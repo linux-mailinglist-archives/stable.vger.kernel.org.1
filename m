@@ -1,132 +1,122 @@
-Return-Path: <stable+bounces-40036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113A98A7457
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 21:07:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1A38A7505
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 21:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93CC0B21CB8
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 19:07:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C84BD282FEF
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 19:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC91137929;
-	Tue, 16 Apr 2024 19:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B825137C39;
+	Tue, 16 Apr 2024 19:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sr2rMEkY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WMXi/bbN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83084137748;
-	Tue, 16 Apr 2024 19:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E632943C;
+	Tue, 16 Apr 2024 19:37:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713294427; cv=none; b=mN+xIeaXlMDXFNXKlFIu5G0jU9eDdK5bd5g+9X3onMfgSc1PhXhzv3oeTbYs7nK5oef2aNqjzbi6fKMp4iZMhDCU8V1Ps0GR8FIjHpQt73rJlKEKSqNS7I3M358mmVJkYTx662CBJTZ72Ue5V75tKDtjAXSFOPQH7xbAzw9nm5I=
+	t=1713296253; cv=none; b=c559PKy0QojNWWl7s3Z2b2J9ZUNinI9QzfWpwQCAQs8x2VwH1q2sc4V2ToQ1RE826uy9+Vdo3W+ZPES9CcKlamawmutlsGQNPLlbMtcN+GdodPPAgW/s9kuKWf6APKpKb4KgyBAcQHK0lhnuwOpsRAz9rWWnr4Z0EzZKl/951wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713294427; c=relaxed/simple;
-	bh=DAngsWtX5i5JPK0TVotIyyLHrT3kU1QwvuimQUMuUwg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=URqR5vnnprpmwX3lxHrPRHqsFUYRP+OToCIEji9wV/pzLTjGfDfSMTIHVU27Jez9Ehw8RW5+yc4PWdwuprp8GVrMWsN7c7v77TOi50ip2YyAZbI4izmHNXmhlUFyh6NLNkHS9cWZiahT5lS/GTps8KDWVKtkmxqKvyLh4gj2bfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sr2rMEkY; arc=none smtp.client-ip=209.85.210.175
+	s=arc-20240116; t=1713296253; c=relaxed/simple;
+	bh=F6vLZMw5iKbm8/K6P0sUwSZXxcZ1d1VPqXfAJPc1ClE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p5TG7N4bCpFLlVJDTBfST+bEH7UYmWkTSo80/X7IaeHCxppdvLm7YTw/QcQQ10aMXMixxoDDvdIs2FA7VkJCL88lseyHIp5PsRJBNUbviLunNHMHObGgq5T9TBR17CgZSxZdydARTrb2xUp1eIq7iE1wM/kn3aMRhYQhz4eLwJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WMXi/bbN; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6ed04c91c46so4911461b3a.0;
-        Tue, 16 Apr 2024 12:07:06 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-518e5a74702so88164e87.1;
+        Tue, 16 Apr 2024 12:37:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713294426; x=1713899226; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ymh6/7DVgNq/BVrdLDL6ajyFa00O1IrR2fX6zfmoZZQ=;
-        b=Sr2rMEkYhxxq9Vo8Dc+elN0e+8QHloyvN5HCHDRgr7FuuKC/4/j0heZH7rE1TZyviq
-         T8Bl2uruwY68YgloLPAJhHOwrMuMxekykKOYxtrUi3xBvG9RS1loTc7bAfC5wdnZkoeX
-         zCsO9v3W61yPtNlpHb9SnKobAwbRDWmiFQ1zCvd77YTQk8emxlOLhwTh7YXDIWxrZxY9
-         9bDuu7x+Q4yI7PbZgpsa4EsKvoU2F7kvg1nqVM9JF2egf15O2f1aZIdbhFfx9zOeVdHi
-         2/48unguQgueg3mlIIi+aVYelCgu0lbJTiPsJ4uEoakzAVuIhMjoi+TwxsINLMbft+US
-         ItZg==
+        d=gmail.com; s=20230601; t=1713296250; x=1713901050; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bhWQKc/eYOwik0yE3g6ijPo7WAzZsqUpRV7UJ5RlYZU=;
+        b=WMXi/bbNsOSmogIMC9C18YcFhLsiKGKEYUUIZwmagPvQ3yxDHooK1xtAOLiiHZzHZS
+         j4VMm37RjOqEUBNJh0Ma7/43Dlk2SXyrYKMv0LXncXACUJInyMZG/hcfZPjTyyH5AXoF
+         3SQgqxd3/wgeJvwYcPF2M6XmFK+7jL0/gAINLK70YePQVSbXn6RTnk+m+BNFdfBz12+G
+         jmUPNeG6KQM/c43KOVyQYV40WGvqaAz676YUDc2d4yzANop7wsAFmuUUi/iauHdfY5lL
+         4adMfXxF4SAvCS19TMdOiVvBWdLmiBETxMGtnias8j8Ym4NPpEvo59ATJmphO1x9eWrR
+         VtEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713294426; x=1713899226;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ymh6/7DVgNq/BVrdLDL6ajyFa00O1IrR2fX6zfmoZZQ=;
-        b=c67fqQ2hmth2gVWhDrIgjk2l74Org+Vv6blRP6cSPlrIK4LHtehTNhU2oj0iIeQGHB
-         gOBmPHmZsRf4ESPk7gMBTCVxVeGxa+U+h7CKaVR4Bhz3AHACtTFFyEqXt6CgKEHHMnxH
-         pHUD9Zs87gTu6p5tJHPCMy0VdYxFHz/Ue8nuBUjGHO6FmIcVDIm4sDJiNO9hmuSSprck
-         DLH5sa8qZYUrfp65niUJfw3GRxY0MRr4oYtvT6yUGypdYS0DV8v8WpvB0LfvNGEB1Z+7
-         fx4nbkTeeVGTaT0ZCqjDFAebIb1t15umsI/tayprhV5iAQhHsxnEEfuyLQreFYW22JVq
-         MUdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUSAf7Fe62oy4N6iC9uCcxoNGd3akU5reqY2K0Xb2ZiNBLpthTB0OEMKlwpucx6yZteRr2ij+Zwt3HWun2nIEI52jY8xO+nKBU1zHYjzGc3H8/m14hhlYJBOqKwrLbiPVHlTFK
-X-Gm-Message-State: AOJu0YzVOM6hOaP0lsi7NTBSz16wN6VcafCZA2Eqian4Q+26D/imdD75
-	2zNBMM5FtaEL618hk++8dKrMW2TJBPpITlmUPTFscg7AaKVNn1IyNgBtffl36viFvw==
-X-Google-Smtp-Source: AGHT+IGoEfX05qonJWd6vzzxV0e1rBcqS8DZ97ASOVz0k0L6okXuaCutvnvql2+UOdD0V4O9OW7O7A==
-X-Received: by 2002:a05:6a21:6d87:b0:1a7:c67:82ff with SMTP id wl7-20020a056a216d8700b001a70c6782ffmr17824895pzb.13.1713294425646;
-        Tue, 16 Apr 2024 12:07:05 -0700 (PDT)
-Received: from localhost.localdomain ([67.198.131.126])
-        by smtp.gmail.com with ESMTPSA id n21-20020a056a000d5500b006ed066ebed4sm9716764pfv.93.2024.04.16.12.07.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Apr 2024 12:07:05 -0700 (PDT)
-From: Yick Xie <yick.xie@gmail.com>
-To: willemdebruijn.kernel@gmail.com,
-	willemb@google.com
-Cc: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] udp: don't be set unconnected if only UDP cmsg
-Date: Wed, 17 Apr 2024 03:03:30 +0800
-Message-Id: <20240416190330.492972-1-yick.xie@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1713296250; x=1713901050;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bhWQKc/eYOwik0yE3g6ijPo7WAzZsqUpRV7UJ5RlYZU=;
+        b=UM7WA56DItfDCe0+TpTN4WW6WR/2jCrQnzaIelwk29f/zk+Hy0vCrAPIuGlcBr8oSP
+         SAUNDj/H+XGcecZvfbr9QKB/MCCSaYYWGp2HD6Oc3C4/cSyhR5BHGFdvB7OK2Au4VvjA
+         EXeAignAewozd181OYppKNJYBKuELeur/5sO3R/vBGtEdRG1DRBy64EzHsQ9ERouccCM
+         3XE3K+ljIk+br6HOf9NaCOGWVxfHYUJgKJ7HBsB67CdoVkotro7QEat/k+DD+m4dFfjo
+         a/20WK6aLhCZJSZVPluSlKlCXJE0q6fusJ1LpI5Zvgsqc9E4JNEN9Nn7dvrtCCPCBGgY
+         j5NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvphNQmojbAKa5dw7+OOE0O74iNOvpB9QqCatdfIqWbqRMLgxOwGN2EXbnpEbvxY75KENrO4YuBWG3rNPG6LHg3h49IEOWtV2K4pRtyBb3VbUOSZ/fc5s6H45BNhJzMJfVcmI13UuuH00Qc/4VcrdLFRNoT0K4UxYpPv2vDOHDu7dV4WQ=
+X-Gm-Message-State: AOJu0Yw/M1JeuJhOV6rfj1P2syhrq8fSfW9NHPoSuIFnmwMH2Dh1TcXX
+	tmvWvcwfu25q6pQxOR4gOSkgD2y6Pgjadh1yrMwss2f4sf3tOT64y/YUOkoqlgAqlElkqd4gp57
+	YwulPiNE2Sci7hltuW6SmZ3ppCYk=
+X-Google-Smtp-Source: AGHT+IH9hPdu6JNc6JS8yjgqhAuaq5GbLqml3teWtRplC+EvlAKU3fTiFGUAx2AXF00rfhMM9xrkMQebrE8LWS5Kmiw=
+X-Received: by 2002:a2e:6e0c:0:b0:2da:f300:90ff with SMTP id
+ j12-20020a2e6e0c000000b002daf30090ffmr700414ljc.2.1713296249388; Tue, 16 Apr
+ 2024 12:37:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20240401185222.12015-1-benno.lossin@proton.me>
+ <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com> <Zh6wTDoMgvjJZ7T9@boqun-archlinux>
+In-Reply-To: <Zh6wTDoMgvjJZ7T9@boqun-archlinux>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 16 Apr 2024 21:36:30 +0200
+Message-ID: <CANiq72m4P8NNr7M0Bv6bFpLonPu=WZC_x-k1KdtzqUd=vtLObA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, 
+	Sumera Priyadarsini <sylphrenadin@gmail.com>, Neal Gompa <neal@gompa.dev>, 
+	Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, 
+	Matthew Bakhtiari <dev@mtbk.me>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, 
+	Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@google.com>, Finn Behrens <me@kloenk.dev>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-"connected" should not be set to 0. Otherwise it stops
-the connected socket from using the cached route.
+On Tue, Apr 16, 2024 at 7:07=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> As reported by Dirk Behme:
+>
+>         https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/t=
+opic/How.20to.20use.20THIS_MODULE.20with.20.22.20rust.3A.20macros.3A.20fix.=
+20soundness.20.2E.22/near/433512583
+>
+> The following is needed to allow modules using `THIS_MODULE` as a static
+> variable. That being said, maybe we can merge this patch as it is, since
+> it doesn't break mainline, and the following change can be done in a
+> separate patch.
 
-Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
-Cc: stable@vger.kernel.org
----
-v2: Add Fixes tag
-v1: https://lore.kernel.org/netdev/20240414195213.106209-1-yick.xie@gmail.com/
----
- net/ipv4/udp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Fixed in `rust-fixes` now.
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index c02bf011d4a6..420905be5f30 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1123,16 +1123,17 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 
- 	if (msg->msg_controllen) {
- 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip_cmsg_send(sk, msg, &ipc,
- 					   sk->sk_family == AF_INET6);
-+			connected = 0;
-+		}
- 		if (unlikely(err < 0)) {
- 			kfree(ipc.opt);
- 			return err;
- 		}
- 		if (ipc.opt)
- 			free = 1;
--		connected = 0;
- 	}
- 	if (!ipc.opt) {
- 		struct ip_options_rcu *inet_opt;
--- 
-2.34.1
+    [ Moved `THIS_MODULE` out of the private-in-private modules since it
+      should remain public, as Dirk Behme noticed [1]. Capitalized comments=
+,
+      avoided newline in non-list SAFETY comments and reworded to add
+      Reported-by and newline. ]
+    Link: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/t=
+opic/x/near/433512583
+[1]
 
+Cheers,
+Miguel
 
