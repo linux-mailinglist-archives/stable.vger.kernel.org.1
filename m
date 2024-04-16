@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-39976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4F58A6093
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 03:54:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9611E8A6094
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 03:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A8502821DE
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 01:54:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419BF1F219F0
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 01:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D138F5A;
-	Tue, 16 Apr 2024 01:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E215AA92E;
+	Tue, 16 Apr 2024 01:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vi2103S8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="g3oIvHJH"
 X-Original-To: stable@vger.kernel.org
 Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703A73FD4
-	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 01:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38531139E
+	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 01:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713232486; cv=none; b=jO6lrYVq4HpgyVR5rlLLw6aHNU8gAScQBbXIcQpJVFPwXaeiZgq3lXL2i9JGx3ZD7WLDuasKkMM5MhJNMG+oCF+zv9uQjfRwx1U88Zy/Fpt5n/9tH9z3gOgcxw7hRKlts4Ob0IY7NZI1uIDiDL+jAHrt++rUvj/RZoo67v6agI8=
+	t=1713232488; cv=none; b=XxdhTy9D/aPE+Y9S89nE3VFXhOO2TaUt62GQtp1Qt9tHoE4E3+WAPw/XCBvCRz3W9E+P0k8fJMTqnUfUYd2yXY78s5QEIs1pRX+vi0jzISMMfRVmoj4eRiqRbiAvQhOK4zD2wZT/170i66MTBJ4afDT1LVBxdrYmU9mcylK51xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713232486; c=relaxed/simple;
-	bh=lsLCBFrVN80SAY3gmxE4uIB3hFAU7d9hvKI+lzQ/pLA=;
+	s=arc-20240116; t=1713232488; c=relaxed/simple;
+	bh=UmXdxqwH4sj9RmKAcekLh/yjceU7ZYfzDTHryeGdseI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o8kMBuzQpD3CFPWM7zuaEYT4s0MQZbPlMU3xb1f/JuHafdTJTYWMDzBnRvxMNl9yUOqxQ94I1b5LR+j/EU6ziHaxJEFWdLqN0ZRplUO5RUp+wWfFSt63FC8CYmXFybYR00Cajqrl0POYQjQih2UapiBRU4zTfN+JL8FBspVO+i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vi2103S8; arc=none smtp.client-ip=91.218.175.186
+	 MIME-Version; b=qrZLv1Vwp25LOX6tiUojAYUVa4SbTOh9nNULDqEdtszta1nc84rMzRAUisoXdimY2et5ew2DxI2BfFNmcL62NbRyvO3+hf3zT1Q2/rx1H3sOeTBxAre+fOkVWLP+7/VmhY7mLSGUm7U5Kdhnb8LCcaZxvDP0lvdEjobY4BsHGPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=g3oIvHJH; arc=none smtp.client-ip=91.218.175.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1713232482;
+	t=1713232484;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iUPbQrJhA5p5ATS70Y1LQQnInKd8si1rbBIrnHRq0/s=;
-	b=vi2103S8CX0hnJetU+d08OfkEQ4g3tr2ngoh4oJsguxUWTnQlOJgs2XA4A9ujb1g2cRr2s
-	RCADtXL4+thOmnoKbedQypyfgsJEhckH2HdTwTRM0QwvMqCdKbtxTnJLyPPXjB3J8HCVtj
-	dBSklXq75ywPmeQz/80kFhWl2gZtTaI=
+	bh=Ce9z3rTgtAmb+z21uy40IYtJhZfm3O/70hN4lTpTqdQ=;
+	b=g3oIvHJHfFtnw79mWSH6eFvzLLCevA9Zso7G+6ifB8JCpY0YLq32UtQNt0CSe/HMAUACAU
+	52GjKQ7OD9USFzF7f6YHRloaTgkevFWj8DDBaluw9o6s57k8W1IvlCjH6aqdM//wj0OuD+
+	TfvXMRNWTazq74aokrlhTAez01BpjDY=
 From: George Guo <dongtai.guo@linux.dev>
 To: gregkh@linuxfoundation.org,
 	tom.zanussi@linux.intel.com
 Cc: stable@vger.kernel.org,
+	Tom Zanussi <tzanussi@gmail.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19.y v5 1/2] tracing: Remove hist trigger synth_var_refs
-Date: Tue, 16 Apr 2024 09:54:31 +0800
-Message-Id: <20240416015432.2282705-2-dongtai.guo@linux.dev>
+Subject: [PATCH 4.19.y v5 2/2] tracing: Use var_refs[] for hist trigger reference checking
+Date: Tue, 16 Apr 2024 09:54:32 +0800
+Message-Id: <20240416015432.2282705-3-dongtai.guo@linux.dev>
 In-Reply-To: <20240416015432.2282705-1-dongtai.guo@linux.dev>
 References: <20240416015432.2282705-1-dongtai.guo@linux.dev>
 Precedence: bulk
@@ -64,13 +65,17 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-From: Tom Zanussi <tom.zanussi@linux.intel.com>
+From: Tom Zanussi <tzanussi@gmail.com>
 
-All var_refs are now handled uniformly and there's no reason to treat
-the synth_refs in a special way now, so remove them and associated
-functions.
+Since all the variable reference hist_fields are collected into
+hist_data->var_refs[] array, there's no need to go through all the
+fields looking for them, or in separate arrays like synth_var_refs[],
+which will be going away soon anyway.
 
-Link: http://lkml.kernel.org/r/b4d3470526b8f0426dcec125399dad9ad9b8589d.1545161087.git.tom.zanussi@linux.intel.com
+This also allows us to get rid of some unnecessary code and functions
+currently used for the same purpose.
+
+Link: http://lkml.kernel.org/r/1545246556.4239.7.camel@gmail.com
 
 Acked-by: Namhyung Kim <namhyung@kernel.org>
 Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
@@ -78,59 +83,101 @@ Signed-off-by: Tom Zanussi <tom.zanussi@linux.intel.com>
 Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- kernel/trace/trace_events_hist.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ kernel/trace/trace_events_hist.c | 68 ++++++--------------------------
+ 1 file changed, 11 insertions(+), 57 deletions(-)
 
 diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index e004daf8cad5..e4f5b6894cf2 100644
+index e4f5b6894cf2..ede370225245 100644
 --- a/kernel/trace/trace_events_hist.c
 +++ b/kernel/trace/trace_events_hist.c
-@@ -280,8 +280,6 @@ struct hist_trigger_data {
- 	struct action_data		*actions[HIST_ACTIONS_MAX];
- 	unsigned int			n_actions;
- 
--	struct hist_field               *synth_var_refs[SYNTH_FIELDS_MAX];
--	unsigned int                    n_synth_var_refs;
- 	struct field_var		*field_vars[SYNTH_FIELDS_MAX];
- 	unsigned int			n_field_vars;
- 	unsigned int			n_field_var_str;
-@@ -3708,20 +3706,6 @@ static void save_field_var(struct hist_trigger_data *hist_data,
- }
- 
- 
--static void destroy_synth_var_refs(struct hist_trigger_data *hist_data)
+@@ -1289,49 +1289,13 @@ check_field_for_var_ref(struct hist_field *hist_field,
+ 			struct hist_trigger_data *var_data,
+ 			unsigned int var_idx)
+ {
+-	struct hist_field *found = NULL;
+-
+-	if (hist_field && hist_field->flags & HIST_FIELD_FL_VAR_REF) {
+-		if (hist_field->var.idx == var_idx &&
+-		    hist_field->var.hist_data == var_data) {
+-			found = hist_field;
+-		}
+-	}
+-
+-	return found;
+-}
+-
+-static struct hist_field *
+-check_field_for_var_refs(struct hist_trigger_data *hist_data,
+-			 struct hist_field *hist_field,
+-			 struct hist_trigger_data *var_data,
+-			 unsigned int var_idx,
+-			 unsigned int level)
 -{
+-	struct hist_field *found = NULL;
 -	unsigned int i;
 -
--	for (i = 0; i < hist_data->n_synth_var_refs; i++)
--		destroy_hist_field(hist_data->synth_var_refs[i], 0);
--}
+-	if (level > 3)
+-		return found;
 -
--static void save_synth_var_ref(struct hist_trigger_data *hist_data,
--			 struct hist_field *var_ref)
--{
--	hist_data->synth_var_refs[hist_data->n_synth_var_refs++] = var_ref;
--}
+-	if (!hist_field)
+-		return found;
 -
- static int check_synth_field(struct synth_event *event,
- 			     struct hist_field *hist_field,
- 			     unsigned int field_pos)
-@@ -3884,7 +3868,6 @@ static int onmatch_create(struct hist_trigger_data *hist_data,
- 				goto err;
- 			}
+-	found = check_field_for_var_ref(hist_field, var_data, var_idx);
+-	if (found)
+-		return found;
+-
+-	for (i = 0; i < HIST_FIELD_OPERANDS_MAX; i++) {
+-		struct hist_field *operand;
++	WARN_ON(!(hist_field && hist_field->flags & HIST_FIELD_FL_VAR_REF));
  
--			save_synth_var_ref(hist_data, var_ref);
- 			field_pos++;
- 			kfree(p);
- 			continue;
-@@ -4631,7 +4614,6 @@ static void destroy_hist_data(struct hist_trigger_data *hist_data)
- 	destroy_actions(hist_data);
- 	destroy_field_vars(hist_data);
- 	destroy_field_var_hists(hist_data);
--	destroy_synth_var_refs(hist_data);
+-		operand = hist_field->operands[i];
+-		found = check_field_for_var_refs(hist_data, operand, var_data,
+-						 var_idx, level + 1);
+-		if (found)
+-			return found;
+-	}
++	if (hist_field && hist_field->var.idx == var_idx &&
++	    hist_field->var.hist_data == var_data)
++		return hist_field;
  
- 	kfree(hist_data);
+-	return found;
++	return NULL;
  }
+ 
+ /**
+@@ -1350,26 +1314,16 @@ static struct hist_field *find_var_ref(struct hist_trigger_data *hist_data,
+ 				       struct hist_trigger_data *var_data,
+ 				       unsigned int var_idx)
+ {
+-	struct hist_field *hist_field, *found = NULL;
++	struct hist_field *hist_field;
+ 	unsigned int i;
+ 
+-	for_each_hist_field(i, hist_data) {
+-		hist_field = hist_data->fields[i];
+-		found = check_field_for_var_refs(hist_data, hist_field,
+-						 var_data, var_idx, 0);
+-		if (found)
+-			return found;
+-	}
+-
+-	for (i = 0; i < hist_data->n_synth_var_refs; i++) {
+-		hist_field = hist_data->synth_var_refs[i];
+-		found = check_field_for_var_refs(hist_data, hist_field,
+-						 var_data, var_idx, 0);
+-		if (found)
+-			return found;
++	for (i = 0; i < hist_data->n_var_refs; i++) {
++		hist_field = hist_data->var_refs[i];
++		if (check_field_for_var_ref(hist_field, var_data, var_idx))
++			return hist_field;
+ 	}
+ 
+-	return found;
++	return NULL;
+ }
+ 
+ /**
 -- 
 2.34.1
 
