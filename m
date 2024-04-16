@@ -1,91 +1,132 @@
-Return-Path: <stable+bounces-39999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57CF8A66EC
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 11:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 766208A67EC
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 12:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BC9D1F25325
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 09:20:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E00191F21BB2
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 10:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E6084FD8;
-	Tue, 16 Apr 2024 09:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236CB86AFC;
+	Tue, 16 Apr 2024 10:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iz5DZxJY"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="Ou/+1mni"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E4AEEB7;
-	Tue, 16 Apr 2024 09:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C1186659
+	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 10:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713259218; cv=none; b=DALwESeTSj9VW5nvkZynwWdSf/TJDR7TPfiujPSdfciWtTApD0r3OOwPJvyfSL/NTk4/9EL9Pmvp5yvaUNYCW/LKxk4S1jvxjZISmX3ajm5comR9ocJNPSbrQ9QvBpgtQn6mLFYyaCZhZAF2eKX7pO5UfqD+3LwSix91EfKKdUk=
+	t=1713262423; cv=none; b=qyQiyYSMsogpZr44vTP06I+OLbbZq7IBWU1iNCksg2AM/Lkp8tyeZ6MnnqITUaEZvrP8hVWpfxEGW24s84NCy2dmoaj7z62/E0RXFTTv4/hQfsNYvrs7j4Y5iesMljF3EY0iBNDHhvt27gzdjvmkgY0HeVeYOJGJ1kPJ6qbH6Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713259218; c=relaxed/simple;
-	bh=JdkdEMs0VGgDEoGPH/7l1eo9YTIzttLE89QjVzLRvf4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PUcB8G+9ebdqeWusINybPiCQMZftMwcP2GZlKUfmL4n0zLP7Z3CyjJkjWKv34OxBP0hOBb9bB2nxXlypvpjxDg2UCP8pJ1sRMrXB19AyMxUDi77lwdobpw8spkACDt9aex8MVdUOUxnJeeQAvVgQZsQAR4vihrWqHBbyi9YBHaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iz5DZxJY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF73DC113CE;
-	Tue, 16 Apr 2024 09:20:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713259218;
-	bh=JdkdEMs0VGgDEoGPH/7l1eo9YTIzttLE89QjVzLRvf4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iz5DZxJYMjV/lqJEkIxmwYC2umpExhi9LHj3r85tw1WUdJ7ikmNGxWtGvyoehA+rl
-	 BwAzPgmU67jka6mn+Vpwk8e47i/mooNw0Udz79pT5R5c/bctwBlhDMXKghwK72JlyV
-	 1WoMHvIqBuNGMV0o9O+9kVa2A1b+h16cdSe3Uj+t7E8Lo4aQsJPV9SRZEZK6+cyg6Q
-	 Af8HiklxwUg/nbskPkkU/wL7CVvF/ychv4a4x95Hgx9Z7k1EiWW8xTFeZUxVZ2Jr7c
-	 YdnB1jRenNIqDNxz71aMxRGgrBnxyWPN9w/8ToLPcTwI+AQVRbGOKHQ5f5uUIlpaA9
-	 FY80xEVQvL0RQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rwezA-000000005IR-3diI;
-	Tue, 16 Apr 2024 11:20:16 +0200
-Date: Tue, 16 Apr 2024 11:20:16 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>, luiz.dentz@gmail.com,
-	marcel@holtmann.org, linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	quic_mohamull@quicinc.com, quic_hbandi@quicinc.com
-Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
- exists in DT"
-Message-ID: <Zh5C0OjVoJaX-GGg@hovoldconsulting.com>
-References: <20240314084412.1127-1-johan+linaro@kernel.org>
- <171146704035.9961.13096206001570615153.git-patchwork-notify@kernel.org>
- <124a7d54-5a18-4be7-9a76-a12017f6cce5@quicinc.com>
- <ZgWLeo5KSLurLDhK@hovoldconsulting.com>
- <c03abbbd-faa5-4fdc-b7c3-5554a90c3419@quicinc.com>
- <Zg1KmcFQ3bAJa8qJ@hovoldconsulting.com>
- <b7d5c2ac-2278-4ccc-be2a-7c7d9936581a@quicinc.com>
- <f72d83fd-9576-4017-bcf9-c50ce94d85ec@quicinc.com>
- <Zh0NhA4GBxIAM-ZI@hovoldconsulting.com>
+	s=arc-20240116; t=1713262423; c=relaxed/simple;
+	bh=PLfHS/pr861fPjFBeMBoEopPIt381ou0qj9dA0o7sxM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TknyXeoZMBSeerhY0U9EyUlsLd0SMs0HYpSYd9tlHwr1JSgAv36itw13w5Rb1ePXCwpIHo2nXSfhzW6/0dpcXNJ/LJVeF0ankJMNwFmVmqAsBzupe5xGE+p7Gqkrawk3BUCAL4WEZ9WbNeFzCgHBgCM9Sj4X0m1DulBGTDXpZUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=Ou/+1mni; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-5dcc4076c13so2782458a12.0
+        for <stable@vger.kernel.org>; Tue, 16 Apr 2024 03:13:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1713262422; x=1713867222; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YZfb01z1cElSdFgczCPztvVWoygfwcGgF7HnVAPTuEs=;
+        b=Ou/+1mnibDBFuGPcQ0dWFkRgXX9GC0Nywe2x4pGJI0/QodftMdTwehlyON8vOOciQa
+         BeEn4O4ss2KnJQII1/G83f3p4FPr2znkx7MfwCmsLz4tEjrxeKKYnr0HrzZAlTPync7d
+         xBrRsG21s+E2Z3YyG6vO+6rqOoZSFFxiYAsy6eCkXNodDsPsvKA1V7vh07Qp/S4JK4lr
+         hq/cePmHYYJqfMWHlQH18BqKdrjXsGlaq+ybfpYFBLuHHDSxHRfw30z+hfcXA7xNJIu8
+         HXOkF/sBRBU6/97i24RMvIIWwUsiEbDzykoIxTo+nUV0/5dl+7EQICdKAN1paTWYXpLJ
+         V4jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713262422; x=1713867222;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YZfb01z1cElSdFgczCPztvVWoygfwcGgF7HnVAPTuEs=;
+        b=EVvV15MOfjb0OnzD7enWwHge0zqXNaSuDogHxdJj431pxrNmrZIuaOt0yr6Gce8WXI
+         AObI/Uf78o9D1Yrja9zj29tyj1kPUoukHOvTxlg194B9pF6TjbsaV8FoDuJy1E20Qmnb
+         RFWi2MAyc3xD3D8lr2Ln/p4z+BnP3I8RWcQyrElKI3pO95/CiHmAtih/rL6lm3swx2hR
+         bj1MUpaXEnrntsz1lHXMrsCAZ4DiHDdjz2uuxHNizImYLpH9uYbVuAMKghugqGYVNrVX
+         FHxh0Nsl/OWnecb2cJV2rxs3DEDUs7e55gkJERAyL2EBjauHGdgrZA4Jh202dnRaS+rE
+         c35g==
+X-Gm-Message-State: AOJu0YxCKbjHrWigmQiw118N9UNVieb4adnp25fpxHkzOyFYrsupOjQ2
+	tLCIx644mzIV1+K7ZQrPu+cvxZSYN0DSEkaTTimnjJXyVC9JirLWnQxMt9c9Z1QmULdluxH1Itz
+	Dgl+pRK9OEWwRx6i3ik4cN8UF7Dct8uKJsyPZyA==
+X-Google-Smtp-Source: AGHT+IEAmCX3pj6Nd8BE8HVb4J6COM8iyob7Dnrh8XVaPFzBOespQeJDXW+F7FT5eUBAa5B9DPn9VuXJil6nMAitpYE=
+X-Received: by 2002:a17:90a:f105:b0:2a7:8674:a0c8 with SMTP id
+ cc5-20020a17090af10500b002a78674a0c8mr2945956pjb.1.1713262421827; Tue, 16 Apr
+ 2024 03:13:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zh0NhA4GBxIAM-ZI@hovoldconsulting.com>
+References: <20240415141953.365222063@linuxfoundation.org>
+In-Reply-To: <20240415141953.365222063@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Tue, 16 Apr 2024 19:13:30 +0900
+Message-ID: <CAKL4bV6gTOUt=LomZjGceMm6SjqWeOXXeTE8EQ7H-ovQvnfzZA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 15, 2024 at 01:20:36PM +0200, Johan Hovold wrote:
-> On Mon, Apr 15, 2024 at 04:22:51PM +0530, Janaki Ramaiah Thota wrote:
-> 
-> > Are you planing to merge your below patch ?
-> 
-> Yes, sorry about the delay. Was busy with other things last week.
-> 
-> I'll revisit and post it shortly.
+Hi Greg
 
-For the record, I've now posted a fix for this here:
+On Mon, Apr 15, 2024 at 11:35=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.28 release.
+> There are 122 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 17 Apr 2024 14:19:30 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.28-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-	https://lore.kernel.org/r/20240416091509.19995-1-johan+linaro@kernel.org
+6.6.28-rc1 tested.
 
-Johan
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
+
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+[    0.000000] Linux version 6.6.28-rc1rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 13.2.1 20230801, GNU ld (GNU
+Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Tue Apr 16 18:32:52 JST 2024
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
