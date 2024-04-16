@@ -1,124 +1,123 @@
-Return-Path: <stable+bounces-40055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF52E8A78DB
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 01:41:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8BC78A78DD
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 01:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E75AB21AD4
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 23:41:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC2F81C21610
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 23:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D2713AA2C;
-	Tue, 16 Apr 2024 23:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9903513A896;
+	Tue, 16 Apr 2024 23:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="rcjcVLc2";
-	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="ct5manT4";
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="t6cv4uUz"
+	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="jFwK+6y6";
+	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="OenLps9z";
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="ey0qVjHR"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-00230701.pphosted.com (mx0a-00230701.pphosted.com [148.163.156.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6224C13A88F;
-	Tue, 16 Apr 2024 23:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D6913A885;
+	Tue, 16 Apr 2024 23:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.156.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713310906; cv=fail; b=jBK6Jn0bGVR+5rF8LHUmIIOrnEyIOv+OIQeKYkdAVDauxZ+Dd6hgtXwMW52t3D1RjeMvs7JaocOjduj1iSRDcU26TTBulauV/Xn4DMnWag3Vokp/OI4z1FApaudsKrCGvdy2ZnKGcGepF3SLKTuZ2dgWpvf6e5oQPoQrxSfBECw=
+	t=1713310911; cv=fail; b=kDn3hAmHZqNA/OKxdhIlDXl8IrTOC0v5uRSsskh5GsrDJd42nMDHPQGBje5nXuaYTCbmlmvQNx5rSqqZceX1q94t/4CG5olOuauim/e1UkIoKJGGBe6lF5mr0jKE4VnAc4QUv3bFsXHMq/RT8Oky+wTIumf0qSQe3aIgwsOTdG0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713310906; c=relaxed/simple;
-	bh=AYGegtnTN0TH7fUzqSEE6sYwxJENhDDAoO4MK6r9kpY=;
+	s=arc-20240116; t=1713310911; c=relaxed/simple;
+	bh=JTuIR1EJmDxdGkm8GybfbEEi8QHhE8YFEaoqZRlhvIE=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UrMOsEI4zniL4uC+73be1WbLfhIwR6BbIa3bjypihswd220FJzIYI4TcwyZacQI9L5PllP37YMzpYdAT/5pTgkmbsVVs8Wu+1YBCjDxaZWgouMiJtOevzyX5L4zNeJOCdbXMLhTNKMClhlUBpYoGrINdB5jAWr2tlKMRtfyQirY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synopsys.com; spf=pass smtp.mailfrom=synopsys.com; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=rcjcVLc2; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=ct5manT4; dkim=fail (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=t6cv4uUz reason="signature verification failed"; arc=fail smtp.client-ip=148.163.156.19
+	 Content-Type:MIME-Version; b=Q4slChbi+xsOB/o89YhWZorOPNafH1OW4GWlFtVYzDIUPeDZbKWWG0okVPbM5RGMAvgAz3cqNrkNtr3ZeDzwsoZVu0zM92cjO6o5ZxH+sBlR4x1vb3ms0mDtwv4hu3SovzNRgeZgmudQV4tmgW/VA5rVg0hvxVItl1HPA7PM3nM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synopsys.com; spf=pass smtp.mailfrom=synopsys.com; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=jFwK+6y6; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=OenLps9z; dkim=fail (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=ey0qVjHR reason="signature verification failed"; arc=fail smtp.client-ip=148.163.156.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synopsys.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=synopsys.com
 Received: from pps.filterd (m0297266.ppops.net [127.0.0.1])
-	by mx0a-00230701.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43GHbY4e013700;
-	Tue, 16 Apr 2024 16:41:41 -0700
+	by mx0a-00230701.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43GHbYrm013683;
+	Tue, 16 Apr 2024 16:41:48 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com; h=
 	from:to:cc:subject:date:message-id:references:in-reply-to
 	:content-type:content-transfer-encoding:mime-version; s=
-	pfptdkimsnps; bh=cF5Q35pK7V0lkL8E7GXTpbxb78e42HJSbSxX0oneDjw=; b=
-	rcjcVLc2Amt0/KfjZ6pfoz6gckOwUpBNtnsecTXAIsLm1kkGQOIGQiwXHW2auyyD
-	LcEowc0MR3A9E0VMch1UXtnzemW2f30UCD4Fv4xsEZTW0Y2ULL/5YciLICPjRcLR
-	/y+tZ3n392y2xLeqwUU6Jei7BnarOukLVRQtxqHjufC3hPJo0kiw+em9ogVUfVFN
-	z8kETZ5WhzaxJ7n48tYaHHl25vK7KzpzlmiST5isx7tOwD37GAAMkJ8iGQoxOZgx
-	yJlf00NgmWt1ilo1K2ql3wNIox5bRLZDRsv5czm/LbYE+afLUBC879Oplwf3fEwo
-	RWBnu7xDbVpevtC7QmAFrg==
+	pfptdkimsnps; bh=xEApJXelvG3O7OD5hkc/1hsFMjvZkuWuVbL9t0vfacc=; b=
+	jFwK+6y6vr6wRbU7pNqy0qktvwik+iXfW673izXLIg70J/zsB4GpIf7Y2qVOih6B
+	Ws7Rw/YZIGrywNhBxFH1ZNB2o+RtsVFcgTda20PD1noE3derWwbj3jbgf/Cz9kgh
+	qMpw4TyVZCgNjNk102LLRrRPtJ3Ig7iTyYo3dG3fIQs+nuLf11wmfFXNHI4Lapab
+	CVuoFZ5mgS77iX6C+vJubsrt/LwURC4ImN58u3tbny/EHTbWttGELW2rU26JylFG
+	FHNtDPTmCgaiLDiBINqJBt/n+6z7HlGApj24yLHU7kUGONl1WegiH5eYAZMXKV2z
+	hiUDIH5PBI6/2NSp0aN5qA==
 Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com [149.117.87.133])
-	by mx0a-00230701.pphosted.com (PPS) with ESMTPS id 3xhrretqh9-1
+	by mx0a-00230701.pphosted.com (PPS) with ESMTPS id 3xhrretqhj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 16:41:41 -0700 (PDT)
+	Tue, 16 Apr 2024 16:41:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
-	t=1713310901; bh=AYGegtnTN0TH7fUzqSEE6sYwxJENhDDAoO4MK6r9kpY=;
+	t=1713310907; bh=JTuIR1EJmDxdGkm8GybfbEEi8QHhE8YFEaoqZRlhvIE=;
 	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=ct5manT44qVs/8ySEaHMcNCM0hGen62mJ4oG1db312S1SmdxrG6pF01IKxM3sjYyd
-	 u/98jpVJ0OqmR+EnQF2WQtsUOu00dmYQSB1QzKbMSppfyovtDknwoFQMesWfWms6y+
-	 eSJjp3Te1CUDow2pgS2IBiWd9Ez819wZU0WbzTiISlnDXFvAU5nt5gwChMYRJ4Zz7a
-	 hByqqLTbN5gL6ZxnXKgEzefqvycLgmLvC3LQHywyipkCE61jBTO0LUiVLcfvN65AY1
-	 bsFzWjzpOpIKvhEF2pEbW99s+rZB21Mg9aKmafmKP59ylSTTeMwCcX9wsXJyhLFKoT
-	 Vyfd5atWBFoQA==
-Received: from mailhost.synopsys.com (sv2-mailhost2.synopsys.com [10.205.2.134])
+	b=OenLps9zGEg3ZAg1T30oFeAO+FcWnm/JlP6gS6KGe2iomTTpXrawplaaG9gQnx3F8
+	 gjfhJsfXYoSnoazA9LezMKqPtaZePMu6KHn5vi2fmiNQQHZVc7DtW/I8Mq9TWsCsUO
+	 uJgiwxQ9YeIyidcGgha4tvvovdwLWCjgxc/qZdHycsm473mgonqa1lUy6Tq2t2JRzW
+	 3ZyyffrRafM9ob7IujawGl1MzvEDnKBvzJAE3FRtSselVZbaXgIzNrb4zUoJFG+Kh9
+	 otcFsBF8ygtvXC70O15xI/Hbp9Ik4uxe3v0YNBqyMAnx0PbJ86Z1qe3p7B4sopEX3r
+	 oJXtui7YcGpVA==
+Received: from mailhost.synopsys.com (badc-mailhost4.synopsys.com [10.192.0.82])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits)
 	 client-signature RSA-PSS (2048 bits))
 	(Client CN "mailhost.synopsys.com", Issuer "SNPSica2" (verified OK))
-	by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id EE8064035C;
-	Tue, 16 Apr 2024 23:41:40 +0000 (UTC)
-Received: from o365relay-in.synopsys.com (us03-o365relay3.synopsys.com [10.4.161.139])
+	by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 39F8740355;
+	Tue, 16 Apr 2024 23:41:47 +0000 (UTC)
+Received: from o365relay-in.synopsys.com (sv2-o365relay1.synopsys.com [10.202.1.137])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(Client CN "o365relay-in.synopsys.com", Issuer "Entrust Certification Authority - L1K" (verified OK))
-	by mailhost.synopsys.com (Postfix) with ESMTPS id 8CA3CA007B;
-	Tue, 16 Apr 2024 23:41:40 +0000 (UTC)
+	by mailhost.synopsys.com (Postfix) with ESMTPS id F06CAA005E;
+	Tue, 16 Apr 2024 23:41:46 +0000 (UTC)
 Authentication-Results: o365relay-in.synopsys.com; dmarc=pass (p=reject dis=none) header.from=synopsys.com
 Authentication-Results: o365relay-in.synopsys.com; spf=pass smtp.mailfrom=synopsys.com
 Authentication-Results: o365relay-in.synopsys.com;
-	dkim=pass (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=selector1 header.b=t6cv4uUz;
+	dkim=pass (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=selector1 header.b=ey0qVjHR;
 	dkim-atps=neutral
 Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(Client CN "mail.protection.outlook.com", Issuer "DigiCert Cloud Services CA-1" (verified OK))
-	by o365relay-in.synopsys.com (Postfix) with ESMTPS id DF82D404D0;
-	Tue, 16 Apr 2024 23:41:39 +0000 (UTC)
+	by o365relay-in.synopsys.com (Postfix) with ESMTPS id 5ECFF40363;
+	Tue, 16 Apr 2024 23:41:46 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GaVqQtFOU2BGx82vwtX2shwe460kMJBeP0NbY3NCRptjUoZXp+HjJ5PUoNOgjfJqZ/BJiwuGTtbJccMSSXRw8WScOtQlbF6I6SuSxoyvgYevrGrRq4aBva6oO+kEzWs9Uzm44Z/4Oy9LeQ5CCsEdKHCyDxigVlxm7jhwad5xLJHHeuiMYckH2FuJtwx9WUHUI4QQXiY7EmWZxivPZ/Nxj7KhwKy3xnUsZ1cfyuZRusgcC+7oZgrOoacC/hn7QG0bL8ZesXQmhKV56/gXnv5y6c0CFNz5h1xYEadKoUfbTA2uoKB0aoHcQ+ZuvzqpZ9VsU5ni8j64FWAw+hxfAL1nVQ==
+ b=VWaGWDT8+OoaSc/U4nC49GPjDcE3nl6KTRq+5sS8F+1WbadXpNlk929i+Tdd+YBDdSpnkHUOcx30Y3DLJ3kXbyg+LznEiezVC4W753WdPNCNmnfh22EG4olDy60dpWchiMKD2zedtUGnQw7jkB4PdJCCBOnxK0BwoQmAlLZU5PVoRMOsdXUXeu/LQvQDDRzh+dg91ubAW7fjgVwow6rHxbobBuETBfjLGV0C8IPFib70i96/7wUNpbJAIrdkwPTrrKKWPoa/v6qsT8hzc5JGIGulln9LtQZTN8Y9Mt2hZvjoHKubaUuO516YLB/fOz947qmsNBXaddTgHPciUEZ9Uw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cF5Q35pK7V0lkL8E7GXTpbxb78e42HJSbSxX0oneDjw=;
- b=LXbT1PcYee8Sb6lEnYZC+F56GOl12qaFx4jErpE9jmvkBvsrbbTCvFx4jqbQkpYpu4mzOB1xHvPmvSIDqqfOjF01zMt/yC3JNZphizDmiNK0bZ2O80wWY8KIoI6fyvrBm62XkUIGaOjMsE9XcjigFrb/T+3SM+px/kp/ckYr8TjBZCzwZSZ8u+scF+GkYXJ3EqsrOI4VkBr7EpMWijteTNmrAG35sNoD/BTpMfNpU8WDGn+4EB+YHH7MesEm98EAc+Q9DYRT3+krDKmisHlAuf+Iyu/+niI0NCg0Z6VBGTAMVRwmcMI39k+TDVuMxDUIDYXYqrB+1WAO2X6sLcjAtQ==
+ bh=xEApJXelvG3O7OD5hkc/1hsFMjvZkuWuVbL9t0vfacc=;
+ b=M5NuCJz4lm2JHI1CPx1bz9cN6eamF9O+3IkMAT5hGIx35P5fdH69M+wf8ZEaem6WTVGo5pLzNFl+JQvCmS1Tou7rPaG2kuZK1lmw5Z14yzMYnW0RmccDUvnYVyGs5F9zZQnhLsKqKJsj56e8CWynrRS+8gRXYpVWs/ng+a4hWq6kWj+x5OjlaozAsKqu1qLWw6dvsFnMGSHKFFD2N6Y7osLr86wzhxncmaOO6/oQ/+DDHi9KzdDY9Hn1MiHUIXfYrkd2BlanWVMj5wDiDm3tmQzr+JQo1/7rqVsm/5LYXDq597RdZb/GwvTHM3ZOxB0GTBdzV6dAU+Af4NZXOYQrMg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
  dkim=pass header.d=synopsys.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cF5Q35pK7V0lkL8E7GXTpbxb78e42HJSbSxX0oneDjw=;
- b=t6cv4uUzij/0w39pPdwq7JQZRjdCjAtnjr0HUvRBVe9Vv2leks1EnD+7ZZ8X+smA13OTu5telqgwPF+2R6jaT4N7kURx9R/uASfjeBin2J0oGy/DiG9qBJT4eXjOXbdlgXB7oCE1SlmexbAHzbNMnuH3ZgF2nAzy/010qvQTm9I=
+ bh=xEApJXelvG3O7OD5hkc/1hsFMjvZkuWuVbL9t0vfacc=;
+ b=ey0qVjHR7zsmQZFPJpM9RAa/tMWxBv5sWjti5NA6OASOVy1750DvaFHRbwHBZeq59M1EjnvG6LiYyekj83158Pvnx/M0oqpoou5dk0tCdCHTZlUfS0qEFGc18kc3CD9mqsSeippd/+WspgNz85ewy3zIxoA3hv3r2bpaw4AnQ0E=
 Received: from LV2PR12MB5990.namprd12.prod.outlook.com (2603:10b6:408:170::16)
  by PH7PR12MB7818.namprd12.prod.outlook.com (2603:10b6:510:269::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Tue, 16 Apr
- 2024 23:41:36 +0000
+ 2024 23:41:42 +0000
 Received: from LV2PR12MB5990.namprd12.prod.outlook.com
  ([fe80::7827:b41a:c9d6:8e1d]) by LV2PR12MB5990.namprd12.prod.outlook.com
  ([fe80::7827:b41a:c9d6:8e1d%7]) with mapi id 15.20.7452.049; Tue, 16 Apr 2024
- 23:41:36 +0000
+ 23:41:42 +0000
 X-SNPS-Relay: synopsys.com
 From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mathias Nyman <mathias.nyman@intel.com>,
         Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 CC: John Youn <John.Youn@synopsys.com>,
         "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH 1/2] usb: xhci-plat: Don't include xhci.h
-Thread-Topic: [PATCH 1/2] usb: xhci-plat: Don't include xhci.h
-Thread-Index: AQHakFefIGBC2BgMlEODQAgnYv9WHQ==
-Date: Tue, 16 Apr 2024 23:41:36 +0000
+Subject: [PATCH 2/2] usb: dwc3: core: Prevent phy suspend during init
+Thread-Topic: [PATCH 2/2] usb: dwc3: core: Prevent phy suspend during init
+Thread-Index: AQHakFeioIjMhcyoIkClbCNPPNRvWA==
+Date: Tue, 16 Apr 2024 23:41:42 +0000
 Message-ID: 
- <900465dc09f1c8e12c4df98d625b9985965951a8.1713310411.git.Thinh.Nguyen@synopsys.com>
+ <e8f04e642889b4c865aaf06762cde9386e0ff830.1713310411.git.Thinh.Nguyen@synopsys.com>
 References: <cover.1713310411.git.Thinh.Nguyen@synopsys.com>
 In-Reply-To: <cover.1713310411.git.Thinh.Nguyen@synopsys.com>
 Accept-Language: en-US
@@ -127,44 +126,44 @@ X-MS-Has-Attach:
 X-MS-TNEF-Correlator: 
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LV2PR12MB5990:EE_|PH7PR12MB7818:EE_
-x-ms-office365-filtering-correlation-id: 1975ab75-0463-4da2-e88c-08dc5e6ec186
+x-ms-office365-filtering-correlation-id: ec6f430d-a393-4fbf-5c9f-08dc5e6ec513
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info: 
- C/sP3OkMb5pCwi0bJ6hIFA9U/yT3fgeqVnyfbNLevQUxapjWr3ze5lu0709S2LsxgvRPG0UFY6tpf6rcKR+wHjfnoZUFSON9s8MNlflw5p6e9DPDth+tXYMtTY0T+lqxtdTv4lBp23n608gNM8p8jf3OnluN7U5oyyW7o82Pi7C0Jq+KQIRquNM7PM1k6NfBiBZoKRI4CjZZM8KaJPiU2jUdSTByRl2vzwcU4YPOL2setosgxb56oKpjOcdp7A85S6Q6Lamgkcc5kg83/iEosWGdPtSQ/iTmUWhBwalKdmiqS69XISn849StxNOnAK6xM4fzyQaxAoP2Fr8weI5foPpGfpEj7uKQey9iGJ7BL35wXZ8aPUAB3vd0dO5WIxnE9P4K+iY9bZNtql9HunIqllID5GRF18yEoYHgiM2la7Qtj/VzhFeDeUkprXlFgXmsbyVzC0Nn1icw1moQrlHaFSKtbBUvI3ejc81WUFVI+sDU3A27vK4jKaksyphsFSeGH8qdf6Dh0Zxt9Xiujn1yDhSFFl+WPhJCbdTrnz6jrrIwqJh2N5YDkd17WGjy2TPZtYpyQrm4dLuD2FPy1ozAwsdg+unqI5VQ72PzNGHe/IpJaodYS8Rw94gUYFRlhtNrAqaUez8C2Jt3Dh5eZZh/MfBXpb5NSi2l3GMSpWSfDbTvCjy5+d/NVXJDUDhj/n1IObbhb9ywDq/KRNHJF0/sOKYPJqxIrmxEZrQYPeO9kqw=
+ u5TdLbSXk22a0+Gdw4+jOQSb0YrpSULwpzNmmU9yLi87vu/o5GmA6v7tkNJSsQb5FFV+XJ7kdDhAq0xDzADI84N0uMQ5rFG/zTRSSygHqmojqQz1zFGeEYS4LPrYdOVtWOxzPgM88deiy+BW/Xyt7pV5dD7k1jTgo/LexXkPnmQWLSBiRBxubGQktMPCPJA9Lzop4cXxUgNttbr+FeY9KHa/aHzC26sIQtAtUhsTM8/4mf8zIQ0lChAS14Kf02UvPhoOtgPPhSbVMiGV5kRxkyOpCzp0tJRS1qHLzX778Xrw5pwGuoym8ybJypOV4RNkNBsvK1A+85ajFWHGeeGJtCsiWtC43IFDEtpwYeJI7TUWk6bx9ibHKi678e1Ss+AVY+reme6K1cxpCU/yt010dq0oyFm4e/FMq4mRbDfH8Q8o0rAo0hJW+jxNqaYHsXKb2xAOnUEJmLfdaGE6sHRGKuhtKarMi5mAYovcr7+kgKE4tPKMy77bmzSzC3VC/Imdy3DE7RUGbi5uvmwNybSAF/fsiW0E1UJ1Cp0pYxY7P5232ofrtFXxe66oKjVow3SfqdZk9EvhHyC7/dV3dKz2b82c2qT9W9MB2jUWDS7ZkAcyg8rHKHGNYMpFpL5N8S9Xb91ffF7pLq1Vo8xf+xrdQj5aRsFjfietuDjqMDN3+bp/pjmpaZhMEVjdqRCHLKGTSkHqPNbj2DqDJ2unuk9TnlFKIM3WwQv5N0aCVduUqh8=
 x-forefront-antispam-report: 
  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(38070700009);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0: 
- =?iso-8859-1?Q?fdi1j77X2Q0ZvJlEjvJ2+/0gLOXyDHe2aZjRRrTq5v5+4fHaKByWKXXaNJ?=
- =?iso-8859-1?Q?neacqZ3bnZGP/EcIIpHjDaPlNq2jhh5d7hYafsGVst1sgjWkL1QvyrMwui?=
- =?iso-8859-1?Q?z3mz2YjDGNJuZyzv3T6oZFzoe0E2JQX6FHfFgb+rDMgX3RzeEqLBp6Y5Ol?=
- =?iso-8859-1?Q?TdemxcBhdSA6VKLaXEpQcbZU55X1d9Jp0VR/Ubno4i+2FPB/fJCUO6CD3R?=
- =?iso-8859-1?Q?SSt9DdfarsSqNPTAjrEWHr0Py/y8F7pla5ZDhVh/FB4B33KBBSB/1HDTbm?=
- =?iso-8859-1?Q?qJ5nsNDGm8gi9WtgS+2wB7Qm3OOlO/RiYef3bvM5SXS63+W6ICEVb9eioH?=
- =?iso-8859-1?Q?Yj7SGinEKHgoL7ENLoVSHO+W5loJMohm+qKmFGoRSrn0m4iJUpdFZSF1J2?=
- =?iso-8859-1?Q?HbHvzxXBCcm2ifO0wYnnCuQtXtdoWH+QC08gOy2bQB4EXJMzNoaWQOgC+S?=
- =?iso-8859-1?Q?f98pKhmOauo5Ug2FSfwbskT466mgqx4wBwubNzXDEdG0cirISKcKNapDsZ?=
- =?iso-8859-1?Q?OWvw4aGJ9Kzc8kZqR8h8lYnRIRZ452OXc3p2Qhg7yVtcLRXVw5tk5ocNbU?=
- =?iso-8859-1?Q?q2Iw7boSs8UN7lXCagd+WALHwjZBB8TKCONzIpjJp5ORfXy5u7lBZiPbGJ?=
- =?iso-8859-1?Q?4AwfyZirATyNtLqsZF+34dn+wD937uIc8TakB/FK7G0LfW88vml710IWGm?=
- =?iso-8859-1?Q?wc+Fuv3hPbZPpwi6QZU5BvdnU6wLrHlB9CzHkfKvWjz2ELUg9nFuax2oac?=
- =?iso-8859-1?Q?saKtEYgzfyASNmtmonv69gekUJdN7uyI23wPFuOYOxo/qyuIxB+O42aQrM?=
- =?iso-8859-1?Q?l0vrgRcTIZ94r+OHk+D4jnFw9xA426THw+j7VoT8FI6FZlglB4jMhrT0Ig?=
- =?iso-8859-1?Q?OON1t9xOsTmyqFSZ1lu7/fvDBvl7ADar6atPC17mWGrQWlR53cNCVm84By?=
- =?iso-8859-1?Q?68NwGKu1WHterN565DtwoiA7lVLDpv7qe8O2O6IRVkEmnDd9bKe2xPJLy/?=
- =?iso-8859-1?Q?4/Pwkw/Q7SG0V4QexR2zjeyZLuvbXMO2AOB4x1sV7KGIRya9z/+cpqwiQw?=
- =?iso-8859-1?Q?D3yG1DpK2R28i3Xf0MB1Re+bWCvodI+dnmK2DB05gfaCLcfHzC/m1HLh2Y?=
- =?iso-8859-1?Q?AF2A7GPYdIF49ZnZzLlv/QtZOzQuctAb7YD/CXB5rkUUIlDiGcFbXE5XNR?=
- =?iso-8859-1?Q?F2aR4dB8AgVZPMVJFgAKOYg//Ir7aIKMmhvVxlGSV0VNsLaUuYcXMtmCqs?=
- =?iso-8859-1?Q?5uV7xYNRnmnsY2oqbmPKI8nI61pTmV8XEvJivx4ZJKYcALvq9LnFRSnHN2?=
- =?iso-8859-1?Q?kjqxdlk6jmtK9FEFTw5oKJ1kXjk7Ni4aubrR1hcnOtK0s9QVfQElg19lfV?=
- =?iso-8859-1?Q?jhU4F95AIu7SHvDKXaGzX8BJhv7ho9EjLO4eE2Zp6QwW++SuZ0GdJIadtg?=
- =?iso-8859-1?Q?nDdkJb+4yCZtip4WksEgbQah8LNpdjvWSW/p5D4PatLEExQ9rCNGKi/8VE?=
- =?iso-8859-1?Q?7d101yZ3QnsJMUILg0euaSlyWqZ0h432Zp2ehNcYM3XZVN9a7wcKcss7op?=
- =?iso-8859-1?Q?YfjxwP41q0NamaPZeKhFrgr0Vo9WtoP1X2EO9DG59KKaXGd1pCmwqsr2f9?=
- =?iso-8859-1?Q?+n6Hk591anpnaLonoKG1bDwOkWyLA4FROh?=
+ =?iso-8859-1?Q?X8+/5mcPIrmY7hZF6et1/xA8UD3PC039rs2qR+05yvM+ZnxdwcL/xoCttI?=
+ =?iso-8859-1?Q?3zbosCxwPLpA95rdAB/HgWgaPAdM9xSssvsQnQcSjsldkpv+jOsWD3uUFt?=
+ =?iso-8859-1?Q?t5euB4EEjwnEnXQY6XgB/xrr7+dT4BUMSPfxkVZCutvlUFDfeGS33POAmG?=
+ =?iso-8859-1?Q?o6an3BVaTN14PudAl/okzxWc3yRNbMeqwBZYQy0nYN1eAnzeVnXVF4Nf4L?=
+ =?iso-8859-1?Q?6zWQypSJkv3NcymsdcKe+5N6vnXqIhyyGWIm5dwSpCi0HSuvzT+lvjCrBg?=
+ =?iso-8859-1?Q?chEBm8Tv8f3BsCT9/l+sHcuUwnV6lBNQRt1Ce6h6KjOKOxLMJeLUok3loV?=
+ =?iso-8859-1?Q?wJ8FIkggtVEbbFYnBq6sqYmKNBOCt2+n6in04DUH4X4Jc+jJ/0hiT07xzd?=
+ =?iso-8859-1?Q?PWvgX/j0TGAuf+kGYGu6WvDC7pFI6st56gtYw8GRLW+qQMQes9Hs6czna5?=
+ =?iso-8859-1?Q?HYuIFMgDAUHxpu03X775adqG58gZPHvZ5Aw0e/W9TMk4oQtBI4RehllugB?=
+ =?iso-8859-1?Q?cgoYskUX5x4jCUKdQlrP7aoRrwLFgrvuBmcda4R2LawHX23zsZa2N3oZlP?=
+ =?iso-8859-1?Q?P+MlIp8007PBSkOVRM2+DPMVow4PH5XAgbmZKnBGtVOc2MwOc0dxy3QOXU?=
+ =?iso-8859-1?Q?62SaujCEtaKbKnJLwNq+Rd2/hg7dymTPpbYmK0Dx3ihmtxnEEl91KF9rmb?=
+ =?iso-8859-1?Q?2pKnu8Fb4gD271MUBALRrMZ3jepwlRMLHf+JlFAPyc1x8CscMAcXhkkJ86?=
+ =?iso-8859-1?Q?LlxKMd0CcII4g53CpvFarmPJy5Obx4eN7ERWDx7oF1ZoGn2KpwP4dxFSDn?=
+ =?iso-8859-1?Q?PS9C8mdTwyJe5hpUFbZMZ0QmOT0c5hxXQqreVecj4sNuQpvHgjEm0j9AOk?=
+ =?iso-8859-1?Q?0OdmH8INRQ7/Yc/Y6Z1fati0Lbq8ArwRgj28ypboMzWIIAZFSJJHGGA34t?=
+ =?iso-8859-1?Q?h7fDYecfjnq5eIZbFqju6uGxGj7wNa3OpRHc+5/b7RRomrHP0R0UuymSDz?=
+ =?iso-8859-1?Q?fb1S7qD48rW/yMiiSJN2n9IIFdliVkcEEWMasFqWijG9Hn+ScTA81dFJig?=
+ =?iso-8859-1?Q?th2E9dm/At1OSjVKejJv2IDQlSa2hIISdeZI0I1H/ygrpge0EOiVads06k?=
+ =?iso-8859-1?Q?LkLrxIEK7p46OAU4V2+2CmT6+IQ+/HOmAit0EFq9wlGlRk+nVPC3czoRaa?=
+ =?iso-8859-1?Q?RH3roZNjUqN57RW0lxlYW42l2VzxaJTB2KXNiA/c09pXDxd0dGsn+bs9Bv?=
+ =?iso-8859-1?Q?s6yF2HjsJV4YrAAyKdOBZudNxISslnA0PP5X345ijfZN34vRrUzHvnbxPm?=
+ =?iso-8859-1?Q?3ve56WITibBL4uSgQuH0G3RGU3IfYx3efDfdioVr7f28TA6kA8H1nJVGY1?=
+ =?iso-8859-1?Q?LGzIOmN20BnjBDwSK7B4x/1AU6u1PSBwDGmdxbClsHKIidePUYyzcuUWef?=
+ =?iso-8859-1?Q?JzOUHRP73KixJm+EgJHbLX9mRV9Y11ZxQVLhwiNgq3g/8L1qRtetIK3jbW?=
+ =?iso-8859-1?Q?OShNkuJDKh5dXN5TzC9QdW+GF1t8tigKwZUCzmHO1TmNyYLNltGNHZrd9O?=
+ =?iso-8859-1?Q?aY3wsoCtDgTVvb511oVlfaPkognJhm3XawIYNwZj2NgY0lJrjacsEOct/6?=
+ =?iso-8859-1?Q?agxuhBJ/uLQ4AARgiKBNA3irHSCOuTzxU2?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -175,20 +174,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	C681fJV+446lHoRBT90otgRlnsB2g4BFSmJhp/SXQ0k0iksrn+Gu1c+6ts3yXL2AqJ1m+oc5RxqRh4nktanseEfujgQGoz2QHjY8rQhqp81kau5Z+SvBWU35cQXH9AdRMcfJGzdfziS21LopHidFl+BwoxYAO0/PMMbmsTrOrW246Co/xgUzDsdCJ8ORfS1dRSKOirZiCxuUDh9RmWqfMyQ90NAIaXSryDR6WhahmY4CiTSN8RUbx3vS+bY1EqM3gvyv9LDcsnC4rCCkw/HNY0V5cyVJ5Eq8HQCc+Bc47DuI4YejQp4xDB27jkDttnpuEQxJZ7+Obp1tUsFo0KOa+xutHVU2sWaRwUXY1rBqgaxtF0ypRya1SI/9o4uR1wRCtO5doG5p2P2AeypQFhbL8c3S//u+BOb5x90Alq5RS3iJxDr+BYLQeRtfOUKYwLsMj233TA3Vy9KhrUvjzrO5YMFubeEFfNZ6kLpbXyMxa6gGIFEYzfiSrL/Bgc1jf74HesNjFFEWJZZgzk222Rbt8ff+zQFNDn5mg56bK5Dzd6Fqa9sXfgoPxUpSrSjWKs40JQ11KSozkmfOug2mgkAoFKWNQOkoPh38T7bEISxic76tiSstqWsfI9JNb+pBqztqCs1VNclz/R1v3m2HcBNyiQ==
+	8WdP3UPPcTr0wmnLD3CDWUXnUs9zXp491G1S5X1owkanZp7C7wp2oN5UeAplYDymsPldyNzOn3jLCShl6SpqeIbjTyWqZWDb+ONaTDhTo81ieNpCEKK7wGNT2piiiev1EuAyDryXtbg0Fnk5YuNWNkKH3kw8jN5ooKdTm4RTd5zFYOE2vnTflgZL5kwyCKAsHNPVyAzlcIr8s/cwiAL9BaulfSRQVxOGwusxAvGou3hyPpZ9hAjMyK3T843I63AOpuzQBTX24MNfVKzgF21+yHmhG/PVlORPQOoZcm3EcQU3JKBosVKnU8I0/trp5CsuKZrJw/tcJvg3aDOzr+Y9J5lIunHRFnKzyPgOuqfKgw2JRvRmGBpTN6JS3sdOpbiVnnULga9Djf9aZBk/u/OWvZ8eRKFbbTFRmFEhAE+coCLv2N1E33NIfqttFhbd6lybZfkuGnk4Ax4BmnFjYhPSicnpmL+5b6n8U4SHphuGz54u55CaF7fkjkR/36lF5LEyT2ZOZj+cK7YdvMnpOz2SyC5a5yOp1cafRTuGWa2oBFXk2XshTdy1gWnKS5ZVye+FAgNJ+wWnO0WJXZvpMTbLpd/1ll/NNmxN78Ctg1RIMGJWLiDENxfHhwrQd9bPv9TwJwCRbtMtquJkfL1KU357Cw==
 X-OriginatorOrg: synopsys.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1975ab75-0463-4da2-e88c-08dc5e6ec186
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2024 23:41:36.5541
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec6f430d-a393-4fbf-5c9f-08dc5e6ec513
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2024 23:41:42.5332
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HbVhOLnR4fuJX5xIQYFb9nNMF68Lj6INj9gAfxRXFteRf2s456+XZxipa7VbHx8gOugaUBwjvX3DkUeFmfq98w==
+X-MS-Exchange-CrossTenant-userprincipalname: EHR1ll5RfNkbtt/t2Av+5SOh/IVmn4EMREoKkPSsTE6BbZ/mIKFaBZ17YfdVmKBJx94N4YLwwmU//blsSEwEnA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7818
-X-Proofpoint-ORIG-GUID: ttak3DOwTmjwO0cjHu62C-cjXuhnN4rq
-X-Proofpoint-GUID: ttak3DOwTmjwO0cjHu62C-cjXuhnN4rq
+X-Proofpoint-ORIG-GUID: VsGJpCYyMS77MBBLx_Mhz-XhB1i0SAT4
+X-Proofpoint-GUID: VsGJpCYyMS77MBBLx_Mhz-XhB1i0SAT4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-04-16_18,2024-04-16_01,2023-05-22_02
@@ -198,32 +197,275 @@ X-Proofpoint-Spam-Details: rule=outbound_active_cloned_notspam policy=outbound_a
  priorityscore=1501 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.19.0-2404010003 definitions=main-2404160155
 
-The xhci_plat.h should not need to include the entire xhci.h header.
-This can cause redefinition in dwc3 if it selectively includes some xHCI
-definitions. This is a prerequisite change for a fix to disable suspend
-during initialization for dwc3.
+GUSB3PIPECTL.SUSPENDENABLE and GUSB2PHYCFG.SUSPHY should be cleared
+during initialization. Suspend during initialization can result in
+undefined behavior due to clock synchronization failure, which often
+seen as core soft reset timeout.
+
+The programming guide recommended these bits to be cleared during
+initialization for DWC_usb3.0 version 1.94 and above (along with
+DWC_usb31 and DWC_usb32). The current check in the driver does not
+account if it's set by default setting from coreConsultant.
+
+This is especially the case for DRD when switching mode to ensure the
+phy clocks are available to change mode. Depending on the
+platforms/design, some may be affected more than others. This is noted
+in the DWC_usb3x programming guide under the above registers.
+
+Let's just disable them during driver load and mode switching. Restore
+them when the controller initialization completes.
+
+Note that some platforms workaround this issue by disabling phy suspend
+through "snps,dis_u3_susphy_quirk" and "snps,dis_u2_susphy_quirk" when
+they should not need to.
 
 Cc: stable@vger.kernel.org
+Fixes: 9ba3aca8fe82 ("usb: dwc3: Disable phy suspend after power-on reset")
 Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 ---
- drivers/usb/host/xhci-plat.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c   | 90 +++++++++++++++++----------------------
+ drivers/usb/dwc3/core.h   |  1 +
+ drivers/usb/dwc3/gadget.c |  2 +
+ drivers/usb/dwc3/host.c   | 27 ++++++++++++
+ 4 files changed, 68 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-plat.h b/drivers/usb/host/xhci-plat.h
-index 2d15386f2c50..6475130eac4b 100644
---- a/drivers/usb/host/xhci-plat.h
-+++ b/drivers/usb/host/xhci-plat.h
-@@ -8,7 +8,9 @@
- #ifndef _XHCI_PLAT_H
- #define _XHCI_PLAT_H
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 31684cdaaae3..100041320e8d 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -104,6 +104,27 @@ static int dwc3_get_dr_mode(struct dwc3 *dwc)
+ 	return 0;
+ }
 =20
--#include "xhci.h"	/* for hcd_to_xhci() */
-+struct device;
-+struct platform_device;
-+struct usb_hcd;
++void dwc3_enable_susphy(struct dwc3 *dwc, bool enable)
++{
++	u32 reg;
++
++	reg =3D dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
++	if (enable && !dwc->dis_u3_susphy_quirk)
++		reg |=3D DWC3_GUSB3PIPECTL_SUSPHY;
++	else
++		reg &=3D ~DWC3_GUSB3PIPECTL_SUSPHY;
++
++	dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), reg);
++
++	reg =3D dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
++	if (enable && !dwc->dis_u2_susphy_quirk)
++		reg |=3D DWC3_GUSB2PHYCFG_SUSPHY;
++	else
++		reg &=3D ~DWC3_GUSB2PHYCFG_SUSPHY;
++
++	dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
++}
++
+ void dwc3_set_prtcap(struct dwc3 *dwc, u32 mode)
+ {
+ 	u32 reg;
+@@ -585,11 +606,8 @@ static int dwc3_core_ulpi_init(struct dwc3 *dwc)
+  */
+ static int dwc3_phy_setup(struct dwc3 *dwc)
+ {
+-	unsigned int hw_mode;
+ 	u32 reg;
 =20
- struct xhci_plat_priv {
- 	const char *firmware_name;
+-	hw_mode =3D DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
+-
+ 	reg =3D dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
+=20
+ 	/*
+@@ -599,21 +617,16 @@ static int dwc3_phy_setup(struct dwc3 *dwc)
+ 	reg &=3D ~DWC3_GUSB3PIPECTL_UX_EXIT_PX;
+=20
+ 	/*
+-	 * Above 1.94a, it is recommended to set DWC3_GUSB3PIPECTL_SUSPHY
+-	 * to '0' during coreConsultant configuration. So default value
+-	 * will be '0' when the core is reset. Application needs to set it
+-	 * to '1' after the core initialization is completed.
+-	 */
+-	if (!DWC3_VER_IS_WITHIN(DWC3, ANY, 194A))
+-		reg |=3D DWC3_GUSB3PIPECTL_SUSPHY;
+-
+-	/*
+-	 * For DRD controllers, GUSB3PIPECTL.SUSPENDENABLE must be cleared after
+-	 * power-on reset, and it can be set after core initialization, which is
+-	 * after device soft-reset during initialization.
++	 * Above DWC_usb3.0 1.94a, it is recommended to set
++	 * DWC3_GUSB3PIPECTL_SUSPHY to '0' during coreConsultant configuration.
++	 * So default value will be '0' when the core is reset. Application
++	 * needs to set it to '1' after the core initialization is completed.
++	 *
++	 * Similarly for DRD controllers, GUSB3PIPECTL.SUSPENDENABLE must be
++	 * cleared after power-on reset, and it can be set after core
++	 * initialization.
+ 	 */
+-	if (hw_mode =3D=3D DWC3_GHWPARAMS0_MODE_DRD)
+-		reg &=3D ~DWC3_GUSB3PIPECTL_SUSPHY;
++	reg &=3D ~DWC3_GUSB3PIPECTL_SUSPHY;
+=20
+ 	if (dwc->u2ss_inp3_quirk)
+ 		reg |=3D DWC3_GUSB3PIPECTL_U2SSINP3OK;
+@@ -639,9 +652,6 @@ static int dwc3_phy_setup(struct dwc3 *dwc)
+ 	if (dwc->tx_de_emphasis_quirk)
+ 		reg |=3D DWC3_GUSB3PIPECTL_TX_DEEPH(dwc->tx_de_emphasis);
+=20
+-	if (dwc->dis_u3_susphy_quirk)
+-		reg &=3D ~DWC3_GUSB3PIPECTL_SUSPHY;
+-
+ 	if (dwc->dis_del_phy_power_chg_quirk)
+ 		reg &=3D ~DWC3_GUSB3PIPECTL_DEPOCHANGE;
+=20
+@@ -689,24 +699,15 @@ static int dwc3_phy_setup(struct dwc3 *dwc)
+ 	}
+=20
+ 	/*
+-	 * Above 1.94a, it is recommended to set DWC3_GUSB2PHYCFG_SUSPHY to
+-	 * '0' during coreConsultant configuration. So default value will
+-	 * be '0' when the core is reset. Application needs to set it to
+-	 * '1' after the core initialization is completed.
+-	 */
+-	if (!DWC3_VER_IS_WITHIN(DWC3, ANY, 194A))
+-		reg |=3D DWC3_GUSB2PHYCFG_SUSPHY;
+-
+-	/*
+-	 * For DRD controllers, GUSB2PHYCFG.SUSPHY must be cleared after
+-	 * power-on reset, and it can be set after core initialization, which is
+-	 * after device soft-reset during initialization.
++	 * Above DWC_usb3.0 1.94a, it is recommended to set
++	 * DWC3_GUSB2PHYCFG_SUSPHY to '0' during coreConsultant configuration.
++	 * So default value will be '0' when the core is reset. Application
++	 * needs to set it to '1' after the core initialization is completed.
++	 *
++	 * Similarly for DRD controllers, GUSB2PHYCFG.SUSPHY must be cleared
++	 * after power-on reset, and it can be set after core initialization.
+ 	 */
+-	if (hw_mode =3D=3D DWC3_GHWPARAMS0_MODE_DRD)
+-		reg &=3D ~DWC3_GUSB2PHYCFG_SUSPHY;
+-
+-	if (dwc->dis_u2_susphy_quirk)
+-		reg &=3D ~DWC3_GUSB2PHYCFG_SUSPHY;
++	reg &=3D ~DWC3_GUSB2PHYCFG_SUSPHY;
+=20
+ 	if (dwc->dis_enblslpm_quirk)
+ 		reg &=3D ~DWC3_GUSB2PHYCFG_ENBLSLPM;
+@@ -1227,21 +1228,6 @@ static int dwc3_core_init(struct dwc3 *dwc)
+ 	if (ret)
+ 		goto err_exit_phy;
+=20
+-	if (hw_mode =3D=3D DWC3_GHWPARAMS0_MODE_DRD &&
+-	    !DWC3_VER_IS_WITHIN(DWC3, ANY, 194A)) {
+-		if (!dwc->dis_u3_susphy_quirk) {
+-			reg =3D dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
+-			reg |=3D DWC3_GUSB3PIPECTL_SUSPHY;
+-			dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), reg);
+-		}
+-
+-		if (!dwc->dis_u2_susphy_quirk) {
+-			reg =3D dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+-			reg |=3D DWC3_GUSB2PHYCFG_SUSPHY;
+-			dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
+-		}
+-	}
+-
+ 	dwc3_core_setup_global_control(dwc);
+ 	dwc3_core_num_eps(dwc);
+=20
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 7e80dd3d466b..180dd8d29287 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1580,6 +1580,7 @@ int dwc3_event_buffers_setup(struct dwc3 *dwc);
+ void dwc3_event_buffers_cleanup(struct dwc3 *dwc);
+=20
+ int dwc3_core_soft_reset(struct dwc3 *dwc);
++void dwc3_enable_susphy(struct dwc3 *dwc, bool enable);
+=20
+ #if IS_ENABLED(CONFIG_USB_DWC3_HOST) || IS_ENABLED(CONFIG_USB_DWC3_DUAL_RO=
+LE)
+ int dwc3_host_init(struct dwc3 *dwc);
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 4df2661f6675..f94f68f1e7d2 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2924,6 +2924,7 @@ static int __dwc3_gadget_start(struct dwc3 *dwc)
+ 	dwc3_ep0_out_start(dwc);
+=20
+ 	dwc3_gadget_enable_irq(dwc);
++	dwc3_enable_susphy(dwc, true);
+=20
+ 	return 0;
+=20
+@@ -4690,6 +4691,7 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
+ 	if (!dwc->gadget)
+ 		return;
+=20
++	dwc3_enable_susphy(dwc, false);
+ 	usb_del_gadget(dwc->gadget);
+ 	dwc3_gadget_free_endpoints(dwc);
+ 	usb_put_gadget(dwc->gadget);
+diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
+index 0204787df81d..a171b27a7845 100644
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -10,10 +10,13 @@
+ #include <linux/irq.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
++#include <linux/usb.h>
++#include <linux/usb/hcd.h>
+=20
+ #include "../host/xhci-port.h"
+ #include "../host/xhci-ext-caps.h"
+ #include "../host/xhci-caps.h"
++#include "../host/xhci-plat.h"
+ #include "core.h"
+=20
+ #define XHCI_HCSPARAMS1		0x4
+@@ -57,6 +60,24 @@ static void dwc3_power_off_all_roothub_ports(struct dwc3=
+ *dwc)
+ 	}
+ }
+=20
++static void dwc3_xhci_plat_start(struct usb_hcd *hcd)
++{
++	struct platform_device *pdev;
++	struct dwc3 *dwc;
++
++	if (!usb_hcd_is_primary_hcd(hcd))
++		return;
++
++	pdev =3D to_platform_device(hcd->self.controller);
++	dwc =3D dev_get_drvdata(pdev->dev.parent);
++
++	dwc3_enable_susphy(dwc, true);
++}
++
++static const struct xhci_plat_priv dwc3_xhci_plat_quirk =3D {
++	.plat_start =3D dwc3_xhci_plat_start,
++};
++
+ static void dwc3_host_fill_xhci_irq_res(struct dwc3 *dwc,
+ 					int irq, char *name)
+ {
+@@ -167,6 +188,11 @@ int dwc3_host_init(struct dwc3 *dwc)
+ 		}
+ 	}
+=20
++	ret =3D platform_device_add_data(xhci, &dwc3_xhci_plat_quirk,
++				       sizeof(struct xhci_plat_priv));
++	if (ret)
++		goto err;
++
+ 	ret =3D platform_device_add(xhci);
+ 	if (ret) {
+ 		dev_err(dwc->dev, "failed to register xHCI device\n");
+@@ -192,6 +218,7 @@ void dwc3_host_exit(struct dwc3 *dwc)
+ 	if (dwc->sys_wakeup)
+ 		device_init_wakeup(&dwc->xhci->dev, false);
+=20
++	dwc3_enable_susphy(dwc, false);
+ 	platform_device_unregister(dwc->xhci);
+ 	dwc->xhci =3D NULL;
+ }
 --=20
 2.28.0
 
