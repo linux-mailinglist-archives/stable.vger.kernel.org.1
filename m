@@ -1,106 +1,258 @@
-Return-Path: <stable+bounces-40031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162638A7246
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 19:28:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8861F8A728E
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 19:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BD271C2153F
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 17:28:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D93A1C21379
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 17:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E38B13329F;
-	Tue, 16 Apr 2024 17:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6904D134403;
+	Tue, 16 Apr 2024 17:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Mgy1JR3E"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0738F10A22;
-	Tue, 16 Apr 2024 17:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A403013342E
+	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 17:41:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713288499; cv=none; b=iUuEnuxCBGF1ZZJye/kujOMjzs4jLYxorePrSmPs3dGK93Xel+BK0H0C3c77zFTXYPzmf3YNXldVIq05lnNoa5RKq1XSZSN6IkOOOhd/+rbIE1YSTq7Ty5A4WduBF2xj+HOJuGmQDOhREbYcnCuB8ifUrb1nF0Qdk4K47DB5Neg=
+	t=1713289311; cv=none; b=lp1n7laYkm+ScowDtaKu/5EobUNDy+vke+eba3AigYF/6saUiLnD8c9hlmlVR5lzLXsEVEfzIzs+eElbMJIjw8w9zhH0iMKzw7AWhsYOigszIS+/2UIHqxjiSOKs34hMvEck5vFq85R1ZGAFEFfxDQcll3dhfQ93qNQWuxkA4nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713288499; c=relaxed/simple;
-	bh=fzIQWinEL64tdKbuV71MRaTNL67LcKX8BvwcAqWO8DA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PztHaNVNL3lnP8oWdrLxK2Td98SEWtPYCEyrTUUM6tbq7cL4wHvrWxr2DAk29C9p/SuFfFQi6I8IOkX5Sx+uY5m3Go/dROjxOOP5f/zRcshBMivArsEQAh3AIUE9wNc96tHuWEgfbSpwxuQ5+Z327kuXtgOXKg2pE6MJ+SVSWPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EABFC113CE;
-	Tue, 16 Apr 2024 17:28:13 +0000 (UTC)
-Date: Tue, 16 Apr 2024 18:28:10 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, Yihuang Yu <yihyu@redhat.com>,
-	Gavin Shan <gshan@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shaoqin Huang <shahuang@redhat.com>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
-Message-ID: <Zh61KobDt_y1O46-@arm.com>
-References: <20240415141953.365222063@linuxfoundation.org>
- <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
- <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
- <86y19dqw74.wl-maz@kernel.org>
+	s=arc-20240116; t=1713289311; c=relaxed/simple;
+	bh=uKVZxVZlSo4tSfHTbZrt8QwnCT7MxtMg82Aru1PM+u8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=slGejDErBdH5y3TNU/mezvjjtL2oA8FiT1H+KEWseZpYj0GnwkjA+7g6M9guHRjNLE2WjnJxgFyOcZGU26QPbaOixO98VggHmJ0MwAyVfjPKZCCtHvyrgab+A96oC12MRa2uF/QG9UEKtGq9Kk433IP9RSEEs+7ToyQtOfAtnDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Mgy1JR3E; arc=none smtp.client-ip=209.85.217.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-479edfd02e4so1187352137.2
+        for <stable@vger.kernel.org>; Tue, 16 Apr 2024 10:41:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713289307; x=1713894107; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WnPrPrshaoqEgDMfeskW4XuFf5a8CzPJbeeAH4eg1mE=;
+        b=Mgy1JR3E9Vsur5ZlHMWzpTWsyNILiUCWGhzslPjYUNRww5e2xPpD+XivgOpASyZ1D1
+         GLkYFUheF/nwvu5YHjIfbAi/6Ax1SJPA13zPmGvR2TLo5putFx+oYTUQSVYosD56OtHE
+         IncOhxn/CygVBU95NtRKVougqP8jwWOLkBbmzQdTjMMUWTsx3l1ewyLw0R8awEo8qgfs
+         U4U5pWYiOmQRR/kQ2R5+11UvgHWlYhapvWp7U8aivSccF0zZiwqJ3gAZUKuqaQIXCH1M
+         lSSwE5n+cSDyHt/VpRxpX8gQFoYzjyv13rZLsvxLq5f0TYRfRiAqAfpNlNXJvLAcZ5Ga
+         tTDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713289307; x=1713894107;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WnPrPrshaoqEgDMfeskW4XuFf5a8CzPJbeeAH4eg1mE=;
+        b=f9czEmd/gD3+JGkhaKVrJ6Xx7P29uZCrCZJ17DL7466vuJexOfdCGd9LLAXhFfGES8
+         3mCuHCdIJGh/bE8DWNKEohBQLY4G/iMG/4bIifIRElaotAu+E4ApBY9QMg/ugrbFBeEr
+         nAhGSHr3A0mA2g4YCSSNs7qF+tb6OVHkTCbJRBwLQ9mJ28qcQJrEVAHCZow0bPTTJx2y
+         uKAOY/rIOnj65oEq/LxFiW9mNTjkLUu7N6VQoqh2/rnzS7ESXQzz7KeSCrdqIasDfu+5
+         MyWdqOe6qc1gRfY7hFrFzXxDOWBOXJLH3Q8tcUdX9qQchxxQCtosV9qAJLHDKhuSOFH7
+         UQeg==
+X-Gm-Message-State: AOJu0Yw8MaiQpFlpr3v3/aBbOSeKRjrGeFCKVqcqMTpkhPlA/L5/spUO
+	sr983F+6NuWkbidPUFg0K1jmKhgxjm/FuAUdgOHb5tS2vou45akNrqmBddVJO9fuFkXK7inwn+5
+	VFeEnkDlfJg25DWCgjznkCq7QtuzLe1d20sGYQw==
+X-Google-Smtp-Source: AGHT+IGQOiRJVB0i9nfTAHucMka5bk9jMtq3i/B9OdHXAz7Tlx+yTSFzDhb7vY49vXsiPkVKXzwjOnCxxwy7cZedC4E=
+X-Received: by 2002:a05:6102:1629:b0:47b:a037:99ca with SMTP id
+ cu41-20020a056102162900b0047ba03799camr1332168vsb.1.1713289306728; Tue, 16
+ Apr 2024 10:41:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86y19dqw74.wl-maz@kernel.org>
+References: <20240415141959.976094777@linuxfoundation.org>
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 16 Apr 2024 23:11:35 +0530
+Message-ID: <CA+G9fYscTZr0qJH5k8eycnD7Mj50XGgNbzcmk65=RKtme1tVpg@mail.gmail.com>
+Subject: Re: [PATCH 6.8 000/172] 6.8.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
-> On Tue, 16 Apr 2024 14:07:30 +0100,
-> Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
-> > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 6.6.28 release.
-> > > > There are 122 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > >
-> > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
-> > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
-> > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
-> > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
-> > > the bisect and looking at the commit log to pull out people to CC and
-> > > note that the fix was explicitly targeted at v6.6.
-> > 
-> > Anders investigated this reported issues and bisected and also found
-> > the missing commit for stable-rc 6.6 is
-> > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
-> 
-> Which is definitely *not* stable candidate. We need to understand why
-> the invalidation goes south when the scale go up instead of down.
+On Mon, 15 Apr 2024 at 19:54, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.8.7 release.
+> There are 172 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 17 Apr 2024 14:19:30 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.8.7-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.8.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
-which fixes 117940aa6e5f ("KVM: arm64: Define
-kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
-("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
-"scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
-CBMC model, not on the actual kernel. It may be worth adding some
-WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
-num greater than 31.
 
-I haven't investigated properly (and I'm off tomorrow, back on Thu) but
-it's likely the original code was not very friendly to the maximum
-range, never tested. Anyway, if one figures out why it goes out of
-range, I think the solution is to also backport e2768b798a19 to stable.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
--- 
-Catalin
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.8.7-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.8.y
+* git commit: 367141eaada2c7635234576914bcd1f480d62731
+* git describe: v6.8.6-173-g367141eaada2
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.6=
+-173-g367141eaada2
+
+## Test Regressions (compared to v6.8.6)
+
+## Metric Regressions (compared to v6.8.6)
+
+## Test Fixes (compared to v6.8.6)
+
+## Metric Fixes (compared to v6.8.6)
+
+## Test result summary
+total: 285130, pass: 247210, fail: 3619, skip: 33930, xfail: 371
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 133 total, 131 passed, 2 failed
+* arm64: 41 total, 41 passed, 0 failed
+* i386: 32 total, 32 passed, 0 failed
+* mips: 25 total, 25 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 19 total, 19 passed, 0 failed
+* s390: 13 total, 13 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 6 passed, 2 failed
+* x86_64: 37 total, 36 passed, 1 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-io[
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
