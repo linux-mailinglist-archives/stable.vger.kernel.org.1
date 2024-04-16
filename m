@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-40051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038878A77E3
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 00:40:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2D18A77E4
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 00:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AC1AB22287
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:40:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0E981F2317F
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EFD137929;
-	Tue, 16 Apr 2024 22:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D94213A25F;
+	Tue, 16 Apr 2024 22:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kVUj7h3K"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XGTSRmQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4B66EB4E;
-	Tue, 16 Apr 2024 22:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3AF1384AD;
+	Tue, 16 Apr 2024 22:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713307234; cv=none; b=Pq4eZe4gnP4+ff5DEGDyFrDpFY9PzYnoxLMr0gqO+Yc42qSL9fEM3As4Db2q8G4lsM3beOoDYuEZn4w2luKuneWcxJBwQ4V4y3ROoKr5CS6wLvWidLRU0s3kl0TBnK39wNaCu/+E8+p4RBi+K/Mw4Rs3n58q8AS8SqxMeDamH1s=
+	t=1713307236; cv=none; b=tZ+B2a2oOoeVJRKDydf6sNo0YjXztK8nmP8u//gddWrI2yJkU2vctuNPOWdFH5i7b8mDYl5XT3YWWVD9RobJuzptNTD44vZef3RAQ07JryPBIfKnKZW0lxTDvrt9k0hl55blF95JwoEYGhObg3Mnf5CRzJLQ3FJ/MX7yoywYaTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713307234; c=relaxed/simple;
-	bh=yY/3Wci30LhkFQT5dSOwZYr9rt04OO1zkncKXdyZq2Y=;
-	h=Date:To:From:Subject:Message-Id; b=d6dJ7YO1Y668NoiztN/Vtq2LnZa2tOedLt4/ZzjzGZck4Ze9gW/On51XEqLnOF+aCc7d6D11m2K2xqVSI0OzmUYhtNJg4EB3PaoSjE7qUbO9GzWOhnACAMsw2ZOhd6jAnOYt5R/+6xLUPRVEJw6mMyeHdptwy+Xb+RsMz4eZDwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kVUj7h3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2533BC113CE;
-	Tue, 16 Apr 2024 22:40:34 +0000 (UTC)
+	s=arc-20240116; t=1713307236; c=relaxed/simple;
+	bh=gQV0H/+4hMv3qKKvIgPuZe8r0gEnMx7SC9eIfguRW3c=;
+	h=Date:To:From:Subject:Message-Id; b=ChikK6T8F8CoNYaB9tvqQ5gfQNKFLH+CdIpkJxRBkg90OAIZG8x5D1ihUWAAz+QWGPff8Kq6qfHZOxzAnc3iyVFFXLnrfYiFYyDEVgJfnxSrb8Jv7EzxbnugoIxmXXgi6JzBFPhVU+7lKRSZTqmrrF3SWcM3wIotn6sl/4pX8MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XGTSRmQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F28DC113CE;
+	Tue, 16 Apr 2024 22:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1713307234;
-	bh=yY/3Wci30LhkFQT5dSOwZYr9rt04OO1zkncKXdyZq2Y=;
+	s=korg; t=1713307236;
+	bh=gQV0H/+4hMv3qKKvIgPuZe8r0gEnMx7SC9eIfguRW3c=;
 	h=Date:To:From:Subject:From;
-	b=kVUj7h3K4iVUtlUnS5Chn+wllxyR61H6OI6NEL535mG6KLURugWDXMpxiwoagIWtD
-	 ok5YCmHmho/7NtD7pZHg3/sUdXlaeUvZISyUC57SnuXpOb0g00uPz9Ew1pxxjo/yn2
-	 UWFakxUbeO+8AmBwcY05ENz+p/05AyovS5v88AEk=
-Date: Tue, 16 Apr 2024 15:40:33 -0700
-To: mm-commits@vger.kernel.org,zhangpeng.00@bytedance.com,willy@infradead.org,thorvald@google.com,tandersen@netflix.com,stable@vger.kernel.org,oleg@redhat.com,muchun.song@linux.dev,mjguzik@gmail.com,Liam.Howlett@oracle.com,kent.overstreet@linux.dev,jane.chu@oracle.com,hca@linux.ibm.com,brauner@kernel.org,linmiaohe@huawei.com,akpm@linux-foundation.org
+	b=XGTSRmQTyHsaoyAw9bmTPBuZuEuow9H6qW+QbPIsaWtky5akfLxCsweHi7sfp59bP
+	 4LEkbMS73cCx4yrXSFRhzF5WiDUNav3i73o+IgN70beYlXpUGRNgDOuNs5+EDwAXkb
+	 7c/yQbka42862Rvw5LvdWYKVAoou1ilo6HX9i7Zw=
+Date: Tue, 16 Apr 2024 15:40:36 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,aha310510@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] fork-defer-linking-file-vma-until-vma-is-fully-initialized.patch removed from -mm tree
-Message-Id: <20240416224034.2533BC113CE@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] nilfs2-fix-oob-in-nilfs_set_de_type.patch removed from -mm tree
+Message-Id: <20240416224036.8F28DC113CE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,119 +50,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: fork: defer linking file vma until vma is fully initialized
+     Subject: nilfs2: fix OOB in nilfs_set_de_type
 has been removed from the -mm tree.  Its filename was
-     fork-defer-linking-file-vma-until-vma-is-fully-initialized.patch
+     nilfs2-fix-oob-in-nilfs_set_de_type.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Miaohe Lin <linmiaohe@huawei.com>
-Subject: fork: defer linking file vma until vma is fully initialized
-Date: Wed, 10 Apr 2024 17:14:41 +0800
+From: Jeongjun Park <aha310510@gmail.com>
+Subject: nilfs2: fix OOB in nilfs_set_de_type
+Date: Tue, 16 Apr 2024 03:20:48 +0900
 
-Thorvald reported a WARNING [1]. And the root cause is below race:
+The size of the nilfs_type_by_mode array in the fs/nilfs2/dir.c file is
+defined as "S_IFMT >> S_SHIFT", but the nilfs_set_de_type() function,
+which uses this array, specifies the index to read from the array in the
+same way as "(mode & S_IFMT) >> S_SHIFT".
 
- CPU 1					CPU 2
- fork					hugetlbfs_fallocate
-  dup_mmap				 hugetlbfs_punch_hole
-   i_mmap_lock_write(mapping);
-   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
-   i_mmap_unlock_write(mapping);
-   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
-					 i_mmap_lock_write(mapping);
-   					 hugetlb_vmdelete_list
-					  vma_interval_tree_foreach
-					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
-   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
-					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
-					 i_mmap_unlock_write(mapping);
+static void nilfs_set_de_type(struct nilfs_dir_entry *de, struct inode
+ *inode)
+{
+	umode_t mode = inode->i_mode;
 
-hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
-i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
-by deferring linking file vma until vma is fully initialized.  Those vmas
-should be initialized first before they can be used.
+	de->file_type = nilfs_type_by_mode[(mode & S_IFMT)>>S_SHIFT]; // oob
+}
 
-Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
-Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Reported-by: Thorvald Natvig <thorvald@google.com>
-Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: Tycho Andersen <tandersen@netflix.com>
+However, when the index is determined this way, an out-of-bounds (OOB)
+error occurs by referring to an index that is 1 larger than the array size
+when the condition "mode & S_IFMT == S_IFMT" is satisfied.  Therefore, a
+patch to resize the nilfs_type_by_mode array should be applied to prevent
+OOB errors.
+
+Link: https://lkml.kernel.org/r/20240415182048.7144-1-konishi.ryusuke@gmail.com
+Reported-by: syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e22057de05b9f3b30d8
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- kernel/fork.c |   33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ fs/nilfs2/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/fork.c~fork-defer-linking-file-vma-until-vma-is-fully-initialized
-+++ a/kernel/fork.c
-@@ -714,6 +714,23 @@ static __latent_entropy int dup_mmap(str
- 		} else if (anon_vma_fork(tmp, mpnt))
- 			goto fail_nomem_anon_vma_fork;
- 		vm_flags_clear(tmp, VM_LOCKED_MASK);
-+		/*
-+		 * Copy/update hugetlb private vma information.
-+		 */
-+		if (is_vm_hugetlb_page(tmp))
-+			hugetlb_dup_vma_private(tmp);
-+
-+		/*
-+		 * Link the vma into the MT. After using __mt_dup(), memory
-+		 * allocation is not necessary here, so it cannot fail.
-+		 */
-+		vma_iter_bulk_store(&vmi, tmp);
-+
-+		mm->map_count++;
-+
-+		if (tmp->vm_ops && tmp->vm_ops->open)
-+			tmp->vm_ops->open(tmp);
-+
- 		file = tmp->vm_file;
- 		if (file) {
- 			struct address_space *mapping = file->f_mapping;
-@@ -730,25 +747,9 @@ static __latent_entropy int dup_mmap(str
- 			i_mmap_unlock_write(mapping);
- 		}
+--- a/fs/nilfs2/dir.c~nilfs2-fix-oob-in-nilfs_set_de_type
++++ a/fs/nilfs2/dir.c
+@@ -240,7 +240,7 @@ nilfs_filetype_table[NILFS_FT_MAX] = {
  
--		/*
--		 * Copy/update hugetlb private vma information.
--		 */
--		if (is_vm_hugetlb_page(tmp))
--			hugetlb_dup_vma_private(tmp);
--
--		/*
--		 * Link the vma into the MT. After using __mt_dup(), memory
--		 * allocation is not necessary here, so it cannot fail.
--		 */
--		vma_iter_bulk_store(&vmi, tmp);
--
--		mm->map_count++;
- 		if (!(tmp->vm_flags & VM_WIPEONFORK))
- 			retval = copy_page_range(tmp, mpnt);
- 
--		if (tmp->vm_ops && tmp->vm_ops->open)
--			tmp->vm_ops->open(tmp);
--
- 		if (retval) {
- 			mpnt = vma_next(&vmi);
- 			goto loop_out;
+ #define S_SHIFT 12
+ static unsigned char
+-nilfs_type_by_mode[S_IFMT >> S_SHIFT] = {
++nilfs_type_by_mode[(S_IFMT >> S_SHIFT) + 1] = {
+ 	[S_IFREG >> S_SHIFT]	= NILFS_FT_REG_FILE,
+ 	[S_IFDIR >> S_SHIFT]	= NILFS_FT_DIR,
+ 	[S_IFCHR >> S_SHIFT]	= NILFS_FT_CHRDEV,
 _
 
-Patches currently in -mm which might be from linmiaohe@huawei.com are
+Patches currently in -mm which might be from aha310510@gmail.com are
 
 
 
