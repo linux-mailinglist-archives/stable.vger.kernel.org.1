@@ -1,157 +1,193 @@
-Return-Path: <stable+bounces-40041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737BB8A7592
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:29:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C578A75C0
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EEAF28227F
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 20:29:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66E1F1C214BC
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 20:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F39713A247;
-	Tue, 16 Apr 2024 20:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855A838FA6;
+	Tue, 16 Apr 2024 20:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="YqOe4wcl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsNZUelp"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829641386B3;
-	Tue, 16 Apr 2024 20:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E522AF02;
+	Tue, 16 Apr 2024 20:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713299377; cv=none; b=kWu1R0FzLXtvyFY85dFPCeA5gm9H1yiQN4sPyn6NCjqCjI6CIsFUS+6lvoQFWOX09kmUGUeyGDmlkMGJDok9x46/rLeRjyz5kZpPJbUBBnqhyAihM4vi6cVMIohvIMc0NCRbEhuE7LIn4zPXNepJ3tuHLW730GvJnoJNV68kC7s=
+	t=1713299622; cv=none; b=dbTI+M/G2mhOO10vi2fnD73ThTa5jh3T7zncYngsmwANT1FNsoy9bH8/pw9+tqg7NKRMg7EbweDDylGee8wEr6+/r1jnYsd/vmjqrmT7k21vx9WXaHYFcO/UUVJ4fVRD4LxxTH//zLQw6YAO9/mtMHvNCBED9IfcHKd/twYpXR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713299377; c=relaxed/simple;
-	bh=6HEyKo5kYiZdTNIX2x7F5vCVAgpWMKUXk3egaK3++qs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=nXRpGGOp1YSJktI0lxsmaaCkPsEHnZ6VNau7oPxtuE7Ir98/j/hYZL2z3p3GfG1Bja7G2EKZ9xRcDnb5Q5U1ftE23izHYIgvJn4lHplhKzE/T/0y0UoaEpytaMknBmq+f5nS4L8GJmB7aGSoVpZF/YTf7GAjNueCMN7Yg5ym5F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=YqOe4wcl; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Content-Type:MIME-Version:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=sPGwBRQWRFRHvSklFGqm1QGyqC8ZPElQNUgAaD314Nw=; b=YqOe4wclWS3JbHyZ7COM1M6eTj
-	F8wAx+o54pfUFxnEI+ubSOBBIqAzVq37pgxB5DqAAsbCXnRA33IGwTU2deot6kUpYaCvqbKGWh8JW
-	HyhomG1yAU4RCBji1N88kC2c0HLYm51wrVTSZ8jPnuZgh95HTaUV+uGgNGsIGa6eXDrtj7U3RXr5U
-	mEekgJcmX3wzjurUXHmg0WEc0FhDg82ibHD/PqJ1LsnFCT7auLTCB9CLedTurK7unbnBKBdo41/Y/
-	W6fQvUr3sPKjp2/PEtlFYFr/jXROEJq018QHXBP4jTGflfSNRSkTGrVwX41xusQv5NGyBrc/RfjTC
-	lwUfX48Q==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <carnil@debian.org>)
-	id 1rwpQU-006b1s-NS; Tue, 16 Apr 2024 20:29:12 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 6A96BBE2EE8; Tue, 16 Apr 2024 22:29:09 +0200 (CEST)
-Date: Tue, 16 Apr 2024 22:29:09 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: linux-usb@vger.kernel.org, regressions@lists.linux.dev,
-	roland@debian.org, stable@vger.kernel.org
-Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Herb Wei <weihao.bj@ieisystem.com>,
-	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Simon Horman <horms@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [Regression] USB ethernet AX88179 broken usb ethernet names
-Message-ID: <Zh7flXvNdDfattD9@eldamar.lan>
+	s=arc-20240116; t=1713299622; c=relaxed/simple;
+	bh=eXSPYBxn/l0S9sMtImb1xGWJp1lG0mtVRN4XUUEEJAk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jVRKaAomz0A3/7kfU1LWwh3/gcHymL5se9JT2p8CvqkExl1EN8YpmE/ngvcrimVhoBo3nL2fleQLY6RMBSG1E+uvlQVGNVgDA3WElSP8Ew7qb4UBKh197ZcSk7Tf9TD9VkPP0uep2XzxDb88xWRscABjHwZfTIU1c3UCtnQW0cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsNZUelp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7F5C3277B;
+	Tue, 16 Apr 2024 20:33:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713299620;
+	bh=eXSPYBxn/l0S9sMtImb1xGWJp1lG0mtVRN4XUUEEJAk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gsNZUelpP2j1WUWxiS1tQJEM//Aasq1+7B7GoqKe4j8VTIOqwU9uewx4Lj/j4u8n8
+	 Yyid7TaF/jYWt7+UuPdzEPZgvS0NGvgTPRFBeXxlCBlIgbiDKV3+MvxvDncGlyeI/d
+	 oc3f6mSUJwUdD5ZX5IkKRmQPWkG0jOLU+0D8mOKrqNU0B/t1SY8cJ+tHn6lYxyw0+r
+	 kY/RTp8+VWXIaboAguAnKW6s5Nv5cvDMVfZ5pfLEsGf4y4VWTTqR+R5DsutWbTYTJg
+	 A+fHq9a7w6sF6xxigfovCHqH+hUo4/jooMD7r0a/zl3fAFarOIMfolnZTuxKpLFJK9
+	 /TbYbhgpXdNyw==
+From: cel@kernel.org
+To: <stable@vger.kernel.org>
+Cc: <linux-nfs@vger.kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH] Revert 2267b2e84593bd3d61a1188e68fba06307fa9dab
+Date: Tue, 16 Apr 2024 16:33:37 -0400
+Message-ID: <20240416203337.10248-1-cel@kernel.org>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Debian-User: carnil
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Roland Rosenfeld reported in Debian a regression after the update to
-the 6.1.85 based kernel, with his USB ethernet device not anymore
-able to use the usb ethernet names.
+ltp test fcntl17 fails on v5.15.154. This was bisected to commit
+2267b2e84593 ("lockd: introduce safe async lock op").
 
-https://bugs.debian.org/1069082
+Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+ Documentation/filesystems/nfs/exporting.rst |  7 -------
+ fs/lockd/svclock.c                          |  4 +++-
+ fs/nfsd/nfs4state.c                         | 10 +++-------
+ include/linux/exportfs.h                    | 14 --------------
+ 4 files changed, 6 insertions(+), 29 deletions(-)
 
-it is somehow linked to the already reported regression
-https://lore.kernel.org/regressions/ZhFl6xueHnuVHKdp@nuc/ but has
-another aspect. I'm quoting his original report:
+diff --git a/Documentation/filesystems/nfs/exporting.rst b/Documentation/filesystems/nfs/exporting.rst
+index 6a1cbd7de38d..6f59a364f84c 100644
+--- a/Documentation/filesystems/nfs/exporting.rst
++++ b/Documentation/filesystems/nfs/exporting.rst
+@@ -241,10 +241,3 @@ following flags are defined:
+     all of an inode's dirty data on last close. Exports that behave this
+     way should set EXPORT_OP_FLUSH_ON_CLOSE so that NFSD knows to skip
+     waiting for writeback when closing such files.
+-
+-  EXPORT_OP_ASYNC_LOCK - Indicates a capable filesystem to do async lock
+-    requests from lockd. Only set EXPORT_OP_ASYNC_LOCK if the filesystem has
+-    it's own ->lock() functionality as core posix_lock_file() implementation
+-    has no async lock request handling yet. For more information about how to
+-    indicate an async lock request from a ->lock() file_operations struct, see
+-    fs/locks.c and comment for the function vfs_lock_file().
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index 55c0a0331188..4e30f3c50970 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -470,7 +470,9 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 	    struct nlm_host *host, struct nlm_lock *lock, int wait,
+ 	    struct nlm_cookie *cookie, int reclaim)
+ {
++#if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+ 	struct inode		*inode = nlmsvc_file_inode(file);
++#endif
+ 	struct nlm_block	*block = NULL;
+ 	int			error;
+ 	int			mode;
+@@ -484,7 +486,7 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 				(long long)lock->fl.fl_end,
+ 				wait);
+ 
+-	if (!exportfs_lock_op_is_async(inode->i_sb->s_export_op)) {
++	if (nlmsvc_file_file(file)->f_op->lock) {
+ 		async_block = wait;
+ 		wait = 0;
+ 	}
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 40b5b226e504..d07176eee935 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7420,7 +7420,6 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	struct nfsd4_blocked_lock *nbl = NULL;
+ 	struct file_lock *file_lock = NULL;
+ 	struct file_lock *conflock = NULL;
+-	struct super_block *sb;
+ 	__be32 status = 0;
+ 	int lkflg;
+ 	int err;
+@@ -7442,7 +7441,6 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 		dprintk("NFSD: nfsd4_lock: permission denied!\n");
+ 		return status;
+ 	}
+-	sb = cstate->current_fh.fh_dentry->d_sb;
+ 
+ 	if (lock->lk_is_new) {
+ 		if (nfsd4_has_session(cstate))
+@@ -7494,8 +7492,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	fp = lock_stp->st_stid.sc_file;
+ 	switch (lock->lk_type) {
+ 		case NFS4_READW_LT:
+-			if (nfsd4_has_session(cstate) ||
+-			    exportfs_lock_op_is_async(sb->s_export_op))
++			if (nfsd4_has_session(cstate))
+ 				fl_flags |= FL_SLEEP;
+ 			fallthrough;
+ 		case NFS4_READ_LT:
+@@ -7507,8 +7504,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 			fl_type = F_RDLCK;
+ 			break;
+ 		case NFS4_WRITEW_LT:
+-			if (nfsd4_has_session(cstate) ||
+-			    exportfs_lock_op_is_async(sb->s_export_op))
++			if (nfsd4_has_session(cstate))
+ 				fl_flags |= FL_SLEEP;
+ 			fallthrough;
+ 		case NFS4_WRITE_LT:
+@@ -7536,7 +7532,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	 * for file locks), so don't attempt blocking lock notifications
+ 	 * on those filesystems:
+ 	 */
+-	if (!exportfs_lock_op_is_async(sb->s_export_op))
++	if (nf->nf_file->f_op->lock)
+ 		fl_flags &= ~FL_SLEEP;
+ 
+ 	nbl = find_or_allocate_block(lock_sop, &fp->fi_fhandle, nn);
+diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
+index 6525f4b7eb97..218fc5c54e90 100644
+--- a/include/linux/exportfs.h
++++ b/include/linux/exportfs.h
+@@ -222,23 +222,9 @@ struct export_operations {
+ 						  atomic attribute updates
+ 						*/
+ #define EXPORT_OP_FLUSH_ON_CLOSE	(0x20) /* fs flushes file data on close */
+-#define EXPORT_OP_ASYNC_LOCK		(0x40) /* fs can do async lock request */
+ 	unsigned long	flags;
+ };
+ 
+-/**
+- * exportfs_lock_op_is_async() - export op supports async lock operation
+- * @export_ops:	the nfs export operations to check
+- *
+- * Returns true if the nfs export_operations structure has
+- * EXPORT_OP_ASYNC_LOCK in their flags set
+- */
+-static inline bool
+-exportfs_lock_op_is_async(const struct export_operations *export_ops)
+-{
+-	return export_ops->flags & EXPORT_OP_ASYNC_LOCK;
+-}
+-
+ extern int exportfs_encode_inode_fh(struct inode *inode, struct fid *fid,
+ 				    int *max_len, struct inode *parent);
+ extern int exportfs_encode_fh(struct dentry *dentry, struct fid *fid,
+-- 
+2.44.0
 
-> Dear Maintainer,
-> 
-> when upgrading from 6.1.76-1 to 6.1.85-1 my USB ethernet device
->  ID 0b95:1790 ASIX Electronics Corp. AX88179 Gigabit Ethernet
-> is no longer named enx00249bXXXXXX but eth0.
-> 
-> I see the following in dmsg:
-> 
-> [    1.484345] usb 4-5: Manufacturer: ASIX Elec. Corp.
-> [    1.484661] usb 4-5: SerialNumber: 0000249BXXXXXX
-> [    1.496312] ax88179_178a 4-5:1.0 eth0: register 'ax88179_178a' at usb-0000:00:14.0-5, ASIX AX88179 USB 3.0 Gigabit Ethernet, d2:60:4c:YY:YY:YY
-> [    1.497746] usbcore: registered new interface driver ax88179_178a
-> 
-> Unplugging and plugging again does not solve the issue, but the
-> interface still is named eth0.
-> 
-> Maybe it has to do with the following commit from
-> https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.85
-> 
-> commit fc77240f6316d17fc58a8881927c3732b1d75d51
-> Author: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> Date:   Wed Apr 3 15:21:58 2024 +0200
-> 
->     net: usb: ax88179_178a: avoid the interface always configured as random address
-> 
->     commit 2e91bb99b9d4f756e92e83c4453f894dda220f09 upstream.
-> 
->     After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
->     consecutive device resets"), reset is not executed from bind operation and
->     mac address is not read from the device registers or the devicetree at that
->     moment. Since the check to configure if the assigned mac address is random
->     or not for the interface, happens after the bind operation from
->     usbnet_probe, the interface keeps configured as random address, although the
->     address is correctly read and set during open operation (the only reset
->     now).
-> 
->     In order to keep only one reset for the device and to avoid the interface
->     always configured as random address, after reset, configure correctly the
->     suitable field from the driver, if the mac address is read successfully from
->     the device registers or the devicetree. Take into account if a locally
->     administered address (random) was previously stored.
-> 
->     cc: stable@vger.kernel.org # 6.6+
->     Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
->     Reported-by: Dave Stevenson  <dave.stevenson@raspberrypi.com>
->     Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
->     Reviewed-by: Simon Horman <horms@kernel.org>
->     Link: https://lore.kernel.org/r/20240403132158.344838-1-jtornosm@redhat.com
->     Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> 
-> Seems, that I'm not alone with this issue, there are also reports in
-> https://www.reddit.com/r/debian/comments/1c304xn/linuximageamd64_61851_usb_link_interface_names/
-> and https://infosec.space/@topher/112276500329020316
-> 
-> 
-> All other (pci based) network interfaces still use there static names
-> (enp0s25, enp2s0, enp3s0), only the usb ethernet name is broken with
-> the new kernel.
-> 
-> Greetings
-> Roland
-
-Roland confirmed that reverting both fc77240f6316 ("net: usb:
-ax88179_178a: avoid the interface always configured as random
-address") and 5c4cbec5106d ("net: usb: ax88179_178a: avoid two
-consecutive device resets") fixes the problem.
-
-Confirmation: https://bugs.debian.org/1069082#27
-
-Regards,
-Salvatore
 
