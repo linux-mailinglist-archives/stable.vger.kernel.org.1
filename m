@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-40045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538F58A77DD
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 00:40:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34F08A77DE
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 00:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 857541C22387
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:40:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF0D62848FC
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 22:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6406513777B;
-	Tue, 16 Apr 2024 22:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A985513281D;
+	Tue, 16 Apr 2024 22:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AdtVpuPz"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zQwrLNm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF2E1E511;
-	Tue, 16 Apr 2024 22:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6703F3B185;
+	Tue, 16 Apr 2024 22:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713307218; cv=none; b=flbfJCVN+8KMC1jO/9oJLJj7WbMdCeryrjxiWuCa6AQHeGBfAWgIrrEyVfSUoKpwDrXsg3DWnvXUQ7uPz7WDFufyknyyuEB7OFAxRtNEsE7Cu1mL9u1GoeU7Gxe9ZusqqPCzWBLx47RHIwC6OrIQVFna535Kv+s8epu0sMdqDYw=
+	t=1713307224; cv=none; b=gbc5hRLIzPF9CF998b3+rcon55kEj9AUyFotTZJFzNNtgAmpRgbrytBGTN7lz98tQn7DAJD0OTx03pLBCmZyLWqRkD1kB4+i4Om5Ots3wwmjVrxRF9sBESe467FzIvweaUoLd4gFKT9NsIjiynvYLX3LPgVo43j1bYCkXdM3bqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713307218; c=relaxed/simple;
-	bh=n/hS5D3g+GGDIm69PXUIF4NlpDqcHGgRpIZkK8eIi3A=;
-	h=Date:To:From:Subject:Message-Id; b=m93clQ2SqD7veOvdMiXdOI5N48YtwsBrpKq4bSPHYszO+Lz2ZugPzgYABGBCQE2v/XF10/PcboDcD6nwcQqjEidT5T523XDzyxitO2eQNYmuDVYF13+3PZ94vSoAnzs9exLHJUC3zEezKEqxAyTZFRzbfm0lVGkp+dPSPaqEnd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AdtVpuPz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7465C4AF08;
-	Tue, 16 Apr 2024 22:40:17 +0000 (UTC)
+	s=arc-20240116; t=1713307224; c=relaxed/simple;
+	bh=r9PGpg/50/HAbD2ROSnvQchZpHrZ75nMRNpmZpeK9Nk=;
+	h=Date:To:From:Subject:Message-Id; b=byy+KOkq+dhz1Ag1ZnG7mAG8ZHEIC6dNpBiNbkD9p6o1Wkr2lAa5Iw3lL/BJv5AEFx7PmfF9AzgHBGpmBGP8repG5Ayet04BsldYfD9Dk94i7lPokb2Rtcu2i5xdjgGlhivkU2Yxpmdf5ZmgUJ9q+NpiL5cLBmh4nBlnBUbYBf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zQwrLNm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371C9C3277B;
+	Tue, 16 Apr 2024 22:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1713307217;
-	bh=n/hS5D3g+GGDIm69PXUIF4NlpDqcHGgRpIZkK8eIi3A=;
+	s=korg; t=1713307224;
+	bh=r9PGpg/50/HAbD2ROSnvQchZpHrZ75nMRNpmZpeK9Nk=;
 	h=Date:To:From:Subject:From;
-	b=AdtVpuPzj0cW9npObs4hYfEsofsgU83nNMVv6THC9TkeS7b13rXz/XxsMbxDy4r2t
-	 ijyUWUBgAakODCo1B9HKR0mfsvYuqNSIiWgr3LpBZMugKSoampHRcSWQ8XAR1lEA9Y
-	 4Tcs/5c43El4wPz/48u91Eiu/ahQl+4DSvGSIU8A=
-Date: Tue, 16 Apr 2024 15:40:17 -0700
-To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,willy@infradead.org,stable@vger.kernel.org,peterx@redhat.com,ngeoffray@google.com,kaleshsingh@google.com,david@redhat.com,aarcange@redhat.com,lokeshgidra@google.com,akpm@linux-foundation.org
+	b=zQwrLNm/hvAgQEinW2Xfr9TKMlIHmhA5b6aH4tGPz/g00MA380r4+GkRTmWHk9V3q
+	 v9GClxpt5hzi96uBxU2gyCCrTiTHefS9MYxRFNgZ5YqeN68Y9IN56esbToKInIoAoE
+	 lY96YyScflV8/F6LIlP1adnCtWJWdtv3zaCIU7aU=
+Date: Tue, 16 Apr 2024 15:40:23 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,david@redhat.com,axelrasmussen@google.com,peterx@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] userfaultfd-change-src_folio-after-ensuring-its-unpinned-in-uffdio_move.patch removed from -mm tree
-Message-Id: <20240416224017.C7465C4AF08@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-userfaultfd-allow-hugetlb-change-protection-upon-poison-entry.patch removed from -mm tree
+Message-Id: <20240416224024.371C9C3277B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,68 +50,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: userfaultfd: change src_folio after ensuring it's unpinned in UFFDIO_MOVE
+     Subject: mm/userfaultfd: allow hugetlb change protection upon poison entry
 has been removed from the -mm tree.  Its filename was
-     userfaultfd-change-src_folio-after-ensuring-its-unpinned-in-uffdio_move.patch
+     mm-userfaultfd-allow-hugetlb-change-protection-upon-poison-entry.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Lokesh Gidra <lokeshgidra@google.com>
-Subject: userfaultfd: change src_folio after ensuring it's unpinned in UFFDIO_MOVE
-Date: Thu, 4 Apr 2024 10:17:26 -0700
+From: Peter Xu <peterx@redhat.com>
+Subject: mm/userfaultfd: allow hugetlb change protection upon poison entry
+Date: Fri, 5 Apr 2024 19:19:20 -0400
 
-Commit d7a08838ab74 ("mm: userfaultfd: fix unexpected change to src_folio
-when UFFDIO_MOVE fails") moved the src_folio->{mapping, index} changing to
-after clearing the page-table and ensuring that it's not pinned.  This
-avoids failure of swapout+migration and possibly memory corruption.
+After UFFDIO_POISON, there can be two kinds of hugetlb pte markers, either
+the POISON one or UFFD_WP one.
 
-However, the commit missed fixing it in the huge-page case.
+Allow change protection to run on a poisoned marker just like !hugetlb
+cases, ignoring the marker irrelevant of the permission.
 
-Link: https://lkml.kernel.org/r/20240404171726.2302435-1-lokeshgidra@google.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Nicolas Geoffray <ngeoffray@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
+Here the two bits are mutual exclusive.  For example, when install a
+poisoned entry it must not be UFFD_WP already (by checking pte_none()
+before such install).  And it also means if UFFD_WP is set there must have
+no POISON bit set.  It makes sense because UFFD_WP is a bit to reflect
+permission, and permissions do not apply if the pte is poisoned and
+destined to sigbus.
+
+So here we simply check uffd_wp bit set first, do nothing otherwise.
+
+Attach the Fixes to UFFDIO_POISON work, as before that it should not be
+possible to have poison entry for hugetlb (e.g., hugetlb doesn't do swap,
+so no chance of swapin errors).
+
+Link: https://lkml.kernel.org/r/20240405231920.1772199-1-peterx@redhat.com
+Link: https://lore.kernel.org/r/000000000000920d5e0615602dd1@google.com
+Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reported-by: syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/huge_memory.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/hugetlb.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/mm/huge_memory.c~userfaultfd-change-src_folio-after-ensuring-its-unpinned-in-uffdio_move
-+++ a/mm/huge_memory.c
-@@ -2259,9 +2259,6 @@ int move_pages_huge_pmd(struct mm_struct
- 			goto unlock_ptls;
- 		}
- 
--		folio_move_anon_rmap(src_folio, dst_vma);
--		WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
--
- 		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
- 		/* Folio got pinned from under us. Put it back and fail the move. */
- 		if (folio_maybe_dma_pinned(src_folio)) {
-@@ -2270,6 +2267,9 @@ int move_pages_huge_pmd(struct mm_struct
- 			goto unlock_ptls;
- 		}
- 
-+		folio_move_anon_rmap(src_folio, dst_vma);
-+		WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
-+
- 		_dst_pmd = mk_huge_pmd(&src_folio->page, dst_vma->vm_page_prot);
- 		/* Follow mremap() behavior and treat the entry dirty after the move */
- 		_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
+--- a/mm/hugetlb.c~mm-userfaultfd-allow-hugetlb-change-protection-upon-poison-entry
++++ a/mm/hugetlb.c
+@@ -7044,9 +7044,13 @@ long hugetlb_change_protection(struct vm
+ 			if (!pte_same(pte, newpte))
+ 				set_huge_pte_at(mm, address, ptep, newpte, psize);
+ 		} else if (unlikely(is_pte_marker(pte))) {
+-			/* No other markers apply for now. */
+-			WARN_ON_ONCE(!pte_marker_uffd_wp(pte));
+-			if (uffd_wp_resolve)
++			/*
++			 * Do nothing on a poison marker; page is
++			 * corrupted, permissons do not apply.  Here
++			 * pte_marker_uffd_wp()==true implies !poison
++			 * because they're mutual exclusive.
++			 */
++			if (pte_marker_uffd_wp(pte) && uffd_wp_resolve)
+ 				/* Safe to modify directly (non-present->none). */
+ 				huge_pte_clear(mm, address, ptep, psize);
+ 		} else if (!huge_pte_none(pte)) {
 _
 
-Patches currently in -mm which might be from lokeshgidra@google.com are
+Patches currently in -mm which might be from peterx@redhat.com are
 
+mm-hmm-process-pud-swap-entry-without-pud_huge.patch
+mm-gup-cache-p4d-in-follow_p4d_mask.patch
+mm-gup-check-p4d-presence-before-going-on.patch
+mm-x86-change-pxd_huge-behavior-to-exclude-swap-entries.patch
+mm-sparc-change-pxd_huge-behavior-to-exclude-swap-entries.patch
+mm-arm-use-macros-to-define-pmd-pud-helpers.patch
+mm-arm-redefine-pmd_huge-with-pmd_leaf.patch
+mm-arm64-merge-pxd_huge-and-pxd_leaf-definitions.patch
+mm-powerpc-redefine-pxd_huge-with-pxd_leaf.patch
+mm-gup-merge-pxd-huge-mapping-checks.patch
+mm-treewide-replace-pxd_huge-with-pxd_leaf.patch
+mm-treewide-remove-pxd_huge.patch
+mm-arm-remove-pmd_thp_or_huge.patch
+mm-document-pxd_leaf-api.patch
+selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation.patch
+selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation-fix.patch
+mm-kconfig-config_pgtable_has_huge_leaves.patch
+mm-hugetlb-declare-hugetlbfs_pagecache_present-non-static.patch
+mm-make-hpage_pxd_-macros-even-if-thp.patch
+mm-introduce-vma_pgtable_walk_beginend.patch
+mm-arch-provide-pud_pfn-fallback.patch
+mm-arch-provide-pud_pfn-fallback-fix.patch
+mm-gup-drop-folio_fast_pin_allowed-in-hugepd-processing.patch
+mm-gup-refactor-record_subpages-to-find-1st-small-page.patch
+mm-gup-handle-hugetlb-for-no_page_table.patch
+mm-gup-cache-pudp-in-follow_pud_mask.patch
+mm-gup-handle-huge-pud-for-follow_pud_mask.patch
+mm-gup-handle-huge-pmd-for-follow_pmd_mask.patch
+mm-gup-handle-huge-pmd-for-follow_pmd_mask-fix.patch
+mm-gup-handle-hugepd-for-follow_page.patch
+mm-gup-handle-hugetlb-in-the-generic-follow_page_mask-code.patch
+mm-allow-anon-exclusive-check-over-hugetlb-tail-pages.patch
+mm-page_table_check-support-userfault-wr-protect-entries.patch
 
 
