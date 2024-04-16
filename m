@@ -1,219 +1,114 @@
-Return-Path: <stable+bounces-40016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F4F8A6AF2
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 14:31:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B465E8A6BD3
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 15:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8DEE1C212EB
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 12:31:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73D971F22695
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 13:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC2C3BB30;
-	Tue, 16 Apr 2024 12:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1320612BF2E;
+	Tue, 16 Apr 2024 13:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ehNdWA8V";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EateKPP+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R1hMs6mu"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE61D1E527;
-	Tue, 16 Apr 2024 12:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F352B12BF30
+	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 13:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713270666; cv=none; b=ekA8HthJZ9zS4rB5AXRbYdu7LTwEK43hshOhRWDE8V7F5qtzDrf1DvQNtf6ax1K/hgTQ9foe+xMMKkLNOlVOul0iPPxJdo6Xwl4z43CnxVHx3Esn+xeHNUnRc3MhdYqYo2DpAXQMFfNkwL0IiWt6UzxNpPiE9oKEdB+5dKp69VI=
+	t=1713272865; cv=none; b=uY94BQCXuNG+MnY9qV2VG/L4B6TLCGbAuQ5vsQeysuD9QU1EACGMAv/+WLO0Mo7tF04NlS/Qz7P2XJSFojy+50EvCjYgmZmy/ga5+Dgp6eEae/hGT/qNLRoIszfoj+84xvO8Abx9/WLOdilp9kh3Zv+QPEe5Ah/nXBQJzlMNClQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713270666; c=relaxed/simple;
-	bh=YjkSOnY7MOYoI4u8ZX/26NHgoThl++miHa+iTTsZVe0=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=P26yVsci+TiquarKwvv/I8svyhe1AzY/BKdp6CkyDIlMo0rf1BfDuv400U2iNr2V/z/yAr1wkrRMDtVgkAhD/GP2R/CCJfjr0FSHCTe9Z6GY1rNSLCrv2el5QtNU7bypNiGcuXPvCFhNH5+5YT9idmQPeTPgDOYe9SGJDlpS97c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ehNdWA8V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EateKPP+; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 16 Apr 2024 12:30:54 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713270655;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GOhenMrd56U68JRoB6aXqA+Ecvh9dj00xNKDtxgfKF8=;
-	b=ehNdWA8V20neHEqejl6B6czC/R1NG/J8ugSwpj4pjPDuXnZplBhdE7MG1TLU6yydtBWeqj
-	Zyq0sWdWNaFB36tQoevaa/aOvFyzZ7hM1Gqwy7oe0EectHyo28zWyBW0c+sXEfOFgGCCQo
-	1gV2Rk8eikT84zgG6eZGMl+uAYGGWZvJThVaU6LN45MYwUl+UHshD5RacH0fbr+rwsdGBH
-	OGeQnvYbzDCX6DpUQcx5rCNxTEUWWlxK+wsdSvEm13wTANrxfcpVicsv4guK9w/5Dm1Vjk
-	qp6Fn4dZm6Uk6zYMpSHIUcZ0sLSl95imHnvcrIP+8MwvcSNaIea5BDVd4sAhUg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713270655;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GOhenMrd56U68JRoB6aXqA+Ecvh9dj00xNKDtxgfKF8=;
-	b=EateKPP+Kv/G/Oi+J3rXMvoYko+aBNaZGvPs7dqi8Bgm/KIagiKynxT/YcC7x4RdJmgSXy
-	kcHQzF+s69sDJzBQ==
-From: "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: sched/urgent] sched: Add missing memory barrier in switch_mm_cid
-Cc: "levi.yun" <yeoreum.yun@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Ingo Molnar <mingo@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,  <stable@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240415152114.59122-2-mathieu.desnoyers@efficios.com>
-References: <20240415152114.59122-2-mathieu.desnoyers@efficios.com>
+	s=arc-20240116; t=1713272865; c=relaxed/simple;
+	bh=7uLnhRptJhIlL/WoucKKi6qhTOkpC62d1wAP3c/jHHE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mYMihu54CBrbM32OPHPFqzJqqMvWDXfohi7872GfZafhID8F8ud35q/BdxB5Xk97eCnobkqEQ6oGzKNwJpApYircF/Il5MJJGlIfcjKX457subI4v3PCXO5VxLaAaopYhTCubVx4D2difGBQKRgKvQ9ftEdVFhJzg+KvpYvosoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R1hMs6mu; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5aa3af24775so3141864eaf.0
+        for <stable@vger.kernel.org>; Tue, 16 Apr 2024 06:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713272862; x=1713877662; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ea6CgGbzHVftCIUlE44bhMIJf3xGIJgS5bdRui+rEss=;
+        b=R1hMs6mu0NtjDxOqe5Z6R0tV/vOvDyBLK1Yp7cCDppKfLaf6bCYG4rqlWkWsHc3U7P
+         zYw8TQGpHqphnnft3uXyAa0oX1PONuRllZbzJ1Gy4fz1VsItiSwx0my2FJG0FBUDawkV
+         gao6P94scI+Mwq//XxXCo6wcKABLSfHCk9/ZzfJ1j3tOmHBzyeRheRq6pgOaru+vH9R6
+         lv/F9vYhx7DUr7m+szlZn+PheH7IKdHooh+qs4Ofjmp5CfiEHGnc0VDQy+LU7LaoA32V
+         6A5XEGHaEdDK+MpqMgVXoZtMQg21NUfPLaDp7jpMrLRgR5k4c9E2ntPC7ewksoCvOa5a
+         f47w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713272862; x=1713877662;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ea6CgGbzHVftCIUlE44bhMIJf3xGIJgS5bdRui+rEss=;
+        b=Y4kOO0nSXR/EOrrVjd38F8Pz+ZARhQMjPPSNuNie9UVb+dcR2Yxo8WEiQ2EB5y7K3k
+         P9Nn8KTIzSL9ayr0zXr6gyGgGT5hlwVr8CQxalCBn/AzkgmGkDwh2IEdg6M1mf9p46IU
+         EmXWdG6BOC4If2oTOSuNmS9ZUSRRCsx3wv5qub3X94D/umdVi7lWtqkgymNchz8aN3Pt
+         P2sjVb+spbl6KT7XRsoBVpUUYYBaJQ2M2kelLkrTPdrl1VUl1OgO3ltfwPaZdSn1ilEy
+         +hat76E5SzDxltLDYwAZC8eSOKjPt4GGp6/O/ulWUOkTv0r5w84AHuEDHiWNgdd+og3z
+         o+zw==
+X-Gm-Message-State: AOJu0Yw+S66bNOzxyNb/tVMHdv9q6jqTdhgcuDcXoAt5rHIwaIEqtaiZ
+	QpJOaf8X7AbKQIkZPtDrYckov/zylg5MBl00eJxSGB0UpRsMTtykMhiUdSkJyfxLmK+0yMhi7k/
+	btOPwsh8bdRNfqZB71n0g0VpX0OmeFYVlHzRQcQ==
+X-Google-Smtp-Source: AGHT+IH7nHIwoL3TWj/tf4kEGG9jfaQ98hAGzRADAS0JU5ClDVgTBcndZ1ImALsskvzSGFQFySrHCtTqVF/FVHBvAsY=
+X-Received: by 2002:a05:6359:4b89:b0:186:3ae:e13c with SMTP id
+ oi9-20020a0563594b8900b0018603aee13cmr15909727rwb.0.1713272861886; Tue, 16
+ Apr 2024 06:07:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171327065441.10875.11466673774953138493.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20240415141953.365222063@linuxfoundation.org> <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+In-Reply-To: <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 16 Apr 2024 18:37:30 +0530
+Message-ID: <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	Yihuang Yu <yihyu@redhat.com>, Marc Zyngier <maz@kernel.org>, Gavin Shan <gshan@redhat.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Shaoqin Huang <shahuang@redhat.com>, 
+	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-The following commit has been merged into the sched/urgent branch of tip:
+On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
+>
+> On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.6.28 release.
+> > There are 122 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+>
+> The bisect of the boot issue that's affecting the FVP in v6.6 (only)
+> landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
+> e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
+> the -rc for v6.8 but that seems fine.  I've done no investigation beyond
+> the bisect and looking at the commit log to pull out people to CC and
+> note that the fix was explicitly targeted at v6.6.
 
-Commit-ID:     fe90f3967bdb3e13f133e5f44025e15f943a99c5
-Gitweb:        https://git.kernel.org/tip/fe90f3967bdb3e13f133e5f44025e15f943a99c5
-Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Mon, 15 Apr 2024 11:21:13 -04:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 16 Apr 2024 13:59:45 +02:00
+Anders investigated this reported issues and bisected and also found
+the missing commit for stable-rc 6.6 is
+e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
 
-sched: Add missing memory barrier in switch_mm_cid
-
-Many architectures' switch_mm() (e.g. arm64) do not have an smp_mb()
-which the core scheduler code has depended upon since commit:
-
-    commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
-
-If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear() can
-unset the actively used cid when it fails to observe active task after it
-sets lazy_put.
-
-There *is* a memory barrier between storing to rq->curr and _return to
-userspace_ (as required by membarrier), but the rseq mm_cid has stricter
-requirements: the barrier needs to be issued between store to rq->curr
-and switch_mm_cid(), which happens earlier than:
-
-  - spin_unlock(),
-  - switch_to().
-
-So it's fine when the architecture switch_mm() happens to have that
-barrier already, but less so when the architecture only provides the
-full barrier in switch_to() or spin_unlock().
-
-It is a bug in the rseq switch_mm_cid() implementation. All architectures
-that don't have memory barriers in switch_mm(), but rather have the full
-barrier either in finish_lock_switch() or switch_to() have them too late
-for the needs of switch_mm_cid().
-
-Introduce a new smp_mb__after_switch_mm(), defined as smp_mb() in the
-generic barrier.h header, and use it in switch_mm_cid() for scheduler
-transitions where switch_mm() is expected to provide a memory barrier.
-
-Architectures can override smp_mb__after_switch_mm() if their
-switch_mm() implementation provides an implicit memory barrier.
-Override it with a no-op on x86 which implicitly provide this memory
-barrier by writing to CR3.
-
-Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-Reported-by: levi.yun <yeoreum.yun@arm.com>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com> # for arm64
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # for x86
-Cc: <stable@vger.kernel.org> # 6.4.x
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240415152114.59122-2-mathieu.desnoyers@efficios.com
----
- arch/x86/include/asm/barrier.h |  3 +++
- include/asm-generic/barrier.h  |  8 ++++++++
- kernel/sched/sched.h           | 20 ++++++++++++++------
- 3 files changed, 25 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
-index fe1e7e3..63bdc6b 100644
---- a/arch/x86/include/asm/barrier.h
-+++ b/arch/x86/include/asm/barrier.h
-@@ -79,6 +79,9 @@ do {									\
- #define __smp_mb__before_atomic()	do { } while (0)
- #define __smp_mb__after_atomic()	do { } while (0)
- 
-+/* Writing to CR3 provides a full memory barrier in switch_mm(). */
-+#define smp_mb__after_switch_mm()	do { } while (0)
-+
- #include <asm-generic/barrier.h>
- 
- #endif /* _ASM_X86_BARRIER_H */
-diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
-index 0c06957..d4f581c 100644
---- a/include/asm-generic/barrier.h
-+++ b/include/asm-generic/barrier.h
-@@ -294,5 +294,13 @@ do {									\
- #define io_stop_wc() do { } while (0)
- #endif
- 
-+/*
-+ * Architectures that guarantee an implicit smp_mb() in switch_mm()
-+ * can override smp_mb__after_switch_mm.
-+ */
-+#ifndef smp_mb__after_switch_mm
-+# define smp_mb__after_switch_mm()	smp_mb()
-+#endif
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* __ASM_GENERIC_BARRIER_H */
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index d224267..ae50f21 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -79,6 +79,8 @@
- # include <asm/paravirt_api_clock.h>
- #endif
- 
-+#include <asm/barrier.h>
-+
- #include "cpupri.h"
- #include "cpudeadline.h"
- 
-@@ -3445,13 +3447,19 @@ static inline void switch_mm_cid(struct rq *rq,
- 		 * between rq->curr store and load of {prev,next}->mm->pcpu_cid[cpu].
- 		 * Provide it here.
- 		 */
--		if (!prev->mm)                          // from kernel
-+		if (!prev->mm) {                        // from kernel
- 			smp_mb();
--		/*
--		 * user -> user transition guarantees a memory barrier through
--		 * switch_mm() when current->mm changes. If current->mm is
--		 * unchanged, no barrier is needed.
--		 */
-+		} else {				// from user
-+			/*
-+			 * user->user transition relies on an implicit
-+			 * memory barrier in switch_mm() when
-+			 * current->mm changes. If the architecture
-+			 * switch_mm() does not have an implicit memory
-+			 * barrier, it is emitted here.  If current->mm
-+			 * is unchanged, no barrier is needed.
-+			 */
-+			smp_mb__after_switch_mm();
-+		}
- 	}
- 	if (prev->mm_cid_active) {
- 		mm_cid_snapshot_time(rq, prev->mm);
+--
+Linaro LKFT
+https://lkft.linaro.org
 
