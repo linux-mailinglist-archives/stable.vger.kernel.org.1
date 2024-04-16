@@ -1,61 +1,52 @@
-Return-Path: <stable+bounces-39977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9611E8A6094
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 03:54:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5AAB8A60DA
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 04:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419BF1F219F0
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 01:54:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 469F4282C08
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 02:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E215AA92E;
-	Tue, 16 Apr 2024 01:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="g3oIvHJH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55919101E2;
+	Tue, 16 Apr 2024 02:16:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38531139E
-	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 01:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451D7F9E8
+	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 02:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713232488; cv=none; b=XxdhTy9D/aPE+Y9S89nE3VFXhOO2TaUt62GQtp1Qt9tHoE4E3+WAPw/XCBvCRz3W9E+P0k8fJMTqnUfUYd2yXY78s5QEIs1pRX+vi0jzISMMfRVmoj4eRiqRbiAvQhOK4zD2wZT/170i66MTBJ4afDT1LVBxdrYmU9mcylK51xA=
+	t=1713233793; cv=none; b=mO2NwdsJdkes+5hH4qQlOIPM/eEWGr2prwfq8kcPNTgsoSnPhUAcm8MBNyZv9M1nj7re0YO+rDtPCy4bAxGxlLUeGzUqMA15Lg6Cywm79TYMyEaVi0cmbLankunb58RTqNSex6zP8EpyfcA27bT89LgIUmDUdgOJTONB2DZNDc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713232488; c=relaxed/simple;
-	bh=UmXdxqwH4sj9RmKAcekLh/yjceU7ZYfzDTHryeGdseI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qrZLv1Vwp25LOX6tiUojAYUVa4SbTOh9nNULDqEdtszta1nc84rMzRAUisoXdimY2et5ew2DxI2BfFNmcL62NbRyvO3+hf3zT1Q2/rx1H3sOeTBxAre+fOkVWLP+7/VmhY7mLSGUm7U5Kdhnb8LCcaZxvDP0lvdEjobY4BsHGPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=g3oIvHJH; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1713232484;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ce9z3rTgtAmb+z21uy40IYtJhZfm3O/70hN4lTpTqdQ=;
-	b=g3oIvHJHfFtnw79mWSH6eFvzLLCevA9Zso7G+6ifB8JCpY0YLq32UtQNt0CSe/HMAUACAU
-	52GjKQ7OD9USFzF7f6YHRloaTgkevFWj8DDBaluw9o6s57k8W1IvlCjH6aqdM//wj0OuD+
-	TfvXMRNWTazq74aokrlhTAez01BpjDY=
-From: George Guo <dongtai.guo@linux.dev>
-To: gregkh@linuxfoundation.org,
-	tom.zanussi@linux.intel.com
-Cc: stable@vger.kernel.org,
-	Tom Zanussi <tzanussi@gmail.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19.y v5 2/2] tracing: Use var_refs[] for hist trigger reference checking
-Date: Tue, 16 Apr 2024 09:54:32 +0800
-Message-Id: <20240416015432.2282705-3-dongtai.guo@linux.dev>
-In-Reply-To: <20240416015432.2282705-1-dongtai.guo@linux.dev>
-References: <20240416015432.2282705-1-dongtai.guo@linux.dev>
+	s=arc-20240116; t=1713233793; c=relaxed/simple;
+	bh=v2VaZ0V8LgmEAjHSu8mpK+M5xBi/i2X00pywvIODD4w=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mCa6xK+c50lForukti3GqIYPI3du9pcu/e+JFfz83Dp70q0gjnRwNV7hvf7qqg8LTbKg0jw2MS8fjmkF6canJlN9zRsXVUlQrLLk/1iC3gTOWjgQMy4upXtpj5X4fQDmY7RwMupQn0UF2e6Wvyt2FwwLY5iaag8A8LsD1jZPUHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4VJSJr5Xpnz1ynKx
+	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 10:14:04 +0800 (CST)
+Received: from dggpeml500012.china.huawei.com (unknown [7.185.36.15])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9A9081A0172
+	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 10:16:26 +0800 (CST)
+Received: from localhost.localdomain (10.67.175.61) by
+ dggpeml500012.china.huawei.com (7.185.36.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Apr 2024 10:16:26 +0800
+From: Zheng Yejian <zhengyejian1@huawei.com>
+To: <stable@vger.kernel.org>
+Subject: [PATCH 5.15.y] kprobes: Fix possible use-after-free issue on kprobe registration
+Date: Tue, 16 Apr 2024 10:16:54 +0800
+Message-ID: <20240416021654.1184927-1-zhengyejian1@huawei.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2024041524-monoxide-kilobyte-1c44@gregkh>
+References: <2024041524-monoxide-kilobyte-1c44@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,122 +54,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpeml500012.china.huawei.com (7.185.36.15)
 
-From: Tom Zanussi <tzanussi@gmail.com>
+commit 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8 upstream.
 
-Since all the variable reference hist_fields are collected into
-hist_data->var_refs[] array, there's no need to go through all the
-fields looking for them, or in separate arrays like synth_var_refs[],
-which will be going away soon anyway.
+When unloading a module, its state is changing MODULE_STATE_LIVE ->
+ MODULE_STATE_GOING -> MODULE_STATE_UNFORMED. Each change will take
+a time. `is_module_text_address()` and `__module_text_address()`
+works with MODULE_STATE_LIVE and MODULE_STATE_GOING.
+If we use `is_module_text_address()` and `__module_text_address()`
+separately, there is a chance that the first one is succeeded but the
+next one is failed because module->state becomes MODULE_STATE_UNFORMED
+between those operations.
 
-This also allows us to get rid of some unnecessary code and functions
-currently used for the same purpose.
+In `check_kprobe_address_safe()`, if the second `__module_text_address()`
+is failed, that is ignored because it expected a kernel_text address.
+But it may have failed simply because module->state has been changed
+to MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify
+non-exist module text address (use-after-free).
 
-Link: http://lkml.kernel.org/r/1545246556.4239.7.camel@gmail.com
+To fix this problem, we should not use separated `is_module_text_address()`
+and `__module_text_address()`, but use only `__module_text_address()`
+once and do `try_module_get(module)` which is only available with
+MODULE_STATE_LIVE.
 
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
+Link: https://lore.kernel.org/all/20240410015802.265220-1-zhengyejian1@huawei.com/
+
+Fixes: 28f6c37a2910 ("kprobes: Forbid probing on trampoline and BPF code areas")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+[Fix conflict due to lack dependency
+commit 223a76b268c9 ("kprobes: Fix coding style issues")]
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
 ---
- kernel/trace/trace_events_hist.c | 68 ++++++--------------------------
- 1 file changed, 11 insertions(+), 57 deletions(-)
+ kernel/kprobes.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index e4f5b6894cf2..ede370225245 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -1289,49 +1289,13 @@ check_field_for_var_ref(struct hist_field *hist_field,
- 			struct hist_trigger_data *var_data,
- 			unsigned int var_idx)
- {
--	struct hist_field *found = NULL;
--
--	if (hist_field && hist_field->flags & HIST_FIELD_FL_VAR_REF) {
--		if (hist_field->var.idx == var_idx &&
--		    hist_field->var.hist_data == var_data) {
--			found = hist_field;
--		}
--	}
--
--	return found;
--}
--
--static struct hist_field *
--check_field_for_var_refs(struct hist_trigger_data *hist_data,
--			 struct hist_field *hist_field,
--			 struct hist_trigger_data *var_data,
--			 unsigned int var_idx,
--			 unsigned int level)
--{
--	struct hist_field *found = NULL;
--	unsigned int i;
--
--	if (level > 3)
--		return found;
--
--	if (!hist_field)
--		return found;
--
--	found = check_field_for_var_ref(hist_field, var_data, var_idx);
--	if (found)
--		return found;
--
--	for (i = 0; i < HIST_FIELD_OPERANDS_MAX; i++) {
--		struct hist_field *operand;
-+	WARN_ON(!(hist_field && hist_field->flags & HIST_FIELD_FL_VAR_REF));
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index 5d713a7d7e87..af57705e1fef 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1564,10 +1564,17 @@ static int check_kprobe_address_safe(struct kprobe *p,
+ 	jump_label_lock();
+ 	preempt_disable();
  
--		operand = hist_field->operands[i];
--		found = check_field_for_var_refs(hist_data, operand, var_data,
--						 var_idx, level + 1);
--		if (found)
--			return found;
--	}
-+	if (hist_field && hist_field->var.idx == var_idx &&
-+	    hist_field->var.hist_data == var_data)
-+		return hist_field;
- 
--	return found;
-+	return NULL;
- }
- 
- /**
-@@ -1350,26 +1314,16 @@ static struct hist_field *find_var_ref(struct hist_trigger_data *hist_data,
- 				       struct hist_trigger_data *var_data,
- 				       unsigned int var_idx)
- {
--	struct hist_field *hist_field, *found = NULL;
-+	struct hist_field *hist_field;
- 	unsigned int i;
- 
--	for_each_hist_field(i, hist_data) {
--		hist_field = hist_data->fields[i];
--		found = check_field_for_var_refs(hist_data, hist_field,
--						 var_data, var_idx, 0);
--		if (found)
--			return found;
--	}
--
--	for (i = 0; i < hist_data->n_synth_var_refs; i++) {
--		hist_field = hist_data->synth_var_refs[i];
--		found = check_field_for_var_refs(hist_data, hist_field,
--						 var_data, var_idx, 0);
--		if (found)
--			return found;
-+	for (i = 0; i < hist_data->n_var_refs; i++) {
-+		hist_field = hist_data->var_refs[i];
-+		if (check_field_for_var_ref(hist_field, var_data, var_idx))
-+			return hist_field;
+-	/* Ensure it is not in reserved area nor out of text */
+-	if (!(core_kernel_text((unsigned long) p->addr) ||
+-	    is_module_text_address((unsigned long) p->addr)) ||
+-	    in_gate_area_no_mm((unsigned long) p->addr) ||
++	/* Ensure the address is in a text area, and find a module if exists. */
++	*probed_mod = NULL;
++	if (!core_kernel_text((unsigned long) p->addr)) {
++		*probed_mod = __module_text_address((unsigned long) p->addr);
++		if (!(*probed_mod)) {
++			ret = -EINVAL;
++			goto out;
++		}
++	}
++	/* Ensure it is not in reserved area. */
++	if (in_gate_area_no_mm((unsigned long) p->addr) ||
+ 	    within_kprobe_blacklist((unsigned long) p->addr) ||
+ 	    jump_label_text_reserved(p->addr, p->addr) ||
+ 	    static_call_text_reserved(p->addr, p->addr) ||
+@@ -1577,8 +1584,7 @@ static int check_kprobe_address_safe(struct kprobe *p,
+ 		goto out;
  	}
  
--	return found;
-+	return NULL;
- }
- 
- /**
+-	/* Check if are we probing a module */
+-	*probed_mod = __module_text_address((unsigned long) p->addr);
++	/* Get module refcount and reject __init functions for loaded modules. */
+ 	if (*probed_mod) {
+ 		/*
+ 		 * We must hold a refcount of the probed module while updating
 -- 
-2.34.1
+2.25.1
 
 
