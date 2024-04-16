@@ -1,108 +1,106 @@
-Return-Path: <stable+bounces-40030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84B58A722E
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 19:24:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162638A7246
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 19:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A1EC283E6F
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 17:24:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BD271C2153F
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 17:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF54113343F;
-	Tue, 16 Apr 2024 17:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="N+VVVFIh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E38B13329F;
+	Tue, 16 Apr 2024 17:28:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BE91332A7;
-	Tue, 16 Apr 2024 17:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0738F10A22;
+	Tue, 16 Apr 2024 17:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713288276; cv=none; b=iwHlkIJOfFmhwG2QuaEp2mSaRu2pmRtS3kOWXVv+6kWIESr7msfP1/qaSOXSZ/1TlibDTM5fdykGzzWf8FlpcnIi6NIkzkw4v/EeOzcd2yIR7A9/aisKmQJhM4UaMsa4yks/DbJq13YjX75u7Lg4qe4D9mb2XcNbblMCjHdPZvM=
+	t=1713288499; cv=none; b=iUuEnuxCBGF1ZZJye/kujOMjzs4jLYxorePrSmPs3dGK93Xel+BK0H0C3c77zFTXYPzmf3YNXldVIq05lnNoa5RKq1XSZSN6IkOOOhd/+rbIE1YSTq7Ty5A4WduBF2xj+HOJuGmQDOhREbYcnCuB8ifUrb1nF0Qdk4K47DB5Neg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713288276; c=relaxed/simple;
-	bh=XzlHoWbCewhBMWvTfN59eZpOMbP92r+tEx3PdmU5CvI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FPLXFh/pVuuN06ZGeMLNO/FqtpnsHhxuTTaJl1Oh78aYivRGlbcrd+OfFYgrKfA0JfLoMAACdKOt7BCzmV+kbOlpt7IpEyEaq+H9uDz/SLmRjhWpKaMmSKIJcuhkwtA5IpAYJs0dXKgf0RW6mABk6ZZdzKloCTF2CLJ0wgQqXPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=N+VVVFIh; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.192.9.210] (unknown [167.220.77.82])
-	by linux.microsoft.com (Postfix) with ESMTPSA id AB92420FD413;
-	Tue, 16 Apr 2024 10:24:28 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AB92420FD413
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1713288268;
-	bh=ls55kzA4NgbPtH5yXF9qjPYhHDVyOeLEqJj+MKe3bqM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=N+VVVFIhkTvl4mLN4zwmv18TFMdC9JISjm+SBtgcqQ/5V1d08QI196QyOuqKmgLgK
-	 gCwBJDk+xncjm55NHbewVDIppAYbhxBgHvN1AqDBceTG6SQy0aGsRDxg/7cxLCwjzZ
-	 kr5pbQVz9AIpAz7G1LQvGNTz83oE7ALyIynw3QIs=
-Message-ID: <cc48b26a-f67e-43bc-a29f-2e9f36cecc45@linux.microsoft.com>
-Date: Tue, 16 Apr 2024 10:24:27 -0700
+	s=arc-20240116; t=1713288499; c=relaxed/simple;
+	bh=fzIQWinEL64tdKbuV71MRaTNL67LcKX8BvwcAqWO8DA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PztHaNVNL3lnP8oWdrLxK2Td98SEWtPYCEyrTUUM6tbq7cL4wHvrWxr2DAk29C9p/SuFfFQi6I8IOkX5Sx+uY5m3Go/dROjxOOP5f/zRcshBMivArsEQAh3AIUE9wNc96tHuWEgfbSpwxuQ5+Z327kuXtgOXKg2pE6MJ+SVSWPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EABFC113CE;
+	Tue, 16 Apr 2024 17:28:13 +0000 (UTC)
+Date: Tue, 16 Apr 2024 18:28:10 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, Yihuang Yu <yihyu@redhat.com>,
+	Gavin Shan <gshan@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shaoqin Huang <shahuang@redhat.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+Message-ID: <Zh61KobDt_y1O46-@arm.com>
+References: <20240415141953.365222063@linuxfoundation.org>
+ <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+ <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
+ <86y19dqw74.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: CPPC: Fix bit_offset shift in MASK_VAL macro
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Easwar Hariharan <eahariha@linux.microsoft.com>,
- "open list:ACPI" <linux-acpi@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-Cc: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
- stable@vger.kernel.org
-References: <20240409052310.3162495-1-jarredwhite@linux.microsoft.com>
-Content-Language: en-CA
-From: Jarred White <jarredwhite@linux.microsoft.com>
-In-Reply-To: <20240409052310.3162495-1-jarredwhite@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86y19dqw74.wl-maz@kernel.org>
 
-On 4/8/2024 10:23 PM, Jarred White wrote:
-> Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
-> system memory accesses") neglected to properly wrap the bit_offset shift
-> when it comes to applying the mask. This may cause incorrect values to be
-> read and may cause the cpufreq module not be loaded.
+On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
+> On Tue, 16 Apr 2024 14:07:30 +0100,
+> Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
+> > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.6.28 release.
+> > > > There are 122 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > >
+> > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
+> > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
+> > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
+> > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
+> > > the bisect and looking at the commit log to pull out people to CC and
+> > > note that the fix was explicitly targeted at v6.6.
+> > 
+> > Anders investigated this reported issues and bisected and also found
+> > the missing commit for stable-rc 6.6 is
+> > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
 > 
-> [   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
-> [   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
-> 
-> Also, corrected the bitmask generation in GENMASK (extra bit being added).
-> 
-> Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-> Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
-> CC: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-> CC: stable@vger.kernel.org #5.15+
-> ---
->   drivers/acpi/cppc_acpi.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 4bfbe55553f4..00a30ca35e78 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -170,8 +170,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
->   #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
->   
->   /* Shift and apply the mask for CPC reads/writes */
-> -#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
-> -					GENMASK(((reg)->bit_width), 0)))
-> +#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
-> +					GENMASK(((reg)->bit_width) - 1, 0))
->   
->   static ssize_t show_feedback_ctrs(struct kobject *kobj,
->   		struct kobj_attribute *attr, char *buf)
+> Which is definitely *not* stable candidate. We need to understand why
+> the invalidation goes south when the scale go up instead of down.
 
-Hi Vanshi,
+If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
+which fixes 117940aa6e5f ("KVM: arm64: Define
+kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
+("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
+"scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
+CBMC model, not on the actual kernel. It may be worth adding some
+WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
+num greater than 31.
 
-Could you review please?
+I haven't investigated properly (and I'm off tomorrow, back on Thu) but
+it's likely the original code was not very friendly to the maximum
+range, never tested. Anyway, if one figures out why it goes out of
+range, I think the solution is to also backport e2768b798a19 to stable.
 
-
-Thanks,
-Jarred
+-- 
+Catalin
 
