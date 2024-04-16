@@ -1,71 +1,185 @@
-Return-Path: <stable+bounces-39984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257B18A6277
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 06:37:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2F18A632F
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 07:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF56D1F21800
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 04:37:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4504F1C21733
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 05:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B2B1EB48;
-	Tue, 16 Apr 2024 04:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF10C3B796;
+	Tue, 16 Apr 2024 05:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPoxxBkD"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="afmwVHJq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BC312E4A
-	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 04:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1EB3A29C
+	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 05:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713242254; cv=none; b=pGYQTToBDdaixQq4232KvhBhjbwsvxPsCWDn7H4EUTDnOI3Gty2Jq208aiJYv6RoGrejfs2yUtpbtIoL5IIRjPhLFWBWW+9daT3qYMf4KIDsXiRkjbDElsSl4SPYoixzrNd107ujolm7p4KObXTSQV7Nt60iANAmuzOHQKxo4bw=
+	t=1713246179; cv=none; b=u5YXhokmUoeKNjarpSj95/ssLHdqF06ydebDRqySfYXNlTJP8gIsDklmcBd9F0C5trRNrNIvNrFPZdIOSZB4Q5/vXd5EbJ+HL9wmY6W0aR1cAH9DbeVNJsOfryvRabH73Gx/692GJ3LjcIgBgzaJPqhzO5EYFvyb0mFyWe84ADM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713242254; c=relaxed/simple;
-	bh=C0O3RnJdDSKQClrWwdB9Rw5TFO52OxrKJMnBKekmWI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GuU/qvwEVmQd9drpaFlTjTmrHWZrJ01iJr6BMCpWkoiRA73zBVeXiCAVAps4ev/mRfR+uJK2kxQoXdWX30ZnGGBLSDdzgTxw7yb4Nfu84NuRVM9t8E41iW/8F0zZnOARlWqPKj71tznh3o+5z2IbhjsB1JC3cD6p9Ej2yf/+oLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPoxxBkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D00C113CE;
-	Tue, 16 Apr 2024 04:37:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713242253;
-	bh=C0O3RnJdDSKQClrWwdB9Rw5TFO52OxrKJMnBKekmWI4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EPoxxBkDW9qYsb/J7blZySQfxR+XWalggQ/+05aFLjbF70m6rWOEu2VcAJfqN3GtZ
-	 jLW+hnI7a9bXFLyqhELEeJ0C69eSEhCsFK0FiMyWCMUDCscgGP9UZA6vEaXsXVxP9w
-	 65S3OnPohbOUiHdcb6P+anogXtaLjUKxrFIJL5Ug=
-Date: Tue, 16 Apr 2024 06:37:28 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: dcrady@os.amperecomputing.com
-Cc: stable@vger.kernel.org
-Subject: Re: v5.15+ backport request
-Message-ID: <2024041608-unnatural-bullpen-b38e@gregkh>
-References: <20240416034626.163580-1-dcrady@os.amperecomputing.com>
+	s=arc-20240116; t=1713246179; c=relaxed/simple;
+	bh=YzcwzdZL4XKreo1CF3wbVR5j3L/jHhRL6gcOR16pIWc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cVITDi5yng9enIVWgi+0zPd05qz3Ys+aafE9snmnClqGHQ1lCurVuzgJ57upiRGC72EIyfUg64+y8+HwD8ofo+/tGVoUU4JroHGszk3T0awjTeWaOVZVRpY+q9ynX4hF5b1ldBxCWCn2Qj1O7KaIGFBYI0NDtzD3YjXDVj0/vSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=afmwVHJq; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6eced6fd98aso3633200b3a.0
+        for <stable@vger.kernel.org>; Mon, 15 Apr 2024 22:42:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713246177; x=1713850977; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=A3zTEkiG2nqHLpygf92sT5A2vKJ1K17V0uKLVPKWPqc=;
+        b=afmwVHJq6P4RkXfLxRHYIyMImrFVEOFBftD0voKWUkTgdOst3JyWVUB475Kaa5pr/d
+         eZ4o47yjeQ8mbk7q5ycqTKIi2orccszgKUmPFySedt8pIyFphCBKVX3+JWjVPtbnoPBF
+         JDXn9ZA4w+329jq0Ba9l1/TKglCAEe71ZZcsUEj0cCI2q2H3VELHwnDe0N9lQJ/OsPpO
+         lv/ZHXzZCdJ9Mc1oLlbDmh91DIAW+CvTfSbhP/buyOVoL57bSY6s/m4H4kiDDOANlI/a
+         3KzTWkFdE+9dFEK46j9110q3218wWETI4mU8Njfr51hheFZLB8rNEHCE80cA6fMsyRk1
+         VCVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713246177; x=1713850977;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A3zTEkiG2nqHLpygf92sT5A2vKJ1K17V0uKLVPKWPqc=;
+        b=Y2mbZqRq7iZCutjiVBCRPEHFGh8m4CVXZq2H9lNgb4PJnfuq0iwmJiIMSrHyQ2Ps/b
+         4BWgq2EcmMcExwEzssCfzB1LW4Nn5PmIuERLJb28cmR6aSqwY7Sbm1OsRhGxut8ObHjq
+         7tGGO9rnFV5xF2GpTfavp336rnq/3BdOQre+tN9teoPKdx47AL07ZBVhKSvqyoBaayMQ
+         3+FCki5M0agrT+TXSrwc8kfuiysDDhw7Twlo/54MIymAT78yPFfPBQYmKFq3qToX8m1x
+         maWdzlZJU9aSN4D9vSB/UsPlAjt3/JClp3wnm2ik+k3c80HPhWlMxylo4+fSWVmIRRWD
+         Rxyw==
+X-Forwarded-Encrypted: i=1; AJvYcCWURIIr/pEnfIookPyzmdKObbfYABRTtpx0juv2NKvM2Edt/akXnsbM4H0NE2X29K0lLAAx/cBBCsT49tcviTdxjnXGG8Iv
+X-Gm-Message-State: AOJu0YwmVjeRR038Y4LUgwV+VfRJeeuMV9FqR/aeYKx8PjMJ2k9Ov/MP
+	hBzgcAPSjqfDZ/TMfGHGMfNhO86oTiPbAzxC4Be99HBmjys/B7diPoOknv6h/g==
+X-Google-Smtp-Source: AGHT+IHmL5CGk/C9YY3eQgCl7Y3aehKD10gTha3MpE92TAHps4Lx1+7Q4FtBizYCJM5LHup7vD1Aeg==
+X-Received: by 2002:a05:6a00:1945:b0:6ea:f4ad:7298 with SMTP id s5-20020a056a00194500b006eaf4ad7298mr16195085pfk.34.1713246177243;
+        Mon, 15 Apr 2024 22:42:57 -0700 (PDT)
+Received: from [127.0.1.1] ([103.28.246.221])
+        by smtp.gmail.com with ESMTPSA id jw9-20020a056a00928900b006ece7862035sm8096651pfb.128.2024.04.15.22.42.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Apr 2024 22:42:56 -0700 (PDT)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Date: Tue, 16 Apr 2024 11:12:35 +0530
+Subject: [PATCH] PCI: rockchip: Use GPIOD_OUT_LOW flag while requesting
+ ep_gpio
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240416034626.163580-1-dcrady@os.amperecomputing.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240416-pci-rockchip-perst-fix-v1-1-4800b1d4d954@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAMoPHmYC/x2MQQqAMAzAviI9W3BFxvQr4kFq1SLo6EQE2d8dH
+ hNIXkhiKgn66gWTW5OeRwFXV8DbdKyCOhcGaqhtWucxsqKdvPOmEaNYunDRB0PgjsiTm7sJShx
+ Niv7Hw5jzB1Ks2+JoAAAA
+To: Shawn Lin <shawn.lin@rock-chips.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Heiko Stuebner <heiko@sntech.de>, Brian Norris <briannorris@chromium.org>
+Cc: linux-pci@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ mhi@lists.linux.dev, stable@vger.kernel.org, 
+ Slark Xiao <slark_xiao@163.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3420;
+ i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
+ bh=YzcwzdZL4XKreo1CF3wbVR5j3L/jHhRL6gcOR16pIWc=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBmHg/crzU1Kkb1i9AqXVJ3hRXBiUx9TkrzmPVOq
+ mUTZO2izYWJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZh4P3AAKCRBVnxHm/pHO
+ 9fTRCACK8wHhlIy/kLvZHbQzhc/EFgpLhGxBwGkKpiC9xOYMycx6mQuk8X1lpK2goCoKljGgktY
+ e/Ti3YO9R2ntH5ycJCk/FK/xMY1wZffrkZYUg6QKtEvZoa/kWnzAIk+Vt9bagTtP++dRzu4C7bq
+ 0Zgccetk3ERl1hzVhTluvHGB1AEHOCgCIyQTOS31v3gy2QmRLo4zDLQULZvtm6X0fNDJNQ2qlsW
+ ftcyIPvXBVxIDlkQsY8t5m23kXP/PeVhPhIn/bvbB2rJ5g4Tsr15A3RwqVuSKt9C6V89PogwlGn
+ qFNOcL9t95ugWM11fE3JxyLL309ww7DJvfLnqgnK8zPZDpqZ
+X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
 
-On Mon, Apr 15, 2024 at 08:46:26PM -0700, dcrady@os.amperecomputing.com wrote:
-> Please backport the following v6.7 commit:
-> 
-> commit be097997a273 ("KVM: arm64: Always invalidate TLB for stage-2 permission faults")
-> 
-> to stable kernels v5.15 and newer to fix:
+Rockchip platforms use 'GPIO_ACTIVE_HIGH' flag in the devicetree definition
+for ep_gpio. This means, whatever the logical value set by the driver for
+the ep_gpio, physical line will output the same logic level.
 
-Any specific reason you didn't cc: the maintainers and developers of
-that change with this request?
+For instance,
 
-thanks,
+	gpiod_set_value_cansleep(rockchip->ep_gpio, 0); --> Level low
+	gpiod_set_value_cansleep(rockchip->ep_gpio, 1); --> Level high
 
-greg k-h
+But while requesting the ep_gpio, GPIOD_OUT_HIGH flag is currently used.
+Now, this also causes the physical line to output 'high' creating trouble
+for endpoint devices during host reboot.
+
+When host reboot happens, the ep_gpio will initially output 'low' due to
+the GPIO getting reset to its POR value. Then during host controller probe,
+it will output 'high' due to GPIOD_OUT_HIGH flag. Then during
+rockchip_pcie_host_init_port(), it will first output 'low' and then 'high'
+indicating the completion of controller initialization.
+
+On the endpoint side, each output 'low' of ep_gpio is accounted for PERST#
+assert and 'high' for PERST# deassert. With the above mentioned flow during
+host reboot, endpoint will witness below state changes for PERST#:
+
+	(1) PERST# assert - GPIO POR state
+	(2) PERST# deassert - GPIOD_OUT_HIGH while requesting GPIO
+	(3) PERST# assert - rockchip_pcie_host_init_port()
+	(4) PERST# deassert - rockchip_pcie_host_init_port()
+
+Now the time interval between (2) and (3) is very short as both happen
+during the driver probe(), and this results in a race in the endpoint.
+Because, before completing the PERST# deassertion in (2), endpoint got
+another PERST# assert in (3).
+
+A proper way to fix this issue is to change the GPIOD_OUT_HIGH flag in (2)
+to GPIOD_OUT_LOW. Because the usual convention is to request the GPIO with
+a state corresponding to its 'initial/default' value and let the driver
+change the state of the GPIO when required.
+
+As per that, the ep_gpio should be requested with GPIOD_OUT_LOW as it
+corresponds to the POR value of '0' (PERST# assert in the endpoint). Then
+the driver can change the state of the ep_gpio later in
+rockchip_pcie_host_init_port() as per the initialization sequence.
+
+This fixes the firmware crash issue in Qcom based modems connected to
+Rockpro64 based board.
+
+Cc:  <stable@vger.kernel.org> # 4.9
+Reported-by: Slark Xiao <slark_xiao@163.com>
+Closes: https://lore.kernel.org/mhi/20240402045647.GG2933@thinkpad/
+Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+ drivers/pci/controller/pcie-rockchip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/controller/pcie-rockchip.c b/drivers/pci/controller/pcie-rockchip.c
+index 0ef2e622d36e..c07d7129f1c7 100644
+--- a/drivers/pci/controller/pcie-rockchip.c
++++ b/drivers/pci/controller/pcie-rockchip.c
+@@ -121,7 +121,7 @@ int rockchip_pcie_parse_dt(struct rockchip_pcie *rockchip)
+ 
+ 	if (rockchip->is_rc) {
+ 		rockchip->ep_gpio = devm_gpiod_get_optional(dev, "ep",
+-							    GPIOD_OUT_HIGH);
++							    GPIOD_OUT_LOW);
+ 		if (IS_ERR(rockchip->ep_gpio))
+ 			return dev_err_probe(dev, PTR_ERR(rockchip->ep_gpio),
+ 					     "failed to get ep GPIO\n");
+
+---
+base-commit: 4cece764965020c22cff7665b18a012006359095
+change-id: 20240416-pci-rockchip-perst-fix-88c922621d9a
+
+Best regards,
+-- 
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
 
