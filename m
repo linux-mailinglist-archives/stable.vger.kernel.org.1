@@ -1,131 +1,132 @@
-Return-Path: <stable+bounces-40018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B938A6C11
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 15:22:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A05D8A6C91
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 15:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4A591F215B4
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 13:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C38F01F21897
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 13:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0D112C47E;
-	Tue, 16 Apr 2024 13:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDE812C48A;
+	Tue, 16 Apr 2024 13:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oauJhRl1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i2DBkE9k"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95E112C46F;
-	Tue, 16 Apr 2024 13:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB23412CD81
+	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 13:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713273732; cv=none; b=MACaickG5J54CddLfFOEN7UTyq+dYtNsV3fZwh2Y800ghG5bZYii8QQYMuga2tNwGxVAevFak5LvsFFr/d0K4m03A/9LyjjDMVvf+VtUHC0A0XQ4K9V/kTCMU41o3c3cZpawaVq7gXyuUl2UGaQx+xA6cx4+wpbw+8snQO8UXNA=
+	t=1713274248; cv=none; b=Dys2AeqyQl/K8X2aLydanBdPhLnxaDfX7uEJB+sE9fKouG4vFUiKnPwF+0fkGZ5pW3VA2LbXjE8p4t6XOzCy1qgWNpIXEmT3LhKGQRyXljKWy0E79kVL8fsfAwYohy5GBz4pe4brVBc3fbmGTyDKNcm4yIn/hpC74VkNXGt0D58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713273732; c=relaxed/simple;
-	bh=BFQljuMVTClNVjDMuw/IrsqPjuJUXCtl5zc7GQU7tpc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YQq7ANhppeWgpvF2/WAbcAQeNe7u2NKSyNjDHjemrs1B/YaPA8cTPJy0+C+ilZmCYg8SYiSVCsZolvnO6rWbNphFHXSNQo/59bg8VbEuOiS9nY9rFWDC6GcGN40m8ZIK+/RF1wpnOvAULikLBDin4QhXcZFi53eK4cx4EeHF70M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oauJhRl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71870C113CE;
-	Tue, 16 Apr 2024 13:22:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713273731;
-	bh=BFQljuMVTClNVjDMuw/IrsqPjuJUXCtl5zc7GQU7tpc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oauJhRl1Ng77wYskusi1RAwDUu9MXz1hjLryHTHiIjNl+n07VIKjCIKuf5Rln5CyE
-	 2gA4nJVd0uzIKIzITAsuRNX6paoUyGBTKJaDjh6G8WokgClf66H6t0Fr7L9Fa7/pio
-	 /unsiVNAqhRLIH6Av0WwQ5DFAjaH/a6qJlNCpjVbepAdLHj2MoLEaCqPlgtLvj9kys
-	 BX33QuZ9EE61exWHDkJSmNN3FM8066NUaRkWbqi+WHAXDI4+xEfI2B0q8kPEc2DBAQ
-	 IVh4+44AzezZ4+AufuewqjR2IY48LH7b0S0TZieuvLhjtA947mb52eL5YFdfkmDlL3
-	 vRYdts8WbjeHg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1rwilF-0051lu-82;
-	Tue, 16 Apr 2024 14:22:09 +0100
-Date: Tue, 16 Apr 2024 14:22:07 +0100
-Message-ID: <86y19dqw74.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Mark Brown <broonie@kernel.org>,
-	stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	Yihuang Yu <yihyu@redhat.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shaoqin Huang <shahuang@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
-In-Reply-To: <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
-References: <20240415141953.365222063@linuxfoundation.org>
-	<Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
-	<CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1713274248; c=relaxed/simple;
+	bh=4o3jbPGF5aLP95zMfmUFigJWBB+90uNzS65Y2AN+b6Y=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=npQW3iX3iQc9clS2u3/t5MRV3iG0KsVqXAQj4jrO96FUUDZUyhBAOQamjWj20fe9DENtTUIfJBuNvot2Fm31VO9/FX3TCsAozR6fN49QmN/tKO0zZU68+NiYqMwGoBj+yXkKVcyfW3cE9CH3aj+MlQ9xbnXM08/l4/THyYdrlf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i2DBkE9k; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713274245;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UH03/5nBsMN52IqYQjlbBdBJW2F80V+mTlh1m4rzE68=;
+	b=i2DBkE9kGywZnSDOFDA8nUzi25y/dKKZaZ1kKxhcpy17ntmvq9KCoZw4yLfwjt68zbA3+w
+	MoJ6oigk1Xj5iY/ZAS7VS71uuCV6oL3E8D3e3AtSvQ+pdXOvzVaLjYGxqa8vwSpnE6XKZX
+	iLR4exPop0XdDPsobPSVcUGgtDXpxMs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-338-i4j1sbJaPIiRMXw0Rnxx7g-1; Tue,
+ 16 Apr 2024 09:30:42 -0400
+X-MC-Unique: i4j1sbJaPIiRMXw0Rnxx7g-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 059723C0ED4B;
+	Tue, 16 Apr 2024 13:30:42 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 28B4A1C06666;
+	Tue, 16 Apr 2024 13:30:41 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
+	id 06DD930C2BF7; Tue, 16 Apr 2024 13:30:41 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 033D43FB54;
+	Tue, 16 Apr 2024 15:30:41 +0200 (CEST)
+Date: Tue, 16 Apr 2024 15:30:40 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Bart Van Assche <bvanassche@acm.org>
+cc: Mike Snitzer <snitzer@redhat.com>, dm-devel@lists.linux.dev, 
+    Eric Biggers <ebiggers@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>, 
+    Daniel Lee <chullee@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] dm: Change the default value of rq_affinity from 0 into
+ 1
+In-Reply-To: <c107bba4-03a1-4121-af9e-7c93f40c24a0@acm.org>
+Message-ID: <1494d512-9eb0-2091-8e9f-fbb28d2441d1@redhat.com>
+References: <20240415194921.6404-1-bvanassche@acm.org> <20cf8b38-6c5b-9a10-6a7b-5d587a19eed@redhat.com> <c107bba4-03a1-4121-af9e-7c93f40c24a0@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: naresh.kamboju@linaro.org, gregkh@linuxfoundation.org, broonie@kernel.org, stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, yihyu@redhat.com, gshan@redhat.com, catalin.marinas@arm.com, ryan.roberts@arm.com, anshuman.khandual@arm.com, shahuang@redhat.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, anders.roxell@linaro.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-On Tue, 16 Apr 2024 14:07:30 +0100,
-Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+
+
+On Mon, 15 Apr 2024, Bart Van Assche wrote:
+
+> On 4/15/24 12:56, Mikulas Patocka wrote:
+> > I am wondering how should QUEUE_FLAG_SAME_COMP work for bio-based
+> > devices.
+> > 
+> > I grepped the kernel for QUEUE_FLAG_SAME_COMP and it is tested in
+> > block/blk-mq.c in blk_mq_complete_need_ipi (this code path is taken only
+> > for request-based devices) and in block/blk-sysfs.c in
+> > queue_rq_affinity_show (this just displays the value in sysfs). There are
+> > no other places where QUEUE_FLAG_SAME_COMP is tested, so I don't see what
+> > effect is it supposed to have.
 > 
-> On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
-> >
-> > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.6.28 release.
-> > > There are 122 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> >
-> > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
-> > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
-> > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
-> > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
-> > the bisect and looking at the commit log to pull out people to CC and
-> > note that the fix was explicitly targeted at v6.6.
+> I think the answer depends on whether or not the underlying device
+> defines the .submit_bio() callback. From block/blk-core.c:
 > 
-> Anders investigated this reported issues and bisected and also found
-> the missing commit for stable-rc 6.6 is
-> e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
+> static void __submit_bio(struct bio *bio)
+> {
+> 	if (unlikely(!blk_crypto_bio_prep(&bio)))
+> 		return;
+> 
+> 	if (!bio->bi_bdev->bd_has_submit_bio) {
+> 		blk_mq_submit_bio(bio);
+> 	} else if (likely(bio_queue_enter(bio) == 0)) {
+> 		struct gendisk *disk = bio->bi_bdev->bd_disk;
+> 
+> 		disk->fops->submit_bio(bio);
+> 		blk_queue_exit(disk->queue);
+> 	}
+> }
+> 
+> In other words, if the .submit_bio() callback is defined, that function
+> is called. If it is not defined, blk_mq_submit_bio() converts the bio
+> into a request. QUEUE_FLAG_SAME_COMP affects the request completion
+> path. On my test setup there are multiple dm instances defined on top of
+> SCSI devices. The SCSI core does not implement the .submit_bio()
+> callback.
+> 
+> Thanks,
+> 
+> Bart.
 
-Which is definitely *not* stable candidate. We need to understand why
-the invalidation goes south when the scale go up instead of down.
+Yes, setting the flag QUEUE_FLAG_SAME_COMP for bio-based drivers (those 
+that define .submit_bio) has no effect. So, I think that you patch doesn't 
+have any effect too.
 
-	M.
+Mikulas
 
--- 
-Without deviation from the norm, progress is not possible.
 
