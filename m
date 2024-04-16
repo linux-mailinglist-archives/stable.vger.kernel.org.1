@@ -1,79 +1,90 @@
-Return-Path: <stable+bounces-40033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333BB8A72C2
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 20:03:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F858A7308
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 20:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDDD9281A41
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 18:02:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9391F1F21922
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 18:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D765D134411;
-	Tue, 16 Apr 2024 18:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2EA013774B;
+	Tue, 16 Apr 2024 18:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aaKd75up"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NTQwhIjF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF5B134405;
-	Tue, 16 Apr 2024 18:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1C3136675;
+	Tue, 16 Apr 2024 18:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713290574; cv=none; b=Y3p5+Y2vvADz3ocC1TxJYOhcIF1yKBStYU6A0TPUB5gnvsPTw0tH1i++jVbONn/wCO1CwuFnyb5gP5p5CIqYjXvgTrpYIoz/U8EWqoiyDse5SKmutRVORpkKAYL0F8IZBeB6KxNeE1/WmrpPwwI2f5E7CfujO36MGwQwqZLGi9M=
+	t=1713291688; cv=none; b=pCSX8pu1SSxOZSOSU+Q+ll6gI5jvqFQDxP+TO7CqsU3yHb0T86XRYhVj+Yz7N/jREcm3C8D5R5TOungYwXGYLzyi2mK2dYAu9S0Gf/iwfAISHGdMjRDXBQuvkP2bPWT4B10wfpt2KCQR/xc04nDD98DUDkTwVAdicKSKSaPl51E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713290574; c=relaxed/simple;
-	bh=RGobAnthjkgsb/QzuzeMGs8pm1LeGhwCVTyS3CsT0Qo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YtLOfg7SlvZiw7SLTnUrVOWtf0eWWLHVGXM/8nmDP76Bo2FkLZNZADoELtNIH6vHL2isIMaq2XJFEICQPyAg9s97jWcU9Q88fX6+WTqtdNh6ilEKmUT6kHavQ1RweGFtwRG0KTCZgtkrNycSn6IcV6RF2KzpLbhi/VLoKx+kOHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aaKd75up; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713290573; x=1744826573;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RGobAnthjkgsb/QzuzeMGs8pm1LeGhwCVTyS3CsT0Qo=;
-  b=aaKd75upi/K+6pDjCRzh7nt+arqPqhJDkENHlWeRrQo+61ivaSNUg7yk
-   5V2bHavWGyPT/+haOKHjn87FMQkS8a5hCFaichSVCy/s5NPEvtenaSdMQ
-   jdlcgRJiSK9gAr+VAi1HG7CBv0AFjk9WN4yajTrHBUilIfDXVLnOg31el
-   oVyPLwOYiALA/TMA+v0UuLIQn+3hQApJIFA8jlNb9Uz8uQC/wGajFAQUp
-   0yZc7ZgdRGebSWKXffid8xyXuwZr39KsPvneeOtr82cb8ekzH/4bs0GiV
-   jvWVN0Z/u8g2U4IqePK8fSgSevLg6fnPPEkaxD+gb5x5mf183W9ufW/+j
-   A==;
-X-CSE-ConnectionGUID: s+hj1Wd5Q9+WrHXDP73pWg==
-X-CSE-MsgGUID: CMVVbtEqSRy96DFBsokpEA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8919455"
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
-   d="scan'208";a="8919455"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 11:02:51 -0700
-X-CSE-ConnectionGUID: CzZ0kg0PQoSYEmRkCRwOgw==
-X-CSE-MsgGUID: eBu4AKCaTcm/ARo6DiMKeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
-   d="scan'208";a="22821944"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by orviesa007.jf.intel.com with ESMTP; 16 Apr 2024 11:02:52 -0700
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@kernel.org,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Cc: irogers@google.com,
-	mpetlan@redhat.com,
-	eranian@google.com,
-	ak@linux.intel.com,
-	Kan Liang <kan.liang@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [RESEND PATCH] perf/x86/intel/uncore: Fix the bits of the CHA extended umask for SPR
-Date: Tue, 16 Apr 2024 11:01:45 -0700
-Message-Id: <20240416180145.2309913-1-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+	s=arc-20240116; t=1713291688; c=relaxed/simple;
+	bh=0uNHnY3/vyfm1OdSaRqU0rd1S/3Au1oahr6hn9+Yh9E=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IuactwEf8QfBodZJVNuNkO7p36PTIxbGPuWowyMOsXgIBvQcuBij2i+ZgThcoZA/9LgXEGpH8pHO797VdTf8yB04pOohdI/LL8Q9OrGNt/m4RUOTaBIE4DKYSQKp2L9/QrnNIF/5Gu+QZRSBePW01d5iaxNmrCDaNddgHjujgxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NTQwhIjF; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43GDoY8M018510;
+	Tue, 16 Apr 2024 18:21:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding:content-type; s=
+	qcppdkim1; bh=GQP/S9wF50hkAtHrqa2wzWbWX4noH2h5fH52On1Who4=; b=NT
+	QwhIjFIjr/7jp0gyi4AJiJlAKkJDZ4q08HigZJ0tdNNKgK995VrChinCoCJMsCKH
+	ccaOmvPPKZwsuE3dbwpKUMRahHT8elRRjSOVNCNV6SpNF2KQWMv+1k6InBkNTOyJ
+	111FF8cX2RBASVil9DxPgWaBIS0C4COGwJEFmdOJ3sLUzvL8+ZWxjG4fmonm3Dnj
+	yg3h6QqAqVMw9fnEMcCvlUA2GEU3gPZqUj5Bg8/S2zlFdT82RVskXiP98IKVm4m3
+	z6Z0Jq5V8wPiAIvdHFbys3kBMK+rFzN7YSQEhAQdl0AtGvxx7YPF7TQ9b/IuAR33
+	DB4lw3Q1Qd0l/Bfis27Q==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xhtjr8vbx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 18:21:22 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43GILL4c009164
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 18:21:21 GMT
+Received: from hu-ajipan-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 16 Apr 2024 11:21:15 -0700
+From: Ajit Pandey <quic_ajipan@quicinc.com>
+To: Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+	<sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Vladimir Zapolskiy
+	<vladimir.zapolskiy@linaro.org>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Taniya Das
+	<quic_tdas@quicinc.com>,
+        Jagadeesh Kona <quic_jkona@quicinc.com>,
+        Imran Shaik
+	<quic_imrashai@quicinc.com>,
+        Satya Priya Kakitapalli
+	<quic_skakitap@quicinc.com>,
+        Ajit Pandey <quic_ajipan@quicinc.com>, <stable@vger.kernel.org>
+Subject: [PATCH V2 1/8] clk: qcom: clk-alpha-pll: Fix CAL_L_VAL override for LUCID EVO PLL
+Date: Tue, 16 Apr 2024 23:49:58 +0530
+Message-ID: <20240416182005.75422-2-quic_ajipan@quicinc.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240416182005.75422-1-quic_ajipan@quicinc.com>
+References: <20240416182005.75422-1-quic_ajipan@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,70 +92,54 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: jujZR0PCkt-404QU1KeuzIAp_DuQUgyX
+X-Proofpoint-GUID: jujZR0PCkt-404QU1KeuzIAp_DuQUgyX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-16_16,2024-04-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404160115
 
-From: Kan Liang <kan.liang@linux.intel.com>
+In LUCID EVO PLL CAL_L_VAL and L_VAL bitfields are part of single
+PLL_L_VAL register. Update for L_VAL bitfield values in PLL_L_VAL
+register using regmap_write() API in __alpha_pll_trion_set_rate
+callback will override LUCID EVO PLL initial configuration related
+to PLL_CAL_L_VAL bit fields in PLL_L_VAL register.
 
-The perf stat errors out with UNC_CHA_TOR_INSERTS.IA_HIT_CXL_ACC_LOCAL
-event.
+Observed random PLL lock failures during PLL enable due to such
+override in PLL calibration value. Use regmap_update_bits() with
+L_VAL bitfield mask instead of regmap_write() API to update only
+PLL_L_VAL bitfields in __alpha_pll_trion_set_rate callback.
 
- $perf stat -e uncore_cha_55/event=0x35,umask=0x10c0008101/ -a -- ls
-    event syntax error: '..0x35,umask=0x10c0008101/'
-                                      \___ Bad event or PMU
-
-The definition of the CHA umask is config:8-15,32-55, which is 32bit.
-However, the umask of the event is bigger than 32bit.
-This is an error in the original uncore spec.
-
-Add a new umask_ext5 for the new CHA umask range.
-
-Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
-Closes: https://lore.kernel.org/linux-perf-users/alpine.LRH.2.20.2401300733310.11354@Diego/
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Fixes: 260e36606a03 ("clk: qcom: clk-alpha-pll: add Lucid EVO PLL configuration interfaces")
+Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
 Cc: stable@vger.kernel.org
 ---
- arch/x86/events/intel/uncore_snbep.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index a96496bef678..7924f315269a 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -461,6 +461,7 @@
- #define SPR_UBOX_DID				0x3250
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index 8a412ef47e16..81cabd28eabe 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -1656,7 +1656,7 @@ static int __alpha_pll_trion_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	if (ret < 0)
+ 		return ret;
  
- /* SPR CHA */
-+#define SPR_CHA_EVENT_MASK_EXT			0xffffffff
- #define SPR_CHA_PMON_CTL_TID_EN			(1 << 16)
- #define SPR_CHA_PMON_EVENT_MASK			(SNBEP_PMON_RAW_EVENT_MASK | \
- 						 SPR_CHA_PMON_CTL_TID_EN)
-@@ -477,6 +478,7 @@ DEFINE_UNCORE_FORMAT_ATTR(umask_ext, umask, "config:8-15,32-43,45-55");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext2, umask, "config:8-15,32-57");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext3, umask, "config:8-15,32-39");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext4, umask, "config:8-15,32-55");
-+DEFINE_UNCORE_FORMAT_ATTR(umask_ext5, umask, "config:8-15,32-63");
- DEFINE_UNCORE_FORMAT_ATTR(qor, qor, "config:16");
- DEFINE_UNCORE_FORMAT_ATTR(edge, edge, "config:18");
- DEFINE_UNCORE_FORMAT_ATTR(tid_en, tid_en, "config:19");
-@@ -5957,7 +5959,7 @@ static struct intel_uncore_ops spr_uncore_chabox_ops = {
+-	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
++	regmap_update_bits(pll->clkr.regmap, PLL_L_VAL(pll), LUCID_EVO_PLL_L_VAL_MASK,  l);
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
  
- static struct attribute *spr_uncore_cha_formats_attr[] = {
- 	&format_attr_event.attr,
--	&format_attr_umask_ext4.attr,
-+	&format_attr_umask_ext5.attr,
- 	&format_attr_tid_en2.attr,
- 	&format_attr_edge.attr,
- 	&format_attr_inv.attr,
-@@ -5993,7 +5995,7 @@ ATTRIBUTE_GROUPS(uncore_alias);
- static struct intel_uncore_type spr_uncore_chabox = {
- 	.name			= "cha",
- 	.event_mask		= SPR_CHA_PMON_EVENT_MASK,
--	.event_mask_ext		= SPR_RAW_EVENT_MASK_EXT,
-+	.event_mask_ext		= SPR_CHA_EVENT_MASK_EXT,
- 	.num_shared_regs	= 1,
- 	.constraints		= skx_uncore_chabox_constraints,
- 	.ops			= &spr_uncore_chabox_ops,
+ 	/* Latch the PLL input */
 -- 
-2.35.1
+2.25.1
 
 
