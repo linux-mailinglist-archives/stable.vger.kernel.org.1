@@ -1,139 +1,132 @@
-Return-Path: <stable+bounces-40035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539058A73E0
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 20:54:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 113A98A7457
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 21:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 847871C218C4
-	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 18:54:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93CC0B21CB8
+	for <lists+stable@lfdr.de>; Tue, 16 Apr 2024 19:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F310137C40;
-	Tue, 16 Apr 2024 18:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC91137929;
+	Tue, 16 Apr 2024 19:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hE6e2M02"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sr2rMEkY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFA513777C
-	for <stable@vger.kernel.org>; Tue, 16 Apr 2024 18:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83084137748;
+	Tue, 16 Apr 2024 19:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713293540; cv=none; b=V3k469eFHogQDX7zI30aUcNMK+8j9cqLu1JwVga16USch+ZWn/f3KPx+47hAVdSIUFk7q1C7L4JtSqi8h5RNn8pmVria6hCptNvn0mplIahiHxTET7QLQNJKpB2Lu5J/zIxa3TtBe61e7SRMXsZzUHgexsw0Gcfhdq8f7tpKNWA=
+	t=1713294427; cv=none; b=mN+xIeaXlMDXFNXKlFIu5G0jU9eDdK5bd5g+9X3onMfgSc1PhXhzv3oeTbYs7nK5oef2aNqjzbi6fKMp4iZMhDCU8V1Ps0GR8FIjHpQt73rJlKEKSqNS7I3M358mmVJkYTx662CBJTZ72Ue5V75tKDtjAXSFOPQH7xbAzw9nm5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713293540; c=relaxed/simple;
-	bh=y0uVH3oZE1a3APxihRtxusmQeZlfaUfpI73EDsl34Ic=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JIlw/Zy66KCeFLwYVxRHZ4ltrCxSz8134NfQGV1/MogGgAN9FCSQwudJWYqbxVzuHjxxQJ2KfP5J6Y30zi7Rl+WR4kjgIp6VDH3/CvbPH7OTnDxq91tOtTxPj5/PZt/EsA6mia8pmN0xmIvhAk1zXYduRLhAt/vgtdwZs/FXWlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hE6e2M02; arc=none smtp.client-ip=209.85.219.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-d9b9adaf291so4731076276.1
-        for <stable@vger.kernel.org>; Tue, 16 Apr 2024 11:52:17 -0700 (PDT)
+	s=arc-20240116; t=1713294427; c=relaxed/simple;
+	bh=DAngsWtX5i5JPK0TVotIyyLHrT3kU1QwvuimQUMuUwg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=URqR5vnnprpmwX3lxHrPRHqsFUYRP+OToCIEji9wV/pzLTjGfDfSMTIHVU27Jez9Ehw8RW5+yc4PWdwuprp8GVrMWsN7c7v77TOi50ip2YyAZbI4izmHNXmhlUFyh6NLNkHS9cWZiahT5lS/GTps8KDWVKtkmxqKvyLh4gj2bfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sr2rMEkY; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6ed04c91c46so4911461b3a.0;
+        Tue, 16 Apr 2024 12:07:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713293537; x=1713898337; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=W5vQzyryFWgKw/gamp30zKVmQkGglywjftI1PpywStM=;
-        b=hE6e2M028SGdn1J6NmvTGc0lCnYRBo1IY3+/VzIBb3MWrQuKMXFHc5jKbZK2qWzNNt
-         7PdZ79yy7q11oLk6TiikHUAUGrFMokjcDDrzwcxbZ/GegpglgHJJK7qBAJn7X45jWl1n
-         S/14eYV+R3WcmcbxVIqX5vV6R/86JQykzksgHOj955lugAHoMt7897vfTVH9E6IOeuPn
-         XxbdKEQP3P+ls8G60k8KdRY51dpvxr8zD4E1ydjl++DTY0/FJLB7YaFQVxSO1FZv7C9J
-         +WigZwi3uCdz7KOm9N/b2svuqCmDMJE+RcEPVj/pTLwJLZjU6SVuRg/mrXwk7fsSb39K
-         Lq1w==
+        d=gmail.com; s=20230601; t=1713294426; x=1713899226; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ymh6/7DVgNq/BVrdLDL6ajyFa00O1IrR2fX6zfmoZZQ=;
+        b=Sr2rMEkYhxxq9Vo8Dc+elN0e+8QHloyvN5HCHDRgr7FuuKC/4/j0heZH7rE1TZyviq
+         T8Bl2uruwY68YgloLPAJhHOwrMuMxekykKOYxtrUi3xBvG9RS1loTc7bAfC5wdnZkoeX
+         zCsO9v3W61yPtNlpHb9SnKobAwbRDWmiFQ1zCvd77YTQk8emxlOLhwTh7YXDIWxrZxY9
+         9bDuu7x+Q4yI7PbZgpsa4EsKvoU2F7kvg1nqVM9JF2egf15O2f1aZIdbhFfx9zOeVdHi
+         2/48unguQgueg3mlIIi+aVYelCgu0lbJTiPsJ4uEoakzAVuIhMjoi+TwxsINLMbft+US
+         ItZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713293537; x=1713898337;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1713294426; x=1713899226;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=W5vQzyryFWgKw/gamp30zKVmQkGglywjftI1PpywStM=;
-        b=GmzxxEMKEXe/x/snMaFP5ETmvq+2GpkLfIktgRXQmSfP3z1zMx4BE6HoGe3FDTcWAb
-         ovO+++4aQe2QzbzDm+Ci97KJzkf2Bw48+0gl65522Fyqct2BX0dhoFwO1qnyn1pP4OWO
-         wPDShyvZewMYjWFQiGGeOROSoSoYzcE2L02RkBwZX0+QS8qi/YV16puNvkQCDpk3d4ec
-         t/wa97B9vrwLoac8XdDREAGHW+vt6PlI09cjKUpaqvAoXl+/e4oNNg+XFnf4iixSj3sY
-         /mmigSIs6d48KhtF/ZrgQFmRZw9xavtIdPGStL0bl8sFw4522pAv4js2L64RPaz9BCDz
-         tV0w==
-X-Forwarded-Encrypted: i=1; AJvYcCX8rbp9CJJkkTppAEkjyxm4onXrL4wLgFZCrrcDRtkSDmeK3W7ZpbK1L4jHzUXjXllJnGgPDqYviBY5nfbtecietSdzLQ5F
-X-Gm-Message-State: AOJu0YxtoDXUJPG14qYE0wwq1FwSW54UZJ48xJWU5HQpLhs7r/LCuYaw
-	0m6VlgH27rx8VHyt8KFx5p+TzFS+WVUFFNB5mDm9prtfd6SBSHcnrgByz/vK7zvqs7xxbzJIxxK
-	Eq2VqerTF5RIBSgBxNZPhJe+fyosk4tIa5CxRTg==
-X-Google-Smtp-Source: AGHT+IEJjJJdzKD55UTLRTScRGrfAh2UPKsgtVqF6P2ql9N19AKf5+ktuo3JFOBl4aK0CuRCXG6qMrNHQ+pcEav3Cwg=
-X-Received: by 2002:a25:1e56:0:b0:de1:1b21:4f8 with SMTP id
- e83-20020a251e56000000b00de11b2104f8mr10605271ybe.62.1713293536905; Tue, 16
- Apr 2024 11:52:16 -0700 (PDT)
+        bh=ymh6/7DVgNq/BVrdLDL6ajyFa00O1IrR2fX6zfmoZZQ=;
+        b=c67fqQ2hmth2gVWhDrIgjk2l74Org+Vv6blRP6cSPlrIK4LHtehTNhU2oj0iIeQGHB
+         gOBmPHmZsRf4ESPk7gMBTCVxVeGxa+U+h7CKaVR4Bhz3AHACtTFFyEqXt6CgKEHHMnxH
+         pHUD9Zs87gTu6p5tJHPCMy0VdYxFHz/Ue8nuBUjGHO6FmIcVDIm4sDJiNO9hmuSSprck
+         DLH5sa8qZYUrfp65niUJfw3GRxY0MRr4oYtvT6yUGypdYS0DV8v8WpvB0LfvNGEB1Z+7
+         fx4nbkTeeVGTaT0ZCqjDFAebIb1t15umsI/tayprhV5iAQhHsxnEEfuyLQreFYW22JVq
+         MUdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWUSAf7Fe62oy4N6iC9uCcxoNGd3akU5reqY2K0Xb2ZiNBLpthTB0OEMKlwpucx6yZteRr2ij+Zwt3HWun2nIEI52jY8xO+nKBU1zHYjzGc3H8/m14hhlYJBOqKwrLbiPVHlTFK
+X-Gm-Message-State: AOJu0YzVOM6hOaP0lsi7NTBSz16wN6VcafCZA2Eqian4Q+26D/imdD75
+	2zNBMM5FtaEL618hk++8dKrMW2TJBPpITlmUPTFscg7AaKVNn1IyNgBtffl36viFvw==
+X-Google-Smtp-Source: AGHT+IGoEfX05qonJWd6vzzxV0e1rBcqS8DZ97ASOVz0k0L6okXuaCutvnvql2+UOdD0V4O9OW7O7A==
+X-Received: by 2002:a05:6a21:6d87:b0:1a7:c67:82ff with SMTP id wl7-20020a056a216d8700b001a70c6782ffmr17824895pzb.13.1713294425646;
+        Tue, 16 Apr 2024 12:07:05 -0700 (PDT)
+Received: from localhost.localdomain ([67.198.131.126])
+        by smtp.gmail.com with ESMTPSA id n21-20020a056a000d5500b006ed066ebed4sm9716764pfv.93.2024.04.16.12.07.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Apr 2024 12:07:05 -0700 (PDT)
+From: Yick Xie <yick.xie@gmail.com>
+To: willemdebruijn.kernel@gmail.com,
+	willemb@google.com
+Cc: netdev@vger.kernel.org,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] udp: don't be set unconnected if only UDP cmsg
+Date: Wed, 17 Apr 2024 03:03:30 +0800
+Message-Id: <20240416190330.492972-1-yick.xie@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240416182005.75422-1-quic_ajipan@quicinc.com> <20240416182005.75422-2-quic_ajipan@quicinc.com>
-In-Reply-To: <20240416182005.75422-2-quic_ajipan@quicinc.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 16 Apr 2024 21:52:05 +0300
-Message-ID: <CAA8EJpox_C7hdHYxM4-w6YKHN2BMQqJ6xaGZqvzFdOYyrYtZFA@mail.gmail.com>
-Subject: Re: [PATCH V2 1/8] clk: qcom: clk-alpha-pll: Fix CAL_L_VAL override
- for LUCID EVO PLL
-To: Ajit Pandey <quic_ajipan@quicinc.com>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Vinod Koul <vkoul@kernel.org>, 
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, linux-arm-msm@vger.kernel.org, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Taniya Das <quic_tdas@quicinc.com>, 
-	Jagadeesh Kona <quic_jkona@quicinc.com>, Imran Shaik <quic_imrashai@quicinc.com>, 
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-On Tue, 16 Apr 2024 at 21:21, Ajit Pandey <quic_ajipan@quicinc.com> wrote:
->
-> In LUCID EVO PLL CAL_L_VAL and L_VAL bitfields are part of single
-> PLL_L_VAL register. Update for L_VAL bitfield values in PLL_L_VAL
-> register using regmap_write() API in __alpha_pll_trion_set_rate
-> callback will override LUCID EVO PLL initial configuration related
-> to PLL_CAL_L_VAL bit fields in PLL_L_VAL register.
->
-> Observed random PLL lock failures during PLL enable due to such
-> override in PLL calibration value. Use regmap_update_bits() with
-> L_VAL bitfield mask instead of regmap_write() API to update only
-> PLL_L_VAL bitfields in __alpha_pll_trion_set_rate callback.
->
-> Fixes: 260e36606a03 ("clk: qcom: clk-alpha-pll: add Lucid EVO PLL configuration interfaces")
-> Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
-> Cc: stable@vger.kernel.org
+If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+"connected" should not be set to 0. Otherwise it stops
+the connected socket from using the cached route.
 
-S-o-B tag should be the last one. With that fixed:
+Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Cc: stable@vger.kernel.org
+---
+v2: Add Fixes tag
+v1: https://lore.kernel.org/netdev/20240414195213.106209-1-yick.xie@gmail.com/
+---
+ net/ipv4/udp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-> ---
->  drivers/clk/qcom/clk-alpha-pll.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-> index 8a412ef47e16..81cabd28eabe 100644
-> --- a/drivers/clk/qcom/clk-alpha-pll.c
-> +++ b/drivers/clk/qcom/clk-alpha-pll.c
-> @@ -1656,7 +1656,7 @@ static int __alpha_pll_trion_set_rate(struct clk_hw *hw, unsigned long rate,
->         if (ret < 0)
->                 return ret;
->
-> -       regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
-> +       regmap_update_bits(pll->clkr.regmap, PLL_L_VAL(pll), LUCID_EVO_PLL_L_VAL_MASK,  l);
->         regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
->
->         /* Latch the PLL input */
-> --
-> 2.25.1
->
->
-
-
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index c02bf011d4a6..420905be5f30 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1123,16 +1123,17 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 
+ 	if (msg->msg_controllen) {
+ 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip_cmsg_send(sk, msg, &ipc,
+ 					   sk->sk_family == AF_INET6);
++			connected = 0;
++		}
+ 		if (unlikely(err < 0)) {
+ 			kfree(ipc.opt);
+ 			return err;
+ 		}
+ 		if (ipc.opt)
+ 			free = 1;
+-		connected = 0;
+ 	}
+ 	if (!ipc.opt) {
+ 		struct ip_options_rcu *inet_opt;
 -- 
-With best wishes
-Dmitry
+2.34.1
+
 
