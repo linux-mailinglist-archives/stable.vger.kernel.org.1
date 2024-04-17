@@ -1,138 +1,208 @@
-Return-Path: <stable+bounces-40118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8628A8BEC
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 21:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F508A8C29
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 21:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991C3289700
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 19:15:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28486282593
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 19:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A562E64C;
-	Wed, 17 Apr 2024 19:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E6E2C69A;
+	Wed, 17 Apr 2024 19:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kEXbZHfC"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OGz1CYIV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11C023772
-	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 19:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B540B1BF53
+	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 19:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713381324; cv=none; b=CvcmOEm7si5NhZlG5JyvIdftRFYbWjRafxggzkeF/i8ysn4ccbNdUKch+2ZpxLLCGZav1ORdv2zBZ3SWE6Ark8D9ao/se3TWjkqq8YCnoawxayJhZLYJc8v9aCcTc0MtKtEI3ad6EA7N43jzTr9XEN8PPot5XUfbCrk3NYo0UPs=
+	t=1713382460; cv=none; b=aAQawJFyQ66X9kcoQ1JaB0E1nJt06wjnngN1SRYnU/nRN9kiZc0CsVrVdfnBQxAZPbjQVimuxsK+99c8Rus6YqL8/5O3XW0n6QyenI2cKRUH5jZECPyCWb6NbuS7dcSkwVf48fN3N8zmp4GrmrCuplIuTx7Vzg3h4KqPiNXT44Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713381324; c=relaxed/simple;
-	bh=uI8tSqgzNQr2KV6CBwiC+zzrx9zKH+jxJVnlJoO9Zao=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DX5HrE11Cb6+vJYBv3liMi7AqmzPmF/4DC9Sp84FwxEyqpyUmFAk7F3O39/YPdwfqPXe3utNQBMjSqptIKMFXRYy65mkaAhba0wb3RPxTWfMKGbiV8Dw0wJ1EoFvwxJ//F83pWntXdT6aJulWU6wsazV0AfPcl3NM/XgO4H+G7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kEXbZHfC; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1713382460; c=relaxed/simple;
+	bh=0LwcQE74ewyrLEKr9qBB4PpxyrOcuzBZ+DsOu847dE0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HAbugRvaAvqphWXdUHezzuFuy40+ZHGxTUQbInjhwvh4UWDQ1uxP2cn4bDJM8yxiTx/4KfTjEW8weWRwmUJ7Qmyyl5014ImsyXDtdbB6PPQXQ/nb3LnmBB7oE8blIPLix8HOzhp/ABHKK1fST3uSUz/yU0JipHU4GtfwRr5yLSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OGz1CYIV; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-6ed663aa4a7so152986b3a.3
-        for <stable@vger.kernel.org>; Wed, 17 Apr 2024 12:15:22 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-56e5174ffc2so2763a12.1
+        for <stable@vger.kernel.org>; Wed, 17 Apr 2024 12:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713381322; x=1713986122; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yw0xNn0IGHj4PbZTLDlFMunyd5B02kMRO4eEUv/pl/M=;
-        b=kEXbZHfCH6F29rWHamKyLmCvDghnNAajhN9huaYMs3Bm46ZHq6zRtVQ8A1YsC2GSap
-         Omp+ti1qPuBT7z4lYm+hgXxTk4UIsL8sTfGl0Yuligni4vePa8QtLWSj2sPCvlYUZA+k
-         PAw7wxoAebc/CgmgY1Pez/gz1vWvYjekN36zxEYf2tqFGZdLqrfi104k+D7s2CnNXSRX
-         TkljiW8fRTY6T+f272Xb8UKKW3D5oH6zRJOuDC+1YD1EF7rwz3MggYy6XNKAnfq6nh6E
-         gu7QNMrfKNYyJhQiHkM6nQlgXtQJvM2rLzsaM/LOeYjd9eTliY1LXaDS6ktXzWTRldhG
-         b2Bg==
+        d=google.com; s=20230601; t=1713382457; x=1713987257; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fyl6TqOQKc7y6AuWZSULZsHIQoiSS+3/2ZOsE3/WMtU=;
+        b=OGz1CYIVBJ7Yid+XCiNzg/JS7CkywMy/vUxd27Uma5XD8ocezRYNhVWnLbbRclhQld
+         kcV56jEIPe0jeUGyK9HO3p/dUqzTt00MrAMF98oidr3M0HSO2HGhsstXN6CAdaXtQzGQ
+         SJSVJQMtG0wwWo5NtYnn+8IfwsIBI5mPmh3AydE7WpAB4Nila3KSELEX37E41C6yRpzC
+         Cmss9vcSJRJ27OQ4EUng/UbpU5wp0M1vxdFnk3iWQgxTKQA1vGFdnNBChuilNt38vwLM
+         lc5ff8bxkEjeS/mZRyJwpRzkYfQJ/c0FiWT3xZggyGqwcmBC7PuFnBAfkUyeGggjZiVX
+         +n5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713381322; x=1713986122;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yw0xNn0IGHj4PbZTLDlFMunyd5B02kMRO4eEUv/pl/M=;
-        b=jY09WKhv3OO5KJTuBs3dsFG7Mvl7vixWUBdBhqwAN+wRZE0rOZ8FjtVayeHVrIsHgh
-         mQqSrSwgVtNPQ+bhavkVBehpERE04flg36rDnc1SpQemmBtv3SdEipz0qp6I/fefoAFd
-         XFTiPx7VJjLIhpA3VU5BlGsjDNriwwjeQCiKeykCYh8x0b3ScqFBYKavsU7m/GYKygly
-         DwR2tIHNP1OJUDXA76KYVY0l6I2fC5HlFnxF0FzzCoKSStRGk+gSsMaQFCkxbDiulmSD
-         Nl2dc4bjRWFs6r3NuVGFLdohHJmfG9jeJZCeeHlCXrRBS3Z63LyXRGaAm+JLe1+q4skP
-         pudA==
-X-Forwarded-Encrypted: i=1; AJvYcCUp9ooNsWmdkTj15/a6XWQd4aLq+4t6LkBTARkVgIlBxBoWGqpvKRj4LsudofBC/E3Fw6DGUXdtQWVTwMeSKKqFw+2NOc/z
-X-Gm-Message-State: AOJu0Yyc7yNKWWaDQiibrnIDSlyg/4OTSEmn+L3ERh3R9cj0WMbntqXE
-	zNrnZABG45Y9aFcmuFVypkt5wEMjeoA+x0PDFXMnTkzsfdqFcfKMiodpBMzH8Mzqqr6wDtbz9s1
-	Ki7Kb6kY0gQ==
-X-Google-Smtp-Source: AGHT+IH38TtfKM2Mr8apHkGPxGYU2dAh7XueTrQaf5Unr5eg1HhWygxnsjTkNpU67yyve2aPRl/L3z7Y3tlbcw==
-X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a05:6a00:98f:b0:6ed:344:9faa with SMTP id
- u15-20020a056a00098f00b006ed03449faamr51828pfg.1.1713381321996; Wed, 17 Apr
- 2024 12:15:21 -0700 (PDT)
-Date: Wed, 17 Apr 2024 19:13:44 +0000
-In-Reply-To: <20240417191418.1341988-1-cmllamas@google.com>
+        d=1e100.net; s=20230601; t=1713382457; x=1713987257;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Fyl6TqOQKc7y6AuWZSULZsHIQoiSS+3/2ZOsE3/WMtU=;
+        b=aGN14qfvl2wASKUN5IVpOM36gz2UrSKYH3MzVIQiV9O1lG4gX9+IhK69cm10HLeEpK
+         Fbd5vL687g3PQqeAf81uUj4PGOkVeJkMFS+gt24Ps0C9Y1iVtcdd0YA/SygcR808i1AG
+         hpVHKn276IjANzBYRwWmcRU/zmElMgwHFQdhKZ/Pa7DPfYXR/xBcxmvzH5pJ89rl5atq
+         Hm/1J3rLa8yXcVBllE76yK3OLDqBW62XgQj3yFME5j1V+WeDWalR6L962KjCFWKwCryo
+         kk6IXmr9YwpQVNuQOOI3umtw/mKL7471trCqxRLwYquogfZSOW6U2Oeiy3PQ4AynP5gN
+         NQuw==
+X-Forwarded-Encrypted: i=1; AJvYcCVB/JHDznHtI1z71J2e8LN8FisGf6L72BqtLDyfAo7uk/xNAAwsCMlE6UtskApLuCa6ljNaN1382MVSmbqsuJ70U8FWFO+2
+X-Gm-Message-State: AOJu0YxHjV1qaMEEnv0bKtgOj1oXLhOv/YlmWyWdXdafltVb9lQGpchF
+	qu7F1WTANVL9arrjo5eKRP7Vx2vIGfJ4leUcGgvX9YHo+xVvz4o8bUqiFl3Ey7BgnTn0oXa4JaW
+	Uu1gthlXjVB+sKXpPu+pv15pkPmyRs5BuPNUr
+X-Google-Smtp-Source: AGHT+IF3BxF61WJZfffzn5eL5CSWhQKAZF34LWBLquyLGLML0FvYcr/UD2V+jp/gbT9bVgfJHdkvmNN7KBf/Xf/oMBk=
+X-Received: by 2002:a05:6402:12d2:b0:571:b3fa:bf81 with SMTP id
+ k18-20020a05640212d200b00571b3fabf81mr29493edx.2.1713382456805; Wed, 17 Apr
+ 2024 12:34:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240417191418.1341988-1-cmllamas@google.com>
-X-Mailer: git-send-email 2.44.0.683.g7961c838ac-goog
-Message-ID: <20240417191418.1341988-5-cmllamas@google.com>
-Subject: [PATCH 4/4] binder: fix max_thread type inconsistency
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Serban Constantinescu <serban.constantinescu@arm.com>
-Cc: linux-kernel@vger.kernel.org, kernel-team@android.com, 
-	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
+MIME-Version: 1.0
+References: <20240118181954.1415197-1-zokeefe@google.com> <20240417111001.fa2eg5gp6t2wiwco@quack3>
+In-Reply-To: <20240417111001.fa2eg5gp6t2wiwco@quack3>
+From: "Zach O'Keefe" <zokeefe@google.com>
+Date: Wed, 17 Apr 2024 12:33:39 -0700
+Message-ID: <CAAa6QmSOum_0ZhyUq1ppguLp0jpEs0u1U843GkF==xMwaMGV4A@mail.gmail.com>
+Subject: Re: [PATCH] mm/writeback: fix possible divide-by-zero in
+ wb_dirty_limits(), again
+To: Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Maxim Patlasov <MPatlasov@parallels.com>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
-size_t to __u32 in order to avoid incompatibility issues between 32 and
-64-bit kernels. However, the internal types used to copy from user and
-store the value were never updated. Use u32 to fix the inconsistency.
+On Wed, Apr 17, 2024 at 4:10=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+>
+> On Thu 18-01-24 10:19:53, Zach O'Keefe wrote:
+> > (struct dirty_throttle_control *)->thresh is an unsigned long, but is
+> > passed as the u32 divisor argument to div_u64().  On architectures wher=
+e
+> > unsigned long is 64 bytes, the argument will be implicitly truncated.
+> >
+> > Use div64_u64() instead of div_u64() so that the value used in the "is
+> > this a safe division" check is the same as the divisor.
+> >
+> > Also, remove redundant cast of the numerator to u64, as that should
+> > happen implicitly.
+> >
+> > This would be difficult to exploit in memcg domain, given the
+> > ratio-based arithmetic domain_drity_limits() uses, but is much easier i=
+n
+> > global writeback domain with a BDI_CAP_STRICTLIMIT-backing device, usin=
+g
+> > e.g. vm.dirty_bytes=3D(1<<32)*PAGE_SIZE so that dtc->thresh =3D=3D (1<<=
+32)
+> >
+> > Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_di=
+rty_limits()")
+> > Cc: Maxim Patlasov <MPatlasov@parallels.com>
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Zach O'Keefe <zokeefe@google.com>
+>
+> I've come across this change today and it is broken in several ways:
 
-Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS =
-declaration")
-Reported-by: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
- drivers/android/binder.c          | 2 +-
- drivers/android/binder_internal.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Thanks for picking up on this, Jan.
 
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index f120a24c9ae6..2596cbfa16d0 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -5408,7 +5408,7 @@ static long binder_ioctl(struct file *filp, unsigned =
-int cmd, unsigned long arg)
- 			goto err;
- 		break;
- 	case BINDER_SET_MAX_THREADS: {
--		int max_threads;
-+		u32 max_threads;
-=20
- 		if (copy_from_user(&max_threads, ubuf,
- 				   sizeof(max_threads))) {
-diff --git a/drivers/android/binder_internal.h b/drivers/android/binder_int=
-ernal.h
-index 221ab7a6384a..3c522698083f 100644
---- a/drivers/android/binder_internal.h
-+++ b/drivers/android/binder_internal.h
-@@ -426,7 +426,7 @@ struct binder_proc {
- 	struct list_head todo;
- 	struct binder_stats stats;
- 	struct list_head delivered_death;
--	int max_threads;
-+	u32 max_threads;
- 	int requested_threads;
- 	int requested_threads_started;
- 	int tmp_ref;
---=20
-2.44.0.683.g7961c838ac-goog
+> > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> > index cd4e4ae77c40a..02147b61712bc 100644
+> > --- a/mm/page-writeback.c
+> > +++ b/mm/page-writeback.c
+> > @@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struct dirty_t=
+hrottle_control *dtc)
+> >        */
+> >       dtc->wb_thresh =3D __wb_calc_thresh(dtc);
+> >       dtc->wb_bg_thresh =3D dtc->thresh ?
+> > -             div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh=
+) : 0;
+> > +             div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) :=
+ 0;
+>
+> Firstly, the removed (u64) cast from the multiplication will introduce a
+> multiplication overflow on 32-bit archs if wb_thresh * bg_thresh >=3D 1<<=
+32
+> (which is actually common - the default settings with 4GB of RAM will
+> trigger this). [..]
 
+True, and embarrassing given I was looking at this code with a 32-bit
+focus. Well spotted.
+
+> [..] Secondly, the div64_u64() is unnecessarily expensive on
+> 32-bit archs. We have div64_ul() in case we want to be safe & cheap.
+
+A last-minute change vs just casting the initial "dtc->thresh ?"
+check. It did look expensive, but figured its existence implied it
+should be used. I must have missed div64_ul().
+
+> Thirdly, if thresholds are larger than 1<<32 pages, then dirty balancing =
+is
+> going to blow up in many other spectacular ways - consider only the
+> multiplication on this line - it will not necessarily fit into u64 anymor=
+e.
+> The whole dirty limiting code is interspersed with assumptions that limit=
+s
+> are actually within u32 and we do our calculations in unsigned longs to
+> avoid worrying about overflows (with occasional typing to u64 to make it
+> more interesting because people expected those entities to overflow 32 bi=
+ts
+> even on 32-bit archs). Which is lame I agree but so far people don't seem
+> to be setting limits to 16TB or more. And I'm not really worried about
+> security here since this is global-root-only tunable and that has much
+> better ways to DoS the system.
+>
+> So overall I'm all for cleaning up this code but in a sensible way please=
+.
+> E.g. for these overflow issues at least do it one function at a time so
+> that we can sensibly review it.
+>
+> Andrew, can you please revert this patch until we have a better fix? So f=
+ar
+> it does more harm than good... Thanks!
+
+Shall we just roll-forward with a suitable fix? I think all the
+original code actually "needed" was to cast the ternary predicate,
+like:
+
+---8<---
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index fba324e1a010..ca1bfc0c9bdd 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1637,8 +1637,8 @@ static inline void wb_dirty_limits(struct
+dirty_throttle_control *dtc)
+         *   at some rate <=3D (write_bw / 2) for bringing down wb_dirty.
+         */
+        dtc->wb_thresh =3D __wb_calc_thresh(dtc);
+-       dtc->wb_bg_thresh =3D dtc->thresh ?
+-               div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0=
+;
++       dtc->wb_bg_thresh =3D (u32)dtc->thresh ?
++               div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) =
+: 0;
+
+        /*
+         * In order to avoid the stacked BDI deadlock we need
+---8<---
+
+Thanks, and apologize for the inconvenience
+
+Zach
+
+>                                                                 Honza
+> --
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
