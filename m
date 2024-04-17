@@ -1,127 +1,75 @@
-Return-Path: <stable+bounces-40107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1646F8A8499
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 15:29:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB698A852B
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 15:46:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96071B28441
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 13:29:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEE291C20F9B
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 13:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375F113F432;
-	Wed, 17 Apr 2024 13:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C74B1411C3;
+	Wed, 17 Apr 2024 13:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqDbioDv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khYE0Yz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93F513CFB7;
-	Wed, 17 Apr 2024 13:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166FC140E46;
+	Wed, 17 Apr 2024 13:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713360488; cv=none; b=CIMn9xFKTfkxfLsNkaEFEFuY7Z4uiGe0JmF8SZ3ry14CU3D+tRcVltHZRuMTZF+4ewm6co9AXS8PpBWBpAyVNnzhY8fSTWlOMR+qTpDE2AVVkZQPf1x1U8UmHMJWYDMaqlhEJKcNJ8tt8QNBTBTomaYcthT0VYzaa4WSORfTR28=
+	t=1713361551; cv=none; b=PALo7O0FNVktoG00JTPAdHjlC3O7/VW4yBMaxmOJTJ32VCObFB61c+rQP6HLBmpkirp0GHPypkIs48n0mW0Q65idz3fCGc0aaXFyoyW44uX4uyOF75gAEYz+zfHckXT/sMopuQDFs1VZetggPxYWLMx30fUuLV0VuluQC/sIYeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713360488; c=relaxed/simple;
-	bh=WsPDv7AF1G0PbOV+/cjKhePBPo6kURl1Gyj2WmHRyn4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FXNndVAKqxkURqFy+GXSSvW9Kx8FNSgAvvTlc49+QiB3IjFc+Jix9E0iQHSn486754aE38am854DT+xBMulLKkjWSrWsgrkHzhRR66XHmbgNepc1SBoTUxt4wYP/X9raoLrQlqcaR+/9y8t59C9hlvZOPWWTJedZtR2iojBV4/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqDbioDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4668C072AA;
-	Wed, 17 Apr 2024 13:28:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713360487;
-	bh=WsPDv7AF1G0PbOV+/cjKhePBPo6kURl1Gyj2WmHRyn4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RqDbioDvLVzUHbdmeiDnGfLAbZNsZmUDDasrCiVyIfe+b5z4wli961BtQtIRoeoaa
-	 0qvPQN46xgVGZBxW9CN4qdUrACqVG6CLonK4xSyf2ucpRBLT/xItM9m34HBDqd4o9P
-	 a84BUqpm5i3ERzMFpIyQfcbiVJPYQnzc/pQ/fOM0=
-Date: Wed, 17 Apr 2024 15:28:04 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Pavel Machek <pavel@denx.de>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	alex.williamson@redhat.com, seanjc@google.com, jpoimboe@redhat.com,
-	michael.roth@amd.com, dsterba@suse.com, aric.cyr@amd.com
-Subject: Re: [PATCH 5.10 000/294] 5.10.215-rc1 review
-Message-ID: <2024041739-faceted-sandpit-0818@gregkh>
-References: <20240411095435.633465671@linuxfoundation.org>
- <Zh/HpAGFqa7YAFuM@duo.ucw.cz>
+	s=arc-20240116; t=1713361551; c=relaxed/simple;
+	bh=mTuRb29PJruHaneu87Xz2mpD+05AIxrJJUP9rmuaKYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lMEoHKtk/DQz7Gp/W0TwLYKncwyfmCk7FM2sOfqUcx/y/6JGTTXoIGUyQKGsl/961ft0e9m0t0ec7/8EVjFKH5+JTnhv+0L3buPz4Bs9NpIi+CbPGfZbKareGBIosEIGwSYIVmZfLUgHkeSgJLHcS42J2Emg69uyaxtkoMBMH3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khYE0Yz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A42C072AA;
+	Wed, 17 Apr 2024 13:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713361550;
+	bh=mTuRb29PJruHaneu87Xz2mpD+05AIxrJJUP9rmuaKYY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=khYE0Yz5QCQ5jMeS9MXJqYG10IlzoaJ2QxzLH/zTw9crbM/9tSi7f7+44+MSgkiOC
+	 Otg5BpA5zrhfgw4xmq2+w8WUo7OFhRbsuoYDaoFqFI5SJIXcjI3U4JOLZFZC/xEcNy
+	 2XL77018Iz2qgSopcpMgd2ZvvZM9kW+5bAkmonLW+5OYM4XnsZumHpriP8LiyzJXKT
+	 mRvqnllv++xNo9IWEvSg/uFmMTbAAxCfRwyFnbgC15FhoQtD6llfnKxq3yJKPMA9Hu
+	 cAHUtBY2tuX6AhZcgIy3qRl6TSneBZwoacRMPzHGHvcxgonwGekZDMAC2J8l7N+A8I
+	 Gh8f12Hjl0Fvw==
+Date: Wed, 17 Apr 2024 06:45:49 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net] r8169: fix LED-related deadlock on module removal
+Message-ID: <20240417064549.10ed50d8@kernel.org>
+In-Reply-To: <4b0495fd-fab5-4341-9b06-2f48613ee921@gmail.com>
+References: <ded9d793-83f8-4f11-87d9-a218d10c2981@gmail.com>
+	<20240416193458.1e2c799d@kernel.org>
+	<4b0495fd-fab5-4341-9b06-2f48613ee921@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zh/HpAGFqa7YAFuM@duo.ucw.cz>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 17, 2024 at 02:59:16PM +0200, Pavel Machek wrote:
-> Hi!
+On Wed, 17 Apr 2024 08:02:31 +0200 Heiner Kallweit wrote:
+> > Looks like I already applied one chunk of this as commit 97e176fcbbf3
+> > ("r8169: add missing conditional compiling for call to r8169_remove_leds")
+> > Is it worth throwing that in as a Fixes tag?  
 > 
-> > This is the start of the stable review cycle for the 5.10.215 release.
-> > There are 294 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> 
-> > Alex Williamson <alex.williamson@redhat.com>
-> >     vfio/pci: Create persistent INTx handler
-> 
-> This introduces memory leak in vfio_intx_enable() -- name is not freed
-> in case vdev->ctx = kzalloc() fails, for example.
+> This is a version of the fix modified to apply on 6.8.
+> It's not supposed to be applied on net / net-next.
+> Should I have sent it to stable@vger.kernel.org only?
 
-So is the upstream commit wrong, or the backport wrong?
-
-> > Sean Christopherson <seanjc@google.com>
-> >     x86/cpufeatures: Add CPUID_LNX_5 to track recently added Linux-defined word
-> 
-> AFAICT this is not needed in 5.10.
-
-Why not?
-
-> > Josh Poimboeuf <jpoimboe@redhat.com>
-> >     objtool: Add asm version of STACK_FRAME_NON_STANDARD
-> 
-> Asm version of this macro is not used in 5.10.
-
-It fixed an issue.
-
-> > Michael Roth <michael.roth@amd.com>
-> >     x86/head/64: Re-enable stack protection
-> 
-> This is preparation for preparation for SEV-SNP CPUID patches, I don't
-> believe we plan that for 6.1.
-
-This is 5.10, not 6.1.
-
-And are you sure that this is not needed?  Remember the x86 speculation
-mess that is happening here.
-
-> > David Sterba <dsterba@suse.com>
-> >     btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
-> 
-> (This applies to 4.19, too). mutex_unlock() is needed before "goto
-> error" here.
-
-So can you provide that fix please?
-
-> > Aric Cyr <aric.cyr@amd.com>
-> >     drm/amd/display: Fix nanosec stat overflow
-> 
-> (This applies to 4.19, too). This is wrong. It updates prototypes but
-> not actual functions.
-
-So should it be dropped or added to 4.19?
-
-confused,
-
-greg k-h
+Ah! I'm not sure what the right way is, either, TBH, but I'd have
+put [PATCH 6.8] rather than [PATCH net] in that case.
 
