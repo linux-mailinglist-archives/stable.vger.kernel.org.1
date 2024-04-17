@@ -1,102 +1,81 @@
-Return-Path: <stable+bounces-40125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F078D8A8DAC
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 23:19:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08328A8E35
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 23:41:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E34C1F21415
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 21:19:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B54D28386C
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 21:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BC752F71;
-	Wed, 17 Apr 2024 21:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F48657CE;
+	Wed, 17 Apr 2024 21:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A1vxw9cw"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FMKTZvcc"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3084CB36
-	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 21:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D102171A1;
+	Wed, 17 Apr 2024 21:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713388725; cv=none; b=rUJVyySgI5AykpX4cDyPWokZ9nEGo0gr1tWv6BaQ3eU/gjlBlkqkJ5Xy7+3e/ekkXqT6QZEKJlz2PiVynOnY4vwzL3NOXdLKV247VfQF83DXF6Q4gMdakaZBIIc/cX0sL72MXPlY8v2zo79XCyaxcyZL37Hq9DlyssQvR7SnJvE=
+	t=1713390056; cv=none; b=cj8Jvjo7kFgKHSLdfYx7AU0mbTkhFXWM15LXbhrrMhnUUMMVtW1SeikHhZ4luQatYq+HHTpuGaxy1ul2eO/xB7bAbXTY4SRtFl1cRapQlfgWGFzj6HLd5pbT7tpQ/iKcRu8+KonmWktjL9A1kaiSx+jfnZ9WONIU/zZ1LAElCRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713388725; c=relaxed/simple;
-	bh=8hBBeVGOfwuGovj1gkEA8TNtFgFkqBM5g9BIRvAXat4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9o7dzpr96wwdEabVzseOMFKEHSWsqDgCpkXOr+0ERX6RPS6IhQk1oWDJGwJrqiPd3+E0zxFjqZqAY0YJBUjSZSLjO0oYZyD2UVcS9ILQ3tPA6vR8cNJNZx//HQQAvERDITnshSMo8OcdAxrrmFwb+gERh0YtVIIdfn23DdSV2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A1vxw9cw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713388723;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=soVIv7S/cFD39BpNRdoqoVyCZSY1hvphkidLWmkZkAI=;
-	b=A1vxw9cw79OVMzi3moPVCH3xEObzbBCpBF9AqmPG4bDAZHeR+9QmbQAMinP/c/c/LovRgr
-	W/XvowUossX2VGGdsSfNaPO73Ziqvy1A+pj4g8t/UwIazhTS18LFN4VhL2R868uiGryC48
-	oRf3KaLtCYHkcKfoJX/8gd6usjcoN+o=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-O9_lPoCbPZCy5yjhYZU1-Q-1; Wed, 17 Apr 2024 17:18:41 -0400
-X-MC-Unique: O9_lPoCbPZCy5yjhYZU1-Q-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6a04b4edafbso451126d6.3
-        for <stable@vger.kernel.org>; Wed, 17 Apr 2024 14:18:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713388721; x=1713993521;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=soVIv7S/cFD39BpNRdoqoVyCZSY1hvphkidLWmkZkAI=;
-        b=EJpyfhGL61iB6+0KmsjShkJIZV5XbZXOkJm/e2wYWFZ0aZrTt75Zs8ffxQI4c+fpG/
-         kLvfavhfzO3W//3MMjUwIO8iLsDeAhHPTfk7dMCk9hIEqaInDcfl1ldWd/c/L1Pr4UkT
-         XkjUOBtkJ59mbm7bfD0nFA1SmJ1EzyuuOf4h9zQ0LbVFQiLpBPx921sLJgRKaFhjg85X
-         Y6JpL4tmzOEQrSLE9kuAdj7oDYcECFRTODcxWJYqgleeB7xCy97DY30Egju7ENoj4lIp
-         DEq8XuIv0J/yVmNrEFWPGpnWhj/YQzpOZeMuxskCd9Bja1Cn+AsCilstP+hjdrf8+iiC
-         3jyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUw1bzKejwFKA1sMm+eAtfYtIhWGYm277tsmzKkXWjSEzKNxUuAulS8L0bR7TRVCMvF4w8d7wfhbQhuA1jaU2KGhlcHjpo6
-X-Gm-Message-State: AOJu0YxuuNICoeqDI1viNuVp2tzpNcbyglxr3Agp6jWi4FM2VOLPY6AL
-	nJo3tJWqYm2yP1nizeAeB6ebou7v5apDq+gRojNsP9IbMG1xsSU/XY41GaYw3B2bv3Zz5mIQ7Vf
-	q6pueO8s7VTpxrMKFNyX6SpfU9gJTFrJzSpzN6i+tm/kpfFWFplQIfQ==
-X-Received: by 2002:a05:620a:40d5:b0:78e:db4f:11e8 with SMTP id g21-20020a05620a40d500b0078edb4f11e8mr665740qko.2.1713388721123;
-        Wed, 17 Apr 2024 14:18:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF29e5f56ETIzCUQyLUa1pQN9jUqXmcKYHsWC/k2I1kVI2Yma0QJE36x4pPxkZnbBNtERvaag==
-X-Received: by 2002:a05:620a:40d5:b0:78e:db4f:11e8 with SMTP id g21-20020a05620a40d500b0078edb4f11e8mr665713qko.2.1713388720577;
-        Wed, 17 Apr 2024 14:18:40 -0700 (PDT)
-Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id c10-20020a37e10a000000b0078d667d1085sm18692qkm.84.2024.04.17.14.18.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Apr 2024 14:18:40 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: peterx@redhat.com,
-	David Hildenbrand <david@redhat.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Rientjes <rientjes@google.com>,
-	syzbot+4b8077a5fccc61c385a1@syzkaller.appspotmail.com,
-	linux-stable <stable@vger.kernel.org>
-Subject: [PATCH 2/3] mm/hugetlb: Fix missing hugetlb_lock for resv uncharge
-Date: Wed, 17 Apr 2024 17:18:35 -0400
-Message-ID: <20240417211836.2742593-3-peterx@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240417211836.2742593-1-peterx@redhat.com>
-References: <20240417211836.2742593-1-peterx@redhat.com>
+	s=arc-20240116; t=1713390056; c=relaxed/simple;
+	bh=UQQp7GOMr3HWLV341KAxVpmwdyLVo5Kvtj7+wCLeCa0=;
+	h=Date:To:From:Subject:Message-Id; b=VzfkoWjp3hFBacTSLdxpys/zlbXtE1rHlFdWCYBEfeyOIClBBa2kque+yDs3oiToRZLSaW5PsljNQdXMWwMAyD5l/UcGCILICawaqEgfKojjnAky8p6tbwJMvUdSDyPKlRfOiTMxn9fkq+45nSRNBCz2k9+6Fnlq/+srUVqjNNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FMKTZvcc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF967C072AA;
+	Wed, 17 Apr 2024 21:40:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1713390055;
+	bh=UQQp7GOMr3HWLV341KAxVpmwdyLVo5Kvtj7+wCLeCa0=;
+	h=Date:To:From:Subject:From;
+	b=FMKTZvccK6KNMy5pR7CMxGTOHo/q7QYZ3dYEI8lcFJC+vLCiaEhxiBNMUwp8lqC1Q
+	 g1sTMV0HdoODTzlHVaVMPq/ng9g4oyGHE7xxQK3gqX7yoUUWJqcbTJuWbDJYfiwL0D
+	 cryxsKxQP+4CMN63zobe0FZeyjNvitc4ZM9HpIRU=
+Date: Wed, 17 Apr 2024 14:40:55 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,david@redhat.com,almasrymina@google.com,peterx@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240417214055.CF967C072AA@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+
+
+The patch titled
+     Subject: mm/hugetlb: fix missing hugetlb_lock for resv uncharge
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Peter Xu <peterx@redhat.com>
+Subject: mm/hugetlb: fix missing hugetlb_lock for resv uncharge
+Date: Wed, 17 Apr 2024 17:18:35 -0400
 
 There is a recent report on UFFDIO_COPY over hugetlb:
 
@@ -111,23 +90,22 @@ the locking criteria was overlooked: hugetlb_cgroup_uncharge_folio_rsvd()
 will update the cgroup pointer, so it requires to be called with the lock
 held.
 
-Looks like a stable material, so have it copied.
-
+Link: https://lkml.kernel.org/r/20240417211836.2742593-3-peterx@redhat.com
+Fixes: 79aa925bf239 ("hugetlb_cgroup: fix reservation accounting")
+Signed-off-by: Peter Xu <peterx@redhat.com>
 Reported-by: syzbot+4b8077a5fccc61c385a1@syzkaller.appspotmail.com
 Cc: Mina Almasry <almasrymina@google.com>
 Cc: David Hildenbrand <david@redhat.com>
-Cc: linux-stable <stable@vger.kernel.org>
-Fixes: 79aa925bf239 ("hugetlb_cgroup: fix reservation accounting")
-Signed-off-by: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/hugetlb.c | 5 ++++-
+
+ mm/hugetlb.c |    5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 26ab9dfc7d63..3158a55ce567 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3247,9 +3247,12 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+--- a/mm/hugetlb.c~mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge
++++ a/mm/hugetlb.c
+@@ -3268,9 +3268,12 @@ struct folio *alloc_hugetlb_folio(struct
  
  		rsv_adjust = hugepage_subpool_put_pages(spool, 1);
  		hugetlb_acct_memory(h, -rsv_adjust);
@@ -141,7 +119,43 @@ index 26ab9dfc7d63..3158a55ce567 100644
  	}
  
  	if (!memcg_charge_ret)
--- 
-2.44.0
+_
+
+Patches currently in -mm which might be from peterx@redhat.com are
+
+mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch
+mm-hmm-process-pud-swap-entry-without-pud_huge.patch
+mm-gup-cache-p4d-in-follow_p4d_mask.patch
+mm-gup-check-p4d-presence-before-going-on.patch
+mm-x86-change-pxd_huge-behavior-to-exclude-swap-entries.patch
+mm-sparc-change-pxd_huge-behavior-to-exclude-swap-entries.patch
+mm-arm-use-macros-to-define-pmd-pud-helpers.patch
+mm-arm-redefine-pmd_huge-with-pmd_leaf.patch
+mm-arm64-merge-pxd_huge-and-pxd_leaf-definitions.patch
+mm-powerpc-redefine-pxd_huge-with-pxd_leaf.patch
+mm-gup-merge-pxd-huge-mapping-checks.patch
+mm-treewide-replace-pxd_huge-with-pxd_leaf.patch
+mm-treewide-remove-pxd_huge.patch
+mm-arm-remove-pmd_thp_or_huge.patch
+mm-document-pxd_leaf-api.patch
+mm-always-initialise-folio-_deferred_list-fix.patch
+selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation.patch
+selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation-fix.patch
+mm-kconfig-config_pgtable_has_huge_leaves.patch
+mm-hugetlb-declare-hugetlbfs_pagecache_present-non-static.patch
+mm-make-hpage_pxd_-macros-even-if-thp.patch
+mm-introduce-vma_pgtable_walk_beginend.patch
+mm-arch-provide-pud_pfn-fallback.patch
+mm-arch-provide-pud_pfn-fallback-fix.patch
+mm-gup-drop-folio_fast_pin_allowed-in-hugepd-processing.patch
+mm-gup-refactor-record_subpages-to-find-1st-small-page.patch
+mm-gup-handle-hugetlb-for-no_page_table.patch
+mm-gup-cache-pudp-in-follow_pud_mask.patch
+mm-gup-handle-huge-pud-for-follow_pud_mask.patch
+mm-gup-handle-huge-pmd-for-follow_pmd_mask.patch
+mm-gup-handle-huge-pmd-for-follow_pmd_mask-fix.patch
+mm-gup-handle-hugepd-for-follow_page.patch
+mm-gup-handle-hugetlb-in-the-generic-follow_page_mask-code.patch
+mm-allow-anon-exclusive-check-over-hugetlb-tail-pages.patch
 
 
