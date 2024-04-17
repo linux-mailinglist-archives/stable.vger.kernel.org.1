@@ -1,115 +1,190 @@
-Return-Path: <stable+bounces-40120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9595E8A8CB7
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 22:07:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C758A8D1C
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 22:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 175C0B24FDD
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 20:07:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 573C91F21AA3
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 20:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914BB36AEC;
-	Wed, 17 Apr 2024 20:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2494597B;
+	Wed, 17 Apr 2024 20:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lQ2zFftC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616E1208D6;
-	Wed, 17 Apr 2024 20:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E76B44C7B;
+	Wed, 17 Apr 2024 20:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713384408; cv=none; b=iNUl8/mIk9eDeVWalEBZBdqXBQf6nXVxoCYsVQil0Ns/3RuN2N4Iy+veWBWEv9BepY3sE0V/eoTVrsf5Iv6vk3jUj+3f/+2Q9914X7WP9AsRSHBTh4EO64RcVOQs3GvS/Aexf6PjoAJWnNsGdPfiulGDuQGGfuZb4+HaMS3Z5ks=
+	t=1713386457; cv=none; b=priaKU97HkjiSb465UpTKjl0PogvCQX7a+AEKlKWLGnxYjrzdbaZZH7L3+sx+44BnDmclQxen2CO3sYf15fTmgrRjyz2tGijkJQfCGoWcbG6au5DZv3EzblL99XA1y2QdrevOSOV7xiYonn65GMgdGdEgZo+DLVcMu7rKGYl6xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713384408; c=relaxed/simple;
-	bh=nv1mChUkPCiO/HWkxgelFfD99Z4nAlmsWNhrqLyMFWM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qPiJU3oaO4J0WPpFXI4Vk1ccG8fTn0FHum1rNHQpd9HwuypkaS0x1oBVj6EQePbCU+ESrgWNeg1NGbOwpEqbBMZUZeY7ACXvcjarTvdh+iZtm20YAsCW6q40thP5DBMiB0zVZkXkrQRtaOv9k2UNwoL6G37uLgCJpF/Ni0207gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85CCC072AA;
-	Wed, 17 Apr 2024 20:06:42 +0000 (UTC)
-Date: Wed, 17 Apr 2024 21:06:40 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Marc Zyngier <maz@kernel.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, Yihuang Yu <yihyu@redhat.com>,
-	Gavin Shan <gshan@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shaoqin Huang <shahuang@redhat.com>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
-Message-ID: <ZiAr0OeeaCeKMY1I@arm.com>
-References: <20240415141953.365222063@linuxfoundation.org>
- <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
- <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
- <86y19dqw74.wl-maz@kernel.org>
- <Zh61KobDt_y1O46-@arm.com>
- <2024041744-pretender-clutter-7d4d@gregkh>
+	s=arc-20240116; t=1713386457; c=relaxed/simple;
+	bh=oZ2d6BQJiFao+w5iptjGcdQdSKyyboWurZy/GTwx25k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=mtCqISJT6TWWv+G4UZpheEL2goiILP0Y3rRJkBS5FeCNB2dev8+NzACXfg7MfxWhzR0P3D9a934shVLbXhd03ywQ4L+peFJogkL8AcwF88JH7DAjyoFp3vq/EZ2ALeSlgxTcP2hn4046UJawnDNocKsXL5mUP+PHVEMF3pTY5d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lQ2zFftC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB8DC072AA;
+	Wed, 17 Apr 2024 20:40:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713386457;
+	bh=oZ2d6BQJiFao+w5iptjGcdQdSKyyboWurZy/GTwx25k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lQ2zFftC3hpzIHJqd2hN4HRau6ckGUHplil62MUbg29PYDkttbTMkRWoHw2GxJWaB
+	 25ZtfkT/G1I+4jEjn0jriCEOvw1F+6De8uaijmOa8RP99MSZPU+1FZYnzEq3AbIfGn
+	 xKbKF64LHZOaUwzMRGSSuQofsAmoaANU0ZI6cGCwz+w2/BotdsbJRm8CNMBntvpbRQ
+	 qoK7U/KYXNKYWh+946vT3D+saKu7utlKsQgXYiQxwHVqNuI1o23EzEfhprTxHxvpsS
+	 l7w081lvJ0m7Y15Yul72n3DiF88FlzUosAz+Fjv3yoEwcCN+F5hag/j4T6CNLWuqtX
+	 9P3jLRARof4og==
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: linux-pci@vger.kernel.org
+Cc: Mateusz Kaduk <mateusz.kaduk@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Tj <linux@iam.tj>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/1] x86/pci: Skip early E820 check for ECAM region
+Date: Wed, 17 Apr 2024 15:40:12 -0500
+Message-Id: <20240417204012.215030-2-helgaas@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240417204012.215030-1-helgaas@kernel.org>
+References: <20240417204012.215030-1-helgaas@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024041744-pretender-clutter-7d4d@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 17, 2024 at 09:05:12AM +0200, Greg Kroah-Hartman wrote:
-> On Tue, Apr 16, 2024 at 06:28:10PM +0100, Catalin Marinas wrote:
-> > On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
-> > > On Tue, 16 Apr 2024 14:07:30 +0100,
-> > > Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> > > > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
-> > > > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
-> > > > > > This is the start of the stable review cycle for the 6.6.28 release.
-> > > > > > There are 122 patches in this series, all will be posted as a response
-> > > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > > let me know.
-> > > > >
-> > > > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
-> > > > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
-> > > > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
-> > > > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
-> > > > > the bisect and looking at the commit log to pull out people to CC and
-> > > > > note that the fix was explicitly targeted at v6.6.
-> > > > 
-> > > > Anders investigated this reported issues and bisected and also found
-> > > > the missing commit for stable-rc 6.6 is
-> > > > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
-> > > 
-> > > Which is definitely *not* stable candidate. We need to understand why
-> > > the invalidation goes south when the scale go up instead of down.
-> > 
-> > If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
-> > which fixes 117940aa6e5f ("KVM: arm64: Define
-> > kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
-> > ("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
-> > "scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
-> > CBMC model, not on the actual kernel. It may be worth adding some
-> > WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
-> > num greater than 31.
-> > 
-> > I haven't investigated properly (and I'm off tomorrow, back on Thu) but
-> > it's likely the original code was not very friendly to the maximum
-> > range, never tested. Anyway, if one figures out why it goes out of
-> > range, I think the solution is to also backport e2768b798a19 to stable.
-> 
-> How about I drop the offending commit from stable and let you all figure
-> out what needs to be added before applying anything else :)
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-It makes sense ;). We'll send them to stable once sorted.
+Arul, Mateusz, Imcarneiro91, and Aman reported a regression caused by
+07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map").  On the
+Lenovo Legion 9i laptop, that commit removes the area containing ECAM from
+E820, which means the early E820 validation started failing, which meant we
+didn't enable ECAM in the "early MCFG" path
 
+The lack of ECAM caused many ACPI methods to fail, resulting in the
+embedded controller, PS/2, audio, trackpad, and battery devices not being
+detected.  The _OSC method also failed, so Linux could not take control of
+the PCIe hotplug, PME, and AER features:
+
+  # pci_mmcfg_early_init()
+
+  PCI: ECAM [mem 0xc0000000-0xce0fffff] (base 0xc0000000) for domain 0000 [bus 00-e0]
+  PCI: not using ECAM ([mem 0xc0000000-0xce0fffff] not reserved)
+
+  ACPI Error: AE_ERROR, Returned by Handler for [PCI_Config] (20230628/evregion-300)
+  ACPI: Interpreter enabled
+  ACPI: Ignoring error and continuing table load
+  ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PC00.RP01._SB.PC00], AE_NOT_FOUND (20230628/dswload2-162)
+  ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20230628/psobject-220)
+  ACPI: Skipping parse of AML opcode: OpcodeName unavailable (0x0010)
+  ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PC00.RP01._SB.PC00], AE_NOT_FOUND (20230628/dswload2-162)
+  ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20230628/psobject-220)
+  ...
+  ACPI Error: Aborting method \_SB.PC00._OSC due to previous error (AE_NOT_FOUND) (20230628/psparse-529)
+  acpi PNP0A08:00: _OSC: platform retains control of PCIe features (AE_NOT_FOUND)
+
+  # pci_mmcfg_late_init()
+
+  PCI: ECAM [mem 0xc0000000-0xce0fffff] (base 0xc0000000) for domain 0000 [bus 00-e0]
+  PCI: [Firmware Info]: ECAM [mem 0xc0000000-0xce0fffff] not reserved in ACPI motherboard resources
+  PCI: ECAM [mem 0xc0000000-0xce0fffff] is EfiMemoryMappedIO; assuming valid
+  PCI: ECAM [mem 0xc0000000-0xce0fffff] reserved to work around lack of ACPI motherboard _CRS
+
+Per PCI Firmware r3.3, sec 4.1.2, ECAM space must be reserved by a PNP0C02
+resource, but it need not be mentioned in E820, so we shouldn't look at
+E820 to validate the ECAM space described by MCFG.
+
+946f2ee5c731 ("[PATCH] i386/x86-64: Check that MCFG points to an e820
+reserved area") added a sanity check of E820 to work around buggy MCFG
+tables, but that over-aggressive validation causes failures like this one.
+
+Keep the E820 validation check only for older BIOSes (pre-2016) so the
+buggy 2006-era machines don't break.  Skip the early E820 check for 2016
+and newer BIOSes.
+
+Fixes: 07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map")
+Reported-by: Mateusz Kaduk <mateusz.kaduk@gmail.com>
+Reported-by: Arul <...>
+Reported-by: Imcarneiro91 <...>
+Reported-by: Aman <...>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218444
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Mateusz Kaduk <mateusz.kaduk@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/pci/mmconfig-shared.c | 35 +++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
+index 0cc9520666ef..53c7afa606c3 100644
+--- a/arch/x86/pci/mmconfig-shared.c
++++ b/arch/x86/pci/mmconfig-shared.c
+@@ -518,7 +518,34 @@ static bool __ref pci_mmcfg_reserved(struct device *dev,
+ {
+ 	struct resource *conflict;
+ 
+-	if (!early && !acpi_disabled) {
++	if (early) {
++
++		/*
++		 * Don't try to do this check unless configuration type 1
++		 * is available.  How about type 2?
++		 */
++
++		/*
++		 * 946f2ee5c731 ("Check that MCFG points to an e820
++		 * reserved area") added this E820 check in 2006 to work
++		 * around BIOS defects.
++		 *
++		 * Per PCI Firmware r3.3, sec 4.1.2, ECAM space must be
++		 * reserved by a PNP0C02 resource, but it need not be
++		 * mentioned in E820.  Before the ACPI interpreter is
++		 * available, we can't check for PNP0C02 resources, so
++		 * there's no reliable way to verify the region in this
++		 * early check.  Keep it only for the old machines that
++		 * motivated 946f2ee5c731.
++		 */
++		if (dmi_get_bios_year() < 2016 && raw_pci_ops)
++			return is_mmconf_reserved(e820__mapped_all, cfg, dev,
++						  "E820 entry");
++
++		return true;
++	}
++
++	if (!acpi_disabled) {
+ 		if (is_mmconf_reserved(is_acpi_reserved, cfg, dev,
+ 				       "ACPI motherboard resource"))
+ 			return true;
+@@ -554,12 +581,6 @@ static bool __ref pci_mmcfg_reserved(struct device *dev,
+ 	if (pci_mmcfg_running_state)
+ 		return true;
+ 
+-	/* Don't try to do this check unless configuration
+-	   type 1 is available. how about type 2 ?*/
+-	if (raw_pci_ops)
+-		return is_mmconf_reserved(e820__mapped_all, cfg, dev,
+-					  "E820 entry");
+-
+ 	return false;
+ }
+ 
 -- 
-Catalin
+2.34.1
+
 
