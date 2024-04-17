@@ -1,99 +1,292 @@
-Return-Path: <stable+bounces-40069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA038A7CD7
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 09:11:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34C08A7CD9
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 09:13:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3BF1F221EB
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 07:11:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 733DC282670
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 07:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02CE6A33E;
-	Wed, 17 Apr 2024 07:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654076A353;
+	Wed, 17 Apr 2024 07:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FtF0ZIs6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="y5tcJ5OX"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454646A333
-	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 07:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6096A33E
+	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 07:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713337888; cv=none; b=Z9XtEM8ClDrfuvmZ4KzDoNj1LM8WhXyfJQhLDUPLUVGRwcTO+97IuUrY5SyRmwnHSGRVM8kT33bdeLorabMpZuF4PzJ3xfvbiOAIiyf5uH/osX2QoORBjDXyT5VPjlDCnYRsWcJiIrhMrirA+sPwT5pJia6MidLfcSilgArw5wc=
+	t=1713337979; cv=none; b=cr2VBB8BP1xZzZ4YbvgZbPJxhNcAnSokGc7PlBqtaRt2Lf1N8Gnegrv/Fb7tNxy0/Fgt9I4JLteMijhJFJmYHhAV2qkUIci9bRewE1ZUemVR7EczVuUnXGPz+0X2/BhmrhbGV/j3aICxj7jJkjrJ2ahFZ6OQYTTVfVM570RB7+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713337888; c=relaxed/simple;
-	bh=4K57y2H0YophcOykf9QYuKDHY8mYB7EgGxsSKs0i7vw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RN4viUpnAokMo5TGHTAec2Za9sr+L1AFGVPNFw1sqfXwBi7j5jqNGk2NspvHfCJUtqRUby3op2yvi8g2W8bfh7Tr3InNLEW1ZGTQ1cr5EbdjPVH6nE3t190sWYb4PH/yIIpeG86zDkG/JH3u9ehQZzjxEoIaZsA+n+kxSTqCmBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FtF0ZIs6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713337886;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4K57y2H0YophcOykf9QYuKDHY8mYB7EgGxsSKs0i7vw=;
-	b=FtF0ZIs62hk8jwLet0KjLZc9ghMeUfpMadcuBtydtrXpIeGqfd78BLFA4FrDSHyGUb/v6o
-	67X29qtCxYU6wupHmAk5j4al9stWFLkGE8VJWD8bFaBZcz85c2SZvCZsoxqGAKb/ND56oX
-	9U0r1ccNSsK+6vtUZoeT5NiUc/oeF5g=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-249-jQKToEXzPYOg9TC8VSPcyQ-1; Wed,
- 17 Apr 2024 03:11:23 -0400
-X-MC-Unique: jQKToEXzPYOg9TC8VSPcyQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4449E385A189;
-	Wed, 17 Apr 2024 07:11:22 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.193.59])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id B743D2166B31;
-	Wed, 17 Apr 2024 07:11:18 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: carnil@debian.org
-Cc: dave.stevenson@raspberrypi.com,
-	gregkh@linuxfoundation.org,
-	horms@kernel.org,
-	jtornosm@redhat.com,
-	kuba@kernel.org,
-	linux-usb@vger.kernel.org,
-	regressions@lists.linux.dev,
-	roland@debian.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org,
-	weihao.bj@ieisystem.com
-Subject: Re: [Regression] USB ethernet AX88179 broken usb ethernet names
-Date: Wed, 17 Apr 2024 09:11:11 +0200
-Message-ID: <20240417071113.7082-1-jtornosm@redhat.com>
-In-Reply-To: <Zh7flXvNdDfattD9@eldamar.lan>
-References: <Zh7flXvNdDfattD9@eldamar.lan>
+	s=arc-20240116; t=1713337979; c=relaxed/simple;
+	bh=SYQdtG0LIT+iAGtHjLvUG40aWiWwc7H2MuZk69JxuZA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L1oxJtiP6RrG0mNaOaxXo1NaSIQF36vrQJ9Q/k+G4Dvz1oecNv1OYEg4/A9u+DYq5YwDpGQiVdjeI4KuXYK83DMmYRji9ZN36YOl3mbyUI5OFyMF8niR54O23q4gitF0PXnQiE1Dlhwkd+xtX7R/atkSy6T9NziA3/W78jejWyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=y5tcJ5OX; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-4daaeb7efa8so1688010e0c.2
+        for <stable@vger.kernel.org>; Wed, 17 Apr 2024 00:12:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713337976; x=1713942776; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SPw4P3Q1CF6rdoVIFAgFiF3XVdMOQuWkW6/qOB/eLSs=;
+        b=y5tcJ5OX1yOmX1vWEi2t/QMZ5pntaoevhcdyGSSOUoOn/gyP7h4JDdM+w1o+8XvTQI
+         +RSyHltTdNCU4yfCv3wN9S546rvOgyM72/fNhzQJ5Vbh4yM07F9qXZxm6VZIBwip+aQt
+         UMrkvAyDVyZXYp77GHOB0Sza+v38lmJg+HDzfK1arUG+AfXHQiiZ843Gr/o8CyFHmll5
+         6qQ2GBlZfxeFJpXEysYP0BYa4DM3CQSXMdJKZI+mVqmxem0+ZdnJpVe9BE2oyajRzEy+
+         ONVLu1NW5xGxkMu3ZIwmX9jGRyoBBylSqEfWG0/3UGGfy4FDWaCdSGrXK6DDovPI6Zsl
+         ww1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713337976; x=1713942776;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SPw4P3Q1CF6rdoVIFAgFiF3XVdMOQuWkW6/qOB/eLSs=;
+        b=rmh+W5etmm+69a/GolhHxlYbthBya6wsePJ+jMXp2KXAj9zXyBxzcDPcyDoUNyk7qt
+         mwt85Jv2FbFkgUlpqqaR/+m9+0ied0Mm/AH6a69VDOoy6pcDsjruwktK2Pej5aUh1M18
+         aXaNAQ2lvJGXb/X51815byJ0pQobeRbF4hE3q0A24gW81CB83mfi4SGyVgvNFPPisAT+
+         YNH4jMWEM3lZ7ye58GvSZSCPT8EyQt4Tq2M0X/ctHLB2qzE8cjFbkGorqUJvzrT/bOF2
+         URpYMSA6znVNhUteJY4Mgpcf3R2b5vX1pDUiPWbPnivO/oaOcBzscMZMvJkn7QZqhJPf
+         EWZQ==
+X-Gm-Message-State: AOJu0Yyav+F5NOwHsYk75UYPQuYl2FmCIMvrIGd2j1wo/sL/R8S2LQWA
+	hMIOhW+BHoRgdmzmOh/nYnasuPZAWoyn7TydZVBAdo0oo7czPbivD/ATlFrS/0fhyslGmYMAWnv
+	n+/iLafJyLvR12HBdW9FG5/pA3OJ4adgvVv1AbA==
+X-Google-Smtp-Source: AGHT+IFZS4Mr/Mn3u9ZIIH99b59sltM+L/4eXixp20bSI9MxLOGvk8dfcsiYvGKrrZbkGJmjmy65/eJJvzLVzv3xcSQ=
+X-Received: by 2002:a05:6122:410d:b0:4d4:20fa:eb0c with SMTP id
+ ce13-20020a056122410d00b004d420faeb0cmr12961881vkb.5.1713337976485; Wed, 17
+ Apr 2024 00:12:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+References: <20240415141942.235939111@linuxfoundation.org>
+In-Reply-To: <20240415141942.235939111@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 17 Apr 2024 12:42:44 +0530
+Message-ID: <CA+G9fYtgpsiHhhiqwqvN51NOSkS2FPdZsJG=CeyHoZ5U+3omqQ@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/45] 5.15.156-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Salvatore,
+On Mon, 15 Apr 2024 at 20:12, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.156 release.
+> There are 45 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 17 Apr 2024 14:19:30 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.156-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Sorry for the incoveniences.
-I am working actively trying to fix this on this thread:
-https://lore.kernel.org/netdev/20240410095603.502566-1-jtornosm@redhat.com/
-Fedora is renaming the interface correctly but I think that could be related
-with the mac address issue.
-After this, let me check with you if the reported problem is fixed.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Best regards
-José Ignacio
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+NOTE:
+[my two cents]
 
+The arm64 kernel boot log is getting new CPU features as kernel page table
+isolation forced OFF by mitigations=3Doff on following devices / qemu / fvp=
+.
+  * bcm2711-rpi-4-b
+  * fvp-aemva
+  * Juno-r2
+  * qemu-arm64
+  * rk3399-rock-pi-4b
+
+This cpu features message began with the latest stable-rc versions:
+ * 6.8.7-rc1
+ * 6.6.28-rc1
+ * 6.1.87-rc1
+ * 5.15.156-rc1
+
+Boot log:
+----
+CPU features: kernel page table isolation forced OFF by mitigations=3Doff
+
+Links:
+-----
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5=
+.15.155-46-g8d83652ef6bf/testrun/23487067/suite/kselftest-arm64/test/arm64_=
+hwcap_sigill_HBC/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5=
+.15.155-46-g8d83652ef6bf/testrun/23487067/suite/kselftest-arm64/tests/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.=
+8.6-173-g367141eaada2/testrun/23487170/suite/kselftest-arm64/test/arm64_za-=
+fork/details/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.=
+8.6-173-g367141eaada2/testrun/23487170/suite/kselftest-arm64/test/arm64_za-=
+fork/log
+
+## Build
+* kernel: 5.15.156-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: 8d83652ef6bf9df8e7203eb24389829ecb092c94
+* git describe: v5.15.155-46-g8d83652ef6bf
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.155-46-g8d83652ef6bf
+
+## Test Regressions (compared to v5.15.155)
+
+## Metric Regressions (compared to v5.15.155)
+
+## Test Fixes (compared to v5.15.155)
+
+## Metric Fixes (compared to v5.15.155)
+
+## Test result summary
+total: 93117, pass: 74945, fail: 2749, skip: 15356, xfail: 67
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 104 total, 104 passed, 0 failed
+* arm64: 31 total, 31 passed, 0 failed
+* i386: 25 total, 25 passed, 0 failed
+* mips: 22 total, 22 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* riscv: 8 total, 8 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 27 total, 27 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
