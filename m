@@ -1,366 +1,390 @@
-Return-Path: <stable+bounces-40102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0E28A82EC
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 14:12:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A4CE8A838A
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 14:58:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9123B2839F8
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 12:12:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D35F1C21E06
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 12:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5332913D265;
-	Wed, 17 Apr 2024 12:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6FF13D26B;
+	Wed, 17 Apr 2024 12:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HfjzBj7u"
+	dkim=pass (1024-bit key) header.d=mail.big.or.jp header.i=@mail.big.or.jp header.b="xliy8O4m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.big.or.jp (mail.big.or.jp [210.197.72.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC6913D245;
-	Wed, 17 Apr 2024 12:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB812D60C;
+	Wed, 17 Apr 2024 12:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.197.72.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713355975; cv=none; b=BwNeFHrklVdgN3mdXp/m0hSuNevjjpGSP6X2tOsr+9T4/MR3GI5TS48itL22iwWELBr5t2WbuNKVOcOfaFu7qTSrfzQUs6LledjCks1JjbZQNsRxbTVvrSrVBNK8QYhhVJrRkFoXBN7XlFRf01hH1BTLSmy0iQOpNyFArCbUf4g=
+	t=1713358689; cv=none; b=FILSIej0JIesEcQaZnYZfluetsmIfYJDkL6KttI59LrebDn5z8SqG5YUBS9V79OZPYG4l98lYNWL/Vc54G/cb+ESTZ5KQTryexftqX15QizvB5RNwra+ovRgHvpycNLUVAyTWM/mS1ezOPb5I2IiJ3WToK78waegca8uIfkG/PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713355975; c=relaxed/simple;
-	bh=HrZpYSTsoC4ix4EpnTAb47aPRg1jX1QDOboBvCgUWeI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CHCVs916ik0d8H0o8HigQACi/9Lh6exx2rFZ49SClbd/W1mM19QLBQ8SUlh37XEHa+tQnguMhqBZh39XaPn8c/RSGez26ZIgBQghJDD5VudDob4mlWTeZwFyeka34RC1pxS5+BpIcllgzkaolQovZ7GYJ5Rde8gipX5rotJYADI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HfjzBj7u; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-416a8ec0239so4689365e9.0;
-        Wed, 17 Apr 2024 05:12:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713355971; x=1713960771; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HrZpYSTsoC4ix4EpnTAb47aPRg1jX1QDOboBvCgUWeI=;
-        b=HfjzBj7uYh4jhpTEEk6ge3FeynYUzCIlfo+ERSwghI0QYNfnWe+DhwdBnFkK5OmaQS
-         xY8A9zwj39s1h1IS50H5XzOzc7KharXnD4AZUAe9X5jp7V0fdhqxQYBRapotaNjrqNBT
-         UgXMwjdMn0E/3jsnquW5egd5x7P4kvZ7mBYfAzTG1wBxE6tpG9lVuUqJQQOJfg9JT5bL
-         xEApHYX9rLnaPQnIOtww/yqk/f3PrFcO7iTlvH39ELXTUjOgkJKHjpHNKDet0JbD2OKQ
-         bj4u29L0XquwRxwiVbr0am1JRVoaOWTdrWnvYEaRjAoZYi201XokvlGySsJMtwo2chte
-         uJLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713355971; x=1713960771;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HrZpYSTsoC4ix4EpnTAb47aPRg1jX1QDOboBvCgUWeI=;
-        b=k4Fb+NhfRgedjt1ZDBODlsdpJO3i79EEywCpEBovqazSM5MsEb/1jrHaA2TFzInCJE
-         IqC9+s0CoTUq5r46h8AC9rav++thHaTnx8vtPkujjSUI0/9fpHmbUtVITdpkLFb5F96e
-         tlTsdieL4eZCR4cQt58b5SZNVY7aPx45akY606CAhZqcTZMUZ+FbRAlhb0+ytwcbW0gF
-         MKUK7m2e+HjxF8p37fOFG1BgN4lhcBR0WLazUHMPzNMo/1/Np8H6IihK30KSy8CFoPTF
-         9dFKOnhPBjJBzrzbggdgv8o2rvP8xvPhDpmD6sxDTaiTyuN2kF82DEuiDy1aOa7+N6/O
-         6k5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVe/ocGO2wA145KGQvxT30tOUL255TLYwp1SOdSvTZ7hjxGcDVecvFTJlVhtFrSccR/ZQn5AZ/eAwyz2ZgnER2ZU4KHEvdeJ3WcZ+ocrG3Hv5DpzDGyHxjH5keuffbIlJK46ZfzuNvTWrBbom2w3/bGS2etNU1nApBxuvSv52vNGg==
-X-Gm-Message-State: AOJu0YwKNlfsbKcr4vvxfXAzQxgIXH7194GFhKmMBik+94u8qLoYdyWS
-	8xmTVbwGE3VwVvLjKgnuBo7WFJBzyaMG5o3njt0dVYx3ubLpniFO
-X-Google-Smtp-Source: AGHT+IHSLygSTkmUK8kxFK7/Y0W8n7WxJu8sNlhyt+B+fUCRZxXO7GbTQJ3brmq96IFuBDfw86LBsw==
-X-Received: by 2002:a05:600c:1d09:b0:417:d347:ac68 with SMTP id l9-20020a05600c1d0900b00417d347ac68mr4178655wms.17.1713355971267;
-        Wed, 17 Apr 2024 05:12:51 -0700 (PDT)
-Received: from ?IPv6:2001:8a0:e622:f700:abb8:8caf:bab6:45a3? ([2001:8a0:e622:f700:abb8:8caf:bab6:45a3])
-        by smtp.gmail.com with ESMTPSA id n26-20020a05600c3b9a00b00418a2ce884bsm2632187wms.32.2024.04.17.05.12.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Apr 2024 05:12:50 -0700 (PDT)
-Message-ID: <ae7a78f5e3258e5e1e0cd1515a50c2c9c0ce1edf.camel@gmail.com>
-Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
- domain parent
-From: Vitor Soares <ivitro@gmail.com>
-To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 17 Apr 2024 13:12:44 +0100
-In-Reply-To: <47cd522d09fbfb4cce7d1d82e6657b6b21fa04d7.camel@pengutronix.de>
-References: <20240409085802.290439-1-ivitro@gmail.com>
-	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
-	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
-	 <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
-	 <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
-	 <c76d98a300a9d65d236d334da62916a7d658ef27.camel@gmail.com>
-	 <564fa534b32f4a6e96da6752f531fc7447ec633d.camel@gmail.com>
-	 <c064940ba46449b540a3cba14ebab96d31ba19de.camel@gmail.com>
-	 <47cd522d09fbfb4cce7d1d82e6657b6b21fa04d7.camel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1713358689; c=relaxed/simple;
+	bh=MquDlLoR4inyVaQlfpG/3XlB8PgwuIOPpDrgijXngzk=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=GQf+Qgm8tzHBvNRgvsgY8A49RDN12Io6RKWEaBUpapobSWr7ufZT8WhCO7gIqa1389oQSbgPs7RamAkxa9wXiANolPnIyWPmai6olH7U5eUKLuAi+JyMOXofH9hEQmsvk0/oZ5hyhVZH2kOM5QuRRZGC7uZfZ3u8yAuOf6uNKdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=big.or.jp; spf=pass smtp.mailfrom=big.or.jp; dkim=pass (1024-bit key) header.d=mail.big.or.jp header.i=@mail.big.or.jp header.b=xliy8O4m; arc=none smtp.client-ip=210.197.72.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=big.or.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=big.or.jp
+Received: from localhost (unknown [IPv6:2409:250:40:1a00:d65d:64ff:fef1:3a80])
+	by mail.big.or.jp (Postfix) with ESMTPA id 7916E15FAEF;
+	Wed, 17 Apr 2024 21:57:55 +0900 (JST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.big.or.jp;
+	s=_dkimselector; t=1713358675;
+	bh=lJ2zFCwXJhAWv+hCBMbTgI0iTMS74MJsdKoj+VbWoIE=;
+	h=Date:To:Cc:Subject:From:In-Reply-To:References;
+	b=xliy8O4mGTpxJ2tLUBJ2DBe+6f8PMZu3TFcAcARRA8Xz67fZBqlbDibs/DNu9+3CY
+	 PRBev9Et0r9mL3Suun+Yedi1v/hrIRSPp97W2d2LMwF9zDwrMoGWkTiadRrtCE1ysf
+	 NM1G2TwTID5TLSkrJg1JzvDmeQ+s9CEGDgFYPKck=
+Date: Wed, 17 Apr 2024 21:57:50 +0900 (JST)
+Message-Id: <20240417.215750.795520800087390305.sian@big.or.jp>
+To: greg@kroah.com
+Cc: holger@applied-asynchrony.com, Naohiro.Aota@wdc.com,
+ regressions@lists.linux.dev, dsterba@suse.com, wqu@suse.com,
+ linux-btrfs@vger.kernel.org, clm@fb.com, josef@toxicpanda.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: btrfs: sanity tests fails on 6.8.3
+From: sian@big.or.jp
+In-Reply-To: <20240415.214704.2195618259755902678.sian@big.or.jp>
+References: <3b2d9a1c-37d2-47f4-b0b4-a9d6c34d2c7d@applied-asynchrony.com>
+	<2024041508-refocus-cycling-09e8@gregkh>
+	<20240415.214704.2195618259755902678.sian@big.or.jp>
+X-Mailer: Mew version 6.8 on Emacs 29.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Hi Lucas,
 
-On Wed, 2024-04-17 at 10:00 +0200, Lucas Stach wrote:
-> Hi Vitor,
->=20
-> Am Dienstag, dem 16.04.2024 um 17:08 +0100 schrieb Vitor Soares:
-> > On Tue, 2024-04-16 at 11:53 +0100, Vitor Soares wrote:
-> > > ++ Peng Fan <peng.fan@nxp.com>
-> > >=20
-> > > Greetings,
-> > >=20
-> > >=20
-> > > On Wed, 2024-04-10 at 12:01 +0100, Vitor Soares wrote:
-> > > > Hi Lucas,
-> > > >=20
-> > > > On Tue, 2024-04-09 at 17:44 +0100, Vitor Soares wrote:
-> > > > > On Tue, 2024-04-09 at 16:36 +0200, Lucas Stach wrote:
-> > > > > > Am Dienstag, dem 09.04.2024 um 14:22 +0100 schrieb Vitor Soares=
-:
-> > > > > > > Hi Lucas,
-> > > > > > >=20
-> > > > > > > Thanks for your feedback.
-> > > > > > >=20
-> > > > > > > On Tue, 2024-04-09 at 11:13 +0200, Lucas Stach wrote:
-> > > > > > > > Hi Vitor,
-> > > > > > > >=20
-> > > > > > > > Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor
-> > > > > > > > Soares:
-> > > > > > > > > From: Vitor Soares <vitor.soares@toradex.com>
-> > > > > > > > >=20
-> > > > > > > > > The pgc_vpu_* nodes miss the reference to the power domai=
-n
-> > > > > > > > > parent,
-> > > > > > > > > leading the system to hang during the resume.
-> > > > > > > > >=20
-> > > > > > > > This change is not correct. The vpumix domain is controlled
-> > > > > > > > through
-> > > > > > > > the
-> > > > > > > > imx8mm-vpu-blk-ctrl and must not be directly triggered by t=
-he
-> > > > > > > > child
-> > > > > > > > domains in order to guarantee proper power sequencing.
-> > > > > > > >=20
-> > > > > > > > If the sequencing is incorrect for resume, it needs to be
-> > > > > > > > fixed
-> > > > > > > > in
-> > > > > > > > the
-> > > > > > > > blk-ctrl driver. I'll happily assist if you have any
-> > > > > > > > questions
-> > > > > > > > about
-> > > > > > > > this intricate mix between GPC and blk-ctrl hardware/driver=
-s.
-> > > > > > > =C2=A0
-> > > > > > > I'm new into the topic, so I tried to follow same approach as
-> > > > > > > in
-> > > > > > > imx8mp
-> > > > > > > DT.
-> > > > > > >=20
-> > > > > > That's a good hint, the 8MP VPU GPC node additions missed my
-> > > > > > radar.
-> > > > > > The
-> > > > > > direct dependency there between the GPC domains is equally wron=
-g.
-> > > > > >=20
-> > > > > > > I also checked the imx8mq DT and it only have one domain for
-> > > > > > > the
-> > > > > > > VPU in the GPC. It seem blk-ctrl also dependes on pgc_vpu_* t=
-o
-> > > > > > > work
-> > > > > > > properly.
-> > > > > > >=20
-> > > > > > > The blk-ctrl driver hangs on imx8m_blk_ctrl_power_on() when
-> > > > > > > access
-> > > > > > > the
-> > > > > > > ip registers for the soft reset. I tried to power-up the befo=
-re
-> > > > > > > the
-> > > > > > > soft reset, but it didn't work.
-> > > > > > >=20
-> > > > > > The runtime_pm_get_sync() at the start of that function should
-> > > > > > ensure
-> > > > > > that bus GPC domain aka vpumix is powered up. Can you check if
-> > > > > > that
-> > > > > > is
-> > > > > > happening?
-> > > > >=20
-> > > > > I checked bc->bus_power_dev->power.runtime_status and it is
-> > > > > RPM_ACTIVE.
-> > > > >=20
-> > > > > Am I looking to on the right thing? It is RPM_ACTIVE event before
-> > > > > runtime_pm_get_sync().
-> > > >=20
-> > > > During the probe I can see that
-> > > > bus_power_dev->power.runtime_status =3D RPM_SUSPENDED and then vpum=
-ix
-> > > > is
-> > > > powered up on GPC driver.
-> > > >=20
-> > > > On resume routine I can't see this flow. bus_power_dev-
-> > > > > power.runtime_status =3D RPM_ACTIVE and vpumix end up not being
-> > > > > powered-
-> > > > up.
-> > > >=20
-> > > > I checked the suspend flow and the GPC tries to poweroff vpumix.
-> > > >=20
-> > > >=20
-> > >=20
-> > > My understanding is that when resuming the 38310000.video-codec, the
-> > > vpumix isn't powered up. It happens because runtime_status and
-> > > runtime_last_status =3D RPM_ACTIVE.=20
-> > >=20
-> > > I tried to change blk-ctrl suspend routine to force the runtime_statu=
-s
-> > > =3D RPM_SUSPENDED, but the system ended up hanging on another device.
-> > >=20
-> > > From the comment in blk-ctrl suspend, we rely on PM_SLEEP code that
-> > > iterates over dpm_list for suspend/resume.
-> > > I did look at the dpm_list, and it changes the order on every boot.=
-=20
-> > >=20
-> > > With all the tests, I also found that the system randomly hangs on
-> > > dispblk-lcdif suspend. I have confirmed this device is in a different
-> > > place in the dpm_list (not sure if it is the root cause).=20
-> > > I haven't understood how blk-ctrl ensures the correct order there yet=
-.=20
-> > >=20
-> Random order of the DPM list seems like a good find to investigate
-> further.
->=20
-> > > Taking the following dpm_list excerpt:
-> > > idx - device
-> > > ------------------------------
-> > > ...=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > 191 - imx-pgc-domain.7=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0
-> > > 192 - imx-pgc-domain.8=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0
-> > > 193 - imx-pgc-domain.9=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0
-> > > 194 - 38330000.blk-ctrl=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0
-> > > 195 - 38310000.video-codec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > 196 - 38300000.video-codec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > ...
-> > > 205 - genpd:0:38330000.blk-ctrl
-> > > 206 - genpd:1:38330000.blk-ctrl
-> > > 207 - genpd:2:38330000.blk-ctrl
-> > > 208 - genpd:3:38330000.blk-ctrl
-> > > ------------------------------
-> > >=20
-> > > Shouldn't genpd devices be before 38330000.blk-ctrl?
-> > > As their power domain is GPC and the blk-ctrl power domain is genpd.
-> > >=20
-> >=20
-> > I did the following change to have genpd device before 38330000.blk-ctr=
-l
-> > on dpm_list and it did work.
-> >=20
-> > diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/i=
-mx/imx8m-blk-ctrl.c
-> > index ca942d7929c2..0f1471dcd4e8 100644
-> > --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> > +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> > @@ -220,6 +220,7 @@ static int imx8m_blk_ctrl_probe(struct platform_dev=
-ice *pdev)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retur=
-n dev_err_probe(dev, PTR_ERR(bc->bus_power_dev),
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "failed to attach power domai=
-n \"bus\"\n");
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 device_move(dev, bc->bus_power_de=
-v, DPM_ORDER_PARENT_BEFORE_DEV);
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < bc_data->n=
-um_domains; i++) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 const struct imx8m_blk_ctrl_domain_data *data =3D &bc=
-_data->domains[i];
-> > @@ -268,6 +269,7 @@ static int imx8m_blk_ctrl_probe(struct platform_dev=
-ice *pdev)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 data->gpc_name);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto =
-cleanup_pds;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 }
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 device_move(dev, domain->power_dev, DPM_ORDER_PARENT_BEFORE=
-_DEV);
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 domain->genpd.name =3D data->name;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 domain->genpd.power_on =3D imx8m_blk_ctrl_power_on;
-> >=20
-> > any concern about this approach?
-> >=20
-> I'm a bit uncomfortable with calling such a low-level function from
-> this driver. Also we don't really want to move the device to a new
-> parent, but just want to ensure proper order on the dpm list. Adding a
-> device_link between the devices seems like the better way to do so.
+Hi,
 
-Thanks for your feedback.
+6.8.7 works.
+Thank you!.
 
-I have tested with device_link_add() and it is working. I will prepare a ne=
-w patch with this change.
+> Hi,
+> =
+
+> Thank you for all your replies.
+> I cherry-picked b2136cc288fc and the ssanity tests work well.
+> =
+
+> =
+
+> From: Greg KH <greg@kroah.com>
+> Subject: Re: btrfs: sanity tests fails on 6.8.3
+> Date: Mon, 15 Apr 2024 09:33:27 +0200
+> =
+
+>> On Mon, Apr 15, 2024 at 09:25:58AM +0200, Holger Hoffst=E4tte wrote:=
+
+>>> On 2024-04-15 07:24, Naohiro Aota wrote:
+>>> > On Mon, Apr 15, 2024 at 07:11:15AM +0200, Linux regression tracki=
+ng (Thorsten Leemhuis) wrote:
+>>> > > [adding the authors of the two commits mentioned as well as the=
+ Btrfs
+>>> > > maintainers and the regressions & stable list to the list of re=
+cipients]
+>>> > > =
+
+>>> > > On 15.04.24 05:56, Hiroshi Takekawa wrote:
+>>> > > > =
+
+>>> > > > Module loading fails with CONFIG_BTRFS_FS_RUN_SANITY_TESTS en=
+abled on
+>>> > > > 6.8.3-6.8.6.
+>>> > > > =
+
+>>> > > > Bisected:
+>>> > > > Reverting these commits, then module loading succeeds.
+>>> > > > 70f49f7b9aa3dfa70e7a2e3163ab4cae7c9a457a
+>>> > > =
+
+>>> > > FWIW, that is a linux-stable commit-id for 41044b41ad2c8c ("btr=
+fs: add
+>>> > > helper to get fs_info from struct inode pointer") [v6.9-rc1, v6=
+.8.3
+>>> > > (70f49f7b9aa3df)]
+>>> > > =
+
+>>> > > > 86211eea8ae1676cc819d2b4fdc8d995394be07d
+>>> > =
+
+>>> > It looks like the stable tree lacks this commit, which is necessa=
+ry for the
+>>> > commit above.
+>>> > =
+
+>>> > b2136cc288fc ("btrfs: tests: allocate dummy fs_info and root in t=
+est_find_delalloc()")
+>>> > =
+
+>>> =
+
+>>> This was previously reported during the last stable cycle, and the =
+missing
+>>> patch is already queued up. You can see the queue here:
+>>> =
+
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue=
+.git/tree/queue-6.8
+>> =
+
+>> Thanks for confirming this, the next 6.8 release should resolve this=
+
+>> issue.
+>> =
+
+>> greg k-h
+>> =
+
+>>
+> =
+
+> cherry-picked on top of 6.8.6
+> =
+
+> $ git log -2
+> commit 12d79cec1083658f23f4566fcea40463549c5a54 (HEAD -> refs/heads/l=
+inux-6.8.6-btrfs-selftest-fix)
+> Author: David Sterba <dsterba@suse.com>
+> Date:   Mon Jan 29 19:04:33 2024 +0100
+> =
+
+>     btrfs: tests: allocate dummy fs_info and root in test_find_delall=
+oc()
+>     =
+
+>     Allocate fs_info and root to have a valid fs_info pointer in case=
+ it's
+>     dereferenced by a helper outside of tests, like find_lock_delallo=
+c_range().
+>     =
+
+>     Signed-off-by: David Sterba <dsterba@suse.com>
+> =
+
+> commit 1f7d392571dfec1c47b306a32bbe60be05a51160 (tag: refs/tags/v6.8.=
+6, refs/remotes/origin/linux-6.8.y, refs/heads/linux-6.8.y)
+> Author: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Date:   Sat Apr 13 13:10:12 2024 +0200
+> =
+
+>     Linux 6.8.6
+>     =
+
+>     Link: https://lore.kernel.org/r/20240411095420.903937140@linuxfou=
+ndation.org
+>     Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+>     Tested-by: SeongJae Park <sj@kernel.org>
+>     Tested-by: Ronald Warsow <rwarsow@gmx.de>
+>     Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+>     Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+>     Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+>     Tested-by: Ron Economos <re@w6rz.net>
+>     Tested-by: Jon Hunter <jonathanh@nvidia.com>
+>     Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> =
+
+> $ cat /proc/version =
+
+> Linux version 6.8.6+ (user@host) (clang version 18.1.3, LLD 18.1.3) #=
+1 SMP PREEMPT Mon Apr 15 21:31:32 JST 2024
+> =
+
+> sanity tests are enabled:
+> $ zgrep BTRFS_FS_RUN /proc/config.gz =
+
+> CONFIG_BTRFS_FS_RUN_SANITY_TESTS=3Dy
+> =
+
+> dmesg, which indicates the success.
+> [  105.926765] xor: automatically using best checksumming function   =
+avx       =
+
+> [  105.928174] raid6: skipped pq benchmark and selected avx2x4
+> [  105.928175] raid6: using avx2x2 recovery algorithm
+> [  106.017111] Btrfs loaded, zoned=3Dno, fsverity=3Dno
+> [  106.017125] BTRFS: selftest: sectorsize: 4096  nodesize: 4096
+> [  106.017126] BTRFS: selftest: running btrfs free space cache tests
+> [  106.017131] BTRFS: selftest: running extent only tests
+> [  106.017133] BTRFS: selftest: running bitmap only tests
+> [  106.017136] BTRFS: selftest: running bitmap and extent tests
+> [  106.017139] BTRFS: selftest: running space stealing from bitmap to=
+ extent tests
+> [  106.017278] BTRFS: selftest: running bytes index tests
+> [  106.017283] BTRFS: selftest: running extent buffer operation tests=
+
+> [  106.017283] BTRFS: selftest: running btrfs_split_item tests
+> [  106.017287] BTRFS: selftest: running extent I/O tests
+> [  106.017288] BTRFS: selftest: running find delalloc tests
+> [  106.051988] BTRFS: selftest: running find_first_clear_extent_bit t=
+est
+> [  106.051991] BTRFS: selftest: running extent buffer bitmap tests
+> [  106.058653] BTRFS: selftest: running extent buffer memory operatio=
+n tests
+> [  106.058664] BTRFS: selftest: running inode tests
+> [  106.058665] BTRFS: selftest: running btrfs_get_extent tests
+> [  106.058680] BTRFS: selftest: running hole first btrfs_get_extent t=
+est
+> [  106.058685] BTRFS: selftest: running outstanding_extents tests
+> [  106.058693] BTRFS: selftest: running qgroup tests
+> [  106.058694] BTRFS: selftest: running qgroup add/remove tests
+> [  106.058701] BTRFS: selftest: running qgroup multiple refs test
+> [  106.058709] BTRFS: selftest: running free space tree tests
+> [  106.065024] BTRFS: selftest: sectorsize: 4096  nodesize: 8192
+> [  106.065025] BTRFS: selftest: running btrfs free space cache tests
+> [  106.065027] BTRFS: selftest: running extent only tests
+> [  106.065029] BTRFS: selftest: running bitmap only tests
+> [  106.065032] BTRFS: selftest: running bitmap and extent tests
+> [  106.065035] BTRFS: selftest: running space stealing from bitmap to=
+ extent tests
+> [  106.065174] BTRFS: selftest: running bytes index tests
+> [  106.065179] BTRFS: selftest: running extent buffer operation tests=
+
+> [  106.065180] BTRFS: selftest: running btrfs_split_item tests
+> [  106.065183] BTRFS: selftest: running extent I/O tests
+> [  106.065183] BTRFS: selftest: running find delalloc tests
+> [  106.099325] BTRFS: selftest: running find_first_clear_extent_bit t=
+est
+> [  106.099327] BTRFS: selftest: running extent buffer bitmap tests
+> [  106.116359] BTRFS: selftest: running extent buffer memory operatio=
+n tests
+> [  106.116380] BTRFS: selftest: running inode tests
+> [  106.116381] BTRFS: selftest: running btrfs_get_extent tests
+> [  106.116395] BTRFS: selftest: running hole first btrfs_get_extent t=
+est
+> [  106.116398] BTRFS: selftest: running outstanding_extents tests
+> [  106.116405] BTRFS: selftest: running qgroup tests
+> [  106.116406] BTRFS: selftest: running qgroup add/remove tests
+> [  106.116413] BTRFS: selftest: running qgroup multiple refs test
+> [  106.116420] BTRFS: selftest: running free space tree tests
+> [  106.122685] BTRFS: selftest: sectorsize: 4096  nodesize: 16384
+> [  106.122686] BTRFS: selftest: running btrfs free space cache tests
+> [  106.122688] BTRFS: selftest: running extent only tests
+> [  106.122690] BTRFS: selftest: running bitmap only tests
+> [  106.122693] BTRFS: selftest: running bitmap and extent tests
+> [  106.122697] BTRFS: selftest: running space stealing from bitmap to=
+ extent tests
+> [  106.122837] BTRFS: selftest: running bytes index tests
+> [  106.122842] BTRFS: selftest: running extent buffer operation tests=
+
+> [  106.122843] BTRFS: selftest: running btrfs_split_item tests
+> [  106.122847] BTRFS: selftest: running extent I/O tests
+> [  106.122847] BTRFS: selftest: running find delalloc tests
+> [  106.156175] BTRFS: selftest: running find_first_clear_extent_bit t=
+est
+> [  106.156177] BTRFS: selftest: running extent buffer bitmap tests
+> [  106.190038] BTRFS: selftest: running extent buffer memory operatio=
+n tests
+> [  106.190076] BTRFS: selftest: running inode tests
+> [  106.190076] BTRFS: selftest: running btrfs_get_extent tests
+> [  106.190091] BTRFS: selftest: running hole first btrfs_get_extent t=
+est
+> [  106.190095] BTRFS: selftest: running outstanding_extents tests
+> [  106.190102] BTRFS: selftest: running qgroup tests
+> [  106.190102] BTRFS: selftest: running qgroup add/remove tests
+> [  106.190110] BTRFS: selftest: running qgroup multiple refs test
+> [  106.190117] BTRFS: selftest: running free space tree tests
+> [  106.196389] BTRFS: selftest: sectorsize: 4096  nodesize: 32768
+> [  106.196390] BTRFS: selftest: running btrfs free space cache tests
+> [  106.196391] BTRFS: selftest: running extent only tests
+> [  106.196394] BTRFS: selftest: running bitmap only tests
+> [  106.196397] BTRFS: selftest: running bitmap and extent tests
+> [  106.196400] BTRFS: selftest: running space stealing from bitmap to=
+ extent tests
+> [  106.196539] BTRFS: selftest: running bytes index tests
+> [  106.196544] BTRFS: selftest: running extent buffer operation tests=
+
+> [  106.196544] BTRFS: selftest: running btrfs_split_item tests
+> [  106.196549] BTRFS: selftest: running extent I/O tests
+> [  106.196549] BTRFS: selftest: running find delalloc tests
+> [  106.230530] BTRFS: selftest: running find_first_clear_extent_bit t=
+est
+> [  106.230534] BTRFS: selftest: running extent buffer bitmap tests
+> [  106.297904] BTRFS: selftest: running extent buffer memory operatio=
+n tests
+> [  106.297981] BTRFS: selftest: running inode tests
+> [  106.297982] BTRFS: selftest: running btrfs_get_extent tests
+> [  106.297997] BTRFS: selftest: running hole first btrfs_get_extent t=
+est
+> [  106.298001] BTRFS: selftest: running outstanding_extents tests
+> [  106.298008] BTRFS: selftest: running qgroup tests
+> [  106.298009] BTRFS: selftest: running qgroup add/remove tests
+> [  106.298016] BTRFS: selftest: running qgroup multiple refs test
+> [  106.298023] BTRFS: selftest: running free space tree tests
+> [  106.304312] BTRFS: selftest: sectorsize: 4096  nodesize: 65536
+> [  106.304313] BTRFS: selftest: running btrfs free space cache tests
+> [  106.304315] BTRFS: selftest: running extent only tests
+> [  106.304317] BTRFS: selftest: running bitmap only tests
+> [  106.304320] BTRFS: selftest: running bitmap and extent tests
+> [  106.304324] BTRFS: selftest: running space stealing from bitmap to=
+ extent tests
+> [  106.304462] BTRFS: selftest: running bytes index tests
+> [  106.304468] BTRFS: selftest: running extent buffer operation tests=
+
+> [  106.304468] BTRFS: selftest: running btrfs_split_item tests
+> [  106.304473] BTRFS: selftest: running extent I/O tests
+> [  106.304473] BTRFS: selftest: running find delalloc tests
+> [  106.338587] BTRFS: selftest: running find_first_clear_extent_bit t=
+est
+> [  106.338589] BTRFS: selftest: running extent buffer bitmap tests
+> [  106.472975] BTRFS: selftest: running extent buffer memory operatio=
+n tests
+> [  106.473127] BTRFS: selftest: running inode tests
+> [  106.473127] BTRFS: selftest: running btrfs_get_extent tests
+> [  106.473143] BTRFS: selftest: running hole first btrfs_get_extent t=
+est
+> [  106.473148] BTRFS: selftest: running outstanding_extents tests
+> [  106.473155] BTRFS: selftest: running qgroup tests
+> [  106.473156] BTRFS: selftest: running qgroup add/remove tests
+> [  106.473164] BTRFS: selftest: running qgroup multiple refs test
+> [  106.473172] BTRFS: selftest: running free space tree tests
+> [  106.479514] BTRFS: selftest: running extent_map tests
+> [  106.479517] BTRFS: selftest: Running btrfs_drop_extent_map_range t=
+ests
+> [  106.479520] BTRFS: selftest: Running btrfs_drop_extent_cache with =
+pinned
+> [  106.479521] BTRFS: selftest: running rmap tests
+> [  126.436989] modprobe: FATAL: Module ikconfig not found in director=
+y /lib/modules/6.8.6+
+> [  170.100869] udevd[9881]: conflicting device node '/dev/mapper/data=
+-encrypted' found, link to '/dev/dm-0' will not be created
+> [  170.861020] EXT4-fs (dm-0): mounted filesystem 22071832-a730-492a-=
+a11f-2bc502437c08 r/w with ordered data mode. Quota mode: disabled.
+> [  176.037983] udevd[9902]: conflicting device node '/dev/mapper/pool=
+-encrypted' found, link to '/dev/dm-1' will not be created
+> [  177.780518] BTRFS: device label pool devid 1 transid 16145 /dev/ma=
+pper/pool-encrypted scanned by mount (9904)
+> [  177.780955] BTRFS info (device dm-1): first mount of filesystem 25=
+48bfee-1ac9-4894-bd68-47e128d7af9b
+> [  177.780963] BTRFS info (device dm-1): using crc32c (crc32c-intel) =
+checksum algorithm
+> [  177.780965] BTRFS info (device dm-1): disk space caching is enable=
+d
+> [  177.865416] BTRFS warning (device dm-1): devid 1 physical 0 len 41=
+94304 inside the reserved space
+> [  183.347633] udevd[10073]: conflicting device node '/dev/mapper/bac=
+kup-encrypted' found, link to '/dev/dm-2' will not be created
+> =
+
+> Best regards,
+> =
+
+> --
+> Hiroshi Takekawa <sian@big.or.jp>
 
 Best regards,
-Vitor Soares
->=20
-> Regards,
-> Lucas
->=20
-> > Best regards,
-> > Vitor Soares
-> > >=20
-> > > >=20
-> > > > >=20
-> > > > >=20
-> > > > > >=20
-> > > > > > Regards,
-> > > > > > Lucas
-> > > > > >=20
-> > > > > > > Do you have an idea how we can address this within blk-ctrl?
-> > > > > > >=20
-> > > > > > > Best regards,
-> > > > > > > Vitor
-> > > > >=20
-> > > >=20
-> > >=20
-> >=20
->=20
 
+--
+Hiroshi Takekawa <sian@big.or.jp>
 
