@@ -1,112 +1,119 @@
-Return-Path: <stable+bounces-40129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370F38A8EE2
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 00:33:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980FF8A8F0E
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 00:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E256D1F22280
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 22:33:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C97DE1C2165F
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 22:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C907640D;
-	Wed, 17 Apr 2024 22:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF528527B;
+	Wed, 17 Apr 2024 22:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="ocCvKi8g"
 X-Original-To: stable@vger.kernel.org
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3812C43ACD;
-	Wed, 17 Apr 2024 22:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713393193; cv=none; b=Mpu0nU7xCGleeWZVdz6QZEaCiFe/5Lc099TPDCH/8V9fDy7AhR7WRHADuxHNt01288Zljv2NwYJ3dmcy35n3n5ekuc5fsizuF7bABimJbj/qTaClQU+DWAwVOltE877ruaOliAE0KM+wNH6sStdu0yaWK/ZLOtcSNei1aZ+GNiY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713393193; c=relaxed/simple;
-	bh=olEtmW1Fdb+ZA6bekXHJ/ecjbAH6rD4LnRBRS5a25K0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bwVNTvizER7sUw8OZk/RsY7KAf7q07Md0eK62n8OT6fzGth04BMEQM+A03RqWZ57OO/sawEXIvPMvwPUnLeXiAS8M6VTeJWwAnCj7x7pTpwwIdWwE0m1ZqqTZOq5vu283IkXCe2M7Xc+z0YIm8Ha1G4bFDiMDf9I2CY53C8PItY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id A4B0E3000D926;
-	Thu, 18 Apr 2024 00:33:00 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 82D8E1BD02; Thu, 18 Apr 2024 00:33:00 +0200 (CEST)
-Date: Thu, 18 Apr 2024 00:33:00 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net] r8169: fix LED-related deadlock on module removal
-Message-ID: <ZiBOHF24EDoaI9gm@wunner.de>
-References: <ded9d793-83f8-4f11-87d9-a218d10c2981@gmail.com>
- <20240416193458.1e2c799d@kernel.org>
- <4b0495fd-fab5-4341-9b06-2f48613ee921@gmail.com>
- <2024041709-prorate-swifter-523d@gregkh>
- <17a3f8cb-26d4-4185-8e8b-0040ed62ae77@gmail.com>
- <2024041746-heritage-annex-3b66@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A799F7E588;
+	Wed, 17 Apr 2024 22:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=167.235.159.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713394744; cv=pass; b=LbjL5rFCUpbcgzrra8sV9jWgUWOJduuJWFky82IWV5oOJ0JJvUZbx7zskfUQyVs1eP1PhYyhQgMeKrqugc1vGgN7I/gsBHqeQwIASKKR+SSbotHiH+I6h6fbPHGGukh+ewd5BRgDSuViV8OaeRX9dY68y8sWPXGKwlufkN/3hIg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713394744; c=relaxed/simple;
+	bh=IN21uIJFZDZ6vnpfnCKHO19bcht2OmcqLTfLjQSZuP0=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=YcI3xmK1XUJrwHT2cyLp3ejsUV7VPCnIqVHmbYZUFHOjy9vVxkA3+GK/iTG0fYIzGbFSpfGNoELIBSBckpiKV0SsJtLFY57Pr2OzRsxebPpGXCPcRCQO8fuMLGg/OaTdEQ8Eu8GM6yUUXWVtcod4AMIsl/mumdfqia30BqzaI/Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=ocCvKi8g; arc=pass smtp.client-ip=167.235.159.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
+Message-ID: <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1713394739;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5gX4h7XWwTPzc8qUo6w0KwuwczujKTtmoHLee/tMjAQ=;
+	b=ocCvKi8gbZu5b4BREy1H6sWfoG/AFUCtTKXPougAtf+fSZKz8anHGr8T20VF2b7lT3Q6BW
+	KdWT6eLMAHAXKIYKik2Dj3kZC3zDlcINdvrT8xRIyXViTjnO+dmgkxbwaO+/naHaUCjH77
+	WmQytU2knAl/fm3bndxlr+lh/QdmaPpZjX9l6Wp71TkLffJ3ogxPWsEOAp+zsoz7QwNGij
+	qRIc3hSzvA8tkRfTly2CdqFVwFKDxmYBODakzItrKewFa50yCZdhlxoQIQ/aAp29vcJh8+
+	a4ayEhzqk4kqKth1pEoSEc28qxXeUDeauTuMPgifAPLzYzKus5qylBnYGUX8XQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1713394739; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5gX4h7XWwTPzc8qUo6w0KwuwczujKTtmoHLee/tMjAQ=;
+	b=MbfVg54eCphZ65LWZXZc3HM7Dk4cm57ZB2fVm4C+5t70bW5pg7/+1cI4xRu7VB+ZP7TrqZ
+	gVaMU5WVvCgKMTdNfIQE1IehAqPekjLNVAE9jaIYGLLEDXSP7Z+dwbT8+wuEq7xjaQUAug
+	Q3a1hol5GHjQkRTyAr0OcKPg7FTx+Xvv+gkbBNQW9QiVkLinH1eK6uRXJzCtrgrEqDz1K0
+	m2Tes9YHA6myhAQIJFp0siM1frNOBonzJKHhU6wgHlt/Nq1LXalrk2obUM0ihdGlrmg8lN
+	jNxdd+qq3cy7mi78QkGT9pFsQo5WpjRdTPjDc3fW1dmD29ay3513+skBmEkoAg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.mailfrom=pc@manguebit.com
+ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1713394739; a=rsa-sha256;
+	cv=none;
+	b=Q3PxL6tMjkIFg/uKKBiBjvpa/2ccv6jRZmfQMD40seMtX0zKXDtv8p2DbMyudC/ZL4D6u3
+	gcu3HFBur0ceETPWWeFegixMyZxyPDcHGZd3QTp9SgYVdCa8WvbQ4cSC9CQnhyy0fl7t2J
+	/zjLsg4tCVkDXeqnZAtmpdIPgyMhI1EyixH41byHrmF1PBBCu9YVYkXd9uq03iINT2lRwN
+	PohZU/epCV83ik0RQnZNNJ+v5nwtTq0Z4lwWBiOxkReGTsAP8Wedxa1NgUImaXsTjDGCa7
+	kj/OCLVgM9uUqROUM5yR5djBBkvSxd5SiAxbYEX//V0GprXg7lBhpqaegQihdw==
+From: Paulo Alcantara <pc@manguebit.com>
+To: Salvatore Bonaccorso <carnil@debian.org>, regressions@lists.linux.dev,
+ Steve French <stfrench@microsoft.com>
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
+ linux-cifs@vger.kernel.org
+Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
+ overflow frame end of buf" and invisible files under certain conditions
+ and at least with noserverino mount option
+In-Reply-To: <ZiBCsoc0yf_I8In8@eldamar.lan>
+References: <ZiBCsoc0yf_I8In8@eldamar.lan>
+Date: Wed, 17 Apr 2024 19:58:56 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024041746-heritage-annex-3b66@gregkh>
+Content-Type: text/plain
 
-On Wed, Apr 17, 2024 at 09:43:27AM +0200, Greg KH wrote:
-> On Wed, Apr 17, 2024 at 09:16:04AM +0200, Heiner Kallweit wrote:
-> > On 17.04.2024 09:04, Greg KH wrote:
-> > > On Wed, Apr 17, 2024 at 08:02:31AM +0200, Heiner Kallweit wrote:
-> > >> On 17.04.2024 04:34, Jakub Kicinski wrote:
-> > >>> On Mon, 15 Apr 2024 13:57:17 +0200 Heiner Kallweit wrote:
-> > >>>> Binding devm_led_classdev_register() to the netdev is problematic
-> > >>>> because on module removal we get a RTNL-related deadlock. Fix this
-> > >>>> by avoiding the device-managed LED functions.
-> > >>>>
-> > >>>> Note: We can safely call led_classdev_unregister() for a LED even
-> > >>>> if registering it failed, because led_classdev_unregister() detects
-> > >>>> this and is a no-op in this case.
-> > >>>>
-> > >>>> Fixes: 18764b883e15 ("r8169: add support for LED's on RTL8168/RTL8101")
-> > >>>> Cc: <stable@vger.kernel.org> # 6.8.x
-> > >>>> Reported-by: Lukas Wunner <lukas@wunner.de>
-> > >>>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> > >> 
-> > >> This is a version of the fix modified to apply on 6.8.
-> > > 
-> > > That was not obvious at all :(
-> > > 
-> > Stating "Cc: <stable@vger.kernel.org> # 6.8.x" isn't sufficient?
-> 
-> Without showing what commit id this is in Linus's tree, no.
+Hi Salvatore,
 
-The upstream commit id *is* called out in the patch, but it's buried
-below the three dashes:
+Salvatore Bonaccorso <carnil@debian.org> writes:
 
-    The original change was introduced with 6.8, 6.9 added support for
-    LEDs on RTL8125. Therefore the first version of the fix applied on
-    6.9-rc only. This is the modified version for 6.8.
-    Upstream commit: 19fa4f2a85d7
-                     ^^^^^^^^^^^^
+> In Debian we got two reports of cifs mounts not functioning, hiding
+> certain files. The two reports are:
+>
+> https://bugs.debian.org/1069102
+> https://bugs.debian.org/1069092
+>
+> On those cases kernel logs error
+>
+> [   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
 
-The proper way to do this is to prominently add ...
+I couldn't reproduce it.  Does the following fix your issue:
 
-    commit 19fa4f2a85d777a8052e869c1b892a2f7556569d upstream.
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 4c1231496a72..3ee35430595e 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -5083,7 +5083,7 @@ smb2_parse_query_directory(struct cifs_tcon *tcon,
+ 		info_buf_size = sizeof(struct smb2_posix_info);
+ 		break;
+ 	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
+-		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO);
++		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO) - 1;
+ 		break;
+ 	default:
+ 		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
 
-... or ...
+If not, please provide network trace and verbose logs.
 
-    [ Upstream commit 19fa4f2a85d777a8052e869c1b892a2f7556569d ]
-
-... as the first line of the commit message, as per
-Documentation/process/stable-kernel-rules.rst
+Thanks.
 
