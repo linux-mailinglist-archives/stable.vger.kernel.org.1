@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-40106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312868A8477
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 15:26:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1646F8A8499
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 15:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3FB71F21A48
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 13:26:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96071B28441
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 13:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A9413FD9C;
-	Wed, 17 Apr 2024 13:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375F113F432;
+	Wed, 17 Apr 2024 13:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kNLeAxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqDbioDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7C213F00A;
-	Wed, 17 Apr 2024 13:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93F513CFB7;
+	Wed, 17 Apr 2024 13:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713360313; cv=none; b=UG52xev0sPBcAC08aP7ZKlN3tsqs/RfP/dB55A+owgxwyvKjLiTH64hT469q/kFYyF84x+T9PKQSivEvsfrcNfX5ekISnwLoGvIlge2eruRE4CInM6MCn7UQ0jSK+u7a/UJojIqvcyfLjVl2fdGW8K0zAAl4X80zz6SmwHnEfpo=
+	t=1713360488; cv=none; b=CIMn9xFKTfkxfLsNkaEFEFuY7Z4uiGe0JmF8SZ3ry14CU3D+tRcVltHZRuMTZF+4ewm6co9AXS8PpBWBpAyVNnzhY8fSTWlOMR+qTpDE2AVVkZQPf1x1U8UmHMJWYDMaqlhEJKcNJ8tt8QNBTBTomaYcthT0VYzaa4WSORfTR28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713360313; c=relaxed/simple;
-	bh=8bqkE0g7ZjbpUsQZ9D9S1dwIKAFyl5WZ/m4Ic5pqksk=;
+	s=arc-20240116; t=1713360488; c=relaxed/simple;
+	bh=WsPDv7AF1G0PbOV+/cjKhePBPo6kURl1Gyj2WmHRyn4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rZDvDykPELMuf8wXrc5GzHh1aqmbJ2cKkY3ridwny/wA6SFM/LYkcShQ1P39w+dYdGqqaYRtmp8qrKP1LFRPSdrybZ8C6iPkyetE7xmRNfiX8MdpE3SGX7i9y8zAyI86vavXz9EX4opsor/7EqJ5p74d9MxFORFJoMJ5RQMMAVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kNLeAxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0041BC4AF07;
-	Wed, 17 Apr 2024 13:25:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=FXNndVAKqxkURqFy+GXSSvW9Kx8FNSgAvvTlc49+QiB3IjFc+Jix9E0iQHSn486754aE38am854DT+xBMulLKkjWSrWsgrkHzhRR66XHmbgNepc1SBoTUxt4wYP/X9raoLrQlqcaR+/9y8t59C9hlvZOPWWTJedZtR2iojBV4/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqDbioDv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4668C072AA;
+	Wed, 17 Apr 2024 13:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713360312;
-	bh=8bqkE0g7ZjbpUsQZ9D9S1dwIKAFyl5WZ/m4Ic5pqksk=;
+	s=korg; t=1713360487;
+	bh=WsPDv7AF1G0PbOV+/cjKhePBPo6kURl1Gyj2WmHRyn4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0kNLeAxX0Q0O1h4Wq+jxWE/nEdKuB32pGl+uIKjBYEXwtliTuAec8ZmTfdeaFQdBt
-	 SIhznfwZPELTOwtgH/mbyDYX00oCClBwRDEYh8WumKkLljgDF1KrBF9tgr2Kh/dE8l
-	 mwn9+zWKbRh/DK83juikJYqIU95gEfpKYezm2Z9k=
-Date: Wed, 17 Apr 2024 15:25:09 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chuck Lever <chuck.lever@oracle.com>
-Cc: cel@kernel.org, stable@vger.kernel.org, linux-nfs@vger.kernel.org,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: Re: [PATCH] Revert 2267b2e84593bd3d61a1188e68fba06307fa9dab
-Message-ID: <2024041745-stagnate-bloating-87e0@gregkh>
-References: <20240416203337.10248-1-cel@kernel.org>
- <2024041727-refueling-sensually-0566@gregkh>
- <Zh/LyjplA5coHKqJ@tissot.1015granger.net>
+	b=RqDbioDvLVzUHbdmeiDnGfLAbZNsZmUDDasrCiVyIfe+b5z4wli961BtQtIRoeoaa
+	 0qvPQN46xgVGZBxW9CN4qdUrACqVG6CLonK4xSyf2ucpRBLT/xItM9m34HBDqd4o9P
+	 a84BUqpm5i3ERzMFpIyQfcbiVJPYQnzc/pQ/fOM0=
+Date: Wed, 17 Apr 2024 15:28:04 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pavel Machek <pavel@denx.de>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+	alex.williamson@redhat.com, seanjc@google.com, jpoimboe@redhat.com,
+	michael.roth@amd.com, dsterba@suse.com, aric.cyr@amd.com
+Subject: Re: [PATCH 5.10 000/294] 5.10.215-rc1 review
+Message-ID: <2024041739-faceted-sandpit-0818@gregkh>
+References: <20240411095435.633465671@linuxfoundation.org>
+ <Zh/HpAGFqa7YAFuM@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,33 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zh/LyjplA5coHKqJ@tissot.1015granger.net>
+In-Reply-To: <Zh/HpAGFqa7YAFuM@duo.ucw.cz>
 
-On Wed, Apr 17, 2024 at 09:16:58AM -0400, Chuck Lever wrote:
-> On Wed, Apr 17, 2024 at 07:56:53AM +0200, Greg KH wrote:
-> > On Tue, Apr 16, 2024 at 04:33:37PM -0400, cel@kernel.org wrote:
-> > > From: Chuck Lever <chuck.lever@oracle.com>
-> > > 
-> > > ltp test fcntl17 fails on v5.15.154. This was bisected to commit
-> > > 2267b2e84593 ("lockd: introduce safe async lock op").
-> > 
-> > Your subject line is a big odd :(
+On Wed, Apr 17, 2024 at 02:59:16PM +0200, Pavel Machek wrote:
+> Hi!
 > 
-> I used the style we normally use for revert patches for Linus'
-> kernel. Let me know what needs to be improved.
+> > This is the start of the stable review cycle for the 5.10.215 release.
+> > There are 294 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> 
+> > Alex Williamson <alex.williamson@redhat.com>
+> >     vfio/pci: Create persistent INTx handler
+> 
+> This introduces memory leak in vfio_intx_enable() -- name is not freed
+> in case vdev->ctx = kzalloc() fails, for example.
 
-That's not normal, this is what that would normally look like:
-~/linux/stable/scratch (s-515) $ git revert 2267b2e84593bd3d61a1188e68fba06307fa9dab
-Auto-merging fs/nfsd/nfs4state.c
-[s-515 5bd6c14e1a72] Revert "lockd: introduce safe async lock op"
- 4 files changed, 6 insertions(+), 29 deletions(-)
+So is the upstream commit wrong, or the backport wrong?
 
-Subject lines don't have a huge hash in it.
+> > Sean Christopherson <seanjc@google.com>
+> >     x86/cpufeatures: Add CPUID_LNX_5 to track recently added Linux-defined word
+> 
+> AFAICT this is not needed in 5.10.
 
-Anyway, I can fix this up, no worries, but I don't know how you created
-this to get that subject line.
+Why not?
 
-thanks,
+> > Josh Poimboeuf <jpoimboe@redhat.com>
+> >     objtool: Add asm version of STACK_FRAME_NON_STANDARD
+> 
+> Asm version of this macro is not used in 5.10.
+
+It fixed an issue.
+
+> > Michael Roth <michael.roth@amd.com>
+> >     x86/head/64: Re-enable stack protection
+> 
+> This is preparation for preparation for SEV-SNP CPUID patches, I don't
+> believe we plan that for 6.1.
+
+This is 5.10, not 6.1.
+
+And are you sure that this is not needed?  Remember the x86 speculation
+mess that is happening here.
+
+> > David Sterba <dsterba@suse.com>
+> >     btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
+> 
+> (This applies to 4.19, too). mutex_unlock() is needed before "goto
+> error" here.
+
+So can you provide that fix please?
+
+> > Aric Cyr <aric.cyr@amd.com>
+> >     drm/amd/display: Fix nanosec stat overflow
+> 
+> (This applies to 4.19, too). This is wrong. It updates prototypes but
+> not actual functions.
+
+So should it be dropped or added to 4.19?
+
+confused,
 
 greg k-h
 
