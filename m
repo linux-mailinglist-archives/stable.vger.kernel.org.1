@@ -1,161 +1,147 @@
-Return-Path: <stable+bounces-40126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08328A8E35
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 23:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F138A8E45
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 23:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B54D28386C
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 21:41:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63245282FC6
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 21:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F48657CE;
-	Wed, 17 Apr 2024 21:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F6C7D410;
+	Wed, 17 Apr 2024 21:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FMKTZvcc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJGu1HGa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D102171A1;
-	Wed, 17 Apr 2024 21:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF9F657C5;
+	Wed, 17 Apr 2024 21:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713390056; cv=none; b=cj8Jvjo7kFgKHSLdfYx7AU0mbTkhFXWM15LXbhrrMhnUUMMVtW1SeikHhZ4luQatYq+HHTpuGaxy1ul2eO/xB7bAbXTY4SRtFl1cRapQlfgWGFzj6HLd5pbT7tpQ/iKcRu8+KonmWktjL9A1kaiSx+jfnZ9WONIU/zZ1LAElCRo=
+	t=1713390265; cv=none; b=HpRvlLTIDPaYlE6DvY+Yq6azFyTdaGiIQmrDVcCrmxKQtBS+L+c1Sbx7WmOW2He6OWEWLQ54HfX8wVY2QTacJJAepYaSkTxLxWphF2kTejPWnVfi0AIGLQgbvc8+g0Y+bQgrJyhrl2eXZS1T0raMKlo7z3wwdRidX85hFY5rvW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713390056; c=relaxed/simple;
-	bh=UQQp7GOMr3HWLV341KAxVpmwdyLVo5Kvtj7+wCLeCa0=;
-	h=Date:To:From:Subject:Message-Id; b=VzfkoWjp3hFBacTSLdxpys/zlbXtE1rHlFdWCYBEfeyOIClBBa2kque+yDs3oiToRZLSaW5PsljNQdXMWwMAyD5l/UcGCILICawaqEgfKojjnAky8p6tbwJMvUdSDyPKlRfOiTMxn9fkq+45nSRNBCz2k9+6Fnlq/+srUVqjNNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FMKTZvcc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF967C072AA;
-	Wed, 17 Apr 2024 21:40:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1713390055;
-	bh=UQQp7GOMr3HWLV341KAxVpmwdyLVo5Kvtj7+wCLeCa0=;
-	h=Date:To:From:Subject:From;
-	b=FMKTZvccK6KNMy5pR7CMxGTOHo/q7QYZ3dYEI8lcFJC+vLCiaEhxiBNMUwp8lqC1Q
-	 g1sTMV0HdoODTzlHVaVMPq/ng9g4oyGHE7xxQK3gqX7yoUUWJqcbTJuWbDJYfiwL0D
-	 cryxsKxQP+4CMN63zobe0FZeyjNvitc4ZM9HpIRU=
-Date: Wed, 17 Apr 2024 14:40:55 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,david@redhat.com,almasrymina@google.com,peterx@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240417214055.CF967C072AA@smtp.kernel.org>
+	s=arc-20240116; t=1713390265; c=relaxed/simple;
+	bh=CKUQsG0mmfIa/QAx1wtwzpQgzNw8NsmVWIrXBKfxecw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=AkUPzwaPOR/CaLAIedUFRBuJhjgWiFkj8tK9KoiJjDzIVmJ5D186HaTiQ4IcR02uSFi/DonJLex01hW/kd9c0+VessLHm3PqMirDbxo6B4yLEwt96IqHPWnf0WlNResNuCtMf4MaXdf4zMtiVMzpIy7b61bkuNMb1KTIy00j3O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJGu1HGa; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a5565291ee7so9573466b.2;
+        Wed, 17 Apr 2024 14:44:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713390262; x=1713995062; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=R/cPwbUkdSnGIuJG3R0hCFpAuz58iZdf0S7zyLL6x1I=;
+        b=iJGu1HGav9qmaXrEAcVAl/hgUJ8Crkm5MOaRky51TrrI2hoDrTFOYJiwapgkKcs9KK
+         AfKB6CJUtV6E4HWsQToJ8OhcEfmLomOUa/KVnxG+Vk2O9bZ79NUowTv2uMDkask6fLyr
+         ZyKghey+JnHjrK6IIQgSvZpGXHugUH3Rel8C0wuToHshGiVQc8wWDMmZszNM/BxOf+dW
+         ihk/kAdQ22TRWVnHHJB401cMhcp1PGmESEfrxOPrfER66oZuRGHDvg1MzC+1v4INuKwA
+         FV3SF/A1XOxlS7f+6EQMTs4qu3VzGMKeP3/oT998pfvbLgPEHyI+ggb+oVWWPkIjVTYT
+         quSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713390262; x=1713995062;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R/cPwbUkdSnGIuJG3R0hCFpAuz58iZdf0S7zyLL6x1I=;
+        b=r71yLT0hANgqgYoHPrCi9lTzGQGDYliKzLnWhujTrCiqID9dXdV1idwSFnlEDJEfzK
+         QS0HlKix0vyshHrY4EOcWxazcfceq8Vq31y/Bsy0dO/19W7ohY1BoLTGejbf/r1EfTrf
+         bnT2aq7BTMFxXm6qcdoIOLRj0CwEYjNcf+dd6TX2ZvXFwPPl/ut/fVMTPTAFgts3Tecb
+         bIZMqjmubAhB51ale43CPUceR9w0XigrGxhALlTwY/cQsqBMo1c1w/9gDYIREIOsX45j
+         offS4ybu5GsvpGH24SC9D/kGfgrzEZK3luKGKpqsQoDEYOnT2ZBJ2/4bnPR2LOwUmaB+
+         n+Cg==
+X-Forwarded-Encrypted: i=1; AJvYcCV52/sTR2UbKw5sz+Wmn19cgyTggfeVFFlu7ic2o+bdklXgvHsiId0RgjoGU/YlLrs2IVUfGZHdWGnCEr8LrrdkS3NZmbqwnu+MFQnQfclGtyP8dCo18eg3vC8lCjFtbVGcFA==
+X-Gm-Message-State: AOJu0YxJZTrGGbLq5c8kWwBAeSDGU4LD4I8+Qq6tHmvxlXBkbbIqJ7uN
+	yxoUzvodAdMElZkob1oKjy1QEmlmqWZMfcqiwp6tzAXrMCsXkENx
+X-Google-Smtp-Source: AGHT+IGhziwNWrUflqmylzgphhuQqIOdmIo9FOUOgVFe3BA/1KzCoiE0xie2CFOhoM7YIWuhY0ETsA==
+X-Received: by 2002:a17:906:6d99:b0:a52:5d42:a542 with SMTP id h25-20020a1709066d9900b00a525d42a542mr416739ejt.63.1713390261177;
+        Wed, 17 Apr 2024 14:44:21 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id p7-20020a17090635c700b00a51e6222200sm66605ejb.156.2024.04.17.14.44.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Apr 2024 14:44:19 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 90DEEBE2EE8; Wed, 17 Apr 2024 23:44:18 +0200 (CEST)
+Date: Wed, 17 Apr 2024 23:44:18 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: regressions@lists.linux.dev, Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
+	linux-cifs@vger.kernel.org
+Subject: [regression 6.1.80+] "CIFS: VFS: directory entry name would overflow
+ frame end of buf" and invisible files under certain conditions and at least
+ with noserverino mount option
+Message-ID: <ZiBCsoc0yf_I8In8@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+Hi Paulo, hi all
 
-The patch titled
-     Subject: mm/hugetlb: fix missing hugetlb_lock for resv uncharge
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch
+In Debian we got two reports of cifs mounts not functioning, hiding
+certain files. The two reports are:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch
+https://bugs.debian.org/1069102
+https://bugs.debian.org/1069092
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On those cases kernel logs error
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+[   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+I do not have yet a minimal reproducing setup, but I was able to
+reproduce the the issue cerating a simple share (done for simplicity
+with ksmbd):
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+[global]
+	...
+[poc]
+        path = /srv/data
+        valid users = root
+        read only = no
 
-------------------------------------------------------
-From: Peter Xu <peterx@redhat.com>
-Subject: mm/hugetlb: fix missing hugetlb_lock for resv uncharge
-Date: Wed, 17 Apr 2024 17:18:35 -0400
+Within /srv/data create an empty file libfoo:
 
-There is a recent report on UFFDIO_COPY over hugetlb:
+# touch /srv/data/libfoo
 
-https://lore.kernel.org/all/000000000000ee06de0616177560@google.com/
+The share is mounted with noserverino (the issue is not reproducible
+without at least in my case):
 
-350:	lockdep_assert_held(&hugetlb_lock);
+mount -t cifs -o noserverino //server/poc /mnt
 
-Should be an issue in hugetlb but triggered in an userfault context, where
-it goes into the unlikely path where two threads modifying the resv map
-together.  Mike has a fix in that path for resv uncharge but it looks like
-the locking criteria was overlooked: hugetlb_cgroup_uncharge_folio_rsvd()
-will update the cgroup pointer, so it requires to be called with the lock
-held.
+On each access of /mnt a new error is logged, while not showing the
+libfoo file:
 
-Link: https://lkml.kernel.org/r/20240417211836.2742593-3-peterx@redhat.com
-Fixes: 79aa925bf239 ("hugetlb_cgroup: fix reservation accounting")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: syzbot+4b8077a5fccc61c385a1@syzkaller.appspotmail.com
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+[   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
+[  603.494356] CIFS: VFS: directory entry name would overflow frame end of buf 000000001dbf54e1
+[  633.217689] CIFS: VFS: directory entry name would overflow frame end of buf 00000000fb4597c4
+[  642.791862] CIFS: VFS: directory entry name would overflow frame end of buf 0000000023b48528
 
- mm/hugetlb.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+I have verified that reverting in 6.1.y the commit 0947d0d463d4 ("smb:
+client: set correct d_type for reparse points under DFS mounts") on
+top of 6.1.87 fixes the issue.
 
---- a/mm/hugetlb.c~mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge
-+++ a/mm/hugetlb.c
-@@ -3268,9 +3268,12 @@ struct folio *alloc_hugetlb_folio(struct
- 
- 		rsv_adjust = hugepage_subpool_put_pages(spool, 1);
- 		hugetlb_acct_memory(h, -rsv_adjust);
--		if (deferred_reserve)
-+		if (deferred_reserve) {
-+			spin_lock_irq(&hugetlb_lock);
- 			hugetlb_cgroup_uncharge_folio_rsvd(hstate_index(h),
- 					pages_per_huge_page(h), folio);
-+			spin_unlock_irq(&hugetlb_lock);
-+		}
- 	}
- 
- 	if (!memcg_charge_ret)
-_
+#regzbot introduced: 0947d0d463d4
 
-Patches currently in -mm which might be from peterx@redhat.com are
+I can try to make a clean environment to reproeduce the issue, but I'm
+not yet there. But the regression is related to 0947d0d463d4 ("smb:
+client: set correct d_type for reparse points under DFS mounts").
+The mentioned commit was as well part of 6.7.7 at least, but I'm not
+able to reproduce the issue from another client running 6.7,9.
 
-mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch
-mm-hmm-process-pud-swap-entry-without-pud_huge.patch
-mm-gup-cache-p4d-in-follow_p4d_mask.patch
-mm-gup-check-p4d-presence-before-going-on.patch
-mm-x86-change-pxd_huge-behavior-to-exclude-swap-entries.patch
-mm-sparc-change-pxd_huge-behavior-to-exclude-swap-entries.patch
-mm-arm-use-macros-to-define-pmd-pud-helpers.patch
-mm-arm-redefine-pmd_huge-with-pmd_leaf.patch
-mm-arm64-merge-pxd_huge-and-pxd_leaf-definitions.patch
-mm-powerpc-redefine-pxd_huge-with-pxd_leaf.patch
-mm-gup-merge-pxd-huge-mapping-checks.patch
-mm-treewide-replace-pxd_huge-with-pxd_leaf.patch
-mm-treewide-remove-pxd_huge.patch
-mm-arm-remove-pmd_thp_or_huge.patch
-mm-document-pxd_leaf-api.patch
-mm-always-initialise-folio-_deferred_list-fix.patch
-selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation.patch
-selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation-fix.patch
-mm-kconfig-config_pgtable_has_huge_leaves.patch
-mm-hugetlb-declare-hugetlbfs_pagecache_present-non-static.patch
-mm-make-hpage_pxd_-macros-even-if-thp.patch
-mm-introduce-vma_pgtable_walk_beginend.patch
-mm-arch-provide-pud_pfn-fallback.patch
-mm-arch-provide-pud_pfn-fallback-fix.patch
-mm-gup-drop-folio_fast_pin_allowed-in-hugepd-processing.patch
-mm-gup-refactor-record_subpages-to-find-1st-small-page.patch
-mm-gup-handle-hugetlb-for-no_page_table.patch
-mm-gup-cache-pudp-in-follow_pud_mask.patch
-mm-gup-handle-huge-pud-for-follow_pud_mask.patch
-mm-gup-handle-huge-pmd-for-follow_pmd_mask.patch
-mm-gup-handle-huge-pmd-for-follow_pmd_mask-fix.patch
-mm-gup-handle-hugepd-for-follow_page.patch
-mm-gup-handle-hugetlb-in-the-generic-follow_page_mask-code.patch
-mm-allow-anon-exclusive-check-over-hugetlb-tail-pages.patch
+Does that ring some bell?
 
+Regards,
+Salvatore
 
