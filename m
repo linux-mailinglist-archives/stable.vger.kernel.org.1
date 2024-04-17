@@ -1,147 +1,295 @@
-Return-Path: <stable+bounces-40127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F138A8E45
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 23:44:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556098A8EB6
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 00:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63245282FC6
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 21:44:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF26A1F22516
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 22:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F6C7D410;
-	Wed, 17 Apr 2024 21:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C001411E5;
+	Wed, 17 Apr 2024 22:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJGu1HGa"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1UYVIt7K"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF9F657C5;
-	Wed, 17 Apr 2024 21:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742FC80C14
+	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 22:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713390265; cv=none; b=HpRvlLTIDPaYlE6DvY+Yq6azFyTdaGiIQmrDVcCrmxKQtBS+L+c1Sbx7WmOW2He6OWEWLQ54HfX8wVY2QTacJJAepYaSkTxLxWphF2kTejPWnVfi0AIGLQgbvc8+g0Y+bQgrJyhrl2eXZS1T0raMKlo7z3wwdRidX85hFY5rvW0=
+	t=1713391542; cv=none; b=Td8OyadI3cGuMtImoVo3oQHXRiufMDBKfVQ/4k4cr7/XtPIJ66KZiy9La25zo1ZIMzKISrGgsTf4MOfvKM4n4d6uEwSv6xU8wXSy97gQVT0Ab08E+g2UXFuB4ZExCi85LR+qpMdQFVzUBPgElZuuNDdRNV3Z5HJ9WTZu/MCaQ2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713390265; c=relaxed/simple;
-	bh=CKUQsG0mmfIa/QAx1wtwzpQgzNw8NsmVWIrXBKfxecw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=AkUPzwaPOR/CaLAIedUFRBuJhjgWiFkj8tK9KoiJjDzIVmJ5D186HaTiQ4IcR02uSFi/DonJLex01hW/kd9c0+VessLHm3PqMirDbxo6B4yLEwt96IqHPWnf0WlNResNuCtMf4MaXdf4zMtiVMzpIy7b61bkuNMb1KTIy00j3O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJGu1HGa; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a5565291ee7so9573466b.2;
-        Wed, 17 Apr 2024 14:44:23 -0700 (PDT)
+	s=arc-20240116; t=1713391542; c=relaxed/simple;
+	bh=erqmtlpijRRSqOo+MRwOcq5rPRXpS5P7NhauhD3F73c=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qBETpx7sWXYtKH8ZoQzdCIkioRnlt8IfE2bRwPNEZGYfaJ8tlEysdp5yNPkTx9JGPF9RZzJbNA6zXMXVNQqUMMQ7YcJJvmX1rOMuY1ZfsERUF9hMbZLiNNonSfus3mND5rqcy16pofJb2Broh3F7N918XATscirmXagf/cbaW/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1UYVIt7K; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2a4b4418a69so309328a91.1
+        for <stable@vger.kernel.org>; Wed, 17 Apr 2024 15:05:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713390262; x=1713995062; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=R/cPwbUkdSnGIuJG3R0hCFpAuz58iZdf0S7zyLL6x1I=;
-        b=iJGu1HGav9qmaXrEAcVAl/hgUJ8Crkm5MOaRky51TrrI2hoDrTFOYJiwapgkKcs9KK
-         AfKB6CJUtV6E4HWsQToJ8OhcEfmLomOUa/KVnxG+Vk2O9bZ79NUowTv2uMDkask6fLyr
-         ZyKghey+JnHjrK6IIQgSvZpGXHugUH3Rel8C0wuToHshGiVQc8wWDMmZszNM/BxOf+dW
-         ihk/kAdQ22TRWVnHHJB401cMhcp1PGmESEfrxOPrfER66oZuRGHDvg1MzC+1v4INuKwA
-         FV3SF/A1XOxlS7f+6EQMTs4qu3VzGMKeP3/oT998pfvbLgPEHyI+ggb+oVWWPkIjVTYT
-         quSg==
+        d=google.com; s=20230601; t=1713391539; x=1713996339; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6sQAd7m1bsb6+Pms8yhE5r0z3pGxSqo7PimBQcO9YDQ=;
+        b=1UYVIt7KoymJSfl5jWOS05O0EQZBUyAjBa3kKLs4aA0cFrCftpJzUisg4/ItWBF26c
+         CDUOoU6SNvKiNr3hoEEjNtaMiER9SVosITe4dzIICvHWMQS1ZXu4S1R/WigVvi4ni1kc
+         MblRqEnSmejvoDl/PcPGNI99+VkX6eCgalYQhqaex05ytkbSFvodJ+LmEh0feU3APiag
+         HRzAaHJw83Mi6ZfivVoq4cT+k8uq//ed49PnSCIdogAx2CdkcrxRE8Ibm4tyUC6tNd8r
+         e/3EkXGBRIuknO1TzT9mC8YYhvDWO4uqlIx4Cf78+B8NYuCfQpB0WIQtHSzv01IY++tn
+         Buzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713390262; x=1713995062;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R/cPwbUkdSnGIuJG3R0hCFpAuz58iZdf0S7zyLL6x1I=;
-        b=r71yLT0hANgqgYoHPrCi9lTzGQGDYliKzLnWhujTrCiqID9dXdV1idwSFnlEDJEfzK
-         QS0HlKix0vyshHrY4EOcWxazcfceq8Vq31y/Bsy0dO/19W7ohY1BoLTGejbf/r1EfTrf
-         bnT2aq7BTMFxXm6qcdoIOLRj0CwEYjNcf+dd6TX2ZvXFwPPl/ut/fVMTPTAFgts3Tecb
-         bIZMqjmubAhB51ale43CPUceR9w0XigrGxhALlTwY/cQsqBMo1c1w/9gDYIREIOsX45j
-         offS4ybu5GsvpGH24SC9D/kGfgrzEZK3luKGKpqsQoDEYOnT2ZBJ2/4bnPR2LOwUmaB+
-         n+Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCV52/sTR2UbKw5sz+Wmn19cgyTggfeVFFlu7ic2o+bdklXgvHsiId0RgjoGU/YlLrs2IVUfGZHdWGnCEr8LrrdkS3NZmbqwnu+MFQnQfclGtyP8dCo18eg3vC8lCjFtbVGcFA==
-X-Gm-Message-State: AOJu0YxJZTrGGbLq5c8kWwBAeSDGU4LD4I8+Qq6tHmvxlXBkbbIqJ7uN
-	yxoUzvodAdMElZkob1oKjy1QEmlmqWZMfcqiwp6tzAXrMCsXkENx
-X-Google-Smtp-Source: AGHT+IGhziwNWrUflqmylzgphhuQqIOdmIo9FOUOgVFe3BA/1KzCoiE0xie2CFOhoM7YIWuhY0ETsA==
-X-Received: by 2002:a17:906:6d99:b0:a52:5d42:a542 with SMTP id h25-20020a1709066d9900b00a525d42a542mr416739ejt.63.1713390261177;
-        Wed, 17 Apr 2024 14:44:21 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id p7-20020a17090635c700b00a51e6222200sm66605ejb.156.2024.04.17.14.44.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Apr 2024 14:44:19 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 90DEEBE2EE8; Wed, 17 Apr 2024 23:44:18 +0200 (CEST)
-Date: Wed, 17 Apr 2024 23:44:18 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: regressions@lists.linux.dev, Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
-	linux-cifs@vger.kernel.org
-Subject: [regression 6.1.80+] "CIFS: VFS: directory entry name would overflow
- frame end of buf" and invisible files under certain conditions and at least
- with noserverino mount option
-Message-ID: <ZiBCsoc0yf_I8In8@eldamar.lan>
+        d=1e100.net; s=20230601; t=1713391539; x=1713996339;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6sQAd7m1bsb6+Pms8yhE5r0z3pGxSqo7PimBQcO9YDQ=;
+        b=ODCK1pPF/+hXwqoGsp/IWt3abuAd7pSbkKk+s+xMEP1WZhwE9x/RzzOaXegcnlG5Ds
+         kklUx7QElT06uZHoasM6UVuj3QNZwxqvu9/wotpoKDG1RHT8GG8aeweqh3Mmvhq9K9a8
+         RZUgNsHVMNAaxfEC0xOOjJKZri+9LeUS9h6SWy+wAABg1RlHj5ut9nO1aF/+RhcAmQzv
+         KsWaLUmSLps+t0wBEEThvkDxOtQXV8P3HL1z3whYv3C7g6e2rJGFNw0rTxx1zBFAgl8N
+         2kuY5M+vRe82fRKd9karN3Vl+O2zwcP6svLwBUlObpuEbWxcr10bjeZkGJQjv+z3+fW1
+         wHdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXo3z8rDC1/D+nbl5M1nl0MDz5ut/1CX4UHcEnv+CeP/PVyDLLmC9tzHR/Fp34LV9ZAFYdfrf3jJ0Yj3rY2yYjKMatMu2LO
+X-Gm-Message-State: AOJu0Ywy5Q9h4uRYLnqTPiFSayurNQPko+eHy/SOvR0RO+s3NvMSrhSx
+	mXadI1YSsdFnEo3w02CYwrmvPwAxYgCD1UV996CUXr/Mw9CWZ4RZehP+FApz292OP+1ILc8RI/3
+	E4sOSH43pIw==
+X-Google-Smtp-Source: AGHT+IGovgi8/xH9OY96galhVVKt2bjrErfL7IPTXr63Z3HFufHi99S0SH/qaFy+Ux5/+5S4orwg+2OVHKBWug==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a17:90b:4a03:b0:2a2:544:71e4 with SMTP id
+ kk3-20020a17090b4a0300b002a2054471e4mr11998pjb.4.1713391538604; Wed, 17 Apr
+ 2024 15:05:38 -0700 (PDT)
+Date: Wed, 17 Apr 2024 22:05:33 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.683.g7961c838ac-goog
+Message-ID: <20240417220534.1370087-1-cmllamas@google.com>
+Subject: [PATCH v4 RESEND] lockdep: fix deadlock issue between lockdep and rcu
+From: Carlos Llamas <cmllamas@google.com>
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Bart Van Assche <bvanassche@acm.org>
+Cc: linux-kernel@vger.kernel.org, kernel-team@android.com, 
+	Zhiguo Niu <zhiguo.niu@unisoc.com>, stable@vger.kernel.org, 
+	Carlos Llamas <cmllamas@google.com>, Xuewen Yan <xuewen.yan@unisoc.com>, 
+	Ingo Molnar <mingo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Paulo, hi all
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-In Debian we got two reports of cifs mounts not functioning, hiding
-certain files. The two reports are:
+There is a deadlock scenario between lockdep and rcu when
+rcu nocb feature is enabled, just as following call stack:
 
-https://bugs.debian.org/1069102
-https://bugs.debian.org/1069092
+     rcuop/x
+-000|queued_spin_lock_slowpath(lock = 0xFFFFFF817F2A8A80, val = ?)
+-001|queued_spin_lock(inline) // try to hold nocb_gp_lock
+-001|do_raw_spin_lock(lock = 0xFFFFFF817F2A8A80)
+-002|__raw_spin_lock_irqsave(inline)
+-002|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F2A8A80)
+-003|wake_nocb_gp_defer(inline)
+-003|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F30B680)
+-004|__call_rcu_common(inline)
+-004|call_rcu(head = 0xFFFFFFC082EECC28, func = ?)
+-005|call_rcu_zapped(inline)
+-005|free_zapped_rcu(ch = ?)// hold graph lock
+-006|rcu_do_batch(rdp = 0xFFFFFF817F245680)
+-007|nocb_cb_wait(inline)
+-007|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F245680)
+-008|kthread(_create = 0xFFFFFF80803122C0)
+-009|ret_from_fork(asm)
 
-On those cases kernel logs error
+     rcuop/y
+-000|queued_spin_lock_slowpath(lock = 0xFFFFFFC08291BBC8, val = 0)
+-001|queued_spin_lock()
+-001|lockdep_lock()
+-001|graph_lock() // try to hold graph lock
+-002|lookup_chain_cache_add()
+-002|validate_chain()
+-003|lock_acquire
+-004|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F211D80)
+-005|lock_timer_base(inline)
+-006|mod_timer(inline)
+-006|wake_nocb_gp_defer(inline)// hold nocb_gp_lock
+-006|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F2A8680)
+-007|__call_rcu_common(inline)
+-007|call_rcu(head = 0xFFFFFFC0822E0B58, func = ?)
+-008|call_rcu_hurry(inline)
+-008|rcu_sync_call(inline)
+-008|rcu_sync_func(rhp = 0xFFFFFFC0822E0B58)
+-009|rcu_do_batch(rdp = 0xFFFFFF817F266680)
+-010|nocb_cb_wait(inline)
+-010|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F266680)
+-011|kthread(_create = 0xFFFFFF8080363740)
+-012|ret_from_fork(asm)
 
-[   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
+rcuop/x and rcuop/y are rcu nocb threads with the same nocb gp thread.
+This patch release the graph lock before lockdep call_rcu.
 
-I do not have yet a minimal reproducing setup, but I was able to
-reproduce the the issue cerating a simple share (done for simplicity
-with ksmbd):
+Fixes: a0b0fd53e1e6 ("locking/lockdep: Free lock classes that are no longer in use")
+Cc:  <stable@vger.kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Carlos Llamas <cmllamas@google.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+---
+ kernel/locking/lockdep.c | 48 ++++++++++++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
-[global]
-	...
-[poc]
-        path = /srv/data
-        valid users = root
-        read only = no
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 151bd3de5936..3468d8230e5f 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -6184,25 +6184,27 @@ static struct pending_free *get_pending_free(void)
+ static void free_zapped_rcu(struct rcu_head *cb);
+ 
+ /*
+- * Schedule an RCU callback if no RCU callback is pending. Must be called with
+- * the graph lock held.
+- */
+-static void call_rcu_zapped(struct pending_free *pf)
++* See if we need to queue an RCU callback, must called with
++* the lockdep lock held, returns false if either we don't have
++* any pending free or the callback is already scheduled.
++* Otherwise, a call_rcu() must follow this function call.
++*/
++static bool prepare_call_rcu_zapped(struct pending_free *pf)
+ {
+ 	WARN_ON_ONCE(inside_selftest());
+ 
+ 	if (list_empty(&pf->zapped))
+-		return;
++		return false;
+ 
+ 	if (delayed_free.scheduled)
+-		return;
++		return false;
+ 
+ 	delayed_free.scheduled = true;
+ 
+ 	WARN_ON_ONCE(delayed_free.pf + delayed_free.index != pf);
+ 	delayed_free.index ^= 1;
+ 
+-	call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
++	return true;
+ }
+ 
+ /* The caller must hold the graph lock. May be called from RCU context. */
+@@ -6228,6 +6230,7 @@ static void free_zapped_rcu(struct rcu_head *ch)
+ {
+ 	struct pending_free *pf;
+ 	unsigned long flags;
++	bool need_callback;
+ 
+ 	if (WARN_ON_ONCE(ch != &delayed_free.rcu_head))
+ 		return;
+@@ -6239,14 +6242,18 @@ static void free_zapped_rcu(struct rcu_head *ch)
+ 	pf = delayed_free.pf + (delayed_free.index ^ 1);
+ 	__free_zapped_classes(pf);
+ 	delayed_free.scheduled = false;
++	need_callback =
++		prepare_call_rcu_zapped(delayed_free.pf + delayed_free.index);
++	lockdep_unlock();
++	raw_local_irq_restore(flags);
+ 
+ 	/*
+-	 * If there's anything on the open list, close and start a new callback.
+-	 */
+-	call_rcu_zapped(delayed_free.pf + delayed_free.index);
++	* If there's pending free and its callback has not been scheduled,
++	* queue an RCU callback.
++	*/
++	if (need_callback)
++		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
+ 
+-	lockdep_unlock();
+-	raw_local_irq_restore(flags);
+ }
+ 
+ /*
+@@ -6286,6 +6293,7 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
+ {
+ 	struct pending_free *pf;
+ 	unsigned long flags;
++	bool need_callback;
+ 
+ 	init_data_structures_once();
+ 
+@@ -6293,10 +6301,11 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
+ 	lockdep_lock();
+ 	pf = get_pending_free();
+ 	__lockdep_free_key_range(pf, start, size);
+-	call_rcu_zapped(pf);
++	need_callback = prepare_call_rcu_zapped(pf);
+ 	lockdep_unlock();
+ 	raw_local_irq_restore(flags);
+-
++	if (need_callback)
++		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
+ 	/*
+ 	 * Wait for any possible iterators from look_up_lock_class() to pass
+ 	 * before continuing to free the memory they refer to.
+@@ -6390,6 +6399,7 @@ static void lockdep_reset_lock_reg(struct lockdep_map *lock)
+ 	struct pending_free *pf;
+ 	unsigned long flags;
+ 	int locked;
++	bool need_callback = false;
+ 
+ 	raw_local_irq_save(flags);
+ 	locked = graph_lock();
+@@ -6398,11 +6408,13 @@ static void lockdep_reset_lock_reg(struct lockdep_map *lock)
+ 
+ 	pf = get_pending_free();
+ 	__lockdep_reset_lock(pf, lock);
+-	call_rcu_zapped(pf);
++	need_callback = prepare_call_rcu_zapped(pf);
+ 
+ 	graph_unlock();
+ out_irq:
+ 	raw_local_irq_restore(flags);
++	if (need_callback)
++		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
+ }
+ 
+ /*
+@@ -6446,6 +6458,7 @@ void lockdep_unregister_key(struct lock_class_key *key)
+ 	struct pending_free *pf;
+ 	unsigned long flags;
+ 	bool found = false;
++	bool need_callback = false;
+ 
+ 	might_sleep();
+ 
+@@ -6466,11 +6479,14 @@ void lockdep_unregister_key(struct lock_class_key *key)
+ 	if (found) {
+ 		pf = get_pending_free();
+ 		__lockdep_free_key_range(pf, key, 1);
+-		call_rcu_zapped(pf);
++		need_callback = prepare_call_rcu_zapped(pf);
+ 	}
+ 	lockdep_unlock();
+ 	raw_local_irq_restore(flags);
+ 
++	if (need_callback)
++		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
++
+ 	/* Wait until is_dynamic_key() has finished accessing k->hash_entry. */
+ 	synchronize_rcu();
+ }
+-- 
+2.44.0.683.g7961c838ac-goog
 
-Within /srv/data create an empty file libfoo:
-
-# touch /srv/data/libfoo
-
-The share is mounted with noserverino (the issue is not reproducible
-without at least in my case):
-
-mount -t cifs -o noserverino //server/poc /mnt
-
-On each access of /mnt a new error is logged, while not showing the
-libfoo file:
-
-[   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
-[  603.494356] CIFS: VFS: directory entry name would overflow frame end of buf 000000001dbf54e1
-[  633.217689] CIFS: VFS: directory entry name would overflow frame end of buf 00000000fb4597c4
-[  642.791862] CIFS: VFS: directory entry name would overflow frame end of buf 0000000023b48528
-
-I have verified that reverting in 6.1.y the commit 0947d0d463d4 ("smb:
-client: set correct d_type for reparse points under DFS mounts") on
-top of 6.1.87 fixes the issue.
-
-#regzbot introduced: 0947d0d463d4
-
-I can try to make a clean environment to reproeduce the issue, but I'm
-not yet there. But the regression is related to 0947d0d463d4 ("smb:
-client: set correct d_type for reparse points under DFS mounts").
-The mentioned commit was as well part of 6.7.7 at least, but I'm not
-able to reproduce the issue from another client running 6.7,9.
-
-Does that ring some bell?
-
-Regards,
-Salvatore
 
