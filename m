@@ -1,194 +1,163 @@
-Return-Path: <stable+bounces-40099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85D78A81B5
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 13:10:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C8F8A82BA
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 14:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C84101C21C57
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 11:10:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB07287C33
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 12:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA91D13C80D;
-	Wed, 17 Apr 2024 11:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C110313D24E;
+	Wed, 17 Apr 2024 12:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Em8TZBwG";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Swm0bX9A";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Em8TZBwG";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Swm0bX9A"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OHlXNPsx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EE113C68E;
-	Wed, 17 Apr 2024 11:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636DB13CFBD;
+	Wed, 17 Apr 2024 12:03:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713352205; cv=none; b=AjJKpu31JKE6R4nOXm5UYxUIH/mouzXFW4YRcuzd4Fqw3NxBcBSfIkwDWpcB6SwLGJyXpTuJ3bEsHxJ+psqaZIUHK2G76UqFxtQLa2ziE54tTW0RNCrLmtFhBdJ4AEfK0SnflwRfoptgZXThWi8+xDgmT5Mp7wKbMGoBXlnKMSY=
+	t=1713355402; cv=none; b=lFkVPDAm0bpZ2Q4VaSBSrPIKu+oXHlPQv+xTJ0qgufhLc21jyVjyYEMXA70C3gZxGRTdW2TnHDjD2mA7YxyciRH7emrn2zYBP5kJJ0K1eoCewGf3IJ1G7mM4+uSHJJiu/MHuoi76stFMjkFAgGaoskLdyoIdt0Y5U/P/KpeWRw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713352205; c=relaxed/simple;
-	bh=+/Y1TqpJnFBRwRqnv1AMakhZION2OOFVGxAQI9xnZtA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DJUd4a3DKwmUNWgAlDRv/D7b5QGSOzO8gZroM50B5ZZhcXBdNpVBQPWHOS1VG+Uet7Iag0uWB5opIZ8FDApbWe1G7A2iv/+h+7LBZ7Dd5d+0dV1Y1Lq7PvrNkCzgVJEn/fp0nWIoQN7yUuJ68PVo415rq5V7WzbW0MoQLEiC6kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Em8TZBwG; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Swm0bX9A; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Em8TZBwG; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Swm0bX9A; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C2A8433B67;
-	Wed, 17 Apr 2024 11:10:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1713352201; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1713355402; c=relaxed/simple;
+	bh=QrIkxiFKF8Y8in54o6OvTGPcyw/dmYtMduYHgiNnLRM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OpoPmZjHcFqRkGNRX7LCa1qRoDLB7iKSdUqJE7yWZnGOPXkNkrbxsAoqLWnYe9o+YGwlKn6bFs3V/kNIwEt5t6J2MWabT9TVx1dzyayvu69qukFR+fTc+323ZmbBrws/UsvVrAIqa2iJTUu66++TkjmU2sHpVqSwYfhFgDe+mAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=OHlXNPsx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E73C072AA;
+	Wed, 17 Apr 2024 12:03:21 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OHlXNPsx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1713355399;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2qaQbAuymIyWXl7clH/m9soo1SrBAkUCeIKbNu703u8=;
-	b=Em8TZBwGsY3v2ac1dac2wkMo6/bVVz1QGJnCr/wV9+xkbk4ee7vqW8WAbuVvioDPZVH3IL
-	p7+vmfE9vRncjj5l3tHv4FYm/p0gDFLJ9s85BbUGThSE9kRgfEqEEpBgu44qhXuWaotQrJ
-	+MfwWf7RXK+KUbtGTUrVJ4OhUIjJMIY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1713352201;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2qaQbAuymIyWXl7clH/m9soo1SrBAkUCeIKbNu703u8=;
-	b=Swm0bX9AnQEPsCqCQVNr3NmWbcAYZ93kf67JeTeWR+wrnSK1hLH3moDJuw6je9vqkjosHA
-	AHX9F4HufK9+egAw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1713352201; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2qaQbAuymIyWXl7clH/m9soo1SrBAkUCeIKbNu703u8=;
-	b=Em8TZBwGsY3v2ac1dac2wkMo6/bVVz1QGJnCr/wV9+xkbk4ee7vqW8WAbuVvioDPZVH3IL
-	p7+vmfE9vRncjj5l3tHv4FYm/p0gDFLJ9s85BbUGThSE9kRgfEqEEpBgu44qhXuWaotQrJ
-	+MfwWf7RXK+KUbtGTUrVJ4OhUIjJMIY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1713352201;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2qaQbAuymIyWXl7clH/m9soo1SrBAkUCeIKbNu703u8=;
-	b=Swm0bX9AnQEPsCqCQVNr3NmWbcAYZ93kf67JeTeWR+wrnSK1hLH3moDJuw6je9vqkjosHA
-	AHX9F4HufK9+egAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5C1C1384C;
-	Wed, 17 Apr 2024 11:10:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 45JdLAmuH2bAfgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 17 Apr 2024 11:10:01 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 5911AA082E; Wed, 17 Apr 2024 13:10:01 +0200 (CEST)
-Date: Wed, 17 Apr 2024 13:10:01 +0200
-From: Jan Kara <jack@suse.cz>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, Zach O'Keefe <zokeefe@google.com>,
+	bh=JqUxpmUqpZwb93aWIdk8nK8jsHAciW5UzOnZrGBCZHY=;
+	b=OHlXNPsxgNeFaA7jrH1Br0FTvd5MlBsolxUqxkTmXnoRRp4LoCKRSh9Wpaa1uSsBNth0bj
+	NruZAmbZY/cwQCmnCYruRcp03ibKhQDImJPVkfT8APA8oexA++D+sa6nAU9aQHKv1vzp5C
+	7tlfLqobpdk11Z41U8yny4pUzFmyWTg=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c1243d44 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Wed, 17 Apr 2024 12:03:17 +0000 (UTC)
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: guoyong.wang@mediatek.com,
 	linux-kernel@vger.kernel.org,
-	Maxim Patlasov <MPatlasov@parallels.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/writeback: fix possible divide-by-zero in
- wb_dirty_limits(), again
-Message-ID: <20240417111001.fa2eg5gp6t2wiwco@quack3>
-References: <20240118181954.1415197-1-zokeefe@google.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	wsd_upstream@mediatek.com,
+	Theodore Ts'o <tytso@mit.edu>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] random: handle creditable entropy from atomic process context
+Date: Wed, 17 Apr 2024 14:01:11 +0200
+Message-ID: <20240417120217.3814215-2-Jason@zx2c4.com>
+In-Reply-To: <20240402081214.2723-1-guoyong.wang@mediatek.com>
+References: <20240402081214.2723-1-guoyong.wang@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240118181954.1415197-1-zokeefe@google.com>
-X-Spam-Level: ****
-X-Spamd-Result: default: False [4.30 / 50.00];
-	BAYES_SPAM(5.10)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Spam-Score: 4.30
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On Thu 18-01-24 10:19:53, Zach O'Keefe wrote:
-> (struct dirty_throttle_control *)->thresh is an unsigned long, but is
-> passed as the u32 divisor argument to div_u64().  On architectures where
-> unsigned long is 64 bytes, the argument will be implicitly truncated.
-> 
-> Use div64_u64() instead of div_u64() so that the value used in the "is
-> this a safe division" check is the same as the divisor.
-> 
-> Also, remove redundant cast of the numerator to u64, as that should
-> happen implicitly.
-> 
-> This would be difficult to exploit in memcg domain, given the
-> ratio-based arithmetic domain_drity_limits() uses, but is much easier in
-> global writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using
-> e.g. vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
-> 
-> Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
-> Cc: Maxim Patlasov <MPatlasov@parallels.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Zach O'Keefe <zokeefe@google.com>
+The entropy accounting changes a static key when the RNG has
+initialized, since it only ever initializes once. Static key changes,
+however, cannot be made from atomic context, so depending on where the
+last creditable entropy comes from, the static key change might need to
+be deferred to a worker.
 
-I've come across this change today and it is broken in several ways:
+Previously the code used the execute_in_process_context() helper
+function, which accounts for whether or not the caller is
+in_interrupt(). However, that doesn't account for the case where the
+caller is actually in process context but is holding a spinlock.
 
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index cd4e4ae77c40a..02147b61712bc 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struct dirty_throttle_control *dtc)
->  	 */
->  	dtc->wb_thresh = __wb_calc_thresh(dtc);
->  	dtc->wb_bg_thresh = dtc->thresh ?
-> -		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
-> +		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+This turned out to be the case with input_handle_event() in
+drivers/input/input.c contributing entropy:
 
-Firstly, the removed (u64) cast from the multiplication will introduce a
-multiplication overflow on 32-bit archs if wb_thresh * bg_thresh >= 1<<32
-(which is actually common - the default settings with 4GB of RAM will
-trigger this). Secondly, the div64_u64() is unnecessarily expensive on
-32-bit archs. We have div64_ul() in case we want to be safe & cheap.
-Thirdly, if thresholds are larger than 1<<32 pages, then dirty balancing is
-going to blow up in many other spectacular ways - consider only the
-multiplication on this line - it will not necessarily fit into u64 anymore.
-The whole dirty limiting code is interspersed with assumptions that limits
-are actually within u32 and we do our calculations in unsigned longs to
-avoid worrying about overflows (with occasional typing to u64 to make it
-more interesting because people expected those entities to overflow 32 bits
-even on 32-bit archs). Which is lame I agree but so far people don't seem
-to be setting limits to 16TB or more. And I'm not really worried about
-security here since this is global-root-only tunable and that has much
-better ways to DoS the system.
+  [<ffffffd613025ba0>] die+0xa8/0x2fc
+  [<ffffffd613027428>] bug_handler+0x44/0xec
+  [<ffffffd613016964>] brk_handler+0x90/0x144
+  [<ffffffd613041e58>] do_debug_exception+0xa0/0x148
+  [<ffffffd61400c208>] el1_dbg+0x60/0x7c
+  [<ffffffd61400c000>] el1h_64_sync_handler+0x38/0x90
+  [<ffffffd613011294>] el1h_64_sync+0x64/0x6c
+  [<ffffffd613102d88>] __might_resched+0x1fc/0x2e8
+  [<ffffffd613102b54>] __might_sleep+0x44/0x7c
+  [<ffffffd6130b6eac>] cpus_read_lock+0x1c/0xec
+  [<ffffffd6132c2820>] static_key_enable+0x14/0x38
+  [<ffffffd61400ac08>] crng_set_ready+0x14/0x28
+  [<ffffffd6130df4dc>] execute_in_process_context+0xb8/0xf8
+  [<ffffffd61400ab30>] _credit_init_bits+0x118/0x1dc
+  [<ffffffd6138580c8>] add_timer_randomness+0x264/0x270
+  [<ffffffd613857e54>] add_input_randomness+0x38/0x48
+  [<ffffffd613a80f94>] input_handle_event+0x2b8/0x490
+  [<ffffffd613a81310>] input_event+0x6c/0x98
 
-So overall I'm all for cleaning up this code but in a sensible way please.
-E.g. for these overflow issues at least do it one function at a time so
-that we can sensibly review it.
+According to Guoyong, it's not really possible to refactor the various
+drivers to never hold a spinlock there. And in_atomic() isn't reliable.
 
-Andrew, can you please revert this patch until we have a better fix? So far
-it does more harm than good... Thanks!
+So, rather than trying to be too fancy, just punt the change in the
+static key to a workqueue always. There's basically no drawback of doing
+this, as the code already needed to account for the static key not
+changing immediately, and given that it's just an optimization, there's
+not exactly a hurry to change the static key right away, so deferal is
+fine.
 
-								Honza
+Reported-by: Guoyong Wang <guoyong.wang@mediatek.com>
+Cc: stable@vger.kernel.org
+Fixes: f5bda35fba61 ("random: use static branch for crng_ready()")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+Guoyong- can you test this and tell me whether it fixes the problem you
+were seeing? If so, I'll try to get this sent up for 6.9. -Jason
+
+ drivers/char/random.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index 456be28ba67c..2597cb43f438 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -702,7 +702,7 @@ static void extract_entropy(void *buf, size_t len)
+ 
+ static void __cold _credit_init_bits(size_t bits)
+ {
+-	static struct execute_work set_ready;
++	static DECLARE_WORK(set_ready, crng_set_ready);
+ 	unsigned int new, orig, add;
+ 	unsigned long flags;
+ 
+@@ -718,8 +718,8 @@ static void __cold _credit_init_bits(size_t bits)
+ 
+ 	if (orig < POOL_READY_BITS && new >= POOL_READY_BITS) {
+ 		crng_reseed(NULL); /* Sets crng_init to CRNG_READY under base_crng.lock. */
+-		if (static_key_initialized)
+-			execute_in_process_context(crng_set_ready, &set_ready);
++		if (static_key_initialized && system_unbound_wq)
++			queue_work(system_unbound_wq, &set_ready);
+ 		atomic_notifier_call_chain(&random_ready_notifier, 0, NULL);
+ 		wake_up_interruptible(&crng_init_wait);
+ 		kill_fasync(&fasync, SIGIO, POLL_IN);
+@@ -890,8 +890,8 @@ void __init random_init(void)
+ 
+ 	/*
+ 	 * If we were initialized by the cpu or bootloader before jump labels
+-	 * are initialized, then we should enable the static branch here, where
+-	 * it's guaranteed that jump labels have been initialized.
++	 * or workqueues are initialized, then we should enable the static
++	 * branch here, where it's guaranteed that these have been initialized.
+ 	 */
+ 	if (!static_branch_likely(&crng_is_ready) && crng_init >= CRNG_READY)
+ 		crng_set_ready(NULL);
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.44.0
+
 
