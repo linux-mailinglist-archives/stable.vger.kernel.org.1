@@ -1,121 +1,99 @@
-Return-Path: <stable+bounces-40068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5CD8A7CBF
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 09:05:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA038A7CD7
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 09:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD9C51C21793
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 07:05:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3BF1F221EB
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 07:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856336A339;
-	Wed, 17 Apr 2024 07:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02CE6A33E;
+	Wed, 17 Apr 2024 07:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dF+7OSQT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FtF0ZIs6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383D46A333;
-	Wed, 17 Apr 2024 07:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454646A333
+	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 07:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713337517; cv=none; b=oEOQQoGJ6BAv3IfLMzEuyzohFRnGxgBaBnFvXQw6nPmo/GKPoxZbhlmQPh4Ee3RgpbklydBFPl1D5pgHLRka5Cld9LOEtNanWWe8xdQdV2Ic8V/VZnq4AKxHfk2+RX3SF+MBuR4H4FNTEyQoTCePX2Y3oMy2CJxYgTaWeW0feV0=
+	t=1713337888; cv=none; b=Z9XtEM8ClDrfuvmZ4KzDoNj1LM8WhXyfJQhLDUPLUVGRwcTO+97IuUrY5SyRmwnHSGRVM8kT33bdeLorabMpZuF4PzJ3xfvbiOAIiyf5uH/osX2QoORBjDXyT5VPjlDCnYRsWcJiIrhMrirA+sPwT5pJia6MidLfcSilgArw5wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713337517; c=relaxed/simple;
-	bh=LoRwP/hEcMXMPwH3S6gBEGGdVfFRMPJvfpf8Ayzlb9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H4qovhoD3vEEwikZg09owSnjeNo4rNfLTjyJasIzCzoGydceBov3lzg+tECq6RaADr8Z7rQutpbPyaqP+T/SefZo9IG3lUOU+C2bYN69zANHrs+EPYhHQcRATuV93mhAqiS3kiV9n3EHkOuklSrUgruYmYoJoy4A/XCV9bMZ18Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dF+7OSQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26288C072AA;
-	Wed, 17 Apr 2024 07:05:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713337516;
-	bh=LoRwP/hEcMXMPwH3S6gBEGGdVfFRMPJvfpf8Ayzlb9c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dF+7OSQTs5upJAfE8SIMKVG3CNOVNuv97qRVM64REg3xFdjCUGvVuf1UrbgZjJy5y
-	 TsMHZULLXaw2bBeBKp7IHpHU6YuGbB/AKmC4Dik5MjGh9MyPcifydtsFxiVo+jc1wo
-	 nUJTczy1nxh+spSvDJmjP/mYn3fjrhULn1TdJEqU=
-Date: Wed, 17 Apr 2024 09:05:12 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, Yihuang Yu <yihyu@redhat.com>,
-	Gavin Shan <gshan@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shaoqin Huang <shahuang@redhat.com>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
-Message-ID: <2024041744-pretender-clutter-7d4d@gregkh>
-References: <20240415141953.365222063@linuxfoundation.org>
- <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
- <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
- <86y19dqw74.wl-maz@kernel.org>
- <Zh61KobDt_y1O46-@arm.com>
+	s=arc-20240116; t=1713337888; c=relaxed/simple;
+	bh=4K57y2H0YophcOykf9QYuKDHY8mYB7EgGxsSKs0i7vw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RN4viUpnAokMo5TGHTAec2Za9sr+L1AFGVPNFw1sqfXwBi7j5jqNGk2NspvHfCJUtqRUby3op2yvi8g2W8bfh7Tr3InNLEW1ZGTQ1cr5EbdjPVH6nE3t190sWYb4PH/yIIpeG86zDkG/JH3u9ehQZzjxEoIaZsA+n+kxSTqCmBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FtF0ZIs6; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713337886;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4K57y2H0YophcOykf9QYuKDHY8mYB7EgGxsSKs0i7vw=;
+	b=FtF0ZIs62hk8jwLet0KjLZc9ghMeUfpMadcuBtydtrXpIeGqfd78BLFA4FrDSHyGUb/v6o
+	67X29qtCxYU6wupHmAk5j4al9stWFLkGE8VJWD8bFaBZcz85c2SZvCZsoxqGAKb/ND56oX
+	9U0r1ccNSsK+6vtUZoeT5NiUc/oeF5g=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-249-jQKToEXzPYOg9TC8VSPcyQ-1; Wed,
+ 17 Apr 2024 03:11:23 -0400
+X-MC-Unique: jQKToEXzPYOg9TC8VSPcyQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4449E385A189;
+	Wed, 17 Apr 2024 07:11:22 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.193.59])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B743D2166B31;
+	Wed, 17 Apr 2024 07:11:18 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: carnil@debian.org
+Cc: dave.stevenson@raspberrypi.com,
+	gregkh@linuxfoundation.org,
+	horms@kernel.org,
+	jtornosm@redhat.com,
+	kuba@kernel.org,
+	linux-usb@vger.kernel.org,
+	regressions@lists.linux.dev,
+	roland@debian.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org,
+	weihao.bj@ieisystem.com
+Subject: Re: [Regression] USB ethernet AX88179 broken usb ethernet names
+Date: Wed, 17 Apr 2024 09:11:11 +0200
+Message-ID: <20240417071113.7082-1-jtornosm@redhat.com>
+In-Reply-To: <Zh7flXvNdDfattD9@eldamar.lan>
+References: <Zh7flXvNdDfattD9@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zh61KobDt_y1O46-@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-On Tue, Apr 16, 2024 at 06:28:10PM +0100, Catalin Marinas wrote:
-> On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
-> > On Tue, 16 Apr 2024 14:07:30 +0100,
-> > Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> > > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
-> > > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
-> > > > > This is the start of the stable review cycle for the 6.6.28 release.
-> > > > > There are 122 patches in this series, all will be posted as a response
-> > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > let me know.
-> > > >
-> > > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
-> > > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
-> > > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
-> > > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
-> > > > the bisect and looking at the commit log to pull out people to CC and
-> > > > note that the fix was explicitly targeted at v6.6.
-> > > 
-> > > Anders investigated this reported issues and bisected and also found
-> > > the missing commit for stable-rc 6.6 is
-> > > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
-> > 
-> > Which is definitely *not* stable candidate. We need to understand why
-> > the invalidation goes south when the scale go up instead of down.
-> 
-> If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
-> which fixes 117940aa6e5f ("KVM: arm64: Define
-> kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
-> ("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
-> "scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
-> CBMC model, not on the actual kernel. It may be worth adding some
-> WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
-> num greater than 31.
-> 
-> I haven't investigated properly (and I'm off tomorrow, back on Thu) but
-> it's likely the original code was not very friendly to the maximum
-> range, never tested. Anyway, if one figures out why it goes out of
-> range, I think the solution is to also backport e2768b798a19 to stable.
+Hello Salvatore,
 
-How about I drop the offending commit from stable and let you all figure
-out what needs to be added before applying anything else :)
+Sorry for the incoveniences.
+I am working actively trying to fix this on this thread:
+https://lore.kernel.org/netdev/20240410095603.502566-1-jtornosm@redhat.com/
+Fedora is renaming the interface correctly but I think that could be related
+with the mac address issue.
+After this, let me check with you if the reported problem is fixed.
 
-thanks,
+Best regards
+José Ignacio
 
-greg k-h
+
 
