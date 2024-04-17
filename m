@@ -1,251 +1,172 @@
-Return-Path: <stable+bounces-40100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8285C8A81BB
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 13:11:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1DA8A8182
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 12:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5219B2319B
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 11:11:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE2D1C21E16
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 10:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3527213C834;
-	Wed, 17 Apr 2024 11:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B2D13C81F;
+	Wed, 17 Apr 2024 10:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="h2LdnW3o"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uq4QSnok"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B99B13BC1B;
-	Wed, 17 Apr 2024 11:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4647913C68E;
+	Wed, 17 Apr 2024 10:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713352273; cv=none; b=YBxn3KtND4qUlrizGjEs6dbkmYOGuuo18cB2muu+ntFfxUtLI8Dr/tzpUvzUNdsP6fCwzXGUBWH9eR+gQGvCiII6EYBbRMmyBH73pLXQoRsIbZORFWyUwGNY//a7YPzWEpQV3L2uZ1bMr+Fiks6YH33kSkaNKn6aC9/4xtO5R80=
+	t=1713351587; cv=none; b=jg5j8YayOeqUPsbhkou2MGd3glP1pb6e9wyoP1kGeET8g9yb8HvpXprz7UH8xZCts56L7hen9bmOEJ6gPSMp8+DR9UA4JoM9B2v1GleWNPLwQaAA6gh5H0FvVWtEZls236RTWx7RDMKwtNymtM6PEmcUMo/VH4puXHbZ0ZUHVRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713352273; c=relaxed/simple;
-	bh=9Kuul0Us5T+DsH8WBIvY0W68/yCJswNN/bgL0D8F6/A=;
-	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:References; b=Q13joI9t0cBOITz7UP1nIBViFTYkYh8aH+UCDz+XoeJmTgGLWImtINdNGwu/9EwuH1OrSb7clP3TscfhL+A/n+DijO4bE+2tiqr94IwSOxTEKk5DpXqCiKXKOjyq76aXceWkE40K9qpELmDOzfPBULYzFyu9VX3jSWJyfUPWbJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=h2LdnW3o; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240417111106euoutp0241e6dab5e1af4767ae19a9df21bd0d06~HDM7xY4u01112511125euoutp021;
-	Wed, 17 Apr 2024 11:11:06 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240417111106euoutp0241e6dab5e1af4767ae19a9df21bd0d06~HDM7xY4u01112511125euoutp021
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1713352266;
-	bh=OY+E3AP4o+cMwdsRSlfCthUAuVMUvOkgraCoEy1EQcs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=h2LdnW3oQlEqsYLbJsjvMNJan0Xxl2M9JUFeftc+dZY2ha4AfwdS6IZKD9SJJjT1e
-	 pmt5hhXhVz6EkU01r55GA1DVcoZC/ScZ78Q9i+3+g9IXtQcsLPfDbahW8RRhlqd/9A
-	 To5nCwmOXhOmebgmRDbUM4DfB+uzcGOtkgdnE7/g=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20240417111106eucas1p1eaa943e8073a58cb94d54d7f42a86df6~HDM7mGwPe2053320533eucas1p1B;
-	Wed, 17 Apr 2024 11:11:06 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges2new.samsung.com (EUCPMTA) with SMTP id 1E.E2.09875.94EAF166; Wed, 17
-	Apr 2024 12:11:05 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20240417111105eucas1p19e8fbbbe60d347e12d0f6d767198e338~HDM7FrwvZ2052520525eucas1p1D;
-	Wed, 17 Apr 2024 11:11:05 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240417111105eusmtrp2e7d69c7090f22d9fcf00febc06c7bddb~HDM7E_AQx0473304733eusmtrp2Z;
-	Wed, 17 Apr 2024 11:11:05 +0000 (GMT)
-X-AuditID: cbfec7f4-11bff70000002693-fc-661fae49bb20
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id 91.5F.08810.94EAF166; Wed, 17
-	Apr 2024 12:11:05 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20240417111105eusmtip2d9a2a1c25a17928cf241e21e4357f84d~HDM62RzBf1251912519eusmtip2k;
-	Wed, 17 Apr 2024 11:11:05 +0000 (GMT)
-Received: from localhost (106.110.32.44) by CAMSVWEXC02.scsc.local
-	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
-	Wed, 17 Apr 2024 12:10:54 +0100
-Date: Wed, 17 Apr 2024 11:44:33 +0200
-From: Joel Granados <j.granados@samsung.com>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, "Eric W.
- Biederman" <ebiederm@xmission.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] fs/proc/proc_sysctl.c: always initialize i_uid/i_gid
-Message-ID: <20240417094433.ahfnijzz2svjhrvt@joelS2.panther.com>
+	s=arc-20240116; t=1713351587; c=relaxed/simple;
+	bh=cmU7FEP7+gAfzRzY/2Uj0ANcSi3jAqVqok2HMkjHbBM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H8EQXvV2koxbCV6P08syBcYRBJXodg86xA0NNa4nH1nRshSgzK3kBoh0IQYtTNfL4VQWMtkW7p8+/m3Z0cJgD1iTvjzXritYOttgb0M6yG4UayGmi/iABIJVu1ks96ZD/ZRUZ52q4gnfNa0l1LtrfDt1ndyfcOsJSKDwqTwOosg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uq4QSnok; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713351585; x=1744887585;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cmU7FEP7+gAfzRzY/2Uj0ANcSi3jAqVqok2HMkjHbBM=;
+  b=Uq4QSnokd3AgLu3KcZUoLUDqvSNM8ZUzwFCQnZ0almyqpAfNtmHtyi73
+   3GbzUG33cronnuvgy5Xt3PkSRQSaPsQ+1RSFrBVL7yVXn580BNKuljxWk
+   Os8sxjo/Zr1p096lbbmTaq2fklty4qjmPTtwh8lsJ41+w8MRM/GNA6Oja
+   ocTEIM0cwHtz18gy67dutmFHAE55RJG/I/yx1ZGqCCSgxV7U3If4r7EgR
+   LmcHdUXLhFlEpkle023kXPo7LTExfFF2///AbNoNv0hp6hp9dexCA4idb
+   TTI6x8ape8HzNqnphdCs3SAtfkLCRTRq3wYF2lHdLJPhofB7d4+aWBrcc
+   Q==;
+X-CSE-ConnectionGUID: 5ubGJBziQaSixqqXfuN2vw==
+X-CSE-MsgGUID: 7EFvZxg+QD2CwP4Utym7mw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="9386635"
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
+   d="scan'208";a="9386635"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 03:59:45 -0700
+X-CSE-ConnectionGUID: oIreVgWaRwGJG3OUgyr3KA==
+X-CSE-MsgGUID: nRymCCveRBqshFKixxFmeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
+   d="scan'208";a="53541746"
+Received: from unknown (HELO 23c141fc0fd8) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 17 Apr 2024 03:59:43 -0700
+Received: from kbuild by 23c141fc0fd8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rx30p-0006Vq-0Z;
+	Wed, 17 Apr 2024 10:59:35 +0000
+Date: Wed, 17 Apr 2024 18:58:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mathias Nyman <mathias.nyman@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, John Youn <John.Youn@synopsys.com>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] usb: xhci-plat: Don't include xhci.h
+Message-ID: <202404171847.XPIgGzM6-lkp@intel.com>
+References: <900465dc09f1c8e12c4df98d625b9985965951a8.1713310411.git.Thinh.Nguyen@synopsys.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="yvgo774vb4mne4gd"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240402-sysctl-net-ownership-v3-1-366b1a76d48a@weissschuh.net>
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOKsWRmVeSWpSXmKPExsWy7djP87qe6+TTDHZ1G1vMOd/CYnF40QtG
-	i//bWtgtnh57xG5xYVsfq8WynrVsFpd3zWGz+P3jGZPFjQlPGS2OLRCz+Hb6DaPFgo2PGB14
-	PFZc6GL12LLyJpPHzll32T0WbCr12LSqk83j/b6rbB6fN8l59HcfY/eYcqidJYAzissmJTUn
-	syy1SN8ugSvj+abXzAUT5Spenv3O0sD4SbKLkYNDQsBE4vRbgS5GLg4hgRWMEmvWTGKBcL4w
-	Ssy694QVwvnMKLHs8HG2LkZOsI7uZy+ZIRLLGSWOTJrLBlfV8/ECE4SzmVHi4czJrCAtLAKq
-	En93nWEHsdkEdCTOv7nDDGKLCNhIrPz2GSzOLDCdWeLLRC0QW1jAR6Jr2zYmEJtXwEFizeIv
-	LBC2oMTJmU9YQA5nFqiQOH/XGsKUllj+jwOkglPAV+LQlknsEIcqSnxdfI8Fwq6VOLXlFthp
-	EgK3OCWeH1rJCJFwkTh2sBfqM2GJV8e3QDXLSPzfOR+qYTKjxP5/H9ghnNXAsGj8ygRRZS3R
-	cuUJVIejRNeyBcyQUOWTuPFWEOIvPolJ26ZDhXklOtqEIKrVJFbfe8MygVF5FpLPZiF8Ngvh
-	s1lgc/QkbkydwoYhrC2xbOFrZgjbVmLduvcsCxjZVzGKp5YW56anFhvlpZbrFSfmFpfmpesl
-	5+duYgSmx9P/jn/Zwbj81Ue9Q4xMHIyHGFWAmh9tWH2BUYolLz8vVUmEt0VYNk2INyWxsiq1
-	KD++qDQntfgQozQHi5I4r2qKfKqQQHpiSWp2ampBahFMlomDU6qBSXjTvJMzbi6bc1yltben
-	bMYUgctHNl43bbvzVnBNwXnTbNE6h0luN5mi1jvsVq/fniDd+nLNJeXZDJW2W9K1NmtrH3t6
-	UeNc3U492dmXp3Dnxrm1HJx49kag0vua+Q7H7HiPea87+jH4FmdE84WLD8xsPDZV88x3uWQg
-	wBLmccv3zS+ptTuE/phMd7i3ufjlIn6O2ytmqBssOdDMIMJ59Me286nie/Vm/rU3eL7h5swP
-	swqKeTMbN3y/Vx395urD9cFX/kuozn20ZIGjcMVS/bbb1UKHK7OrkroSz9bKTN7klhJov8hy
-	4l9Tq1V/Dbkv75/b3X5bPFor1ap9v2KVo/OEBQZ5on6rLzzk0XzPWqjEUpyRaKjFXFScCAAt
-	WmLjCgQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGKsWRmVeSWpSXmKPExsVy+t/xe7qe6+TTDHa+EbaYc76FxeLwoheM
-	Fv+3tbBbPD32iN3iwrY+VotlPWvZLC7vmsNm8fvHMyaLGxOeMlocWyBm8e30G0aLBRsfMTrw
-	eKy40MXqsWXlTSaPnbPusnss2FTqsWlVJ5vH+31X2Tw+b5Lz6O8+xu4x5VA7SwBnlJ5NUX5p
-	SapCRn5xia1StKGFkZ6hpYWekYmlnqGxeayVkamSvp1NSmpOZllqkb5dgl7Gm5fn2Ar65So2
-	rTzM2MD4QbKLkZNDQsBEovvZS+YuRi4OIYGljBKtrR9YIBIyEhu/XGWFsIUl/lzrYoMo+sgo
-	sWZlFxOEs5lRYsbvOWwgVSwCqhJ/d51hB7HZBHQkzr+5wwxiiwjYSKz89hksziwwnVniy0Qt
-	EFtYwEeia9s2JhCbV8BBYs3iLywQQxcwSjzecJ4dIiEocXLmExaI5jKJ+WcuMnYxcgDZ0hLL
-	/3GAhDkFfCUObZnEDnGposTXxfegPqiV+Pz3GeMERuFZSCbNQjJpFsIkiLCOxM6td9gwhLUl
-	li18zQxh20qsW/eeZQEj+ypGkdTS4tz03GJDveLE3OLSvHS95PzcTYzARLHt2M/NOxjnvfqo
-	d4iRiYPxEKMKUOejDasvMEqx5OXnpSqJ8LYIy6YJ8aYkVlalFuXHF5XmpBYfYjQFhuJEZinR
-	5HxgCssriTc0MzA1NDGzNDC1NDNWEuf1LOhIFBJITyxJzU5NLUgtgulj4uCUamAq1QpqniJv
-	rbNOsilgrW/FnRi7FysvRF7s5XThijM1tar/crN68Zr5n9obQ1P37HGYwr3MoOSsnl++ZdaR
-	LPNvvaXcfZ9udl27dVn5qUmbONta8TVFz50+aNXPVxVT3uPyqMppTeIz00uTkg9fm7TVZWZ2
-	3+FnVpzx0Umi4hO0ex4/N5r/wfqJ5TX/nhPfjnzeL7D7THDzP9GbL4MUdJ7N36S+8fbCjh7t
-	21w7fgVx59xu+TR19tcpDCVTj1tUz/DzPRr5VZTd+HDYTfcixTN725aypm390yq/uW6+8cYt
-	mgkXz8Rbnn4yLzOvuzRsZeJj2bftH68tdTn0aee/MLGqaYy3edqql83qiAiZIeqnxFKckWio
-	xVxUnAgAg0XQpakDAAA=
-X-CMS-MailID: 20240417111105eucas1p19e8fbbbe60d347e12d0f6d767198e338
-X-Msg-Generator: CA
-X-RootMTR: 20240402211043eucas1p173a936d187ae9bcf5be3729e69739e38
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240402211043eucas1p173a936d187ae9bcf5be3729e69739e38
-References: <CGME20240402211043eucas1p173a936d187ae9bcf5be3729e69739e38@eucas1p1.samsung.com>
-	<20240402-sysctl-net-ownership-v3-1-366b1a76d48a@weissschuh.net>
+In-Reply-To: <900465dc09f1c8e12c4df98d625b9985965951a8.1713310411.git.Thinh.Nguyen@synopsys.com>
 
---yvgo774vb4mne4gd
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Thinh,
 
-On Tue, Apr 02, 2024 at 11:10:34PM +0200, Thomas Wei=DFschuh wrote:
-> Commit 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of i_=
-uid/i_gid on /proc/sys inodes.")
-> added defaults for i_uid/i_gid when set_ownership() is not implemented.
-> It missed to also adjust net_ctl_set_ownership() to use the same default
-> values in case the computation of a better value fails.
->=20
-> Instead always initialize i_uid/i_gid inside the sysfs core so
-> set_ownership() can safely skip setting them.
+kernel test robot noticed the following build errors:
 
-Added this to sysctl-testing with minor changes in the commit message:
+[auto build test ERROR on 3d122e6d27e417a9fa91181922743df26b2cd679]
 
-"""
-sysctl: always initialize i_uid/i_gid
+url:    https://github.com/intel-lab-lkp/linux/commits/Thinh-Nguyen/usb-xhci-plat-Don-t-include-xhci-h/20240417-074220
+base:   3d122e6d27e417a9fa91181922743df26b2cd679
+patch link:    https://lore.kernel.org/r/900465dc09f1c8e12c4df98d625b9985965951a8.1713310411.git.Thinh.Nguyen%40synopsys.com
+patch subject: [PATCH 1/2] usb: xhci-plat: Don't include xhci.h
+config: arc-allmodconfig (https://download.01.org/0day-ci/archive/20240417/202404171847.XPIgGzM6-lkp@intel.com/config)
+compiler: arceb-elf-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240417/202404171847.XPIgGzM6-lkp@intel.com/reproduce)
 
-Always initialize i_uid/i_gid inside the sysfs core so set_ownership()
-can safely skip setting them.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202404171847.XPIgGzM6-lkp@intel.com/
 
-Commit 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of
-i_uid/i_gid on /proc/sys inodes.") added defaults for i_uid/i_gid when
-set_ownership() was not implemented. It also missed adjusting
-net_ctl_set_ownership() to use the same default values in case the
-computation of a better value failed.
+All errors (new ones prefixed by >>):
 
-Fixes: 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of i_ui=
-d/i_gid on /proc/sys inodes.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Wei=DFschuh <linux@weissschuh.net>
-Signed-off-by: Joel Granados <j.granados@samsung.com>
-"""
+   drivers/usb/host/xhci-rzv2m.c: In function 'xhci_rzv2m_init_quirk':
+>> drivers/usb/host/xhci-rzv2m.c:21:33: error: invalid use of undefined type 'struct usb_hcd'
+      21 |         struct device *dev = hcd->self.controller;
+         |                                 ^~
+>> drivers/usb/host/xhci-rzv2m.c:23:32: error: invalid use of undefined type 'struct device'
+      23 |         rzv2m_usb3drd_reset(dev->parent, true);
+         |                                ^~
+   drivers/usb/host/xhci-rzv2m.c: In function 'xhci_rzv2m_start':
+   drivers/usb/host/xhci-rzv2m.c:32:16: error: invalid use of undefined type 'struct usb_hcd'
+      32 |         if (hcd->regs) {
+         |                ^~
+>> drivers/usb/host/xhci-rzv2m.c:34:26: error: implicit declaration of function 'readl' [-Werror=implicit-function-declaration]
+      34 |                 int_en = readl(hcd->regs + RZV2M_USB3_INTEN);
+         |                          ^~~~~
+   drivers/usb/host/xhci-rzv2m.c:34:35: error: invalid use of undefined type 'struct usb_hcd'
+      34 |                 int_en = readl(hcd->regs + RZV2M_USB3_INTEN);
+         |                                   ^~
+>> drivers/usb/host/xhci-rzv2m.c:14:33: error: implicit declaration of function 'BIT' [-Werror=implicit-function-declaration]
+      14 | #define RZV2M_USB3_INT_XHC_ENA  BIT(0)
+         |                                 ^~~
+   drivers/usb/host/xhci-rzv2m.c:16:34: note: in expansion of macro 'RZV2M_USB3_INT_XHC_ENA'
+      16 | #define RZV2M_USB3_INT_ENA_VAL  (RZV2M_USB3_INT_XHC_ENA \
+         |                                  ^~~~~~~~~~~~~~~~~~~~~~
+   drivers/usb/host/xhci-rzv2m.c:35:27: note: in expansion of macro 'RZV2M_USB3_INT_ENA_VAL'
+      35 |                 int_en |= RZV2M_USB3_INT_ENA_VAL;
+         |                           ^~~~~~~~~~~~~~~~~~~~~~
+>> drivers/usb/host/xhci-rzv2m.c:36:17: error: implicit declaration of function 'writel' [-Werror=implicit-function-declaration]
+      36 |                 writel(int_en, hcd->regs + RZV2M_USB3_INTEN);
+         |                 ^~~~~~
+   drivers/usb/host/xhci-rzv2m.c:36:35: error: invalid use of undefined type 'struct usb_hcd'
+      36 |                 writel(int_en, hcd->regs + RZV2M_USB3_INTEN);
+         |                                   ^~
+   cc1: some warnings being treated as errors
 
-Will let it simmer in testing for now.
 
-Best
+vim +21 drivers/usb/host/xhci-rzv2m.c
 
->=20
-> Fixes: 5ec27ec735ba ("fs/proc/proc_sysctl.c: fix the default values of i_=
-uid/i_gid on /proc/sys inodes.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Wei=DFschuh <linux@weissschuh.net>
-> ---
-> Changes in v3:
-> - Rebase onto v6.9-rc1
-> - Reword commit message and mention correct fixed commit
-> - Link to v2: https://lore.kernel.org/r/20240322-sysctl-net-ownership-v2-=
-1-a8b4a3306542@weissschuh.net
->=20
-> Changes in v2:
-> - Move the fallback logic to the sysctl core
-> - Link to v1: https://lore.kernel.org/r/20240315-sysctl-net-ownership-v1-=
-1-2b465555a292@weissschuh.net
-> ---
->  fs/proc/proc_sysctl.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->=20
-> diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-> index 37cde0efee57..9e34ab9c21e4 100644
-> --- a/fs/proc/proc_sysctl.c
-> +++ b/fs/proc/proc_sysctl.c
-> @@ -479,12 +479,10 @@ static struct inode *proc_sys_make_inode(struct sup=
-er_block *sb,
->  			make_empty_dir_inode(inode);
->  	}
-> =20
-> +	inode->i_uid =3D GLOBAL_ROOT_UID;
-> +	inode->i_gid =3D GLOBAL_ROOT_GID;
->  	if (root->set_ownership)
->  		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
-> -	else {
-> -		inode->i_uid =3D GLOBAL_ROOT_UID;
-> -		inode->i_gid =3D GLOBAL_ROOT_GID;
-> -	}
-> =20
->  	return inode;
->  }
->=20
-> ---
-> base-commit: 4cece764965020c22cff7665b18a012006359095
-> change-id: 20240315-sysctl-net-ownership-bc4e17eaeea6
->=20
-> Best regards,
-> --=20
-> Thomas Wei=DFschuh <linux@weissschuh.net>
->=20
+c52c9acc415eb6 Biju Das 2023-01-21  13  
+c52c9acc415eb6 Biju Das 2023-01-21 @14  #define RZV2M_USB3_INT_XHC_ENA	BIT(0)
+c52c9acc415eb6 Biju Das 2023-01-21  15  #define RZV2M_USB3_INT_HSE_ENA	BIT(2)
+c52c9acc415eb6 Biju Das 2023-01-21  16  #define RZV2M_USB3_INT_ENA_VAL	(RZV2M_USB3_INT_XHC_ENA \
+c52c9acc415eb6 Biju Das 2023-01-21  17  				 | RZV2M_USB3_INT_HSE_ENA)
+c52c9acc415eb6 Biju Das 2023-01-21  18  
+c52c9acc415eb6 Biju Das 2023-01-21  19  int xhci_rzv2m_init_quirk(struct usb_hcd *hcd)
+c52c9acc415eb6 Biju Das 2023-01-21  20  {
+c52c9acc415eb6 Biju Das 2023-01-21 @21  	struct device *dev = hcd->self.controller;
+c52c9acc415eb6 Biju Das 2023-01-21  22  
+c52c9acc415eb6 Biju Das 2023-01-21 @23  	rzv2m_usb3drd_reset(dev->parent, true);
+c52c9acc415eb6 Biju Das 2023-01-21  24  
+c52c9acc415eb6 Biju Das 2023-01-21  25  	return 0;
+c52c9acc415eb6 Biju Das 2023-01-21  26  }
+c52c9acc415eb6 Biju Das 2023-01-21  27  
+c52c9acc415eb6 Biju Das 2023-01-21  28  void xhci_rzv2m_start(struct usb_hcd *hcd)
+c52c9acc415eb6 Biju Das 2023-01-21  29  {
+c52c9acc415eb6 Biju Das 2023-01-21  30  	u32 int_en;
+c52c9acc415eb6 Biju Das 2023-01-21  31  
+c52c9acc415eb6 Biju Das 2023-01-21  32  	if (hcd->regs) {
+c52c9acc415eb6 Biju Das 2023-01-21  33  		/* Interrupt Enable */
+c52c9acc415eb6 Biju Das 2023-01-21 @34  		int_en = readl(hcd->regs + RZV2M_USB3_INTEN);
+c52c9acc415eb6 Biju Das 2023-01-21  35  		int_en |= RZV2M_USB3_INT_ENA_VAL;
+c52c9acc415eb6 Biju Das 2023-01-21 @36  		writel(int_en, hcd->regs + RZV2M_USB3_INTEN);
 
---=20
-
-Joel Granados
-
---yvgo774vb4mne4gd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmYfmgAACgkQupfNUreW
-QU9U/Av9HKXJffWcIsZrwOT7yI37cd8cc4W1cjH3yBMzvQ9RWE6365mNygSJp0hs
-eGO+pFN+UtxaJmkPKG8MPVuggE+fmrvU++Ld4s/W9H55mNRALAu7q/KPPSgNXcb6
-wjfhKLcCteSVTMW/jU8LWWevH/35Y6Uf1eVWoNbzuQbxKsDTy52JzmRzSo2AC/8R
-1L10XsolcGe90NlnRlM7BHYvh02ZPrgjjZBCzYcxy8XhjqNZZsrRRmWLTwnGb80+
-gPjx6gRO3QYnQu0+jmfvu8C85dJKG9hV0oR9xSV0tqVITre0dpsjhgYKWz/mGIUN
-m/oOSDIiJhYFzUcSxcv4B/sNEnxltWMrgNYv7+lpUTekxFRKxlO7vwHVp/2SVJFO
-NoGTC//FKOPASWRRzKpCdlulMDEndfHgsYHksFxQs/90sBfGhCYGKDjZ1sCQ5Xoc
-ytuR3cgJd/01e9R235dLfq5+JXN0ORzJefcwS88B7365Yah0PY6IxR81kMhM/gCL
-niVLSZ0W
-=WR4U
------END PGP SIGNATURE-----
-
---yvgo774vb4mne4gd--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
