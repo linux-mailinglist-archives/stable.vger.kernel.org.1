@@ -1,114 +1,148 @@
-Return-Path: <stable+bounces-40086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B819C8A7F19
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 11:04:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EA38A7FBA
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 11:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E93911C218F9
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 09:04:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B24001F21C1B
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 09:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F81C12EBDB;
-	Wed, 17 Apr 2024 09:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7151327F2;
+	Wed, 17 Apr 2024 09:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q0MiUKkD";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c/A7I8SO"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C75212D759
-	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 09:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A42112FB3E;
+	Wed, 17 Apr 2024 09:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713344682; cv=none; b=I3wJhLpzksHqdLd488uKzAJam8W4rBR6Tv/YK632xoUHn1XDu1jegG1b9aQs+8UGhPoS6BkgPUop04hYsUUVqv9h+qcGq3KFS90ahSsuW5Nc/ggyHbgLIC2GRnSaKFYOS0a8Ay8cVoYGTROXvxI3suotVH7GFY27C7scJEuQQ8E=
+	t=1713346449; cv=none; b=o22FmE9wmRHlRH8gkwtP3o2zwJgfW7mhebbi9rv0vYd4ljHts65tOejNn0/AseVCQPk0WkT2dLiuRzkvedK5ehuKb++io7csUd/RT6Na0SInDZB/C1tHBR0MDcyQ7QikSeHaQF0H0qlp6u4iEFaJU0wsOXxjff9Q3e6rtB5Ap44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713344682; c=relaxed/simple;
-	bh=CFmHE1BzGVHwhk0poqXyOfp0UAIGCsaPeLG3rEUuFW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R+qfNx5yo0/mx7mckoqQ8Vv408TPtypaCu7KtwZ5sCWimMFSPsw7drOPLrrxtUhITNc3XiQ/UAcYxpxhUjJ5GNSJH/8ow77rwvWCuCwilq3HPuQ3OJoPV0R8b3xto6SgOrymsko3kG2WrYTUziZEvRFwAD2GlaH9aXhEYz3kBfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rx1DD-0004on-PA; Wed, 17 Apr 2024 11:04:15 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rx1DC-00ClGK-4Z; Wed, 17 Apr 2024 11:04:14 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rx1DC-002hM4-0A;
-	Wed, 17 Apr 2024 11:04:14 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	kernel@pengutronix.de,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Valentin Caron <valentin.caron@foss.st.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Erwan Le Ray <erwan.leray@foss.st.com>,
-	Peter Hurley <peter@hurleysoftware.com>,
-	Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>,
-	linux-serial@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1713346449; c=relaxed/simple;
+	bh=kN90jndgiFO0MC3EhH/pmTsVnzp2fc8W39rYQDRB/HQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=leCwAaMOzwMF9WhS02B9qoX9yAvAd8oR7Ys4/JjqIyxe2upWUXXWS3IjJPn+Ygo0GRhfgA70fUOe9mAoHFAtEpfU4BOKShObQtj3pasUvSSEw/dVOLbtIjtU1wl070Syol2kpFcJQOLLwD2PU78r85yvGMrrha1zAZrpoU6HN/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q0MiUKkD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c/A7I8SO; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713346446;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WXHMgCoxkvQpet00Q19cxZJkOm1T4p+LzBOkMzDbXOE=;
+	b=Q0MiUKkDHTYfWXT3LH1rsuYBwNEsZ4h/JYly1ASppJC4iFAiFuILpgcvBOjj1U5I1T717p
+	lqHS2225EGbzHpq7VfKBKFmjKefk7QdJMGq1//hkid1eun3rw4z+rkUbL0iKzEdjXONu2U
+	Plw1hyyqTMNIv1+xAxft29bYXsJWaRr2o++F5VAC9RNrWo8X4Mr2ZM2SsQ+O1NFblTOtuT
+	tFRlUKfLuOABVa430G0qzYZTIhHBKD1i8pPkgRRdLT4gb7xvcHUfsnCtTstleUx7uGi9cQ
+	YnB16FF777MtAsRXu2gqcvr79CyzDeORtbEdnF1zxxeJxyveifNor8TZ/a43tg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713346446;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WXHMgCoxkvQpet00Q19cxZJkOm1T4p+LzBOkMzDbXOE=;
+	b=c/A7I8SOMI3vyvSmsclkbn2uLOeRruiCLrU3ZeV022vdkIHCQyvoKTmSrjPdG6ZekeLkv5
+	fWXj5Hh68F+eq/CQ==
+To: linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/2] serial: stm32: Reset .throttled state in .startup()
-Date: Wed, 17 Apr 2024 11:03:28 +0200
-Message-ID:  <a784f80d3414f7db723b2ec66efc56e1ad666cbf.1713344161.git.u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1713344161.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1713344161.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 2/2] wifi: rtl8xxxu: enable MFP support
+Date: Wed, 17 Apr 2024 11:33:52 +0200
+Message-Id: <20240417093352.1840632-3-martin.kaistra@linutronix.de>
+In-Reply-To: <20240417093352.1840632-1-martin.kaistra@linutronix.de>
+References: <20240417093352.1840632-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1049; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=CFmHE1BzGVHwhk0poqXyOfp0UAIGCsaPeLG3rEUuFW0=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmH5BijoBEeBEBW6sX9z1WyExTH4i3AnV9yQT9Z lBMrOKfwXSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZh+QYgAKCRCPgPtYfRL+ Tql6B/9J22rBmAfTCxSYqK0kI0Av488jT1v/xAP7xF0yXbywi5OUJMKeUCyjk84D/DSBYn4Is+8 WcNweLId14pD66JBCLv9mogAIkXZdMP+M9VFoozWpa5wvbIwlCR+xtgkTrIhaPIV8e1X4SjxBwy vw7ra9YZ6zXmrnmSPiigEvbSOYFVq7JAYwva4BVC28eqHaDvV+uUbM8XYGcquxV64bgG+RUwoJF 5TbiWjJhY8aNnrBNtJigGB6QeZwtC/QK5q9D//p27xcE5wC6BXul465HCMg1ljMl6PJteONYP7S KT7DALY0S/Vq+nz+vB1s02g0Ph/a7mZaEWgGQandOBYwPi5S
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
 
-When an UART is opened that still has .throttled set from a previous
-open, the RX interrupt is enabled but the irq handler doesn't consider
-it. This easily results in a stuck irq with the effect to occupy the CPU
-in a tight loop.
+In order to connect to networks which require 802.11w, add the
+MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
 
-So reset the throttle state in .startup() to ensure that RX irqs are
-handled.
+When a robust management frame is received, rx_dec->swdec is not set,
+even though the HW did not decrypt it. Extend the check and don't set
+RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
 
-Fixes: d1ec8a2eabe9 ("serial: stm32: update throttle and unthrottle ops for dma mode")
+Use the security flag in the RX descriptor for this purpose, like it is
+done in the rtw88 driver.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
 ---
- drivers/tty/serial/stm32-usart.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 9 +++++++++
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 7 +++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
-index 2bea1d7c9858..e1e7bc04c579 100644
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -1080,6 +1080,7 @@ static int stm32_usart_startup(struct uart_port *port)
- 		val |= USART_CR2_SWAP;
- 		writel_relaxed(val, port->membase + ofs->cr2);
- 	}
-+	stm32_port->throttled = false;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index fd92d23c43d91..4f2615dbfd0f0 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -122,6 +122,15 @@ enum rtl8xxxu_rx_type {
+ 	RX_TYPE_ERROR = -1
+ };
  
- 	/* RX FIFO Flush */
- 	if (ofs->rqr != UNDEF_REG)
++enum rtw_rx_desc_enc {
++	RX_DESC_ENC_NONE	= 0,
++	RX_DESC_ENC_WEP40	= 1,
++	RX_DESC_ENC_TKIP_WO_MIC	= 2,
++	RX_DESC_ENC_TKIP_MIC	= 3,
++	RX_DESC_ENC_AES		= 4,
++	RX_DESC_ENC_WEP104	= 5,
++};
++
+ struct rtl8xxxu_rxdesc16 {
+ #ifdef __LITTLE_ENDIAN
+ 	u32 pktlen:14;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 4a49f8f9d80f2..b15a30a54259e 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -6473,7 +6473,8 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ 			rx_status->mactime = rx_desc->tsfl;
+ 			rx_status->flag |= RX_FLAG_MACTIME_START;
+ 
+-			if (!rx_desc->swdec)
++			if (!rx_desc->swdec &&
++			    rx_desc->security != RX_DESC_ENC_NONE)
+ 				rx_status->flag |= RX_FLAG_DECRYPTED;
+ 			if (rx_desc->crc32)
+ 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+@@ -6578,7 +6579,8 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ 			rx_status->mactime = rx_desc->tsfl;
+ 			rx_status->flag |= RX_FLAG_MACTIME_START;
+ 
+-			if (!rx_desc->swdec)
++			if (!rx_desc->swdec &&
++			    rx_desc->security != RX_DESC_ENC_NONE)
+ 				rx_status->flag |= RX_FLAG_DECRYPTED;
+ 			if (rx_desc->crc32)
+ 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+@@ -7998,6 +8000,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+ 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
+ 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
++	ieee80211_hw_set(hw, MFP_CAPABLE);
+ 
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+ 
 -- 
-2.43.0
+2.39.2
 
 
