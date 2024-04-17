@@ -1,75 +1,112 @@
-Return-Path: <stable+bounces-40108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB698A852B
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 15:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 617888A8600
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 16:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEE291C20F9B
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 13:46:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 927221C2114D
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 14:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C74B1411C3;
-	Wed, 17 Apr 2024 13:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khYE0Yz5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F81653801;
+	Wed, 17 Apr 2024 14:35:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166FC140E46;
-	Wed, 17 Apr 2024 13:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FC4132807;
+	Wed, 17 Apr 2024 14:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713361551; cv=none; b=PALo7O0FNVktoG00JTPAdHjlC3O7/VW4yBMaxmOJTJ32VCObFB61c+rQP6HLBmpkirp0GHPypkIs48n0mW0Q65idz3fCGc0aaXFyoyW44uX4uyOF75gAEYz+zfHckXT/sMopuQDFs1VZetggPxYWLMx30fUuLV0VuluQC/sIYeE=
+	t=1713364525; cv=none; b=Ht9efX8FOqBRudNgaM86zUChunbzmc2PpBX4n5kXFmxgLs/oyEWI0ibUcjYRivF+qZN7+E8ETGtIrP837umNzCRf1rMJFKhO/SUGCZzQqB5fhsuwhKfzfTWOQN5x/hBHapuDfcuGX4wZUpu4wnDjWIMIlqQxZCUDT6lRGMODsAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713361551; c=relaxed/simple;
-	bh=mTuRb29PJruHaneu87Xz2mpD+05AIxrJJUP9rmuaKYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lMEoHKtk/DQz7Gp/W0TwLYKncwyfmCk7FM2sOfqUcx/y/6JGTTXoIGUyQKGsl/961ft0e9m0t0ec7/8EVjFKH5+JTnhv+0L3buPz4Bs9NpIi+CbPGfZbKareGBIosEIGwSYIVmZfLUgHkeSgJLHcS42J2Emg69uyaxtkoMBMH3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khYE0Yz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A42C072AA;
-	Wed, 17 Apr 2024 13:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713361550;
-	bh=mTuRb29PJruHaneu87Xz2mpD+05AIxrJJUP9rmuaKYY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=khYE0Yz5QCQ5jMeS9MXJqYG10IlzoaJ2QxzLH/zTw9crbM/9tSi7f7+44+MSgkiOC
-	 Otg5BpA5zrhfgw4xmq2+w8WUo7OFhRbsuoYDaoFqFI5SJIXcjI3U4JOLZFZC/xEcNy
-	 2XL77018Iz2qgSopcpMgd2ZvvZM9kW+5bAkmonLW+5OYM4XnsZumHpriP8LiyzJXKT
-	 mRvqnllv++xNo9IWEvSg/uFmMTbAAxCfRwyFnbgC15FhoQtD6llfnKxq3yJKPMA9Hu
-	 cAHUtBY2tuX6AhZcgIy3qRl6TSneBZwoacRMPzHGHvcxgonwGekZDMAC2J8l7N+A8I
-	 Gh8f12Hjl0Fvw==
-Date: Wed, 17 Apr 2024 06:45:49 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net] r8169: fix LED-related deadlock on module removal
-Message-ID: <20240417064549.10ed50d8@kernel.org>
-In-Reply-To: <4b0495fd-fab5-4341-9b06-2f48613ee921@gmail.com>
-References: <ded9d793-83f8-4f11-87d9-a218d10c2981@gmail.com>
-	<20240416193458.1e2c799d@kernel.org>
-	<4b0495fd-fab5-4341-9b06-2f48613ee921@gmail.com>
+	s=arc-20240116; t=1713364525; c=relaxed/simple;
+	bh=/m0XnVMz0BvDuqHBqE70SQPupIVTwefnijZ2fT9R74s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fBXxLne+7CNKJbzjRohbiPac9XHJ1AeXLN00y/yqIHpG6Tz22/x+9uuVwAhGPil+vTUwNeY1lqFNA7m2Ow9a3a6Ta+w4Wd7yUyUKk/B0s6KSP8Ghhnt/6OxH5ja0P/XfgOWOSvpMK7Y57tVL3olALXEKKc1bXbSzuDC7CjMFRrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+Received: from i5e8616c3.versanet.de ([94.134.22.195] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1rx6NP-0003y3-HQ; Wed, 17 Apr 2024 16:35:07 +0200
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Krzysztof =?utf-8?B?V2lsY3p5xYRza2k=?= <kw@linux.com>,
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Simon Xue <xxm@rock-chips.com>, Shawn Lin <shawn.lin@rock-chips.com>,
+ Niklas Cassel <cassel@kernel.org>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ Jianfeng Liu <liujianfeng1994@gmail.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ stable@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v2] PCI: dw-rockchip: Fix GPIO initialization flag
+Date: Wed, 17 Apr 2024 16:35:06 +0200
+Message-ID: <3292185.44csPzL39Z@diego>
+In-Reply-To: <20240416121522.269972-1-cassel@kernel.org>
+References: <20240416121522.269972-1-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, 17 Apr 2024 08:02:31 +0200 Heiner Kallweit wrote:
-> > Looks like I already applied one chunk of this as commit 97e176fcbbf3
-> > ("r8169: add missing conditional compiling for call to r8169_remove_leds")
-> > Is it worth throwing that in as a Fixes tag?  
+Am Dienstag, 16. April 2024, 14:15:22 CEST schrieb Niklas Cassel:
+> PERST is active low according to the PCIe specification.
 > 
-> This is a version of the fix modified to apply on 6.8.
-> It's not supposed to be applied on net / net-next.
-> Should I have sent it to stable@vger.kernel.org only?
+> However, the existing pcie-dw-rockchip.c driver does:
+> gpiod_set_value(..., 0); msleep(100); gpiod_set_value(..., 1);
+> When asserting + deasserting PERST.
+> 
+> This is of course wrong, but because all the device trees for this
+> compatible string have also incorrectly marked this GPIO as ACTIVE_HIGH:
+> $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3568*
+> $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3588*
+> 
+> The actual toggling of PERST is correct.
+> (And we cannot change it anyway, since that would break device tree
+> compatibility.)
+> 
+> However, this driver does request the GPIO to be initialized as
+> GPIOD_OUT_HIGH, which does cause a silly sequence where PERST gets
+> toggled back and forth for no good reason.
+> 
+> Fix this by requesting the GPIO to be initialized as GPIOD_OUT_LOW
+> (which for this driver means PERST asserted).
+> 
+> This will avoid an unnecessary signal change where PERST gets deasserted
+> (by devm_gpiod_get_optional()) and then gets asserted
+> (by rockchip_pcie_start_link()) just a few instructions later.
+> 
+> Before patch, debug prints on EP side, when booting RC:
+> [  845.606810] pci: PERST asserted by host!
+> [  852.483985] pci: PERST de-asserted by host!
+> [  852.503041] pci: PERST asserted by host!
+> [  852.610318] pci: PERST de-asserted by host!
+> 
+> After patch, debug prints on EP side, when booting RC:
+> [  125.107921] pci: PERST asserted by host!
+> [  132.111429] pci: PERST de-asserted by host!
+> 
+> This extra, very short, PERST assertion + deassertion has been reported
+> to cause issues with certain WLAN controllers, e.g. RTL8822CE.
+> 
+> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+> Tested-by: Jianfeng Liu <liujianfeng1994@gmail.com>
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-Ah! I'm not sure what the right way is, either, TBH, but I'd have
-put [PATCH 6.8] rather than [PATCH net] in that case.
+On rk3588-jaguar
+Tested-by: Heiko Stuebner <heiko@sntech.de>
+
+
+
 
