@@ -1,163 +1,366 @@
-Return-Path: <stable+bounces-40101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C8F8A82BA
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 14:03:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0E28A82EC
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 14:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB07287C33
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 12:03:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9123B2839F8
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 12:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C110313D24E;
-	Wed, 17 Apr 2024 12:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5332913D265;
+	Wed, 17 Apr 2024 12:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OHlXNPsx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HfjzBj7u"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636DB13CFBD;
-	Wed, 17 Apr 2024 12:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC6913D245;
+	Wed, 17 Apr 2024 12:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713355402; cv=none; b=lFkVPDAm0bpZ2Q4VaSBSrPIKu+oXHlPQv+xTJ0qgufhLc21jyVjyYEMXA70C3gZxGRTdW2TnHDjD2mA7YxyciRH7emrn2zYBP5kJJ0K1eoCewGf3IJ1G7mM4+uSHJJiu/MHuoi76stFMjkFAgGaoskLdyoIdt0Y5U/P/KpeWRw4=
+	t=1713355975; cv=none; b=BwNeFHrklVdgN3mdXp/m0hSuNevjjpGSP6X2tOsr+9T4/MR3GI5TS48itL22iwWELBr5t2WbuNKVOcOfaFu7qTSrfzQUs6LledjCks1JjbZQNsRxbTVvrSrVBNK8QYhhVJrRkFoXBN7XlFRf01hH1BTLSmy0iQOpNyFArCbUf4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713355402; c=relaxed/simple;
-	bh=QrIkxiFKF8Y8in54o6OvTGPcyw/dmYtMduYHgiNnLRM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpoPmZjHcFqRkGNRX7LCa1qRoDLB7iKSdUqJE7yWZnGOPXkNkrbxsAoqLWnYe9o+YGwlKn6bFs3V/kNIwEt5t6J2MWabT9TVx1dzyayvu69qukFR+fTc+323ZmbBrws/UsvVrAIqa2iJTUu66++TkjmU2sHpVqSwYfhFgDe+mAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=OHlXNPsx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E73C072AA;
-	Wed, 17 Apr 2024 12:03:21 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OHlXNPsx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1713355399;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JqUxpmUqpZwb93aWIdk8nK8jsHAciW5UzOnZrGBCZHY=;
-	b=OHlXNPsxgNeFaA7jrH1Br0FTvd5MlBsolxUqxkTmXnoRRp4LoCKRSh9Wpaa1uSsBNth0bj
-	NruZAmbZY/cwQCmnCYruRcp03ibKhQDImJPVkfT8APA8oexA++D+sa6nAU9aQHKv1vzp5C
-	7tlfLqobpdk11Z41U8yny4pUzFmyWTg=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c1243d44 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Wed, 17 Apr 2024 12:03:17 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: guoyong.wang@mediatek.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	wsd_upstream@mediatek.com,
-	Theodore Ts'o <tytso@mit.edu>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] random: handle creditable entropy from atomic process context
-Date: Wed, 17 Apr 2024 14:01:11 +0200
-Message-ID: <20240417120217.3814215-2-Jason@zx2c4.com>
-In-Reply-To: <20240402081214.2723-1-guoyong.wang@mediatek.com>
-References: <20240402081214.2723-1-guoyong.wang@mediatek.com>
+	s=arc-20240116; t=1713355975; c=relaxed/simple;
+	bh=HrZpYSTsoC4ix4EpnTAb47aPRg1jX1QDOboBvCgUWeI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CHCVs916ik0d8H0o8HigQACi/9Lh6exx2rFZ49SClbd/W1mM19QLBQ8SUlh37XEHa+tQnguMhqBZh39XaPn8c/RSGez26ZIgBQghJDD5VudDob4mlWTeZwFyeka34RC1pxS5+BpIcllgzkaolQovZ7GYJ5Rde8gipX5rotJYADI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HfjzBj7u; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-416a8ec0239so4689365e9.0;
+        Wed, 17 Apr 2024 05:12:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713355971; x=1713960771; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HrZpYSTsoC4ix4EpnTAb47aPRg1jX1QDOboBvCgUWeI=;
+        b=HfjzBj7uYh4jhpTEEk6ge3FeynYUzCIlfo+ERSwghI0QYNfnWe+DhwdBnFkK5OmaQS
+         xY8A9zwj39s1h1IS50H5XzOzc7KharXnD4AZUAe9X5jp7V0fdhqxQYBRapotaNjrqNBT
+         UgXMwjdMn0E/3jsnquW5egd5x7P4kvZ7mBYfAzTG1wBxE6tpG9lVuUqJQQOJfg9JT5bL
+         xEApHYX9rLnaPQnIOtww/yqk/f3PrFcO7iTlvH39ELXTUjOgkJKHjpHNKDet0JbD2OKQ
+         bj4u29L0XquwRxwiVbr0am1JRVoaOWTdrWnvYEaRjAoZYi201XokvlGySsJMtwo2chte
+         uJLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713355971; x=1713960771;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HrZpYSTsoC4ix4EpnTAb47aPRg1jX1QDOboBvCgUWeI=;
+        b=k4Fb+NhfRgedjt1ZDBODlsdpJO3i79EEywCpEBovqazSM5MsEb/1jrHaA2TFzInCJE
+         IqC9+s0CoTUq5r46h8AC9rav++thHaTnx8vtPkujjSUI0/9fpHmbUtVITdpkLFb5F96e
+         tlTsdieL4eZCR4cQt58b5SZNVY7aPx45akY606CAhZqcTZMUZ+FbRAlhb0+ytwcbW0gF
+         MKUK7m2e+HjxF8p37fOFG1BgN4lhcBR0WLazUHMPzNMo/1/Np8H6IihK30KSy8CFoPTF
+         9dFKOnhPBjJBzrzbggdgv8o2rvP8xvPhDpmD6sxDTaiTyuN2kF82DEuiDy1aOa7+N6/O
+         6k5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVe/ocGO2wA145KGQvxT30tOUL255TLYwp1SOdSvTZ7hjxGcDVecvFTJlVhtFrSccR/ZQn5AZ/eAwyz2ZgnER2ZU4KHEvdeJ3WcZ+ocrG3Hv5DpzDGyHxjH5keuffbIlJK46ZfzuNvTWrBbom2w3/bGS2etNU1nApBxuvSv52vNGg==
+X-Gm-Message-State: AOJu0YwKNlfsbKcr4vvxfXAzQxgIXH7194GFhKmMBik+94u8qLoYdyWS
+	8xmTVbwGE3VwVvLjKgnuBo7WFJBzyaMG5o3njt0dVYx3ubLpniFO
+X-Google-Smtp-Source: AGHT+IHSLygSTkmUK8kxFK7/Y0W8n7WxJu8sNlhyt+B+fUCRZxXO7GbTQJ3brmq96IFuBDfw86LBsw==
+X-Received: by 2002:a05:600c:1d09:b0:417:d347:ac68 with SMTP id l9-20020a05600c1d0900b00417d347ac68mr4178655wms.17.1713355971267;
+        Wed, 17 Apr 2024 05:12:51 -0700 (PDT)
+Received: from ?IPv6:2001:8a0:e622:f700:abb8:8caf:bab6:45a3? ([2001:8a0:e622:f700:abb8:8caf:bab6:45a3])
+        by smtp.gmail.com with ESMTPSA id n26-20020a05600c3b9a00b00418a2ce884bsm2632187wms.32.2024.04.17.05.12.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Apr 2024 05:12:50 -0700 (PDT)
+Message-ID: <ae7a78f5e3258e5e1e0cd1515a50c2c9c0ce1edf.camel@gmail.com>
+Subject: Re: [PATCH v1] arm64: dts: imx8mm: fix missing pgc_vpu_* power
+ domain parent
+From: Vitor Soares <ivitro@gmail.com>
+To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 17 Apr 2024 13:12:44 +0100
+In-Reply-To: <47cd522d09fbfb4cce7d1d82e6657b6b21fa04d7.camel@pengutronix.de>
+References: <20240409085802.290439-1-ivitro@gmail.com>
+	 <9ce35b9bb5a15891f6bd01bd54b7dc84b3ba4021.camel@pengutronix.de>
+	 <e1552a3008a30ef7ed9097b4b80cda23ccb9e840.camel@gmail.com>
+	 <fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de>
+	 <bd4d7198e58bd89b46a4c721546f6975b287a5fc.camel@gmail.com>
+	 <c76d98a300a9d65d236d334da62916a7d658ef27.camel@gmail.com>
+	 <564fa534b32f4a6e96da6752f531fc7447ec633d.camel@gmail.com>
+	 <c064940ba46449b540a3cba14ebab96d31ba19de.camel@gmail.com>
+	 <47cd522d09fbfb4cce7d1d82e6657b6b21fa04d7.camel@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The entropy accounting changes a static key when the RNG has
-initialized, since it only ever initializes once. Static key changes,
-however, cannot be made from atomic context, so depending on where the
-last creditable entropy comes from, the static key change might need to
-be deferred to a worker.
+Hi Lucas,
 
-Previously the code used the execute_in_process_context() helper
-function, which accounts for whether or not the caller is
-in_interrupt(). However, that doesn't account for the case where the
-caller is actually in process context but is holding a spinlock.
+On Wed, 2024-04-17 at 10:00 +0200, Lucas Stach wrote:
+> Hi Vitor,
+>=20
+> Am Dienstag, dem 16.04.2024 um 17:08 +0100 schrieb Vitor Soares:
+> > On Tue, 2024-04-16 at 11:53 +0100, Vitor Soares wrote:
+> > > ++ Peng Fan <peng.fan@nxp.com>
+> > >=20
+> > > Greetings,
+> > >=20
+> > >=20
+> > > On Wed, 2024-04-10 at 12:01 +0100, Vitor Soares wrote:
+> > > > Hi Lucas,
+> > > >=20
+> > > > On Tue, 2024-04-09 at 17:44 +0100, Vitor Soares wrote:
+> > > > > On Tue, 2024-04-09 at 16:36 +0200, Lucas Stach wrote:
+> > > > > > Am Dienstag, dem 09.04.2024 um 14:22 +0100 schrieb Vitor Soares=
+:
+> > > > > > > Hi Lucas,
+> > > > > > >=20
+> > > > > > > Thanks for your feedback.
+> > > > > > >=20
+> > > > > > > On Tue, 2024-04-09 at 11:13 +0200, Lucas Stach wrote:
+> > > > > > > > Hi Vitor,
+> > > > > > > >=20
+> > > > > > > > Am Dienstag, dem 09.04.2024 um 09:58 +0100 schrieb Vitor
+> > > > > > > > Soares:
+> > > > > > > > > From: Vitor Soares <vitor.soares@toradex.com>
+> > > > > > > > >=20
+> > > > > > > > > The pgc_vpu_* nodes miss the reference to the power domai=
+n
+> > > > > > > > > parent,
+> > > > > > > > > leading the system to hang during the resume.
+> > > > > > > > >=20
+> > > > > > > > This change is not correct. The vpumix domain is controlled
+> > > > > > > > through
+> > > > > > > > the
+> > > > > > > > imx8mm-vpu-blk-ctrl and must not be directly triggered by t=
+he
+> > > > > > > > child
+> > > > > > > > domains in order to guarantee proper power sequencing.
+> > > > > > > >=20
+> > > > > > > > If the sequencing is incorrect for resume, it needs to be
+> > > > > > > > fixed
+> > > > > > > > in
+> > > > > > > > the
+> > > > > > > > blk-ctrl driver. I'll happily assist if you have any
+> > > > > > > > questions
+> > > > > > > > about
+> > > > > > > > this intricate mix between GPC and blk-ctrl hardware/driver=
+s.
+> > > > > > > =C2=A0
+> > > > > > > I'm new into the topic, so I tried to follow same approach as
+> > > > > > > in
+> > > > > > > imx8mp
+> > > > > > > DT.
+> > > > > > >=20
+> > > > > > That's a good hint, the 8MP VPU GPC node additions missed my
+> > > > > > radar.
+> > > > > > The
+> > > > > > direct dependency there between the GPC domains is equally wron=
+g.
+> > > > > >=20
+> > > > > > > I also checked the imx8mq DT and it only have one domain for
+> > > > > > > the
+> > > > > > > VPU in the GPC. It seem blk-ctrl also dependes on pgc_vpu_* t=
+o
+> > > > > > > work
+> > > > > > > properly.
+> > > > > > >=20
+> > > > > > > The blk-ctrl driver hangs on imx8m_blk_ctrl_power_on() when
+> > > > > > > access
+> > > > > > > the
+> > > > > > > ip registers for the soft reset. I tried to power-up the befo=
+re
+> > > > > > > the
+> > > > > > > soft reset, but it didn't work.
+> > > > > > >=20
+> > > > > > The runtime_pm_get_sync() at the start of that function should
+> > > > > > ensure
+> > > > > > that bus GPC domain aka vpumix is powered up. Can you check if
+> > > > > > that
+> > > > > > is
+> > > > > > happening?
+> > > > >=20
+> > > > > I checked bc->bus_power_dev->power.runtime_status and it is
+> > > > > RPM_ACTIVE.
+> > > > >=20
+> > > > > Am I looking to on the right thing? It is RPM_ACTIVE event before
+> > > > > runtime_pm_get_sync().
+> > > >=20
+> > > > During the probe I can see that
+> > > > bus_power_dev->power.runtime_status =3D RPM_SUSPENDED and then vpum=
+ix
+> > > > is
+> > > > powered up on GPC driver.
+> > > >=20
+> > > > On resume routine I can't see this flow. bus_power_dev-
+> > > > > power.runtime_status =3D RPM_ACTIVE and vpumix end up not being
+> > > > > powered-
+> > > > up.
+> > > >=20
+> > > > I checked the suspend flow and the GPC tries to poweroff vpumix.
+> > > >=20
+> > > >=20
+> > >=20
+> > > My understanding is that when resuming the 38310000.video-codec, the
+> > > vpumix isn't powered up. It happens because runtime_status and
+> > > runtime_last_status =3D RPM_ACTIVE.=20
+> > >=20
+> > > I tried to change blk-ctrl suspend routine to force the runtime_statu=
+s
+> > > =3D RPM_SUSPENDED, but the system ended up hanging on another device.
+> > >=20
+> > > From the comment in blk-ctrl suspend, we rely on PM_SLEEP code that
+> > > iterates over dpm_list for suspend/resume.
+> > > I did look at the dpm_list, and it changes the order on every boot.=
+=20
+> > >=20
+> > > With all the tests, I also found that the system randomly hangs on
+> > > dispblk-lcdif suspend. I have confirmed this device is in a different
+> > > place in the dpm_list (not sure if it is the root cause).=20
+> > > I haven't understood how blk-ctrl ensures the correct order there yet=
+.=20
+> > >=20
+> Random order of the DPM list seems like a good find to investigate
+> further.
+>=20
+> > > Taking the following dpm_list excerpt:
+> > > idx - device
+> > > ------------------------------
+> > > ...=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > > 191 - imx-pgc-domain.7=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0
+> > > 192 - imx-pgc-domain.8=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0
+> > > 193 - imx-pgc-domain.9=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0
+> > > 194 - 38330000.blk-ctrl=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0
+> > > 195 - 38310000.video-codec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > > 196 - 38300000.video-codec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > > ...
+> > > 205 - genpd:0:38330000.blk-ctrl
+> > > 206 - genpd:1:38330000.blk-ctrl
+> > > 207 - genpd:2:38330000.blk-ctrl
+> > > 208 - genpd:3:38330000.blk-ctrl
+> > > ------------------------------
+> > >=20
+> > > Shouldn't genpd devices be before 38330000.blk-ctrl?
+> > > As their power domain is GPC and the blk-ctrl power domain is genpd.
+> > >=20
+> >=20
+> > I did the following change to have genpd device before 38330000.blk-ctr=
+l
+> > on dpm_list and it did work.
+> >=20
+> > diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/i=
+mx/imx8m-blk-ctrl.c
+> > index ca942d7929c2..0f1471dcd4e8 100644
+> > --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> > +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> > @@ -220,6 +220,7 @@ static int imx8m_blk_ctrl_probe(struct platform_dev=
+ice *pdev)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retur=
+n dev_err_probe(dev, PTR_ERR(bc->bus_power_dev),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "failed to attach power domai=
+n \"bus\"\n");
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 device_move(dev, bc->bus_power_de=
+v, DPM_ORDER_PARENT_BEFORE_DEV);
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < bc_data->n=
+um_domains; i++) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 const struct imx8m_blk_ctrl_domain_data *data =3D &bc=
+_data->domains[i];
+> > @@ -268,6 +269,7 @@ static int imx8m_blk_ctrl_probe(struct platform_dev=
+ice *pdev)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 data->gpc_name);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto =
+cleanup_pds;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 device_move(dev, domain->power_dev, DPM_ORDER_PARENT_BEFORE=
+_DEV);
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 domain->genpd.name =3D data->name;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 domain->genpd.power_on =3D imx8m_blk_ctrl_power_on;
+> >=20
+> > any concern about this approach?
+> >=20
+> I'm a bit uncomfortable with calling such a low-level function from
+> this driver. Also we don't really want to move the device to a new
+> parent, but just want to ensure proper order on the dpm list. Adding a
+> device_link between the devices seems like the better way to do so.
 
-This turned out to be the case with input_handle_event() in
-drivers/input/input.c contributing entropy:
+Thanks for your feedback.
 
-  [<ffffffd613025ba0>] die+0xa8/0x2fc
-  [<ffffffd613027428>] bug_handler+0x44/0xec
-  [<ffffffd613016964>] brk_handler+0x90/0x144
-  [<ffffffd613041e58>] do_debug_exception+0xa0/0x148
-  [<ffffffd61400c208>] el1_dbg+0x60/0x7c
-  [<ffffffd61400c000>] el1h_64_sync_handler+0x38/0x90
-  [<ffffffd613011294>] el1h_64_sync+0x64/0x6c
-  [<ffffffd613102d88>] __might_resched+0x1fc/0x2e8
-  [<ffffffd613102b54>] __might_sleep+0x44/0x7c
-  [<ffffffd6130b6eac>] cpus_read_lock+0x1c/0xec
-  [<ffffffd6132c2820>] static_key_enable+0x14/0x38
-  [<ffffffd61400ac08>] crng_set_ready+0x14/0x28
-  [<ffffffd6130df4dc>] execute_in_process_context+0xb8/0xf8
-  [<ffffffd61400ab30>] _credit_init_bits+0x118/0x1dc
-  [<ffffffd6138580c8>] add_timer_randomness+0x264/0x270
-  [<ffffffd613857e54>] add_input_randomness+0x38/0x48
-  [<ffffffd613a80f94>] input_handle_event+0x2b8/0x490
-  [<ffffffd613a81310>] input_event+0x6c/0x98
+I have tested with device_link_add() and it is working. I will prepare a ne=
+w patch with this change.
 
-According to Guoyong, it's not really possible to refactor the various
-drivers to never hold a spinlock there. And in_atomic() isn't reliable.
-
-So, rather than trying to be too fancy, just punt the change in the
-static key to a workqueue always. There's basically no drawback of doing
-this, as the code already needed to account for the static key not
-changing immediately, and given that it's just an optimization, there's
-not exactly a hurry to change the static key right away, so deferal is
-fine.
-
-Reported-by: Guoyong Wang <guoyong.wang@mediatek.com>
-Cc: stable@vger.kernel.org
-Fixes: f5bda35fba61 ("random: use static branch for crng_ready()")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
-Guoyong- can you test this and tell me whether it fixes the problem you
-were seeing? If so, I'll try to get this sent up for 6.9. -Jason
-
- drivers/char/random.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 456be28ba67c..2597cb43f438 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -702,7 +702,7 @@ static void extract_entropy(void *buf, size_t len)
- 
- static void __cold _credit_init_bits(size_t bits)
- {
--	static struct execute_work set_ready;
-+	static DECLARE_WORK(set_ready, crng_set_ready);
- 	unsigned int new, orig, add;
- 	unsigned long flags;
- 
-@@ -718,8 +718,8 @@ static void __cold _credit_init_bits(size_t bits)
- 
- 	if (orig < POOL_READY_BITS && new >= POOL_READY_BITS) {
- 		crng_reseed(NULL); /* Sets crng_init to CRNG_READY under base_crng.lock. */
--		if (static_key_initialized)
--			execute_in_process_context(crng_set_ready, &set_ready);
-+		if (static_key_initialized && system_unbound_wq)
-+			queue_work(system_unbound_wq, &set_ready);
- 		atomic_notifier_call_chain(&random_ready_notifier, 0, NULL);
- 		wake_up_interruptible(&crng_init_wait);
- 		kill_fasync(&fasync, SIGIO, POLL_IN);
-@@ -890,8 +890,8 @@ void __init random_init(void)
- 
- 	/*
- 	 * If we were initialized by the cpu or bootloader before jump labels
--	 * are initialized, then we should enable the static branch here, where
--	 * it's guaranteed that jump labels have been initialized.
-+	 * or workqueues are initialized, then we should enable the static
-+	 * branch here, where it's guaranteed that these have been initialized.
- 	 */
- 	if (!static_branch_likely(&crng_is_ready) && crng_init >= CRNG_READY)
- 		crng_set_ready(NULL);
--- 
-2.44.0
+Best regards,
+Vitor Soares
+>=20
+> Regards,
+> Lucas
+>=20
+> > Best regards,
+> > Vitor Soares
+> > >=20
+> > > >=20
+> > > > >=20
+> > > > >=20
+> > > > > >=20
+> > > > > > Regards,
+> > > > > > Lucas
+> > > > > >=20
+> > > > > > > Do you have an idea how we can address this within blk-ctrl?
+> > > > > > >=20
+> > > > > > > Best regards,
+> > > > > > > Vitor
+> > > > >=20
+> > > >=20
+> > >=20
+> >=20
+>=20
 
 
