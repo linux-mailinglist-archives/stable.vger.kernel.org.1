@@ -1,257 +1,135 @@
-Return-Path: <stable+bounces-40074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3A38A7D53
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 09:43:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55A08A7D67
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 09:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B7531C20AEA
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 07:43:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4313AB21EAC
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 07:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085C46CDA9;
-	Wed, 17 Apr 2024 07:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BC0745C5;
+	Wed, 17 Apr 2024 07:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qj1zIwYP"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="eKhPh5nv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2C8184D
-	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 07:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22FD7173A;
+	Wed, 17 Apr 2024 07:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713339828; cv=none; b=cz4qnBA2dmIi0KUYYR2WmB2uZN8V1qq/MI+N9Sd/foisNPZcToFxvfKNAzrywCsIV/HZYoJ/EriiPZn35KkAPH8mk3T7Xp5Z82z1rYlM5fPA6CAQ59h7LNQ48fK9R7/T/BSM0fyE85NAvtqljnvWevY/ulaRpgrNRHK+RnGGUUo=
+	t=1713340269; cv=none; b=DmWWBqAGptHGUumth4eQHyja+0EDeYNWqcgK7cu1ebzHizCCtdgviAnQO70/k6aBbwDGQhKJ+1zBxlCoTQkDn8q7FJJ6RecooigSWHmwhPVkaFUy6RyX3n15IgLIhCIYDmfL+kB+FpjFrl+ZqFjlGiGeTbKkOg2RKJN5JO2koL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713339828; c=relaxed/simple;
-	bh=h8c3gJb9ZG5Vj1Znka0shDUGDwvzYy+8bgKQ4ihTSRU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EJ9EQQVfLHKZdz0L1VCvIkeOnJQEmGIkkd8LE5+v9P7mrfhJzTJbgs8pk1OCJQYcFc/6h96p0nVujcbnUxq6NQW9/lREQ29rQSNFvQASagtIGRiZMBYopezhsFzdhIqezEjpjIdPh65Gykg5mWvEtNFjzv2oF8/n2pjNoqpI9h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qj1zIwYP; arc=none smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-7e7b473bc62so1083774241.2
-        for <stable@vger.kernel.org>; Wed, 17 Apr 2024 00:43:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713339826; x=1713944626; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Phf0FF6NStVSDXIMMyMNZP1z+jfYnoekO6QoTXZR0Wg=;
-        b=qj1zIwYPlt6xaJlB7omqQA7a5UnVRF38TI5yMi8HzSkghQ+oBiM6XeEXiN8NZLGHKj
-         e9asYIaSa1LEg4Yixtg0hfH4uimOEtg9JuZxGcf3GyoGcCLeRvmuaeeOT9RfB7h6wHVp
-         pT4cq625a6bhaT0HPMl1gweXvEioe5yO4Ln2VLM6+kVYGoq3vljM51RMjILWA78pKtx7
-         JnV03Q+/AsgO5HCYFNoxqRme5dpq8kkBq8sYDs8mobmc+MPna7897E7rv/cq7egGjpnK
-         sYo/Na973gnsCNwq+gJZBGaXXbnZFuX96Vyg70fBJDG1liawDtmt3cbIAEYQ7hDeD75d
-         KWHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713339826; x=1713944626;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Phf0FF6NStVSDXIMMyMNZP1z+jfYnoekO6QoTXZR0Wg=;
-        b=uf+e8QIi/5gVRVQspkXcpb1rq/f9b8XgLghLw7qN1E70eKj3DDcBaeODVGrpfr3j8c
-         Fofjzfmx2IqbwyxQe7TRCeNOf2LqY1e3GeNUlqGc7TddBDSEfFZG8ZA1JxuNogcbictB
-         DfV27BkE1XeB0f+bF1+ovqfhNqfkB301y++sq/vGomXLStCesxuc9fEicQ8py5mwZjBW
-         V+kjlkSeSxoWYBoecvjjMMolVK07IFw+I/eHCdUWO4VHEhWTvD4/lZE2VfY7vJIldEjZ
-         /UvdpLGj6thnxEaLFeIflPX1m7sTwgzC3O9nDJ3Smj0GuzHaR7e02KQc2CdcOOK+qS3E
-         czGg==
-X-Gm-Message-State: AOJu0YwZIbHSkR/pXA5UdSJaEA44p0HIzfF9LfHtZ4Zdyo5aVl1c8RxF
-	LYnUdRMDFbmbjzNmLz0X6WZc0vDq4ygzTHwGswBvpxCelZceQ58HlhW25V5kZeJdrP1Ql2sfjo5
-	btPt99L7RS8FattXLe9rFcshmS9H4xBBBM8Rb8g==
-X-Google-Smtp-Source: AGHT+IGKIXyPa/nU2wtBFQ2i7XYjjJSCtGr11a/Jxi4Ce0+hrTHgJNre43i0/FxzDMGJ3Dw/GOVllDLGg6pbXxrS2Ac=
-X-Received: by 2002:a05:6122:1d8c:b0:4da:c699:de98 with SMTP id
- gg12-20020a0561221d8c00b004dac699de98mr12138986vkb.16.1713339826114; Wed, 17
- Apr 2024 00:43:46 -0700 (PDT)
+	s=arc-20240116; t=1713340269; c=relaxed/simple;
+	bh=nkHXoxrUC6y6rXyp3n2yBLub76g+yVRVU0sB8x34LCc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=trAWfDQQYV6CVtMRf2QR5AAnZM8KnJxN/ZDyeBsRYqc8EX6kwBdU09nnrbHUhCd71VUXUMXyQlJY5hcYGOS1J+uVh39GYFp8gu5VCzRz0ePQwli9Do+XF4MOxJiJnerS1bAtB2bJ1M5YkhGDTKqROI6Qfhi7V6LyymDB4beKjR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=eKhPh5nv; arc=none smtp.client-ip=68.232.139.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1713340267; x=1744876267;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=nkHXoxrUC6y6rXyp3n2yBLub76g+yVRVU0sB8x34LCc=;
+  b=eKhPh5nvtWPGFBzrANTr93lci/cw1PLYB/gX0LN1Vgm/osV1GQjaJwIu
+   JBVvGV7NG+iglIuPVyZEgFbs48zZPUlul1ziSI0F+qrHVwJbsxqBC6XF0
+   UpGM+TGCb939VM/oYyNDjIeI02+E4QfkC37qOQKNcnmuJgevou5MuaZJB
+   1d3Tr/s6kt6a37UYKppPmLATwqG9Aye/QNU8To63YBefTMcDuEYT1gL56
+   dg1/t+iClIt9VjxVBV23rHprPndmmfrsS1mgJv4diiZOCmgC4uSWXgQhO
+   Ma1R52KRfzwuQLAXdV5qZbRuglKQiibZWE9ChK+1H+hIFkjpC2yMBp430
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="157776076"
+X-IronPort-AV: E=Sophos;i="6.07,208,1708354800"; 
+   d="scan'208";a="157776076"
+Received: from unknown (HELO yto-r2.gw.nic.fujitsu.com) ([218.44.52.218])
+  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 16:50:58 +0900
+Received: from yto-m2.gw.nic.fujitsu.com (yto-nat-yto-m2.gw.nic.fujitsu.com [192.168.83.65])
+	by yto-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id E216715FA8;
+	Wed, 17 Apr 2024 16:50:55 +0900 (JST)
+Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com [192.51.206.22])
+	by yto-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 2436E4E653;
+	Wed, 17 Apr 2024 16:50:55 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+	by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id 948502288CF;
+	Wed, 17 Apr 2024 16:50:54 +0900 (JST)
+Received: from irides.g08.fujitsu.local (unknown [10.167.226.114])
+	by edo.cn.fujitsu.com (Postfix) with ESMTP id EF3991A000C;
+	Wed, 17 Apr 2024 15:50:53 +0800 (CST)
+From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+To: qemu-devel@nongnu.org,
+	linux-cxl@vger.kernel.org
+Cc: Jonathan.Cameron@huawei.com,
+	dan.j.williams@intel.com,
+	dave@stgolabs.net,
+	ira.weiny@intel.com,
+	alison.schofield@intel.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] cxl/core: correct length of DPA field masks
+Date: Wed, 17 Apr 2024 15:50:52 +0800
+Message-Id: <20240417075053.3273543-2-ruansy.fnst@fujitsu.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240417075053.3273543-1-ruansy.fnst@fujitsu.com>
+References: <20240417075053.3273543-1-ruansy.fnst@fujitsu.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240415141946.165870434@linuxfoundation.org>
-In-Reply-To: <20240415141946.165870434@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 17 Apr 2024 13:13:34 +0530
-Message-ID: <CA+G9fYu=tSQw-bmr8eQvifTKV67H01H63R9qPEkY-RSFOxoTNQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/69] 6.1.87-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28326.006
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28326.006
+X-TMASE-Result: 10-1.936900-10.000000
+X-TMASE-MatchedRID: Z72PYcQfb3Po4fT4WEihVSQWufwDJ4K9T5ysQDj6eFnIPbn2oQhptW4j
+	6HJSTgstiC69Gex0rT0XkIT0cenSu+BRuAss+FbmEXjPIvKd74BUENBIMyKD0ceQfu6iwSfsePr
+	7SQbqKPDi8zVgXoAltuJ5hXsnxp7jC24oEZ6SpSmcfuxsiY4QFJp+Fkm0Yph4NSGlnU1tfkqmmA
+	tzdYh7Px/SCJhYcntdSNllVVIjtxumPccZWwKt1wdD9AYG5JbSTGKjvF046qOjDGFJqjnwwJsNE
+	GpLafrrLM/nEDLP056e+TDiyH/49wxfkLAfkNNSaAZk0sEcY14=
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 
-On Mon, 15 Apr 2024 at 20:09, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.87 release.
-> There are 69 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 17 Apr 2024 14:19:30 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.87-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+The length of Physical Address in General Media Event Record/DRAM Event
+Record is 64-bit, so the field mask should be defined as such length.
+Otherwise, this causes cxl_general_media and cxl_dram tracepoints to
+mask off the upper-32-bits of DPA addresses. The cxl_poison event is
+unaffected.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+If userspace was doing its own DPA-to-HPA translation this could lead to
+incorrect page retirement decisions, but there is no known consumer
+(like rasdaemon) of this event today.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Fixes: d54a531a430b ("cxl/mem: Trace General Media Event Record")
+Cc: <stable@vger.kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+---
+ drivers/cxl/core/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-## Build
-* kernel: 6.1.87-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: 6745a5f2c8063076bb5a9cd18ede5a5559258492
-* git describe: v6.1.86-70-g6745a5f2c806
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.8=
-6-70-g6745a5f2c806
+diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+index e5f13260fc52..cdfce932d5b1 100644
+--- a/drivers/cxl/core/trace.h
++++ b/drivers/cxl/core/trace.h
+@@ -253,7 +253,7 @@ TRACE_EVENT(cxl_generic_event,
+  * DRAM Event Record
+  * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
+  */
+-#define CXL_DPA_FLAGS_MASK			0x3F
++#define CXL_DPA_FLAGS_MASK			0x3FULL
+ #define CXL_DPA_MASK				(~CXL_DPA_FLAGS_MASK)
+ 
+ #define CXL_DPA_VOLATILE			BIT(0)
+-- 
+2.34.1
 
-## Test Regressions (compared to v6.1.86)
-
-## Metric Regressions (compared to v6.1.86)
-
-## Test Fixes (compared to v6.1.86)
-
-## Metric Fixes (compared to v6.1.86)
-
-## Test result summary
-total: 237743, pass: 204447, fail: 4019, skip: 28994, xfail: 283
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 138 total, 138 passed, 0 failed
-* arm64: 41 total, 41 passed, 0 failed
-* i386: 31 total, 31 passed, 0 failed
-* mips: 26 total, 26 passed, 0 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 36 passed, 0 failed
-* riscv: 11 total, 11 passed, 0 failed
-* s390: 15 total, 15 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 37 total, 36 passed, 1 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
