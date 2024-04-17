@@ -1,208 +1,115 @@
-Return-Path: <stable+bounces-40119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73F508A8C29
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 21:34:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9595E8A8CB7
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 22:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28486282593
-	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 19:34:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 175C0B24FDD
+	for <lists+stable@lfdr.de>; Wed, 17 Apr 2024 20:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E6E2C69A;
-	Wed, 17 Apr 2024 19:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OGz1CYIV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914BB36AEC;
+	Wed, 17 Apr 2024 20:06:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B540B1BF53
-	for <stable@vger.kernel.org>; Wed, 17 Apr 2024 19:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616E1208D6;
+	Wed, 17 Apr 2024 20:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713382460; cv=none; b=aAQawJFyQ66X9kcoQ1JaB0E1nJt06wjnngN1SRYnU/nRN9kiZc0CsVrVdfnBQxAZPbjQVimuxsK+99c8Rus6YqL8/5O3XW0n6QyenI2cKRUH5jZECPyCWb6NbuS7dcSkwVf48fN3N8zmp4GrmrCuplIuTx7Vzg3h4KqPiNXT44Y=
+	t=1713384408; cv=none; b=iNUl8/mIk9eDeVWalEBZBdqXBQf6nXVxoCYsVQil0Ns/3RuN2N4Iy+veWBWEv9BepY3sE0V/eoTVrsf5Iv6vk3jUj+3f/+2Q9914X7WP9AsRSHBTh4EO64RcVOQs3GvS/Aexf6PjoAJWnNsGdPfiulGDuQGGfuZb4+HaMS3Z5ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713382460; c=relaxed/simple;
-	bh=0LwcQE74ewyrLEKr9qBB4PpxyrOcuzBZ+DsOu847dE0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HAbugRvaAvqphWXdUHezzuFuy40+ZHGxTUQbInjhwvh4UWDQ1uxP2cn4bDJM8yxiTx/4KfTjEW8weWRwmUJ7Qmyyl5014ImsyXDtdbB6PPQXQ/nb3LnmBB7oE8blIPLix8HOzhp/ABHKK1fST3uSUz/yU0JipHU4GtfwRr5yLSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OGz1CYIV; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-56e5174ffc2so2763a12.1
-        for <stable@vger.kernel.org>; Wed, 17 Apr 2024 12:34:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713382457; x=1713987257; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fyl6TqOQKc7y6AuWZSULZsHIQoiSS+3/2ZOsE3/WMtU=;
-        b=OGz1CYIVBJ7Yid+XCiNzg/JS7CkywMy/vUxd27Uma5XD8ocezRYNhVWnLbbRclhQld
-         kcV56jEIPe0jeUGyK9HO3p/dUqzTt00MrAMF98oidr3M0HSO2HGhsstXN6CAdaXtQzGQ
-         SJSVJQMtG0wwWo5NtYnn+8IfwsIBI5mPmh3AydE7WpAB4Nila3KSELEX37E41C6yRpzC
-         Cmss9vcSJRJ27OQ4EUng/UbpU5wp0M1vxdFnk3iWQgxTKQA1vGFdnNBChuilNt38vwLM
-         lc5ff8bxkEjeS/mZRyJwpRzkYfQJ/c0FiWT3xZggyGqwcmBC7PuFnBAfkUyeGggjZiVX
-         +n5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713382457; x=1713987257;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fyl6TqOQKc7y6AuWZSULZsHIQoiSS+3/2ZOsE3/WMtU=;
-        b=aGN14qfvl2wASKUN5IVpOM36gz2UrSKYH3MzVIQiV9O1lG4gX9+IhK69cm10HLeEpK
-         Fbd5vL687g3PQqeAf81uUj4PGOkVeJkMFS+gt24Ps0C9Y1iVtcdd0YA/SygcR808i1AG
-         hpVHKn276IjANzBYRwWmcRU/zmElMgwHFQdhKZ/Pa7DPfYXR/xBcxmvzH5pJ89rl5atq
-         Hm/1J3rLa8yXcVBllE76yK3OLDqBW62XgQj3yFME5j1V+WeDWalR6L962KjCFWKwCryo
-         kk6IXmr9YwpQVNuQOOI3umtw/mKL7471trCqxRLwYquogfZSOW6U2Oeiy3PQ4AynP5gN
-         NQuw==
-X-Forwarded-Encrypted: i=1; AJvYcCVB/JHDznHtI1z71J2e8LN8FisGf6L72BqtLDyfAo7uk/xNAAwsCMlE6UtskApLuCa6ljNaN1382MVSmbqsuJ70U8FWFO+2
-X-Gm-Message-State: AOJu0YxHjV1qaMEEnv0bKtgOj1oXLhOv/YlmWyWdXdafltVb9lQGpchF
-	qu7F1WTANVL9arrjo5eKRP7Vx2vIGfJ4leUcGgvX9YHo+xVvz4o8bUqiFl3Ey7BgnTn0oXa4JaW
-	Uu1gthlXjVB+sKXpPu+pv15pkPmyRs5BuPNUr
-X-Google-Smtp-Source: AGHT+IF3BxF61WJZfffzn5eL5CSWhQKAZF34LWBLquyLGLML0FvYcr/UD2V+jp/gbT9bVgfJHdkvmNN7KBf/Xf/oMBk=
-X-Received: by 2002:a05:6402:12d2:b0:571:b3fa:bf81 with SMTP id
- k18-20020a05640212d200b00571b3fabf81mr29493edx.2.1713382456805; Wed, 17 Apr
- 2024 12:34:16 -0700 (PDT)
+	s=arc-20240116; t=1713384408; c=relaxed/simple;
+	bh=nv1mChUkPCiO/HWkxgelFfD99Z4nAlmsWNhrqLyMFWM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qPiJU3oaO4J0WPpFXI4Vk1ccG8fTn0FHum1rNHQpd9HwuypkaS0x1oBVj6EQePbCU+ESrgWNeg1NGbOwpEqbBMZUZeY7ACXvcjarTvdh+iZtm20YAsCW6q40thP5DBMiB0zVZkXkrQRtaOv9k2UNwoL6G37uLgCJpF/Ni0207gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85CCC072AA;
+	Wed, 17 Apr 2024 20:06:42 +0000 (UTC)
+Date: Wed, 17 Apr 2024 21:06:40 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Marc Zyngier <maz@kernel.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, Yihuang Yu <yihyu@redhat.com>,
+	Gavin Shan <gshan@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shaoqin Huang <shahuang@redhat.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+Message-ID: <ZiAr0OeeaCeKMY1I@arm.com>
+References: <20240415141953.365222063@linuxfoundation.org>
+ <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+ <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
+ <86y19dqw74.wl-maz@kernel.org>
+ <Zh61KobDt_y1O46-@arm.com>
+ <2024041744-pretender-clutter-7d4d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118181954.1415197-1-zokeefe@google.com> <20240417111001.fa2eg5gp6t2wiwco@quack3>
-In-Reply-To: <20240417111001.fa2eg5gp6t2wiwco@quack3>
-From: "Zach O'Keefe" <zokeefe@google.com>
-Date: Wed, 17 Apr 2024 12:33:39 -0700
-Message-ID: <CAAa6QmSOum_0ZhyUq1ppguLp0jpEs0u1U843GkF==xMwaMGV4A@mail.gmail.com>
-Subject: Re: [PATCH] mm/writeback: fix possible divide-by-zero in
- wb_dirty_limits(), again
-To: Jan Kara <jack@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Maxim Patlasov <MPatlasov@parallels.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024041744-pretender-clutter-7d4d@gregkh>
 
-On Wed, Apr 17, 2024 at 4:10=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
->
-> On Thu 18-01-24 10:19:53, Zach O'Keefe wrote:
-> > (struct dirty_throttle_control *)->thresh is an unsigned long, but is
-> > passed as the u32 divisor argument to div_u64().  On architectures wher=
-e
-> > unsigned long is 64 bytes, the argument will be implicitly truncated.
-> >
-> > Use div64_u64() instead of div_u64() so that the value used in the "is
-> > this a safe division" check is the same as the divisor.
-> >
-> > Also, remove redundant cast of the numerator to u64, as that should
-> > happen implicitly.
-> >
-> > This would be difficult to exploit in memcg domain, given the
-> > ratio-based arithmetic domain_drity_limits() uses, but is much easier i=
-n
-> > global writeback domain with a BDI_CAP_STRICTLIMIT-backing device, usin=
-g
-> > e.g. vm.dirty_bytes=3D(1<<32)*PAGE_SIZE so that dtc->thresh =3D=3D (1<<=
-32)
-> >
-> > Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_di=
-rty_limits()")
-> > Cc: Maxim Patlasov <MPatlasov@parallels.com>
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Zach O'Keefe <zokeefe@google.com>
->
-> I've come across this change today and it is broken in several ways:
+On Wed, Apr 17, 2024 at 09:05:12AM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Apr 16, 2024 at 06:28:10PM +0100, Catalin Marinas wrote:
+> > On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
+> > > On Tue, 16 Apr 2024 14:07:30 +0100,
+> > > Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > > > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
+> > > > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > This is the start of the stable review cycle for the 6.6.28 release.
+> > > > > > There are 122 patches in this series, all will be posted as a response
+> > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > let me know.
+> > > > >
+> > > > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
+> > > > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
+> > > > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
+> > > > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
+> > > > > the bisect and looking at the commit log to pull out people to CC and
+> > > > > note that the fix was explicitly targeted at v6.6.
+> > > > 
+> > > > Anders investigated this reported issues and bisected and also found
+> > > > the missing commit for stable-rc 6.6 is
+> > > > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
+> > > 
+> > > Which is definitely *not* stable candidate. We need to understand why
+> > > the invalidation goes south when the scale go up instead of down.
+> > 
+> > If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
+> > which fixes 117940aa6e5f ("KVM: arm64: Define
+> > kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
+> > ("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
+> > "scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
+> > CBMC model, not on the actual kernel. It may be worth adding some
+> > WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
+> > num greater than 31.
+> > 
+> > I haven't investigated properly (and I'm off tomorrow, back on Thu) but
+> > it's likely the original code was not very friendly to the maximum
+> > range, never tested. Anyway, if one figures out why it goes out of
+> > range, I think the solution is to also backport e2768b798a19 to stable.
+> 
+> How about I drop the offending commit from stable and let you all figure
+> out what needs to be added before applying anything else :)
 
-Thanks for picking up on this, Jan.
+It makes sense ;). We'll send them to stable once sorted.
 
-> > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> > index cd4e4ae77c40a..02147b61712bc 100644
-> > --- a/mm/page-writeback.c
-> > +++ b/mm/page-writeback.c
-> > @@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struct dirty_t=
-hrottle_control *dtc)
-> >        */
-> >       dtc->wb_thresh =3D __wb_calc_thresh(dtc);
-> >       dtc->wb_bg_thresh =3D dtc->thresh ?
-> > -             div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh=
-) : 0;
-> > +             div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) :=
- 0;
->
-> Firstly, the removed (u64) cast from the multiplication will introduce a
-> multiplication overflow on 32-bit archs if wb_thresh * bg_thresh >=3D 1<<=
-32
-> (which is actually common - the default settings with 4GB of RAM will
-> trigger this). [..]
-
-True, and embarrassing given I was looking at this code with a 32-bit
-focus. Well spotted.
-
-> [..] Secondly, the div64_u64() is unnecessarily expensive on
-> 32-bit archs. We have div64_ul() in case we want to be safe & cheap.
-
-A last-minute change vs just casting the initial "dtc->thresh ?"
-check. It did look expensive, but figured its existence implied it
-should be used. I must have missed div64_ul().
-
-> Thirdly, if thresholds are larger than 1<<32 pages, then dirty balancing =
-is
-> going to blow up in many other spectacular ways - consider only the
-> multiplication on this line - it will not necessarily fit into u64 anymor=
-e.
-> The whole dirty limiting code is interspersed with assumptions that limit=
-s
-> are actually within u32 and we do our calculations in unsigned longs to
-> avoid worrying about overflows (with occasional typing to u64 to make it
-> more interesting because people expected those entities to overflow 32 bi=
-ts
-> even on 32-bit archs). Which is lame I agree but so far people don't seem
-> to be setting limits to 16TB or more. And I'm not really worried about
-> security here since this is global-root-only tunable and that has much
-> better ways to DoS the system.
->
-> So overall I'm all for cleaning up this code but in a sensible way please=
-.
-> E.g. for these overflow issues at least do it one function at a time so
-> that we can sensibly review it.
->
-> Andrew, can you please revert this patch until we have a better fix? So f=
-ar
-> it does more harm than good... Thanks!
-
-Shall we just roll-forward with a suitable fix? I think all the
-original code actually "needed" was to cast the ternary predicate,
-like:
-
----8<---
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index fba324e1a010..ca1bfc0c9bdd 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -1637,8 +1637,8 @@ static inline void wb_dirty_limits(struct
-dirty_throttle_control *dtc)
-         *   at some rate <=3D (write_bw / 2) for bringing down wb_dirty.
-         */
-        dtc->wb_thresh =3D __wb_calc_thresh(dtc);
--       dtc->wb_bg_thresh =3D dtc->thresh ?
--               div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0=
-;
-+       dtc->wb_bg_thresh =3D (u32)dtc->thresh ?
-+               div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) =
-: 0;
-
-        /*
-         * In order to avoid the stacked BDI deadlock we need
----8<---
-
-Thanks, and apologize for the inconvenience
-
-Zach
-
->                                                                 Honza
-> --
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+-- 
+Catalin
 
