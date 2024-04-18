@@ -1,140 +1,130 @@
-Return-Path: <stable+bounces-40186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ACDF8A9B90
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 15:47:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2638A9BA5
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 15:52:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AD22B21F9C
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:47:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EAAF1F233F5
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DAEE1607B3;
-	Thu, 18 Apr 2024 13:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446951607BD;
+	Thu, 18 Apr 2024 13:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="UB8HuKZl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nXJI8z3w"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830CE15AAB7;
-	Thu, 18 Apr 2024 13:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=167.235.159.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713448029; cv=pass; b=qVWMezjvp2z5DVdPwtoaqaLcVgK1cZkiteG2cUuuMV29rU20f5GIg4TpRFxeTRo591bi1XcxcXyXaBvh72l78pyhkmOxltIRInYKcgGQ4QUJJ9M6lf4Aene2ug5RBeX9WbHPiYLZHtVigue0psHuv8JWj2NuGEuJT72fBRPtzzA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713448029; c=relaxed/simple;
-	bh=O4NLUl1PjH8QiQoDvqx/qELU67RP3FS7QbuTtQCXt20=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=ZQPcl0UlGIZGPzH0N6q1OFoZOlyby6wRHSb++3ZfO5d+ZZpvgcWOe5xz2iLA+H2ktsSYCtaZ7dhUtYq/nGG1VtIFWVDAirGGjFfkqrUGKU/NGYNH+VGIC3abe+lRRr3y6l6cN7tkJc7OwY4R2v4fZZTNdygPG9JcWkDWfX3eTSA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=UB8HuKZl; arc=pass smtp.client-ip=167.235.159.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
-Message-ID: <29e0cbcab5be560608d1dfbfb0ccbc96@manguebit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1713448024;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7rU0kOVmyBLX9ndqmurxB34d6Cclj332xnTjEKvm7HA=;
-	b=UB8HuKZlNT0DFaxFELpQyJIHcVKpTxtAd3P8hAyt5sJuunUsJ3b6l4pAsRezCp2MGzu4xI
-	I0/SQyhtEO9HILsKY3b20D8O6ufJ3pxz2uhiPE8c/9+6OBMsfWYohMO4YnYpETMb48JwtG
-	IFNgXoCYWsm8oi59KzT5eRQEz0VX/grQozCt2y7lMFXyubT1avJbMOuy+L5tIAU8sI6VCY
-	hsamDTIMnHHYDMneURyrfvgu/aA9LfRUKkR0s0301vE3A1BYvjMO+Br2mI1VNt6ybin41+
-	2HcDsCdXhX/f1gRqofpzJk5OXGU0qZN26AXj6n8m6OZ2Oi9SfupY6NuhBGncQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1713448024; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7rU0kOVmyBLX9ndqmurxB34d6Cclj332xnTjEKvm7HA=;
-	b=a2Bi8TZD3NAuhNV3ohoMtEBiMtrH+9kRTWj6jKFEVsXQp6N68s5JgLgE5Plocme8zP4T/D
-	CzwC7y8qFBV4g5rGojVB54TjR7u2uujOQjVmf37vLvLi+6bTEOiPWKayQKruAe6pyn0Ggx
-	hoiappzpHfJPRh5rY0233exMp8eIt8WWCwQG+TXLEghJYSh3ibeQU7Gra11FywU3iqBakX
-	BBgTwJGFEDxp2+em5NZrbOQbB0QIOvwOhh0ZB6WERHwd/6hANWtI1QeyAWefGcs8gwO+aM
-	o5CBmt+bJ7aiPwHVcOmUz4qUPGy5zG3IbKsjcxVhpvCFOtU1T1i8YF6TzQqdKA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.mailfrom=pc@manguebit.com
-ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1713448024; a=rsa-sha256;
-	cv=none;
-	b=kUtYyctEG3LKddBFEQCb7K3qzEgAOzCZ8ZymcGRwUG3IJetAsrrQPH3mLO84p+xuMrgJzp
-	Ne3OKlF47QG0xyUJQy13AOZhhKWKPpSkJOcbPqKzkdDnPjYqdbHsQg9EW7h2U9Is5295Fo
-	eE9qRK/Wdny4Asok8QXSgKxAUgvXOE9yiZPbpLwU+TTteQIHEDYl8wVG/lP6UXZN7KSTie
-	b+FV+bCdS9z+V2ciJkxGzyyLVI3DbNRKGMsTNhdbQbcQrJrjFK5/dumdlWyG/AoAEVpQVd
-	+lKrHgSalUou3Nu2uRbFGtLJrnPIiy1/ou6lW9xilglvW3Y75ezYGl5ARTCdHA==
-From: Paulo Alcantara <pc@manguebit.com>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: regressions@lists.linux.dev, Steve French <stfrench@microsoft.com>,
- gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
- linux-cifs@vger.kernel.org
-Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
- overflow frame end of buf" and invisible files under certain conditions
- and at least with noserverino mount option
-In-Reply-To: <ZiCoYjr79HXxiTjr@eldamar.lan>
-References: <ZiBCsoc0yf_I8In8@eldamar.lan>
- <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
- <ZiCoYjr79HXxiTjr@eldamar.lan>
-Date: Thu, 18 Apr 2024 10:47:01 -0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E38EAD2;
+	Thu, 18 Apr 2024 13:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713448354; cv=none; b=U6TNRrL6G1MnZEgbDT2QPLYPRYbVhkS1IT35dCfFPP9imBNq1vNwPQ5j+g8iNbIGyk5aOiGpViFxFH9/ncFLaLENX99jl486B7xWKBCSV2ZAZ04LChsYoE7Fd4VX6kmsCbXjw0TJ/kBN8nGYHPQf/fAn61sVOyhNJJmqLb7DmXM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713448354; c=relaxed/simple;
+	bh=Je31ci+eyD97RXiVi+9JjGy6yYzwIgH+zf+ojiy2P8U=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=n0PyD9gXoKwy7NrF5S3wKrU/yaQBZABboI9hvzrj/BBjvUK3MnmorAIq3Xr9H6XxodI2mkCJDa1ErSu6iw+HGxjgdxd99YyszfWsMS3gB3eM6efIPWgMqQpFkkVC0pFE+c8d6JsH77zSuzdJfGTV/Vwq7UKK62oEKXy76GbHdUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nXJI8z3w; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-61500da846fso6349287b3.1;
+        Thu, 18 Apr 2024 06:52:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713448352; x=1714053152; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KWDkD4GBnwBQNPancuw8naTRgpzqp6wkxrmNfvesCMc=;
+        b=nXJI8z3wGOsRB73GfOuJT9zurZ6Ji06lBZbCd1QoSnzm+Eij+0qE5Mgw6GCoZZNw++
+         GIDSSx7zG1V9hA7160zKDQ2eG1i8qXN8XthIKoBEZeEBcBOKS1gdtktmrub4q23YyLao
+         jVXmUe/5Xk1ANbzxKkF8M085EZr4MEGO2/5OE053f9f2tF3IjtJIvXJjxo1vi2VR3fOs
+         zZEQ0BqBHOtlQt2bPZEsQF4ibr1vPovxdtToo7y3bxJK8+JspKtDQ2CIjdeFaL7zJP4s
+         bQAAYVWLY9+9ZREBgicg0Fe4VD/+KerJsW+Sn58f5ZzT6rvcmEIP0eEUy+O892fkdS3r
+         8EcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713448352; x=1714053152;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KWDkD4GBnwBQNPancuw8naTRgpzqp6wkxrmNfvesCMc=;
+        b=bdGcOPoqnRHME90qUZhnytR2jULGST+Wm3+3qHMLrLMkR+FlW2YABuiFVZzmBswqpT
+         41zOD+mgm7drcMrIyXn3zi4piM/VU75J0LKHwVShRSC6sAakTpU04/MYTviiYVzKncqe
+         uNmFzySzAgJ/IcPJS114X2CBkdLSftUq9ihtmytg30euu6nXxLayBqh3qfmmBt43BfCu
+         nsr4/dxPDMRttU7HzxbTxLLNVzJNqIXr1VWg6+o+6RiE/THJbgt95AlslRX48u6jIMVz
+         lLM9CGIFjQsrbOQNIhvGs8eN0cP8krNV6TJNbWIDWJKpsqbPe96+OxAtrvzrJ3W/PDs+
+         n5BA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPwEMPyCOuJeqi987XZTW5Wxt77OIY110nswniCiPK+790FS9fuPTi7eEmkVpz+N8DgN3uiv1YXDdzL7MWFKKGXN7vKFb4ZxxnQA9MvMlIUDBQ1Sc09I/4njVE93PrCqBbN1kk
+X-Gm-Message-State: AOJu0Yxvqf6bgiOrc0J1spWBs0NuYODBndRFMm/Lu6L12FLGPJkvn7lo
+	0Z2Yh/OH4n34bwflpj9L6x1lMxDgpm7dKmpSBuTL3IIHp24Y6oaY3+aKsA==
+X-Google-Smtp-Source: AGHT+IHcC/d5g/vrVO8yq6W/ye3vmtyJcu0gh/Sfv4UXpVtFtmjp0tOz0EvRUuueXnSjUeruqSxwbw==
+X-Received: by 2002:a05:690c:25c7:b0:61b:2:6c36 with SMTP id dv7-20020a05690c25c700b0061b00026c36mr2640195ywb.24.1713448350174;
+        Thu, 18 Apr 2024 06:52:30 -0700 (PDT)
+Received: from localhost (73.84.86.34.bc.googleusercontent.com. [34.86.84.73])
+        by smtp.gmail.com with ESMTPSA id ku20-20020a05622a0a9400b00437add246c2sm240951qtb.7.2024.04.18.06.52.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Apr 2024 06:52:29 -0700 (PDT)
+Date: Thu, 18 Apr 2024 09:52:29 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>, 
+ Yick Xie <yick.xie@gmail.com>, 
+ willemdebruijn.kernel@gmail.com, 
+ willemb@google.com
+Cc: netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ dsahern@kernel.org, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+Message-ID: <6621259d66d0f_ec9b929478@willemb.c.googlers.com.notmuch>
+In-Reply-To: <0a17d6745d5c6d4bb635cfac1029e90c1ac2c676.camel@redhat.com>
+References: <20240416190330.492972-1-yick.xie@gmail.com>
+ <0a17d6745d5c6d4bb635cfac1029e90c1ac2c676.camel@redhat.com>
+Subject: Re: [PATCH net v2] udp: don't be set unconnected if only UDP cmsg
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Salvatore Bonaccorso <carnil@debian.org> writes:
+Paolo Abeni wrote:
+> Hi,
+> 
+> On Wed, 2024-04-17 at 03:03 +0800, Yick Xie wrote:
+> > If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+> > "connected" should not be set to 0. Otherwise it stops
+> > the connected socket from using the cached route.
+> > 
+> > Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+> > Signed-off-by: Yick Xie <yick.xie@gmail.com>
+> > Cc: stable@vger.kernel.org
+> 
+> Minor: the patch subj is IMHO a bit confusing, what about removing the
+> double negation?
+> 
+> preserve connect status with UDP-only cmsg
+> 
+> > ---
+> > v2: Add Fixes tag
+> > v1: https://lore.kernel.org/netdev/20240414195213.106209-1-yick.xie@gmail.com/
+> > ---
+> >  net/ipv4/udp.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> > index c02bf011d4a6..420905be5f30 100644
+> > --- a/net/ipv4/udp.c
+> > +++ b/net/ipv4/udp.c
+> 
+> What about ipv6? why this fix does not apply there, too?
 
-> On Wed, Apr 17, 2024 at 07:58:56PM -0300, Paulo Alcantara wrote:
->> Hi Salvatore,
->> 
->> Salvatore Bonaccorso <carnil@debian.org> writes:
->> 
->> > In Debian we got two reports of cifs mounts not functioning, hiding
->> > certain files. The two reports are:
->> >
->> > https://bugs.debian.org/1069102
->> > https://bugs.debian.org/1069092
->> >
->> > On those cases kernel logs error
->> >
->> > [   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
->> 
->> I couldn't reproduce it.  Does the following fix your issue:
->> 
->> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
->> index 4c1231496a72..3ee35430595e 100644
->> --- a/fs/smb/client/smb2pdu.c
->> +++ b/fs/smb/client/smb2pdu.c
->> @@ -5083,7 +5083,7 @@ smb2_parse_query_directory(struct cifs_tcon *tcon,
->>  		info_buf_size = sizeof(struct smb2_posix_info);
->>  		break;
->>  	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
->> -		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO);
->> +		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO) - 1;
->>  		break;
->>  	default:
->>  		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
->> 
->> If not, please provide network trace and verbose logs.
->
-> Yes that appears to fix the issue.
-
-Thanks for quickly testing it.  So the above change indicates that we're
-missing 35235e19b393 ("cifs: Replace remaining 1-element arrays") in
-v6.1.y.
-
-Can you test it now with 35235e19b393 backported without the above
-change?
-
-> But as you say you are not able to reproduce the issue, I guess we
-> need to try to get it clearly reproducible first to see we face no
-> other fallouts?
-
-I couldn't reproduce it in v6.9-rc4.  Forgot to mention it, sorry.
-
-Yes, further testing would be great to make sure we're not missing
-anything else.
+Oops. Thanks Paolo. Yes, this definitely also applies to ipv6.
 
