@@ -1,218 +1,168 @@
-Return-Path: <stable+bounces-40148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2688A9170
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 05:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C683C8A91A5
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 05:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94AED1F21BD3
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 03:10:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ECE21F21D4B
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 03:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00EE4F5F9;
-	Thu, 18 Apr 2024 03:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6E15467E;
+	Thu, 18 Apr 2024 03:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SSNDyq0v"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Lhc9wMVh"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026FA63D5;
-	Thu, 18 Apr 2024 03:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB0A50A73;
+	Thu, 18 Apr 2024 03:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713409832; cv=none; b=RjcxDiDXtWUhADY4k+v1AyUj4qAYUEo8baPbnRmxobyI3Q0XPIJUqwBbF6GMFYGhHlzRU+bNJzDFbFizPL/wGH2ZDwfWPD++DY7LlLkV3iyUMwtBpRA/MDN2psyXTD7ABVw+GSMMXVy7pVByKINhHjzgrVmFSdsw+tSbbF80Fxc=
+	t=1713411873; cv=none; b=LSxLToQYAmgHUSGNXPtMWETc8cdNLRGdTP6F2D/C6zllR6lT+nMnoc7V1Xq2WU7e3+Og1KHJJ1TJnllzoEz9gGu+KV33SLvQaV5ZxEMf8bqSaF24AKdaGUgLvH+no62YEpBCACcaG3Fd1yf1AF9f4NagY5tYSVHQphRjyD1vQWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713409832; c=relaxed/simple;
-	bh=8LEJM9vkGFK/UoZS9qEvsMoHGiAAvfvk08Ql1e4Kkuo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lz1Lec1fa9vK9wQlDF1DWWbRwxZOaforvVmOo3KuXrlj9OpyIVx6+1l+zIAmme7ihAm3tYZKL7YoVGyuv+e4C/q0sF95DFMDQX3pNButEwhzxC2xYW4C0osMhBkLGjJ9ZtficCy8epDqURJpV3flWz0PXnvgLaqZ6QgZRMnRDiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SSNDyq0v; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713409831; x=1744945831;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=8LEJM9vkGFK/UoZS9qEvsMoHGiAAvfvk08Ql1e4Kkuo=;
-  b=SSNDyq0vhm8KtyiZ/IMxLsQVfJjfgkigBCerEQBvYgse7o6DtIV2oLjm
-   gwSlr/9Mig/dk4AkyAqUHfkyc1EiTd7u2oz6OMz+M3rszmh+VrZ6kuUSr
-   /L40pmMH0fjRp3mluCJigWCQNItF8bdk3/pdITN2YP1nAdYIf3/+w3erh
-   AJ8/LARtsFHqMqrAm2mj6isMMZ4MPdroj431s13Fn1di0N3DkjO06mfaA
-   kglYF5G8KLUUc5g+hI8AYtWP8czkAg8oxexJAg1M7CxB2hh7UXfcrmvR7
-   vkvZgHVe766aKBmMJTCLZz35O/KvaUa50UCGBPgExUEbhUxVQDQsWRSVC
-   A==;
-X-CSE-ConnectionGUID: geMvzFiYQhuQ0rvPQCpdlA==
-X-CSE-MsgGUID: 6T9ikv9TRJS6BBjXGZ5KeQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="20080580"
-X-IronPort-AV: E=Sophos;i="6.07,210,1708416000"; 
-   d="scan'208";a="20080580"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 20:10:30 -0700
-X-CSE-ConnectionGUID: 1JISkpTwRQa9i+mRmysrmg==
-X-CSE-MsgGUID: 7JxQED1ZQZSmm/xdv2Nh5g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,210,1708416000"; 
-   d="scan'208";a="27414951"
-Received: from kglossop-mobl.amr.corp.intel.com (HELO [10.209.94.180]) ([10.209.94.180])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 20:10:29 -0700
-Message-ID: <11f55f7e-92f9-4689-9dd8-75fb45f8afe5@linux.intel.com>
-Date: Wed, 17 Apr 2024 20:10:28 -0700
+	s=arc-20240116; t=1713411873; c=relaxed/simple;
+	bh=U2Nj0y8rgDV3GxEW5hGYuCnMlaN52bBjiECPFvi+s40=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=tg/9nKTE6Cm4lIpXRoZ3gmtfpgFlvW9EldBsoyYcdK09ZGLvoaM3eey50aF9X5aMTUhh/EZmDp4ALYMsSqvUCXFRZbCz5szeVRIe6lnowDkJpeeYi/re8FVl2Bxm5acD6pXgSXG3KkD9fOKqjOfk3NY9h4ZcqYphzhSO7lnVLKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Lhc9wMVh; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: f2ae429efd3511ee935d6952f98a51a9-20240418
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:CC:To:Subject:MIME-Version:Date:Message-ID; bh=2WZOZxeDxzclDmOroLLjFYiWM5YkLbMKvy/WySlZYsk=;
+	b=Lhc9wMVhaxyGUSTN/TCoW9WtFk5f3/de7p46OKwpWVzZsIrcfq+o2ELf3Dc+/Fxx8l1ywf1oG8yx8zuvSEoM/mdZx3b5SDk5JKxdFnewhN1rasyzXzZhfCX0rmhmIisfYA9dvYIuHZg6wZ+f/jM9HDK3wmoQA85OfSh2XF9iDGM=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.38,REQID:74206c3e-81c0-41e8-915f-e84c0589e004,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:82c5f88,CLOUDID:8546b791-e2c0-40b0-a8fe-7c7e47299109,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: f2ae429efd3511ee935d6952f98a51a9-20240418
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
+	(envelope-from <macpaul.lin@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 562359842; Thu, 18 Apr 2024 11:44:24 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Wed, 17 Apr 2024 20:44:22 -0700
+Received: from [172.21.84.99] (172.21.84.99) by mtkmbs13n1.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.2.1118.26 via Frontend
+ Transport; Thu, 18 Apr 2024 11:44:22 +0800
+Message-ID: <cdcadfdc-1861-b3b3-eafa-22071516197b@mediatek.com>
+Date: Thu, 18 Apr 2024 11:44:20 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] x86/pci: Skip early E820 check for ECAM region
-To: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org
-Cc: Mateusz Kaduk <mateusz.kaduk@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Tj <linux@iam.tj>, Andy Shevchenko <andy.shevchenko@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
- stable@vger.kernel.org
-References: <20240417204012.215030-1-helgaas@kernel.org>
- <20240417204012.215030-2-helgaas@kernel.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH] arm64: dts: mediatek: mt8395-genio-1200-evk: add u3port1
+ for xhci1
 Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20240417204012.215030-2-helgaas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+To: Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+CC: Bear Wang <bear.wang@mediatek.com>, Pablo Sun <pablo.sun@mediatek.com>,
+	Macpaul Lin <macpaul@gmail.com>, Chunfeng Yun <chunfeng.yun@mediatek.com>,
+	MediaTek Chromebook Upstream
+	<Project_Global_Chrome_Upstream_Group@mediatek.com>, Chen-Yu Tsai
+	<wenst@chromium.org>, <stable@vger.kernel.org>
+References: <20240216095751.4937-1-macpaul.lin@mediatek.com>
+From: Macpaul Lin <macpaul.lin@mediatek.com>
+In-Reply-To: <20240216095751.4937-1-macpaul.lin@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 2/16/24 17:57, Macpaul Lin wrote:
+> This patch fixes an issue where xhci1 was not functioning properly because
+> the state and PHY settings were incorrect.
+> 
+> The introduction of the 'force-mode' property in the phy-mtk-tphy driver
+> allows for the correct initialization of xhci1 by updating the Device Tree
+> settings accordingly.
+> 
+> The necessary fixup which added support for the 'force-mode' switch in the
+> phy-mtk-tphy driver.
+> commit 9b27303003f5 ("phy: mediatek: tphy: add support force phy mode switch")
+> Link: https://lore.kernel.org/r/20231211025624.28991-2-chunfeng.yun@mediatek.com
 
-On 4/17/24 1:40 PM, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
->
-> Arul, Mateusz, Imcarneiro91, and Aman reported a regression caused by
-> 07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map").  On the
-> Lenovo Legion 9i laptop, that commit removes the area containing ECAM from
-> E820, which means the early E820 validation started failing, which meant we
-> didn't enable ECAM in the "early MCFG" path
->
-> The lack of ECAM caused many ACPI methods to fail, resulting in the
-> embedded controller, PS/2, audio, trackpad, and battery devices not being
-> detected.  The _OSC method also failed, so Linux could not take control of
-> the PCIe hotplug, PME, and AER features:
->
->   # pci_mmcfg_early_init()
->
->   PCI: ECAM [mem 0xc0000000-0xce0fffff] (base 0xc0000000) for domain 0000 [bus 00-e0]
->   PCI: not using ECAM ([mem 0xc0000000-0xce0fffff] not reserved)
->
->   ACPI Error: AE_ERROR, Returned by Handler for [PCI_Config] (20230628/evregion-300)
->   ACPI: Interpreter enabled
->   ACPI: Ignoring error and continuing table load
->   ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PC00.RP01._SB.PC00], AE_NOT_FOUND (20230628/dswload2-162)
->   ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20230628/psobject-220)
->   ACPI: Skipping parse of AML opcode: OpcodeName unavailable (0x0010)
->   ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PC00.RP01._SB.PC00], AE_NOT_FOUND (20230628/dswload2-162)
->   ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20230628/psobject-220)
->   ...
->   ACPI Error: Aborting method \_SB.PC00._OSC due to previous error (AE_NOT_FOUND) (20230628/psparse-529)
->   acpi PNP0A08:00: _OSC: platform retains control of PCIe features (AE_NOT_FOUND)
->
->   # pci_mmcfg_late_init()
->
->   PCI: ECAM [mem 0xc0000000-0xce0fffff] (base 0xc0000000) for domain 0000 [bus 00-e0]
->   PCI: [Firmware Info]: ECAM [mem 0xc0000000-0xce0fffff] not reserved in ACPI motherboard resources
->   PCI: ECAM [mem 0xc0000000-0xce0fffff] is EfiMemoryMappedIO; assuming valid
->   PCI: ECAM [mem 0xc0000000-0xce0fffff] reserved to work around lack of ACPI motherboard _CRS
->
-> Per PCI Firmware r3.3, sec 4.1.2, ECAM space must be reserved by a PNP0C02
-> resource, but it need not be mentioned in E820, so we shouldn't look at
-> E820 to validate the ECAM space described by MCFG.
->
-> 946f2ee5c731 ("[PATCH] i386/x86-64: Check that MCFG points to an e820
-> reserved area") added a sanity check of E820 to work around buggy MCFG
-> tables, but that over-aggressive validation causes failures like this one.
->
-> Keep the E820 validation check only for older BIOSes (pre-2016) so the
-> buggy 2006-era machines don't break.  Skip the early E820 check for 2016
-> and newer BIOSes.
->
-> Fixes: 07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map")
-> Reported-by: Mateusz Kaduk <mateusz.kaduk@gmail.com>
-> Reported-by: Arul <...>
-> Reported-by: Imcarneiro91 <...>
-> Reported-by: Aman <...>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218444
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Tested-by: Mateusz Kaduk <mateusz.kaduk@gmail.com>
-> Cc: stable@vger.kernel.org
+Dear AngeloGioacchino,
+
+Just a soft reminding about the patch has been sent a while back for the 
+shared U3PHY and PCIe PHY setup for genio-1200 boards. I'm not sure if 
+you've missed this patch in mail box. :)
+
+The patch is pretty important as it lets the device tree (dts) decide 
+whether to enable U3PHY or PCIe PHY. Because this is a shared hardware 
+phy and could only be configured in dts to decide which function to be 
+initialized, so it's something that should be included in the 
+board-specific dts files.
+
+Do you think it needs to be resubmitted, or is it still in the queue for 
+review? It's meant to be ready for action from kernel version 6.8 onwards.
+
+Looking forward to your thoughts on this. Let me know if there's 
+anything else you need from my side.
+
+> Prior to this fix, the system would exhibit the following probe failure messages
+> for xhci1:
+>    xhci-mtk 11290000.usb: supply vbus not found, using dummy regulator
+>    xhci-mtk 11290000.usb: uwk - reg:0x400, version:104
+>    xhci-mtk 11290000.usb: xHCI Host Controller
+>    xhci-mtk 11290000.usb: new USB bus registered, assigned bus number 5
+>    xhci-mtk 11290000.usb: clocks are not stable (0x1003d0f)
+>    xhci-mtk 11290000.usb: can't setup: -110
+>    xhci-mtk 11290000.usb: USB bus 5 deregistered
+>    xhci-mtk: probe of 11290000.usb failed with error -110
+> 
+> With the application of this dts fixup, the aforementioned initialization errors
+> are resolved and xhci1 is working.
+> 
+> Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
 > ---
-
-LGTM
-
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-
->  arch/x86/pci/mmconfig-shared.c | 35 +++++++++++++++++++++++++++-------
->  1 file changed, 28 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
-> index 0cc9520666ef..53c7afa606c3 100644
-> --- a/arch/x86/pci/mmconfig-shared.c
-> +++ b/arch/x86/pci/mmconfig-shared.c
-> @@ -518,7 +518,34 @@ static bool __ref pci_mmcfg_reserved(struct device *dev,
->  {
->  	struct resource *conflict;
->  
-> -	if (!early && !acpi_disabled) {
-> +	if (early) {
+>   arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts b/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
+> index 7fc515a07c65..e0b9f2615c11 100644
+> --- a/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
+> +++ b/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
+> @@ -854,6 +854,10 @@
+>   
+>   &u3phy1 {
+>   	status = "okay";
 > +
-> +		/*
-> +		 * Don't try to do this check unless configuration type 1
-> +		 * is available.  How about type 2?
+> +	u3port1: usb-phy@700 {
+> +		mediatek,force-mode;
+> +	};
+>   };
+>   
+>   &u3phy2 {
+> @@ -885,6 +889,8 @@
+>   };
+>   
+>   &xhci1 {
+> +	phys = <&u2port1 PHY_TYPE_USB2>,
+> +	       <&u3port1 PHY_TYPE_USB3>;
+>   	vusb33-supply = <&mt6359_vusb_ldo_reg>;
+>   	status = "okay";
+>   };
 
-I don't understand why above question is included in the comment. Do
-you think it is better to drop that part of the comment?
-
-> +		 */
-> +
-> +		/*
-> +		 * 946f2ee5c731 ("Check that MCFG points to an e820
-> +		 * reserved area") added this E820 check in 2006 to work
-> +		 * around BIOS defects.
-> +		 *
-> +		 * Per PCI Firmware r3.3, sec 4.1.2, ECAM space must be
-> +		 * reserved by a PNP0C02 resource, but it need not be
-> +		 * mentioned in E820.  Before the ACPI interpreter is
-> +		 * available, we can't check for PNP0C02 resources, so
-> +		 * there's no reliable way to verify the region in this
-> +		 * early check.  Keep it only for the old machines that
-> +		 * motivated 946f2ee5c731.
-> +		 */
-> +		if (dmi_get_bios_year() < 2016 && raw_pci_ops)
-> +			return is_mmconf_reserved(e820__mapped_all, cfg, dev,
-> +						  "E820 entry");
-> +
-> +		return true;
-> +	}
-> +
-> +	if (!acpi_disabled) {
->  		if (is_mmconf_reserved(is_acpi_reserved, cfg, dev,
->  				       "ACPI motherboard resource"))
->  			return true;
-> @@ -554,12 +581,6 @@ static bool __ref pci_mmcfg_reserved(struct device *dev,
->  	if (pci_mmcfg_running_state)
->  		return true;
->  
-> -	/* Don't try to do this check unless configuration
-> -	   type 1 is available. how about type 2 ?*/
-> -	if (raw_pci_ops)
-> -		return is_mmconf_reserved(e820__mapped_all, cfg, dev,
-> -					  "E820 entry");
-> -
->  	return false;
->  }
->  
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+Thanks
+Macpaul Lin
 
