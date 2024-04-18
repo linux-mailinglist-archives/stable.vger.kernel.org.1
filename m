@@ -1,173 +1,173 @@
-Return-Path: <stable+bounces-40191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C8B8A9C4D
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 16:09:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868D48A9CDC
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 16:23:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10CC9282461
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 14:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA1F51C2421E
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 14:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F99165FC5;
-	Thu, 18 Apr 2024 14:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0432165FDB;
+	Thu, 18 Apr 2024 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="b7fYvs2w";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xf6obBvM";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="b7fYvs2w";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xf6obBvM"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="h6LQtccb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazolkn19010000.outbound.protection.outlook.com [52.103.66.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F5D1635BB;
-	Thu, 18 Apr 2024 14:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713449382; cv=none; b=th658UYozy3ZrmJ2kPumDGa2ipJoFIV3hMu6z/AKYY3F+SOMFf5At6lAYIzTvoA0gEEFkOcPiaBSiI7BX9L5sSw/f27h+mEi2aDx9xrxhse7ZmW6CLdGpbspNaiqWdFVjd6gKKLJ09zzP+jfND/6SUVSJlRPnKbrY2IL/+jYHaM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713449382; c=relaxed/simple;
-	bh=A8Mks8OEjnKoJPkHboz3k+HgPBr8f4wcnalTXqlxDPc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dJ1d9sYDuDiCAdTaYGcNGmWbQP255IXfqVE0FI3IGagg95sPFN88P+EgLKyYfa+jrO6NJX/8LBXBt5ChpxcE4pFhdv+rVXUM6DdIwtHiGzUbTzFtX5bSNIMTuS6ESWfYj+UGmt5gFgBPyv9PGYnCW1EI3LW6lfBQ29VFeWq7KfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=b7fYvs2w; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xf6obBvM; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=b7fYvs2w; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xf6obBvM; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9D065342E5;
-	Thu, 18 Apr 2024 14:09:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1713449376; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d3OJ4/bXydiAt8KgqqTkfhtbCN1YrrE2xwd3vvC2540=;
-	b=b7fYvs2w/VseAGgpPE7mwc6xHBwfmKQsfIIfG22WT2ffaw7mJ24a7T7tJvB6AotPcbW4k2
-	P38ZYnIVl5QgvBkuy0BKdhFPrx3Kmk5u7pKO9VvoLabwCV6PaPKkmZZ0Y0eq675hoelsHX
-	i+mTzefxiKb51zgWsdT+fj9T/0qT8z4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1713449376;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d3OJ4/bXydiAt8KgqqTkfhtbCN1YrrE2xwd3vvC2540=;
-	b=xf6obBvMMFIugmelJqSqf/vFg5xRMhEXvYAhgjbjwXKwShCDBZKgnb/aiNOH92nSkxWw66
-	p0nSm/1KMqLaXIBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1713449376; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d3OJ4/bXydiAt8KgqqTkfhtbCN1YrrE2xwd3vvC2540=;
-	b=b7fYvs2w/VseAGgpPE7mwc6xHBwfmKQsfIIfG22WT2ffaw7mJ24a7T7tJvB6AotPcbW4k2
-	P38ZYnIVl5QgvBkuy0BKdhFPrx3Kmk5u7pKO9VvoLabwCV6PaPKkmZZ0Y0eq675hoelsHX
-	i+mTzefxiKb51zgWsdT+fj9T/0qT8z4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1713449376;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d3OJ4/bXydiAt8KgqqTkfhtbCN1YrrE2xwd3vvC2540=;
-	b=xf6obBvMMFIugmelJqSqf/vFg5xRMhEXvYAhgjbjwXKwShCDBZKgnb/aiNOH92nSkxWw66
-	p0nSm/1KMqLaXIBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4665013687;
-	Thu, 18 Apr 2024 14:09:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qQDtD6ApIWZCHgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 18 Apr 2024 14:09:36 +0000
-Date: Thu, 18 Apr 2024 16:09:44 +0200
-Message-ID: <87v84ewymv.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,	Pierre-Louis Bossart
- <pierre-louis.bossart@linux.intel.com>,	linux-kernel@vger.kernel.org,
-	Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
- <amadeuszx.slawinski@linux.intel.com>,	Bard Liao
- <yung-chuan.liao@linux.intel.com>,	Brady Norander
- <bradynorander@gmail.com>,	Jaroslav Kysela <perex@perex.cz>,	Mark Brown
- <broonie@kernel.org>,	Mark Hasemeyer <markhas@chromium.org>,	Takashi Iwai
- <tiwai@suse.com>,	linux-sound@vger.kernel.org,	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda: intel-dsp-config: Fix Huawei Matebook D14 NBLB-WAX9N quirk detection
-In-Reply-To: <ZiEoyDaRHPZkFI-T@smile.fi.intel.com>
-References: <5e6ba980c0738199589749b68b83f2d730512107.1713430105.git.mchehab@kernel.org>
-	<20240418110453.10efcb60@sal.lan>
-	<ZiEoyDaRHPZkFI-T@smile.fi.intel.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FB5165FA3;
+	Thu, 18 Apr 2024 14:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713449949; cv=fail; b=jPUOVG0CB057wBVuQ4ieIIPEy4gSJcmefGQjUg5p/lyUOV9MiT1Grp2lCeaz47QxJXoMD3dZKHt3e4t/YrZwDM+WBzSbYJ4d9Rsk3sgjo7NMz1szDULud3iv3Qggj7jv8TSAY0aDXYrY+rg44cKFD2q6AuWtHyt9AlVjlAV7+rQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713449949; c=relaxed/simple;
+	bh=OHOjw3nIiTAUxJW0xkkgVj68+GhAz6qApJYb2N1gBxo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cTT3H7J8vPiAwjVgAT01HDIjDZTpyZc0rSgTSjOCmi+GgGNlJHO5GBYPVbu2Ot/wUBQlbF/K3ul43cknRiXvmiSzwIjhEL8h0lhDFV/gN7ESghuKd290HKDC154PmqueNRAuU6NSSMd7tBcN1JcyizxqaVuioLzw3Ymucnar9yw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=h6LQtccb; arc=fail smtp.client-ip=52.103.66.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CYwr4FZfBTzbouUHS8g+/iJit7ANZSQb98ILudAL3EbjZB70kvMeSSZQmF99hBhWW3FQvhGDbADg/zJo/JhLhefFKVH3+QfWkRikPamRTST3kIiwUbK3+DyGpUEzFWzwSrOYZjWcBOpGPdcbbR21wh7SLNSXEcBDkoIX49YT6knroLMcEobeCj9ZTzQ/dlmGY1v3Qt4DD/+pZ1J8rPAIjKbUUxvl7JE3+yTvRYcp4vFox1QIC0g7FYCVsckjpFAj0V+gTkhgV10ZrYufhylcejd163kMJWZTNbDz6oy+8c+glYnCi/7SonvRDCrkp3jLk+9HxLR6GYYDEUOvOL9jPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OHOjw3nIiTAUxJW0xkkgVj68+GhAz6qApJYb2N1gBxo=;
+ b=htrEkk7cpXXECF5KYYhXhpql82Hnx02eGBt0FMZYt8KibEs6OXGWmYuDYgrcf0lGnPwOlQ6o25CxtcDALBMlwxNGVz0FnRzT7DMtg0+QY5pifjbYSEc7SYNfojNJ/pWRdMzSrzVOpRHYmTELEW+BJm+6QCdfpRNTJNdl6m0GevlAN9s0qXAdn0snuhGDZbU6F9hkK/j4iIuwBHPzKPrPlpLs287p9sdumX0wuu5sqSTNl2NPCVU1SZwVyxqk4Bi8uztYJnxWgmU/RSkyjIARxogKUO28ItUx98BMx2+TASWjYzQqZnBLTteCDQrHbdPSDjhud6l/DrPwUAPr+EpQSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OHOjw3nIiTAUxJW0xkkgVj68+GhAz6qApJYb2N1gBxo=;
+ b=h6LQtccbb//ZH/YHCgYdffcd0zVqkfQJDbLbObSG/ThFtDevihWk0DsyTfTJBgoEYS5qU67n0JalFr1eLes8NcAhdFROVy8hQLjlXhsnP0+77Ys/XKMV24CInEFWlCPzOu5zuzP6F4zvKvkuEawJAeg4VezSfktL39G6zpn7mlO2DlAvYkeAJloe/8PncqcZYco0vQjd0MuVpu9LHTOZwmS+w7x4DQ6brJkfK8wdVmkxdckEyuvjaQ6HpDerpPjn4WpXkfidL/n/Xvq+xs4g5m6Do1QdnwQezN6WpvIepRcoHbKR1LScLJj/LOEHzxFpbdIyQH5aAQoBWQOe1ArDAw==
+Received: from TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:209::11)
+ by TYTP286MB3596.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:39e::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.39; Thu, 18 Apr
+ 2024 14:19:04 +0000
+Received: from TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f2c3:e53f:2ea9:55c8]) by TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f2c3:e53f:2ea9:55c8%4]) with mapi id 15.20.7472.037; Thu, 18 Apr 2024
+ 14:19:04 +0000
+From: Qi Qi <ArcticLampyrid@outlook.com>
+To: Charles Keepax <ckeepax@opensource.cirrus.com>
+CC: "sbinding@opensource.cirrus.com" <sbinding@opensource.cirrus.com>,
+	"david.rhodes@cirrus.com" <david.rhodes@cirrus.com>,
+	"james.schulman@cirrus.com" <james.schulman@cirrus.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
+	"patches@opensource.cirrus.com" <patches@opensource.cirrus.com>,
+	"rf@opensource.cirrus.com" <rf@opensource.cirrus.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] ALSA: hda/realtek: Fix internal speakers for
+ Legion Y9000X 2022 IAH7
+Thread-Topic: [PATCH v3 2/2] ALSA: hda/realtek: Fix internal speakers for
+ Legion Y9000X 2022 IAH7
+Thread-Index: AQHakZMnl6GUz3RxgkmV9kw8BxeryrFuDjcAgAAFWIA=
+Date: Thu, 18 Apr 2024 14:19:04 +0000
+Message-ID: <1883258.tdWV9SEqCh@qlaptoparch>
+References:
+ <TYCP286MB25357A4599E935F26A8AAB24C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
+ <TYCP286MB25359B61BB685A4B3110BB44C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
+ <ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com>
+In-Reply-To: <ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com>
+Reply-To: "ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com"
+	<ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+x-tmn: [Xh/i7gCk/X4ZQc/HHnV444OvoaWJyRQz]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYCP286MB2535:EE_|TYTP286MB3596:EE_
+x-ms-office365-filtering-correlation-id: d2e67935-bd1a-4e37-ddbd-08dc5fb28053
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ RWQ0RjDxQPyYuWCLPrhlEC+rrSKPYPgOp3ZoJWa5xAWFYqz8hEM77oYL7oCsJt/qfDei6ZGkIUH0DNJO5dNgv/70k+OQ3ZgYOT9hO3Q9r8qwIZaAcv4bNhmxBpmN3yD7DiihckdB7Qd3C5cS2oH59Y3dPTtLBcMc7T8daQpnCTEAfL/vfvoF03idqBiW2MmdGbmVoM8ZdbF2X4Mz+wKpZPwjjblX83rK8CzroCY06NI1UKb2KbBISj2JuNV8sy8w1Ys3+UxWj0v/TG7j0d5QgwcwLOkzeD/g9FUoVNyvnYunNUTKYIsJKEzCn1xAYZEkTgXbx954nfBFNoqj9OFh5omec3J5yuDu5YI/Wdr+aHWnWaLJcOoGxwKtvrgt0VVJq7gKk97JacIffG1EJ1dcDLhUQ6OKCr9W7S12IYDIOXBgwWSIbzxyt+wTxzDo6L2qMa7u7i7qSUgr3ldLiI9lRwese2/c4f5ICZItxoNHQXdvsicyssTiHjb7CmZvI7sHKE08EQpihlF9dzePfBoFro0J5Ly5Bt2ZAWQ8UANLXGTGZKf4ORcw0t5HIPlQzbm2YNsWV0fjrxZhcsOPATynw2lQIwTVIXtYomGX+5W3D1jlAcSgbl4bxAqQ8lcWZk2e
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?MHplbGIyZGNOdXcrbEZkK1IrdlJDeUxvaHVjOTFwb0VQUEEvMENuQ0VvR0tG?=
+ =?utf-8?B?N1hMN0hMbzZFY0ZoSnp1dHEzZ1FQcThDaGpDUEh2Znd1eG9GWENFZXZWSHBL?=
+ =?utf-8?B?VFRKaTRGVVA5T0N4K3R1cEVUcVdqU2doNHF4Z3NjQmMwblVmRWdiTDhjdTBO?=
+ =?utf-8?B?dnoya0ljNE5SekFOZWlOYkg5OXQ1aUdmK2VYbEFmL1FDVGxkWVhWUGdlaGxw?=
+ =?utf-8?B?d3FqZE9odkI2cGRIMHc0dXozU0szOUFpZkJNQjlYTVkvU1hPTmlwVm9yQll0?=
+ =?utf-8?B?UU5PRUlyWVhmMHFPd1EyV3dtcGdHbEp0T0g0R2JoaGNnTmsrODZMZzJJSVJN?=
+ =?utf-8?B?cHFqM3JTa1hvWkRvemhJYUFQMGdlVEZJMVp4bFo2dnZDT2VvYmxTeURYb3pt?=
+ =?utf-8?B?MEtweDR0ZDRXYWRkZzZqUVZoYnNhaHE0VlZ0Vk5GdGsrMEg2a1UxdzZKajAv?=
+ =?utf-8?B?aXVjbGo0M29sRE5oMmJ5TlVCMG9GUW5sUkJGdE9vRWpKNmhUY3dtVW1FR0kw?=
+ =?utf-8?B?MTRwU2ZRNDFtRkVEMk51V0dzK0JlZHNYMjViU2N1cGpkL3A0RDdteHBNaHBY?=
+ =?utf-8?B?WWRmT2l1Qk9LZ3JmL0VQZGU2a3lKcjhqd1lJNUFXMWpFWEQ1Yy9iaC9sTFlM?=
+ =?utf-8?B?c0NEQTlHWUdjcjFFNTlZQ0xjdDM5UFI0ckttUTVNMmRuNTNVOEdJaHowUjhE?=
+ =?utf-8?B?UVM4MldlSWFoQk5rU3JkRGFLcFpnZVdhc0ZSNkxCdkdDVjJ0S1kzUDRiRzI2?=
+ =?utf-8?B?UTN4UnV2STAxQ0pIc1lWZWFvZFltZm5nNVFNclN1TFBldEsxRzc4SHNmOFBB?=
+ =?utf-8?B?OVVrV1JsaFpFOEJJN2FYaUxSTlVaaGVzNDh6RnBVdDZsalVCMURRV0I4N1Js?=
+ =?utf-8?B?MGxBQnJlaTQyVnlaMHpEakN6RDB2Mlp4a0FiaEk2VVhPSTJYRXNtYTNBYUNs?=
+ =?utf-8?B?cGtwWEs0Vkw3SnBPUnpyd2FyUExoRllmbjFVc29JSFJPSTk3R0x2cXU0ZlEz?=
+ =?utf-8?B?UWFsU2lNOFBGS3ZQTXI1bGpjUUY0b0gwZzFWVlhlMkxOZ0hONFViQWlNOXpX?=
+ =?utf-8?B?Q0QyUWVHR1JvREVDci9EcmlvTFBpdW12OEdZY3RYbkltMzJkNlUvc0xVcnVn?=
+ =?utf-8?B?eklBUEtpWE5WbHY3TnNPQ1JPc3F1SXI1OXV4a1k3eGRVOFRTaUY1MzVMZk1U?=
+ =?utf-8?B?aWQ0Vmo3SlVESWlWRFhWTXNZTU1GS2hMWXlldnlsd1N3aVZvWHplL2pNbmda?=
+ =?utf-8?B?eHZjdFIrOUhtRm1NUGROVkl0RHlacjZrRE9MZ3k0QXVvUnM2SjVTbUdUbkJn?=
+ =?utf-8?B?REhlNFBKRGVOOVNqZTBCbExhN1J3Ykt4NkVobWlTaWdqRkR4V0VEOVJ1ekc5?=
+ =?utf-8?B?bFZxK2c2Q0ZuL0xkcm5vbDBnRjY1RjRPT0pZMGVBbWo3Yy9qK0g1SXYwcThS?=
+ =?utf-8?B?eWVWMWVGOGMyajhjMGNzWEdHaWtjbjJsWnIvMUdYYU5wKytaUEVLaWE1dERC?=
+ =?utf-8?B?MHVBME5uYTVsNWFScWpxanczMkFBRmNHYVRHTzRGRXcrZ1I1RWxncFMvMmJO?=
+ =?utf-8?B?aGJoTlBGczVYYnpnTlVDeW5xdEZIMHlKRTZnajdYMWJiYjRpOGIrVjZKckda?=
+ =?utf-8?B?QTBsQWJmYzJJbkp3U3NOaVMxN0lOdWF2ZnROZHRXL0NydUlaNWUvNmZTSXBj?=
+ =?utf-8?Q?nzHR/JM0PZoKiuSPo2Ld?=
+Content-Type: multipart/signed; boundary="nextPart2179604.irdbgypaU6";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.04
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.04 / 50.00];
-	BAYES_HAM(-2.74)[98.86%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,linux.intel.com,vger.kernel.org,gmail.com,perex.cz,chromium.org,suse.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2e67935-bd1a-4e37-ddbd-08dc5fb28053
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Apr 2024 14:19:04.1491
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYTP286MB3596
 
-On Thu, 18 Apr 2024 16:06:00 +0200,
-Andy Shevchenko wrote:
-> 
-> On Thu, Apr 18, 2024 at 11:04:53AM +0100, Mauro Carvalho Chehab wrote:
-> > Em Thu, 18 Apr 2024 09:48:27 +0100
-> > Mauro Carvalho Chehab <mchehab@kernel.org> escreveu:
-> > 
-> > > Newer Matebook D14 model comes with essx8336 and supports SOF,
-> > > but the initial models use the legacy driver, with a Realtek ALC 256
-> > > AC97 chip on it.
-> > > 
-> > > The BIOS seems to be prepared to be used by both models, so
-> > > it contains an entry for ESSX8336 on its DSDT table.
-> > > 
-> > > Add a quirk, as otherwise dspconfig driver will try to load
-> > > SOF, causing audio probe to fail.
-> 
-> ...
-> 
-> > Worth to mention that I opened an issue on Github about that:
-> > 
-> > https://github.com/thesofproject/linux/issues/4934
-> > 
-> > I added there the ACPI DSDT table as a reference.
-> 
-> Yeah, please add a BugLink tag.
+--nextPart2179604.irdbgypaU6
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: ArcticLampyrid <ArcticLampyrid@outlook.com>
+To: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reply-To: ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com
+Date: Thu, 18 Apr 2024 22:18:59 +0800
+Message-ID: <1883258.tdWV9SEqCh@qlaptoparch>
+In-Reply-To: <ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com>
+MIME-Version: 1.0
 
-I thought a Link tag is preferred over a BugLink tag nowadays.
-
-I can add it in my side, but let's wait for the review by Intel people
-at first.
+PiBJIHdvdWxkIHdhaXQgZm9yIFN0ZWZhbiB0byByZXZpZXcgdGhlIGNvbnRlbnQgYmVmb3JlIHJl
+c3Bpbm5pbmcKPiBidXQgeW91IG5lZWQgdG8gdXNlIHlvdXIgcmVhbCBuYW1lIGZvciB0aGUgU2ln
+bmVkLW9mZi1ieSBsaW5lIGFzCj4gcGVyIERvY3VtZW50YXRpb24vcHJvY2Vzcy9zdWJtaXR0aW5n
+LXBhdGNoZXMucnN0LCBpdCdzIGEgbGVnYWwKPiB0aGluZy4KClRoYW5rcyBmb3IgdGhlIHJlbWlu
+ZGVyLgoKTXkgcmVhbCBuYW1lIGlzIEp1bmhhbyBQZWkuIApNeSBQR1AgZmluZ2VycHJpbnQgaXMg
+N0RBODgxNUMxMEZDREFCOEM2RDExQzRCREM3MkEyNTE5RTc3RDZDRi4KCkkgY2xhaW0gdGhhdCBJ
+IG93biB0aGUgY29weXJpZ2h0IG9mIHRoZXNlIHBhdGNoZXMsIGFuZCBhZ3JlZSB0byBsaWNlbnNl
+IHRoZW0gCnVuZGVyIEdQTCB2Mi4wIG9yIGxhdGVyLgo=
 
 
-thanks,
+--nextPart2179604.irdbgypaU6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: base64
 
-Takashi
+LS0tLS1CRUdJTiBQR1AgU0lHTkFUVVJFLS0tLS0KCmlIVUVBQllLQUIwV0lRUjlxSUZjRVB6YXVN
+YlJIRXZjY3FKUm5uZld6d1VDWmlFcjB3QUtDUkRjY3FKUm5uZlcKejR2c0FQd0lCdnBQMU1MdzJR
+U3Y0RERrWEJGQWgxNzY4aE5PcXRwTDVyTmhSUkFyWEFFQStwMzNUR1ZkOWM4UQpVOEpnQ1VaQWFm
+UFhNa1Jad0RmN05FTWR6UFAwVEFBPQo9K3RtNwotLS0tLUVORCBQR1AgU0lHTkFUVVJFLS0tLS0K
+
+--nextPart2179604.irdbgypaU6--
 
