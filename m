@@ -1,202 +1,125 @@
-Return-Path: <stable+bounces-40221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79748AA439
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 22:47:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 223CF8AA5AC
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 01:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02190B21AE2
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 20:46:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D4801C21357
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 23:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613131836EE;
-	Thu, 18 Apr 2024 20:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B708F6A025;
+	Thu, 18 Apr 2024 23:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uD4wCO9g"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qLXUflGh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40815427E
-	for <stable@vger.kernel.org>; Thu, 18 Apr 2024 20:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0DD4EB2B
+	for <stable@vger.kernel.org>; Thu, 18 Apr 2024 23:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713473212; cv=none; b=HSGDBaWOZWHByhnaWSkrEb8G8TkHcsEu2Ghz0yQM3cf42X/OFZuHEqfqiRxKt1lz1XqxsUh8QRZJHmoILBeie+hc+tnJfLxtis/DcuvaTMn3YLkfCaseWQNoLTQN5UxxOR/lvmBvWw26DGxzKPonRJIAaRZ98TRjeR/LJrS4j8I=
+	t=1713482426; cv=none; b=Ft7HJk/BsutxkKd+MH4lsSGbo6ptFnXMKPyCF+OOOQVtl2K7LqbdXLwZUY5pS1TsGGeX4IF9PGBHR8LwKM1dcbnu/S3tFSs77M+vOFa1xVP5YjacXTL4gZVSKUlMeurzrzqXGk2GS4qPk9jSOfD4oiS8nvk3v0kgRwPbmWC2/sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713473212; c=relaxed/simple;
-	bh=2uEjWGQAsOsIfV8JweL2+DM0EtwCDNgkVsQGr2+cEXg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GldczNTXsk6CJnUjB9Ekh9tVezrWrc7bg2hBdm4TDop9G8q8pC4NcGG04zLQ0n9CxplVnxTSDGaMyjyCAquJg9SDqumzLFmPpLPpfEQHdaHDHd0E9qKpH5PPRpwwcAFbJvY8WtMG6PjWCU4Sh0oTHtQzjJLGUG6oNsxOB3ygZ2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uD4wCO9g; arc=none smtp.client-ip=209.85.214.171
+	s=arc-20240116; t=1713482426; c=relaxed/simple;
+	bh=h4Z5MLdi8J9t3gzna+fG2ThqFUoIZcOZaNd46qMwcq4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WKavZ67AC4CXF7vYjWmdEyj4Ja4tNakhRxA5HZ2kNI2w9/uSEUS6lX2A9jMr+JGk9llDTYU7NCX5gO5hbmb3igQn4JNkM8y2z+UrBLPaRhL3wmX/3mthlsmN3Zi5TWG3vkwlgUbYGi/RaCLrHxxK20bbpM81nbRGn3PMPIDhPNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edliaw.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qLXUflGh; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1e84a894335so55775ad.0
-        for <stable@vger.kernel.org>; Thu, 18 Apr 2024 13:46:50 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edliaw.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-6ed2f4e685bso1540056b3a.0
+        for <stable@vger.kernel.org>; Thu, 18 Apr 2024 16:20:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713473210; x=1714078010; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+OxDjoGGy1HqEOb4w0cL5x3uQ8o+UC2ei3huEHy8ahs=;
-        b=uD4wCO9gOe7TS7XxbYRnMo3yUekKX35BGa9TYKa4dmUy9UrpsqMtl/jL3geGsizwk1
-         YXGaaykmo8bD0eeYlgjTnsInU19/M1554+Y3lr92VLJsX+fMnkYO/MDctYneJ06uYHB3
-         grF4wQ+SzLZhRyRBDy9wr4ej1tewETDtk3gsI9qoEXNPUOb/F4S6OPVzfP8BcZfFbRdg
-         fd8GR+zjSGwrRpaAw6agoYhrtocTPe00bmFHAOukJgcMhr74lxV97D3uo3DP79yRj2vX
-         DalQHaF4JhGiihAQLe9CYU8F5+GXRxVtGwRoz7wTxQbV+OPNNJA2n0Myh7aENu0GAuT7
-         zkfQ==
+        d=google.com; s=20230601; t=1713482425; x=1714087225; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=26meAcCrC16s/TSKv+80D/MrO7azFsmm58EfNKygcv8=;
+        b=qLXUflGhzThS1SFZeMcN/ybDAUijfn0ZdWaM7+lZJo1kVCMqI8u5KZ8qk3YSqDymBS
+         haCbDZivU8Mg2UF/mpoAjZSvmTQ52CC36sgOL05PXxHGLRnqQGqvoaGyNjfC7Gcr7jcE
+         e6tvDY5rNbRGQVqvNf22Rmk4XRsiB9xn6WtUQqqookXHtSKkt+3cZQLQwqlCdNBzbcfC
+         +OdYPZ8xKujbtQBFbH10qEKZbLCLbXRaQmbjbWe0ngqcaYKo+OhEE/S4D5DiYuVYbk5N
+         S42FpAAYxzHLTeG5bkKXE5936j8vvpdTxTFl9u47ISQL39xkm0+CmjtGFn/KQpQqBbOz
+         +yoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713473210; x=1714078010;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+OxDjoGGy1HqEOb4w0cL5x3uQ8o+UC2ei3huEHy8ahs=;
-        b=vP+Y12tKOwOAccTay56hif5Mgau8DVxO5k0FwG2cDccHXcJX3Q8kuuKomYR6WUnXu/
-         4JHLGL6r/HHoEbp2URgxHlVTDTFzWOF4Ga1FM0r717jsnYOzksU1rtfqTHyLLB8Erqwx
-         7Q7iQ4rXzqCsJdh3FAXON2uJLMwYQMDsYXR9nCz/Z/yOZLO4ZUdxIlZsfOIseAhyB2cf
-         9vDML2uBbsHAkaIGYWMVh2nitNXR4IbR1X4sz8mXEXyJiwhF8nFDyJRvRIG5JT3hxuCY
-         WBz3MLDr0be/PpuLQLdhEqsv4nu9pygxKfO8uqB1D5b6HaWBb1/m1i56rzXHC2I5oNdR
-         M/NQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV67gxl0D+DSQrRaWMA0K3R+qu4bJUNYCjXlGiXw865BYzN8T83VSIJ0ws2lvJiJKQphKN1LeysPMVaIC6qWTB71pKlb5Sy
-X-Gm-Message-State: AOJu0YxuTm+tp7v8hGD2BF/KXs4wJzByAYmKsAXqxsc46KS53R6DHXth
-	10fPwl4Cxc2MRbQWt7ZwY0tWtQDqjpWt07ZCY82xD2XeW+YeAyhn5rmqSf/9Vw==
-X-Google-Smtp-Source: AGHT+IFj941mf9cufQ2vfb9yEB1VjE8vhFQwbWqrjph2DM5feMXwOPO/D+qJcXCDQar1DEssSmKLYA==
-X-Received: by 2002:a17:902:fa07:b0:1e5:c85e:6b71 with SMTP id la7-20020a170902fa0700b001e5c85e6b71mr60894plb.22.1713473209904;
-        Thu, 18 Apr 2024 13:46:49 -0700 (PDT)
-Received: from google.com ([2620:15c:2d3:205:4bdb:93c3:5c52:fa8a])
-        by smtp.gmail.com with ESMTPSA id a8-20020aa78e88000000b006f0ba1c8ddesm318098pfr.184.2024.04.18.13.46.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 13:46:49 -0700 (PDT)
-Date: Thu, 18 Apr 2024 13:46:45 -0700
-From: Fangrui Song <maskray@google.com>
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Song Liu <song@kernel.org>,
-	Ricardo Ribalda <ribalda@kernel.org>,
-	Arthur Eubanks <aeubanks@google.com>, stable@vger.kernel.org,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Vaibhav Rustagi <vaibhavrustagi@google.com>,
-	Andreas Smas <andreas@lonelycoder.com>
-Subject: Re: [PATCH] x86/purgatory: Switch to the position-independent small
- code model
-Message-ID: <20240418204645.o4av4kl2y35qcm2u@google.com>
-References: <20240418201705.3673200-2-ardb+git@google.com>
- <CAKwvOdnNurTJNb7iOVW4dpkV-rZGWg2t3HuLkL+B5sNOin39WA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1713482425; x=1714087225;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=26meAcCrC16s/TSKv+80D/MrO7azFsmm58EfNKygcv8=;
+        b=o4pEf2AYGkSlrBkmFXPHOZHMkPflEBkQCVFBb3VcG5Yf6Vg1hb1sg0ug2skPeLKKh6
+         8h0SCtA/gXS/nawgdXEZz1VfevQBlrRglaR8CPiH4coxJo20YnUC1pNEE2wQm/A89n+h
+         HGrLIjE99j1J9h+KH1dsXyqqebVEH/H/ANEn3vZnqeqdqq58G8L45KqH6L2PmgbMyzzZ
+         K7vEVXf8TzS0uMbg486YBoquwcQszsO/5sgHx+V6rbsf2EicyKS8NuK9bmu3s9hKamka
+         +YAlFGvAnw9MiSYCvRc4S9rUCGEt9qqT9kMwD//C/+S3SSiurNM7e7mqQiYeJ6yxZXgH
+         Ce1Q==
+X-Gm-Message-State: AOJu0Yx7dn2HFWKozW2B6uM+zQJoefIsBZ9xLpy39HwflFUc0CjWpZKC
+	+euCWCRLr0U9RIm84PzFFAw95U5hej7H1Cb5EO3WZ/DgZYqDVeO/9ZtPjaufZYInM8gQVQaRrbb
+	1n6wWvQccFkZHwH8fkEJwfl4QZypi+TW+nxUP1+yBrkg4O5/BLJ/9m8u6TMrymcb/qsiVAetY2w
+	Bm1huOzlU1AxoREPr2VeOITmw+zoErT0fs
+X-Google-Smtp-Source: AGHT+IFCT+LD8L7Ydyey8ugQxfC4hQL7hz4SeRVez+Chgb/ZmrwQpoWBky8hs4o0JI2AHzcCAT53BPCTo9c=
+X-Received: from edliaw.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:305d])
+ (user=edliaw job=sendgmr) by 2002:a05:6a00:3998:b0:6ea:f425:dba2 with SMTP id
+ fi24-20020a056a00399800b006eaf425dba2mr50612pfb.0.1713482424349; Thu, 18 Apr
+ 2024 16:20:24 -0700 (PDT)
+Date: Thu, 18 Apr 2024 23:19:46 +0000
+In-Reply-To: <16430256912363@kroah.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKwvOdnNurTJNb7iOVW4dpkV-rZGWg2t3HuLkL+B5sNOin39WA@mail.gmail.com>
+Mime-Version: 1.0
+References: <16430256912363@kroah.com>
+X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
+Message-ID: <20240418232005.34244-1-edliaw@google.com>
+Subject: [PATCH 5.15.y v3 0/5] Backport bounds checks for bpf
+From: Edward Liaw <edliaw@google.com>
+To: stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>
+Cc: bpf@vger.kernel.org, kernel-team@android.com, 
+	Edward Liaw <edliaw@google.com>, Yonghong Song <yhs@fb.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+
+These backports fix CVE-2021-4204, CVE-2022-23222 for 5.15.y.
+
+This includes a conflict resolution with 45ce4b4f9009 ("bpf: Fix crash
+due to out of bounds access into reg2btf_ids.") which was cherry-picked
+previously.
+Link: https://lore.kernel.org/all/20220428235751.103203-11-haoluo@google.com/
+
+They were tested on 5.15.156 to pass LTP test bpf_prog06 with no
+regressions in test_verifier in bpf selftests.
+
+v2:
+Made a mistake of not including the out of bounds reg2btf_ids fix
+v3:
+Merged in prog_type fix from f858c2b2ca04 ("bpf: Fix calling global
+functions from BPF_PROG_TYPE_EXT programs") and rebased to 5.15.156
 
 
-On 2024-04-18, Nick Desaulniers wrote:
->On Thu, Apr 18, 2024 at 1:17 PM Ard Biesheuvel <ardb+git@google.com> wrote:
->>
->> From: Ard Biesheuvel <ardb@kernel.org>
->>
->> On x86, the ordinary, position dependent 'small' and 'kernel' code models only
->> support placement of the executable in 32-bit addressable memory, due to
->> the use of 32-bit signed immediates to generate references to global
->> variables. For the kernel, this implies that all global variables must
->> reside in the top 2 GiB of the kernel virtual address space, where the
->> implicit address bits 63:32 are equal to sign bit 31.
->>
->> This means the kernel code model is not suitable for other bare metal
->> executables such as the kexec purgatory, which can be placed arbitrarily
->> in the physical address space, where its address may no longer be
->> representable as a sign extended 32-bit quantity. For this reason,
->> commit
->>
->>   e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
->>
->> switched to the 'large' code model, which uses 64-bit immediates for all
->> symbol references, including function calls, in order to avoid relying
->> on any assumptions regarding proximity of symbols in the final
->> executable.
->>
->> The large code model is rarely used, clunky and the least likely to
->> operate in a similar fashion when comparing GCC and Clang, so it is best
->> avoided. This is especially true now that Clang 18 has started to emit
->> executable code in two separate sections (.text and .ltext), which
->> triggers an issue in the kexec loading code at runtime.
->>
->> Instead, use the position independent small code model, which makes no
->> assumptions about placement but only about proximity, where all
->> referenced symbols must be within -/+ 2 GiB, i.e., in range for a
->> RIP-relative reference. Use hidden visibility to suppress the use of a
->> GOT, which carries absolute addresses that are not covered by static ELF
->> relocations, and is therefore incompatible with the kexec loader's
->> relocation logic.
->>
->> Cc: Nathan Chancellor <nathan@kernel.org>
->> Cc: Nick Desaulniers <ndesaulniers@google.com>
->
->Thanks Ard!
->
->Acked-by: Nick Desaulniers <ndesaulniers@google.com>
->Reported-by: ns <0n-s@users.noreply.github.com>
->Closes: https://github.com/ClangBuiltLinux/linux/issues/2016
->Fixes: e16c2983fba0 ("x86/purgatory: Change compiler flags from
->-mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
->
->(I don't have a kexec setup ready to go; maybe someone that does can
->help test it.)
+Daniel Borkmann (4):
+  bpf: Generalize check_ctx_reg for reuse with other types
+  bpf: Generally fix helper register offset check
+  bpf: Fix out of bounds access for ringbuf helpers
+  bpf: Fix ringbuf memory type confusion when passing to helpers
 
-LGTM.
+Edward Liaw (1):
+  bpf: Extend kfunc with PTR_TO_CTX, PTR_TO_MEM argument support
 
-Position-dependent small code model may generate R_X86_64_32S
-relocations with a range of [0,2GiB) (the negative half cannot be used).
-Position-independent small code model with hidden visibility will
-generate R_X86_64_PC32 and can typically be quite larger than 2G without
-hitting an overflow issue.
+ include/linux/bpf.h          |  9 +++-
+ include/linux/bpf_verifier.h |  4 +-
+ kernel/bpf/btf.c             | 93 ++++++++++++++++++++++++++++--------
+ kernel/bpf/verifier.c        | 66 +++++++++++++++++--------
+ 4 files changed, 129 insertions(+), 43 deletions(-)
 
-(I have some notes about R_X86_64_32S at
-https://maskray.me/blog/2023-05-14-relocation-overflow-and-code-models#x86-64-linker-requirement)
+--
+2.44.0.769.g3c40516874-goog
 
-Reviewed-by: Fangrui Song <maskray@google.com>
-
->> Cc: Bill Wendling <morbo@google.com>
->> Cc: Justin Stitt <justinstitt@google.com>
->> Cc: Song Liu <song@kernel.org>
->> Cc: Ricardo Ribalda <ribalda@kernel.org>
->> Cc: Fangrui Song <maskray@google.com>
->> Cc: Arthur Eubanks <aeubanks@google.com>
->> Link: https://lore.kernel.org/all/20240417-x86-fix-kexec-with-llvm-18-v1-0-5383121e8fb7@kernel.org/
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->> ---
->>  arch/x86/purgatory/Makefile | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
->> index bc31863c5ee6..a18591f6e6d9 100644
->> --- a/arch/x86/purgatory/Makefile
->> +++ b/arch/x86/purgatory/Makefile
->> @@ -42,7 +42,8 @@ KCOV_INSTRUMENT := n
->>  # make up the standalone purgatory.ro
->>
->>  PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
->> -PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss -g0
->> +PURGATORY_CFLAGS := -mcmodel=small -ffreestanding -fno-zero-initialized-in-bss -g0
->> +PURGATORY_CFLAGS += -fpic -fvisibility=hidden
->>  PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
->>  PURGATORY_CFLAGS += -fno-stack-protector
->>
->> --
->> 2.44.0.769.g3c40516874-goog
->>
->
->
->-- 
->Thanks,
->~Nick Desaulniers
 
