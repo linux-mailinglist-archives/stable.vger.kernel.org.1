@@ -1,193 +1,97 @@
-Return-Path: <stable+bounces-40146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E5E8A905A
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 03:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C1D8A90AC
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 03:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE5E1C21937
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 01:09:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1376E1C21B24
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 01:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360F654794;
-	Thu, 18 Apr 2024 01:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3420339ACD;
+	Thu, 18 Apr 2024 01:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3zlUL53G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgkRsR9d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7D6C139
-	for <stable@vger.kernel.org>; Thu, 18 Apr 2024 01:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D584779E1;
+	Thu, 18 Apr 2024 01:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713402468; cv=none; b=mATrJh2YWjEGUK6z8qVXMFQiOevfsbVjHN2EiOMLrE8+mUkNIlh/bQM7Zppgs5SyJprsimFadF4Wz98z2iCFrERRlEvIs9kzmE2VwY45C1VAp+4aLaoNimNiceZlPPjsTh7lKJSGfJU/eU7hCMI+guviPfGxzhHcOfa4kmfkQuc=
+	t=1713403829; cv=none; b=aau1tKDD8CkKdq0VTzMkUI8vAEV8XacYUYij8+/Fu9dsCvlpqCDPZprZmMJ1ofbZU9tVJwPy0h7S0L4FcMNviORQFZhJZCWxVHgIuH4h+1iQEoURqxjeXlkGrQtk+5jFwuYdICKrHsDlIMHzyNDzBighzavYiz8HhMU6tEoiQQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713402468; c=relaxed/simple;
-	bh=vjRJ1U7DKOKEv8zqHNl/1MSWTfJ+WAHC2urS1kF08ZE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mYqYShhf/jcVHCfE/51JcSjV7OBohafPXtSibPDjOGh8XLBrJkDPZJdiSHmLOSljE8StilWEOhYbzTC/artu0tUwptlNik1uNxC8fbddv/fnpF/XzQq9/xK6YOTPVws/tJeaiOuTMHgjfwPZuZ2mLixioy1hGGmWNRKT1WrQ4+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edliaw.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3zlUL53G; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edliaw.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2a2fdf6eb3bso432753a91.1
-        for <stable@vger.kernel.org>; Wed, 17 Apr 2024 18:07:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713402466; x=1714007266; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cuQpI8q1wJxBD6X4kJwl22uAmYchmA+XE2ed6Sx/XW8=;
-        b=3zlUL53GYrQQVBA8OYZL9i3FfPwxwKewyXimi9tOZ96GONwRJDuKPMQ00Z2alMSTSI
-         EE4WPfCJeEgEa3cacElVP7F562Vi0/MWmc9unN+epmhgSihCcq/ZQe4L33BtK/1bh7Kn
-         vJEwCNpq6cqtd8qKr00ttZg92oYKFUwmg/IrlCLjmt6RAZHP8sLRSKTaUXH/Mr1BtJEU
-         dE+WBVNC8lh8D+KHwNns2gQBzUo8R+LHcLKAV2H3YW0VOhLyazVeoUBs8rVKQFLW9mlf
-         +w6DqGw/hwXujXKJnzCnHh7iLrYVLaISDVUsteVa+wnzhJq07xcdH6Yv7gvCYbZeREN/
-         KTaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713402466; x=1714007266;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cuQpI8q1wJxBD6X4kJwl22uAmYchmA+XE2ed6Sx/XW8=;
-        b=qkw8ivjyRw2b7M8NZYCsdr2DKTkAwWtCRokfTxm7cK9jJ8hjyjbXhPtM7LY/iTkMYQ
-         VP9BBBVUYwPeLFmLO7WrhM7VtPhLJVMTCYzAHFRT0NBT383fG2kRjrnQyNN2nl+a8SIe
-         GeDYRo2JFyWDK2pZvlNl3UtWXZz1hD4cs3s9Q95P4tdSKMs1MWX+sHjmL4MMJFcuCgBE
-         htGqT5WhLX6q8Ij3rIJjWUDx1zx+//n+WC1bynLUKr3Evq4wgfSkQ9+KF89BSwITR8hy
-         fnA9hbOOZsa5ueFJaP5LaCLz5UYRSXpT1RB4JCKNDkO+MnSGK1WaHoscJyodwhdmrDbi
-         YQ+A==
-X-Gm-Message-State: AOJu0YzTAIki6GQsf7+/wSP6wptOhM8Ahq73p8ZB5FYXZ/I2orbReMEq
-	wc6s6gfOhW5wEv1OxT8j+nk8673ODm23V56inxJHVT5X7a/xhPAs0e7eDZBCJE2FHarlpzni/Mm
-	l+/d8dznR9zxkpxELjerycc1RGdfX3+yPmOXGhPsBt8dWYqs9TsBpWPwRXlYi+PaarRTf4BZH3f
-	y0OV7l7bPMJnzLvm8Lf1WnJWHblIlAe3b2
-X-Google-Smtp-Source: AGHT+IHGZwUXxnIi8umgtcmk1AYnoU9sLsjsWPwJKD9HL4ufshZxqeVmZB8Cu9P+R7pMCrRGbgVEpjMIq+c=
-X-Received: from edliaw.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:305d])
- (user=edliaw job=sendgmr) by 2002:a17:90a:d081:b0:2a2:5697:f90d with SMTP id
- k1-20020a17090ad08100b002a25697f90dmr2975pju.6.1713402463538; Wed, 17 Apr
- 2024 18:07:43 -0700 (PDT)
-Date: Thu, 18 Apr 2024 01:07:14 +0000
-In-Reply-To: <20240418010723.3069001-1-edliaw@google.com>
+	s=arc-20240116; t=1713403829; c=relaxed/simple;
+	bh=gZOT/mOu2CyMDoG/ag0UuuhYX4Sj3DH7kUHqY72aNOo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=iNRsZqPslfcTvNaw5kB30r2QZM5lLjhNQGx4tiEUqLGCAbMKSIRNhQhiECOpevMRho7bLHrlweGDwZ1vlGZPjZJuE5WLAs+3fMHoXt5N0hCQLdD4zW/Rq9t3Wa/IQNnvVd6xJZOA8kcCjvabR6atY4fcRLtRo9XmbLo1YcbsV38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgkRsR9d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7777BC2BD11;
+	Thu, 18 Apr 2024 01:30:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713403829;
+	bh=gZOT/mOu2CyMDoG/ag0UuuhYX4Sj3DH7kUHqY72aNOo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=FgkRsR9dWmawSa+lnBNBzm7D5ZM9RlrEERfvyTaUHRx/3rWYNT0Q8O8cZvmCQAYJI
+	 m/F7LaRFVd4roG2p6Bpd3t8ibrTf7ke9/7lTm5M2j8R7WWmhgAJ21zW9m4t/t9WLEv
+	 w2cScYoGJM3m+/uHE0Py9Yg5Ct99El7TsOmElrO8ZyHpFvN2jvgMLxzHVEVaRSgiXo
+	 efrbo/t2d6i1G1nwRKr9hy6bd/dRys/4Af9/wnMDI1UtCN+8W8budnEZTFzUwPL0xa
+	 R9pDdKiZHvSl6ESvQE9eSlPrK0X7K552vSqzZM24EZ2QEt/s18ncUpQ2z3oO9pZKTl
+	 iUSO1jhT7aI2w==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5BCFEC43619;
+	Thu, 18 Apr 2024 01:30:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <16430256912363@kroah.com> <20240418010723.3069001-1-edliaw@google.com>
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240418010723.3069001-6-edliaw@google.com>
-Subject: [PATCH 5.15.y v2 5/5] bpf: Fix ringbuf memory type confusion when
- passing to helpers
-From: Edward Liaw <edliaw@google.com>
-To: stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>, 
-	John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
-	Hao Luo <haoluo@google.com>
-Cc: bpf@vger.kernel.org, kernel-team@android.com, 
-	Edward Liaw <edliaw@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/2 v3] USB: serial: option: add Lonsung U8300/U9300 product
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171340382937.22183.3670134253557534621.git-patchwork-notify@kernel.org>
+Date: Thu, 18 Apr 2024 01:30:29 +0000
+References: <20240415142625.1756740-1-coiaprant@gmail.com>
+In-Reply-To: <20240415142625.1756740-1-coiaprant@gmail.com>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: linux-usb@vger.kernel.org, larsm17@gmail.com, stable@vger.kernel.org,
+ netdev@vger.kernel.org
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+Hello:
 
-The bpf_ringbuf_submit() and bpf_ringbuf_discard() have ARG_PTR_TO_ALLOC_MEM
-in their bpf_func_proto definition as their first argument, and thus both expect
-the result from a prior bpf_ringbuf_reserve() call which has a return type of
-RET_PTR_TO_ALLOC_MEM_OR_NULL.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-While the non-NULL memory from bpf_ringbuf_reserve() can be passed to other
-helpers, the two sinks (bpf_ringbuf_submit(), bpf_ringbuf_discard()) right now
-only enforce a register type of PTR_TO_MEM.
+On Mon, 15 Apr 2024 07:26:25 -0700 you wrote:
+> Update the USB serial option driver to support Longsung U8300/U9300.
+> 
+> For U8300
+> 
+> Interface 4 is used by for QMI interface in stock firmware of U8300, the
+> router which uses U8300 modem. Free the interface up, to rebind it to
+> qmi_wwan driver.
+> Interface 5 is used by for ADB interface in stock firmware of U8300, the
+> router which uses U8300 modem. Free the interface up.
+> The proper configuration is:
+> 
+> [...]
 
-This can lead to potential type confusion since it would allow other PTR_TO_MEM
-memory to be passed into the two sinks which did not come from bpf_ringbuf_reserve().
+Here is the summary with links:
+  - [1/2,v3] USB: serial: option: add Lonsung U8300/U9300 product
+    (no matching commit)
+  - [2/2,v3] net: usb: qmi_wwan: add Lonsung U8300/U9300 product
+    https://git.kernel.org/netdev/net-next/c/bc1b7f02c8fe
 
-Add a new MEM_ALLOC composable type attribute for PTR_TO_MEM, and enforce that:
-
- - bpf_ringbuf_reserve() returns NULL or PTR_TO_MEM | MEM_ALLOC
- - bpf_ringbuf_submit() and bpf_ringbuf_discard() only take PTR_TO_MEM | MEM_ALLOC
-   but not plain PTR_TO_MEM arguments via ARG_PTR_TO_ALLOC_MEM
- - however, other helpers might treat PTR_TO_MEM | MEM_ALLOC as plain PTR_TO_MEM
-   to populate the memory area when they use ARG_PTR_TO_{UNINIT_,}MEM in their
-   func proto description
-
-Fixes: 457f44363a88 ("bpf: Implement BPF ring buffer and verifier support for it")
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-(cherry picked from commit a672b2e36a648afb04ad3bda93b6bda947a479a5)
-Signed-off-by: Edward Liaw <edliaw@google.com>
----
- include/linux/bpf.h   | 9 +++++++--
- kernel/bpf/verifier.c | 6 +++++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 84efd8dd139d..96b2aa567d23 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -312,7 +312,12 @@ enum bpf_type_flag {
- 	 */
- 	MEM_RDONLY		= BIT(1 + BPF_BASE_TYPE_BITS),
- 
--	__BPF_TYPE_LAST_FLAG	= MEM_RDONLY,
-+	/* MEM was "allocated" from a different helper, and cannot be mixed
-+	 * with regular non-MEM_ALLOC'ed MEM types.
-+	 */
-+	MEM_ALLOC		= BIT(2 + BPF_BASE_TYPE_BITS),
-+
-+	__BPF_TYPE_LAST_FLAG	= MEM_ALLOC,
- };
- 
- /* Max number of base types. */
-@@ -396,7 +401,7 @@ enum bpf_return_type {
- 	RET_PTR_TO_SOCKET_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_SOCKET,
- 	RET_PTR_TO_TCP_SOCK_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_TCP_SOCK,
- 	RET_PTR_TO_SOCK_COMMON_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_SOCK_COMMON,
--	RET_PTR_TO_ALLOC_MEM_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_ALLOC_MEM,
-+	RET_PTR_TO_ALLOC_MEM_OR_NULL	= PTR_MAYBE_NULL | MEM_ALLOC | RET_PTR_TO_ALLOC_MEM,
- 	RET_PTR_TO_BTF_ID_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_BTF_ID,
- 
- 	/* This must be the last entry. Its purpose is to ensure the enum is
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 3dfc45ed428a..6162ba31a89e 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -567,6 +567,8 @@ static const char *reg_type_str(struct bpf_verifier_env *env,
- 
- 	if (type & MEM_RDONLY)
- 		strncpy(prefix, "rdonly_", 16);
-+	if (type & MEM_ALLOC)
-+		strncpy(prefix, "alloc_", 16);
- 
- 	snprintf(env->type_str_buf, TYPE_STR_BUF_LEN, "%s%s%s",
- 		 prefix, str[base_type(type)], postfix);
-@@ -4970,6 +4972,7 @@ static const struct bpf_reg_types mem_types = {
- 		PTR_TO_MAP_KEY,
- 		PTR_TO_MAP_VALUE,
- 		PTR_TO_MEM,
-+		PTR_TO_MEM | MEM_ALLOC,
- 		PTR_TO_BUF,
- 	},
- };
-@@ -4987,7 +4990,7 @@ static const struct bpf_reg_types int_ptr_types = {
- static const struct bpf_reg_types fullsock_types = { .types = { PTR_TO_SOCKET } };
- static const struct bpf_reg_types scalar_types = { .types = { SCALAR_VALUE } };
- static const struct bpf_reg_types context_types = { .types = { PTR_TO_CTX } };
--static const struct bpf_reg_types alloc_mem_types = { .types = { PTR_TO_MEM } };
-+static const struct bpf_reg_types alloc_mem_types = { .types = { PTR_TO_MEM | MEM_ALLOC } };
- static const struct bpf_reg_types const_map_ptr_types = { .types = { CONST_PTR_TO_MAP } };
- static const struct bpf_reg_types btf_ptr_types = { .types = { PTR_TO_BTF_ID } };
- static const struct bpf_reg_types spin_lock_types = { .types = { PTR_TO_MAP_VALUE } };
-@@ -5150,6 +5153,7 @@ static int check_func_arg(struct bpf_verifier_env *env, u32 arg,
- 	case PTR_TO_MAP_VALUE:
- 	case PTR_TO_MEM:
- 	case PTR_TO_MEM | MEM_RDONLY:
-+	case PTR_TO_MEM | MEM_ALLOC:
- 	case PTR_TO_BUF:
- 	case PTR_TO_BUF | MEM_RDONLY:
- 	case PTR_TO_STACK:
+You are awesome, thank you!
 -- 
-2.44.0.769.g3c40516874-goog
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
