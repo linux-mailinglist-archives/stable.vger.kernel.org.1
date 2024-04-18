@@ -1,79 +1,182 @@
-Return-Path: <stable+bounces-40181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFEE68A9A53
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 14:49:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB3B8A9AC7
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 15:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 754E3283997
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 12:49:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31F961F2545E
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3AEE1607AC;
-	Thu, 18 Apr 2024 12:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14225165FC6;
+	Thu, 18 Apr 2024 13:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBqQ3YaW"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="td7NRfGf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NTafIBCY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6753B15E7E7;
-	Thu, 18 Apr 2024 12:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A338B1465B1;
+	Thu, 18 Apr 2024 13:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713444421; cv=none; b=kdAdIx/MwcZPv86ek8rSwJ+BN7AOxZN2IiT01hLrxKC9lYCnI4RwrxzIhInmLKDNHEY8YwiGcAYqYIn4yvN0+x3ua4PHsPL3xlzlOzGK5AzGV6AVREB3Jf2kJbVJwn9AAcouoQonU6RnhDNu9IEGxjfOSdiY/95dY2Pmg4CPhME=
+	t=1713445317; cv=none; b=mI4pCO4qpBQUX3CeCe2Jnoov9c9fK2VQdIuEiUcQUv8buSWSg7hOpF5HGEWyUpS/u8Z6oYVWgJzXV7BIi59IJzZcqsm1Qldi/Tj3OKamQpHqu0myjjq8qnmKLSjbZBGBe3tcVb3TAJotQz3x4/RXTEkxFz9H9jpMp7BTk+FJ/kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713444421; c=relaxed/simple;
-	bh=A6gHdTX14hzxoADRPGN9sifbwuNE31ws3WFjmms2JaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WEBTOzZhyGbrUWj0Sk1X/qZj92S9fCh1KMBdJ8GyEyIM9QfwKpl8iBRolUI3bPc1TzgG6KS7RdMeOxVbfZRbtrbQgtVU8AzpLaK/klva+5uHghzbfZARHAGwPljFCiOjfqatNSsCLJjrxsyQDIIJ174waCI/vQ2kj/HDkKKjcNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBqQ3YaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89221C113CC;
-	Thu, 18 Apr 2024 12:47:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713444420;
-	bh=A6gHdTX14hzxoADRPGN9sifbwuNE31ws3WFjmms2JaI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mBqQ3YaWfdR4I/5K6W+ZmHFXCV92UX3hfcA/Mp0l0lz9wEdvHWlXQKRHkyebh2pEj
-	 Pr/CvZr651wNVWxIScQj1N/zd+Q+3ZFkEjOP7ULrUBhvdwqsUozQ8PV52fXXVq/76Y
-	 ieIry8zunRoeXrULaj8E7BgUl4yhoEL2kJNxL3VE=
-Date: Thu, 18 Apr 2024 14:46:58 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "vmgenid: emit uevent when VMGENID updates"
-Message-ID: <2024041829-gander-uninjured-5b2f@gregkh>
-References: <20240418114814.24601-1-Jason@zx2c4.com>
+	s=arc-20240116; t=1713445317; c=relaxed/simple;
+	bh=/V9nJ3w6SVVFPJeLw5l/Mr1q879sKp9vUjziZRX9VjM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ss9U6aLsWCACHsw0ipMMN9uIaWnYvpp6jXxC5t/wHfkt29QTzZmHTj9gadQCv4GY876xDI9XkSZZdnDWrXFhwEp9Bfir4FBbxvbcU9bUQZSps+P7sNRl46F5qRdgPhjN0lcH/0qKyes1wKesBv/p7uqbtoyQpMG1RFNTwGm4gKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=td7NRfGf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NTafIBCY; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 18 Apr 2024 15:01:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713445310;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0GJg4wo0VKLac1PG97GL83QKeqaA9szY5zPKromLH+A=;
+	b=td7NRfGfcrv0MyyqY+R9o3SoF/k2jyFG+Hw7c1iUg6sGEx/jr18/rj4iS1DJnfvGCR68pw
+	rPRsi11sW51RYh1zIYoVxRPbgMoAcCiEAMrRLR9nlGI5MXoHvXTg5w8haFnEipTHC8L2HL
+	GWVwjcdQbvWzbsxenfbbEpLyISg/ZtzSzQqBBJIKiBRu1NpOfgm0acuuLOqhmM7RBrjlCv
+	s1DWtTp64zduTiWs856+1dllq2b+ovcJwOPy67hRL8w+Lhx9oDOQqbijAjb1461hu1NJiM
+	A0X0DzUjidKOd+p1q3gRJpZoCjKF40N02qN+mT8SxrMv/j+9pK+Fqj7LhvA3Yw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713445310;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0GJg4wo0VKLac1PG97GL83QKeqaA9szY5zPKromLH+A=;
+	b=NTafIBCYsXh1Tdh3iOhsXmxdqRGVtfe43CHFbsPqgsih4/iAHkX8D+I5XsL1Gc1tYxHC6+
+	BnB4ua0EWdlKKbCw==
+From: Nam Cao <namcao@linutronix.de>
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Andreas Dilger <adilger@dilger.ca>,
+ linux-riscv@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
+ Andrew Morton <akpm@linux-foundation.org>, "ndesaulniers @ google . com"
+ <ndesaulniers@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Ingo
+ Molnar <mingo@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Tejun Heo <tj@kernel.org>, Krister Johansen <kjlx@templeofstupid.com>,
+ Changbin Du <changbin.du@huawei.com>, Arnd Bergmann <arnd@arndb.de>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] init: fix allocated page overlapping with PTR_ERR
+Message-ID: <20240418150148.6a0b4664@namcao>
+In-Reply-To: <87edb2sv0d.fsf@all.your.base.are.belong.to.us>
+References: <20240418102943.180510-1-namcao@linutronix.de>
+	<20240418131238.636bee2c@namcao>
+	<87edb2sv0d.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240418114814.24601-1-Jason@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 18, 2024 at 01:48:08PM +0200, Jason A. Donenfeld wrote:
-> This reverts commit ad6bcdad2b6724e113f191a12f859a9e8456b26d. I had
-> nak'd it, and Greg said on the thread that it links that he wasn't going
-> to take it either, especially since it's not his code or his tree, but
-> then, seemingly accidentally, it got pushed up some months later, in
-> what looks like a mistake, with no further discussion in the linked
-> thread. So revert it, since it's clearly not intended.
-> 
-> Fixes: ad6bcdad2b67 ("vmgenid: emit uevent when VMGENID updates")
-> Cc: stable@vger.kernel.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Link: https://lore.kernel.org/r/20230531095119.11202-2-bchalios@amazon.es
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> ---
->  drivers/virt/vmgenid.c | 2 --
->  1 file changed, 2 deletions(-)
+On 2024-04-18 Bj=C3=B6rn T=C3=B6pel wrote:
+> Nam Cao <namcao@linutronix.de> writes:
+>=20
+> > On 2024-04-18 Nam Cao wrote:
+> >> There is nothing preventing kernel memory allocators from allocating a
+> >> page that overlaps with PTR_ERR(), except for architecture-specific
+> >> code that setup memblock.
+> >>=20
+> >> It was discovered that RISCV architecture doesn't setup memblock
+> >> corectly, leading to a page overlapping with PTR_ERR() being allocated,
+> >> and subsequently crashing the kernel (link in Close: )
+> >>=20
+> >> The reported crash has nothing to do with PTR_ERR(): the last page
+> >> (at address 0xfffff000) being allocated leads to an unexpected
+> >> arithmetic overflow in ext4; but still, this page shouldn't be
+> >> allocated in the first place.
+> >>=20
+> >> Because PTR_ERR() is an architecture-independent thing, we shouldn't
+> >> ask every single architecture to set this up. There may be other
+> >> architectures beside RISCV that have the same problem.
+> >>=20
+> >> Fix this one and for all by reserving the physical memory page that
+> >> may be mapped to the last virtual memory page as part of low memory.
+> >>=20
+> >> Unfortunately, this means if there is actual memory at this reserved
+> >> location, that memory will become inaccessible. However, if this page
+> >> is not reserved, it can only be accessed as high memory, so this
+> >> doesn't matter if high memory is not supported. Even if high memory is
+> >> supported, it is still only one page.
+> >>=20
+> >> Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.ba=
+se.are.belong.to.us
+> >> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> >> Cc: <stable@vger.kernel.org> # all versions
+> >
+> > Sorry, forgot to add:
+> > Reported-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+>=20
+> Hmm, can't we get rid of the whole check in arch/riscv/mm/init.c for
+> 32b?
 
-Sorry about that, I picked it up thinking I had missed it previously:
+We can, but that depends on this patch. So my intention is to wait for
+this patch to be applied first, because I don't want to bother the
+maintainers with dependencies.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> --8<--
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index fe8e159394d8..1e91d5728887 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -196,7 +196,6 @@ early_param("mem", early_mem);
+>  static void __init setup_bootmem(void)
+>  {
+>  	phys_addr_t vmlinux_end =3D __pa_symbol(&_end);
+> -	phys_addr_t max_mapped_addr;
+>  	phys_addr_t phys_ram_end, vmlinux_start;
+> =20
+>  	if (IS_ENABLED(CONFIG_XIP_KERNEL))
+> @@ -234,21 +233,6 @@ static void __init setup_bootmem(void)
+>  	if (IS_ENABLED(CONFIG_64BIT))
+>  		kernel_map.va_pa_offset =3D PAGE_OFFSET - phys_ram_base;
+> =20
+> -	/*
+> -	 * memblock allocator is not aware of the fact that last 4K bytes of
+> -	 * the addressable memory can not be mapped because of IS_ERR_VALUE
+> -	 * macro. Make sure that last 4k bytes are not usable by memblock
+> -	 * if end of dram is equal to maximum addressable memory.  For 64-bit
+> -	 * kernel, this problem can't happen here as the end of the virtual
+> -	 * address space is occupied by the kernel mapping then this check must
+> -	 * be done as soon as the kernel mapping base address is determined.
+> -	 */
+> -	if (!IS_ENABLED(CONFIG_64BIT)) {
+> -		max_mapped_addr =3D __pa(~(ulong)0);
+> -		if (max_mapped_addr =3D=3D (phys_ram_end - 1))
+> -			memblock_set_current_limit(max_mapped_addr - 4096);
+> -	}
+> -
+
+If you are going to send this, you can add:
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+
+>  	min_low_pfn =3D PFN_UP(phys_ram_base);
+>  	max_low_pfn =3D max_pfn =3D PFN_DOWN(phys_ram_end);
+>  	high_memory =3D (void *)(__va(PFN_PHYS(max_low_pfn)));
+> --8<--
+>=20
+> Mike hints that's *not* the case
+> (https://lore.kernel.org/linux-riscv/ZiAkRMUfiPDUGPdL@kernel.org/).
+> memblock_reserve() should disallow allocation as well, no?
+
+He said it can't be removed if we set max_low_pfn instead of using
+memblock_reserve()
+
+If max_low_pfn() is used, then it can be removed:
+https://lore.kernel.org/linux-riscv/Zh6n-nvnQbL-0xss@kernel.org
+
+Best regards,
+Nam
 
 
