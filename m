@@ -1,98 +1,133 @@
-Return-Path: <stable+bounces-40168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817158A972B
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 12:21:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98BC18A9773
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 12:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B30B91C21D49
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 10:21:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24B2B1F235B6
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 10:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC9B15B971;
-	Thu, 18 Apr 2024 10:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D741C1586F5;
+	Thu, 18 Apr 2024 10:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GWuezpAM"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rFoTg+5O";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OkgiFbzK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A91815B57F;
-	Thu, 18 Apr 2024 10:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454438821;
+	Thu, 18 Apr 2024 10:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713435652; cv=none; b=lFiqHJzo/YQ0NsbPGY6T+wTcrdAOmCHBNpLCu+1kuTKX/wxo8v5l1ewwhJwR3XTI7fknRM9BPV21DXQCkj3KvcXbh2hdz5RoYb2sxlH6uTFTQbn3B1j4xXoHDVD9/dY3vLdY1x2mSqvDoPVwQII3GyAzCN2K2XZGQ8FCxLb2b8U=
+	t=1713436524; cv=none; b=CySIrsaz8QsT2PKCIW5ZxW43oMEBWgZMRUhbT/nbkZmOF+82bU0Avby+P7YOYGb0R37mJLHC14n8rkSZUxhLCHqSzRzBJnJZEYy9vDQ0FYCv79g0RHeV1pigAw0Phx/VK3rZONHbJkPnlZYWwbFY0vVgBJDeLTgGEx2CnjTNeSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713435652; c=relaxed/simple;
-	bh=3Y5JB/WtfH5WH9bHCRUJuJuoNEPscNNjUmD2/T+wdHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gR51nVNuf9wxhK1T8dCAFuWsM3ogAdMdn7bVMNpLDQoislzyCRc9IQ2HkV4wUCZLkhtgKiPv+BLTa6N7JB3jXvsg6Fn6tixesNXPwuqlLqFTdPLZM899ta5nR3u+Sdnw3ZRMtacuUoN2vlkaLOtVg2MoaTDs0uVgTqBZIpwLEEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GWuezpAM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53522C32781;
-	Thu, 18 Apr 2024 10:20:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713435652;
-	bh=3Y5JB/WtfH5WH9bHCRUJuJuoNEPscNNjUmD2/T+wdHc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GWuezpAM/tvSVnMHw6t+mTnV7HMoCkz2/7R497QatvoCRl6upJfXlF3JX5sTzMGKr
-	 l+LRH8aD3fi1IJ3nHAHbT8VkXrUqj1AL0bAglqnMIvrWFf5stfdYy05e+8YhQsGED6
-	 LRiT88aIl6g1mm4sQUnD64X2iB2cDgHByJxUt1mdaKRjEQpmOIzqMfOw/9Dpnwgcd4
-	 1W6HAeWJx3Edaaj9EMH/+AhznhRelVOaE1QHUak77k625eSIQ5Qo4fiOusynMdfeZ7
-	 T1U9ZTRLnwF03YWxG4DQLEHk35/+u5J0b0YobKfs20Epbobh88Hn9GEH8ervAGmdDb
-	 j8zU4M3TMCNzQ==
-Date: Thu, 18 Apr 2024 11:20:46 +0100
-From: Lee Jones <lee@kernel.org>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-kernel@vger.kernel.org, kernel-team@android.com,
-	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org,
-	Todd Kjos <tkjos@google.com>
-Subject: Re: [PATCH] binder: check offset alignment in binder_get_object()
-Message-ID: <20240418102046.GA2329396@google.com>
-References: <20240330190115.1877819-1-cmllamas@google.com>
+	s=arc-20240116; t=1713436524; c=relaxed/simple;
+	bh=elx7OKm1udJewvzUfuAa8NkG1AOgelvnmXs8xqzFUUI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U2r9tNCAx9Mij5z4BMI5NJZpLhn5Oba6pi9LcrWhVEVbPD3EmBsmn5mio/lcvO5kNK1N16WQ9LyyG/RjFaZuBQxAJ5LI0CoHNzJvCx+fXcerxQSls0U10cRP3MaEzMJdcVEpkw716Kq9srtBNzuQeyN3CGQtnFCx/mL6NyawPBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rFoTg+5O; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OkgiFbzK; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713436521;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9obvaWEEEdGVSr28CMv6Cu4kAaroOIyrSClUKb5FyOY=;
+	b=rFoTg+5OscplOaVXCHK/7cHWKm5qOdAWblkqZCJ4vMeOn8y66abd6BreT1dDnFVPIaJNVv
+	p/hp4pRcVCOw04EJpMLmY1szbPdhyMQ2HFjpRkmDBJOhtx4HHbYjvFcbpkPietVTHmQrrn
+	zxRRoVm4xJ5hzULwg9DSeqh0PYBILFnoFxNaWkgCjR0NXrpWoNDkAmoo2pj9tK/H1s6NAF
+	/sQxEmmMmTQyftLxWpmCSNAaJTp5D+XI8olwQ/8vYgbBa8WVWW/7tPDRO0RkCTx35M+wwd
+	N41gq0rbAGXQyGPUu+uOvXtM/Wqp9Cbq3A1/UijMAY80/oNXauN5duvfOZdTBw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713436521;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9obvaWEEEdGVSr28CMv6Cu4kAaroOIyrSClUKb5FyOY=;
+	b=OkgiFbzKFvUFsoqftpSJySJo2U0wWkhDCM7WswDQsLc3kI9ofNu49Xa0uBH+A6iGWmTwFN
+	xHdX+y73q6HTaOAQ==
+To: Mike Rapoport <rppt@kernel.org>,
+	Andreas Dilger <adilger@dilger.ca>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	linux-riscv@lists.infradead.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"ndesaulniers @ google . com" <ndesaulniers@google.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Tejun Heo <tj@kernel.org>,
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Changbin Du <changbin.du@huawei.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] init: fix allocated page overlapping with PTR_ERR
+Date: Thu, 18 Apr 2024 12:29:43 +0200
+Message-Id: <20240418102943.180510-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240330190115.1877819-1-cmllamas@google.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 30 Mar 2024, Carlos Llamas wrote:
+There is nothing preventing kernel memory allocators from allocating a
+page that overlaps with PTR_ERR(), except for architecture-specific
+code that setup memblock.
 
-> Commit 6d98eb95b450 ("binder: avoid potential data leakage when copying
-> txn") introduced changes to how binder objects are copied. In doing so,
-> it unintentionally removed an offset alignment check done through calls
-> to binder_alloc_copy_from_buffer() -> check_buffer().
-> 
-> These calls were replaced in binder_get_object() with copy_from_user(),
-> so now an explicit offset alignment check is needed here. This avoids
-> later complications when unwinding the objects gets harder.
-> 
-> It is worth noting this check existed prior to commit 7a67a39320df
-> ("binder: add function to copy binder object from buffer"), likely
-> removed due to redundancy at the time.
-> 
-> Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> ---
->  drivers/android/binder.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+It was discovered that RISCV architecture doesn't setup memblock
+corectly, leading to a page overlapping with PTR_ERR() being allocated,
+and subsequently crashing the kernel (link in Close: )
 
-Thanks for chasing this one down Carlos.
+The reported crash has nothing to do with PTR_ERR(): the last page
+(at address 0xfffff000) being allocated leads to an unexpected
+arithmetic overflow in ext4; but still, this page shouldn't be
+allocated in the first place.
 
-Reviewed-by: Lee Jones <lee@kernel.org>
+Because PTR_ERR() is an architecture-independent thing, we shouldn't
+ask every single architecture to set this up. There may be other
+architectures beside RISCV that have the same problem.
 
--- 
-Lee Jones [李琼斯]
+Fix this one and for all by reserving the physical memory page that
+may be mapped to the last virtual memory page as part of low memory.
+
+Unfortunately, this means if there is actual memory at this reserved
+location, that memory will become inaccessible. However, if this page
+is not reserved, it can only be accessed as high memory, so this
+doesn't matter if high memory is not supported. Even if high memory is
+supported, it is still only one page.
+
+Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.ar=
+e.belong.to.us
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org> # all versions
+---
+ init/main.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/init/main.c b/init/main.c
+index 881f6230ee59..f8d2793c4641 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -900,6 +900,7 @@ void start_kernel(void)
+ 	page_address_init();
+ 	pr_notice("%s", linux_banner);
+ 	early_security_init();
++	memblock_reserve(__pa(-PAGE_SIZE), PAGE_SIZE); /* reserve last page for E=
+RR_PTR */
+ 	setup_arch(&command_line);
+ 	setup_boot_config();
+ 	setup_command_line(command_line);
+--=20
+2.39.2
+
 
