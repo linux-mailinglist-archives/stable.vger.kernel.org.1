@@ -1,177 +1,172 @@
-Return-Path: <stable+bounces-40206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2EC8AA15C
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 19:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F1C8AA277
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 21:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 822321C20DEF
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 17:49:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CED9D1C20D91
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 19:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FC0176FD2;
-	Thu, 18 Apr 2024 17:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF88A17AD83;
+	Thu, 18 Apr 2024 19:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lefzVpvd"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XaOmHb6E"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACE317556D;
-	Thu, 18 Apr 2024 17:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9129A4F8A3;
+	Thu, 18 Apr 2024 19:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713462538; cv=none; b=d6ToJzqW1sNgE8uiebeDNGsEM7MNB5/W1mbGGt9jGjtTfINGCtapDhsSBCkaL8CwK0Fx6fVaWE85fSxhRAYwEGGxpPLfAQqYaW6puL3/9nNLNdHre6ebpB36xDPWvFNa1zt4CuCzLSyXSufZ66hoVElzMBDqnvtulL47TYzWATc=
+	t=1713467000; cv=none; b=IGxvbP1tJ98fsIq6gt9zdznVl5jo1qw6iEbgF+aP9685rnGxNVyIua2KmvQA1fUQ1JREEqbLtT09GS+DZxnBbLvSvhnrMCHgspDeOZb4/WZkXpQ93vczRjQFycMUTlcOQtZLuY5FzWkVvNlRFHFNcRNqpLtSto5fWlaHdjqEVSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713462538; c=relaxed/simple;
-	bh=P2+1M5xlz5nO98fQHEzHTaHBC6pZovHWDXMrzDKvvkk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i4oLWk/K1obeLYo5ZVeeVLFUUpSryVYrcRqr3eiXpOiIEOfavFyrgffrgQdUg1YURe+P/uhHMCL2TGY51Wj6B40/hIPSZbG+w/4Xus2cIuTLgIe3dkZTj6qda48fJDP+smHtpTYhalVxHMvh7Nex6h/t3vSUc5qtJWtrgqDNWNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lefzVpvd; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d9fe2b37acso15166511fa.2;
-        Thu, 18 Apr 2024 10:48:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713462535; x=1714067335; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nWjRP/RRJQ8mM83fkHijl/axycbWYPWuBIUVY65UOGA=;
-        b=lefzVpvdhSmK89ZXjbG4ujrLhIF769iRqcnzoiAvU2S2q6T04padjjOVi4weBjduae
-         ZmZM0ldexer7TeynnsICi8pKc9UWMXqQS0UfJGXcoIHz8J3XKQv9ZRizwXl7cMUn6CV7
-         2QuDRtjdaWGojfZBFOpoyCQyGTXgsIkZ1ghBuRnN7IV0+GPSart/xOimzX06RqJwLB+E
-         Lvd5xaTDCrjwIJeo2w0mZhrHURsiftDX+HLg0zl8pfHxgQ4nlNK911UknkQ2/Amwnnq2
-         Ht+7VW7n/Haj9mlMbe8wnTXBdVEJN7m+atdn9RtvrqlknJYV4nZ0+Awv96fOoCmCz+Py
-         saOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713462535; x=1714067335;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nWjRP/RRJQ8mM83fkHijl/axycbWYPWuBIUVY65UOGA=;
-        b=FN+1L6kZ9/1IHALKblwvVk8hJAxsVoxkNIl6dDfzUDUewhAKxBWKTV5Vy00frfDW41
-         5edzCCCDfSEfywlxnUkMEj9PGodLy5KmhgefIzDScjPi5VpFjLFbY2+bL7MvyvItvS1w
-         vGc9WtIwWadkYOwd0fhF9IpYmcuDolSKHfaiVyWtU23renthFtiYs+rWnWoUIwLMg2R2
-         DoWKhbrrWXexRcDsks72kvfcORaxJg1o8Zft+PGQ1F9r4sSc5g+sjbeQ88uSWRoDewei
-         TIQBMLk3pIma50YTrwraC0IdQc/fucQ+za/veUNznXZoGId+VBnWqXGbc5LfdrRvpWY1
-         6u4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWEzbOMhbPjEVLIVjD0QgbiLfGs9//NCovId+K2TCsS3srATyhq7toHPox52zfWDWDvAmdpCpjWK1EJh6ug4hUKu4ps/nvtxtuJlpy6SUbL7cN2S45SdFyu6DgnSATYbnI1qEAC0gy+ZUDkztNyFlNpzlY4bmmgksKCphHVLD/0Ayc=
-X-Gm-Message-State: AOJu0Yxbi2tw32ll7l47hVYQGOL/Wl4WNSUDvyXOtjv5SyfTam7FtlVJ
-	SNUhGWHrFpO0EfknIKbVAtzjWkWxdj4eF89a/hZSiBOzVbgrnHpq
-X-Google-Smtp-Source: AGHT+IFLN8AVKD6AbFTXCtyt/i2xPnyVSWhKPGW1JF/2/FqWjGy5naOgcXt0w7tJVCAdQgHvWpQApQ==
-X-Received: by 2002:a2e:8807:0:b0:2da:9ebe:e35f with SMTP id x7-20020a2e8807000000b002da9ebee35fmr1923468ljh.22.1713462534894;
-        Thu, 18 Apr 2024 10:48:54 -0700 (PDT)
-Received: from [10.0.0.100] (host-213-145-200-116.kaisa-laajakaista.fi. [213.145.200.116])
-        by smtp.gmail.com with ESMTPSA id p12-20020a2ea40c000000b002d80b78c1e0sm268671ljn.117.2024.04.18.10.48.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Apr 2024 10:48:54 -0700 (PDT)
-Message-ID: <f0dcab9a-1f9d-4db5-b886-0d2174070f37@gmail.com>
-Date: Thu, 18 Apr 2024 20:49:09 +0300
+	s=arc-20240116; t=1713467000; c=relaxed/simple;
+	bh=VZtGpaqMkzB76SNGwLTn/euqnQq0FB7DHkLA0nWRmK8=;
+	h=Date:To:From:Subject:Message-Id; b=Zxqw48H487KJT9ZD6xPjQzH5qeiJiD2Jkj71/eDY/L9rivMc++Vy9y/MUtoBN4mDM0Sxc/W30alKLW0wgAYyTiIZvn1JzwlYRW87tQoIEtiNRuR4/jtUa7g/dN1m1YXN2m1y9+1W+HBeAfVnOwhlG6PITiuXnuohBAV/mrZFw/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XaOmHb6E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DB9C113CC;
+	Thu, 18 Apr 2024 19:03:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1713467000;
+	bh=VZtGpaqMkzB76SNGwLTn/euqnQq0FB7DHkLA0nWRmK8=;
+	h=Date:To:From:Subject:From;
+	b=XaOmHb6EaDMSsbSYy+b1mckBnnMJvcTguyD6l+5wpmYa+pjJJZWhADH/A1n6B0yBh
+	 lKe3gcmMnuLDvljBGb60otAowsohZdixp5XPEWdGmnwdPisGcI5jUOfBDLq4wA/sjz
+	 rwQVT/58o7f8d3FCGrc/4RVVYYdFZYW+8kp3CHKo=
+Date: Thu, 18 Apr 2024 12:03:19 -0700
+To: mm-commits@vger.kernel.org,yosryahmed@google.com,vitaly.wool@konsulko.com,stable@vger.kernel.org,sjenning@redhat.com,rjones@redhat.com,nphamcs@gmail.com,ddstreet@ieee.org,christian@heusel.eu,chengming.zhou@linux.dev,hannes@cmpxchg.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-zswap-fix-shrinker-null-crash-with-cgroup_disable=memory.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240418190320.14DB9C113CC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: ti: davinci-mcasp: Fix race condition during probe
-To: Joao Paulo Goncalves <jpaulo.silvagoncalves@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>,
- Jai Luthra <j-luthra@ti.com>, alsa-devel@alsa-project.org,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
-From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
 
+The patch titled
+     Subject: mm: zswap: fix shrinker NULL crash with cgroup_disable=memory
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-zswap-fix-shrinker-null-crash-with-cgroup_disable=memory.patch
 
-On 17/04/2024 21:41, Joao Paulo Goncalves wrote:
-> From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
-> 
-> When using davinci-mcasp as CPU DAI with simple-card, there are some
-> conditions that cause simple-card to finish registering a sound card before
-> davinci-mcasp finishes registering all sound components. This creates a
-> non-working sound card from userspace with no problem indication apart
-> from not being able to play/record audio on a PCM stream. The issue
-> arises during simultaneous probe execution of both drivers. Specifically,
-> the simple-card driver, awaiting a CPU DAI, proceeds as soon as
-> davinci-mcasp registers its DAI. However, this process can lead to the
-> client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
-> being preempted before PCM DMA registration on davinci-mcasp finishes.
-> This situation occurs when the probes of both drivers run concurrently.
-> Below is the code path for this condition. To solve the issue, defer
-> davinci-mcasp CPU DAI registration to the last step in the audio part of
-> it. This way, simple-card CPU DAI parsing will be deferred until all
-> audio components are registered.
-> 
-> Fail Code Path:
-> 
-> simple-card.c: probe starts
-> simple-card.c: simple_dai_link_of: simple_parse_node(..,cpu,..) returns EPROBE_DEFER, no CPU DAI yet
-> davinci-mcasp.c: probe starts
-> davinci-mcasp.c: devm_snd_soc_register_component() register CPU DAI
-> simple-card.c: probes again, finish CPU DAI parsing and call devm_snd_soc_register_card()
-> simple-card.c: finish probe
-> davinci-mcasp.c: *dma_pcm_platform_register() register PCM  DMA
-> davinci-mcasp.c: probe finish
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zswap-fix-shrinker-null-crash-with-cgroup_disable=memory.patch
 
-Interesting... Thanks for the details.
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 9fbd58cf4ab0 ("ASoC: davinci-mcasp: Choose PCM driver based on configured DMA controller")
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Just to note that the DAI registration was always before the platform
-registration (ever since the DAI driver started to register the
-platform) and I think most TI (and probably other vendor's) driver does
-things this way. McASP does a bit of lifting by requesting a DMA channel
-to figure out the type of DMA...
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-> Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
-> ---
->  sound/soc/ti/davinci-mcasp.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-> index b892d66f78470..1e760c3155213 100644
-> --- a/sound/soc/ti/davinci-mcasp.c
-> +++ b/sound/soc/ti/davinci-mcasp.c
-> @@ -2417,12 +2417,6 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
->  
->  	mcasp_reparent_fck(pdev);
->  
-> -	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
-> -					      &davinci_mcasp_dai[mcasp->op_mode], 1);
-> -
-> -	if (ret != 0)
-> -		goto err;
-> -
->  	ret = davinci_mcasp_get_dma_type(mcasp);
->  	switch (ret) {
->  	case PCM_EDMA:
-> @@ -2449,6 +2443,12 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
->  		goto err;
->  	}
->  
-> +	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
-> +					      &davinci_mcasp_dai[mcasp->op_mode], 1);
-> +
-> +	if (ret != 0)
-> +		goto err;
-> +
->  no_audio:
->  	ret = davinci_mcasp_init_gpiochip(mcasp);
->  	if (ret) {
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
--- 
-Péter
+------------------------------------------------------
+From: Johannes Weiner <hannes@cmpxchg.org>
+Subject: mm: zswap: fix shrinker NULL crash with cgroup_disable=memory
+Date: Thu, 18 Apr 2024 08:26:28 -0400
+
+Christian reports a NULL deref in zswap that he bisected down to the zswap
+shrinker.  The issue also cropped up in the bug trackers of libguestfs [1]
+and the Red Hat bugzilla [2].
+
+The problem is that when memcg is disabled with the boot time flag, the
+zswap shrinker might get called with sc->memcg == NULL.  This is okay in
+many places, like the lruvec operations.  But it crashes in
+memcg_page_state() - which is only used due to the non-node accounting of
+cgroup's the zswap memory to begin with.
+
+Nhat spotted that the memcg can be NULL in the memcg-disabled case, and I
+was then able to reproduce the crash locally as well.
+
+[1] https://github.com/libguestfs/libguestfs/issues/139
+[2] https://bugzilla.redhat.com/show_bug.cgi?id=2275252
+
+Link: https://lkml.kernel.org/r/20240418124043.GC1055428@cmpxchg.org
+Link: https://lkml.kernel.org/r/20240417143324.GA1055428@cmpxchg.org
+Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reported-by: Christian Heusel <christian@heusel.eu>
+Debugged-by: Nhat Pham <nphamcs@gmail.com>
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
+Tested-by: Christian Heusel <christian@heusel.eu>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Dan Streetman <ddstreet@ieee.org>
+Cc: Richard W.M. Jones <rjones@redhat.com>
+Cc: Seth Jennings <sjenning@redhat.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: <stable@vger.kernel.org>	[v6.8]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/zswap.c |   25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+--- a/mm/zswap.c~mm-zswap-fix-shrinker-null-crash-with-cgroup_disable=memory
++++ a/mm/zswap.c
+@@ -1331,15 +1331,22 @@ static unsigned long zswap_shrinker_coun
+ 	if (!gfp_has_io_fs(sc->gfp_mask))
+ 		return 0;
+ 
+-#ifdef CONFIG_MEMCG_KMEM
+-	mem_cgroup_flush_stats(memcg);
+-	nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
+-	nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED);
+-#else
+-	/* use pool stats instead of memcg stats */
+-	nr_backing = zswap_pool_total_size >> PAGE_SHIFT;
+-	nr_stored = atomic_read(&zswap_nr_stored);
+-#endif
++	/*
++	 * For memcg, use the cgroup-wide ZSWAP stats since we don't
++	 * have them per-node and thus per-lruvec. Careful if memcg is
++	 * runtime-disabled: we can get sc->memcg == NULL, which is ok
++	 * for the lruvec, but not for memcg_page_state().
++	 *
++	 * Without memcg, use the zswap pool-wide metrics.
++	 */
++	if (!mem_cgroup_disabled()) {
++		mem_cgroup_flush_stats(memcg);
++		nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
++		nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED);
++	} else {
++		nr_backing = zswap_pool_total_size >> PAGE_SHIFT;
++		nr_stored = atomic_read(&zswap_nr_stored);
++	}
+ 
+ 	if (!nr_stored)
+ 		return 0;
+_
+
+Patches currently in -mm which might be from hannes@cmpxchg.org are
+
+mm-zswap-fix-shrinker-null-crash-with-cgroup_disable=memory.patch
+mm-zswap-optimize-zswap-pool-size-tracking.patch
+mm-zpool-return-pool-size-in-pages.patch
+mm-page_alloc-remove-pcppage-migratetype-caching.patch
+mm-page_alloc-optimize-free_unref_folios.patch
+mm-page_alloc-fix-up-block-types-when-merging-compatible-blocks.patch
+mm-page_alloc-move-free-pages-when-converting-block-during-isolation.patch
+mm-page_alloc-fix-move_freepages_block-range-error.patch
+mm-page_alloc-fix-freelist-movement-during-block-conversion.patch
+mm-page_alloc-close-migratetype-race-between-freeing-and-stealing.patch
+mm-page_isolation-prepare-for-hygienic-freelists.patch
+mm-page_isolation-prepare-for-hygienic-freelists-fix.patch
+mm-page_alloc-consolidate-free-page-accounting.patch
+mm-page_alloc-consolidate-free-page-accounting-fix.patch
+mm-page_alloc-consolidate-free-page-accounting-fix-2.patch
+mm-page_alloc-batch-vmstat-updates-in-expand.patch
+
 
