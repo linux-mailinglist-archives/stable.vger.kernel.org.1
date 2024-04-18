@@ -1,123 +1,98 @@
-Return-Path: <stable+bounces-40167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718D38A96F6
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 12:05:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817158A972B
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 12:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7114B23AB8
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 10:05:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B30B91C21D49
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 10:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD82F15B571;
-	Thu, 18 Apr 2024 10:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC9B15B971;
+	Thu, 18 Apr 2024 10:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ES2zQAiq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GWuezpAM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DD815B544;
-	Thu, 18 Apr 2024 10:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A91815B57F;
+	Thu, 18 Apr 2024 10:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713434700; cv=none; b=SY/fFleQNeuA9s3Fe8U89+8sxHj5o1Vmgj4pJV5TUv2RNbai5sfB/VsRg/YRqVj3pd43JZaF7v7Nq20BNrP6qhLJIwrb3d+NF+qBdXE3ATW+u3HsDoKBrfteowJMi7nTTnUJ/zuqDh5NKQ7fmKohZhv8nmQ8VICT7f2DmUe0obc=
+	t=1713435652; cv=none; b=lFiqHJzo/YQ0NsbPGY6T+wTcrdAOmCHBNpLCu+1kuTKX/wxo8v5l1ewwhJwR3XTI7fknRM9BPV21DXQCkj3KvcXbh2hdz5RoYb2sxlH6uTFTQbn3B1j4xXoHDVD9/dY3vLdY1x2mSqvDoPVwQII3GyAzCN2K2XZGQ8FCxLb2b8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713434700; c=relaxed/simple;
-	bh=LwQOF5GIBi0GuSs+JnaNPA7CehP+tyQkRU7uPocooMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jdIVTEwOQSxONA1dendjeNkPOSjb90boR1BPnxKOQgqnkEqmOTn+Ns6wP/pumBaJEhpTChWZshWcBrwGttyqJt1xc9dig6Rjghgd+enRdRMGzOgnaxhVmNUrn6izGGT5JiRPNc8Joejq4eQiW1CIDj+ynLWm1yLDCNPzuheBDgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ES2zQAiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30515C113CC;
-	Thu, 18 Apr 2024 10:04:56 +0000 (UTC)
+	s=arc-20240116; t=1713435652; c=relaxed/simple;
+	bh=3Y5JB/WtfH5WH9bHCRUJuJuoNEPscNNjUmD2/T+wdHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gR51nVNuf9wxhK1T8dCAFuWsM3ogAdMdn7bVMNpLDQoislzyCRc9IQ2HkV4wUCZLkhtgKiPv+BLTa6N7JB3jXvsg6Fn6tixesNXPwuqlLqFTdPLZM899ta5nR3u+Sdnw3ZRMtacuUoN2vlkaLOtVg2MoaTDs0uVgTqBZIpwLEEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GWuezpAM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53522C32781;
+	Thu, 18 Apr 2024 10:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713434700;
-	bh=LwQOF5GIBi0GuSs+JnaNPA7CehP+tyQkRU7uPocooMs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ES2zQAiqNQM8vuvknyz10WlCyWB8BhMoNugq3tHoAg+4gY7miz4XzJ+uApy0eli6k
-	 craeU6QIsLgpzPqLED+pkmlKC7n40/HRN/00ebMAGKSkhEK2rKCy9ZkiEwk+4s8BI5
-	 l/Cy5H8ltUnmvgsn3gnsy0TlcUgsHlDu19/hlBn8mgsKZo+A83iFMiLwkvGyp2xZQt
-	 T2VxZ2odRLrGhF/hHPuNn89u69BH/pQmu3TRpUPW2ADlG+NDvAWjhRBhmhpBU2DCH3
-	 wHegU+el09jgDM7w+YWurvRi5cGM/92P2140C8BCBNyk5OhO957M/bvzxNbgCJIYxZ
-	 q+gvjXPYeDXGQ==
-Date: Thu, 18 Apr 2024 11:04:53 +0100
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, Amadeusz =?UTF-8?B?U8WCYXdpxYRza2k=?=
- <amadeuszx.slawinski@linux.intel.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Bard Liao
- <yung-chuan.liao@linux.intel.com>, Brady Norander
- <bradynorander@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Mark Brown
- <broonie@kernel.org>, Mark Hasemeyer <markhas@chromium.org>, Takashi Iwai
- <tiwai@suse.com>, linux-sound@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda: intel-dsp-config: Fix Huawei Matebook D14
- NBLB-WAX9N quirk detection
-Message-ID: <20240418110453.10efcb60@sal.lan>
-In-Reply-To: <5e6ba980c0738199589749b68b83f2d730512107.1713430105.git.mchehab@kernel.org>
-References: <5e6ba980c0738199589749b68b83f2d730512107.1713430105.git.mchehab@kernel.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	s=k20201202; t=1713435652;
+	bh=3Y5JB/WtfH5WH9bHCRUJuJuoNEPscNNjUmD2/T+wdHc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GWuezpAM/tvSVnMHw6t+mTnV7HMoCkz2/7R497QatvoCRl6upJfXlF3JX5sTzMGKr
+	 l+LRH8aD3fi1IJ3nHAHbT8VkXrUqj1AL0bAglqnMIvrWFf5stfdYy05e+8YhQsGED6
+	 LRiT88aIl6g1mm4sQUnD64X2iB2cDgHByJxUt1mdaKRjEQpmOIzqMfOw/9Dpnwgcd4
+	 1W6HAeWJx3Edaaj9EMH/+AhznhRelVOaE1QHUak77k625eSIQ5Qo4fiOusynMdfeZ7
+	 T1U9ZTRLnwF03YWxG4DQLEHk35/+u5J0b0YobKfs20Epbobh88Hn9GEH8ervAGmdDb
+	 j8zU4M3TMCNzQ==
+Date: Thu, 18 Apr 2024 11:20:46 +0100
+From: Lee Jones <lee@kernel.org>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	linux-kernel@vger.kernel.org, kernel-team@android.com,
+	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org,
+	Todd Kjos <tkjos@google.com>
+Subject: Re: [PATCH] binder: check offset alignment in binder_get_object()
+Message-ID: <20240418102046.GA2329396@google.com>
+References: <20240330190115.1877819-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240330190115.1877819-1-cmllamas@google.com>
 
-Em Thu, 18 Apr 2024 09:48:27 +0100
-Mauro Carvalho Chehab <mchehab@kernel.org> escreveu:
+On Sat, 30 Mar 2024, Carlos Llamas wrote:
 
-> Newer Matebook D14 model comes with essx8336 and supports SOF,
-> but the initial models use the legacy driver, with a Realtek ALC 256
-> AC97 chip on it.
+> Commit 6d98eb95b450 ("binder: avoid potential data leakage when copying
+> txn") introduced changes to how binder objects are copied. In doing so,
+> it unintentionally removed an offset alignment check done through calls
+> to binder_alloc_copy_from_buffer() -> check_buffer().
 > 
-> The BIOS seems to be prepared to be used by both models, so
-> it contains an entry for ESSX8336 on its DSDT table.
+> These calls were replaced in binder_get_object() with copy_from_user(),
+> so now an explicit offset alignment check is needed here. This avoids
+> later complications when unwinding the objects gets harder.
 > 
-> Add a quirk, as otherwise dspconfig driver will try to load
-> SOF, causing audio probe to fail.
+> It is worth noting this check existed prior to commit 7a67a39320df
+> ("binder: add function to copy binder object from buffer"), likely
+> removed due to redundancy at the time.
 > 
+> Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-Worth to mention that I opened an issue on Github about that:
-
-https://github.com/thesofproject/linux/issues/4934
-
-I added there the ACPI DSDT table as a reference.
-
-
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 > ---
->  sound/hda/intel-dsp-config.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
-> index 6a384b922e4f..8e728f0585dd 100644
-> --- a/sound/hda/intel-dsp-config.c
-> +++ b/sound/hda/intel-dsp-config.c
-> @@ -46,6 +46,22 @@ static const struct snd_soc_acpi_codecs __maybe_unused essx_83x6 = {
->   * - the first successful match will win
->   */
->  static const struct config_entry config_table[] = {
-> +	/* Quirks */
-> +	{
-> +		.flags = 0,	/* Model uses AC97 with Realtek ALC 256 */
-> +		.device = PCI_DEVICE_ID_INTEL_HDA_CML_LP,
-> +		.dmi_table = (const struct dmi_system_id []) {
-> +			{
-> +				.ident = "Huawei NBLB-WAX9N",
-> +				.matches = {
-> +					DMI_MATCH(DMI_SYS_VENDOR, "HUAWEI"),
-> +					DMI_MATCH(DMI_PRODUCT_NAME, "NBLB-WAX9N"),
-> +				}
-> +			},
-> +			{}
-> +		}
-> +	},
-> +
->  /* Merrifield */
->  #if IS_ENABLED(CONFIG_SND_SOC_SOF_MERRIFIELD)
->  	{
+>  drivers/android/binder.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+
+Thanks for chasing this one down Carlos.
+
+Reviewed-by: Lee Jones <lee@kernel.org>
+
+-- 
+Lee Jones [李琼斯]
 
