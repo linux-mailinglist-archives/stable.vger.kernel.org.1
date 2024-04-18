@@ -1,134 +1,126 @@
-Return-Path: <stable+bounces-40175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F9C8A9857
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:12:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E7D8A986F
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:21:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0334E1F215E6
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 11:12:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F0981F2267B
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 11:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDF715E5A8;
-	Thu, 18 Apr 2024 11:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="l6a+QUyp";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ODGVWrPh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3108915E5B4;
+	Thu, 18 Apr 2024 11:21:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F6615D5A8;
-	Thu, 18 Apr 2024 11:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F370D15B573;
+	Thu, 18 Apr 2024 11:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713438763; cv=none; b=qKPBrcxTL6Ffntnp+F2FjHuXq0UUIvHww4BebUagiE8fDi7VbTuemO28Iw4mR8+psBOwV4J39+rBRZ+OpPqmSRCykbdFpiIUWMHvSRLiQcpX/cz8F772oi1BPVCPOmUIZQZWVJWqBX0kjJ2znaEhGAU0qBDEU2nKGu/tpbpWFBs=
+	t=1713439285; cv=none; b=QhRHYgvAYcVdPUg9A0HqBLXnM6H2lftDl/vzV2eT0QfA/opAeYt9F/PZlb4+moRFLsUGnY4MV/ULs3qnMmusms9866sWHQ86j2LFTSOLqx0h3NN4EsFXZjgU6ATD7G7Jo9YGp5xicvFDo99Q9VUbnOAksfWJ5kIzieklrKevnAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713438763; c=relaxed/simple;
-	bh=fNlxzM+FeEWS046ooaGKqIMrCq4ZXCHkyzA7h0Mb/9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cEhhiNxkkQPQzkpNTmJeLuMAaa41xe6/iZpfEKOAHB7ThmCvacHPKi6uJeiri+D6mnlWjt2fknoPuYPMHE9kL4LaqBLO+rZjaIKlyk47R6Mq4/oU8NpKA+K0XWWIlM+UzXrAtoBCmHgQchaPxiODrN7de/syydPgS3zqvuswjwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=l6a+QUyp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ODGVWrPh; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 18 Apr 2024 13:12:38 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713438759;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nCv9ASSWxGZcIN7EnwuxCIn0p9FkfWST0gNno06amaQ=;
-	b=l6a+QUypxbl9h555q2yiw/t94zDEElznKUzGxGLAY/rHnR02Y/nSIP4bBAiuhDhJDVZUK5
-	H7Np4stZZGUcBsoAjV4oysMkigqHK4i2tspfqn9A4bR1K54JUR9lxe+/RIfaJu3RwmVrS2
-	7P6Bte7YnLDphUF1DtMd4oS3ccYZQTcjjXSic9zRlTt1gNqwO0q7KsZlY6/+E1Vvk50bHR
-	GUeCDi7Nnkfzr4+5dYFOKNdrVCpxFh9lpbZfAKlZEmX7qQVbNeNAqfpugKtYCEAKNEJ470
-	ZLMjEUwZ8XEQj7TEjffWRS5wc/xE8vPB+Xl+nB1Hd5iemqeNli8Bkz5+N+3Hrw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713438759;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nCv9ASSWxGZcIN7EnwuxCIn0p9FkfWST0gNno06amaQ=;
-	b=ODGVWrPhBwMPbqT0n48i9td51IgqEIAiB+5frU9luBafGaLa8VPMmXOcF4TATtx3YH0bzt
-	ghlP4tJrhhPeHEBA==
-From: Nam Cao <namcao@linutronix.de>
-To: Mike Rapoport <rppt@kernel.org>, Andreas Dilger <adilger@dilger.ca>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- linux-riscv@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
- Andrew Morton <akpm@linux-foundation.org>, "ndesaulniers @ google . com"
- <ndesaulniers@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Ingo
- Molnar <mingo@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Tejun Heo <tj@kernel.org>, Krister Johansen <kjlx@templeofstupid.com>,
- Changbin Du <changbin.du@huawei.com>, Arnd Bergmann <arnd@arndb.de>, Geert
- Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] init: fix allocated page overlapping with PTR_ERR
-Message-ID: <20240418131238.636bee2c@namcao>
-In-Reply-To: <20240418102943.180510-1-namcao@linutronix.de>
-References: <20240418102943.180510-1-namcao@linutronix.de>
+	s=arc-20240116; t=1713439285; c=relaxed/simple;
+	bh=GjmNQpVi6Pjtu34nTkDpKtBKEjPKDfdVMkq31b+TbhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QzCGhQTaC1jGeqChMOtLTVp/K7h2ZYN3+Iezk71w00r8lKWxaPKERW33+rvTwRgHnhezd5HAvKsAMDM8d15+mHMcZsICz32pZ0BzBwccuejgqwqFQcqZCB8YLp7cf0PfQ6Pcmi5Xi757/2k4X3M+24CqQ7umSHlnoG75Vn6igBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91590C113CC;
+	Thu, 18 Apr 2024 11:21:19 +0000 (UTC)
+Date: Thu, 18 Apr 2024 12:21:17 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, Yihuang Yu <yihyu@redhat.com>,
+	Gavin Shan <gshan@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shaoqin Huang <shahuang@redhat.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+Message-ID: <ZiECLaXHce05DSM6@arm.com>
+References: <20240415141953.365222063@linuxfoundation.org>
+ <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+ <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
+ <86y19dqw74.wl-maz@kernel.org>
+ <Zh61KobDt_y1O46-@arm.com>
+ <86sezjq688.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86sezjq688.wl-maz@kernel.org>
 
-On 2024-04-18 Nam Cao wrote:
-> There is nothing preventing kernel memory allocators from allocating a
-> page that overlaps with PTR_ERR(), except for architecture-specific
-> code that setup memblock.
->=20
-> It was discovered that RISCV architecture doesn't setup memblock
-> corectly, leading to a page overlapping with PTR_ERR() being allocated,
-> and subsequently crashing the kernel (link in Close: )
->=20
-> The reported crash has nothing to do with PTR_ERR(): the last page
-> (at address 0xfffff000) being allocated leads to an unexpected
-> arithmetic overflow in ext4; but still, this page shouldn't be
-> allocated in the first place.
->=20
-> Because PTR_ERR() is an architecture-independent thing, we shouldn't
-> ask every single architecture to set this up. There may be other
-> architectures beside RISCV that have the same problem.
->=20
-> Fix this one and for all by reserving the physical memory page that
-> may be mapped to the last virtual memory page as part of low memory.
->=20
-> Unfortunately, this means if there is actual memory at this reserved
-> location, that memory will become inaccessible. However, if this page
-> is not reserved, it can only be accessed as high memory, so this
-> doesn't matter if high memory is not supported. Even if high memory is
-> supported, it is still only one page.
->=20
-> Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.=
-are.belong.to.us
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Cc: <stable@vger.kernel.org> # all versions
+On Thu, Apr 18, 2024 at 12:07:35PM +0100, Marc Zyngier wrote:
+> On Tue, 16 Apr 2024 18:28:10 +0100,
+> Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
+> > > On Tue, 16 Apr 2024 14:07:30 +0100,
+> > > Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > > > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
+> > > > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > This is the start of the stable review cycle for the 6.6.28 release.
+> > > > > > There are 122 patches in this series, all will be posted as a response
+> > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > let me know.
+> > > > >
+> > > > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
+> > > > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
+> > > > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
+> > > > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
+> > > > > the bisect and looking at the commit log to pull out people to CC and
+> > > > > note that the fix was explicitly targeted at v6.6.
+> > > > 
+> > > > Anders investigated this reported issues and bisected and also found
+> > > > the missing commit for stable-rc 6.6 is
+> > > > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
+> > > 
+> > > Which is definitely *not* stable candidate. We need to understand why
+> > > the invalidation goes south when the scale go up instead of down.
+> > 
+> > If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
+> > which fixes 117940aa6e5f ("KVM: arm64: Define
+> > kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
+> > ("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
+> > "scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
+> > CBMC model, not on the actual kernel. It may be worth adding some
+> > WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
+> > num greater than 31.
+> > 
+> > I haven't investigated properly (and I'm off tomorrow, back on Thu) but
+> > it's likely the original code was not very friendly to the maximum
+> > range, never tested. Anyway, if one figures out why it goes out of
+> > range, I think the solution is to also backport e2768b798a19 to stable.
+> 
+> I looked into this, and I came to the conclusion that this patch is
+> pretty much incompatible with the increasing scale (even if you cap
+> num to 30).
 
-Sorry, forgot to add:
-Reported-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+Thanks Marc for digging into this.
 
-> ---
->  init/main.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/init/main.c b/init/main.c
-> index 881f6230ee59..f8d2793c4641 100644
-> --- a/init/main.c
-> +++ b/init/main.c
-> @@ -900,6 +900,7 @@ void start_kernel(void)
->  	page_address_init();
->  	pr_notice("%s", linux_banner);
->  	early_security_init();
-> +	memblock_reserve(__pa(-PAGE_SIZE), PAGE_SIZE); /* reserve last page for=
- ERR_PTR */
->  	setup_arch(&command_line);
->  	setup_boot_config();
->  	setup_command_line(command_line);
+> So despite my earlier comment, it looks like picking e2768b798a19 is
+> the right thing to do *if* we're taking e3ba51ab24fd into 6.6-stable.
+> 
+> Otherwise, we need a separate fix, which Ryan initially advocating for
+> initially.
 
+My preference would be to cherry-pick the two upstream commits than
+coming up with an alternative fix for 6.6.
+
+-- 
+Catalin
 
