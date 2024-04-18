@@ -1,90 +1,140 @@
-Return-Path: <stable+bounces-40151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610228A921B
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 06:41:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE768A9239
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 06:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFCC21F21B20
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 04:41:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D175A2840E0
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 04:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D5A433A6;
-	Thu, 18 Apr 2024 04:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7627C4EB51;
+	Thu, 18 Apr 2024 04:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJqHREHb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIQ2q0Hl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FA837162;
-	Thu, 18 Apr 2024 04:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF4F4438F;
+	Thu, 18 Apr 2024 04:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713415258; cv=none; b=YKqQ4AmVdjrkZqAzm/o3I1DtTS/IiTqjb1DI9ycB9uTFNWKWANxPkxfcBvlMyF2zxe1tOgL0Wng3O+J3fZdPjsegGzKUD/TsVP6BwPuKV6FeZNjanmGaSC5EmoADOvkTfiNfdE2LOaZPAnMz+f3LT3siExmLV/Q64dQpPBp99V4=
+	t=1713416296; cv=none; b=CDZr5Mm5tC+VMbGQislnjAWMRVFip5f1+Fj+X0fxb40eYuaLNpD6GyPf+v7vBrDilEN3da2BIOpKijUuKIaYkps88Uc3fX4zrskY7h8dh9O3QW610ds0FFwMKRtNXlm48VNoDLGrIdGg/0cU98VCLrnYvQPLbGK/G0EHaCE7cUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713415258; c=relaxed/simple;
-	bh=VQ+erC02S8QBEDvlvhPlfOxKd9HwPHoMlyukhevwlIQ=;
+	s=arc-20240116; t=1713416296; c=relaxed/simple;
+	bh=1GIfnLR14SpISzBtJDNhW/puZNUl+1Lzin0dxK/lgws=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GuJDVP5+IyDaoVI1H6Tl2qbHC9JRHacZd3Yg1GKKKlQ0GxdMpSX1gB7cnbvlUMPZ0gZRlsxFROGjOva1/qokpjTjVGmPWwTFTg1Mx+mFDO3LifAizOnpK1hcIhaPV8rJaHO3FAAsGMDXxdjHxo47I8D3+0Lzc4rTFJZHfg1SSlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJqHREHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210FCC113CC;
-	Thu, 18 Apr 2024 04:40:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713415257;
-	bh=VQ+erC02S8QBEDvlvhPlfOxKd9HwPHoMlyukhevwlIQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WJqHREHbYjz/JTe12+U0xtkbyjeOrhG+U7wI2vaISWNhthmu6JzBwTJzx0T6OUqkA
-	 hcLnVClJH3E1joYatGWn/i5ijuRyr3mCYwgaMhcXwqev0eX31VRfabVAiiyHakgmsg
-	 aglJgsJMS+Xf3aALsPR8EDgcn3EDDOaGfhF1dwmA=
-Date: Thu, 18 Apr 2024 06:40:52 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Serban Constantinescu <serban.constantinescu@arm.com>,
-	linux-kernel@vger.kernel.org, kernel-team@android.com,
-	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 4/4] binder: fix max_thread type inconsistency
-Message-ID: <2024041858-unwoven-craziness-13a6@gregkh>
-References: <20240417191418.1341988-1-cmllamas@google.com>
- <20240417191418.1341988-5-cmllamas@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EYx+62IoSDYIb8Jiuw+zkokWRRnLUWPY5T9CvuRXPQ4ilSH9cATWAGc24xxOQpIU28ZcCRV7Gx3blZnJAUrxSIjHMNQCpjVNqgR8MFAyPoRR9bTuVzqtmxliAxWVpr+rsJ3dCI8lJEQLsvmMuO9NDn4rLG9wqnq5BRlJF5V8XrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIQ2q0Hl; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56e6a1edecfso559773a12.1;
+        Wed, 17 Apr 2024 21:58:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713416293; x=1714021093; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SL2uiIXH35aGZc0Hh8VLlfK7Ln3jRKiQNAg1SPvfYcs=;
+        b=XIQ2q0HlaGbtjmZ21Re7qDfJ07IUir6HxGMZO8DD/KJMbkvHUUx1FwUEGFLgSTstcW
+         3JruC8Vbj2t50xwTPE/rTHLVJFvTrTmW3TI7AC4wMsvFBhD+Ms3qVPBmP6/0fhRDl00j
+         rr90Psjyr0w2LECN31IRNuJdWz6E0bnob0JBVl/xMCHiLPyYlGzcZ8aYB9sosxIAVxLP
+         PUEidWZfJvLPngn220UT4uqazCOI8bkbOSh0bezS6q8k1enVhMXAJXTfkhTXzLZu/j6v
+         9OTkz+rrDjOmab4LPueY9tdKpFL4Me5DtAw+Lr3Nzbzzmtzt7TEp9MuE2Abls9xknyQG
+         pRLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713416293; x=1714021093;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SL2uiIXH35aGZc0Hh8VLlfK7Ln3jRKiQNAg1SPvfYcs=;
+        b=IIeFfg6WL7z6PtuzlyqvfP66YLIwh1d9iASwsmDM/CTveAdtENixSxV7VkK5vEUONk
+         mhVIQ3DTvhPZy8uwrJ7a4OvH5SGYylI5cC01ld/y01klUer4nZga3cRgP1OvxmzVIYXf
+         6GWnbVz9FkbCMwU+x3xaHfMs1ha/rplrRIaYjIwXrsIY1K6Mzyoj4zXhJTUBjXjamEbU
+         +T8GRQW8/losJWt2kZrsFH1N3l00BAb0E3nvjDEVO2EiJserLAgnb/aWZMC/gWkwcjUS
+         zZSbfsg+AUJV7sh2EkTUIO5jb2mIG4wPYZNI8fJgNmfQbhjW8lAf5spuCh0MqGp7dtkd
+         YXNw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+8fAerK6ZIWZlc2pNp9c4S73UOSl1gUqHIyyyt0rZlUkqMc9zn7lLJm4ZKyL0i4pWfM6J0uQKvH+FxovnLjcHzmeLKElvN0M4X8mg4PsS4xsRX8g2Hd9B/xoQWjkeQmnqag==
+X-Gm-Message-State: AOJu0Yxx5OuAS3s0KfXnM6ugZzhhGZEvSskLz41v9dPXdOtXvPuRLMbg
+	UQxv+MCmiG2Hn76/VdY9sbMRWWeEz1PxIFEZVGFanVIVoPKoanbk
+X-Google-Smtp-Source: AGHT+IHz0IE74OUzjcYa9ALlwnqFMHsbPsP49is02/FUiFH1TdkJ3Fu4Hl774aOUHaxTCJ5ZuqG6xA==
+X-Received: by 2002:a50:d4c2:0:b0:56e:2abd:d00f with SMTP id e2-20020a50d4c2000000b0056e2abdd00fmr1172402edj.18.1713416292503;
+        Wed, 17 Apr 2024 21:58:12 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id d15-20020aa7d68f000000b005701df2ea98sm383140edr.32.2024.04.17.21.58.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Apr 2024 21:58:11 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 1C0A9BE2EE8; Thu, 18 Apr 2024 06:58:10 +0200 (CEST)
+Date: Thu, 18 Apr 2024 06:58:10 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Paulo Alcantara <pc@manguebit.com>
+Cc: regressions@lists.linux.dev, Steve French <stfrench@microsoft.com>,
+	gregkh@linuxfoundation.org, sashal@kernel.org,
+	stable@vger.kernel.org, linux-cifs@vger.kernel.org
+Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
+ overflow frame end of buf" and invisible files under certain conditions and
+ at least with noserverino mount option
+Message-ID: <ZiCoYjr79HXxiTjr@eldamar.lan>
+References: <ZiBCsoc0yf_I8In8@eldamar.lan>
+ <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240417191418.1341988-5-cmllamas@google.com>
+In-Reply-To: <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
 
-On Wed, Apr 17, 2024 at 07:13:44PM +0000, Carlos Llamas wrote:
-> The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
-> size_t to __u32 in order to avoid incompatibility issues between 32 and
-> 64-bit kernels. However, the internal types used to copy from user and
-> store the value were never updated. Use u32 to fix the inconsistency.
+Hi Paulo,
+
+Thanks a lot for your time on looking into it.
+
+On Wed, Apr 17, 2024 at 07:58:56PM -0300, Paulo Alcantara wrote:
+> Hi Salvatore,
 > 
-> Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS declaration")
-> Reported-by: Arve Hjønnevåg <arve@android.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> ---
->  drivers/android/binder.c          | 2 +-
->  drivers/android/binder_internal.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+> Salvatore Bonaccorso <carnil@debian.org> writes:
+> 
+> > In Debian we got two reports of cifs mounts not functioning, hiding
+> > certain files. The two reports are:
+> >
+> > https://bugs.debian.org/1069102
+> > https://bugs.debian.org/1069092
+> >
+> > On those cases kernel logs error
+> >
+> > [   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
+> 
+> I couldn't reproduce it.  Does the following fix your issue:
+> 
+> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+> index 4c1231496a72..3ee35430595e 100644
+> --- a/fs/smb/client/smb2pdu.c
+> +++ b/fs/smb/client/smb2pdu.c
+> @@ -5083,7 +5083,7 @@ smb2_parse_query_directory(struct cifs_tcon *tcon,
+>  		info_buf_size = sizeof(struct smb2_posix_info);
+>  		break;
+>  	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
+> -		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO);
+> +		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO) - 1;
+>  		break;
+>  	default:
+>  		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
+> 
+> If not, please provide network trace and verbose logs.
 
-Why does only patch 4/4 need to go into the tree now, and as a stable
-backport, but the first 3 do not?  Shouldn't this be two different
-series of patches, one 3 long, and one 1 long, to go to the different
-branches (next and linus)?
+Yes that appears to fix the issue.
 
-thanks,
+But as you say you are not able to reproduce the issue, I guess we
+need to try to get it clearly reproducible first to see we face no
+other fallouts?
 
-greg k-h
+Regards,
+Salvatore
 
