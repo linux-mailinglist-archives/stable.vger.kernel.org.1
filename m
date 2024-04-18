@@ -1,158 +1,181 @@
-Return-Path: <stable+bounces-40215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4278AA3F1
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 22:17:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B148AA3FD
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 22:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3057C284CF2
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 20:17:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D2692848C3
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 20:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A38172798;
-	Thu, 18 Apr 2024 20:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53D1181BA8;
+	Thu, 18 Apr 2024 20:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uGso32qo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHVRut7M"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E0416FF26
-	for <stable@vger.kernel.org>; Thu, 18 Apr 2024 20:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC7713D626;
+	Thu, 18 Apr 2024 20:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713471443; cv=none; b=Y4r4jt5rlBmhLlconjHWIozIlJXTI8cvlzHgac4U2pKRhxXxq8/sC5b+D438PPLjRuBgctk/DdFAbisbRnbT18vDY3x1+QN2Sargr31g2MHV29VQXt7Nu7SWGrQmGWlAx1eVFzhBMKkyzSpTqLPyat0RmFOQ+hsDBs7eSNpMOEA=
+	t=1713471762; cv=none; b=rARuJyKe1IQEfHkTxnoDNtStBJBj7TvOr679CGcRSNjAsVO45z7VahwDdBqX4sh1/q94AIxg+PFHy0uwUtrwogH2yWJXZClGUZpVynooFUYXoNMJLEa4Shjmbdh2kbndN7S+++qoGFQEJndhBYvjmbMINBJOeYTkjbqCgtWMYgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713471443; c=relaxed/simple;
-	bh=PNpJ102IODnY+tP+EPd4hBpdwzR2uPBBpsCceK5xb1Y=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hCWlpvtK/guhyEnCzZfVP1T83mUThX+WfJ0nUWEqajb2b6T0PBWV5d2OrG1VKRaSSA9U7L7mQ3mGxYYPF/WvT7PVjiV45ipp7JaQiP9jXYTvlUyhNjhQTfpRb7WqV0BOyCaYVoBVRCq4SfWSXjj03eeB/2FNy5hTjIaNGDEQy2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uGso32qo; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-615138794f5so23126927b3.2
-        for <stable@vger.kernel.org>; Thu, 18 Apr 2024 13:17:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713471440; x=1714076240; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nPRPig/UBV/GYmfvV/J67GripPGXMGIUkVLpwA56bFk=;
-        b=uGso32qoUzfsGxoN4A39Y+kdwdEOTuFPfrP8xZmz32jJLkTeEj/igkFBwl6A3TsEWr
-         nl17E4B2TO+FhORhr32dTLIwO5blXRYb6w9W+WnlfgyovKKP7nnMgrCoPT/GQsHJONwn
-         sh5+TySjxkjfySV7OIFwcBDYsaN8DkrQ682kCI1diDAPzpzneIaLztK15pcyF/MplRX+
-         5VgGKIX6p1NWTTLOu7FnA7SWnNzk4d0TEFkGGW+CzWCOVNE1AelbkKTUX8oSJVdfpoRw
-         s/pOzsziJhhzvtb3BrYxJtOP/QFdXkNPB/rZ7twNPAWT4ARgeF3zcXDRrC85GY4T9mPe
-         LfcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713471440; x=1714076240;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nPRPig/UBV/GYmfvV/J67GripPGXMGIUkVLpwA56bFk=;
-        b=Dlqy5nmPe0q2PZ62PrOWJw0gHRrzKHKQC9rEM5FFu/fi2QK0tAR01pqPnyL/KBtW1m
-         VxKqiVMVqvRbgYbxLMwNF7x4wRRbUeQm6UHFhTtqsefV0mIb93dW4eZzNF6BhN4X7U22
-         gR7XDDuawatHBqLjO0GpeQrb1//y+lRgo4cOEyiqaYapHVJXRW315eGv2BM2YCFCANKG
-         RLek1Xq/qaQ7fDVKVmtx2NQDP5yhwMs4yWhHcy458IUEPW7H23Jy+x/dLKViu7rLDgkS
-         ohfsCGLn44cq2y/gNPalLEGWB122ge3QN/HfqhOx1Q/CtBcItzF/E90TYbGQyVh8sXT3
-         paMA==
-X-Forwarded-Encrypted: i=1; AJvYcCV0RkSF/a/OlPRwdq9C027THnKGQOfbaS6uYhrwDnXAxBa9jg7jdAbOYYpUaINgTqMndenfgtF9rKJZMX8qaPko51WW1Q/Y
-X-Gm-Message-State: AOJu0YyfB2jEaDcU9jeP6+sgu0088EISaPe58m+lFLT1ebVK7tk0D89W
-	84POCpPd/ZHi+CboSxHv+vOK/R6N9LXDnsrtk0L3zU/dfOh16AbfuRHuTEEP3zRPYYUM5g==
-X-Google-Smtp-Source: AGHT+IHhR2ajpJ5AbKkKViK2PWF29qowrptoZgf1Y1XIFZIDe3IMYHifRXgRh70WSViJcAY5E97OOgPd
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:6902:1005:b0:dcb:fb69:eadc with SMTP id
- w5-20020a056902100500b00dcbfb69eadcmr444642ybt.6.1713471439850; Thu, 18 Apr
- 2024 13:17:19 -0700 (PDT)
-Date: Thu, 18 Apr 2024 22:17:06 +0200
+	s=arc-20240116; t=1713471762; c=relaxed/simple;
+	bh=40SDlxrTEy1tKYcd/loaYV6z14zKTw8+g0WRYTiJ/ks=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hnHupSuURrIwTEo6wd+sdLD+j3SUJTCtI/FokMRRKvAPxuy8I7ddO7qPX1UaE1UxQrWYU8VPCP25PQ+11XV96Bpj7J4oxNnGp65Zcq6ZL6JVvkc2qMTXYZLj0qfM2QQ0ZWqsgTe0jBmxSULnjNaVFbHMmT8t4tUKQQI++ejuKbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHVRut7M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB98BC113CC;
+	Thu, 18 Apr 2024 20:22:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713471761;
+	bh=40SDlxrTEy1tKYcd/loaYV6z14zKTw8+g0WRYTiJ/ks=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nHVRut7MRgBEAkVf8AHawXLsTxYwcLi9zi/FHqkACKu0XmdEJZcwvxmO7Tg3l2hJc
+	 kYOcW0eR7xm5UmiMUD0o3potGz1qT05c1CFdHQx1yTLCPFqp6HpAsmUtsmWNb8jabn
+	 9iZ/6h9TPocn6hF5c5W/ErWDI0L4fM5Z6OUOp6THhRp4RyLBl6Vq+ZZwGiGMWF9Kyh
+	 wW3N6GYbU9q8gfFi+GvW9zcvOy2m6dhqnEyanb1Pe93DwsbSBnc753somSKVUtX+dT
+	 BcaA+Om88/hUx9bPbFY7SnIB/xQIrc6eqfFjmlKNT3a9n9O7ZwKJSnyXFwxufYSeSP
+	 3UKuacSS4S/IQ==
+Date: Thu, 18 Apr 2024 21:22:35 +0100
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, Amadeusz =?UTF-8?B?U8WCYXdpxYRza2k=?=
+ <amadeuszx.slawinski@linux.intel.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Bard Liao
+ <yung-chuan.liao@linux.intel.com>, Brady Norander
+ <bradynorander@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Mark Brown
+ <broonie@kernel.org>, Mark Hasemeyer <markhas@chromium.org>, Takashi Iwai
+ <tiwai@suse.com>, linux-sound@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda: intel-dsp-config: Fix Huawei Matebook D14
+ NBLB-WAX9N quirk detection
+Message-ID: <20240418212235.6548447d@sal.lan>
+In-Reply-To: <848bcc94-3a31-4fb4-81bc-bd3f138e12f6@linux.intel.com>
+References: <5e6ba980c0738199589749b68b83f2d730512107.1713430105.git.mchehab@kernel.org>
+	<20240418110453.10efcb60@sal.lan>
+	<848bcc94-3a31-4fb4-81bc-bd3f138e12f6@linux.intel.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3137; i=ardb@kernel.org;
- h=from:subject; bh=MPuylR2BAeKlyMS0C+bD7PXG3vqlOIfrzNI/uvzYVJY=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIU2x/uD9iAdF0/M+8kzr+XBP6uE0h2d7lIM7mozWPwopF
- itS+zSzo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEyEqZmRYdW+5VmfT519Zx91
- 8J3XiVKVRP15NxqKTB11Atp+ep7tPsrIsGx1mOv/jsh9bB3rjr03+e279umMLq9diwV3BqhYMRe vZgUA
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240418201705.3673200-2-ardb+git@google.com>
-Subject: [PATCH] x86/purgatory: Switch to the position-independent small code model
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Song Liu <song@kernel.org>, 
-	Ricardo Ribalda <ribalda@kernel.org>, Fangrui Song <maskray@google.com>, 
-	Arthur Eubanks <aeubanks@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Ard Biesheuvel <ardb@kernel.org>
+Em Thu, 18 Apr 2024 08:24:10 -0500
+Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com> escreveu:
 
-On x86, the ordinary, position dependent 'small' and 'kernel' code models only
-support placement of the executable in 32-bit addressable memory, due to
-the use of 32-bit signed immediates to generate references to global
-variables. For the kernel, this implies that all global variables must
-reside in the top 2 GiB of the kernel virtual address space, where the
-implicit address bits 63:32 are equal to sign bit 31.
+> On 4/18/24 05:04, Mauro Carvalho Chehab wrote:
+> > Em Thu, 18 Apr 2024 09:48:27 +0100
+> > Mauro Carvalho Chehab <mchehab@kernel.org> escreveu:
+> >   
+> >> Newer Matebook D14 model comes with essx8336 and supports SOF,
+> >> but the initial models use the legacy driver, with a Realtek ALC 256
+> >> AC97 chip on it.
+> >>
+> >> The BIOS seems to be prepared to be used by both models, so
+> >> it contains an entry for ESSX8336 on its DSDT table.
+> >>
+> >> Add a quirk, as otherwise dspconfig driver will try to load
+> >> SOF, causing audio probe to fail.
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>  
+> > 
+> > Worth to mention that I opened an issue on Github about that:
+> > 
+> > https://github.com/thesofproject/linux/issues/4934
+> > 
+> > I added there the ACPI DSDT table as a reference.  
+> 
+> This sounds like an 'easy enough' fix, but I don't have a burning desire
+> to start adding quirks of this nature. To be clear, the entire support
+> of the ES8336 is an absolute nightmare that I've stopped looking at
+> completely given the lack of support of vendor/OEMs.
 
-This means the kernel code model is not suitable for other bare metal
-executables such as the kexec purgatory, which can be placed arbitrarily
-in the physical address space, where its address may no longer be
-representable as a sign extended 32-bit quantity. For this reason,
-commit
+Heh, I know the pain, having working myself to have some support for audio
+on two different notebooks with my siblings, both with es8336. On both 
+cases, the BIOS info was not really useful, requiring quirks to make device
+to work properly.
 
-  e16c2983fba0 ("x86/purgatory: Change compiler flags from -mcmodel=kernel to -mcmodel=large to fix kexec relocation errors")
+This is btw a common issue I'm aware for a long time: BIOS data is
+not reliable, as vendors tend to re-use BIOS from one device on others,
+without actually reflecting what it is on each device.
 
-switched to the 'large' code model, which uses 64-bit immediates for all
-symbol references, including function calls, in order to avoid relying
-on any assumptions regarding proximity of symbols in the final
-executable.
+The EDAC subsystem never relies on DMI data for memory banks - as even
+server BIOS from top tear manufacturers usually report wrong data for
+motherboard's DIMM labels. Instead, an userspace application reads
+DMI data and propose changes, but patches for rasdaemon are required
+to add such labels to a database.
 
-The large code model is rarely used, clunky and the least likely to
-operate in a similar fashion when comparing GCC and Clang, so it is best
-avoided. This is especially true now that Clang 18 has started to emit
-executable code in two separate sections (.text and .ltext), which
-triggers an issue in the kexec loading code at runtime.
+-
 
-Instead, use the position independent small code model, which makes no
-assumptions about placement but only about proximity, where all
-referenced symbols must be within -/+ 2 GiB, i.e., in range for a
-RIP-relative reference. Use hidden visibility to suppress the use of a
-GOT, which carries absolute addresses that are not covered by static ELF
-relocations, and is therefore incompatible with the kexec loader's
-relocation logic.
+In any case, this specific device doesn't have es8336 ;-)
 
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Song Liu <song@kernel.org>
-Cc: Ricardo Ribalda <ribalda@kernel.org>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Arthur Eubanks <aeubanks@google.com>
-Link: https://lore.kernel.org/all/20240417-x86-fix-kexec-with-llvm-18-v1-0-5383121e8fb7@kernel.org/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/purgatory/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Also, I don't think this problem will remain confined to es8336: any
+other SOF driver may have the same problem: a BIOS (or a BIOS update)
+may add non-existent _HID devices to DSDT, causing the driver to
+disable AC97 support, enabling SOF instead and causing regressions.
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index bc31863c5ee6..a18591f6e6d9 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -42,7 +42,8 @@ KCOV_INSTRUMENT := n
- # make up the standalone purgatory.ro
- 
- PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
--PURGATORY_CFLAGS := -mcmodel=large -ffreestanding -fno-zero-initialized-in-bss -g0
-+PURGATORY_CFLAGS := -mcmodel=small -ffreestanding -fno-zero-initialized-in-bss -g0
-+PURGATORY_CFLAGS += -fpic -fvisibility=hidden
- PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
- PURGATORY_CFLAGS += -fno-stack-protector
- 
--- 
-2.44.0.769.g3c40516874-goog
+As I wrote at the Github issue, one solution would be to do an I2C
+scan to detect if the SOF device(s) reported by BIOS are really
+present. This would require that, before calling 
+snd_intel_acpi_dsp_driver_probe():
 
+	- the I2C bus to be created;
+	- Runtime PM for the audio device needs to put resume the
+	  device and I2C bus controller, if suspended;
+	- the I2C address of the audio device needs to be known
+	  by sound/hda/intel-dsp-config.c
+
+With that, a zero-byte (or one-byte if zero-byte not support)
+read or write could detect if the device is there, before
+initializing it - or calling the device-specific driver.
+
+Another solution would be to probe the SOF driver, falling back
+to AC97 if SOF init fails.
+
+> 
+> In this case, the ACPI table is completely wrong, we should try to
+> 'mark' the ES8336 device as 'not present' or detect the presence of HDaudio.
+> 
+> Andy, what do you think and what would be your recommendation?
+> 
+> >> ---
+> >>  sound/hda/intel-dsp-config.c | 16 ++++++++++++++++
+> >>  1 file changed, 16 insertions(+)
+> >>
+> >> diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
+> >> index 6a384b922e4f..8e728f0585dd 100644
+> >> --- a/sound/hda/intel-dsp-config.c
+> >> +++ b/sound/hda/intel-dsp-config.c
+> >> @@ -46,6 +46,22 @@ static const struct snd_soc_acpi_codecs __maybe_unused essx_83x6 = {
+> >>   * - the first successful match will win
+> >>   */
+> >>  static const struct config_entry config_table[] = {
+> >> +	/* Quirks */
+> >> +	{
+> >> +		.flags = 0,	/* Model uses AC97 with Realtek ALC 256 */
+> >> +		.device = PCI_DEVICE_ID_INTEL_HDA_CML_LP,
+> >> +		.dmi_table = (const struct dmi_system_id []) {
+> >> +			{
+> >> +				.ident = "Huawei NBLB-WAX9N",
+> >> +				.matches = {
+> >> +					DMI_MATCH(DMI_SYS_VENDOR, "HUAWEI"),
+> >> +					DMI_MATCH(DMI_PRODUCT_NAME, "NBLB-WAX9N"),
+> >> +				}
+> >> +			},
+> >> +			{}
+> >> +		}
+> >> +	},
+> >> +
+> >>  /* Merrifield */
+> >>  #if IS_ENABLED(CONFIG_SND_SOC_SOF_MERRIFIELD)
+> >>  	{  
 
