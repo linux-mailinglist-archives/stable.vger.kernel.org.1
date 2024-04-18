@@ -1,179 +1,226 @@
-Return-Path: <stable+bounces-40172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2C28A9808
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:00:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ADA8A9824
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B14A51C21224
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 11:00:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 010F11F22CE0
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 11:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C3715E1FB;
-	Thu, 18 Apr 2024 10:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E525E15E216;
+	Thu, 18 Apr 2024 11:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="EsgIvVEN"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="iwuquuFV";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="5agX036W";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XI4mK2VA";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lRh68gjo"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2358E15E1EE;
-	Thu, 18 Apr 2024 10:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859F015D5C1;
+	Thu, 18 Apr 2024 11:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713437966; cv=none; b=uUDNdTm13uvkiZqSRw4iUjBJh9424iy8zWJ7Hmd5SwBDAskIwQivG0MJx4Y/oZUq+FDR+E9VWWWA/6UPZ1j9TDkCAsd/Xz49YZFCJpRgxmVef5hmKutnoLFzkkyDy8yHcxKT+jsnTsuP8KwxBGjF7eXC0doTUaRCQ8Zo95wWYTE=
+	t=1713438284; cv=none; b=XYjYOGmMcTsvaNcEw5BC8vydgJ6ZxluBDGFiJptMrN2S/QcAod/rKIwJXVwYMsoME3izyJfQFZb6CT0uX/5sjItIuH7ZItKBURnloqU8AcjroUCjejJIrpVfWZ1p+IT2jPX6qsQ+XsIGcCbHNnR63+SK5SMd2qcCg5Fo/qeQnos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713437966; c=relaxed/simple;
-	bh=Dmw2mzRePDDaTlpv0cyxsROjXNG2sIARTqcRZ94iPag=;
-	h=From:To:CC:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mHZLlOArs3KxIbn2k/PGtKPDfJPI4Yoa7Q77XSv6J0neVOACiC7kykpvNC8JWJPAIHj/7A/KF43VYaK/hHT20vxV3GznNV7Y9FTLzbIuzMYI7WaGWzDRmpliy80hxT1yjWc2gjoLiu074FNe5beGZ1r9TVFL1fzCkuUw/POwbNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=EsgIvVEN; arc=none smtp.client-ip=67.231.152.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43I7MKuD021498;
-	Thu, 18 Apr 2024 05:59:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
-	from:to:cc:references:in-reply-to:subject:date:message-id
-	:mime-version:content-type:content-transfer-encoding; s=
-	PODMain02222019; bh=RlY3ymPRlrecGeYIf3u9yTqQFB6fZZei6Z2kUrb0t0k=; b=
-	EsgIvVENbI5fwPQNQDDWrnF2zv15un8Qa81c955laK2qpLYdYRZ8kzMxEQDbZ+m0
-	BAy9kUU5T0YG7H+qEUeHz1ook4QeXsx+5Cx9zBYM/4EG9tHTfV7l6jdX995SMIGr
-	E5x53e4HfGn2uPHjz47E7BGllRK+pFsZmTBKwWo51Itj2Piqlv+EKD99b2kGmq7K
-	Ekkts8qKHUvDuhnK6OElr4sLEQKV0L6bG7k7ouFBuQ3emRlIhhRECEt7PbJtqTxV
-	0Q2GoVt5S23lCE4Qsw5B9j90rsxuy52W2BfhQVvHvOjSBKgFVD3AEm5VC7CalgkJ
-	sJUnN9fIkpaQccBJyfNg7A==
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3xfpfhvnad-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Apr 2024 05:59:21 -0500 (CDT)
-Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 18 Apr
- 2024 11:59:19 +0100
-Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9
- via Frontend Transport; Thu, 18 Apr 2024 11:59:19 +0100
-Received: from LONN2DGDQ73 (LONN2DGDQ73.ad.cirrus.com [198.61.64.201])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 36044820245;
-	Thu, 18 Apr 2024 10:59:19 +0000 (UTC)
-From: Stefan Binding <sbinding@opensource.cirrus.com>
-To: 'ArcticLampyrid' <ArcticLampyrid@outlook.com>, <james.schulman@cirrus.com>,
-        <david.rhodes@cirrus.com>, <rf@opensource.cirrus.com>
-CC: <patches@opensource.cirrus.com>, <linux-sound@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <TYCP286MB253523D85F6E0ECAA3E03D58C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM> <TYCP286MB25358BF2246DE04CE8D12BE8C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
-In-Reply-To: <TYCP286MB25358BF2246DE04CE8D12BE8C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
-Subject: RE: [PATCH v2 2/2] ALSA: hda/realtek: Fix internal speakers for Legion Y9000X 2022 IAH7
-Date: Thu, 18 Apr 2024 11:59:19 +0100
-Message-ID: <002201da917f$766278d0$63276a70$@opensource.cirrus.com>
+	s=arc-20240116; t=1713438284; c=relaxed/simple;
+	bh=n6GYePWKGsaNVZpPhB0ngSYw7xW4miHlMzKXOKwuVms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t3TW8uBUTqXx4qpMii562uehiOTEn6GZCd0I+Q+toPHqckq4LdANvtLPVCQMVKfcptqPIdLOid7zaZVDrJt3UhOSJc199Gy3oEy3EO4Q+f/3MtMqhD/ErSSn4h8z/xURuI4jmszW9LgXhOLvvVs133hwIaB/acktdtQpMsjVUuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=iwuquuFV; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=5agX036W; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XI4mK2VA; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lRh68gjo; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B234C34DD5;
+	Thu, 18 Apr 2024 11:04:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1713438275; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gv1S5z4U/Lpggcm746FJVB5sgVR9PpMNoPlpi/9ROxQ=;
+	b=iwuquuFVSRj3wbZCLHn+iERrfqZ94jpQwcRoAjkTgPgCjZ9T5yHoslKOU7yjTp2Qn7GhQI
+	4bp/2Jm/BhOOW45u/3kTokz1zh3D9BRjs2v5BXX0U6hohw/BdwtSc4lvfUA5lsrufbci3b
+	XSEcEqETcdua1ZbS1B7L450I6w+Rcnc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1713438275;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gv1S5z4U/Lpggcm746FJVB5sgVR9PpMNoPlpi/9ROxQ=;
+	b=5agX036W69nvNXNH3kJXYCpizMe4x2w1YlQxcUWUiKddCrUfqw1yXh3VJB7M6C0kkf0SzM
+	8aXAirlqboDm7SCg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XI4mK2VA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lRh68gjo
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1713438274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gv1S5z4U/Lpggcm746FJVB5sgVR9PpMNoPlpi/9ROxQ=;
+	b=XI4mK2VAsewf9Mau4YEWo81qOrnE2L6X7K447OkXOVwrenGAseIJdpA75NAw3F06xbZnV2
+	5oB1MfaA+dUoJIs2Ki0kWbes/57/3OEdsf29V7TVph11AOK07vbTL83ycbxzKMy/Mzv2di
+	5rBtIkL/Iq0VRQIDp11LMq2JREALHTw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1713438274;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gv1S5z4U/Lpggcm746FJVB5sgVR9PpMNoPlpi/9ROxQ=;
+	b=lRh68gjome/yMlDFGPIYA9g2odX3SgIGtGtf7dAvaJwfZUQxh0UVwOfZBK60hYYb/EcL07
+	PbLXKw4KbgMc1ECw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A60E91384C;
+	Thu, 18 Apr 2024 11:04:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LpV7KEL+IGYrWwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 18 Apr 2024 11:04:34 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 4DEF6A0812; Thu, 18 Apr 2024 13:04:34 +0200 (CEST)
+Date: Thu, 18 Apr 2024 13:04:34 +0200
+From: Jan Kara <jack@suse.cz>
+To: Zach O'Keefe <zokeefe@google.com>
+Cc: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Maxim Patlasov <MPatlasov@parallels.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/writeback: fix possible divide-by-zero in
+ wb_dirty_limits(), again
+Message-ID: <20240418110434.g5bx5ntp2m4433eo@quack3>
+References: <20240118181954.1415197-1-zokeefe@google.com>
+ <20240417111001.fa2eg5gp6t2wiwco@quack3>
+ <CAAa6QmSOum_0ZhyUq1ppguLp0jpEs0u1U843GkF==xMwaMGV4A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-gb
-Thread-Index: AQJzUjqa4IlF22ZsXxMyjNS9IQLhdQGIbEcssDAWyjA=
-X-Proofpoint-ORIG-GUID: 6cGaL1IhxL8DSA0rTQRDX4c1sl7LL6Q3
-X-Proofpoint-GUID: 6cGaL1IhxL8DSA0rTQRDX4c1sl7LL6Q3
-X-Proofpoint-Spam-Reason: safe
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAa6QmSOum_0ZhyUq1ppguLp0jpEs0u1U843GkF==xMwaMGV4A@mail.gmail.com>
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: B234C34DD5
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email];
+	MISSING_XM_UA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_TRACE(0.00)[suse.cz:+]
 
-Hi,
-
-> -----Original Message-----
-> From: ArcticLampyrid <ArcticLampyrid@outlook.com>
-> Sent: Thursday, April 18, 2024 7:46 AM
-> To: james.schulman@cirrus.com; david.rhodes@cirrus.com;
-> rf@opensource.cirrus.com
-> Cc: patches@opensource.cirrus.com; linux-sound@vger.kernel.org;
-linux-
-> kernel@vger.kernel.org; ArcticLampyrid <ArcticLampyrid@outlook.com>;
-> stable@vger.kernel.org
-> Subject: [PATCH v2 2/2] ALSA: hda/realtek: Fix internal speakers for
-Legion
-> Y9000X 2022 IAH7
+On Wed 17-04-24 12:33:39, Zach O'Keefe wrote:
+> On Wed, Apr 17, 2024 at 4:10 AM Jan Kara <jack@suse.cz> wrote:
+> > > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> > > index cd4e4ae77c40a..02147b61712bc 100644
+> > > --- a/mm/page-writeback.c
+> > > +++ b/mm/page-writeback.c
+> > > @@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struct dirty_throttle_control *dtc)
+> > >        */
+> > >       dtc->wb_thresh = __wb_calc_thresh(dtc);
+> > >       dtc->wb_bg_thresh = dtc->thresh ?
+> > > -             div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+> > > +             div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+...
+> > Thirdly, if thresholds are larger than 1<<32 pages, then dirty balancing is
+> > going to blow up in many other spectacular ways - consider only the
+> > multiplication on this line - it will not necessarily fit into u64 anymore.
+> > The whole dirty limiting code is interspersed with assumptions that limits
+> > are actually within u32 and we do our calculations in unsigned longs to
+> > avoid worrying about overflows (with occasional typing to u64 to make it
+> > more interesting because people expected those entities to overflow 32 bits
+> > even on 32-bit archs). Which is lame I agree but so far people don't seem
+> > to be setting limits to 16TB or more. And I'm not really worried about
+> > security here since this is global-root-only tunable and that has much
+> > better ways to DoS the system.
+> >
+> > So overall I'm all for cleaning up this code but in a sensible way please.
+> > E.g. for these overflow issues at least do it one function at a time so
+> > that we can sensibly review it.
+> >
+> > Andrew, can you please revert this patch until we have a better fix? So far
+> > it does more harm than good... Thanks!
 > 
-> This fixes the sound not working from internal speakers on
-> Lenovo Legion Y9000X 2022 IAH7 models.
+> Shall we just roll-forward with a suitable fix? I think all the
+> original code actually "needed" was to cast the ternary predicate,
+> like:
 > 
-> Signed-off-by: ArcticLampyrid <ArcticLampyrid@outlook.com>
-> Cc: <stable@vger.kernel.org>
-> ---
->  sound/pci/hda/cs35l41_hda_property.c | 2 ++
->  sound/pci/hda/patch_realtek.c        | 1 +
->  2 files changed, 3 insertions(+)
+> ---8<---
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index fba324e1a010..ca1bfc0c9bdd 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -1637,8 +1637,8 @@ static inline void wb_dirty_limits(struct
+> dirty_throttle_control *dtc)
+>          *   at some rate <= (write_bw / 2) for bringing down wb_dirty.
+>          */
+>         dtc->wb_thresh = __wb_calc_thresh(dtc);
+> -       dtc->wb_bg_thresh = dtc->thresh ?
+> -               div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+> +       dtc->wb_bg_thresh = (u32)dtc->thresh ?
+> +               div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+
+Well, this would fix the division by 0 but when you read the code you
+really start wondering what's going on :) And as I wrote above when
+thresholds pass UINT_MAX, the dirty limitting code breaks down anyway so I
+don't think the machine will be more usable after your fix. Would you be up
+for a challenge to modify mm/page-writeback.c so that such huge limits
+cannot be set instead? That would be actually a useful fix...
+
+								Honza
+
 > 
-> diff --git a/sound/pci/hda/cs35l41_hda_property.c
-> b/sound/pci/hda/cs35l41_hda_property.c
-> index 8fb688e41414..60ad2344488b 100644
-> --- a/sound/pci/hda/cs35l41_hda_property.c
-> +++ b/sound/pci/hda/cs35l41_hda_property.c
-> @@ -109,6 +109,7 @@ static const struct cs35l41_config
-> cs35l41_config_table[] = {
->  	{ "10431F1F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0
-> }, 1, -1, 0, 0, 0, 0 },
->  	{ "10431F62", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0
-> }, 1, 2, 0, 0, 0, 0 },
->  	{ "10433A60", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0
-> }, 1, 2, 0, 1000, 4500, 24 },
-> +	{ "17AA386E", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0
-> }, 0, 1, -1, 0, 0, 0 },
-
-Looking at your ACPI, its clear that the Speaker ID is at index 2 not
-index 1.
-Thus, this should be:
-
-	{ "17AA386E", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0
-}, 0, 2, -1, 0, 0, 0 },
-
-Thanks,
-Stefan
-
->  	{ "17AA386F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0
-> }, 0, -1, -1, 0, 0, 0 },
->  	{ "17AA3877", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0
-> }, 0, 1, -1, 0, 0, 0 },
->  	{ "17AA3878", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0
-> }, 0, 1, -1, 0, 0, 0 },
-> @@ -500,6 +501,7 @@ static const struct cs35l41_prop_model
-> cs35l41_prop_model_table[] = {
->  	{ "CSC3551", "10431F1F", generic_dsd_config },
->  	{ "CSC3551", "10431F62", generic_dsd_config },
->  	{ "CSC3551", "10433A60", generic_dsd_config },
-> +	{ "CSC3551", "17AA386E", generic_dsd_config },
->  	{ "CSC3551", "17AA386F", generic_dsd_config },
->  	{ "CSC3551", "17AA3877", generic_dsd_config },
->  	{ "CSC3551", "17AA3878", generic_dsd_config },
-> diff --git a/sound/pci/hda/patch_realtek.c
-> b/sound/pci/hda/patch_realtek.c
-> index cdcb28aa9d7b..ac729187f6a7 100644
-> --- a/sound/pci/hda/patch_realtek.c
-> +++ b/sound/pci/hda/patch_realtek.c
-> @@ -10382,6 +10382,7 @@ static const struct snd_pci_quirk
-> alc269_fixup_tbl[] = {
->  	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5",
-> ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
->  	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6",
-> ALC287_FIXUP_LEGION_16ITHG6),
->  	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7",
-> ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
-> +	SND_PCI_QUIRK(0x17aa, 0x386e, "Legion Y9000X 2022 IAH7",
-> ALC287_FIXUP_CS35L41_I2C_2),
->  	SND_PCI_QUIRK(0x17aa, 0x386f, "Legion 7i 16IAX7",
-> ALC287_FIXUP_CS35L41_I2C_2),
->  	SND_PCI_QUIRK(0x17aa, 0x3870, "Lenovo Yoga 7 14ARB7",
-> ALC287_FIXUP_YOGA7_14ARB7_I2C),
->  	SND_PCI_QUIRK(0x17aa, 0x3877, "Lenovo Legion 7 Slim
-> 16ARHA7", ALC287_FIXUP_CS35L41_I2C_2),
-> --
-> 2.44.0
+>         /*
+>          * In order to avoid the stacked BDI deadlock we need
+> ---8<---
 > 
-
-
+> Thanks, and apologize for the inconvenience
+> 
+> Zach
+> 
+> >                                                                 Honza
+> > --
+> > Jan Kara <jack@suse.com>
+> > SUSE Labs, CR
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
