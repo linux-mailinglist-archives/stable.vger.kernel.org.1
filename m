@@ -1,204 +1,175 @@
-Return-Path: <stable+bounces-40153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0078A936B
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 08:45:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671DE8A9376
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 08:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1CA9280F4D
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 06:45:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C3552823FC
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 06:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8748538DD9;
-	Thu, 18 Apr 2024 06:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9728C11;
+	Thu, 18 Apr 2024 06:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="sv8hVM3H"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="kvCwUMDb"
 X-Original-To: stable@vger.kernel.org
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazolkn19011002.outbound.protection.outlook.com [52.103.43.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC0D77F2D;
-	Thu, 18 Apr 2024 06:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713422676; cv=none; b=DOg3TeQpYcR2rCzIHA7iIVpk8xZ/xEFGAcVnsFizE0hmn/7+beXcoP4jlUvv1BUaMrBKnGGfMID9CKob+Vk/517woLPqq3w51i6ThGSnB6STMueNxXbPPSX9G3HVeBshSeAQHiBNajOkYtV9ymaoytLwYlQD/LFkyZn9opGe4TE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713422676; c=relaxed/simple;
-	bh=F4j2YeFDdlVC8020K/Vmjs/sUEilFa5SrR5hL+gvFT4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kj/kXB9dEoz2HotzW0z1im0pOzM1MogieMmvQ0XmTb0xJaEi6wivvJD7CYnurlL+4vdzhF56PneZIoVcZOfI/96tuDKIFMYgXcy9NVMWd7eVlSHgKfV+EVHs/gl4H5RzzAyNT1OZNO5ZocnMp+mR7SUPCL8VKEIMO8WGLkxCr80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=sv8hVM3H; arc=none smtp.client-ip=198.47.19.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 43I6iHpb129585;
-	Thu, 18 Apr 2024 01:44:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1713422657;
-	bh=90nyYzTpix82xLJuEEoTch0nJmxT21KfiXvrixbJ65w=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=sv8hVM3H+hR5A8dqlG9g7pm6vM8TGedLfXktfBdxO0+yomNvG6ZAd2va/R6gjby0V
-	 z5Nk4LYXQLQgwb3gks78vHpV8HldHS5gtmiRQpRM9fA/Lf60DCr1CuwVaxsOlLjM1z
-	 yq0QqKsvoFqnOCG3J5Fgc4DYwbjT4dHrQVFYQ2QU=
-Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 43I6iGku021731
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 18 Apr 2024 01:44:17 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 18
- Apr 2024 01:44:16 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 18 Apr 2024 01:44:16 -0500
-Received: from localhost (jluthra.dhcp.ti.com [172.24.227.116])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 43I6iFJq099234;
-	Thu, 18 Apr 2024 01:44:16 -0500
-Date: Thu, 18 Apr 2024 12:14:15 +0530
-From: Jai Luthra <j-luthra@ti.com>
-To: Joao Paulo Goncalves <jpaulo.silvagoncalves@gmail.com>
-CC: Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Liam Girdwood
-	<lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela
-	<perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Joao Paulo Goncalves
-	<joao.goncalves@toradex.com>,
-        <alsa-devel@alsa-project.org>, <linux-sound@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] ASoC: ti: davinci-mcasp: Fix race condition during probe
-Message-ID: <nhfnj5b44lrsh57ffxzsj5la6q36llq4qptyenmaor4xhnbqem@skyzmn4fyhkd>
-References: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A802D057;
+	Thu, 18 Apr 2024 06:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713422764; cv=fail; b=rJLG/ab9fMoRd72MPsfV2K0i0KWWqLDTtgMJybAcQetcLBAZwqUODkEU63K87fChSSlqNlu04oHSL9TqOtfdKzRjD7eHwmar4yfXk2I5n1qeoNmWK0Dibo3zcH+KhJLDnew7RCrDcq/bsNKwT6BNLIQ+gnh1IixquBUeuN0PWas=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713422764; c=relaxed/simple;
+	bh=vYxOV0wOMa+vYj3ZwetKI0ywFYi7hhRLEUXGISHaEhY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CFIx1JteMwe+n4ki8dWWlr8kdqp5JtAfP+EDtll+XpSbEsebyOvdLvLB1Sg5lsjkvxGWhDes11J02Ovev9pZNXnCWgDBlc3HjP5GbWIm1SzMMJeBtsDaSY0acOFUdwesjmhPQ+Mk6im6xVPyBIC9Rb94lX84FXqGOYFiNaS9ti4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=kvCwUMDb; arc=fail smtp.client-ip=52.103.43.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=m4VFCnjYfPnxw2NXRJm6suxlN7SqQJTKm8yo3Q1fpmBxtn7C4JAXdx1mFL5CZHUilyiFXBLhDqxfg7K/UhYjjCqx3X+CHsRk8REItBnKedPhJFztzAFNBWR3wJMJCXrxwGDRm9tp6IXifvg1crXNWZ0fyxZ2kf+LXksHUgJryclhoSAAbdV/zf/z1V3s+CvU0jjWRfYW9O+bN13vv1JFQSunZSkhVGQF4anUJcltrxNs0eiFwXvCQmD/48kD8av1DRII2mR56hayjWzX64kPc6X6w8VxxpuKH+3XHOerMwOOORP1li/HSkDyBLgfJxY2Og3MNQgxldBfYfCltUNpIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4b0BKBkpWpEgLf46H2ZiN45feDj7+6AF1xyN8VgC9aE=;
+ b=O5wRg+zlASyahJTbsg3Cntklhtua0ixQofsq+IQY/bvU4TS5Y4gW6/GB7+072UqxcyxJ9+K8JoQwDs8wIYLQMysw51ugrVPpm3c23OuN+EH1rBUTEFvsYwcqrvEUFlgBFOwhfSAfUtoj0ygDUK9ULvGfdSRuveMIGGCx3Fy07jbeFY7m4+dm8qhlaojeKGZDK1VOo4K3iUIdRQ8PEw2DP6CjKI3o+zxieyRhOpgDWJI1mVzUmu1GG/AG0a3afEnO+9DmJLIj4vctfwyWGz0cqA2HaluJeplLXJ1sK8zu7QhPyf+fn1eqk/bdibX1ecG8GwNGkOYflVj55Fpmm6hG1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4b0BKBkpWpEgLf46H2ZiN45feDj7+6AF1xyN8VgC9aE=;
+ b=kvCwUMDb2BLuHN0/8Ad/8xxtg993nd20w6xDpEyWhSamNqvy5R/bGBAC7IxEmItzcuVr3okW/rbd32lXnebbLtdzmINSlR32UPchOSwdHKjRbT81zQSCfQTRZVT66O5uoSNI/lZcqWH+QNnt3W6TFwxFaPZeComXHLlzMwWuYuDxJjueN9HKrpSm8eYcGktd/I6lJkugGqHuE9wda6ZzCJdMvG+XJHI37unsXcrRdU6K/P3Q8Od+ybjbaeU2XWGyTNV/IWO2BfafWTmwGnIYByBXmCsiy8z7/ddh8WlGRC3oUnVU4J1CBMvnVGsVyt2MLfS+68PcMnd8igjkUT/Z2g==
+Received: from TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:209::11)
+ by OS3P286MB3372.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:20b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.51; Thu, 18 Apr
+ 2024 06:45:59 +0000
+Received: from TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f2c3:e53f:2ea9:55c8]) by TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f2c3:e53f:2ea9:55c8%4]) with mapi id 15.20.7452.050; Thu, 18 Apr 2024
+ 06:45:59 +0000
+From: ArcticLampyrid <ArcticLampyrid@outlook.com>
+To: james.schulman@cirrus.com,
+	david.rhodes@cirrus.com,
+	rf@opensource.cirrus.com
+Cc: patches@opensource.cirrus.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ArcticLampyrid <ArcticLampyrid@outlook.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 2/2] ALSA: hda/realtek: Fix internal speakers for Legion Y9000X 2022 IAH7
+Date: Thu, 18 Apr 2024 14:45:50 +0800
+Message-ID:
+ <TYCP286MB25358BF2246DE04CE8D12BE8C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <TYCP286MB253523D85F6E0ECAA3E03D58C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
+References: <TYCP286MB253523D85F6E0ECAA3E03D58C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [ZxYRBvbSVhl+wEq0q1DtED/LvmHEBklH5J6v/+JTyJEnOJg8azg0zg==]
+X-ClientProxiedBy: PS2PR02CA0084.apcprd02.prod.outlook.com
+ (2603:1096:300:5c::24) To TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:209::11)
+X-Microsoft-Original-Message-ID:
+ <20240418064550.13866-1-ArcticLampyrid@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="yxhrp7awxfgehq5t"
-Content-Disposition: inline
-In-Reply-To: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCP286MB2535:EE_|OS3P286MB3372:EE_
+X-MS-Office365-Filtering-Correlation-Id: 338ba514-d49e-4a02-a9b1-08dc5f7334f6
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	L9SyoPRB9unc5TJqm9Rmj0TaUVBweSgVF1b2OCP0Q8wzsQnSmqfeo0T2XhZXFy0UnDz+kf3UhdaIcSrYQ8z9xoOZ9PJV16ArYvtHIRCPLIgGkyIGd9VZmKi3kQJnTAxE8WtkOHr8KCkTcGHpnvUMg/dEdDteQ+VyAyroV6J4ul3StHE4qPO0XQ2N7v1zw/ntgOICAomMIQs2s4tlPtxNS/Cbx2CHyNCRqzrB9zK94OhmJMyQlf0PilMx3hZgKKQFXx/0UGgUE30bzcEdZd6MjlHTeL5ZfVbOAOiZ5nsPUE5n/MTq+pCebdDMMnHAJtn5MeajNx6kvLzuqFcU1ZBC+KUfu+1WDckF1DkA0hF2OhXGsszbhrr0Av1LF+Px7cEc/EmZhqkUb8lLPQrvWi9rITACT20rO4HX5+FkoJbowkSV2fmT/blBQA51HlgRvYz9e1FfWyZH9vXPE+LfOhBrGScj64rNu5Dqv52Kd21iItU0WUGlXb/ztA7O3P0vf0b/EKBdtBUMQNQkjgcmm6Sz6NBFB/peiz/UUgYGVsAU3+86yb8yXDKzR+dikDKr+7ArsPLG9G5WoFp125ZNajF3A+di0sUvdoA3aIfwMStODq8=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6eY9srxP6gkHvqQmkapRtAhdUTjTzeEobmn8jczhwONKDIG48IFf0+ON9ct5?=
+ =?us-ascii?Q?X5/N/XuXVVtanY4gq9Lud7it06yBHkwOYpUPow+K46wUZL/MODQTUyY+y/Vd?=
+ =?us-ascii?Q?uXc1RJkkP/yYxx8poDZCxG8ogHzJU2rawpWwqQHWsIohC0xeSwX3iKeA+9ES?=
+ =?us-ascii?Q?hZgOIp5Nv6oRicVNnS+9PGljOKekxiynp8Gv9UzsKbdgvscGUz8yqou8ni6v?=
+ =?us-ascii?Q?W6ltRhGfOZExTttd8bSZcSOcq8BMA56YFPbur+szBfVjDVetPrzUZBa0k2ra?=
+ =?us-ascii?Q?76zhSouIQvf2nDbrhbl1QIiv72XCZwPJUxQtsHusCEJTQ8zZNqwnRkgIin9A?=
+ =?us-ascii?Q?sjpOINgEzJI9Uc6bo/jmSoSsVAK3tGA/mVEQPR/6eSWSpXgSGjkN7aLURCU/?=
+ =?us-ascii?Q?aj4rLuIyKnEoS91oo1CP7qqnAEjhJZqN2T/rBtLj9p2Vcfls/TwF/F05fmOj?=
+ =?us-ascii?Q?n1cPCEd16DEaSxLTHizB+orH21fM2DTtmDnno/25Z9WpYlzc/hzefjUzw+AD?=
+ =?us-ascii?Q?PlqwPRnvGyHWMBAFIB42Kroi9ptypy2Z7870yEs5QGcFpUxOw/LfETip7Ttw?=
+ =?us-ascii?Q?O29e2e+6GTFemBVrNHXntiO58533KialZfUelHVhVqZrAl0uwAZrwk0h+PHP?=
+ =?us-ascii?Q?CncDXzSJbjE3pUMPcI0TgponpsuZPXJ7/Du+KvjX9iE5nlhMOWfRhSx64hFv?=
+ =?us-ascii?Q?xiis+rYH1dVTshZ+cnSHenwHUsIbhzfZMtNMrgXDjGb3eF26mW/JBvUNVhRv?=
+ =?us-ascii?Q?BF9rQ1feV1X30w9bAACYNv0bfTr0KAzEhX0fmxe6XSlnnvomHIHT9TJRLsra?=
+ =?us-ascii?Q?bDMcajroFHMVqtuSsZHDmUbOVqKZ9/lLy35V87tRiPGYw72cWQk5uhrsgA1O?=
+ =?us-ascii?Q?sbM3AlewCvyAV9leO1SRdbubzDsxsbQFCumiFoW8c9Cwgvhaz5c3kaDuU16L?=
+ =?us-ascii?Q?Zx3AzTRrlbTcjtwErGO+rxIOFM69tLpwPPSSLpQPLkgJ93QRvHjofqbP9LsK?=
+ =?us-ascii?Q?khtq46jtBjThQb+rdrHTwwZDJ7bB8+z9DWQSEobnSeD5+AHDI9dWnyxUiNEE?=
+ =?us-ascii?Q?UpXg4wd8wpK0v8wjGJbnxTpu3G39/LphRPbfeDHKy1fPS/nyCUS4jr3cBEBk?=
+ =?us-ascii?Q?4AbmyVKFSTX5Qe8FvzbfwD6kDUWGDYoxzVb7lNKHf52FdzAt9J1elmM7rOyo?=
+ =?us-ascii?Q?rL4E76SpgNdyQEVAR7W3949PpL5ddWqJnsL3LGuSNNC2F2+BctEYIHbx2lUD?=
+ =?us-ascii?Q?CqS5LuSn9AEjHHM/OcOU7tADlX2doGDINgJ1EFTUqg=3D=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 338ba514-d49e-4a02-a9b1-08dc5f7334f6
+X-MS-Exchange-CrossTenant-AuthSource: TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 06:45:59.6825
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3P286MB3372
 
---yxhrp7awxfgehq5t
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This fixes the sound not working from internal speakers on
+Lenovo Legion Y9000X 2022 IAH7 models.
 
-Hi Joao,
+Signed-off-by: ArcticLampyrid <ArcticLampyrid@outlook.com>
+Cc: <stable@vger.kernel.org>
+---
+ sound/pci/hda/cs35l41_hda_property.c | 2 ++
+ sound/pci/hda/patch_realtek.c        | 1 +
+ 2 files changed, 3 insertions(+)
 
-On Apr 17, 2024 at 15:41:38 -0300, Joao Paulo Goncalves wrote:
-> From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
->=20
-> When using davinci-mcasp as CPU DAI with simple-card, there are some
-> conditions that cause simple-card to finish registering a sound card befo=
-re
-> davinci-mcasp finishes registering all sound components. This creates a
-> non-working sound card from userspace with no problem indication apart
-> from not being able to play/record audio on a PCM stream. The issue
-> arises during simultaneous probe execution of both drivers. Specifically,
-> the simple-card driver, awaiting a CPU DAI, proceeds as soon as
-> davinci-mcasp registers its DAI. However, this process can lead to the
-> client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
-> being preempted before PCM DMA registration on davinci-mcasp finishes.
-> This situation occurs when the probes of both drivers run concurrently.
-> Below is the code path for this condition. To solve the issue, defer
-> davinci-mcasp CPU DAI registration to the last step in the audio part of
-> it. This way, simple-card CPU DAI parsing will be deferred until all
-> audio components are registered.
+diff --git a/sound/pci/hda/cs35l41_hda_property.c b/sound/pci/hda/cs35l41_hda_property.c
+index 8fb688e41414..60ad2344488b 100644
+--- a/sound/pci/hda/cs35l41_hda_property.c
++++ b/sound/pci/hda/cs35l41_hda_property.c
+@@ -109,6 +109,7 @@ static const struct cs35l41_config cs35l41_config_table[] = {
+ 	{ "10431F1F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, -1, 0, 0, 0, 0 },
+ 	{ "10431F62", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 0, 0, 0 },
+ 	{ "10433A60", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
++	{ "17AA386E", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+ 	{ "17AA386F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
+ 	{ "17AA3877", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+ 	{ "17AA3878", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+@@ -500,6 +501,7 @@ static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
+ 	{ "CSC3551", "10431F1F", generic_dsd_config },
+ 	{ "CSC3551", "10431F62", generic_dsd_config },
+ 	{ "CSC3551", "10433A60", generic_dsd_config },
++	{ "CSC3551", "17AA386E", generic_dsd_config },
+ 	{ "CSC3551", "17AA386F", generic_dsd_config },
+ 	{ "CSC3551", "17AA3877", generic_dsd_config },
+ 	{ "CSC3551", "17AA3878", generic_dsd_config },
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index cdcb28aa9d7b..ac729187f6a7 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10382,6 +10382,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x386e, "Legion Y9000X 2022 IAH7", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x386f, "Legion 7i 16IAX7", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3870, "Lenovo Yoga 7 14ARB7", ALC287_FIXUP_YOGA7_14ARB7_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3877, "Lenovo Legion 7 Slim 16ARHA7", ALC287_FIXUP_CS35L41_I2C_2),
+-- 
+2.44.0
 
-Good catch, thanks for the fix.
-
-Reviewed-by: Jai Luthra <j-luthra@ti.com>
-
->=20
-> Fail Code Path:
->=20
-> simple-card.c: probe starts
-> simple-card.c: simple_dai_link_of: simple_parse_node(..,cpu,..) returns E=
-PROBE_DEFER, no CPU DAI yet
-> davinci-mcasp.c: probe starts
-> davinci-mcasp.c: devm_snd_soc_register_component() register CPU DAI
-> simple-card.c: probes again, finish CPU DAI parsing and call devm_snd_soc=
-_register_card()
-> simple-card.c: finish probe
-> davinci-mcasp.c: *dma_pcm_platform_register() register PCM  DMA
-> davinci-mcasp.c: probe finish
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 9fbd58cf4ab0 ("ASoC: davinci-mcasp: Choose PCM driver based on con=
-figured DMA controller")
-> Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
-> ---
->  sound/soc/ti/davinci-mcasp.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->=20
-> diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-> index b892d66f78470..1e760c3155213 100644
-> --- a/sound/soc/ti/davinci-mcasp.c
-> +++ b/sound/soc/ti/davinci-mcasp.c
-> @@ -2417,12 +2417,6 @@ static int davinci_mcasp_probe(struct platform_dev=
-ice *pdev)
-> =20
->  	mcasp_reparent_fck(pdev);
-> =20
-> -	ret =3D devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_comp=
-onent,
-> -					      &davinci_mcasp_dai[mcasp->op_mode], 1);
-> -
-> -	if (ret !=3D 0)
-> -		goto err;
-> -
->  	ret =3D davinci_mcasp_get_dma_type(mcasp);
->  	switch (ret) {
->  	case PCM_EDMA:
-> @@ -2449,6 +2443,12 @@ static int davinci_mcasp_probe(struct platform_dev=
-ice *pdev)
->  		goto err;
->  	}
-> =20
-> +	ret =3D devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_comp=
-onent,
-> +					      &davinci_mcasp_dai[mcasp->op_mode], 1);
-> +
-> +	if (ret !=3D 0)
-> +		goto err;
-> +
->  no_audio:
->  	ret =3D davinci_mcasp_init_gpiochip(mcasp);
->  	if (ret) {
-> --=20
-> 2.34.1
->=20
-
---=20
-Thanks,
-Jai
-
-GPG Fingerprint: 4DE0 D818 E5D5 75E8 D45A AFC5 43DE 91F9 249A 7145
-
---yxhrp7awxfgehq5t
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEETeDYGOXVdejUWq/FQ96R+SSacUUFAmYgwTsACgkQQ96R+SSa
-cUWXrBAApnBEaeieeTJxw4vOCZ+HgP2Btgkjs72DfMCPJiJ/5cmgjRJiZNk2Xbzh
-1jWiwvjvk0saPdbb1RyXvXo+sOKsYBlRQS8i8kpOIsx6S7eqZlsF9kkMcotiDe3m
-zL4hQpcwevYmVCqnnTaZfTHAyMN2Tk+I7Np/I+86MgOt86L0N3GVPjlTts2EeKDY
-/dfoDYgFfWqRfdZmGSFxVl4YdEmrwwvNK0u2CrUgXuSkvBhjQ6CZ0FW7GVH7z0nd
-EBCT+ssdfPQK4Y5WlDrAfmlc3qSnhNoleSsDa1XjM58NadRZ/yq9t+rYWsQmRXVf
-fTOdaCoWIyN1Iz66SxCZ2kJLpyTiQgwn2sM2UaE5IVCMaPjWorI2Ae9KqoGu/ygA
-2sU37vn7gPBfT7+Y4t8OKrZIglYJ/CQEHcKrUjLfoRo5XcGfwdi0iLJmwNhnGLjs
-rIClOzHfTmgRhioIOn2Ha7W5IW9it8StDt2LR4zCd3+gLNB/pyppKk1LPGy3VxE+
-k0SuLkRNMWi3UHGrzyJnFb7YmWZbdlHAfd5NQWIwOarPt+PrwSfhrCj2qWkIV/38
-qIir+32qM8LpYEbURnN/BzH/P6Z+c5/37E0fSe3eFa+Yajk1YmVM/d+I0arUMajJ
-pU88RuDWpkvX6floGYsv4+lZ5DPG3ifNch0Lra1iL99jAJlf4iY=
-=DnJd
------END PGP SIGNATURE-----
-
---yxhrp7awxfgehq5t--
 
