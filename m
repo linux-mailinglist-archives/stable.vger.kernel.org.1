@@ -1,140 +1,204 @@
-Return-Path: <stable+bounces-40152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE768A9239
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 06:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0078A936B
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 08:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D175A2840E0
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 04:58:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1CA9280F4D
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 06:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7627C4EB51;
-	Thu, 18 Apr 2024 04:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8748538DD9;
+	Thu, 18 Apr 2024 06:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIQ2q0Hl"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="sv8hVM3H"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF4F4438F;
-	Thu, 18 Apr 2024 04:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC0D77F2D;
+	Thu, 18 Apr 2024 06:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713416296; cv=none; b=CDZr5Mm5tC+VMbGQislnjAWMRVFip5f1+Fj+X0fxb40eYuaLNpD6GyPf+v7vBrDilEN3da2BIOpKijUuKIaYkps88Uc3fX4zrskY7h8dh9O3QW610ds0FFwMKRtNXlm48VNoDLGrIdGg/0cU98VCLrnYvQPLbGK/G0EHaCE7cUI=
+	t=1713422676; cv=none; b=DOg3TeQpYcR2rCzIHA7iIVpk8xZ/xEFGAcVnsFizE0hmn/7+beXcoP4jlUvv1BUaMrBKnGGfMID9CKob+Vk/517woLPqq3w51i6ThGSnB6STMueNxXbPPSX9G3HVeBshSeAQHiBNajOkYtV9ymaoytLwYlQD/LFkyZn9opGe4TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713416296; c=relaxed/simple;
-	bh=1GIfnLR14SpISzBtJDNhW/puZNUl+1Lzin0dxK/lgws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EYx+62IoSDYIb8Jiuw+zkokWRRnLUWPY5T9CvuRXPQ4ilSH9cATWAGc24xxOQpIU28ZcCRV7Gx3blZnJAUrxSIjHMNQCpjVNqgR8MFAyPoRR9bTuVzqtmxliAxWVpr+rsJ3dCI8lJEQLsvmMuO9NDn4rLG9wqnq5BRlJF5V8XrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIQ2q0Hl; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56e6a1edecfso559773a12.1;
-        Wed, 17 Apr 2024 21:58:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713416293; x=1714021093; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SL2uiIXH35aGZc0Hh8VLlfK7Ln3jRKiQNAg1SPvfYcs=;
-        b=XIQ2q0HlaGbtjmZ21Re7qDfJ07IUir6HxGMZO8DD/KJMbkvHUUx1FwUEGFLgSTstcW
-         3JruC8Vbj2t50xwTPE/rTHLVJFvTrTmW3TI7AC4wMsvFBhD+Ms3qVPBmP6/0fhRDl00j
-         rr90Psjyr0w2LECN31IRNuJdWz6E0bnob0JBVl/xMCHiLPyYlGzcZ8aYB9sosxIAVxLP
-         PUEidWZfJvLPngn220UT4uqazCOI8bkbOSh0bezS6q8k1enVhMXAJXTfkhTXzLZu/j6v
-         9OTkz+rrDjOmab4LPueY9tdKpFL4Me5DtAw+Lr3Nzbzzmtzt7TEp9MuE2Abls9xknyQG
-         pRLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713416293; x=1714021093;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SL2uiIXH35aGZc0Hh8VLlfK7Ln3jRKiQNAg1SPvfYcs=;
-        b=IIeFfg6WL7z6PtuzlyqvfP66YLIwh1d9iASwsmDM/CTveAdtENixSxV7VkK5vEUONk
-         mhVIQ3DTvhPZy8uwrJ7a4OvH5SGYylI5cC01ld/y01klUer4nZga3cRgP1OvxmzVIYXf
-         6GWnbVz9FkbCMwU+x3xaHfMs1ha/rplrRIaYjIwXrsIY1K6Mzyoj4zXhJTUBjXjamEbU
-         +T8GRQW8/losJWt2kZrsFH1N3l00BAb0E3nvjDEVO2EiJserLAgnb/aWZMC/gWkwcjUS
-         zZSbfsg+AUJV7sh2EkTUIO5jb2mIG4wPYZNI8fJgNmfQbhjW8lAf5spuCh0MqGp7dtkd
-         YXNw==
-X-Forwarded-Encrypted: i=1; AJvYcCV+8fAerK6ZIWZlc2pNp9c4S73UOSl1gUqHIyyyt0rZlUkqMc9zn7lLJm4ZKyL0i4pWfM6J0uQKvH+FxovnLjcHzmeLKElvN0M4X8mg4PsS4xsRX8g2Hd9B/xoQWjkeQmnqag==
-X-Gm-Message-State: AOJu0Yxx5OuAS3s0KfXnM6ugZzhhGZEvSskLz41v9dPXdOtXvPuRLMbg
-	UQxv+MCmiG2Hn76/VdY9sbMRWWeEz1PxIFEZVGFanVIVoPKoanbk
-X-Google-Smtp-Source: AGHT+IHz0IE74OUzjcYa9ALlwnqFMHsbPsP49is02/FUiFH1TdkJ3Fu4Hl774aOUHaxTCJ5ZuqG6xA==
-X-Received: by 2002:a50:d4c2:0:b0:56e:2abd:d00f with SMTP id e2-20020a50d4c2000000b0056e2abdd00fmr1172402edj.18.1713416292503;
-        Wed, 17 Apr 2024 21:58:12 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id d15-20020aa7d68f000000b005701df2ea98sm383140edr.32.2024.04.17.21.58.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Apr 2024 21:58:11 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 1C0A9BE2EE8; Thu, 18 Apr 2024 06:58:10 +0200 (CEST)
-Date: Thu, 18 Apr 2024 06:58:10 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Paulo Alcantara <pc@manguebit.com>
-Cc: regressions@lists.linux.dev, Steve French <stfrench@microsoft.com>,
-	gregkh@linuxfoundation.org, sashal@kernel.org,
-	stable@vger.kernel.org, linux-cifs@vger.kernel.org
-Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
- overflow frame end of buf" and invisible files under certain conditions and
- at least with noserverino mount option
-Message-ID: <ZiCoYjr79HXxiTjr@eldamar.lan>
-References: <ZiBCsoc0yf_I8In8@eldamar.lan>
- <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
+	s=arc-20240116; t=1713422676; c=relaxed/simple;
+	bh=F4j2YeFDdlVC8020K/Vmjs/sUEilFa5SrR5hL+gvFT4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kj/kXB9dEoz2HotzW0z1im0pOzM1MogieMmvQ0XmTb0xJaEi6wivvJD7CYnurlL+4vdzhF56PneZIoVcZOfI/96tuDKIFMYgXcy9NVMWd7eVlSHgKfV+EVHs/gl4H5RzzAyNT1OZNO5ZocnMp+mR7SUPCL8VKEIMO8WGLkxCr80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=sv8hVM3H; arc=none smtp.client-ip=198.47.19.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 43I6iHpb129585;
+	Thu, 18 Apr 2024 01:44:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1713422657;
+	bh=90nyYzTpix82xLJuEEoTch0nJmxT21KfiXvrixbJ65w=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=sv8hVM3H+hR5A8dqlG9g7pm6vM8TGedLfXktfBdxO0+yomNvG6ZAd2va/R6gjby0V
+	 z5Nk4LYXQLQgwb3gks78vHpV8HldHS5gtmiRQpRM9fA/Lf60DCr1CuwVaxsOlLjM1z
+	 yq0QqKsvoFqnOCG3J5Fgc4DYwbjT4dHrQVFYQ2QU=
+Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 43I6iGku021731
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 18 Apr 2024 01:44:17 -0500
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 18
+ Apr 2024 01:44:16 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 18 Apr 2024 01:44:16 -0500
+Received: from localhost (jluthra.dhcp.ti.com [172.24.227.116])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 43I6iFJq099234;
+	Thu, 18 Apr 2024 01:44:16 -0500
+Date: Thu, 18 Apr 2024 12:14:15 +0530
+From: Jai Luthra <j-luthra@ti.com>
+To: Joao Paulo Goncalves <jpaulo.silvagoncalves@gmail.com>
+CC: Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Liam Girdwood
+	<lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela
+	<perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Joao Paulo Goncalves
+	<joao.goncalves@toradex.com>,
+        <alsa-devel@alsa-project.org>, <linux-sound@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] ASoC: ti: davinci-mcasp: Fix race condition during probe
+Message-ID: <nhfnj5b44lrsh57ffxzsj5la6q36llq4qptyenmaor4xhnbqem@skyzmn4fyhkd>
+References: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="yxhrp7awxfgehq5t"
+Content-Disposition: inline
+In-Reply-To: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+
+--yxhrp7awxfgehq5t
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
+Content-Transfer-Encoding: quoted-printable
 
-Hi Paulo,
+Hi Joao,
 
-Thanks a lot for your time on looking into it.
+On Apr 17, 2024 at 15:41:38 -0300, Joao Paulo Goncalves wrote:
+> From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+>=20
+> When using davinci-mcasp as CPU DAI with simple-card, there are some
+> conditions that cause simple-card to finish registering a sound card befo=
+re
+> davinci-mcasp finishes registering all sound components. This creates a
+> non-working sound card from userspace with no problem indication apart
+> from not being able to play/record audio on a PCM stream. The issue
+> arises during simultaneous probe execution of both drivers. Specifically,
+> the simple-card driver, awaiting a CPU DAI, proceeds as soon as
+> davinci-mcasp registers its DAI. However, this process can lead to the
+> client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
+> being preempted before PCM DMA registration on davinci-mcasp finishes.
+> This situation occurs when the probes of both drivers run concurrently.
+> Below is the code path for this condition. To solve the issue, defer
+> davinci-mcasp CPU DAI registration to the last step in the audio part of
+> it. This way, simple-card CPU DAI parsing will be deferred until all
+> audio components are registered.
 
-On Wed, Apr 17, 2024 at 07:58:56PM -0300, Paulo Alcantara wrote:
-> Hi Salvatore,
-> 
-> Salvatore Bonaccorso <carnil@debian.org> writes:
-> 
-> > In Debian we got two reports of cifs mounts not functioning, hiding
-> > certain files. The two reports are:
-> >
-> > https://bugs.debian.org/1069102
-> > https://bugs.debian.org/1069092
-> >
-> > On those cases kernel logs error
-> >
-> > [   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
-> 
-> I couldn't reproduce it.  Does the following fix your issue:
-> 
-> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-> index 4c1231496a72..3ee35430595e 100644
-> --- a/fs/smb/client/smb2pdu.c
-> +++ b/fs/smb/client/smb2pdu.c
-> @@ -5083,7 +5083,7 @@ smb2_parse_query_directory(struct cifs_tcon *tcon,
->  		info_buf_size = sizeof(struct smb2_posix_info);
->  		break;
->  	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
-> -		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO);
-> +		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO) - 1;
->  		break;
->  	default:
->  		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
-> 
-> If not, please provide network trace and verbose logs.
+Good catch, thanks for the fix.
 
-Yes that appears to fix the issue.
+Reviewed-by: Jai Luthra <j-luthra@ti.com>
 
-But as you say you are not able to reproduce the issue, I guess we
-need to try to get it clearly reproducible first to see we face no
-other fallouts?
+>=20
+> Fail Code Path:
+>=20
+> simple-card.c: probe starts
+> simple-card.c: simple_dai_link_of: simple_parse_node(..,cpu,..) returns E=
+PROBE_DEFER, no CPU DAI yet
+> davinci-mcasp.c: probe starts
+> davinci-mcasp.c: devm_snd_soc_register_component() register CPU DAI
+> simple-card.c: probes again, finish CPU DAI parsing and call devm_snd_soc=
+_register_card()
+> simple-card.c: finish probe
+> davinci-mcasp.c: *dma_pcm_platform_register() register PCM  DMA
+> davinci-mcasp.c: probe finish
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 9fbd58cf4ab0 ("ASoC: davinci-mcasp: Choose PCM driver based on con=
+figured DMA controller")
+> Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+> ---
+>  sound/soc/ti/davinci-mcasp.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+> index b892d66f78470..1e760c3155213 100644
+> --- a/sound/soc/ti/davinci-mcasp.c
+> +++ b/sound/soc/ti/davinci-mcasp.c
+> @@ -2417,12 +2417,6 @@ static int davinci_mcasp_probe(struct platform_dev=
+ice *pdev)
+> =20
+>  	mcasp_reparent_fck(pdev);
+> =20
+> -	ret =3D devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_comp=
+onent,
+> -					      &davinci_mcasp_dai[mcasp->op_mode], 1);
+> -
+> -	if (ret !=3D 0)
+> -		goto err;
+> -
+>  	ret =3D davinci_mcasp_get_dma_type(mcasp);
+>  	switch (ret) {
+>  	case PCM_EDMA:
+> @@ -2449,6 +2443,12 @@ static int davinci_mcasp_probe(struct platform_dev=
+ice *pdev)
+>  		goto err;
+>  	}
+> =20
+> +	ret =3D devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_comp=
+onent,
+> +					      &davinci_mcasp_dai[mcasp->op_mode], 1);
+> +
+> +	if (ret !=3D 0)
+> +		goto err;
+> +
+>  no_audio:
+>  	ret =3D davinci_mcasp_init_gpiochip(mcasp);
+>  	if (ret) {
+> --=20
+> 2.34.1
+>=20
 
-Regards,
-Salvatore
+--=20
+Thanks,
+Jai
+
+GPG Fingerprint: 4DE0 D818 E5D5 75E8 D45A AFC5 43DE 91F9 249A 7145
+
+--yxhrp7awxfgehq5t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEETeDYGOXVdejUWq/FQ96R+SSacUUFAmYgwTsACgkQQ96R+SSa
+cUWXrBAApnBEaeieeTJxw4vOCZ+HgP2Btgkjs72DfMCPJiJ/5cmgjRJiZNk2Xbzh
+1jWiwvjvk0saPdbb1RyXvXo+sOKsYBlRQS8i8kpOIsx6S7eqZlsF9kkMcotiDe3m
+zL4hQpcwevYmVCqnnTaZfTHAyMN2Tk+I7Np/I+86MgOt86L0N3GVPjlTts2EeKDY
+/dfoDYgFfWqRfdZmGSFxVl4YdEmrwwvNK0u2CrUgXuSkvBhjQ6CZ0FW7GVH7z0nd
+EBCT+ssdfPQK4Y5WlDrAfmlc3qSnhNoleSsDa1XjM58NadRZ/yq9t+rYWsQmRXVf
+fTOdaCoWIyN1Iz66SxCZ2kJLpyTiQgwn2sM2UaE5IVCMaPjWorI2Ae9KqoGu/ygA
+2sU37vn7gPBfT7+Y4t8OKrZIglYJ/CQEHcKrUjLfoRo5XcGfwdi0iLJmwNhnGLjs
+rIClOzHfTmgRhioIOn2Ha7W5IW9it8StDt2LR4zCd3+gLNB/pyppKk1LPGy3VxE+
+k0SuLkRNMWi3UHGrzyJnFb7YmWZbdlHAfd5NQWIwOarPt+PrwSfhrCj2qWkIV/38
+qIir+32qM8LpYEbURnN/BzH/P6Z+c5/37E0fSe3eFa+Yajk1YmVM/d+I0arUMajJ
+pU88RuDWpkvX6floGYsv4+lZ5DPG3ifNch0Lra1iL99jAJlf4iY=
+=DnJd
+-----END PGP SIGNATURE-----
+
+--yxhrp7awxfgehq5t--
 
