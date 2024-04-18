@@ -1,194 +1,137 @@
-Return-Path: <stable+bounces-40227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AA18AA5BF
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 01:22:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 810C78AA5FA
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 01:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99F0E2855F7
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 23:22:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED0881F21454
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 23:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A754C4AED6;
-	Thu, 18 Apr 2024 23:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4ACC78286;
+	Thu, 18 Apr 2024 23:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="koaBsHNr"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UyXDSEpS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A2A7EF1E
-	for <stable@vger.kernel.org>; Thu, 18 Apr 2024 23:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8801C5FEED
+	for <stable@vger.kernel.org>; Thu, 18 Apr 2024 23:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713482447; cv=none; b=PjT5rKr4+Vv3JFfTcZ92J0NfTJv0WVWfqJFq8I1NBYffd2t0CNiwzTIzDdXZ8o/8OPds2C8phmP8rqCcN8T/VcQh2mSUKpOelB2eyXyisyOdKB9yiEYXFvQBqBViHUaQVREYPtnv+WmLq8NjwgllUnjEsvJ5D1Re4iHrTaNffSY=
+	t=1713483673; cv=none; b=ObWkjhiSebxOLHy1eETRmTH/My09aEpbXPCZrppiOKw/LglAZ14n8iZ9dYb1KuKdS520BJ2F7CV4n+ymMJcm0eWseZ0q/8ioXJGUY7MG6ct6YLKVsqPQZdlwMbcVhZjcoT+oQTZP9q69EZv9MN/EX9ozKbWj4uqxkzcIk+9nmko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713482447; c=relaxed/simple;
-	bh=zL0IOoCobZDTZUsmgY7nEkobUjMzIyGPYXzHlOIP8G0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ix2ozU2Nx4n/GnMkPyDhktDWwrVOvdvjN0yhWWMnhZ4+zT3lvmvxTj8rM/BAd9ozdL+MiM4Q2YY0StX4HI9X6nAyBCsCwE/LSOVDAyLSg1sNCY3UyL/wT7y13z0tSQ0knq4ywsSyTCFdXMKP02bBYPMJTU+VJjY3QHTV5ajVRdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edliaw.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=koaBsHNr; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edliaw.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2a5066ddd4cso1609148a91.0
-        for <stable@vger.kernel.org>; Thu, 18 Apr 2024 16:20:45 -0700 (PDT)
+	s=arc-20240116; t=1713483673; c=relaxed/simple;
+	bh=oS4EJBOFAK9U3IsQ2hlOiJf8LGZYq2pmuC4jtH1eYZQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MlxVl7XtwI0kbr8Z+7OMWz9fSpK5A0K8wzkmiY1N8ayZ6ZKCSE5jVLUt0W8L2AbghpnrqZkiQ9COSTDJ4onRL3cka96dsAxhjGiuK3SIkCKeHqgtxJnyhwiy70gfrCnnQ1yRR5bxrLlZW0+I/CjfDzltmFFFNUNrTG0MZL0rGq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UyXDSEpS; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6ee12766586so1214497b3a.0
+        for <stable@vger.kernel.org>; Thu, 18 Apr 2024 16:41:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713482445; x=1714087245; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kPcj1Y72oL0YYRAb0yR7vLtHAgm/BnGjHu6ktOeso8Y=;
-        b=koaBsHNrYSBt01wMnhjZzOomSPzo/bFkh1Mq47Jr406ZU0RHI012dOZGeHRZUoDA/N
-         OP7YfGqVjAKAwed/s4sd6TWiyImAMMW2Z0j5RKGAqaeQOCY18FzsiH75gWVhW00yyBUF
-         E9wOuMqUeOAeBFrnSzbiVGqIxXuT/Ff6R+fBO0sEYwxin6p3VxoRGtjJ9yHib9BbDOBg
-         oObdFJTj4XHzv7OA+6H5xX07iMutMTcyfn55DOrVqZWHbsYHervxC11BAzK9mxrn55dT
-         fkWQ6hKgaC3qp+HuBCIIKNzt0sMbkSPqjnFJEg236gnqOGgArEChwLeIabNW1HJydCTM
-         BR2w==
+        d=linaro.org; s=google; t=1713483671; x=1714088471; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KGXVJHkqXUXGowXRQlx5v2hqDJp91SY1761utJ4P5AQ=;
+        b=UyXDSEpSqJqSCCSRAl2GaHpDBNkxvH9trcGXi3/OH0yaxBRuswlMapSUeJ3JhCD7EM
+         Cm3EDPMlbGvSrnRRLpqjOvfr9y0cuQyuNL5j1CfZJKucz1/btGJoRGDaWYK5L8cCWr8B
+         AxpLcOqkt/2osDmRdb1cBo/gwWWGeKz7qNmghOtWbQMOrvQ7di7Mf/kDhebxJivQocdV
+         qjTtd/6zR379lyi37KNB+HxSl3U+HgcDF0OXhsdCcdcSpvAceA3oNHQlLVf9W41LbfHT
+         JYg4ZtMaieXfPLQ6q0CROJe9GzipCz2/2/0qgnQUU5IqwA9rPeSs4r4bOkwLXzjXCkXk
+         4ycw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713482445; x=1714087245;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kPcj1Y72oL0YYRAb0yR7vLtHAgm/BnGjHu6ktOeso8Y=;
-        b=PgWa/W9fhquzcyY4GfSy7Ifp6z6OHTxhrPOchylTQqQQLAUvfKvM/V2h0wQUFSW42a
-         ex0Js0pUK92NygEgzWsTJJJG0Sj9Of/ObdXugRrgxih/rABY3MflXSI79I9zm6boxggi
-         ZIvPv0BdHE4jfIwQAxACBND2+tSP0FKDb9aaxL+jVhyA3NpzI7Kg9soUe/dxD3XqL7hx
-         30dGJ1OKG/uI/UY+ukMps7TqYOTRibYEwLkAmpD5mTolwveVDxZ/088BjVVf5Bwr8J1p
-         rjSHlK4TvmAkl4yiytSvPIw8aUqiW0M01B8GqqCuM7Sv4MPMSNH+VJmTWnSwCHpt1ahC
-         SEcA==
-X-Gm-Message-State: AOJu0YyYLK8HJZTNCwUCJEAJo/7n7ILJZD8qyJZ3eBTw1jlsBtnlCBGJ
-	NTRtuHbt+EHrzma9+9xbflflBPMC9afv7Sw6cSJJ1pO8U3tnveqraWpE0JZXhVfEvgSliu6kTof
-	T5pvg488IdwSKtlamLQ4Hcpg9u5GGcmLSlSUTVqBtvL5RAtCa3Xog1aSx24SFPhgv8TUtExEnLV
-	wjtZtRGWgf3AdqVUaOEOu5XIDJzcGJn26/
-X-Google-Smtp-Source: AGHT+IEEzy9e5oCLBFWlB6Une2LnpsXUA9NbXktsIkQ6j7clNh0qpXI1n6gnG31DeYQV8W7REduewhCPvyA=
-X-Received: from edliaw.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:305d])
- (user=edliaw job=sendgmr) by 2002:a17:90a:46c8:b0:2ab:e1ae:d4c4 with SMTP id
- x8-20020a17090a46c800b002abe1aed4c4mr2052pjg.5.1713482444029; Thu, 18 Apr
- 2024 16:20:44 -0700 (PDT)
-Date: Thu, 18 Apr 2024 23:19:51 +0000
-In-Reply-To: <20240418232005.34244-1-edliaw@google.com>
+        d=1e100.net; s=20230601; t=1713483671; x=1714088471;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KGXVJHkqXUXGowXRQlx5v2hqDJp91SY1761utJ4P5AQ=;
+        b=NR4YdqTjRjU9TKZ0hjHUug6SXUYZ4IsZZF50h4/MWHODlGR75FR2g9IiI16fqUEgcU
+         ZTZ4Fo40twaDanV7jQKnum7wuMJq2+wnrh2PcLSyhCFanhqogy/mLQ0NVfsU6i9GypJX
+         n65670BXjyXxhhJNSgbjXqUB8ZMI3ZYcEc3DMm9k9E8t9VvpaKUl5Iw6UTGeI71Csbb0
+         d5pDgLzwvs8F3OIjKIXWWLqbFU8cc+SXmetmecmDpQRWzv9IOLN8gNKikTfFcvanqLJ1
+         vQd7/KX2RSz9rb4ZujHoUQqD+Zz53IHmP8RKUQBnXvy3eC0jZZvD+qAja3ohqdqn0eK3
+         qazg==
+X-Forwarded-Encrypted: i=1; AJvYcCWLmhJFZc1aY03LqOURxdUTZYzi2YtAbbr2JI/ePt5UpRXprp6TWfEymygG9H08tqCcCoK0hqjzHLhsVi+AXVKLWygbV+yr
+X-Gm-Message-State: AOJu0YyxQQLx0o2kE7ME0jG113hL+xk6KELqTWdHV4TY4sjnFLddPvyS
+	lAaXqCJegfEP2YLmlmbG5UuC7CEF+5YLDib4EZBGsJt+mYMwzPGK3Jxqh9q7P5M=
+X-Google-Smtp-Source: AGHT+IHcWz5nk/GgsJQgu1UEhUdG0EsvhhpLCyj/MsQLD2WdQKca7fsvr1cU7UdC1GmlThxMGjCUMA==
+X-Received: by 2002:a05:6a00:2408:b0:6ed:416d:e9e with SMTP id z8-20020a056a00240800b006ed416d0e9emr867794pfh.16.1713483670741;
+        Thu, 18 Apr 2024 16:41:10 -0700 (PDT)
+Received: from [172.20.10.110] ([209.37.221.130])
+        by smtp.gmail.com with ESMTPSA id ld2-20020a056a004f8200b006eaf43bbcb5sm2050444pfb.114.2024.04.18.16.41.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Apr 2024 16:41:10 -0700 (PDT)
+Message-ID: <15164074-f050-49ef-8e24-f64fc417a0b4@linaro.org>
+Date: Fri, 19 Apr 2024 00:41:08 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <16430256912363@kroah.com> <20240418232005.34244-1-edliaw@google.com>
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240418232005.34244-6-edliaw@google.com>
-Subject: [PATCH 5.15.y v3 5/5] bpf: Fix ringbuf memory type confusion when
- passing to helpers
-From: Edward Liaw <edliaw@google.com>
-To: stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>
-Cc: bpf@vger.kernel.org, kernel-team@android.com, 
-	Edward Liaw <edliaw@google.com>, Yonghong Song <yhs@fb.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] usb: typec: qcom-pmic: fix use-after-free on late
+ probe errors
+To: Johan Hovold <johan+linaro@kernel.org>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240418145730.4605-1-johan+linaro@kernel.org>
+ <20240418145730.4605-2-johan+linaro@kernel.org>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20240418145730.4605-2-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+On 18/04/2024 15:57, Johan Hovold wrote:
+> Make sure to stop and deregister the port in case of late probe errors
+> to avoid use-after-free issues when the underlying memory is released by
+> devres.
+> 
+> Fixes: a4422ff22142 ("usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
+> Cc: stable@vger.kernel.org	# 6.5
+> Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>   drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+> index e48412cdcb0f..d3958c061a97 100644
+> --- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+> +++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+> @@ -104,14 +104,18 @@ static int qcom_pmic_typec_probe(struct platform_device *pdev)
+>   
+>   	ret = tcpm->port_start(tcpm, tcpm->tcpm_port);
+>   	if (ret)
+> -		goto fwnode_remove;
+> +		goto port_unregister;
+>   
+>   	ret = tcpm->pdphy_start(tcpm, tcpm->tcpm_port);
+>   	if (ret)
+> -		goto fwnode_remove;
+> +		goto port_stop;
+>   
+>   	return 0;
+>   
+> +port_stop:
+> +	tcpm->port_stop(tcpm);
+> +port_unregister:
+> +	tcpm_unregister_port(tcpm->tcpm_port);
+>   fwnode_remove:
+>   	fwnode_remove_software_node(tcpm->tcpc.fwnode);
+>   
 
-The bpf_ringbuf_submit() and bpf_ringbuf_discard() have ARG_PTR_TO_ALLOC_MEM
-in their bpf_func_proto definition as their first argument, and thus both expect
-the result from a prior bpf_ringbuf_reserve() call which has a return type of
-RET_PTR_TO_ALLOC_MEM_OR_NULL.
-
-While the non-NULL memory from bpf_ringbuf_reserve() can be passed to other
-helpers, the two sinks (bpf_ringbuf_submit(), bpf_ringbuf_discard()) right now
-only enforce a register type of PTR_TO_MEM.
-
-This can lead to potential type confusion since it would allow other PTR_TO_MEM
-memory to be passed into the two sinks which did not come from bpf_ringbuf_reserve().
-
-Add a new MEM_ALLOC composable type attribute for PTR_TO_MEM, and enforce that:
-
- - bpf_ringbuf_reserve() returns NULL or PTR_TO_MEM | MEM_ALLOC
- - bpf_ringbuf_submit() and bpf_ringbuf_discard() only take PTR_TO_MEM | MEM_ALLOC
-   but not plain PTR_TO_MEM arguments via ARG_PTR_TO_ALLOC_MEM
- - however, other helpers might treat PTR_TO_MEM | MEM_ALLOC as plain PTR_TO_MEM
-   to populate the memory area when they use ARG_PTR_TO_{UNINIT_,}MEM in their
-   func proto description
-
-Fixes: 457f44363a88 ("bpf: Implement BPF ring buffer and verifier support for it")
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-(cherry picked from commit a672b2e36a648afb04ad3bda93b6bda947a479a5)
-Signed-off-by: Edward Liaw <edliaw@google.com>
----
- include/linux/bpf.h   | 9 +++++++--
- kernel/bpf/verifier.c | 6 +++++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index df15d4d445dd..74a26cabc084 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -321,7 +321,12 @@ enum bpf_type_flag {
- 	 */
- 	MEM_RDONLY		= BIT(1 + BPF_BASE_TYPE_BITS),
- 
--	__BPF_TYPE_LAST_FLAG	= MEM_RDONLY,
-+	/* MEM was "allocated" from a different helper, and cannot be mixed
-+	 * with regular non-MEM_ALLOC'ed MEM types.
-+	 */
-+	MEM_ALLOC		= BIT(2 + BPF_BASE_TYPE_BITS),
-+
-+	__BPF_TYPE_LAST_FLAG	= MEM_ALLOC,
- };
- 
- /* Max number of base types. */
-@@ -405,7 +410,7 @@ enum bpf_return_type {
- 	RET_PTR_TO_SOCKET_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_SOCKET,
- 	RET_PTR_TO_TCP_SOCK_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_TCP_SOCK,
- 	RET_PTR_TO_SOCK_COMMON_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_SOCK_COMMON,
--	RET_PTR_TO_ALLOC_MEM_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_ALLOC_MEM,
-+	RET_PTR_TO_ALLOC_MEM_OR_NULL	= PTR_MAYBE_NULL | MEM_ALLOC | RET_PTR_TO_ALLOC_MEM,
- 	RET_PTR_TO_BTF_ID_OR_NULL	= PTR_MAYBE_NULL | RET_PTR_TO_BTF_ID,
- 
- 	/* This must be the last entry. Its purpose is to ensure the enum is
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 33fb379b9f58..67b325427022 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -573,6 +573,8 @@ static const char *reg_type_str(struct bpf_verifier_env *env,
- 
- 	if (type & MEM_RDONLY)
- 		strncpy(prefix, "rdonly_", 16);
-+	if (type & MEM_ALLOC)
-+		strncpy(prefix, "alloc_", 16);
- 
- 	snprintf(env->type_str_buf, TYPE_STR_BUF_LEN, "%s%s%s",
- 		 prefix, str[base_type(type)], postfix);
-@@ -5157,6 +5159,7 @@ static const struct bpf_reg_types mem_types = {
- 		PTR_TO_MAP_KEY,
- 		PTR_TO_MAP_VALUE,
- 		PTR_TO_MEM,
-+		PTR_TO_MEM | MEM_ALLOC,
- 		PTR_TO_BUF,
- 	},
- };
-@@ -5174,7 +5177,7 @@ static const struct bpf_reg_types int_ptr_types = {
- static const struct bpf_reg_types fullsock_types = { .types = { PTR_TO_SOCKET } };
- static const struct bpf_reg_types scalar_types = { .types = { SCALAR_VALUE } };
- static const struct bpf_reg_types context_types = { .types = { PTR_TO_CTX } };
--static const struct bpf_reg_types alloc_mem_types = { .types = { PTR_TO_MEM } };
-+static const struct bpf_reg_types alloc_mem_types = { .types = { PTR_TO_MEM | MEM_ALLOC } };
- static const struct bpf_reg_types const_map_ptr_types = { .types = { CONST_PTR_TO_MAP } };
- static const struct bpf_reg_types btf_ptr_types = { .types = { PTR_TO_BTF_ID } };
- static const struct bpf_reg_types spin_lock_types = { .types = { PTR_TO_MAP_VALUE } };
-@@ -5337,6 +5340,7 @@ static int check_func_arg(struct bpf_verifier_env *env, u32 arg,
- 	case PTR_TO_MAP_VALUE:
- 	case PTR_TO_MEM:
- 	case PTR_TO_MEM | MEM_RDONLY:
-+	case PTR_TO_MEM | MEM_ALLOC:
- 	case PTR_TO_BUF:
- 	case PTR_TO_BUF | MEM_RDONLY:
- 	case PTR_TO_STACK:
--- 
-2.44.0.769.g3c40516874-goog
-
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
