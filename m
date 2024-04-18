@@ -1,226 +1,176 @@
-Return-Path: <stable+bounces-40173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71ADA8A9824
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:04:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0899B8A983B
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 010F11F22CE0
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 11:04:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98BE6282DF5
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 11:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E525E15E216;
-	Thu, 18 Apr 2024 11:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E0D15E5DA;
+	Thu, 18 Apr 2024 11:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="iwuquuFV";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="5agX036W";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XI4mK2VA";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lRh68gjo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WtBUCCud"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859F015D5C1;
-	Thu, 18 Apr 2024 11:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23C215E5C6;
+	Thu, 18 Apr 2024 11:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713438284; cv=none; b=XYjYOGmMcTsvaNcEw5BC8vydgJ6ZxluBDGFiJptMrN2S/QcAod/rKIwJXVwYMsoME3izyJfQFZb6CT0uX/5sjItIuH7ZItKBURnloqU8AcjroUCjejJIrpVfWZ1p+IT2jPX6qsQ+XsIGcCbHNnR63+SK5SMd2qcCg5Fo/qeQnos=
+	t=1713438459; cv=none; b=muRpHdHgn2kwDM6rqMJihiUHwDHvUX3rJsId/y6CAryoacJMcD+b/3lOq9gz0yuxb5qF4Az0URjOfLAQAT21Vmtv48nobWpHADJWDc1kOu2XNlApPPxPFisOJYSOkANq10a9WTGTaQ1l6yjsHWXapvrjT8KR0WMiG/79rUDdmVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713438284; c=relaxed/simple;
-	bh=n6GYePWKGsaNVZpPhB0ngSYw7xW4miHlMzKXOKwuVms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t3TW8uBUTqXx4qpMii562uehiOTEn6GZCd0I+Q+toPHqckq4LdANvtLPVCQMVKfcptqPIdLOid7zaZVDrJt3UhOSJc199Gy3oEy3EO4Q+f/3MtMqhD/ErSSn4h8z/xURuI4jmszW9LgXhOLvvVs133hwIaB/acktdtQpMsjVUuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=iwuquuFV; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=5agX036W; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XI4mK2VA; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lRh68gjo; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B234C34DD5;
-	Thu, 18 Apr 2024 11:04:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1713438275; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gv1S5z4U/Lpggcm746FJVB5sgVR9PpMNoPlpi/9ROxQ=;
-	b=iwuquuFVSRj3wbZCLHn+iERrfqZ94jpQwcRoAjkTgPgCjZ9T5yHoslKOU7yjTp2Qn7GhQI
-	4bp/2Jm/BhOOW45u/3kTokz1zh3D9BRjs2v5BXX0U6hohw/BdwtSc4lvfUA5lsrufbci3b
-	XSEcEqETcdua1ZbS1B7L450I6w+Rcnc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1713438275;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gv1S5z4U/Lpggcm746FJVB5sgVR9PpMNoPlpi/9ROxQ=;
-	b=5agX036W69nvNXNH3kJXYCpizMe4x2w1YlQxcUWUiKddCrUfqw1yXh3VJB7M6C0kkf0SzM
-	8aXAirlqboDm7SCg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XI4mK2VA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lRh68gjo
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1713438274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gv1S5z4U/Lpggcm746FJVB5sgVR9PpMNoPlpi/9ROxQ=;
-	b=XI4mK2VAsewf9Mau4YEWo81qOrnE2L6X7K447OkXOVwrenGAseIJdpA75NAw3F06xbZnV2
-	5oB1MfaA+dUoJIs2Ki0kWbes/57/3OEdsf29V7TVph11AOK07vbTL83ycbxzKMy/Mzv2di
-	5rBtIkL/Iq0VRQIDp11LMq2JREALHTw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1713438274;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gv1S5z4U/Lpggcm746FJVB5sgVR9PpMNoPlpi/9ROxQ=;
-	b=lRh68gjome/yMlDFGPIYA9g2odX3SgIGtGtf7dAvaJwfZUQxh0UVwOfZBK60hYYb/EcL07
-	PbLXKw4KbgMc1ECw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A60E91384C;
-	Thu, 18 Apr 2024 11:04:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id LpV7KEL+IGYrWwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 18 Apr 2024 11:04:34 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 4DEF6A0812; Thu, 18 Apr 2024 13:04:34 +0200 (CEST)
-Date: Thu, 18 Apr 2024 13:04:34 +0200
-From: Jan Kara <jack@suse.cz>
-To: Zach O'Keefe <zokeefe@google.com>
-Cc: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Maxim Patlasov <MPatlasov@parallels.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/writeback: fix possible divide-by-zero in
- wb_dirty_limits(), again
-Message-ID: <20240418110434.g5bx5ntp2m4433eo@quack3>
-References: <20240118181954.1415197-1-zokeefe@google.com>
- <20240417111001.fa2eg5gp6t2wiwco@quack3>
- <CAAa6QmSOum_0ZhyUq1ppguLp0jpEs0u1U843GkF==xMwaMGV4A@mail.gmail.com>
+	s=arc-20240116; t=1713438459; c=relaxed/simple;
+	bh=zwXcSp+gS+V/zeI7KiXiX9qGQJloCCeFDJ8XC9FCmp8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FBy7D7P6s7lsXhV5axLLI+EFfY7xYy3CGGIfdwc0nBTQDPKomoxDrwQPzdB65NDQHLwODOqnP2t3+pul/K0y0t2K99rqbjanVnRbMMYVryGjOj7X909KC0j52op3+5ia2f/60TDZvvR7HU/r0XkWiEMyPd6Nk/3LQ87dBfhQDM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WtBUCCud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340B6C4AF08;
+	Thu, 18 Apr 2024 11:07:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713438459;
+	bh=zwXcSp+gS+V/zeI7KiXiX9qGQJloCCeFDJ8XC9FCmp8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WtBUCCudLJbry0qzPtwylXf2XGuGsS9YFZZbVBKyb4nwXE9SbJPICMdSz17v5pxpQ
+	 zHMRtYfZqNy8jVXfppLtkwfowLAiAnDXlQFRDsgFJThXqFJO5h3zoSsvYjRlEMLzAx
+	 9LXQ6/oTWKWqsKJRc3vDNEzH4kYvhm8PMnO/2O86+TtjGbI0mDRKn1qKcM1i53BaD7
+	 cxUXY2nD7xItggFx0zxzRcrcPku0l6YxKUng3U7W95PmU5T9CGOmmgyciRByFeKSMS
+	 0HWc5L4ytm1JZ0cJPT3mJopkclbM0rRRltrI9Q7mBDJWZkjWVJ7tY+CxB9RRvdEunj
+	 PByS17Na8RLYg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1rxPc8-005iIG-CB;
+	Thu, 18 Apr 2024 12:07:36 +0100
+Date: Thu, 18 Apr 2024 12:07:35 +0100
+Message-ID: <86sezjq688.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	Yihuang Yu <yihyu@redhat.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shaoqin Huang <shahuang@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+In-Reply-To: <Zh61KobDt_y1O46-@arm.com>
+References: <20240415141953.365222063@linuxfoundation.org>
+	<Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+	<CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
+	<86y19dqw74.wl-maz@kernel.org>
+	<Zh61KobDt_y1O46-@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAa6QmSOum_0ZhyUq1ppguLp0jpEs0u1U843GkF==xMwaMGV4A@mail.gmail.com>
-X-Spam-Flag: NO
-X-Spam-Score: -4.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: B234C34DD5
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email];
-	MISSING_XM_UA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_TRACE(0.00)[suse.cz:+]
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: catalin.marinas@arm.com, naresh.kamboju@linaro.org, gregkh@linuxfoundation.org, broonie@kernel.org, stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, yihyu@redhat.com, gshan@redhat.com, ryan.roberts@arm.com, anshuman.khandual@arm.com, shahuang@redhat.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, anders.roxell@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed 17-04-24 12:33:39, Zach O'Keefe wrote:
-> On Wed, Apr 17, 2024 at 4:10 AM Jan Kara <jack@suse.cz> wrote:
-> > > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> > > index cd4e4ae77c40a..02147b61712bc 100644
-> > > --- a/mm/page-writeback.c
-> > > +++ b/mm/page-writeback.c
-> > > @@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struct dirty_throttle_control *dtc)
-> > >        */
-> > >       dtc->wb_thresh = __wb_calc_thresh(dtc);
-> > >       dtc->wb_bg_thresh = dtc->thresh ?
-> > > -             div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
-> > > +             div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
-...
-> > Thirdly, if thresholds are larger than 1<<32 pages, then dirty balancing is
-> > going to blow up in many other spectacular ways - consider only the
-> > multiplication on this line - it will not necessarily fit into u64 anymore.
-> > The whole dirty limiting code is interspersed with assumptions that limits
-> > are actually within u32 and we do our calculations in unsigned longs to
-> > avoid worrying about overflows (with occasional typing to u64 to make it
-> > more interesting because people expected those entities to overflow 32 bits
-> > even on 32-bit archs). Which is lame I agree but so far people don't seem
-> > to be setting limits to 16TB or more. And I'm not really worried about
-> > security here since this is global-root-only tunable and that has much
-> > better ways to DoS the system.
-> >
-> > So overall I'm all for cleaning up this code but in a sensible way please.
-> > E.g. for these overflow issues at least do it one function at a time so
-> > that we can sensibly review it.
-> >
-> > Andrew, can you please revert this patch until we have a better fix? So far
-> > it does more harm than good... Thanks!
+On Tue, 16 Apr 2024 18:28:10 +0100,
+Catalin Marinas <catalin.marinas@arm.com> wrote:
 > 
-> Shall we just roll-forward with a suitable fix? I think all the
-> original code actually "needed" was to cast the ternary predicate,
-> like:
+> On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
+> > On Tue, 16 Apr 2024 14:07:30 +0100,
+> > Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
+> > > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 6.6.28 release.
+> > > > > There are 122 patches in this series, all will be posted as a response
+> > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > let me know.
+> > > >
+> > > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
+> > > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
+> > > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
+> > > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
+> > > > the bisect and looking at the commit log to pull out people to CC and
+> > > > note that the fix was explicitly targeted at v6.6.
+> > > 
+> > > Anders investigated this reported issues and bisected and also found
+> > > the missing commit for stable-rc 6.6 is
+> > > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
+> > 
+> > Which is definitely *not* stable candidate. We need to understand why
+> > the invalidation goes south when the scale go up instead of down.
 > 
-> ---8<---
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index fba324e1a010..ca1bfc0c9bdd 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -1637,8 +1637,8 @@ static inline void wb_dirty_limits(struct
-> dirty_throttle_control *dtc)
->          *   at some rate <= (write_bw / 2) for bringing down wb_dirty.
->          */
->         dtc->wb_thresh = __wb_calc_thresh(dtc);
-> -       dtc->wb_bg_thresh = dtc->thresh ?
-> -               div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
-> +       dtc->wb_bg_thresh = (u32)dtc->thresh ?
-> +               div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+> If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
+> which fixes 117940aa6e5f ("KVM: arm64: Define
+> kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
+> ("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
+> "scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
+> CBMC model, not on the actual kernel. It may be worth adding some
+> WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
+> num greater than 31.
+> 
+> I haven't investigated properly (and I'm off tomorrow, back on Thu) but
+> it's likely the original code was not very friendly to the maximum
+> range, never tested. Anyway, if one figures out why it goes out of
+> range, I think the solution is to also backport e2768b798a19 to stable.
 
-Well, this would fix the division by 0 but when you read the code you
-really start wondering what's going on :) And as I wrote above when
-thresholds pass UINT_MAX, the dirty limitting code breaks down anyway so I
-don't think the machine will be more usable after your fix. Would you be up
-for a challenge to modify mm/page-writeback.c so that such huge limits
-cannot be set instead? That would be actually a useful fix...
+I looked into this, and I came to the conclusion that this patch is
+pretty much incompatible with the increasing scale (even if you cap
+num to 30).
 
-								Honza
+The number of pages to invalidate is a 20 bit quantity, a 5 bit slice
+per scale. With the 6.6 approach (limit of num=30 and increasing
+scale), we invalidate each 5 bit slice independently. After each
+scale round, the corresponding slice is guaranteed to be 0.
 
-> 
->         /*
->          * In order to avoid the stacked BDI deadlock we need
-> ---8<---
-> 
-> Thanks, and apologize for the inconvenience
-> 
-> Zach
-> 
-> >                                                                 Honza
-> > --
-> > Jan Kara <jack@suse.com>
-> > SUSE Labs, CR
-> 
+With the 6.9 method, we invalidate the maximum possible for a given
+scale. With a decreasing scale, we converge towards 0 or 1 on each
+round.  With an increasing scale, this breaks spectacularly, because
+the strong guarantee that the remaining page count is "aligned" to
+2^(5*scale+1) is not valid anymore (the low bits may not be 0).
+
+As a result, we don't converge because we never consider these low
+bits anymore, the page count doesn't decrease, scale goes past 3, and
+everything catches fire.
+
+So despite my earlier comment, it looks like picking e2768b798a19 is
+the right thing to do *if* we're taking e3ba51ab24fd into 6.6-stable.
+
+Otherwise, we need a separate fix, which Ryan initially advocating for
+initially.
+
+Thanks,
+
+	M.
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Without deviation from the norm, progress is not possible.
 
