@@ -1,130 +1,99 @@
-Return-Path: <stable+bounces-40187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2638A9BA5
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 15:52:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D728A9C05
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 16:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EAAF1F233F5
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 13:52:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54B371F24082
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 14:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446951607BD;
-	Thu, 18 Apr 2024 13:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC29168AEC;
+	Thu, 18 Apr 2024 14:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nXJI8z3w"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="Jla47F2B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E38EAD2;
-	Thu, 18 Apr 2024 13:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E111F84D02;
+	Thu, 18 Apr 2024 13:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713448354; cv=none; b=U6TNRrL6G1MnZEgbDT2QPLYPRYbVhkS1IT35dCfFPP9imBNq1vNwPQ5j+g8iNbIGyk5aOiGpViFxFH9/ncFLaLENX99jl486B7xWKBCSV2ZAZ04LChsYoE7Fd4VX6kmsCbXjw0TJ/kBN8nGYHPQf/fAn61sVOyhNJJmqLb7DmXM=
+	t=1713448801; cv=none; b=I1KA5grR7Z9ePK9ZCcWLQj/fVOh5TfvkSDR+9sWXABjtq6dENQiw1UlEuiTVVvJCq1c9AcDgN/uEEMXIe0htun3r9uFuLOT0sD7PJlTOeMmfCpOpLCqh8aMkTBfsDCAXWexcstLvh0orqAhP70EK6uQa3glQwWmIlKYcipuIPA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713448354; c=relaxed/simple;
-	bh=Je31ci+eyD97RXiVi+9JjGy6yYzwIgH+zf+ojiy2P8U=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=n0PyD9gXoKwy7NrF5S3wKrU/yaQBZABboI9hvzrj/BBjvUK3MnmorAIq3Xr9H6XxodI2mkCJDa1ErSu6iw+HGxjgdxd99YyszfWsMS3gB3eM6efIPWgMqQpFkkVC0pFE+c8d6JsH77zSuzdJfGTV/Vwq7UKK62oEKXy76GbHdUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nXJI8z3w; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-61500da846fso6349287b3.1;
-        Thu, 18 Apr 2024 06:52:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713448352; x=1714053152; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KWDkD4GBnwBQNPancuw8naTRgpzqp6wkxrmNfvesCMc=;
-        b=nXJI8z3wGOsRB73GfOuJT9zurZ6Ji06lBZbCd1QoSnzm+Eij+0qE5Mgw6GCoZZNw++
-         GIDSSx7zG1V9hA7160zKDQ2eG1i8qXN8XthIKoBEZeEBcBOKS1gdtktmrub4q23YyLao
-         jVXmUe/5Xk1ANbzxKkF8M085EZr4MEGO2/5OE053f9f2tF3IjtJIvXJjxo1vi2VR3fOs
-         zZEQ0BqBHOtlQt2bPZEsQF4ibr1vPovxdtToo7y3bxJK8+JspKtDQ2CIjdeFaL7zJP4s
-         bQAAYVWLY9+9ZREBgicg0Fe4VD/+KerJsW+Sn58f5ZzT6rvcmEIP0eEUy+O892fkdS3r
-         8EcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713448352; x=1714053152;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KWDkD4GBnwBQNPancuw8naTRgpzqp6wkxrmNfvesCMc=;
-        b=bdGcOPoqnRHME90qUZhnytR2jULGST+Wm3+3qHMLrLMkR+FlW2YABuiFVZzmBswqpT
-         41zOD+mgm7drcMrIyXn3zi4piM/VU75J0LKHwVShRSC6sAakTpU04/MYTviiYVzKncqe
-         uNmFzySzAgJ/IcPJS114X2CBkdLSftUq9ihtmytg30euu6nXxLayBqh3qfmmBt43BfCu
-         nsr4/dxPDMRttU7HzxbTxLLNVzJNqIXr1VWg6+o+6RiE/THJbgt95AlslRX48u6jIMVz
-         lLM9CGIFjQsrbOQNIhvGs8eN0cP8krNV6TJNbWIDWJKpsqbPe96+OxAtrvzrJ3W/PDs+
-         n5BA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPwEMPyCOuJeqi987XZTW5Wxt77OIY110nswniCiPK+790FS9fuPTi7eEmkVpz+N8DgN3uiv1YXDdzL7MWFKKGXN7vKFb4ZxxnQA9MvMlIUDBQ1Sc09I/4njVE93PrCqBbN1kk
-X-Gm-Message-State: AOJu0Yxvqf6bgiOrc0J1spWBs0NuYODBndRFMm/Lu6L12FLGPJkvn7lo
-	0Z2Yh/OH4n34bwflpj9L6x1lMxDgpm7dKmpSBuTL3IIHp24Y6oaY3+aKsA==
-X-Google-Smtp-Source: AGHT+IHcC/d5g/vrVO8yq6W/ye3vmtyJcu0gh/Sfv4UXpVtFtmjp0tOz0EvRUuueXnSjUeruqSxwbw==
-X-Received: by 2002:a05:690c:25c7:b0:61b:2:6c36 with SMTP id dv7-20020a05690c25c700b0061b00026c36mr2640195ywb.24.1713448350174;
-        Thu, 18 Apr 2024 06:52:30 -0700 (PDT)
-Received: from localhost (73.84.86.34.bc.googleusercontent.com. [34.86.84.73])
-        by smtp.gmail.com with ESMTPSA id ku20-20020a05622a0a9400b00437add246c2sm240951qtb.7.2024.04.18.06.52.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 06:52:29 -0700 (PDT)
-Date: Thu, 18 Apr 2024 09:52:29 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>, 
- Yick Xie <yick.xie@gmail.com>, 
- willemdebruijn.kernel@gmail.com, 
- willemb@google.com
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- dsahern@kernel.org, 
- edumazet@google.com, 
- kuba@kernel.org, 
- linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-Message-ID: <6621259d66d0f_ec9b929478@willemb.c.googlers.com.notmuch>
-In-Reply-To: <0a17d6745d5c6d4bb635cfac1029e90c1ac2c676.camel@redhat.com>
-References: <20240416190330.492972-1-yick.xie@gmail.com>
- <0a17d6745d5c6d4bb635cfac1029e90c1ac2c676.camel@redhat.com>
-Subject: Re: [PATCH net v2] udp: don't be set unconnected if only UDP cmsg
+	s=arc-20240116; t=1713448801; c=relaxed/simple;
+	bh=AJPEjPlUPQHJ4hOGffADPP2SRRuSF2ri7CkK+4eg5ro=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XsCeEimNA2wKvLo0vL0rCwAhRVmACVAGhbTGydrUV/fczsGfTd1+KOhOWhbHgyCKlaRfeHsgpBN/XR6KrPCB/BnZCEjA5zlLAa+Po8lR9pDaPX37ocqjp/mF9jsyvLsfKA0GaE8Pk9sjkfyD50DeRLxYCJf5Knzd4Ax13E47hqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=Jla47F2B; arc=none smtp.client-ip=67.231.149.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+	by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43I4kSSo025732;
+	Thu, 18 Apr 2024 08:59:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
+	date:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=PODMain02222019; bh=RViRRtMM8/41BS4
+	fsufbmgDyWahRy+WUSOiq+FX5YFc=; b=Jla47F2B05U0+DpWmxSAtlFEchV+PoB
+	+6us+KXEh7/ptsumv/cUSMS+3sjIwcEydfhucC68WWDVu5dDL21uVfWNbpiuTwbl
+	xjy3ZOnV+Th2yH0OOMevp/tQ1ihqV7IGKX5Valuf57i8qHQm9S1/3PYQdmnF5R2V
+	xMSKsB3u6TJYa6dDsL2MvY6lPSiluyGqMi1o6lCTwkntxf/HQ9fFy/Matci99PHl
+	PlBCjOf4QX9izX5ww6vPTI2RwTVCRwJLeO0c+TNzsTX3Jo6nJAwnUcCjQRphgwOa
+	nsGg4fcCkHWs4ccgK9/m5KgAxDfu7rd5mza2hxxtXASAFalu9/S5R6A==
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3xfqeyctxv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Apr 2024 08:59:55 -0500 (CDT)
+Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 18 Apr
+ 2024 14:59:53 +0100
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9
+ via Frontend Transport; Thu, 18 Apr 2024 14:59:53 +0100
+Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPS id 61517820245;
+	Thu, 18 Apr 2024 13:59:53 +0000 (UTC)
+Date: Thu, 18 Apr 2024 13:59:52 +0000
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: ArcticLampyrid <ArcticLampyrid@outlook.com>
+CC: <sbinding@opensource.cirrus.com>, <david.rhodes@cirrus.com>,
+        <james.schulman@cirrus.com>, <linux-kernel@vger.kernel.org>,
+        <linux-sound@vger.kernel.org>, <patches@opensource.cirrus.com>,
+        <rf@opensource.cirrus.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] ALSA: hda/realtek: Fix internal speakers for
+ Legion Y9000X 2022 IAH7
+Message-ID: <ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com>
+References: <TYCP286MB25357A4599E935F26A8AAB24C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
+ <TYCP286MB25359B61BB685A4B3110BB44C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <TYCP286MB25359B61BB685A4B3110BB44C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
+X-Proofpoint-GUID: CX0RV_R6dqnRXP9MnD36QRZK8Bh6ECaB
+X-Proofpoint-ORIG-GUID: CX0RV_R6dqnRXP9MnD36QRZK8Bh6ECaB
+X-Proofpoint-Spam-Reason: safe
 
-Paolo Abeni wrote:
-> Hi,
+On Thu, Apr 18, 2024 at 09:20:06PM +0800, ArcticLampyrid wrote:
+> This fixes the sound not working from internal speakers on
+> Lenovo Legion Y9000X 2022 IAH7 models.
 > 
-> On Wed, 2024-04-17 at 03:03 +0800, Yick Xie wrote:
-> > If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-> > "connected" should not be set to 0. Otherwise it stops
-> > the connected socket from using the cached route.
-> > 
-> > Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-> > Signed-off-by: Yick Xie <yick.xie@gmail.com>
-> > Cc: stable@vger.kernel.org
-> 
-> Minor: the patch subj is IMHO a bit confusing, what about removing the
-> double negation?
-> 
-> preserve connect status with UDP-only cmsg
-> 
-> > ---
-> > v2: Add Fixes tag
-> > v1: https://lore.kernel.org/netdev/20240414195213.106209-1-yick.xie@gmail.com/
-> > ---
-> >  net/ipv4/udp.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-> > index c02bf011d4a6..420905be5f30 100644
-> > --- a/net/ipv4/udp.c
-> > +++ b/net/ipv4/udp.c
-> 
-> What about ipv6? why this fix does not apply there, too?
+> Signed-off-by: ArcticLampyrid <ArcticLampyrid@outlook.com>
 
-Oops. Thanks Paolo. Yes, this definitely also applies to ipv6.
+I would wait for Stefan to review the content before respinning
+but you need to use your real name for the Signed-off-by line as
+per Documentation/process/submitting-patches.rst, it's a legal
+thing.
+
+Thanks,
+Charles
 
