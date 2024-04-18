@@ -1,109 +1,148 @@
-Return-Path: <stable+bounces-40157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E3B8A9390
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 08:54:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DB38A93DD
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 09:18:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDC9D1F21D8B
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 06:54:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41813281BBF
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 07:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5C12E3F7;
-	Thu, 18 Apr 2024 06:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6749F6CDA9;
+	Thu, 18 Apr 2024 07:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q8Nc4tUH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uKkbkvm5"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B896BF9E9;
-	Thu, 18 Apr 2024 06:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11A33BB22;
+	Thu, 18 Apr 2024 07:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713423268; cv=none; b=vFttEhXWzo1L7iHG9bd+RPfmQcZqefjAaRZB6rJXxx3ShZHEJXr8TNGWk600tlMofSZ8TXocHJRFaWmj/z1ts7mfvE/5Ch00gJ03Ff6Vn/8BeDHFCobplfjkdraCBvoFaQdE35mjJjGuYvFl9knrk/428DWwG1Mvdt1hrkQxqeU=
+	t=1713424701; cv=none; b=P3Zyu1+672E2aVIGmiuLV6ozMhAGqQ30AMhy5uCaJkEacIlTTp8QMiyGj6FDClVIl2yfw+LbQhIf3kxbjIcv3Op98qXqOxn/nZWyuLDdIAqCJR6YtaJMPW01nwehYYszm3Ml0fMWLpq/B14f6kC4xPh90yiXihWbjBWu/gJrIgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713423268; c=relaxed/simple;
-	bh=mhYZZNbDMNOgWfIaFRUNGRT0avxSypQAg5nsiFDhP7Y=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=slwY82MCAmR9oQdpO0zG+OrIZFvLCdTfeZCmQZtRfihVA6S5XSdeVpTicfT3ByZqPJ7MATJepNCOu2sB3HL2IEJRYi7JudU5RAfOsGhSbrpALLMBr7BVQEPMO3MO4MdhjH8nsePkEcOPEsC3l6RXVOnFRHxCS0qh4yMue7DxZ/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43I6sFHP1037130, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43I6sFHP1037130
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Apr 2024 14:54:15 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 18 Apr 2024 14:54:16 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 18 Apr 2024 14:54:16 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Thu, 18 Apr 2024 14:54:16 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Martin Kaistra <martin.kaistra@linutronix.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Bitterblue Smith
-	<rtl8821cerfe2@gmail.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH 2/2] wifi: rtl8xxxu: enable MFP support
-Thread-Topic: [PATCH 2/2] wifi: rtl8xxxu: enable MFP support
-Thread-Index: AQHakKpmN+k3bxFC206ySgnAPq76G7FtKcXg///nXICAAIdW0A==
-Date: Thu, 18 Apr 2024 06:54:16 +0000
-Message-ID: <d697a217e5a747f29c2c23bf6eb275b2@realtek.com>
-References: <20240417093352.1840632-1-martin.kaistra@linutronix.de>
- <20240417093352.1840632-3-martin.kaistra@linutronix.de>
- <6a1571aadad1486eb83a19437e1d2437@realtek.com>
- <137a9ecb-d5de-4471-bbc1-32986b735f28@linutronix.de>
-In-Reply-To: <137a9ecb-d5de-4471-bbc1-32986b735f28@linutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1713424701; c=relaxed/simple;
+	bh=kSmybSuk0Gp2zGe5jwz7Jb8ibYlAi+O173JdALK0pq8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=fw+1LLEjQUzuVf6zusrByZtOED89WJlXWvVuN1MIutPfJMZRFy6QIDUmy/lfZcSODEPnb+kiiMRNumw2X+V1Lkbvd3AXZOJxQYL210j/783RTiKcdWRgA5CuPtSdOnRhDifMQ8TEW5U2remsut/mmaVMaysdzX4YPVifkq99q6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q8Nc4tUH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uKkbkvm5; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713424697;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gSz9EbV7Go68IjIBCLe7KIpM4jH0XbRpBsMopvgUL94=;
+	b=q8Nc4tUHS+Q9yVd9fEKFGqHJ+6YxrKc67hNgFqr1IeQHBalKGY02w+O0aK//gDJ4VpfPoy
+	HfY+dcMbNOLfnC0yNTlbqC8CX5F84NeV2ewrY0qeuzp1M3l9kvYxhi2P6JDyIJkgkTqAq9
+	jEUylCXEG7HqY8gi8uOGaSDU7Esa/MsG2A7HimiAm5rDAScEceO8LC00k2l3glQpgImLp8
+	t6bDZiZ72ONQvT/WUMnTOVzngcEzf7W4rKxuiKW/OClFPQ9dYZZt8mKjX55qZozJo2un5h
+	pH/vzFSOvXf4Ud8BhcSsrlkl/46h0oEfoH4noT3iZOrb54VtXYWcBKn1eiKxvA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713424697;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gSz9EbV7Go68IjIBCLe7KIpM4jH0XbRpBsMopvgUL94=;
+	b=uKkbkvm5VlkGy4orVzzaPS5Murapo+W4ORkkoZ25fkDPvJJS/+MuwFFcka8NPh9Fh/3P0R
+	VGNETJDT+XSdRgAA==
+To: linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 2/2] wifi: rtl8xxxu: enable MFP support with security flag of RX descriptor
+Date: Thu, 18 Apr 2024 09:18:13 +0200
+Message-Id: <20240418071813.1883174-3-martin.kaistra@linutronix.de>
+In-Reply-To: <20240418071813.1883174-1-martin.kaistra@linutronix.de>
+References: <20240418071813.1883174-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
 
-TWFydGluIEthaXN0cmEgPG1hcnRpbi5rYWlzdHJhQGxpbnV0cm9uaXguZGU+IHdyb3RlOg0KPiBB
-bSAxOC4wNC4yNCB1bSAwMjoxOSBzY2hyaWViIFBpbmctS2UgU2hpaDoNCj4gPiBNYXJ0aW4gS2Fp
-c3RyYSA8bWFydGluLmthaXN0cmFAbGludXRyb25peC5kZT4gd3JvdGU6DQo+ID4NCj4gPj4NCj4g
-Pj4gSW4gb3JkZXIgdG8gY29ubmVjdCB0byBuZXR3b3JrcyB3aGljaCByZXF1aXJlIDgwMi4xMXcs
-IGFkZCB0aGUNCj4gPj4gTUZQX0NBUEFCTEUgZmxhZyBhbmQgbGV0IG1hYzgwMjExIGRvIHRoZSBh
-Y3R1YWwgY3J5cHRvIGluIHNvZnR3YXJlLg0KPiA+Pg0KPiA+PiBXaGVuIGEgcm9idXN0IG1hbmFn
-ZW1lbnQgZnJhbWUgaXMgcmVjZWl2ZWQsIHJ4X2RlYy0+c3dkZWMgaXMgbm90IHNldCwNCj4gPj4g
-ZXZlbiB0aG91Z2ggdGhlIEhXIGRpZCBub3QgZGVjcnlwdCBpdC4gRXh0ZW5kIHRoZSBjaGVjayBh
-bmQgZG9uJ3Qgc2V0DQo+ID4+IFJYX0ZMQUdfREVDUllQVEVEIGZvciB0aGVzZSBmcmFtZXMgaW4g
-b3JkZXIgdG8gdXNlIFNXIGRlY3J5cHRpb24uDQo+ID4+DQo+ID4+IFVzZSB0aGUgc2VjdXJpdHkg
-ZmxhZyBpbiB0aGUgUlggZGVzY3JpcHRvciBmb3IgdGhpcyBwdXJwb3NlLCBsaWtlIGl0IGlzDQo+
-ID4+IGRvbmUgaW4gdGhlIHJ0dzg4IGRyaXZlci4NCj4gPj4NCj4gPj4gQ2M6IHN0YWJsZUB2Z2Vy
-Lmtlcm5lbC5vcmcNCj4gPj4gU2lnbmVkLW9mZi1ieTogTWFydGluIEthaXN0cmEgPG1hcnRpbi5r
-YWlzdHJhQGxpbnV0cm9uaXguZGU+DQo+ID4NCj4gPiBJIHdvdWxkIGxpa2UgdG8gY2hhbmdlIHN1
-YmplY3QgdG8NCj4gPiAid2lmaTogcnRsOHh4eHU6IGVuYWJsZSBNRlAgc3VwcG9ydCB3aXRoIHNl
-Y3VyaXR5IGZsYWcgb2YgUlggZGVzY3JpcHRvciIsDQo+ID4gYmVjYXVzZSB0aGUgc2FtZSBzdWJq
-ZWN0IGFzIGZvcm1lciBwYXRjaCBjYXVzZSBjb25mdXNpbmcuIEkgY2FuIGNoYW5nZSB0aGF0DQo+
-ID4gZHVyaW5nIGNvbW1pdHRpbmcuDQo+ID4NCj4gPiBPdGhlcnMgYXJlIGdvb2QgdG8gbWUuDQo+
-ID4NCj4gDQo+IG9rLCBzdWJqZWN0IGNoYW5nZSBpcyBmaW5lIGZvciBtZS4NCj4gSSBqdXN0IG5v
-dGljZWQgdGhvdWdoLCB0aGF0IEkgbmFtZWQgdGhlIGVudW0gInJ0d19yeF9kZXNjX2VuYyIgaW5z
-dGVhZCBvZiB0aGUNCj4gcHJvYmFibHkgbW9yZSBhcHByb3ByaWF0ZSAicnRsOHh4eHVfcnhfZGVz
-Y19lbmMiLiBTaG91bGQgSSBjaGFuZ2UgdGhhdD8NCg0KSSBtaXNzZWQgdGhhdC4gUGxlYXNlIGRv
-IGl0IGFuZCBjaGFuZ2UgdGhlIHN1YmplY3QgYnkgdGhlIHdheS4gVGhhbmtzLg0KDQpQaW5nLUtl
-DQoNCg==
+In order to connect to networks which require 802.11w, add the
+MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
+
+When a robust management frame is received, rx_dec->swdec is not set,
+even though the HW did not decrypt it. Extend the check and don't set
+RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
+
+Use the security flag in the RX descriptor for this purpose, like it is
+done in the rtw88 driver.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 9 +++++++++
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 7 +++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index fd92d23c43d91..16d884a3d87df 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -122,6 +122,15 @@ enum rtl8xxxu_rx_type {
+ 	RX_TYPE_ERROR = -1
+ };
+ 
++enum rtl8xxxu_rx_desc_enc {
++	RX_DESC_ENC_NONE	= 0,
++	RX_DESC_ENC_WEP40	= 1,
++	RX_DESC_ENC_TKIP_WO_MIC	= 2,
++	RX_DESC_ENC_TKIP_MIC	= 3,
++	RX_DESC_ENC_AES		= 4,
++	RX_DESC_ENC_WEP104	= 5,
++};
++
+ struct rtl8xxxu_rxdesc16 {
+ #ifdef __LITTLE_ENDIAN
+ 	u32 pktlen:14;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 4a49f8f9d80f2..b15a30a54259e 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -6473,7 +6473,8 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ 			rx_status->mactime = rx_desc->tsfl;
+ 			rx_status->flag |= RX_FLAG_MACTIME_START;
+ 
+-			if (!rx_desc->swdec)
++			if (!rx_desc->swdec &&
++			    rx_desc->security != RX_DESC_ENC_NONE)
+ 				rx_status->flag |= RX_FLAG_DECRYPTED;
+ 			if (rx_desc->crc32)
+ 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+@@ -6578,7 +6579,8 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ 			rx_status->mactime = rx_desc->tsfl;
+ 			rx_status->flag |= RX_FLAG_MACTIME_START;
+ 
+-			if (!rx_desc->swdec)
++			if (!rx_desc->swdec &&
++			    rx_desc->security != RX_DESC_ENC_NONE)
+ 				rx_status->flag |= RX_FLAG_DECRYPTED;
+ 			if (rx_desc->crc32)
+ 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+@@ -7998,6 +8000,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+ 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
+ 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
++	ieee80211_hw_set(hw, MFP_CAPABLE);
+ 
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+ 
+-- 
+2.39.2
+
 
