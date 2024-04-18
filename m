@@ -1,163 +1,107 @@
-Return-Path: <stable+bounces-40202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D168AA0C5
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 19:08:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D1B8AA0CB
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 19:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D540D1F21467
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 17:08:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 283241C21031
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 17:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D88D17109D;
-	Thu, 18 Apr 2024 17:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11906171E57;
+	Thu, 18 Apr 2024 17:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YgKZmvCL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h9OddMzf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CD7171E77;
-	Thu, 18 Apr 2024 17:08:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FEB15FA72;
+	Thu, 18 Apr 2024 17:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713460091; cv=none; b=tyE+BxEckIaW2Oz9qEHmTCwRefdDmzGoTFgOzcv19tsTwYahBAZe6o/Ttv8aNhoYjpqHnvGkrnaKCCiAkOR4Vjz+PJpRXdQi3CpGn6Rm+ZMHo+p0Dv+lyAX1uNc/Ojgf7dRpH6CD7taE2nNhqt1QSdzea2lJnzy1ZRa6EJohttg=
+	t=1713460213; cv=none; b=gK36kmC7sUtJ7INg4hmUyxOTNvxnK5Dn3ivRNAhptiBWv8mBO6rHakzKah5KqlxqEMC6idRPTltlSG40uWPflTvGF8CusgeZBYAjtZwAMePSQAY/2Pb2XQ7gDf78TxwRT4BAjj0k8Wuyl4rQtytMGNqnnhp7ExVjriYI6TlJvhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713460091; c=relaxed/simple;
-	bh=eCtKOdVAQNp2A4st0BhHo8jBLBWUqc2tUDSRWCS566Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YrB7EU8ymJ2ZVG31vjTHtMBiQPpHasP9BrJ+/GA5G0ajMwkJOKIa044Q2nXcIe5wCSlnpa0Uf2gP9TxqYZnb/yFVL5BtsmPsoBSxA5WLU/+jYicmeXXmt2F3gSfgv1XMyWnho5tW/VLtPlle5tf3SclRrDNzch49hFGMpBVob/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YgKZmvCL; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1e857e571f3so9499015ad.0;
-        Thu, 18 Apr 2024 10:08:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713460089; x=1714064889; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XW7920DVCiComrNM1OgXootScUMXHBonTRbYMTBe4yg=;
-        b=YgKZmvCLUpCYzVoJMGPf0sL2Y+S9VAvIK/O4yRWZN1BfRcbh+L6pf5Fd+iNzJN+BPC
-         B2MOYPNnIzkOxVE8O6BQVR8qPVgr7FUV0t/29D4jtsTTLuw6jeEPWFU7Ey1jyFDYQ2pP
-         wu/t3T8iQmsMXOcss1cjOWSvXMaGiWlnpycaIZsXYX5mNRTpBe2Hk+B5K9xs8qdchnrg
-         7gOWJFzlvUynSwOofYfRs1P7q2/aGZGslxm1q5ekPdhDjJ+w5qqEdOjQbC+3ajw5Ydcu
-         zwf/pz1N1lqgXtQ1DeqG4S0Fi6TM88QC16dlOJO6IqREk5kRqU2k8YDrH9BofLAliLBc
-         C+bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713460089; x=1714064889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XW7920DVCiComrNM1OgXootScUMXHBonTRbYMTBe4yg=;
-        b=D38BfC+U5+avOHGuzTyBNtWqtPl2HoPRJyhig5HpaR41165wop1DeNgUCMJFgL2QgZ
-         wSitPL/vkWkDcGPsEdR6MRsd1GWej6P3/4WN58wQi/89GgaRWL63rBnZyepxgF5PQIOD
-         bFr2TUj2iSHj+7nynrmCq4M6kKaIy980vu+NT5PbGyqmZIY1FJbSCsfJo/ti9HAN3Tbp
-         ujys4DFY0atmhnYiHZ1sT65LHoqYItetleH86fFVtflKyU6cT5WeTHTof7sxZAzYy/HG
-         LqSwDeFYrjPvX0w8jo2T917buM/PCztBv+WJACuktxUxKz4WxqEWJpHCe7tovEvKoA1Y
-         crWg==
-X-Forwarded-Encrypted: i=1; AJvYcCVu88L9ff9nVZSI01FNuyJvNyCdl0rQfMwukD/DGiLAMLDzypuPmT3co9kRbb+Jb2v6ZoCwdKI6vZtn/mw2UgdBjrHJpdzvzlXvTtj3/u5CdXzwfL33sb7V3JelxoaLeJtaqK64
-X-Gm-Message-State: AOJu0YwLr4GfeNzT+EPIVKIPZ0jcPkzfYj2boTF5p5xGQAt4FZB57q1C
-	ajHZw8imEOJjOnKQWKAZcZPiYg3GEylK8OY29G4tVECra6+2phP7
-X-Google-Smtp-Source: AGHT+IEgHtnZeEa6Rp4iVj/4BdN3MtRwG1GFyaoa1NlmerqjZSjhv0ADYR/1SGH1QNvq3sx8qa32Sg==
-X-Received: by 2002:a17:902:cecc:b0:1e2:9c3b:df8d with SMTP id d12-20020a170902cecc00b001e29c3bdf8dmr4846362plg.20.1713460088935;
-        Thu, 18 Apr 2024 10:08:08 -0700 (PDT)
-Received: from localhost.localdomain ([67.198.131.126])
-        by smtp.gmail.com with ESMTPSA id m10-20020a170902f20a00b001e8a90b8ac7sm616677plc.303.2024.04.18.10.08.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 10:08:08 -0700 (PDT)
-From: Yick Xie <yick.xie@gmail.com>
-To: willemdebruijn.kernel@gmail.com,
-	willemb@google.com
-Cc: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1713460213; c=relaxed/simple;
+	bh=kl0oAxdGo+sXqPTli9f/DOJgHUCpe4k+GtvAOTn9Q0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=GC68SHefMoh9BTvpa2p1gwMAK2WY2FduXr42DGrUAqqwOpeCGH3zV+TcCw/77QxaDQLGtlyRXZ/SMov8a3CwT5nGAN4WCRxm4xc0LE3Yz372v2zjKRi2RiMxcAT2hyQlpnAMtq1GSjikJjxlHFMlUy9VDfz7gI97RuYZTbE7gZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h9OddMzf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B642C113CC;
+	Thu, 18 Apr 2024 17:10:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713460213;
+	bh=kl0oAxdGo+sXqPTli9f/DOJgHUCpe4k+GtvAOTn9Q0M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=h9OddMzfpmDhGWyoOoQUndZjnz5KmnKYn9fv+GuLfL5syWSxwFrRN+bMzVXigc1hF
+	 UPAtrO1mw63M+0n3GUmLDymcQ3e73CHFCJtrBb15rHCLW/fizqKY86gnPQm5uJKEgT
+	 HBcX/0h8QKiOOO3icqqjKS6qIF9MDZJvZTLTULI9t102r1wTghkNKtSvbKUQjIMMgA
+	 YAWEjQR+FK7mRUNgEp2FpAmGoeImUmmZenGJ5F/b1uL4NaBk+NErEfCPHrSX4rnLhP
+	 VXFuiPGkPOqXzA6ZprDyEEmjg9QWaFvBBQaH2DR+Cec355u0am1e9ppuFKJL0Wmdf7
+	 yLlIy5XA9qdag==
+Date: Thu, 18 Apr 2024 12:10:11 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: linux-pci@vger.kernel.org, Mateusz Kaduk <mateusz.kaduk@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, Tj <linux@iam.tj>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net v3] udp: preserve the connected status if only UDP cmsg
-Date: Fri, 19 Apr 2024 01:06:10 +0800
-Message-Id: <20240418170610.867084-1-yick.xie@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <6621259d66d0f_ec9b929478@willemb.c.googlers.com.notmuch>
-References: <6621259d66d0f_ec9b929478@willemb.c.googlers.com.notmuch>
+Subject: Re: [PATCH 1/1] x86/pci: Skip early E820 check for ECAM region
+Message-ID: <20240418171011.GA243400@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <11f55f7e-92f9-4689-9dd8-75fb45f8afe5@linux.intel.com>
 
-If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-"connected" should not be set to 0. Otherwise it stops
-the connected socket from using the cached route.
+On Wed, Apr 17, 2024 at 08:10:28PM -0700, Kuppuswamy Sathyanarayanan wrote:
+> 
+> On 4/17/24 1:40 PM, Bjorn Helgaas wrote:
+> > From: Bjorn Helgaas <bhelgaas@google.com>
+> >
+> > Arul, Mateusz, Imcarneiro91, and Aman reported a regression caused by
+> > 07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map").  On the
+> > Lenovo Legion 9i laptop, that commit removes the area containing ECAM from
+> > E820, which means the early E820 validation started failing, which meant we
+> > didn't enable ECAM in the "early MCFG" path
+> ...
 
-Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
-Cc: stable@vger.kernel.org
----
-v3: Fix the IPV6 counterpart and revise the subject
-v2: Add Fixes tag
-v1: https://lore.kernel.org/netdev/20240414195213.106209-1-yick.xie@gmail.com/
----
- net/ipv4/udp.c | 5 +++--
- net/ipv6/udp.c | 5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+> LGTM
+> 
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index c02bf011d4a6..420905be5f30 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1123,16 +1123,17 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 
- 	if (msg->msg_controllen) {
- 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip_cmsg_send(sk, msg, &ipc,
- 					   sk->sk_family == AF_INET6);
-+			connected = 0;
-+		}
- 		if (unlikely(err < 0)) {
- 			kfree(ipc.opt);
- 			return err;
- 		}
- 		if (ipc.opt)
- 			free = 1;
--		connected = 0;
- 	}
- 	if (!ipc.opt) {
- 		struct ip_options_rcu *inet_opt;
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 8b1dd7f51249..1a4cccdd40c9 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1474,9 +1474,11 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 		ipc6.opt = opt;
- 
- 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, fl6,
- 						    &ipc6);
-+			connected = false;
-+		}
- 		if (err < 0) {
- 			fl6_sock_release(flowlabel);
- 			return err;
-@@ -1488,7 +1490,6 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 		}
- 		if (!(opt->opt_nflen|opt->opt_flen))
- 			opt = NULL;
--		connected = false;
- 	}
- 	if (!opt) {
- 		opt = txopt_get(np);
--- 
-2.34.1
+Thanks for taking a look!
 
+> > -	if (!early && !acpi_disabled) {
+> > +	if (early) {
+> > +
+> > +		/*
+> > +		 * Don't try to do this check unless configuration type 1
+> > +		 * is available.  How about type 2?
+> 
+> I don't understand why above question is included in the comment. Do
+> you think it is better to drop that part of the comment?
+
+The "How about type 2?" questio was added by bb63b4219976 ("x86 pci:
+remove checking type for mmconfig probe").  I only moved it and fixed
+the capitalization and formatting.
+
+> > -	/* Don't try to do this check unless configuration
+> > -	   type 1 is available. how about type 2 ?*/
+> > -	if (raw_pci_ops)
+> > -		return is_mmconf_reserved(e820__mapped_all, cfg, dev,
+> > -					  "E820 entry");
+> > -
+> >  	return false;
+> >  }
 
