@@ -1,148 +1,117 @@
-Return-Path: <stable+bounces-40158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DB38A93DD
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 09:18:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B0FA8A93EF
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 09:23:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41813281BBF
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 07:18:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58A34281E17
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 07:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6749F6CDA9;
-	Thu, 18 Apr 2024 07:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925513D984;
+	Thu, 18 Apr 2024 07:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q8Nc4tUH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uKkbkvm5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CC1igNG/"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11A33BB22;
-	Thu, 18 Apr 2024 07:18:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4340010A0E;
+	Thu, 18 Apr 2024 07:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713424701; cv=none; b=P3Zyu1+672E2aVIGmiuLV6ozMhAGqQ30AMhy5uCaJkEacIlTTp8QMiyGj6FDClVIl2yfw+LbQhIf3kxbjIcv3Op98qXqOxn/nZWyuLDdIAqCJR6YtaJMPW01nwehYYszm3Ml0fMWLpq/B14f6kC4xPh90yiXihWbjBWu/gJrIgQ=
+	t=1713424985; cv=none; b=dk83NuJVDeY6QwFXnrKM6Ttl0x5tKCpbUJlzfOzUtZ1s+kyN7S4rUinMUteRUVPU5xR/lhyWiRYSHxHzw3kEGEjpFB6UPQVXP3makXqyw6SILWUoh+h6Ag3KqeApj5lSLEnbSxTKsUo55PiL5JA1A4RN/jNtX1B2AjgvMPnrRPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713424701; c=relaxed/simple;
-	bh=kSmybSuk0Gp2zGe5jwz7Jb8ibYlAi+O173JdALK0pq8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fw+1LLEjQUzuVf6zusrByZtOED89WJlXWvVuN1MIutPfJMZRFy6QIDUmy/lfZcSODEPnb+kiiMRNumw2X+V1Lkbvd3AXZOJxQYL210j/783RTiKcdWRgA5CuPtSdOnRhDifMQ8TEW5U2remsut/mmaVMaysdzX4YPVifkq99q6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q8Nc4tUH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uKkbkvm5; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713424697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gSz9EbV7Go68IjIBCLe7KIpM4jH0XbRpBsMopvgUL94=;
-	b=q8Nc4tUHS+Q9yVd9fEKFGqHJ+6YxrKc67hNgFqr1IeQHBalKGY02w+O0aK//gDJ4VpfPoy
-	HfY+dcMbNOLfnC0yNTlbqC8CX5F84NeV2ewrY0qeuzp1M3l9kvYxhi2P6JDyIJkgkTqAq9
-	jEUylCXEG7HqY8gi8uOGaSDU7Esa/MsG2A7HimiAm5rDAScEceO8LC00k2l3glQpgImLp8
-	t6bDZiZ72ONQvT/WUMnTOVzngcEzf7W4rKxuiKW/OClFPQ9dYZZt8mKjX55qZozJo2un5h
-	pH/vzFSOvXf4Ud8BhcSsrlkl/46h0oEfoH4noT3iZOrb54VtXYWcBKn1eiKxvA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713424697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gSz9EbV7Go68IjIBCLe7KIpM4jH0XbRpBsMopvgUL94=;
-	b=uKkbkvm5VlkGy4orVzzaPS5Murapo+W4ORkkoZ25fkDPvJJS/+MuwFFcka8NPh9Fh/3P0R
-	VGNETJDT+XSdRgAA==
-To: linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] wifi: rtl8xxxu: enable MFP support with security flag of RX descriptor
-Date: Thu, 18 Apr 2024 09:18:13 +0200
-Message-Id: <20240418071813.1883174-3-martin.kaistra@linutronix.de>
-In-Reply-To: <20240418071813.1883174-1-martin.kaistra@linutronix.de>
-References: <20240418071813.1883174-1-martin.kaistra@linutronix.de>
+	s=arc-20240116; t=1713424985; c=relaxed/simple;
+	bh=HcL3bdax0vWgbd+ZMV08mblWaeGO7x77npLnawEPafw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b3bAiT6uSdJYTnPg1LxbOwFkWU/h2YKaAchzkFwG0k1viarOn4K7QrovwAF8/mteWFxqGLrD8Q3cJBEAQgFKb2JGsdcvbZXO0t/4EskqWoZZhrr6mTUKiD7upH4KVGTdIiaxQvJy+8uv/Ws5PGcusU2xd7QU+7F+nxlR8VOHGxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CC1igNG/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BD4C113CC;
+	Thu, 18 Apr 2024 07:23:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713424984;
+	bh=HcL3bdax0vWgbd+ZMV08mblWaeGO7x77npLnawEPafw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CC1igNG/40KXu78up/lUkjsTE61ygR3YeH/ZV2UkSUDls5VouKRVSYcMUin5GVa0m
+	 NxcAkmKpexwPG/FebECf0Cvg3NSduZVW/FpJVhks5tY2Q8Soh81eaKw8yXoyid/j+e
+	 dRfLkWJuBOel+dp2iBh9UTanNkb7R8EqLGV9zKsjngl1NFpFbT1VUyZA5bvrjHLsKL
+	 CpK35o7jz3w8WA0luuwfsRS97Ugyg16fRtitjhJoSZHeCjHYzoGEQfmBJbEvoRn1oc
+	 cYx9l8sG5ZIUDAuuwYHZmYyFjhKY2Yu3wC6WQESfWQnzGqxFVUCxt9/39mwHHDe+H6
+	 6yX9Q/vvhHx5A==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rxM6s-000000002tR-3Ivn;
+	Thu, 18 Apr 2024 09:23:06 +0200
+Date: Thu, 18 Apr 2024 09:23:06 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: linux-usb@vger.kernel.org, Lars Melin <larsm17@gmail.com>,
+	stable@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/2 v3] USB: serial: option: add Lonsung U8300/U9300
+ product
+Message-ID: <ZiDKWvLJkfOidH4w@hovoldconsulting.com>
+References: <20240415142625.1756740-1-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240415142625.1756740-1-coiaprant@gmail.com>
 
-In order to connect to networks which require 802.11w, add the
-MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
+On Mon, Apr 15, 2024 at 07:26:25AM -0700, Coia Prant wrote:
+> Update the USB serial option driver to support Longsung U8300/U9300.
 
-When a robust management frame is received, rx_dec->swdec is not set,
-even though the HW did not decrypt it. Extend the check and don't set
-RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
+> Signed-off-by: Coia Prant <coiaprant@gmail.com>
+> Reviewed-by: Lars Melin <larsm17@gmail.com>
+> Cc: stable@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> ---
 
-Use the security flag in the RX descriptor for this purpose, like it is
-done in the rtw88 driver.
+Thanks for the update. Next time, remember to include a short changelog
+here when revising a patch.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 9 +++++++++
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 7 +++++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+>  drivers/usb/serial/option.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+> index 55a65d941ccb..27a116901459 100644
+> --- a/drivers/usb/serial/option.c
+> +++ b/drivers/usb/serial/option.c
+> @@ -412,6 +412,10 @@ static void option_instat_callback(struct urb *urb);
+>   */
+>  #define LONGCHEER_VENDOR_ID			0x1c9e
+>  
+> +/* Longsung products */
+> +#define LONGSUNG_U8300_PRODUCT_ID		0x9b05
+> +#define LONGSUNG_U9300_PRODUCT_ID		0x9b3c
+> +
+>  /* 4G Systems products */
+>  /* This one was sold as the VW and Skoda "Carstick LTE" */
+>  #define FOUR_G_SYSTEMS_PRODUCT_CARSTICK_LTE	0x7605
+> @@ -2054,6 +2058,10 @@ static const struct usb_device_id option_ids[] = {
+>  	  .driver_info = RSVD(4) },
+>  	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
+>  	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
+> +	{ USB_DEVICE(LONGCHEER_VENDOR_ID, LONGSUNG_U8300_PRODUCT_ID),
+> +	  .driver_info = RSVD(4) | RSVD(5) },
+> +	{ USB_DEVICE(LONGCHEER_VENDOR_ID, LONGSUNG_U9300_PRODUCT_ID),
+> +	  .driver_info = RSVD(0) | RSVD(4) },
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index fd92d23c43d91..16d884a3d87df 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -122,6 +122,15 @@ enum rtl8xxxu_rx_type {
- 	RX_TYPE_ERROR = -1
- };
- 
-+enum rtl8xxxu_rx_desc_enc {
-+	RX_DESC_ENC_NONE	= 0,
-+	RX_DESC_ENC_WEP40	= 1,
-+	RX_DESC_ENC_TKIP_WO_MIC	= 2,
-+	RX_DESC_ENC_TKIP_MIC	= 3,
-+	RX_DESC_ENC_AES		= 4,
-+	RX_DESC_ENC_WEP104	= 5,
-+};
-+
- struct rtl8xxxu_rxdesc16 {
- #ifdef __LITTLE_ENDIAN
- 	u32 pktlen:14;
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 4a49f8f9d80f2..b15a30a54259e 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -6473,7 +6473,8 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
- 
--			if (!rx_desc->swdec)
-+			if (!rx_desc->swdec &&
-+			    rx_desc->security != RX_DESC_ENC_NONE)
- 				rx_status->flag |= RX_FLAG_DECRYPTED;
- 			if (rx_desc->crc32)
- 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-@@ -6578,7 +6579,8 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
- 
--			if (!rx_desc->swdec)
-+			if (!rx_desc->swdec &&
-+			    rx_desc->security != RX_DESC_ENC_NONE)
- 				rx_status->flag |= RX_FLAG_DECRYPTED;
- 			if (rx_desc->crc32)
- 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-@@ -7998,6 +8000,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
- 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
- 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
-+	ieee80211_hw_set(hw, MFP_CAPABLE);
- 
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 
--- 
-2.39.2
+I dropped the product defines in favour of a comment (as they don't
+really add any value and we don't have to worry about keeping the
+defines sorted).
 
+I also trimmed the commit message slightly before applying.
+
+The end-result is here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/johan/usb-serial.git/commit/?h=usb-linus&id=cf16ffa17c398434a77b8a373e69287c95b60de2
+
+Johan
 
