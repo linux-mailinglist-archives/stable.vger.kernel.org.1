@@ -1,104 +1,95 @@
-Return-Path: <stable+bounces-40200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5118AA057
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 18:50:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 403718AA0A2
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 19:01:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 860101F2255C
-	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 16:50:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DE9AB225BC
+	for <lists+stable@lfdr.de>; Thu, 18 Apr 2024 17:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526CD171092;
-	Thu, 18 Apr 2024 16:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C48B172BD5;
+	Thu, 18 Apr 2024 17:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iUY9ASaY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NR9zXjhy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5CC16EC02;
-	Thu, 18 Apr 2024 16:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97F215B117;
+	Thu, 18 Apr 2024 17:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713459034; cv=none; b=bluiPUY8IVcX4jZjFHzy7CWk7rg4LeNH0IAWYkfK9bJr+vpNHuWVas5OJ1KBFfZVPETWRTZCw+NBRLbkr9saC/Wv89qbjlFdhEymcCYmV08b4nLqYEU0GO+UMVaw8fuscp11Puo66PqioHOHlHrEaq84KtVQTU4YMcR74NtxFhE=
+	t=1713459628; cv=none; b=HUGrn7yG9hhScB6neFkqNIb3Q7E7GCER4HoiQ8FKj+LjZceakEphALeGO3xdUNx5Z9v6lMGH9bSUNh26m/MwwZuvcLEWdbueHoI3btUM/S+zeg7wzMwvGVuHSOOQqNrPhmIfn0PaFLzxNUuPFSbq4dNLI0szVew0SUTUEZfYHyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713459034; c=relaxed/simple;
-	bh=gA7kr3P8rammQuVG8J+GOuRW2Trrize3tToG0qF1s44=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nP5aO6KdlUsujVQyFM725TTCIiEfo0pXrXEcUnFx5eh6PRwNxtm8M6TG3M00AYtNanPlvNyjyettbadHe/5adD5p57kdNVMvEdSBAEgPjyj92H5bp7TOmD0Z2XQPLneeUaWpBwY6XWMN7fvfhpuZujhkUJG6TMPMYXlly6BQkfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iUY9ASaY; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-418c1920313so9301055e9.1;
-        Thu, 18 Apr 2024 09:50:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713459031; x=1714063831; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gA7kr3P8rammQuVG8J+GOuRW2Trrize3tToG0qF1s44=;
-        b=iUY9ASaYi1OjXSdCHzq/+uPyCutSh1oIn7jNO4wtf8hmBqN1OSW3gvzSSE+UFqMd42
-         yMne/Fz7Oa0jJDa8rgNxVwzv4Ls2gVcRCgHe0+DGTSYfeEilJGfJ+jn9N2fld6SZF5y8
-         ckFNxEyEZ9eWMmqE93yC9HlTh+Vdt91SXMBpt/A+k2+OSbjHAAcDeapK+Lne4cz+3vUv
-         4r+D4xQbBYsICEC/iaStA0wXmLd6P7ITd6ftOI3sM/OW+ec7nqA8gKROUVSp6reVt8Oe
-         txN14lkpd1h1AKxBQPVo/77rQ61ixRK4p7J3WPaOKZuFOtHnKVHkBPTRlm1MVZ+1tQ/9
-         9XIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713459031; x=1714063831;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gA7kr3P8rammQuVG8J+GOuRW2Trrize3tToG0qF1s44=;
-        b=axz0NWSrpYkcGgsTC6H6pJsDg2ze5g5Uq70pb0Ltkv+afuAL2cPKKcSER2aPlLpdYT
-         5Ujf9Kg3DEtebHC5F1ilY3lPNA1FZo7erj8bEuk1ramRWdyfOUZWMu5basujpT45gERC
-         3/0uh1+4rRgkW0VdhFgnI3Uh+L1dVqJH+u6zROYQoOG1OgO401cUlhV76uC+0JOiUoKy
-         /DRBlqq5vqZlFV6f03IvVdq9onUUizTHcRBYBhP1TmF2LUITTPK/vnl0C1aagNC4aLPP
-         0S76/SI65xYxS0XlHgUkfEOmE+8S+UHqVcD1LKYDmwljhTF6EH2xgTq0VaSHJIbIpGUD
-         oC7g==
-X-Forwarded-Encrypted: i=1; AJvYcCVHB+511C1iQsayb8qEPiaTn9NKmRHsHw/sa4tJqC+zdLfp1tozw7OJQ8amKnv1qTEz5/j1QlglTPtI/6FRU1XIf7EClPPGLQQ4b5U14wtSIFJC2zyJtAGTNCtn/opJQFgdutu/DEwkiruTy+hhnrF7YpC2BARPHyU9fco8VShBzBo8x+4IGmBprz0YZI5qfgxvQ3BLip0r4yp3Qf+Dv2g=
-X-Gm-Message-State: AOJu0YxGxMX3sYSMf7J27WJqB/4YccK1b66qgj0Gj0AhTS3nulCi7b8N
-	dT+Zd7M5ouCh8+0qsIsumajm5Ie3yUx0IhBBrPSsnSt7yg94tD4K
-X-Google-Smtp-Source: AGHT+IHMfj38JoZUDpClMWDwQ5C3bc7yi/tNoR0G8uDumFXmFP2ZjAKxHbWtJ3fy5o0rdm/ner2vrg==
-X-Received: by 2002:a5d:4082:0:b0:346:305c:b0eb with SMTP id o2-20020a5d4082000000b00346305cb0ebmr2404081wrp.22.1713459030879;
-        Thu, 18 Apr 2024 09:50:30 -0700 (PDT)
-Received: from ?IPv6:2001:8a0:e622:f700:cffe:40a8:31d4:2e61? ([2001:8a0:e622:f700:cffe:40a8:31d4:2e61])
-        by smtp.gmail.com with ESMTPSA id cg3-20020a5d5cc3000000b00349bd105089sm2223076wrb.47.2024.04.18.09.50.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 09:50:30 -0700 (PDT)
-Message-ID: <e6b42e27b3fd4a0970904224d7bd32c52159a788.camel@gmail.com>
-Subject: Re: [PATCH] pmdomain: imx8m-blk-ctrl: fix suspend/resume order
-From: Vitor Soares <ivitro@gmail.com>
-To: Markus Elfring <Markus.Elfring@web.de>, Vitor Soares
- <vitor.soares@toradex.com>, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, kernel-janitors@vger.kernel.org, 
- kernel@pengutronix.de, Fabio Estevam <festevam@gmail.com>, Sascha Hauer
- <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Ulf Hansson
- <ulf.hansson@linaro.org>
-Cc: Lucas Stach <l.stach@pengutronix.de>, LKML
- <linux-kernel@vger.kernel.org>,  stable@vger.kernel.org
-Date: Thu, 18 Apr 2024 17:50:29 +0100
-In-Reply-To: <29e1a687-99f5-4e9f-a8c5-50154312cac4@web.de>
-References: <20240418155151.355133-1-ivitro@gmail.com>
-	 <29e1a687-99f5-4e9f-a8c5-50154312cac4@web.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1713459628; c=relaxed/simple;
+	bh=M5490jcSE4ZyRqN3KFV7i3MTuPXtaiZf0isFGnyxHYg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=M7Zsj/UoPH+PCeXA3y7Os5/dVP3c6OjgBmAvbcsu8SmjsimX7223Vf3DI6B+1r3ycXPE+YozNy6GUbGym0BLc5ZoC81mHnPxPypLUxtAew6aW9uUsoXlGuSxEqekPGeQJKF9ap4r6tVFVfKAiZZ7M+VwLBNBnxnNXtiobACujWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NR9zXjhy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 88478C32781;
+	Thu, 18 Apr 2024 17:00:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713459627;
+	bh=M5490jcSE4ZyRqN3KFV7i3MTuPXtaiZf0isFGnyxHYg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=NR9zXjhyYKkRA+YPEgzvHCr1AEcRb3xUUcYxNKjEZrnYIeEvsmxJ1kPJIBS0hsyIJ
+	 Ipm7BxHjyKsYzi2Cl+ql0RSFrb4aO+07WZ05lUE0bxA16pVgwMB+7vrRwW5032OwZc
+	 YhTqm1u12voxV1CmLm+MG57hkGmX9iHVbqNfqkOYcS6gzvClqWG5gBmE/HGaOfQSZ0
+	 ioOAFVaohvwj+EyYWLyWqXgRSw4cP0FRSpt2PYYb7B7dOUATV9fkI3XXWrancevwTS
+	 3cFrDGUjgCUO/UuGZ8L1UFoBH+VBDPJ/AcSH91F3K1QGMunBnTQ7ktwfwtvfbwV4gu
+	 NJ2k+Zqwz8YfQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 707D3C43619;
+	Thu, 18 Apr 2024 17:00:27 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] net: usb: ax88179_178a: avoid writing the mac address
+ before first reading
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171345962745.29083.15641493659556059187.git-patchwork-notify@kernel.org>
+Date: Thu, 18 Apr 2024 17:00:27 +0000
+References: <20240417085524.219532-1-jtornosm@redhat.com>
+In-Reply-To: <20240417085524.219532-1-jtornosm@redhat.com>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ jarkko.palviainen@gmail.com
 
-SGkgTWFya3VzLAoKCk9uIFRodSwgMjAyNC0wNC0xOCBhdCAxODoyNCArMDIwMCwgTWFya3VzIEVs
-ZnJpbmcgd3JvdGU6Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg4oCmLCBhZGQgYSBkZXZpY2Ug
-bGluayBiZXR3ZWVtCj4gPiBibGtfY3RybCBhbmQgZ2VucGQgcG93ZXJfZGV2LiDigKYKPiAKPiBJ
-IGhvcGUgdGhhdCBhIHR5cG8gd2lsbCBiZSBhdm9pZGVkIGluIHRoaXMgY2hhbmdlIGRlc2NyaXB0
-aW9uIGZvciB0aGUgZmluYWwgY29tbWl0Lgo+IAoKVGhhbmtzIGZvciB5b3UgZmVlZGJhY2suCkkg
-d2lsbCBmaXggaXQgbmV4dCB2ZXJzaW9uLgoKQmVzdCByZWdhcmRzLApWaXRvciBTb2FyZXMKCj4g
-UmVnYXJkcywKPiBNYXJrdXMKCg==
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 17 Apr 2024 10:55:13 +0200 you wrote:
+> After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
+> consecutive device resets"), reset operation, in which the default mac
+> address from the device is read, is not executed from bind operation and
+> the random address, that is pregenerated just in case, is direclty written
+> the first time in the device, so the default one from the device is not
+> even read. This writing is not dangerous because is volatile and the
+> default mac address is not missed.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2] net: usb: ax88179_178a: avoid writing the mac address before first reading
+    https://git.kernel.org/netdev/net/c/56f78615bcb1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
