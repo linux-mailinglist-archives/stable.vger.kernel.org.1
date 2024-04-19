@@ -1,279 +1,204 @@
-Return-Path: <stable+bounces-40315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1C28AB4B8
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 20:04:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCED8AB4B9
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 20:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88AA21C21DE2
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 18:04:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F66D1C21EA7
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 18:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F1C13B5A1;
-	Fri, 19 Apr 2024 18:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF5C13AD37;
+	Fri, 19 Apr 2024 18:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hqK4xQz+"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d2HcSxa5"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2075.outbound.protection.outlook.com [40.107.236.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8456A130E5E;
-	Fri, 19 Apr 2024 18:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713549879; cv=fail; b=bqlYlscmL85Cu5rjGG8tAG6qI/BKiauVnXnRP3s1ZXOCyDzH8C091rEr98AB2XJ75Kz1VG5XzwTxgr4uuYlaickcALrqaNS0CJLgvI2oGxse3xj8rL7vjhGePeaw3/44XBAAD0hHm/K99jTcEeulcWYvnV+z6J6lPvg+7VLjGMI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713549879; c=relaxed/simple;
-	bh=1Q9mUmFV8prQvcPJewMsmclXYvVhSJHJRmjQHdTXNj4=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 Content-Type:MIME-Version; b=ksoldImkTCjRstLrM5OYOhJu8qmJ5gdi559Oh12ojlVZ2Q/6141t02FLDH68DgtNB7GLjFnrCNFIwXQR3SqqybuDEdjhaAUlMCydCq0t6EZHkAHqK0TNdjou3KglXvkCQbKT/1gYW74YOPrMUPfr7sT+KBO5clcWQ6x1yOzJtWQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hqK4xQz+; arc=fail smtp.client-ip=40.107.236.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gedOhjvRpxuEAIC+DCN2usYquo55uzwi+sjPVJLJWBYp1bngyva/FWJicxoHAAwcACDPQAwXZkLtgf4w8cndDn4mfXzYUtEN6Sth7xriQVkbCaorjnTTSnjO96EeqgI+qCEZbvE3VESMXoF/77SMiLrJ1U86HRO+P50rvbWu/OUg9d5JwP6xcAI4kG1kDqNoKPw7fRZxoSvlm8xAl5ETQcOpfM1JMx1hlqlQlc9nuKhQ8ZmJUfJlV8LDUHCupOSfXOfzbq7MBJlnIi61+ILx2kE5uPy/AOM/EVOe86Di6Lr8f79ra8Vu8dnqvajRVmljFQVGZkTiTxb3/V+RbI21aQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l8/VcuV4s257xRep7QS3OomL+Fy5JTcIuQ5hi6W/8/8=;
- b=YqzvvZbe64JZ4oBJxtUVH6+mVaR/baiGkS9Z8k7XRFXkeTTjT+av6oO0zPuysiwF5s04jGGg/fByoNWPi/qpT6gW9kly+b8rOkmeYjqvlu3G0kKcs8r2NTV69jz6LqEBEyFs8Ci5H6/3zV93NPa310XszcbmEeVG1g4UdiItre6iPXgQRqND0c6ZJO0l2py7OoOZc0ks40/gIPXwA5MwSCUTmTNLLh5AjN4RK6kBEKUuvsVv45UfWQK/qMrJoRLcRaq8Hv6X5YW1ZSqJkoVHdg9UBxg8HEs3EMdpHvAX5DQNIlkIbGkfSLcng6so5x7rcAYeQ9/5AhV1B339JjGaAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l8/VcuV4s257xRep7QS3OomL+Fy5JTcIuQ5hi6W/8/8=;
- b=hqK4xQz+t+05BlSDpLGWLv8X+WNf2w9WplrLqvkMN9tb1weNwS5TuQF2uB2EJO+AQzC0vGzKbRvWJvndkrSRG3Mk+XRYbq6iGhUu6cIDFuqujrkqLYrVuoj9Ygrl1Deayr3HLsOeybcISPgX4EAwV3qjfr4PKsLIVnTgPVqQfj3OlyVIuFom7CsHWyhqyzvutbLn7YvZYgiB1wktjCS5029jG13uZ+EI5r8cvGpnwkSdPMNPIVQwa6UYQpmBRjOKgwL7lyL04uTVpz9oqJPoDLWGcVt99m/H4i41BzcFcoN7iapqoEnuhU7C37EpMFPMmNiaZ3ir2E7bJFM7YdADww==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BYAPR12MB2743.namprd12.prod.outlook.com (2603:10b6:a03:61::28)
- by DS0PR12MB6656.namprd12.prod.outlook.com (2603:10b6:8:d2::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.41; Fri, 19 Apr
- 2024 18:04:32 +0000
-Received: from BYAPR12MB2743.namprd12.prod.outlook.com
- ([fe80::3ec0:1215:f4ed:9535]) by BYAPR12MB2743.namprd12.prod.outlook.com
- ([fe80::3ec0:1215:f4ed:9535%4]) with mapi id 15.20.7472.044; Fri, 19 Apr 2024
- 18:04:32 +0000
-References: <20240419011740.333714-1-rrameshbabu@nvidia.com>
- <ZiKH52u_sjpm2mhf@hog>
-User-agent: mu4e 1.10.8; emacs 28.2
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, Jakub Kicinski
- <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, "David S. Miller"
- <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Gal Pressman
- <gal@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Yossi Kuperman
- <yossiku@nvidia.com>, Benjamin Poirier <bpoirier@nvidia.com>, Cosmin Ratiu
- <cratiu@nvidia.com>
-Subject: Re: [PATCH net-next 0/3] Resolve security issue in MACsec offload
- Rx datapath
-Date: Fri, 19 Apr 2024 10:56:20 -0700
-In-reply-to: <ZiKH52u_sjpm2mhf@hog>
-Message-ID: <87jzkt6xg0.fsf@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BYAPR01CA0021.prod.exchangelabs.com (2603:10b6:a02:80::34)
- To BYAPR12MB2743.namprd12.prod.outlook.com (2603:10b6:a03:61::28)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D487412FB3C
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 18:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713549912; cv=none; b=bZK7BqlGY6XngRji2KAm5r50W/UllgcM8Q/IIRGLdovJ3RWrS/m6qb6XU2UPTBRJyvUZsvTIhnrpTP0dYU34y2bCi0nC0oDTmJKC3VhCZrOCLPHf9kUrQ+wTgrldy7fZ/W82X0sS8naNqGaX52+f0xtu2eme1/pfsRpjFyPzcW0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713549912; c=relaxed/simple;
+	bh=F4cNOrYwM4Aq4Iiy4jYOyWYoKlDnc4rZFnYqfqmTWJk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pHMmeL/1n9InM0VnYiOCGXVYG8iw+v2ltNnZ5EMZMXoSmiwME36MtjHRvF96a+rKzycitqSzYFUS5lzgGHKfF+h5ovuQ+UgYCztBaDHqT0o9tNlXWvmgHYGNcMdUyQyf7EayB4wuA+AuE3S4DESXM0dKibEJdVhisUvwbJ8WgaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d2HcSxa5; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-571e13cd856so2169a12.0
+        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 11:05:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1713549909; x=1714154709; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HmgSdIOaBGzF1wIJwZyCqHKWiUO1epUovMBrXDSKd70=;
+        b=d2HcSxa5F65+eScAfEpAhoKksIvRGfuZBpJXIMiBC+K8a1+k0S+cqd8ygzEmehsf4n
+         ZASPZIwM0OIrSYlcj1htbfPP8tq0S48Ne/V+lVdca2+OYl12fRNDVyCJJ6Id9+Jr9Mn+
+         mC2FZDTP9LxUpjTz7PqGFcDIVbWHSC/VjQ6a889ixUFByjOEw4xt+ZzjWiTAZMV4MBCz
+         Vy4c5kzHexzU4EEy2IB6YStLSmGO5DHkripX3mxg6vok+Wzn6Mb1lzEVfF6fGrIwHzz/
+         EFkOQkmiLwau4BTUcjXYHMmuG+HVLdUYDeFIvyg89EumIaEZbCpGYfL8ezqXe0ypG92P
+         1C+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713549909; x=1714154709;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HmgSdIOaBGzF1wIJwZyCqHKWiUO1epUovMBrXDSKd70=;
+        b=SKOAhK2hmOnyw6CbLFtFR76cPgBXE+ytrQUOlRZvdc2chSGA/+7Wo9P8ZULl6G0xRd
+         9pyqIzOyIIphWtfl8ppZMhLW5kojWdcGFhdKiYu4I+uj8K3ZS3vtw70wONAlfi2y6Sjm
+         O6K+pYf4pmmdQX37vWfAk8yhW54lQiD/S6xl54oFPJPimBPBaatnmbGloz1iMHCEqlbe
+         oNXs+UuOYvmr6jjfXZBTJdMCy8+rTvniyLaaKMund/YJwEFIo5qmkzvGLbSTJxS1rtHR
+         cDo5UlQ15dMVas9ljqCRRQEMIGy0Gm/KJdM2/grhL7ZyS9wv0XMQcg38UXu/f4u85iTy
+         cIIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVN6pdA+srXz2xSU/ajINQ8xnOmkD+vP2XPbk7QZ2G6Fo331MGLMJstVvd9+U6DBWef0gtdHtI9X++ZxIH72kGp+AkQ/PXR
+X-Gm-Message-State: AOJu0YxHmvoKMCIhYrnaenhydL2wANvnJhGAT1OId8IQeXb5430BmiQz
+	DafuAYk0QSc2wwMB/orFr3cNuDOdz3zJNkqPltzZxCuEnZknZtEqWFQBD9/YDNDlWJD7+uGJxvs
+	ImbMNlE44UiebzjGl/Ijl5zZ03ehcTii25mIz
+X-Google-Smtp-Source: AGHT+IFiJwIF8NBICxhoTwIgH3tKMxmE/Jfl8ucbO0D4wydmlmbZBia7J/vwSPgO/y44rmwz5zaGNM//OJRSzziGxyg=
+X-Received: by 2002:a50:fc08:0:b0:571:b9c7:2804 with SMTP id
+ i8-20020a50fc08000000b00571b9c72804mr5894edr.5.1713549908902; Fri, 19 Apr
+ 2024 11:05:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR12MB2743:EE_|DS0PR12MB6656:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7bace4b8-7d19-4930-a547-08dc609b2a39
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q214YTBvUnlVWlRXT3dYYkVyVk01RUV4NkgyQVBucVNNWWxoZUFMMHVoczA2?=
- =?utf-8?B?SGRGMzRFNmQrMHdxUFcxWFdDS29ETVpRZDBja09GQy93NitBUGRxVms2NU5K?=
- =?utf-8?B?ckwrWDJmS3NHVG1TNXV2T3NOOHAwSFpiMVlJbFlxMURnaXpPK2dKZkRvTU8y?=
- =?utf-8?B?eTJVRTcycXR4eDVvWkpmd1IwQW5hcit3cE9nRGlnSlRnZG5KVjNGdEZSdW5v?=
- =?utf-8?B?NithZG41dDAxTGVxcDhpNjJBdlQ0ZlRXRUVJQ3BlSEZaODNGM1ZaeTVHckZC?=
- =?utf-8?B?b3JSMjBFdUl6dVVpRUVxV0Z5YW1RRDdJT2VpK2tSMnpwWU96L1Faem10aFBP?=
- =?utf-8?B?cVVhREkvSlZmV0ZhOUsvcEY1UURMRFhndWR3WDU5ZUY1SENKeldvZzY4WW9N?=
- =?utf-8?B?THBpRDVicG5RN0QrN0dGWjVuVEl4eCtvdHZlVm9INXgyTGlhbjk5Zmh2c3Ur?=
- =?utf-8?B?bnJlOUNyYXdhUEpJZ2hDV0IxN1N3eG9nYjhDTG5UQksrQjFGeHBTL1pVTFFq?=
- =?utf-8?B?YytVVmJrVzJkT3NOMmhFTEJuZ0hjdU5heW9lenhiNGd5VW4relA5bTNmQVVk?=
- =?utf-8?B?clFMQnN4NGdhV283Ujlnbi8rZVY0ajRQTEp6dnJGWEQ3ZklVRnhTc1puR1dZ?=
- =?utf-8?B?ZGtzN1BndTRNc2ZCTWRUUWFKalhxcFE0Q3ZFajNEcEJwaGJxcEQwQUJsL2lF?=
- =?utf-8?B?TE9QbCs2NFdFVGR2L3ZNSHByVENCYUVDY0YzZklKS3ZoMDkrNFNaTWcxRFFC?=
- =?utf-8?B?cDZMbFhMTnFaVlVUam4zdGZqL0svL2cxUllyR0FFNXdFWVp4TjdYbEwrNlRT?=
- =?utf-8?B?R1loWVZBQW1ZQUtsSGd2WHkrL3pEclNsS3YrOFJwN09MdHZxSGxGUzAvdHBI?=
- =?utf-8?B?NVRuS1NiT0dSZnQyNVlOZ0NLVkZBdlU0dm00aDFwUnJRcjRSRVVCNHoycXlG?=
- =?utf-8?B?eEg0UitWMmIzY25rcUpuLzRHSTlQS3Q2L3VUd1prQTJlSkdsajZBbkJ4eEQ1?=
- =?utf-8?B?anB5UXFNZExCS3VTZUU2UWhHWnVjTzhXeGxvdnF5aFovR2hiNjluYm90bS9D?=
- =?utf-8?B?VUxHUWtSWndndUUzeU5PSzhybSsyYzlhYkFFV2FVSUlmWXhObTg4aEVuUGZp?=
- =?utf-8?B?VjBGdTFSQzY4d0JqYk5Hckx4RzVNU0Jwb1oxbEZNdnp6c2J5R0pRK1lsTzh3?=
- =?utf-8?B?aHk4SFNHMzJ2SEFYVUx5RGw3aW5ybGxORFZRMlpRSWtxTmdPbmRFN1gvdlJ0?=
- =?utf-8?B?MG5xWVpjQURoWm0zMktGNVloZGZaS2xEeXZzNmRhK0dBSEQxclduRU9vclJl?=
- =?utf-8?B?T2dObWdTcE41aDVQcTUzWXhQS2RZZFdMVTJsK0MwVnhQaW5lOVZOOU9kRkN5?=
- =?utf-8?B?elRZd1h5d3pzeStaVVNGSmFWd3BFUVBYd0dvNGFwM2dRM1pjRDlvRkhBbC9x?=
- =?utf-8?B?NVlPbUoxeTV5ZzJjZEw4TEh6Z082MGEvYkJwMExsWmZYVGxFZlVXWXcxbzE3?=
- =?utf-8?B?bWdnT2g2VUJ4T2gzUlhTNWhJY3FMa1FOeit0bEIrak9TMWlVUjhoN08xVnh0?=
- =?utf-8?B?NlJjdGtMaDlPWTN1Nnlab2pJcVlwc1JNRWl0RDlJTFZ6RTFMc3Q0UURnT05w?=
- =?utf-8?B?RW44anlvTE5tQi9QWHdlODhTS0kxbmpPRVJubEs3ei9wNi9pUDZKb3REUThS?=
- =?utf-8?B?V0J4ZWJxRlhaNmdrY1VBN3VSdEZqeXRXeEhYSnYxUW1sOVpUeGViMlpBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2743.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SVR2UnVoTTRHYmNsVUZsOStIMUJXbVZrUzdlTENnTWd5MVBoNGgvb1l4OUtQ?=
- =?utf-8?B?SVlOaWg3VjRJL1RBblRoYzBXcmhYYW9zVDhudjZueGVzdmxKZnRHZ09vdU5M?=
- =?utf-8?B?UDBWNXAvWWVLTzd0YktTSThXYVJyZ2tWRkFOWGlyR0xBdzRYY09qeGVycTVI?=
- =?utf-8?B?VUR4Vy9idTJRVzVlYUFqalBTbitMSVlUZ2tjRG40aDlNMHEyeko4RmxQVjRH?=
- =?utf-8?B?YnAyVTZnRWwwcS8xWG0wRGhJcytrZktqZmN2M0tCZ2NXZDFHcVF0RDN3VUx3?=
- =?utf-8?B?ZVVXTWRQYml3Q00vRUU2eW1sUUNsbnZuZlp3K3pSdFd3eGl2cmZVYTNqd3pT?=
- =?utf-8?B?UGsrMW5nZ1NqaHFKRklWQ1RnYVpYWTJqVTB5LzBYdkQ4NUFOZEYvMGNIWmg1?=
- =?utf-8?B?RWRSMk81Mm42QkFERUMxU2RIV2tBSXIyRTRMb0JzOHZSY2tvUjdQbFdsS05r?=
- =?utf-8?B?Vm5iS0VQSldGNGdyR3V4eHNQNmRLS2V5QzcxcTlDSSsxT0xFdFhPTjI3U2d1?=
- =?utf-8?B?R2k1V1IrSG5LTE5MNE9GanBYaHB4MldGaWNCNHBRcjVkc1dtODg5MjdtU2Nu?=
- =?utf-8?B?MGZ0VU9SSG1xVkFZRzNTMm9CMSsxLzVZK0RKbjlHK0plQXVHQ1hNRWcxaTV4?=
- =?utf-8?B?TU8zSHhkVVlmWVZKZk5lcndGVEhTTHluZW5PczJDMVR5eGF5TTZpWWtRc2t2?=
- =?utf-8?B?OHdqQkpPaHRMYndMU3B0dE1Sc3Y5dHhpbFl0d0pwb1IxRzZKck1yZlFxU0VG?=
- =?utf-8?B?TU45UVpZNk44Y25hbWpDNzhDdGF0QjZ0TUFmUnNFR2U2d3FoZmhpYmZnUEdo?=
- =?utf-8?B?aHJGWFFITURMYmw4STJMTnppTXBSeXE0Wnd5QXJQNUdUZHBaaXZkYXdhQmFU?=
- =?utf-8?B?UnUzWndxeEFCR214bllkZ2hwaFVwZWFiMEtQbXF3aE5VWEJMbkRBR1ZwSi9R?=
- =?utf-8?B?cGFNaWhST3JsemlobHZOZGxJK0hPNmlucWtzK1piQVdyam00dTFIODVUdzYx?=
- =?utf-8?B?WjIzaC9nNXZKOHF5L1VRelBLbEphckhQNDBrZWI0dXVxRkp1QjV0cmFCaklk?=
- =?utf-8?B?ZUpWOG5POEhBaVZ5K3Ric2VyeERJRGU1ajdXZ3EzYmRMWS9yb090WVQyaEFI?=
- =?utf-8?B?TmFEMEZwSXU5SlBwbkVrTHBVZWk2ZGpDV2JWMkpVMGlKVFJndmVCSFM4YkZN?=
- =?utf-8?B?NEl1RjVwdHY5ZHpXdFk4aFlGTmtBeXh0ZDRzUERLUTloZlUvQkNrN2FQMkR2?=
- =?utf-8?B?bDRNWVA3YkVGNm8za3A0TkJMUmRJQmZ4TmxlVmFpVlkwOWdqRWZNdXJjSzJ4?=
- =?utf-8?B?cmwyV1VhaWNxYm1WSjJ6UERZSUE5NDBJbU1Vc1hMRTF1YjU1Q1dvNzRLSTNj?=
- =?utf-8?B?WVVWS2lMUEFrd1l0SnlLUDhFMEcxVGdQMDhsQ1JzcmhKNHk1MUlzREF3bTBl?=
- =?utf-8?B?Y2RJejlYZHlpbENZakV1U1pmekNaZkVEWFZtdndUUW1mNWE5L1lPUVVzeFNF?=
- =?utf-8?B?dmdPY2lFZHRTcmEzUXdrUUtTVHZwQ1c5YS9QelNpMHhWdWpFR1J4cE9NQ1FC?=
- =?utf-8?B?L2hnQ1RNYjk0Yjg2SkF1Zjh4R3hEU2tYbGpRWFdzQnRMZFh4b1NLWlFqcTBB?=
- =?utf-8?B?NGQya3puMndGamVoZVhKZytNL2tWanFzZzJmTWlOcm5rOTZTN2Vxc1lVUnVz?=
- =?utf-8?B?R0R5cDJyclZrRVBKZEwzMG40RHFmVWN3ZDZwMEpUL1JvZm5RTmQ1UlU5SVpy?=
- =?utf-8?B?Njh4dnVQTHlkMFNjdG9TWkRNcCt0UUtwMHVUZXB4cSttNkxJRjhEWG1WeGJX?=
- =?utf-8?B?UmNqdkF5Qk1jRnV2VTVzR2sva2xaYlJvTUVCRlJBbnhaS2tKUTJRR2ZYc2Zq?=
- =?utf-8?B?V1dOOXVaZktjVmg3eEFOL3hkMjBKbTExdkFDYWJIZzFQeE9XSFpCSFhyQjk5?=
- =?utf-8?B?QXBkS1h5c2NxbGh3cGNkRDdwTmdqOXJWZUJFbmJXM29BUTZFaVc0M1lQVWVv?=
- =?utf-8?B?SjFNaXJzRzQ3Sy84K1g0Q1p5cUhwQWRvSnVXSTNOTk1ERnNnTFp5K1ZrMFFM?=
- =?utf-8?B?QktVSGtyQmpHanRpRFNtYlg2VEtqaDBJR1RjakhMRDZkY2V0MERYN0ZqbmtC?=
- =?utf-8?B?NlRvY0d4RmRxeXBCZGVtZ0kwWCt1YXdwcmN0Rkw2dkZvZzhnUDcvTWlGanA0?=
- =?utf-8?B?aEE9PQ==?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bace4b8-7d19-4930-a547-08dc609b2a39
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2743.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2024 18:04:32.5607
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hZxUqsZZFyXJZx3Ma0lHkjclE3FqaIUOF2DxI/Ai8lgygWp4mj7vYpitJPnebdFuzuW/Efv3JpB5eF0ix3CPcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6656
+References: <20240118181954.1415197-1-zokeefe@google.com> <20240417111001.fa2eg5gp6t2wiwco@quack3>
+ <CAAa6QmSOum_0ZhyUq1ppguLp0jpEs0u1U843GkF==xMwaMGV4A@mail.gmail.com> <20240418110434.g5bx5ntp2m4433eo@quack3>
+In-Reply-To: <20240418110434.g5bx5ntp2m4433eo@quack3>
+From: "Zach O'Keefe" <zokeefe@google.com>
+Date: Fri, 19 Apr 2024 11:04:31 -0700
+Message-ID: <CAAa6QmS-PwoR7QGr5f-yUrMsnszb=q8+wpjKrYzsv0OsgdP4jw@mail.gmail.com>
+Subject: Re: [PATCH] mm/writeback: fix possible divide-by-zero in
+ wb_dirty_limits(), again
+To: Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Maxim Patlasov <MPatlasov@parallels.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 19 Apr, 2024 17:04:07 +0200 Sabrina Dubroca <sd@queasysnail.net> wr=
-ote:
-> This should go to net, not net-next. It fixes a serious bug. Also
-> please change the title to:
->   fix isolation of broadcast traffic with MACsec offload
+On Thu, Apr 18, 2024 at 4:04=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
 >
-> "resolve security issue" is too vague.
-
-Ack. It also fixes an issue where macsec should not reply to arbitrary
-unicast traffic even in promiscuous mode. ARP unicast without a matching
-destination address should not be replied to by the macsec device even
-if its in promiscuous mode (the software implementation of macsec
-behaves correctly in this regard).
-
+> On Wed 17-04-24 12:33:39, Zach O'Keefe wrote:
+> > On Wed, Apr 17, 2024 at 4:10=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+> > > > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> > > > index cd4e4ae77c40a..02147b61712bc 100644
+> > > > --- a/mm/page-writeback.c
+> > > > +++ b/mm/page-writeback.c
+> > > > @@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struct dir=
+ty_throttle_control *dtc)
+> > > >        */
+> > > >       dtc->wb_thresh =3D __wb_calc_thresh(dtc);
+> > > >       dtc->wb_bg_thresh =3D dtc->thresh ?
+> > > > -             div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->th=
+resh) : 0;
+> > > > +             div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thres=
+h) : 0;
+> ...
+> > > Thirdly, if thresholds are larger than 1<<32 pages, then dirty balanc=
+ing is
+> > > going to blow up in many other spectacular ways - consider only the
+> > > multiplication on this line - it will not necessarily fit into u64 an=
+ymore.
+> > > The whole dirty limiting code is interspersed with assumptions that l=
+imits
+> > > are actually within u32 and we do our calculations in unsigned longs =
+to
+> > > avoid worrying about overflows (with occasional typing to u64 to make=
+ it
+> > > more interesting because people expected those entities to overflow 3=
+2 bits
+> > > even on 32-bit archs). Which is lame I agree but so far people don't =
+seem
+> > > to be setting limits to 16TB or more. And I'm not really worried abou=
+t
+> > > security here since this is global-root-only tunable and that has muc=
+h
+> > > better ways to DoS the system.
+> > >
+> > > So overall I'm all for cleaning up this code but in a sensible way pl=
+ease.
+> > > E.g. for these overflow issues at least do it one function at a time =
+so
+> > > that we can sensibly review it.
+> > >
+> > > Andrew, can you please revert this patch until we have a better fix? =
+So far
+> > > it does more harm than good... Thanks!
+> >
+> > Shall we just roll-forward with a suitable fix? I think all the
+> > original code actually "needed" was to cast the ternary predicate,
+> > like:
+> >
+> > ---8<---
+> > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> > index fba324e1a010..ca1bfc0c9bdd 100644
+> > --- a/mm/page-writeback.c
+> > +++ b/mm/page-writeback.c
+> > @@ -1637,8 +1637,8 @@ static inline void wb_dirty_limits(struct
+> > dirty_throttle_control *dtc)
+> >          *   at some rate <=3D (write_bw / 2) for bringing down wb_dirt=
+y.
+> >          */
+> >         dtc->wb_thresh =3D __wb_calc_thresh(dtc);
+> > -       dtc->wb_bg_thresh =3D dtc->thresh ?
+> > -               div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh)=
+ : 0;
+> > +       dtc->wb_bg_thresh =3D (u32)dtc->thresh ?
+> > +               div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thre=
+sh) : 0;
 >
-> 2024-04-18, 18:17:14 -0700, Rahul Rameshbabu wrote:
->> Some device drivers support devices that enable them to annotate whether=
- a
->> Rx skb refers to a packet that was processed by the MACsec offloading
->> functionality of the device. Logic in the Rx handling for MACsec offload
->> does not utilize this information to preemptively avoid forwarding to th=
-e
->> macsec netdev currently. Because of this, things like multicast messages
->> such as ARP requests are forwarded to the macsec netdev whether the mess=
-age
->> received was MACsec encrypted or not. The goal of this patch series is t=
-o
->> improve the Rx handling for MACsec offload for devices capable of
->> annotating skbs received that were decrypted by the NIC offload for MACs=
-ec.
->>=20
->> Here is a summary of the issue that occurs with the existing logic today=
-.
->>=20
->>     * The current design of the MACsec offload handling path tries to us=
-e
->>       "best guess" mechanisms for determining whether a packet associate=
-d
->>       with the currently handled skb in the datapath was processed via H=
-W
->>       offload=E2=80=8B
->
-> nit: there's a strange character after "offload" and at the end of a
-> few other lines in this list
+> Well, this would fix the division by 0 but when you read the code you
+> really start wondering what's going on :) [..]
 
-Will clean up. They got carried over from the presentation I copied this
-list from.
+Ya, this was definitely a local fix in an area of code I know very
+little abit. I stumbled across it in a rather contrived way -- made
+easier by internal patches -- and felt its existence still warranted a
+local fix.
 
->
->>     * The best guess mechanism uses the following heuristic logic (in or=
-der of
->>       precedence)
->>       - Check if header destination MAC address matches MACsec netdev MA=
-C
->>         address -> forward to MACsec port
->>       - Check if packet is multicast traffic -> forward to MACsec port=
-=E2=80=8B
->                                                                    here ^
->
->>       - MACsec security channel was able to be looked up from skb offloa=
-d
->>         context (mlx5 only) -> forward to MACsec port=E2=80=8B
->                                                   here ^
->
->>     * Problem: plaintext traffic can potentially solicit a MACsec encryp=
-ted
->>       response from the offload device
->>       - Core aspect of MACsec is that it identifies unauthorized LAN con=
-nections
->>         and excludes them from communication
->>         + This behavior can be seen when not enabling offload for MACsec=
-=E2=80=8B
->                                                                      here=
- ^
->
->>       - The offload behavior violates this principle in MACsec
->>=20
->
+> [..] And as I wrote above when
+> thresholds pass UINT_MAX, the dirty limitting code breaks down anyway so =
+I
+> don't think the machine will be more usable after your fix. Would you be =
+up
+> for a challenge to modify mm/page-writeback.c so that such huge limits
+> cannot be set instead? That would be actually a useful fix...
 
-Thanks for taking the time to explicitly point them out.
+:) I can't say my schedule affords me much time to take on any
+significant unplanned work. Perhaps as a Friday afternoon exercise
+I'll come back to scope this out, driven by some sense of
+responsibility garnered from starting down this path ; but ... my TODO
+list is long.
 
->>=20
->> Link: https://github.com/Binary-Eater/macsec-rx-offload/blob/trunk/MACse=
-c_violation_in_core_stack_offload_rx_handling.pdf
->> Link: https://lore.kernel.org/netdev/87r0l25y1c.fsf@nvidia.com/
->> Link: https://lore.kernel.org/netdev/20231116182900.46052-1-rrameshbabu@=
-nvidia.com/
->> Cc: Sabrina Dubroca <sd@queasysnail.net>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Have a great rest of your day / weekend,
+Zach
+
+>                                                                 Honza
 >
-> I would put some Fixes tags on this series. Since we can't do anything
-> about non-md_dst devices, I would say that the main patch fixes
-> 860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path
-> support"), and the driver patch fixes b7c9400cbc48 ("net/mlx5e:
-> Implement MACsec Rx data path using MACsec skb_metadata_dst"). Jakub,
-> Rahul, does that sound ok to both of you?
-
-I am aligned with this.
-
---
-Thanks,
-
-Rahul Rameshbabu
+> >
+> >         /*
+> >          * In order to avoid the stacked BDI deadlock we need
+> > ---8<---
+> >
+> > Thanks, and apologize for the inconvenience
+> >
+> > Zach
+> >
+> > >                                                                 Honza
+> > > --
+> > > Jan Kara <jack@suse.com>
+> > > SUSE Labs, CR
+> >
+> --
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
