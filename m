@@ -1,148 +1,144 @@
-Return-Path: <stable+bounces-40299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7438AB228
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 17:41:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4D38AB242
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 17:47:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 243D12861ED
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:41:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CE941F21C65
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E651E130A49;
-	Fri, 19 Apr 2024 15:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF4B12FB01;
+	Fri, 19 Apr 2024 15:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Ka0pMMog"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G+dJMIz2"
 X-Original-To: stable@vger.kernel.org
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazolkn19010000.outbound.protection.outlook.com [52.103.66.0])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136F1130A4D;
-	Fri, 19 Apr 2024 15:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713541260; cv=fail; b=sXJdHWYvTERDIpmT+ncaixiTnq2KdWZxzNmZveC3JXZzfRz08ZJClc6t+NhRMPrSlx7NpqvKvU50pF2SvBD5IrX5OrgtVuque6lDpKdiCqYM8pytlRmz/kMILVl7jFJCKWxOlYMS1vdkVZ2YyV8Y5dzVEH2BG8eCQpyKYJz2Ph4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713541260; c=relaxed/simple;
-	bh=ZCZZewG2HTul4dll/38bVXYAwekM1ldgzxeNW7rCWR0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MuUYNNYno+6e+RROhOIT/bXjCyGBrB02rzDL8aT2N5WItgJMj2F96Sut4/nxktof7AFM74nJDvktr797sCW3n4pJxK5OOxm7OcyyehySauW/H8B6dNyf2WOTJPTevaEc7bJHkpnkQww4VEzwtDrxDKHSUa2+51tXNFzRzk6QnKA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Ka0pMMog; arc=fail smtp.client-ip=52.103.66.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h/8o204DSJl2TjUjTrC9POF9+YIdK6a1eJYgu9Hb79fU+Vr/1h5y07vLpuugY4Lf0rRKh/qgOkm8xdV1bgLyeS3HtZSr1HMzn6CFbC57FjrISuDZAaqLwvFpCDxEmrO7THWFA+oE1KSkbmJ/oDreyveqzjqkWHRpE4VuOe+CtVcVltXtDnl0lDDhPEpb63D7ZVceiv3LybJLlmgfQhayvrqO/Kdk9oM92c+ZVaOHrtLELWAiK8knc17WAhHrwDG2EVaDQukjTqx4MxA2c+cOjmhjz7SlUab1Lk1ADrXfBzr62gT4iu6uAFCax8fQVyi3quIY6OMGOgnmQ0PWxasLGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZCZZewG2HTul4dll/38bVXYAwekM1ldgzxeNW7rCWR0=;
- b=CQuvr/kgKeD8zEI+2pLQxFHRHulJ8FBz7dInCBDuGHeKswzgjIc/TNggmSy754Y8qLQLtocaL2LyYGwg8wSEped0KNWYpP5UUN8j+D85xeHKACdcdAo9aVDBTtUCGz0JvGfGJ2WCzXd/4fKbDByrFTAv3/Q/M2lpqp3/wp8LgcEkwHefeMh39Wn7jvqKczfSC2tqIF5mXDb3oaTNxQ/zGj/WD8fWQWa/ejLVm4qsPesdMXMof1PQ4wemGRKsWvYEvHXyDKsTunyY9E/dR4ZgivFbHUEaXTToWuLArb6JPcD5bjJpkq2ThYHVrQU4cUTDLOzJBWGO46+xAMCR291sDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZCZZewG2HTul4dll/38bVXYAwekM1ldgzxeNW7rCWR0=;
- b=Ka0pMMogYseaehKk5DpLRnKSSSATdhuL5OTFtP9ylGZyjBfgeYBaLvlnH3sjvK9UUjxX8G+4+Gm1qFCFOo+cChPL1DPETCKqEHyR2CkjNTzsc3P7B3u7rmOg0xFshNrLPeKXTAqB3Dyxq+eNLWDD66ZMjxHBta+42hBrpAYH3SNNQqK8MgfMCcA09bOOvdwclraSXg3Z7Wo1AT6ZgWSgGR0wthY3HKi5V3nmR2J0Fx7nwGmBd5ZCWeBTFVg3cwHVwmW0uLozjVnIdc1rlhP7sT6uEXdAe1kccPUuHmAvR8pbxSAiOYHQU2aWUau0mxVTG0QT52nscona4ThAvnskTw==
-Received: from TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:209::11)
- by TYCP286MB2928.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:302::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Fri, 19 Apr
- 2024 15:40:55 +0000
-Received: from TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
- ([fe80::f2c3:e53f:2ea9:55c8]) by TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
- ([fe80::f2c3:e53f:2ea9:55c8%4]) with mapi id 15.20.7472.044; Fri, 19 Apr 2024
- 15:40:55 +0000
-From: Qi Qi <ArcticLampyrid@outlook.com>
-To: Charles Keepax <ckeepax@opensource.cirrus.com>
-CC: "sbinding@opensource.cirrus.com" <sbinding@opensource.cirrus.com>,
-	"david.rhodes@cirrus.com" <david.rhodes@cirrus.com>,
-	"james.schulman@cirrus.com" <james.schulman@cirrus.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
-	"patches@opensource.cirrus.com" <patches@opensource.cirrus.com>,
-	"rf@opensource.cirrus.com" <rf@opensource.cirrus.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] ALSA: hda/realtek: Fix internal speakers for
- Legion Y9000X 2022 IAH7
-Thread-Topic: [PATCH v3 2/2] ALSA: hda/realtek: Fix internal speakers for
- Legion Y9000X 2022 IAH7
-Thread-Index: AQHakZMnl6GUz3RxgkmV9kw8BxeryrFuDjcAgAGuiwA=
-Date: Fri, 19 Apr 2024 15:40:55 +0000
-Message-ID: <5830451.DvuYhMxLoT@qlaptoparch>
-References:
- <TYCP286MB25357A4599E935F26A8AAB24C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
- <TYCP286MB25359B61BB685A4B3110BB44C40E2@TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM>
- <ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com>
-In-Reply-To: <ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com>
-Reply-To: "ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com"
-	<ZiEnWBbvmWwKqytK@ediswmail9.ad.cirrus.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tmn: [OxaR2dtzbSKeJLXG2GdLqvRTtuGuXvWe]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYCP286MB2535:EE_|TYCP286MB2928:EE_
-x-ms-office365-filtering-correlation-id: 0c6197c1-75be-46ac-9b77-08dc60871a12
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- n5wAwctJK9cNYCC8CiRsUARWcKR9AcJx/PmZPlsTS9f2d8ep+tV+auk4yD6uiHsat5vHIPCodsFsjifFLQY5meXtyg2oxAuKA9f/+zAl5flKWv4fKCQDt7Pfozd+cxkLyJj/9QH+xL9v8iBNlHsbPKT2sDER9eMND18ZoC0RnD7/WL4SG8A8EX1D5L8pUZTKkKJw8GE91dsHasaSUELpOKgBSIFNChnVlswaOUusvBhIUVLuf4on6bzeDg4X1X8TZ2Mr0IHzCJOGrzrvtl8ULobzuuNYKbpw7tzpNZA9IKO/de1ET3aA+sbyBf+mn/v7mmoPO5os8Vh4ckvfzBGtVTqYj0qWcE8KE3IX6Et1jk3sMkeKgwqty1EhIVWJKa/ZO2GCHuhR7Zms/pRZo9F5C5TDasQYZJvo2eeCa6dmWGZOGNegAUArvD1MdyMacKRL9ULjFmD8r3J9IMwaFt5w3sVjoKr0FNBN9ji7YN5aXePh4BhhqhMjpvxV+gk0/cZvgWrLWwhY3jKE6BihlIh3Le7pLXqiFttoEg0oB5qdvUkQAq8NZr8dAMJwPcx5jXG6
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?TWI2bWdCZWZkQ1QyeVB5Yjc1WjMxZENWSkRNTTMwdUUwc0VaS0hjb3dVbXls?=
- =?utf-8?B?bTNIQzBCRGd0NkVFYklLOGI1R3d2STV3Z09qazRNd01vMm5vdzJIN3NiRWdw?=
- =?utf-8?B?MjVyOUNDYVQyS2FiUXFPZUE4YjBxSXZsYlVCWVhaNVFaUVBDTmtTc3lLNnFP?=
- =?utf-8?B?VDAxK1pDOHJmTGx4SmsrR042MTh0OXV5U0V1R3lPSW1wd0FYbTBhUVFjeVM2?=
- =?utf-8?B?ZmVKQXZ3RncwK08yeTZZdzZUTTIya2NpSXVaaDNoQmk4YndWM1JuWit6VE1U?=
- =?utf-8?B?UVVYYWtCMTZGaUVYWjc2RUdRWklhSE81SjlTajAwVUtKOEZCUkdZcm4zQTNU?=
- =?utf-8?B?Zys0dmpnelJFaTFhUWV1SnJudC8vVXJOb25hQ1N5YUJQZDJGbkdmbmEvK0o2?=
- =?utf-8?B?cFpLUEhvcUFFTWp3Zk05RzdFS3lZVjNEMEZyMjlWVW9GSzVlcVJsYVZEL3Vn?=
- =?utf-8?B?OTVMK3EyaXJlempKd0QzNEZtZzFWOUNhc0liV28wVU9ualNEK2J4cHBQdTcx?=
- =?utf-8?B?TFRSeFcwd2JFWW1XSXNVWjlGSGVPQmhDM1JzK3lyZ2lHdkJBYW5GQzVwNjVK?=
- =?utf-8?B?S29DbENXWkd3K01hTXNPdCtJMHkxa1l5SUNtNzdpblVXUkxNL0VOdHg3ZHlw?=
- =?utf-8?B?QlRydGIzVGhFSFI1N2ZvZWUyQXBKbmJzSk1sVW1vWXVpSkpqRC9YTkdIUVJx?=
- =?utf-8?B?T21kYjNnTGNPdUdpUk9GVDBmZlk5a0diK3A1aWtYOUpYS1BqZW84OEI3Z2dE?=
- =?utf-8?B?Uk9NQ08wY1d3NUUrNmhlVlBMeURwMWQxc3NIaDRIVkNhSFp3R0Z6UHhxbG1C?=
- =?utf-8?B?YXdPdDB3U2hOZjhKcS9VWnc1bElDTS9NdllVSVAvNWllNGltVldNL1NhL3Zv?=
- =?utf-8?B?RTEvcU02azJoNlcwSDRsTGxNQW9SNDJQdVJUa0d2RWRaYVRTKy9kK0loY1JW?=
- =?utf-8?B?Z0hCcGJITTZWWUZKdUlRRTZ1MG1QZGtCNHZ1MWVpNmJaUDVIY0VIOEtGTjNr?=
- =?utf-8?B?Y1ZxNXZhcHhMM2hLK01Vd1FLaTJPbE8vUW1GVFc4S3Z4OUovYmk1TnJaNmZG?=
- =?utf-8?B?Wlo1MXRIQWx2dEw0c01lR1h3M0Zmd0lQOC9BR29rTzlodlk1eFVVdGFza1k2?=
- =?utf-8?B?cElwdWhTb3lLVEhvU04zdWttNElkQjRGSUFlSDZ6TGlkMWZJcWU4UFFzaGVF?=
- =?utf-8?B?USsrVzkvdU5nT1Q1eW9YbE9rUWtyQkF4ei9zKzRtTEhROGl5RERoVTBvZlJi?=
- =?utf-8?B?azZFQnE2UE4xRXhMUGtvbW9PdlpuS3ZaOWU2S0dPYStjQWtyRFBPRVI2b3dI?=
- =?utf-8?B?Q1pPSEhJNUlON0VDaXA2Nk14a2NZUW1RUWUya3dlemNCNk5XV21ibkpCeEdn?=
- =?utf-8?B?d3BOYTI1dDY5cWhMcVF0Z3AxdDNZbktmZzMzVi9iT2M4TEVLWmJqZ3ZORXRJ?=
- =?utf-8?B?SWxKTkdZM0s2U25zcllhMW1QUk44OGRRQW12dGUxRnkvWGdRZVQzYk5QVUpl?=
- =?utf-8?B?LzRZd2FJV3hoYXZ6VTFlelc1MDdFbzY5QWp1VVVBZWFTc2VQWFBZdFBrMHRU?=
- =?utf-8?B?RjBhcG4yMTJqYlpPdWhQelIrbkw2UlRPUU40Tk5BSmNBeGVRVXVFK0pIdXpy?=
- =?utf-8?B?NW5uTzJxZ3FtVGtGVDVkZHRRdm1uTTNrVERwUjQ2dzd6Q1M0Qmx5VjRKWURX?=
- =?utf-8?Q?oyB9702XWPg9kKI12jtJ?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3B2B008B7DA13644970E24ED76682775@JPNP286.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090E777F13
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 15:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713541636; cv=none; b=Tdzy92cv8dzy3caLUOLITfHJ4KItMIPwd7xXk1qUtiMdTWytGIP3TJZ0/KFNBBNXtJaroKmaq4VncOYIviLQK2TBxky3v4ZBFQUNlmjfb/QVvopZid8ZpmL8uvJ4vwaoIetAgRtanyx3B200IQkzmCdcOw8trE2R4z59nYlVMLk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713541636; c=relaxed/simple;
+	bh=KeOYklVnhrkn4BnPW+ur8UG57oHWwhmThF+7IRomSg8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=PSnmiZLZtU/TlI4+pF5rMQ8tI8L6jaFcnx45R1yL0jBMF2EdrEBxPXrBG+DWTAMQUirTIpo9TF3gWgYpJ19sQkeIMU03SI0CXr+UzNn3VgV8SjpDUTf+wtyviu0uW9YQLOwp9sFOclv5eBFn9mPqLCQss7tbirsrKtixNwNn5oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G+dJMIz2; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1713541630;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LCfcmFtg6PJYBGY2xi+5oc8zgDy3MNFQs+r7zZ51UPs=;
+	b=G+dJMIz2JhBLUtWVaAuaEcB8yQwv/PiP0bYqDZcvheuXrxmnUCL9Vl7a84ouijQDeY1VEP
+	h80JYhVev1PW7n5aSS2xV7TSVv+UvBLYQj5stYH2w6emEBYpkVi+NIzRFyZWxTKtWF94xj
+	Dq8Hk2FzqaMHjzEECzrDBTc8zJkenjM=
+From: George Guo <dongtai.guo@linux.dev>
+To: gregkh@linuxfoundation.org,
+	tom.zanussi@linux.intel.com
+Cc: stable@vger.kernel.org
+Subject: 
+Date: Fri, 19 Apr 2024 23:46:56 +0800
+Message-Id: <20240419154658.4015260-1-dongtai.guo@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYCP286MB2535.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c6197c1-75be-46ac-9b77-08dc60871a12
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Apr 2024 15:40:55.3808
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB2928
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-SSBiZWxpZXZlIHdlIHNob3VsZCBvYmV5IHRoZSB0eXBlIGRlY2xhcmVkIGluIERTRFQgdGFibGUg
-aWYgaXQgZXhpc3RzLCBpbiAKZ2VuZXJhbCBjYXNlLgoKQ291bGQgeW91IHBsZWFzZSBleHBsYWlu
-IHdoeSBpdCBkaWQgbm90IHNvbHZlIHRoZSBpbnRlcnJ1cHQ/IElzIGl0IGEgCm1pc2xlYWRpbmcg
-aXRlbSBpbiBEU0RUPwoKVGhhbmtzIGZvciB5b3VyIHJlcGx5Lg==
+Subject: [PATCH 4.19.y v6 0/2] Double-free bug discovery on testing trigger-field-variable-support.tc
+
+1) About v4-0001-tracing-Remove-hist-trigger-synth_var_refs.patch:
+
+The reason I am backporting this patch is that no one found the double-free bug
+at that time, then later the code was removed on upstream, but
+4.19-stable has the bug.
+
+This is tested via "./ftracetest test.d/trigger/inter-event/
+trigger-field-variable-support.tc"
+==================================================================
+BUG: KASAN: use-after-free in destroy_hist_field+0x115/0x140
+Read of size 4 at addr ffff888012e95318 by task ftracetest/1858
+
+CPU: 1 PID: 1858 Comm: ftracetest Kdump: loaded Tainted: GE 4.19.90-89 #24
+Source Version: Unknown
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0
+Call Trace:
+ dump_stack+0xcb/0x10b
+ print_address_description.cold+0x54/0x249
+ kasan_report_error.cold+0x63/0xab
+ ? destroy_hist_field+0x115/0x140
+ __asan_report_load4_noabort+0x8d/0xa0
+ ? destroy_hist_field+0x115/0x140
+ destroy_hist_field+0x115/0x140
+ destroy_hist_data+0x4e4/0x9a0
+ event_hist_trigger_free+0x212/0x2f0
+ ? update_cond_flag+0x128/0x170
+ ? event_hist_trigger_func+0x2880/0x2880
+ hist_unregister_trigger+0x2f2/0x4f0
+ event_hist_trigger_func+0x168c/0x2880
+ ? tracing_map_read_var_once+0xd0/0xd0
+ ? create_key_field+0x520/0x520
+ ? __mutex_lock_slowpath+0x10/0x10
+ event_trigger_write+0x2f4/0x490
+ ? trigger_start+0x180/0x180
+ ? __fget_light+0x369/0x5d0
+ ? count_memcg_event_mm+0x104/0x2b0
+ ? trigger_start+0x180/0x180
+ __vfs_write+0x81/0x100
+ vfs_write+0x1e1/0x540
+ ksys_write+0x12a/0x290
+ ? __ia32_sys_read+0xb0/0xb0
+ ? __close_fd+0x1d3/0x280
+ do_syscall_64+0xe3/0x2d0
+ entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+RIP: 0033:0x7efdd342ee04
+Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00 48
+8d 05 39 34 0c 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff
+ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
+RSP: 002b:00007ffda01f5e08 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00000000000000b4 RCX: 00007efdd342ee04
+RDX: 00000000000000b4 RSI: 000055c5b41b1e90 RDI: 0000000000000001
+RBP: 000055c5b41b1e90 R08: 000000000000000a R09: 0000000000000000
+R10: 000000000000000a R11: 0000000000000246 R12: 00007efdd34ed5c0
+R13: 00000000000000b4 R14: 00007efdd34ed7c0 R15: 00000000000000b4
+==================================================================
+
+2) About v4-0002-tracing-Use-var_refs-for-hist-trigger-reference-c.patch:
+
+Only v4-0001-tracing-Remove-hist-trigger-synth_var_refs.patch will lead
+to compilation errors:
+
+../kernel/trace/trace_events_hist.c: In function ‘find_var_ref’:
+../kernel/trace/trace_events_hist.c:1364:36: error: ‘struct hist_trigger_data’ has no member named ‘n_synth_var_refs’; did you mean ‘n_var_refs’?
+ 1364 |         for (i = 0; i < hist_data->n_synth_var_refs; i++) {
+      |                                    ^~~~~~~~~~~~~~~~
+      |                                    n_var_refs
+../kernel/trace/trace_events_hist.c:1365:41: error: ‘struct hist_trigger_data’ has no member named ‘synth_var_refs’; did you mean ‘n_var_refs’?
+ 1365 |                 hist_field = hist_data->synth_var_refs[i];
+      |                                         ^~~~~~~~~~~~~~
+      |                                         n_var_refs
+
+
+Tom Zanussi (2):
+  tracing: Remove hist trigger synth_var_refs
+  tracing: Use var_refs[] for hist trigger reference checking
+
+ kernel/trace/trace_events_hist.c | 86 ++++----------------------------
+ 1 file changed, 11 insertions(+), 75 deletions(-)
+
+-- 
+2.34.1
+
 
