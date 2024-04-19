@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-40237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 353878AA9CA
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:11:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAB68AA9CC
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCF3D28443F
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 08:11:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D8CE284548
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 08:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D7B4E1DC;
-	Fri, 19 Apr 2024 08:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3698741C89;
+	Fri, 19 Apr 2024 08:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0dhmSpTL"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N+oVabBK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C88B3A1A8
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 08:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599E53A1A8
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 08:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713514290; cv=none; b=T48Zu+xflqRZoHOjzbIPYJ5Y9Sf/PUtuuQdyWf6GR5m1GD/th9MsoNFHp1/2B0ahi8qYGr4zSsosm08iRm2fIV5j9dDQcPS/flbwh+i7CZjnQTbd9ThJ/GaX16h/2VsX0Opb3vwrIQn0yZY7kQq4teePIADqt84FopibGDnunag=
+	t=1713514295; cv=none; b=iGSZZkND/nkv/SdLk0vd1inTEJIUb/J/r5mhTnasvUp3KR4XCiZmIHa+ZbRWDfBUrLnBk06v3z5GtKrhNaNRPsBss1LW8qM5Oic+05K8nXprNzsDAKGnzOg/Re2odV55vXZ61HYc6nbRGgfsFvppwMRHuZ8X0jXHkLinQGPj2sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713514290; c=relaxed/simple;
-	bh=cZlrK7VcBPGaKBKQRUFHRJ6afrO+p/fmZ53D4tt7mhA=;
+	s=arc-20240116; t=1713514295; c=relaxed/simple;
+	bh=aQourgWq5u/GtxhorUB+TKbifDy8NOdt3ELiFp7IHP8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=umMCOp3DFrqsC5x0P8xAWy9feta1jA9JwRNmtX6Fx5KGELn8tn2Q2bBU7nEA3bhMBSVVU+NkHG2HjUGsEk623pVJ4iF9kIHM5fZcewDz5HTBcizXIiJNOMyq2EoUm0n9hxNNC0F02v83Fmf0HUJZGAnrUnezF6paZZWx4sW9nIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0dhmSpTL; arc=none smtp.client-ip=209.85.219.201
+	 To:Content-Type; b=oQ755d6TjivbY3DazNkF8SCd0LXenGdAh5ys10Hox2L0azWYDvUcFXVEy/si+eNKKCQyFsMG1Gl5pGsAXBcNaKfm3UTjQahwOyEHDrnrvrZHACNDGj7ZDtxIaemA4w5y1Y6blw/Jwp2NRw8ft83EPXw7A0bOvJzKo7uevmfYtzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N+oVabBK; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-de3d9eacb57so3379033276.1
-        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 01:11:29 -0700 (PDT)
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-41681022d82so9013325e9.1
+        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 01:11:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713514288; x=1714119088; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1713514291; x=1714119091; darn=vger.kernel.org;
         h=to:from:subject:message-id:references:mime-version:in-reply-to:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ryXdNdXc58/TKL5CJXa7BnnxRoM5W5YL7HE9+rH2Rcg=;
-        b=0dhmSpTLmlWj9zOy3dF6FkylzhMaAZV4B+xa09h5MInjhHm8Mfv7FkdT7dLD93bubm
-         LBpHK9Eub2NZvTi0BEEJaEuQY/hwzpFZrq8D/Vmg0bOW4YF/x9pGpGugJQhU/pp9yvn3
-         4ahVPfZD53UbcVD4JUUwoYLpnxI48XXQuLOMvSNflcdd+aCSLD816cdeoMItCtsjKchw
-         xUzcYK19HavMrntSXL8quyR0b+byZEV1KjZ+mfTqWmGOE/p9kFbN1ATPo3z3dGOAvP3F
-         wgJuV4TW0Vh8qd+hV2AALaQb/E+zFMwij5szSJ7l8pyAw9oZz8aoF/1MnP7EuJtG25as
-         VzEg==
+        bh=EnpXQFkPioV4WD1eolUSMJVmrqnnLb+UPDvmvoIwzck=;
+        b=N+oVabBKc0KM4VZebqC7CR7iQZ+soesZNQJevh2bLK8X2qnXzBgm4D8IoFq7K8NiDG
+         +TVNN/HvL7/RDbYXGTHj4f6SKe8lu1C4HLBkpHApgbQqxnlhDxI3Cr4Rv1CVBH/mGrrV
+         C/kHwyJiaj6B/jZmE3nMONIP2vtjnhc1oBvmRqxXeAyooxGLImYcx7Pe8LyXGBUt/G5s
+         xZ7zkjctKG03YZ5JKM/u2vruyaL3JxakoygftVzSH+co+141nIR4L6pIp2goJXC9/eFY
+         V1VWHmeh3CTMRcGbqKB6oxwLnhWx1kDAod5XX9ii/BfDqxHA4mrILzzjTnkKesBdd38P
+         Dt7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713514288; x=1714119088;
+        d=1e100.net; s=20230601; t=1713514291; x=1714119091;
         h=to:from:subject:message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ryXdNdXc58/TKL5CJXa7BnnxRoM5W5YL7HE9+rH2Rcg=;
-        b=DGs776sX7BxNKX1OwQV6JiR+cCOByR6SfI4V12VO+WPvTLqppKIxm/falg0lGzjlkz
-         YMd1NoBN++4fj8thYilND9/Bjd3VeXdlTrgcJA5TDlIv//6sNoTp4T45PEUU5OE6PDx7
-         PoywKd4fC1eZkq52FCjz93lqFLCTaGRYKzgCgDIS2qchRlm4N8R7AT29h10wjnKE+dYT
-         GlilYg7EEflu/9FmxLvxxO5v4UGJlix1pmYGdXDyjbygSJnyvt/5EU4+vnrBZ4EbgaNg
-         Au+8BnLO8mc4COHB2LgIDEax2VtzsS1CeipcHJescjHGzErziTtCxHMShqWsYrudKG1J
-         IuDg==
-X-Gm-Message-State: AOJu0YzF3sXaam+h3uq7qdzLsYU+bSTWOg5ojlm2TeqBgAf7w4KWyz8Y
-	vGn9KACM1jSs5VOmMdyBqliDjHuqFmLYjKwMDZLTZI7OLaZDKzXrEqTS+8Fxbrhd5KVv1WuYk1R
-	JdePpVT0clYqRQO+cNRGoziCcYKbdE0+9BkcinXQ9Cd/rtbSKPDzMDA7eC/StOvuwL20G1tgMfV
-	vnKmCRfVzLvDP/UCpP3+T7aw==
-X-Google-Smtp-Source: AGHT+IEY3HRfEHMwd0csvtmRA4RltOcwGdaUEVkxlLjvQAj5U7pYlxJYZI6WOrYPkJLE+d9GIXtA0tbm
+        bh=EnpXQFkPioV4WD1eolUSMJVmrqnnLb+UPDvmvoIwzck=;
+        b=Ro043AfZJAs2OZZ68b52kPnKNUHg3nb3Xr7NLyidSK8zHySPig3iT4GgZRYJBR6Y0I
+         yYDUPpQY2//GNoC40qtt1Xcor2C0KvpIcdCWa7qUXi3JCwtkZ+hjlKXGfY11Ar6BxByI
+         WG07k44J277+c5o9U/yoAglmtU7+ZSx2j3qOjQQqgU53wJix97aGteQILCdIqSTHSjSv
+         ciJZmt48Vdgdg6XBtAfJU1XRhL3gr4V7NZNiBQDcW45bXwcF2yE4STA7G55o9LqDbWK0
+         hyjDPSuhIiV7Jig3iBZCt2qo3fLNjof1Xr/cAkrXOj5E6MQQPjakYw3+bVV1iDEQcPUZ
+         eR/w==
+X-Gm-Message-State: AOJu0YyhWl/xVNKmDnWd1qVXh0WLE4kS1rVrFVohEtCBltjjimrjlgL1
+	4lbmlXVerkizEdoorF9uUU5iTaGnPh0hijtKOXWWNeS2DBkoOSh4BexeF04L8CmtF4E81NOm0KC
+	xUAy/iaucrzcR/IMZqvMmgFZGd9+WaLCJHdA1uiAZnPpf/7FUUuzy9a3Wkbz9q9zOf/oyXKFqeo
+	+E96CmVVBqbOsU8PsqpFaX6g==
+X-Google-Smtp-Source: AGHT+IHKR7QG7UjCBe6zkkOglvVJTeKr0lncwFz24/wAXGGER6QvVjZfwBtvdLZpVD8MLUZBuO4UE6gq
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:6902:c10:b0:dbd:b165:441 with SMTP id
- fs16-20020a0569020c1000b00dbdb1650441mr399894ybb.0.1713514288514; Fri, 19 Apr
- 2024 01:11:28 -0700 (PDT)
-Date: Fri, 19 Apr 2024 10:11:07 +0200
+ (user=ardb job=sendgmr) by 2002:a05:600c:1c11:b0:414:843:3ac1 with SMTP id
+ j17-20020a05600c1c1100b0041408433ac1mr9493wms.7.1713514290738; Fri, 19 Apr
+ 2024 01:11:30 -0700 (PDT)
+Date: Fri, 19 Apr 2024 10:11:08 +0200
 In-Reply-To: <20240419081105.3817596-25-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,64 +74,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240419081105.3817596-25-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1898; i=ardb@kernel.org;
- h=from:subject; bh=jQO+2WRntDgctTjxEk/+b/vWauI/fszL3dFNg5TRPCg=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIU1JXSpKqHz6m9SrAaySh/qUm8+y3Zt4R6Qpb9qPXRe93
- xyXZ2PrKGFhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABPhi2X4Zx0YoCGRvrBa5I7t
- SZd/R6Z8V1vZE/d/cfPX8iYnZw7RLQw/ZkdLnVsqcOwdY7K+ve2KNUxZfl9f7Zny6cD/mKNWv3a zAgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4020; i=ardb@kernel.org;
+ h=from:subject; bh=N0B/CmDtPOOr4PG5bO4e7bxW2Jc/lfcmFIyOh2Fx1v8=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIU1JXfrWHBOxSuM1fX57lNtMFnfV9Vjd2xPAenr66W8ll
+ 769XxPXUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACay/gIjw7be+Xwe/xRP6JTH
+ pHWZMM+pmCdoKNJ4ruPEdi6+/CcX9Bn+KR/OPM389kXqhxiXDZZKW+84rFRrMDpukG1m2+R4/mQ oMwA=
 X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240419081105.3817596-26-ardb+git@google.com>
-Subject: [PATCH for-stable-6.1 01/23] x86/efi: Drop EFI stub .bss from .data section
+Message-ID: <20240419081105.3817596-27-ardb+git@google.com>
+Subject: [PATCH for-stable-6.1 02/23] x86/efi: Disregard setup header of
+ loaded image
 From: Ard Biesheuvel <ardb+git@google.com>
 To: stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Commit 5f51c5d0e905608ba7be126737f7c84a793ae1aa upstream ]
+[ Commit 7e50262229faad0c7b8c54477cd1c883f31cc4a7 upstream ]
 
-Now that the EFI stub always zero inits its BSS section upon entry,
-there is no longer a need to place the BSS symbols carried by the stub
-into the .data section.
+The native EFI entrypoint does not take a struct boot_params from the
+loader, but instead, it constructs one from scratch, using the setup
+header data placed at the start of the image.
+
+This setup header is placed in a way that permits legacy loaders to
+manipulate the contents (i.e., to pass the kernel command line or the
+address and size of an initial ramdisk), but EFI boot does not use it in
+that way - it only copies the contents that were placed there at build
+time, but EFI loaders will not (and should not) manipulate the setup
+header to configure the boot. (Commit 63bf28ceb3ebbe76 "efi: x86: Wipe
+setup_data on pure EFI boot" deals with some of the fallout of using
+setup_data in a way that breaks EFI boot.)
+
+Given that none of the non-zero values that are copied from the setup
+header into the EFI stub's struct boot_params are relevant to the boot
+now that the EFI stub no longer enters via the legacy decompressor, the
+copy can be omitted altogether.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-18-ardb@google.com
+Link: https://lore.kernel.org/r/20230912090051.4014114-19-ardb@google.com
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/vmlinux.lds.S | 1 -
- drivers/firmware/efi/libstub/Makefile  | 7 -------
- 2 files changed, 8 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 46 +++-----------------
+ 1 file changed, 6 insertions(+), 40 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index 112b2375d021..32892e81bf61 100644
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -46,7 +46,6 @@ SECTIONS
- 		_data = . ;
- 		*(.data)
- 		*(.data.*)
--		*(.bss.efistub)
- 		_edata = . ;
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index dc50dda40239..c592ecd40dab 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -426,9 +426,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 				   efi_system_table_t *sys_table_arg)
+ {
+-	struct boot_params *boot_params;
+-	struct setup_header *hdr;
+-	void *image_base;
++	static struct boot_params boot_params __page_aligned_bss;
++	struct setup_header *hdr = &boot_params.hdr;
+ 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
+ 	int options_size = 0;
+ 	efi_status_t status;
+@@ -449,30 +448,9 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 		efi_exit(handle, status);
  	}
- 	. = ALIGN(L1_CACHE_BYTES);
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 473ef18421db..748781c25787 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -102,13 +102,6 @@ lib-y				:= $(patsubst %.o,%.stub.o,$(lib-y))
- # https://bugs.llvm.org/show_bug.cgi?id=46480
- STUBCOPY_FLAGS-y		+= --remove-section=.note.gnu.property
  
--#
--# For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
--# .bss section, so the .bss section of the EFI stub needs to be included in the
--# .data section of the compressed kernel to ensure initialization. Rename the
--# .bss section here so it's easy to pick out in the linker script.
--#
--STUBCOPY_FLAGS-$(CONFIG_X86)	+= --rename-section .bss=.bss.efistub,load,alloc
- STUBCOPY_RELOC-$(CONFIG_X86_32)	:= R_386_32
- STUBCOPY_RELOC-$(CONFIG_X86_64)	:= R_X86_64_64
+-	image_base = efi_table_attr(image, image_base);
+-
+-	status = efi_allocate_pages(sizeof(struct boot_params),
+-				    (unsigned long *)&boot_params, ULONG_MAX);
+-	if (status != EFI_SUCCESS) {
+-		efi_err("Failed to allocate lowmem for boot params\n");
+-		efi_exit(handle, status);
+-	}
+-
+-	memset(boot_params, 0x0, sizeof(struct boot_params));
+-
+-	hdr = &boot_params->hdr;
+-
+-	/* Copy the setup header from the second sector to boot_params */
+-	memcpy(&hdr->jump, image_base + 512,
+-	       sizeof(struct setup_header) - offsetof(struct setup_header, jump));
+-
+-	/*
+-	 * Fill out some of the header fields ourselves because the
+-	 * EFI firmware loader doesn't load the first sector.
+-	 */
++	/* Assign the setup_header fields that the kernel actually cares about */
+ 	hdr->root_flags	= 1;
+ 	hdr->vid_mode	= 0xffff;
+-	hdr->boot_flag	= 0xAA55;
+ 
+ 	hdr->type_of_loader = 0x21;
+ 
+@@ -481,25 +459,13 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	if (!cmdline_ptr)
+ 		goto fail;
+ 
+-	efi_set_u64_split((unsigned long)cmdline_ptr,
+-			  &hdr->cmd_line_ptr, &boot_params->ext_cmd_line_ptr);
+-
+-	hdr->ramdisk_image = 0;
+-	hdr->ramdisk_size = 0;
+-
+-	/*
+-	 * Disregard any setup data that was provided by the bootloader:
+-	 * setup_data could be pointing anywhere, and we have no way of
+-	 * authenticating or validating the payload.
+-	 */
+-	hdr->setup_data = 0;
++	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
++			  &boot_params.ext_cmd_line_ptr);
+ 
+-	efi_stub_entry(handle, sys_table_arg, boot_params);
++	efi_stub_entry(handle, sys_table_arg, &boot_params);
+ 	/* not reached */
+ 
+ fail:
+-	efi_free(sizeof(struct boot_params), (unsigned long)boot_params);
+-
+ 	efi_exit(handle, status);
+ }
  
 -- 
 2.44.0.769.g3c40516874-goog
