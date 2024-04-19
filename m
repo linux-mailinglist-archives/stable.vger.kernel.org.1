@@ -1,203 +1,239 @@
-Return-Path: <stable+bounces-40265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4408E8AACDF
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:31:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D9A8AACEF
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6F7C1F21F9E
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:31:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7937DB211E9
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462047E582;
-	Fri, 19 Apr 2024 10:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190DF7E582;
+	Fri, 19 Apr 2024 10:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OZIrMUT+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6SGQVOM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4115B199C2
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 10:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65493D961
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 10:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713522643; cv=none; b=MOrBB86aifpxh+gUpVhFrkIa/2YpkeAGLMzmM2BS2UtKsQOuLs3AKn3p+cjDRs0//I6RTUAERirEZ2vGXikoj6Gup5xR1AA0HWX24yucNJpgvxIawuI0xkYe2PE7acrYTQZ6p/ard9khIQvGBu97+Fax3dy6ZYQaCNZPjUWXUcc=
+	t=1713523034; cv=none; b=rGUbYzbgqMQqp1d8Vm6X8iAJ8pWsOEI8vB9r1GrQzwFHFyWNYKJPK1390febyKGN4A4asjcEqBpMSIm4J0a7WB4ptQFEfqqebd5o8ALtjWMHAAjLi4wqn5dC4fu3xIxJ0IBCzlm54Vs36mOuyn9ecHSpa9Hqs6rsJ8I+xqboq1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713522643; c=relaxed/simple;
-	bh=C+qOn5JTN9zJb5FySGwxd2G4kTU2FmFYAYBmugqPSPE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DmHgoismaQJBvDON+pLvkeSy+VUrvK1fPDuRDymbX5EmSpFAMHsiffUuta45W4UacGB87OIQCSlFugyJ0fCm+Ff6PrMld6gUJd+06JwE98iEcKjorAJXhxHhxrIpQcPC4XSJLM8vNZBWXBC55sqbdLy4/Qs2fjcoxzzujREMdrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OZIrMUT+; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-418e4cd1ffaso12696365e9.1
-        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 03:30:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713522639; x=1714127439; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zXfB1XmyJGycp6o9EvN2dcs3pfRs+qgNDmJ2Wpliu7Y=;
-        b=OZIrMUT+//6cXhkvDocEAfhEH1IELAy6u9w1akANGX0tQK1JsF9DyJ2dBETGMKhFBy
-         JHe4Kdc6pI9KIb3trnvSsMVNiGmS8iTX4AsLVeAcgHlqHjxwjrQecCV4MHFs9ioPvVOM
-         v4PpWCuAW7NnvzksiOooxfWBxEZ0F+ZKf47o2B1uqbgkciCxbADPhJL7a9SVxr0kVcVO
-         zVoha0DujNzBfGGVg7sGnGUSf2bv4xnHkOtlSA5MNpTskKzOTfYMWUEQORX3C0ghtJAW
-         cgZd8kkZAT2JPuO2tSe/HzmiF6gQWL6HXc/1xo3C1XIfWc8qk9SMO/kryiAvMbM+eyh4
-         tC4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713522639; x=1714127439;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zXfB1XmyJGycp6o9EvN2dcs3pfRs+qgNDmJ2Wpliu7Y=;
-        b=kZZpBZeMFRoArHg0bDVW+OPzy90JbTQu/sXJbl0koZmc2i0jdiuzFUh+OoGab2qUW6
-         n3PozO4CXqtQQSey0m5cwFj46LfHFkwCIdZxccu+jadOZSk/mptOZrV1uXdCY8HnGNK8
-         mNAE04hl0+Zjoluryf/x03/TlHD74BgyrfPuARH1lwenxQKQKT433etqjOv2Gm2k1KaP
-         FhtyrxPW1thIiuhKgsU8nyMBjUfGpH0Rb5RuXYrIlT6m8NrCcOErtxn5WKqRfsNhTDSJ
-         BhRywgVVaq5qGpY9WiGwPyvquiuSLGZmwMCpiz+u6uwmXH5HltDg8jn+GDNA0r1WwSjo
-         +VhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWo0zScdzo5IYn4PcgaQFwxZKlZZflx0QY1m2oNMYPD9c5w5VpEK4GHN/QnpaUaDaR4sk6z2OeHyqdH3ePaiP+a9hEhzjxz
-X-Gm-Message-State: AOJu0YwkuOfxlQg7F+nusPJafID+mTxE4STcuBEuiLqtXYmN0ZMwjgb6
-	p3H4+2mLUiJ4qh8bolA3lN2XTFcK2nEZe+xhxuPeyfeZ52xz+P7ZJe9PoflF0MA=
-X-Google-Smtp-Source: AGHT+IGiH7Y+JOa4zFWT4uBG5e0nxTZ7q2bT95W8eY0sXWj0RTRbbUTMVj2Y/lTD0+EbzWnZRuMC8Q==
-X-Received: by 2002:a05:600c:3ba3:b0:418:d4a5:b10c with SMTP id n35-20020a05600c3ba300b00418d4a5b10cmr1203298wms.28.1713522639574;
-        Fri, 19 Apr 2024 03:30:39 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id jg1-20020a05600ca00100b004183e983d97sm5885615wmb.39.2024.04.19.03.30.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Apr 2024 03:30:39 -0700 (PDT)
-From: Daniel Thompson <daniel.thompson@linaro.org>
-Date: Fri, 19 Apr 2024 11:30:01 +0100
-Subject: [PATCH] serial: kgdboc: Fix NMI-safety problems from keyboard
- reset code
+	s=arc-20240116; t=1713523034; c=relaxed/simple;
+	bh=i8wB85ziZmS4dHhAjrFvLI6hL1a3MPU1ATy86/otpKk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SVtUWKfq1RsmOUjPATItPoXZdXp+JsCZyYflWQTZRSCKuDQbh26bdWJoTRkjaRT8sRQOvNzEl2qNdV1EGSFNnr6K9RC5AQdvlNN1Gajx32FM6V/tOHfSsAI8qrxZXCN7nXPje5fSbAyRm91UDOWIg+U4Kn7SvUZ4dskNPYNc3XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6SGQVOM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DF7C072AA;
+	Fri, 19 Apr 2024 10:37:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1713523034;
+	bh=i8wB85ziZmS4dHhAjrFvLI6hL1a3MPU1ATy86/otpKk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=c6SGQVOM1mrFbZJpk80JXHUYb/TPyvQI2FB3NrWD6mAByYvnAdCdA9SOeu1LKmzBm
+	 5TZC+aqRH18fModkQdJqEa8UKu5krAFk0ItOy+ZcWkTZYff2F5qo8sgUgInODiCtKL
+	 /13A3mYWgOMUeOQuW8qn0gtxrt/ZqohhF2gtNWa8=
+Subject: FAILED: patch "[PATCH] NFSD: fix endianness issue in nfsd4_encode_fattr4" failed to apply to 6.8-stable tree
+To: gor@linux.ibm.com,chuck.lever@oracle.com,jlayton@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 19 Apr 2024 12:37:09 +0200
+Message-ID: <2024041908-sandblast-sullen-2eed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240419-kgdboc_fix_schedule_work-v1-1-ff19881677e5@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAKhHImYC/x2MSQqAMBDAviJztlB1BPUrIqXLqINipcUFxL9bP
- AaSPBApMEXosgcCnRzZbwmKPAM7620iwS4xlLJEiUUrlskZb9XIt4p2JnespC4fFjFKaxBNo6s
- aIeV7oCT963543w83lr0YagAAAA==
-To: Jason Wessel <jason.wessel@windriver.com>, 
- Douglas Anderson <dianders@chromium.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>
-Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
- linux-serial@vger.kernel.org, Liuye <liu.yeC@h3c.com>, 
- stable@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3694;
- i=daniel.thompson@linaro.org; h=from:subject:message-id;
- bh=C+qOn5JTN9zJb5FySGwxd2G4kTU2FmFYAYBmugqPSPE=;
- b=owEBbQKS/ZANAwAKAXzjJV0594ihAcsmYgBmIke9ZVMNfK8Mz+OrFbqaCdj672YT4w8UQ6ueq
- XBwtvN/r82JAjMEAAEKAB0WIQQvNUFTUPeVarpwrPB84yVdOfeIoQUCZiJHvQAKCRB84yVdOfeI
- ofNLD/0Umjj+W7GAbBqQ40IwzKkdPszIlUlf+waYzWOInyWrpl4sPA64fuVxOM2OiIaMG76D5wZ
- TaHUmY75/p8yYCvxnDmCImLbbfksCTqMWW6U4OIg/Smf2j04Qr11sM8bjhpZsS7yDBZK6wCdFec
- ixKLPDfcJLWujuojN8mgtzUD5HDdNTytJFS7HsMTNC9sZHHUN0quVcTU3P6AaqYApXoBzQN2H6B
- HtDoEBSNjeeq/LrZCcrLHNTgWTQ9xlnZVOHFdlzCmSSMKaonGBK2Q57W3yOgcdGUqkL3fTmM97+
- EebnbAIuqfIHzbeHkFJNDThEsUCqyg4GXpHi/De94YHJoab9H8DazLfa5p1BqmVM7obUOK+4z4v
- nLTeji+w4KrvcAqxGu5y4IHL3rwd7c14dD0USQqNS32p1mnzrkJN95l7SV2MwyeBjiAFJ6j8dd7
- NEOqHbly54qnGxAKN2NNAjo6b7upiB3zBnvKB8smcKodgoNxiqDzXWmRlXWrSymGVUidj/WQBpq
- 343NQhA3JUChjQXwvXUONWV/Vka8QXMflolG+vVdOGfXbjfWyXlkWVMtNuOBFZR/1ChTcqAWYls
- 1BuHcD+sywGdEzXvb2qP7Fbc4S47aYDSAy+T2fX4aDz5z+9qpjG+EvMJniaR7tceykHS3GzOOMi
- v/BaL26UzkgkwSQ==
-X-Developer-Key: i=daniel.thompson@linaro.org; a=openpgp;
- fpr=E38BE19861669213F6E2661AA8A4E3BC5B7B28BE
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Currently, when kdb is compiled with keyboard support, then we will use
-schedule_work() to provoke reset of the keyboard status.  Unfortunately
-schedule_work() gets called from the kgdboc post-debug-exception
-handler.  That risks deadlock since schedule_work() is not NMI-safe and,
-even on platforms where the NMI is not directly used for debugging, the
-debug trap can have NMI-like behaviour depending on where breakpoints
-are placed.
 
-Fix this by using the irq work system, which is NMI-safe, to defer the
-call to schedule_work() to a point when it is safe to call.
+The patch below does not apply to the 6.8-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Reported-by: Liuye <liu.yeC@h3c.com>
-Closes: https://lore.kernel.org/all/20240228025602.3087748-1-liu.yeC@h3c.com/
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git checkout FETCH_HEAD
+git cherry-pick -x f488138b526715c6d2568d7329c4477911be4210
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041908-sandblast-sullen-2eed@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+
+Possible dependencies:
+
+f488138b5267 ("NFSD: fix endianness issue in nfsd4_encode_fattr4")
+c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
+6487a13b5c6b ("NFSD: add support for CB_GETATTR callback")
+4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
+93483ac5fec6 ("nfsd: expose /proc/net/sunrpc/nfsd in net namespaces")
+d98416cc2154 ("nfsd: rename NFSD_NET_* to NFSD_STATS_*")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f488138b526715c6d2568d7329c4477911be4210 Mon Sep 17 00:00:00 2001
+From: Vasily Gorbik <gor@linux.ibm.com>
+Date: Thu, 11 Apr 2024 11:45:57 +0200
+Subject: [PATCH] NFSD: fix endianness issue in nfsd4_encode_fattr4
+
+The nfs4 mount fails with EIO on 64-bit big endian architectures since
+v6.7. The issue arises from employing a union in the nfsd4_encode_fattr4()
+function to overlay a 32-bit array with a 64-bit values based bitmap,
+which does not function as intended. Address the endianness issue by
+utilizing bitmap_from_arr32() to copy 32-bit attribute masks into a
+bitmap in an endianness-agnostic manner.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
----
- drivers/tty/serial/kgdboc.c | 30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+Fixes: fce7913b13d0 ("NFSD: Use a bitmask loop to encode FATTR4 results")
+Link: https://bugs.launchpad.net/ubuntu/+source/nfs-utils/+bug/2060217
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 
-diff --git a/drivers/tty/serial/kgdboc.c b/drivers/tty/serial/kgdboc.c
-index 7ce7bb1640054..adcea70fd7507 100644
---- a/drivers/tty/serial/kgdboc.c
-+++ b/drivers/tty/serial/kgdboc.c
-@@ -19,6 +19,7 @@
- #include <linux/console.h>
- #include <linux/vt_kern.h>
- #include <linux/input.h>
-+#include <linux/irq_work.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/serial_core.h>
-@@ -48,6 +49,25 @@ static struct kgdb_io		kgdboc_earlycon_io_ops;
- static int                      (*earlycon_orig_exit)(struct console *con);
- #endif /* IS_BUILTIN(CONFIG_KGDB_SERIAL_CONSOLE) */
- 
-+/*
-+ * When we leave the debug trap handler we need to reset the keyboard status
-+ * (since the original keyboard state gets partially clobbered by kdb use of
-+ * the keyboard).
-+ *
-+ * The path to deliver the reset is somewhat circuitous.
-+ *
-+ * To deliver the reset we register an input handler, reset the keyboard and
-+ * then deregister the input handler. However, to get this done right, we do
-+ * have to carefully manage the calling context because we can only register
-+ * input handlers from task context.
-+ *
-+ * In particular we need to trigger the action from the debug trap handler with
-+ * all its NMI and/or NMI-like oddities. To solve this the kgdboc trap exit code
-+ * (the "post_exception" callback) uses irq_work_queue(), which is NMI-safe, to
-+ * schedule a callback from a hardirq context. From there we have to defer the
-+ * work again, this time using schedule_Work(), to get a callback using the
-+ * system workqueue, which runs in task context.
-+ */
- #ifdef CONFIG_KDB_KEYBOARD
- static int kgdboc_reset_connect(struct input_handler *handler,
- 				struct input_dev *dev,
-@@ -99,10 +119,17 @@ static void kgdboc_restore_input_helper(struct work_struct *dummy)
- 
- static DECLARE_WORK(kgdboc_restore_input_work, kgdboc_restore_input_helper);
- 
-+static void kgdboc_queue_restore_input_helper(struct irq_work *unused)
-+{
-+	schedule_work(&kgdboc_restore_input_work);
-+}
-+
-+static DEFINE_IRQ_WORK(kgdboc_restore_input_irq_work, kgdboc_queue_restore_input_helper);
-+
- static void kgdboc_restore_input(void)
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index fac938f563ad..1955481832e0 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3490,11 +3490,13 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 		    struct dentry *dentry, const u32 *bmval,
+ 		    int ignore_crossmnt)
  {
- 	if (likely(system_state == SYSTEM_RUNNING))
--		schedule_work(&kgdboc_restore_input_work);
-+		irq_work_queue(&kgdboc_restore_input_irq_work);
- }
++	DECLARE_BITMAP(attr_bitmap, ARRAY_SIZE(nfsd4_enc_fattr4_encode_ops));
+ 	struct nfsd4_fattr_args args;
+ 	struct svc_fh *tempfh = NULL;
+ 	int starting_len = xdr->buf->len;
+ 	__be32 *attrlen_p, status;
+ 	int attrlen_offset;
++	u32 attrmask[3];
+ 	int err;
+ 	struct nfsd4_compoundres *resp = rqstp->rq_resp;
+ 	u32 minorversion = resp->cstate.minorversion;
+@@ -3502,10 +3504,6 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 		.mnt	= exp->ex_path.mnt,
+ 		.dentry	= dentry,
+ 	};
+-	union {
+-		u32		attrmask[3];
+-		unsigned long	mask[2];
+-	} u;
+ 	unsigned long bit;
+ 	bool file_modified = false;
+ 	u64 size = 0;
+@@ -3521,20 +3519,19 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 	/*
+ 	 * Make a local copy of the attribute bitmap that can be modified.
+ 	 */
+-	memset(&u, 0, sizeof(u));
+-	u.attrmask[0] = bmval[0];
+-	u.attrmask[1] = bmval[1];
+-	u.attrmask[2] = bmval[2];
++	attrmask[0] = bmval[0];
++	attrmask[1] = bmval[1];
++	attrmask[2] = bmval[2];
  
- static int kgdboc_register_kbd(char **cptr)
-@@ -133,6 +160,7 @@ static void kgdboc_unregister_kbd(void)
- 			i--;
- 		}
+ 	args.rdattr_err = 0;
+ 	if (exp->ex_fslocs.migrated) {
+-		status = fattr_handle_absent_fs(&u.attrmask[0], &u.attrmask[1],
+-						&u.attrmask[2], &args.rdattr_err);
++		status = fattr_handle_absent_fs(&attrmask[0], &attrmask[1],
++						&attrmask[2], &args.rdattr_err);
+ 		if (status)
+ 			goto out;
  	}
-+	irq_work_sync(&kgdboc_restore_input_irq_work);
- 	flush_work(&kgdboc_restore_input_work);
- }
- #else /* ! CONFIG_KDB_KEYBOARD */
-
----
-base-commit: 0bbac3facb5d6cc0171c45c9873a2dc96bea9680
-change-id: 20240419-kgdboc_fix_schedule_work-f0cb44b8a354
-
-Best regards,
--- 
-Daniel Thompson <daniel.thompson@linaro.org>
+ 	args.size = 0;
+-	if (u.attrmask[0] & (FATTR4_WORD0_CHANGE | FATTR4_WORD0_SIZE)) {
++	if (attrmask[0] & (FATTR4_WORD0_CHANGE | FATTR4_WORD0_SIZE)) {
+ 		status = nfsd4_deleg_getattr_conflict(rqstp, d_inode(dentry),
+ 					&file_modified, &size);
+ 		if (status)
+@@ -3553,16 +3550,16 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 
+ 	if (!(args.stat.result_mask & STATX_BTIME))
+ 		/* underlying FS does not offer btime so we can't share it */
+-		u.attrmask[1] &= ~FATTR4_WORD1_TIME_CREATE;
+-	if ((u.attrmask[0] & (FATTR4_WORD0_FILES_AVAIL | FATTR4_WORD0_FILES_FREE |
++		attrmask[1] &= ~FATTR4_WORD1_TIME_CREATE;
++	if ((attrmask[0] & (FATTR4_WORD0_FILES_AVAIL | FATTR4_WORD0_FILES_FREE |
+ 			FATTR4_WORD0_FILES_TOTAL | FATTR4_WORD0_MAXNAME)) ||
+-	    (u.attrmask[1] & (FATTR4_WORD1_SPACE_AVAIL | FATTR4_WORD1_SPACE_FREE |
++	    (attrmask[1] & (FATTR4_WORD1_SPACE_AVAIL | FATTR4_WORD1_SPACE_FREE |
+ 		       FATTR4_WORD1_SPACE_TOTAL))) {
+ 		err = vfs_statfs(&path, &args.statfs);
+ 		if (err)
+ 			goto out_nfserr;
+ 	}
+-	if ((u.attrmask[0] & (FATTR4_WORD0_FILEHANDLE | FATTR4_WORD0_FSID)) &&
++	if ((attrmask[0] & (FATTR4_WORD0_FILEHANDLE | FATTR4_WORD0_FSID)) &&
+ 	    !fhp) {
+ 		tempfh = kmalloc(sizeof(struct svc_fh), GFP_KERNEL);
+ 		status = nfserr_jukebox;
+@@ -3577,10 +3574,10 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 		args.fhp = fhp;
+ 
+ 	args.acl = NULL;
+-	if (u.attrmask[0] & FATTR4_WORD0_ACL) {
++	if (attrmask[0] & FATTR4_WORD0_ACL) {
+ 		err = nfsd4_get_nfs4_acl(rqstp, dentry, &args.acl);
+ 		if (err == -EOPNOTSUPP)
+-			u.attrmask[0] &= ~FATTR4_WORD0_ACL;
++			attrmask[0] &= ~FATTR4_WORD0_ACL;
+ 		else if (err == -EINVAL) {
+ 			status = nfserr_attrnotsupp;
+ 			goto out;
+@@ -3592,17 +3589,17 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 
+ #ifdef CONFIG_NFSD_V4_SECURITY_LABEL
+ 	args.context = NULL;
+-	if ((u.attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) ||
+-	     u.attrmask[0] & FATTR4_WORD0_SUPPORTED_ATTRS) {
++	if ((attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) ||
++	     attrmask[0] & FATTR4_WORD0_SUPPORTED_ATTRS) {
+ 		if (exp->ex_flags & NFSEXP_SECURITY_LABEL)
+ 			err = security_inode_getsecctx(d_inode(dentry),
+ 						&args.context, &args.contextlen);
+ 		else
+ 			err = -EOPNOTSUPP;
+ 		args.contextsupport = (err == 0);
+-		if (u.attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) {
++		if (attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) {
+ 			if (err == -EOPNOTSUPP)
+-				u.attrmask[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
++				attrmask[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
+ 			else if (err)
+ 				goto out_nfserr;
+ 		}
+@@ -3610,8 +3607,8 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ #endif /* CONFIG_NFSD_V4_SECURITY_LABEL */
+ 
+ 	/* attrmask */
+-	status = nfsd4_encode_bitmap4(xdr, u.attrmask[0],
+-				      u.attrmask[1], u.attrmask[2]);
++	status = nfsd4_encode_bitmap4(xdr, attrmask[0], attrmask[1],
++				      attrmask[2]);
+ 	if (status)
+ 		goto out;
+ 
+@@ -3620,7 +3617,9 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 	attrlen_p = xdr_reserve_space(xdr, XDR_UNIT);
+ 	if (!attrlen_p)
+ 		goto out_resource;
+-	for_each_set_bit(bit, (const unsigned long *)&u.mask,
++	bitmap_from_arr32(attr_bitmap, attrmask,
++			  ARRAY_SIZE(nfsd4_enc_fattr4_encode_ops));
++	for_each_set_bit(bit, attr_bitmap,
+ 			 ARRAY_SIZE(nfsd4_enc_fattr4_encode_ops)) {
+ 		status = nfsd4_enc_fattr4_encode_ops[bit](xdr, &args);
+ 		if (status != nfs_ok)
 
 
