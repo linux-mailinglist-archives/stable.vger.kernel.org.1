@@ -1,143 +1,138 @@
-Return-Path: <stable+bounces-40300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4D38AB242
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 17:47:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B128AB245
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 17:47:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CE941F21C65
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:47:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 348FAB21CC1
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF4B12FB01;
-	Fri, 19 Apr 2024 15:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30C112FB05;
+	Fri, 19 Apr 2024 15:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G+dJMIz2"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BSKlMVg6"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090E777F13
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 15:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29E312FB18
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 15:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713541636; cv=none; b=Tdzy92cv8dzy3caLUOLITfHJ4KItMIPwd7xXk1qUtiMdTWytGIP3TJZ0/KFNBBNXtJaroKmaq4VncOYIviLQK2TBxky3v4ZBFQUNlmjfb/QVvopZid8ZpmL8uvJ4vwaoIetAgRtanyx3B200IQkzmCdcOw8trE2R4z59nYlVMLk=
+	t=1713541637; cv=none; b=kfdZ2h3dYTtVEFJf33Slo7OWdUbnSOJBHDNYNIjhqZvIXdGBAi8nW1ccYd5VisCNH2dD6V/q6G7VtvxG1qguh7kpsGnlIbpjIjsrt+NKhEnI+J5A8cf82IVPfzKRSy43kB1T32mDmwM7EfV56tYe+3vvVjbBu5rzSDmqGkVoIxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713541636; c=relaxed/simple;
-	bh=KeOYklVnhrkn4BnPW+ur8UG57oHWwhmThF+7IRomSg8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=PSnmiZLZtU/TlI4+pF5rMQ8tI8L6jaFcnx45R1yL0jBMF2EdrEBxPXrBG+DWTAMQUirTIpo9TF3gWgYpJ19sQkeIMU03SI0CXr+UzNn3VgV8SjpDUTf+wtyviu0uW9YQLOwp9sFOclv5eBFn9mPqLCQss7tbirsrKtixNwNn5oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G+dJMIz2; arc=none smtp.client-ip=91.218.175.174
+	s=arc-20240116; t=1713541637; c=relaxed/simple;
+	bh=Ighm23j8LkVYC+wsxxPfVCbc4FMTNLhJsp7jD2WmR+I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NOMgBpJFXjrwhSUJ2+AbtO8wfvBtxO6s/Pr5eqO02mc6pJrRpJnjSgeWV+st6ByWqlo/Wf1T6Soo1wcYbt/tKO71LdeFsfPmQcva+KrN6fYNK96jean8LXU/7X9X8+L9LpTLnOOnONMaMjAGpH5KEUj1dzeG5MrYEQ/wDlPz5wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BSKlMVg6; arc=none smtp.client-ip=91.218.175.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1713541630;
+	t=1713541632;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LCfcmFtg6PJYBGY2xi+5oc8zgDy3MNFQs+r7zZ51UPs=;
-	b=G+dJMIz2JhBLUtWVaAuaEcB8yQwv/PiP0bYqDZcvheuXrxmnUCL9Vl7a84ouijQDeY1VEP
-	h80JYhVev1PW7n5aSS2xV7TSVv+UvBLYQj5stYH2w6emEBYpkVi+NIzRFyZWxTKtWF94xj
-	Dq8Hk2FzqaMHjzEECzrDBTc8zJkenjM=
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OFj78g7lgpNWf+bXW61uPptpVivxmo4eSRSsOflqKx0=;
+	b=BSKlMVg6gkPimTnnGKP9hm0UlK1sX78CBEqo9TvwGGvk1hb33NK38dBOggi4Vl7ka17eS3
+	PxLYj2UDC2UYEOv8vOJC6XO/q61MleDkeegdZHFSA7nBVq2hU16c4KiX+PeS0KukdB+4uR
+	EUnGLsCJC+WvxDhJkWk8AMfGR6KdeHs=
 From: George Guo <dongtai.guo@linux.dev>
 To: gregkh@linuxfoundation.org,
 	tom.zanussi@linux.intel.com
-Cc: stable@vger.kernel.org
-Subject: 
-Date: Fri, 19 Apr 2024 23:46:56 +0800
-Message-Id: <20240419154658.4015260-1-dongtai.guo@linux.dev>
+Cc: stable@vger.kernel.org,
+	Namhyung Kim <namhyung@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	George Guo <guodongtai@kylinos.cn>
+Subject: [PATCH 4.19.y v6 1/2] tracing: Remove hist trigger synth_var_refs
+Date: Fri, 19 Apr 2024 23:46:57 +0800
+Message-Id: <20240419154658.4015260-2-dongtai.guo@linux.dev>
+In-Reply-To: <20240419154658.4015260-1-dongtai.guo@linux.dev>
+References: <20240419154658.4015260-1-dongtai.guo@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Subject: [PATCH 4.19.y v6 0/2] Double-free bug discovery on testing trigger-field-variable-support.tc
+From: Tom Zanussi <tom.zanussi@linux.intel.com>
 
-1) About v4-0001-tracing-Remove-hist-trigger-synth_var_refs.patch:
+commit 912201345f7c39e6b0ac283207be2b6641fa47b9 upstream.
 
-The reason I am backporting this patch is that no one found the double-free bug
-at that time, then later the code was removed on upstream, but
-4.19-stable has the bug.
+All var_refs are now handled uniformly and there's no reason to treat
+the synth_refs in a special way now, so remove them and associated
+functions.
 
-This is tested via "./ftracetest test.d/trigger/inter-event/
-trigger-field-variable-support.tc"
-==================================================================
-BUG: KASAN: use-after-free in destroy_hist_field+0x115/0x140
-Read of size 4 at addr ffff888012e95318 by task ftracetest/1858
+Link: http://lkml.kernel.org/r/b4d3470526b8f0426dcec125399dad9ad9b8589d.1545161087.git.tom.zanussi@linux.intel.com
 
-CPU: 1 PID: 1858 Comm: ftracetest Kdump: loaded Tainted: GE 4.19.90-89 #24
-Source Version: Unknown
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0
-Call Trace:
- dump_stack+0xcb/0x10b
- print_address_description.cold+0x54/0x249
- kasan_report_error.cold+0x63/0xab
- ? destroy_hist_field+0x115/0x140
- __asan_report_load4_noabort+0x8d/0xa0
- ? destroy_hist_field+0x115/0x140
- destroy_hist_field+0x115/0x140
- destroy_hist_data+0x4e4/0x9a0
- event_hist_trigger_free+0x212/0x2f0
- ? update_cond_flag+0x128/0x170
- ? event_hist_trigger_func+0x2880/0x2880
- hist_unregister_trigger+0x2f2/0x4f0
- event_hist_trigger_func+0x168c/0x2880
- ? tracing_map_read_var_once+0xd0/0xd0
- ? create_key_field+0x520/0x520
- ? __mutex_lock_slowpath+0x10/0x10
- event_trigger_write+0x2f4/0x490
- ? trigger_start+0x180/0x180
- ? __fget_light+0x369/0x5d0
- ? count_memcg_event_mm+0x104/0x2b0
- ? trigger_start+0x180/0x180
- __vfs_write+0x81/0x100
- vfs_write+0x1e1/0x540
- ksys_write+0x12a/0x290
- ? __ia32_sys_read+0xb0/0xb0
- ? __close_fd+0x1d3/0x280
- do_syscall_64+0xe3/0x2d0
- entry_SYSCALL_64_after_hwframe+0x5c/0xc1
-RIP: 0033:0x7efdd342ee04
-Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00 48
-8d 05 39 34 0c 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff
-ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
-RSP: 002b:00007ffda01f5e08 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00000000000000b4 RCX: 00007efdd342ee04
-RDX: 00000000000000b4 RSI: 000055c5b41b1e90 RDI: 0000000000000001
-RBP: 000055c5b41b1e90 R08: 000000000000000a R09: 0000000000000000
-R10: 000000000000000a R11: 0000000000000246 R12: 00007efdd34ed5c0
-R13: 00000000000000b4 R14: 00007efdd34ed7c0 R15: 00000000000000b4
-==================================================================
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Tom Zanussi <tom.zanussi@linux.intel.com>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: George Guo <guodongtai@kylinos.cn>
+---
+ kernel/trace/trace_events_hist.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-2) About v4-0002-tracing-Use-var_refs-for-hist-trigger-reference-c.patch:
-
-Only v4-0001-tracing-Remove-hist-trigger-synth_var_refs.patch will lead
-to compilation errors:
-
-../kernel/trace/trace_events_hist.c: In function ‘find_var_ref’:
-../kernel/trace/trace_events_hist.c:1364:36: error: ‘struct hist_trigger_data’ has no member named ‘n_synth_var_refs’; did you mean ‘n_var_refs’?
- 1364 |         for (i = 0; i < hist_data->n_synth_var_refs; i++) {
-      |                                    ^~~~~~~~~~~~~~~~
-      |                                    n_var_refs
-../kernel/trace/trace_events_hist.c:1365:41: error: ‘struct hist_trigger_data’ has no member named ‘synth_var_refs’; did you mean ‘n_var_refs’?
- 1365 |                 hist_field = hist_data->synth_var_refs[i];
-      |                                         ^~~~~~~~~~~~~~
-      |                                         n_var_refs
-
-
-Tom Zanussi (2):
-  tracing: Remove hist trigger synth_var_refs
-  tracing: Use var_refs[] for hist trigger reference checking
-
- kernel/trace/trace_events_hist.c | 86 ++++----------------------------
- 1 file changed, 11 insertions(+), 75 deletions(-)
-
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index e004daf8cad5..e4f5b6894cf2 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -280,8 +280,6 @@ struct hist_trigger_data {
+ 	struct action_data		*actions[HIST_ACTIONS_MAX];
+ 	unsigned int			n_actions;
+ 
+-	struct hist_field               *synth_var_refs[SYNTH_FIELDS_MAX];
+-	unsigned int                    n_synth_var_refs;
+ 	struct field_var		*field_vars[SYNTH_FIELDS_MAX];
+ 	unsigned int			n_field_vars;
+ 	unsigned int			n_field_var_str;
+@@ -3708,20 +3706,6 @@ static void save_field_var(struct hist_trigger_data *hist_data,
+ }
+ 
+ 
+-static void destroy_synth_var_refs(struct hist_trigger_data *hist_data)
+-{
+-	unsigned int i;
+-
+-	for (i = 0; i < hist_data->n_synth_var_refs; i++)
+-		destroy_hist_field(hist_data->synth_var_refs[i], 0);
+-}
+-
+-static void save_synth_var_ref(struct hist_trigger_data *hist_data,
+-			 struct hist_field *var_ref)
+-{
+-	hist_data->synth_var_refs[hist_data->n_synth_var_refs++] = var_ref;
+-}
+-
+ static int check_synth_field(struct synth_event *event,
+ 			     struct hist_field *hist_field,
+ 			     unsigned int field_pos)
+@@ -3884,7 +3868,6 @@ static int onmatch_create(struct hist_trigger_data *hist_data,
+ 				goto err;
+ 			}
+ 
+-			save_synth_var_ref(hist_data, var_ref);
+ 			field_pos++;
+ 			kfree(p);
+ 			continue;
+@@ -4631,7 +4614,6 @@ static void destroy_hist_data(struct hist_trigger_data *hist_data)
+ 	destroy_actions(hist_data);
+ 	destroy_field_vars(hist_data);
+ 	destroy_field_var_hists(hist_data);
+-	destroy_synth_var_refs(hist_data);
+ 
+ 	kfree(hist_data);
+ }
 -- 
 2.34.1
 
