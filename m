@@ -1,120 +1,166 @@
-Return-Path: <stable+bounces-40318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1FC8AB569
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 21:06:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 088058AB5F0
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 22:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3734E1C216D4
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 19:06:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B883B282774
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 20:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B146813AD08;
-	Fri, 19 Apr 2024 19:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A9213CA99;
+	Fri, 19 Apr 2024 20:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="EZMeU8+N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ccOP9udB"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBE5C8DE;
-	Fri, 19 Apr 2024 19:06:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5574137778;
+	Fri, 19 Apr 2024 20:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713553587; cv=none; b=QzlmoDsB8h39BcF95mY+ymfnGRUTs2aLbIgJQodZxzV6ihHCAa3aWNzYrxUfBYbtDQrJCVS3HABX1eH9HMJRVRkl70RF5PNrgAp9ekqGM+2GfIZJUmQxuJ4E3F/fRso4bYY07P2h6rYbpxBqQNXCRTONBy2JMfHu2eAB40FFILU=
+	t=1713557537; cv=none; b=eyolsvVTabH+5dp/FRDJnTxajUljKm3i0wu4VuJWD06bRjsSSZHl/3gxhQGYEQP9lObfS6FogxVrGEMkiDUx0a8l51midvLOJj3BGcYj1OA1NDmGcSPesW9XE6t3iSbYrNOllhXMu/O+MVVbk70IdJhQQL0xS/bX+gWkBnh/f0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713553587; c=relaxed/simple;
-	bh=frL8nDEOPNIliRkZiIQStZruuhfZi9k5U/6Msmie5BI=;
+	s=arc-20240116; t=1713557537; c=relaxed/simple;
+	bh=nPHvh3DkiBgyvr/B9kszo7qSn9jSsyNQbHvayINckmk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fd7HiLNlDkUpUjmZ7PvJ9baIJ0ByvDx5lt2VVki87sV1Be7I08q6Mbe5UWCrHNUViNiT2GisJMbVNKuz4zaWxgW2mn+oS1qp1XA90MwX5i5pmUT13EsnIPXjPxgQ8IXYb2OEssf9N5kfVxyBtg6bZwVDom4WlVvVAd9RkbCGifE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=EZMeU8+N; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=ZmQFYaswe3z60hg/CuMLOym6Q3T9KnwS2wmjRnDn+oM=; b=EZ
-	MeU8+NJ+ZBi999lgafyf432ur07xzuxB+/J3aV8ZPqjM+K67GilYYxGY8tp16Khd9GDYYYGh0QUZl
-	LsfvAlWENVANlpRQt1Mj9pwexlARzPWjgG0AMAa/TD5/ompi7HSxnIq1/IKhJcRZXLcNSkaZb/FUL
-	tpQeUw16KVNMhTI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rxtZ0-00DTab-4O; Fri, 19 Apr 2024 21:06:22 +0200
-Date: Fri, 19 Apr 2024 21:06:22 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Peter =?iso-8859-1?Q?M=FCnster?= <pm@a16n.net>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>
-Subject: Re: [PATCH net v2] net: b44: set pause params only when interface is
- up
-Message-ID: <3615d058-13c7-4e51-9299-e994ca9c13f3@lunn.ch>
-References: <875xwd1g44.fsf@a16n.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HCtETyIlWeeO/hifDbN5twGdBsiIvTUp7p5BuORSGymmeqd4dxcKHG1KygQ3DMi/G8YLz+crLexstvpm+lQrxbZB1on3qOzEWkrKFgYT3X2PD3l8BnVC0xXocDweupTKO08PgGAmyxyjPXtEpF+ZUVp/8xzM7Ma+vIWIXQvZrUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ccOP9udB; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-56e4a148aeeso1122438a12.2;
+        Fri, 19 Apr 2024 13:12:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713557534; x=1714162334; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iQR7nTkye4AVZtx+ZZbC5oLR5EmGS6z2i/4lvmSfqDo=;
+        b=ccOP9udBPseEbFq5l24WuUGWl1eFV+LiNY/gW7l7z7QG8MRss+/Z4BBocnZO5ypoF6
+         dl1D3m/7vZiTwVTrTaZ41tvC/E6TzAtOXyOPioSkaeSbMkqDq8HVepPrAVig9J7XXvHY
+         s8pfpWMjqhxgbDomxZ7ScwWhxClLqJjc4szETqCRKI7NJbRq4Ob5mu1LqqLBXx/EdaC+
+         e2gjRMAbUQwSOfZbBJmtX24bV3rZGrwPVaj2VuFYyrPg4ZIqyaWsXLmoefhgegOgqn9E
+         3eGVrSRsFzrhMheoBugriRpdI8fZOaieTfjtC/z6Ak9/6RkPe2aVvy9JaXEo9xstjnew
+         TCmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713557534; x=1714162334;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iQR7nTkye4AVZtx+ZZbC5oLR5EmGS6z2i/4lvmSfqDo=;
+        b=RwM+wTO9jg92yPv9TIcOvuRafFDySxVd36L6Jmz7L8ZuK1HMyGgAfCYo1ssB2lmzrT
+         GAk5nCewaZOrtvN2lS5ABGvoBY0knY+PSYB43DCda0jjwAPHNedDyYhdWS620mJfWVLx
+         uw/0nkewsKJTC3qt2T7ao08W5FhPdcggynjTo+e//9gZI2nICrBvu1lSHwKfgEfWvIns
+         RKs034htj5OA5nxnd2CIKfUQgXKFdIIvTmjYs1HYXhE1FNsr/cRETWgAILliLEcnAIKO
+         kcgJki9jGwNK6TfvK1A3L2sBeUx6rw3iL8sMmqw6CAAGXWuhs53zia7EjwbzgwDaoLFN
+         sY0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWXO2NX5DD9EbW6nF91Q4axhT7kqT9Zhm0JQtFxfycKs14ZaLDQM2ip0mlwrBv1B2YIAf8sEV+enFCY0aRlO1ktkiv4RyyAhEzvQUSnw6pY97y2XgSVv/6giIXMAxAW688RKg==
+X-Gm-Message-State: AOJu0Yw/UZ/G5NNk7CeGcA0l/aM9zQN4iVibqUzJTYxMqLegIKrCCSqJ
+	qTmZj7r1A3jMdPb982rWY72xGJZOyglMSIgGQqqE1n3iLZeLzztByqVEaTv3
+X-Google-Smtp-Source: AGHT+IGOHAF5nkXJuC88UzrlA2WgNUXaH2KnFa4PsZZwcaO1GcXKC2SWKsteBi2XE0Xb0zFDe+LUrw==
+X-Received: by 2002:a50:a451:0:b0:56e:3293:3777 with SMTP id v17-20020a50a451000000b0056e32933777mr2576385edb.17.1713557533455;
+        Fri, 19 Apr 2024 13:12:13 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id c26-20020a056402101a00b0056e66f1fe9bsm2488468edu.23.2024.04.19.13.12.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Apr 2024 13:12:12 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id A93CABE2EE8; Fri, 19 Apr 2024 22:12:11 +0200 (CEST)
+Date: Fri, 19 Apr 2024 22:12:11 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Paulo Alcantara <pc@manguebit.com>
+Cc: regressions@lists.linux.dev, Steve French <stfrench@microsoft.com>,
+	gregkh@linuxfoundation.org, sashal@kernel.org,
+	stable@vger.kernel.org, linux-cifs@vger.kernel.org
+Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
+ overflow frame end of buf" and invisible files under certain conditions and
+ at least with noserverino mount option
+Message-ID: <ZiLQG4x0m1L70ugu@eldamar.lan>
+References: <ZiBCsoc0yf_I8In8@eldamar.lan>
+ <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
+ <ZiCoYjr79HXxiTjr@eldamar.lan>
+ <29e0cbcab5be560608d1dfbfb0ccbc96@manguebit.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <875xwd1g44.fsf@a16n.net>
+In-Reply-To: <29e0cbcab5be560608d1dfbfb0ccbc96@manguebit.com>
 
-On Fri, Apr 19, 2024 at 06:17:47PM +0200, Peter Münster wrote:
-> Hi,
+Hi Paulo,
+
+On Thu, Apr 18, 2024 at 10:47:01AM -0300, Paulo Alcantara wrote:
+> Salvatore Bonaccorso <carnil@debian.org> writes:
 > 
-> This patch fixes a kernel panic when using netifd.
-> Could you please apply it also to linux-5.15.y at least?
+> > On Wed, Apr 17, 2024 at 07:58:56PM -0300, Paulo Alcantara wrote:
+> >> Hi Salvatore,
+> >> 
+> >> Salvatore Bonaccorso <carnil@debian.org> writes:
+> >> 
+> >> > In Debian we got two reports of cifs mounts not functioning, hiding
+> >> > certain files. The two reports are:
+> >> >
+> >> > https://bugs.debian.org/1069102
+> >> > https://bugs.debian.org/1069092
+> >> >
+> >> > On those cases kernel logs error
+> >> >
+> >> > [   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
+> >> 
+> >> I couldn't reproduce it.  Does the following fix your issue:
+> >> 
+> >> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+> >> index 4c1231496a72..3ee35430595e 100644
+> >> --- a/fs/smb/client/smb2pdu.c
+> >> +++ b/fs/smb/client/smb2pdu.c
+> >> @@ -5083,7 +5083,7 @@ smb2_parse_query_directory(struct cifs_tcon *tcon,
+> >>  		info_buf_size = sizeof(struct smb2_posix_info);
+> >>  		break;
+> >>  	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
+> >> -		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO);
+> >> +		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO) - 1;
+> >>  		break;
+> >>  	default:
+> >>  		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
+> >> 
+> >> If not, please provide network trace and verbose logs.
+> >
+> > Yes that appears to fix the issue.
 > 
-> TIA and kind regards,
-> -- 
->            Peter
-
-Hi Peter
-
-This is better, but still has some process issues.
-
-> b44_free_rings() accesses b44::rx_buffers (and ::tx_buffers)
-> unconditionally, but b44::rx_buffers is only valid when the
-> device is up (they get allocated in b44_open(), and deallocated
-> again in b44_close()), any other time these is just a NULL pointers.
+> Thanks for quickly testing it.  So the above change indicates that we're
+> missing 35235e19b393 ("cifs: Replace remaining 1-element arrays") in
+> v6.1.y.
 > 
-> So if you try to change the pause params while the network interface
-> is disabled/administratively down, everything explodes (which likely
-> netifd tries to do).
+> Can you test it now with 35235e19b393 backported without the above
+> change?
+
+Done. From the experiment in the avialable setup this seems to indeed
+fix the issue. The commit can mostly be cherry-picked with one manual
+whitespace caused fixup.
+
+> > But as you say you are not able to reproduce the issue, I guess we
+> > need to try to get it clearly reproducible first to see we face no
+> > other fallouts?
 > 
-> Link: https://github.com/openwrt/openwrt/issues/13789
-> Fixes: 1da177e4c3f4 (Linux-2.6.12-rc2)
+> I couldn't reproduce it in v6.9-rc4.  Forgot to mention it, sorry.
 
-Cc: stable@vger.kernel.org
+Ack understand.
 
-needs to go here. Your patch will first get applied to the next -rc
-release. Once it is published there, any patches with this tag are
-automatically added to the list for backporting to stable. That will
-include all long term stable branches, so there is no need to request
-specifically linux-5.15.
+> Yes, further testing would be great to make sure we're not missing
+> anything else.
 
-There is some documentation about this here:
+I'm still failing to provide you a recipe with a minimal as possible
+setup, but with the instance I was able to reproduce the issue the
+regression seems gone with cherry-picking 35235e19b393 ("cifs: Replace
+remaining 1-element arrays") .
 
-https://www.kernel.org/doc/Documentation/process/stable-kernel-rules.rst
-
-> Reported-by: Peter Münster <pm@a16n.net>
-> Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-> Signed-off-by: Vaclav Svoboda <svoboda@neng.cz>
-> Tested-by: Peter Münster <pm@a16n.net>
-> Signed-off-by: Peter Münster <pm@a16n.net>
-> ---
-
-Anything above the --- gets merged as the commit message. Anything
-below it and the patch proper gets discarded. This is where you can
-add comments for Maintainers etc. For this patch, you don't actually
-need any such comments.
-
-I often say to mainline newbies: The code is easy, the hard bit is the
-processes.
-
-	Andrew
+Regards,
+Salvatore
 
