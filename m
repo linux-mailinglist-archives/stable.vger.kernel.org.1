@@ -1,97 +1,116 @@
-Return-Path: <stable+bounces-40263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA1A8AAB48
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 11:17:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A698AAC59
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E61D1C21CB3
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 09:17:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF98D281B35
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C0A7580B;
-	Fri, 19 Apr 2024 09:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5E27C0A9;
+	Fri, 19 Apr 2024 10:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNp4CEeH"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD1DF9CD;
-	Fri, 19 Apr 2024 09:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5E47BB19;
+	Fri, 19 Apr 2024 10:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713518247; cv=none; b=YWWax9fAdjswT9TX292lZCu16HwQ/vfDF5NT6o4aJZp08bUXiHwqjZYtC3mt2dDSNPpyDfD8GpLFfgThDNjQg6B2ylphoe762TfUHoVZaGwxxDGnbLCVaEy3Gw63Xxeq7oa3j5QFxsxCLpfU2Ttor3mXuf3fhi/tLk6U7LOgZTs=
+	t=1713521020; cv=none; b=avm6J7GN8JjcHYR2rPqxqQGhmazlCcKSCptTPdeaWQMqnTTMH/Pe07u7O2ATITw5/qCYIom13evbj8qJtLjlnZFa86iJU9L2pFF0/WkNOem0eHY1HJJi4gf+qgHNQVSHY9gzLZ7TJ90MXRYN39YUl09mP99YBG6jl1wttZSs8ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713518247; c=relaxed/simple;
-	bh=fVtm2MQDOR/x6RlSD7/xIApw8gEH7eq2JLBMAl1iBLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IcLGPH8+HpfxIeBtOyAhzyIFvt0IATGdongaG7t1mks1XanLFSRH7nXNwXKn1mWc8PfgLGQ6XWTgAW5Yx1p1uhLN/HQoxZu1mx9/PPbAbE5WaTKLqkoRw7k2+AgpIVE/gKSqZ7Zx2C53maNcUYmQoUCKbsHhxEoz5qCLmSiFrzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id CD4911C0080; Fri, 19 Apr 2024 11:17:16 +0200 (CEST)
-Date: Fri, 19 Apr 2024 11:17:16 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>, Anand Jain <anand.jain@oracle.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Pavel Machek <pavel@denx.de>, stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: add missing mutex_unlock in
- btrfs_relocate_sys_chunks()
-Message-ID: <ZiI2nIYK0X6RLciF@duo.ucw.cz>
-References: <20240419-btrfs_unlock-v1-1-c3557976a691@codewreck.org>
+	s=arc-20240116; t=1713521020; c=relaxed/simple;
+	bh=Y+l/5wzPKHUbS5RS+cGf0Dhxvzxyf8nHK5sorhrqVPs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=T8sZLULXlw0I+xPtMuUhLsA3cTkcyIEMnFyEftac1bCCzAIsts1sb8TwkClfLI8MiQBUx7V/YY32EzHisaWVN54UdIXh+dRDK4sQIBOAJFS+x0KGmQyxC72a6jr4ZbMLJ/dtehxL79HMAIsswKqhqEQcY0VEyO+6h20e7AyyFAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNp4CEeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F597C072AA;
+	Fri, 19 Apr 2024 10:03:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713521019;
+	bh=Y+l/5wzPKHUbS5RS+cGf0Dhxvzxyf8nHK5sorhrqVPs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=qNp4CEeH/RtTaj6c0/jyji1DErFEvmLvA92sY4so1y3KYC/ks7SaahgVq73vRFfyC
+	 721AQNRNvig2459UGf0y2hfBSiI8S4ZTmo0TFB3FPM1YXjF0yPIre5DIcPdG1CYM6T
+	 qjW/w/UfrCQ0cIqi0SB/B0BrNySAkVpRI5zIC0mJ521c4v2z89/mulx2bQlvKzpx90
+	 n8XT6DHr8MlWaTGFXevMdeE0iFjSWWbIWxrS8fHQxJ4i/gOpDBVQhEzrGiF/0iBdpB
+	 tuhx4c9SXceMAev1iGFrAd5kHh/e4NvtB5GwdNeIhZ11qwgiKcxe8S0Mruu2+Y13BP
+	 Gi5DtPBR0WmGQ==
+From: Mark Brown <broonie@kernel.org>
+To: Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, 
+ Joao Paulo Goncalves <jpaulo.silvagoncalves@gmail.com>
+Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>, 
+ Jai Luthra <j-luthra@ti.com>, alsa-devel@alsa-project.org, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
+References: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
+Subject: Re: [PATCH] ASoC: ti: davinci-mcasp: Fix race condition during
+ probe
+Message-Id: <171352101774.1723702.5403683019757123784.b4-ty@kernel.org>
+Date: Fri, 19 Apr 2024 19:03:37 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="d/xyR8aY9qMuo2Dt"
-Content-Disposition: inline
-In-Reply-To: <20240419-btrfs_unlock-v1-1-c3557976a691@codewreck.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 
+On Wed, 17 Apr 2024 15:41:38 -0300, Joao Paulo Goncalves wrote:
+> When using davinci-mcasp as CPU DAI with simple-card, there are some
+> conditions that cause simple-card to finish registering a sound card before
+> davinci-mcasp finishes registering all sound components. This creates a
+> non-working sound card from userspace with no problem indication apart
+> from not being able to play/record audio on a PCM stream. The issue
+> arises during simultaneous probe execution of both drivers. Specifically,
+> the simple-card driver, awaiting a CPU DAI, proceeds as soon as
+> davinci-mcasp registers its DAI. However, this process can lead to the
+> client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
+> being preempted before PCM DMA registration on davinci-mcasp finishes.
+> This situation occurs when the probes of both drivers run concurrently.
+> Below is the code path for this condition. To solve the issue, defer
+> davinci-mcasp CPU DAI registration to the last step in the audio part of
+> it. This way, simple-card CPU DAI parsing will be deferred until all
+> audio components are registered.
+> 
+> [...]
 
---d/xyR8aY9qMuo2Dt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Fri 2024-04-19 11:22:48, Dominique Martinet wrote:
-> From: Dominique Martinet <dominique.martinet@atmark-techno.com>
->=20
-> The previous patch forgot to unlock in the error path
->=20
-> Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
-> Reported-by: Pavel Machek <pavel@denx.de>
-> Cc: stable@vger.kernel.org
-> Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relo=
-cate_sys_chunks()")
-> Signed-off-by: Dominique Martinet<dominique.martinet@atmark-techno.com>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Reviewed-by: Pavel Machek <pavel@denx.de>
+Thanks!
 
-Thank you!
+[1/1] ASoC: ti: davinci-mcasp: Fix race condition during probe
+      commit: d18ca8635db2f88c17acbdf6412f26d4f6aff414
 
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---d/xyR8aY9qMuo2Dt
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZiI2nAAKCRAw5/Bqldv6
-8sZaAJ4xe8Los8Q9+crUyfsKAtYLU9NzHQCgsXwYrzAz9gTdBy8Cqqum4uHMIYA=
-=t1ta
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---d/xyR8aY9qMuo2Dt--
+Thanks,
+Mark
+
 
