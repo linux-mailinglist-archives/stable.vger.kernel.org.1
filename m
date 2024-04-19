@@ -1,61 +1,74 @@
-Return-Path: <stable+bounces-40264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A698AAC59
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:03:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4408E8AACDF
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF98D281B35
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:03:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6F7C1F21F9E
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5E27C0A9;
-	Fri, 19 Apr 2024 10:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462047E582;
+	Fri, 19 Apr 2024 10:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNp4CEeH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OZIrMUT+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5E47BB19;
-	Fri, 19 Apr 2024 10:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4115B199C2
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 10:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713521020; cv=none; b=avm6J7GN8JjcHYR2rPqxqQGhmazlCcKSCptTPdeaWQMqnTTMH/Pe07u7O2ATITw5/qCYIom13evbj8qJtLjlnZFa86iJU9L2pFF0/WkNOem0eHY1HJJi4gf+qgHNQVSHY9gzLZ7TJ90MXRYN39YUl09mP99YBG6jl1wttZSs8ko=
+	t=1713522643; cv=none; b=MOrBB86aifpxh+gUpVhFrkIa/2YpkeAGLMzmM2BS2UtKsQOuLs3AKn3p+cjDRs0//I6RTUAERirEZ2vGXikoj6Gup5xR1AA0HWX24yucNJpgvxIawuI0xkYe2PE7acrYTQZ6p/ard9khIQvGBu97+Fax3dy6ZYQaCNZPjUWXUcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713521020; c=relaxed/simple;
-	bh=Y+l/5wzPKHUbS5RS+cGf0Dhxvzxyf8nHK5sorhrqVPs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=T8sZLULXlw0I+xPtMuUhLsA3cTkcyIEMnFyEftac1bCCzAIsts1sb8TwkClfLI8MiQBUx7V/YY32EzHisaWVN54UdIXh+dRDK4sQIBOAJFS+x0KGmQyxC72a6jr4ZbMLJ/dtehxL79HMAIsswKqhqEQcY0VEyO+6h20e7AyyFAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNp4CEeH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F597C072AA;
-	Fri, 19 Apr 2024 10:03:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713521019;
-	bh=Y+l/5wzPKHUbS5RS+cGf0Dhxvzxyf8nHK5sorhrqVPs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=qNp4CEeH/RtTaj6c0/jyji1DErFEvmLvA92sY4so1y3KYC/ks7SaahgVq73vRFfyC
-	 721AQNRNvig2459UGf0y2hfBSiI8S4ZTmo0TFB3FPM1YXjF0yPIre5DIcPdG1CYM6T
-	 qjW/w/UfrCQ0cIqi0SB/B0BrNySAkVpRI5zIC0mJ521c4v2z89/mulx2bQlvKzpx90
-	 n8XT6DHr8MlWaTGFXevMdeE0iFjSWWbIWxrS8fHQxJ4i/gOpDBVQhEzrGiF/0iBdpB
-	 tuhx4c9SXceMAev1iGFrAd5kHh/e4NvtB5GwdNeIhZ11qwgiKcxe8S0Mruu2+Y13BP
-	 Gi5DtPBR0WmGQ==
-From: Mark Brown <broonie@kernel.org>
-To: Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, 
- Joao Paulo Goncalves <jpaulo.silvagoncalves@gmail.com>
-Cc: Joao Paulo Goncalves <joao.goncalves@toradex.com>, 
- Jai Luthra <j-luthra@ti.com>, alsa-devel@alsa-project.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
-References: <20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com>
-Subject: Re: [PATCH] ASoC: ti: davinci-mcasp: Fix race condition during
- probe
-Message-Id: <171352101774.1723702.5403683019757123784.b4-ty@kernel.org>
-Date: Fri, 19 Apr 2024 19:03:37 +0900
+	s=arc-20240116; t=1713522643; c=relaxed/simple;
+	bh=C+qOn5JTN9zJb5FySGwxd2G4kTU2FmFYAYBmugqPSPE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DmHgoismaQJBvDON+pLvkeSy+VUrvK1fPDuRDymbX5EmSpFAMHsiffUuta45W4UacGB87OIQCSlFugyJ0fCm+Ff6PrMld6gUJd+06JwE98iEcKjorAJXhxHhxrIpQcPC4XSJLM8vNZBWXBC55sqbdLy4/Qs2fjcoxzzujREMdrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OZIrMUT+; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-418e4cd1ffaso12696365e9.1
+        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 03:30:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713522639; x=1714127439; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zXfB1XmyJGycp6o9EvN2dcs3pfRs+qgNDmJ2Wpliu7Y=;
+        b=OZIrMUT+//6cXhkvDocEAfhEH1IELAy6u9w1akANGX0tQK1JsF9DyJ2dBETGMKhFBy
+         JHe4Kdc6pI9KIb3trnvSsMVNiGmS8iTX4AsLVeAcgHlqHjxwjrQecCV4MHFs9ioPvVOM
+         v4PpWCuAW7NnvzksiOooxfWBxEZ0F+ZKf47o2B1uqbgkciCxbADPhJL7a9SVxr0kVcVO
+         zVoha0DujNzBfGGVg7sGnGUSf2bv4xnHkOtlSA5MNpTskKzOTfYMWUEQORX3C0ghtJAW
+         cgZd8kkZAT2JPuO2tSe/HzmiF6gQWL6HXc/1xo3C1XIfWc8qk9SMO/kryiAvMbM+eyh4
+         tC4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713522639; x=1714127439;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zXfB1XmyJGycp6o9EvN2dcs3pfRs+qgNDmJ2Wpliu7Y=;
+        b=kZZpBZeMFRoArHg0bDVW+OPzy90JbTQu/sXJbl0koZmc2i0jdiuzFUh+OoGab2qUW6
+         n3PozO4CXqtQQSey0m5cwFj46LfHFkwCIdZxccu+jadOZSk/mptOZrV1uXdCY8HnGNK8
+         mNAE04hl0+Zjoluryf/x03/TlHD74BgyrfPuARH1lwenxQKQKT433etqjOv2Gm2k1KaP
+         FhtyrxPW1thIiuhKgsU8nyMBjUfGpH0Rb5RuXYrIlT6m8NrCcOErtxn5WKqRfsNhTDSJ
+         BhRywgVVaq5qGpY9WiGwPyvquiuSLGZmwMCpiz+u6uwmXH5HltDg8jn+GDNA0r1WwSjo
+         +VhA==
+X-Forwarded-Encrypted: i=1; AJvYcCWo0zScdzo5IYn4PcgaQFwxZKlZZflx0QY1m2oNMYPD9c5w5VpEK4GHN/QnpaUaDaR4sk6z2OeHyqdH3ePaiP+a9hEhzjxz
+X-Gm-Message-State: AOJu0YwkuOfxlQg7F+nusPJafID+mTxE4STcuBEuiLqtXYmN0ZMwjgb6
+	p3H4+2mLUiJ4qh8bolA3lN2XTFcK2nEZe+xhxuPeyfeZ52xz+P7ZJe9PoflF0MA=
+X-Google-Smtp-Source: AGHT+IGiH7Y+JOa4zFWT4uBG5e0nxTZ7q2bT95W8eY0sXWj0RTRbbUTMVj2Y/lTD0+EbzWnZRuMC8Q==
+X-Received: by 2002:a05:600c:3ba3:b0:418:d4a5:b10c with SMTP id n35-20020a05600c3ba300b00418d4a5b10cmr1203298wms.28.1713522639574;
+        Fri, 19 Apr 2024 03:30:39 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id jg1-20020a05600ca00100b004183e983d97sm5885615wmb.39.2024.04.19.03.30.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Apr 2024 03:30:39 -0700 (PDT)
+From: Daniel Thompson <daniel.thompson@linaro.org>
+Date: Fri, 19 Apr 2024 11:30:01 +0100
+Subject: [PATCH] serial: kgdboc: Fix NMI-safety problems from keyboard
+ reset code
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,53 +77,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+Message-Id: <20240419-kgdboc_fix_schedule_work-v1-1-ff19881677e5@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAKhHImYC/x2MSQqAMBDAviJztlB1BPUrIqXLqINipcUFxL9bP
+ AaSPBApMEXosgcCnRzZbwmKPAM7620iwS4xlLJEiUUrlskZb9XIt4p2JnespC4fFjFKaxBNo6s
+ aIeV7oCT963543w83lr0YagAAAA==
+To: Jason Wessel <jason.wessel@windriver.com>, 
+ Douglas Anderson <dianders@chromium.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>
+Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
+ linux-serial@vger.kernel.org, Liuye <liu.yeC@h3c.com>, 
+ stable@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3694;
+ i=daniel.thompson@linaro.org; h=from:subject:message-id;
+ bh=C+qOn5JTN9zJb5FySGwxd2G4kTU2FmFYAYBmugqPSPE=;
+ b=owEBbQKS/ZANAwAKAXzjJV0594ihAcsmYgBmIke9ZVMNfK8Mz+OrFbqaCdj672YT4w8UQ6ueq
+ XBwtvN/r82JAjMEAAEKAB0WIQQvNUFTUPeVarpwrPB84yVdOfeIoQUCZiJHvQAKCRB84yVdOfeI
+ ofNLD/0Umjj+W7GAbBqQ40IwzKkdPszIlUlf+waYzWOInyWrpl4sPA64fuVxOM2OiIaMG76D5wZ
+ TaHUmY75/p8yYCvxnDmCImLbbfksCTqMWW6U4OIg/Smf2j04Qr11sM8bjhpZsS7yDBZK6wCdFec
+ ixKLPDfcJLWujuojN8mgtzUD5HDdNTytJFS7HsMTNC9sZHHUN0quVcTU3P6AaqYApXoBzQN2H6B
+ HtDoEBSNjeeq/LrZCcrLHNTgWTQ9xlnZVOHFdlzCmSSMKaonGBK2Q57W3yOgcdGUqkL3fTmM97+
+ EebnbAIuqfIHzbeHkFJNDThEsUCqyg4GXpHi/De94YHJoab9H8DazLfa5p1BqmVM7obUOK+4z4v
+ nLTeji+w4KrvcAqxGu5y4IHL3rwd7c14dD0USQqNS32p1mnzrkJN95l7SV2MwyeBjiAFJ6j8dd7
+ NEOqHbly54qnGxAKN2NNAjo6b7upiB3zBnvKB8smcKodgoNxiqDzXWmRlXWrSymGVUidj/WQBpq
+ 343NQhA3JUChjQXwvXUONWV/Vka8QXMflolG+vVdOGfXbjfWyXlkWVMtNuOBFZR/1ChTcqAWYls
+ 1BuHcD+sywGdEzXvb2qP7Fbc4S47aYDSAy+T2fX4aDz5z+9qpjG+EvMJniaR7tceykHS3GzOOMi
+ v/BaL26UzkgkwSQ==
+X-Developer-Key: i=daniel.thompson@linaro.org; a=openpgp;
+ fpr=E38BE19861669213F6E2661AA8A4E3BC5B7B28BE
 
-On Wed, 17 Apr 2024 15:41:38 -0300, Joao Paulo Goncalves wrote:
-> When using davinci-mcasp as CPU DAI with simple-card, there are some
-> conditions that cause simple-card to finish registering a sound card before
-> davinci-mcasp finishes registering all sound components. This creates a
-> non-working sound card from userspace with no problem indication apart
-> from not being able to play/record audio on a PCM stream. The issue
-> arises during simultaneous probe execution of both drivers. Specifically,
-> the simple-card driver, awaiting a CPU DAI, proceeds as soon as
-> davinci-mcasp registers its DAI. However, this process can lead to the
-> client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
-> being preempted before PCM DMA registration on davinci-mcasp finishes.
-> This situation occurs when the probes of both drivers run concurrently.
-> Below is the code path for this condition. To solve the issue, defer
-> davinci-mcasp CPU DAI registration to the last step in the audio part of
-> it. This way, simple-card CPU DAI parsing will be deferred until all
-> audio components are registered.
-> 
-> [...]
+Currently, when kdb is compiled with keyboard support, then we will use
+schedule_work() to provoke reset of the keyboard status.  Unfortunately
+schedule_work() gets called from the kgdboc post-debug-exception
+handler.  That risks deadlock since schedule_work() is not NMI-safe and,
+even on platforms where the NMI is not directly used for debugging, the
+debug trap can have NMI-like behaviour depending on where breakpoints
+are placed.
 
-Applied to
+Fix this by using the irq work system, which is NMI-safe, to defer the
+call to schedule_work() to a point when it is safe to call.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Reported-by: Liuye <liu.yeC@h3c.com>
+Closes: https://lore.kernel.org/all/20240228025602.3087748-1-liu.yeC@h3c.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+---
+ drivers/tty/serial/kgdboc.c | 30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
-Thanks!
+diff --git a/drivers/tty/serial/kgdboc.c b/drivers/tty/serial/kgdboc.c
+index 7ce7bb1640054..adcea70fd7507 100644
+--- a/drivers/tty/serial/kgdboc.c
++++ b/drivers/tty/serial/kgdboc.c
+@@ -19,6 +19,7 @@
+ #include <linux/console.h>
+ #include <linux/vt_kern.h>
+ #include <linux/input.h>
++#include <linux/irq_work.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/serial_core.h>
+@@ -48,6 +49,25 @@ static struct kgdb_io		kgdboc_earlycon_io_ops;
+ static int                      (*earlycon_orig_exit)(struct console *con);
+ #endif /* IS_BUILTIN(CONFIG_KGDB_SERIAL_CONSOLE) */
+ 
++/*
++ * When we leave the debug trap handler we need to reset the keyboard status
++ * (since the original keyboard state gets partially clobbered by kdb use of
++ * the keyboard).
++ *
++ * The path to deliver the reset is somewhat circuitous.
++ *
++ * To deliver the reset we register an input handler, reset the keyboard and
++ * then deregister the input handler. However, to get this done right, we do
++ * have to carefully manage the calling context because we can only register
++ * input handlers from task context.
++ *
++ * In particular we need to trigger the action from the debug trap handler with
++ * all its NMI and/or NMI-like oddities. To solve this the kgdboc trap exit code
++ * (the "post_exception" callback) uses irq_work_queue(), which is NMI-safe, to
++ * schedule a callback from a hardirq context. From there we have to defer the
++ * work again, this time using schedule_Work(), to get a callback using the
++ * system workqueue, which runs in task context.
++ */
+ #ifdef CONFIG_KDB_KEYBOARD
+ static int kgdboc_reset_connect(struct input_handler *handler,
+ 				struct input_dev *dev,
+@@ -99,10 +119,17 @@ static void kgdboc_restore_input_helper(struct work_struct *dummy)
+ 
+ static DECLARE_WORK(kgdboc_restore_input_work, kgdboc_restore_input_helper);
+ 
++static void kgdboc_queue_restore_input_helper(struct irq_work *unused)
++{
++	schedule_work(&kgdboc_restore_input_work);
++}
++
++static DEFINE_IRQ_WORK(kgdboc_restore_input_irq_work, kgdboc_queue_restore_input_helper);
++
+ static void kgdboc_restore_input(void)
+ {
+ 	if (likely(system_state == SYSTEM_RUNNING))
+-		schedule_work(&kgdboc_restore_input_work);
++		irq_work_queue(&kgdboc_restore_input_irq_work);
+ }
+ 
+ static int kgdboc_register_kbd(char **cptr)
+@@ -133,6 +160,7 @@ static void kgdboc_unregister_kbd(void)
+ 			i--;
+ 		}
+ 	}
++	irq_work_sync(&kgdboc_restore_input_irq_work);
+ 	flush_work(&kgdboc_restore_input_work);
+ }
+ #else /* ! CONFIG_KDB_KEYBOARD */
 
-[1/1] ASoC: ti: davinci-mcasp: Fix race condition during probe
-      commit: d18ca8635db2f88c17acbdf6412f26d4f6aff414
+---
+base-commit: 0bbac3facb5d6cc0171c45c9873a2dc96bea9680
+change-id: 20240419-kgdboc_fix_schedule_work-f0cb44b8a354
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Best regards,
+-- 
+Daniel Thompson <daniel.thompson@linaro.org>
 
 
