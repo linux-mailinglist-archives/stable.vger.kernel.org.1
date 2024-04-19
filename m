@@ -1,90 +1,54 @@
-Return-Path: <stable+bounces-40288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485BF8AAE99
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 14:36:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF6B8AAFE2
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0444628285C
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:36:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B90F1C22BC8
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 13:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63959622;
-	Fri, 19 Apr 2024 12:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2486912D75C;
+	Fri, 19 Apr 2024 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kNnqByRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PewEYGoF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA88D1E867;
-	Fri, 19 Apr 2024 12:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C058C12D1F1
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 13:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713530197; cv=none; b=rW1FWLegEnASVXiaG043WfQaOFPKWenCwbqPnFKbnqlsF+Cp3oSspkAxnrFHq/sZ7rI9GV+pngJct69RFV097rrKz73af1rWw1lTuFXX+OyaHEpw0svP5snb3V9L1fPPukQ7mfTHEIkVAMtwja1ajkrojJW4FVlrkPKF1eIF7Eg=
+	t=1713535116; cv=none; b=Q7G3eZlpxx0Xi7Kn2QfDyprZEixVCYU6n2Fvv8XKotj/4LdAEpGsnsYeGKy9O3Oncrm+cK3EqEZ7YxjaRRAq8Pahdv0LBdV8AljrDFcQoP7PtRLw7m0vZgphRD4MydyTtZTQgB2dZErvlj2yxLbYIqGXDd7FY4u357VhbTDvK0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713530197; c=relaxed/simple;
-	bh=hmMFJYJeLShGfYoil0Tx2J0V4mfm9GoN40TdvPb4CIs=;
+	s=arc-20240116; t=1713535116; c=relaxed/simple;
+	bh=k/tTkUxRS4T5vxu2Ors6LiIwIxRVd+MH/lkHnelFqUc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nkVKg6ZuQaS+Xl84B/5OrDTLlEI3hY9h583fQmoeNI+FPGi1GyDelxKJIHLKnUh8p+MAFXlII0k8h7cQQYQc8ll5saVpWp0+JODmbFXZcBt9oyF4/WjjS/CvB00Un678fJhdnA4fD4WWk5D9mlyJ2MT1P9AXwogK0i5TxITqvEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kNnqByRq; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1e4c4fb6af3so14083115ad.0;
-        Fri, 19 Apr 2024 05:36:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713530195; x=1714134995; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AJ2O6fzXkdIMQAVMScv0OWxTVLp0wpG13C0/RNc+3ls=;
-        b=kNnqByRqf6SCqqseIZkDpdwgFaHPhsdi9yufxsD4pGXpfOPmvCtpuUZiJ6x00qgVFZ
-         p0gi5uY+xIBpsLirMnrhds1UrVOfEi52t5EKwmsqs0ARlqZTVjZf6Ru/hrTmSIIX71xP
-         pzrs92W4dbxMkAvbDwJPFaQlOA/f3h2+JfnuNU2WIZr6AmDpAJrPgoJ1Jle3z3115R7b
-         MYD1ISGi9iIjFtlpfWGDiRtKPVv9ijvaWR39hOm6ga+OGerRBNu+rm1dgHGOmsG2Q8T7
-         sGZK44ErhaSWzpTlDKevnfREnG1i9c7u9z0vQ+01Diui99LnODZ65mFZuX5b2h6X9ulQ
-         qtag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713530195; x=1714134995;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AJ2O6fzXkdIMQAVMScv0OWxTVLp0wpG13C0/RNc+3ls=;
-        b=jyyMSUsKxpgLkBt8hqf3+/Q6yMDnsTrEJLluGp64ixg3m/p8+g2WuBl7HiaP54Gfx3
-         tIaQenO23G5YR7JcQOJEDVIEL2oh9fAQRpp/nsG5CUtbQt2tLNdIFkvrkD75mOH3eIV3
-         1xcglbcihXxy2N7LC6jdMKsf3aNpJZkCaoSJSB3ZoBy0M/No0mq01bveFOUY7h5/e3OV
-         iLNfxtF3z7Nrd5pV9M5rROGQcB/ZNh4+uHop+pgewpt56Cz4MXo51qtXAP/ZU3UvbRkC
-         S84JICI9Kue27vkV02N/6Zu2LEwS9oHiaEOCaN/f/zo4Z7cYnTY0iSvXfVEHkmdBb1MD
-         TU0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVkSVVnBgsfesDc145wbdZIt/2g4MrVj/8Eh6c/9F+vejLuj87uXSOdXCTNNR+5Uuv891ckTn4nRJ/W9lt6HrKACixTlmj8DUOFwQG5
-X-Gm-Message-State: AOJu0YxOeb9sGwXRsqZytVqkA9rR7RGyJ+IJ+c2+LzwsFF8axH9OEai5
-	EEb4vLejNCK+UTliwDQBgMOMiuNBzjBXnFcu2A5fKKaREiIVpIqc
-X-Google-Smtp-Source: AGHT+IFxgn0ysmSSHGx6XdXzvTnX2ZwfJP200Gp3ut8JQa89cvJ04M5UYd4nVRbx+nvCju4zW1da/g==
-X-Received: by 2002:a17:903:2290:b0:1e4:7bf1:521 with SMTP id b16-20020a170903229000b001e47bf10521mr8262391plh.19.1713530195012;
-        Fri, 19 Apr 2024 05:36:35 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id kh5-20020a170903064500b001e47bf10536sm3240883plb.69.2024.04.19.05.36.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Apr 2024 05:36:34 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 19 Apr 2024 05:36:33 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org,
-	Phillip Pearson <philpearson@google.com>
-Subject: Re: [PATCH 5.4 000/215] 5.4.274-rc1 review
-Message-ID: <a5c09590-edfe-4fef-8edc-75a39b92446e@roeck-us.net>
-References: <20240411095424.875421572@linuxfoundation.org>
- <787e0ac1-cb31-47d9-8200-3f6a3b4119dd@roeck-us.net>
- <c5d0c7f7-96a0-4806-b3b6-269d9189037d@roeck-us.net>
- <2024041949-strained-steadfast-13cf@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YfrTFcfd0tjLHGxGbcI5z6bDocAwaIH/24ViJoZN6miJh//W+0gffJ3aAZDp/8bh234e9tkWPVZULwxY+Em9SDaU0t7lrN329CCt4KwG+2WgjmEVmiwGT1k9yoPcSaY9BAmW7TIMWvchV/36WJEwLgO+MFlG9d401nT3laIToAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PewEYGoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9DEC072AA;
+	Fri, 19 Apr 2024 13:58:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1713535116;
+	bh=k/tTkUxRS4T5vxu2Ors6LiIwIxRVd+MH/lkHnelFqUc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PewEYGoFeY263/MiZk6ekBZPPIg63wJLNS2fMJnEVsCjItuKJ48p8Q6aiw9e1oUKH
+	 ZAu3UISNE6bgbQvF2ZQbWVKCMVmWd/c7Joi9wyh34cuz9xpbJWOD6yyfNT9ErOCn/S
+	 i7+k0AdGhZguoZg6s1YxpGldrcRhdTh+I99386uk=
+Date: Fri, 19 Apr 2024 15:58:30 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Cc: stable@vger.kernel.org, Chen Jiahao <chenjiahao16@huawei.com>,
+	Baoquan He <bhe@redhat.com>
+Subject: Re: [PATCH] Revert "riscv: kdump: fix crashkernel reserving problem
+ on RISC-V"
+Message-ID: <2024041939-isotope-client-3d75@gregkh>
+References: <20240416085647.14376-1-xingmingzheng@iscas.ac.cn>
+ <2024041927-remedial-choking-c548@gregkh>
+ <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,45 +57,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2024041949-strained-steadfast-13cf@gregkh>
+In-Reply-To: <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
 
-On Fri, Apr 19, 2024 at 12:41:02PM +0200, Greg Kroah-Hartman wrote:
-> On Thu, Apr 18, 2024 at 12:38:59PM -0700, Guenter Roeck wrote:
-> > On Thu, Apr 18, 2024 at 12:25:21PM -0700, Guenter Roeck wrote:
-> > > On Thu, Apr 11, 2024 at 11:53:29AM +0200, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 5.4.274 release.
-> > > > There are 215 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > > 
-> > > > Responses should be made by Sat, 13 Apr 2024 09:53:55 +0000.
-> > > > Anything received after that time might be too late.
-> > > > 
-> > > [ ... ]
-> > > > 
-> > > > Sean Christopherson <seanjc@google.com>
-> > > >     KVM: Always flush async #PF workqueue when vCPU is being destroyed
-> > > > 
-> > > 
-> > > This backport is bad. In kvm_setup_async_pf(), it removes a call to
-> > > kvm_get_kvm(). However, it does not remove the call to kvm_put_kvm()
-> > > in its error handler. Also see upstream commit 7863e346e108 ("KVM:
-> > > async_pf: Cleanup kvm_setup_async_pf()") which explains that one of
-> > > the error paths in kvm_setup_async_pf() which is not supposed to be
-> > > observed can be observed after all.
-> > > 
+On Fri, Apr 19, 2024 at 08:26:07PM +0800, Mingzheng Xing wrote:
+> On 4/19/24 18:44, Greg Kroah-Hartman wrote:
+> > On Tue, Apr 16, 2024 at 04:56:47PM +0800, Mingzheng Xing wrote:
+> >> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which has been
+> >> merged into the mainline commit 39365395046f ("riscv: kdump: use generic
+> >> interface to simplify crashkernel reservation"), but the latter's series of
+> >> patches are not included in the 6.6 branch.
+> >>
+> >> This will result in the loss of Crash kernel data in /proc/iomem, and kdump
+> >> loading the kernel will also cause an error:
+> >>
+> >> ```
+> >> Memory for crashkernel is not reserved
+> >> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
+> >> Then try to loading kdump kernel
+> >> ```
+> >>
+> >> After revert this patch, verify that it works properly on QEMU riscv.
+> >>
+> >> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv
+> >> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+> >> ---
 > > 
-> > Reverting the above commit from v5.4.y fixes the problem. Alternatively,
-> > applying commit 7863e346e108 on top of v5.4.274 fixes it as well.
-> > 
-> > I added Phillip Pearson to Cc:; he did all the testing and can provide
-> > additional information if needed.
+> > I do not understand, what branch is this for?  Why have you not cc:ed
+> > any of the original developers here?  Why does Linus's tree not have the
+> > same problem?  And the first sentence above does not make much sense as
+> > a 6.6 change is merged into 6.7?
 > 
-> So which is recommended, revert or add the other commit?
+> Sorry, I'll try to explain it more clearly.
 > 
-We decided to apply 7863e346e108.
+> This commit 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem
+> on RISC-V") should not have existed because this patch has been merged into
+> another larger patch [1]. Here is that complete series:
 
-https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/5465806
+What "larger patch"?  It is in Linus's tree, so it's not part of
+something different, right?  I'm confused.
 
-Guenter
+> c37e56cac3d62 crash_core.c: remove unneeded functions
+> 39365395046fe riscv: kdump: use generic interface to simplify crashkernel reservation [1]
+> fdc268232dbba arm64: kdump: use generic interface to simplify crashkernel reservation
+> 9c08a2a139fe8 x86: kdump: use generic interface to simplify crashkernel reservation code
+> b631b95dded5e crash_core: move crashk_*res definition into crash_core.c
+> 0ab97169aa051 crash_core: add generic function to do reservation
+> 70916e9c8d9f1 crash_core: change parse_crashkernel() to support crashkernel=,high|low parsing
+> a9e1a3d84e4a0 crash_core: change the prototype of function parse_crashkernel()
+> a6304272b03ec crash_core.c: remove unnecessary parameter of function
+> 
+> I checked and that series above is not present in 6.6.y. It is only present
+> in 6.7+. So this commit is causing an error. Crash kernel information
+> cannot be read from /proc/iomem when using the 6.6.y kernel.
+
+Did that ever work in older kernels?  Is this a regression?  Or are the
+commits in 6.7 just to fix this feature up and get it to work?
+
+> I tested two ways to fix this error, the first one is to revert this
+> commit. the second one is to backport the complete series above to 6.6.y,
+> but according to stable-kernel-rules, it seems that the most appropriate
+> method is the first one.
+
+It depends if this is a regression from older kernels or not.
+
+Please work with the maintainers of the above code to figure out what is
+best to do here and get them to agree what needs to happen.
+
+thanks,
+
+greg k-h
 
