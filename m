@@ -1,166 +1,215 @@
-Return-Path: <stable+bounces-40319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088058AB5F0
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 22:12:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9138AB648
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 23:12:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B883B282774
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 20:12:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE5CA1C20912
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 21:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A9213CA99;
-	Fri, 19 Apr 2024 20:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6163410A3B;
+	Fri, 19 Apr 2024 21:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ccOP9udB"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MTjFQmE9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5574137778;
-	Fri, 19 Apr 2024 20:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134D8107B2;
+	Fri, 19 Apr 2024 21:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713557537; cv=none; b=eyolsvVTabH+5dp/FRDJnTxajUljKm3i0wu4VuJWD06bRjsSSZHl/3gxhQGYEQP9lObfS6FogxVrGEMkiDUx0a8l51midvLOJj3BGcYj1OA1NDmGcSPesW9XE6t3iSbYrNOllhXMu/O+MVVbk70IdJhQQL0xS/bX+gWkBnh/f0g=
+	t=1713561128; cv=none; b=sfAGww9ELMZZxe/W//QowV7qEgZQd2yjkeNnrmAEL9U4+k4J6CFMkzs7eUrVAGPF+D7FLqqk76GAoo+5L8Npxg0E4OnANbor+1TOF/jnGb/YPsAc+7wJARTLzhBqU6o/fHSL/aNaqkr1iBJM17Z5OitsLAc+qnA8xiMBvgOIsGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713557537; c=relaxed/simple;
-	bh=nPHvh3DkiBgyvr/B9kszo7qSn9jSsyNQbHvayINckmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HCtETyIlWeeO/hifDbN5twGdBsiIvTUp7p5BuORSGymmeqd4dxcKHG1KygQ3DMi/G8YLz+crLexstvpm+lQrxbZB1on3qOzEWkrKFgYT3X2PD3l8BnVC0xXocDweupTKO08PgGAmyxyjPXtEpF+ZUVp/8xzM7Ma+vIWIXQvZrUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ccOP9udB; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-56e4a148aeeso1122438a12.2;
-        Fri, 19 Apr 2024 13:12:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713557534; x=1714162334; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iQR7nTkye4AVZtx+ZZbC5oLR5EmGS6z2i/4lvmSfqDo=;
-        b=ccOP9udBPseEbFq5l24WuUGWl1eFV+LiNY/gW7l7z7QG8MRss+/Z4BBocnZO5ypoF6
-         dl1D3m/7vZiTwVTrTaZ41tvC/E6TzAtOXyOPioSkaeSbMkqDq8HVepPrAVig9J7XXvHY
-         s8pfpWMjqhxgbDomxZ7ScwWhxClLqJjc4szETqCRKI7NJbRq4Ob5mu1LqqLBXx/EdaC+
-         e2gjRMAbUQwSOfZbBJmtX24bV3rZGrwPVaj2VuFYyrPg4ZIqyaWsXLmoefhgegOgqn9E
-         3eGVrSRsFzrhMheoBugriRpdI8fZOaieTfjtC/z6Ak9/6RkPe2aVvy9JaXEo9xstjnew
-         TCmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713557534; x=1714162334;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iQR7nTkye4AVZtx+ZZbC5oLR5EmGS6z2i/4lvmSfqDo=;
-        b=RwM+wTO9jg92yPv9TIcOvuRafFDySxVd36L6Jmz7L8ZuK1HMyGgAfCYo1ssB2lmzrT
-         GAk5nCewaZOrtvN2lS5ABGvoBY0knY+PSYB43DCda0jjwAPHNedDyYhdWS620mJfWVLx
-         uw/0nkewsKJTC3qt2T7ao08W5FhPdcggynjTo+e//9gZI2nICrBvu1lSHwKfgEfWvIns
-         RKs034htj5OA5nxnd2CIKfUQgXKFdIIvTmjYs1HYXhE1FNsr/cRETWgAILliLEcnAIKO
-         kcgJki9jGwNK6TfvK1A3L2sBeUx6rw3iL8sMmqw6CAAGXWuhs53zia7EjwbzgwDaoLFN
-         sY0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWXO2NX5DD9EbW6nF91Q4axhT7kqT9Zhm0JQtFxfycKs14ZaLDQM2ip0mlwrBv1B2YIAf8sEV+enFCY0aRlO1ktkiv4RyyAhEzvQUSnw6pY97y2XgSVv/6giIXMAxAW688RKg==
-X-Gm-Message-State: AOJu0Yw/UZ/G5NNk7CeGcA0l/aM9zQN4iVibqUzJTYxMqLegIKrCCSqJ
-	qTmZj7r1A3jMdPb982rWY72xGJZOyglMSIgGQqqE1n3iLZeLzztByqVEaTv3
-X-Google-Smtp-Source: AGHT+IGOHAF5nkXJuC88UzrlA2WgNUXaH2KnFa4PsZZwcaO1GcXKC2SWKsteBi2XE0Xb0zFDe+LUrw==
-X-Received: by 2002:a50:a451:0:b0:56e:3293:3777 with SMTP id v17-20020a50a451000000b0056e32933777mr2576385edb.17.1713557533455;
-        Fri, 19 Apr 2024 13:12:13 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id c26-20020a056402101a00b0056e66f1fe9bsm2488468edu.23.2024.04.19.13.12.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Apr 2024 13:12:12 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id A93CABE2EE8; Fri, 19 Apr 2024 22:12:11 +0200 (CEST)
-Date: Fri, 19 Apr 2024 22:12:11 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Paulo Alcantara <pc@manguebit.com>
-Cc: regressions@lists.linux.dev, Steve French <stfrench@microsoft.com>,
-	gregkh@linuxfoundation.org, sashal@kernel.org,
-	stable@vger.kernel.org, linux-cifs@vger.kernel.org
-Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
- overflow frame end of buf" and invisible files under certain conditions and
- at least with noserverino mount option
-Message-ID: <ZiLQG4x0m1L70ugu@eldamar.lan>
-References: <ZiBCsoc0yf_I8In8@eldamar.lan>
- <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
- <ZiCoYjr79HXxiTjr@eldamar.lan>
- <29e0cbcab5be560608d1dfbfb0ccbc96@manguebit.com>
+	s=arc-20240116; t=1713561128; c=relaxed/simple;
+	bh=paOwNNaJQx2fFbQ4/IW5ROiDIEogw/laSZEbUOJEBuY=;
+	h=Date:To:From:Subject:Message-Id; b=o6juOh24HJOyb0NBLAHEo61+31f+kdGFX6NPAKX0T6JQinx+MHMQA2Ioj6tYx2cPE49TXsFKwcsxxez6iwN8/YKhzjLV7wdj6etw3UMBxs/FNmCJnkUB9eBYv4ttKWnlfF5kRL6MPcfKJY4zXF5EG6iSW3EVaM+31l52yPkuRsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MTjFQmE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A917C072AA;
+	Fri, 19 Apr 2024 21:12:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1713561127;
+	bh=paOwNNaJQx2fFbQ4/IW5ROiDIEogw/laSZEbUOJEBuY=;
+	h=Date:To:From:Subject:From;
+	b=MTjFQmE9oap3L/V8loy2GN9NiVjYYiwbjofXzAN9vawlSz24I0XmS9DcFMuL4wnQc
+	 tuxb8IRDJ3gAZ96kJluVQxnqa2OVqx8G/4H8N/0IOj9F6JcUj4Oy4YbZ97FnmdvUab
+	 nHZUg7Vj9PVlV6YZ2nJQoBdoZo6+0Ignc8znzqrs=
+Date: Fri, 19 Apr 2024 14:12:06 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,linmiaohe@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-hugetlb-fix-debug_locks_warn_on1-when-dissolve_free_hugetlb_folio.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240419211207.6A917C072AA@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <29e0cbcab5be560608d1dfbfb0ccbc96@manguebit.com>
 
-Hi Paulo,
 
-On Thu, Apr 18, 2024 at 10:47:01AM -0300, Paulo Alcantara wrote:
-> Salvatore Bonaccorso <carnil@debian.org> writes:
-> 
-> > On Wed, Apr 17, 2024 at 07:58:56PM -0300, Paulo Alcantara wrote:
-> >> Hi Salvatore,
-> >> 
-> >> Salvatore Bonaccorso <carnil@debian.org> writes:
-> >> 
-> >> > In Debian we got two reports of cifs mounts not functioning, hiding
-> >> > certain files. The two reports are:
-> >> >
-> >> > https://bugs.debian.org/1069102
-> >> > https://bugs.debian.org/1069092
-> >> >
-> >> > On those cases kernel logs error
-> >> >
-> >> > [   23.225952] CIFS: VFS: directory entry name would overflow frame end of buf 00000000a44b272c
-> >> 
-> >> I couldn't reproduce it.  Does the following fix your issue:
-> >> 
-> >> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-> >> index 4c1231496a72..3ee35430595e 100644
-> >> --- a/fs/smb/client/smb2pdu.c
-> >> +++ b/fs/smb/client/smb2pdu.c
-> >> @@ -5083,7 +5083,7 @@ smb2_parse_query_directory(struct cifs_tcon *tcon,
-> >>  		info_buf_size = sizeof(struct smb2_posix_info);
-> >>  		break;
-> >>  	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
-> >> -		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO);
-> >> +		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO) - 1;
-> >>  		break;
-> >>  	default:
-> >>  		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
-> >> 
-> >> If not, please provide network trace and verbose logs.
-> >
-> > Yes that appears to fix the issue.
-> 
-> Thanks for quickly testing it.  So the above change indicates that we're
-> missing 35235e19b393 ("cifs: Replace remaining 1-element arrays") in
-> v6.1.y.
-> 
-> Can you test it now with 35235e19b393 backported without the above
-> change?
+The patch titled
+     Subject: mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when dissolve_free_hugetlb_folio()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-hugetlb-fix-debug_locks_warn_on1-when-dissolve_free_hugetlb_folio.patch
 
-Done. From the experiment in the avialable setup this seems to indeed
-fix the issue. The commit can mostly be cherry-picked with one manual
-whitespace caused fixup.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-debug_locks_warn_on1-when-dissolve_free_hugetlb_folio.patch
 
-> > But as you say you are not able to reproduce the issue, I guess we
-> > need to try to get it clearly reproducible first to see we face no
-> > other fallouts?
-> 
-> I couldn't reproduce it in v6.9-rc4.  Forgot to mention it, sorry.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Ack understand.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-> Yes, further testing would be great to make sure we're not missing
-> anything else.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-I'm still failing to provide you a recipe with a minimal as possible
-setup, but with the instance I was able to reproduce the issue the
-regression seems gone with cherry-picking 35235e19b393 ("cifs: Replace
-remaining 1-element arrays") .
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Regards,
-Salvatore
+------------------------------------------------------
+From: Miaohe Lin <linmiaohe@huawei.com>
+Subject: mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when dissolve_free_hugetlb_folio()
+Date: Fri, 19 Apr 2024 16:58:19 +0800
+
+When I did memory failure tests recently, below warning occurs:
+
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 8 PID: 1011 at kernel/locking/lockdep.c:232 __lock_acquire+0xccb/0x1ca0
+Modules linked in: mce_inject hwpoison_inject
+CPU: 8 PID: 1011 Comm: bash Kdump: loaded Not tainted 6.9.0-rc3-next-20240410-00012-gdb69f219f4be #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+RIP: 0010:__lock_acquire+0xccb/0x1ca0
+RSP: 0018:ffffa7a1c7fe3bd0 EFLAGS: 00000082
+RAX: 0000000000000000 RBX: eb851eb853975fcf RCX: ffffa1ce5fc1c9c8
+RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffffa1ce5fc1c9c0
+RBP: ffffa1c6865d3280 R08: ffffffffb0f570a8 R09: 0000000000009ffb
+R10: 0000000000000286 R11: ffffffffb0f2ad50 R12: ffffa1c6865d3d10
+R13: ffffa1c6865d3c70 R14: 0000000000000000 R15: 0000000000000004
+FS:  00007ff9f32aa740(0000) GS:ffffa1ce5fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff9f3134ba0 CR3: 00000008484e4000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ lock_acquire+0xbe/0x2d0
+ _raw_spin_lock_irqsave+0x3a/0x60
+ hugepage_subpool_put_pages.part.0+0xe/0xc0
+ free_huge_folio+0x253/0x3f0
+ dissolve_free_huge_page+0x147/0x210
+ __page_handle_poison+0x9/0x70
+ memory_failure+0x4e6/0x8c0
+ hard_offline_page_store+0x55/0xa0
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x380/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xbc/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff9f3114887
+RSP: 002b:00007ffecbacb458 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007ff9f3114887
+RDX: 000000000000000c RSI: 0000564494164e10 RDI: 0000000000000001
+RBP: 0000564494164e10 R08: 00007ff9f31d1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+R13: 00007ff9f321b780 R14: 00007ff9f3217600 R15: 00007ff9f3216a00
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+CPU: 8 PID: 1011 Comm: bash Kdump: loaded Not tainted 6.9.0-rc3-next-20240410-00012-gdb69f219f4be #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ panic+0x326/0x350
+ check_panic_on_warn+0x4f/0x50
+ __warn+0x98/0x190
+ report_bug+0x18e/0x1a0
+ handle_bug+0x3d/0x70
+ exc_invalid_op+0x18/0x70
+ asm_exc_invalid_op+0x1a/0x20
+RIP: 0010:__lock_acquire+0xccb/0x1ca0
+RSP: 0018:ffffa7a1c7fe3bd0 EFLAGS: 00000082
+RAX: 0000000000000000 RBX: eb851eb853975fcf RCX: ffffa1ce5fc1c9c8
+RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffffa1ce5fc1c9c0
+RBP: ffffa1c6865d3280 R08: ffffffffb0f570a8 R09: 0000000000009ffb
+R10: 0000000000000286 R11: ffffffffb0f2ad50 R12: ffffa1c6865d3d10
+R13: ffffa1c6865d3c70 R14: 0000000000000000 R15: 0000000000000004
+ lock_acquire+0xbe/0x2d0
+ _raw_spin_lock_irqsave+0x3a/0x60
+ hugepage_subpool_put_pages.part.0+0xe/0xc0
+ free_huge_folio+0x253/0x3f0
+ dissolve_free_huge_page+0x147/0x210
+ __page_handle_poison+0x9/0x70
+ memory_failure+0x4e6/0x8c0
+ hard_offline_page_store+0x55/0xa0
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x380/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xbc/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff9f3114887
+RSP: 002b:00007ffecbacb458 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007ff9f3114887
+RDX: 000000000000000c RSI: 0000564494164e10 RDI: 0000000000000001
+RBP: 0000564494164e10 R08: 00007ff9f31d1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+R13: 00007ff9f321b780 R14: 00007ff9f3217600 R15: 00007ff9f3216a00
+ </TASK>
+
+After git bisecting and digging into the code, I believe the root cause is
+that _deferred_list field of folio is unioned with _hugetlb_subpool field.
+In __update_and_free_hugetlb_folio(), folio->_deferred_list is
+initialized leading to corrupted folio->_hugetlb_subpool when folio is
+hugetlb.  Later free_huge_folio() will use _hugetlb_subpool and above
+warning happens.
+
+But it is assumed hugetlb flag must have been cleared when calling
+folio_put() in update_and_free_hugetlb_folio().  This assumption is broken
+due to below race:
+
+CPU1					CPU2
+dissolve_free_huge_page			update_and_free_pages_bulk
+ update_and_free_hugetlb_folio		 hugetlb_vmemmap_restore_folios
+					  folio_clear_hugetlb_vmemmap_optimized
+  clear_flag = folio_test_hugetlb_vmemmap_optimized
+  if (clear_flag) <-- False, it's already cleared.
+   __folio_clear_hugetlb(folio) <-- Hugetlb is not cleared.
+  folio_put
+   free_huge_folio <-- free_the_page is expected.
+					 list_for_each_entry()
+					  __folio_clear_hugetlb <-- Too late.
+
+Fix this issue by checking whether folio is hugetlb directly instead of
+checking clear_flag to close the race window.
+
+Link: https://lkml.kernel.org/r/20240419085819.1901645-1-linmiaohe@huawei.com
+Fixes: 32c877191e02 ("hugetlb: do not clear hugetlb dtor until allocating vmemmap")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/hugetlb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/hugetlb.c~mm-hugetlb-fix-debug_locks_warn_on1-when-dissolve_free_hugetlb_folio
++++ a/mm/hugetlb.c
+@@ -1781,7 +1781,7 @@ static void __update_and_free_hugetlb_fo
+ 	 * If vmemmap pages were allocated above, then we need to clear the
+ 	 * hugetlb destructor under the hugetlb lock.
+ 	 */
+-	if (clear_dtor) {
++	if (folio_test_hugetlb(folio)) {
+ 		spin_lock_irq(&hugetlb_lock);
+ 		__clear_hugetlb_destructor(h, folio);
+ 		spin_unlock_irq(&hugetlb_lock);
+_
+
+Patches currently in -mm which might be from linmiaohe@huawei.com are
+
+mm-hugetlb-fix-debug_locks_warn_on1-when-dissolve_free_hugetlb_folio.patch
+
 
