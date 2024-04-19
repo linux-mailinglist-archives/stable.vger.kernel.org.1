@@ -1,129 +1,183 @@
-Return-Path: <stable+bounces-40277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7168AAD10
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:50:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2008AAD13
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:50:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDABB1F21A30
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:50:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2BB8B21E24
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212DF7FBC2;
-	Fri, 19 Apr 2024 10:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355717FBDD;
+	Fri, 19 Apr 2024 10:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gd6BOoYB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOID6TxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7752883D
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 10:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D013B3D62;
+	Fri, 19 Apr 2024 10:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713523798; cv=none; b=sGc2Ff0WzO4aqSEttaeiHlPU099eaw1jxRgzPJ6+ZduHoalY4Ec/rH+cD669j4UNAkNrm8I/aJ9BVGOZLQbt+teVJMfYMkLNmO6ZT2UWrR6TRAKjqgI7NQkIGss15yPSys47jt6qMwbFSZdmUOVVIOXwuXR6moXx2x+j87VGZ5E=
+	t=1713523818; cv=none; b=n1mrUS4Udb2Wk9zf0e6Kc8fStH4DGq7uI/KOnFUw0CdVqT/BvGqdxjyPab4anvXP1rlUyMeYAR6sL0K2jVTRZqAFejjBDw0mnrS0pbx88YULHoRQZa5t5Frai8DaqNhUsw1dVVQUHeVXEp2uA8gTjXmKZ13e9FGFt3/j3+NW1DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713523798; c=relaxed/simple;
-	bh=xcFg2MIaltj2mv/XdLCjKEfFm4q/LwqRkL/FQhTIhik=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kx3TPHqURLEkr83wNsVJgLjRFZrLtLxzJu2jkR0FR+wEDGO6tw/x4gLydDDmXQPekcv9t55pW62csDoEoRgQxikAtR2wQOexepn/NKsWlhMRY60s1O3jwIvge8s3jZ+0v20Zv1PedLc1QuT7D0TIVneiTsjWZrpbA8OQPrJsNTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gd6BOoYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59682C072AA;
-	Fri, 19 Apr 2024 10:49:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713523798;
-	bh=xcFg2MIaltj2mv/XdLCjKEfFm4q/LwqRkL/FQhTIhik=;
-	h=Subject:To:Cc:From:Date:From;
-	b=gd6BOoYB8qZEWjIcKS6VJr9PO6hbLy52cCWwAmr/RNSQIeltly/Josn3crc37DVR6
-	 FKLqvuvn8v4msr8IWUvMKo78YE9O+Nzu+oFM1S2t2FqXLc9PEzgDrRQ0zPsVVAF0d9
-	 oh1/fjoCgcyzCRL658wu6zRKs9FzQld2OYoHZ4qE=
-Subject: FAILED: patch "[PATCH] SUNRPC: Fix rpcgss_context trace event acceptor field" failed to apply to 5.4-stable tree
-To: rostedt@goodmis.org,chuck.lever@oracle.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 19 Apr 2024 12:49:53 +0200
-Message-ID: <2024041953-duration-fructose-0bc1@gregkh>
+	s=arc-20240116; t=1713523818; c=relaxed/simple;
+	bh=eAPMP/cHU6KEqU8q+tfjHwFwP6sfACuYmS7UfdP3cxQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AV52X/Xj05a43+owiQVDbDg1UmM87FuieLTRB5WrlLWDMvIjnVe+cz7R7ZOmdYJ4sOs4KthiKmmOnyTd5IBeaZjhrUdaV0SuXkMOt6IZ2GCu058fBWhb2D+qeSalvwDVJ1aIF0ZduW3Dh6k5Vo50u6kod9hJPhQI7RxoQXZvaDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOID6TxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926BAC072AA;
+	Fri, 19 Apr 2024 10:50:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713523817;
+	bh=eAPMP/cHU6KEqU8q+tfjHwFwP6sfACuYmS7UfdP3cxQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rOID6TxSj8ICbmG3K2hSpxaiXsYmGuiUYyl/zAQPai4WarYIPm2FfuZJIBA22F4+Z
+	 iCCLbg3aPmnn9MnnZIx8bhopueXsMx35kH0ct3PT5VRpxfz+gri19dtL11YmD9915P
+	 uTRlb9b0sesXfz8z/cpg9Qr0+2TY6ttkJmq7gESUVgQ01Qz4BV4kVKiU2nLMKmubIB
+	 3BxxJGefKXfpC+R99ZtwRgKYx760NUIzLefpMdp7l/ZBenY/Y7rIiEj8Sw0VMe+neh
+	 UHCZnmJHefmEsXIKBF0OaDwyyvsKu/HLZSPitNKNmuiB4EAl1Jd2nziXqQug2vFAr/
+	 oAuqx1ueRjjeg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1rxlot-0063Xb-Ei;
+	Fri, 19 Apr 2024 11:50:15 +0100
+Date: Fri, 19 Apr 2024 11:50:14 +0100
+Message-ID: <86r0f1r5i1.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	Yihuang Yu <yihyu@redhat.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shaoqin Huang <shahuang@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+In-Reply-To: <2024041921-drown-dizzy-7481@gregkh>
+References: <20240415141953.365222063@linuxfoundation.org>
+	<Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+	<CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
+	<86y19dqw74.wl-maz@kernel.org>
+	<Zh61KobDt_y1O46-@arm.com>
+	<86sezjq688.wl-maz@kernel.org>
+	<ZiECLaXHce05DSM6@arm.com>
+	<2024041921-drown-dizzy-7481@gregkh>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: gregkh@linuxfoundation.org, catalin.marinas@arm.com, naresh.kamboju@linaro.org, broonie@kernel.org, stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, yihyu@redhat.com, gshan@redhat.com, ryan.roberts@arm.com, anshuman.khandual@arm.com, shahuang@redhat.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, anders.roxell@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
+On Fri, 19 Apr 2024 11:40:33 +0100,
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> 
+> On Thu, Apr 18, 2024 at 12:21:17PM +0100, Catalin Marinas wrote:
+> > On Thu, Apr 18, 2024 at 12:07:35PM +0100, Marc Zyngier wrote:
+> > > On Tue, 16 Apr 2024 18:28:10 +0100,
+> > > Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > > > On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
+> > > > > On Tue, 16 Apr 2024 14:07:30 +0100,
+> > > > > Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > > > > > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
+> > > > > > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > > > This is the start of the stable review cycle for the 6.6.28 release.
+> > > > > > > > There are 122 patches in this series, all will be posted as a response
+> > > > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > > > let me know.
+> > > > > > >
+> > > > > > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
+> > > > > > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
+> > > > > > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
+> > > > > > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
+> > > > > > > the bisect and looking at the commit log to pull out people to CC and
+> > > > > > > note that the fix was explicitly targeted at v6.6.
+> > > > > > 
+> > > > > > Anders investigated this reported issues and bisected and also found
+> > > > > > the missing commit for stable-rc 6.6 is
+> > > > > > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
+> > > > > 
+> > > > > Which is definitely *not* stable candidate. We need to understand why
+> > > > > the invalidation goes south when the scale go up instead of down.
+> > > > 
+> > > > If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
+> > > > which fixes 117940aa6e5f ("KVM: arm64: Define
+> > > > kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
+> > > > ("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
+> > > > "scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
+> > > > CBMC model, not on the actual kernel. It may be worth adding some
+> > > > WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
+> > > > num greater than 31.
+> > > > 
+> > > > I haven't investigated properly (and I'm off tomorrow, back on Thu) but
+> > > > it's likely the original code was not very friendly to the maximum
+> > > > range, never tested. Anyway, if one figures out why it goes out of
+> > > > range, I think the solution is to also backport e2768b798a19 to stable.
+> > > 
+> > > I looked into this, and I came to the conclusion that this patch is
+> > > pretty much incompatible with the increasing scale (even if you cap
+> > > num to 30).
+> > 
+> > Thanks Marc for digging into this.
+> > 
+> > > So despite my earlier comment, it looks like picking e2768b798a19 is
+> > > the right thing to do *if* we're taking e3ba51ab24fd into 6.6-stable.
+> > > 
+> > > Otherwise, we need a separate fix, which Ryan initially advocating for
+> > > initially.
+> > 
+> > My preference would be to cherry-pick the two upstream commits than
+> > coming up with an alternative fix for 6.6.
+> 
+> To be specific, which 2 commits, and what order?
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+That'd be:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x a4833e3abae132d613ce7da0e0c9a9465d1681fa
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041953-duration-fructose-0bc1@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+followed by:
 
-Possible dependencies:
+e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
 
-a4833e3abae1 ("SUNRPC: Fix rpcgss_context trace event acceptor field")
+Thanks,
 
-thanks,
+	M.
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a4833e3abae132d613ce7da0e0c9a9465d1681fa Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Date: Wed, 10 Apr 2024 12:38:13 -0400
-Subject: [PATCH] SUNRPC: Fix rpcgss_context trace event acceptor field
-
-The rpcgss_context trace event acceptor field is a dynamically sized
-string that records the "data" parameter. But this parameter is also
-dependent on the "len" field to determine the size of the data.
-
-It needs to use __string_len() helper macro where the length can be passed
-in. It also incorrectly uses strncpy() to save it instead of
-__assign_str(). As these macros can change, it is not wise to open code
-them in trace events.
-
-As of commit c759e609030c ("tracing: Remove __assign_str_len()"),
-__assign_str() can be used for both __string() and __string_len() fields.
-Before that commit, __assign_str_len() is required to be used. This needs
-to be noted for backporting. (In actuality, commit c1fa617caeb0 ("tracing:
-Rework __assign_str() and __string() to not duplicate getting the string")
-is the commit that makes __string_str_len() obsolete).
-
-Cc: stable@vger.kernel.org
-Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-
-diff --git a/include/trace/events/rpcgss.h b/include/trace/events/rpcgss.h
-index ba2d96a1bc2f..f50fcafc69de 100644
---- a/include/trace/events/rpcgss.h
-+++ b/include/trace/events/rpcgss.h
-@@ -609,7 +609,7 @@ TRACE_EVENT(rpcgss_context,
- 		__field(unsigned int, timeout)
- 		__field(u32, window_size)
- 		__field(int, len)
--		__string(acceptor, data)
-+		__string_len(acceptor, data, len)
- 	),
- 
- 	TP_fast_assign(
-@@ -618,7 +618,7 @@ TRACE_EVENT(rpcgss_context,
- 		__entry->timeout = timeout;
- 		__entry->window_size = window_size;
- 		__entry->len = len;
--		strncpy(__get_str(acceptor), data, len);
-+		__assign_str(acceptor, data);
- 	),
- 
- 	TP_printk("win_size=%u expiry=%lu now=%lu timeout=%u acceptor=%.*s",
-
+-- 
+Without deviation from the norm, progress is not possible.
 
