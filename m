@@ -1,169 +1,152 @@
-Return-Path: <stable+bounces-40294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862398AB140
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 17:03:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F16C8AB144
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 17:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26D5D1F23AAE
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:03:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9431C212C3
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751E812F59D;
-	Fri, 19 Apr 2024 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3A412F58C;
+	Fri, 19 Apr 2024 15:04:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311B812F39C
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 15:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE781E893
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 15:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.211.30.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713539005; cv=none; b=GXRUYtKp1sKLjhAtAXB3IhFS3wWl0vbmXVUwI8CvNFCB7hJDZPMw+XxHusVMLURIGWEOmnQ59hgo1UxpelCc1e45fAXBrCWTgOYOFupNTN/uOET2WT92oOrPVJnVnCZleEnNCP+atyrIIy/x4DZQpe272T5upOaHcs3R9mehk5I=
+	t=1713539064; cv=none; b=I94cwOVUADETFEAjILJjTTmZWGhGW623QC5MRWORTWvYDJp1XUbXvX6wjilOTf+Hm1XYkcwV6Bhivr8eW0qkV8Jy71h/k6fG7lnd3blD7SXN/6YjXy8m+3eKkJvkfAHoozcrg8DIE6aECeeAoLVPVMR7PBbCj6/gAVpVg8A4jnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713539005; c=relaxed/simple;
-	bh=8lN9OmMx4G6Jgdsl3YbLa0gthasc9uVfFwJOtKyRZPM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X3RH+hsrcEIa+XT/wXwFKwpHR17KKUWAXM9B0knT/EcSixHiQqCUb1VENhc+rmCzPGb/w1FsEmG8N0ltN3DJdSjgAoBQIpoztL84VjPGQGKRbxWwMUrjS1I+dxqUOyAVsXHr7RWxCveUG495as+i5gglSWWCIVyGc6DTdIrk7XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.1.103] (unknown [120.221.12.99])
-	by APP-01 (Coremail) with SMTP id qwCowADXG8zwhSJmZ1CYBA--.12762S2;
-	Fri, 19 Apr 2024 22:55:45 +0800 (CST)
-Message-ID: <a5493f44-2aac-4005-992b-f2ac90cd1835@iscas.ac.cn>
-Date: Fri, 19 Apr 2024 22:55:44 +0800
+	s=arc-20240116; t=1713539064; c=relaxed/simple;
+	bh=BfPC7rSyyC8PwFpTcUkxNnMuZ2RpZN5nSwew3yN8V08=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=Ujj7gwQWK5R5dkHE5cnI8TQNSNTNCOLnZcHNOPQ35rQQZW7DacfANmFDS5dDfnC1Vi4jP75+4XR5zSTyX7YHz95TVQnEAZiYmD8kNfjDZK6NTphdPfS/7rRKIht4DfKTkeJiyy0OvTT9SjSTML6Vvh0UNBzr2O1PFB6OJLyWa+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=none smtp.mailfrom=queasysnail.net; arc=none smtp.client-ip=207.211.30.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=queasysnail.net
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-7CD1Fwe2O922ruFHYjUJtg-1; Fri, 19 Apr 2024 11:04:11 -0400
+X-MC-Unique: 7CD1Fwe2O922ruFHYjUJtg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 364278E9E89;
+	Fri, 19 Apr 2024 15:04:10 +0000 (UTC)
+Received: from hog (unknown [10.39.193.137])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 93AC6581D0;
+	Fri, 19 Apr 2024 15:04:08 +0000 (UTC)
+Date: Fri, 19 Apr 2024 17:04:07 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Yossi Kuperman <yossiku@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>
+Subject: Re: [PATCH net-next 0/3] Resolve security issue in MACsec offload Rx
+ datapath
+Message-ID: <ZiKH52u_sjpm2mhf@hog>
+References: <20240419011740.333714-1-rrameshbabu@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "riscv: kdump: fix crashkernel reserving problem
- on RISC-V"
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Chen Jiahao <chenjiahao16@huawei.com>,
- Baoquan He <bhe@redhat.com>
-References: <20240416085647.14376-1-xingmingzheng@iscas.ac.cn>
- <2024041927-remedial-choking-c548@gregkh>
- <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
- <2024041939-isotope-client-3d75@gregkh>
-From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Content-Language: en-US
-In-Reply-To: <2024041939-isotope-client-3d75@gregkh>
+In-Reply-To: <20240419011740.333714-1-rrameshbabu@nvidia.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: queasysnail.net
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:qwCowADXG8zwhSJmZ1CYBA--.12762S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWw15WF1ruw15tFy7Cw43Awb_yoWrWw1fpa
-	y8Ca1Dtr4DJFn3G392yr4xuFyFv3yayFy5Wr1kJw48AF90yFyfKrZIg3W5ua4UCrnYkay2
-	vw4rWr9I9w1rAaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyYb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E
-	4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGV
-	WUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_
-	Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rV
-	WUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4U
-	JbIYCTnIWIevJa73UjIFyTuYvjxUy75rDUUUU
-X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiBgwMCmYieQsh6QAAsy
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 4/19/24 21:58, Greg Kroah-Hartman wrote:
-> On Fri, Apr 19, 2024 at 08:26:07PM +0800, Mingzheng Xing wrote:
->> On 4/19/24 18:44, Greg Kroah-Hartman wrote:
->>> On Tue, Apr 16, 2024 at 04:56:47PM +0800, Mingzheng Xing wrote:
->>>> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which has been
->>>> merged into the mainline commit 39365395046f ("riscv: kdump: use generic
->>>> interface to simplify crashkernel reservation"), but the latter's series of
->>>> patches are not included in the 6.6 branch.
->>>>
->>>> This will result in the loss of Crash kernel data in /proc/iomem, and kdump
->>>> loading the kernel will also cause an error:
->>>>
->>>> ```
->>>> Memory for crashkernel is not reserved
->>>> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
->>>> Then try to loading kdump kernel
->>>> ```
->>>>
->>>> After revert this patch, verify that it works properly on QEMU riscv.
->>>>
->>>> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv
->>>> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
->>>> ---
->>>
->>> I do not understand, what branch is this for?  Why have you not cc:ed
->>> any of the original developers here?  Why does Linus's tree not have the
->>> same problem?  And the first sentence above does not make much sense as
->>> a 6.6 change is merged into 6.7?
->>
->> Sorry, I'll try to explain it more clearly.
->>
->> This commit 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem
->> on RISC-V") should not have existed because this patch has been merged into
->> another larger patch [1]. Here is that complete series:
-> 
-> What "larger patch"?  It is in Linus's tree, so it's not part of
-> something different, right?  I'm confused.
-> 
+This should go to net, not net-next. It fixes a serious bug. Also
+please change the title to:
+  fix isolation of broadcast traffic with MACsec offload
 
-Hi, Greg
+"resolve security issue" is too vague.
 
-The email Cc:ed to author Chen Jiahao was bounced by the system, so maybe
-we can wait for Baoquan He to confirm.
+2024-04-18, 18:17:14 -0700, Rahul Rameshbabu wrote:
+> Some device drivers support devices that enable them to annotate whether =
+a
+> Rx skb refers to a packet that was processed by the MACsec offloading
+> functionality of the device. Logic in the Rx handling for MACsec offload
+> does not utilize this information to preemptively avoid forwarding to the
+> macsec netdev currently. Because of this, things like multicast messages
+> such as ARP requests are forwarded to the macsec netdev whether the messa=
+ge
+> received was MACsec encrypted or not. The goal of this patch series is to
+> improve the Rx handling for MACsec offload for devices capable of
+> annotating skbs received that were decrypted by the NIC offload for MACse=
+c.
+>=20
+> Here is a summary of the issue that occurs with the existing logic today.
+>=20
+>     * The current design of the MACsec offload handling path tries to use
+>       "best guess" mechanisms for determining whether a packet associated
+>       with the currently handled skb in the datapath was processed via HW
+>       offload=E2=80=8B
 
-This is indeed a bit confusing. The Fixes: tag in 1d6cd2146c2b58 is a false
-reference. If I understand correctly, this is similar to the following
-scenario:
+nit: there's a strange character after "offload" and at the end of a
+few other lines in this list
 
-A Fixes B, B doesn't go into linus mainline. C contains A, C goes into linus
-mainline 6.7, and C has more reconstruction code. but A goes into 6.6, so
-it doesn't make sense for A to be in the mainline, and there's no C in 6.6
-but there's an A, thus resulting in an incomplete code that creates an error.
+>     * The best guess mechanism uses the following heuristic logic (in ord=
+er of
+>       precedence)
+>       - Check if header destination MAC address matches MACsec netdev MAC
+>         address -> forward to MACsec port
+>       - Check if packet is multicast traffic -> forward to MACsec port=E2=
+=80=8B
+                                                                   here ^
 
-The link I quoted [1] shows that Baoquan had expressed an opinion on this
-at the time.
+>       - MACsec security channel was able to be looked up from skb offload
+>         context (mlx5 only) -> forward to MACsec port=E2=80=8B
+                                                  here ^
 
-Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
+>     * Problem: plaintext traffic can potentially solicit a MACsec encrypt=
+ed
+>       response from the offload device
+>       - Core aspect of MACsec is that it identifies unauthorized LAN conn=
+ections
+>         and excludes them from communication
+>         + This behavior can be seen when not enabling offload for MACsec=
+=E2=80=8B
+                                                                     here ^
 
+>       - The offload behavior violates this principle in MACsec
+>=20
 
-Thanks,
-Mingzheng
+>=20
+> Link: https://github.com/Binary-Eater/macsec-rx-offload/blob/trunk/MACsec=
+_violation_in_core_stack_offload_rx_handling.pdf
+> Link: https://lore.kernel.org/netdev/87r0l25y1c.fsf@nvidia.com/
+> Link: https://lore.kernel.org/netdev/20231116182900.46052-1-rrameshbabu@n=
+vidia.com/
+> Cc: Sabrina Dubroca <sd@queasysnail.net>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
->> c37e56cac3d62 crash_core.c: remove unneeded functions
->> 39365395046fe riscv: kdump: use generic interface to simplify crashkernel reservation [1]
->> fdc268232dbba arm64: kdump: use generic interface to simplify crashkernel reservation
->> 9c08a2a139fe8 x86: kdump: use generic interface to simplify crashkernel reservation code
->> b631b95dded5e crash_core: move crashk_*res definition into crash_core.c
->> 0ab97169aa051 crash_core: add generic function to do reservation
->> 70916e9c8d9f1 crash_core: change parse_crashkernel() to support crashkernel=,high|low parsing
->> a9e1a3d84e4a0 crash_core: change the prototype of function parse_crashkernel()
->> a6304272b03ec crash_core.c: remove unnecessary parameter of function
->>
->> I checked and that series above is not present in 6.6.y. It is only present
->> in 6.7+. So this commit is causing an error. Crash kernel information
->> cannot be read from /proc/iomem when using the 6.6.y kernel.
-> 
-> Did that ever work in older kernels?  Is this a regression?  Or are the
-> commits in 6.7 just to fix this feature up and get it to work?
-> 
->> I tested two ways to fix this error, the first one is to revert this
->> commit. the second one is to backport the complete series above to 6.6.y,
->> but according to stable-kernel-rules, it seems that the most appropriate
->> method is the first one.
-> 
-> It depends if this is a regression from older kernels or not.
-> 
-> Please work with the maintainers of the above code to figure out what is
-> best to do here and get them to agree what needs to happen.
-> 
-> thanks,
-> 
-> greg k-h
+I would put some Fixes tags on this series. Since we can't do anything
+about non-md_dst devices, I would say that the main patch fixes
+860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path
+support"), and the driver patch fixes b7c9400cbc48 ("net/mlx5e:
+Implement MACsec Rx data path using MACsec skb_metadata_dst"). Jakub,
+Rahul, does that sound ok to both of you?
+
+--=20
+Sabrina
 
 
