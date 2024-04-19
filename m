@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2B18AB295
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 17:56:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A8F8AB2C1
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 18:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB98D1F249F2
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:56:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D54C1F2277F
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 16:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7246130A56;
-	Fri, 19 Apr 2024 15:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD497130E4A;
+	Fri, 19 Apr 2024 16:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="GADsMMA5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ou/pVdos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741E312F386
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 15:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBF112FB3F
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 16:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713542178; cv=none; b=ifHGTqBD99yxFJxckATVb1WxqMpoyPM3RHfycxITQmgADT4caENpUJtw00kF3yV5Ac9Zc0YGiq0FOL0UX4K8fWCtBvaAIsflmVCEm/vs4YDS+wFwiSNmCwZRcW0psd5/yRRRkdsj9dBafjHqofZ6MG9Hew5CZUyPTph1RNFZ+K8=
+	t=1713542599; cv=none; b=Wu9vDtsbjAC21FQcY/GN7WCfPcZn/xTn3PfiQVNIDWvO28FDg3PiaPC5MaOgTMogwEeoj+xxXD33/90Cfmo6dF/DSqUxmXbMVaNBtBHrdeUlWPRODOZihHakygOepPG+9ieQGMsYirMeRb9Cwl8HYBbnzuJCyOeyMyfYA4mc6BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713542178; c=relaxed/simple;
-	bh=nRWmsz+ol86iEda/sLaGstghkFR8dtrs3F6/QzYbTWo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hk1qtFjbeAwDiKUls468y7JwepaCF+Xz/Wwf/tnLdAdeRePNz46eeUO6tMWnFXeu+5ImYVrXZ9pv1Q2aoKFaw+i8CLplbPxzgMYYCl/8Z+zhSNp4nJfM2ZNTuzQeKNXiY+81+E7wzNBRpOCsNR94JirC0UYzF+LF8BbUtPlTBOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=GADsMMA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C5BC072AA;
-	Fri, 19 Apr 2024 15:56:17 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="GADsMMA5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1713542176;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=IugwrqbwFRM5bjQBieEeKRil9KI+xMtghTX72F0ck44=;
-	b=GADsMMA5aBjtlXUiXpxhS+/52XTdMNnK+ZvOo/eYwDzGhjKTBDoFY7tpnf5BGn9B0Yy7d6
-	H0W7ifZ9v5s9xU3dbJ5NZ3PzPebLZ+3FzwNkNZ08lfNpKy3NOMKOzvTDo0AUyl1woWx+Ya
-	qS5fSPGc4p/DgK/HiprMvtpV12xYMqo=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 21f102d6 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 19 Apr 2024 15:56:15 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: stable@vger.kernel.org
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH stable 6.8.y] Revert "vmgenid: emit uevent when VMGENID updates"
-Date: Fri, 19 Apr 2024 17:55:49 +0200
-Message-ID: <20240419155556.467970-1-Jason@zx2c4.com>
+	s=arc-20240116; t=1713542599; c=relaxed/simple;
+	bh=6l5MaNC9Af+6+HbaXRUEpP61u70H5DwYWR6FVjRSsGo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ACwGF7zXzANFszY1GuNZVULhyeLHHblf4iZ2gRWUeVBXbxP5wVzGU5gA9nNkJpnHmvzZ8FtjES/VruKqEt7CvCfpVmcXho0rQVP35DBctQ6YWDtYeonMtRI47UZh2DS6b+2nkXAY/WC+MhcMCIGhLzefc6Pl/t0qa9E7+tVSHTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ou/pVdos; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F902C072AA;
+	Fri, 19 Apr 2024 16:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713542599;
+	bh=6l5MaNC9Af+6+HbaXRUEpP61u70H5DwYWR6FVjRSsGo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ou/pVdosp4k/lQA45AZZDL5m7+Xdi6F06wIcelsxxG8lJ8wpq8r/binUKWIsE6rUf
+	 VDDO6rHiShB8uW2ngBaOgR76GFiEoUGljCqqTxAnGgd5ZRVX6avfSfqy6rxEPXgVwH
+	 xBdcIFObWo3pB4obiRDG2x/Og8jfF/T/YinrE94FVa2tu4rDgJkpWIG4lU7ZZBq4OF
+	 e6AOtf2QTiRHLrDkjuyecoSkzzxviDsqOrRktq5NueQa3fiuxaYGqSf80SsIT1TDz+
+	 nx7b1P1Vhm8Md9SuL7vuNdnm+tSibsMEhbifWjrUdXI84QNHbmupRiu8QJq+q/sQ0W
+	 Az8hUti44zLUg==
+From: cel@kernel.org
+To: stable@kernel.org
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+	stable@vger.kernel.org,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.8.y] NFSD: fix endianness issue in nfsd4_encode_fattr4
+Date: Fri, 19 Apr 2024 12:03:15 -0400
+Message-ID: <20240419160315.1835-1-cel@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024041908-sandblast-sullen-2eed@gregkh>
+References: <2024041908-sandblast-sullen-2eed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,45 +60,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-commit 3aadf100f93d80815685493d60cd8cab206403df upstream.
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-This reverts commit ad6bcdad2b6724e113f191a12f859a9e8456b26d. I had
-nak'd it, and Greg said on the thread that it links that he wasn't going
-to take it either, especially since it's not his code or his tree, but
-then, seemingly accidentally, it got pushed up some months later, in
-what looks like a mistake, with no further discussion in the linked
-thread. So revert it, since it's clearly not intended.
+[ Upstream commit 862bee84d77fa01cc8929656ae77781abf917863 ]
 
-Fixes: ad6bcdad2b67 ("vmgenid: emit uevent when VMGENID updates")
+The nfs4 mount fails with EIO on 64-bit big endian architectures since
+v6.7. The issue arises from employing a union in the nfsd4_encode_fattr4()
+function to overlay a 32-bit array with a 64-bit values based bitmap,
+which does not function as intended. Address the endianness issue by
+utilizing bitmap_from_arr32() to copy 32-bit attribute masks into a
+bitmap in an endianness-agnostic manner.
+
 Cc: stable@vger.kernel.org
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20230531095119.11202-2-bchalios@amazon.es
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Fixes: fce7913b13d0 ("NFSD: Use a bitmask loop to encode FATTR4 results")
+Link: https://bugs.launchpad.net/ubuntu/+source/nfs-utils/+bug/2060217
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+[ cel: adjusted to apply on 6.8.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/virt/vmgenid.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/nfsd/nfs4xdr.c | 47 +++++++++++++++++++++++------------------------
+ 1 file changed, 23 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/virt/vmgenid.c b/drivers/virt/vmgenid.c
-index b67a28da4702..a1c467a0e9f7 100644
---- a/drivers/virt/vmgenid.c
-+++ b/drivers/virt/vmgenid.c
-@@ -68,7 +68,6 @@ static int vmgenid_add(struct acpi_device *device)
- static void vmgenid_notify(struct acpi_device *device, u32 event)
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index c719c475a068..c17bdf973c18 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3490,11 +3490,13 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 		    struct dentry *dentry, const u32 *bmval,
+ 		    int ignore_crossmnt)
  {
- 	struct vmgenid_state *state = acpi_driver_data(device);
--	char *envp[] = { "NEW_VMGENID=1", NULL };
- 	u8 old_id[VMGENID_SIZE];
++	DECLARE_BITMAP(attr_bitmap, ARRAY_SIZE(nfsd4_enc_fattr4_encode_ops));
+ 	struct nfsd4_fattr_args args;
+ 	struct svc_fh *tempfh = NULL;
+ 	int starting_len = xdr->buf->len;
+ 	__be32 *attrlen_p, status;
+ 	int attrlen_offset;
++	u32 attrmask[3];
+ 	int err;
+ 	struct nfsd4_compoundres *resp = rqstp->rq_resp;
+ 	u32 minorversion = resp->cstate.minorversion;
+@@ -3502,10 +3504,6 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 		.mnt	= exp->ex_path.mnt,
+ 		.dentry	= dentry,
+ 	};
+-	union {
+-		u32		attrmask[3];
+-		unsigned long	mask[2];
+-	} u;
+ 	unsigned long bit;
  
- 	memcpy(old_id, state->this_id, sizeof(old_id));
-@@ -76,7 +75,6 @@ static void vmgenid_notify(struct acpi_device *device, u32 event)
- 	if (!memcmp(old_id, state->this_id, sizeof(old_id)))
- 		return;
- 	add_vmfork_randomness(state->this_id, sizeof(state->this_id));
--	kobject_uevent_env(&device->dev.kobj, KOBJ_CHANGE, envp);
- }
+ 	WARN_ON_ONCE(bmval[1] & NFSD_WRITEONLY_ATTRS_WORD1);
+@@ -3519,20 +3517,19 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 	/*
+ 	 * Make a local copy of the attribute bitmap that can be modified.
+ 	 */
+-	memset(&u, 0, sizeof(u));
+-	u.attrmask[0] = bmval[0];
+-	u.attrmask[1] = bmval[1];
+-	u.attrmask[2] = bmval[2];
++	attrmask[0] = bmval[0];
++	attrmask[1] = bmval[1];
++	attrmask[2] = bmval[2];
  
- static const struct acpi_device_id vmgenid_ids[] = {
+ 	args.rdattr_err = 0;
+ 	if (exp->ex_fslocs.migrated) {
+-		status = fattr_handle_absent_fs(&u.attrmask[0], &u.attrmask[1],
+-						&u.attrmask[2], &args.rdattr_err);
++		status = fattr_handle_absent_fs(&attrmask[0], &attrmask[1],
++						&attrmask[2], &args.rdattr_err);
+ 		if (status)
+ 			goto out;
+ 	}
+ 	args.size = 0;
+-	if (u.attrmask[0] & (FATTR4_WORD0_CHANGE | FATTR4_WORD0_SIZE)) {
++	if (attrmask[0] & (FATTR4_WORD0_CHANGE | FATTR4_WORD0_SIZE)) {
+ 		status = nfsd4_deleg_getattr_conflict(rqstp, d_inode(dentry));
+ 		if (status)
+ 			goto out;
+@@ -3547,16 +3544,16 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 
+ 	if (!(args.stat.result_mask & STATX_BTIME))
+ 		/* underlying FS does not offer btime so we can't share it */
+-		u.attrmask[1] &= ~FATTR4_WORD1_TIME_CREATE;
+-	if ((u.attrmask[0] & (FATTR4_WORD0_FILES_AVAIL | FATTR4_WORD0_FILES_FREE |
++		attrmask[1] &= ~FATTR4_WORD1_TIME_CREATE;
++	if ((attrmask[0] & (FATTR4_WORD0_FILES_AVAIL | FATTR4_WORD0_FILES_FREE |
+ 			FATTR4_WORD0_FILES_TOTAL | FATTR4_WORD0_MAXNAME)) ||
+-	    (u.attrmask[1] & (FATTR4_WORD1_SPACE_AVAIL | FATTR4_WORD1_SPACE_FREE |
++	    (attrmask[1] & (FATTR4_WORD1_SPACE_AVAIL | FATTR4_WORD1_SPACE_FREE |
+ 		       FATTR4_WORD1_SPACE_TOTAL))) {
+ 		err = vfs_statfs(&path, &args.statfs);
+ 		if (err)
+ 			goto out_nfserr;
+ 	}
+-	if ((u.attrmask[0] & (FATTR4_WORD0_FILEHANDLE | FATTR4_WORD0_FSID)) &&
++	if ((attrmask[0] & (FATTR4_WORD0_FILEHANDLE | FATTR4_WORD0_FSID)) &&
+ 	    !fhp) {
+ 		tempfh = kmalloc(sizeof(struct svc_fh), GFP_KERNEL);
+ 		status = nfserr_jukebox;
+@@ -3571,10 +3568,10 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 		args.fhp = fhp;
+ 
+ 	args.acl = NULL;
+-	if (u.attrmask[0] & FATTR4_WORD0_ACL) {
++	if (attrmask[0] & FATTR4_WORD0_ACL) {
+ 		err = nfsd4_get_nfs4_acl(rqstp, dentry, &args.acl);
+ 		if (err == -EOPNOTSUPP)
+-			u.attrmask[0] &= ~FATTR4_WORD0_ACL;
++			attrmask[0] &= ~FATTR4_WORD0_ACL;
+ 		else if (err == -EINVAL) {
+ 			status = nfserr_attrnotsupp;
+ 			goto out;
+@@ -3586,17 +3583,17 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 
+ #ifdef CONFIG_NFSD_V4_SECURITY_LABEL
+ 	args.context = NULL;
+-	if ((u.attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) ||
+-	     u.attrmask[0] & FATTR4_WORD0_SUPPORTED_ATTRS) {
++	if ((attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) ||
++	     attrmask[0] & FATTR4_WORD0_SUPPORTED_ATTRS) {
+ 		if (exp->ex_flags & NFSEXP_SECURITY_LABEL)
+ 			err = security_inode_getsecctx(d_inode(dentry),
+ 						&args.context, &args.contextlen);
+ 		else
+ 			err = -EOPNOTSUPP;
+ 		args.contextsupport = (err == 0);
+-		if (u.attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) {
++		if (attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) {
+ 			if (err == -EOPNOTSUPP)
+-				u.attrmask[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
++				attrmask[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
+ 			else if (err)
+ 				goto out_nfserr;
+ 		}
+@@ -3604,8 +3601,8 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ #endif /* CONFIG_NFSD_V4_SECURITY_LABEL */
+ 
+ 	/* attrmask */
+-	status = nfsd4_encode_bitmap4(xdr, u.attrmask[0],
+-				      u.attrmask[1], u.attrmask[2]);
++	status = nfsd4_encode_bitmap4(xdr, attrmask[0], attrmask[1],
++				      attrmask[2]);
+ 	if (status)
+ 		goto out;
+ 
+@@ -3614,7 +3611,9 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 	attrlen_p = xdr_reserve_space(xdr, XDR_UNIT);
+ 	if (!attrlen_p)
+ 		goto out_resource;
+-	for_each_set_bit(bit, (const unsigned long *)&u.mask,
++	bitmap_from_arr32(attr_bitmap, attrmask,
++			  ARRAY_SIZE(nfsd4_enc_fattr4_encode_ops));
++	for_each_set_bit(bit, attr_bitmap,
+ 			 ARRAY_SIZE(nfsd4_enc_fattr4_encode_ops)) {
+ 		status = nfsd4_enc_fattr4_encode_ops[bit](xdr, &args);
+ 		if (status != nfs_ok)
 -- 
-2.44.0
+2.43.0
 
 
