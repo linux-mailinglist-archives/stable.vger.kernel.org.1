@@ -1,72 +1,61 @@
-Return-Path: <stable+bounces-40280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779F68AAD4D
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 13:05:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 921B98AAD6C
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 13:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3281A282E9C
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 11:05:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4710D1F2218F
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 11:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448618005E;
-	Fri, 19 Apr 2024 11:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68BDB811FB;
+	Fri, 19 Apr 2024 11:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDY7u55w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCRo1+5w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29537BAE5;
-	Fri, 19 Apr 2024 11:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EF47C0AA;
+	Fri, 19 Apr 2024 11:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713524717; cv=none; b=k/oF9Nk+Tn/bqJxNQe+WZ/Baf7vfFbIDxQf2uEMbp4ejpKkwHxplatoAQMTK0H05eMpB3AzP3M0wZjscnO3rNOGrQVH3s4pbn10wlnZpIFyxAu/xOllYAnU3NhWLSYQBGH7P8R9vQNDGng47DJZ45mUVxf7+xo8TI17jmjV9i08=
+	t=1713524962; cv=none; b=Yw//DwZRwQorusYXHIZJ5a7xRL2k2oG+cH/MW7143m4geJZMz3UeCEbFxg8neTMu6oaGWSd+lUUD70QirRKu8iToqxfwKnZEGtWnNx7QVEwetIkQKq9hZ/SvRDWyBfj32CDTV3C/BhuAsYE/GZTRce/a8jfcsTbrqfHKCAdmC74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713524717; c=relaxed/simple;
-	bh=wOUo2++bYvOhHtA/1yKJ+lIawhgs+4qJQ+CoecAxzKI=;
+	s=arc-20240116; t=1713524962; c=relaxed/simple;
+	bh=YI3P7Rva9xSglnlAVV6zSk/NWyRNlLlz//CcwKpcCTM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iWFaukRC+ZBRG7w8t2FUff+6vbkwG7rh1pg05gzJrM06JNXWFTOwpQrKejAI+bOL9XVuHVVqbc7bf+Gb9UgnTu0pp9FvlcIAqDBNJuXfxtegveJ+toIyS6vOajCB6WVptlLpYbMneILatOUzuSspzHT0CWua49VgIRn+ZROBQBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDY7u55w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E2AC072AA;
-	Fri, 19 Apr 2024 11:05:16 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OyYY+1qZ2C6epHKZZlfw5957gsbdbgovJwfVJM3hmuhn810/1zPRNg709QxEGfLPXz/Gp1W/tVR3KM/zGVSkyQHwO0+GMTHb7aNhzcfW9diGsckv+8cOXY8oKWR3zPRi90YcXb6H6PAV7dxTwdY1JrvB+FssUMfPD5jhuKTw8ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCRo1+5w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C77AC072AA;
+	Fri, 19 Apr 2024 11:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713524716;
-	bh=wOUo2++bYvOhHtA/1yKJ+lIawhgs+4qJQ+CoecAxzKI=;
+	s=korg; t=1713524962;
+	bh=YI3P7Rva9xSglnlAVV6zSk/NWyRNlLlz//CcwKpcCTM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tDY7u55wKa7tKq9U/6vZr38Np7ow1VOp99BWoLgocxm2uWiDfyEh9Dsk8vZXHzZkz
-	 Q0m24GX9jFlUdmh4oONI+68B20HmzlRA4Xsc0BlhOJxU1cjIRqXTin+etPgdMXKDMv
-	 K3GPdXbZApY6JvwNKf9mLSDW2aplgZgxJr5447fo=
-Date: Fri, 19 Apr 2024 13:05:03 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, Yihuang Yu <yihyu@redhat.com>,
-	Gavin Shan <gshan@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shaoqin Huang <shahuang@redhat.com>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
-Message-ID: <2024041954-replica-deflation-73b5@gregkh>
-References: <20240415141953.365222063@linuxfoundation.org>
- <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
- <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
- <86y19dqw74.wl-maz@kernel.org>
- <Zh61KobDt_y1O46-@arm.com>
- <86sezjq688.wl-maz@kernel.org>
- <ZiECLaXHce05DSM6@arm.com>
- <2024041921-drown-dizzy-7481@gregkh>
- <86r0f1r5i1.wl-maz@kernel.org>
+	b=MCRo1+5wIIs/WfccSt8i6DyJQUPvAeWr2EZfcnhwoVTmbhYtoa/62LWc2fzZIvfwP
+	 +vKHTazBB8EomoJZqaiKlwhSdjFizANNVizJ0haWw+QJXlmKms4SQfZlGGEjBjJQir
+	 VO3MlMRlGksncnidd/u6GFpm/keHk/Ou6zhe2gP4=
+Date: Fri, 19 Apr 2024 13:09:10 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Edward Liaw <edliaw@google.com>
+Cc: stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	bpf@vger.kernel.org, kernel-team@android.com,
+	Yonghong Song <yhs@fb.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5.15.y v3 0/5] Backport bounds checks for bpf
+Message-ID: <2024041958-devourer-shanty-bdba@gregkh>
+References: <16430256912363@kroah.com>
+ <20240418232005.34244-1-edliaw@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,80 +64,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <86r0f1r5i1.wl-maz@kernel.org>
+In-Reply-To: <20240418232005.34244-1-edliaw@google.com>
 
-On Fri, Apr 19, 2024 at 11:50:14AM +0100, Marc Zyngier wrote:
-> On Fri, 19 Apr 2024 11:40:33 +0100,
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > 
-> > On Thu, Apr 18, 2024 at 12:21:17PM +0100, Catalin Marinas wrote:
-> > > On Thu, Apr 18, 2024 at 12:07:35PM +0100, Marc Zyngier wrote:
-> > > > On Tue, 16 Apr 2024 18:28:10 +0100,
-> > > > Catalin Marinas <catalin.marinas@arm.com> wrote:
-> > > > > On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
-> > > > > > On Tue, 16 Apr 2024 14:07:30 +0100,
-> > > > > > Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> > > > > > > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
-> > > > > > > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
-> > > > > > > > > This is the start of the stable review cycle for the 6.6.28 release.
-> > > > > > > > > There are 122 patches in this series, all will be posted as a response
-> > > > > > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > > > > > let me know.
-> > > > > > > >
-> > > > > > > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
-> > > > > > > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
-> > > > > > > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
-> > > > > > > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
-> > > > > > > > the bisect and looking at the commit log to pull out people to CC and
-> > > > > > > > note that the fix was explicitly targeted at v6.6.
-> > > > > > > 
-> > > > > > > Anders investigated this reported issues and bisected and also found
-> > > > > > > the missing commit for stable-rc 6.6 is
-> > > > > > > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
-> > > > > > 
-> > > > > > Which is definitely *not* stable candidate. We need to understand why
-> > > > > > the invalidation goes south when the scale go up instead of down.
-> > > > > 
-> > > > > If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
-> > > > > which fixes 117940aa6e5f ("KVM: arm64: Define
-> > > > > kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
-> > > > > ("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
-> > > > > "scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
-> > > > > CBMC model, not on the actual kernel. It may be worth adding some
-> > > > > WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
-> > > > > num greater than 31.
-> > > > > 
-> > > > > I haven't investigated properly (and I'm off tomorrow, back on Thu) but
-> > > > > it's likely the original code was not very friendly to the maximum
-> > > > > range, never tested. Anyway, if one figures out why it goes out of
-> > > > > range, I think the solution is to also backport e2768b798a19 to stable.
-> > > > 
-> > > > I looked into this, and I came to the conclusion that this patch is
-> > > > pretty much incompatible with the increasing scale (even if you cap
-> > > > num to 30).
-> > > 
-> > > Thanks Marc for digging into this.
-> > > 
-> > > > So despite my earlier comment, it looks like picking e2768b798a19 is
-> > > > the right thing to do *if* we're taking e3ba51ab24fd into 6.6-stable.
-> > > > 
-> > > > Otherwise, we need a separate fix, which Ryan initially advocating for
-> > > > initially.
-> > > 
-> > > My preference would be to cherry-pick the two upstream commits than
-> > > coming up with an alternative fix for 6.6.
-> > 
-> > To be specific, which 2 commits, and what order?
+On Thu, Apr 18, 2024 at 11:19:46PM +0000, Edward Liaw wrote:
+> These backports fix CVE-2021-4204, CVE-2022-23222 for 5.15.y.
 > 
-> That'd be:
+> This includes a conflict resolution with 45ce4b4f9009 ("bpf: Fix crash
+> due to out of bounds access into reg2btf_ids.") which was cherry-picked
+> previously.
+> Link: https://lore.kernel.org/all/20220428235751.103203-11-haoluo@google.com/
 > 
-> e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
-> 
-> followed by:
-> 
-> e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
+> They were tested on 5.15.156 to pass LTP test bpf_prog06 with no
+> regressions in test_verifier in bpf selftests.
 
-Thanks, now queued up.
+All now applied, thanks.
 
 greg k-h
 
