@@ -1,251 +1,97 @@
-Return-Path: <stable+bounces-40262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4B48AAB23
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 11:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA1A8AAB48
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 11:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60F451C214EB
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 09:04:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E61D1C21CB3
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 09:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81517745D6;
-	Fri, 19 Apr 2024 09:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C0A7580B;
+	Fri, 19 Apr 2024 09:17:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987D0757F6
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 09:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD1DF9CD;
+	Fri, 19 Apr 2024 09:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713517444; cv=none; b=cI9vb0Jk/nEa+OA6C7+DjXeBAi5QumwuGhlo09H5CRbEnKj9FDdFCamMLNGrfjQoMT+TntQ6HUPzkZyiE/m99pDlgWWrPig5IY+DrXQXveqIyZpO1OvxLEzTGtgJ9sRagHFSYKFByCO4VEgx3geGifeSXn7dWIRw556Gt88SVi0=
+	t=1713518247; cv=none; b=YWWax9fAdjswT9TX292lZCu16HwQ/vfDF5NT6o4aJZp08bUXiHwqjZYtC3mt2dDSNPpyDfD8GpLFfgThDNjQg6B2ylphoe762TfUHoVZaGwxxDGnbLCVaEy3Gw63Xxeq7oa3j5QFxsxCLpfU2Ttor3mXuf3fhi/tLk6U7LOgZTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713517444; c=relaxed/simple;
-	bh=QKJ8w14BAcNcvnhnmmvDzibYqoDvnNYdIslGWyMDXgU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=O1k4qlfbQJcyNe0BgWUKuhRQHk7DZAmz/nqGCAytFzGT7qWTdUVoywQGUFMDqVOtw9C/xTil7RI03i+D1eqTjFCH38vdVsssunMXufkcrov106oA3kcywtniS/z9qjrBgjdRgz5M7PGa3HM4FB4n7U2tkq7CDJmjOl1d0jxF7Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a5565291ee7so195108366b.2
-        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 02:04:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713517441; x=1714122241;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vzkLKu/6wYd7EWcuLxPk+/qlS0DbU0fekpjNF7HhE5s=;
-        b=oCwioiYKwayHdBCGqndOv8E1XS+HJKyMEqMKxCb6G61AJN0XCTlKDZvqvT62Z3qaN1
-         3UkAdzqxyuAkiTUvDtVZl+Vc7jTttZyFv9K8SPqxwDCbAx54TaqYpN3l07StnXo/Zbg0
-         /6CFqzl7t7vhzcCYAJP+ecOeJrbuEZTNd0SVGWjok8Y8DPiQCXZaXIm5+XyzP6qj7Z0G
-         or+qDkJVyL2XrXrLsEoKdwUbvGK6E8HxPC2XhLS5EBAoIT9uhx6uDd83vCMXWl3TwqxW
-         0Td2pplGPIicRtbn1/3IAJ0UXa6cea8sMpTCz1IoOpnjdhpr5tbFVpBUiTHZlt/BSz+9
-         xNhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWscmjLe94O+KOpohlyAFbKqK3caPQLRX2DCD6ARHJWrJIF7+l1VBl61E+NGy5CiUpLRHW4y0ucdyT9DjN/NpYZGthpfBoZ
-X-Gm-Message-State: AOJu0Yy/fVqphyJa3qgP1GgOn5gdcGha/jd8dqlaMaa+SFEjikC/J78K
-	5XV4SdaSEEw1/GkcawO4+wksTVOcooZgEH0DXfTF7ebV72Aqf0Vd
-X-Google-Smtp-Source: AGHT+IGDR1TnoIHppsTsK/HbeKue6vIzv0Y0QmEZkdKiUs7yTsyAaJ5lpEzkeWBM2maEEsr2/B+MHA==
-X-Received: by 2002:a17:906:a008:b0:a55:4d24:6f9a with SMTP id p8-20020a170906a00800b00a554d246f9amr1056927ejy.6.1713517440854;
-        Fri, 19 Apr 2024 02:04:00 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
-        by smtp.gmail.com with ESMTPSA id b17-20020a170906491100b00a522bf06d8fsm1960789ejq.14.2024.04.19.02.04.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Apr 2024 02:04:00 -0700 (PDT)
-Message-ID: <1f4367b6-7d56-4a81-a271-9a4e7089f6ef@kernel.org>
-Date: Fri, 19 Apr 2024 11:03:59 +0200
+	s=arc-20240116; t=1713518247; c=relaxed/simple;
+	bh=fVtm2MQDOR/x6RlSD7/xIApw8gEH7eq2JLBMAl1iBLs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IcLGPH8+HpfxIeBtOyAhzyIFvt0IATGdongaG7t1mks1XanLFSRH7nXNwXKn1mWc8PfgLGQ6XWTgAW5Yx1p1uhLN/HQoxZu1mx9/PPbAbE5WaTKLqkoRw7k2+AgpIVE/gKSqZ7Zx2C53maNcUYmQoUCKbsHhxEoz5qCLmSiFrzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id CD4911C0080; Fri, 19 Apr 2024 11:17:16 +0200 (CEST)
+Date: Fri, 19 Apr 2024 11:17:16 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>, Anand Jain <anand.jain@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	Pavel Machek <pavel@denx.de>, stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: add missing mutex_unlock in
+ btrfs_relocate_sys_chunks()
+Message-ID: <ZiI2nIYK0X6RLciF@duo.ucw.cz>
+References: <20240419-btrfs_unlock-v1-1-c3557976a691@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.8 117/273] e1000e: Workaround for sporadic MDI error on
- Meteor Lake systems
-From: Jiri Slaby <jirislaby@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Nikolay Mushayev <nikolay.mushayev@intel.com>,
- Nir Efrati <nir.efrati@intel.com>,
- Vitaly Lifshits <vitaly.lifshits@intel.com>,
- Naama Meir <naamax.meir@linux.intel.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>
-References: <20240408125309.280181634@linuxfoundation.org>
- <20240408125312.934033981@linuxfoundation.org>
- <809b5785-e65f-47f4-b52b-f9d2af0a3484@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
- rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
- rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
- i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
- wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
- ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
- cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
- 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
- w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
- YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
- IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
- BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
- eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
- 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
- XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
- l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
- UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
- gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
- oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
- o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
- Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
- wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
- t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
- YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
- DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
- f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
- 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
- 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
- /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
- 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
- 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
- 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
- wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
- 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
- jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
- wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
- wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
- W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
- f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
- DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
- S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <809b5785-e65f-47f4-b52b-f9d2af0a3484@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="d/xyR8aY9qMuo2Dt"
+Content-Disposition: inline
+In-Reply-To: <20240419-btrfs_unlock-v1-1-c3557976a691@codewreck.org>
 
-On 19. 04. 24, 10:44, Jiri Slaby wrote:
-> On 08. 04. 24, 14:56, Greg Kroah-Hartman wrote:
->> 6.8-stable review patch.  If anyone has any objections, please let me 
->> know.
->>
->> ------------------
->>
->> From: Vitaly Lifshits <vitaly.lifshits@intel.com>
->>
->> commit 6dbdd4de0362c37e54e8b049781402e5a409e7d0 upstream.
->>
->> On some Meteor Lake systems accessing the PHY via the MDIO interface may
->> result in an MDI error. This issue happens sporadically and in most cases
->> a second access to the PHY via the MDIO interface results in success.
->>
->> As a workaround, introduce a retry counter which is set to 3 on Meteor
->> Lake systems. The driver will only return an error if 3 consecutive PHY
->> access attempts fail. The retry mechanism is disabled in specific flows,
->> where MDI errors are expected.
-> ...
->> --- a/drivers/net/ethernet/intel/e1000e/phy.c
->> +++ b/drivers/net/ethernet/intel/e1000e/phy.c
->> @@ -107,6 +107,16 @@ s32 e1000e_phy_reset_dsp(struct e1000_hw
->>       return e1e_wphy(hw, M88E1000_PHY_GEN_CONTROL, 0);
->>   }
->> +void e1000e_disable_phy_retry(struct e1000_hw *hw)
->> +{
->> +    hw->phy.retry_enabled = false;
->> +}
->> +
->> +void e1000e_enable_phy_retry(struct e1000_hw *hw)
->> +{
->> +    hw->phy.retry_enabled = true;
->> +}
->> +
->>   /**
->>    *  e1000e_read_phy_reg_mdic - Read MDI control register
->>    *  @hw: pointer to the HW structure
->> @@ -118,55 +128,73 @@ s32 e1000e_phy_reset_dsp(struct e1000_hw
->>    **/
->>   s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 
->> *data)
->>   {
->> +    u32 i, mdic = 0, retry_counter, retry_max;
->>       struct e1000_phy_info *phy = &hw->phy;
->> -    u32 i, mdic = 0;
->> +    bool success;
->>       if (offset > MAX_PHY_REG_ADDRESS) {
->>           e_dbg("PHY Address %d is out of range\n", offset);
->>           return -E1000_ERR_PARAM;
->>       }
->> +    retry_max = phy->retry_enabled ? phy->retry_count : 0;
->> +
->>       /* Set up Op-code, Phy Address, and register offset in the MDI
->>        * Control register.  The MAC will take care of interfacing with 
->> the
->>        * PHY to retrieve the desired data.
->>        */
->> -    mdic = ((offset << E1000_MDIC_REG_SHIFT) |
->> -        (phy->addr << E1000_MDIC_PHY_SHIFT) |
->> -        (E1000_MDIC_OP_READ));
->> -
->> -    ew32(MDIC, mdic);
->> -
->> -    /* Poll the ready bit to see if the MDI read completed
->> -     * Increasing the time out as testing showed failures with
->> -     * the lower time out
->> -     */
->> -    for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
->> -        udelay(50);
->> -        mdic = er32(MDIC);
->> -        if (mdic & E1000_MDIC_READY)
->> -            break;
->> -    }
->> -    if (!(mdic & E1000_MDIC_READY)) {
->> -        e_dbg("MDI Read PHY Reg Address %d did not complete\n", offset);
->> -        return -E1000_ERR_PHY;
->> -    }
->> -    if (mdic & E1000_MDIC_ERROR) {
->> -        e_dbg("MDI Read PHY Reg Address %d Error\n", offset);
->> -        return -E1000_ERR_PHY;
->> -    }
->> -    if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
->> -        e_dbg("MDI Read offset error - requested %d, returned %d\n",
->> -              offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
->> -        return -E1000_ERR_PHY;
->> +    for (retry_counter = 0; retry_counter <= retry_max; 
->> retry_counter++) {
->> +        success = true;
->> +
->> +        mdic = ((offset << E1000_MDIC_REG_SHIFT) |
->> +            (phy->addr << E1000_MDIC_PHY_SHIFT) |
->> +            (E1000_MDIC_OP_READ));
->> +
->> +        ew32(MDIC, mdic);
->> +
->> +        /* Poll the ready bit to see if the MDI read completed
->> +         * Increasing the time out as testing showed failures with
->> +         * the lower time out
->> +         */
->> +        for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
->> +            usleep_range(50, 60);
-> 
-> This crashes the kernel as a spinlock is held upper in the call stack in 
-> e1000_watchdog_task():
->    spin_lock(&adapter->stats64_lock);
->    e1000e_update_stats(adapter);
->    -> e1000e_update_phy_stats()
->       -> e1000e_read_phy_reg_mdic()
->          -> usleep_range() ----> Boom.
-> 
-> It was reported to our bugzilla:
-> https://bugzilla.suse.com/show_bug.cgi?id=1223109
-> 
-> I believe, the mainline has the same bug.
-> 
-> Any ideas?
 
-Obviously change the usleeps back to udelays? Or maybe only when
-retry_enabled is set?
+--d/xyR8aY9qMuo2Dt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> thanks,
--- 
-js
-suse labs
+On Fri 2024-04-19 11:22:48, Dominique Martinet wrote:
+> From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+>=20
+> The previous patch forgot to unlock in the error path
+>=20
+> Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
+> Reported-by: Pavel Machek <pavel@denx.de>
+> Cc: stable@vger.kernel.org
+> Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relo=
+cate_sys_chunks()")
+> Signed-off-by: Dominique Martinet<dominique.martinet@atmark-techno.com>
 
+Reviewed-by: Pavel Machek <pavel@denx.de>
+
+Thank you!
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--d/xyR8aY9qMuo2Dt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZiI2nAAKCRAw5/Bqldv6
+8sZaAJ4xe8Los8Q9+crUyfsKAtYLU9NzHQCgsXwYrzAz9gTdBy8Cqqum4uHMIYA=
+=t1ta
+-----END PGP SIGNATURE-----
+
+--d/xyR8aY9qMuo2Dt--
 
