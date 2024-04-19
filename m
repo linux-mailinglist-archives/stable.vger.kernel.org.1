@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-40241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8859B8AA9D0
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F208AA9D1
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:11:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D48E8B21586
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 08:11:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E088CB21AB9
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 08:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5722B4D59F;
-	Fri, 19 Apr 2024 08:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6AA4E1AD;
+	Fri, 19 Apr 2024 08:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sFWLAZn0"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LGoAQRc9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04784DA0D
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 08:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C936A3A1A8
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 08:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713514301; cv=none; b=ejNiWX6rX1PPHLs+HEBZ69zArCoD/AOzSzsrxCGlm9Y7nVKPGzdcr7+fo0/ghrqVHOrKbzxleYKtSp9pCj6zPsiLqDl14LJZ3jgtXjEUQA6aczS5/Z4c14p8kJp/eDl+FkcMiZ1g6tRCYj/RKC/c2ZgFnb3xr7QhmG+f0kwQnbE=
+	t=1713514302; cv=none; b=dEYVAfKIpcz7rtdR1UROvAX2OB7i/VNdt7EbaPiuKKqN/EPyisG7vygJP4jCDKubqtB9qAMkGXAAEna0joqXC3kc8eUgOoMR+2/7WK0foo93J4aX5FYEk8bs2ZcmwRUw8LBLXQs+46MUsPlqGm7V0UyIBDYmfdt7lzkQys1bMLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713514301; c=relaxed/simple;
-	bh=F4+Qqi6XLQsL/9QmIZVJUnP3MUPLiGLRgKjzal28MIU=;
+	s=arc-20240116; t=1713514302; c=relaxed/simple;
+	bh=18XDpqJz80CqecZKaoC3ynCGOruJl8RzlCgjb/CIUZY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=OkfEwoDxgbHrwnAG5F6YNPwdiyKeLu840cX4vn9FYf9ZKw2ALLvq7iNMR7fGB1zEGZTgWTzADyhERqzBFEek5y4ZlPiFKiQJShqviCtYNTWlJZBl5TE2vzRNaXjAZrDnyFcasF5Ksekn6QEkVIxzPaf3TVn9ZfskNJ17lowNFEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sFWLAZn0; arc=none smtp.client-ip=209.85.128.74
+	 To:Content-Type; b=D5lMRDQAyyfizsFoqAFu5nh7mL2kIDj4QWbsdFlhiIqERDj5mijdpJ+yUehJtqfF3StOT0JANJCzaimWPvJRVue5lefdMK0woAN2Oxe6jOzlc7PC0d2zwIhCv1Y1AB/EeWemnNAKmy/tfyhSilc6XsqqZnQj/ZiDjS+8nZp7qEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LGoAQRc9; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4165339d3a5so9921475e9.3
-        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 01:11:38 -0700 (PDT)
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-61b2abd30f9so22478677b3.0
+        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 01:11:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713514297; x=1714119097; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1713514300; x=1714119100; darn=vger.kernel.org;
         h=to:from:subject:message-id:references:mime-version:in-reply-to:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=FR6+OhOPJAepgZ5WSg4/zCOAwzHlW7iK6WO4mZo7iz0=;
-        b=sFWLAZn0pdVxM+LfvkKXWmrdBACj8yeNVLXyD3arKswwCWG7FXrE1HLmfeNzPkaJGq
-         yOIq3gHx3McfrjiwVTmzYgWmOR+H5UOgkKF0wFiNZ2tf5RcLSd7bxYI/7Hh9ZPdbxS03
-         2MMVpP8b6WeVOuRgHnqCuUdkv6BA/7lA47G0ETcvD/rRroPPl8q65ZNwwtUtliy+zdPR
-         aORTPgFJ0TkIQTTSljsyU2GYVCUlEknwcx0Ff2W8Wh4zyJxHrb9n9Ewnz4+hmnTiyKGY
-         VW4cSIeaFdY08mVpqBFrdU6OJEJ5hioiBzLfVGocBlGOKRPOdgdT3uvZb/fMCZzn9V9c
-         IP5g==
+        bh=p3ZmRQH6ImzlNG6vwerHEhLNZsBTXc5jiqBc3TwHTiQ=;
+        b=LGoAQRc9ftQ12Ek9iUitw/4N7oCsgzl/edbFd+XhE42pxzzDIioBxcQFsEAnfydAm0
+         TWJYh7JsMJQMugAOUKB8TldLaGadBhMrwwiR5CNysyUXgLFotW1To0ZkPhtZVYS22y1V
+         GNb5EKEtVMmtV2J09F1ooytsOEDNrSseQv/M8LYuIGxuKLXuWY3WPEVM1K5QyTgOQ5ey
+         Nn4h60Ea3nZp83tEcQw3nKALOAyIhbnGmqoXipF7H3o0R+NgIyvIQ08rroIUnyqFNDZH
+         QBkYnYEiw2U1Ipx6Iu1GBymSLpNru7KwReRNTzoCBGdhucJBkS6yIi3IwyqGxXhbLv9L
+         RWlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713514297; x=1714119097;
+        d=1e100.net; s=20230601; t=1713514300; x=1714119100;
         h=to:from:subject:message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FR6+OhOPJAepgZ5WSg4/zCOAwzHlW7iK6WO4mZo7iz0=;
-        b=RDR3cZmcUFiN/VF+/3ZJ7KyES3P2uC2mSI5wZCQPlR3Of7FlbkTJQvSRNoZtoSDR+T
-         zXrwsMAo9fpxxz5mSGLfZspNpRf/VEIakWO4AufbiSEJ4f7xgt0/plgdjhWGo/odIxrP
-         72f1xxWbeNG52Qqs8ef56tpWJ0+jvvfb6HOWHKfQqEi0VM5cs4qF9BBTc0S03UlOW6cl
-         DPBTzmZj6LB+LVfYuZy18fuB+GiaQXzezc3fM5TXqa7dvgxLqsTUK7xoyplTPR76hopH
-         3YDU9z8pZ3Pp4jgfF5F/4juyy9SYIy29LsuSMzO+BZ0q37o4cHmL1WIczP0fqDEjIv22
-         v8yQ==
-X-Gm-Message-State: AOJu0Yyzw0cLFG39TwFpvVSXhemVAZNmET/1QWBhAjVpYKbWnpZIQqlU
-	uB0mMvyKGSZ0JV7XOWLmvzFAadGht2TrKT8++HbcJQ2WDQ13ai1Kuftt3FdpxOiB1h8z64xDdpU
-	GPQIkozfUpG+Kn3TyvGRGtcUBb5GDvbzGHF08r/5yyCJQcLQNPF4YITXbyza4hic5dH5+ID50xv
-	uKTQmDxCVFvnFJ8v8LudyhfA==
-X-Google-Smtp-Source: AGHT+IEZdvNT/TfMtgpiCjpXbHcvduMOkX7X/Lg075hxSD/QKKK3O0NUfmcpXrMH438hEFChZFWbQb4H
+        bh=p3ZmRQH6ImzlNG6vwerHEhLNZsBTXc5jiqBc3TwHTiQ=;
+        b=SxRS+BCQJxVRX3chHeoNVPuknHg4iYzYuQefM+N2EMFAc1MIRKyUy5Y+K3OrZHqeu5
+         UFDA2GMMQ0Ll2iL9PZPhatMHXM/qKfowjFXPAlUkGcGMuMZaNxjjcAdKVHa9w0JPwntJ
+         ogQ4RMAnzOmkGrRx7BIc87GIsWzkhqCMxdtAA7/WenFAnhm53XISRDdDd3HCIK7AE6+t
+         oMtUYWSCzuRCrOq3KZW3FoN+01PZjuW8h3dLPj8z3uznuxyaumo8FEBlaTn2N7MRwKOk
+         xotl9BsK2HmV3fISmfYymRdCnSwkQTtAi2xP+YvoCmGE+cTEvRKv22IVGhzzi430N4tE
+         ad5g==
+X-Gm-Message-State: AOJu0Yz159298WbItZRiyjaFLanPcklwS2WAHN0D6BR9mgJkTdNgQ/9J
+	RG0i6UxvYF04TMvAvvGc+j+Lf8OUrYlgpFDZiM76Zc8dBeLIdSYCqQrREjeL6fi5koTWB03z5NH
+	3zZmcXjtchEdMbKsQNHXI9j018Bv+Ci5WUOXXfthFRgc6DlrHH3uqQo9GVDdMLedLxQDs1BtvBh
+	+36HukESGD8wRutLaFBkcN0A==
+X-Google-Smtp-Source: AGHT+IGkhas0WGfy+mbYoKkSJVy5vwHZBLoLEiSezjbEbnMTW/nYiqketT91FXy4fBWk/n5IY/ksFWJU
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:600c:444e:b0:418:683d:60db with SMTP id
- v14-20020a05600c444e00b00418683d60dbmr13322wmn.6.1713514297471; Fri, 19 Apr
- 2024 01:11:37 -0700 (PDT)
-Date: Fri, 19 Apr 2024 10:11:11 +0200
+ (user=ardb job=sendgmr) by 2002:a0d:ed47:0:b0:618:511e:c54c with SMTP id
+ w68-20020a0ded47000000b00618511ec54cmr342143ywe.0.1713514299906; Fri, 19 Apr
+ 2024 01:11:39 -0700 (PDT)
+Date: Fri, 19 Apr 2024 10:11:12 +0200
 In-Reply-To: <20240419081105.3817596-25-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,139 +74,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240419081105.3817596-25-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3258; i=ardb@kernel.org;
- h=from:subject; bh=FORMdqsqrOwwtFoeASpvvueIc46ZThlLDZ+6im4TeTs=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIU1JXdZw8+m3TjHmXSY61kduN96WOtP8Y1IF4+02uek/m
- 8K3/ejsKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABMRd2VkmNnh7jCr/VWTOHMp
- 16wtR1ZqJrVvq+r68bWRK0f+3qddrxh+s65W3zx3QXerwt6pDqVnZa/OzPe+zrz0qaisXfYd/iJ mdgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5475; i=ardb@kernel.org;
+ h=from:subject; bh=7yEW1HeWl3Aq+nmI0V4r/gCiWQzdN9hWnAP71iwlOio=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIU1JXU57zdFtARnqv94EC/rKfCmNm3s+5nD7xxdzOQt/9
+ 0v9lZboKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABO5e5WRYe+qvV+vpZ5c/2ab
+ iMgSh8iq4wf+WpYeclpXKrwoSPRa4B2Gv6JPquMb071LEnde+bFW7Wu05Pu6G0X3ODWawuytWCQ WcQEA
 X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240419081105.3817596-30-ardb+git@google.com>
-Subject: [PATCH for-stable-6.1 05/23] x86/boot: Remove the 'bugger off' message
+Message-ID: <20240419081105.3817596-31-ardb+git@google.com>
+Subject: [PATCH for-stable-6.1 06/23] x86/boot: Omit compression buffer from
+ PE/COFF image memory footprint
 From: Ard Biesheuvel <ardb+git@google.com>
 To: stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Commit 768171d7ebbce005210e1cf8456f043304805c15 upstream ]
+[ Commit 8eace5b3555606e684739bef5bcdfcfe68235257 upstream ]
 
-Ancient (pre-2003) x86 kernels could boot from a floppy disk straight from
-the BIOS, using a small real mode boot stub at the start of the image
-where the BIOS would expect the boot record (or boot block) to appear.
-
-Due to its limitations (kernel size < 1 MiB, no support for IDE, USB or
-El Torito floppy emulation), this support was dropped, and a Linux aware
-bootloader is now always required to boot the kernel from a legacy BIOS.
-
-To smoothen this transition, the boot stub was not removed entirely, but
-replaced with one that just prints an error message telling the user to
-install a bootloader.
-
-As it is unlikely that anyone doing direct floppy boot with such an
-ancient kernel is going to upgrade to v6.5+ and expect that this boot
-method still works, printing this message is kind of pointless, and so
-it should be possible to remove the logic that emits it.
-
-Let's free up this space so it can be used to expand the PE header in a
-subsequent patch.
+Now that the EFI stub decompresses the kernel and hands over to the
+decompressed image directly, there is no longer a need to provide a
+decompression buffer as part of the .BSS allocation of the PE/COFF
+image. It also means the PE/COFF image can be loaded anywhere in memory,
+and setting the preferred image base is unnecessary. So drop the
+handling of this from the header and from the build tool.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20230912090051.4014114-21-ardb@google.com
+Link: https://lore.kernel.org/r/20230912090051.4014114-22-ardb@google.com
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/header.S | 49 --------------------
- arch/x86/boot/setup.ld |  7 +--
- 2 files changed, 4 insertions(+), 52 deletions(-)
+ arch/x86/boot/header.S      |  6 +--
+ arch/x86/boot/tools/build.c | 50 +++-----------------
+ 2 files changed, 8 insertions(+), 48 deletions(-)
 
 diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index 38b611eb1a3c..b8d241e57b49 100644
+index b8d241e57b49..98dd4c36ccca 100644
 --- a/arch/x86/boot/header.S
 +++ b/arch/x86/boot/header.S
-@@ -38,63 +38,14 @@ SYSSEG		= 0x1000		/* historical load address >> 4 */
+@@ -89,12 +89,10 @@ optional_header:
+ #endif
  
- 	.code16
- 	.section ".bstext", "ax"
--
--	.global bootsect_start
--bootsect_start:
- #ifdef CONFIG_EFI_STUB
- 	# "MZ", MS-DOS header
- 	.word	MZ_MAGIC
--#endif
--
--	# Normalize the start address
--	ljmp	$BOOTSEG, $start2
--
--start2:
--	movw	%cs, %ax
--	movw	%ax, %ds
--	movw	%ax, %es
--	movw	%ax, %ss
--	xorw	%sp, %sp
--	sti
--	cld
--
--	movw	$bugger_off_msg, %si
--
--msg_loop:
--	lodsb
--	andb	%al, %al
--	jz	bs_die
--	movb	$0xe, %ah
--	movw	$7, %bx
--	int	$0x10
--	jmp	msg_loop
--
--bs_die:
--	# Allow the user to press a key, then reboot
--	xorw	%ax, %ax
--	int	$0x16
--	int	$0x19
--
--	# int 0x19 should never return.  In case it does anyway,
--	# invoke the BIOS reset code...
--	ljmp	$0xf000,$0xfff0
--
--#ifdef CONFIG_EFI_STUB
- 	.org	0x3c
- 	#
- 	# Offset to the PE header.
- 	#
- 	.long	pe_header
--#endif /* CONFIG_EFI_STUB */
--
--	.section ".bsdata", "a"
--bugger_off_msg:
--	.ascii	"Use a boot loader.\r\n"
--	.ascii	"\n"
--	.ascii	"Remove disk and press any key to reboot...\r\n"
--	.byte	0
--
--#ifdef CONFIG_EFI_STUB
- pe_header:
- 	.long	PE_MAGIC
+ extra_header_fields:
+-	# PE specification requires ImageBase to be 64k aligned
+-	.set	image_base, (LOAD_PHYSICAL_ADDR + 0xffff) & ~0xffff
+ #ifdef CONFIG_X86_32
+-	.long	image_base			# ImageBase
++	.long	0				# ImageBase
+ #else
+-	.quad	image_base			# ImageBase
++	.quad	0				# ImageBase
+ #endif
+ 	.long	0x20				# SectionAlignment
+ 	.long	0x20				# FileAlignment
+diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
+index bd247692b701..0354c223e354 100644
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -65,7 +65,6 @@ static unsigned long efi_pe_entry;
+ static unsigned long efi32_pe_entry;
+ static unsigned long kernel_info;
+ static unsigned long startup_64;
+-static unsigned long _ehead;
+ static unsigned long _end;
  
-diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
-index 49546c247ae2..b11c45b9e51e 100644
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -10,10 +10,11 @@ ENTRY(_start)
- SECTIONS
+ /*----------------------------------------------------------------------*/
+@@ -229,27 +228,14 @@ static void update_pecoff_setup_and_reloc(unsigned int size)
+ #endif
+ }
+ 
+-static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
+-			       unsigned int init_sz)
++static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
  {
- 	. = 0;
--	.bstext		: { *(.bstext) }
--	.bsdata		: { *(.bsdata) }
-+	.bstext	: {
-+		*(.bstext)
-+		. = 495;
-+	} =0xffffffff
+ 	unsigned int pe_header;
+ 	unsigned int text_sz = file_sz - text_start;
+-	unsigned int bss_sz = init_sz - file_sz;
++	unsigned int bss_sz = _end - text_sz;
  
--	. = 495;
- 	.header		: { *(.header) }
- 	.entrytext	: { *(.entrytext) }
- 	.inittext	: { *(.inittext) }
+ 	pe_header = get_unaligned_le32(&buf[0x3c]);
+ 
+-	/*
+-	 * The PE/COFF loader may load the image at an address which is
+-	 * misaligned with respect to the kernel_alignment field in the setup
+-	 * header.
+-	 *
+-	 * In order to avoid relocating the kernel to correct the misalignment,
+-	 * add slack to allow the buffer to be aligned within the declared size
+-	 * of the image.
+-	 */
+-	bss_sz	+= CONFIG_PHYSICAL_ALIGN;
+-	init_sz	+= CONFIG_PHYSICAL_ALIGN;
+-
+ 	/*
+ 	 * Size of code: Subtract the size of the first sector (512 bytes)
+ 	 * which includes the header.
+@@ -257,7 +243,7 @@ static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
+ 	put_unaligned_le32(file_sz - 512 + bss_sz, &buf[pe_header + 0x1c]);
+ 
+ 	/* Size of image */
+-	put_unaligned_le32(init_sz, &buf[pe_header + 0x50]);
++	put_unaligned_le32(file_sz + bss_sz, &buf[pe_header + 0x50]);
+ 
+ 	/*
+ 	 * Address of entry point for PE/COFF executable
+@@ -308,8 +294,7 @@ static void efi_stub_entry_update(void)
+ 
+ static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
+ static inline void update_pecoff_text(unsigned int text_start,
+-				      unsigned int file_sz,
+-				      unsigned int init_sz) {}
++				      unsigned int file_sz) {}
+ static inline void efi_stub_defaults(void) {}
+ static inline void efi_stub_entry_update(void) {}
+ 
+@@ -360,7 +345,6 @@ static void parse_zoffset(char *fname)
+ 		PARSE_ZOFS(p, efi32_pe_entry);
+ 		PARSE_ZOFS(p, kernel_info);
+ 		PARSE_ZOFS(p, startup_64);
+-		PARSE_ZOFS(p, _ehead);
+ 		PARSE_ZOFS(p, _end);
+ 
+ 		p = strchr(p, '\n');
+@@ -371,7 +355,7 @@ static void parse_zoffset(char *fname)
+ 
+ int main(int argc, char ** argv)
+ {
+-	unsigned int i, sz, setup_sectors, init_sz;
++	unsigned int i, sz, setup_sectors;
+ 	int c;
+ 	u32 sys_size;
+ 	struct stat sb;
+@@ -442,31 +426,9 @@ int main(int argc, char ** argv)
+ 	buf[0x1f1] = setup_sectors-1;
+ 	put_unaligned_le32(sys_size, &buf[0x1f4]);
+ 
+-	init_sz = get_unaligned_le32(&buf[0x260]);
+-#ifdef CONFIG_EFI_STUB
+-	/*
+-	 * The decompression buffer will start at ImageBase. When relocating
+-	 * the compressed kernel to its end, we must ensure that the head
+-	 * section does not get overwritten.  The head section occupies
+-	 * [i, i + _ehead), and the destination is [init_sz - _end, init_sz).
+-	 *
+-	 * At present these should never overlap, because 'i' is at most 32k
+-	 * because of SETUP_SECT_MAX, '_ehead' is less than 1k, and the
+-	 * calculation of INIT_SIZE in boot/header.S ensures that
+-	 * 'init_sz - _end' is at least 64k.
+-	 *
+-	 * For future-proofing, increase init_sz if necessary.
+-	 */
+-
+-	if (init_sz - _end < i + _ehead) {
+-		init_sz = (i + _ehead + _end + 4095) & ~4095;
+-		put_unaligned_le32(init_sz, &buf[0x260]);
+-	}
+-#endif
+-	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16), init_sz);
++	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
+ 
+ 	efi_stub_entry_update();
+-
+ 	/* Update kernel_info offset. */
+ 	put_unaligned_le32(kernel_info, &buf[0x268]);
+ 
 -- 
 2.44.0.769.g3c40516874-goog
 
