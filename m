@@ -1,192 +1,140 @@
-Return-Path: <stable+bounces-40272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF928AACF8
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:40:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 502838AACFB
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 12:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4B6DB20B4C
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:40:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B95128208A
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5717BB12;
-	Fri, 19 Apr 2024 10:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E677EEE2;
+	Fri, 19 Apr 2024 10:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BV2xGW9m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeC3+ENv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4AB199C2
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 10:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0661B7C0A9;
+	Fri, 19 Apr 2024 10:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713523207; cv=none; b=Lt1S5ODI5BPG4F7HzPfmLJfYd4ZB2mv6IEzC96NjNO1jyg+UQB+neDzPW5GI6Q49cJW3nz8axHwk576v58yN80EPYUWjpL9SWWMDbp+Bbc4QTPAUdW1Zs/7T6YAwcKoOtKn87CYrXRp3wLXeJpebFLWwGahR3Cet/W0bidbRjV8=
+	t=1713523239; cv=none; b=IHTT7AZ/3HTo06/GtO6DFjC84MUcWDckjC6jG1VSTXRj1EZVchZDvrgER0CihxSB9rCmdP09gM1PQRIvPyP1bg7z7uoBn9DKRTbp3gsCJK2m6DcJMS60X1iiQVUUsU0Lov+ZMUOsEcbkxM0heNmYOZ25URezoS7JH+eLrFjVj9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713523207; c=relaxed/simple;
-	bh=m3InNOsuH2pOPXCsGkYSHNdnTqIEK+TE00sj650iOsY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Cg2/+xeBQK1+WYthLnrC6qAwahwHYwPPjkq+HepHKLZKZPEdPr/HEbeqOC3MnzyhSMiDV+HNHmLbsbbwer+3iZ8AfgCWiPjofgUknZFY7tdGXOHUN/s7ZrX1vRlbEHpU2jJoGrvjph0+EE582k07bgWRiVD0BCcCrksoAHK1X2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BV2xGW9m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4708FC072AA;
-	Fri, 19 Apr 2024 10:40:07 +0000 (UTC)
+	s=arc-20240116; t=1713523239; c=relaxed/simple;
+	bh=ri/VNF8+x+uUhczJHngVNn6oFRLkfNLj0bwKqlWZIzQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dncCYMYTyPuCtDrJmIR/VghQF/HIGNVOT0VOZCXi9qIAGxs3/mI5i3zI8N5dJ0qKuC6Xl2EcIf2Vj6IrquiLIu26oqeZ+lsdCubGQkuaBxWYqrIwoP8/qkryVbxbFsDhNv1uHB9EAF9uir40pMr4z4z79DhU9LSY/tVAClNkVYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeC3+ENv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEF6C072AA;
+	Fri, 19 Apr 2024 10:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713523207;
-	bh=m3InNOsuH2pOPXCsGkYSHNdnTqIEK+TE00sj650iOsY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=BV2xGW9m1WceHVpMsDMIBPFy3RzrZUX1ePj+28l/T2owLaWy1ltGaokETGMap+/RG
-	 +NLWjdXZKl+4Hvo/Tgn2O7HgvJ0saLXqjpZU4ngTF5Uh3V2oqXvm5IEYI5DS9ruchD
-	 uA10iuOCA+fHxSa3iaQ4SF/rydhNfgQWNTIl15mU=
-Subject: FAILED: patch "[PATCH] btrfs: do not wait for short bulk allocation" failed to apply to 6.1-stable tree
-To: wqu@suse.com,dsterba@suse.com,fdmanana@suse.com,julian.taylor@1und1.de,sweettea-kernel@dorminy.me
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 19 Apr 2024 12:39:54 +0200
-Message-ID: <2024041954-bullish-slingshot-109f@gregkh>
+	s=korg; t=1713523238;
+	bh=ri/VNF8+x+uUhczJHngVNn6oFRLkfNLj0bwKqlWZIzQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WeC3+ENvz+TN27Esdm/RbWH+MG+s52+P+bjha7fh95m1E0R3zZqhRs5qy7O1L7AoZ
+	 WH+9c+FL/fcXE9NtLidlL68LN3n4sZwxNLAm981tf8xB0NB0z5p7RQ3D9KibYOSWSi
+	 XbSt5h9BofkxGJLzcOEQfHvCt42ap4UBvBJKKhb0=
+Date: Fri, 19 Apr 2024 12:40:33 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, Yihuang Yu <yihyu@redhat.com>,
+	Gavin Shan <gshan@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shaoqin Huang <shahuang@redhat.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: [PATCH 6.6 000/122] 6.6.28-rc1 review
+Message-ID: <2024041921-drown-dizzy-7481@gregkh>
+References: <20240415141953.365222063@linuxfoundation.org>
+ <Zh5UJh31PlBkpZWd@finisterre.sirena.org.uk>
+ <CA+G9fYu-AjRm-BBA=8fWS8oCbBJ5W443JHPh3uddD7ea7MY-YA@mail.gmail.com>
+ <86y19dqw74.wl-maz@kernel.org>
+ <Zh61KobDt_y1O46-@arm.com>
+ <86sezjq688.wl-maz@kernel.org>
+ <ZiECLaXHce05DSM6@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZiECLaXHce05DSM6@arm.com>
 
+On Thu, Apr 18, 2024 at 12:21:17PM +0100, Catalin Marinas wrote:
+> On Thu, Apr 18, 2024 at 12:07:35PM +0100, Marc Zyngier wrote:
+> > On Tue, 16 Apr 2024 18:28:10 +0100,
+> > Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > > On Tue, Apr 16, 2024 at 02:22:07PM +0100, Marc Zyngier wrote:
+> > > > On Tue, 16 Apr 2024 14:07:30 +0100,
+> > > > Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > > > > On Tue, 16 Apr 2024 at 16:04, Mark Brown <broonie@kernel.org> wrote:
+> > > > > > On Mon, Apr 15, 2024 at 04:19:25PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > > This is the start of the stable review cycle for the 6.6.28 release.
+> > > > > > > There are 122 patches in this series, all will be posted as a response
+> > > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > > let me know.
+> > > > > >
+> > > > > > The bisect of the boot issue that's affecting the FVP in v6.6 (only)
+> > > > > > landed on c9ad150ed8dd988 (arm64: tlb: Fix TLBI RANGE operand),
+> > > > > > e3ba51ab24fdd in mainline, as being the first bad commit - it's also in
+> > > > > > the -rc for v6.8 but that seems fine.  I've done no investigation beyond
+> > > > > > the bisect and looking at the commit log to pull out people to CC and
+> > > > > > note that the fix was explicitly targeted at v6.6.
+> > > > > 
+> > > > > Anders investigated this reported issues and bisected and also found
+> > > > > the missing commit for stable-rc 6.6 is
+> > > > > e2768b798a19 ("arm64/mm: Modify range-based tlbi to decrement scale")
+> > > > 
+> > > > Which is definitely *not* stable candidate. We need to understand why
+> > > > the invalidation goes south when the scale go up instead of down.
+> > > 
+> > > If you backport e3ba51ab24fd ("arm64: tlb: Fix TLBI RANGE operand")
+> > > which fixes 117940aa6e5f ("KVM: arm64: Define
+> > > kvm_tlb_flush_vmid_range()") but without the newer e2768b798a19
+> > > ("arm64/mm: Modify range-based tlbi to decrement scale"), it looks like
+> > > "scale" in __flush_tlb_range_op() goes out of range to 4. Tested on my
+> > > CBMC model, not on the actual kernel. It may be worth adding some
+> > > WARN_ONs in __flush_tlb_range_op() if scale is outside the 0..3 range or
+> > > num greater than 31.
+> > > 
+> > > I haven't investigated properly (and I'm off tomorrow, back on Thu) but
+> > > it's likely the original code was not very friendly to the maximum
+> > > range, never tested. Anyway, if one figures out why it goes out of
+> > > range, I think the solution is to also backport e2768b798a19 to stable.
+> > 
+> > I looked into this, and I came to the conclusion that this patch is
+> > pretty much incompatible with the increasing scale (even if you cap
+> > num to 30).
+> 
+> Thanks Marc for digging into this.
+> 
+> > So despite my earlier comment, it looks like picking e2768b798a19 is
+> > the right thing to do *if* we're taking e3ba51ab24fd into 6.6-stable.
+> > 
+> > Otherwise, we need a separate fix, which Ryan initially advocating for
+> > initially.
+> 
+> My preference would be to cherry-pick the two upstream commits than
+> coming up with an alternative fix for 6.6.
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1db7959aacd905e6487d0478ac01d89f86eb1e51
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024041954-bullish-slingshot-109f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-1db7959aacd9 ("btrfs: do not wait for short bulk allocation")
-09e6cef19c9f ("btrfs: refactor alloc_extent_buffer() to allocate-then-attach method")
-397239ed6a6c ("btrfs: allow extent buffer helpers to skip cross-page handling")
-94dbf7c0871f ("btrfs: free the allocated memory if btrfs_alloc_page_array() fails")
-096d23016543 ("btrfs: refactor main loop in memmove_extent_buffer()")
-13840f3f2837 ("btrfs: refactor main loop in memcpy_extent_buffer()")
-730c374e5b2c ("btrfs: use write_extent_buffer() to implement write_extent_buffer_*id()")
-cb22964f1dad ("btrfs: refactor extent buffer bitmaps operations")
-52ea5bfbfa6d ("btrfs: move eb subpage preallocation out of the loop")
-5a96341927b0 ("btrfs: subpage: make alloc_extent_buffer() handle previously uptodate range efficiently")
-2af2aaf98205 ("btrfs: scrub: introduce structure for new BTRFS_STRIPE_LEN based interface")
-5eb30ee26fa4 ("btrfs: raid56: introduce the main entrance for RMW path")
-6486d21c99cb ("btrfs: raid56: extract rwm write bios assembly into a helper")
-509c27aa2fb6 ("btrfs: raid56: extract the rmw bio list build code into a helper")
-30e3c897f4a8 ("btrfs: raid56: extract the pq generation code into a helper")
-2fc6822c99d7 ("btrfs: move scrub prototypes into scrub.h")
-677074792a1d ("btrfs: move relocation prototypes into relocation.h")
-33cf97a7b658 ("btrfs: move acl prototypes into acl.h")
-af142b6f44d3 ("btrfs: move file prototypes to file.h")
-7572dec8f522 ("btrfs: move ioctl prototypes into ioctl.h")
+To be specific, which 2 commits, and what order?
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1db7959aacd905e6487d0478ac01d89f86eb1e51 Mon Sep 17 00:00:00 2001
-From: Qu Wenruo <wqu@suse.com>
-Date: Tue, 26 Mar 2024 09:16:46 +1030
-Subject: [PATCH] btrfs: do not wait for short bulk allocation
-
-[BUG]
-There is a recent report that when memory pressure is high (including
-cached pages), btrfs can spend most of its time on memory allocation in
-btrfs_alloc_page_array() for compressed read/write.
-
-[CAUSE]
-For btrfs_alloc_page_array() we always go alloc_pages_bulk_array(), and
-even if the bulk allocation failed (fell back to single page
-allocation) we still retry but with extra memalloc_retry_wait().
-
-If the bulk alloc only returned one page a time, we would spend a lot of
-time on the retry wait.
-
-The behavior was introduced in commit 395cb57e8560 ("btrfs: wait between
-incomplete batch memory allocations").
-
-[FIX]
-Although the commit mentioned that other filesystems do the wait, it's
-not the case at least nowadays.
-
-All the mainlined filesystems only call memalloc_retry_wait() if they
-failed to allocate any page (not only for bulk allocation).
-If there is any progress, they won't call memalloc_retry_wait() at all.
-
-For example, xfs_buf_alloc_pages() would only call memalloc_retry_wait()
-if there is no allocation progress at all, and the call is not for
-metadata readahead.
-
-So I don't believe we should call memalloc_retry_wait() unconditionally
-for short allocation.
-
-Call memalloc_retry_wait() if it fails to allocate any page for tree
-block allocation (which goes with __GFP_NOFAIL and may not need the
-special handling anyway), and reduce the latency for
-btrfs_alloc_page_array().
-
-Reported-by: Julian Taylor <julian.taylor@1und1.de>
-Tested-by: Julian Taylor <julian.taylor@1und1.de>
-Link: https://lore.kernel.org/all/8966c095-cbe7-4d22-9784-a647d1bf27c3@1und1.de/
-Fixes: 395cb57e8560 ("btrfs: wait between incomplete batch memory allocations")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index b18034f2ab80..2776112dbdf8 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -681,31 +681,21 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
- int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array,
- 			   gfp_t extra_gfp)
- {
-+	const gfp_t gfp = GFP_NOFS | extra_gfp;
- 	unsigned int allocated;
- 
- 	for (allocated = 0; allocated < nr_pages;) {
- 		unsigned int last = allocated;
- 
--		allocated = alloc_pages_bulk_array(GFP_NOFS | extra_gfp,
--						   nr_pages, page_array);
--
--		if (allocated == nr_pages)
--			return 0;
--
--		/*
--		 * During this iteration, no page could be allocated, even
--		 * though alloc_pages_bulk_array() falls back to alloc_page()
--		 * if  it could not bulk-allocate. So we must be out of memory.
--		 */
--		if (allocated == last) {
-+		allocated = alloc_pages_bulk_array(gfp, nr_pages, page_array);
-+		if (unlikely(allocated == last)) {
-+			/* No progress, fail and do cleanup. */
- 			for (int i = 0; i < allocated; i++) {
- 				__free_page(page_array[i]);
- 				page_array[i] = NULL;
- 			}
- 			return -ENOMEM;
- 		}
--
--		memalloc_retry_wait(GFP_NOFS);
- 	}
- 	return 0;
- }
-
 
