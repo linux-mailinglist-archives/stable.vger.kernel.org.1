@@ -1,204 +1,150 @@
-Return-Path: <stable+bounces-40316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCED8AB4B9
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 20:05:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17918AB559
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 21:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F66D1C21EA7
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 18:05:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A455D1F215F7
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 19:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF5C13AD37;
-	Fri, 19 Apr 2024 18:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C46013BAFF;
+	Fri, 19 Apr 2024 19:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d2HcSxa5"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vhf1rzDV";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PplcsBRD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D487412FB3C
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 18:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4A8C8DE;
+	Fri, 19 Apr 2024 19:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713549912; cv=none; b=bZK7BqlGY6XngRji2KAm5r50W/UllgcM8Q/IIRGLdovJ3RWrS/m6qb6XU2UPTBRJyvUZsvTIhnrpTP0dYU34y2bCi0nC0oDTmJKC3VhCZrOCLPHf9kUrQ+wTgrldy7fZ/W82X0sS8naNqGaX52+f0xtu2eme1/pfsRpjFyPzcW0=
+	t=1713553264; cv=none; b=ZgnyGpG0Pgfs1qvvWi8Qy59YQnYvLBohIbmd8ffM3vuElDr1M9QpnE4fDD4yO66dwkIMCMgJ929EhRXyftZjyrRsXbY+HKjxW7az6+g3gk6i3tr+P8o1xuy4ZIRtd6I5SfI9Sv4XGvFsFVT8MBDec8rzYjYMnafFoMesBOrGcwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713549912; c=relaxed/simple;
-	bh=F4cNOrYwM4Aq4Iiy4jYOyWYoKlDnc4rZFnYqfqmTWJk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pHMmeL/1n9InM0VnYiOCGXVYG8iw+v2ltNnZ5EMZMXoSmiwME36MtjHRvF96a+rKzycitqSzYFUS5lzgGHKfF+h5ovuQ+UgYCztBaDHqT0o9tNlXWvmgHYGNcMdUyQyf7EayB4wuA+AuE3S4DESXM0dKibEJdVhisUvwbJ8WgaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d2HcSxa5; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-571e13cd856so2169a12.0
-        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 11:05:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713549909; x=1714154709; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HmgSdIOaBGzF1wIJwZyCqHKWiUO1epUovMBrXDSKd70=;
-        b=d2HcSxa5F65+eScAfEpAhoKksIvRGfuZBpJXIMiBC+K8a1+k0S+cqd8ygzEmehsf4n
-         ZASPZIwM0OIrSYlcj1htbfPP8tq0S48Ne/V+lVdca2+OYl12fRNDVyCJJ6Id9+Jr9Mn+
-         mC2FZDTP9LxUpjTz7PqGFcDIVbWHSC/VjQ6a889ixUFByjOEw4xt+ZzjWiTAZMV4MBCz
-         Vy4c5kzHexzU4EEy2IB6YStLSmGO5DHkripX3mxg6vok+Wzn6Mb1lzEVfF6fGrIwHzz/
-         EFkOQkmiLwau4BTUcjXYHMmuG+HVLdUYDeFIvyg89EumIaEZbCpGYfL8ezqXe0ypG92P
-         1C+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713549909; x=1714154709;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HmgSdIOaBGzF1wIJwZyCqHKWiUO1epUovMBrXDSKd70=;
-        b=SKOAhK2hmOnyw6CbLFtFR76cPgBXE+ytrQUOlRZvdc2chSGA/+7Wo9P8ZULl6G0xRd
-         9pyqIzOyIIphWtfl8ppZMhLW5kojWdcGFhdKiYu4I+uj8K3ZS3vtw70wONAlfi2y6Sjm
-         O6K+pYf4pmmdQX37vWfAk8yhW54lQiD/S6xl54oFPJPimBPBaatnmbGloz1iMHCEqlbe
-         oNXs+UuOYvmr6jjfXZBTJdMCy8+rTvniyLaaKMund/YJwEFIo5qmkzvGLbSTJxS1rtHR
-         cDo5UlQ15dMVas9ljqCRRQEMIGy0Gm/KJdM2/grhL7ZyS9wv0XMQcg38UXu/f4u85iTy
-         cIIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVN6pdA+srXz2xSU/ajINQ8xnOmkD+vP2XPbk7QZ2G6Fo331MGLMJstVvd9+U6DBWef0gtdHtI9X++ZxIH72kGp+AkQ/PXR
-X-Gm-Message-State: AOJu0YxHmvoKMCIhYrnaenhydL2wANvnJhGAT1OId8IQeXb5430BmiQz
-	DafuAYk0QSc2wwMB/orFr3cNuDOdz3zJNkqPltzZxCuEnZknZtEqWFQBD9/YDNDlWJD7+uGJxvs
-	ImbMNlE44UiebzjGl/Ijl5zZ03ehcTii25mIz
-X-Google-Smtp-Source: AGHT+IFiJwIF8NBICxhoTwIgH3tKMxmE/Jfl8ucbO0D4wydmlmbZBia7J/vwSPgO/y44rmwz5zaGNM//OJRSzziGxyg=
-X-Received: by 2002:a50:fc08:0:b0:571:b9c7:2804 with SMTP id
- i8-20020a50fc08000000b00571b9c72804mr5894edr.5.1713549908902; Fri, 19 Apr
- 2024 11:05:08 -0700 (PDT)
+	s=arc-20240116; t=1713553264; c=relaxed/simple;
+	bh=ugcejKN/8bnvBn8l5R62QNpOVWEX5fo+kneA8+gug5o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MGxY+ox7O7yTIQ9rP2Wu0ZZcObT/Rhw/cAQnrWu9pkFOMrDr3omYXZ3Pec2l4DDNbXgTJM/QK/kwuRD5liaZ6fNHesUwrvWofY+K3xc4e5zdgDH/bcBEpwAn4IZRuRR9749AOFkR/iw8vIVFZqpnpc7V89x8Km3lF75WZj602k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vhf1rzDV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PplcsBRD; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713553241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=y/Mk5BsbEdPJv8VhsnLb8RYA6psPnj/he2tHNKR8Z40=;
+	b=vhf1rzDVQfE+/pOsWmkzBlegxqrjQuuESIAJdtotPXce6QuVJ6YaC6HifvsNYVnDhQgJa0
+	Lfr3oFEIan0WVRvty2I1nNaQXfnTx0Wmfp0aum6T8h4LMCeO/lYjQHhrn6aKCOP50LcI+u
+	YBprsuhsoxofF7tTDEWdgxI8RLR40An9nvdMPLEb1H/mgLt8KXvCj+Jx9ZWzhsRybm+UAA
+	EXwHepNbnvBxF3I0u2ryueoFrfLDW2cluNB8c0cdNntvY3qWhItvwxmvqohbBHFMU4+Y7z
+	53x9kfZQMMjT5VQq2/UKdPofyY5PT2gj8eWbMCBPyK2BLuDvbTVrR6Qwi8gqSw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713553241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=y/Mk5BsbEdPJv8VhsnLb8RYA6psPnj/he2tHNKR8Z40=;
+	b=PplcsBRDDf6zq+QhZEMuFbhwBir7skqDABVWyD78qtxe3KSN0aak49/olGdQdBYu1n8YLM
+	te0wsKuJFRXt63BQ==
+To: Jaya Kumar <jayalk@intworks.biz>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: tiwai@suse.de,
+	namcao@linutronix.de,
+	bigeasy@linutronix.de,
+	patrik.r.jakobsson@gmail.com,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	George Kennedy <george.kennedy@oracle.com>,
+	Darren Kenny <darren.kenny@oracle.com>,
+	chuansheng.liu@intel.com,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fbdev: fix incorrect address computation in deferred IO
+Date: Fri, 19 Apr 2024 21:00:32 +0200
+Message-Id: <20240419190032.40490-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118181954.1415197-1-zokeefe@google.com> <20240417111001.fa2eg5gp6t2wiwco@quack3>
- <CAAa6QmSOum_0ZhyUq1ppguLp0jpEs0u1U843GkF==xMwaMGV4A@mail.gmail.com> <20240418110434.g5bx5ntp2m4433eo@quack3>
-In-Reply-To: <20240418110434.g5bx5ntp2m4433eo@quack3>
-From: "Zach O'Keefe" <zokeefe@google.com>
-Date: Fri, 19 Apr 2024 11:04:31 -0700
-Message-ID: <CAAa6QmS-PwoR7QGr5f-yUrMsnszb=q8+wpjKrYzsv0OsgdP4jw@mail.gmail.com>
-Subject: Re: [PATCH] mm/writeback: fix possible divide-by-zero in
- wb_dirty_limits(), again
-To: Jan Kara <jack@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Maxim Patlasov <MPatlasov@parallels.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 18, 2024 at 4:04=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
->
-> On Wed 17-04-24 12:33:39, Zach O'Keefe wrote:
-> > On Wed, Apr 17, 2024 at 4:10=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
-> > > > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> > > > index cd4e4ae77c40a..02147b61712bc 100644
-> > > > --- a/mm/page-writeback.c
-> > > > +++ b/mm/page-writeback.c
-> > > > @@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struct dir=
-ty_throttle_control *dtc)
-> > > >        */
-> > > >       dtc->wb_thresh =3D __wb_calc_thresh(dtc);
-> > > >       dtc->wb_bg_thresh =3D dtc->thresh ?
-> > > > -             div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->th=
-resh) : 0;
-> > > > +             div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thres=
-h) : 0;
-> ...
-> > > Thirdly, if thresholds are larger than 1<<32 pages, then dirty balanc=
-ing is
-> > > going to blow up in many other spectacular ways - consider only the
-> > > multiplication on this line - it will not necessarily fit into u64 an=
-ymore.
-> > > The whole dirty limiting code is interspersed with assumptions that l=
-imits
-> > > are actually within u32 and we do our calculations in unsigned longs =
-to
-> > > avoid worrying about overflows (with occasional typing to u64 to make=
- it
-> > > more interesting because people expected those entities to overflow 3=
-2 bits
-> > > even on 32-bit archs). Which is lame I agree but so far people don't =
-seem
-> > > to be setting limits to 16TB or more. And I'm not really worried abou=
-t
-> > > security here since this is global-root-only tunable and that has muc=
-h
-> > > better ways to DoS the system.
-> > >
-> > > So overall I'm all for cleaning up this code but in a sensible way pl=
-ease.
-> > > E.g. for these overflow issues at least do it one function at a time =
-so
-> > > that we can sensibly review it.
-> > >
-> > > Andrew, can you please revert this patch until we have a better fix? =
-So far
-> > > it does more harm than good... Thanks!
-> >
-> > Shall we just roll-forward with a suitable fix? I think all the
-> > original code actually "needed" was to cast the ternary predicate,
-> > like:
-> >
-> > ---8<---
-> > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> > index fba324e1a010..ca1bfc0c9bdd 100644
-> > --- a/mm/page-writeback.c
-> > +++ b/mm/page-writeback.c
-> > @@ -1637,8 +1637,8 @@ static inline void wb_dirty_limits(struct
-> > dirty_throttle_control *dtc)
-> >          *   at some rate <=3D (write_bw / 2) for bringing down wb_dirt=
-y.
-> >          */
-> >         dtc->wb_thresh =3D __wb_calc_thresh(dtc);
-> > -       dtc->wb_bg_thresh =3D dtc->thresh ?
-> > -               div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh)=
- : 0;
-> > +       dtc->wb_bg_thresh =3D (u32)dtc->thresh ?
-> > +               div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thre=
-sh) : 0;
->
-> Well, this would fix the division by 0 but when you read the code you
-> really start wondering what's going on :) [..]
+With deferred IO enabled, a page fault happens when data is written to the
+framebuffer device. Then driver determines which page is being updated by
+calculating the offset of the written virtual address within the virtual
+memory area, and uses this offset to get the updated page within the
+internal buffer. This page is later copied to hardware (thus the name
+"deferred IO").
 
-Ya, this was definitely a local fix in an area of code I know very
-little abit. I stumbled across it in a rather contrived way -- made
-easier by internal patches -- and felt its existence still warranted a
-local fix.
+This calculation is only correct if the virtual memory area is mapped to
+the beginning of the internal buffer. Otherwise this is wrong. For example,
+if users do:
+    mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
 
-> [..] And as I wrote above when
-> thresholds pass UINT_MAX, the dirty limitting code breaks down anyway so =
-I
-> don't think the machine will be more usable after your fix. Would you be =
-up
-> for a challenge to modify mm/page-writeback.c so that such huge limits
-> cannot be set instead? That would be actually a useful fix...
+Then the virtual memory area will mapped at offset 0xff000 within the
+internal buffer. This offset 0xff000 is not accounted for, and wrong page
+is updated. This will lead to wrong pixels being updated on the device.
 
-:) I can't say my schedule affords me much time to take on any
-significant unplanned work. Perhaps as a Friday afternoon exercise
-I'll come back to scope this out, driven by some sense of
-responsibility garnered from starting down this path ; but ... my TODO
-list is long.
+However, it gets worse: if users do 2 mmap to the same virtual address, for
+example:
 
-Have a great rest of your day / weekend,
-Zach
+    int fd =3D open("/dev/fb0", O_RDWR, 0);
+    char *ptr =3D (char *) 0x20000000ul;
+    mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
+    *ptr =3D 0; // write #1
+    mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0);
+    *ptr =3D 0; // write #2
 
->                                                                 Honza
->
-> >
-> >         /*
-> >          * In order to avoid the stacked BDI deadlock we need
-> > ---8<---
-> >
-> > Thanks, and apologize for the inconvenience
-> >
-> > Zach
-> >
-> > >                                                                 Honza
-> > > --
-> > > Jan Kara <jack@suse.com>
-> > > SUSE Labs, CR
-> >
-> --
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+In this case, both write #1 and write #2 apply to the same virtual address
+(0x20000000ul), and the driver mistakenly thinks the same page is being
+written to. When the second write happens, the driver thinks this is the
+same page as the last time, and reuse the page from write #1. The driver
+then lock_page() an incorrect page, and returns VM_FAULT_LOCKED with the
+correct page unlocked. It is unclear what will happen with memory
+management subsystem after that, but likely something terrible.
+
+Fix this by taking the mapping offset into account.
+
+Reported-and-tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.c=
+om>
+Closes: https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4a=
+b341a@oracle.com
+Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+---
+ drivers/video/fbdev/core/fb_defio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core=
+/fb_defio.c
+index dae96c9f61cf..d5d6cd9e8b29 100644
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -196,7 +196,8 @@ static vm_fault_t fb_deferred_io_track_page(struct fb_i=
+nfo *info, unsigned long
+  */
+ static vm_fault_t fb_deferred_io_page_mkwrite(struct fb_info *info, struct=
+ vm_fault *vmf)
+ {
+-	unsigned long offset =3D vmf->address - vmf->vma->vm_start;
++	unsigned long offset =3D vmf->address - vmf->vma->vm_start
++			+ (vmf->vma->vm_pgoff << PAGE_SHIFT);
+ 	struct page *page =3D vmf->page;
+=20
+ 	file_update_time(vmf->vma->vm_file);
+--=20
+2.39.2
+
 
