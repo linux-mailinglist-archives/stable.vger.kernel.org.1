@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-40295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F16C8AB144
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 17:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFF48AB149
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 17:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9431C212C3
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:04:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80A5F1C2104F
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3A412F58C;
-	Fri, 19 Apr 2024 15:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B1B12F39A;
+	Fri, 19 Apr 2024 15:06:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE781E893
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC44C7D07F
+	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 15:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.211.30.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713539064; cv=none; b=I94cwOVUADETFEAjILJjTTmZWGhGW623QC5MRWORTWvYDJp1XUbXvX6wjilOTf+Hm1XYkcwV6Bhivr8eW0qkV8Jy71h/k6fG7lnd3blD7SXN/6YjXy8m+3eKkJvkfAHoozcrg8DIE6aECeeAoLVPVMR7PBbCj6/gAVpVg8A4jnM=
+	t=1713539162; cv=none; b=YLW59tbIcAHb/pdDtndeH7MBzwTFWRvOPUCh4PgbBnjWi+JOkqj57gzXhsZ6Qt7lYysxmcUIdxedLBrO0o3Pf/khfRkD0386XpD4aG+vI5nfaHC4TVIMHbNxCFU5gD9cqkc+FTO2jvNCVX6nrkqk4DdDWpOjsC4b2Fk321+6svA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713539064; c=relaxed/simple;
-	bh=BfPC7rSyyC8PwFpTcUkxNnMuZ2RpZN5nSwew3yN8V08=;
+	s=arc-20240116; t=1713539162; c=relaxed/simple;
+	bh=SCtTqh76GTTaanZq/azQaTgxCnU5AoDXMye3iDEfSc4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=Ujj7gwQWK5R5dkHE5cnI8TQNSNTNCOLnZcHNOPQ35rQQZW7DacfANmFDS5dDfnC1Vi4jP75+4XR5zSTyX7YHz95TVQnEAZiYmD8kNfjDZK6NTphdPfS/7rRKIht4DfKTkeJiyy0OvTT9SjSTML6Vvh0UNBzr2O1PFB6OJLyWa+Q=
+	 In-Reply-To:Content-Type:Content-Disposition; b=Vx5EHFDxwjNecBuZ7SNyC8k7lzqiTD7oDm8rk4q1QnFoebMPX0/V65/Acu+x2bdX9BTyEtzRDBjsSn1GEEyndwuQtiFGSgGAkcr+wvHhVkWzCaYRXbpH0AYFIvTuXCB83k13zuAeZRuk84U9C2SLev0q8/X6hvVFTMWQ1sO+EeE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=none smtp.mailfrom=queasysnail.net; arc=none smtp.client-ip=207.211.30.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=queasysnail.net
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-323-7CD1Fwe2O922ruFHYjUJtg-1; Fri, 19 Apr 2024 11:04:11 -0400
-X-MC-Unique: 7CD1Fwe2O922ruFHYjUJtg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-307-wfiM61_ZMsS5SR3VQFv4Hg-1; Fri,
+ 19 Apr 2024 11:05:56 -0400
+X-MC-Unique: wfiM61_ZMsS5SR3VQFv4Hg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 364278E9E89;
-	Fri, 19 Apr 2024 15:04:10 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B085F3816462;
+	Fri, 19 Apr 2024 15:05:55 +0000 (UTC)
 Received: from hog (unknown [10.39.193.137])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 93AC6581D0;
-	Fri, 19 Apr 2024 15:04:08 +0000 (UTC)
-Date: Fri, 19 Apr 2024 17:04:07 +0200
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id A0D042166B34;
+	Fri, 19 Apr 2024 15:05:53 +0000 (UTC)
+Date: Fri, 19 Apr 2024 17:05:52 +0200
 From: Sabrina Dubroca <sd@queasysnail.net>
 To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
@@ -55,96 +55,130 @@ Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
 	Yossi Kuperman <yossiku@nvidia.com>,
 	Benjamin Poirier <bpoirier@nvidia.com>,
 	Cosmin Ratiu <cratiu@nvidia.com>
-Subject: Re: [PATCH net-next 0/3] Resolve security issue in MACsec offload Rx
- datapath
-Message-ID: <ZiKH52u_sjpm2mhf@hog>
+Subject: Re: [PATCH net-next 2/3] macsec: Detect if Rx skb is macsec-related
+ for offloading devices that update md_dst
+Message-ID: <ZiKIUC6bTCDhlnRw@hog>
 References: <20240419011740.333714-1-rrameshbabu@nvidia.com>
+ <20240419011740.333714-3-rrameshbabu@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240419011740.333714-1-rrameshbabu@nvidia.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+In-Reply-To: <20240419011740.333714-3-rrameshbabu@nvidia.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: queasysnail.net
 Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-This should go to net, not net-next. It fixes a serious bug. Also
-please change the title to:
-  fix isolation of broadcast traffic with MACsec offload
+2024-04-18, 18:17:16 -0700, Rahul Rameshbabu wrote:
+> diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+> index 0206b84284ab..679302ef1cd9 100644
+> --- a/drivers/net/macsec.c
+> +++ b/drivers/net/macsec.c
+> @@ -991,6 +991,19 @@ static struct macsec_rx_sc *find_rx_sc_rtnl(struct m=
+acsec_secy *secy, sci_t sci)
+>  =09return NULL;
+>  }
+> =20
+> +static __u8 macsec_offload_pkt_type(const u8 *h_dest, const u8 *ndev_bro=
+adcast)
+> +
 
-"resolve security issue" is too vague.
+nit: empty line shouldn't be here
 
-2024-04-18, 18:17:14 -0700, Rahul Rameshbabu wrote:
-> Some device drivers support devices that enable them to annotate whether =
-a
-> Rx skb refers to a packet that was processed by the MACsec offloading
-> functionality of the device. Logic in the Rx handling for MACsec offload
-> does not utilize this information to preemptively avoid forwarding to the
-> macsec netdev currently. Because of this, things like multicast messages
-> such as ARP requests are forwarded to the macsec netdev whether the messa=
-ge
-> received was MACsec encrypted or not. The goal of this patch series is to
-> improve the Rx handling for MACsec offload for devices capable of
-> annotating skbs received that were decrypted by the NIC offload for MACse=
-c.
->=20
-> Here is a summary of the issue that occurs with the existing logic today.
->=20
->     * The current design of the MACsec offload handling path tries to use
->       "best guess" mechanisms for determining whether a packet associated
->       with the currently handled skb in the datapath was processed via HW
->       offload=E2=80=8B
+> +{
+> +=09if (is_multicast_ether_addr_64bits(h_dest)) {
+> +=09=09if (ether_addr_equal_64bits(h_dest, ndev_broadcast))
+> +=09=09=09return PACKET_BROADCAST;
+> +=09=09else
+> +=09=09=09return PACKET_MULTICAST;
+> +=09}
+> +
+> +=09return PACKET_HOST;
+> +}
+> +
+>  static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
+>  {
+>  =09/* Deliver to the uncontrolled port by default */
+> @@ -999,10 +1012,12 @@ static enum rx_handler_result handle_not_macsec(st=
+ruct sk_buff *skb)
+>  =09struct metadata_dst *md_dst;
+>  =09struct macsec_rxh_data *rxd;
+>  =09struct macsec_dev *macsec;
+> +=09bool is_macsec_md_dst;
+> =20
+>  =09rcu_read_lock();
+>  =09rxd =3D macsec_data_rcu(skb->dev);
+>  =09md_dst =3D skb_metadata_dst(skb);
+> +=09is_macsec_md_dst =3D md_dst && md_dst->type =3D=3D METADATA_MACSEC;
+> =20
+>  =09list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
+>  =09=09struct sk_buff *nskb;
+> @@ -1014,13 +1029,40 @@ static enum rx_handler_result handle_not_macsec(s=
+truct sk_buff *skb)
+>  =09=09 */
+>  =09=09if (macsec_is_offloaded(macsec) && netif_running(ndev)) {
+>  =09=09=09struct macsec_rx_sc *rx_sc =3D NULL;
 
-nit: there's a strange character after "offload" and at the end of a
-few other lines in this list
+Please move this into the "if (is_macsec_md_dst)" block below, since
+it's no longer used outside.
 
->     * The best guess mechanism uses the following heuristic logic (in ord=
-er of
->       precedence)
->       - Check if header destination MAC address matches MACsec netdev MAC
->         address -> forward to MACsec port
->       - Check if packet is multicast traffic -> forward to MACsec port=E2=
-=80=8B
-                                                                   here ^
+> +=09=09=09const struct macsec_ops *ops;
+> =20
+> -=09=09=09if (md_dst && md_dst->type =3D=3D METADATA_MACSEC)
+> -=09=09=09=09rx_sc =3D find_rx_sc(&macsec->secy, md_dst->u.macsec_info.sc=
+i);
+> +=09=09=09ops =3D macsec_get_ops(macsec, NULL);
+> =20
+> -=09=09=09if (md_dst && md_dst->type =3D=3D METADATA_MACSEC && !rx_sc)
+> +=09=09=09if (ops->rx_uses_md_dst && !is_macsec_md_dst)
+>  =09=09=09=09continue;
+> =20
+> +=09=09=09if (is_macsec_md_dst) {
+> +=09=09=09=09/* All drivers that implement MACsec offload
+> +=09=09=09=09 * support using skb metadata destinations must
+> +=09=09=09=09 * indicate that they do so.
+> +=09=09=09=09 */
+> +=09=09=09=09DEBUG_NET_WARN_ON_ONCE(!ops->rx_uses_md_dst);
+> +=09=09=09=09rx_sc =3D find_rx_sc(&macsec->secy, md_dst->u.macsec_info.sc=
+i);
+> +=09=09=09=09if (!rx_sc)
+> +=09=09=09=09=09continue;
+> +=09=09=09=09/* device indicated macsec offload occurred */
+> +=09=09=09=09skb->dev =3D ndev;
+> +=09=09=09=09skb->pkt_type =3D macsec_offload_pkt_type(
+> +=09=09=09=09=09hdr->h_dest, ndev->broadcast);
+> +=09=09=09=09ret =3D RX_HANDLER_ANOTHER;
+> +=09=09=09=09goto out;
+> +=09=09=09}
+> +
+> +=09=09=09/* This datapath is insecure because it is unable to
+> +=09=09=09 * enforce isolation of broadcast/multicast traffic and
+> +=09=09=09 * unicast traffic with promiscuous mode on the macsec
+> +=09=09=09 * netdev. Since the core stack has no mechanism to
+> +=09=09=09 * check that the hardware did indeed receive MACsec
+> +=09=09=09 * traffic, it is possible that the response handling
+> +=09=09=09 * done by the MACsec port was to a plaintext packet.
+> +=09=09=09 * This violates the MACsec protocol standard.
+> +=09=09=09 */
+> +=09=09=09DEBUG_NET_WARN_ON_ONCE(true);
 
->       - MACsec security channel was able to be looked up from skb offload
->         context (mlx5 only) -> forward to MACsec port=E2=80=8B
-                                                  here ^
+If you insist on this warning (and I'm not convinced it's useful,
+since if the HW is already built and cannot inform the driver, there's
+nothing the driver implementer can do), I would move it somewhere into
+the config path. macsec_update_offload would be a better location for
+this kind of warning (maybe with a pr_warn (not limited to debug
+configs) saying something like "MACsec offload on devices that don't
+support md_dst are insecure: they do not provide proper isolation of
+traffic"). The comment can stay here.
 
->     * Problem: plaintext traffic can potentially solicit a MACsec encrypt=
-ed
->       response from the offload device
->       - Core aspect of MACsec is that it identifies unauthorized LAN conn=
-ections
->         and excludes them from communication
->         + This behavior can be seen when not enabling offload for MACsec=
-=E2=80=8B
-                                                                     here ^
-
->       - The offload behavior violates this principle in MACsec
->=20
-
->=20
-> Link: https://github.com/Binary-Eater/macsec-rx-offload/blob/trunk/MACsec=
-_violation_in_core_stack_offload_rx_handling.pdf
-> Link: https://lore.kernel.org/netdev/87r0l25y1c.fsf@nvidia.com/
-> Link: https://lore.kernel.org/netdev/20231116182900.46052-1-rrameshbabu@n=
-vidia.com/
-> Cc: Sabrina Dubroca <sd@queasysnail.net>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-
-I would put some Fixes tags on this series. Since we can't do anything
-about non-md_dst devices, I would say that the main patch fixes
-860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path
-support"), and the driver patch fixes b7c9400cbc48 ("net/mlx5e:
-Implement MACsec Rx data path using MACsec skb_metadata_dst"). Jakub,
-Rahul, does that sound ok to both of you?
+>  =09=09=09if (ether_addr_equal_64bits(hdr->h_dest,
+>  =09=09=09=09=09=09    ndev->dev_addr)) {
+>  =09=09=09=09/* exact match, divert skb to this port */
 
 --=20
 Sabrina
