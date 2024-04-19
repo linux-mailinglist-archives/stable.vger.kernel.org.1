@@ -1,188 +1,152 @@
-Return-Path: <stable+bounces-40259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A19B8AA9E1
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:12:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5BD98AAA4D
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 10:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7E5CB232AC
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 08:12:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 208321C21F14
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 08:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A873A55;
-	Fri, 19 Apr 2024 08:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526EA651B6;
+	Fri, 19 Apr 2024 08:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2rPFJF+2"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="y2UJax0t";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Q+Sw9bjz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CFC4E1AD
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 08:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6A654FBD;
+	Fri, 19 Apr 2024 08:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713514340; cv=none; b=r11t4xpa2PPpEHWzD+Bl/+mWvVL3p8ie5jDF5T+mgdQvwg5c6QfGi1J/fvFPm/90cN1oZ2vHlS5yNtiwaoQgJKWajqg5bZWJG9eLHUbqSz9jnCvnIWYsjtmSnJ7Z0Zmh+0vRnrTmX87X1Dld/sZRl51UAWkT9TFvmdLeWyx9T0E=
+	t=1713515621; cv=none; b=Xn/uu2hBnNbUT9dVjOIYG5DvUrEYYIWyQ9f57wPmsokpBx/6V6jPm8zbk3OubthkDgxY/awHBEItnMDDG4OsNnvxK0B8SSjcEgxdS668vIL6D+3rkvKOR1TlyKmggbxIZs0wUWygoQrLEcnvuzrwo/IZH2RSnGM2tLbp0dq0nZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713514340; c=relaxed/simple;
-	bh=p1XdwJfsE21MtGtcoD4ctHbfB/8+qXVMGCEb1zVBrQs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=FFKn7PpD/8nalJkHgSXmZGj1kCYE+TzbYu+BJh8FSS75lbUYXeNPbFRvPe9KTj32h+B1OH3ZzfSsrHBfkDG0fzv4dwA5Wt0qR0BHayRpmNSd/ZppPxlOADjbkA0Gsncvzj2kspMm27na49P5W2kK/cQLR4FFkoW2ZUSQjrVhOH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2rPFJF+2; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-417df7b0265so8978305e9.3
-        for <stable@vger.kernel.org>; Fri, 19 Apr 2024 01:12:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713514337; x=1714119137; darn=vger.kernel.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BjkNQ5iVSg+OWtUwVEniFrBciNEkP0ZUaHhGpbLm8hw=;
-        b=2rPFJF+2F7CP7XY4DzPr1wq+VeFg95b8lmYoZnt7IY60Jvs81oje4do8Tx2dGVhwLW
-         A4fVPFn4B+ZQxgVnU+s3kM1Sk6lnSjxgTHTrFopPnTEF+o2sHCcquBwUg6dmawEAC3q9
-         NDJ26mtk5QniO6cpl2E1sq5pgmNtEXHD2c8bl8Ol/9T6y3CAu5g0kY3dEwC95WYKNHRJ
-         Xg5wvmcDQaKxATASGBXLu894Z4MTzP6Jxhc3lltQljQe243tdpFeQI75JgNN6tcPbrRv
-         DD65eCL1VBzssK5op3S94yY0REYNOVLmAeTn4O7sAkRlWcAf91rlNy74txm8u/cQdR2P
-         nQcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713514337; x=1714119137;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BjkNQ5iVSg+OWtUwVEniFrBciNEkP0ZUaHhGpbLm8hw=;
-        b=UbfUHZJAmBqN4Ws9u1iQbXVHYAlDfs+E4SggEb95uWm9dO4FoB3gHyxVkMxqlaa1sY
-         k1n8rf4AsR7EsTjdK4Kawu6Iie4ZikYVFTNa0RkP6QhCl/NPE5aXzr9wGDlTD0sHG/Ah
-         8c34BzfeuM4tqPxFxVajo5yfifxXP4ncnDrOAn+8m+KuW7HRZ4l4zYdP5CRB23kzFKJ6
-         f1BxSX2pjWltrmkWtmLPPfbTptpTb5jT8iy42B2VTUyBN+QkZsDLdbBzr+WPT/r6+LSm
-         aPxfyByPBWC8C2q+3ZkXIakXsoIQflR01kqIXSBox6cyBjkdtkkbvwDmXNr1kV8dazOi
-         ysvw==
-X-Gm-Message-State: AOJu0YxAvuLSuyPjyvHmWEw7MCT39ID3ourYQQyMD27YmHlgc55g8INl
-	mGEJAbL6MT5PPcQJoUkt9Fx73pkX987fMtCVMsvMhqGknfTnaepxIgyp43cohPSVMnVQW3p45s6
-	eFRaxcrMhyS2SokGKZD8LQhD1yYSj7gwjTG5I7BrubcdvgYjRfr0/uF83BPS/w+mF5YdijRtlS5
-	yIqbuGjYA7+dFMG2CTgNHACg==
-X-Google-Smtp-Source: AGHT+IGu+9QZzT9Rbe5eCwjuLK1O77rq3tO3vhq1d/0aD5MdQ4mCKxAEw08/PyWlh4H0gJg+UxZxiWTg
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:600c:3b9d:b0:418:ee2f:cacb with SMTP id
- n29-20020a05600c3b9d00b00418ee2fcacbmr9617wms.1.1713514337213; Fri, 19 Apr
- 2024 01:12:17 -0700 (PDT)
-Date: Fri, 19 Apr 2024 10:11:29 +0200
-In-Reply-To: <20240419081105.3817596-25-ardb+git@google.com>
+	s=arc-20240116; t=1713515621; c=relaxed/simple;
+	bh=yUTT/BsavEY92mydX2L4Md+rJ16mCVnB3JnE+Z1ZhYw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eyr2Qlu9bV1ybTVTscRDxqT3gQVfq7bLs6poKtUyJpP68reFPSqND7Sw8ChVdvak5w1XovuqlKpdp9iGSxfH6NMmR2aFYAfOAS5liU7OWWPuhj8J8ohDKokTzjeud2ARCJvTGU9WM5u9TPh0C9XYUgDvy3rJkX4Yk2oM4G3Q4CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=y2UJax0t; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Q+Sw9bjz; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9F5733757B;
+	Fri, 19 Apr 2024 08:33:36 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1713515616; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/mq/lkQh4x3KA2MtCgwt0aXOtawttZvqhrviIfs7Oow=;
+	b=y2UJax0tgcelybXaF7SLCGRGz166/mobyhcC6G89zXMDDI9ktW7MaqVG531snbDizMswpO
+	1CkrxHc8PE3WcnmTKnNZ5/Ljy+S0X+VTxv6yT3/3gm2ghxp0WGNWfKEXNSQdLA0qwKUN6O
+	I5dUD0CGUk5lgFwvEvtXWGPdAe8I1cU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1713515616;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/mq/lkQh4x3KA2MtCgwt0aXOtawttZvqhrviIfs7Oow=;
+	b=Q+Sw9bjzIOxWGoEnwy7DbDvMrNg5YpHVlBMC2KuTqa04OGuAwJ2aRZo3sOrZ/l4j3V7iHc
+	E9Sga0aBiIh+JDCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4FB931395B;
+	Fri, 19 Apr 2024 08:33:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sEVNEmAsImb9agAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 19 Apr 2024 08:33:36 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	deller@gmx.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Zack Rusin <zackr@vmware.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	stable@vger.kernel.org,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>
+Subject: [PATCH v3 01/43] drm/fbdev-generic: Do not set physical framebuffer address
+Date: Fri, 19 Apr 2024 10:28:54 +0200
+Message-ID: <20240419083331.7761-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240419083331.7761-1-tzimmermann@suse.de>
+References: <20240419083331.7761-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240419081105.3817596-25-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4117; i=ardb@kernel.org;
- h=from:subject; bh=NxJ4so8cZ7ODeEPtHXBg7uybazHnAn+PlECJWZAeiug=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIU1JXbuK7y2n+rKtx+/xqV5i8bM0mfngrVPZ/MWRrpcZJ
- O4v+Tiro5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEzkKycjQ8flibx+N86V6ks3
- pgdkRHpe1Cqb+epp08bqoksCCifLlBn+F3PIMyjuLpvOuGX9BC+tp55vDu0OVtx68EmDQvDLbSX VTAA=
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240419081105.3817596-48-ardb+git@google.com>
-Subject: [PATCH for-stable-6.1 23/23] x86/efistub: Remap kernel text read-only
- before dropping NX attribute
-From: Ard Biesheuvel <ardb+git@google.com>
-To: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Rspamd-Queue-Id: 9F5733757B
 
-From: Ard Biesheuvel <ardb@kernel.org>
+Framebuffer memory is allocated via vzalloc() from non-contiguous
+physical pages. The physical framebuffer start address is therefore
+meaningless. Do not set it.
 
-[ Commit 9c55461040a9264b7e44444c53d26480b438eda6 upstream ]
+The value is not used within the kernel and only exported to userspace
+on dedicated ARM configs. No functional change is expected.
 
-Currently, the EFI stub invokes the EFI memory attributes protocol to
-strip any NX restrictions from the entire loaded kernel, resulting in
-all code and data being mapped read-write-execute.
+v2:
+- refer to vzalloc() in commit message (Javier)
 
-The point of the EFI memory attributes protocol is to remove the need
-for all memory allocations to be mapped with both write and execute
-permissions by default, and make it the OS loader's responsibility to
-transition data mappings to code mappings where appropriate.
-
-Even though the UEFI specification does not appear to leave room for
-denying memory attribute changes based on security policy, let's be
-cautious and avoid relying on the ability to create read-write-execute
-mappings. This is trivially achievable, given that the amount of kernel
-code executing via the firmware's 1:1 mapping is rather small and
-limited to the .head.text region. So let's drop the NX restrictions only
-on that subregion, but not before remapping it as read-only first.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: a5b44c4adb16 ("drm/fbdev-generic: Always use shadow buffering")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Zack Rusin <zackr@vmware.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.4+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Reviewed-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Tested-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Acked-by: Maxime Ripard <mripard@kernel.org>
 ---
- arch/x86/boot/compressed/Makefile       |  2 +-
- arch/x86/boot/compressed/misc.c         |  1 +
- arch/x86/include/asm/boot.h             |  1 +
- drivers/firmware/efi/libstub/x86-stub.c | 11 ++++++++++-
- 4 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_fbdev_generic.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 3965b2c9efee..6e61baff223f 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -84,7 +84,7 @@ LDFLAGS_vmlinux += -T
- hostprogs	:= mkpiggy
- HOST_EXTRACFLAGS += -I$(srctree)/tools/include
+diff --git a/drivers/gpu/drm/drm_fbdev_generic.c b/drivers/gpu/drm/drm_fbdev_generic.c
+index be357f926faec..97e579c33d84a 100644
+--- a/drivers/gpu/drm/drm_fbdev_generic.c
++++ b/drivers/gpu/drm/drm_fbdev_generic.c
+@@ -113,7 +113,6 @@ static int drm_fbdev_generic_helper_fb_probe(struct drm_fb_helper *fb_helper,
+ 	/* screen */
+ 	info->flags |= FBINFO_VIRTFB | FBINFO_READS_FAST;
+ 	info->screen_buffer = screen_buffer;
+-	info->fix.smem_start = page_to_phys(vmalloc_to_page(info->screen_buffer));
+ 	info->fix.smem_len = screen_size;
  
--sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABCDGRSTVW] \(_text\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
-+sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABCDGRSTVW] \(_text\|__start_rodata\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
- 
- quiet_cmd_voffset = VOFFSET $@
-       cmd_voffset = $(NM) $< | sed -n $(sed-voffset) > $@
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 8ae7893d712f..45435ff88363 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -330,6 +330,7 @@ static size_t parse_elf(void *output)
- 	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
- }
- 
-+const unsigned long kernel_text_size = VO___start_rodata - VO__text;
- const unsigned long kernel_total_size = VO__end - VO__text;
- 
- static u8 boot_heap[BOOT_HEAP_SIZE] __aligned(4);
-diff --git a/arch/x86/include/asm/boot.h b/arch/x86/include/asm/boot.h
-index a38cc0afc90a..a3e0be0470a4 100644
---- a/arch/x86/include/asm/boot.h
-+++ b/arch/x86/include/asm/boot.h
-@@ -81,6 +81,7 @@
- 
- #ifndef __ASSEMBLY__
- extern unsigned int output_len;
-+extern const unsigned long kernel_text_size;
- extern const unsigned long kernel_total_size;
- 
- unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 1f5edcb6339a..55468debd55d 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -227,6 +227,15 @@ efi_status_t efi_adjust_memory_range_protection(unsigned long start,
- 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
- 
- 	if (memattr != NULL) {
-+		status = efi_call_proto(memattr, set_memory_attributes,
-+					rounded_start,
-+					rounded_end - rounded_start,
-+					EFI_MEMORY_RO);
-+		if (status != EFI_SUCCESS) {
-+			efi_warn("Failed to set EFI_MEMORY_RO attribute\n");
-+			return status;
-+		}
-+
- 		status = efi_call_proto(memattr, clear_memory_attributes,
- 					rounded_start,
- 					rounded_end - rounded_start,
-@@ -778,7 +787,7 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
- 
- 	*kernel_entry = addr + entry;
- 
--	return efi_adjust_memory_range_protection(addr, kernel_total_size);
-+	return efi_adjust_memory_range_protection(addr, kernel_text_size);
- }
- 
- static void __noreturn enter_kernel(unsigned long kernel_addr,
+ 	/* deferred I/O */
 -- 
-2.44.0.769.g3c40516874-goog
+2.44.0
 
 
