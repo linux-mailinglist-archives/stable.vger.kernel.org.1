@@ -1,129 +1,103 @@
-Return-Path: <stable+bounces-40289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF6B8AAFE2
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 15:58:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCCB8AB0FA
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 16:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B90F1C22BC8
-	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 13:58:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0B561F24774
+	for <lists+stable@lfdr.de>; Fri, 19 Apr 2024 14:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2486912D75C;
-	Fri, 19 Apr 2024 13:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F0F12EBF8;
+	Fri, 19 Apr 2024 14:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PewEYGoF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oATss3xu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C058C12D1F1
-	for <stable@vger.kernel.org>; Fri, 19 Apr 2024 13:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D4A7BAF7;
+	Fri, 19 Apr 2024 14:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713535116; cv=none; b=Q7G3eZlpxx0Xi7Kn2QfDyprZEixVCYU6n2Fvv8XKotj/4LdAEpGsnsYeGKy9O3Oncrm+cK3EqEZ7YxjaRRAq8Pahdv0LBdV8AljrDFcQoP7PtRLw7m0vZgphRD4MydyTtZTQgB2dZErvlj2yxLbYIqGXDd7FY4u357VhbTDvK0E=
+	t=1713538079; cv=none; b=jGyd5omjLLuRvJ2ZpHbZ+NLd3mcwd3QUA0gTagOP8LgcLhYON7xU3boMqFDLT0nUK5eq0fTOp/fWxD6TYqTu6Sgi4IIfnG30qLJeLdYf5s7e4yBos4WW4NdXLM7diZAmvcpARHtVqwOq0PDfw9ytNrATxpskuoidx706ScYSdwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713535116; c=relaxed/simple;
-	bh=k/tTkUxRS4T5vxu2Ors6LiIwIxRVd+MH/lkHnelFqUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YfrTFcfd0tjLHGxGbcI5z6bDocAwaIH/24ViJoZN6miJh//W+0gffJ3aAZDp/8bh234e9tkWPVZULwxY+Em9SDaU0t7lrN329CCt4KwG+2WgjmEVmiwGT1k9yoPcSaY9BAmW7TIMWvchV/36WJEwLgO+MFlG9d401nT3laIToAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PewEYGoF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9DEC072AA;
-	Fri, 19 Apr 2024 13:58:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713535116;
-	bh=k/tTkUxRS4T5vxu2Ors6LiIwIxRVd+MH/lkHnelFqUc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PewEYGoFeY263/MiZk6ekBZPPIg63wJLNS2fMJnEVsCjItuKJ48p8Q6aiw9e1oUKH
-	 ZAu3UISNE6bgbQvF2ZQbWVKCMVmWd/c7Joi9wyh34cuz9xpbJWOD6yyfNT9ErOCn/S
-	 i7+k0AdGhZguoZg6s1YxpGldrcRhdTh+I99386uk=
-Date: Fri, 19 Apr 2024 15:58:30 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Cc: stable@vger.kernel.org, Chen Jiahao <chenjiahao16@huawei.com>,
-	Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH] Revert "riscv: kdump: fix crashkernel reserving problem
- on RISC-V"
-Message-ID: <2024041939-isotope-client-3d75@gregkh>
-References: <20240416085647.14376-1-xingmingzheng@iscas.ac.cn>
- <2024041927-remedial-choking-c548@gregkh>
- <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
+	s=arc-20240116; t=1713538079; c=relaxed/simple;
+	bh=Vmc6uljHRntJBts9DEApBMq9kJrVnjN559MuPl/JPvY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sSJ8KxG8MHYuB10xuWEFVMN+R/ZdC6H1Q3gVECK8JFky9+sE1jj70LG7OqQb8ZMIxrDIfQx4J/pCkZotNpwzGsbYbcqtaPcjnsULRx3X3v3CedJtuy4UfBJ2Qer6DskaqJwJeaHmGCXal5PW4HHrABfvFqkj8r7Cpang3nLKmPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oATss3xu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE23FC072AA;
+	Fri, 19 Apr 2024 14:47:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713538078;
+	bh=Vmc6uljHRntJBts9DEApBMq9kJrVnjN559MuPl/JPvY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=oATss3xunmgNT0u+8ornpkeuTAS/jWOhja5fjOtkoDuudOlKwTYa1K/3CPo14wWCY
+	 Re72jJhjB7BR/3RqdSFBBLmZ46OLn8iuFIwvc/qAZ361fwKoanDawnLuOOiB8Ax88U
+	 WuPIudjokUNlVVYPYnE/Jv9ew7crTZtmvkM6zYrMx9ELJLgcYQ9f6Lq9MaPhID2DMQ
+	 wQ3rKamAevyBk1ed2gcR/n7m8RU0bgnFNawwsqG77HYYXu5KQoBUWH5CN85/gpTePf
+	 k0f6o36ZiG7W6PHioQlVh8HQTmtFCPqTDo9ewtbuLc0uUQfadOMYCz3v98ivArFSuy
+	 BuMljNR3kUcZw==
+From: Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 0/3] HID: bpf: some fixes for pre-loading HID-BPF
+Date: Fri, 19 Apr 2024 16:47:50 +0200
+Message-Id: <20240419-hid_bpf_lazy_skel-v1-0-9210bcd4b61c@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABaEImYC/x3MTQqAIBBA4avErBMspLCrRIg/Yw5FhUJU0t2Tl
+ t/ivQwJI2GCocoQ8aRE+1bQ1BXYoLcZGbliaHkruGgkC+SUObxa9XOrtODKtOGu64U1Qhoo3RH
+ R0/U/x+l9P3XeqdFjAAAA
+To: Jiri Kosina <jikos@kernel.org>, 
+ Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Benjamin Tissoires <bentiss@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1713538077; l=1241;
+ i=bentiss@kernel.org; s=20230215; h=from:subject:message-id;
+ bh=Vmc6uljHRntJBts9DEApBMq9kJrVnjN559MuPl/JPvY=;
+ b=dH+Tb8LcFr6PErY4tmh5SeDIfBbGra62JhiR8cw22cbSx/zh8+1beYHqxpoQkMieF9/GIO7zs
+ WJYH006XLlrArLWrJuwQyMLdqxxkAVQ99cOyptgpNM6OzA3rH44PK1E
+X-Developer-Key: i=bentiss@kernel.org; a=ed25519;
+ pk=7D1DyAVh6ajCkuUTudt/chMuXWIJHlv2qCsRkIizvFw=
 
-On Fri, Apr 19, 2024 at 08:26:07PM +0800, Mingzheng Xing wrote:
-> On 4/19/24 18:44, Greg Kroah-Hartman wrote:
-> > On Tue, Apr 16, 2024 at 04:56:47PM +0800, Mingzheng Xing wrote:
-> >> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which has been
-> >> merged into the mainline commit 39365395046f ("riscv: kdump: use generic
-> >> interface to simplify crashkernel reservation"), but the latter's series of
-> >> patches are not included in the 6.6 branch.
-> >>
-> >> This will result in the loss of Crash kernel data in /proc/iomem, and kdump
-> >> loading the kernel will also cause an error:
-> >>
-> >> ```
-> >> Memory for crashkernel is not reserved
-> >> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
-> >> Then try to loading kdump kernel
-> >> ```
-> >>
-> >> After revert this patch, verify that it works properly on QEMU riscv.
-> >>
-> >> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv
-> >> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-> >> ---
-> > 
-> > I do not understand, what branch is this for?  Why have you not cc:ed
-> > any of the original developers here?  Why does Linus's tree not have the
-> > same problem?  And the first sentence above does not make much sense as
-> > a 6.6 change is merged into 6.7?
-> 
-> Sorry, I'll try to explain it more clearly.
-> 
-> This commit 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem
-> on RISC-V") should not have existed because this patch has been merged into
-> another larger patch [1]. Here is that complete series:
+As I am working on the next functionalities of HID-BPF, I realized that
+I had a few issues while preloading the skeleton at boot.
 
-What "larger patch"?  It is in Linus's tree, so it's not part of
-something different, right?  I'm confused.
+None of the errors are terrible as they are not inducing a kernel crash,
+so it's not super urgent IMO.
 
-> c37e56cac3d62 crash_core.c: remove unneeded functions
-> 39365395046fe riscv: kdump: use generic interface to simplify crashkernel reservation [1]
-> fdc268232dbba arm64: kdump: use generic interface to simplify crashkernel reservation
-> 9c08a2a139fe8 x86: kdump: use generic interface to simplify crashkernel reservation code
-> b631b95dded5e crash_core: move crashk_*res definition into crash_core.c
-> 0ab97169aa051 crash_core: add generic function to do reservation
-> 70916e9c8d9f1 crash_core: change parse_crashkernel() to support crashkernel=,high|low parsing
-> a9e1a3d84e4a0 crash_core: change the prototype of function parse_crashkernel()
-> a6304272b03ec crash_core.c: remove unnecessary parameter of function
-> 
-> I checked and that series above is not present in 6.6.y. It is only present
-> in 6.7+. So this commit is causing an error. Crash kernel information
-> cannot be read from /proc/iomem when using the 6.6.y kernel.
+Regarding the last one, I'm not sure what makes RHEL behave slightly
+different than upstream. But I am not sure also that the code matches
+upstream everywhere, so lazy loading it seems like a sensible idea.
 
-Did that ever work in older kernels?  Is this a regression?  Or are the
-commits in 6.7 just to fix this feature up and get it to work?
+Furthermore, that also means that the code will not be available until
+requested by user space, which fits well in the whole idea of HID-BPF:
+if the user doesn't want it, then it shouldn't be it.
 
-> I tested two ways to fix this error, the first one is to revert this
-> commit. the second one is to backport the complete series above to 6.6.y,
-> but according to stable-kernel-rules, it seems that the most appropriate
-> method is the first one.
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+---
+Benjamin Tissoires (3):
+      HID: bpf: fix a comment in a define
+      HID: bpf: fix return value of entrypoints_*__attach()
+      HID: bpf: lazy load the hid_tail_call entrypoint
 
-It depends if this is a regression from older kernels or not.
+ drivers/hid/bpf/hid_bpf_dispatch.c  |  6 ------
+ drivers/hid/bpf/hid_bpf_jmp_table.c | 17 ++++++++++++-----
+ 2 files changed, 12 insertions(+), 11 deletions(-)
+---
+base-commit: b912cf042072e12e93faa874265b30cc0aa521b9
+change-id: 20240419-hid_bpf_lazy_skel-ab0d674cb49b
 
-Please work with the maintainers of the above code to figure out what is
-best to do here and get them to agree what needs to happen.
+Best regards,
+-- 
+Benjamin Tissoires <bentiss@kernel.org>
 
-thanks,
-
-greg k-h
 
