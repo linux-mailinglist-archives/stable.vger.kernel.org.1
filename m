@@ -1,190 +1,296 @@
-Return-Path: <stable+bounces-40347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA50D8ABC7B
-	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 18:46:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160E48ABCB7
+	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 20:28:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D5FB28172F
-	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 16:46:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 399A41C20AD0
+	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 18:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111D031758;
-	Sat, 20 Apr 2024 16:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A823D0B3;
+	Sat, 20 Apr 2024 18:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EXCVuwlQ"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gX8atNjs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2044.outbound.protection.outlook.com [40.107.237.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C099326AFB
-	for <stable@vger.kernel.org>; Sat, 20 Apr 2024 16:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713631567; cv=none; b=RWenOsgmvwK20Bhj7I1LoNa74ZeB/RVZP406SRG5kHRs2/NYluPUmihg1TqlGOINNF65AUmkn7dxR6Y2oHrckzduQe77lZQlgb4rg6s8+xs1tBFDe0oltS16T1In5Qsh5QGE/OZgpNXb9Vj/1mYvBmSSbAOXHE6FnPTwk8dv8Kc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713631567; c=relaxed/simple;
-	bh=A8EhFHuFokq1x8cw5TKN7CxgUpTvIPkB1j34BbNcBbM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fO0RPp5XbPDd5/HVMKqx0nT13rbPYMzwpV/EC+kkeM+UT/AymQELDrfnCXnKUEGjBsO49VuMpq7F+rzYtvLzJK9PGjn3hyD6aAviX+psMlNqPlF9hHuacUYhSJiBuqYon/yf8w2opMzFDc14/oQGCD3KLooH6oE5yGnbgXnKMns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EXCVuwlQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6D9F0C32782;
-	Sat, 20 Apr 2024 16:46:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713631567;
-	bh=A8EhFHuFokq1x8cw5TKN7CxgUpTvIPkB1j34BbNcBbM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EXCVuwlQKk3MjzNu8n5SbRkBqnUP/t3Pdq87/HAKQBf/Et9EBAfuE/wuUtajs3n+T
-	 basjWzcAFSjlIlrS8FkOA0Wp48YVdXGpacH9ghVRvoYyJ0oML73pjYVzjfWXscFFKU
-	 9rUBJ4UgF+18JPjpS5z6SwQRPxNISxum/Pj6sBPRwuVyv3HvOKuAvBRSWLI+UVsm8x
-	 qvOfMIO6y9ZOgFJhWP2SsVdS9MlUvXOlNQWcl6ujoqmhgI6+2dNwjBLktJ7zUaNK7x
-	 S/51MeDjI+vgyuwUZ4atxBP3/MRU33oSRdCI36C3a7uavsT3uHvlRDcGFNYd8hXEh8
-	 BB6HD4LTRHArg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64F40C07E8E;
-	Sat, 20 Apr 2024 16:46:07 +0000 (UTC)
-From: =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL_via_B4_Relay?= <devnull+arinc.unal.arinc9.com@kernel.org>
-Date: Sat, 20 Apr 2024 19:46:06 +0300
-Subject: [PATCH 4/4] net: dsa: mt7530: fix enabling EEE on MT7531 switch on
- all boards
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081503B299;
+	Sat, 20 Apr 2024 18:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713637731; cv=fail; b=o7SSzSCrShU0atop8G0meOxjc9EWwbvfZ+wgfW33PUA9y3HsHxndChyRfZQZrBZpnSoAUt0xMmxDaGzPD+XJs8ZPs3YDjHpGQpRiHU6QbfXdW3ingKgVZMFz2yXpRPE/LCsJul2ichrL1H6lse+GSpTmvtcdJJzjiNCWa7HsDQk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713637731; c=relaxed/simple;
+	bh=pnxIGrKR5wdCtZmcwUSpLwsbZasAJ2IzVsP37FsuVZs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Ufsg6AsyxCpakozpAiSTR0iDiS2750ivEA6FpCh9UO+OcyKXIiLZzSOAOPa+Rj9a7ZjwVvVtgoksSBrGU46/P2Y3Ojg4An/9Dx44IRKALNuwOenouIGOOd1yuRwkTFJaUMkGHDsMdWcx3eWSeHdr/GI1z/XjX6VSd9Y+88w2ZwM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gX8atNjs; arc=fail smtp.client-ip=40.107.237.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PKc5yxOMP4Iv2Kg5xFTw9B52i1RJQ1rcDlHXlGGGS2uDmeSxcYb4l8DKIY2fZ1gUpOJw0zZ6VMHM8/pdCvwF47QHAy1b3LO5JROQDYFPAq9eecf1HUYGeBuXs/WKxU2rvFP4wv4y4jZK/lok7ETAs4ghmOEpO270OXpUwnXlDajx3G1LkYqdNshLBSRumW1/V/sDCYN8zGV0eN+CphW+Wgz+eYL/yNKDLRr3R5/dlOPHl8cGNvTnstxjipA4ZSDTHVDt3M0jB9rV07xk+eCfSTUVZuMsj+2RQECryM5f7SK532A99a6qnrTetpQHd82rOw5MT4CgAWdYWBzKiDkEgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xZtHmHup4DzWyy5k8MC2tLXy6u+/oo6XijzNgiQ5phQ=;
+ b=Pv9iKj3Yz94ZdY07WUoSchBsrTrTqzMVx4qbIR3foKeavI72Ctm++dOv5PHYJP0eGc0v/EP3pdWPI1Ctes+jX8clK0VdOwjxXGhu8EO4YCHa4GQvXBteTq27OTp878eh1YSC5sjsxtWVA7muUqDlZ2VUQgTqZncdcKff5B35r19HjX5YEowCi5zdxuciMzmNh7ssom8SOA7PyZMBem8YVU7eOj6fKAiwzZxyl6Ua23IiLPX9dg+G7/0z6IkrML0cRDmF1PY9yJtHsqA1LKQFZNvxTWQS/U26BSRKZ18kGI7OglqdjvTtBWEUJyCFpL6SWXJsusfuKfB0zzZ5rrknYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=e16-tech.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xZtHmHup4DzWyy5k8MC2tLXy6u+/oo6XijzNgiQ5phQ=;
+ b=gX8atNjsFYHHEhfM4BGn7vsWfit+G7uNo7pskqN902VE+9zydTL1gIsi8Alc/fvFuRaTLkldu+6gevW6dtjbk4KEKXVZbcFF5JOISwutG5qqKmmOdBWwwRxMhjNLABtuqFCpy+tYfPPxBhfvnsZbdVsoTB/XFHVdAxgN8Lx6fkgKMgu5cadEmRvqZkefvCBe2mzxU5DFTEX7LOCTM+Ieo+SxxqHTf08vEYRKI14woUNIL0f4M4M/nbM1xjEDh2zuTnRg5GJXg9D1DCbAcpyxTABpd5TpY//2FQisT+bJNmziKyo5d00SzCBofVInBDZ90iclRnCM50kErsAHixYqlA==
+Received: from CY5PR03CA0029.namprd03.prod.outlook.com (2603:10b6:930:8::30)
+ by CY5PR12MB6621.namprd12.prod.outlook.com (2603:10b6:930:43::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.43; Sat, 20 Apr
+ 2024 18:28:47 +0000
+Received: from CY4PEPF0000FCC5.namprd03.prod.outlook.com
+ (2603:10b6:930:8:cafe::40) by CY5PR03CA0029.outlook.office365.com
+ (2603:10b6:930:8::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7495.30 via Frontend
+ Transport; Sat, 20 Apr 2024 18:28:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CY4PEPF0000FCC5.mail.protection.outlook.com (10.167.242.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7452.22 via Frontend Transport; Sat, 20 Apr 2024 18:28:46 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Sat, 20 Apr
+ 2024 11:28:39 -0700
+Received: from [172.27.21.38] (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Sat, 20 Apr
+ 2024 11:28:36 -0700
+Message-ID: <220e55df-a0a2-4272-b94f-c7c4c6fbf2b7@nvidia.com>
+Date: Sat, 20 Apr 2024 21:28:33 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240420-for-stable-5-15-backports-v1-4-007bfa19d044@arinc9.com>
-References: <20240420-for-stable-5-15-backports-v1-0-007bfa19d044@arinc9.com>
-In-Reply-To: <20240420-for-stable-5-15-backports-v1-0-007bfa19d044@arinc9.com>
-To: stable@vger.kernel.org
-Cc: Daniel Golle <daniel@makrotopia.org>, 
- =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL?= <arinc.unal@arinc9.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Jakub Kicinski <kuba@kernel.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1713631565; l=4744;
- i=arinc.unal@arinc9.com; s=arinc9-Xeront; h=from:subject:message-id;
- bh=wI+VNPUDKMADiqTcJvasF28AuwQZJ6Eh4q11OnAtrCI=;
- b=mc1cJvPV45O1nrZM2w9joefDvw6oBTsEhTeYs9mlaliBk71lneBUQssAPOuc3cDlurt/2DOHq
- zBTAKwJ9VS6ALJiYgrSozDMDME5l9jFpC2rLSw4YSfKKmSHbUzK5GvF
-X-Developer-Key: i=arinc.unal@arinc9.com; a=ed25519;
- pk=z49tLn29CyiL4uwBTrqH9HO1Wu3sZIuRp4DaLZvtP9M=
-X-Endpoint-Received: by B4 Relay for arinc.unal@arinc9.com/arinc9-Xeront
- with auth_id=137
-X-Original-From: =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL?= <arinc.unal@arinc9.com>
-Reply-To: arinc.unal@arinc9.com
-
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
-
-[ Upstream commit 06dfcd4098cfdc4d4577d94793a4f9125386da8b ]
-
-The commit 40b5d2f15c09 ("net: dsa: mt7530: Add support for EEE features")
-brought EEE support but did not enable EEE on MT7531 switch MACs. EEE is
-enabled on MT7531 switch MACs by pulling the LAN2LED0 pin low on the board
-(bootstrapping), unsetting the EEE_DIS bit on the trap register, or setting
-the internal EEE switch bit on the CORE_PLL_GROUP4 register. Thanks to
-SkyLake Huang (黃啟澤) from MediaTek for providing information on the
-internal EEE switch bit.
-
-There are existing boards that were not designed to pull the pin low.
-Because of that, the EEE status currently depends on the board design.
-
-The EEE_DIS bit on the trap pertains to the LAN2LED0 pin which is usually
-used to control an LED. Once the bit is unset, the pin will be low. That
-will make the active low LED turn on. The pin is controlled by the switch
-PHY. It seems that the PHY controls the pin in the way that it inverts the
-pin state. That means depending on the wiring of the LED connected to
-LAN2LED0 on the board, the LED may be on without an active link.
-
-To not cause this unwanted behaviour whilst enabling EEE on all boards, set
-the internal EEE switch bit on the CORE_PLL_GROUP4 register.
-
-My testing on MT7531 shows a certain amount of traffic loss when EEE is
-enabled. That said, I haven't come across a board that enables EEE. So
-enable EEE on the switch MACs but disable EEE advertisement on the switch
-PHYs. This way, we don't change the behaviour of the majority of the boards
-that have this switch. The mediatek-ge PHY driver already disables EEE
-advertisement on the switch PHYs but my testing shows that it is somehow
-enabled afterwards. Disabling EEE advertisement before the PHY driver
-initialises keeps it off.
-
-With this change, EEE can now be enabled using ethtool.
-
-Fixes: 40b5d2f15c09 ("net: dsa: mt7530: Add support for EEE features")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/20240408-for-net-mt7530-fix-eee-for-mt7531-mt7988-v3-1-84fdef1f008b@arinc9.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
----
- drivers/net/dsa/mt7530.c | 19 +++++++++++++------
- drivers/net/dsa/mt7530.h |  1 +
- 2 files changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index ebf0a85f6657..bc4d8b0bc5e7 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2581,7 +2581,7 @@ mt7531_setup(struct dsa_switch *ds)
- 	struct mt7530_priv *priv = ds->priv;
- 	struct mt7530_dummy_poll p;
- 	u32 val, id;
--	int ret;
-+	int ret, i;
- 
- 	/* Reset whole chip through gpio pin or memory-mapped registers for
- 	 * different type of hardware
-@@ -2641,18 +2641,25 @@ mt7531_setup(struct dsa_switch *ds)
- 	priv->p5_interface = PHY_INTERFACE_MODE_NA;
- 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
- 
--	/* Enable PHY core PLL, since phy_device has not yet been created
--	 * provided for phy_[read,write]_mmd_indirect is called, we provide
--	 * our own mt7531_ind_mmd_phy_[read,write] to complete this
--	 * function.
-+	/* Enable Energy-Efficient Ethernet (EEE) and PHY core PLL, since
-+	 * phy_device has not yet been created provided for
-+	 * phy_[read,write]_mmd_indirect is called, we provide our own
-+	 * mt7531_ind_mmd_phy_[read,write] to complete this function.
- 	 */
- 	val = mt7531_ind_c45_phy_read(priv, MT753X_CTRL_PHY_ADDR,
- 				      MDIO_MMD_VEND2, CORE_PLL_GROUP4);
--	val |= MT7531_PHY_PLL_BYPASS_MODE;
-+	val |= MT7531_RG_SYSPLL_DMY2 | MT7531_PHY_PLL_BYPASS_MODE;
- 	val &= ~MT7531_PHY_PLL_OFF;
- 	mt7531_ind_c45_phy_write(priv, MT753X_CTRL_PHY_ADDR, MDIO_MMD_VEND2,
- 				 CORE_PLL_GROUP4, val);
- 
-+	/* Disable EEE advertisement on the switch PHYs. */
-+	for (i = MT753X_CTRL_PHY_ADDR;
-+	     i < MT753X_CTRL_PHY_ADDR + MT7530_NUM_PHYS; i++) {
-+		mt7531_ind_c45_phy_write(priv, i, MDIO_MMD_AN, MDIO_AN_EEE_ADV,
-+					 0);
-+	}
-+
- 	mt7531_setup_common(ds);
- 
- 	/* Setup VLAN ID 0 for VLAN-unaware bridges */
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index 22152d74b327..de4badbf27ef 100644
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -669,6 +669,7 @@ enum mt7531_clk_skew {
- #define  RG_SYSPLL_DDSFBK_EN		BIT(12)
- #define  RG_SYSPLL_BIAS_EN		BIT(11)
- #define  RG_SYSPLL_BIAS_LPF_EN		BIT(10)
-+#define  MT7531_RG_SYSPLL_DMY2		BIT(6)
- #define  MT7531_PHY_PLL_OFF		BIT(5)
- #define  MT7531_PHY_PLL_BYPASS_MODE	BIT(4)
- 
-
--- 
-2.40.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: Linux 6.6.28
+To: Wang Yugui <wangyugui@e16-tech.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: <linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
+	<torvalds@linux-foundation.org>, <stable@vger.kernel.org>, <lwn@lwn.net>,
+	<jslaby@suse.cz>
+References: <2024041758-unvaried-agreement-8d7b@gregkh>
+ <20240420135914.2AD9.409509F4@e16-tech.com>
+Content-Language: en-US
+From: Shay Drori <shayd@nvidia.com>
+In-Reply-To: <20240420135914.2AD9.409509F4@e16-tech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC5:EE_|CY5PR12MB6621:EE_
+X-MS-Office365-Filtering-Correlation-Id: af9fd48b-24cf-4eab-700d-08dc6167b751
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SG56R0ZMS2FOd2dEZWpLUXVBV05uUTA0M3BicGdmWlNWQXdDeTF4ODBQempY?=
+ =?utf-8?B?dE9hV3ZOZHkzeEtmR0cwQ282cTR5RzYzaUE5RksxUTEwMGI5TS90STJzMkh4?=
+ =?utf-8?B?RVZOaGk5cUNaZWNodDd6NXFWTUQxNEsxWGtRQW5lM1UyVUEvSmtPWU44MDAr?=
+ =?utf-8?B?YkRrNDIxM2Ywai9qS1VuWHhnUFdVYWlzOFF5TGVOeUJUVjZ1dENlWUVOVG9Z?=
+ =?utf-8?B?OHdBUkhqNWttZVZqNDE4SnE2RUpEdVBYaFNlTlJWc0IyRll0U1VMSHNwaGxG?=
+ =?utf-8?B?MlBaT1RieFh2ZFJVdVVKUUV2OTMrQTJYZ095UVhtUS9sTThHZ0NGcW5uQ2Ni?=
+ =?utf-8?B?Z1Bmakc1SHVldnJBNWYraXhVU2h2eVYxL1BsSmJtTmVtMkVJdmJRN1h3OWJY?=
+ =?utf-8?B?Tm4xUU1Id01pRFlrZEx2c01kdW13WHQrNkl3YXBCR1NIbXg3Mld3YnRlK0Jr?=
+ =?utf-8?B?ZDhEQm55VHVnbG1wQmlrZlAzZDFQRGhVaHMxRi9YY25uVndOU1BoZjFGTEEw?=
+ =?utf-8?B?R2pUUjhSeVA3ZG1ZR285L3lFZnBWc29jaTRWUlNxZUE0b1JBK3FzVjVZUlFG?=
+ =?utf-8?B?dEdwbDF1WjMwLzd3dzZEcTd1N3JydTZXTW9XUWVDbktFenRKYThHQ2NWV20r?=
+ =?utf-8?B?aDh4RERRU1BBclZLRkt3MVhwZUdKOU4vbERIQU8xR3RNdXZsczhrMklseERi?=
+ =?utf-8?B?N3VRM1piUU1tUXJ5ZGtsOWEySDlLRmlTVnhHYnRrRVBxK0ZNdVdxMzIrS243?=
+ =?utf-8?B?VlFRUEpLekZZRlhjdXRMaUUyYk9tTUNGK2dRUTV4aktkYUYrVExNeXdwcmNz?=
+ =?utf-8?B?eWFjWDVVVzJjRzd5NzZqSjRLTlduSE9LTlFiRGw3NTl3VXJuOVU4Uk92dHc3?=
+ =?utf-8?B?SlVkQ05mUTRYSzM4NFpPOVVNWERTcWUyNXZ6MzdOZmhPMjdhTnBMcWpySEZ1?=
+ =?utf-8?B?VTYrNzlnT3VkTjJ1QU01UjQyTzZ0N0hlSEZQWjZiTVJIcGMwUkRpTWRSRFhI?=
+ =?utf-8?B?UGpOby9iMTRnbzVqVS85cDJvYXp2N2dLN2JmeGpMVjdtMU1rU01uRENJRkZZ?=
+ =?utf-8?B?dzF2a2p0KzBiRWk0cWZYdGYvd0NMbGo1ekRvNVZuTGlwMDNGMThZQ0xpaUNU?=
+ =?utf-8?B?ZkI5dkRNMC85SUZwNnMrdm1iTWJFby9KZldmSTdTNjRCV0Y2bWFJYjhTcnBi?=
+ =?utf-8?B?T3BUd3l0bkQ3bTF4MldyS1dFeGF5THpORVVYY0hFUWZNMFgvQXQ1REJ5ZXhm?=
+ =?utf-8?B?aHFjNFdQcC92MG14c3FnMmd0YzNtQzlPU3Zqd3pEZ21MeFhQTnJPeVdWbS9j?=
+ =?utf-8?B?UDJRb21JOUNXTGwvbnhOaytBejFUYnhLUS92anJIS0dzR3A3ZmFNUlkyb0Zj?=
+ =?utf-8?B?cWlSUUhtNTFETkU0cVA5Y2duemNoWWJIdk93eEpDZjE2M1phaTRrNkc3eFc0?=
+ =?utf-8?B?L2JNaUY3aWFlbTJyeCtCN1VseVJjeXZUKzBjSG5KL0Q4TXI4M2EwVksxclFw?=
+ =?utf-8?B?YUpUNGlrcGRRb2JEYXYrK2daRnlnR0R3S0pyLzlGSS9ITUJ3K0tVYkxiTlZD?=
+ =?utf-8?B?SE9sMWRMcXRVK1dmMjdHSTByUlRpL3BVeVlDTjdya1lIaFNmU1Fab3dHYWt3?=
+ =?utf-8?B?UXZabHQ0dmpsSGlJKzR6SDRhUEdzN3lCQlIzbi9Yb0ZrY0s1UE8rZGJwc0lQ?=
+ =?utf-8?B?cXJWQ0lmSjlLQkZ2RnRhVk1VODVYUHpaMk5jUm5ObklxcmRwb2NJVG12cE1m?=
+ =?utf-8?B?NVB2cmxnOFViMXRrWG1TNWpHUUdyTDZmc3ZNNFNpTDZzRnJJaUhOL2doQWo5?=
+ =?utf-8?Q?sjaCDoDCNOXqw5QxsjmOaUXfW67yL/6BcdyaQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(36860700004)(376005)(82310400014)(1800799015);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2024 18:28:46.3767
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: af9fd48b-24cf-4eab-700d-08dc6167b751
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000FCC5.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6621
 
 
+
+On 20/04/2024 8:59, Wang Yugui wrote:
+> External email: Use caution opening links or attachments
+> 
+> 
+> Hi,
+> 
+>> I'm announcing the release of the 6.6.28 kernel.
+>>
+>> All users of the 6.6 kernel series must upgrade.
+>>
+>> The updated 6.6.y git tree can be found at:
+>>        git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.6.y
+>> and can be browsed at the normal kernel.org git web browser:
+>>        https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+> 
+> Linux 6.6.28 failed to boot with the following panic *1 on a server with
+> mellonax CX-6 VPI NIC, but 6.6.27/6.1.87 boot well.
+> 
+> After reverting 'net/mlx5: Restore mistakenly dropped parts in register devlink
+> flow', linux boot well.
+> 
+
+there is a similar discussion in net-dev ML[1].
+In short, it seems this patch is missing from stable, which is 
+prerequisite for the bad patch:
+0553e753ea9e
+"net/mlx5: E-switch, store eswitch pointer before registering 
+devlink_param".
+
+Wang, can you test it out please?
+
+thanks
+Shay
+
+[1]
+https://lore.kernel.org/netdev/20240419162842.69433-1-oxana@cloudflare.com/T/#m9a8dd7f2e76d805baf2ea441137928a4dc6a11a7 
+
+
+> There is already a patch(*2 ) in upstream, but yet not in queue-6.6(for the
+> coming 6.6.29).
+> 
+> 
+> *1 panic info:
+> [   15.114364] BUG: unable to handle page fault for address: 0000000000001118
+> [   15.114815] infiniband bnxt_re0: Device registered with IB successfully
+> [   15.114822] #PF: supervisor read access in kernel mode
+> [   15.134119] #PF: error_code(0x0000) - not-present page
+> [   15.139652] PGD 0 P4D 0
+> [   15.142553] Oops: 0000 [#1] PREEMPT SMP NOPTI
+> [   15.143055] infiniband bnxt_re1: Device registered with IB successfully
+> [   15.147233] CPU: 1 PID: 1253 Comm: kworker/1:4 Not tainted 6.6.28-1.el7.x86_64 #1
+> [   15.147236] Hardware name: Dell Inc. PowerEdge T640/0TWW5Y, BIOS 2.21.0 12/11/2023
+> [   15.147238] Workqueue: events work_for_cpu_fn
+> [   15.174498] RIP: 0010:esw_port_metadata_get+0x19/0x30 [mlx5_core]
+> [   15.181056] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 53 48 89 d3 e8 ce 28 9a cc 48 8b 80 b0 09 00 00 <8b> 80 18 11 00 00 88 03 31 c0 80 23 01 5b c3 cc cc cc cc 0f 1f 40
+> [   15.200401] RSP: 0000:ffff9ec05bf1fb98 EFLAGS: 00010286
+> [   15.205930] RAX: 0000000000000000 RBX: ffff9ec05bf1fbe4 RCX: 0000000000000028
+> [   15.213364] RDX: ffff9ec05bf1fbe4 RSI: 0000000000000013 RDI: ffff8bdd1d696000
+> [   15.220801] RBP: ffffffffc1134c60 R08: 0000000000000000 R09: 0000000000000000
+> [   15.228235] R10: ffff9ec05bf1fbf8 R11: 0000000000001000 R12: ffff8bdd1d696000
+> [   15.235671] R13: ffff8bdd9541c720 R14: 0000000000000000 R15: 0000000000000000
+> [   15.243098] FS:  0000000000000000(0000) GS:ffff8c3b7ea00000(0000) knlGS:0000000000000000
+> [   15.251480] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   15.257520] CR2: 0000000000001118 CR3: 00000004f9220003 CR4: 00000000007706e0
+> [   15.264955] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> [   15.272383] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> [   15.279800] PKRU: 55555554
+> [   15.282790] Call Trace:
+> [   15.285523]  <TASK>
+> [   15.287905]  ? __die_body+0x1e/0x60
+> [   15.291675]  ? page_fault_oops+0x151/0x490
+> [   15.296050]  ? __update_idle_core+0x27/0xc0
+> [   15.300505]  ? exc_page_fault+0x6b/0x150
+> [   15.304700]  ? asm_exc_page_fault+0x26/0x30
+> [   15.309149]  ? esw_port_metadata_get+0x19/0x30 [mlx5_core]
+> [   15.315066]  ? esw_port_metadata_get+0x12/0x30 [mlx5_core]
+> [   15.320940]  devlink_nl_param_fill.constprop.23+0x88/0x5d0
+> [   15.326679]  ? __alloc_skb+0x87/0x190
+> [   15.330594]  ? __kmalloc_node_track_caller+0x55/0x130
+> [   15.335897]  ? __kmalloc_node_track_caller+0x55/0x130
+> [   15.341196]  ? kmalloc_reserve+0x65/0xf0
+> [   15.345370]  ? __alloc_skb+0xd9/0x190
+> [   15.349280]  devlink_param_notify.constprop.20+0x72/0xd0
+> [   15.354845]  devl_params_register+0x150/0x250
+> [   15.359456]  esw_offloads_init+0x181/0x1a0 [mlx5_core]
+> [   15.364967]  mlx5_eswitch_init+0x4be/0x6e0 [mlx5_core]
+> [   15.370471]  mlx5_init_once+0xf0/0x550 [mlx5_core]
+> [   15.375601]  mlx5_init_one_devl_locked+0x7a/0x1d0 [mlx5_core]
+> [   15.381676]  mlx5_init_one+0x2e/0x60 [mlx5_core]
+> [   15.386616]  probe_one+0x2b6/0x410 [mlx5_core]
+> [   15.391382]  local_pci_probe+0x45/0xa0
+> [   15.395367]  work_for_cpu_fn+0x17/0x30
+> [   15.399345]  process_scheduled_works+0x8a/0x380
+> [   15.404102]  worker_thread+0x165/0x2d0
+> [   15.408082]  ? __pfx_worker_thread+0x10/0x10
+> [   15.412578]  kthread+0xf2/0x120
+> [   15.415952]  ? __pfx_kthread+0x10/0x10
+> [   15.419928]  ret_from_fork+0x31/0x40
+> [   15.423724]  ? __pfx_kthread+0x10/0x10
+> [   15.427692]  ret_from_fork_asm+0x1b/0x30
+> [   15.431827]  </TASK>
+> [   15.434218] Modules linked in: xor bnxt_re zstd_compress raid6_pq ib_uverbs sd_mod ib_core t10_pi mlx5_core(+) pci_hyperv_intf mlxfw ahci libahci bnx2x mpi3mr psample i40e libata tls bnxt_en megaraid_sas scsi_transport_sas crc32c_intel mgag200 mdio i2c_algo_bit wmi dm_mirror dm_region_hash dm_log dm_mod
+> [   15.461684] CR2: 0000000000001118
+> [   15.465213] ---[ end trace 0000000000000000 ]---
+> [   15.476059] pstore: backend (erst) writing error (-28)
+> [   15.481415] RIP: 0010:esw_port_metadata_get+0x19/0x30 [mlx5_core]
+> [   15.487856] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 53 48 89 d3 e8 ce 28 9a cc 48 8b 80 b0 09 00 00 <8b> 80 18 11 00 00 88 03 31 c0 80 23 01 5b c3 cc cc cc cc 0f 1f 40
+> [   15.507043] RSP: 0000:ffff9ec05bf1fb98 EFLAGS: 00010286
+> [   15.512493] RAX: 0000000000000000 RBX: ffff9ec05bf1fbe4 RCX: 0000000000000028
+> [   15.519852] RDX: ffff9ec05bf1fbe4 RSI: 0000000000000013 RDI: ffff8bdd1d696000
+> [   15.527209] RBP: ffffffffc1134c60 R08: 0000000000000000 R09: 0000000000000000
+> [   15.534568] R10: ffff9ec05bf1fbf8 R11: 0000000000001000 R12: ffff8bdd1d696000
+> [   15.541934] R13: ffff8bdd9541c720 R14: 0000000000000000 R15: 0000000000000000
+> [   15.549299] FS:  0000000000000000(0000) GS:ffff8c3b7ea00000(0000) knlGS:0000000000000000
+> [   15.557618] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   15.563607] CR2: 0000000000001118 CR3: 00000004f9220003 CR4: 00000000007706e0
+> [   15.570981] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> [   15.578356] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> [   15.585733] PKRU: 55555554
+> [   15.588679] Kernel panic - not syncing: Fatal exception
+> [   15.594163] Kernel Offset: 0xbc00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+> 
+> 
+> *2
+>  From bf729988303a27833a86acb561f42b9a3cc12728 Mon Sep 17 00:00:00 2001
+> From: Shay Drory <shayd@nvidia.com>
+> Date: Thu, 11 Apr 2024 14:54:41 +0300
+> Subject: [PATCH] net/mlx5: Restore mistakenly dropped parts in register
+>   devlink flow
+> 
+> Fixes: c6e77aa9dd82 ("net/mlx5: Register devlink first under devlink lock")
+> 
+> 
+> Best Regards
+> Wang Yugui (wangyugui@e16-tech.com)
+> 2024/04/20
+> 
+> 
+> 
 
