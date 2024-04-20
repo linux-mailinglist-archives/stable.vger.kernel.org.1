@@ -1,181 +1,82 @@
-Return-Path: <stable+bounces-40328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE32C8ABB17
-	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 12:52:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FE28ABB4D
+	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 13:20:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D6791C20CB7
-	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 10:52:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2B211C20BF6
+	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 11:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA801805A;
-	Sat, 20 Apr 2024 10:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D23829417;
+	Sat, 20 Apr 2024 11:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CypQJrAC"
+	dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b="DqtIX+HW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB4529CF0
-	for <stable@vger.kernel.org>; Sat, 20 Apr 2024 10:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D505179A8
+	for <stable@vger.kernel.org>; Sat, 20 Apr 2024 11:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713610344; cv=none; b=pKE1ODV/XW5412jazGvw3zFEiSFpxsdQ5q8IGHVw6tjuoCnh5UIUl8O8qe1L7+KQbnUSHOOa/dASFcsy8+PlRqmgonCpYpMvNdtqRwavzjn8r8Owj0Bi0JbkxLPTzUEaTs16HWlpy6vzytckv4k9ZHoBZZ4VOyILrJ1S9VLEK40=
+	t=1713611999; cv=none; b=KtoQgEhaFGEXMZ38VWsXiVHQoY8xBWcMiqrRzXmk/DznX/X5cnb2nodjXFcgKUa/90P3YjtAbCgYyobUC4PfpdYqZQ9v+GL6lcoiowaWzRDUGRDUe8P3N5Shx3mlJIL/QLw9+yE+y0/vlZNO/UuMefA7nZ3x8j+zCgHNF8ygImY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713610344; c=relaxed/simple;
-	bh=iAl7tQRhqUZPdBSmtS4aIbhPVO6pLEUpR1Op23O/tc4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=F3XgLdWSxtUE5wyU2CPQzVizzA+UZdFNVXXpnrqpAQOvspbhwqh99E+AGig07YY6f/sGNmeAk7Mzy4KJU36g+pEk5NObN0+8CoWRdWwtaBGFecjT81W6QqrSGeXIvzDdVvM7rHJQu91DZxfU2ELyGQyPWocNeAxiZKWRrGnlp/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CypQJrAC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A459C32781;
-	Sat, 20 Apr 2024 10:52:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713610344;
-	bh=iAl7tQRhqUZPdBSmtS4aIbhPVO6pLEUpR1Op23O/tc4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CypQJrACj3GCr1biAvXEs5Ga9JnCdNJjQkAMgcuWjCJvhYBkKnl9GmNRBQOA8ysuS
-	 FTDOsL405mO8xQtbxUJSyMUEUO9MEfkHdRhzW2RtrAPVXhd+e1L/EGsaNbghl4I6dF
-	 3mO/L6Q95VGrKl7o7z96qNtyFeeZagg/PcJrJ83IGLQezH4n+G9eqcY05ZiPDJGwOK
-	 WxhL4ijS/gJ9z9KsCuoS1zG6u6U0erjBvM98yrQ31LMuXhaJtMlt1I2/LJ5h4Xk1vB
-	 Pegk+z4sl+RrWhNIG1GgmllMY9MOc7OXk1Dw5bj79FACBztLCfnbokEM+Rwl/sQ856
-	 biKoXk9YEbjlg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C29EC07E8D;
-	Sat, 20 Apr 2024 10:52:24 +0000 (UTC)
-From: =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL_via_B4_Relay?= <devnull+arinc.unal.arinc9.com@kernel.org>
-Date: Sat, 20 Apr 2024 13:51:53 +0300
-Subject: [PATCH 2/2] net: dsa: mt7530: fix enabling EEE on MT7531 switch on
- all boards
+	s=arc-20240116; t=1713611999; c=relaxed/simple;
+	bh=jDkQY9iimEQod6utZrUZUhldajJA19rOn2DYbebTQuQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kGtIx5w4zRfBcRVEG/H1f0SmU3ya9ZvgjSnc4ukoLF7lyu2DyEdxeskukHMQ9r9s5JCexcPgGklbzK2z3qmNeFJbrMZcV5KjQJvou1HGFwz0k7/KhxJOdlc2v3OiG2XMhys35av6oL6bHehIq4C23swywuEcFpxBTA1oU4uoJso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com; spf=pass smtp.mailfrom=arinc9.com; dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b=DqtIX+HW; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arinc9.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2D6B91C0007;
+	Sat, 20 Apr 2024 11:19:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arinc9.com; s=gm1;
+	t=1713611989;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YnlQyxFt1cjC4p0mAPDuZw5h9bX3BKj8elDKWk8IcfA=;
+	b=DqtIX+HWSNpziENPj5+8AKU1gQwaKGWVjsOqRNia+wv2KdXLqdfVLyhc1kO4RqYcQMwnQO
+	0xoJjGvXyaz7FLs2TuDCxP349jreN3n2vpS5y/Ov1XA7sQk62tbmNKCXNdHrfEWzdwc3Z0
+	m38FMERvVVY6rSqEnkLM1YDIORCWbl3Skp2CKZfPGlGiV/C6qUHBa4GKShVGN/u4gUim2T
+	oXKv6vMoO1DTWR0sBCGBqwUruEEz9UBueXHPp7hQHnRcX8P8XugnCysFAOTHbe0LfMuSdR
+	Swc2+zzt8ZEtNebKRteliH47x0ijDxz4bgKVzBAV4HjRzPwkYXiX07y6wVLuVA==
+Message-ID: <ff6e71e3-9c76-4ac1-bf34-4803c4ef48f6@arinc9.com>
+Date: Sat, 20 Apr 2024 14:19:46 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240420-for-stable-6-8-backports-v1-2-4dafb598aa3b@arinc9.com>
-References: <20240420-for-stable-6-8-backports-v1-0-4dafb598aa3b@arinc9.com>
-In-Reply-To: <20240420-for-stable-6-8-backports-v1-0-4dafb598aa3b@arinc9.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] Please apply these MT7530 DSA subdriver patches to
+ 6.8
 To: stable@vger.kernel.org
-Cc: Daniel Golle <daniel@makrotopia.org>, 
- =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL?= <arinc.unal@arinc9.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
+Cc: Daniel Golle <daniel@makrotopia.org>, Paolo Abeni <pabeni@redhat.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
  Jakub Kicinski <kuba@kernel.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1713610341; l=4462;
- i=arinc.unal@arinc9.com; s=arinc9-Xeront; h=from:subject:message-id;
- bh=RXxjHzTzor5KNAlr0g5sE80ldWBo5whIIxavYREOg98=;
- b=u0IL4uBAHPmvP7tD6Pq/OB6J0yWtIX6HOW7NHq78tbDF/vF73l7HVMM5OJmAhDiJsdKbj36Up
- KGm51wSouPPD4TOwayc59JyHv1MBMBQuIip73eLY2R5XPcgSGiXyaaN
-X-Developer-Key: i=arinc.unal@arinc9.com; a=ed25519;
- pk=z49tLn29CyiL4uwBTrqH9HO1Wu3sZIuRp4DaLZvtP9M=
-X-Endpoint-Received: by B4 Relay for arinc.unal@arinc9.com/arinc9-Xeront
- with auth_id=137
-X-Original-From: =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL?= <arinc.unal@arinc9.com>
-Reply-To: arinc.unal@arinc9.com
+References: <20240420-for-stable-6-8-backports-v1-0-4dafb598aa3b@arinc9.com>
+Content-Language: en-US
+From: =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>
+In-Reply-To: <20240420-for-stable-6-8-backports-v1-0-4dafb598aa3b@arinc9.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: arinc.unal@arinc9.com
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+On 20/04/2024 13:51, Arınç ÜNAL via B4 Relay wrote:
+> Hello.
+> 
+> These are the remaining bugfix patches for the MT7530 DSA subdriver.
+> They didn't apply as is to the 6.8 stable tree so I have submitted the
+> adjusted versions in this thread. Please apply them in the order
+> they were submitted.
 
-[ Upstream commit 06dfcd4098cfdc4d4577d94793a4f9125386da8b ]
+Please apply these adjusted versions to 6.6 as well.
 
-The commit 40b5d2f15c09 ("net: dsa: mt7530: Add support for EEE features")
-brought EEE support but did not enable EEE on MT7531 switch MACs. EEE is
-enabled on MT7531 switch MACs by pulling the LAN2LED0 pin low on the board
-(bootstrapping), unsetting the EEE_DIS bit on the trap register, or setting
-the internal EEE switch bit on the CORE_PLL_GROUP4 register. Thanks to
-SkyLake Huang (黃啟澤) from MediaTek for providing information on the
-internal EEE switch bit.
-
-There are existing boards that were not designed to pull the pin low.
-Because of that, the EEE status currently depends on the board design.
-
-The EEE_DIS bit on the trap pertains to the LAN2LED0 pin which is usually
-used to control an LED. Once the bit is unset, the pin will be low. That
-will make the active low LED turn on. The pin is controlled by the switch
-PHY. It seems that the PHY controls the pin in the way that it inverts the
-pin state. That means depending on the wiring of the LED connected to
-LAN2LED0 on the board, the LED may be on without an active link.
-
-To not cause this unwanted behaviour whilst enabling EEE on all boards, set
-the internal EEE switch bit on the CORE_PLL_GROUP4 register.
-
-My testing on MT7531 shows a certain amount of traffic loss when EEE is
-enabled. That said, I haven't come across a board that enables EEE. So
-enable EEE on the switch MACs but disable EEE advertisement on the switch
-PHYs. This way, we don't change the behaviour of the majority of the boards
-that have this switch. The mediatek-ge PHY driver already disables EEE
-advertisement on the switch PHYs but my testing shows that it is somehow
-enabled afterwards. Disabling EEE advertisement before the PHY driver
-initialises keeps it off.
-
-With this change, EEE can now be enabled using ethtool.
-
-Fixes: 40b5d2f15c09 ("net: dsa: mt7530: Add support for EEE features")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/20240408-for-net-mt7530-fix-eee-for-mt7531-mt7988-v3-1-84fdef1f008b@arinc9.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
----
- drivers/net/dsa/mt7530.c | 17 ++++++++++++-----
- drivers/net/dsa/mt7530.h |  1 +
- 2 files changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index a9ee6336759c..554fe4240eb5 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2704,18 +2704,25 @@ mt7531_setup(struct dsa_switch *ds)
- 	priv->p5_interface = PHY_INTERFACE_MODE_NA;
- 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
- 
--	/* Enable PHY core PLL, since phy_device has not yet been created
--	 * provided for phy_[read,write]_mmd_indirect is called, we provide
--	 * our own mt7531_ind_mmd_phy_[read,write] to complete this
--	 * function.
-+	/* Enable Energy-Efficient Ethernet (EEE) and PHY core PLL, since
-+	 * phy_device has not yet been created provided for
-+	 * phy_[read,write]_mmd_indirect is called, we provide our own
-+	 * mt7531_ind_mmd_phy_[read,write] to complete this function.
- 	 */
- 	val = mt7531_ind_c45_phy_read(priv, MT753X_CTRL_PHY_ADDR,
- 				      MDIO_MMD_VEND2, CORE_PLL_GROUP4);
--	val |= MT7531_PHY_PLL_BYPASS_MODE;
-+	val |= MT7531_RG_SYSPLL_DMY2 | MT7531_PHY_PLL_BYPASS_MODE;
- 	val &= ~MT7531_PHY_PLL_OFF;
- 	mt7531_ind_c45_phy_write(priv, MT753X_CTRL_PHY_ADDR, MDIO_MMD_VEND2,
- 				 CORE_PLL_GROUP4, val);
- 
-+	/* Disable EEE advertisement on the switch PHYs. */
-+	for (i = MT753X_CTRL_PHY_ADDR;
-+	     i < MT753X_CTRL_PHY_ADDR + MT7530_NUM_PHYS; i++) {
-+		mt7531_ind_c45_phy_write(priv, i, MDIO_MMD_AN, MDIO_AN_EEE_ADV,
-+					 0);
-+	}
-+
- 	mt7531_setup_common(ds);
- 
- 	/* Setup VLAN ID 0 for VLAN-unaware bridges */
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index ddefeb69afda..5e3e8427d88d 100644
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -630,6 +630,7 @@ enum mt7531_clk_skew {
- #define  RG_SYSPLL_DDSFBK_EN		BIT(12)
- #define  RG_SYSPLL_BIAS_EN		BIT(11)
- #define  RG_SYSPLL_BIAS_LPF_EN		BIT(10)
-+#define  MT7531_RG_SYSPLL_DMY2		BIT(6)
- #define  MT7531_PHY_PLL_OFF		BIT(5)
- #define  MT7531_PHY_PLL_BYPASS_MODE	BIT(4)
- 
-
--- 
-2.40.1
-
-
+Arınç
 
