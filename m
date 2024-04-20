@@ -1,296 +1,296 @@
-Return-Path: <stable+bounces-40348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160E48ABCB7
-	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 20:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8418ABCF0
+	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 21:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 399A41C20AD0
-	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 18:28:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A5CA1C20A40
+	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 19:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A823D0B3;
-	Sat, 20 Apr 2024 18:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44833FE54;
+	Sat, 20 Apr 2024 19:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gX8atNjs"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HEUjHDgu"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2044.outbound.protection.outlook.com [40.107.237.44])
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2088.outbound.protection.outlook.com [40.107.102.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081503B299;
-	Sat, 20 Apr 2024 18:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F87613FFC;
+	Sat, 20 Apr 2024 19:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.88
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713637731; cv=fail; b=o7SSzSCrShU0atop8G0meOxjc9EWwbvfZ+wgfW33PUA9y3HsHxndChyRfZQZrBZpnSoAUt0xMmxDaGzPD+XJs8ZPs3YDjHpGQpRiHU6QbfXdW3ingKgVZMFz2yXpRPE/LCsJul2ichrL1H6lse+GSpTmvtcdJJzjiNCWa7HsDQk=
+	t=1713641919; cv=fail; b=uaMvumQgYU3fdR+2V/lLL52Ek+d9LnNkNDFehfvtge3ZN3dURSRS3ttIrkjHKS9SqlBgcVl68OoLbCg+b0YZ1SyvaN5KooCIPKWGqDmngBXhk/v/y8uRD7faMAGa1FDdCarekxY8Va43oqW72vbO1mbCyEMkHJX+Y/NhYO4QRXM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713637731; c=relaxed/simple;
-	bh=pnxIGrKR5wdCtZmcwUSpLwsbZasAJ2IzVsP37FsuVZs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Ufsg6AsyxCpakozpAiSTR0iDiS2750ivEA6FpCh9UO+OcyKXIiLZzSOAOPa+Rj9a7ZjwVvVtgoksSBrGU46/P2Y3Ojg4An/9Dx44IRKALNuwOenouIGOOd1yuRwkTFJaUMkGHDsMdWcx3eWSeHdr/GI1z/XjX6VSd9Y+88w2ZwM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gX8atNjs; arc=fail smtp.client-ip=40.107.237.44
+	s=arc-20240116; t=1713641919; c=relaxed/simple;
+	bh=Kanet9d84CFhjZMIjIi0JK6eWh7CT+Z4TbreT850Wg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=LESdhFtCu+oizw8Rh0BEOxjLhIGnKitww6+VZmI/54xvUXCREJS3tGbMb2fmdh+y8+mxmRrgBsSOaJsDdPF8TDRbLdT8prszlrRHJBsT3ekPb9OnzOdfCCYY6OPwB2US9wbC2kw0pLDFU64kOapC5wgsZsrwY4zbgrAWd7tCrlg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HEUjHDgu; arc=fail smtp.client-ip=40.107.102.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PKc5yxOMP4Iv2Kg5xFTw9B52i1RJQ1rcDlHXlGGGS2uDmeSxcYb4l8DKIY2fZ1gUpOJw0zZ6VMHM8/pdCvwF47QHAy1b3LO5JROQDYFPAq9eecf1HUYGeBuXs/WKxU2rvFP4wv4y4jZK/lok7ETAs4ghmOEpO270OXpUwnXlDajx3G1LkYqdNshLBSRumW1/V/sDCYN8zGV0eN+CphW+Wgz+eYL/yNKDLRr3R5/dlOPHl8cGNvTnstxjipA4ZSDTHVDt3M0jB9rV07xk+eCfSTUVZuMsj+2RQECryM5f7SK532A99a6qnrTetpQHd82rOw5MT4CgAWdYWBzKiDkEgA==
+ b=S/7dpMRnL74cv8zxFnrxeyuFKGyTLC7FtbTIrUTZYTz5kjTr7HypDUTmArl0Xk5LE+jTYOZDRspWnCXT8D/0HuHlmEy0JPGSDz05Gqwo7XNMNCJMHubgpQLRCQcBwwQRJ8YL+4pYIrpIGnYYbRXHpusIaHqQOiVGbopKsxqMAVXbyhDgwVJB+4XuPknAGMfSf4nRiRKW0z2flZcxFdUk3XqDi/be3HrO/asAlNnVlEZ9j6qvY/XFZVmXcX6K9iSWObgmUW7c6mefc0aSE73m6ieAsZbW8XiqoFO/upjz9G51KBr+U+pNxM6RrNas/d3KXSmSvu5aA5OjlBqXh7RI9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xZtHmHup4DzWyy5k8MC2tLXy6u+/oo6XijzNgiQ5phQ=;
- b=Pv9iKj3Yz94ZdY07WUoSchBsrTrTqzMVx4qbIR3foKeavI72Ctm++dOv5PHYJP0eGc0v/EP3pdWPI1Ctes+jX8clK0VdOwjxXGhu8EO4YCHa4GQvXBteTq27OTp878eh1YSC5sjsxtWVA7muUqDlZ2VUQgTqZncdcKff5B35r19HjX5YEowCi5zdxuciMzmNh7ssom8SOA7PyZMBem8YVU7eOj6fKAiwzZxyl6Ua23IiLPX9dg+G7/0z6IkrML0cRDmF1PY9yJtHsqA1LKQFZNvxTWQS/U26BSRKZ18kGI7OglqdjvTtBWEUJyCFpL6SWXJsusfuKfB0zzZ5rrknYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=e16-tech.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
+ bh=kyMQIfOF7fNWg/JUu5OHhKLrRvqxhTUhkN1i+tIGDcs=;
+ b=lJCDxcmQzLXdw8VorJa+RG9UGs8KY/7oB6GmrEu2pxk9wSRgtY4yA0cngCrLCLlZP8Iws+XZrENNfiIPD5XpjVJttly8S63FHsIkv7l/+NfIfVQdjXA8+G/H50U+ozN6qbM/+qSVAXb7HnF7F0HaSP0D/JFE5xnMpYNXgbkcLxlZyka3kzAuUAJpL9EIDRssS7XrJco4xD45h1nMjoAvOTxpb0jClfO96/d584g8EFTVGCOWt3PCtK4Ok84OMFHpUqsLciLLetxk173QDvW7Uu2f9GgaXCOCCm34wzmF6Wt8sIJRd0YN4kDFf8kIC1GGS2jUm631Hf99UxEmgG4aaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xZtHmHup4DzWyy5k8MC2tLXy6u+/oo6XijzNgiQ5phQ=;
- b=gX8atNjsFYHHEhfM4BGn7vsWfit+G7uNo7pskqN902VE+9zydTL1gIsi8Alc/fvFuRaTLkldu+6gevW6dtjbk4KEKXVZbcFF5JOISwutG5qqKmmOdBWwwRxMhjNLABtuqFCpy+tYfPPxBhfvnsZbdVsoTB/XFHVdAxgN8Lx6fkgKMgu5cadEmRvqZkefvCBe2mzxU5DFTEX7LOCTM+Ieo+SxxqHTf08vEYRKI14woUNIL0f4M4M/nbM1xjEDh2zuTnRg5GJXg9D1DCbAcpyxTABpd5TpY//2FQisT+bJNmziKyo5d00SzCBofVInBDZ90iclRnCM50kErsAHixYqlA==
-Received: from CY5PR03CA0029.namprd03.prod.outlook.com (2603:10b6:930:8::30)
- by CY5PR12MB6621.namprd12.prod.outlook.com (2603:10b6:930:43::15) with
+ bh=kyMQIfOF7fNWg/JUu5OHhKLrRvqxhTUhkN1i+tIGDcs=;
+ b=HEUjHDguc79DyQgNolQWKY0smThn20WlbmfO45mX1fGRyYbVXizcZLjCBOXvTUFzpaElO62dsuNUAd0kGnsTZ0KCv+ycyQJd+3NnP+DUeZ7Wx9gnJ+xzfTzx0iHkzWFitN+r95pnF3mmMLHQfis8GD2+vwZKYHVm29fu4ZbTPIXBDgXJKr9yjKYZkV9JA8VCSbougWRfgE4uCLlcR2S82emVb6tsOUhyt2Dsk4F7QIYlLD9dWRPTpGUQYfvWpA1RI6oIT/xOqsxx0/rx4+cL66dikKhCgFzLOIyPXPnhSsjIyYv5SJSkT9nv8aQuvItpBRgISOA0VKxVcm5HUMcpMA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN2PR12MB4373.namprd12.prod.outlook.com (2603:10b6:208:261::8)
+ by DS7PR12MB6095.namprd12.prod.outlook.com (2603:10b6:8:9c::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.43; Sat, 20 Apr
- 2024 18:28:47 +0000
-Received: from CY4PEPF0000FCC5.namprd03.prod.outlook.com
- (2603:10b6:930:8:cafe::40) by CY5PR03CA0029.outlook.office365.com
- (2603:10b6:930:8::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7495.30 via Frontend
- Transport; Sat, 20 Apr 2024 18:28:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000FCC5.mail.protection.outlook.com (10.167.242.107) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7452.22 via Frontend Transport; Sat, 20 Apr 2024 18:28:46 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Sat, 20 Apr
- 2024 11:28:39 -0700
-Received: from [172.27.21.38] (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Sat, 20 Apr
- 2024 11:28:36 -0700
-Message-ID: <220e55df-a0a2-4272-b94f-c7c4c6fbf2b7@nvidia.com>
-Date: Sat, 20 Apr 2024 21:28:33 +0300
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Sat, 20 Apr
+ 2024 19:38:34 +0000
+Received: from MN2PR12MB4373.namprd12.prod.outlook.com
+ ([fe80::35b1:d84c:f3ea:c25e]) by MN2PR12MB4373.namprd12.prod.outlook.com
+ ([fe80::35b1:d84c:f3ea:c25e%3]) with mapi id 15.20.7472.044; Sat, 20 Apr 2024
+ 19:38:34 +0000
+Date: Sat, 20 Apr 2024 15:38:31 -0400
+From: Benjamin Poirier <bpoirier@nvidia.com>
+To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Yossi Kuperman <yossiku@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>
+Subject: Re: [PATCH net v2 0/4] Fix isolation of broadcast traffic and
+ unmatched unicast traffic with MACsec offload
+Message-ID: <ZiQZt6m-KOcOYHqP@f4>
+References: <20240419213033.400467-1-rrameshbabu@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240419213033.400467-1-rrameshbabu@nvidia.com>
+X-ClientProxiedBy: YQBPR01CA0061.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:2::33) To MN2PR12MB4373.namprd12.prod.outlook.com
+ (2603:10b6:208:261::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Linux 6.6.28
-To: Wang Yugui <wangyugui@e16-tech.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: <linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
-	<torvalds@linux-foundation.org>, <stable@vger.kernel.org>, <lwn@lwn.net>,
-	<jslaby@suse.cz>
-References: <2024041758-unvaried-agreement-8d7b@gregkh>
- <20240420135914.2AD9.409509F4@e16-tech.com>
-Content-Language: en-US
-From: Shay Drori <shayd@nvidia.com>
-In-Reply-To: <20240420135914.2AD9.409509F4@e16-tech.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC5:EE_|CY5PR12MB6621:EE_
-X-MS-Office365-Filtering-Correlation-Id: af9fd48b-24cf-4eab-700d-08dc6167b751
+X-MS-TrafficTypeDiagnostic: MN2PR12MB4373:EE_|DS7PR12MB6095:EE_
+X-MS-Office365-Filtering-Correlation-Id: a70d578c-0171-47b7-6348-08dc6171770c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SG56R0ZMS2FOd2dEZWpLUXVBV05uUTA0M3BicGdmWlNWQXdDeTF4ODBQempY?=
- =?utf-8?B?dE9hV3ZOZHkzeEtmR0cwQ282cTR5RzYzaUE5RksxUTEwMGI5TS90STJzMkh4?=
- =?utf-8?B?RVZOaGk5cUNaZWNodDd6NXFWTUQxNEsxWGtRQW5lM1UyVUEvSmtPWU44MDAr?=
- =?utf-8?B?YkRrNDIxM2Ywai9qS1VuWHhnUFdVYWlzOFF5TGVOeUJUVjZ1dENlWUVOVG9Z?=
- =?utf-8?B?OHdBUkhqNWttZVZqNDE4SnE2RUpEdVBYaFNlTlJWc0IyRll0U1VMSHNwaGxG?=
- =?utf-8?B?MlBaT1RieFh2ZFJVdVVKUUV2OTMrQTJYZ095UVhtUS9sTThHZ0NGcW5uQ2Ni?=
- =?utf-8?B?Z1Bmakc1SHVldnJBNWYraXhVU2h2eVYxL1BsSmJtTmVtMkVJdmJRN1h3OWJY?=
- =?utf-8?B?Tm4xUU1Id01pRFlrZEx2c01kdW13WHQrNkl3YXBCR1NIbXg3Mld3YnRlK0Jr?=
- =?utf-8?B?ZDhEQm55VHVnbG1wQmlrZlAzZDFQRGhVaHMxRi9YY25uVndOU1BoZjFGTEEw?=
- =?utf-8?B?R2pUUjhSeVA3ZG1ZR285L3lFZnBWc29jaTRWUlNxZUE0b1JBK3FzVjVZUlFG?=
- =?utf-8?B?dEdwbDF1WjMwLzd3dzZEcTd1N3JydTZXTW9XUWVDbktFenRKYThHQ2NWV20r?=
- =?utf-8?B?aDh4RERRU1BBclZLRkt3MVhwZUdKOU4vbERIQU8xR3RNdXZsczhrMklseERi?=
- =?utf-8?B?N3VRM1piUU1tUXJ5ZGtsOWEySDlLRmlTVnhHYnRrRVBxK0ZNdVdxMzIrS243?=
- =?utf-8?B?VlFRUEpLekZZRlhjdXRMaUUyYk9tTUNGK2dRUTV4aktkYUYrVExNeXdwcmNz?=
- =?utf-8?B?eWFjWDVVVzJjRzd5NzZqSjRLTlduSE9LTlFiRGw3NTl3VXJuOVU4Uk92dHc3?=
- =?utf-8?B?SlVkQ05mUTRYSzM4NFpPOVVNWERTcWUyNXZ6MzdOZmhPMjdhTnBMcWpySEZ1?=
- =?utf-8?B?VTYrNzlnT3VkTjJ1QU01UjQyTzZ0N0hlSEZQWjZiTVJIcGMwUkRpTWRSRFhI?=
- =?utf-8?B?UGpOby9iMTRnbzVqVS85cDJvYXp2N2dLN2JmeGpMVjdtMU1rU01uRENJRkZZ?=
- =?utf-8?B?dzF2a2p0KzBiRWk0cWZYdGYvd0NMbGo1ekRvNVZuTGlwMDNGMThZQ0xpaUNU?=
- =?utf-8?B?ZkI5dkRNMC85SUZwNnMrdm1iTWJFby9KZldmSTdTNjRCV0Y2bWFJYjhTcnBi?=
- =?utf-8?B?T3BUd3l0bkQ3bTF4MldyS1dFeGF5THpORVVYY0hFUWZNMFgvQXQ1REJ5ZXhm?=
- =?utf-8?B?aHFjNFdQcC92MG14c3FnMmd0YzNtQzlPU3Zqd3pEZ21MeFhQTnJPeVdWbS9j?=
- =?utf-8?B?UDJRb21JOUNXTGwvbnhOaytBejFUYnhLUS92anJIS0dzR3A3ZmFNUlkyb0Zj?=
- =?utf-8?B?cWlSUUhtNTFETkU0cVA5Y2duemNoWWJIdk93eEpDZjE2M1phaTRrNkc3eFc0?=
- =?utf-8?B?L2JNaUY3aWFlbTJyeCtCN1VseVJjeXZUKzBjSG5KL0Q4TXI4M2EwVksxclFw?=
- =?utf-8?B?YUpUNGlrcGRRb2JEYXYrK2daRnlnR0R3S0pyLzlGSS9ITUJ3K0tVYkxiTlZD?=
- =?utf-8?B?SE9sMWRMcXRVK1dmMjdHSTByUlRpL3BVeVlDTjdya1lIaFNmU1Fab3dHYWt3?=
- =?utf-8?B?UXZabHQ0dmpsSGlJKzR6SDRhUEdzN3lCQlIzbi9Yb0ZrY0s1UE8rZGJwc0lQ?=
- =?utf-8?B?cXJWQ0lmSjlLQkZ2RnRhVk1VODVYUHpaMk5jUm5ObklxcmRwb2NJVG12cE1m?=
- =?utf-8?B?NVB2cmxnOFViMXRrWG1TNWpHUUdyTDZmc3ZNNFNpTDZzRnJJaUhOL2doQWo5?=
- =?utf-8?Q?sjaCDoDCNOXqw5QxsjmOaUXfW67yL/6BcdyaQ=3D?=
+	=?us-ascii?Q?271Hitwu6i1izS90tsD2WXaP8TH5tMoUluj82RqDR2NG4BNdcGCrspx7lKCI?=
+ =?us-ascii?Q?D0sTSB98yYpqRNnVuPNvzbVZgC7Vh+JVOjeP4h5C0JL+21lNBEV5wQXjxmEM?=
+ =?us-ascii?Q?dRMYFWElA8Zl+fH7zNd0BW8GOhZ1ihcn8cheLP3UfOHJEwc9GKNQ0L3CPASW?=
+ =?us-ascii?Q?Q3rCcSTxrl/qP8BfjHgBCuhgglVGd2vreHRnS0UXnZaRSj13ri0XYk76ewNa?=
+ =?us-ascii?Q?xUWRrfpXZf4LC7dlhQ67sg5jKelNOrpjoI4P+HttwtUrFSOQ/gaCwlilhO7X?=
+ =?us-ascii?Q?9rZiBmpwP++8x0JUJID5keV3gI9mrAvBjEFfWc+9FNy6/8gLOWNQlnqNCSRV?=
+ =?us-ascii?Q?a4ZJmtD4Hnt9n4qB/3sj7jy92fqIzZvpKJ+/FcXp/JL9dSW+n7c4DrzNa/FZ?=
+ =?us-ascii?Q?OqPKURsbZ/dFXucKskJfNLIprd7RxjDugwnTHilHqw+/Jz2OeiVmYb8wdRQC?=
+ =?us-ascii?Q?BoN5KMnucIC8CSNFUqbKM9+kol1Em9cH8KHZc3mr7YebQnJtyUQjOAnrurVZ?=
+ =?us-ascii?Q?7jEtqlo9ALEZhW9VKYw7XKbtyec0tCQNNexFWntxunHrAtjN/Wo/WROVihfw?=
+ =?us-ascii?Q?eS26kCzi9I8xePA5Gj65Ccz8AVZ33mCnH/jpV2W5iHuFvcMwWKJ1gxIs7l3a?=
+ =?us-ascii?Q?V20Kxt/QnA0u69bq0izKzKz3M5YJkT4std+ABKso6E6XheLc3J8g7gq3guG/?=
+ =?us-ascii?Q?a7bdadx0Iowi//yX03TKY/1WF73+9xCUNYUhZBvXS2Smhz07xZ9GU+kOWwSY?=
+ =?us-ascii?Q?78613kG8q26KdKkC960CeqF8tUwH4kKZhfFjSgOisB7EjtFZ1utFjOTFmXh3?=
+ =?us-ascii?Q?PYW8JxydtCkVwoUmcTqm8p5dGVwbrgtwA+i2xgtJ5Y0VpBv1X9GOkNAPSkGn?=
+ =?us-ascii?Q?vzHOVnMJpUfLsUU8PpqKhwI57SNDtZ9ohif13kj28gMVHadz4Gj7rBhJHBY3?=
+ =?us-ascii?Q?tqxz/MY+KsYcjAIVNKz7z+NcCCeadiAXN8xaKf2gjiqAg8AHoBZj1PHHybTH?=
+ =?us-ascii?Q?CbFoZhpr0e4jDyiwouFUaeBwZBekNHAHvjZshA70Eb0pStuBlfR73UpQ5Snf?=
+ =?us-ascii?Q?SsQ29XcRvybRDQVbtnHQeHGh7cU5Md/1PzdYK3vFWTjRQ++m5lrE6S2a6tFp?=
+ =?us-ascii?Q?jtMmYMIDqX0euKoBn30xxxsysuIuecDst8n6+qoR7wVUytftolmxKVvc1toB?=
+ =?us-ascii?Q?XWJeCYFJFTP6rOCXgbrTpRoV8QufT7Tp0fcIkjR1SEg97gBOYz8ZJhTjqXWk?=
+ =?us-ascii?Q?1WgGy1LLivCUm87g4kP5/+V8OgNtLVO6IE60l/TJgg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(36860700004)(376005)(82310400014)(1800799015);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?h7RNlMd94ZERk9UVBk6qGU9UWnpOYY0zYMi1iNm1XG1aQxDToKoOjV5oQvdP?=
+ =?us-ascii?Q?7JWlMRD3a66qW9xadR9EUX/P0l7rZuxJmq9CaAlO+nmhlUOr0VQxUSElHYnK?=
+ =?us-ascii?Q?5zcwn6GqnUdey8gIPS6uR2qGKWIXieKKcyEfhgHNDwho273CgPWxACHor5Hz?=
+ =?us-ascii?Q?5RfOHkrgq9F1umrG1Aln6rmOQWra+bZv+IClXIV6Z84LA5XB2YZ0IWNrMZsB?=
+ =?us-ascii?Q?9hEL4OKFIeA/DaJnPHI5RLqTQaT2hSWUQfQ2gUgGmP5msIKI5MSmaHeoSon2?=
+ =?us-ascii?Q?py7RGoCRBXLHzqeRye7p2KSECVIOkwoYKnENdlkXzwyGRlwtycEr3MqkLpCV?=
+ =?us-ascii?Q?72S/IMvqtyQn9adn/AgynUjpx7f3lCbAaaf8gKqZ2RNtB5jmwzsDDe+U/Wh6?=
+ =?us-ascii?Q?Bou4GGm73IegTR8zbeo83Kr+vC5J+dTnrPxtulEDDpdVabCYPMaxZsP17AwV?=
+ =?us-ascii?Q?jzQzeyTXpDwcfoCDS0umkH76vwuFNPyR/APVsguveY02qvxxdS9chTRjrntl?=
+ =?us-ascii?Q?BKcS8MhMkcUAkNLYypNouexud+l9JFyW6CT8O84eNEIDQ2xFWGrrk0/cN9OZ?=
+ =?us-ascii?Q?f6LE0EJ0U3q0+GsUUFwkcogH3uvECA+Bhcki1/qpm/OLPAhAaX++lTGEcdEL?=
+ =?us-ascii?Q?2OcxgCzDSI4+yBzoxgE+48z54O7VNLwdup0QDHcTtA7/vCvZx3Qt5Z3OFrWD?=
+ =?us-ascii?Q?Cn4aJ8Ff1m+XqDPpEzWeXHf1KzMgv3c4iqmU/gjO8TrfkZd2/AOWOrMp5TOU?=
+ =?us-ascii?Q?B18jM0UBNpE/IleZ47cTKR7DhuS8TPzV1+d687A/+60mfgDf0CLytnQzemXC?=
+ =?us-ascii?Q?oO9kILFvQ8yYMbkFuR2beL9lNjp5AQjp0hLS5UKlZtuqsRg06VVFFju5MXET?=
+ =?us-ascii?Q?P77v9mfcAYS3/aSwmId8aUSOBCN1EbspvCGUqV958HP2cThZclhO3PN0jGI+?=
+ =?us-ascii?Q?WBfiZw1lDH5TojRGjS72ECsTPr4WYri9t98fhzPSDOLR27xL2PY9avby+CTY?=
+ =?us-ascii?Q?ZnYUXEamQV66o9InoxgfkzLr/FddrXBHEPNvdjIUu6cdnKC626T97QCMkkt2?=
+ =?us-ascii?Q?gezuMzF3VTlXfmZAZj56qjMIrf5I/5w9i6UYOgK2aC5mdOyT7LkSJWh8QMG1?=
+ =?us-ascii?Q?Ym5E6qq7J7y4V1fvgC2co2yTjMSKGK5SGCd2T11N4pf2g2zk///5wgHe4dXa?=
+ =?us-ascii?Q?/TDlm9UUi+cNAlPmHwZz7d1fdlrZWNdsHewtPUtGRCWKtjQFaKBmrISmka9j?=
+ =?us-ascii?Q?lhqPz068ApVO3h4XHEgVMvVqUiqDmfobDMTMOupwePjRLFuPGrLCSFi6EYaW?=
+ =?us-ascii?Q?lYOGy7KezJRVwmYa0HDO3rglanP6PHvtP0Qp/fSl1ROOdbEu0rUebHjdkSMH?=
+ =?us-ascii?Q?2+42tNQIRgkwTda2cToWsM4L1xVyP7W279SVBrNp++HqlrgMb5DqL6y8X3JP?=
+ =?us-ascii?Q?AvRUN5D1xrhn9GHhfdpQR9YUytri9xX+63BWs5dSAVrVQm7i7ITqgj4ClR2p?=
+ =?us-ascii?Q?mRxz7Fkn1FBrTG/ypkngfrtUPpEanJNyMwQFOxSGAvpZpLpRnLcTI9mi5iuA?=
+ =?us-ascii?Q?JbJljCsa2Jf1/35wveArbWYo/wCOFKqcwTF3r/oy?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2024 18:28:46.3767
+X-MS-Exchange-CrossTenant-Network-Message-Id: a70d578c-0171-47b7-6348-08dc6171770c
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB4373.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2024 19:38:33.9167
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: af9fd48b-24cf-4eab-700d-08dc6167b751
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCC5.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6621
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HZ3QupKCKX0uyFzLd7Cr956wCiXLzEe4P+b5HmBwzXfZUDAwaFlB2XCD8ibUfgg2yqrCS0CV2t5CCst0R6XOJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6095
 
+On 2024-04-19 14:30 -0700, Rahul Rameshbabu wrote:
+> Some device drivers support devices that enable them to annotate whether a
+> Rx skb refers to a packet that was processed by the MACsec offloading
+> functionality of the device. Logic in the Rx handling for MACsec offload
+> does not utilize this information to preemptively avoid forwarding to the
+> macsec netdev currently. Because of this, things like multicast messages or
+> unicast messages with an unmatched destination address such as ARP requests
+> are forwarded to the macsec netdev whether the message received was MACsec
+> encrypted or not. The goal of this patch series is to improve the Rx
+> handling for MACsec offload for devices capable of annotating skbs received
+> that were decrypted by the NIC offload for MACsec.
+> 
+> Here is a summary of the issue that occurs with the existing logic today.
+> 
+>     * The current design of the MACsec offload handling path tries to use
+>       "best guess" mechanisms for determining whether a packet associated
+>       with the currently handled skb in the datapath was processed via HW
+>       offload
+>     * The best guess mechanism uses the following heuristic logic (in order of
+>       precedence)
+>       - Check if header destination MAC address matches MACsec netdev MAC
+>         address -> forward to MACsec port
+>       - Check if packet is multicast traffic -> forward to MACsec port
+>       - MACsec security channel was able to be looked up from skb offload
+>         context (mlx5 only) -> forward to MACsec port
+>     * Problem: plaintext traffic can potentially solicit a MACsec encrypted
+>       response from the offload device
+>       - Core aspect of MACsec is that it identifies unauthorized LAN connections
+>         and excludes them from communication
+>         + This behavior can be seen when not enabling offload for MACsec
+>       - The offload behavior violates this principle in MACsec
+> 
+> I believe this behavior is a security bug since applications utilizing
+> MACsec could be exploited using this behavior, and the correct way to
+> resolve this is by having the hardware correctly indicate whether MACsec
+> offload occurred for the packet or not. In the patches in this series, I
+> leave a warning for when the problematic path occurs because I cannot
+> figure out a secure way to fix the security issue that applies to the core
+> MACsec offload handling in the Rx path without breaking MACsec offload for
+> other vendors.
+> 
+> Shown at the bottom is an example use case where plaintext traffic sent to
+> a physical port of a NIC configured for MACsec offload is unable to be
+> handled correctly by the software stack when the NIC provides awareness to
+> the kernel about whether the received packet is MACsec traffic or not. In
+> this specific example, plaintext ARP requests are being responded with
+> MACsec encrypted ARP replies (which leads to routing information being
+> unable to be built for the requester).
+> 
+>     Side 1
+> 
+>       ip link del macsec0
+>       ip address flush mlx5_1
+>       ip address add 1.1.1.1/24 dev mlx5_1
+>       ip link set dev mlx5_1 up
+>       ip link add link mlx5_1 macsec0 type macsec sci 1 encrypt on
+>       ip link set dev macsec0 address 00:11:22:33:44:66
+>       ip macsec offload macsec0 mac
+>       ip macsec add macsec0 tx sa 0 pn 1 on key 00 dffafc8d7b9a43d5b9a3dfbbf6a30c16
+>       ip macsec add macsec0 rx sci 2 on
+>       ip macsec add macsec0 rx sci 2 sa 0 pn 1 on key 00 ead3664f508eb06c40ac7104cdae4ce5
+>       ip address flush macsec0
+>       ip address add 2.2.2.1/24 dev macsec0
+>       ip link set dev macsec0 up
+> 
+>       # macsec0 enters promiscuous mode.
+>       # This enables all traffic received on macsec_vlan to be processed by
+>       # the macsec offload rx datapath. This however means that traffic
+>       # meant to be received by mlx5_1 will be incorrectly steered to
+>       # macsec0 as well.
+> 
+>       ip link add link macsec0 name macsec_vlan type vlan id 1
+>       ip link set dev macsec_vlan address 00:11:22:33:44:88
+>       ip address flush macsec_vlan
+>       ip address add 3.3.3.1/24 dev macsec_vlan
+>       ip link set dev macsec_vlan up
+> 
+>     Side 2
+> 
+>       ip link del macsec0
+>       ip address flush mlx5_1
+>       ip address add 1.1.1.2/24 dev mlx5_1
+>       ip link set dev mlx5_1 up
+>       ip link add link mlx5_1 macsec0 type macsec sci 2 encrypt on
+>       ip link set dev macsec0 address 00:11:22:33:44:77
+>       ip macsec offload macsec0 mac
+>       ip macsec add macsec0 tx sa 0 pn 1 on key 00 ead3664f508eb06c40ac7104cdae4ce5
+>       ip macsec add macsec0 rx sci 1 on
+>       ip macsec add macsec0 rx sci 1 sa 0 pn 1 on key 00 dffafc8d7b9a43d5b9a3dfbbf6a30c16
+>       ip address flush macsec0
+>       ip address add 2.2.2.2/24 dev macsec0
+>       ip link set dev macsec0 up
+> 
+>       # macsec0 enters promiscuous mode.
+>       # This enables all traffic received on macsec_vlan to be processed by
+>       # the macsec offload rx datapath. This however means that traffic
+>       # meant to be received by mlx5_1 will be incorrectly steered to
+>       # macsec0 as well.
+> 
+>       ip link add link macsec0 name macsec_vlan type vlan id 1
+>       ip link set dev macsec_vlan address 00:11:22:33:44:99
+>       ip address flush macsec_vlan
+>       ip address add 3.3.3.2/24 dev macsec_vlan
+>       ip link set dev macsec_vlan up
+> 
+>     Side 1
+> 
+>       ping -I mlx5_1 1.1.1.2
+>       PING 1.1.1.2 (1.1.1.2) from 1.1.1.1 mlx5_1: 56(84) bytes of data.
+>       From 1.1.1.1 icmp_seq=1 Destination Host Unreachable
+>       ping: sendmsg: No route to host
+>       From 1.1.1.1 icmp_seq=2 Destination Host Unreachable
+>       From 1.1.1.1 icmp_seq=3 Destination Host Unreachable
+> 
+> Changes:
+> 
+>   v1->v2:
+>     * Fixed series subject to detail the issue being fixed
+>     * Removed strange characters from cover letter
+>     * Added comment in example that illustrates the impact involving
+>       promiscuous mode
+>     * Added patch for generalizing packet type detection
+>     * Added Fixes: tags and targeting net
+>     * Removed pointless warning in the heuristic Rx path for macsec offload
+>     * Applied small refactor in Rx path offload to minimize scope of rx_sc
+>       local variable
+> 
+> Link: https://github.com/Binary-Eater/macsec-rx-offload/blob/trunk/MACsec_violation_in_core_stack_offload_rx_handling.pdf
+> Link: https://lore.kernel.org/netdev/20240419011740.333714-1-rrameshbabu@nvidia.com/
+> Link: https://lore.kernel.org/netdev/87r0l25y1c.fsf@nvidia.com/
+> Link: https://lore.kernel.org/netdev/20231116182900.46052-1-rrameshbabu@nvidia.com/
+> Cc: Sabrina Dubroca <sd@queasysnail.net>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-
-On 20/04/2024 8:59, Wang Yugui wrote:
-> External email: Use caution opening links or attachments
-> 
-> 
-> Hi,
-> 
->> I'm announcing the release of the 6.6.28 kernel.
->>
->> All users of the 6.6 kernel series must upgrade.
->>
->> The updated 6.6.y git tree can be found at:
->>        git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.6.y
->> and can be browsed at the normal kernel.org git web browser:
->>        https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-> 
-> Linux 6.6.28 failed to boot with the following panic *1 on a server with
-> mellonax CX-6 VPI NIC, but 6.6.27/6.1.87 boot well.
-> 
-> After reverting 'net/mlx5: Restore mistakenly dropped parts in register devlink
-> flow', linux boot well.
-> 
-
-there is a similar discussion in net-dev ML[1].
-In short, it seems this patch is missing from stable, which is 
-prerequisite for the bad patch:
-0553e753ea9e
-"net/mlx5: E-switch, store eswitch pointer before registering 
-devlink_param".
-
-Wang, can you test it out please?
-
-thanks
-Shay
-
-[1]
-https://lore.kernel.org/netdev/20240419162842.69433-1-oxana@cloudflare.com/T/#m9a8dd7f2e76d805baf2ea441137928a4dc6a11a7 
-
-
-> There is already a patch(*2 ) in upstream, but yet not in queue-6.6(for the
-> coming 6.6.29).
-> 
-> 
-> *1 panic info:
-> [   15.114364] BUG: unable to handle page fault for address: 0000000000001118
-> [   15.114815] infiniband bnxt_re0: Device registered with IB successfully
-> [   15.114822] #PF: supervisor read access in kernel mode
-> [   15.134119] #PF: error_code(0x0000) - not-present page
-> [   15.139652] PGD 0 P4D 0
-> [   15.142553] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [   15.143055] infiniband bnxt_re1: Device registered with IB successfully
-> [   15.147233] CPU: 1 PID: 1253 Comm: kworker/1:4 Not tainted 6.6.28-1.el7.x86_64 #1
-> [   15.147236] Hardware name: Dell Inc. PowerEdge T640/0TWW5Y, BIOS 2.21.0 12/11/2023
-> [   15.147238] Workqueue: events work_for_cpu_fn
-> [   15.174498] RIP: 0010:esw_port_metadata_get+0x19/0x30 [mlx5_core]
-> [   15.181056] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 53 48 89 d3 e8 ce 28 9a cc 48 8b 80 b0 09 00 00 <8b> 80 18 11 00 00 88 03 31 c0 80 23 01 5b c3 cc cc cc cc 0f 1f 40
-> [   15.200401] RSP: 0000:ffff9ec05bf1fb98 EFLAGS: 00010286
-> [   15.205930] RAX: 0000000000000000 RBX: ffff9ec05bf1fbe4 RCX: 0000000000000028
-> [   15.213364] RDX: ffff9ec05bf1fbe4 RSI: 0000000000000013 RDI: ffff8bdd1d696000
-> [   15.220801] RBP: ffffffffc1134c60 R08: 0000000000000000 R09: 0000000000000000
-> [   15.228235] R10: ffff9ec05bf1fbf8 R11: 0000000000001000 R12: ffff8bdd1d696000
-> [   15.235671] R13: ffff8bdd9541c720 R14: 0000000000000000 R15: 0000000000000000
-> [   15.243098] FS:  0000000000000000(0000) GS:ffff8c3b7ea00000(0000) knlGS:0000000000000000
-> [   15.251480] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   15.257520] CR2: 0000000000001118 CR3: 00000004f9220003 CR4: 00000000007706e0
-> [   15.264955] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> [   15.272383] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> [   15.279800] PKRU: 55555554
-> [   15.282790] Call Trace:
-> [   15.285523]  <TASK>
-> [   15.287905]  ? __die_body+0x1e/0x60
-> [   15.291675]  ? page_fault_oops+0x151/0x490
-> [   15.296050]  ? __update_idle_core+0x27/0xc0
-> [   15.300505]  ? exc_page_fault+0x6b/0x150
-> [   15.304700]  ? asm_exc_page_fault+0x26/0x30
-> [   15.309149]  ? esw_port_metadata_get+0x19/0x30 [mlx5_core]
-> [   15.315066]  ? esw_port_metadata_get+0x12/0x30 [mlx5_core]
-> [   15.320940]  devlink_nl_param_fill.constprop.23+0x88/0x5d0
-> [   15.326679]  ? __alloc_skb+0x87/0x190
-> [   15.330594]  ? __kmalloc_node_track_caller+0x55/0x130
-> [   15.335897]  ? __kmalloc_node_track_caller+0x55/0x130
-> [   15.341196]  ? kmalloc_reserve+0x65/0xf0
-> [   15.345370]  ? __alloc_skb+0xd9/0x190
-> [   15.349280]  devlink_param_notify.constprop.20+0x72/0xd0
-> [   15.354845]  devl_params_register+0x150/0x250
-> [   15.359456]  esw_offloads_init+0x181/0x1a0 [mlx5_core]
-> [   15.364967]  mlx5_eswitch_init+0x4be/0x6e0 [mlx5_core]
-> [   15.370471]  mlx5_init_once+0xf0/0x550 [mlx5_core]
-> [   15.375601]  mlx5_init_one_devl_locked+0x7a/0x1d0 [mlx5_core]
-> [   15.381676]  mlx5_init_one+0x2e/0x60 [mlx5_core]
-> [   15.386616]  probe_one+0x2b6/0x410 [mlx5_core]
-> [   15.391382]  local_pci_probe+0x45/0xa0
-> [   15.395367]  work_for_cpu_fn+0x17/0x30
-> [   15.399345]  process_scheduled_works+0x8a/0x380
-> [   15.404102]  worker_thread+0x165/0x2d0
-> [   15.408082]  ? __pfx_worker_thread+0x10/0x10
-> [   15.412578]  kthread+0xf2/0x120
-> [   15.415952]  ? __pfx_kthread+0x10/0x10
-> [   15.419928]  ret_from_fork+0x31/0x40
-> [   15.423724]  ? __pfx_kthread+0x10/0x10
-> [   15.427692]  ret_from_fork_asm+0x1b/0x30
-> [   15.431827]  </TASK>
-> [   15.434218] Modules linked in: xor bnxt_re zstd_compress raid6_pq ib_uverbs sd_mod ib_core t10_pi mlx5_core(+) pci_hyperv_intf mlxfw ahci libahci bnx2x mpi3mr psample i40e libata tls bnxt_en megaraid_sas scsi_transport_sas crc32c_intel mgag200 mdio i2c_algo_bit wmi dm_mirror dm_region_hash dm_log dm_mod
-> [   15.461684] CR2: 0000000000001118
-> [   15.465213] ---[ end trace 0000000000000000 ]---
-> [   15.476059] pstore: backend (erst) writing error (-28)
-> [   15.481415] RIP: 0010:esw_port_metadata_get+0x19/0x30 [mlx5_core]
-> [   15.487856] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 53 48 89 d3 e8 ce 28 9a cc 48 8b 80 b0 09 00 00 <8b> 80 18 11 00 00 88 03 31 c0 80 23 01 5b c3 cc cc cc cc 0f 1f 40
-> [   15.507043] RSP: 0000:ffff9ec05bf1fb98 EFLAGS: 00010286
-> [   15.512493] RAX: 0000000000000000 RBX: ffff9ec05bf1fbe4 RCX: 0000000000000028
-> [   15.519852] RDX: ffff9ec05bf1fbe4 RSI: 0000000000000013 RDI: ffff8bdd1d696000
-> [   15.527209] RBP: ffffffffc1134c60 R08: 0000000000000000 R09: 0000000000000000
-> [   15.534568] R10: ffff9ec05bf1fbf8 R11: 0000000000001000 R12: ffff8bdd1d696000
-> [   15.541934] R13: ffff8bdd9541c720 R14: 0000000000000000 R15: 0000000000000000
-> [   15.549299] FS:  0000000000000000(0000) GS:ffff8c3b7ea00000(0000) knlGS:0000000000000000
-> [   15.557618] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   15.563607] CR2: 0000000000001118 CR3: 00000004f9220003 CR4: 00000000007706e0
-> [   15.570981] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> [   15.578356] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> [   15.585733] PKRU: 55555554
-> [   15.588679] Kernel panic - not syncing: Fatal exception
-> [   15.594163] Kernel Offset: 0xbc00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-> 
-> 
-> *2
->  From bf729988303a27833a86acb561f42b9a3cc12728 Mon Sep 17 00:00:00 2001
-> From: Shay Drory <shayd@nvidia.com>
-> Date: Thu, 11 Apr 2024 14:54:41 +0300
-> Subject: [PATCH] net/mlx5: Restore mistakenly dropped parts in register
->   devlink flow
-> 
-> Fixes: c6e77aa9dd82 ("net/mlx5: Register devlink first under devlink lock")
-> 
-> 
-> Best Regards
-> Wang Yugui (wangyugui@e16-tech.com)
-> 2024/04/20
-> 
-> 
-> 
+Tested-by: Benjamin Poirier <bpoirier@nvidia.com>
 
