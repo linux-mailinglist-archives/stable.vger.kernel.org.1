@@ -1,97 +1,114 @@
-Return-Path: <stable+bounces-40336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2E3B8ABC3D
-	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 17:51:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0288ABC4E
+	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 18:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48392281733
-	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 15:51:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAD0128172B
+	for <lists+stable@lfdr.de>; Sat, 20 Apr 2024 16:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C81D2942C;
-	Sat, 20 Apr 2024 15:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC99839AC3;
+	Sat, 20 Apr 2024 16:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edA4XVGT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SsuM/aYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4E3168CC;
-	Sat, 20 Apr 2024 15:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA542942C
+	for <stable@vger.kernel.org>; Sat, 20 Apr 2024 16:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713628276; cv=none; b=W6NboAhFz/N0zrwQUuwJKv8LMYkp20sE18A357AaAdzYjxia3ijUIq+KU55d6DA2bJ1DQzIe+K2cFO5wJVFM6o1VCP3Ksj34yPFVIZRgxPWZgnf7J/Pb6HQ3J1Hj1TSo0C0OFad/xmU0F65gOlgx8wA0wfAvATXv28LFdOfT9B4=
+	t=1713628813; cv=none; b=Ll9lxFUMItR1r2s5EyQgjIHfrMGn/EU2on9TPZZGbsyj0U4SF9lGNSwpVG4OtJMkcZpvyXThW/jcDu/6gqQAYTJVr9EaPMEnhUYmZLeIy6dJMShyHDDDrvPdLz4VJubC5rmm7OyWxVCdb09QHaw1yFii/u/iRQcYK7Y2BiqnjUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713628276; c=relaxed/simple;
-	bh=1y9ReD3omOttKuEU/pbgVso8baWmO6raIsoII56FCTU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KNpiO0+MGuY+UrsaAlaa6UMjN3DH90xVWXRY/lNbM79jT6RiYXldT0IN1fbRAvC+4tKjKfqKJy7df3vAln4orMzEsq2xUtNQ0a0NFdsYK5QYMvoFCe+u2krVc6ePcf/1JxF1zGgxkdw5owND/IkH+9DNJS39qSY20aT5S/O/eRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edA4XVGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E8AC072AA;
-	Sat, 20 Apr 2024 15:51:15 +0000 (UTC)
+	s=arc-20240116; t=1713628813; c=relaxed/simple;
+	bh=/ed9nH5y17K10P4P954SKyt1HWbeQ6IpmCrsuHQLQyU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QrKTBQYqC8yZ/PQQkk5pery3VL7J+hhRNxBU0oezjcU/XylMyc6EADcWD8fpoVLkXHI+zKkYH3bMHnStthChzNGARBJMwhOJbIrkzYaD8kqG1kNNGbY17AbxGAqbJRiD7hIuDsrIa4GFRlOwIpWaf/YnfTZtUqPDiyoZYiNywM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SsuM/aYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 12330C072AA;
+	Sat, 20 Apr 2024 16:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713628275;
-	bh=1y9ReD3omOttKuEU/pbgVso8baWmO6raIsoII56FCTU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=edA4XVGTqIapcjhD4vqhl7D+6qCgdunFCkFnar3fvqFDhMp3LyS/5BVAddlZuzOo9
-	 181OqFibd3eKCvgTVCWJpQByBBD/Cxao/g6wpQ4M+O2chpN9p6ClKdwzObCb/18sTe
-	 SzayZy5wJgEb1EZKImzCjy2Xa01pwZSH+uTMZNhGPQ6459oR+jSk9nx62rwE7Reepy
-	 kWTS5DdgYka0QQvLh8GUHeh4vAxulr9Pe2CkpjtfgRyoyYXJnnn5dEsg7HY5BB1/ls
-	 httcZZdk9kUqKx2wl23dB3AQwwJ+Bz7rAKE73hd+3H3au0d9sKfAOv6w9631u0wvnk
-	 I7U9iEl7+8M8g==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-516d2b9cd69so3632607e87.2;
-        Sat, 20 Apr 2024 08:51:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUb5hJYXtT2tTGoTmEEUsBj5wHRKEGu1BqEwjneI2aYEy8HkVzAYcrWrrO4aXnFaLi28qRtppdJ40qxBNkp3IVJigM86tUOvtluchpQq3fg99aO8n5688j/vpm/ZsRktHgPlCRh
-X-Gm-Message-State: AOJu0YzeFsPEw/xGuoUF6hw05PovNlooGaXD6EBMfBlW6LhDx4g13V3F
-	1aJm/AqhFZSno260O/inZBteSldxZPBZu/epbgrzDMsIgXZcoJutTZwLwocUjS22LgHsOy3GJ/3
-	UHguaICvct8HBI5InC/iRgsD+/Rg=
-X-Google-Smtp-Source: AGHT+IEDoq9iwxFclFtovzyfMv+BQvN+kusnl28/i1FMGJ35LKYWR3ndwLVhaQcDxlGWAMsvh3/0tfqRqPGS3ZBR7+k=
-X-Received: by 2002:a05:6512:475:b0:516:d17f:3c30 with SMTP id
- x21-20020a056512047500b00516d17f3c30mr3446274lfd.3.1713628273772; Sat, 20 Apr
- 2024 08:51:13 -0700 (PDT)
+	s=k20201202; t=1713628813;
+	bh=/ed9nH5y17K10P4P954SKyt1HWbeQ6IpmCrsuHQLQyU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=SsuM/aYZYtwLb4EjwwN34czLfosJp2qOmBfiPsoKJ5uocgHksvM/Bu4eUVVuk7hDS
+	 AUPNzZOqcQewiWboFuU1O+maJ40lhq/z4U0ZaJXc9Yfs/kmPYkoBlrnmRcI0RoM0vz
+	 ZQyz/si/O+OSVs//M5ADEa4dirlWYQUdt9Tiixq2Yzpe9qc3YLxuX+d7pdlVhjQOy8
+	 o2mRH0h7n/29D0u7mpr43/om5kg5LB4PyZT5T9Y02CV6t2fBik7GImZMNJ0elX43NL
+	 fOAgi+0G6qhgXcmiEaKm5ext/z8L7DYGuESt1/9m9D+MyeiBpx4C6eUUgH2QgGuLh0
+	 epX9R7JXwYAgQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2AE8C4345F;
+	Sat, 20 Apr 2024 16:00:12 +0000 (UTC)
+From: =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL_via_B4_Relay?= <devnull+arinc.unal.arinc9.com@kernel.org>
+Subject: [PATCH 0/4] Please apply these MT7530 DSA subdriver patches to 6.1
+Date: Sat, 20 Apr 2024 18:59:49 +0300
+Message-Id: <20240420-for-stable-6-1-backports-v1-0-0c50ca4324ea@arinc9.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240418201705.3673200-2-ardb+git@google.com> <CAKwvOdnNurTJNb7iOVW4dpkV-rZGWg2t3HuLkL+B5sNOin39WA@mail.gmail.com>
- <20240420152938.GDZiPfYl9iIgJw6_ux@fat_crate.local>
-In-Reply-To: <20240420152938.GDZiPfYl9iIgJw6_ux@fat_crate.local>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sat, 20 Apr 2024 17:51:02 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF-U=WUg_+nC1RojLa8FWdx+dOuq8zUyTLJ5u290fFv8Q@mail.gmail.com>
-Message-ID: <CAMj1kXF-U=WUg_+nC1RojLa8FWdx+dOuq8zUyTLJ5u290fFv8Q@mail.gmail.com>
-Subject: Re: [PATCH] x86/purgatory: Switch to the position-independent small
- code model
-To: Borislav Petkov <bp@alien8.de>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, Ard Biesheuvel <ardb+git@google.com>, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Song Liu <song@kernel.org>, 
-	Ricardo Ribalda <ribalda@kernel.org>, Fangrui Song <maskray@google.com>, 
-	Arthur Eubanks <aeubanks@google.com>, stable@vger.kernel.org, 
-	Steve Wahl <steve.wahl@hpe.com>, Vaibhav Rustagi <vaibhavrustagi@google.com>, 
-	Andreas Smas <andreas@lonelycoder.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAHXmI2YC/x3MQQqDMBBA0avIrB2IaaqNV5EuYjrWwWJkJogg3
+ t3Q5Vv8f4KSMCn01QlCOyuntaCpK4hzWL+E/CkGa6wzzhqckqDmMP4IW2xwDHHZkmTFp4v+4W3
+ XvjoPJd+EJj7+6+F9XTeL+m67agAAAA==
+To: stable@vger.kernel.org
+Cc: Daniel Golle <daniel@makrotopia.org>, 
+ =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL?= <arinc.unal@arinc9.com>, 
+ "Russell King (Oracle)" <linux@armlinux.org.uk>, 
+ Vladimir Oltean <olteanv@gmail.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1713628810; l=1085;
+ i=arinc.unal@arinc9.com; s=arinc9-Xeront; h=from:subject:message-id;
+ bh=/ed9nH5y17K10P4P954SKyt1HWbeQ6IpmCrsuHQLQyU=;
+ b=WRUPxDNFQaGV6hONFMqLFp9O3RYgthoAXxRcy8GTTy1nyFvb4zuuCfpFUM9wv18tu87zkNkpI
+ JG8bxp7is9dCTLJDM6J7DOTQaTAOW7jc9p1U3GnResKp2Kbd9AcsdxJ
+X-Developer-Key: i=arinc.unal@arinc9.com; a=ed25519;
+ pk=z49tLn29CyiL4uwBTrqH9HO1Wu3sZIuRp4DaLZvtP9M=
+X-Endpoint-Received: by B4 Relay for arinc.unal@arinc9.com/arinc9-Xeront
+ with auth_id=137
+X-Original-From: =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL?= <arinc.unal@arinc9.com>
+Reply-To: arinc.unal@arinc9.com
 
-On Sat, 20 Apr 2024 at 17:30, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Thu, Apr 18, 2024 at 01:36:22PM -0700, Nick Desaulniers wrote:
-> > Reported-by: ns <0n-s@users.noreply.github.com>
->
-> I don't know what the goal with this tag is but this'll keep bouncing:
->
-> <0n-s@users.noreply.github.com>: Host or domain name not found. Name service
->     error for name=users.noreply.github.com type=AAAA: Host not found
->
-> Maybe use a non-void email...?
->
+Hello.
 
-Let's just drop that.
+These are the remaining bugfix patches for the MT7530 DSA subdriver.
+They didn't apply as is to the 6.1 stable tree so I have submitted the
+adjusted versions in this thread. Please apply them in the order
+they were submitted.
 
-If people cannot be bothered to use their real name, I don't think
-they care about being credited either.
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+---
+Arınç ÜNAL (3):
+      net: dsa: mt7530: set all CPU ports in MT7531_CPU_PMAP
+      net: dsa: mt7530: fix improper frames on all 25MHz and 40MHz XTAL MT7530
+      net: dsa: mt7530: fix enabling EEE on MT7531 switch on all boards
+
+Vladimir Oltean (1):
+      net: dsa: introduce preferred_default_local_cpu_port and use on MT7530
+
+ drivers/net/dsa/mt7530.c | 52 ++++++++++++++++++++++++++++++++++--------------
+ drivers/net/dsa/mt7530.h |  2 ++
+ include/net/dsa.h        |  8 ++++++++
+ net/dsa/dsa2.c           | 24 +++++++++++++++++++++-
+ 4 files changed, 70 insertions(+), 16 deletions(-)
+---
+base-commit: 6741e066ec7633450d3186946035c1f80c4226b8
+change-id: 20240420-for-stable-6-1-backports-54c939276879
+
+Best regards,
+-- 
+Arınç ÜNAL <arinc.unal@arinc9.com>
+
+
 
