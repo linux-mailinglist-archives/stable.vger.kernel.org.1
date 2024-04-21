@@ -1,138 +1,139 @@
-Return-Path: <stable+bounces-40359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBBD8AC056
-	for <lists+stable@lfdr.de>; Sun, 21 Apr 2024 19:44:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F108AC058
+	for <lists+stable@lfdr.de>; Sun, 21 Apr 2024 19:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A531F20FEA
-	for <lists+stable@lfdr.de>; Sun, 21 Apr 2024 17:44:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A659B281268
+	for <lists+stable@lfdr.de>; Sun, 21 Apr 2024 17:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917C829CF7;
-	Sun, 21 Apr 2024 17:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E312A1BC23;
+	Sun, 21 Apr 2024 17:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BIHPYHY1"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eoYuZvqH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF0125779
-	for <stable@vger.kernel.org>; Sun, 21 Apr 2024 17:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ACC625
+	for <stable@vger.kernel.org>; Sun, 21 Apr 2024 17:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713721469; cv=none; b=YDoze7M1M606FSfeUHoTdqu2RwxK8WUxIY7jZgsayWIeqYW1Xa/pU4YRatZz56V0QdcwUq3J+g0u3rPChbiRVhiEZ/ns5XgpxuGPkDbuyGhgxxLSpf+h/HNB1VDYmTYVI352htr3ld0HUaqJKw1x50lv2EIgj1a553+cqJ/eoBM=
+	t=1713721690; cv=none; b=bPVyfOZrVisOUkZDeRI3HN+IUElVhqWw9SmlLYVVkKjFSs2lOvkqBQqygPGll2ufdjZIukDzkWd8wsHh0yXHdzQXQKRLACeOWlbvPPv3fw8KHc7Z4VqS7sJ9J5cv5QANUPwg5/P5CrrCM5ru1nq/f74FdOsAi1Ivn7rYnbxJBAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713721469; c=relaxed/simple;
-	bh=Rxo/QLb3D3FLuHpq7mRBclfypka9nF4CKeJoBwNdfpM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SrfcuPmR6HTuGfF07Ed/+nAtkvW+J2ku7PtDqliYrLDXjyWiUmCRKtMaMQMpgFFPwNLruWBEW9lsTuucR4FleBvGjGcU5qfgD2mzXm6Vkz//4l8DAugeT5b0Cv9Exr4SDhjOPAig+qoQqaBpOA0nD0Fi+77omz4WAsTqVyDhe6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BIHPYHY1; arc=none smtp.client-ip=209.85.128.202
+	s=arc-20240116; t=1713721690; c=relaxed/simple;
+	bh=nVqmOLqS8Jm879/wAzi3qp2fB/Kd9kS1cq5sv7FOepE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KyNf62bEXm7yLxr8PmwMrB1Pd2/QWvfE4uZQr03fSkJCLpZdrmFo4P5cPT6Io6bwe12JkFTJHFFIILUePoYtlQdj+Ek3019Adu0HnoSXWDm3+bhCDI60fgQnIYhHuPi8Igr6HVTGqSyELLyXzn6dsz/FBtxtAg1NVwF4ujdYnhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eoYuZvqH; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-61890f3180aso82457317b3.2
-        for <stable@vger.kernel.org>; Sun, 21 Apr 2024 10:44:27 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6ed3cafd766so2958564b3a.0
+        for <stable@vger.kernel.org>; Sun, 21 Apr 2024 10:48:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713721467; x=1714326267; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pfJhufGPprljhvqok4xuEp55QbKVyiGYgMx3ut44Am8=;
-        b=BIHPYHY1h0UTofabFuCg7ujlFTprNGseIERqlJkBWKp37GHfi+nziSy+eIluIW4eMP
-         IUeXHLiDQWn8rwu6ShQx6mn/QgaR9JMilJkreXsquyIGw2Nv9Cz9ft4QlG2CtWQJxzwc
-         1EpOp+MiWiiR7EjDC2a1FkP/kZZFFEWwMHPXl0Rq/4FqxSOi8UpGGBIugiH2HJiFgcol
-         uUoTsaQXHYMnZbb8p9Yotxduo6SGLkXtVZt6tUyZThq7QfH04rH4S9SGwdcUQfxiEDVs
-         SRrxvNiKNO4lU3epXrxuvk2CBpl9FL62PRBsp62hSejRXdgyQDGTeyqqVtl8EtH60yFW
-         Yttg==
+        d=google.com; s=20230601; t=1713721689; x=1714326489; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Ci/J2ILNecORXupy9IHKIghPdBckTpTbuTnDZ9u6/Us=;
+        b=eoYuZvqH1UkPW1+ZnsDJqA6ya7IIgZSVbu0CpxBIXy8RAmqmwdQP484s6PcGKaaqrV
+         YDZKZKlkcgc53EJv4MWmyLKYEUgBXy+IEkQeNjfcdEQh9EKAIzWmVfbzgGne1OPFVbny
+         kefL1BdBpwKClgX3+HnGOPdlyYVHAVix90k/1gVx+YK4jD0AS3Amqwi5g9gvjmGwsadt
+         E0ar1iob0jZmzR+XcMCk2nljPudkpmZ/CZgnUetEaij6QWZoqj8Fu5F49Hgup0BRPKAW
+         18ffDCa4lasawp/Tho2lpTBDSeIuHanezNVHwshf3HFWUQZ2iQhVTDTvjXjzJEO6ZdbD
+         RUow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713721467; x=1714326267;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pfJhufGPprljhvqok4xuEp55QbKVyiGYgMx3ut44Am8=;
-        b=AWO91Ly/OcE+njVCSXN3EKrgtdqzK77FisVY4YV4Z4gDby4N+wP7uJYSLho0wKgE62
-         UGD8RoPN+jMkNujYjEhwFSbACaaUCj8rBWQw19JY8Q+6WPNbKefzf5W71ncj3HdQRDG6
-         p6CrrN2bq75gPnenA7HBtjDZdM0epM+E/r9X3dPfVTeJacVjo4SXDDjV9p84UZsS83Gt
-         kKJagJt2RzW0/7q4dwQeDYFFVJGFq3iijYMMh5RCZ3v2VOeDsO+ttY1Ol9RkZyNKEGAA
-         H4mWnkjYuH1WSMqQSxjpeE1026pRVYbmmSC3kMIMYe87mqkUNuHychkCc44n4DzNlrDM
-         wGjg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrwkVd++dk4tjvtbBI8EhadIWHHrVZxK9hVZ4BLZtIuQS6yGsphnREuwMDrcJ1Cr6ao7oew6tfoRf6MpPmBmpJkj+Ib1CG
-X-Gm-Message-State: AOJu0YxjE/X1Pb8HPKvhH2nUC1Nw4lUDfYJGa6306AJzFCVLATikRRwX
-	FL3X+jyXrRWWGJT6ExO1embO3w0bDhWhpWo+R7AT+2oARRawEQK6TWAY7OC37LMX1QGz83mXzHD
-	uW0+KUBEgCg==
-X-Google-Smtp-Source: AGHT+IFea26EdgRBiy2bok1wSSeQVXwViDdWSFDukZLbc7EAjnnR+53AfvJcxXye0zeBN8dajLnwzb+FJYxlLQ==
-X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a0d:d8cb:0:b0:61a:bfc8:64ce with SMTP id
- a194-20020a0dd8cb000000b0061abfc864cemr2032717ywe.8.1713721467059; Sun, 21
- Apr 2024 10:44:27 -0700 (PDT)
-Date: Sun, 21 Apr 2024 17:37:49 +0000
+        d=1e100.net; s=20230601; t=1713721689; x=1714326489;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ci/J2ILNecORXupy9IHKIghPdBckTpTbuTnDZ9u6/Us=;
+        b=qht/ZouQxDHx59qyHshqT1E1BsrvE2u9LorA2hY6hZfoQn7ytG7T+eLbpXuxOWgHdD
+         dJUumWEp/uTKwkJPQ+NA1BDfe3R1KU2oJWxadEPEcduc1PzNgxM+5pznIKRfyvpffulo
+         MGjDV4d++YPD12HDLQXy/ADcHyfRQRHpA0Al3QYTrc4y5jeUOwjYsvwhuOmQ2UUB4vxu
+         M7iiUbjJo3fgXJ4mhsFgkBa8nxkxuJhDUGl8IUdKEsxea48xf7ktdrcDOgdK3dtSRQ8W
+         VHLUPIPLL3RRY1JNp1DjuV/Bdfc5mMow3RZLjaTjT0/CnlyhU0cKFpfU56X48+HKSpjo
+         lobw==
+X-Forwarded-Encrypted: i=1; AJvYcCX2CNIGsnzsxJ3PI7yyAOAVFJBzGXr53HR3xD/9DYUzBpYfZEYzfPDlP7EdMJo84r9PTGDIOQne9zRJQlSGpAn6wRlgOYZV
+X-Gm-Message-State: AOJu0Yy2OwgUh5N+fhQCdh1s1clSdV3e7P/PHsIaj5Y8+t+G75tKAp7Q
+	6wnCCb2fqAs8cISzX5b/wXvoUYB+dL5CsIe/j0+jJPtf2SVWf6jG1RXpr7Gb2Q==
+X-Google-Smtp-Source: AGHT+IGi2HySwpde2wPLGS1rXBVAEyk1Wfn9J93KyuB17lYPSWAXzJl73cC5aQiCwTgjPjlaLTj62A==
+X-Received: by 2002:a05:6a00:3929:b0:6e7:b3c4:43a4 with SMTP id fh41-20020a056a00392900b006e7b3c443a4mr9638797pfb.25.1713721688439;
+        Sun, 21 Apr 2024 10:48:08 -0700 (PDT)
+Received: from google.com (139.69.82.34.bc.googleusercontent.com. [34.82.69.139])
+        by smtp.gmail.com with ESMTPSA id d6-20020a63d646000000b005dc8702f0a9sm6192755pgj.1.2024.04.21.10.48.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Apr 2024 10:48:07 -0700 (PDT)
+Date: Sun, 21 Apr 2024 17:48:03 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Serban Constantinescu <serban.constantinescu@arm.com>,
+	linux-kernel@vger.kernel.org, kernel-team@android.com,
+	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 4/4] binder: fix max_thread type inconsistency
+Message-ID: <ZiVRU_nBc91qp0j7@google.com>
+References: <20240417191418.1341988-1-cmllamas@google.com>
+ <20240417191418.1341988-5-cmllamas@google.com>
+ <2024041858-unwoven-craziness-13a6@gregkh>
+ <ZiRXHs9_Uszd7xzS@google.com>
+ <2024042112-landscape-gains-1bb0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240421173750.3117808-1-cmllamas@google.com>
-Subject: [PATCH v2] binder: fix max_thread type inconsistency
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Serban Constantinescu <serban.constantinescu@arm.com>
-Cc: linux-kernel@vger.kernel.org, kernel-team@android.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024042112-landscape-gains-1bb0@gregkh>
 
-The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
-size_t to __u32 in order to avoid incompatibility issues between 32 and
-64-bit kernels. However, the internal types used to copy from user and
-store the value were never updated. Use u32 to fix the inconsistency.
+On Sun, Apr 21, 2024 at 08:39:23AM +0200, Greg Kroah-Hartman wrote:
+> On Sun, Apr 21, 2024 at 12:00:30AM +0000, Carlos Llamas wrote:
+> > On Thu, Apr 18, 2024 at 06:40:52AM +0200, Greg Kroah-Hartman wrote:
+> > > On Wed, Apr 17, 2024 at 07:13:44PM +0000, Carlos Llamas wrote:
+> > > > The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
+> > > > size_t to __u32 in order to avoid incompatibility issues between 32 and
+> > > > 64-bit kernels. However, the internal types used to copy from user and
+> > > > store the value were never updated. Use u32 to fix the inconsistency.
+> > > > 
+> > > > Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS declaration")
+> > > > Reported-by: Arve Hjønnevåg <arve@android.com>
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> > > > ---
+> > > >  drivers/android/binder.c          | 2 +-
+> > > >  drivers/android/binder_internal.h | 2 +-
+> > > >  2 files changed, 2 insertions(+), 2 deletions(-)
+> > > 
+> > > Why does only patch 4/4 need to go into the tree now, and as a stable
+> > > backport, but the first 3 do not?  Shouldn't this be two different
+> > > series of patches, one 3 long, and one 1 long, to go to the different
+> > > branches (next and linus)?
+> > 
+> > Yes, that is correct. Only patch 4/4 would need to be picked for linus
+> > now and for stable. The others would go to next. Sorry, I was not aware
+> > that sending them separately would be preferred.
+> > 
+> > I'll drop 4/4 patch from the series in v2. Let me know if you still need
+> > me to send it again separately.
+> 
+> Please do, thanks!
+> 
+> greg k-h
+> 
 
-Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS =
-declaration")
-Reported-by: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
+Ok, done. The separated patch is here:
+https://lore.kernel.org/all/20240421173750.3117808-1-cmllamas@google.com/
 
-Notes:
-    v2: rebased, send fix patch separately per Greg's feedback.
-
- drivers/android/binder.c          | 2 +-
- drivers/android/binder_internal.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index bad28cf42010..5834e829f391 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -5365,7 +5365,7 @@ static long binder_ioctl(struct file *filp, unsigned =
-int cmd, unsigned long arg)
- 			goto err;
- 		break;
- 	case BINDER_SET_MAX_THREADS: {
--		int max_threads;
-+		u32 max_threads;
-=20
- 		if (copy_from_user(&max_threads, ubuf,
- 				   sizeof(max_threads))) {
-diff --git a/drivers/android/binder_internal.h b/drivers/android/binder_int=
-ernal.h
-index 7270d4d22207..5b7c80b99ae8 100644
---- a/drivers/android/binder_internal.h
-+++ b/drivers/android/binder_internal.h
-@@ -421,7 +421,7 @@ struct binder_proc {
- 	struct list_head todo;
- 	struct binder_stats stats;
- 	struct list_head delivered_death;
--	int max_threads;
-+	u32 max_threads;
- 	int requested_threads;
- 	int requested_threads_started;
- 	int tmp_ref;
---=20
-2.44.0.769.g3c40516874-goog
-
+Thanks,
+Carlos Llamas
 
