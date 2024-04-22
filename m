@@ -1,154 +1,107 @@
-Return-Path: <stable+bounces-40401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDC08AD54D
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 21:55:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D36938AD55F
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 21:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69A552812E7
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 19:55:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11B141C20F1B
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 19:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC201553AE;
-	Mon, 22 Apr 2024 19:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1608155733;
+	Mon, 22 Apr 2024 19:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="B5b7UUYk"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KDrk3IC/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D281552E4;
-	Mon, 22 Apr 2024 19:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DF51553A9
+	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 19:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713815643; cv=none; b=qcNGryXBbpgDGsfgavWTb/f5W92zp6gH53QW8yf9XUJVLtvJdWBCo0Ao0MUMTaezxnY82fQEXNYfOfqW+4VMU24vFAMpBMFOUTW9gIKYaquULukRwHjpv2YMuqz7ShDtCxmwDHyJXhbkp6HFsCId1mPwsZszheJh07LFHWP6fpE=
+	t=1713815959; cv=none; b=Mdke3yDlUuo66PJo6whEBtTx9DET1n17Vi44BT6EcqvXE/BETI6X5vVi1vaR33e5IMRzOPahhMXc/CVPQJx66LgeVQ1abq71IOKcKSUPP7rt3lSEiZ00Inc/Gt+on9Q47ScE0rrtK5l53uBynYfzdCkHisxCALbrHFbdnOcfDWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713815643; c=relaxed/simple;
-	bh=CKovM99CpAea3dMheTJmg8+vR1Kanfw2KSJtSVkjRRc=;
-	h=Date:To:From:Subject:Message-Id; b=GAIPmawdQgx/Lj600T8g12tXRrIfr7xvf/8Ke5jmuBgLLU99RX2AAtgaVGmAAAtJ0q945hGlUVMPthHLIMkY//dgFeMf98iht5wwbdGRsL+3Xh9InW8gqzbwg/FvZrQCs523QRVw+gfputWJAl5i73M8xuBTnyEFh4sMRH5gxC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=B5b7UUYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A49EC116B1;
-	Mon, 22 Apr 2024 19:54:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1713815643;
-	bh=CKovM99CpAea3dMheTJmg8+vR1Kanfw2KSJtSVkjRRc=;
-	h=Date:To:From:Subject:From;
-	b=B5b7UUYkrkBYUy5OnfGU7K0Y7PA9b0ucykEbzDCWzHfL38IS+hQTUHgtjZklgQf9x
-	 jkhAf+6eW74zr4GJmyROE+NjnKzz7LGLnuARDMw9OpKJESfQ57WmlPt6B2GvFmkIEJ
-	 eazpy/1LlVMKQ00WeSWG032ocnKS0bAJA7sfe8fU=
-Date: Mon, 22 Apr 2024 12:54:02 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nadav.amit@gmail.com,david@redhat.com,peterx@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240422195403.4A49EC116B1@smtp.kernel.org>
+	s=arc-20240116; t=1713815959; c=relaxed/simple;
+	bh=LwPdmR8T/aH1kw3i4JjBM2eMK60qsGACKxgdXHID3TU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ILo73yX4iJ+wLKzPfEeVBZD7Rdi/+Fk5UuTCOUO15csbNQwNBA/1mEWzwh7ho8jHyxQps8GFtmjMW6Zec7XAhIgxt2MPq2tAlPUgIH3EiFFtoUf+PbdJNd+ugYI7FAeRXp5jbOaDMhlhrZKjQgfaOwL3wc7xPFdk7bLoPX00A6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KDrk3IC/; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1713815955;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uxrzEwSyavPBOJlQAif9+5rStSFz6W1Ij1Eu/oUzLnc=;
+	b=KDrk3IC/L4fgCZN/+vzk/pxjOzeiz0gYdiIHpjWJENRhHn8pIipO19ki11qyDlB8u34hio
+	NF7rl9Pu5kg1b+4vqLwV1dxPUHh4nm0dOv1LQMmzw1Fvo3f9dJk/uAsKji5Ie0B+dwB47o
+	NQ2SaLoRQrxUHYYLeQVokHsiz3pXmXI=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	linux-pci@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	stable@vger.kernel.org,
+	Bharat Kumar Gogada <bharatku@xilinx.com>
+Subject: [PATCH 2/7] PCI: xilinx-nwl: Fix off-by-one
+Date: Mon, 22 Apr 2024 15:58:59 -0400
+Message-Id: <20240422195904.3591683-3-sean.anderson@linux.dev>
+In-Reply-To: <20240422195904.3591683-1-sean.anderson@linux.dev>
+References: <20240422195904.3591683-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
+IRQs start at 0, so we don't need to subtract 1.
 
-The patch titled
-     Subject: mm/userfaultfd: reset ptes when close() for wr-protected ones
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Peter Xu <peterx@redhat.com>
-Subject: mm/userfaultfd: reset ptes when close() for wr-protected ones
-Date: Mon, 22 Apr 2024 09:33:11 -0400
-
-Userfaultfd unregister includes a step to remove wr-protect bits from all
-the relevant pgtable entries, but that only covered an explicit
-UFFDIO_UNREGISTER ioctl, not a close() on the userfaultfd itself.  Cover
-that too.  This fixes a WARN trace.
-
-Link: https://lore.kernel.org/all/000000000000ca4df20616a0fe16@google.com/
-Analyzed-by: David Hildenbrand <david@redhat.com>
-Link: https://lkml.kernel.org/r/20240422133311.2987675-1-peterx@redhat.com
-Reported-by: syzbot+d8426b591c36b21c750e@syzkaller.appspotmail.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Nadav Amit <nadav.amit@gmail.com>
+Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 ---
 
- fs/userfaultfd.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/controller/pcie-xilinx-nwl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/userfaultfd.c~mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones
-+++ a/fs/userfaultfd.c
-@@ -895,6 +895,10 @@ static int userfaultfd_release(struct in
- 			prev = vma;
- 			continue;
- 		}
-+		/* Reset ptes for the whole vma range if wr-protected */
-+		if (userfaultfd_wp(vma))
-+			uffd_wp_range(vma, vma->vm_start,
-+				      vma->vm_end - vma->vm_start, false);
- 		new_flags = vma->vm_flags & ~__VM_UFFD_FLAGS;
- 		vma = vma_modify_flags_uffd(&vmi, prev, vma, vma->vm_start,
- 					    vma->vm_end, new_flags,
-_
-
-Patches currently in -mm which might be from peterx@redhat.com are
-
-mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch
-mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones.patch
-mm-hmm-process-pud-swap-entry-without-pud_huge.patch
-mm-gup-cache-p4d-in-follow_p4d_mask.patch
-mm-gup-check-p4d-presence-before-going-on.patch
-mm-x86-change-pxd_huge-behavior-to-exclude-swap-entries.patch
-mm-sparc-change-pxd_huge-behavior-to-exclude-swap-entries.patch
-mm-arm-use-macros-to-define-pmd-pud-helpers.patch
-mm-arm-redefine-pmd_huge-with-pmd_leaf.patch
-mm-arm64-merge-pxd_huge-and-pxd_leaf-definitions.patch
-mm-powerpc-redefine-pxd_huge-with-pxd_leaf.patch
-mm-gup-merge-pxd-huge-mapping-checks.patch
-mm-treewide-replace-pxd_huge-with-pxd_leaf.patch
-mm-treewide-remove-pxd_huge.patch
-mm-arm-remove-pmd_thp_or_huge.patch
-mm-document-pxd_leaf-api.patch
-mm-always-initialise-folio-_deferred_list-fix.patch
-selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation.patch
-selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation-fix.patch
-mm-kconfig-config_pgtable_has_huge_leaves.patch
-mm-hugetlb-declare-hugetlbfs_pagecache_present-non-static.patch
-mm-make-hpage_pxd_-macros-even-if-thp.patch
-mm-introduce-vma_pgtable_walk_beginend.patch
-mm-arch-provide-pud_pfn-fallback.patch
-mm-arch-provide-pud_pfn-fallback-fix.patch
-mm-gup-drop-folio_fast_pin_allowed-in-hugepd-processing.patch
-mm-gup-refactor-record_subpages-to-find-1st-small-page.patch
-mm-gup-handle-hugetlb-for-no_page_table.patch
-mm-gup-cache-pudp-in-follow_pud_mask.patch
-mm-gup-handle-huge-pud-for-follow_pud_mask.patch
-mm-gup-handle-huge-pmd-for-follow_pmd_mask.patch
-mm-gup-handle-huge-pmd-for-follow_pmd_mask-fix.patch
-mm-gup-handle-hugepd-for-follow_page.patch
-mm-gup-handle-hugetlb-in-the-generic-follow_page_mask-code.patch
-mm-allow-anon-exclusive-check-over-hugetlb-tail-pages.patch
-mm-hugetlb-assert-hugetlb_lock-in-__hugetlb_cgroup_commit_charge.patch
-mm-page_table_check-support-userfault-wr-protect-entries.patch
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index 0408f4d612b5..437927e3bcca 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -371,7 +371,7 @@ static void nwl_mask_intx_irq(struct irq_data *data)
+ 	u32 mask;
+ 	u32 val;
+ 
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
+@@ -385,7 +385,7 @@ static void nwl_unmask_intx_irq(struct irq_data *data)
+ 	u32 mask;
+ 	u32 val;
+ 
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
+-- 
+2.35.1.1320.gc452695387.dirty
 
 
