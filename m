@@ -1,172 +1,149 @@
-Return-Path: <stable+bounces-40386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6628AD1E8
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 18:29:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1DC8AD1F7
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 18:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 531731C20B60
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 16:29:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AAE41F2185C
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 16:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B0115380A;
-	Mon, 22 Apr 2024 16:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631551514CA;
+	Mon, 22 Apr 2024 16:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kkgG4Htf"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UOYb5BBV"
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E57014F11B
-	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 16:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E16D22097
+	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 16:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713803381; cv=none; b=SJPIKLIrN+JggYyDi/zTMm9vjBpXPN91OG4msCcCVsAU1wUJAMfPB/NhF9LSTZ+HmS1b4QwEJGPnVivHyaWXaSPEFEc70WKv40Mg/DS82D2+Jlt66gW9R7lx3uN3YUcM1iHwjJ5bYRUVeufl/q9peqHk+SGuDHlGGa4lTwbKLhY=
+	t=1713803873; cv=none; b=He2w8HXZ/lkl7wKQm5w1QbM9+NsRQaEoqqV8PkmKVXXCQxEZy+nWI7AqUpADFf8lZj2M7APGK8zhjSpURLdI9H2XLYvZw/nqlYEN6CG97u+RlEa37o/DoFBkRKfw30cPm2T+ORcjj5CXBsEj9R+5b/2ZhFs+yhUpMpHmjHgzMCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713803381; c=relaxed/simple;
-	bh=P9aG6NC23QsaUIy270PeCkJiPULoV/ZeUHoxbdAoj/Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oJAIGrmM3AB5Am0c2xSjr3O02G/xu2G82I/a8zDaSQg0DZOu0hn/F8vi4uRufQxXl7XgGiw6NKAa6SBIJE0BJvjyspSsV88rd7ewMMmDq7WdhbyBF3gluYeZJo7V4+dFBEnOjsoraHmLgjfdsJUfXp16mmpOhTfPWLVM1rEr/pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kkgG4Htf; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1713803376;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=J8Qoghwco/VQmgqsF+4q/QYcXZav68r5906wc06JM0A=;
-	b=kkgG4HtfgR6UWSdWZpTEms0r0sHOCM2mSxG2sAUBmafgI+d8QY/yGkRTMTTmywWLl57XZF
-	b5Rs47VzO+kqhnnLeYuB6P5qyD1GZzhAGGrlgle1KdI6rqJBrVEi81XUFRABFzHTyB06V0
-	NumqB0GWISyZ/rDN47M1IHKa7gtM190=
-From: Sean Anderson <sean.anderson@linux.dev>
-To: Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	linux-nvme@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org,
-	Sean Anderson <sean.anderson@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH] nvme-pci: Add quirk for broken MSIs
-Date: Mon, 22 Apr 2024 12:28:23 -0400
-Message-Id: <20240422162822.3539156-1-sean.anderson@linux.dev>
+	s=arc-20240116; t=1713803873; c=relaxed/simple;
+	bh=H6lY9kh62C4YQstjcqSOklbN1ZNSivp/MHHRCWngx/g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kmiMIc1MO8ToVRxPaa+XoHiNLAW8emCwawtSTjMsgrafps9hmeOs+Wv7NxOglVLdMspeIOKFlFSxkiZvVJpGg1EPmdqvQl7uEDLmFoqrER85iAznN5h1t0Emhtpc1hjBrBatjG54CJ3hNpf99uAw0vvMRdcV0NiQnsWC2XMvkxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UOYb5BBV; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-41a5b68ed5cso11734225e9.2
+        for <stable@vger.kernel.org>; Mon, 22 Apr 2024 09:37:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713803870; x=1714408670; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W/RJrrrs8RwvpYrHG7SbHwPY/r0CKqLeGFzxu6oxqWA=;
+        b=UOYb5BBVre+5E6nos39Uiao3CK2OxOG7MUlmz4HX7BqHBw1TSpDWuopt/sKarjM1kF
+         rrCRifJI9Jd4XUemwN6KvHZ63evdivIEU5hnfeMAZjkmn4euqPBTldYEgRI/iipkG93+
+         OXru28yYUvdUMfA5jOyV8HYKOz1Dq5lZonU4dzQKRJ8cBwBZAkZOWOKKRfkZ/EAtYk6O
+         GdPsJOtUC2QtJwAh7+uf9Opfox4LyaWc+rXvebP0PAZhdA2eP1a0czsIqe1nLnYBY3GJ
+         cNSYaqmUFEmbuK5GEi2S6cNNNKgB+bTUEUbVNBYQ9TqtfbpZeEu1gjxW3TlQ4c+7NKH0
+         yL0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713803870; x=1714408670;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W/RJrrrs8RwvpYrHG7SbHwPY/r0CKqLeGFzxu6oxqWA=;
+        b=v/D58V381CJS77FM3YahL2Wi+Q8u5xjM6FSEt/wGO9fFgd0lY3jb3BXtC3YXPo5kqA
+         yF55WtN6osM9ZynNKhw3OSuYOwIBvRoPY5h4rAfTS5BiZZ7//Omt2jfTvZazj1rmZrky
+         4MLjUZL8ZAi2dPR/GAXx4wM9NkNPMED9LXc3E/ZgMo1aVaTBA558yD+10Xtiv2VJV/ZD
+         jYms7ln9+MRD+eM6qn2yTMAOIQSKQ81t5SVSg2sTlB8XK0xmHYAx4DE1Bd+FLYK9qORk
+         m/VJS7VhlWuvc32yHIc7+3cN3Vb1P0/CBQ1zCqoMW+X96GiyF2VGW6+jGnK+wJusA4A9
+         Tsig==
+X-Forwarded-Encrypted: i=1; AJvYcCUvvaqmeFwsgKi0gUMBpgMpgEFCkya5dig05jKInHpse33AAy3jA8peERvra06mPT7JIovUDCswNi3kLFF1UKAnPBJeDa5L
+X-Gm-Message-State: AOJu0YwRFl6yAjXBGakQbafGy4xvg+uyW9FoSZ94Sg5tee+KSPNRVmgR
+	DSSor6PTzhmAFyu6dBtIh4VTACRLoXIYnXmb8xQSygFIX9RmFHScsP1GreJVnqI=
+X-Google-Smtp-Source: AGHT+IEq1dPmWSDiW/s+JYEDdjB58eHF/R/VUvio1ax8A9B8QWPR1f0qHTZyqiH56s6nclUVAWVSJg==
+X-Received: by 2002:a05:600c:4689:b0:418:f308:7fa2 with SMTP id p9-20020a05600c468900b00418f3087fa2mr9531927wmo.14.1713803869838;
+        Mon, 22 Apr 2024 09:37:49 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id jp13-20020a05600c558d00b0041a9a6a2bebsm433343wmb.1.2024.04.22.09.37.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Apr 2024 09:37:49 -0700 (PDT)
+From: Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH v2 0/7] kdb: Refactor and fix bugs in kdb_read()
+Date: Mon, 22 Apr 2024 17:35:53 +0100
+Message-Id: <20240422-kgdb_read_refactor-v2-0-ed51f7d145fe@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOmRJmYC/22N0QrCMAxFf2Xk2Upbtik++R8ypG26LiittFKU0
+ X83DnzzJXBuck9WKD6TL3DqVsi+UqEUGfSuA7eYGLwgZAYtdS97NYhbQHvN3iCP2bhnykJ7o3F
+ 2akBrgYsP3tBrk14m5oUKn723H1V9059u/KerSkhh1dFplEoeRjzfKZqc9ikHmFprHxZbklS1A
+ AAA
+To: Jason Wessel <jason.wessel@windriver.com>, 
+ Douglas Anderson <dianders@chromium.org>
+Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
+ Daniel Thompson <daniel.thompson@linaro.org>, 
+ Justin Stitt <justinstitt@google.com>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1729;
+ i=daniel.thompson@linaro.org; h=from:subject:message-id;
+ bh=H6lY9kh62C4YQstjcqSOklbN1ZNSivp/MHHRCWngx/g=;
+ b=owEBbQKS/ZANAwAKAXzjJV0594ihAcsmYgBmJpHtkKsfkSXNmY9hGFqe83qhrZ53UoPZO663u
+ 6hQPnNvMfWJAjMEAAEKAB0WIQQvNUFTUPeVarpwrPB84yVdOfeIoQUCZiaR7QAKCRB84yVdOfeI
+ oeekEACbufg6Gh/VvIIcYb0alGNjOAr7Mt/Xh2T+vBP1rKQ59CIlF6jekwGOWqZrLQWxvngMN7r
+ +1H7M9HRBfuW8EHdOtLkncBL+Zc9sO9XlAVbp0tEZA93WzyFrqZuFUqZVGcVP+RKn76blnYgCLE
+ gkJpCWKRBW+N8amQNP6rmLhZjjVpTuv/0QpPKbkNXbxhUZBrFnrsH+8FkSpx8xwmt6MyTqjKZVJ
+ KUynxaIMBXMyjMv81FgnTojX2NAB8NynwrsxCnhfc/LX5KzKIjCDijYP2wfWpT37VBE4rpiI0rZ
+ qrDgjhRPg0DeHPiKdtjIEOgbD+n5HlWU/iKzNFWpytkKyfFES/3O2Vx2RkkwgXQlUOcBlUJ3HkC
+ gUF217AgffkBRamyjOqPYZszjG4BUibaJTbNmeNK3Oz8p4sSI8y3bW+mgg/t0d/bvSt94f3VUQ/
+ R/7k40vyL2vrEMSks/kE9e3jUSMWtKe/yWKUueWEi9ILZkSYTrPZhO5H5PdMG0EsJ/Fp914tDgf
+ oGRPWvoUXinJrvLaMgbFYVoGoig80vjilbwmvbYlq/qypUMCUFOnreglL3HSexrsHxykbrEDM82
+ 3JzFHDOlReG7Tcn/GMLAzhQ+o19Akf1JEgaGExm6F6Ce5lH8TLcBpmcbTaQSXpdH25RMZ6FLB52
+ 3Kf8+wJ5FwwDsaw==
+X-Developer-Key: i=daniel.thompson@linaro.org; a=openpgp;
+ fpr=E38BE19861669213F6E2661AA8A4E3BC5B7B28BE
 
-Sandisk SN530 NVMe drives have broken MSIs. On systems without MSI-X
-support, all commands time out resulting in the following message:
+Inspired by a patch from [Justin][1] I took a closer look at kdb_read().
 
-nvme nvme0: I/O tag 12 (100c) QID 0 timeout, completion polled
+Despite Justin's patch being a (correct) one-line manipulation it was a
+tough patch to review because the surrounding code was hard to read and
+it looked like there were unfixed problems.
 
-These timeouts cause the boot to take an excessively-long time (over 20
-minutes) while the initial command queue is flushed.
+This series isn't enough to make kdb_read() beautiful but it does make
+it shorter, easier to reason about and fixes two buffer overflows and a
+screen redraw problem!
 
-Address this by adding a quirk for drives with buggy MSIs. The lspci
-output for this device (recorded on a system with MSI-X support) is:
+[1]: https://lore.kernel.org/all/20240403-strncpy-kernel-debug-kdb-kdb_io-c-v1-1-7f78a08e9ff4@google.com/
 
-02:00.0 Non-Volatile memory controller: Sandisk Corp Device 5008 (rev 01) (prog-if 02 [NVM Express])
-	Subsystem: Sandisk Corp Device 5008
-	Flags: bus master, fast devsel, latency 0, IRQ 16, NUMA node 0
-	Memory at f7e00000 (64-bit, non-prefetchable) [size=16K]
-	Memory at f7e04000 (64-bit, non-prefetchable) [size=256]
-	Capabilities: [80] Power Management version 3
-	Capabilities: [90] MSI: Enable- Count=1/32 Maskable- 64bit+
-	Capabilities: [b0] MSI-X: Enable+ Count=17 Masked-
-	Capabilities: [c0] Express Endpoint, MSI 00
-	Capabilities: [100] Advanced Error Reporting
-	Capabilities: [150] Device Serial Number 00-00-00-00-00-00-00-00
-	Capabilities: [1b8] Latency Tolerance Reporting
-	Capabilities: [300] Secondary PCI Express
-	Capabilities: [900] L1 PM Substates
-	Kernel driver in use: nvme
-	Kernel modules: nvme
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 ---
+Changes in v2:
+- No code changes!
+- I belatedly realized that one of the cleanups actually fixed a buffer
+  overflow so there are changes to Cc: (to add stable@...) and to one
+  of the patch descriptions.
+- Link to v1: https://lore.kernel.org/r/20240416-kgdb_read_refactor-v1-0-b18c2d01076d@linaro.org
 
- drivers/nvme/host/nvme.h |  5 +++++
- drivers/nvme/host/pci.c  | 14 +++++++++++---
- 2 files changed, 16 insertions(+), 3 deletions(-)
+---
+Daniel Thompson (7):
+      kdb: Fix buffer overflow during tab-complete
+      kdb: Use format-strings rather than '\0' injection in kdb_read()
+      kdb: Fix console handling when editing and tab-completing commands
+      kdb: Merge identical case statements in kdb_read()
+      kdb: Use format-specifiers rather than memset() for padding in kdb_read()
+      kdb: Replace double memcpy() with memmove() in kdb_read()
+      kdb: Simplify management of tmpbuffer in kdb_read()
 
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 7b87763e2f8a..738719085e05 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -162,6 +162,11 @@ enum nvme_quirks {
- 	 * Disables simple suspend/resume path.
- 	 */
- 	NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND	= (1 << 20),
-+
-+	/*
-+	 * MSI (but not MSI-X) interrupts are broken and never fire.
-+	 */
-+	NVME_QUIRK_BROKEN_MSI			= (1 << 21),
- };
- 
- /*
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index e6267a6aa380..d1f0fa2e7c96 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2218,6 +2218,7 @@ static int nvme_setup_irqs(struct nvme_dev *dev, unsigned int nr_io_queues)
- 		.priv		= dev,
- 	};
- 	unsigned int irq_queues, poll_queues;
-+	unsigned int flags = PCI_IRQ_ALL_TYPES | PCI_IRQ_AFFINITY;
- 
- 	/*
- 	 * Poll queues don't need interrupts, but we need at least one I/O queue
-@@ -2241,8 +2242,10 @@ static int nvme_setup_irqs(struct nvme_dev *dev, unsigned int nr_io_queues)
- 	irq_queues = 1;
- 	if (!(dev->ctrl.quirks & NVME_QUIRK_SINGLE_VECTOR))
- 		irq_queues += (nr_io_queues - poll_queues);
--	return pci_alloc_irq_vectors_affinity(pdev, 1, irq_queues,
--			      PCI_IRQ_ALL_TYPES | PCI_IRQ_AFFINITY, &affd);
-+	if (dev->ctrl.quirks & NVME_QUIRK_BROKEN_MSI)
-+		flags &= ~PCI_IRQ_MSI;
-+	return pci_alloc_irq_vectors_affinity(pdev, 1, irq_queues, flags,
-+					      &affd);
- }
- 
- static unsigned int nvme_max_io_queues(struct nvme_dev *dev)
-@@ -2471,6 +2474,7 @@ static int nvme_pci_enable(struct nvme_dev *dev)
- {
- 	int result = -ENOMEM;
- 	struct pci_dev *pdev = to_pci_dev(dev->dev);
-+	unsigned int flags = PCI_IRQ_ALL_TYPES;
- 
- 	if (pci_enable_device_mem(pdev))
- 		return result;
-@@ -2487,7 +2491,9 @@ static int nvme_pci_enable(struct nvme_dev *dev)
- 	 * interrupts. Pre-enable a single MSIX or MSI vec for setup. We'll
- 	 * adjust this later.
- 	 */
--	result = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
-+	if (dev->ctrl.quirks & NVME_QUIRK_BROKEN_MSI)
-+		flags &= ~PCI_IRQ_MSI;
-+	result = pci_alloc_irq_vectors(pdev, 1, 1, flags);
- 	if (result < 0)
- 		goto disable;
- 
-@@ -3381,6 +3387,8 @@ static const struct pci_device_id nvme_id_table[] = {
- 		.driver_data = NVME_QUIRK_DELAY_BEFORE_CHK_RDY |
- 				NVME_QUIRK_DISABLE_WRITE_ZEROES|
- 				NVME_QUIRK_IGNORE_DEV_SUBNQN, },
-+	{ PCI_DEVICE(0x15b7, 0x5008),   /* Sandisk SN530 */
-+		.driver_data = NVME_QUIRK_BROKEN_MSI },
- 	{ PCI_DEVICE(0x1987, 0x5012),	/* Phison E12 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1987, 0x5016),	/* Phison E16 */
+ kernel/debug/kdb/kdb_io.c | 133 ++++++++++++++++++++--------------------------
+ 1 file changed, 58 insertions(+), 75 deletions(-)
+---
+base-commit: dccce9b8780618986962ba37c373668bcf426866
+change-id: 20240415-kgdb_read_refactor-2ea2dfc15dbb
+
+Best regards,
 -- 
-2.35.1.1320.gc452695387.dirty
+Daniel Thompson <daniel.thompson@linaro.org>
 
 
