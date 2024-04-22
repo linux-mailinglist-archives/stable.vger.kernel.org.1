@@ -1,172 +1,218 @@
-Return-Path: <stable+bounces-40381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6857A8AD053
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 17:10:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438D88AD073
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 17:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20102288E34
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 15:10:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD3F1F218BF
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 15:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF46152522;
-	Mon, 22 Apr 2024 15:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F37A1534E2;
+	Mon, 22 Apr 2024 15:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QfI0QTu0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ElRNR3hV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168845025E;
-	Mon, 22 Apr 2024 15:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD617153505
+	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 15:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713798620; cv=none; b=qCwnLYU6a88on0wcwX8vBo4HdeTy+bfaC3/3VgcDwXBg/UgvFtpKzPR739tJZxtl0aK9MqAcs0WrV78wsBKGXyqkxFw7BTHY5xIIsjxw+v6FCCn9JDsWtxYBnlOfUdWZldxTcUMC9x0cSQC+R/w0vfE0lF2k6CRjPbI5QWKE80o=
+	t=1713799090; cv=none; b=MjhUrSI9HwYBDnNjZ1+aEOoqc1/w4RYSHht/L8LfKtDQoEAmsr0DCwM73A5KCFBiOF1Ohn8cFenLpeLmB23eq2nfG+CyRQMt4x17KJ5E0zL68aU9U7wC1c/Pbv0WvG3fZS5kHgrQTmpIxAIYo8wnMTdOq9VTGytJqpyilwTXq98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713798620; c=relaxed/simple;
-	bh=Yt8xkX0N3nbNBABJMLTLHbcx2YsWeUS8NaA+r9e8Kt0=;
-	h=Date:Message-Id:From:To:Cc:Subject:In-Reply-To; b=fgdrfHH4dk9m5Hcn396XxAvx2IjbvAhe9nPMnvMME425nvBGPP72SpdgAYKzFDYeNnCrGNc7Z5eFCBw3KDVqIlXGg3hlkijIom1z0QufCVwySVwBED2flNr2+VzuwC1CrA6TDj1PYnZ69wp5/2LeUZUbFZ+Jkd2HHqnHuRsd02I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QfI0QTu0; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1713799090; c=relaxed/simple;
+	bh=egAKcaQhm4QwS4uKVQDr57jjtMoFh1CKVEFLITqf4YE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=frreXTNpyf5O/wYQjl1c6hd5kX5V953dbHEAY5KB9mlcofxkG9HsxYYZorYqK635nu2KLM4RVdweVlPiKOyEHVxp6y+Ua/CcQpJiAdUsfnV965yzax4ZyutCKsjCW+y3fKu4rUiZjXmwNAMWMsf/gHKXoPM+b//nUr6T8mW/bKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ElRNR3hV; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6ed20fb620fso3757260b3a.2;
-        Mon, 22 Apr 2024 08:10:18 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56e6affdd21so1561711a12.3
+        for <stable@vger.kernel.org>; Mon, 22 Apr 2024 08:18:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713798618; x=1714403418; darn=vger.kernel.org;
-        h=in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gNrs7+bJ32cKaNctOjioC+KE9Cj3gAa7cu0czlLxGY4=;
-        b=QfI0QTu0/jyfXVUSfU7UWeC7fdNHy+FG2geP4YVjNPOIIkFCH9L2K38yhnpxvYtsda
-         k7NJNZacGlwEgX20KJv3uYqWHqV2tG9RgiXVqxi6LHOxwbzemZs4d2ZjHUXDYLPBwUZg
-         3lHlTgo1VocIcgGCIElcZch/RcuDhTSqIkqgOFgxBSmc02v9nkhw3ucSmtZrP39lNyv3
-         Fbot7u09uf3znE48B0YLdRSx4xZI1K+WZQ4WVv/6vZ/2x/UW1LdR36SN7A4G1AmxSKy0
-         fRZuzphWGp9gFw27lRE3BjLTT25GgvXJAWxAnRyx4MSW6jeOKuykhdfztko7LusOyhun
-         0y6Q==
+        d=gmail.com; s=20230601; t=1713799086; x=1714403886; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d9xj7HwmwuIRzsMLAZWeyWIJzUgtPFLJ8hFtN2pvdUw=;
+        b=ElRNR3hVUEOMSXIsCS0BdIUjbBxXt0hkzEsxhbsb85bOB224owjRLDCmFTt2rO3xQf
+         c6Uyw8jFyoxr4JEqYYr0TKeZUL3QTVlXohXmDxW03wllHzrBR9diTREz0iIoTEO+5zmQ
+         HUNgx3nln8MXxIVTMjAJIkjKkWq8QJtSnm5qenKM9u5mcvf5ICebAdjqtMeq6GN5nbae
+         MutVwT5wyw0rWBEYsH94S37/Z4XNaQQgqKeG+BdeNX2/rusrS9zomPqnDsy0LZaTWg34
+         H1t+wHgOm6tSipCVDOncx9IWO/xTsZkRQmnaI1q+2sHRELBK7URziVi/H/+wMYdadQdv
+         gO3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713798618; x=1714403418;
-        h=in-reply-to:subject:cc:to:from:message-id:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gNrs7+bJ32cKaNctOjioC+KE9Cj3gAa7cu0czlLxGY4=;
-        b=AxFPfhZWcLHWOP4wtR1g63sZdWSsr8vm1XYjZXJz70cs4nYEtQdZtQd7/uPJ0wqpJn
-         oOfF7Fky645RKwg9OkejPPeNgbOyX46z6CLhgC0fa7nvrHwOXtrODGeIAdhPXh9KwF2k
-         pfhKOgTbeTgGY9FdTLmksA1QyzVyR/XPcJSW6+Aey/e7KMKtqrNtPg6xAci8DN/mFDnV
-         kCmtRbGN4wjXKvsNkl2g7Ngu/H5V34blgmHyDOTUW6kRlugUj/cRJVrvc9i9Z7fcqE4j
-         EB4ZMyQIZbwiY/lAToUW60epH32Us2Sln04RHC+g/8pyyt7LXU3ZBTdINbLtBy7AnSHN
-         P/hA==
-X-Forwarded-Encrypted: i=1; AJvYcCXu6tDpDiLd1jlVpMzAxJ8F8617E13c/FoCq2FpIbBQIfA8+dxaj3ICdMIEzZs2meVflJ8ly3O5nAXNkEYIGkz90napuN0J
-X-Gm-Message-State: AOJu0Yygdcl+QrS3Y9dXLzt4W4okJo7eBoQtlfyWtyFeQuWawe1wivo6
-	N51AMi8zmKasueO+ic2yMA4eFWW3A3utkJxASdtp1+XOo2ksfsbY0bkQLlbM
-X-Google-Smtp-Source: AGHT+IHDNzsY4d3Q0b4UVY5LCW618G1RRmCZh82VLR8jRuC6damal3HdfFvzYkRd8KE0X3rEFcK+hw==
-X-Received: by 2002:a05:6a20:101a:b0:1a7:bb6d:6589 with SMTP id gs26-20020a056a20101a00b001a7bb6d6589mr8925877pzc.29.1713798617717;
-        Mon, 22 Apr 2024 08:10:17 -0700 (PDT)
-Received: from dw-tp ([171.76.85.139])
-        by smtp.gmail.com with ESMTPSA id q23-20020a62ae17000000b006ed64f4767asm7935370pff.112.2024.04.22.08.10.15
+        d=1e100.net; s=20230601; t=1713799086; x=1714403886;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=d9xj7HwmwuIRzsMLAZWeyWIJzUgtPFLJ8hFtN2pvdUw=;
+        b=HGVrva07xrrWnFaeGMo3MNbJm5mNgkrbXjFQVTMIB6XuX9mO1j1HuutBiIC1HLr/Op
+         LOnbGoStAEcuekTus909yPp07EAe3jGOQx2+rlahdDvynjk7HlBbK3H/UxoNCs5Jj9QA
+         aVaol5ej8l2891QnFGVh4a9E5oBivr8Mwj7yUjGMCzaOy1zVj+udkxM+PnGJTLeHuDJa
+         UJhfCgrQZaZd6gEfXHL8s0mYFKloXABWN9rOrE5cWwYIMxYtdVUKThT45HoPwAPfLbE4
+         5OoTPik2vUNvM+6ej6zk1+pMpEvCEDIn5Xtva+GYPF7JKeoQ9cHFoodODUGHJIyIgHks
+         IYCA==
+X-Gm-Message-State: AOJu0YwP6oiWCZnvnu5GfZWWMdva+pYyxOEZsRid+HdB4LXbcPt2tyY5
+	c4GzCFylb1HXS3Ryx4lqoP/dZA3la9yBZnSpDjX6O8HPVcq69Vuyqfxs7BeBaJI=
+X-Google-Smtp-Source: AGHT+IE0xIZcSiuCSsz7uHwpkq02z/02QgEoSLowEQ4mDuOxo6EQH/+kgcM7JeLLwXtgGDXeB3sn2Q==
+X-Received: by 2002:a05:6402:524c:b0:572:1574:2b88 with SMTP id t12-20020a056402524c00b0057215742b88mr1242248edd.40.1713799086256;
+        Mon, 22 Apr 2024 08:18:06 -0700 (PDT)
+Received: from localhost (fwdproxy-lla-007.fbsv.net. [2a03:2880:30ff:7::face:b00c])
+        by smtp.gmail.com with ESMTPSA id p8-20020a05640243c800b00571fad0647csm2411769edc.74.2024.04.22.08.18.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Apr 2024 08:10:17 -0700 (PDT)
-Date: Mon, 22 Apr 2024 20:40:03 +0530
-Message-Id: <87ttjto2lw.fsf@gmail.com>
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Dave Chinner <david@fromorbit.com>
-Cc: linux-xfs@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>, Ojaswin Mujoo <ojaswin@linux.ibm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] xfs: Add cond_resched to xfs_defer_finish_noroll
-In-Reply-To: <ZiWjbWrD60W/0s/F@dread.disaster.area>
+        Mon, 22 Apr 2024 08:18:05 -0700 (PDT)
+From: Vlad Poenaru <vlad.wing@gmail.com>
+To: stable@vger.kernel.org
+Cc: Breno Leitao <leitao@debian.org>,
+	qemu-devel@nongnu.org,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Subject: [PATCH 6.6.y] virtio_net: Do not send RSS key if it is not supported
+Date: Mon, 22 Apr 2024 08:18:03 -0700
+Message-ID: <20240422151803.1266071-1-vlad.wing@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024041412-subduing-brewing-cd04@gregkh>
+References: <2024041412-subduing-brewing-cd04@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Dave Chinner <david@fromorbit.com> writes:
+From: Breno Leitao <leitao@debian.org>
 
-> On Sun, Apr 21, 2024 at 01:19:44PM +0530, Ritesh Harjani (IBM) wrote:
->> An async dio write to a sparse file can generate a lot of extents
->> and when we unlink this file (using rm), the kernel can be busy in umapping
->> and freeing those extents as part of transaction processing.
->> Add cond_resched() in xfs_defer_finish_noroll() to avoid soft lockups
->> messages. Here is a call trace of such soft lockup.
->> 
->> watchdog: BUG: soft lockup - CPU#1 stuck for 23s! [rm:81335]
->> CPU: 1 PID: 81335 Comm: rm Kdump: loaded Tainted: G             L X    5.14.21-150500.53-default
->
-> Can you reproduce this on a current TOT kernel? 5.14 is pretty old,
-> and this stack trace:
->
+commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream.
 
-Yes, I was able to reproduce this on upstream kernel too -
+There is a bug when setting the RSS options in virtio_net that can break
+the whole machine, getting the kernel into an infinite loop.
 
-    watchdog: BUG: soft lockup - CPU#1 stuck for 22s! [kworker/1:0:82435]
-    CPU: 1 PID: 82435 Comm: kworker/1:0 Tainted: G S  L   6.9.0-rc5-0-default #1
-    Workqueue: xfs-inodegc/sda2 xfs_inodegc_worker
-    NIP [c000000000beea10] xfs_extent_busy_trim+0x100/0x290
-    LR [c000000000bee958] xfs_extent_busy_trim+0x48/0x290
-    Call Trace:
-      xfs_alloc_get_rec+0x54/0x1b0 (unreliable)
-      xfs_alloc_compute_aligned+0x5c/0x144
-      xfs_alloc_ag_vextent_size+0x238/0x8d4
-      xfs_alloc_fix_freelist+0x540/0x694
-      xfs_free_extent_fix_freelist+0x84/0xe0
-      __xfs_free_extent+0x74/0x1ec
-      xfs_extent_free_finish_item+0xcc/0x214
-      xfs_defer_finish_one+0x194/0x388
-      xfs_defer_finish_noroll+0x1b4/0x5c8
-      xfs_defer_finish+0x2c/0xc4
-      xfs_bunmapi_range+0xa4/0x100
-      xfs_itruncate_extents_flags+0x1b8/0x2f4
-      xfs_inactive_truncate+0xe0/0x124
-      xfs_inactive+0x30c/0x3e0
-      xfs_inodegc_worker+0x140/0x234
-      process_scheduled_works+0x240/0x57c
-      worker_thread+0x198/0x468
-      kthread+0x138/0x140
-      start_kernel_thread+0x14/0x18
+Running the following command in any QEMU virtual machine with virtionet
+will reproduce this problem:
 
+    # ethtool -X eth0  hfunc toeplitz
 
->> NIP [c00800001b174768] xfs_extent_busy_trim+0xc0/0x2a0 [xfs]
->> LR [c00800001b1746f4] xfs_extent_busy_trim+0x4c/0x2a0 [xfs]
->> Call Trace:
->>  0xc0000000a8268340 (unreliable)
->>  xfs_alloc_compute_aligned+0x5c/0x150 [xfs]
->>  xfs_alloc_ag_vextent_size+0x1dc/0x8c0 [xfs]
->>  xfs_alloc_ag_vextent+0x17c/0x1c0 [xfs]
->>  xfs_alloc_fix_freelist+0x274/0x4b0 [xfs]
->>  xfs_free_extent_fix_freelist+0x84/0xe0 [xfs]
->>  __xfs_free_extent+0xa0/0x240 [xfs]
->>  xfs_trans_free_extent+0x6c/0x140 [xfs]
->>  xfs_defer_finish_noroll+0x2b0/0x650 [xfs]
->>  xfs_inactive_truncate+0xe8/0x140 [xfs]
->>  xfs_fs_destroy_inode+0xdc/0x320 [xfs]
->>  destroy_inode+0x6c/0xc0
->
-> .... doesn't exist anymore.
->
-> xfs_inactive_truncate() is now done from a
-> background inodegc thread, not directly in destroy_inode().
->
-> I also suspect that any sort of cond_resched() should be in the top
-> layer loop in xfs_bunmapi_range(), not hidden deep in the defer
-> code. The problem is the number of extents being processed without
-> yielding, not the time spent processing each individual deferred
-> work chain to free the extent. Hence the explicit rescheduling
-> should be at the top level loop where it can be easily explained and
-> understand, not hidden deep inside the defer chain mechanism....
+This is how the problem happens:
 
-Yes, sure. I will submit a v2 with this diff then (after I verify the
-fix once on the setup, just for my sanity)
+1) ethtool_set_rxfh() calls virtnet_set_rxfh()
 
-diff --git a/fs/xfs/libxfs/xfs_bmap.c b/fs/xfs/libxfs/xfs_bmap.c
-index 656c95a22f2e..44d5381bc66f 100644
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -6354,6 +6354,7 @@ xfs_bunmapi_range(
-                error = xfs_defer_finish(tpp);
-                if (error)
-                        goto out;
-+               cond_resched();
-        }
- out:
-        return error;
+2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
 
+3) virtnet_commit_rss_command() populates 4 entries for the rss
+scatter-gather
 
--ritesh
+4) Since the command above does not have a key, then the last
+scatter-gatter entry will be zeroed, since rss_key_size == 0.
+sg_buf_size = vi->rss_key_size;
+
+5) This buffer is passed to qemu, but qemu is not happy with a buffer
+with zero length, and do the following in virtqueue_map_desc() (QEMU
+function):
+
+  if (!sz) {
+      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
+
+6) virtio_error() (also QEMU function) set the device as broken
+
+    vdev->broken = true;
+
+7) Qemu bails out, and do not repond this crazy kernel.
+
+8) The kernel is waiting for the response to come back (function
+virtnet_send_command())
+
+9) The kernel is waiting doing the following :
+
+      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
+	     !virtqueue_is_broken(vi->cvq))
+	      cpu_relax();
+
+10) None of the following functions above is true, thus, the kernel
+loops here forever. Keeping in mind that virtqueue_is_broken() does
+not look at the qemu `vdev->broken`, so, it never realizes that the
+vitio is broken at QEMU side.
+
+Fix it by not sending RSS commands if the feature is not available in
+the device.
+
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Cc: stable@vger.kernel.org
+Cc: qemu-devel@nongnu.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
+---
+ drivers/net/virtio_net.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 7cb0548d17a3..56cbe00126bb 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3570,19 +3570,34 @@ static int virtnet_get_rxfh(struct net_device *dev, u32 *indir, u8 *key, u8 *hfu
+ static int virtnet_set_rxfh(struct net_device *dev, const u32 *indir, const u8 *key, const u8 hfunc)
+ {
+ 	struct virtnet_info *vi = netdev_priv(dev);
++	bool update = false;
+ 	int i;
+ 
+ 	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (indir) {
++		if (!vi->has_rss)
++			return -EOPNOTSUPP;
++
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+ 			vi->ctrl->rss.indirection_table[i] = indir[i];
++		update = true;
+ 	}
+-	if (key)
++	if (key) {
++		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
++		 * device provides hash calculation capabilities, that is,
++		 * hash_key is configured.
++		 */
++		if (!vi->has_rss && !vi->has_rss_hash_report)
++			return -EOPNOTSUPP;
++
+ 		memcpy(vi->ctrl->rss.key, key, vi->rss_key_size);
++		update = true;
++	}
+ 
+-	virtnet_commit_rss_command(vi);
++	if (update)
++		virtnet_commit_rss_command(vi);
+ 
+ 	return 0;
+ }
+@@ -4491,13 +4506,15 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
+ 		vi->has_rss_hash_report = true;
+ 
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
++	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
+ 		vi->has_rss = true;
+ 
+-	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_indir_table_size =
+ 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
+ 				rss_max_indirection_table_length));
++	}
++
++	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+ 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+ 
+-- 
+2.43.0
+
 
