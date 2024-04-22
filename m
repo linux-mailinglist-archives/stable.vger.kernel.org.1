@@ -1,167 +1,222 @@
-Return-Path: <stable+bounces-40398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1485B8AD37E
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 19:51:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF928AD3CE
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 20:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CB0BB237D1
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 17:50:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF3C81C20D73
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 18:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0599153BF5;
-	Mon, 22 Apr 2024 17:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993D7154448;
+	Mon, 22 Apr 2024 18:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="To7dC6M/"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="chkmHGeE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD114153BF7
-	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 17:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B8215443D;
+	Mon, 22 Apr 2024 18:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713808255; cv=none; b=gKhjxJqidJtKCJgznEiK3rWUGw6M1QMtWRvyzeBNC8lzRlGO324jusKzjsc+vrJayMQr4BjzMydCVEmnq3qCtmhLYy6qxdWAc+O5/mGdw+/F7ZwaiVlYLRfP9E+fYOnYVpIDHfK/jveEME1kZI05IbzpRbxNcRU4P/k9InkJmzA=
+	t=1713810201; cv=none; b=cvscbCl2xn7dsUgEvas5R72kcdTVXQ7emGFo9RSojI5FwT3Dh2bGax8D3yDY0JtzqTMB73glnWGip1Ti4GfubA4HOWly8uBcBD8ziXXMdBl1Wfo9kJL8DC5rAllkRRu/yUafBp084B+kjBq3QbrFfWh8/FjDHfvLfL5BZhfcWLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713808255; c=relaxed/simple;
-	bh=PedKjQ4IchNk0puiU4eLptdz+f6auezzylZJfV3vp0I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MNfx0qTf4EV8D3zDSQ8yyDdeZkplyQzrEkTHIrarnPpQ6uzCxG+dcI3bmp5LbaTozTUbbFtjUQxYqzJNaUlX3wodiSPD8UITlU13rLfsP/QAA4qb7gp8GP3swTUxEv9gsRbCYEgiUWzRm4ns8UT1kMuKIIDDRjXVI1z8PwoUBf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=To7dC6M/; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-78f05afc8d6so325754585a.3
-        for <stable@vger.kernel.org>; Mon, 22 Apr 2024 10:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1713808252; x=1714413052; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IPoRNKoBlgwzxEWzxuaC/lQKyisFmyEGkELxXi0f2xY=;
-        b=To7dC6M/PmdEevzayY5EkU9GpBjHKe8PW4TALzgY1zmNd89YbjoWzBzVhC+6xt8W5b
-         d/C/UOS98N5eqLGk/0ui4dVS11rkxB+ZvJXi1aGj5fc2BeSkBaUC2yCYxlMTTL/zneCX
-         0tcecKOXd1keoqHi7NHn8Frkm41nw7meIe6yc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713808252; x=1714413052;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IPoRNKoBlgwzxEWzxuaC/lQKyisFmyEGkELxXi0f2xY=;
-        b=nxP0qRe0emyXpuGrKa10Gou8BYqTkiZtDjk2yAk/lJeX3oEHeNK1SAG+224oQnHOAS
-         7AslClPIaCcOX2rzWaJm36Ynqd+th7eRm9AwEJW1e3R42myyMv939gkB7GP0/QHtuNan
-         gY1h+3ih7nGbceJZD0OelLhQGCVU0TAloK/1OJymqUDY7kqgBlDXPHHla0PICOoXBS+I
-         5QGh3RLWoRtiCJXhFJgelOVe7IvoflSMQL8xZhQjTaSMD45mWPGznHSTCqYZZxWSxO5V
-         2UTc6Zc1GGvHYFqlkbKdKHceTfttIHJXibZpyuEB0cL66GE5GX8rq29UOEcKp+gP9pj8
-         pWHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCpgUc39k3adMogiLJzS1lya/onB3Xgy1Sntd2ThLRdqEMx8zYhQGO7FbTf/bTExiqIl9v4FtwHQNV06rM1Rhj27b2L4wI
-X-Gm-Message-State: AOJu0YwxvQsr8YsiA5n5ti6zMAC4o6aOm1+iYMfht8d0rSYw2859Lo7b
-	WN0fUQHKlyTZoPDD2ZXzHJhRaqgr5Ntwq2hLBHSer2MJmD2QDGfulZIpWUtRjvot4IJ1WcG9N7k
-	=
-X-Google-Smtp-Source: AGHT+IEIxXP1hahlW4V2qM1qgblbtbCNHOaLgSb5+/l5MQTy65a4+q5g/T0NCL3J5WXQK00UV1rO+w==
-X-Received: by 2002:a05:620a:4fa:b0:78a:f3:34eb with SMTP id b26-20020a05620a04fa00b0078a00f334ebmr12482172qkh.23.1713808251792;
-        Mon, 22 Apr 2024 10:50:51 -0700 (PDT)
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com. [209.85.160.182])
-        by smtp.gmail.com with ESMTPSA id bi39-20020a05620a31a700b0078d66ed5e41sm4454497qkb.131.2024.04.22.10.50.50
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Apr 2024 10:50:51 -0700 (PDT)
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-434ffc2b520so18291cf.0
-        for <stable@vger.kernel.org>; Mon, 22 Apr 2024 10:50:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV1pGD999nCeEbkG5SIFFJGzMPtV/SZvqkxhXl8MhPOARqFuUtnsSATjHfrzRWMo20TN2Yj0npH2VcRsxn9a/OZaAngHLB6
-X-Received: by 2002:a05:622a:a097:b0:437:75be:9111 with SMTP id
- jv23-20020a05622aa09700b0043775be9111mr9752qtb.1.1713808250395; Mon, 22 Apr
- 2024 10:50:50 -0700 (PDT)
+	s=arc-20240116; t=1713810201; c=relaxed/simple;
+	bh=Ru5ZB5vIAH0fi1eFLsi9W+vcowjm9Z3/1FXenThHwPk=;
+	h=Date:To:From:Subject:Message-Id; b=b2cDU7QUgUe/RA2N4IJ2RErDg/AOHR6OZJjwav5672KGeDb93tYAn5L7NcSnj/VVHVBqPwmjO6E92fEWJj2G+rmbJn0nCNgFm1bV8oPdix1eZllONUOlO/wvK2lBRiVbVWiK0vVvkvFej+iVnr2BLqFhR1IXx14cAk/AVdAXLxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=chkmHGeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922E4C116B1;
+	Mon, 22 Apr 2024 18:23:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1713810200;
+	bh=Ru5ZB5vIAH0fi1eFLsi9W+vcowjm9Z3/1FXenThHwPk=;
+	h=Date:To:From:Subject:From;
+	b=chkmHGeETaajb6t7HqMvGLBk1itnoerxhQDRkvuAiVzz176J3MkS2uS4YEnZRbB93
+	 kRs8pXiO790KS4zjJFo3KqJmQMknEtQfhNG2pwgmFtTciSR9rNWtUUKgVZzXqaEp93
+	 PKgoQWvRNX0IO73iUXclsu9dK25ih8Nb315RxhZE=
+Date: Mon, 22 Apr 2024 11:23:20 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mhiramat@kernel.org,qiang4.zhang@intel.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [alternative-merged] bootconfig-use-memblock_free_late-to-free-xbc-memory-to-buddy.patch removed from -mm tree
+Message-Id: <20240422182320.922E4C116B1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240416091509.19995-1-johan+linaro@kernel.org>
-In-Reply-To: <20240416091509.19995-1-johan+linaro@kernel.org>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 22 Apr 2024 10:50:33 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
-Message-ID: <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
-Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Matthias Kaehlcke <mka@chromium.org>, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>, stable@vger.kernel.org, 
-	Stephen Boyd <swboyd@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Tue, Apr 16, 2024 at 2:17=E2=80=AFAM Johan Hovold <johan+linaro@kernel.o=
-rg> wrote:
->
-> Qualcomm Bluetooth controllers may not have been provisioned with a
-> valid device address and instead end up using the default address
-> 00:00:00:00:5a:ad.
->
-> This was previously believed to be due to lack of persistent storage for
-> the address but it may also be due to integrators opting to not use the
-> on-chip OTP memory and instead store the address elsewhere (e.g. in
-> storage managed by secure world firmware).
->
-> According to Qualcomm, at least WCN6750, WCN6855 and WCN7850 have
-> on-chip OTP storage for the address.
->
-> As the device type alone cannot be used to determine when the address is
-> valid, instead read back the address during setup() and only set the
-> HCI_QUIRK_USE_BDADDR_PROPERTY flag when needed.
->
-> This specifically makes sure that controllers that have been provisioned
-> with an address do not start as unconfigured.
->
-> Reported-by: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-> Link: https://lore.kernel.org/r/124a7d54-5a18-4be7-9a76-a12017f6cce5@quic=
-inc.com/
-> Fixes: 5971752de44c ("Bluetooth: hci_qca: Set HCI_QUIRK_USE_BDADDR_PROPER=
-TY for wcn3990")
-> Fixes: e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD addres=
-s missing in dts")
-> Fixes: 6945795bc81a ("Bluetooth: fix use-bdaddr-property quirk")
-> Cc: stable@vger.kernel.org      # 6.5
-> Cc: Matthias Kaehlcke <mka@chromium.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->  drivers/bluetooth/btqca.c   | 38 +++++++++++++++++++++++++++++++++++++
->  drivers/bluetooth/hci_qca.c |  2 --
->  2 files changed, 38 insertions(+), 2 deletions(-)
->
->
-> Matthias and Doug,
->
-> As Chromium is the only known user of the 'local-bd-address' property,
-> could you please confirm that your controllers use the 00:00:00:00:5a:ad
-> address by default so that the quirk continues to be set as intended?
-
-I was at EOSS last week so didn't get a chance to test this, but I
-just tested it now and I can confirm that it breaks trogdor. It
-appears that trogdor devices seem to have a variant of your "default"
-address. Instead of:
-
-00:00:00:00:5a:ad
-
-We seem to have a default of this:
-
-39:98:00:00:5a:ad
-
-...so almost the same, but not enough the same to make it work with
-your code. I checked 3 different trogdor boards and they were all the
-same, though I can't 100% commit to saying that every trogdor device
-out there has that same default address...
-
-Given that this breaks devices and also that it's already landed and
-tagged for stable, what's the plan here? Do we revert? Do we add the
-second address in and hope that there aren't trogdor devices out in
-the wild that somehow have a different default?
 
 
--Doug
+The quilt patch titled
+     Subject: bootconfig: use memblock_free_late to free xbc memory to buddy
+has been removed from the -mm tree.  Its filename was
+     bootconfig-use-memblock_free_late-to-free-xbc-memory-to-buddy.patch
+
+This patch was dropped because an alternative patch was or shall be merged
+
+------------------------------------------------------
+From: Qiang Zhang <qiang4.zhang@intel.com>
+Subject: bootconfig: use memblock_free_late to free xbc memory to buddy
+Date: Sun, 14 Apr 2024 19:49:45 +0800
+
+On the time to free xbc memory in xbc_exit(), memblock may has handed
+over memory to buddy allocator. So it doesn't make sense to free memory
+back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
+on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
+Following KASAN logs shows this case.
+
+This patch fixes the xbc memory free problem by calling memblock_free()
+in early xbc init error rewind path and calling memblock_free_late() in
+xbc exit path to free memory to buddy allocator.
+
+[    9.410890] ==================================================================
+[    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
+[    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
+
+[    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
+[    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
+[    9.460789] Call Trace:
+[    9.463518]  <TASK>
+[    9.465859]  dump_stack_lvl+0x53/0x70
+[    9.469949]  print_report+0xce/0x610
+[    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
+[    9.478619]  ? memblock_isolate_range+0x12d/0x260
+[    9.483877]  kasan_report+0xc6/0x100
+[    9.487870]  ? memblock_isolate_range+0x12d/0x260
+[    9.493125]  memblock_isolate_range+0x12d/0x260
+[    9.498187]  memblock_phys_free+0xb4/0x160
+[    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
+[    9.508021]  ? mutex_unlock+0x7e/0xd0
+[    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
+[    9.516786]  ? kernel_init_freeable+0x2d4/0x430
+[    9.521850]  ? __pfx_kernel_init+0x10/0x10
+[    9.526426]  xbc_exit+0x17/0x70
+[    9.529935]  kernel_init+0x38/0x1e0
+[    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
+[    9.538601]  ret_from_fork+0x2c/0x50
+[    9.542596]  ? __pfx_kernel_init+0x10/0x10
+[    9.547170]  ret_from_fork_asm+0x1a/0x30
+[    9.551552]  </TASK>
+
+[    9.555649] The buggy address belongs to the physical page:
+[    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
+[    9.570821] flags: 0x200000000000000(node=0|zone=2)
+[    9.576271] page_type: 0xffffffff()
+[    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
+[    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
+[    9.597476] page dumped because: kasan: bad access detected
+
+[    9.605362] Memory state around the buggy address:
+[    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[    9.634930]                    ^
+[    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[    9.654675] ==================================================================
+
+[akpm@linux-foundation.org: fix kerneldoc]
+Link: https://lkml.kernel.org/r/20240414114944.1012359-1-qiang4.zhang@linux.intel.com
+Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/bootconfig.h |    7 ++++++-
+ lib/bootconfig.c           |   22 +++++++++++++---------
+ 2 files changed, 19 insertions(+), 10 deletions(-)
+
+--- a/include/linux/bootconfig.h~bootconfig-use-memblock_free_late-to-free-xbc-memory-to-buddy
++++ a/include/linux/bootconfig.h
+@@ -288,7 +288,12 @@ int __init xbc_init(const char *buf, siz
+ int __init xbc_get_info(int *node_size, size_t *data_size);
+ 
+ /* XBC cleanup data structures */
+-void __init xbc_exit(void);
++void __init _xbc_exit(bool early);
++
++static inline void xbc_exit(void)
++{
++	_xbc_exit(false);
++}
+ 
+ /* XBC embedded bootconfig data in kernel */
+ #ifdef CONFIG_BOOT_CONFIG_EMBED
+--- a/lib/bootconfig.c~bootconfig-use-memblock_free_late-to-free-xbc-memory-to-buddy
++++ a/lib/bootconfig.c
+@@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_me
+ 	return memblock_alloc(size, SMP_CACHE_BYTES);
+ }
+ 
+-static inline void __init xbc_free_mem(void *addr, size_t size)
++static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
+ {
+-	memblock_free(addr, size);
++	if (early)
++		memblock_free(addr, size);
++	else if (addr)
++		memblock_free_late(__pa(addr), size);
+ }
+ 
+ #else /* !__KERNEL__ */
+@@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t
+ 	return malloc(size);
+ }
+ 
+-static inline void xbc_free_mem(void *addr, size_t size)
++static inline void xbc_free_mem(void *addr, size_t size, bool early)
+ {
+ 	free(addr);
+ }
+@@ -898,19 +901,20 @@ static int __init xbc_parse_tree(void)
+ }
+ 
+ /**
+- * xbc_exit() - Clean up all parsed bootconfig
++ * _xbc_exit() - Clean up all parsed bootconfig
++ * @early: in early xbc init error
+  *
+  * This clears all data structures of parsed bootconfig on memory.
+  * If you need to reuse xbc_init() with new boot config, you can
+  * use this.
+  */
+-void __init xbc_exit(void)
++void __init _xbc_exit(bool early)
+ {
+-	xbc_free_mem(xbc_data, xbc_data_size);
++	xbc_free_mem(xbc_data, xbc_data_size, early);
+ 	xbc_data = NULL;
+ 	xbc_data_size = 0;
+ 	xbc_node_num = 0;
+-	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
++	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
+ 	xbc_nodes = NULL;
+ 	brace_index = 0;
+ }
+@@ -963,7 +967,7 @@ int __init xbc_init(const char *data, si
+ 	if (!xbc_nodes) {
+ 		if (emsg)
+ 			*emsg = "Failed to allocate bootconfig nodes";
+-		xbc_exit();
++		_xbc_exit(true);
+ 		return -ENOMEM;
+ 	}
+ 	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
+@@ -977,7 +981,7 @@ int __init xbc_init(const char *data, si
+ 			*epos = xbc_err_pos;
+ 		if (emsg)
+ 			*emsg = xbc_err_msg;
+-		xbc_exit();
++		_xbc_exit(true);
+ 	} else
+ 		ret = xbc_node_num;
+ 
+_
+
+Patches currently in -mm which might be from qiang4.zhang@intel.com are
+
+
 
