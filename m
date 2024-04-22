@@ -1,99 +1,172 @@
-Return-Path: <stable+bounces-40380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FE38AD04C
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 17:09:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6857A8AD053
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 17:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 785AC1C215C2
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 15:09:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20102288E34
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 15:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FF915250F;
-	Mon, 22 Apr 2024 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF46152522;
+	Mon, 22 Apr 2024 15:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="X59CekS+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QfI0QTu0"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF021474B9;
-	Mon, 22 Apr 2024 15:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=167.235.159.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713798545; cv=pass; b=nEwja2e60jz4sbazR1C16gckStvXRgE1HqXVPY6qPquCb+IW/DpcdRJrIAG/kM8kfkk9LASMXOAdXyEKjbURgucUiEN46B7QQ7y54HJzX7l1qQ51EE08xPZ65osMEEZhM1Xsvdt6QqSZbQRgoJaWrKLObrOuoUNWPc/i/2gYZsc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713798545; c=relaxed/simple;
-	bh=Laelx3WwGmYXAKn58hviI/QXfuGutDv98jUfvYbPftY=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=G99MOCvDwz8aFVxqeWYyQMKJ09DcAgjlt/aRTOHe0axq00N0F/dJ0NWq6Cih3TnfiIAMVEeOgzTp0zvNE0fUMUDoNcznyWjuijhd+l8sGpK16eXuwzjYJ6amZJhbxP40HXa+U8sHihyMh8+b9MSXWv0+3foTrogn4/RVh1BC6Qk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=X59CekS+; arc=pass smtp.client-ip=167.235.159.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
-Message-ID: <adfd2a680e289404140ef917cf0bd0ab@manguebit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1713798535;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NHiQDl3huVUrNs3zqg+ufyzgDB4ufs3iLmI3DcUaM4g=;
-	b=X59CekS+vQyGU4mbbf+XSXxI1Qf14YQydzv+LrL9pId/xgrIM/FP3dIfAHFRqONuzX+fly
-	F6uB0f/V05e7G7D+gwWnvc36Ru6RcUKhXv5TVSiNYcfGY6TGglPULS8v0qyW/wOWvKcD1b
-	IhfEOEmViOeRTIgeqUsn1RWQcBANLA5QFxWltfhVgwsgGeCRhLr/1GCwIP9Di3CwewoYj5
-	0Bb855HwfQeLWUsqRuJlUswD2EUPHq3aj7sloxNW6O7Y4mZnlXINn2aLDW4ftXTbmx/YMQ
-	8S08nCBtrvC88p3mXM+YPkJVj2IZA0O0uTC4ALQcf6rCvrLUNbog5GQh3MEkBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1713798535; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NHiQDl3huVUrNs3zqg+ufyzgDB4ufs3iLmI3DcUaM4g=;
-	b=f7vLiCUmWsRz/5cThcXHeJGzr4+qoFf4Owt0NE+badFXbOQcaS3pp64OGMgwIJ1+atALDi
-	1qDAVVvAt+uKlzmmqw9pghabd/pBRTuW/TIrKOmRuZLrAGa1wdTfFlRpEaZ+zcnoMReUYY
-	SnnHMuSGuKC9RWVgu3NIDImFD+ZNCQG5EFYlJ98tca+CpOEEpqlG2JRxtGM5DUDdq/7KPw
-	F+79xaQcq7g4fQtLuCZ4dOyfIM7tVaficOn088RogntPNGUtnz/YoG0m1T1t5t637czDWs
-	WCW99AXjVm5+TcV4eUyLx6XrFOlcMZsqcL3ta51GNRZiLpbaKhK5LzO6tk7GKw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.mailfrom=pc@manguebit.com
-ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1713798535; a=rsa-sha256;
-	cv=none;
-	b=hw1j1lauKgSuJHYQk7fonUtn2dkUrf4CZRJ0yExPcETXQy6TUZkGjbn6wyir/5+Zhom7TY
-	3ymlJTI9VSTJkqej2Crfb8QaK//dNqhdZjSKSaMsswwxHNEWpf6FY4Xw8AQfFrdRF3KkF4
-	hrcSbwqQK0POMgZwtDhG5NYi9PHWWqgl984MECj2OGMYyRdKTRgxp+yRj8eF5s232kbPjc
-	jEs6N8zf4WmWXuPDu6JTNZNHQewwll1dN9R1PRChbKBLiuNHyXNUUit2wvfrZgaW/JfZX2
-	X9Y9C1uqJw/xY2nDjCFYwMkDLZJKKP/FBTEm7+jQ1QqXOkpG55EH0V0Oetipdw==
-From: Paulo Alcantara <pc@manguebit.com>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: regressions@lists.linux.dev, Steve French <stfrench@microsoft.com>,
- gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
- linux-cifs@vger.kernel.org
-Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
- overflow frame end of buf" and invisible files under certain conditions
- and at least with noserverino mount option
-In-Reply-To: <ZiLQG4x0m1L70ugu@eldamar.lan>
-References: <ZiBCsoc0yf_I8In8@eldamar.lan>
- <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
- <ZiCoYjr79HXxiTjr@eldamar.lan>
- <29e0cbcab5be560608d1dfbfb0ccbc96@manguebit.com>
- <ZiLQG4x0m1L70ugu@eldamar.lan>
-Date: Mon, 22 Apr 2024 12:08:53 -0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168845025E;
+	Mon, 22 Apr 2024 15:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713798620; cv=none; b=qCwnLYU6a88on0wcwX8vBo4HdeTy+bfaC3/3VgcDwXBg/UgvFtpKzPR739tJZxtl0aK9MqAcs0WrV78wsBKGXyqkxFw7BTHY5xIIsjxw+v6FCCn9JDsWtxYBnlOfUdWZldxTcUMC9x0cSQC+R/w0vfE0lF2k6CRjPbI5QWKE80o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713798620; c=relaxed/simple;
+	bh=Yt8xkX0N3nbNBABJMLTLHbcx2YsWeUS8NaA+r9e8Kt0=;
+	h=Date:Message-Id:From:To:Cc:Subject:In-Reply-To; b=fgdrfHH4dk9m5Hcn396XxAvx2IjbvAhe9nPMnvMME425nvBGPP72SpdgAYKzFDYeNnCrGNc7Z5eFCBw3KDVqIlXGg3hlkijIom1z0QufCVwySVwBED2flNr2+VzuwC1CrA6TDj1PYnZ69wp5/2LeUZUbFZ+Jkd2HHqnHuRsd02I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QfI0QTu0; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6ed20fb620fso3757260b3a.2;
+        Mon, 22 Apr 2024 08:10:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713798618; x=1714403418; darn=vger.kernel.org;
+        h=in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gNrs7+bJ32cKaNctOjioC+KE9Cj3gAa7cu0czlLxGY4=;
+        b=QfI0QTu0/jyfXVUSfU7UWeC7fdNHy+FG2geP4YVjNPOIIkFCH9L2K38yhnpxvYtsda
+         k7NJNZacGlwEgX20KJv3uYqWHqV2tG9RgiXVqxi6LHOxwbzemZs4d2ZjHUXDYLPBwUZg
+         3lHlTgo1VocIcgGCIElcZch/RcuDhTSqIkqgOFgxBSmc02v9nkhw3ucSmtZrP39lNyv3
+         Fbot7u09uf3znE48B0YLdRSx4xZI1K+WZQ4WVv/6vZ/2x/UW1LdR36SN7A4G1AmxSKy0
+         fRZuzphWGp9gFw27lRE3BjLTT25GgvXJAWxAnRyx4MSW6jeOKuykhdfztko7LusOyhun
+         0y6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713798618; x=1714403418;
+        h=in-reply-to:subject:cc:to:from:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gNrs7+bJ32cKaNctOjioC+KE9Cj3gAa7cu0czlLxGY4=;
+        b=AxFPfhZWcLHWOP4wtR1g63sZdWSsr8vm1XYjZXJz70cs4nYEtQdZtQd7/uPJ0wqpJn
+         oOfF7Fky645RKwg9OkejPPeNgbOyX46z6CLhgC0fa7nvrHwOXtrODGeIAdhPXh9KwF2k
+         pfhKOgTbeTgGY9FdTLmksA1QyzVyR/XPcJSW6+Aey/e7KMKtqrNtPg6xAci8DN/mFDnV
+         kCmtRbGN4wjXKvsNkl2g7Ngu/H5V34blgmHyDOTUW6kRlugUj/cRJVrvc9i9Z7fcqE4j
+         EB4ZMyQIZbwiY/lAToUW60epH32Us2Sln04RHC+g/8pyyt7LXU3ZBTdINbLtBy7AnSHN
+         P/hA==
+X-Forwarded-Encrypted: i=1; AJvYcCXu6tDpDiLd1jlVpMzAxJ8F8617E13c/FoCq2FpIbBQIfA8+dxaj3ICdMIEzZs2meVflJ8ly3O5nAXNkEYIGkz90napuN0J
+X-Gm-Message-State: AOJu0Yygdcl+QrS3Y9dXLzt4W4okJo7eBoQtlfyWtyFeQuWawe1wivo6
+	N51AMi8zmKasueO+ic2yMA4eFWW3A3utkJxASdtp1+XOo2ksfsbY0bkQLlbM
+X-Google-Smtp-Source: AGHT+IHDNzsY4d3Q0b4UVY5LCW618G1RRmCZh82VLR8jRuC6damal3HdfFvzYkRd8KE0X3rEFcK+hw==
+X-Received: by 2002:a05:6a20:101a:b0:1a7:bb6d:6589 with SMTP id gs26-20020a056a20101a00b001a7bb6d6589mr8925877pzc.29.1713798617717;
+        Mon, 22 Apr 2024 08:10:17 -0700 (PDT)
+Received: from dw-tp ([171.76.85.139])
+        by smtp.gmail.com with ESMTPSA id q23-20020a62ae17000000b006ed64f4767asm7935370pff.112.2024.04.22.08.10.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Apr 2024 08:10:17 -0700 (PDT)
+Date: Mon, 22 Apr 2024 20:40:03 +0530
+Message-Id: <87ttjto2lw.fsf@gmail.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Dave Chinner <david@fromorbit.com>
+Cc: linux-xfs@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>, Ojaswin Mujoo <ojaswin@linux.ibm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] xfs: Add cond_resched to xfs_defer_finish_noroll
+In-Reply-To: <ZiWjbWrD60W/0s/F@dread.disaster.area>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
 
-Salvatore Bonaccorso <carnil@debian.org> writes:
+Dave Chinner <david@fromorbit.com> writes:
 
-> I'm still failing to provide you a recipe with a minimal as possible
-> setup, but with the instance I was able to reproduce the issue the
-> regression seems gone with cherry-picking 35235e19b393 ("cifs: Replace
-> remaining 1-element arrays") .
+> On Sun, Apr 21, 2024 at 01:19:44PM +0530, Ritesh Harjani (IBM) wrote:
+>> An async dio write to a sparse file can generate a lot of extents
+>> and when we unlink this file (using rm), the kernel can be busy in umapping
+>> and freeing those extents as part of transaction processing.
+>> Add cond_resched() in xfs_defer_finish_noroll() to avoid soft lockups
+>> messages. Here is a call trace of such soft lockup.
+>> 
+>> watchdog: BUG: soft lockup - CPU#1 stuck for 23s! [rm:81335]
+>> CPU: 1 PID: 81335 Comm: rm Kdump: loaded Tainted: G             L X    5.14.21-150500.53-default
+>
+> Can you reproduce this on a current TOT kernel? 5.14 is pretty old,
+> and this stack trace:
+>
 
-It's OK, no problem.  Could you please provide the backport to stable
-team?
+Yes, I was able to reproduce this on upstream kernel too -
+
+    watchdog: BUG: soft lockup - CPU#1 stuck for 22s! [kworker/1:0:82435]
+    CPU: 1 PID: 82435 Comm: kworker/1:0 Tainted: G S  L   6.9.0-rc5-0-default #1
+    Workqueue: xfs-inodegc/sda2 xfs_inodegc_worker
+    NIP [c000000000beea10] xfs_extent_busy_trim+0x100/0x290
+    LR [c000000000bee958] xfs_extent_busy_trim+0x48/0x290
+    Call Trace:
+      xfs_alloc_get_rec+0x54/0x1b0 (unreliable)
+      xfs_alloc_compute_aligned+0x5c/0x144
+      xfs_alloc_ag_vextent_size+0x238/0x8d4
+      xfs_alloc_fix_freelist+0x540/0x694
+      xfs_free_extent_fix_freelist+0x84/0xe0
+      __xfs_free_extent+0x74/0x1ec
+      xfs_extent_free_finish_item+0xcc/0x214
+      xfs_defer_finish_one+0x194/0x388
+      xfs_defer_finish_noroll+0x1b4/0x5c8
+      xfs_defer_finish+0x2c/0xc4
+      xfs_bunmapi_range+0xa4/0x100
+      xfs_itruncate_extents_flags+0x1b8/0x2f4
+      xfs_inactive_truncate+0xe0/0x124
+      xfs_inactive+0x30c/0x3e0
+      xfs_inodegc_worker+0x140/0x234
+      process_scheduled_works+0x240/0x57c
+      worker_thread+0x198/0x468
+      kthread+0x138/0x140
+      start_kernel_thread+0x14/0x18
+
+
+>> NIP [c00800001b174768] xfs_extent_busy_trim+0xc0/0x2a0 [xfs]
+>> LR [c00800001b1746f4] xfs_extent_busy_trim+0x4c/0x2a0 [xfs]
+>> Call Trace:
+>>  0xc0000000a8268340 (unreliable)
+>>  xfs_alloc_compute_aligned+0x5c/0x150 [xfs]
+>>  xfs_alloc_ag_vextent_size+0x1dc/0x8c0 [xfs]
+>>  xfs_alloc_ag_vextent+0x17c/0x1c0 [xfs]
+>>  xfs_alloc_fix_freelist+0x274/0x4b0 [xfs]
+>>  xfs_free_extent_fix_freelist+0x84/0xe0 [xfs]
+>>  __xfs_free_extent+0xa0/0x240 [xfs]
+>>  xfs_trans_free_extent+0x6c/0x140 [xfs]
+>>  xfs_defer_finish_noroll+0x2b0/0x650 [xfs]
+>>  xfs_inactive_truncate+0xe8/0x140 [xfs]
+>>  xfs_fs_destroy_inode+0xdc/0x320 [xfs]
+>>  destroy_inode+0x6c/0xc0
+>
+> .... doesn't exist anymore.
+>
+> xfs_inactive_truncate() is now done from a
+> background inodegc thread, not directly in destroy_inode().
+>
+> I also suspect that any sort of cond_resched() should be in the top
+> layer loop in xfs_bunmapi_range(), not hidden deep in the defer
+> code. The problem is the number of extents being processed without
+> yielding, not the time spent processing each individual deferred
+> work chain to free the extent. Hence the explicit rescheduling
+> should be at the top level loop where it can be easily explained and
+> understand, not hidden deep inside the defer chain mechanism....
+
+Yes, sure. I will submit a v2 with this diff then (after I verify the
+fix once on the setup, just for my sanity)
+
+diff --git a/fs/xfs/libxfs/xfs_bmap.c b/fs/xfs/libxfs/xfs_bmap.c
+index 656c95a22f2e..44d5381bc66f 100644
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -6354,6 +6354,7 @@ xfs_bunmapi_range(
+                error = xfs_defer_finish(tpp);
+                if (error)
+                        goto out;
++               cond_resched();
+        }
+ out:
+        return error;
+
+
+-ritesh
 
