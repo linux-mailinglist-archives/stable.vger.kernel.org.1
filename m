@@ -1,191 +1,154 @@
-Return-Path: <stable+bounces-40400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798DC8AD46B
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 20:54:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACDC08AD54D
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 21:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DDBD1C21413
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 18:54:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69A552812E7
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 19:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A647A1552EF;
-	Mon, 22 Apr 2024 18:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC201553AE;
+	Mon, 22 Apr 2024 19:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="loiR+IJ8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="B5b7UUYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1811552E3;
-	Mon, 22 Apr 2024 18:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D281552E4;
+	Mon, 22 Apr 2024 19:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713812076; cv=none; b=VlOhXC2mxVuoam9voi8r301ydrcHDu5Zdatl9FfKN5sLNbhn1kpZwHejIDkjii9o0aPq89LByqOdX+BOGRudsFHf6HlCsr8KzcZ9X+mye2vF1HpC5q+MLrjul9eLptWzP1yzAerUeC8UgYBIjlAhfJO6C8ZundMz2UWcGtCLdZE=
+	t=1713815643; cv=none; b=qcNGryXBbpgDGsfgavWTb/f5W92zp6gH53QW8yf9XUJVLtvJdWBCo0Ao0MUMTaezxnY82fQEXNYfOfqW+4VMU24vFAMpBMFOUTW9gIKYaquULukRwHjpv2YMuqz7ShDtCxmwDHyJXhbkp6HFsCId1mPwsZszheJh07LFHWP6fpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713812076; c=relaxed/simple;
-	bh=0VulwEmxbw+TEjzwRlIsiaj0G4/7yYeaxTjsvfq8Qyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=obDFzLsuEiBBLQ665lg31ppScHQG81gQlXSUZwviSB5WldfE6Qe/R/Fe1gZ4xJi4cga20vFPi23HaX5+CgXS3ZDWF8zJoHQe06cyXB20NgYjykUpILInmi9n7vmNewridmEow+xPr/n36YhE6DdiKELRp8a10uLhx7GPuyU+Tsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=loiR+IJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD26C113CC;
-	Mon, 22 Apr 2024 18:54:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713812075;
-	bh=0VulwEmxbw+TEjzwRlIsiaj0G4/7yYeaxTjsvfq8Qyg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=loiR+IJ8wlG4fEnzE3jDIWggVTVM2FuR0sJOnjnJdTI0vAV7iCj/AK0PLy8XwOqvi
-	 g7UiQ3MZkAJjeafejpKyUmolzrdzRxa0aeUZ2l9wVaMDhWGuqVpGK4gT5FFoHYUF8t
-	 wLdWng2P56rubadC+3g9oy3nbJQfuztBFYBmqC9OqvWt1Azb2SX/x2ppAZ/j+tuHjn
-	 7ClGUmO/9aUPncOsEBU786brjCsLxfjUMfUo/y1Ywd9gev3CUxHYO1Cc0eVvI+3Xts
-	 1rB5PryTMULQhq5r4WUdaNkaul+JmFE5Wex9v/6nwAe2NUAo0onVUGIR+9j+CtZ8sx
-	 k27UWNmyeoYow==
-Date: Mon, 22 Apr 2024 11:54:33 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: Patch "configs/hardening: Fix disabling UBSAN configurations"
- has been added to the 6.8-stable tree
-Message-ID: <20240422185433.GA10996@dev-arch.thelio-3990X>
-References: <20240421171119.1444407-1-sashal@kernel.org>
+	s=arc-20240116; t=1713815643; c=relaxed/simple;
+	bh=CKovM99CpAea3dMheTJmg8+vR1Kanfw2KSJtSVkjRRc=;
+	h=Date:To:From:Subject:Message-Id; b=GAIPmawdQgx/Lj600T8g12tXRrIfr7xvf/8Ke5jmuBgLLU99RX2AAtgaVGmAAAtJ0q945hGlUVMPthHLIMkY//dgFeMf98iht5wwbdGRsL+3Xh9InW8gqzbwg/FvZrQCs523QRVw+gfputWJAl5i73M8xuBTnyEFh4sMRH5gxC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=B5b7UUYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A49EC116B1;
+	Mon, 22 Apr 2024 19:54:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1713815643;
+	bh=CKovM99CpAea3dMheTJmg8+vR1Kanfw2KSJtSVkjRRc=;
+	h=Date:To:From:Subject:From;
+	b=B5b7UUYkrkBYUy5OnfGU7K0Y7PA9b0ucykEbzDCWzHfL38IS+hQTUHgtjZklgQf9x
+	 jkhAf+6eW74zr4GJmyROE+NjnKzz7LGLnuARDMw9OpKJESfQ57WmlPt6B2GvFmkIEJ
+	 eazpy/1LlVMKQ00WeSWG032ocnKS0bAJA7sfe8fU=
+Date: Mon, 22 Apr 2024 12:54:02 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nadav.amit@gmail.com,david@redhat.com,peterx@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240422195403.4A49EC116B1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8pgIU5OAIaSZWnNn"
-Content-Disposition: inline
-In-Reply-To: <20240421171119.1444407-1-sashal@kernel.org>
 
 
---8pgIU5OAIaSZWnNn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The patch titled
+     Subject: mm/userfaultfd: reset ptes when close() for wr-protected ones
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones.patch
 
-On Sun, Apr 21, 2024 at 01:11:19PM -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     configs/hardening: Fix disabling UBSAN configurations
-> 
-> to the 6.8-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      configs-hardening-fix-disabling-ubsan-configurations.patch
-> and it can be found in the queue-6.8 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit a54fba0bb1f52707b423c908e153d6429d08db58
-> Author: Nathan Chancellor <nathan@kernel.org>
-> Date:   Thu Apr 11 11:11:06 2024 -0700
-> 
->     configs/hardening: Fix disabling UBSAN configurations
->     
->     [ Upstream commit e048d668f2969cf2b76e0fa21882a1b3bb323eca ]
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones.patch
 
-While I think backporting this makes sense, I don't know that
-backporting 918327e9b7ff ("ubsan: Remove CONFIG_UBSAN_SANITIZE_ALL") to
-resolve the conflict with 6.8 is entirely necessary (or beneficial, I
-don't know how Kees feels about it though). I've attached a version that
-applies cleanly to 6.8, in case it is desirable.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Cheers,
-Nathan
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
---8pgIU5OAIaSZWnNn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment;
-	filename="e048d668f2969cf2b76e0fa21882a1b3bb323eca-6.8.patch"
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-From 8990975f1a5b3042a51253d1be0a360fba38b43e Mon Sep 17 00:00:00 2001
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Thu, 11 Apr 2024 11:11:06 -0700
-Subject: [PATCH 6.8] configs/hardening: Fix disabling UBSAN configurations
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-commit e048d668f2969cf2b76e0fa21882a1b3bb323eca upstream.
+------------------------------------------------------
+From: Peter Xu <peterx@redhat.com>
+Subject: mm/userfaultfd: reset ptes when close() for wr-protected ones
+Date: Mon, 22 Apr 2024 09:33:11 -0400
 
-The initial change that added kernel/configs/hardening.config attempted
-to disable all UBSAN sanitizers except for the array bounds one while
-turning on UBSAN_TRAP. Unfortunately, it only got the syntax for
-CONFIG_UBSAN_SHIFT correct, so configurations that are on by default
-with CONFIG_UBSAN=y such as CONFIG_UBSAN_{BOOL,ENUM} do not get disabled
-properly.
+Userfaultfd unregister includes a step to remove wr-protect bits from all
+the relevant pgtable entries, but that only covered an explicit
+UFFDIO_UNREGISTER ioctl, not a close() on the userfaultfd itself.  Cover
+that too.  This fixes a WARN trace.
 
-  CONFIG_ARCH_HAS_UBSAN=y
-  CONFIG_UBSAN=y
-  CONFIG_UBSAN_TRAP=y
-  CONFIG_CC_HAS_UBSAN_BOUNDS_STRICT=y
-  CONFIG_UBSAN_BOUNDS=y
-  CONFIG_UBSAN_BOUNDS_STRICT=y
-  # CONFIG_UBSAN_SHIFT is not set
-  # CONFIG_UBSAN_DIV_ZERO is not set
-  # CONFIG_UBSAN_UNREACHABLE is not set
-  CONFIG_UBSAN_SIGNED_WRAP=y
-  CONFIG_UBSAN_BOOL=y
-  CONFIG_UBSAN_ENUM=y
-  # CONFIG_TEST_UBSAN is not set
-
-Add the missing 'is not set' to each configuration that needs it so that
-they get disabled as intended.
-
-  CONFIG_ARCH_HAS_UBSAN=y
-  CONFIG_UBSAN=y
-  CONFIG_UBSAN_TRAP=y
-  CONFIG_CC_HAS_UBSAN_BOUNDS_STRICT=y
-  CONFIG_UBSAN_BOUNDS=y
-  CONFIG_UBSAN_BOUNDS_STRICT=y
-  # CONFIG_UBSAN_SHIFT is not set
-  # CONFIG_UBSAN_DIV_ZERO is not set
-  # CONFIG_UBSAN_UNREACHABLE is not set
-  CONFIG_UBSAN_SIGNED_WRAP=y
-  # CONFIG_UBSAN_BOOL is not set
-  # CONFIG_UBSAN_ENUM is not set
-  # CONFIG_TEST_UBSAN is not set
-
-Fixes: 215199e3d9f3 ("hardening: Provide Kconfig fragments for basic options")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240411-fix-ubsan-in-hardening-config-v1-1-e0177c80ffaa@kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-[nathan: Resolve conflicts due to lack of 006eac3fe20f and de2683e7fdac
-         in earlier releases]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/all/000000000000ca4df20616a0fe16@google.com/
+Analyzed-by: David Hildenbrand <david@redhat.com>
+Link: https://lkml.kernel.org/r/20240422133311.2987675-1-peterx@redhat.com
+Reported-by: syzbot+d8426b591c36b21c750e@syzkaller.appspotmail.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- kernel/configs/hardening.config | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/configs/hardening.config b/kernel/configs/hardening.config
-index 95a400f042b1..cac20e001c5b 100644
---- a/kernel/configs/hardening.config
-+++ b/kernel/configs/hardening.config
-@@ -39,11 +39,11 @@ CONFIG_UBSAN=y
- CONFIG_UBSAN_TRAP=y
- CONFIG_UBSAN_BOUNDS=y
- # CONFIG_UBSAN_SHIFT is not set
--# CONFIG_UBSAN_DIV_ZERO
--# CONFIG_UBSAN_UNREACHABLE
--# CONFIG_UBSAN_BOOL
--# CONFIG_UBSAN_ENUM
--# CONFIG_UBSAN_ALIGNMENT
-+# CONFIG_UBSAN_DIV_ZERO is not set
-+# CONFIG_UBSAN_UNREACHABLE is not set
-+# CONFIG_UBSAN_BOOL is not set
-+# CONFIG_UBSAN_ENUM is not set
-+# CONFIG_UBSAN_ALIGNMENT is not set
- CONFIG_UBSAN_SANITIZE_ALL=y
- 
- # Linked list integrity checking.
+ fs/userfaultfd.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-base-commit: 12dadc409c2bd8538c6ee0e56e191efde6d92007
--- 
-2.44.0
+--- a/fs/userfaultfd.c~mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones
++++ a/fs/userfaultfd.c
+@@ -895,6 +895,10 @@ static int userfaultfd_release(struct in
+ 			prev = vma;
+ 			continue;
+ 		}
++		/* Reset ptes for the whole vma range if wr-protected */
++		if (userfaultfd_wp(vma))
++			uffd_wp_range(vma, vma->vm_start,
++				      vma->vm_end - vma->vm_start, false);
+ 		new_flags = vma->vm_flags & ~__VM_UFFD_FLAGS;
+ 		vma = vma_modify_flags_uffd(&vmi, prev, vma, vma->vm_start,
+ 					    vma->vm_end, new_flags,
+_
 
+Patches currently in -mm which might be from peterx@redhat.com are
 
---8pgIU5OAIaSZWnNn--
+mm-hugetlb-fix-missing-hugetlb_lock-for-resv-uncharge.patch
+mm-userfaultfd-reset-ptes-when-close-for-wr-protected-ones.patch
+mm-hmm-process-pud-swap-entry-without-pud_huge.patch
+mm-gup-cache-p4d-in-follow_p4d_mask.patch
+mm-gup-check-p4d-presence-before-going-on.patch
+mm-x86-change-pxd_huge-behavior-to-exclude-swap-entries.patch
+mm-sparc-change-pxd_huge-behavior-to-exclude-swap-entries.patch
+mm-arm-use-macros-to-define-pmd-pud-helpers.patch
+mm-arm-redefine-pmd_huge-with-pmd_leaf.patch
+mm-arm64-merge-pxd_huge-and-pxd_leaf-definitions.patch
+mm-powerpc-redefine-pxd_huge-with-pxd_leaf.patch
+mm-gup-merge-pxd-huge-mapping-checks.patch
+mm-treewide-replace-pxd_huge-with-pxd_leaf.patch
+mm-treewide-remove-pxd_huge.patch
+mm-arm-remove-pmd_thp_or_huge.patch
+mm-document-pxd_leaf-api.patch
+mm-always-initialise-folio-_deferred_list-fix.patch
+selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation.patch
+selftests-mm-run_vmtestssh-fix-hugetlb-mem-size-calculation-fix.patch
+mm-kconfig-config_pgtable_has_huge_leaves.patch
+mm-hugetlb-declare-hugetlbfs_pagecache_present-non-static.patch
+mm-make-hpage_pxd_-macros-even-if-thp.patch
+mm-introduce-vma_pgtable_walk_beginend.patch
+mm-arch-provide-pud_pfn-fallback.patch
+mm-arch-provide-pud_pfn-fallback-fix.patch
+mm-gup-drop-folio_fast_pin_allowed-in-hugepd-processing.patch
+mm-gup-refactor-record_subpages-to-find-1st-small-page.patch
+mm-gup-handle-hugetlb-for-no_page_table.patch
+mm-gup-cache-pudp-in-follow_pud_mask.patch
+mm-gup-handle-huge-pud-for-follow_pud_mask.patch
+mm-gup-handle-huge-pmd-for-follow_pmd_mask.patch
+mm-gup-handle-huge-pmd-for-follow_pmd_mask-fix.patch
+mm-gup-handle-hugepd-for-follow_page.patch
+mm-gup-handle-hugetlb-in-the-generic-follow_page_mask-code.patch
+mm-allow-anon-exclusive-check-over-hugetlb-tail-pages.patch
+mm-hugetlb-assert-hugetlb_lock-in-__hugetlb_cgroup_commit_charge.patch
+mm-page_table_check-support-userfault-wr-protect-entries.patch
+
 
