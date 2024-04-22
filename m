@@ -1,104 +1,136 @@
-Return-Path: <stable+bounces-40366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D848AC7C3
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 10:52:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5142B8AC87A
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 11:09:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D93F9280D3E
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 08:52:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E56911F235E0
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 09:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B586654913;
-	Mon, 22 Apr 2024 08:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260B353E35;
+	Mon, 22 Apr 2024 09:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NkUFJEK3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/vWRz1/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6845490A
-	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 08:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C353F56B62;
+	Mon, 22 Apr 2024 09:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713775746; cv=none; b=bdx8Mt1qJdWkj6SNaVqG50gFdXFxru6/VUZ9dv7+28o11oCbG9cksyRn8S1lx0jboaMwDqS9WMPnjovJjfQlN4/hzMACJzrSeVaHBIiDIGPEWbplJGKX/jGgXsacEFtjDRw1IXqP9i118DVvd0svzmcD6uM7aXxuT9n2giIvu9U=
+	t=1713776893; cv=none; b=St8aI6tvmqBgmHKq66hFH2PzL7QPjFHDxWsiV6WrGjdV+U6PjJlrZmnqvs9Ht8gkHn0zKL0ya7dHKJ4wTkmQ5b9eprnN0ZyWEzJJ3uI9aR4ta7V8gC4lFtGRHg+4Yod61RQbZ7zsfazlMaXiEKUf3rbbNNOwyVsGCUbNBIdLYJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713775746; c=relaxed/simple;
-	bh=CT2XS1e89+VXbYTqzvXH0Y15mp2pRI9oxR2LT3rbeeA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ipxSxHRJyEard+McxCvAMyNdvEqsPIRxCbmpdJM2/mP3g04pA+uOZt3F6JQY85D3EpUaxoaAeopPlcWg/W/3/uyFC4MiN01pUkvBrGdZX2yw4KFke/8UmVsMAqqiFJ2ssUlXZmOTeFO4xunjYk8aNnO2D+Zw3t27H1s4k2ShymE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NkUFJEK3; arc=none smtp.client-ip=209.85.221.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-4dac92abe71so1025246e0c.2
-        for <stable@vger.kernel.org>; Mon, 22 Apr 2024 01:49:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713775744; x=1714380544; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=81H2tvp2dnEImlGObJk9X2NDKqHXpLpFCie3SlEmMD0=;
-        b=NkUFJEK3/S7dlNMbfaKMakzM77EmAHPN1I9IoZbq/fWLW5H4A2wmJ2NnFWcsaWfdD5
-         aFiPAHSY0Y9pR3n9IpqHA7fjAzc1hUTfHLpfuuOKVqCFzAE+nAOTOwwrnyWuhxBV4+zm
-         y+QJYLGevdhIPXXHGeQOUyMMWDkwlPnY7S0OKIsZc+EDu3DFa201Ad9C2foSq4xyLtvF
-         lP6/vxltUGlFV3TUz37GFkKBDJtzfcLjp3sFCawryy6tZVdTIDqrGw744s8/6JRmhLOj
-         d4Z1nSldogqYxnVyTA6VywdVbNAM0PEcXMLuixN8xbnFQl33lsBHoHgadN3za/HpABMH
-         OGZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713775744; x=1714380544;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=81H2tvp2dnEImlGObJk9X2NDKqHXpLpFCie3SlEmMD0=;
-        b=MZ+fI18OUebSrCtw7ava39Oxe4AJAVV/gqlBtmZ2ZCwM2tyNl/5GsqX8TOneVwvn/2
-         0eCLP3ck22gi6CHG+8wW5YYiXP7IBjqoeLuoDYp3XNgqrogqUKrNroJaXLsjiV/f2vAO
-         hyrAm+nuOt3mxzIp1QM8e9tX62pKvggQqdzBcQqQsAyjIdmiYazq4u4ZQ/BBvpXeK21E
-         G+iBpNeS4No7NoswdWWvUjnUuzHYehNnRc4Zf5RqGegURnYhGKqeRfOFZmLWVSXqmUT5
-         aboCnPSyAttXFJSx2CkNgoj+Z2YlRoxUPA4ywsp5cHV/8RnRhA0lRqCBMlOEPy90IC1o
-         TNpA==
-X-Forwarded-Encrypted: i=1; AJvYcCV4EQdU/iHG1g/mHh1vv46XZ1PsdK9H19njA8Uxz5koP1DfZ4i8y9M7/QojUqt0UJLXibiBxeCUroKgmIaZKxgDghoJ/eBL
-X-Gm-Message-State: AOJu0YzvN0ALYqxpsvr5OfW6VO6HpIK+wbCaZ08ELAgwCJFLJA2sBbLV
-	49VqN3IrWib+FlnKDmdGr2lh5cc4kdDvrs+Mw2S/6wleqi6QruUH0zAOyRUGYi8Ny5k1yOfOeEs
-	XFgiD9vWxGvhghdwdNidxw1pHTriF2n/20aOl
-X-Google-Smtp-Source: AGHT+IEQSgdlHXUsgOeV6YmT9G8tiLYTZX/LCUwTiWsJcbPy91Vh0VZt3NNcie66mXn1DRWyl2UOedjfFoim2Vi3Ou4=
-X-Received: by 2002:a05:6122:916:b0:4da:a9d8:f719 with SMTP id
- j22-20020a056122091600b004daa9d8f719mr9487633vka.4.1713775742422; Mon, 22 Apr
- 2024 01:49:02 -0700 (PDT)
+	s=arc-20240116; t=1713776893; c=relaxed/simple;
+	bh=nLmuYu0vjDSSPfnTZYanrd2ZE6KNz5H4Gy9hK4smJew=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tX9PzLz9UubyHdIL3m8/yrYpOve8eb3Y7yKq1AvPw1hvygq2wup7zZDdxPOelyTlp37D/31mWXvT3ueMnliB0zXJxEHDGbrx9dJLIKorkJkYzhhNPKPgvpUdJqVdcRZabMKKU8iudP1YfunDWaB/8phYpTXCiBkcjdQD/m/Zgyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/vWRz1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E509CC2BD11;
+	Mon, 22 Apr 2024 09:08:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713776893;
+	bh=nLmuYu0vjDSSPfnTZYanrd2ZE6KNz5H4Gy9hK4smJew=;
+	h=From:To:Cc:Subject:Date:From;
+	b=f/vWRz1/H6RXhOhaIZGUNLX/n8qb9XAR7xOna0+LcmYCPgZjinz83E8Vtio5GaKhn
+	 Nm4hZTOi24CKzp40peY24bICe/TcrJ111eJwPohJXcliwcsp69ocFNwcQMxNk53OKK
+	 0bnVjrf9NpyB9yTm1yoyfKdPy5r8a40uYvCBnYenIzWd7WQnJNVSn77wguPWgsG98C
+	 zJPz9ZeRAcnrwVkE9obdd4a/RixaIcBNmx/zOcnPNlu8jAcCPc7nkKwbq4VhrUJcyU
+	 84/7GOh0UOtsYz+4ASehvMM2Jat4Ac5CD1HC6kNCvo+2er+8ZbKkDR/ahRTzRc2yWz
+	 jMHQAxvBZlZpQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Julian Stecklina <julian.stecklina@cyberus-technology.de>
+Subject: [PATCH] kbuild: rust: force `alloc` extern to allow "empty" Rust files
+Date: Mon, 22 Apr 2024 11:06:44 +0200
+Message-ID: <20240422090644.525520-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240421173750.3117808-1-cmllamas@google.com>
-In-Reply-To: <20240421173750.3117808-1-cmllamas@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 22 Apr 2024 10:48:50 +0200
-Message-ID: <CAH5fLggC597GVm3QQGi+VeqUNBJk6vfq2eQSKgGyUZfS6dHVqg@mail.gmail.com>
-Subject: Re: [PATCH v2] binder: fix max_thread type inconsistency
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Serban Constantinescu <serban.constantinescu@arm.com>, 
-	linux-kernel@vger.kernel.org, kernel-team@android.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Apr 21, 2024 at 7:44=E2=80=AFPM Carlos Llamas <cmllamas@google.com>=
- wrote:
->
-> The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
-> size_t to __u32 in order to avoid incompatibility issues between 32 and
-> 64-bit kernels. However, the internal types used to copy from user and
-> store the value were never updated. Use u32 to fix the inconsistency.
->
-> Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREAD=
-S declaration")
-> Reported-by: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-> Cc:  <stable@vger.kernel.org>
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+If one attempts to build an essentially empty file somewhere in the
+kernel tree, it leads to a build error because the compiler does not
+recognize the `new_uninit` unstable feature:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+    error[E0635]: unknown feature `new_uninit`
+     --> <crate attribute>:1:9
+      |
+    1 | feature(new_uninit)
+      |         ^^^^^^^^^^
+
+The reason is that we pass `-Zcrate-attr='feature(new_uninit)'` (together
+with `-Zallow-features=new_uninit`) to let non-`rust/` code use that
+unstable feature.
+
+However, the compiler only recognizes the feature if the `alloc` crate
+is resolved (the feature is an `alloc` one). `--extern alloc`, which we
+pass, is not enough to resolve the crate.
+
+Introducing a reference like `use alloc;` or `extern crate alloc;`
+solves the issue, thus this is not seen in normal files. For instance,
+`use`ing the `kernel` prelude introduces such a reference, since `alloc`
+is used inside.
+
+While normal use of the build system is not impacted by this, it can still
+be fairly confusing for kernel developers [1], thus use the unstable
+`force` option of `--extern` [2] (added in Rust 1.71 [3]) to force the
+compiler to resolve `alloc`.
+
+This new unstable feature is only needed meanwhile we use the other
+unstable feature, since then we will not need `-Zcrate-attr`.
+
+Cc: stable@vger.kernel.org # v6.6+
+Reported-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reported-by: Julian Stecklina <julian.stecklina@cyberus-technology.de>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/x/near/424096982 [1]
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Link: https://github.com/rust-lang/rust/issues/111302 [2]
+Link: https://github.com/rust-lang/rust/pull/109421 [3]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ scripts/Makefile.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index baf86c0880b6..533a7799fdfe 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -273,7 +273,7 @@ rust_common_cmd = \
+ 	-Zallow-features=$(rust_allowed_features) \
+ 	-Zcrate-attr=no_std \
+ 	-Zcrate-attr='feature($(rust_allowed_features))' \
+-	--extern alloc --extern kernel \
++	-Zunstable-options --extern force:alloc --extern kernel \
+ 	--crate-type rlib -L $(objtree)/rust/ \
+ 	--crate-name $(basename $(notdir $@)) \
+ 	--sysroot=/dev/null \
+
+base-commit: 4cece764965020c22cff7665b18a012006359095
+-- 
+2.44.0
+
 
