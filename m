@@ -1,122 +1,121 @@
-Return-Path: <stable+bounces-40370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5CDE8AC8D3
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 11:23:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A56D8AC8DA
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 11:26:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03B301C20613
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 09:23:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D6E11C20EBC
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 09:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1557264CF2;
-	Mon, 22 Apr 2024 09:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F0A82893;
+	Mon, 22 Apr 2024 09:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="twZsfRK3"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC47524A0
-	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 09:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.211.30.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8DE54FA1
+	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 09:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713777797; cv=none; b=Xh5TGplnFZzN5aHd+ibig7de2vswDjBDCnwgT1y54DSKlQuM15s8NMTdBB6DW8s8OvD4kL03AUQj/gkJvEjPwSb35Z/PHhyKj2LgommpX/ouJAy77Z2kP2Om2fEvMapuEObfw/z9nB3imqbKwcNiJbltprM9A9e3nn9Sc6TvLKg=
+	t=1713777958; cv=none; b=FsNd/ZZfwB00jlHJFi35F9giQElnNE17YmsWzbR+2bMrXBzz/Ar8NfYqKQjMJsTJdVF7Gq1+ShMPbQwcv+LMbEEyuv0uJvRf9s9RCE4EzfpOIl00z+G3ty9f/llQ+/XQb2+QpOQCXfm094X5Cv3C5a8MWuFcQCMPwYW19B0S9wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713777797; c=relaxed/simple;
-	bh=eWOXaVT85A0p2K8VV3eR2Omezs8xxTes3p8sMathWVE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=uWLlynJJsJNtThNIhuraWj3EmdHvoOsJkuoQqFkgK2Ehrw+HmBqgXNol0ctvLisHm220dcxSbfuucu+sX8Z6DwsXehpZeJGszlaNTpxQxxHZWkzKv/jge1wLL7ucsnXrmevA5k1AghZe0pfxJemTRnXHVXId2pnoUleczrNopT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=none smtp.mailfrom=queasysnail.net; arc=none smtp.client-ip=207.211.30.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=queasysnail.net
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-27-wpWgdN9GPVmzoCEWiMfYYw-1; Mon,
- 22 Apr 2024 05:23:08 -0400
-X-MC-Unique: wpWgdN9GPVmzoCEWiMfYYw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA23C1C0AF40;
-	Mon, 22 Apr 2024 09:23:07 +0000 (UTC)
-Received: from hog (unknown [10.39.193.137])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 69E1D1121312;
-	Mon, 22 Apr 2024 09:23:06 +0000 (UTC)
-Date: Mon, 22 Apr 2024 11:23:05 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Yossi Kuperman <yossiku@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>
-Subject: Re: [PATCH net-next 2/3] macsec: Detect if Rx skb is macsec-related
- for offloading devices that update md_dst
-Message-ID: <ZiYseYT62ZI0-_V9@hog>
-References: <20240419011740.333714-1-rrameshbabu@nvidia.com>
- <20240419011740.333714-3-rrameshbabu@nvidia.com>
- <ZiKIUC6bTCDhlnRw@hog>
- <87mspp6xh7.fsf@nvidia.com>
+	s=arc-20240116; t=1713777958; c=relaxed/simple;
+	bh=ye+YDeypngJNVRNApH4ApNOV3asObjEsmLgFOfVV0AA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Tp2a5whQswCJ7cwj4bkK6MecgY5LAJOw6mjdcVQyrWMO5Gqqk8F8ezLH8NjyPurExr17voeLSKaPdQFj3RT1itI1w2sg0sjCKevjrHIhFC8bjwtJdo1rfaqeYdiuPAU5mVBXEy1W7eOyuIRNFridVPS6x/K0hwIh4fHFFyDUKjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=twZsfRK3; arc=none smtp.client-ip=209.85.222.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-7e7cf5cc1d0so3391206241.0
+        for <stable@vger.kernel.org>; Mon, 22 Apr 2024 02:25:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1713777956; x=1714382756; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u02hciJF/25Uzt60NJ0xbu51k6rfBNzWcPBLcSlUo80=;
+        b=twZsfRK3ziG0zUb1bCJXi8C9F56uvM1GjgJNPIFDkI+Z/QqUDW+ujcsdzCaqKqm6YL
+         0mwFX8clbtzZmG6070BsZODiLVFyOvnD9XXXEFVhSNgbJa0vXnevR4Kz9VVs0QcAzSBB
+         MTJdLjhLWgnrhN6kicMs/vxU2u9W+ompDL1GQFXLDh3IWDKiAlmn4fQzxPjv8J2WyOcR
+         f1j3Q9UnrLDBTFGS/5EHfOQZiO8BfXIwB07OIpsnXNfGtRJrjuUzSR8rnLymI7Hq8I9C
+         ibyqWof0mrDVQXnYgcspRBgnNYcU+HCmfE0doCBJq3F1rejFI/Mu28ItdnoSk0oF0N0T
+         0hbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713777956; x=1714382756;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u02hciJF/25Uzt60NJ0xbu51k6rfBNzWcPBLcSlUo80=;
+        b=ZqyAfR9jVGLho5ViifguMn4JvyjwE4v5y2esXBjcsXj3/gpelBg8xClY6YqRaL0w2x
+         541W3JVnNGdFG35wWH57ulCPO3f2KMtFVSKJXNygQFnhxgf8s9NEPt1dfVSwlcKjEdXF
+         VgsD9WMogpss6MMvSqXNd+3RWGkosVzLXxzbZZsH0cKiInraMGAZ69lk/1pqTb8CHp5s
+         stTYHYiT+eXsAaJdf4aAaKPAjDR/sZKJ+BrtXwAUanEJMnRrMTitKvlsU0x1uAcirOoS
+         rcgPUAbZufHReGF0xqkYsOlGSKZCnwFofm5NOP+mBWZyMyqYEn04GY2V7J4MN5knXxUw
+         iq6g==
+X-Forwarded-Encrypted: i=1; AJvYcCXlFdPLMeSr2pgjIQhe0bm8LwDrSLYgVKZH7jcrZ/KA//gshSEBj+JljYQHklIkfDgT8UWovXa77nxxHXPpBi+EFi0A1pP+
+X-Gm-Message-State: AOJu0YwC9ct3TDuuRm9DPyjOKYs9uE5Oa/8BGWe6N5mE9q5C/AOa3aDS
+	qmL02un9V7Oo+3UyRfHvPgTWhK96F51KTR0shOv56ha0qYh/pNKp3fMKCb6AXq/7+0fjFWRqJ5+
+	D1My7HkcSLPUgu5HuKGImUWqSb5sSBSOretnJ
+X-Google-Smtp-Source: AGHT+IFzbvs5nDCKVidubFmVhCqyTJZpX1MSVwcFBpjxWlOvQIwOZ8sgogJwUEo36R0OhEd8C3NQ+lrl6rjs+COe24c=
+X-Received: by 2002:a05:6122:2008:b0:4d4:34b2:9a89 with SMTP id
+ l8-20020a056122200800b004d434b29a89mr13136946vkd.8.1713777956098; Mon, 22 Apr
+ 2024 02:25:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <87mspp6xh7.fsf@nvidia.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: queasysnail.net
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
+References: <20240422091215.526688-1-ojeda@kernel.org>
+In-Reply-To: <20240422091215.526688-1-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 22 Apr 2024 11:25:45 +0200
+Message-ID: <CAH5fLgg=v28bFJE1izZ-WF7uBLcr7D2o6Yr2ihdPAz205MiGGw@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: rust: remove unneeded `@rustc_cfg` to avoid ICE
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	David Gow <davidgow@google.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-2024-04-19, 11:01:20 -0700, Rahul Rameshbabu wrote:
-> On Fri, 19 Apr, 2024 17:05:52 +0200 Sabrina Dubroca <sd@queasysnail.net> =
-wrote:
-> > 2024-04-18, 18:17:16 -0700, Rahul Rameshbabu wrote:
-> <snip>
-> >> +=09=09=09/* This datapath is insecure because it is unable to
-> >> +=09=09=09 * enforce isolation of broadcast/multicast traffic and
-> >> +=09=09=09 * unicast traffic with promiscuous mode on the macsec
-> >> +=09=09=09 * netdev. Since the core stack has no mechanism to
-> >> +=09=09=09 * check that the hardware did indeed receive MACsec
-> >> +=09=09=09 * traffic, it is possible that the response handling
-> >> +=09=09=09 * done by the MACsec port was to a plaintext packet.
-> >> +=09=09=09 * This violates the MACsec protocol standard.
-> >> +=09=09=09 */
-> >> +=09=09=09DEBUG_NET_WARN_ON_ONCE(true);
-> >
-> > If you insist on this warning (and I'm not convinced it's useful,
-> > since if the HW is already built and cannot inform the driver, there's
-> > nothing the driver implementer can do), I would move it somewhere into
-> > the config path. macsec_update_offload would be a better location for
-> > this kind of warning (maybe with a pr_warn (not limited to debug
-> > configs) saying something like "MACsec offload on devices that don't
-> > support md_dst are insecure: they do not provide proper isolation of
-> > traffic"). The comment can stay here.
-> >
->=20
-> I do not like the warning either. I left it mainly if it needed further
-> discussion on the mailing list. Will remove it in my next revision. That
-> said, it may make sense to advertise rx_uses_md_dst over netlink to
-> annotate what macsec offload path a device uses? Just throwing out an
-> idea here.
+On Mon, Apr 22, 2024 at 11:13=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
+>
+> When KUnit tests are enabled, under very big kernel configurations
+> (e.g. `allyesconfig`), we can trigger a `rustdoc` ICE [1]:
+>
+>       RUSTDOC TK rust/kernel/lib.rs
+>     error: the compiler unexpectedly panicked. this is a bug.
+>
+> The reason is that this build step has a duplicated `@rustc_cfg` argument=
+,
+> which contains the kernel configuration, and thus a lot of arguments. The
+> factor 2 happens to be enough to reach the ICE.
+>
+> Thus remove the unneeded `@rustc_cfg`. By doing so, we clean up the
+> command and workaround the ICE.
+>
+> The ICE has been fixed in the upcoming Rust 1.79 [2].
+>
+> Cc: stable@vger.kernel.org
+> Fixes: a66d733da801 ("rust: support running Rust documentation tests as K=
+Unit ones")
+> Link: https://github.com/rust-lang/rust/issues/122722 [1]
+> Link: https://github.com/rust-lang/rust/pull/122840 [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Maybe. I was also thinking about adding a way to restrict offloading
-only to devices with rx_uses_md_dst.
-
-(Slightly related) I also find it annoying that users have to tell the
-kernel whether to use PHY or MAC offload, but have no way to know
-which one their HW supports. That should probably have been an
-implementation detail that didn't need to be part of uapi :/
-
---=20
-Sabrina
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
