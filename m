@@ -1,129 +1,94 @@
-Return-Path: <stable+bounces-40393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D9808AD298
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 18:46:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E8E8AD2B2
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 18:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF8421C20D15
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 16:46:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 403BC28D34E
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 16:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742EC15535A;
-	Mon, 22 Apr 2024 16:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F37715381F;
+	Mon, 22 Apr 2024 16:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLZm4gLT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ppG1k03i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7DF153BDF;
-	Mon, 22 Apr 2024 16:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC6415358B;
+	Mon, 22 Apr 2024 16:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713804219; cv=none; b=E8C9QimWiyEdmL8V2qH9l2Er3zAxpnruouI2Jn2TcrF50cCxZekhmT1S+Ua//qMR63oNIe4p7k/IarHN8oCLrWRFKB5x+nP5q2WBnmrCK0zq9GLt3fW9fgYc3xQbn1xotbjKbTghYujQ5RW2hqomuMzokfsMH+DK23uis6Qofp8=
+	t=1713804565; cv=none; b=Xz3bx3IV33JvEfUpdPzB27U2i++CHXQ6c20erigRtVUBEfwAHgG3sxEjALVrSY+HEqC8SRmUyZTxiVSfryNjCSLdZLmYm23hWDS+xsfHGGpgAXP2Yp7DmA8hJHBtEXb5khvDSSp5JXi/FOtPBBZtpGIDb7Cd82PEH9dn1sEwAHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713804219; c=relaxed/simple;
-	bh=wHHpm/MlIMnUD56C0I+68LKr2Emf+Rz6l1nA6FA+p4s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jxLtjsYB0ZqYa5eLPD/sqFJl6BTvwcczZrzu9BBQgVNWMmveHhdTTFvsFjUN2w7zSt2IKO87zGo+VgFz7SfdNcu00eo3z5qBCpWpkuCmuiwMXTNGJiCtcPAdDNhg5kzetdNxRo+fqQuHHyUPGwspCjq2OG0sbyLzU2yAYz8uGJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLZm4gLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A787DC113CC;
-	Mon, 22 Apr 2024 16:43:38 +0000 (UTC)
+	s=arc-20240116; t=1713804565; c=relaxed/simple;
+	bh=bE7FnNf0IfF6MoCHb9dCmSncIpBLHSLJiBoyZV9ggi4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pbg/amPVkLU+Azq2gbOY9wsQ4FXDkfbxqf4/jFCYBZ1L7oYK3jstq9N7HQ1bWX9M9aj1cqZYoKmJA8N86iNVJg0n5BpoDe8vXHW0kiCbfLcbxRJgSGJgQkmL9ifiqHr4LY8FhEQpihOMlSFxRGZT+DcRVhtS45S7Ofm96p2fuoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ppG1k03i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D288C113CC;
+	Mon, 22 Apr 2024 16:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713804218;
-	bh=wHHpm/MlIMnUD56C0I+68LKr2Emf+Rz6l1nA6FA+p4s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kLZm4gLTCzd79EAv67FYtqqitGs1/djNHusslR7yiiTIaKsydTJYA4EWbufUHqa5H
-	 UjHTLgDTbBnp0dTouoXG1tylA9PIeeaiITC8suHtBSQw29/ssD9MNGpaGWNc3Yhujj
-	 VsRs57ehcqWBtEajQ9GU88WaNLHV6uN+u/uV3srlUr/gBthuCfV1iU7+4kHDiLAsba
-	 /U9AMu8IEd5Yzzs2twbO5+DtdhaUCVnIaI9AEHj7Kv1B23dfAo1sg3lxtEu4M21o9a
-	 EYOx5F8k213BirWvLt+T//gk8zuHblnRunMVnTLyjyNfSCXLMM5sNNqT5TIzaN+MdR
-	 jy8TvbugD6llQ==
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6ea0a6856d7so844365a34.1;
-        Mon, 22 Apr 2024 09:43:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW0SoMdZYciZ1ZMujRNt2+uM8hRTau1bxIt9bfkjD6lKTGdnh8b5nbgmaeLCIOiFWCqO63ydZ1zbSzh4qFz1qYdBQ315XIzOWC95kXOyLYnie5iwb0VYlOnsxhrgPJAjNKAjrgnUDXKJ+fxx6ntpCYcOgGJcxXowUTTwMU4jInaqQ==
-X-Gm-Message-State: AOJu0YzvlETSlQe3B9Vx65F2m5ZNU+B5bqadKcRX9otOzJuZcnOOVHil
-	k7GmbMsXJhIjvJchF1/THiMaCjdGzL8oMQlnar6ch0U8SzmJaFR1dilYNllRvRMS98I7KMh/cXA
-	45UGq3p8X53DWizfczLM1eOhMuAM=
-X-Google-Smtp-Source: AGHT+IFxhkTiGWpLI37qbMnnvDoa9HCZq+l7GBMHsvYcSFiRCIGp8GKu5oJltXjmDUMrx1tmpugYn8g6AT+C8moo+Ig=
-X-Received: by 2002:a05:6820:e07:b0:5aa:14ff:4128 with SMTP id
- el7-20020a0568200e0700b005aa14ff4128mr10710388oob.1.1713804217994; Mon, 22
- Apr 2024 09:43:37 -0700 (PDT)
+	s=k20201202; t=1713804564;
+	bh=bE7FnNf0IfF6MoCHb9dCmSncIpBLHSLJiBoyZV9ggi4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ppG1k03i2NISyJrq0pt0EK2X7yPyJCIHkbhBuDL6UEkj8sTffH7g7HZDyMtHthVaP
+	 vkHXwN2hNBJNBRe+K6mUxEL1kz7Nt2SbwVx1EoZfWaejolEsw+Adq2S9oee35kriz2
+	 dsU+aET/4u3jOI0ZzXzdoJDRD+9GBBSKWV5LcCaKZVyXEHx7tCUe17JXTZftW/UP2v
+	 HN9lWXtsexyH2jUQftjtPF/rSkvJh7X3Qujva6UQvsW793Rya+NN7FSLReZ+xvnhly
+	 D8buqfFb1Ic7QI32HJeU0kW2EYLm2Sat4TWA0m3ZNozke/Th3C/W4ofG6WqWD0vN/7
+	 gbSu/9F6cKdpw==
+Date: Mon, 22 Apr 2024 10:49:21 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>, linux-nvme@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] nvme-pci: Add quirk for broken MSIs
+Message-ID: <ZiaVEfdUXO97eWzV@kbusch-mbp.dhcp.thefacebook.com>
+References: <20240422162822.3539156-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240409052310.3162495-1-jarredwhite@linux.microsoft.com> <soawdod6cpcc73wrc35bvnah5toubf2cv4x7c3e6p53xtvllrs@6dtpn2v5t3di>
-In-Reply-To: <soawdod6cpcc73wrc35bvnah5toubf2cv4x7c3e6p53xtvllrs@6dtpn2v5t3di>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Apr 2024 18:43:26 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0imiRbheOJgEf=Ua-JRhDTh1+SJ-=CjUC7vOQYffV50FA@mail.gmail.com>
-Message-ID: <CAJZ5v0imiRbheOJgEf=Ua-JRhDTh1+SJ-=CjUC7vOQYffV50FA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: CPPC: Fix bit_offset shift in MASK_VAL macro
-To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>, 
-	Jarred White <jarredwhite@linux.microsoft.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Easwar Hariharan <eahariha@linux.microsoft.com>, 
-	"open list:ACPI" <linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240422162822.3539156-1-sean.anderson@linux.dev>
 
-On Wed, Apr 17, 2024 at 7:37=E2=80=AFPM Vanshidhar Konda
-<vanshikonda@os.amperecomputing.com> wrote:
->
-> Looks good to me.
->
-> Reviewed-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
->
-> On Mon, Apr 08, 2024 at 10:23:09PM -0700, Jarred White wrote:
-> >Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
-> >system memory accesses") neglected to properly wrap the bit_offset shift
-> >when it comes to applying the mask. This may cause incorrect values to b=
-e
-> >read and may cause the cpufreq module not be loaded.
-> >
-> >[   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
-> >[   11.066005] cpu_capacity: partial information: fallback to 1024 for a=
-ll CPUs
-> >
-> >Also, corrected the bitmask generation in GENMASK (extra bit being added=
-).
-> >
-> >Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for sy=
-stem memory accesses")
-> >Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
-> >CC: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-> >CC: stable@vger.kernel.org #5.15+
-> >---
-> > drivers/acpi/cppc_acpi.c | 4 ++--
-> > 1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> >diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> >index 4bfbe55553f4..00a30ca35e78 100644
-> >--- a/drivers/acpi/cppc_acpi.c
-> >+++ b/drivers/acpi/cppc_acpi.c
-> >@@ -170,8 +170,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs=
-, wraparound_time);
-> > #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_=
-width - 1)) : (reg)->bit_width)
-> >
-> > /* Shift and apply the mask for CPC reads/writes */
-> >-#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset &              =
-       \
-> >-                                      GENMASK(((reg)->bit_width), 0)))
-> >+#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) &             =
-       \
-> >+                                      GENMASK(((reg)->bit_width) - 1, 0=
-))
-> >
-> > static ssize_t show_feedback_ctrs(struct kobject *kobj,
-> >               struct kobj_attribute *attr, char *buf)
-> >--
+On Mon, Apr 22, 2024 at 12:28:23PM -0400, Sean Anderson wrote:
+> Sandisk SN530 NVMe drives have broken MSIs. On systems without MSI-X
+> support, all commands time out resulting in the following message:
+> 
+> nvme nvme0: I/O tag 12 (100c) QID 0 timeout, completion polled
+> 
+> These timeouts cause the boot to take an excessively-long time (over 20
+> minutes) while the initial command queue is flushed.
+> 
+> Address this by adding a quirk for drives with buggy MSIs. The lspci
+> output for this device (recorded on a system with MSI-X support) is:
 
-Applied as 6.9-rc material, thanks!
+Based on your description, the patch looks good. This will fallback to
+legacy emulated pin interrupts, and that's better than timeout polling,
+but will still appear sluggish compared to MSI's. Is there an errata
+from the vendor on this? I'm just curious if the bug is at the Device ID
+level, and not something we could constrain to a particular model or
+firmware revision. 
+ 
+> 02:00.0 Non-Volatile memory controller: Sandisk Corp Device 5008 (rev 01) (prog-if 02 [NVM Express])
+> 	Subsystem: Sandisk Corp Device 5008
+> 	Flags: bus master, fast devsel, latency 0, IRQ 16, NUMA node 0
+> 	Memory at f7e00000 (64-bit, non-prefetchable) [size=16K]
+> 	Memory at f7e04000 (64-bit, non-prefetchable) [size=256]
+> 	Capabilities: [80] Power Management version 3
+> 	Capabilities: [90] MSI: Enable- Count=1/32 Maskable- 64bit+
+> 	Capabilities: [b0] MSI-X: Enable+ Count=17 Masked-
+
+Interesting, the MSI capability does look weird here. I've never seen
+MSI-x count smaller than the MSI's. As long as both work, though, I
+think nvme would actually prefer whichever is bigger!
 
