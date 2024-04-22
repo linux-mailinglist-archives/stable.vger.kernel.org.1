@@ -1,300 +1,148 @@
-Return-Path: <stable+bounces-40364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074908AC418
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 08:22:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D9A8AC5FA
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 09:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B15D8282508
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 06:22:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DE961C20D59
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 07:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED4E3FB94;
-	Mon, 22 Apr 2024 06:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9472A4D58A;
+	Mon, 22 Apr 2024 07:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ym3NFGKB"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="pcucO8P1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C45B3FB26
-	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 06:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B8A4D11D;
+	Mon, 22 Apr 2024 07:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713766924; cv=none; b=sxU5oyhsranH0+5g2gc1S7tegHxnOX6yiZIi98PNmNauR2AH4O9Z+LDNT6qZsh/vofaYWIDWNzVNvfu3MUruRdxiWYgMfS02aRH0Xxka+7ZZZfk9jQA23WlNfvzYUazpcXo/byDeJUdJUdFpQRHikEfgRvM8LbcLem7pgme2usE=
+	t=1713772311; cv=none; b=nnnQpSUGCt9UlQjmwo1mwtVfvhvip9YL55rzcsv4oV0cJewr3SLEc12F4yGsAWaFykH4OUupeUFoVZrqkHu4IbQDtN86BKMa291hAP9LnSg5ygN+xCv4U5gQDf25ghneLiEQ9Q/Sfbnt2PxM9/4SbXIPE7DVC3NrRZfaBXQ5CF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713766924; c=relaxed/simple;
-	bh=SGZSK0ustsY1Lf9KVstOIQKwZBL7OEMrqFJf4TCxONU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Mmfhg+mxVpVEfmV7jrTeFGNALDK6Yg2WSDseJncFe5bDUUSniRFkTCR3S4N1fh3qkKhTu+69NpkUC9AaOOFXtlo7xqwJXs9KFagVbaoeaVoy3tNbPRG9vd3ObvD3UWN5nfDnde1K3Pht5YQUDd4IkayuPPzzcVHX7mp6qUsh6ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edliaw.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ym3NFGKB; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edliaw.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-5d8df7c5500so4607714a12.2
-        for <stable@vger.kernel.org>; Sun, 21 Apr 2024 23:22:02 -0700 (PDT)
+	s=arc-20240116; t=1713772311; c=relaxed/simple;
+	bh=V+hmni4mAKTQ8wXjeiMX0dljZgO3ua+RXHTJ7o7gkok=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NtDN0cuyNvy/wMr5CiBIT+Z+RnCFzqboVXKxV3K2Vkjhh/toiVz0vrT81NeDzA3+K9FTxePRSTySJ7kZPm/bs8TQ8cy4WL3a48oW818MFC0t9JyG+p3Q9VWAK1ZH998WESgQpQeyGCRld6btZP8aJ5HuN1RrpbjJK3bdzKsluR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=pcucO8P1; arc=none smtp.client-ip=207.171.184.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713766922; x=1714371722; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BgHnvH0SifwgzbjlbM6L8Ym3RK63epZLUnxr0JyiQ3A=;
-        b=Ym3NFGKB+Jdr66+5y8SwFfY+eIr4e/8MoGUojmsOPiLG1M/5geXtCyet4YhELqCH45
-         YhHtv7HJwXazfojM+TFI6ZJOChy/H4nQ37QdLGWdJx5chJnyczq8Evash41ZbHyZ4Jix
-         tAUQaK6dCFkk5WZFaekw92/G1V9HtoreKZ/hxT+GIfGQC2tp/Ksi+Rjx096THtC7ILq6
-         WscVXeaqIIKVZ7o/oSsUeEk/c6XGndZYuKBfFK3gdSL5BPiM8q62aUJemVLGD/Wg2/TH
-         En9w182z4uEJqV2tTrSqhBJQ0meoX1fdjKVTxumFRkrxpJSj4BhPlKWhDKMtkUm6nmcb
-         9Ycg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713766922; x=1714371722;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BgHnvH0SifwgzbjlbM6L8Ym3RK63epZLUnxr0JyiQ3A=;
-        b=gfL+fDZdMK4s+ZPlD2zGI4YXsrqnVIftuQ6aQqlG2CnHkSU4icb2FOUOkFy4+/Pnpr
-         EJCTTaIvzNVU3eKLMjrsmJLF+wURWxS2zb2kaTtzJ3av3+Np4DFBr3DRvBjWh+fvU8ed
-         RebIb4fifvN9asp2+YGDJart5HiWpEUXYdjwtaUSJuCQuXzTibCSPIc84PZS+3Zz8dsq
-         JkOys4wQDo1O54TTt9FDJ/UqyQodXvbNACrhOF6WfKMrKOnbw5cWujCi+RKvwfBfsEuw
-         vKtJYBwuUYGJCBPtnJaNaVCRKq/Gd6YEOzp/nb9NA7zDHLyU1co5mff3BlD9Jq5PD7jo
-         I2JQ==
-X-Gm-Message-State: AOJu0YwBy6EbzFsRZeTAfer+ecpCqIqQKl8j7+9EFedryGvOO9yiz0Y6
-	dYcz673oYr6EF8LoSANtnW0Pv4yaoeTGb7j9ymBN5/q+nU0PgfO0zul0gQrS28Jt4YNcEuEW9D5
-	WBaGayo5PnrKkFCETHdFF7f8CmVTUx5QpriATmcUAlBJTZuDWEYh/NBiEHv32lcOCxhKSs1KyfV
-	0awyKIw0wna/RsXWvy/j8pyNvGlT4kySIs
-X-Google-Smtp-Source: AGHT+IG60hX85zyqhoN/GGQeaHC9TWv2bBTAYTzrGgW8aBKeakB6ufmF0DHNgdD+A/EpTFGn21ykx8dr8NA=
-X-Received: from edliaw.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:305d])
- (user=edliaw job=sendgmr) by 2002:a05:6a02:8c3:b0:5fc:52b3:a014 with SMTP id
- ch3-20020a056a0208c300b005fc52b3a014mr21986pgb.4.1713766921226; Sun, 21 Apr
- 2024 23:22:01 -0700 (PDT)
-Date: Mon, 22 Apr 2024 06:21:43 +0000
-In-Reply-To: <2024041509-triangle-parlor-1783@gregkh>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1713772309; x=1745308309;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=V+hmni4mAKTQ8wXjeiMX0dljZgO3ua+RXHTJ7o7gkok=;
+  b=pcucO8P1XhEBArvhEO6TBkbOiEKbc7Bli5l8Wt2Iyb6d9cxagxY5pqkE
+   u9khb4jTE0t1zNfzQDYvO8zby8nCyT3/d3uUW0zHjdN0ZCVN2Cwv6x86J
+   scDgMSly2lY+Rhms4ibRKYayqJDxr905HUcOvu4paJjfe4zkPlH8PbOqz
+   o=;
+X-IronPort-AV: E=Sophos;i="6.07,220,1708387200"; 
+   d="scan'208";a="413631555"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 07:51:41 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:8532]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.0.190:2525] with esmtp (Farcaster)
+ id 98f6d520-ff55-44d0-a03c-306ba359ccb1; Mon, 22 Apr 2024 07:51:40 +0000 (UTC)
+X-Farcaster-Flow-ID: 98f6d520-ff55-44d0-a03c-306ba359ccb1
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 22 Apr 2024 07:51:36 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Mon, 22 Apr
+ 2024 07:51:33 +0000
+Message-ID: <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
+Date: Mon, 22 Apr 2024 09:51:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2024041509-triangle-parlor-1783@gregkh>
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240422062148.642140-1-edliaw@google.com>
-Subject: [PATCH 6.6.y] selftests/timers/posix_timers: Reimplement check_timer_distribution()
-From: Edward Liaw <edliaw@google.com>
-To: stable@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, 
-	Dmitry Vyukov <dvyukov@google.com>, Marco Elver <elver@google.com>
-Cc: kernel-team@android.com, Oleg Nesterov <oleg@redhat.com>, 
-	Edward Liaw <edliaw@google.com>, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when VMGENID
+ updates"
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, <linux-kernel@vger.kernel.org>
+CC: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>, Lennart Poettering
+	<mzxreary@0pointer.de>, Babis Chalios <bchalios@amazon.es>, Theodore Ts'o
+	<tytso@mit.edu>, "Cali, Marco" <xmarcalx@amazon.co.uk>, Arnd Bergmann
+	<arnd@arndb.de>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "Christian
+ Brauner" <brauner@kernel.org>, <linux@leemhuis.info>,
+	<regressions@lists.linux.dev>
+References: <20240418114814.24601-1-Jason@zx2c4.com>
+Content-Language: en-US
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <20240418114814.24601-1-Jason@zx2c4.com>
+X-ClientProxiedBy: EX19D033UWC003.ant.amazon.com (10.13.139.217) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-From: Oleg Nesterov <oleg@redhat.com>
-
-check_timer_distribution() runs ten threads in a busy loop and tries to
-test that the kernel distributes a process posix CPU timer signal to every
-thread over time.
-
-There is not guarantee that this is true even after commit bcb7ee79029d
-("posix-timers: Prefer delivery of signals to the current thread") because
-that commit only avoids waking up the sleeping process leader thread, but
-that has nothing to do with the actual signal delivery.
-
-As the signal is process wide the first thread which observes sigpending
-and wins the race to lock sighand will deliver the signal. Testing shows
-that this hangs on a regular base because some threads never win the race.
-
-The comment "This primarily tests that the kernel does not favour any one."
-is wrong. The kernel does favour a thread which hits the timer interrupt
-when CLOCK_PROCESS_CPUTIME_ID expires.
-
-Rewrite the test so it only checks that the group leader sleeping in join()
-never receives SIGALRM and the thread which burns CPU cycles receives all
-signals.
-
-In older kernels which do not have commit bcb7ee79029d ("posix-timers:
-Prefer delivery of signals to the current thread") the test-case fails
-immediately, the very 1st tick wakes the leader up. Otherwise it quickly
-succeeds after 100 ticks.
-
-CI testing wants to use newer selftest versions on stable kernels. In this
-case the test is guaranteed to fail.
-
-So check in the failure case whether the kernel version is less than v6.3
-and skip the test result in that case.
-
-[ tglx: Massaged change log, renamed the version check helper ]
-[ edliaw: 071af0c9e582 ("selftests: timers: Convert posix_timers test to
-  generate KTAP output") wasn't merged to 6.6.y, so resolved merge
-  conflicts. ]
-
-Fixes: e797203fb3ba ("selftests/timers/posix_timers: Test delivery of signals across threads")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240409133802.GD29396@redhat.com
-(cherry picked from commit 6d029c25b71f2de2838a6f093ce0fa0e69336154)
-Signed-off-by: Edward Liaw <edliaw@google.com>
----
- tools/testing/selftests/kselftest.h           | 13 +++
- tools/testing/selftests/timers/posix_timers.c | 99 +++++++++----------
- 2 files changed, 59 insertions(+), 53 deletions(-)
-
-diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
-index 529d29a35900..68d5a93dff8d 100644
---- a/tools/testing/selftests/kselftest.h
-+++ b/tools/testing/selftests/kselftest.h
-@@ -49,6 +49,7 @@
- #include <unistd.h>
- #include <stdarg.h>
- #include <stdio.h>
-+#include <sys/utsname.h>
- #endif
- 
- #ifndef ARRAY_SIZE
-@@ -327,4 +328,16 @@ static inline int ksft_exit_skip(const char *msg, ...)
- 	exit(KSFT_SKIP);
- }
- 
-+static inline int ksft_min_kernel_version(unsigned int min_major,
-+					  unsigned int min_minor)
-+{
-+	unsigned int major, minor;
-+	struct utsname info;
-+
-+	if (uname(&info) || sscanf(info.release, "%u.%u.", &major, &minor) != 2)
-+		ksft_exit_fail_msg("Can't parse kernel version\n");
-+
-+	return major > min_major || (major == min_major && minor >= min_minor);
-+}
-+
- #endif /* __KSELFTEST_H */
-diff --git a/tools/testing/selftests/timers/posix_timers.c b/tools/testing/selftests/timers/posix_timers.c
-index 9a42403eaff7..aaec7f9845c5 100644
---- a/tools/testing/selftests/timers/posix_timers.c
-+++ b/tools/testing/selftests/timers/posix_timers.c
-@@ -188,78 +188,71 @@ static int check_timer_create(int which)
- 	return 0;
- }
- 
--int remain;
--__thread int got_signal;
-+static pthread_t ctd_thread;
-+static volatile int ctd_count, ctd_failed;
- 
--static void *distribution_thread(void *arg)
-+static void ctd_sighandler(int sig)
- {
--	while (__atomic_load_n(&remain, __ATOMIC_RELAXED));
--	return NULL;
-+	if (pthread_self() != ctd_thread)
-+		ctd_failed = 1;
-+	ctd_count--;
- }
- 
--static void distribution_handler(int nr)
-+static void *ctd_thread_func(void *arg)
- {
--	if (!__atomic_exchange_n(&got_signal, 1, __ATOMIC_RELAXED))
--		__atomic_fetch_sub(&remain, 1, __ATOMIC_RELAXED);
--}
--
--/*
-- * Test that all running threads _eventually_ receive CLOCK_PROCESS_CPUTIME_ID
-- * timer signals. This primarily tests that the kernel does not favour any one.
-- */
--static int check_timer_distribution(void)
--{
--	int err, i;
--	timer_t id;
--	const int nthreads = 10;
--	pthread_t threads[nthreads];
- 	struct itimerspec val = {
- 		.it_value.tv_sec = 0,
- 		.it_value.tv_nsec = 1000 * 1000,
- 		.it_interval.tv_sec = 0,
- 		.it_interval.tv_nsec = 1000 * 1000,
- 	};
-+	timer_t id;
- 
--	printf("Check timer_create() per process signal distribution... ");
--	fflush(stdout);
-+	/* 1/10 seconds to ensure the leader sleeps */
-+	usleep(10000);
- 
--	remain = nthreads + 1;  /* worker threads + this thread */
--	signal(SIGALRM, distribution_handler);
--	err = timer_create(CLOCK_PROCESS_CPUTIME_ID, NULL, &id);
--	if (err < 0) {
--		perror("Can't create timer\n");
--		return -1;
--	}
--	err = timer_settime(id, 0, &val, NULL);
--	if (err < 0) {
--		perror("Can't set timer\n");
--		return -1;
--	}
-+	ctd_count = 100;
-+	if (timer_create(CLOCK_PROCESS_CPUTIME_ID, NULL, &id))
-+		return "Can't create timer\n";
-+	if (timer_settime(id, 0, &val, NULL))
-+		return "Can't set timer\n";
- 
--	for (i = 0; i < nthreads; i++) {
--		if (pthread_create(&threads[i], NULL, distribution_thread, NULL)) {
--			perror("Can't create thread\n");
--			return -1;
--		}
--	}
-+	while (ctd_count > 0 && !ctd_failed)
-+		;
- 
--	/* Wait for all threads to receive the signal. */
--	while (__atomic_load_n(&remain, __ATOMIC_RELAXED));
-+	if (timer_delete(id))
-+		return "Can't delete timer\n";
- 
--	for (i = 0; i < nthreads; i++) {
--		if (pthread_join(threads[i], NULL)) {
--			perror("Can't join thread\n");
--			return -1;
--		}
--	}
-+	return NULL;
-+}
- 
--	if (timer_delete(id)) {
--		perror("Can't delete timer\n");
--		return -1;
--	}
-+/*
-+ * Test that only the running thread receives the timer signal.
-+ */
-+static int check_timer_distribution(void)
-+{
-+	const char *errmsg;
- 
--	printf("[OK]\n");
-+	signal(SIGALRM, ctd_sighandler);
-+
-+	errmsg = "Can't create thread\n";
-+	if (pthread_create(&ctd_thread, NULL, ctd_thread_func, NULL))
-+		goto err;
-+
-+	errmsg = "Can't join thread\n";
-+	if (pthread_join(ctd_thread, (void **)&errmsg) || errmsg)
-+		goto err;
-+
-+	if (!ctd_failed)
-+		ksft_test_result_pass("check signal distribution\n");
-+	else if (ksft_min_kernel_version(6, 3))
-+		ksft_test_result_fail("check signal distribution\n");
-+	else
-+		ksft_test_result_skip("check signal distribution (old kernel)\n");
- 	return 0;
-+err:
-+	ksft_print_msg(errmsg);
-+	return -1;
- }
- 
- int main(int argc, char **argv)
--- 
-2.44.0.769.g3c40516874-goog
+W0FkZGluZyBDQyBsaXN0IG9mIG9yaWdpbmFsIHBhdGNoIHBsdXMgcmVncmVzc2lvbiB0cmFja2Vy
+XQoKSGkgSmFzb24sCgpPbiAxOC4wNC4yNCAxMzo0OCwgSmFzb24gQS4gRG9uZW5mZWxkIHdyb3Rl
+Ogo+IFRoaXMgcmV2ZXJ0cyBjb21taXQgYWQ2YmNkYWQyYjY3MjRlMTEzZjE5MWExMmY4NTlhOWU4
+NDU2YjI2ZC4gSSBoYWQKPiBuYWsnZCBpdCwgYW5kIEdyZWcgc2FpZCBvbiB0aGUgdGhyZWFkIHRo
+YXQgaXQgbGlua3MgdGhhdCBoZSB3YXNuJ3QgZ29pbmcKPiB0byB0YWtlIGl0IGVpdGhlciwgZXNw
+ZWNpYWxseSBzaW5jZSBpdCdzIG5vdCBoaXMgY29kZSBvciBoaXMgdHJlZSwgYnV0Cj4gdGhlbiwg
+c2VlbWluZ2x5IGFjY2lkZW50YWxseSwgaXQgZ290IHB1c2hlZCB1cCBzb21lIG1vbnRocyBsYXRl
+ciwgaW4KPiB3aGF0IGxvb2tzIGxpa2UgYSBtaXN0YWtlLCB3aXRoIG5vIGZ1cnRoZXIgZGlzY3Vz
+c2lvbiBpbiB0aGUgbGlua2VkCj4gdGhyZWFkLiBTbyByZXZlcnQgaXQsIHNpbmNlIGl0J3MgY2xl
+YXJseSBub3QgaW50ZW5kZWQuCgpSZXZlcnRpbmcgdGhpcyBwYXRjaCBjcmVhdGVzIGEgdXNlciBz
+cGFjZSB2aXNpYmxlIHJlZ3Jlc3Npb24gY29tcGFyZWQgdG8gCnY2LjguIFBsZWFzZSB0cmVhdCBp
+dCBhcyBzdWNoLgoKSSdtIHNsaWdodGx5IGNvbmZ1c2VkIHRvIHNlZSB5b3UgcGFzc2lvbmF0ZSBh
+Ym91dCB0aGlzIHBhdGNoIGFmdGVyIHlvdSAKZ2hvc3RlZCB0aGUgY29udmVyc2F0aW9uIHlvdSBy
+ZWZlcmVuY2VkOgoKIApodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzAwZDYxNzJmLWUyOTEt
+NGU5Ni05ZDNlLTYzZWU4ZTYwZDU1NkBhbWF6b24uY29tLwoKVGhlIHB1cnBvc2Ugb2YgdGhpcyB1
+ZXZlbnQgaXMgdG8gbm90aWZ5IHN5c3RlbWRbMV1bMl0gKG9yIHNpbWlsYXIpIHRoYXQgCmEgVk0g
+Y2xvbmUgZXZlbnQgaGFwcGVuZWQsIHNvIGl0IGNhbiBmb3IgZXhhbXBsZSByZWdlbmVyYXRlIE1B
+QyAKYWRkcmVzc2VzIGlmIGl0IGdlbmVyYXRlZCB0aGVtIG9uIGJvb3QsIHJlZ2VuZXJhdGUgaXRz
+IHVuaXF1ZSBtYWNoaW5lIGlkIApvciBzaW1wbHkgZm9yY2UgcmVyZXF1ZXN0IGEgbmV3IERIQ1Ag
+bGVhc2UuCgpJIGRvbid0IHVuZGVyc3RhbmQgaG93IHRoZXJlJ3MgYW55IGNvcnJlbGF0aW9uIG9y
+IGRlcGVuZGVuY3kgdG8gCnZnZXRyYW5kb20oKSBvciBhbnl0aGluZyBSTkcgaW4gdGhpcyBhbmQg
+d2h5IGdldHRpbmcgdmdldHJhbmRvbSgpIG1lcmdlZCAKdXBzdHJlYW0gaXMgZXZlbiBzb21ldGhp
+bmcgdG8gdGFsayBhYm91dCBpbiB0aGUgc2FtZSBsaW5lIGFzIHRoaXMgcGF0Y2ggWzNdLgoKV2Ug
+aGFkIGEgbGVuZ3RoeSwgY29uc3RydWN0aXZlIGNvbnZlcnNhdGlvbiB3aXRoIFRlZCBhdCBMUEMg
+bGFzdCB5ZWFyIAphYm91dCB0aGUgIlBSTkcgYW5kIGNsb25lIiB1c2UgY2FzZSBhbmQgY29uY2x1
+ZGVkIHRoYXQgaXQncyBiZXN0IGZvciAKZXZlcnlvbmUgdG8gc2ltcGx5IGFzc3VtZSB0aGUgc3lz
+dGVtIGNvdWxkIGJlIGNsb25lZCBhdCBhbnkgcG9pbnQsIGhlbmNlIAphbHdheXMgZm9yY2UgaW50
+ZXJtaXggb2YgUkRSQU5EIG9yIGNvbXBhcmFibGUgdG8gYW55IFBSTkcgb3V0cHV0LiBXZSAKc2lu
+Y2Ugbm8gbG9uZ2VyIG5lZWQgYW4gZXZlbnQgZm9yIHRoYXQgY2FzZS4KCgpBbGV4CgpbMV0gaHR0
+cHM6Ly9naXRodWIuY29tL3N5c3RlbWQvc3lzdGVtZC9pc3N1ZXMvMjYzODAKWzJdIGh0dHBzOi8v
+bG9yZS5rZXJuZWwub3JnL2xrbWwvWkpHTlJFTjR0THpRWE9KckBnYXJkZWwtbG9naW4vClszXSAK
+aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGttbC9DQUhtTUU5cHhjLW5PX3hhPTQrMUNudmJudWVm
+YlJUSkh4TTduODE3Y19UUGVveHp1X2dAbWFpbC5nbWFpbC5jb20vCgojcmVnemJvdCBpbnRyb2R1
+Y2VkOiAzYWFkZjEwMGY5M2Q4MDgxCgo+IAo+IEZpeGVzOiBhZDZiY2RhZDJiNjcgKCJ2bWdlbmlk
+OiBlbWl0IHVldmVudCB3aGVuIFZNR0VOSUQgdXBkYXRlcyIpCj4gQ2M6IHN0YWJsZUB2Z2VyLmtl
+cm5lbC5vcmcKPiBDYzogR3JlZyBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9u
+Lm9yZz4KPiBMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9yLzIwMjMwNTMxMDk1MTE5LjEx
+MjAyLTItYmNoYWxpb3NAYW1hem9uLmVzCj4gU2lnbmVkLW9mZi1ieTogSmFzb24gQS4gRG9uZW5m
+ZWxkIDxKYXNvbkB6eDJjNC5jb20+Cj4gLS0tCj4gICBkcml2ZXJzL3ZpcnQvdm1nZW5pZC5jIHwg
+MiAtLQo+ICAgMSBmaWxlIGNoYW5nZWQsIDIgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvdmlydC92bWdlbmlkLmMgYi9kcml2ZXJzL3ZpcnQvdm1nZW5pZC5jCj4gaW5kZXgg
+YjY3YTI4ZGE0NzAyLi5hMWM0NjdhMGU5ZjcgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy92aXJ0L3Zt
+Z2VuaWQuYwo+ICsrKyBiL2RyaXZlcnMvdmlydC92bWdlbmlkLmMKPiBAQCAtNjgsNyArNjgsNiBA
+QCBzdGF0aWMgaW50IHZtZ2VuaWRfYWRkKHN0cnVjdCBhY3BpX2RldmljZSAqZGV2aWNlKQo+ICAg
+c3RhdGljIHZvaWQgdm1nZW5pZF9ub3RpZnkoc3RydWN0IGFjcGlfZGV2aWNlICpkZXZpY2UsIHUz
+MiBldmVudCkKPiAgIHsKPiAgIAlzdHJ1Y3Qgdm1nZW5pZF9zdGF0ZSAqc3RhdGUgPSBhY3BpX2Ry
+aXZlcl9kYXRhKGRldmljZSk7Cj4gLQljaGFyICplbnZwW10gPSB7ICJORVdfVk1HRU5JRD0xIiwg
+TlVMTCB9Owo+ICAgCXU4IG9sZF9pZFtWTUdFTklEX1NJWkVdOwo+ICAgCj4gICAJbWVtY3B5KG9s
+ZF9pZCwgc3RhdGUtPnRoaXNfaWQsIHNpemVvZihvbGRfaWQpKTsKPiBAQCAtNzYsNyArNzUsNiBA
+QCBzdGF0aWMgdm9pZCB2bWdlbmlkX25vdGlmeShzdHJ1Y3QgYWNwaV9kZXZpY2UgKmRldmljZSwg
+dTMyIGV2ZW50KQo+ICAgCWlmICghbWVtY21wKG9sZF9pZCwgc3RhdGUtPnRoaXNfaWQsIHNpemVv
+ZihvbGRfaWQpKSkKPiAgIAkJcmV0dXJuOwo+ICAgCWFkZF92bWZvcmtfcmFuZG9tbmVzcyhzdGF0
+ZS0+dGhpc19pZCwgc2l6ZW9mKHN0YXRlLT50aGlzX2lkKSk7Cj4gLQlrb2JqZWN0X3VldmVudF9l
+bnYoJmRldmljZS0+ZGV2LmtvYmosIEtPQkpfQ0hBTkdFLCBlbnZwKTsKPiAgIH0KPiAgIAo+ICAg
+c3RhdGljIGNvbnN0IHN0cnVjdCBhY3BpX2RldmljZV9pZCB2bWdlbmlkX2lkc1tdID0gewoKCgoK
+QW1hem9uIERldmVsb3BtZW50IENlbnRlciBHZXJtYW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAx
+MTcgQmVybGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRo
+YW4gV2Vpc3MKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIg
+SFJCIDE0OTE3MyBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDI4OSAyMzcgODc5CgoK
 
 
