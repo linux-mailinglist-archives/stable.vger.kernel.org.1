@@ -1,133 +1,126 @@
-Return-Path: <stable+bounces-40374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FF18ACBC2
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 13:14:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D886F8ACDE6
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 15:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 483591C22799
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 11:14:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95C13285427
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 13:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E52146597;
-	Mon, 22 Apr 2024 11:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA022150986;
+	Mon, 22 Apr 2024 13:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sqkpgcbg"
+	dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="TtRAMlly"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7BF145FEE;
-	Mon, 22 Apr 2024 11:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71804145342;
+	Mon, 22 Apr 2024 13:11:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713784440; cv=none; b=pI2GXDgNjTXQSGJphikB/yJvkMIslMSs/MOzl7bfJYlr6jgEDrRfVktLoLBPXImRdCtpoyltF/B0DUcwODDvmDUsuryGHan0A6csFnUJl/TklLcg/UC6rd1VxkuSFvcgH3BpkC0miiUzIPDg3HXMOoP/DowHpte0KQvML5PtkA0=
+	t=1713791520; cv=none; b=iIk6XmJXd5t+PltghQqs38JEf148SgYhL4FZnLJqAO9Mu99P6nP5QUEv8eiyVHoqpwZNC0PnQ8jLyAzx/1Mo8msBEZur3/7vIzk3AhtjyUR9IBGK7hJxrwKEJfeh0cbgmgrgpSmxjeAtga1nUQ1AKEUp2u8Sd/fbSHubzqqewbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713784440; c=relaxed/simple;
-	bh=Zdgd6Fj5wUDm/hSh8fpDnEnjpUDlT+CuNtJ1yiPZDh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R5LWHt4EkpkS0LyoO+bpVxNIFkV2tMksaN3iVrhwFL5rWkLw6WspRiPaEZgYqXGEoTtZXgvC/5uLZSHCIqlKLl7Mpz1KYl0ebDEwuOlHaxTRZjqpbvPRw6iXyd8eODjUPUg6wNgQIK5IqFPGica7ogiiY1MVcHtlS8FyIsxC/3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sqkpgcbg; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713784439; x=1745320439;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Zdgd6Fj5wUDm/hSh8fpDnEnjpUDlT+CuNtJ1yiPZDh8=;
-  b=SqkpgcbgM3rpvAywqse7i02x6QveAKJ0E1JlzLFZxTfSXIVGCfS89sZp
-   M6geA4fjdcTAdhdsfaDJRKFNckLjeLIr1/azKKyim5L+NlhedFYcdXghy
-   JWLKcbIt3EtVaX7P1Q/i1qiy1XKsGem7smwB2bWHlTFBIbVYAc7hmXgzo
-   gtOHtGhRhDt6c5ZA2Ccw9LG8BQ4HfoeUKfySemD8L6mrF1YbCSHhHbMN8
-   O7FsIWVg5ZTpPr3qLl0pdAfDV6YH9op6Kt0FJ/+ZJ8m/g/yYqf1Nk0Q55
-   /AVIsz3AF19+uZ9oKvV8yjp/VnZ9xMbYoMAqrF8ggUBMLw0wFsSuVdFvp
-   w==;
-X-CSE-ConnectionGUID: F4kCHlZaTC+15N7YdWEXNA==
-X-CSE-MsgGUID: s+n5UrveSwG2/vIaR+0zlw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11051"; a="19868743"
-X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; 
-   d="scan'208";a="19868743"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 04:13:58 -0700
-X-CSE-ConnectionGUID: 59KrG3F5Svasv566kQDXJg==
-X-CSE-MsgGUID: jiOK+9VtQV+MSJDUnNQ9hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; 
-   d="scan'208";a="28649184"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmviesa004.fm.intel.com with SMTP; 22 Apr 2024 04:13:55 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 22 Apr 2024 14:13:54 +0300
-Date: Mon, 22 Apr 2024 14:13:54 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] usb: typec: qcom-pmic: fix use-after-free on late
- probe errors
-Message-ID: <ZiZGciWjmA5SfjUD@kuha.fi.intel.com>
-References: <20240418145730.4605-1-johan+linaro@kernel.org>
- <20240418145730.4605-2-johan+linaro@kernel.org>
+	s=arc-20240116; t=1713791520; c=relaxed/simple;
+	bh=XOe3rO+V4OSg40SEQ1ztLJzq8dL9itVN6gTILUOr+sM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n3CKynZILXiJQtbrnyKst2xa+w1/JGCi6bE3LvMO0X+ETpsyksiTsolKCjM3v9iREiaGeRsEXUWcBWSCHPNzLRp/VWhEy8yOp0ApET+G2rB8fcpO7yy5H9fQCuoVld3X/HWCSSIskVUz0eLKQBoI8VQYeW8ygo1dGs2WvIcbwfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=TtRAMlly; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4VNQd26fR4z680f;
+	Mon, 22 Apr 2024 15:11:50 +0200 (CEST)
+Received: from [10.10.15.10] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4VNQd237yKz67yS;
+	Mon, 22 Apr 2024 15:11:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=unoeuro; t=1713791510;
+	bh=iD3Put1A9IYrX60+JD9GoM52tBmlJ+dyLBFknV0tTPQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=TtRAMllyiIjnlMnB6dqO3KD6WcIQO5NTJkh6TKPLjrT/J/9ZcPM3F6bFOTThF33Si
+	 UdX/+xkzQfUDpCq7x24jv2whpot9Bj+ZJepyWqsq1xUb2RsvSlaRytJqDYP6aNEE3u
+	 Me8YSRtuU9Lnoyfj4tH9eQMca7zsZpwGrIvqf8n8=
+Message-ID: <509e2bb2-54c2-4156-9bb8-4541c87ea2f2@gaisler.com>
+Date: Mon, 22 Apr 2024 15:11:49 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240418145730.4605-2-johan+linaro@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] sparc64: Fix CPU online bug and warning fixes
+To: Sam Ravnborg <sam@ravnborg.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org,
+ Nick Bowler <nbowler@draconx.ca>, linux-kernel@vger.kernel.org,
+ Atish Patra <atish.patra@oracle.com>, stable@vger.kernel.org,
+ Bob Picco <bob.picco@oracle.com>, Vijay Kumar <vijay.ac.kumar@oracle.com>
+References: <20240330-sparc64-warnings-v1-0-37201023ee2f@ravnborg.org>
+ <4e57929b-1539-4a25-ab05-a2a9e04ecc1d@app.fastmail.com>
+ <20240330183937.GA191882@ravnborg.org>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20240330183937.GA191882@ravnborg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 18, 2024 at 04:57:29PM +0200, Johan Hovold wrote:
-> Make sure to stop and deregister the port in case of late probe errors
-> to avoid use-after-free issues when the underlying memory is released by
-> devres.
+
+
+On 2024-03-30 19:39, Sam Ravnborg wrote:
+> Hi Arnd,
 > 
-> Fixes: a4422ff22142 ("usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
-> Cc: stable@vger.kernel.org	# 6.5
-> Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> On Sat, Mar 30, 2024 at 11:19:37AM +0100, Arnd Bergmann wrote:
+>> On Sat, Mar 30, 2024, at 10:57, Sam Ravnborg via B4 Relay wrote:
+>>> Nick Bowler reported that sparc64 failed to bring all his CPU's online,
+>>> and that turned out to be an easy fix.
+>>>
+>>> The sparc64 build was rather noisy with a lot of warnings which had
+>>> irritated me enough to go ahead and fix them.
+>>> With this set of patches my arch/sparc/ is almost warning free for
+>>> all{no,yes,mod}config + defconfig builds.
+>>
+>> Patches 1-9 look good to me,
+>>
+>> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> Thanks!
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Picking up patches 1-8 to my for-next with
 
-> ---
->  drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Tested-by: Andreas Larsson <andreas@gaisler.com>
+
+and, having run it only on single core qemu, patch 9 with
+
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+
+>>
+>>> There is one warning about "clone3 not implemented", which I have ignored.
+>>>
+>>> The warning fixes hides the fact that sparc64 is not yet y2038 prepared,
+>>> and it would be preferable if someone knowledgeable would fix this
+>>> poperly.
+>>
+>> The clone3 bug has been around for ages, it's probably not even that
+>> hard to fix and just needs a little bit of testing.
+> I looked briefly and it involves a better understanding of the window
+> register manipulation than what I have today.
 > 
-> diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-> index e48412cdcb0f..d3958c061a97 100644
-> --- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-> +++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-> @@ -104,14 +104,18 @@ static int qcom_pmic_typec_probe(struct platform_device *pdev)
->  
->  	ret = tcpm->port_start(tcpm, tcpm->tcpm_port);
->  	if (ret)
-> -		goto fwnode_remove;
-> +		goto port_unregister;
->  
->  	ret = tcpm->pdphy_start(tcpm, tcpm->tcpm_port);
->  	if (ret)
-> -		goto fwnode_remove;
-> +		goto port_stop;
->  
->  	return 0;
->  
-> +port_stop:
-> +	tcpm->port_stop(tcpm);
-> +port_unregister:
-> +	tcpm_unregister_port(tcpm->tcpm_port);
->  fwnode_remove:
->  	fwnode_remove_software_node(tcpm->tcpc.fwnode);
->  
-> -- 
-> 2.43.2
+>>
+>> If anyone wants to work on the time64 support for the vdso, I can
+>> explain the details for how it's done.
+>
+> I am happy to type the patches but need to rely on others for testing.
+> Anything to help me get started would be super.
 
--- 
-heikki
+I'm not picking up patch 10 at the moment, but it would be really nice
+to get allmodconfig builds to not fail due to prototype Werrors.
+
+Thanks,
+Andreas
 
