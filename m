@@ -1,83 +1,95 @@
-Return-Path: <stable+bounces-40382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438D88AD073
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 17:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C618AD0B5
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 17:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD3F1F218BF
-	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 15:18:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07DDB1F23054
+	for <lists+stable@lfdr.de>; Mon, 22 Apr 2024 15:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F37A1534E2;
-	Mon, 22 Apr 2024 15:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAC5152DEE;
+	Mon, 22 Apr 2024 15:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ElRNR3hV"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EmlZ7k8V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2071.outbound.protection.outlook.com [40.107.236.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD617153505
-	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 15:18:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713799090; cv=none; b=MjhUrSI9HwYBDnNjZ1+aEOoqc1/w4RYSHht/L8LfKtDQoEAmsr0DCwM73A5KCFBiOF1Ohn8cFenLpeLmB23eq2nfG+CyRQMt4x17KJ5E0zL68aU9U7wC1c/Pbv0WvG3fZS5kHgrQTmpIxAIYo8wnMTdOq9VTGytJqpyilwTXq98=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713799090; c=relaxed/simple;
-	bh=egAKcaQhm4QwS4uKVQDr57jjtMoFh1CKVEFLITqf4YE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frreXTNpyf5O/wYQjl1c6hd5kX5V953dbHEAY5KB9mlcofxkG9HsxYYZorYqK635nu2KLM4RVdweVlPiKOyEHVxp6y+Ua/CcQpJiAdUsfnV965yzax4ZyutCKsjCW+y3fKu4rUiZjXmwNAMWMsf/gHKXoPM+b//nUr6T8mW/bKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ElRNR3hV; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56e6affdd21so1561711a12.3
-        for <stable@vger.kernel.org>; Mon, 22 Apr 2024 08:18:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713799086; x=1714403886; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d9xj7HwmwuIRzsMLAZWeyWIJzUgtPFLJ8hFtN2pvdUw=;
-        b=ElRNR3hVUEOMSXIsCS0BdIUjbBxXt0hkzEsxhbsb85bOB224owjRLDCmFTt2rO3xQf
-         c6Uyw8jFyoxr4JEqYYr0TKeZUL3QTVlXohXmDxW03wllHzrBR9diTREz0iIoTEO+5zmQ
-         HUNgx3nln8MXxIVTMjAJIkjKkWq8QJtSnm5qenKM9u5mcvf5ICebAdjqtMeq6GN5nbae
-         MutVwT5wyw0rWBEYsH94S37/Z4XNaQQgqKeG+BdeNX2/rusrS9zomPqnDsy0LZaTWg34
-         H1t+wHgOm6tSipCVDOncx9IWO/xTsZkRQmnaI1q+2sHRELBK7URziVi/H/+wMYdadQdv
-         gO3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713799086; x=1714403886;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d9xj7HwmwuIRzsMLAZWeyWIJzUgtPFLJ8hFtN2pvdUw=;
-        b=HGVrva07xrrWnFaeGMo3MNbJm5mNgkrbXjFQVTMIB6XuX9mO1j1HuutBiIC1HLr/Op
-         LOnbGoStAEcuekTus909yPp07EAe3jGOQx2+rlahdDvynjk7HlBbK3H/UxoNCs5Jj9QA
-         aVaol5ej8l2891QnFGVh4a9E5oBivr8Mwj7yUjGMCzaOy1zVj+udkxM+PnGJTLeHuDJa
-         UJhfCgrQZaZd6gEfXHL8s0mYFKloXABWN9rOrE5cWwYIMxYtdVUKThT45HoPwAPfLbE4
-         5OoTPik2vUNvM+6ej6zk1+pMpEvCEDIn5Xtva+GYPF7JKeoQ9cHFoodODUGHJIyIgHks
-         IYCA==
-X-Gm-Message-State: AOJu0YwP6oiWCZnvnu5GfZWWMdva+pYyxOEZsRid+HdB4LXbcPt2tyY5
-	c4GzCFylb1HXS3Ryx4lqoP/dZA3la9yBZnSpDjX6O8HPVcq69Vuyqfxs7BeBaJI=
-X-Google-Smtp-Source: AGHT+IE0xIZcSiuCSsz7uHwpkq02z/02QgEoSLowEQ4mDuOxo6EQH/+kgcM7JeLLwXtgGDXeB3sn2Q==
-X-Received: by 2002:a05:6402:524c:b0:572:1574:2b88 with SMTP id t12-20020a056402524c00b0057215742b88mr1242248edd.40.1713799086256;
-        Mon, 22 Apr 2024 08:18:06 -0700 (PDT)
-Received: from localhost (fwdproxy-lla-007.fbsv.net. [2a03:2880:30ff:7::face:b00c])
-        by smtp.gmail.com with ESMTPSA id p8-20020a05640243c800b00571fad0647csm2411769edc.74.2024.04.22.08.18.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Apr 2024 08:18:05 -0700 (PDT)
-From: Vlad Poenaru <vlad.wing@gmail.com>
-To: stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	qemu-devel@nongnu.org,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Subject: [PATCH 6.6.y] virtio_net: Do not send RSS key if it is not supported
-Date: Mon, 22 Apr 2024 08:18:03 -0700
-Message-ID: <20240422151803.1266071-1-vlad.wing@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024041412-subduing-brewing-cd04@gregkh>
-References: <2024041412-subduing-brewing-cd04@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C3B152E1C
+	for <stable@vger.kernel.org>; Mon, 22 Apr 2024 15:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713799744; cv=fail; b=UQUVnmBqAQxu8mdscVLYfMc/DdUmbzX+nZJ01kM2cFLOhYBU3uoRxJFO3PLqlKZWYTNuvUylRYuGEsgBkWg36eicEWTFYF5aEZ2o46YL0urRYsKtsv/KqcgugGPpbsh9oTMMrLkVN1+mH7HjQrRMwpVLahlp11BeGrZENUICRYw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713799744; c=relaxed/simple;
+	bh=bv/cllM/XhLS96iOKJrTWcuHxEXDCAN0a9jQ0C+Fi/Q=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OB7D8VCv7Y4UcEVi5cDTJMKIKH9ODC91mZQkYbK9P3+S9Gq9Ur0A+hWi39uvo6luk8bZY62XLxHetEEXeNunfiRk4MDvk03Yy+kE4HMa/vJEEW42h9dzt+LtE5th9n4Qvxuz+OkdALQqVNXGkeUGw6bSfRqUm+26yrKRJ89QU5w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EmlZ7k8V; arc=fail smtp.client-ip=40.107.236.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bB1Zm/qJbugQ+0d1K7hQebHhLdr8PiHHuTWQNOiqzpOpoq9eY4oS6DUZ4CI9mE4Z6QdHTMo0cSD7UcpIacUW5/y9WOk9gX0dmeQI7QNahYxkaBw3oqUcetwJ96yK+pwMupZ37B4a299RkWshVuBQr4bQO9VGVS3AGcnGNre3SifPJWakeOmUeAX01i8PjeCIYarg4flwjh2nuuob1ONCgFXk2JQeGz0GmFG/tEQhr9JpQUz54Obg8ElkssOr83pWjij9RB5qk3yGbEJrQgp0T0HW11duI//t7Piyh++S9Tg+gTOn9vtdlCz4vgkF1xi6uBHHJJ4wG5IEizem4XAC3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dga6hOGUCEzTc5Ywn+l8TJNRR4bJ22ab3aBnfdEkTuQ=;
+ b=Eqdvn1Yo7UEUZXknyg1s5i9+40ulVl74pykrUwWVbdGUcIUF51TO6ebAYqOILAmYbYYf4QpAWQJ9cRxOfTUXzqTkX6hNySmi71a7J3FfcA9RCEqcYaTcvWUMDi3c4dqtcoIv399ynriUZnV7p+/4rFwtwJ2DLVcgd27QKJo4vztvWTB/Y8xTotI/B0kiT925bALQhPuyboJj94mvYKkbeTMlTqtosIDGYEsaXkpb2VbePwbxomJWzHWuLZid1hayi5Nck+zXsGPXeW122TN3MMW5RT9VkRIQXd8Sx+JpXodltMO/8W/1Lq11Raypmgw71/YQWxA2vWqz7n4BZyEI3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dga6hOGUCEzTc5Ywn+l8TJNRR4bJ22ab3aBnfdEkTuQ=;
+ b=EmlZ7k8V4TPFiZ4oCaerzHZ4vZRHhk9u0rcCYs6QxJ2UvQt2LLoyA0BI3VskT5CzMQxXgq0jigtr5toAdJCTOVn6TPJEhU0N/rct1zUnl1vkvDLGhrKSHVQN4Unr4O6iwze+wlPAWJBeu5n8maN9dslwdldNIDq0tV6R5Tv0W+c=
+Received: from PR0P264CA0225.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100:1e::21)
+ by DS7PR12MB6120.namprd12.prod.outlook.com (2603:10b6:8:98::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7472.44; Mon, 22 Apr 2024 15:28:51 +0000
+Received: from SN1PEPF00036F3C.namprd05.prod.outlook.com
+ (2603:10a6:100:1e:cafe::7b) by PR0P264CA0225.outlook.office365.com
+ (2603:10a6:100:1e::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7495.34 via Frontend
+ Transport; Mon, 22 Apr 2024 15:28:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ SN1PEPF00036F3C.mail.protection.outlook.com (10.167.248.20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7519.19 via Frontend Transport; Mon, 22 Apr 2024 15:28:50 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 22 Apr
+ 2024 10:28:47 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 22 Apr
+ 2024 10:28:47 -0500
+Received: from aaurabin-suse.king-squeaker.ts.net (10.180.168.240) by
+ SATLEXMB03.amd.com (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35
+ via Frontend Transport; Mon, 22 Apr 2024 10:28:46 -0500
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
+	<Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>, <roman.li@amd.com>,
+	<wayne.lin@amd.com>, <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
+	<hersenxs.wu@amd.com>, <jerry.zuo@amd.com>, George Shen
+	<george.shen@amd.com>, <stable@vger.kernel.org>, Daniel Wheeler
+	<daniel.wheeler@amd.com>
+Subject: [PATCH 06/37] drm/amd/display: Handle Y carry-over in VCP X.Y calculation
+Date: Mon, 22 Apr 2024 11:27:15 -0400
+Message-ID: <20240422152817.2765349-7-aurabindo.pillai@amd.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240422152817.2765349-1-aurabindo.pillai@amd.com>
+References: <20240422152817.2765349-1-aurabindo.pillai@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,134 +97,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3C:EE_|DS7PR12MB6120:EE_
+X-MS-Office365-Filtering-Correlation-Id: 07c56d2b-6276-4b74-f362-08dc62e0e965
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?cuL9sB9pPIJx9DkQ9tKjKzG2mgqOKzt3nf1o4DEfkYvTkMaFJRctvBRCWpv0?=
+ =?us-ascii?Q?oYDfwachJtezrnM31raBUWufQerr6lYykWxBq0SIsBKuoOoaOydDrnfGd+RE?=
+ =?us-ascii?Q?DzCUB7n3gnGW3KHCLZwgD+VAEOBK6tYOln5AahJ/UbFmj4NEtFjV9Mivkr+y?=
+ =?us-ascii?Q?kK/m6GND9RsPNFI9oPcrtzGBe2euV5VWmhEaDd0ERQUyZlA0/iyB8xtTsrmz?=
+ =?us-ascii?Q?gL/+q+Jw1WUL8d1ZVdXmtKGXUkgaolTycDgzpLvvJ5CKcrChYeb9qlKMZip2?=
+ =?us-ascii?Q?t4d8TQr1zpNXH6eOgpFvy5xDk0wOyWbAowDdvTSez8lro8IcjjLZkLIkpxpO?=
+ =?us-ascii?Q?GBiU0rNo8ol5xHjPKUmj9H/QdIZPl1VktVY0lJ5xNPwSu9yeRokBwzvXziyA?=
+ =?us-ascii?Q?W6c67YEvRUZ6S5N3trdFzU7YpS9oaHeo65ldhkH9Lh93/BbRE/39P6Pp1K6/?=
+ =?us-ascii?Q?p5DwiSOeQAmXgEoxZZlDsETiFPsDY6G/+8VvyMZ5tYD+Xa7x7hH5JLPva7zL?=
+ =?us-ascii?Q?492nDBb+3yzCjEoKgMqdKUf25b+VWYQ4v9R2Cv9YbHPTQEzYq+G+R6s0FaTu?=
+ =?us-ascii?Q?HDe4B31iGCd6H5eK/rZhSBmB1WqalHMNoMFAnJitV6VFMFkEbbHnM5AAvO/S?=
+ =?us-ascii?Q?r9VRA5Wj7vhWwyqwFq1BjgMpIR//cg26BKiIiIvne4maHBNE11PkSDixYc6C?=
+ =?us-ascii?Q?D7zkOxbMadcUvaf3NGn3wH1SK06On2+JVS3+Z2kDTG9gVCeodGQ4AVMJhQ7x?=
+ =?us-ascii?Q?tMfXwASmV6VjlVtGU5zHK/fAMIfGCBoNkoyE0vylmZVYZAjbmqkNJhcuqChW?=
+ =?us-ascii?Q?73opv1SEdB3cG3MSMPpJKe7HfgsRkClnimu3iS+Y4BJOAMurqfQVklwE5t1E?=
+ =?us-ascii?Q?TKZ4J6z8g34JhIVyHDI0exYreUQOD3c6UudBVCojJ34LDP01HgSZBAAle/gQ?=
+ =?us-ascii?Q?Pxzxh95llds7S2t1r3YBIQG7c+7LACiwixmNx6zDuC63zmIhChVrYbtsfKpA?=
+ =?us-ascii?Q?i6HDbjI7W8q7SKUD3Jsbyoc0RmSyzf6eDTy4V7aNyqcLczbdgbhqcQ429rT9?=
+ =?us-ascii?Q?WVkZF1ufqN1pBtcyNdk4KM4QoPnx8/dvuVKZqxIMMz8NWYf8Nw1nWgwV7Tak?=
+ =?us-ascii?Q?ShyXtgCrVpzxcmHF5neGOd/dKdbDWurnqTASpwFXhlxIH0sb/ySXZl1L5pjz?=
+ =?us-ascii?Q?qhfoTcYU4WhHm69gNK39fV4mHQUlxqIvy5OXOhuOsmRbVeFHpocTYEVybSdy?=
+ =?us-ascii?Q?Ll4TEjtSrqe7NWCdKZshukh/OkKW9np/PQBl+eeTJfITPCweUeGGmCEIOVuK?=
+ =?us-ascii?Q?wKI7HasYvGM3bCaAgXz9/FkBLx6vPimrAbT+/jR4G3d/6pA2f1McscyCXpR2?=
+ =?us-ascii?Q?YFAlYj0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(82310400014)(1800799015)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2024 15:28:50.7111
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07c56d2b-6276-4b74-f362-08dc62e0e965
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00036F3C.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6120
 
-From: Breno Leitao <leitao@debian.org>
+From: George Shen <george.shen@amd.com>
 
-commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream.
+Theoretically rare corner case where ceil(Y) results in rounding up to
+an integer. If this happens, the 1 should be carried over to the X
+value.
 
-There is a bug when setting the RSS options in virtio_net that can break
-the whole machine, getting the kernel into an infinite loop.
-
-Running the following command in any QEMU virtual machine with virtionet
-will reproduce this problem:
-
-    # ethtool -X eth0  hfunc toeplitz
-
-This is how the problem happens:
-
-1) ethtool_set_rxfh() calls virtnet_set_rxfh()
-
-2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
-
-3) virtnet_commit_rss_command() populates 4 entries for the rss
-scatter-gather
-
-4) Since the command above does not have a key, then the last
-scatter-gatter entry will be zeroed, since rss_key_size == 0.
-sg_buf_size = vi->rss_key_size;
-
-5) This buffer is passed to qemu, but qemu is not happy with a buffer
-with zero length, and do the following in virtqueue_map_desc() (QEMU
-function):
-
-  if (!sz) {
-      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
-
-6) virtio_error() (also QEMU function) set the device as broken
-
-    vdev->broken = true;
-
-7) Qemu bails out, and do not repond this crazy kernel.
-
-8) The kernel is waiting for the response to come back (function
-virtnet_send_command())
-
-9) The kernel is waiting doing the following :
-
-      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
-	     !virtqueue_is_broken(vi->cvq))
-	      cpu_relax();
-
-10) None of the following functions above is true, thus, the kernel
-loops here forever. Keeping in mind that virtqueue_is_broken() does
-not look at the qemu `vdev->broken`, so, it never realizes that the
-vitio is broken at QEMU side.
-
-Fix it by not sending RSS commands if the feature is not available in
-the device.
-
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Cc: stable@vger.kernel.org
-Cc: qemu-devel@nongnu.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
+CC: stable@vger.kernel.org
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 ---
- drivers/net/virtio_net.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ .../drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c    | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 7cb0548d17a3..56cbe00126bb 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3570,19 +3570,34 @@ static int virtnet_get_rxfh(struct net_device *dev, u32 *indir, u8 *key, u8 *hfu
- static int virtnet_set_rxfh(struct net_device *dev, const u32 *indir, const u8 *key, const u8 hfunc)
- {
- 	struct virtnet_info *vi = netdev_priv(dev);
-+	bool update = false;
- 	int i;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c
+index 48e63550f696..03b4ac2f1991 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c
+@@ -395,6 +395,12 @@ void dcn31_hpo_dp_link_enc_set_throttled_vcp_size(
+ 				x),
+ 			25));
  
- 	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
- 		return -EOPNOTSUPP;
- 
- 	if (indir) {
-+		if (!vi->has_rss)
-+			return -EOPNOTSUPP;
-+
- 		for (i = 0; i < vi->rss_indir_table_size; ++i)
- 			vi->ctrl->rss.indirection_table[i] = indir[i];
-+		update = true;
- 	}
--	if (key)
-+	if (key) {
-+		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
-+		 * device provides hash calculation capabilities, that is,
-+		 * hash_key is configured.
-+		 */
-+		if (!vi->has_rss && !vi->has_rss_hash_report)
-+			return -EOPNOTSUPP;
-+
- 		memcpy(vi->ctrl->rss.key, key, vi->rss_key_size);
-+		update = true;
-+	}
- 
--	virtnet_commit_rss_command(vi);
-+	if (update)
-+		virtnet_commit_rss_command(vi);
- 
- 	return 0;
- }
-@@ -4491,13 +4506,15 @@ static int virtnet_probe(struct virtio_device *vdev)
- 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
- 		vi->has_rss_hash_report = true;
- 
--	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
-+	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
- 		vi->has_rss = true;
- 
--	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_indir_table_size =
- 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
- 				rss_max_indirection_table_length));
++	// If y rounds up to integer, carry it over to x.
++	if (y >> 25) {
++		x += 1;
++		y = 0;
 +	}
 +
-+	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_key_size =
- 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
- 
+ 	switch (stream_encoder_inst) {
+ 	case 0:
+ 		REG_SET_2(DP_DPHY_SYM32_VC_RATE_CNTL0, 0,
 -- 
-2.43.0
+2.44.0
 
 
