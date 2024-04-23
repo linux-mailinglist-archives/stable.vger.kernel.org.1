@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B5A8AFA34
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D4D8AF99B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B344C28ABA9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 735EB1C22677
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE3314901A;
-	Tue, 23 Apr 2024 21:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71B5145B1E;
+	Tue, 23 Apr 2024 21:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyZ6tCDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayRPhrMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C2114389E;
-	Tue, 23 Apr 2024 21:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86793143897;
+	Tue, 23 Apr 2024 21:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908653; cv=none; b=md1nbRPGS86bCvGSfVGw3JC/YU9mRyr3iUnxuTQhBWYngFtJ0AUXJj4uDrn6Zda/3D6v0is4ryOYVPhBwIB0Ol2tIB4YmtNbI3g1yLLq0ibuUGytKLO3kXlAFjYAax6/c/62vR8Su2rKBZwRMscXJrtDFZjhXBNVCZnkAxYXnq4=
+	t=1713908555; cv=none; b=HxLc+6fAVmHgDsXIfFM4c71FjZFHdEojj7K7qHPfl0oq1CW0YTonMWeLSRfyPrpJhAi5hbxqoMuEKcdMsiP/nWzHRrOeg7CjJpoKkpYUsa5xVhoiXXBYfT+E+mHRiBJFQi5auIq9LP5Ec7FI7wVLeusxKsWlvyCXgy5Rw6wRwNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908653; c=relaxed/simple;
-	bh=k6CJ3pSCou6GZwOlonHQhyFiJKpbsuU3fOh5NK0S5Q4=;
+	s=arc-20240116; t=1713908555; c=relaxed/simple;
+	bh=gAYqPg2jEEEm/Pm1UXV7qxZdCyDa2xv57vIeASnhTxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ez/UG6+n6huFWgwd3KPMxv2FMzYkOgCRXm4mgEa1+iF6VWSObj9NE9qHVsFwjUCTUTzjCyTpFsUVEUtO82vyjlBXP6aWktjtaQvRUPdGzs4XXh43lPTZisw7ADdZjhIRs+eVMlDXWse8BjAwnQByTr9PwapudU8eOib7r5JOG6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyZ6tCDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E541C3277B;
-	Tue, 23 Apr 2024 21:44:13 +0000 (UTC)
+	 MIME-Version; b=LfUzskSGTwkt1ub5mAFtxq8d6tv1k6dp6HhUfYu5WuSZgA/sjA+SFIAb1GHWr/CzVGLMUGVGziKSdJkphT6UBfSAdRf4kTNLh+E1Hd1GiKcZgpZbwt7F5nFaxF+9MvW3XOsEyh2JDqEpZmS/cpsUvbjp985eGTZKMiQSsiqBUl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayRPhrMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD3BC32786;
+	Tue, 23 Apr 2024 21:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908653;
-	bh=k6CJ3pSCou6GZwOlonHQhyFiJKpbsuU3fOh5NK0S5Q4=;
+	s=korg; t=1713908555;
+	bh=gAYqPg2jEEEm/Pm1UXV7qxZdCyDa2xv57vIeASnhTxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyZ6tCDuINKpdyxWyDJFdBI8uWfnJS3mrFWWO4suehiAq0vLbw8VSuPHXaNwXtbrF
-	 5z/pzzc7+J9vjZskT2QS+9Yv7+JbMpbt4tle/oMv6NcvBiLvKnF2d+2Vz2K+yT43qB
-	 qjdzZLDb27kVbmCuBjTCkgSFTbSDPUNCRdXB9Q6w=
+	b=ayRPhrMtKT/HVd6jG47ZEsNLGfz3Emo+rbn3GuXCxihsMLrDMEV561tCaEYDdSjYx
+	 MH3ETVN+H/8GFSV6/hIzqEf3HMRw9vP+ZsigteKJJB4A9w+Q/WKL/VrikFO1b0spYe
+	 4H8Kd3xDUKUXNUhiO8SvBaDm82EpXj9rpQ+nXW7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 143/158] drm/amdgpu: remove invalid resource->start check v2
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.8 158/158] ksmbd: common: use struct_group_attr instead of struct_group for network_open_info
 Date: Tue, 23 Apr 2024 14:39:40 -0700
-Message-ID: <20240423213900.335757179@linuxfoundation.org>
+Message-ID: <20240423213900.974796333@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit ca7c4507ba87e9fc22e0ecfa819c3664b3e8287b upstream.
+commit 0268a7cc7fdc47d90b6c18859de7718d5059f6f1 upstream.
 
-The majority of those where removed in the commit aed01a68047b
-("drm/amdgpu: Remove TTM resource->start visible VRAM condition v2")
+4byte padding cause the connection issue with the applications of MacOS.
+smb2_close response size increases by 4 bytes by padding, And the smb
+client of MacOS check it and stop the connection. This patch use
+struct_group_attr instead of struct_group for network_open_info to use
+ __packed to avoid padding.
 
-But this one was missed because it's working on the resource and not the
-BO. Since we also no longer use a fake start address for visible BOs
-this will now trigger invalid mapping errors.
-
-v2: also remove the unused variable
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: aed01a68047b ("drm/amdgpu: Remove TTM resource->start visible VRAM condition v2")
-CC: stable@vger.kernel.org
-Acked-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0015eb6e1238 ("smb: client, common: fix fortify warnings")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/smb/common/smb2pdu.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -562,7 +562,6 @@ static int amdgpu_ttm_io_mem_reserve(str
- 				     struct ttm_resource *mem)
- {
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bdev);
--	size_t bus_size = (size_t)mem->size;
- 
- 	switch (mem->mem_type) {
- 	case TTM_PL_SYSTEM:
-@@ -573,9 +572,6 @@ static int amdgpu_ttm_io_mem_reserve(str
- 		break;
- 	case TTM_PL_VRAM:
- 		mem->bus.offset = mem->start << PAGE_SHIFT;
--		/* check if it's visible */
--		if ((mem->bus.offset + bus_size) > adev->gmc.visible_vram_size)
--			return -EINVAL;
- 
- 		if (adev->mman.aper_base_kaddr &&
- 		    mem->placement & TTM_PL_FLAG_CONTIGUOUS)
+--- a/fs/smb/common/smb2pdu.h
++++ b/fs/smb/common/smb2pdu.h
+@@ -702,7 +702,7 @@ struct smb2_close_rsp {
+ 	__le16 StructureSize; /* 60 */
+ 	__le16 Flags;
+ 	__le32 Reserved;
+-	struct_group(network_open_info,
++	struct_group_attr(network_open_info, __packed,
+ 		__le64 CreationTime;
+ 		__le64 LastAccessTime;
+ 		__le64 LastWriteTime;
 
 
 
