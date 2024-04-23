@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D24FC8AFAEA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 198798AFAC8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C64E282F7F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1D0B285BFD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEED14B067;
-	Tue, 23 Apr 2024 21:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6B914A62F;
+	Tue, 23 Apr 2024 21:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnhTCHCz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaD/j8xX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D86014883C;
-	Tue, 23 Apr 2024 21:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC414A629;
+	Tue, 23 Apr 2024 21:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908782; cv=none; b=UGh6f0geGWKb9Z9ozJG0evM6cXpIvllryUbXKGLYC5eeQN2sy4bBI2Oug0DGl/oqugft45gItKmXAd40y+lfNUQ17plMXPF099YP2LL+W/Bn0L6fPk82wR0iEJtHQOCOKNgtFXuzQbrnWJg+TM8qgScJAySdywEmtlt5DcUvdi4=
+	t=1713908757; cv=none; b=bnhyokAG+u3Qkm+Ig9pVVjZP2ZwWdrrF7qbczmL0mXINDrNMR81K5Oi/A05Zd5rLHdGMRC/+Eu2wjAs88AV+baCF//Cm6Tqzi/2RMJ/tzXupoQhRiGY/yKA9TixE7ka3ebvFauJ/ZTs39VlqfgTgFRFnOutl2/9ldB/phk5fuUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908782; c=relaxed/simple;
-	bh=MsL0zSREABbxkR4kcZ1CTaxFCZRicE/yy3HZDDRsbMw=;
+	s=arc-20240116; t=1713908757; c=relaxed/simple;
+	bh=/NAfNWdnOxxa/DMO9aUWTMQvy3X7svxWf7aCymRxBos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fb/f02J4CoitBiSoT3ul/nXWOrxU6L+KYgJO1XtllZlCKf6r/5CCusWnQKaq3ycks83mqXSUydCgKO9b6XzFHM+NTbMDPTjH5CiLkZj3vzhG3NwSq7i/uKJpdthEXkBzMjRH9bUDrzWGUWI2dRbn8K8bsy9MGBt9KYTggY8yu/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnhTCHCz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EAFC116B1;
-	Tue, 23 Apr 2024 21:46:22 +0000 (UTC)
+	 MIME-Version; b=ggErxjM3+FKLEcDRabWsgVuE0jxUOPD3SZHpmbJKoclMDfBM3JFrttANKnrXmsA1hfvkmM67NjGrpvHXxw0oqPM6HxNtNSdQqR9qg4nlekd5p+UBx15I+FVN4bHb/omEe0twiLy7YfMC4rBHKCAc+C0vdoa9ZzpPNdp2JHsXc98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaD/j8xX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EB8C32781;
+	Tue, 23 Apr 2024 21:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908782;
-	bh=MsL0zSREABbxkR4kcZ1CTaxFCZRicE/yy3HZDDRsbMw=;
+	s=korg; t=1713908757;
+	bh=/NAfNWdnOxxa/DMO9aUWTMQvy3X7svxWf7aCymRxBos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnhTCHCzWVB8R9synE0w5ygmBNreGbYpxYllpEvrKSBVveYpw63ZAQKjsbmAQknQv
-	 npwsmtYvmHPr7jQ+IOrNZS9VqzBE9EYW9sX5+9NBhdHCDRowVB4TjDbTBPivsDYLbG
-	 a+6szc8l6v+HSst31uPsVh0KOP/2QHk0KzOnaN+E=
+	b=PaD/j8xXoY0OchOfJTCrswv2DH9VPHWC9xbIWfyixgqJHOiPDdThfQcEREpi660nq
+	 5JYs8RwOnGRgm6JZwxbXB/B4RPW+xMMZaeutacGcg7grw6nN/K9LLnUZZeQ5l9ka3i
+	 5dN0mB1YckDtui0OY6yN0rpSpFPrNyANKWGUAkl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 23/71] af_unix: Dont peek OOB data without MSG_OOB.
+	bolan wang <bolan.wang@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 108/141] USB: serial: option: add Fibocom FM135-GL variants
 Date: Tue, 23 Apr 2024 14:39:36 -0700
-Message-ID: <20240423213844.945812138@linuxfoundation.org>
+Message-ID: <20240423213856.691527813@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: bolan wang <bolan.wang@fibocom.com>
 
-[ Upstream commit 22dd70eb2c3d754862964377a75abafd3167346b ]
+commit 356952b13af5b2c338df1e06889fd1b5e12cbbf4 upstream.
 
-Currently, we can read OOB data without MSG_OOB by using MSG_PEEK
-when OOB data is sitting on the front row, which is apparently
-wrong.
+Update the USB serial option driver support for the Fibocom
+FM135-GL LTE modules.
+- VID:PID 2cb7:0115, FM135-GL for laptop debug M.2 cards(with MBIM
+interface for /Linux/Chrome OS)
 
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'a', MSG_OOB)
-  1
-  >>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-  b'a'
+0x0115: mbim, diag, at, pipe
 
-If manage_oob() is called when no data has been copied, we only
-check if the socket enables SO_OOBINLINE or MSG_PEEK is not used.
-Otherwise, the skb is returned as is.
+Here are the outputs of usb-devices:
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0115 Rev=05.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=12345678
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-However, here we should return NULL if MSG_PEEK is set and no data
-has been copied.
-
-Also, in such a case, we should not jump to the redo label because
-we will be caught in the loop and hog the CPU until normal data
-comes in.
-
-Then, we need to handle skb == NULL case with the if-clause below
-the manage_oob() block.
-
-With this patch:
-
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'a', MSG_OOB)
-  1
-  >>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-  Traceback (most recent call last):
-    File "<stdin>", line 1, in <module>
-  BlockingIOError: [Errno 11] Resource temporarily unavailable
-
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240410171016.7621-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: bolan wang <bolan.wang@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index e2a2e22d210f6..f66f867049015 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2565,7 +2565,9 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 					WRITE_ONCE(u->oob_skb, NULL);
- 					consume_skb(skb);
- 				}
--			} else if (!(flags & MSG_PEEK)) {
-+			} else if (flags & MSG_PEEK) {
-+				skb = NULL;
-+			} else {
- 				skb_unlink(skb, &sk->sk_receive_queue);
- 				WRITE_ONCE(u->oob_skb, NULL);
- 				if (!WARN_ON_ONCE(skb_unref(skb)))
-@@ -2648,11 +2650,9 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
- 		if (skb) {
- 			skb = manage_oob(skb, sk, flags, copied);
--			if (!skb) {
-+			if (!skb && copied) {
- 				unix_state_unlock(sk);
--				if (copied)
--					break;
--				goto redo;
-+				break;
- 			}
- 		}
- #endif
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2272,6 +2272,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
 
 
 
