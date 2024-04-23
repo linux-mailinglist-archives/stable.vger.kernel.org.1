@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF31F8AFB1E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAD38AFACF
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E11A71C233EE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:53:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 795042863D2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7620F14D294;
-	Tue, 23 Apr 2024 21:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EFD1487F3;
+	Tue, 23 Apr 2024 21:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zerYNdlL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pn8lsG0F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3331014D28F;
-	Tue, 23 Apr 2024 21:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7D5143C5F;
+	Tue, 23 Apr 2024 21:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908816; cv=none; b=UlGOb2kCeCHvKxga7AvAUor5NxmwlKzRi4YN1PEQwYsZHaxeS7vZmdBI1bDwdF7OxFHFyN57kQX7f8xmgdy7gb7c2qI2WQQLmUHrLZbn3G+JMHcPpNmWoGx3BZpVcIMBeVfcjqh81KUtxZTnHmL5ZFG/mRCPOZAGRfyjA+ucPIM=
+	t=1713908763; cv=none; b=SXMaZ1d/UdmyuqaSIvojh9BKGgS7y++DWIW7O+vTugA7Al5GYZIesEFtMMJVY8W+r6zRDalyxLSshcr+/u8UnJhbE4BG6JlMetMciq0FiGGKbsjhmArcvv4oGjSrWsuKo+41D+GeschyvhotBs5UKdise8JJp0ukhauz3yDiK00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908816; c=relaxed/simple;
-	bh=+IKtsH5EfPxX4eVsxn0wDwW6YS6M7MhMgBMKCCEEXf4=;
+	s=arc-20240116; t=1713908763; c=relaxed/simple;
+	bh=be/0zsiL/AEMbZE7NEPIAtOGv4jyn3g8tCEhDQN21mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lSngBKhBAdeSlWIAGs3JaqkYsvUq1qhFooLxC1NeoGS4kTt5JWXpvYsNNp+Hlu40Nl+tIb8IkVCBCHDMRXfTk68VMWCx8QAnl6URWU2cCiaKboFu82lNJjJtPMVKm5PHRRLQtb9AombVUEr0uIxEeWf3RBv6hWRtSMGDZObHEvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zerYNdlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068B4C116B1;
-	Tue, 23 Apr 2024 21:46:55 +0000 (UTC)
+	 MIME-Version; b=nN9WNZdf7/VjC2sALm3udx8JL+sX+UKDkFE8jSBCs2Pl3P9KRHe7p6hN0FZCfy+R2AiL83iieXl+atcoViot4eeqw5Agckp5YNv7gYcpELrDIM6V1Yxjfv8ohUZANdiSZ4g2wAFHZLgzqLkzV1D0SucBAv85Bu1Fn2KGyNz9Ymc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pn8lsG0F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDAAC116B1;
+	Tue, 23 Apr 2024 21:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908816;
-	bh=+IKtsH5EfPxX4eVsxn0wDwW6YS6M7MhMgBMKCCEEXf4=;
+	s=korg; t=1713908763;
+	bh=be/0zsiL/AEMbZE7NEPIAtOGv4jyn3g8tCEhDQN21mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zerYNdlLvOji5kE3rWEl2HE3Z6S1aWDU8jLKsZqTczxfeiVHh3cqvjkCu+bV/Bny2
-	 L1BGsLe+2vlm5E/TIG8mYH77pB4JgEYvnPDjRfS5Zh/zO0f3T6A6L9stmga+ExRrkA
-	 p3K2dxa6Wc97bnaKpPxzxADboAXSKW0br6Ri0DW4=
+	b=pn8lsG0FkE6px7pJWbo0niDYLQ+7JvhyZ80xom3l8irNQhjNFKCPZRYHqOKxWSlQe
+	 0x7ODDdXmNvvTbA0qAwAPJv40kYhMEgAr9g5nDBkJEmzSLFiR90Va2qm899AsyyB6v
+	 1o6GHBbRhyX3tEBSGaZEq+AArjsT8esdT2zYZanc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	": Aleksander Morgado" <aleksandermj@chromium.org>,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
-Subject: [PATCH 5.15 52/71] Revert "usb: cdc-wdm: close race between read and workqueue"
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 137/141] ksmbd: fix slab-out-of-bounds in smb2_allocate_rsp_buf
 Date: Tue, 23 Apr 2024 14:40:05 -0700
-Message-ID: <20240423213845.976246095@linuxfoundation.org>
+Message-ID: <20240423213857.667932968@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 1607830dadeefc407e4956336d9fcd9e9defd810 upstream.
+commit c119f4ede3fa90a9463f50831761c28f989bfb20 upstream.
 
-This reverts commit 339f83612f3a569b194680768b22bf113c26a29d.
+If ->ProtocolId is SMB2_TRANSFORM_PROTO_NUM, smb2 request size
+validation could be skipped. if request size is smaller than
+sizeof(struct smb2_query_info_req), slab-out-of-bounds read can happen in
+smb2_allocate_rsp_buf(). This patch allocate response buffer after
+decrypting transform request. smb3_decrypt_req() will validate transform
+request size and avoid slab-out-of-bound in smb2_allocate_rsp_buf().
 
-It has been found to cause problems in a number of Chromebook devices,
-so revert the change until it can be brought back in a safe way.
-
-Link: https://lore.kernel.org/r/385a3519-b45d-48c5-a6fd-a3fdb6bec92f@chromium.org
-Reported-by:: Aleksander Morgado <aleksandermj@chromium.org>
-Fixes: 339f83612f3a ("usb: cdc-wdm: close race between read and workqueue")
-Cc: stable <stable@kernel.org>
-Cc: Oliver Neukum <oneukum@suse.com>
-Cc: Bjørn Mork <bjorn@mork.no>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/smb/server/server.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -485,7 +485,6 @@ out_free_mem:
- static int service_outstanding_interrupt(struct wdm_device *desc)
- {
- 	int rv = 0;
--	int used;
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -167,20 +167,17 @@ static void __handle_ksmbd_work(struct k
+ 	int rc;
+ 	bool is_chained = false;
  
- 	/* submit read urb only if the device is waiting for it */
- 	if (!desc->resp_count || !--desc->resp_count)
-@@ -500,10 +499,7 @@ static int service_outstanding_interrupt
- 		goto out;
+-	if (conn->ops->allocate_rsp_buf(work))
+-		return;
+-
+ 	if (conn->ops->is_transform_hdr &&
+ 	    conn->ops->is_transform_hdr(work->request_buf)) {
+ 		rc = conn->ops->decrypt_req(work);
+-		if (rc < 0) {
+-			conn->ops->set_rsp_status(work, STATUS_DATA_ERROR);
+-			goto send;
+-		}
+-
++		if (rc < 0)
++			return;
+ 		work->encrypted = true;
  	}
  
--	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
--	if (used)
--		goto out;
--
-+	set_bit(WDM_RESPONDING, &desc->flags);
- 	spin_unlock_irq(&desc->iuspin);
- 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
- 	spin_lock_irq(&desc->iuspin);
++	if (conn->ops->allocate_rsp_buf(work))
++		return;
++
+ 	rc = conn->ops->init_rsp_hdr(work);
+ 	if (rc) {
+ 		/* either uid or tid is not correct */
 
 
 
