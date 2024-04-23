@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A758AFA89
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DEE8AF95D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFABA1F29709
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 687FFB24331
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1706145354;
-	Tue, 23 Apr 2024 21:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D841143888;
+	Tue, 23 Apr 2024 21:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzmKT5ad"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loRJNq7m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A1D143C58;
-	Tue, 23 Apr 2024 21:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD3A14388F;
+	Tue, 23 Apr 2024 21:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908718; cv=none; b=CR7y7mdS6sC7F2CyalxoJ0UYGAa9iEmW9vtQUwyttKQOi8pAUMkJUJJxpHja9qkyAciTBQCC0H4E/QjuQKpe9+yV9/h8l+Of5NIxYMpHIfAyXe4NUP83Q9Gh/oTGErCRzpKChMxMQRSeChjVrTmVosBiIAckJaikE57Q6NuSpZU=
+	t=1713908512; cv=none; b=hHbzfr0jDeup1umRc4dywPGCSl9FZfQtHSWtTusXsbSdjmcbRxegevU3tO4x8PTWozO7CRTUSzr95W+9HRaHuzpLXFGhNrcT4YJpxc1Yy2cxFUTuMis/iVDXhwzxvFbetIJAbQkoMQIPF3PTscYVY3N3xFgnmRgwYny5/jWWie8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908718; c=relaxed/simple;
-	bh=w4hpCmcE8vZT0o6omv9QD05uBhbjQ/FtIGZZSlQ4uVo=;
+	s=arc-20240116; t=1713908512; c=relaxed/simple;
+	bh=bztB9bOskQ7VdURopk8JA7QT6gC49kOWW9cAdgnONUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMrFxtHkS60PGnGkfOYYtBLlP4JbTrhjEVgKK54ZudXAqDQVFRsrGbJwwHGuiFqEdojCmavMqKHCVdlEnSAL5Q2t1jLVS6842tUMH5v7c9XvQXOVKHOGurQQL40HnwXoylq44QutGZOzlTN6pD4vUWeE2uL7+I2SKzKVa+xO1IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzmKT5ad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36195C116B1;
-	Tue, 23 Apr 2024 21:45:18 +0000 (UTC)
+	 MIME-Version; b=ssEFrGcxBWuTzQfnqTZZXRQ9k6Lla+UdULYUz3GL/VG783i2oSV18nAMCNrZ1AGWPfg2yOrsghIkH0b7L1okBvqfGpkZwYfQEWN6yZgdrZ707rYVR/XlH0rA/7dpLDU3onnbCL2IXpn+Lj9cMcLvirPncmgyybRQ0bvwm+LMA/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loRJNq7m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F58AC116B1;
+	Tue, 23 Apr 2024 21:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908718;
-	bh=w4hpCmcE8vZT0o6omv9QD05uBhbjQ/FtIGZZSlQ4uVo=;
+	s=korg; t=1713908512;
+	bh=bztB9bOskQ7VdURopk8JA7QT6gC49kOWW9cAdgnONUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BzmKT5adRC2gRIG6FTF2LMIyMV1G04j72bZnW7hgexHCNIgzxXIC5wpM1ogxSIy3c
-	 wptfB83UHla3OSwvPt4izIMiQ5YPNUXZ4u49qUihUcGloD34Ro0eYzNbA7K4v4b18g
-	 O+ZpYGk03Om+bSBs3TSHtgZ0f1dq8nDf/i21ulfk=
+	b=loRJNq7mFjvIEoOI4nKro4P6F/NuTt7moNohnQmEghabYqycN0EdWyeow4IwsFV+4
+	 /Mks0NSoxTm/jjzcmoE+VEbvX+Fru7XNnGCaq+UlFcoQOvq+NLPTpinK9nG1764R6Z
+	 LylP6iss0kEDWqpKcl7+Q85WIO2CKAz72QxVSMKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/141] s390/qdio: handle deferred cc1
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.8 097/158] thunderbolt: Avoid notify PM core about runtime PM resume
 Date: Tue, 23 Apr 2024 14:38:39 -0700
-Message-ID: <20240423213854.911645697@linuxfoundation.org>
+Message-ID: <20240423213859.103838348@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +61,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Gil Fine <gil.fine@linux.intel.com>
 
-[ Upstream commit 607638faf2ff1cede37458111496e7cc6c977f6f ]
+commit dcd12acaf384c30437fa5a9a1f71df06fc9835fd upstream.
 
-A deferred condition code 1 response indicates that I/O was not started
-and should be retried. The current QDIO implementation handles a cc1
-response as I/O error, resulting in a failed QDIO setup. This can happen
-for example when a path verification request arrives at the same time
-as QDIO setup I/O is started.
+Currently we notify PM core about occurred wakes after any resume. This
+is not actually needed after resume from runtime suspend. Hence, notify
+PM core about occurred wakes only after resume from system sleep. Also,
+if the wake occurred in USB4 router upstream port, we don't notify the
+PM core about it since it is not actually needed and can cause
+unexpected autowake (e.g. if /sys/power/wakeup_count is used).
 
-Fix this by retrying the QDIO setup I/O when a cc1 response is received.
+While there add the missing kernel-doc for tb_switch_resume().
 
-Note that since
-
-commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-commit 5ef1dc40ffa6 ("s390/cio: fix invalid -EBUSY on ccw_device_start")
-
-deferred cc1 responses are much more likely to occur. See the commit
-message of the latter for more background information.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/qdio_main.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ drivers/thunderbolt/switch.c |   27 +++++++++++++++++++++++++--
+ drivers/thunderbolt/tb.c     |    4 ++--
+ drivers/thunderbolt/tb.h     |    3 ++-
+ drivers/thunderbolt/usb4.c   |   13 +++++++------
+ 4 files changed, 36 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
-index 9cde55730b65a..ebcb535809882 100644
---- a/drivers/s390/cio/qdio_main.c
-+++ b/drivers/s390/cio/qdio_main.c
-@@ -722,8 +722,8 @@ static void qdio_handle_activate_check(struct qdio_irq *irq_ptr,
- 	lgr_info_log();
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -3441,7 +3441,26 @@ static int tb_switch_set_wake(struct tb_
+ 	return tb_lc_set_wake(sw, flags);
  }
  
--static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
--				      int dstat)
-+static int qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
-+				     int dstat, int dcc)
- {
- 	DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qest irq");
- 
-@@ -731,15 +731,18 @@ static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
- 		goto error;
- 	if (dstat & ~(DEV_STAT_DEV_END | DEV_STAT_CHN_END))
- 		goto error;
-+	if (dcc == 1)
-+		return -EAGAIN;
- 	if (!(dstat & DEV_STAT_DEV_END))
- 		goto error;
- 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ESTABLISHED);
--	return;
-+	return 0;
- 
- error:
- 	DBF_ERROR("%4x EQ:error", irq_ptr->schid.sch_no);
- 	DBF_ERROR("ds: %2x cs:%2x", dstat, cstat);
- 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
-+	return -EIO;
- }
- 
- /* qdio interrupt handler */
-@@ -748,7 +751,7 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
- {
- 	struct qdio_irq *irq_ptr = cdev->private->qdio_data;
- 	struct subchannel_id schid;
--	int cstat, dstat;
-+	int cstat, dstat, rc, dcc;
- 
- 	if (!intparm || !irq_ptr) {
- 		ccw_device_get_schid(cdev, &schid);
-@@ -768,10 +771,12 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
- 	qdio_irq_check_sense(irq_ptr, irb);
- 	cstat = irb->scsw.cmd.cstat;
- 	dstat = irb->scsw.cmd.dstat;
-+	dcc   = scsw_cmd_is_valid_cc(&irb->scsw) ? irb->scsw.cmd.cc : 0;
-+	rc    = 0;
- 
- 	switch (irq_ptr->state) {
- 	case QDIO_IRQ_STATE_INACTIVE:
--		qdio_establish_handle_irq(irq_ptr, cstat, dstat);
-+		rc = qdio_establish_handle_irq(irq_ptr, cstat, dstat, dcc);
- 		break;
- 	case QDIO_IRQ_STATE_CLEANUP:
- 		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_INACTIVE);
-@@ -785,12 +790,25 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
- 		if (cstat || dstat)
- 			qdio_handle_activate_check(irq_ptr, intparm, cstat,
- 						   dstat);
-+		else if (dcc == 1)
-+			rc = -EAGAIN;
- 		break;
- 	case QDIO_IRQ_STATE_STOPPED:
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 	}
-+
-+	if (rc == -EAGAIN) {
-+		DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qint retry");
-+		rc = ccw_device_start(cdev, irq_ptr->ccw, intparm, 0, 0);
-+		if (!rc)
-+			return;
-+		DBF_ERROR("%4x RETRY ERR", irq_ptr->schid.sch_no);
-+		DBF_ERROR("rc:%4x", rc);
-+		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
+-int tb_switch_resume(struct tb_switch *sw)
++static void tb_switch_check_wakes(struct tb_switch *sw)
++{
++	if (device_may_wakeup(&sw->dev)) {
++		if (tb_switch_is_usb4(sw))
++			usb4_switch_check_wakes(sw);
 +	}
++}
 +
- 	wake_up(&cdev->private->wait_q);
++/**
++ * tb_switch_resume() - Resume a switch after sleep
++ * @sw: Switch to resume
++ * @runtime: Is this resume from runtime suspend or system sleep
++ *
++ * Resumes and re-enumerates router (and all its children), if still plugged
++ * after suspend. Don't enumerate device router whose UID was changed during
++ * suspend. If this is resume from system sleep, notifies PM core about the
++ * wakes occurred during suspend. Disables all wakes, except USB4 wake of
++ * upstream port for USB4 routers that shall be always enabled.
++ */
++int tb_switch_resume(struct tb_switch *sw, bool runtime)
+ {
+ 	struct tb_port *port;
+ 	int err;
+@@ -3490,6 +3509,9 @@ int tb_switch_resume(struct tb_switch *s
+ 	if (err)
+ 		return err;
+ 
++	if (!runtime)
++		tb_switch_check_wakes(sw);
++
+ 	/* Disable wakes */
+ 	tb_switch_set_wake(sw, 0);
+ 
+@@ -3519,7 +3541,8 @@ int tb_switch_resume(struct tb_switch *s
+ 			 */
+ 			if (tb_port_unlock(port))
+ 				tb_port_warn(port, "failed to unlock port\n");
+-			if (port->remote && tb_switch_resume(port->remote->sw)) {
++			if (port->remote &&
++			    tb_switch_resume(port->remote->sw, runtime)) {
+ 				tb_port_warn(port,
+ 					     "lost during suspend, disconnecting\n");
+ 				tb_sw_set_unplugged(port->remote->sw);
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -2760,7 +2760,7 @@ static int tb_resume_noirq(struct tb *tb
+ 	/* remove any pci devices the firmware might have setup */
+ 	tb_switch_reset(tb->root_switch);
+ 
+-	tb_switch_resume(tb->root_switch);
++	tb_switch_resume(tb->root_switch, false);
+ 	tb_free_invalid_tunnels(tb);
+ 	tb_free_unplugged_children(tb->root_switch);
+ 	tb_restore_children(tb->root_switch);
+@@ -2886,7 +2886,7 @@ static int tb_runtime_resume(struct tb *
+ 	struct tb_tunnel *tunnel, *n;
+ 
+ 	mutex_lock(&tb->lock);
+-	tb_switch_resume(tb->root_switch);
++	tb_switch_resume(tb->root_switch, true);
+ 	tb_free_invalid_tunnels(tb);
+ 	tb_restore_children(tb->root_switch);
+ 	list_for_each_entry_safe(tunnel, n, &tcm->tunnel_list, list)
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -817,7 +817,7 @@ int tb_switch_configuration_valid(struct
+ int tb_switch_add(struct tb_switch *sw);
+ void tb_switch_remove(struct tb_switch *sw);
+ void tb_switch_suspend(struct tb_switch *sw, bool runtime);
+-int tb_switch_resume(struct tb_switch *sw);
++int tb_switch_resume(struct tb_switch *sw, bool runtime);
+ int tb_switch_reset(struct tb_switch *sw);
+ int tb_switch_wait_for_bit(struct tb_switch *sw, u32 offset, u32 bit,
+ 			   u32 value, int timeout_msec);
+@@ -1278,6 +1278,7 @@ static inline bool tb_switch_is_usb4(con
+ 	return usb4_switch_version(sw) > 0;
  }
  
--- 
-2.43.0
-
++void usb4_switch_check_wakes(struct tb_switch *sw);
+ int usb4_switch_setup(struct tb_switch *sw);
+ int usb4_switch_configuration_valid(struct tb_switch *sw);
+ int usb4_switch_read_uid(struct tb_switch *sw, u64 *uid);
+--- a/drivers/thunderbolt/usb4.c
++++ b/drivers/thunderbolt/usb4.c
+@@ -155,7 +155,13 @@ static inline int usb4_switch_op_data(st
+ 				tx_dwords, rx_data, rx_dwords);
+ }
+ 
+-static void usb4_switch_check_wakes(struct tb_switch *sw)
++/**
++ * usb4_switch_check_wakes() - Check for wakes and notify PM core about them
++ * @sw: Router whose wakes to check
++ *
++ * Checks wakes occurred during suspend and notify the PM core about them.
++ */
++void usb4_switch_check_wakes(struct tb_switch *sw)
+ {
+ 	bool wakeup_usb4 = false;
+ 	struct usb4_port *usb4;
+@@ -163,9 +169,6 @@ static void usb4_switch_check_wakes(stru
+ 	bool wakeup = false;
+ 	u32 val;
+ 
+-	if (!device_may_wakeup(&sw->dev))
+-		return;
+-
+ 	if (tb_route(sw)) {
+ 		if (tb_sw_read(sw, &val, TB_CFG_SWITCH, ROUTER_CS_6, 1))
+ 			return;
+@@ -244,8 +247,6 @@ int usb4_switch_setup(struct tb_switch *
+ 	u32 val = 0;
+ 	int ret;
+ 
+-	usb4_switch_check_wakes(sw);
+-
+ 	if (!tb_route(sw))
+ 		return 0;
+ 
 
 
 
