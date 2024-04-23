@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471168AFA4D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1835E8AF9D7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78FA01C22036
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7553EB2AC03
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26F51494D3;
-	Tue, 23 Apr 2024 21:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055CD145344;
+	Tue, 23 Apr 2024 21:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U29p/vTY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJU1BGvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16E6146A87;
-	Tue, 23 Apr 2024 21:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FF4143889;
+	Tue, 23 Apr 2024 21:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908672; cv=none; b=GojrVNuKZ7tAWca0ZM+dmaT5LPEfyxlmpPahKm82vunvRqoi8iruTVsOeya5llzlLfS4TCLjbYnmmN2JKpEZqXHJu+s2dvihSuvSGZcuFdwV0Of1gJcAPvf9smzHMqc5C6LkeFIGlwZKNIlcLK5WWJInpC6Zpnbas0y75Sf8JQg=
+	t=1713908591; cv=none; b=Hr3kJu/A1fm0tHAnX61Wo9gWEW/eDWXl12b+i6W9Su1HSPrVHao0IE64bolRrlBqqsy3dK8x63IHZQVLD1gZ9XWSZl9Yb7m4wlqwEjdv+FJOAj6IBcSbv4XtiY/7vw2WhJTWMgrZFsWTw/i1j3vztRQqatR4WMKGjjC2apgj6qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908672; c=relaxed/simple;
-	bh=CtV92cJdmRoyWm26XVn6E5+Hsb66R69VeyLExnJUaD8=;
+	s=arc-20240116; t=1713908591; c=relaxed/simple;
+	bh=yKA9sGgw9uM3qal9s57f3o5GglN8vRr+MehprDlCesw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8/Yf821t/+CQwcrhfmlu58t2VboancPikNUk6AmbXTUX5Ml3C8N+P5GmezExd2uwoKs/Jgibf6viBKN79aGD3tVKV0ynfmXxyTpT7NqSQL+B3FQPLjnz+2os6M9qF45TOaX5OEKp2gKggc/GWGet1oF4MQPyNUMqPB5fbEaGbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U29p/vTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86932C3277B;
-	Tue, 23 Apr 2024 21:44:32 +0000 (UTC)
+	 MIME-Version; b=QHle1h7EVmewb8afhUwIgUR7vHH+v10676maq9R+R/R5wirx6Oy46FT9HdPCw71MKy8KRqWe9lFIqrKWUMLG3w09mzOGp0iAnlm6gwg8N5a4cyI33UgwN5HKyKGjG+0g9ME3q4bNl7otCVoyiyk4M1o33zQLxIp4510L3uuGzus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJU1BGvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9ACC4AF08;
+	Tue, 23 Apr 2024 21:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908672;
-	bh=CtV92cJdmRoyWm26XVn6E5+Hsb66R69VeyLExnJUaD8=;
+	s=korg; t=1713908591;
+	bh=yKA9sGgw9uM3qal9s57f3o5GglN8vRr+MehprDlCesw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U29p/vTYcgfjyZUJqKUtnJFkUkXZAYwBAF4ZuGulikdmUQOWfxErdEW8Oc0BZK1IE
-	 Rv9Sl6F3Omi/KJXXONXBoImZDvRkBL7xjcSKqOoe+QDP0ZhZqCZD2kfkz4SKTAV1Ob
-	 Dv2b0eQGL+jl9cp8gtea+GeUb1HAgMDKM1hj206E=
+	b=RJU1BGvZ9VsCZL+0nmPLaVTd54Sgd7ZnQbR+gSg98NQhQ4htKAjgGVNpETDq8MNft
+	 BH3oCBOW11mHjw5Xt9Pl1S6j1OkbFMG/D8AL64oWVg+xY1Up6y3yzwUEOxlpR/oMwu
+	 TwTV1ZMLuKQM+zl3d4ROv/M/QDdkMZGpwINS8PwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 012/141] x86/efi: Disregard setup header of loaded image
-Date: Tue, 23 Apr 2024 14:38:00 -0700
-Message-ID: <20240423213853.749127367@linuxfoundation.org>
+	Yuri Benditovich <yuri.benditovich@daynix.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 044/158] net: change maximum number of UDP segments to 128
+Date: Tue, 23 Apr 2024 14:38:01 -0700
+Message-ID: <20240423213857.204028752@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
 
-[ Commit 7e50262229faad0c7b8c54477cd1c883f31cc4a7 upstream ]
+[ Upstream commit 1382e3b6a3500c245e5278c66d210c02926f804f ]
 
-The native EFI entrypoint does not take a struct boot_params from the
-loader, but instead, it constructs one from scratch, using the setup
-header data placed at the start of the image.
+The commit fc8b2a619469
+("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
+adds check of potential number of UDP segments vs
+UDP_MAX_SEGMENTS in linux/virtio_net.h.
+After this change certification test of USO guest-to-guest
+transmit on Windows driver for virtio-net device fails,
+for example with packet size of ~64K and mss of 536 bytes.
+In general the USO should not be more restrictive than TSO.
+Indeed, in case of unreasonably small mss a lot of segments
+can cause queue overflow and packet loss on the destination.
+Limit of 128 segments is good for any practical purpose,
+with minimal meaningful mss of 536 the maximal UDP packet will
+be divided to ~120 segments.
+The number of segments for UDP packets is validated vs
+UDP_MAX_SEGMENTS also in udp.c (v4,v6), this does not affect
+quest-to-guest path but does affect packets sent to host, for
+example.
+It is important to mention that UDP_MAX_SEGMENTS is kernel-only
+define and not available to user mode socket applications.
+In order to request MSS smaller than MTU the applications
+just uses setsockopt with SOL_UDP and UDP_SEGMENT and there is
+no limitations on socket API level.
 
-This setup header is placed in a way that permits legacy loaders to
-manipulate the contents (i.e., to pass the kernel command line or the
-address and size of an initial ramdisk), but EFI boot does not use it in
-that way - it only copies the contents that were placed there at build
-time, but EFI loaders will not (and should not) manipulate the setup
-header to configure the boot. (Commit 63bf28ceb3ebbe76 "efi: x86: Wipe
-setup_data on pure EFI boot" deals with some of the fallout of using
-setup_data in a way that breaks EFI boot.)
-
-Given that none of the non-zero values that are copied from the setup
-header into the EFI stub's struct boot_params are relevant to the boot
-now that the EFI stub no longer enters via the legacy decompressor, the
-copy can be omitted altogether.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-19-ardb@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
+Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |   46 ++++----------------------------
- 1 file changed, 6 insertions(+), 40 deletions(-)
+ include/linux/udp.h                  | 2 +-
+ tools/testing/selftests/net/udpgso.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -426,9 +426,8 @@ void __noreturn efi_stub_entry(efi_handl
- efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 				   efi_system_table_t *sys_table_arg)
- {
--	struct boot_params *boot_params;
--	struct setup_header *hdr;
--	void *image_base;
-+	static struct boot_params boot_params __page_aligned_bss;
-+	struct setup_header *hdr = &boot_params.hdr;
- 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
- 	int options_size = 0;
- 	efi_status_t status;
-@@ -449,30 +448,9 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 		efi_exit(handle, status);
- 	}
+diff --git a/include/linux/udp.h b/include/linux/udp.h
+index 94e63b2695406..00790bb5cbde6 100644
+--- a/include/linux/udp.h
++++ b/include/linux/udp.h
+@@ -105,7 +105,7 @@ struct udp_sock {
+ #define udp_assign_bit(nr, sk, val)		\
+ 	assign_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags, val)
  
--	image_base = efi_table_attr(image, image_base);
--
--	status = efi_allocate_pages(sizeof(struct boot_params),
--				    (unsigned long *)&boot_params, ULONG_MAX);
--	if (status != EFI_SUCCESS) {
--		efi_err("Failed to allocate lowmem for boot params\n");
--		efi_exit(handle, status);
--	}
--
--	memset(boot_params, 0x0, sizeof(struct boot_params));
--
--	hdr = &boot_params->hdr;
--
--	/* Copy the setup header from the second sector to boot_params */
--	memcpy(&hdr->jump, image_base + 512,
--	       sizeof(struct setup_header) - offsetof(struct setup_header, jump));
--
--	/*
--	 * Fill out some of the header fields ourselves because the
--	 * EFI firmware loader doesn't load the first sector.
--	 */
-+	/* Assign the setup_header fields that the kernel actually cares about */
- 	hdr->root_flags	= 1;
- 	hdr->vid_mode	= 0xffff;
--	hdr->boot_flag	= 0xAA55;
+-#define UDP_MAX_SEGMENTS	(1 << 6UL)
++#define UDP_MAX_SEGMENTS	(1 << 7UL)
  
- 	hdr->type_of_loader = 0x21;
+ #define udp_sk(ptr) container_of_const(ptr, struct udp_sock, inet.sk)
  
-@@ -481,25 +459,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 	if (!cmdline_ptr)
- 		goto fail;
+diff --git a/tools/testing/selftests/net/udpgso.c b/tools/testing/selftests/net/udpgso.c
+index 7badaf215de28..b02080d09fbc0 100644
+--- a/tools/testing/selftests/net/udpgso.c
++++ b/tools/testing/selftests/net/udpgso.c
+@@ -34,7 +34,7 @@
+ #endif
  
--	efi_set_u64_split((unsigned long)cmdline_ptr,
--			  &hdr->cmd_line_ptr, &boot_params->ext_cmd_line_ptr);
--
--	hdr->ramdisk_image = 0;
--	hdr->ramdisk_size = 0;
-+	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
-+			  &boot_params.ext_cmd_line_ptr);
+ #ifndef UDP_MAX_SEGMENTS
+-#define UDP_MAX_SEGMENTS	(1 << 6UL)
++#define UDP_MAX_SEGMENTS	(1 << 7UL)
+ #endif
  
--	/*
--	 * Disregard any setup data that was provided by the bootloader:
--	 * setup_data could be pointing anywhere, and we have no way of
--	 * authenticating or validating the payload.
--	 */
--	hdr->setup_data = 0;
--
--	efi_stub_entry(handle, sys_table_arg, boot_params);
-+	efi_stub_entry(handle, sys_table_arg, &boot_params);
- 	/* not reached */
- 
- fail:
--	efi_free(sizeof(struct boot_params), (unsigned long)boot_params);
--
- 	efi_exit(handle, status);
- }
- 
+ #define CONST_MTU_TEST	1500
+-- 
+2.43.0
+
 
 
 
