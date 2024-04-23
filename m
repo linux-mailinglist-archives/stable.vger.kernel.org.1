@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-40798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028EC8AF91B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 752928AF9A8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26CCD1C22047
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C45E28A211
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED4A143C6C;
-	Tue, 23 Apr 2024 21:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3502145321;
+	Tue, 23 Apr 2024 21:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBOnTv60"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUXmmD3T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F069A143C69;
-	Tue, 23 Apr 2024 21:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91553143C6C;
+	Tue, 23 Apr 2024 21:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908470; cv=none; b=pmspQUkNn2mr3a1133a5jNc65amOKiH1MfRmpQi4VbryELH03dfI1qRsLEAmV58JKtj2RZAK4vG+pRKIbdd2SuVGoB6vzbVePTbCgYTXTwW0h+IkEbgy3IALPUZHWmF3j0+WAx4kS2udkqrf6MstkefAnsHWoypXvULdEmK8MHA=
+	t=1713908564; cv=none; b=oSFwkKu7DEW61UyFKVhIQPPiPsZRL0ViEplLSNQtQn0F6v7LK6EsK67qSgO6zx62SbJ2VmK8seDA+5WSZ/OcyZbgJMh6BJvNX+JKUhE/BK915Lxlsva8Xzc6JwV0Fwq6wIHUwYcWYmjGa7sPhGzXXFqrA4Gm7kw/+itlCAumPK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908470; c=relaxed/simple;
-	bh=/crl7X5H7Uq3aVi3BYiNBBPQHzKIfuWVqU883+1/VDE=;
+	s=arc-20240116; t=1713908564; c=relaxed/simple;
+	bh=r+jEbIJEhjhof6CWn4N0nFb18VGsnPgPH/4CP3s2LBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSzfexHWJ/7Su981WeQGOp+BQp/fwYaAeDPmVb6DEzD6l3Bb/2sx8yE7ds+ob7MQzm8KaUq7Lh7nNn+0D0dCvHmuvi1ecT8UskF31s5xEvguiK+6xPF8cgd6ivTcZ50wg61WKUWBSQDndH7x9vSTs97b5GRO7Wiq+HwdbKoxPBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBOnTv60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1289C116B1;
-	Tue, 23 Apr 2024 21:41:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nWl1VsUvN5lgXY8Zpxv3GkFUyJuyoytGhfpqX9IF3NM0YKQ/SFyAEFKBASxiVHm13wzbYfFYCMsmHXEouWdHsTSprddnAMsC+INWBWRtfnRBUxJxBc2ykZaX/51KewjeIu/FRVW3wnbCmdh1ckmEx/dGDBLoUAGZ8XKOzHGDJvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUXmmD3T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A84C32783;
+	Tue, 23 Apr 2024 21:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908469;
-	bh=/crl7X5H7Uq3aVi3BYiNBBPQHzKIfuWVqU883+1/VDE=;
+	s=korg; t=1713908564;
+	bh=r+jEbIJEhjhof6CWn4N0nFb18VGsnPgPH/4CP3s2LBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBOnTv60Otw84jw03C0F46GttBfssVOKStpwuq3z2FkEtP7diKfPrKAGtVnJ1QfrX
-	 98sV55IL6Nd4i2Cq4yBguTUx3iV7QvWTdNgLMr/A/BEXOlaJWLNIsBQ95z496tzrtP
-	 Wpn/PqpJJq81S0e1a1mum5pVIxqILjDh9rC/hB4g=
+	b=KUXmmD3Tju2NXWxWJfDVinX3udKGStiAL5mExu6Ve3m6zaQWzxIsz+JNRPdkOJoYR
+	 OVDQeLCFa5ML4nwpcRpL7/HmYUPyy8pbZpQ6MPSjP5WxHGUq+hPZY6/q4Axxv3sZDx
+	 +24KgiIjR8W421RLSsGNDm+9XOESjDPjFXREps7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Manasi Navare <navaremanasi@chromium.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 027/158] net/mlx5e: Prevent deadlock while disabling aRFS
+Subject: [PATCH 6.6 012/158] drm/i915: Adjust seamless_m_n flag behaviour
 Date: Tue, 23 Apr 2024 14:37:29 -0700
-Message-ID: <20240423213856.748390218@linuxfoundation.org>
+Message-ID: <20240423213856.117313615@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,217 +60,192 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit fef965764cf562f28afb997b626fc7c3cec99693 ]
+[ Upstream commit 825edc8bc72f3266534a04e9a4447b12332fac82 ]
 
-When disabling aRFS under the `priv->state_lock`, any scheduled
-aRFS works are canceled using the `cancel_work_sync` function,
-which waits for the work to end if it has already started.
-However, while waiting for the work handler, the handler will
-try to acquire the `state_lock` which is already acquired.
+Make the seamless_m_n flag more like the update_pipe fastset
+flag, ie. the flag will only be set if we need to do the seamless
+M/N update, and in all other cases the flag is cleared. Also
+rename the flag to update_m_n to make it more clear it's similar
+to update_pipe.
 
-The worker acquires the lock to delete the rules if the state
-is down, which is not the worker's responsibility since
-disabling aRFS deletes the rules.
+I believe special casing seamless_m_n like this makes sense
+as it also affects eg. vblank evasion. We can potentially avoid
+some vblank evasion tricks, simplify some checks, and hopefully
+will help with the VRR vs. M/N mess.
 
-Add an aRFS state variable, which indicates whether the aRFS is
-enabled and prevent adding rules when the aRFS is disabled.
-
-Kernel log:
-
-======================================================
-WARNING: possible circular locking dependency detected
-6.7.0-rc4_net_next_mlx5_5483eb2 #1 Tainted: G          I
-------------------------------------------------------
-ethtool/386089 is trying to acquire lock:
-ffff88810f21ce68 ((work_completion)(&rule->arfs_work)){+.+.}-{0:0}, at: __flush_work+0x74/0x4e0
-
-but task is already holding lock:
-ffff8884a1808cc0 (&priv->state_lock){+.+.}-{3:3}, at: mlx5e_ethtool_set_channels+0x53/0x200 [mlx5_core]
-
-which lock already depends on the new lock.
-
-the existing dependency chain (in reverse order) is:
-
--> #1 (&priv->state_lock){+.+.}-{3:3}:
-       __mutex_lock+0x80/0xc90
-       arfs_handle_work+0x4b/0x3b0 [mlx5_core]
-       process_one_work+0x1dc/0x4a0
-       worker_thread+0x1bf/0x3c0
-       kthread+0xd7/0x100
-       ret_from_fork+0x2d/0x50
-       ret_from_fork_asm+0x11/0x20
-
--> #0 ((work_completion)(&rule->arfs_work)){+.+.}-{0:0}:
-       __lock_acquire+0x17b4/0x2c80
-       lock_acquire+0xd0/0x2b0
-       __flush_work+0x7a/0x4e0
-       __cancel_work_timer+0x131/0x1c0
-       arfs_del_rules+0x143/0x1e0 [mlx5_core]
-       mlx5e_arfs_disable+0x1b/0x30 [mlx5_core]
-       mlx5e_ethtool_set_channels+0xcb/0x200 [mlx5_core]
-       ethnl_set_channels+0x28f/0x3b0
-       ethnl_default_set_doit+0xec/0x240
-       genl_family_rcv_msg_doit+0xd0/0x120
-       genl_rcv_msg+0x188/0x2c0
-       netlink_rcv_skb+0x54/0x100
-       genl_rcv+0x24/0x40
-       netlink_unicast+0x1a1/0x270
-       netlink_sendmsg+0x214/0x460
-       __sock_sendmsg+0x38/0x60
-       __sys_sendto+0x113/0x170
-       __x64_sys_sendto+0x20/0x30
-       do_syscall_64+0x40/0xe0
-       entry_SYSCALL_64_after_hwframe+0x46/0x4e
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&priv->state_lock);
-                               lock((work_completion)(&rule->arfs_work));
-                               lock(&priv->state_lock);
-  lock((work_completion)(&rule->arfs_work));
-
- *** DEADLOCK ***
-
-3 locks held by ethtool/386089:
- #0: ffffffff82ea7210 (cb_lock){++++}-{3:3}, at: genl_rcv+0x15/0x40
- #1: ffffffff82e94c88 (rtnl_mutex){+.+.}-{3:3}, at: ethnl_default_set_doit+0xd3/0x240
- #2: ffff8884a1808cc0 (&priv->state_lock){+.+.}-{3:3}, at: mlx5e_ethtool_set_channels+0x53/0x200 [mlx5_core]
-
-stack backtrace:
-CPU: 15 PID: 386089 Comm: ethtool Tainted: G          I        6.7.0-rc4_net_next_mlx5_5483eb2 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x60/0xa0
- check_noncircular+0x144/0x160
- __lock_acquire+0x17b4/0x2c80
- lock_acquire+0xd0/0x2b0
- ? __flush_work+0x74/0x4e0
- ? save_trace+0x3e/0x360
- ? __flush_work+0x74/0x4e0
- __flush_work+0x7a/0x4e0
- ? __flush_work+0x74/0x4e0
- ? __lock_acquire+0xa78/0x2c80
- ? lock_acquire+0xd0/0x2b0
- ? mark_held_locks+0x49/0x70
- __cancel_work_timer+0x131/0x1c0
- ? mark_held_locks+0x49/0x70
- arfs_del_rules+0x143/0x1e0 [mlx5_core]
- mlx5e_arfs_disable+0x1b/0x30 [mlx5_core]
- mlx5e_ethtool_set_channels+0xcb/0x200 [mlx5_core]
- ethnl_set_channels+0x28f/0x3b0
- ethnl_default_set_doit+0xec/0x240
- genl_family_rcv_msg_doit+0xd0/0x120
- genl_rcv_msg+0x188/0x2c0
- ? ethnl_ops_begin+0xb0/0xb0
- ? genl_family_rcv_msg_dumpit+0xf0/0xf0
- netlink_rcv_skb+0x54/0x100
- genl_rcv+0x24/0x40
- netlink_unicast+0x1a1/0x270
- netlink_sendmsg+0x214/0x460
- __sock_sendmsg+0x38/0x60
- __sys_sendto+0x113/0x170
- ? do_user_addr_fault+0x53f/0x8f0
- __x64_sys_sendto+0x20/0x30
- do_syscall_64+0x40/0xe0
- entry_SYSCALL_64_after_hwframe+0x46/0x4e
- </TASK>
-
-Fixes: 45bf454ae884 ("net/mlx5e: Enabling aRFS mechanism")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240411115444.374475-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Manasi Navare <navaremanasi@chromium.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230901130440.2085-6-ville.syrjala@linux.intel.com
+Reviewed-by: Manasi Navare <navaremanasi@chromium.org>
+Stable-dep-of: 4a36e46df7aa ("drm/i915: Disable live M/N updates when using bigjoiner")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_arfs.c | 27 +++++++++++--------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/i915/display/intel_atomic.c   |  1 +
+ drivers/gpu/drm/i915/display/intel_crtc.c     |  2 +-
+ drivers/gpu/drm/i915/display/intel_display.c  | 22 +++++++++++--------
+ .../drm/i915/display/intel_display_types.h    |  2 +-
+ drivers/gpu/drm/i915/display/intel_dp.c       |  2 +-
+ 5 files changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-index e66f486faafe1..415fec7763bd2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-@@ -45,6 +45,10 @@ struct arfs_table {
- 	struct hlist_head	 rules_hash[ARFS_HASH_SIZE];
- };
+diff --git a/drivers/gpu/drm/i915/display/intel_atomic.c b/drivers/gpu/drm/i915/display/intel_atomic.c
+index 7cf51dd8c0567..aaddd8c0cfa0e 100644
+--- a/drivers/gpu/drm/i915/display/intel_atomic.c
++++ b/drivers/gpu/drm/i915/display/intel_atomic.c
+@@ -259,6 +259,7 @@ intel_crtc_duplicate_state(struct drm_crtc *crtc)
+ 		drm_property_blob_get(crtc_state->post_csc_lut);
  
-+enum {
-+	MLX5E_ARFS_STATE_ENABLED,
-+};
-+
- enum arfs_type {
- 	ARFS_IPV4_TCP,
- 	ARFS_IPV6_TCP,
-@@ -59,6 +63,7 @@ struct mlx5e_arfs_tables {
- 	spinlock_t                     arfs_lock;
- 	int                            last_filter_id;
- 	struct workqueue_struct        *wq;
-+	unsigned long                  state;
- };
- 
- struct arfs_tuple {
-@@ -169,6 +174,8 @@ int mlx5e_arfs_enable(struct mlx5e_flow_steering *fs)
- 			return err;
- 		}
- 	}
-+	set_bit(MLX5E_ARFS_STATE_ENABLED, &arfs->state);
-+
- 	return 0;
+ 	crtc_state->update_pipe = false;
++	crtc_state->update_m_n = false;
+ 	crtc_state->disable_lp_wm = false;
+ 	crtc_state->disable_cxsr = false;
+ 	crtc_state->update_wm_pre = false;
+diff --git a/drivers/gpu/drm/i915/display/intel_crtc.c b/drivers/gpu/drm/i915/display/intel_crtc.c
+index 5c89eba8148c0..cfbfbfed3f5e6 100644
+--- a/drivers/gpu/drm/i915/display/intel_crtc.c
++++ b/drivers/gpu/drm/i915/display/intel_crtc.c
+@@ -510,7 +510,7 @@ static void intel_crtc_vblank_evade_scanlines(struct intel_atomic_state *state,
+ 	 * M/N is double buffered on the transcoder's undelayed vblank,
+ 	 * so with seamless M/N we must evade both vblanks.
+ 	 */
+-	if (new_crtc_state->seamless_m_n && intel_crtc_needs_fastset(new_crtc_state))
++	if (new_crtc_state->update_m_n)
+ 		*min -= adjusted_mode->crtc_vblank_start - adjusted_mode->crtc_vdisplay;
  }
  
-@@ -454,6 +461,8 @@ static void arfs_del_rules(struct mlx5e_flow_steering *fs)
- 	int i;
- 	int j;
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index 39efd67cc3232..1a59fca40252c 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -5215,7 +5215,7 @@ intel_pipe_config_compare(const struct intel_crtc_state *current_config,
+ 	PIPE_CONF_CHECK_X(lane_lat_optim_mask);
  
-+	clear_bit(MLX5E_ARFS_STATE_ENABLED, &arfs->state);
-+
- 	spin_lock_bh(&arfs->arfs_lock);
- 	mlx5e_for_each_arfs_rule(rule, htmp, arfs->arfs_tables, i, j) {
- 		hlist_del_init(&rule->hlist);
-@@ -626,17 +635,8 @@ static void arfs_handle_work(struct work_struct *work)
- 	struct mlx5_flow_handle *rule;
+ 	if (HAS_DOUBLE_BUFFERED_M_N(dev_priv)) {
+-		if (!fastset || !pipe_config->seamless_m_n)
++		if (!fastset || !pipe_config->update_m_n)
+ 			PIPE_CONF_CHECK_M_N(dp_m_n);
+ 	} else {
+ 		PIPE_CONF_CHECK_M_N(dp_m_n);
+@@ -5353,7 +5353,7 @@ intel_pipe_config_compare(const struct intel_crtc_state *current_config,
+ 	if (IS_G4X(dev_priv) || DISPLAY_VER(dev_priv) >= 5)
+ 		PIPE_CONF_CHECK_I(pipe_bpp);
  
- 	arfs = mlx5e_fs_get_arfs(priv->fs);
--	mutex_lock(&priv->state_lock);
--	if (!test_bit(MLX5E_STATE_OPENED, &priv->state)) {
--		spin_lock_bh(&arfs->arfs_lock);
--		hlist_del(&arfs_rule->hlist);
--		spin_unlock_bh(&arfs->arfs_lock);
--
--		mutex_unlock(&priv->state_lock);
--		kfree(arfs_rule);
--		goto out;
+-	if (!fastset || !pipe_config->seamless_m_n) {
++	if (!fastset || !pipe_config->update_m_n) {
+ 		PIPE_CONF_CHECK_I(hw.pipe_mode.crtc_clock);
+ 		PIPE_CONF_CHECK_I(hw.adjusted_mode.crtc_clock);
+ 	}
+@@ -5448,6 +5448,7 @@ int intel_modeset_all_pipes(struct intel_atomic_state *state,
+ 
+ 		crtc_state->uapi.mode_changed = true;
+ 		crtc_state->update_pipe = false;
++		crtc_state->update_m_n = false;
+ 
+ 		ret = drm_atomic_add_affected_connectors(&state->base,
+ 							 &crtc->base);
+@@ -5565,13 +5566,14 @@ static void intel_crtc_check_fastset(const struct intel_crtc_state *old_crtc_sta
+ {
+ 	struct drm_i915_private *i915 = to_i915(old_crtc_state->uapi.crtc->dev);
+ 
+-	if (!intel_pipe_config_compare(old_crtc_state, new_crtc_state, true)) {
++	if (!intel_pipe_config_compare(old_crtc_state, new_crtc_state, true))
+ 		drm_dbg_kms(&i915->drm, "fastset requirement not met, forcing full modeset\n");
++	else
++		new_crtc_state->uapi.mode_changed = false;
+ 
+-		return;
 -	}
--	mutex_unlock(&priv->state_lock);
-+	if (!test_bit(MLX5E_ARFS_STATE_ENABLED, &arfs->state))
-+		return;
++	if (intel_crtc_needs_modeset(new_crtc_state))
++		new_crtc_state->update_m_n = false;
  
- 	if (!arfs_rule->rule) {
- 		rule = arfs_add_rule(priv, arfs_rule);
-@@ -752,6 +752,11 @@ int mlx5e_rx_flow_steer(struct net_device *dev, const struct sk_buff *skb,
- 		return -EPROTONOSUPPORT;
+-	new_crtc_state->uapi.mode_changed = false;
+ 	if (!intel_crtc_needs_modeset(new_crtc_state))
+ 		new_crtc_state->update_pipe = true;
+ }
+@@ -6297,6 +6299,7 @@ int intel_atomic_check(struct drm_device *dev,
+ 			if (intel_cpu_transcoders_need_modeset(state, BIT(master))) {
+ 				new_crtc_state->uapi.mode_changed = true;
+ 				new_crtc_state->update_pipe = false;
++				new_crtc_state->update_m_n = false;
+ 			}
+ 		}
  
- 	spin_lock_bh(&arfs->arfs_lock);
-+	if (!test_bit(MLX5E_ARFS_STATE_ENABLED, &arfs->state)) {
-+		spin_unlock_bh(&arfs->arfs_lock);
-+		return -EPERM;
-+	}
-+
- 	arfs_rule = arfs_find_rule(arfs_t, &fk);
- 	if (arfs_rule) {
- 		if (arfs_rule->rxq == rxq_index || work_busy(&arfs_rule->arfs_work)) {
+@@ -6309,6 +6312,7 @@ int intel_atomic_check(struct drm_device *dev,
+ 			if (intel_cpu_transcoders_need_modeset(state, trans)) {
+ 				new_crtc_state->uapi.mode_changed = true;
+ 				new_crtc_state->update_pipe = false;
++				new_crtc_state->update_m_n = false;
+ 			}
+ 		}
+ 
+@@ -6316,6 +6320,7 @@ int intel_atomic_check(struct drm_device *dev,
+ 			if (intel_pipes_need_modeset(state, new_crtc_state->bigjoiner_pipes)) {
+ 				new_crtc_state->uapi.mode_changed = true;
+ 				new_crtc_state->update_pipe = false;
++				new_crtc_state->update_m_n = false;
+ 			}
+ 		}
+ 	}
+@@ -6494,7 +6499,7 @@ static void intel_pipe_fastset(const struct intel_crtc_state *old_crtc_state,
+ 	    IS_BROADWELL(dev_priv) || IS_HASWELL(dev_priv))
+ 		hsw_set_linetime_wm(new_crtc_state);
+ 
+-	if (new_crtc_state->seamless_m_n)
++	if (new_crtc_state->update_m_n)
+ 		intel_cpu_transcoder_set_m1_n1(crtc, new_crtc_state->cpu_transcoder,
+ 					       &new_crtc_state->dp_m_n);
+ }
+@@ -6630,8 +6635,7 @@ static void intel_update_crtc(struct intel_atomic_state *state,
+ 	 *
+ 	 * FIXME Should be synchronized with the start of vblank somehow...
+ 	 */
+-	if (vrr_enabling(old_crtc_state, new_crtc_state) ||
+-	    (new_crtc_state->seamless_m_n && intel_crtc_needs_fastset(new_crtc_state)))
++	if (vrr_enabling(old_crtc_state, new_crtc_state) || new_crtc_state->update_m_n)
+ 		intel_crtc_update_active_timings(new_crtc_state,
+ 						 new_crtc_state->vrr.enable);
+ 
+diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
+index 8b0dc2b75da4a..1c23b186aff20 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1084,6 +1084,7 @@ struct intel_crtc_state {
+ 
+ 	unsigned fb_bits; /* framebuffers to flip */
+ 	bool update_pipe; /* can a fast modeset be performed? */
++	bool update_m_n; /* update M/N seamlessly during fastset? */
+ 	bool disable_cxsr;
+ 	bool update_wm_pre, update_wm_post; /* watermarks are updated */
+ 	bool fifo_changed; /* FIFO split is changed */
+@@ -1196,7 +1197,6 @@ struct intel_crtc_state {
+ 	/* m2_n2 for eDP downclock */
+ 	struct intel_link_m_n dp_m2_n2;
+ 	bool has_drrs;
+-	bool seamless_m_n;
+ 
+ 	/* PSR is supported but might not be enabled due the lack of enabled planes */
+ 	bool has_psr;
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index d712cb9b81e1e..7e135ed8e1d75 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -2149,7 +2149,7 @@ intel_dp_drrs_compute_config(struct intel_connector *connector,
+ 	int pixel_clock;
+ 
+ 	if (has_seamless_m_n(connector))
+-		pipe_config->seamless_m_n = true;
++		pipe_config->update_m_n = true;
+ 
+ 	if (!can_enable_drrs(connector, pipe_config, downclock_mode)) {
+ 		if (intel_cpu_transcoder_has_m2_n2(i915, pipe_config->cpu_transcoder))
 -- 
 2.43.0
 
