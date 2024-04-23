@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-40976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D236D8AF9D6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94EC28AFA6E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DDDC28BF85
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91D01C21901
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB0E1474B7;
-	Tue, 23 Apr 2024 21:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80560149DE0;
+	Tue, 23 Apr 2024 21:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3BE0u54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU1tJA8L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A38144D15;
-	Tue, 23 Apr 2024 21:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF621420BE;
+	Tue, 23 Apr 2024 21:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908593; cv=none; b=gh3TL3MmjgqSNCjU2PxyASFV11AcP7RfLOrYGxaZQkyyXTHWvLHP8Ar4dRZ6qOpAoPhG6iAz2bIcJ+IouMAFLgsckIcQt5cyda04POC49tfAubRCMVqZsYr2HAjZN4B5Fqs0lY5WcAlxsDR5dhfvOrcfn6fHZ3KMAUYzZrGbtcg=
+	t=1713908697; cv=none; b=l0hNf0AulEM7JVmrXr14kpHKoewpnxNbN9edcy5VIFl90FQM3j0mosDaHA2OSaMchAZOfHlNwRVaJ3SQ5w6j1j+HrKSPM7Nh4WVurPcRXNuO6IezveKBQ20noH3IIy1N4F7Xzcj/yZlbDlKBZMsHPtKocSuFvsK2xjkswHAZSZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908593; c=relaxed/simple;
-	bh=pqRU7fKaNHtXrZF8ebXY2AxqdGNCHk8cqFRJXUwZl6g=;
+	s=arc-20240116; t=1713908697; c=relaxed/simple;
+	bh=RFf1ZnnsANlf+ITGLZrd7AUnXmyFQw3AizD+mqzCAzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dFBcdaJoHvbkyotGZcu7fobVD3XVYOpSHMA06J7OGbRd87eseeiCek0uHxHtjQ2cMPhR0z8hegRjNmcBruWWupjND7HLD209N2Q2G84RLnH+79W8RaVEy6Ek3xDsDJk5gempuU8iW0ldf6PfZ9gUtjxXoJXAkqOy82tcU/I/iWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3BE0u54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2225C32781;
-	Tue, 23 Apr 2024 21:43:12 +0000 (UTC)
+	 MIME-Version; b=ptPrcGXsSzVICx3dEO8e3p3u6/CJWN8JrPNYRdqXPAxQ3a+weTnfXieyPB7xrqH5e8W2LQvftepDJaGPvjYcobV0k0H2Z58ukPZCTM/8kjl4S+hMm1c8+TFF2EBOpmCXy/Ij9A2eqlW8kWiFgzZAVzI0LKQN/rNVqKPgNtzl04A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU1tJA8L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127BCC116B1;
+	Tue, 23 Apr 2024 21:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908593;
-	bh=pqRU7fKaNHtXrZF8ebXY2AxqdGNCHk8cqFRJXUwZl6g=;
+	s=korg; t=1713908697;
+	bh=RFf1ZnnsANlf+ITGLZrd7AUnXmyFQw3AizD+mqzCAzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3BE0u54V+F8yoKL7lZtTLZTNnyVSCu9ZJ+u9kCGoJFqkZk6qK8F8ofMgGn8knVEZ
-	 VTvmtbd2ZZmmckN44cMztloofh0ine1OO138qLHsaWa+qqktKqRoTlTuVA9NtmXb/c
-	 Z0IRV69bzrlVaE2BR4CapQibszOgRhZh/IthvQHw=
+	b=yU1tJA8LUyy7HvZc0h58sTCwrZgaDsG3iq0D5XN8VPd/HIV/zaNk6ZlhF2NAsMXAt
+	 0TjRPcFXY/umIIwLYknKR8P8Asx+K0PsvoteaB2DrpPUZ8ZPKdTMT/ehd6IDxdTC29
+	 F2PmyB08SNDg9h4GdD2RDd2M2ERITz/BWLsKvIIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/158] net: dsa: mt7530: fix port mirroring for MT7988 SoC switch
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.1 023/141] x86/boot: Construct PE/COFF .text section from assembler
 Date: Tue, 23 Apr 2024 14:38:11 -0700
-Message-ID: <20240423213857.531194574@linuxfoundation.org>
+Message-ID: <20240423213854.078917417@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +59,186 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 2c606d138518cc69f09c35929abc414a99e3a28f ]
+[ Commit efa089e63b56bdc5eca754b995cb039dd7a5457e upstream ]
 
-The "MT7988A Wi-Fi 7 Generation Router Platform: Datasheet (Open Version)
-v0.1" document shows bits 16 to 18 as the MIRROR_PORT field of the CPU
-forward control register. Currently, the MT7530 DSA subdriver configures
-bits 0 to 2 of the CPU forward control register which breaks the port
-mirroring feature for the MT7988 SoC switch.
+Now that the size of the setup block is visible to the assembler, it is
+possible to populate the PE/COFF header fields from the asm code
+directly, instead of poking the values into the binary using the build
+tool. This will make it easier to reorganize the section layout without
+having to tweak the build tool in lockstep.
 
-Fix this by using the MT7531_MIRROR_PORT_GET() and MT7531_MIRROR_PORT_SET()
-macros which utilise the correct bits.
+This change has no impact on the resulting bzImage binary.
 
-Fixes: 110c18bfed41 ("net: dsa: mt7530: introduce driver for MT7988 built-in switch")
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Acked-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230915171623.655440-15-ardb@google.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/boot/header.S      |   22 ++++++--------------
+ arch/x86/boot/tools/build.c |   47 --------------------------------------------
+ 2 files changed, 7 insertions(+), 62 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index a123bb832db91..ea59f19a724c9 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -1948,14 +1948,16 @@ mt7530_port_vlan_del(struct dsa_switch *ds, int port,
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -74,14 +74,12 @@ optional_header:
+ 	.byte	0x02				# MajorLinkerVersion
+ 	.byte	0x14				# MinorLinkerVersion
  
- static int mt753x_mirror_port_get(unsigned int id, u32 val)
- {
--	return (id == ID_MT7531) ? MT7531_MIRROR_PORT_GET(val) :
--				   MIRROR_PORT(val);
-+	return (id == ID_MT7531 || id == ID_MT7988) ?
-+		       MT7531_MIRROR_PORT_GET(val) :
-+		       MIRROR_PORT(val);
+-	# Filled in by build.c
+-	.long	0				# SizeOfCode
++	.long	setup_size + ZO__end - 0x200	# SizeOfCode
+ 
+ 	.long	0				# SizeOfInitializedData
+ 	.long	0				# SizeOfUninitializedData
+ 
+-	# Filled in by build.c
+-	.long	0x0000				# AddressOfEntryPoint
++	.long	setup_size + ZO_efi_pe_entry	# AddressOfEntryPoint
+ 
+ 	.long	0x0200				# BaseOfCode
+ #ifdef CONFIG_X86_32
+@@ -104,10 +102,7 @@ extra_header_fields:
+ 	.word	0				# MinorSubsystemVersion
+ 	.long	0				# Win32VersionValue
+ 
+-	#
+-	# The size of the bzImage is written in tools/build.c
+-	#
+-	.long	0				# SizeOfImage
++	.long	setup_size + ZO__end 		# SizeOfImage
+ 
+ 	.long	0x200				# SizeOfHeaders
+ 	.long	0				# CheckSum
+@@ -198,18 +193,15 @@ section_table:
+ 		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
+ #endif
+ 
+-	#
+-	# The offset & size fields are filled in by build.c.
+-	#
+ 	.ascii	".text"
+ 	.byte	0
+ 	.byte	0
+ 	.byte	0
+-	.long	0
+-	.long	0x0				# startup_{32,64}
+-	.long	0				# Size of initialized data
++	.long	ZO__end
++	.long	setup_size
++	.long	ZO__edata			# Size of initialized data
+ 						# on disk
+-	.long	0x0				# startup_{32,64}
++	.long	setup_size
+ 	.long	0				# PointerToRelocations
+ 	.long	0				# PointerToLineNumbers
+ 	.word	0				# NumberOfRelocations
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -50,10 +50,8 @@ u8 buf[SETUP_SECT_MAX*512];
+ #define PECOFF_RELOC_RESERVE 0x20
+ #define PECOFF_COMPAT_RESERVE 0x20
+ 
+-static unsigned long efi_pe_entry;
+ static unsigned long efi32_pe_entry;
+ static unsigned long _edata;
+-static unsigned long _end;
+ 
+ /*----------------------------------------------------------------------*/
+ 
+@@ -216,32 +214,6 @@ static void update_pecoff_setup_and_relo
+ #endif
  }
  
- static int mt753x_mirror_port_set(unsigned int id, u32 val)
+-static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
+-{
+-	unsigned int pe_header;
+-	unsigned int text_sz = file_sz - text_start;
+-	unsigned int bss_sz = _end - text_sz;
+-
+-	pe_header = get_unaligned_le32(&buf[0x3c]);
+-
+-	/*
+-	 * Size of code: Subtract the size of the first sector (512 bytes)
+-	 * which includes the header.
+-	 */
+-	put_unaligned_le32(file_sz - 512 + bss_sz, &buf[pe_header + 0x1c]);
+-
+-	/* Size of image */
+-	put_unaligned_le32(file_sz + bss_sz, &buf[pe_header + 0x50]);
+-
+-	/*
+-	 * Address of entry point for PE/COFF executable
+-	 */
+-	put_unaligned_le32(text_start + efi_pe_entry, &buf[pe_header + 0x28]);
+-
+-	update_pecoff_section_header_fields(".text", text_start, text_sz + bss_sz,
+-					    text_sz, text_start);
+-}
+-
+ static int reserve_pecoff_reloc_section(int c)
  {
--	return (id == ID_MT7531) ? MT7531_MIRROR_PORT_SET(val) :
--				   MIRROR_PORT(val);
-+	return (id == ID_MT7531 || id == ID_MT7988) ?
-+		       MT7531_MIRROR_PORT_SET(val) :
-+		       MIRROR_PORT(val);
+ 	/* Reserve 0x20 bytes for .reloc section */
+@@ -249,22 +221,9 @@ static int reserve_pecoff_reloc_section(
+ 	return PECOFF_RELOC_RESERVE;
  }
  
- static int mt753x_port_mirror_add(struct dsa_switch *ds, int port,
--- 
-2.43.0
-
+-static void efi_stub_defaults(void)
+-{
+-	/* Defaults for old kernel */
+-#ifdef CONFIG_X86_32
+-	efi_pe_entry = 0x10;
+-#else
+-	efi_pe_entry = 0x210;
+-#endif
+-}
+-
+ #else
+ 
+ static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
+-static inline void update_pecoff_text(unsigned int text_start,
+-				      unsigned int file_sz) {}
+-static inline void efi_stub_defaults(void) {}
+ 
+ static inline int reserve_pecoff_reloc_section(int c)
+ {
+@@ -307,10 +266,8 @@ static void parse_zoffset(char *fname)
+ 	p = (char *)buf;
+ 
+ 	while (p && *p) {
+-		PARSE_ZOFS(p, efi_pe_entry);
+ 		PARSE_ZOFS(p, efi32_pe_entry);
+ 		PARSE_ZOFS(p, _edata);
+-		PARSE_ZOFS(p, _end);
+ 
+ 		p = strchr(p, '\n');
+ 		while (p && (*p == '\r' || *p == '\n'))
+@@ -328,8 +285,6 @@ int main(int argc, char ** argv)
+ 	void *kernel;
+ 	u32 crc = 0xffffffffUL;
+ 
+-	efi_stub_defaults();
+-
+ 	if (argc != 5)
+ 		usage();
+ 	parse_zoffset(argv[3]);
+@@ -376,8 +331,6 @@ int main(int argc, char ** argv)
+ 	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
+ 	if (kernel == MAP_FAILED)
+ 		die("Unable to mmap '%s': %m", argv[2]);
+-	update_pecoff_text(setup_sectors * 512, i + _edata);
+-
+ 
+ 	crc = partial_crc32(buf, i, crc);
+ 	if (fwrite(buf, 1, i, dest) != i)
 
 
 
