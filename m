@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-41060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0043C8AFA2F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797A78AFA81
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B026428A669
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03DD11F294D0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A48145FE3;
-	Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8061474CD;
+	Tue, 23 Apr 2024 21:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFPEJUg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGhpjUEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E903143C6B;
-	Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0229143C5A;
+	Tue, 23 Apr 2024 21:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908650; cv=none; b=hG8EIS3IGJOmmBcLWAHgsflUhwxNw9HL34SWHw6puSoJ+djw4UbQmFccdcacGaEM5cK0eFiaCE/hFHJEEgigwMb8syEv69QhopNY8adDosK3BmhFxKNMEnS8OqTEnS930YAUh0/cN9uohmbmc7qv9xbr6UbmflzH2FZzwJeGELA=
+	t=1713908712; cv=none; b=ognYoExTFjdBKJ7vuWDI056EGWqUuKY3COjiSj7xLd+a0dC+gD1OhA6Q3LB64S4kLm9/5czWEFqmFnLnJsfmILg3PR8xhe/oGhF7i+4AIjijAgFceJ6LzO0L6hoClYaIL6E9CEtJj4mm7nsk6B38YgyB56k6VbUi4aZeUJPSGrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908650; c=relaxed/simple;
-	bh=+58TTd6JNBaS0pJu1VzPeFSTMGRPE/PQ36iqMeSbcss=;
+	s=arc-20240116; t=1713908712; c=relaxed/simple;
+	bh=4+CI1jmc4Jrn4HgnR3HBOMOXIfn8bpTcX2KBpG5Wk40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VP8DnC0VP/I1SEWHKS2sEJx6kO2VNIqCjFGRckKSBHkMbNCAvBKV6V78AAskp1JG+kbdNH/LSnls94xopcca+8nwHzz6zQt7QKiYttITlV6eXyWXfAfqEoH7NuPO5A7e/7KbgsDFRX4PPK3Dmrkhgeix9Z20BcKhVHEYjUceKnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFPEJUg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B37C32781;
-	Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
+	 MIME-Version; b=dGQYGzITAjYpBcs32LSSLD+wWTmWEtFNX57IlWny/2x2BbDj3WECc9jMyEUpTZvqI6N6cpTHnhETGo5ruqc5dzsUPD1CHRBO9UnBSFJE8l6PcjXyuDd1HekVs5YvWS9J2Nx0zM8+z2ea40lnVK4OLGT4pYH7486MQVziAVUWmdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGhpjUEN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DCDC3277B;
+	Tue, 23 Apr 2024 21:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908650;
-	bh=+58TTd6JNBaS0pJu1VzPeFSTMGRPE/PQ36iqMeSbcss=;
+	s=korg; t=1713908712;
+	bh=4+CI1jmc4Jrn4HgnR3HBOMOXIfn8bpTcX2KBpG5Wk40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFPEJUg8WPA74dpWD/zt/wHH4WQGRYGamPDXQAn5j4K2WY8C1X53la/rWrtKYqMxs
-	 WmqNUleIxVcfYPUmVtYejypBQUaOgC0O8gyFLSwqxps19Ou7PwZHMIEgrG9ijW4PHJ
-	 5IIpQieOAGdZvjuYMHv/zgRw7BsrlbE0waQRv+mE=
+	b=mGhpjUENYWVjdO8obaVw4OCdYB4FhfSIbUqAHJ4cOXtQqxzic0umYpzJ/YNH19tYD
+	 mF6QUlX8jth8+DQKUfpGs2++stEKVTsxhnh7CULkErFdLNkRL0qgmMRRTPyLpNMhob
+	 BmMia6+j0i7F3UAOCy70zMLzNjptoISKCKp3Jpmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 100/158] ALSA: seq: ump: Fix conversion from MIDI2 to MIDI1 UMP messages
+	Philippe Perrot <philippe@perrot-net.fr>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 069/141] ALSA: scarlett2: Move USB IDs out from device_info struct
 Date: Tue, 23 Apr 2024 14:38:57 -0700
-Message-ID: <20240423213858.999513325@linuxfoundation.org>
+Message-ID: <20240423213855.465830028@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +63,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-commit f25f17dc5c6a5e3f2014d44635f0c0db45224efe upstream.
+[ Upstream commit d98cc489029dba4d99714c2e8ec4f5ba249f6851 ]
 
-The conversion from MIDI2 to MIDI1 UMP messages had a leftover
-artifact (superfluous bit shift), and this resulted in the bogus type
-check, leading to empty outputs.  Let's fix it.
+By moving the USB IDs from the device_info struct into
+scarlett2_devices[], that will allow for devices with different
+USB IDs to share the same device_info.
 
-Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
-Cc: <stable@vger.kernel.org>
-Link: https://github.com/alsa-project/alsa-utils/issues/262
-Message-ID: <20240419100442.14806-1-tiwai@suse.de>
+Tested-by: Philippe Perrot <philippe@perrot-net.fr>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://lore.kernel.org/r/8263368e8d49e6fcebc709817bd82ab79b404468.1694705811.git.g@b4.vu
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: b9a98cdd3ac7 ("ALSA: scarlett2: Add support for Clarett 8Pre USB")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_convert.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_scarlett_gen2.c | 63 ++++++++++++---------------------
+ 1 file changed, 23 insertions(+), 40 deletions(-)
 
-diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index b141024830ec..ee6ac649df83 100644
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -428,7 +428,7 @@ static int cvt_ump_midi2_to_midi1(struct snd_seq_client *dest,
- 	midi1->note.group = midi2->note.group;
- 	midi1->note.status = midi2->note.status;
- 	midi1->note.channel = midi2->note.channel;
--	switch (midi2->note.status << 4) {
-+	switch (midi2->note.status) {
- 	case UMP_MSG_STATUS_NOTE_ON:
- 	case UMP_MSG_STATUS_NOTE_OFF:
- 		midi1->note.note = midi2->note.note;
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index 1bcb05c73e0ad..2668bc1b918ba 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -317,8 +317,6 @@ struct scarlett2_mux_entry {
+ };
+ 
+ struct scarlett2_device_info {
+-	u32 usb_id; /* USB device identifier */
+-
+ 	/* Gen 3 devices have an internal MSD mode switch that needs
+ 	 * to be disabled in order to access the full functionality of
+ 	 * the device.
+@@ -440,8 +438,6 @@ struct scarlett2_data {
+ /*** Model-specific data ***/
+ 
+ static const struct scarlett2_device_info s6i6_gen2_info = {
+-	.usb_id = USB_ID(0x1235, 0x8203),
+-
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_2,
+ 	.level_input_count = 2,
+ 	.pad_input_count = 2,
+@@ -486,8 +482,6 @@ static const struct scarlett2_device_info s6i6_gen2_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i8_gen2_info = {
+-	.usb_id = USB_ID(0x1235, 0x8204),
+-
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_2,
+ 	.level_input_count = 2,
+ 	.pad_input_count = 4,
+@@ -535,8 +529,6 @@ static const struct scarlett2_device_info s18i8_gen2_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i20_gen2_info = {
+-	.usb_id = USB_ID(0x1235, 0x8201),
+-
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_2,
+ 	.line_out_hw_vol = 1,
+ 
+@@ -589,8 +581,6 @@ static const struct scarlett2_device_info s18i20_gen2_info = {
+ };
+ 
+ static const struct scarlett2_device_info solo_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8211),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_NO_MIXER,
+ 	.level_input_count = 1,
+@@ -602,8 +592,6 @@ static const struct scarlett2_device_info solo_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s2i2_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8210),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_NO_MIXER,
+ 	.level_input_count = 2,
+@@ -614,8 +602,6 @@ static const struct scarlett2_device_info s2i2_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s4i4_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8212),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_3,
+ 	.level_input_count = 2,
+@@ -660,8 +646,6 @@ static const struct scarlett2_device_info s4i4_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s8i6_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8213),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_3,
+ 	.level_input_count = 2,
+@@ -713,8 +697,6 @@ static const struct scarlett2_device_info s8i6_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i8_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8214),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_3,
+ 	.line_out_hw_vol = 1,
+@@ -783,8 +765,6 @@ static const struct scarlett2_device_info s18i8_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i20_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8215),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_3,
+ 	.line_out_hw_vol = 1,
+@@ -848,8 +828,6 @@ static const struct scarlett2_device_info s18i20_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info clarett_8pre_info = {
+-	.usb_id = USB_ID(0x1235, 0x820c),
+-
+ 	.config_set = SCARLETT2_CONFIG_SET_CLARETT,
+ 	.line_out_hw_vol = 1,
+ 	.level_input_count = 2,
+@@ -902,25 +880,30 @@ static const struct scarlett2_device_info clarett_8pre_info = {
+ 	} },
+ };
+ 
+-static const struct scarlett2_device_info *scarlett2_devices[] = {
++struct scarlett2_device_entry {
++	const u32 usb_id; /* USB device identifier */
++	const struct scarlett2_device_info *info;
++};
++
++static const struct scarlett2_device_entry scarlett2_devices[] = {
+ 	/* Supported Gen 2 devices */
+-	&s6i6_gen2_info,
+-	&s18i8_gen2_info,
+-	&s18i20_gen2_info,
++	{ USB_ID(0x1235, 0x8203), &s6i6_gen2_info },
++	{ USB_ID(0x1235, 0x8204), &s18i8_gen2_info },
++	{ USB_ID(0x1235, 0x8201), &s18i20_gen2_info },
+ 
+ 	/* Supported Gen 3 devices */
+-	&solo_gen3_info,
+-	&s2i2_gen3_info,
+-	&s4i4_gen3_info,
+-	&s8i6_gen3_info,
+-	&s18i8_gen3_info,
+-	&s18i20_gen3_info,
++	{ USB_ID(0x1235, 0x8211), &solo_gen3_info },
++	{ USB_ID(0x1235, 0x8210), &s2i2_gen3_info },
++	{ USB_ID(0x1235, 0x8212), &s4i4_gen3_info },
++	{ USB_ID(0x1235, 0x8213), &s8i6_gen3_info },
++	{ USB_ID(0x1235, 0x8214), &s18i8_gen3_info },
++	{ USB_ID(0x1235, 0x8215), &s18i20_gen3_info },
+ 
+ 	/* Supported Clarett+ devices */
+-	&clarett_8pre_info,
++	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info },
+ 
+ 	/* End of list */
+-	NULL
++	{ 0, NULL },
+ };
+ 
+ /* get the starting port index number for a given port type/direction */
+@@ -4149,17 +4132,17 @@ static int scarlett2_init_notify(struct usb_mixer_interface *mixer)
+ 
+ static int snd_scarlett_gen2_controls_create(struct usb_mixer_interface *mixer)
+ {
+-	const struct scarlett2_device_info **info = scarlett2_devices;
++	const struct scarlett2_device_entry *entry = scarlett2_devices;
+ 	int err;
+ 
+-	/* Find device in scarlett2_devices */
+-	while (*info && (*info)->usb_id != mixer->chip->usb_id)
+-		info++;
+-	if (!*info)
++	/* Find entry in scarlett2_devices */
++	while (entry->usb_id && entry->usb_id != mixer->chip->usb_id)
++		entry++;
++	if (!entry->usb_id)
+ 		return -EINVAL;
+ 
+ 	/* Initialise private data */
+-	err = scarlett2_init_private(mixer, *info);
++	err = scarlett2_init_private(mixer, entry->info);
+ 	if (err < 0)
+ 		return err;
+ 
 -- 
-2.44.0
+2.43.0
 
 
 
