@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5A78AFA67
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 018C18AF93D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15CBE1C22C53
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33E3C1C22D95
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26257149C76;
-	Tue, 23 Apr 2024 21:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAD01442F1;
+	Tue, 23 Apr 2024 21:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcxL1amx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NrUygH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E1F146D73;
-	Tue, 23 Apr 2024 21:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A43F143889;
+	Tue, 23 Apr 2024 21:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908691; cv=none; b=dabrfB07pL4qld4wxNtgBsUgidgdckHPJzEU9gkLkmVdLpDvMHZZBWQA1GlrxKk31YyEr3hbVHg+X8XdKPvYH4PrntH1gNaiW2dVafnxrjj/QbW2UDpjVgqpc8B+ciVw9xeHBeo4vA5fThP0edtCTZXQjsfIDXjDIOi9V3nwDQ0=
+	t=1713908492; cv=none; b=OMSyKS/uwC5eNbOSTlG0ovBGD9oEB0Vb1xVhnqjARA6o+OKwg4OKFBj56o0ReJvPrc1m80rTVnkki2ndRbhfODqUyzwBqoOJGCgLF2MZecnLGlHuUz7Q7/A0lGfO2OuZDHEhvRExhzRV3KETnA9fh9j2FO+hGo8ybMsayEHIaVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908691; c=relaxed/simple;
-	bh=9XOX0/q6BZOe9rNbkGQD5yiUkprZCI2RxCFiwuKESkc=;
+	s=arc-20240116; t=1713908492; c=relaxed/simple;
+	bh=CdJ5/+3ESPLwHo/Gi0pzy2eWy2xqtcFTPZD9W+Xj82M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjISFgNKJBXG3Yb57xZGMNI9Mdvl0n2kMcbmHAPP0D8SfpzF32h4JEE3qG7POCNhiFV+c0Lv6de0M8Rx3wPLjOlAdgEbAN7EzD/I90ADg6Zzx3Msixn98ufKSTnCIfEL+V891R27B+jdX1bP5x4wh13+jDbx6MJShcX+H/zSBmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcxL1amx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8B8C116B1;
-	Tue, 23 Apr 2024 21:44:51 +0000 (UTC)
+	 MIME-Version; b=spHfc/5LS6bbhnCpFfFB5mwV8aJBXn1xNY1bPjFl3YIBV8ThHWuh98xR9O5aThyiHcgSIckyGs4QuaE8du/cTNbmYK8Xex/h7QgFXRMGNOtHq4NUHWxPs2X9TGd9hcGqMXwMWp/u1mrdcZO+K9cIUGYsIaJeNYNTIPKiWVG+RUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NrUygH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9C8C116B1;
+	Tue, 23 Apr 2024 21:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908691;
-	bh=9XOX0/q6BZOe9rNbkGQD5yiUkprZCI2RxCFiwuKESkc=;
+	s=korg; t=1713908492;
+	bh=CdJ5/+3ESPLwHo/Gi0pzy2eWy2xqtcFTPZD9W+Xj82M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcxL1amxHWEvSka7AuIJs54jVu8CW+a8T9kbgTpTr0oi5s/1g9ztSsPHH7BvDg0ea
-	 Jr+5RqpQKHAElKPI2bf8mSV+AftNJ6CHtQD2JrVp93nME/Bhq3mZVQn1gBh6spdbu9
-	 g0/OUGyvsSgwNGOhBy3sFNsy5PZuqDr8HhED2kkk=
+	b=1NrUygH4BWwqdET1+eQLPUggxIdxJWaVaPOyDblzu9Y8/6r3f0DeZNDhR0ZSPEXJd
+	 Tzt/rjERrI0nX4PyBjuQem9UI8KCLDCvKV2jO4sq9XClGpzrnzOg7ESM55eYhTw+mw
+	 WH12rqvsWI/ukUWK0qTA/R0sdiJMZnzdhCucKrE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 022/141] x86/boot: Derive file size from _edata symbol
+	Sanath S <Sanath.S@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.8 068/158] thunderbolt: Introduce tb_path_deactivate_hop()
 Date: Tue, 23 Apr 2024 14:38:10 -0700
-Message-ID: <20240423213854.042834225@linuxfoundation.org>
+Message-ID: <20240423213858.168958912@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,142 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Sanath S <Sanath.S@amd.com>
 
-[ Commit aeb92067f6ae994b541d7f9752fe54ed3d108bcc upstream ]
+commit b35c1d7b11da8c08b14147bbe87c2c92f7a83f8b upstream.
 
-Tweak the linker script so that the value of _edata represents the
-decompressor binary's file size rounded up to the appropriate alignment.
-This removes the need to calculate it in the build tool, and will make
-it easier to refer to the file size from the header directly in
-subsequent changes to the PE header layout.
+This function can be used to clear path config space of an adapter. Make
+it available for other files in this driver.
 
-While adding _edata to the sed regex that parses the compressed
-vmlinux's symbol list, tweak the regex a bit for conciseness.
-
-This change has no impact on the resulting bzImage binary when
-configured with CONFIG_EFI_STUB=y.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230915171623.655440-14-ardb@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/Makefile                 |    2 +-
- arch/x86/boot/compressed/vmlinux.lds.S |    3 +++
- arch/x86/boot/header.S                 |    2 +-
- arch/x86/boot/tools/build.c            |   30 +++++++-----------------------
- 4 files changed, 12 insertions(+), 25 deletions(-)
+ drivers/thunderbolt/path.c |   13 +++++++++++++
+ drivers/thunderbolt/tb.h   |    1 +
+ 2 files changed, 14 insertions(+)
 
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -91,7 +91,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vm
+--- a/drivers/thunderbolt/path.c
++++ b/drivers/thunderbolt/path.c
+@@ -446,6 +446,19 @@ static int __tb_path_deactivate_hop(stru
+ 	return -ETIMEDOUT;
+ }
  
- SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
- 
--sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
-+sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi.._stub_entry\|efi\(32\)\?_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|_edata\|z_.*\)$$/\#define ZO_\2 0x\1/p'
- 
- quiet_cmd_zoffset = ZOFFSET $@
-       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -46,6 +46,9 @@ SECTIONS
- 		_data = . ;
- 		*(.data)
- 		*(.data.*)
++/**
++ * tb_path_deactivate_hop() - Deactivate one path in path config space
++ * @port: Lane or protocol adapter
++ * @hop_index: HopID of the path to be cleared
++ *
++ * This deactivates or clears a single path config space entry at
++ * @hop_index. Returns %0 in success and negative errno otherwise.
++ */
++int tb_path_deactivate_hop(struct tb_port *port, int hop_index)
++{
++	return __tb_path_deactivate_hop(port, hop_index, true);
++}
 +
-+		/* Add 4 bytes of extra space for a CRC-32 checksum */
-+		. = ALIGN(. + 4, 0x20);
- 		_edata = . ;
- 	}
- 	. = ALIGN(L1_CACHE_BYTES);
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -232,7 +232,7 @@ sentinel:	.byte 0xff, 0xff        /* Use
- hdr:
- 		.byte setup_sects - 1
- root_flags:	.word ROOT_RDONLY
--syssize:	.long 0			/* Filled in by build.c */
-+syssize:	.long ZO__edata / 16
- ram_size:	.word 0			/* Obsolete */
- vid_mode:	.word SVGA_MODE
- root_dev:	.word 0			/* Default to major/minor 0/0 */
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -52,6 +52,7 @@ u8 buf[SETUP_SECT_MAX*512];
- 
- static unsigned long efi_pe_entry;
- static unsigned long efi32_pe_entry;
-+static unsigned long _edata;
- static unsigned long _end;
- 
- /*----------------------------------------------------------------------*/
-@@ -308,6 +309,7 @@ static void parse_zoffset(char *fname)
- 	while (p && *p) {
- 		PARSE_ZOFS(p, efi_pe_entry);
- 		PARSE_ZOFS(p, efi32_pe_entry);
-+		PARSE_ZOFS(p, _edata);
- 		PARSE_ZOFS(p, _end);
- 
- 		p = strchr(p, '\n');
-@@ -320,7 +322,6 @@ int main(int argc, char ** argv)
+ static void __tb_path_deactivate_hops(struct tb_path *path, int first_hop)
  {
- 	unsigned int i, sz, setup_sectors;
- 	int c;
--	u32 sys_size;
- 	struct stat sb;
- 	FILE *file, *dest;
- 	int fd;
-@@ -368,24 +369,14 @@ int main(int argc, char ** argv)
- 		die("Unable to open `%s': %m", argv[2]);
- 	if (fstat(fd, &sb))
- 		die("Unable to stat `%s': %m", argv[2]);
--	sz = sb.st_size;
-+	if (_edata != sb.st_size)
-+		die("Unexpected file size `%s': %u != %u", argv[2], _edata,
-+		    sb.st_size);
-+	sz = _edata - 4;
- 	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
- 	if (kernel == MAP_FAILED)
- 		die("Unable to mmap '%s': %m", argv[2]);
--	/* Number of 16-byte paragraphs, including space for a 4-byte CRC */
--	sys_size = (sz + 15 + 4) / 16;
--#ifdef CONFIG_EFI_STUB
--	/*
--	 * COFF requires minimum 32-byte alignment of sections, and
--	 * adding a signature is problematic without that alignment.
--	 */
--	sys_size = (sys_size + 1) & ~1;
--#endif
--
--	/* Patch the setup code with the appropriate size parameters */
--	put_unaligned_le32(sys_size, &buf[0x1f4]);
--
--	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
-+	update_pecoff_text(setup_sectors * 512, i + _edata);
- 
- 
- 	crc = partial_crc32(buf, i, crc);
-@@ -397,13 +388,6 @@ int main(int argc, char ** argv)
- 	if (fwrite(kernel, 1, sz, dest) != sz)
- 		die("Writing kernel failed");
- 
--	/* Add padding leaving 4 bytes for the checksum */
--	while (sz++ < (sys_size*16) - 4) {
--		crc = partial_crc32_one('\0', crc);
--		if (fwrite("\0", 1, 1, dest) != 1)
--			die("Writing padding failed");
--	}
--
- 	/* Write the CRC */
- 	put_unaligned_le32(crc, buf);
- 	if (fwrite(buf, 1, 4, dest) != 4)
+ 	int i, res;
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -1154,6 +1154,7 @@ struct tb_path *tb_path_alloc(struct tb
+ void tb_path_free(struct tb_path *path);
+ int tb_path_activate(struct tb_path *path);
+ void tb_path_deactivate(struct tb_path *path);
++int tb_path_deactivate_hop(struct tb_port *port, int hop_index);
+ bool tb_path_is_invalid(struct tb_path *path);
+ bool tb_path_port_on_path(const struct tb_path *path,
+ 			  const struct tb_port *port);
 
 
 
