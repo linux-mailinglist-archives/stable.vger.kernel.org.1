@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985448AFAD5
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E9C8AFA1B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53F22286BCD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52675289540
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C72145B1A;
-	Tue, 23 Apr 2024 21:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A94714883B;
+	Tue, 23 Apr 2024 21:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTDcCWnB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luInJEwd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5F3143C5F;
-	Tue, 23 Apr 2024 21:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB06143888;
+	Tue, 23 Apr 2024 21:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908767; cv=none; b=MFVzrD5tPJNY50lFjcz7WZ9HdsJxlALGrpKuodHAk7c2I2KefdrCSWtiTR9uSllRpFChE4W7BC6HOJEcM1iqDmtVRUMXJc6/l+9f4wJpWKp+WZEpZ1F8FqnY8TV/ugy+7550Zm4rIx+vODFGwvM+8KJuGJRU7Iyf7ZEaRNrN1PQ=
+	t=1713908636; cv=none; b=J53MRzHAGAy7OhBZB1GPXOKaQ9/Fco8byPnh661dhp+L8Kv6X/wmLY2GqZgvMzzBNfCooqprTfRhwzwZTNqHkOdYLL7Ujfb19FXxBKIWJM73gs91bmDhzB6N6VPuh+bB/UQD+GX9WBqqeR1AaBMmzX4TCGepmGOlRn1qq9eQUgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908767; c=relaxed/simple;
-	bh=zAd6y5hG91CFlKTUVnvAZutJZiX2mxpD0VG800EbyzI=;
+	s=arc-20240116; t=1713908636; c=relaxed/simple;
+	bh=SUUIZoyCRVNpVxUF5wSvYyPEQ2WDOp6xncvABYqay1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nnb5aD/gNvHHkme19CZAlbjYBAUZx6BAqwD0JbVOzRFEsiurBhVywsrBaPVnJ208FMDGBOKO2MDsLZSCOQyhVlIjkaf/vuL7XzYk58vv8D7xBrAwVZU7g+iGfjWa1c9+Sfjv8t5bqqDP0TFWjq4moQ0twwxlupkxqekSlu1lCsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTDcCWnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E23C116B1;
-	Tue, 23 Apr 2024 21:46:07 +0000 (UTC)
+	 MIME-Version; b=pTSI4qC9vhOeM8AMB+EGkydZ2s+z3ztRxT93f8+A6Ss5/9iAl0UU4c1hkTJV6WQTLR3YbO99ddbCXr4bhsdzx01JlP8M0rbLRBwGNFa86UZOU/Lw1z9TvQ3JoAC9mn68H4+5J3V3YYJ3/agmOI+Jg65QXJ/GktZ1Ydf7kNIx8gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luInJEwd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87EDC3277B;
+	Tue, 23 Apr 2024 21:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908767;
-	bh=zAd6y5hG91CFlKTUVnvAZutJZiX2mxpD0VG800EbyzI=;
+	s=korg; t=1713908635;
+	bh=SUUIZoyCRVNpVxUF5wSvYyPEQ2WDOp6xncvABYqay1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTDcCWnBD7qGMpLYmLON2i2MKStnzbZ+LFhNUrUIojEmAMuev1KVps1xxR8wFJOZ1
-	 656GbMiCjiypW71zaQVgLsMUSHGpB/v7zu5Rhy3Zwnm8r2No6+nHlIU9+K4xu46vBI
-	 pgSZQ0l4PH6dFrKDD9ZtUiB9CpnaiLkjhsY4JBn8=
+	b=luInJEwdL1cjZU4maLM7sI8EaKHX+QgDoVwBedEWMdIxsGHMcw/tT3R2idUY5gmHP
+	 ngCE4+HyB+z2IzqcuPzcR0CuHiyHTLLZ4cVLuMiA60Y7jGSuQ2GLol3zDsIR4QLhPY
+	 QSPrYdTKdsqozJwcIJOAzXeq07JBT4bxq8eQju48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 01/71] ksmbd: dont send oplock break if rename fails
+	Coia Prant <coiaprant@gmail.com>,
+	Lars Melin <larsm17@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 117/158] USB: serial: option: add Lonsung U8300/U9300 product
 Date: Tue, 23 Apr 2024 14:39:14 -0700
-Message-ID: <20240423213844.170765993@linuxfoundation.org>
+Message-ID: <20240423213859.541264655@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Coia Prant <coiaprant@gmail.com>
 
-[ Upstream commit c1832f67035dc04fb89e6b591b64e4d515843cda ]
+commit cf16ffa17c398434a77b8a373e69287c95b60de2 upstream.
 
-Don't send oplock break if rename fails. This patch fix
-smb2.oplock.batch20 test.
+Update the USB serial option driver to support Longsung U8300/U9300.
 
+For U8300
+
+Interface 4 is used by for QMI interface in stock firmware of U8300, the
+router which uses U8300 modem.
+Interface 5 is used by for ADB interface in stock firmware of U8300, the
+router which uses U8300 modem.
+
+Interface mapping is:
+0: unknown (Debug), 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI, 5: ADB
+
+T:  Bus=05 Lev=01 Prnt=03 Port=02 Cnt=01 Dev#=  4 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1c9e ProdID=9b05 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=Android
+C:  #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+For U9300
+
+Interface 1 is used by for ADB interface in stock firmware of U9300, the
+router which uses U9300 modem.
+Interface 4 is used by for QMI interface in stock firmware of U9300, the
+router which uses U9300 modem.
+
+Interface mapping is:
+0: ADB, 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI
+
+Note: Interface 3 of some models of the U9300 series can send AT commands.
+
+T:  Bus=05 Lev=01 Prnt=05 Port=04 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1c9e ProdID=9b3c Rev=03.18
+S:  Manufacturer=Android
+S:  Product=Android
+C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+
+Tested successfully using Modem Manager on U9300.
+Tested successfully AT commands using If=1, If=2 and If=3 on U9300.
+
+Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Reviewed-by: Lars Melin <larsm17@gmail.com>
+[ johan: drop product defines, trim commit message ]
 Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 14cd86a14012f..86b1fb43104e9 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -5581,8 +5581,9 @@ static int smb2_rename(struct ksmbd_work *work,
- 	if (!file_info->ReplaceIfExists)
- 		flags = RENAME_NOREPLACE;
- 
--	smb_break_all_levII_oplock(work, fp, 0);
- 	rc = ksmbd_vfs_rename(work, &fp->filp->f_path, new_name, flags);
-+	if (!rc)
-+		smb_break_all_levII_oplock(work, fp, 0);
- out:
- 	kfree(new_name);
- 	return rc;
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2052,6 +2052,10 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(LONGCHEER_VENDOR_ID, 0x9803, 0xff),
+ 	  .driver_info = RSVD(4) },
++	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b05),	/* Longsung U8300 */
++	  .driver_info = RSVD(4) | RSVD(5) },
++	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b3c),	/* Longsung U9300 */
++	  .driver_info = RSVD(0) | RSVD(4) },
+ 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
+ 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
+ 	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
 
 
 
