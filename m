@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1938AFAAE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461EB8AFA98
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CBCF1F29748
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF974B2B947
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB878145B04;
-	Tue, 23 Apr 2024 21:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9901494A9;
+	Tue, 23 Apr 2024 21:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4Y6H7Bh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6OwBsVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98973148318;
-	Tue, 23 Apr 2024 21:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1E8146017;
+	Tue, 23 Apr 2024 21:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908748; cv=none; b=ZrRYLJMxSwe+tE0PFd39NjoDKFj8XFE1uk14knNCYW2F/tnDUOUg6/xuViWpeoLkfLdBy+wQugh1/LPjKlWJ3oa8J9Aw9xIkq2P9h99nKo+fY5DzMU36y+N/3PzBSQ3xK8OdPE7e/cjrhzzSariwhpEyM9vyEgnca5j9OCBijPY=
+	t=1713908662; cv=none; b=Yo7J0GVVEfcKKCTUe5rqmrTGAv9eMti/jMNH7ufDu+lcFAkLqzSXcoXY1y/kb44tPyIa+dWuHFU9/+TNOUnoypsO1p7axJlqh7HlYJnZt3eKbZ107uKK60Ex/X/bg1Phnt7jeaWL7EYrmOS8nhJ9VIJRvf8IBYp+sXC9mveKfxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908748; c=relaxed/simple;
-	bh=UncSxT57T4TWWSalXaD8l1DfjvA8uhjXWPgCjZ7TwRA=;
+	s=arc-20240116; t=1713908662; c=relaxed/simple;
+	bh=XwiW8XqxeoyZy0GU5vosztLuZMTJjAAPTnISdS4vkpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXZLxFAbEVDgHH2DlUh0VUIFtCS3fokhtRfz1hlmnU1WldMXCb7GpEhyl5PMmDSR38ZCMF7uInAutI2VIqVxLGQTaJ66a8rzQiGDfe3Rff4/HY/6v3ynTzYmleJUHWtZb0EqqibAK/Ua/I11q6bVc2XSB8+cDaWvpXdBxkHYKCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4Y6H7Bh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1C9C32783;
-	Tue, 23 Apr 2024 21:45:48 +0000 (UTC)
+	 MIME-Version; b=FFnxP1702oY0KlPvkouawuSBsKtvE1HSDs5/Ujr56K2B5gaQVVULQEFQ+9XXv3C9WPL/gjI+elgAkZPP1q4jLOqB04AG3Si2/Qtd1gF/jOEZ6qN8JBXyB3FN4UdjoXTOKFKdchbxi4wj6G56wvrX5XVfy6niQqDfWkP8iXoPXg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6OwBsVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6873C116B1;
+	Tue, 23 Apr 2024 21:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908748;
-	bh=UncSxT57T4TWWSalXaD8l1DfjvA8uhjXWPgCjZ7TwRA=;
+	s=korg; t=1713908661;
+	bh=XwiW8XqxeoyZy0GU5vosztLuZMTJjAAPTnISdS4vkpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I4Y6H7BhDz0rMW9HxvIH4nW3RiAwtV+BrHlGpFqUp+vTr6eBJrdUkCDA1WxPdY1Pe
-	 VB5N7kgayuLl0zD82Mci2t16Kg98dVEn0Q1t+QJcxT6rZ+Ha09821Gqg0fWpSmK6tF
-	 ybyO0i0wfq6pHYQN8CEgLTirqaDxrZlHOc0BOhyA=
+	b=V6OwBsVk+pdKHgMSAjWDZTog8sb24qo76w6tqsKZFhZLf8RO2JSWtvEnwykhZtQlq
+	 LM90H58NnKexPH4x2nRZ1qIxyVEcNrp1pIRBF4BuDy3x0cxGwoGodt1/1vbQQ8ZNZQ
+	 bNHLZe3tSKDPb2CkpqDFEh7CendwZ8zr7diID0xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 123/141] KVM: x86/pmu: Do not mask LVTPC when handling a PMI on AMD platforms
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 154/158] ksmbd: fix slab-out-of-bounds in smb2_allocate_rsp_buf
 Date: Tue, 23 Apr 2024 14:39:51 -0700
-Message-ID: <20240423213857.200762395@linuxfoundation.org>
+Message-ID: <20240423213900.674335281@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 49ff3b4aec51e3abfc9369997cc603319b02af9a upstream.
+commit c119f4ede3fa90a9463f50831761c28f989bfb20 upstream.
 
-On AMD and Hygon platforms, the local APIC does not automatically set
-the mask bit of the LVTPC register when handling a PMI and there is
-no need to clear it in the kernel's PMI handler.
+If ->ProtocolId is SMB2_TRANSFORM_PROTO_NUM, smb2 request size
+validation could be skipped. if request size is smaller than
+sizeof(struct smb2_query_info_req), slab-out-of-bounds read can happen in
+smb2_allocate_rsp_buf(). This patch allocate response buffer after
+decrypting transform request. smb3_decrypt_req() will validate transform
+request size and avoid slab-out-of-bound in smb2_allocate_rsp_buf().
 
-For guests, the mask bit is currently set by kvm_apic_local_deliver()
-and unless it is cleared by the guest kernel's PMI handler, PMIs stop
-arriving and break use-cases like sampling with perf record.
-
-This does not affect non-PerfMonV2 guests because PMIs are handled in
-the guest kernel by x86_pmu_handle_irq() which always clears the LVTPC
-mask bit irrespective of the vendor.
-
-Before:
-
-  $ perf record -e cycles:u true
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.001 MB perf.data (1 samples) ]
-
-After:
-
-  $ perf record -e cycles:u true
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.002 MB perf.data (19 samples) ]
-
-Fixes: a16eb25b09c0 ("KVM: x86: Mask LVTPC when handling a PMI")
+Reported-by: Norbert Szetei <norbert@doyensec.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-[sean: use is_intel_compatible instead of !is_amd_or_hygon()]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20240405235603.1173076-3-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/server.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2548,7 +2548,8 @@ int kvm_apic_local_deliver(struct kvm_la
- 		trig_mode = reg & APIC_LVT_LEVEL_TRIGGER;
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -167,20 +167,17 @@ static void __handle_ksmbd_work(struct k
+ 	int rc;
+ 	bool is_chained = false;
  
- 		r = __apic_accept_irq(apic, mode, vector, 1, trig_mode, NULL);
--		if (r && lvt_type == APIC_LVTPC)
-+		if (r && lvt_type == APIC_LVTPC &&
-+		    guest_cpuid_is_intel_compatible(apic->vcpu))
- 			kvm_lapic_set_reg(apic, APIC_LVTPC, reg | APIC_LVT_MASKED);
- 		return r;
+-	if (conn->ops->allocate_rsp_buf(work))
+-		return;
+-
+ 	if (conn->ops->is_transform_hdr &&
+ 	    conn->ops->is_transform_hdr(work->request_buf)) {
+ 		rc = conn->ops->decrypt_req(work);
+-		if (rc < 0) {
+-			conn->ops->set_rsp_status(work, STATUS_DATA_ERROR);
+-			goto send;
+-		}
+-
++		if (rc < 0)
++			return;
+ 		work->encrypted = true;
  	}
+ 
++	if (conn->ops->allocate_rsp_buf(work))
++		return;
++
+ 	rc = conn->ops->init_rsp_hdr(work);
+ 	if (rc) {
+ 		/* either uid or tid is not correct */
 
 
 
