@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-40854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53898AF955
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F0B8AF9E9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E77B81C24617
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0779DB2AD70
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE4A144D34;
-	Tue, 23 Apr 2024 21:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0374147C75;
+	Tue, 23 Apr 2024 21:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6+24Ll3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BY0BV17Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B26085274;
-	Tue, 23 Apr 2024 21:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8AE144317;
+	Tue, 23 Apr 2024 21:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908508; cv=none; b=YUp5UdjHuYU+BudhlW8pvR5f3wsFzpBCqv7drAun5c2dhdEdR3ZOsph7FLD4p1ZTUuKKQ6n3D1+4hGaxhfsxvVsW02ykkEDXoF72tVbYfJVrY8ycvM86pTRirtoc0fqcxQfYrqQ5z/WjRu6pIL4UOH1JrirtdETdZfZCkSK43cQ=
+	t=1713908603; cv=none; b=FxE3G38VQ2LVgQVXxwfV7m/HzAzemP7tB65qrt3SF1j9J62H2kU6f95BRx86k/D6p3LsEsXgUj1bSFvHRDFYnATZRMkgdeglLak3ZMBwrnlGdx2TE6u4kjI1V8tSEzkwmL8o+gUyYQDcjj0cv5Eu+pfZH5KaxWlMwVOQqx0uJtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908508; c=relaxed/simple;
-	bh=bZ9PiPN5aV/VTmDPUoxPI5oG2EFbu5yglpKhO0HnYz4=;
+	s=arc-20240116; t=1713908603; c=relaxed/simple;
+	bh=aOFb2SHAjEeHgcksI0KeGg0IIHB6KXL/6a1T/kMNOgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNk7HayV6DzqTM/ucmOx4jofBRovBebdI3lQGT/mVkqt9iE/Xqo9jUdTnvCC3kzRuIlk2b7eFmmQ5B+8KDVCz9em3HBuoduTq7vv+Hakxl8I5kP0g/1MCQqij9dsEJjWiTpdQUvkAeSskSyaqkTzie0knz3Iqrb3yY+OLHGvt04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6+24Ll3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08230C32783;
-	Tue, 23 Apr 2024 21:41:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hgJuLHFPyxEnjwn5idrjetNlPmmWycHlaht9eZBec6D2mOfqeSRKypKJYIyVO8GWi7uG/ghFLEZXnGgO0Z+utc8u2ZpCnNMIayOsWKc3NNyRYTO2bJb63nRyyfXUG6+X1LRLwxvO5Fv51kZtiOPZe2euRpq7foCWEvQkC7lSkDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BY0BV17Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE9AC32782;
+	Tue, 23 Apr 2024 21:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908508;
-	bh=bZ9PiPN5aV/VTmDPUoxPI5oG2EFbu5yglpKhO0HnYz4=;
+	s=korg; t=1713908603;
+	bh=aOFb2SHAjEeHgcksI0KeGg0IIHB6KXL/6a1T/kMNOgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6+24Ll3ukWEoxMzbS8O45AGb6ldl37YLVtTN0MLKchkkkON+Iax4CXX6VtGhNfti
-	 z5XK56rsDif6ELTYNAdSLiQ8vom3tjQ94K70HZObGRvl619S66yQwgjWKqNexxqGlx
-	 U0ZeaD73eVPICeW8s0Z4zFoimD5sFnRvd3Od0lYs=
+	b=BY0BV17ZLlCKRf2po4hN/vqg2QMV/VhWYKwiq3Vg52ZDtKOqv7xvNe0lx6cdLf7A5
+	 utWgKqMg+iT46Z/O1FaVI2Lnfy4Xf/p+0NjuX3AkYRcCb07WZTHI88RBj7MXopVlD6
+	 v98llSy7Tk1y79SSd/GeA/TU4r2mlmlZrtx+D8TM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Shih <sam.shih@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Kees Cook <keescook@chromium.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 083/158] clk: mediatek: mt7988-infracfg: fix clocks for 2nd PCIe port
+Subject: [PATCH 6.6 068/158] drm/radeon: make -fstrict-flex-arrays=3 happy
 Date: Tue, 23 Apr 2024 14:38:25 -0700
-Message-ID: <20240423213858.644701202@linuxfoundation.org>
+Message-ID: <20240423213857.979448775@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit d3e8a91a848a5941e3c31ecebd6b2612b37e01a6 ]
+[ Upstream commit 0ba753bc7e79e49556e81b0d09b2de1aa558553b ]
 
-Due to what seems to be an undocumented oddity in MediaTek's MT7988
-SoC design the CLK_INFRA_PCIE_PERI_26M_CK_P2 clock requires
-CLK_INFRA_PCIE_PERI_26M_CK_P3 to be enabled.
+The driver parses a union where the layout up through the first
+array is the same, however, the array has different sizes
+depending on the elements in the union.  Be explicit to
+fix the UBSAN checker.
 
-This currently leads to PCIe port 2 not working in Linux.
-
-Reflect the apparent relationship in the clk driver to make sure PCIe
-port 2 of the MT7988 SoC works.
-
-Fixes: 4b4719437d85f ("clk: mediatek: add drivers for MT7988 SoC")
-Suggested-by: Sam Shih <sam.shih@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/1da2506a51f970706bf4ec9509dd04e0471065e5.1710367453.git.daniel@makrotopia.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3323
+Fixes: df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3")
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt7988-infracfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/radeon_atombios.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt7988-infracfg.c b/drivers/clk/mediatek/clk-mt7988-infracfg.c
-index 8011ef278bea3..df02997c6b7c9 100644
---- a/drivers/clk/mediatek/clk-mt7988-infracfg.c
-+++ b/drivers/clk/mediatek/clk-mt7988-infracfg.c
-@@ -152,7 +152,7 @@ static const struct mtk_gate infra_clks[] = {
- 	GATE_INFRA0(CLK_INFRA_PCIE_PERI_26M_CK_P1, "infra_pcie_peri_ck_26m_ck_p1",
- 		    "csw_infra_f26m_sel", 8),
- 	GATE_INFRA0(CLK_INFRA_PCIE_PERI_26M_CK_P2, "infra_pcie_peri_ck_26m_ck_p2",
--		    "csw_infra_f26m_sel", 9),
-+		    "infra_pcie_peri_ck_26m_ck_p3", 9),
- 	GATE_INFRA0(CLK_INFRA_PCIE_PERI_26M_CK_P3, "infra_pcie_peri_ck_26m_ck_p3",
- 		    "csw_infra_f26m_sel", 10),
- 	/* INFRA1 */
+diff --git a/drivers/gpu/drm/radeon/radeon_atombios.c b/drivers/gpu/drm/radeon/radeon_atombios.c
+index 85c4bb186203c..061396e7fa0f9 100644
+--- a/drivers/gpu/drm/radeon/radeon_atombios.c
++++ b/drivers/gpu/drm/radeon/radeon_atombios.c
+@@ -922,8 +922,12 @@ bool radeon_get_atom_connector_info_from_supported_devices_table(struct
+ 		max_device = ATOM_MAX_SUPPORTED_DEVICE_INFO;
+ 
+ 	for (i = 0; i < max_device; i++) {
+-		ATOM_CONNECTOR_INFO_I2C ci =
+-		    supported_devices->info.asConnInfo[i];
++		ATOM_CONNECTOR_INFO_I2C ci;
++
++		if (frev > 1)
++			ci = supported_devices->info_2d1.asConnInfo[i];
++		else
++			ci = supported_devices->info.asConnInfo[i];
+ 
+ 		bios_connectors[i].valid = false;
+ 
 -- 
 2.43.0
 
