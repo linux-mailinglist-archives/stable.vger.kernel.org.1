@@ -1,117 +1,121 @@
-Return-Path: <stable+bounces-40714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F438AE8AA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:51:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8388B8AE8F2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53D1A1C21FFF
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:51:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B564F1C22BF6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA46D136E2C;
-	Tue, 23 Apr 2024 13:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A37113774C;
+	Tue, 23 Apr 2024 14:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="BRfXEkci"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587FE135A5B
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.211.30.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5EC136E16;
+	Tue, 23 Apr 2024 14:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713880304; cv=none; b=STfUBBc/F+PoomnqOCYalyau6zDZnTPulKfvRPjlz5BmGRAOhpRPlYbAkjc/vKC6WpxQtCDYmWtDUNa5QHth9Bh9LKhlwi6bx/dOdK3YCkXN8yhvxSb4C/MN99yvwOpK7X9sGPlEEhZZNAk47Iy95U4wWCYuBWpxRlZbtsnLop4=
+	t=1713880806; cv=none; b=d7xgEuASdrduwmmVkmTj4pFl19TnLxpux7VpaxpNEJK4oDbh2v5Ns5ZMN1ZUdwFShR0IRkdeT8r1bGj7zwxE8ZdnbnL+VV5xkLqQPPW4+TvFJE/s9kxSf+6EyVCynMa5vY9BRoMh5LLEy3NcnzPb/g8Zgz5gAg/kNfJ07u9yn2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713880304; c=relaxed/simple;
-	bh=HqWlP2B43ITaNAmdX2M76lS5NeYbBVl1sCNqC1NeAuQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=HIeR4DDVMyangw+luu5PHWvccDnR4iYNBSy6MfSNt9hQvhJYdUqIvkpSyIkAcJ+Wrm+Cwdp33rfprPjCKbVzlPR+CdOMsdctCxp1vvMJged8mm3GcS++QgT8FQgT3coUHYwyCWbMjknIA0RTYvZLWq/PhvXMbEauJgYr/cZY9aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=none smtp.mailfrom=queasysnail.net; arc=none smtp.client-ip=207.211.30.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=queasysnail.net
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-_0ByQh2pOYmmNHXQusQQfA-1; Tue,
- 23 Apr 2024 09:51:32 -0400
-X-MC-Unique: _0ByQh2pOYmmNHXQusQQfA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8EE2D3C3D0C5;
-	Tue, 23 Apr 2024 13:51:31 +0000 (UTC)
-Received: from hog (unknown [10.39.193.137])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 13B9940C6CC0;
-	Tue, 23 Apr 2024 13:51:29 +0000 (UTC)
-Date: Tue, 23 Apr 2024 15:51:28 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Yossi Kuperman <yossiku@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>
-Subject: Re: [PATCH net v2 2/4] ethernet: Add helper for assigning packet
- type when dest address does not match device address
-Message-ID: <Zie84KZ--UBnBydc@hog>
-References: <20240419213033.400467-1-rrameshbabu@nvidia.com>
- <20240419213033.400467-3-rrameshbabu@nvidia.com>
+	s=arc-20240116; t=1713880806; c=relaxed/simple;
+	bh=PzEyPm3uFppccDqRRPZJsBGGE8BDKJ5eSFXRs0iXUsg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Dtj9TAePa88UMZ19BkqAe9xwZt0cmsrcJDdt6gN6Ogy8JsEq/s5TnbDpLidQaoZqf2iJwx9rWCkaVnXw4Bhk8HOiEwY/nwZn+GGYRLwtZa5RYGVYnvThXge2RC8vkMR8rHEtMcrgT4qs2vym9u1V2SgTwuePYiTZ1LlGi0xvqnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=BRfXEkci; arc=none smtp.client-ip=207.171.184.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1713880805; x=1745416805;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SyeTuxtsDsOQH6Q0op2IkDaUc7NS6Cg+L/o0qZ8cwsI=;
+  b=BRfXEkcihaww6gtGRCMcy5W9z9NWwpa5WpHBCWdoxYHlO4kVrIQujAIQ
+   t97+OMBdWEzTN+OQk24ZaiEo/KF2iDRBLV4CfaGOpI0z2p4khZ26TGLy7
+   WyQz5xZFRO4azGbRJKVhKYPMEOzV+p6BzOdPT6Jc17GxDj8sXqWoD+YlE
+   E=;
+X-IronPort-AV: E=Sophos;i="6.07,222,1708387200"; 
+   d="scan'208";a="414050955"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 13:59:58 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.10.100:20810]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.30.96:2525] with esmtp (Farcaster)
+ id c93c9285-09b3-43d0-9b46-423906eadf23; Tue, 23 Apr 2024 13:59:57 +0000 (UTC)
+X-Farcaster-Flow-ID: c93c9285-09b3-43d0-9b46-423906eadf23
+Received: from EX19D008EUC004.ant.amazon.com (10.252.51.148) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 23 Apr 2024 13:59:57 +0000
+Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
+ EX19D008EUC004.ant.amazon.com (10.252.51.148) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 23 Apr 2024 13:59:56 +0000
+Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com
+ (10.253.65.58) by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP
+ Server id 15.2.1258.28 via Frontend Transport; Tue, 23 Apr 2024 13:59:56
+ +0000
+Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
+	id BF09A20D4A; Tue, 23 Apr 2024 13:59:55 +0000 (UTC)
+From: Hagar Hemdan <hagarhem@amazon.com>
+To:
+CC: Maximilian Heyne <mheyne@amazon.de>, Pratyush Yadav <ptyadav@amazon.de>,
+	Norbert Manthey <nmanthey@amazon.de>, Hagar Hemdan <hagarhem@amazon.com>,
+	<stable@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] efi: libstub: only free priv.runtime_map when allocated
+Date: Tue, 23 Apr 2024 13:59:26 +0000
+Message-ID: <20240423135928.1200-1-hagarhem@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240419213033.400467-3-rrameshbabu@nvidia.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: queasysnail.net
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-2024-04-19, 14:30:17 -0700, Rahul Rameshbabu wrote:
-> Enable reuse of logic in eth_type_trans for determining packet type.
->=20
-> Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-> ---
->  include/linux/etherdevice.h | 24 ++++++++++++++++++++++++
->  net/ethernet/eth.c          | 12 +-----------
->  2 files changed, 25 insertions(+), 11 deletions(-)
->=20
-> diff --git a/include/linux/etherdevice.h b/include/linux/etherdevice.h
-> index 224645f17c33..f5868ac69dec 100644
-> --- a/include/linux/etherdevice.h
-> +++ b/include/linux/etherdevice.h
-> @@ -607,6 +607,30 @@ static inline void eth_hw_addr_gen(struct net_device=
- *dev, const u8 *base_addr,
->  =09eth_hw_addr_set(dev, addr);
->  }
-> =20
-> +/**
-> + * eth_skb_pkt_type - Assign packet type if destination address does not=
- match
-> + * @skb: Assigned a packet type if address does not match @dev address
-> + * @dev: Network device used to compare packet address against
-> + *
-> + * If the destination MAC address of the packet does not match the netwo=
-rk
-> + * device address, assign an appropriate packet type.
-> + */
-> +static inline void eth_skb_pkt_type(struct sk_buff *skb, struct net_devi=
-ce *dev)
+priv.runtime_map is only allocated when efi_novamap is not set.
+Otherwise, it is an uninitialized value.
+In the error path, it is freed unconditionally.
+Avoid passing an uninitialized value to free_pool.
+Free priv.runtime_map only when it was allocated.
 
-Could you make dev const? Otherwise the series looks good to me.
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-Thanks.
+Fixes: f80d26043af9 ("efi: libstub: avoid efi_get_memory_map() for allocating the virt map")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+---
+v2: added Cc stable tag to the commit message as requested by kernel
+test robot.
+---
+ drivers/firmware/efi/libstub/fdt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---=20
-Sabrina
+diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
+index 70e9789ff9de..6a337f1f8787 100644
+--- a/drivers/firmware/efi/libstub/fdt.c
++++ b/drivers/firmware/efi/libstub/fdt.c
+@@ -335,8 +335,8 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
+ 
+ fail:
+ 	efi_free(fdt_size, fdt_addr);
+-
+-	efi_bs_call(free_pool, priv.runtime_map);
++	if (!efi_novamap)
++		efi_bs_call(free_pool, priv.runtime_map);
+ 
+ 	return EFI_LOAD_ERROR;
+ }
+-- 
+2.40.1
 
 
