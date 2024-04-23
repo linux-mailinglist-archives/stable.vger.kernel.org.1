@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72628AF9C0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A29F58AFA54
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6114028ABC1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5BB81C22FB9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A881448F4;
-	Tue, 23 Apr 2024 21:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883DF149C41;
+	Tue, 23 Apr 2024 21:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rtncezi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCwAaOG/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C6F14533C;
-	Tue, 23 Apr 2024 21:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C94146A94;
+	Tue, 23 Apr 2024 21:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908579; cv=none; b=oHmkxIPAHCeu1tESiAS2T9vZkJJyTcAVE70Fuia53LCBQVCMazxuB1lXUzI2Q1uj18coFKFYhTXy0zCdgQy112gjHqKr2QAJvqrr+rEsbN66X7hYwYXDexq8INl4JZ9CbFyZdRQPswOe4F5yYRWKLFSkCuPyGxXO8pMA2Dg0P20=
+	t=1713908678; cv=none; b=BguiVanjoauNAtRlrt4nIeyW8RRDqud7q+4zr3XvmJH+mtNBl6/d+F/rBCLkz6o4/gjzoLsB8sRu7QWg5idcCos9eTEsJAujs4k9jYBXURkRvzteOoJ5xRHJApXOtRz/44yQPqXSs1JKkVGWXIYZUid7A0QUIRYA0IwNUZz86hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908579; c=relaxed/simple;
-	bh=uq7Jb30LJHbtl8fzz/1kVD38e/xjU98Y28YrTK14Oo8=;
+	s=arc-20240116; t=1713908678; c=relaxed/simple;
+	bh=Kh5ykcHSFA7dXCNS2c7niqhL1ibVubiqepHAHWG2XQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4rGIkNU+DmqMgMaYKWAyx6M1KUBGrFVkW31AQgedgWyt1OCVYxr5537ytKSGlL/bqw4cbPcLEdNUAxkW0oc+n3FNUM7w9ulGoIc9cpk0LIr9evkHP4O1qcVdjFOSSMtYYA4O9x2hdHZhxHrjeOImC5Z6NMf4e5OgJ6tFXUryx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rtncezi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D62C32782;
-	Tue, 23 Apr 2024 21:42:58 +0000 (UTC)
+	 MIME-Version; b=eNKCtBmWAHruvFpiVCHb3l+4AOHuOQR6RIMNp9tWKXDb/zTNmBTmOxkfYPjHpRcKPuZjpeHISHyN0ip7jfVmu54bQ3JiiDMBtPhISe+i8Gj2QgfiY30mHCHaw1x0qE5TKQiuKhxLvxT/Ligyl9poEfne1nn3NCpJW94bzIoMpeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCwAaOG/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117AAC116B1;
+	Tue, 23 Apr 2024 21:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908578;
-	bh=uq7Jb30LJHbtl8fzz/1kVD38e/xjU98Y28YrTK14Oo8=;
+	s=korg; t=1713908678;
+	bh=Kh5ykcHSFA7dXCNS2c7niqhL1ibVubiqepHAHWG2XQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2rtncezi8z57xKkDlOLrTwDQkmqvcvLa/vZHQu9eXZCb0bpRiacTlDFyeS3XutWVs
-	 FCnxMAwTZ+YjgonpFvIT/C7lWsT+BHg3qEbYxm9yxA+NRxnVz/TtQBgJVsMpY/7lTZ
-	 sKrjL59NP6h0q43siv6TvtPqNCDT/QIdFaDHVfyw=
+	b=pCwAaOG/n5foS1VjGtbPtbksz8mrL6wsnE1zMX2bInTcUwfWQEFt/fwm+BlEhGQg7
+	 A8WYkEiH/2wBB7aU/4kLYdABskdAzP9WPjA/UDVirxJmUApZsA7oLRcSd9jkspCb5X
+	 nULqgPmpf4YuhcLsuo7+LM3fsTK9sobY3jU1ML7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Xuan <william.xuanziyang@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Likun Gao <Likun.Gao@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/158] netfilter: nf_tables: Fix potential data-race in __nft_expr_type_get()
+Subject: [PATCH 6.1 002/141] drm/amdgpu: fix incorrect active rb bitmap for gfx11
 Date: Tue, 23 Apr 2024 14:37:50 -0700
-Message-ID: <20240423213856.821763538@linuxfoundation.org>
+Message-ID: <20240423213853.435557465@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Hawking Zhang <Hawking.Zhang@amd.com>
 
-[ Upstream commit f969eb84ce482331a991079ab7a5c4dc3b7f89bf ]
+[ Upstream commit f9c35f4fffc6cb5bbb23f546f48c045aef012518 ]
 
-nft_unregister_expr() can concurrent with __nft_expr_type_get(),
-and there is not any protection when iterate over nf_tables_expressions
-list in __nft_expr_type_get(). Therefore, there is potential data-race
-of nf_tables_expressions list entry.
+GFX v11 changes RB_BACKEND_DISABLE related registers
+from per SA to global ones. The approach to query active
+rb bitmap needs to be changed accordingly. Query per
+SE setting returns wrong active RB bitmap especially
+in the case when some of SA are disabled. With the new
+approach, driver will generate the active rb bitmap
+based on active SA bitmap and global active RB bitmap.
 
-Use list_for_each_entry_rcu() to iterate over nf_tables_expressions
-list in __nft_expr_type_get(), and use rcu_read_lock() in the caller
-nft_expr_type_get() to protect the entire type query process.
-
-Fixes: ef1f7df9170d ("netfilter: nf_tables: expression ops overloading")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Likun Gao <Likun.Gao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: bbca7f414ae9 ("drm/amdgpu: fix incorrect number of active RBs for gfx11")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 78 +++++++++++++++++---------
+ 1 file changed, 52 insertions(+), 26 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 2a4649df8f086..fe6ee16e2dbf4 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3047,7 +3047,7 @@ static const struct nft_expr_type *__nft_expr_type_get(u8 family,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 66a6f7a37ebcf..ec40f88da00c3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -1531,44 +1531,70 @@ static void gfx_v11_0_select_se_sh(struct amdgpu_device *adev, u32 se_num,
+ 	WREG32_SOC15(GC, 0, regGRBM_GFX_INDEX, data);
+ }
+ 
+-static u32 gfx_v11_0_get_rb_active_bitmap(struct amdgpu_device *adev)
++static u32 gfx_v11_0_get_sa_active_bitmap(struct amdgpu_device *adev)
  {
- 	const struct nft_expr_type *type, *candidate = NULL;
+-	u32 data, mask;
++	u32 gc_disabled_sa_mask, gc_user_disabled_sa_mask, sa_mask;
++
++	gc_disabled_sa_mask = RREG32_SOC15(GC, 0, regCC_GC_SA_UNIT_DISABLE);
++	gc_disabled_sa_mask = REG_GET_FIELD(gc_disabled_sa_mask,
++					   CC_GC_SA_UNIT_DISABLE,
++					   SA_DISABLE);
++	gc_user_disabled_sa_mask = RREG32_SOC15(GC, 0, regGC_USER_SA_UNIT_DISABLE);
++	gc_user_disabled_sa_mask = REG_GET_FIELD(gc_user_disabled_sa_mask,
++						 GC_USER_SA_UNIT_DISABLE,
++						 SA_DISABLE);
++	sa_mask = amdgpu_gfx_create_bitmask(adev->gfx.config.max_sh_per_se *
++					    adev->gfx.config.max_shader_engines);
  
--	list_for_each_entry(type, &nf_tables_expressions, list) {
-+	list_for_each_entry_rcu(type, &nf_tables_expressions, list) {
- 		if (!nla_strcmp(nla, type->name)) {
- 			if (!type->family && !candidate)
- 				candidate = type;
-@@ -3079,9 +3079,13 @@ static const struct nft_expr_type *nft_expr_type_get(struct net *net,
- 	if (nla == NULL)
- 		return ERR_PTR(-EINVAL);
+-	data = RREG32_SOC15(GC, 0, regCC_RB_BACKEND_DISABLE);
+-	data |= RREG32_SOC15(GC, 0, regGC_USER_RB_BACKEND_DISABLE);
++	return sa_mask & (~(gc_disabled_sa_mask | gc_user_disabled_sa_mask));
++}
  
-+	rcu_read_lock();
- 	type = __nft_expr_type_get(family, nla);
--	if (type != NULL && try_module_get(type->owner))
-+	if (type != NULL && try_module_get(type->owner)) {
-+		rcu_read_unlock();
- 		return type;
-+	}
-+	rcu_read_unlock();
+-	data &= CC_RB_BACKEND_DISABLE__BACKEND_DISABLE_MASK;
+-	data >>= GC_USER_RB_BACKEND_DISABLE__BACKEND_DISABLE__SHIFT;
++static u32 gfx_v11_0_get_rb_active_bitmap(struct amdgpu_device *adev)
++{
++	u32 gc_disabled_rb_mask, gc_user_disabled_rb_mask;
++	u32 rb_mask;
  
- 	lockdep_nfnl_nft_mutex_not_held();
- #ifdef CONFIG_MODULES
+-	mask = amdgpu_gfx_create_bitmask(adev->gfx.config.max_backends_per_se /
+-					 adev->gfx.config.max_sh_per_se);
++	gc_disabled_rb_mask = RREG32_SOC15(GC, 0, regCC_RB_BACKEND_DISABLE);
++	gc_disabled_rb_mask = REG_GET_FIELD(gc_disabled_rb_mask,
++					    CC_RB_BACKEND_DISABLE,
++					    BACKEND_DISABLE);
++	gc_user_disabled_rb_mask = RREG32_SOC15(GC, 0, regGC_USER_RB_BACKEND_DISABLE);
++	gc_user_disabled_rb_mask = REG_GET_FIELD(gc_user_disabled_rb_mask,
++						 GC_USER_RB_BACKEND_DISABLE,
++						 BACKEND_DISABLE);
++	rb_mask = amdgpu_gfx_create_bitmask(adev->gfx.config.max_backends_per_se *
++					    adev->gfx.config.max_shader_engines);
+ 
+-	return (~data) & mask;
++	return rb_mask & (~(gc_disabled_rb_mask | gc_user_disabled_rb_mask));
+ }
+ 
+ static void gfx_v11_0_setup_rb(struct amdgpu_device *adev)
+ {
+-	int i, j;
+-	u32 data;
+-	u32 active_rbs = 0;
+-	u32 rb_bitmap_width_per_sh = adev->gfx.config.max_backends_per_se /
+-					adev->gfx.config.max_sh_per_se;
++	u32 rb_bitmap_width_per_sa;
++	u32 max_sa;
++	u32 active_sa_bitmap;
++	u32 global_active_rb_bitmap;
++	u32 active_rb_bitmap = 0;
++	u32 i;
+ 
+-	mutex_lock(&adev->grbm_idx_mutex);
+-	for (i = 0; i < adev->gfx.config.max_shader_engines; i++) {
+-		for (j = 0; j < adev->gfx.config.max_sh_per_se; j++) {
+-			gfx_v11_0_select_se_sh(adev, i, j, 0xffffffff);
+-			data = gfx_v11_0_get_rb_active_bitmap(adev);
+-			active_rbs |= data << ((i * adev->gfx.config.max_sh_per_se + j) *
+-					       rb_bitmap_width_per_sh);
+-		}
++	/* query sa bitmap from SA_UNIT_DISABLE registers */
++	active_sa_bitmap = gfx_v11_0_get_sa_active_bitmap(adev);
++	/* query rb bitmap from RB_BACKEND_DISABLE registers */
++	global_active_rb_bitmap = gfx_v11_0_get_rb_active_bitmap(adev);
++
++	/* generate active rb bitmap according to active sa bitmap */
++	max_sa = adev->gfx.config.max_shader_engines *
++		 adev->gfx.config.max_sh_per_se;
++	rb_bitmap_width_per_sa = adev->gfx.config.max_backends_per_se /
++				 adev->gfx.config.max_sh_per_se;
++	for (i = 0; i < max_sa; i++) {
++		if (active_sa_bitmap & (1 << i))
++			active_rb_bitmap |= (0x3 << (i * rb_bitmap_width_per_sa));
+ 	}
+-	gfx_v11_0_select_se_sh(adev, 0xffffffff, 0xffffffff, 0xffffffff);
+-	mutex_unlock(&adev->grbm_idx_mutex);
+ 
+-	adev->gfx.config.backend_enable_mask = active_rbs;
+-	adev->gfx.config.num_rbs = hweight32(active_rbs);
++	active_rb_bitmap |= global_active_rb_bitmap;
++	adev->gfx.config.backend_enable_mask = active_rb_bitmap;
++	adev->gfx.config.num_rbs = hweight32(active_rb_bitmap);
+ }
+ 
+ #define DEFAULT_SH_MEM_BASES	(0x6000)
 -- 
 2.43.0
 
