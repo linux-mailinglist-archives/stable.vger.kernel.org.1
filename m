@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CA68AFA82
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD318AFA86
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18E7BB2B5C3
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD8191C21EC4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB662145B39;
-	Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99162149E01;
+	Tue, 23 Apr 2024 21:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVf0qocp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrCun+Ik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A13A14389F;
-	Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57939143C58;
+	Tue, 23 Apr 2024 21:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908647; cv=none; b=avy5/MB4HplWMfzhzuefPEvBAJ9pGm4PfjIJwHkg5ziqpP518GnlweiSSskCw3x5y0bIEqJVtf1IPjgnNKATFpF0i2vbjkXPpGRTpQi503QkMLGoI5adikRJjGk2CS50o5T4cpcykDyo2QDDPV5cp2sMTo7EXAX+In1lcFvrOu0=
+	t=1713908716; cv=none; b=D9tRl+zp3NevfaVVcgVn04UCQoaa+9B0Vpl7aNAPhP1IoQAc3yvRfybwchq+NG+1eNb+DkKIPJrdSDosE4K2gc8jX2GIaW5SXIJxlu+sWLHn4WZqOv9bJgc+U0RV5RSBaE+J3Xgsvxq4K2M4n+BveOBb3JXzaLDz9Ep++k2zijQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908647; c=relaxed/simple;
-	bh=nVcmpjzNwg6u8suOQfCL0qpT8Vi5DPs3Gej+XSJ7FRE=;
+	s=arc-20240116; t=1713908716; c=relaxed/simple;
+	bh=eEbGCkolZe0S3nYOWaa4WKpgUDeR/1ZBk2TQW8gT8yU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nUojd82PUfUaqg2yJF/R7yUJZVaGvGWcOSV9pKGcgstWkjyoBgdLO3+Y0TddOXA0m9UpECcSZK/Y80HxGr+jXxrziav4Zk5vuGAQ47NPcRRbSA1egicYNGIiA8FLSDWzK0FKCyXY45Gj6Q2K6XUDblP4E5ndQQYd/YpJyx8Xpq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVf0qocp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA98C32783;
-	Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
+	 MIME-Version; b=NBckdB0RR4SkSaIYhC0R4qaekFuAG+VYyG0X+jIx2bl9f1j3Y9Z/pJReT6pHh55crI6Co3CjM3Lfl96vTvSin38qlT4q7499hPqKckhDD+PH9vjeFRa5XXovOvzaHXQI5i1ltI866zl/PQWTGrcPd3Nc1LGfi5rQKDPQL8P8D2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrCun+Ik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE0CC116B1;
+	Tue, 23 Apr 2024 21:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908647;
-	bh=nVcmpjzNwg6u8suOQfCL0qpT8Vi5DPs3Gej+XSJ7FRE=;
+	s=korg; t=1713908716;
+	bh=eEbGCkolZe0S3nYOWaa4WKpgUDeR/1ZBk2TQW8gT8yU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVf0qocpP5bpeSB09ISqYEjI755CYUTpLYJF7w9/LO51zcNZoa81iOAib1H7K5VXt
-	 m0aRXPIb7QAI506Cih2BslQ7zxeTzf6OfO1lW33nbT814r+4aiysGUkEIrQOgGP1ZP
-	 veS2Bo++fjReDhY4cY8UibKAw8FsmNuV/RMkb8xg=
+	b=UrCun+IkI4NzRO/G4OL0V0xoMgbBKFNkvCfu7Fg6OLi8s8enXQTf8oe+CN53BFPS1
+	 tRRE6XQFnI6RWD4ExBGN/dhSEBD9TPlWMnW1ZcK9fnXn1k6ft83/S2uXkXZ7aMhKyU
+	 Vx6Tj8Fn/VKR+Ru8tpbSiA1krMzWiAy0IBNO7wL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gil Fine <gil.fine@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 106/158] thunderbolt: Avoid notify PM core about runtime PM resume
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 075/141] ALSA: scarlett2: Add Focusrite Clarett+ 2Pre and 4Pre support
 Date: Tue, 23 Apr 2024 14:39:03 -0700
-Message-ID: <20240423213859.199989220@linuxfoundation.org>
+Message-ID: <20240423213855.640564092@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,159 +62,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Fine <gil.fine@linux.intel.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-commit dcd12acaf384c30437fa5a9a1f71df06fc9835fd upstream.
+[ Upstream commit b61a3acada0031e7a4922d1340b4296ab95c260b ]
 
-Currently we notify PM core about occurred wakes after any resume. This
-is not actually needed after resume from runtime suspend. Hence, notify
-PM core about occurred wakes only after resume from system sleep. Also,
-if the wake occurred in USB4 router upstream port, we don't notify the
-PM core about it since it is not actually needed and can cause
-unexpected autowake (e.g. if /sys/power/wakeup_count is used).
+The Focusrite Clarett+ series uses the same protocol as the Scarlett
+Gen 2 and Gen 3 series. This patch adds support for the Clarett+ 2Pre
+and Clarett+ 4Pre similarly to the existing 8Pre support by adding
+appropriate entries to the scarlett2 driver.
 
-While there add the missing kernel-doc for tb_switch_resume().
+The Clarett 2Pre USB and 4Pre USB presumably use the same protocol as
+well, so support for them can easily be added if someone can test.
 
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://lore.kernel.org/r/ZRL7qjC3tYQllT3H@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/switch.c |   27 +++++++++++++++++++++++++--
- drivers/thunderbolt/tb.c     |    4 ++--
- drivers/thunderbolt/tb.h     |    3 ++-
- drivers/thunderbolt/usb4.c   |   13 +++++++------
- 4 files changed, 36 insertions(+), 11 deletions(-)
+ sound/usb/mixer_quirks.c        |  2 +
+ sound/usb/mixer_scarlett_gen2.c | 97 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 98 insertions(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -3208,7 +3208,26 @@ static int tb_switch_set_wake(struct tb_
- 	return tb_lc_set_wake(sw, flags);
- }
- 
--int tb_switch_resume(struct tb_switch *sw)
-+static void tb_switch_check_wakes(struct tb_switch *sw)
-+{
-+	if (device_may_wakeup(&sw->dev)) {
-+		if (tb_switch_is_usb4(sw))
-+			usb4_switch_check_wakes(sw);
-+	}
-+}
-+
-+/**
-+ * tb_switch_resume() - Resume a switch after sleep
-+ * @sw: Switch to resume
-+ * @runtime: Is this resume from runtime suspend or system sleep
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index b122d7aedb443..3721d59a56809 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -3448,6 +3448,8 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
+ 	case USB_ID(0x1235, 0x8214): /* Focusrite Scarlett 18i8 3rd Gen */
+ 	case USB_ID(0x1235, 0x8215): /* Focusrite Scarlett 18i20 3rd Gen */
+ 	case USB_ID(0x1235, 0x8208): /* Focusrite Clarett 8Pre USB */
++	case USB_ID(0x1235, 0x820a): /* Focusrite Clarett+ 2Pre */
++	case USB_ID(0x1235, 0x820b): /* Focusrite Clarett+ 4Pre */
+ 	case USB_ID(0x1235, 0x820c): /* Focusrite Clarett+ 8Pre */
+ 		err = snd_scarlett_gen2_init(mixer);
+ 		break;
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index 328a593aceaa9..e6088fdafe7a3 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -6,7 +6,7 @@
+  *   - 6i6/18i8/18i20 Gen 2
+  *   - Solo/2i2/4i4/8i6/18i8/18i20 Gen 3
+  *   - Clarett 8Pre USB
+- *   - Clarett+ 8Pre
++ *   - Clarett+ 2Pre/4Pre/8Pre
+  *
+  *   Copyright (c) 2018-2023 by Geoffrey D. Bennett <g at b4.vu>
+  *   Copyright (c) 2020-2021 by Vladimir Sadovnikov <sadko4u@gmail.com>
+@@ -60,6 +60,10 @@
+  * Support for Clarett 8Pre USB added in Sep 2023 (thanks to Philippe
+  * Perrot for confirmation).
+  *
++ * Support for Clarett+ 4Pre and 2Pre added in Sep 2023 (thanks to
++ * Gregory Rozzo for donating a 4Pre, and David Sherwood and Patrice
++ * Peterson for usbmon output).
 + *
-+ * Resumes and re-enumerates router (and all its children), if still plugged
-+ * after suspend. Don't enumerate device router whose UID was changed during
-+ * suspend. If this is resume from system sleep, notifies PM core about the
-+ * wakes occurred during suspend. Disables all wakes, except USB4 wake of
-+ * upstream port for USB4 routers that shall be always enabled.
-+ */
-+int tb_switch_resume(struct tb_switch *sw, bool runtime)
- {
- 	struct tb_port *port;
- 	int err;
-@@ -3257,6 +3276,9 @@ int tb_switch_resume(struct tb_switch *s
- 	if (err)
- 		return err;
+  * This ALSA mixer gives access to (model-dependent):
+  *  - input, output, mixer-matrix muxes
+  *  - mixer-matrix gain stages
+@@ -832,6 +836,95 @@ static const struct scarlett2_device_info s18i20_gen3_info = {
+ 	} },
+ };
  
-+	if (!runtime)
-+		tb_switch_check_wakes(sw);
++static const struct scarlett2_device_info clarett_2pre_info = {
++	.config_set = SCARLETT2_CONFIG_SET_CLARETT,
++	.line_out_hw_vol = 1,
++	.level_input_count = 2,
++	.air_input_count = 2,
 +
- 	/* Disable wakes */
- 	tb_switch_set_wake(sw, 0);
++	.line_out_descrs = {
++		"Monitor L",
++		"Monitor R",
++		"Headphones L",
++		"Headphones R",
++	},
++
++	.port_count = {
++		[SCARLETT2_PORT_TYPE_NONE]     = {  1,  0 },
++		[SCARLETT2_PORT_TYPE_ANALOGUE] = {  2,  4 },
++		[SCARLETT2_PORT_TYPE_SPDIF]    = {  2,  0 },
++		[SCARLETT2_PORT_TYPE_ADAT]     = {  8,  0 },
++		[SCARLETT2_PORT_TYPE_MIX]      = { 10, 18 },
++		[SCARLETT2_PORT_TYPE_PCM]      = {  4, 12 },
++	},
++
++	.mux_assignment = { {
++		{ SCARLETT2_PORT_TYPE_PCM,      0, 12 },
++		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0,  4 },
++		{ SCARLETT2_PORT_TYPE_MIX,      0, 18 },
++		{ SCARLETT2_PORT_TYPE_NONE,     0,  8 },
++		{ 0,                            0,  0 },
++	}, {
++		{ SCARLETT2_PORT_TYPE_PCM,      0,  8 },
++		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0,  4 },
++		{ SCARLETT2_PORT_TYPE_MIX,      0, 18 },
++		{ SCARLETT2_PORT_TYPE_NONE,     0,  8 },
++		{ 0,                            0,  0 },
++	}, {
++		{ SCARLETT2_PORT_TYPE_PCM,      0,  2 },
++		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0,  4 },
++		{ SCARLETT2_PORT_TYPE_NONE,     0, 26 },
++		{ 0,                            0,  0 },
++	} },
++};
++
++static const struct scarlett2_device_info clarett_4pre_info = {
++	.config_set = SCARLETT2_CONFIG_SET_CLARETT,
++	.line_out_hw_vol = 1,
++	.level_input_count = 2,
++	.air_input_count = 4,
++
++	.line_out_descrs = {
++		"Monitor L",
++		"Monitor R",
++		"Headphones 1 L",
++		"Headphones 1 R",
++		"Headphones 2 L",
++		"Headphones 2 R",
++	},
++
++	.port_count = {
++		[SCARLETT2_PORT_TYPE_NONE]     = {  1,  0 },
++		[SCARLETT2_PORT_TYPE_ANALOGUE] = {  8,  6 },
++		[SCARLETT2_PORT_TYPE_SPDIF]    = {  2,  2 },
++		[SCARLETT2_PORT_TYPE_ADAT]     = {  8,  0 },
++		[SCARLETT2_PORT_TYPE_MIX]      = { 10, 18 },
++		[SCARLETT2_PORT_TYPE_PCM]      = {  8, 18 },
++	},
++
++	.mux_assignment = { {
++		{ SCARLETT2_PORT_TYPE_PCM,      0, 18 },
++		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0,  6 },
++		{ SCARLETT2_PORT_TYPE_SPDIF,    0,  2 },
++		{ SCARLETT2_PORT_TYPE_MIX,      0, 18 },
++		{ SCARLETT2_PORT_TYPE_NONE,     0,  8 },
++		{ 0,                            0,  0 },
++	}, {
++		{ SCARLETT2_PORT_TYPE_PCM,      0, 14 },
++		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0,  6 },
++		{ SCARLETT2_PORT_TYPE_SPDIF,    0,  2 },
++		{ SCARLETT2_PORT_TYPE_MIX,      0, 18 },
++		{ SCARLETT2_PORT_TYPE_NONE,     0,  8 },
++		{ 0,                            0,  0 },
++	}, {
++		{ SCARLETT2_PORT_TYPE_PCM,      0, 12 },
++		{ SCARLETT2_PORT_TYPE_ANALOGUE, 0,  6 },
++		{ SCARLETT2_PORT_TYPE_SPDIF,    0,  2 },
++		{ SCARLETT2_PORT_TYPE_NONE,     0, 24 },
++		{ 0,                            0,  0 },
++	} },
++};
++
+ static const struct scarlett2_device_info clarett_8pre_info = {
+ 	.config_set = SCARLETT2_CONFIG_SET_CLARETT,
+ 	.line_out_hw_vol = 1,
+@@ -907,6 +1000,8 @@ static const struct scarlett2_device_entry scarlett2_devices[] = {
  
-@@ -3286,7 +3308,8 @@ int tb_switch_resume(struct tb_switch *s
- 			 */
- 			if (tb_port_unlock(port))
- 				tb_port_warn(port, "failed to unlock port\n");
--			if (port->remote && tb_switch_resume(port->remote->sw)) {
-+			if (port->remote &&
-+			    tb_switch_resume(port->remote->sw, runtime)) {
- 				tb_port_warn(port,
- 					     "lost during suspend, disconnecting\n");
- 				tb_sw_set_unplugged(port->remote->sw);
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -2262,7 +2262,7 @@ static int tb_resume_noirq(struct tb *tb
- 	/* remove any pci devices the firmware might have setup */
- 	tb_switch_reset(tb->root_switch);
+ 	/* Supported Clarett USB/Clarett+ devices */
+ 	{ USB_ID(0x1235, 0x8208), &clarett_8pre_info, "Clarett USB" },
++	{ USB_ID(0x1235, 0x820a), &clarett_2pre_info, "Clarett+" },
++	{ USB_ID(0x1235, 0x820b), &clarett_4pre_info, "Clarett+" },
+ 	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info, "Clarett+" },
  
--	tb_switch_resume(tb->root_switch);
-+	tb_switch_resume(tb->root_switch, false);
- 	tb_free_invalid_tunnels(tb);
- 	tb_free_unplugged_children(tb->root_switch);
- 	tb_restore_children(tb->root_switch);
-@@ -2388,7 +2388,7 @@ static int tb_runtime_resume(struct tb *
- 	struct tb_tunnel *tunnel, *n;
- 
- 	mutex_lock(&tb->lock);
--	tb_switch_resume(tb->root_switch);
-+	tb_switch_resume(tb->root_switch, true);
- 	tb_free_invalid_tunnels(tb);
- 	tb_restore_children(tb->root_switch);
- 	list_for_each_entry_safe(tunnel, n, &tcm->tunnel_list, list)
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -802,7 +802,7 @@ int tb_switch_configuration_valid(struct
- int tb_switch_add(struct tb_switch *sw);
- void tb_switch_remove(struct tb_switch *sw);
- void tb_switch_suspend(struct tb_switch *sw, bool runtime);
--int tb_switch_resume(struct tb_switch *sw);
-+int tb_switch_resume(struct tb_switch *sw, bool runtime);
- int tb_switch_reset(struct tb_switch *sw);
- int tb_switch_wait_for_bit(struct tb_switch *sw, u32 offset, u32 bit,
- 			   u32 value, int timeout_msec);
-@@ -1224,6 +1224,7 @@ static inline bool tb_switch_is_usb4(con
- 	return usb4_switch_version(sw) > 0;
- }
- 
-+void usb4_switch_check_wakes(struct tb_switch *sw);
- int usb4_switch_setup(struct tb_switch *sw);
- int usb4_switch_configuration_valid(struct tb_switch *sw);
- int usb4_switch_read_uid(struct tb_switch *sw, u64 *uid);
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -155,7 +155,13 @@ static inline int usb4_switch_op_data(st
- 				tx_dwords, rx_data, rx_dwords);
- }
- 
--static void usb4_switch_check_wakes(struct tb_switch *sw)
-+/**
-+ * usb4_switch_check_wakes() - Check for wakes and notify PM core about them
-+ * @sw: Router whose wakes to check
-+ *
-+ * Checks wakes occurred during suspend and notify the PM core about them.
-+ */
-+void usb4_switch_check_wakes(struct tb_switch *sw)
- {
- 	bool wakeup_usb4 = false;
- 	struct usb4_port *usb4;
-@@ -163,9 +169,6 @@ static void usb4_switch_check_wakes(stru
- 	bool wakeup = false;
- 	u32 val;
- 
--	if (!device_may_wakeup(&sw->dev))
--		return;
--
- 	if (tb_route(sw)) {
- 		if (tb_sw_read(sw, &val, TB_CFG_SWITCH, ROUTER_CS_6, 1))
- 			return;
-@@ -244,8 +247,6 @@ int usb4_switch_setup(struct tb_switch *
- 	u32 val = 0;
- 	int ret;
- 
--	usb4_switch_check_wakes(sw);
--
- 	if (!tb_route(sw))
- 		return 0;
- 
+ 	/* End of list */
+-- 
+2.43.0
+
 
 
 
