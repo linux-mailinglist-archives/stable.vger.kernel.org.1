@@ -1,116 +1,157 @@
-Return-Path: <stable+bounces-40566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5F98AE244
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:34:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DB48AE261
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5DA9283A75
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 10:34:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91F7C283EE1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 10:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B6350279;
-	Tue, 23 Apr 2024 10:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABF46311D;
+	Tue, 23 Apr 2024 10:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="pjmsJBd0"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q82WsPe0"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EEF37147;
-	Tue, 23 Apr 2024 10:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DD7219FD
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 10:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713868492; cv=none; b=PGhR5A+bkFKXZeTMoJOSNGQZNq99Dol0varl19SKJVZGl0LFDhT/KXgnvH1jltbKM/6XYQ+SRQqkOTIBIwgweFBmOdoZLBpXK/qq/lSYuo2/R4htsUgDVzbSgfdhe+nJLx3J6VTBPrczgJnig4yl8OE7u/dRnzKwSJ3QS3qqsRM=
+	t=1713868642; cv=none; b=fddeAroq9796pEDrQ9jgq5+TfU0sH7ecHU9PqafGD+ewwpdKcJl1g2ZCdQmH+3SVgHMUXHIw5nkLY8CttcelQne34uyuXMjGhPOQEO1E7c0m+fwio08DuvblKUxKVE0BdUh0YfypMnHM60uEbKxkuCxtyiMk6Mbf7Nk5Dh8nFb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713868492; c=relaxed/simple;
-	bh=KwbPcjrXsaN9eBiRQy+fJ9TI6jMFZegKAgDYMpZNJdM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=l18kxxCFT/BxRPW/zJyLh+BketoqJsNCycat3dCAYSgEJBdcP7HLMh+A+yLIe6u7/o1znvc9Ce/2gEg4p8IVLMRc5B8GZTtFRiyvrvatAOMkCW8s7/OXJbGoPERiPB21iGtZneCALF2DBzXshdG5Es9F5/vFh4SMIpJ0LsjFjG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=pjmsJBd0; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1713868488;
-	bh=KwbPcjrXsaN9eBiRQy+fJ9TI6jMFZegKAgDYMpZNJdM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=pjmsJBd0v+P59KM67nzYcRDzVTYZlnVLnM4dpCMlJFmnik6IGbQMQ3WhUmQeVH2dN
-	 7ZcFK1cb8ULPCZF1S20yh+Leutr4nyumJji4ATkCq8dH/15QHRDrMOiTI1GexJM/pp
-	 u5kHBpOlp9ERu9vwGlcifI+DF+e8mFRz68hEecME=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 23 Apr 2024 12:34:25 +0200
-Subject: [PATCH] admin-guide/hw-vuln/core-scheduling: fix return type of
- PR_SCHED_CORE_GET
+	s=arc-20240116; t=1713868642; c=relaxed/simple;
+	bh=GwRtUr6gtqGKN2XBp8si19LOYfDcQhuRzWg2az31ZlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EUCns/qSCBnD65JXuoJtnQOB9yG82vkYTTEzb0EQtciIOBc3kzbGi4pvbpcuVIYX/xq2B+BfspxbhQI3yJD06uheUi3A4wKl80M+jmgUOtPRFrVpbXQmLrzJVncyGwWV4110pMv9us/tf6pTEA+zCk8CmTpBblPYSU+QbHhlwes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q82WsPe0; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-41a72f3a20dso13249845e9.0
+        for <stable@vger.kernel.org>; Tue, 23 Apr 2024 03:37:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713868638; x=1714473438; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=f1GtuAnGuJIGmi4Nj3I/YO3XIATvrNjSsCDRrmOKdN4=;
+        b=q82WsPe01V5/Sl0RcDNMdzwE63weQp4khO33A0ROpQqMUBM8uS+SvQhl4wT6oprLF3
+         m42okMIe46Tsj4+G1DSQ9wAZt7ClxlDToC9Q4tcmPblXLexaKRqmbkZkxWGgmyVNjKLw
+         WTU7TvVOAuE+++raMn4KxwkVaN3SnH3cTKhIUccpLe38KJZbZzjIyQM/uWRkw3PsXMAn
+         tylol34UF6aBDzQzroH0XQnqO3hyJv+ujhix1+Dr/8t6tvZyOGTdRP7duyN8MlPxgByZ
+         UJW2ZRTsX9oCns1U7yqR1uKXkLck/BAjt6a9u0VEYUSiBuZMj/lewP/TDMlfUTnQLsK6
+         mjlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713868638; x=1714473438;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f1GtuAnGuJIGmi4Nj3I/YO3XIATvrNjSsCDRrmOKdN4=;
+        b=nNICrXvX6H/ob5dvKdrAO+njTGhnSgACfE41f+pFVBpQZoCY9/oVx6j2Dt/u9GCCGX
+         FkBcjk6pHNaInHUbmjcA9kePDT1r0oZmHEbswHSVK8o0PhJeQ+fsifaG1szWbedCAYfJ
+         3yKMId+Z3fgWuXiJU2iUzfzfJIYeoWov+ZAcn/Sy0pwP95hNrfvZq3CvVbPhc7mikVMS
+         rMJW+59GJgIqdWGCcw6m2/UNkTeqgQeWR5j1m6l1UM7+QC8OY70FisjWdeXIsqjkLZlV
+         xnTgEjYGtRGZMfNVi1khWpqbsGDdbCMicr+NtbsAquaP8SaS+dnwDzYSGeD8fEkr6uH2
+         S+Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEcxMKg2PRp+xsJtRHgquFMcXhT4Ks0wGAt169tbL3Dw3abQb64fqrNkryQQhysP0yqLAJD9UH1A/R6AJcErjunJmrEXiE
+X-Gm-Message-State: AOJu0Yx66V2awPRJyp2IbH4/bui/GEsGatCv8lxMER3ALwMbHIZX9SCP
+	rmt4v9jAWhEIIGtcpEGpNPCfsUS2+3SjbWgxrhrP6BP+/buy33qjhCmj/T+LiVs=
+X-Google-Smtp-Source: AGHT+IEH4u6S6D3wRTzN4LoL8l6ZdRFVF5WlLyRo5GBP3Ye47cGr849oyji7omkAYtv3mN9qFEIfTw==
+X-Received: by 2002:a05:600c:3c95:b0:419:f126:a46d with SMTP id bg21-20020a05600c3c9500b00419f126a46dmr6803385wmb.30.1713868637635;
+        Tue, 23 Apr 2024 03:37:17 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id bd6-20020a05600c1f0600b0041a7aa23dbfsm5003551wmb.48.2024.04.23.03.37.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Apr 2024 03:37:16 -0700 (PDT)
+Date: Tue, 23 Apr 2024 11:37:14 +0100
+From: Daniel Thompson <daniel.thompson@linaro.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Jason Wessel <jason.wessel@windriver.com>,
+	kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/7] kdb: Use format-strings rather than '\0'
+ injection in kdb_read()
+Message-ID: <20240423103714.GB1567803@aspen.lan>
+References: <20240422-kgdb_read_refactor-v2-0-ed51f7d145fe@linaro.org>
+ <20240422-kgdb_read_refactor-v2-2-ed51f7d145fe@linaro.org>
+ <CAD=FV=VXFHqOatn3cvwvYCey53+zuzB7ie4gYdvDVbfGL=Qm1Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240423-core-scheduling-cookie-v1-1-5753a35f8dfc@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIALCOJ2YC/x3MQQqAIBBA0avErBNGs4iuEi3SphwKDaUIwrsnL
- d/i/xcSRaYEQ/VCpJsTB18g6wqsm/1GgpdiUKg0atUIGyKJZB0t18F+Kw47kzDYttJqNNh3UOI
- z0srPPx6nnD+NHGzzaAAAAA==
-To: Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, 
- Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
- Jonathan Corbet <corbet@lwn.net>, 
- "Joel Fernandes (Google)" <joel@joelfernandes.org>, 
- Chris Hyser <chris.hyser@oracle.com>, Josh Don <joshdon@google.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1713868488; l=1859;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=KwbPcjrXsaN9eBiRQy+fJ9TI6jMFZegKAgDYMpZNJdM=;
- b=JGquxRziWJbrB0Tbk8Ppl9VeteFIloDvuyOExYZGiqPT81OPpbtPqZNAfzkxoB1t3AHAKoBbX
- KLKCKKJzT1lBpL7VvsFV1xY8gIi4iuLpjh64HbiJa8QtfYC/c9LUY0N
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+In-Reply-To: <CAD=FV=VXFHqOatn3cvwvYCey53+zuzB7ie4gYdvDVbfGL=Qm1Q@mail.gmail.com>
 
-sched_core_share_pid() copies the cookie to userspace with
-put_user(id, (u64 __user *)uaddr), expecting 64 bits of space.
-The "unsigned long" datatype that is documented in core-scheduling.rst
-however is only 32 bits large on 32 bit architectures.
+On Mon, Apr 22, 2024 at 04:52:04PM -0700, Doug Anderson wrote:
+> Hi,
+>
+> On Mon, Apr 22, 2024 at 9:37 AM Daniel Thompson
+> <daniel.thompson@linaro.org> wrote:
+> >
+> > Currently when kdb_read() needs to reposition the cursor it uses copy and
+> > paste code that works by injecting an '\0' at the cursor position before
+> > delivering a carriage-return and reprinting the line (which stops at the
+> > '\0').
+> >
+> > Tidy up the code by hoisting the copy and paste code into an appropriately
+> > named function. Additionally let's replace the '\0' injection with a
+> > proper field width parameter so that the string will be abridged during
+> > formatting instead.
+> >
+> > Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
+> > Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+> > ---
+> >  kernel/debug/kdb/kdb_io.c | 34 ++++++++++++++--------------------
+> >  1 file changed, 14 insertions(+), 20 deletions(-)
+>
+> Looks like a nice fix, but I think this'll create a compile warning on
+> some compilers. The variable "tmp" is no longer used, I think.
+>
+> Once the "tmp" variable is deleted, feel free to add my Reviewed-by.
 
-Document "unsigned long long" as the correct data type that is always
-64bits large.
+Good spot. I'll fix that.
 
-This matches what the selftest cs_prctl_test.c has been doing all along.
 
-Fixes: 0159bb020ca9 ("Documentation: Add usecases, design and interface for core scheduling")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/util-linux/df7a25a0-7923-4f8b-a527-5e6f0064074d@t-8ch.de/
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- Documentation/admin-guide/hw-vuln/core-scheduling.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> NOTE: patch #7 in your series re-adds a user of "tmp", but since this
+> one is "Cc: stable" you will need to delete it here and then re-add it
+> in patch #7.
+>
+>
+> > diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
+> > index 06dfbccb10336..a42607e4d1aba 100644
+> > --- a/kernel/debug/kdb/kdb_io.c
+> > +++ b/kernel/debug/kdb/kdb_io.c
+> > @@ -184,6 +184,13 @@ char kdb_getchar(void)
+> >         unreachable();
+> >  }
+> >
+> > +static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
+> > +{
+> > +       kdb_printf("\r%s", kdb_prompt_str);
+> > +       if (cp > buffer)
+> > +               kdb_printf("%.*s", (int)(cp - buffer), buffer);
+>
+> nit: personally, I'd take the "if" statement out. I'm nearly certain
+> that kdb_printf() can handle zero-length for the width argument and
+> "buffer" can never be _after_ cp (so you can't get negative).
 
-diff --git a/Documentation/admin-guide/hw-vuln/core-scheduling.rst b/Documentation/admin-guide/hw-vuln/core-scheduling.rst
-index cf1eeefdfc32..a92e10ec402e 100644
---- a/Documentation/admin-guide/hw-vuln/core-scheduling.rst
-+++ b/Documentation/admin-guide/hw-vuln/core-scheduling.rst
-@@ -67,8 +67,8 @@ arg4:
-     will be performed for all tasks in the task group of ``pid``.
- 
- arg5:
--    userspace pointer to an unsigned long for storing the cookie returned by
--    ``PR_SCHED_CORE_GET`` command. Should be 0 for all other commands.
-+    userspace pointer to an unsigned long long for storing the cookie returned
-+    by ``PR_SCHED_CORE_GET`` command. Should be 0 for all other commands.
- 
- In order for a process to push a cookie to, or pull a cookie from a process, it
- is required to have the ptrace access mode: `PTRACE_MODE_READ_REALCREDS` to the
+The kernel will correctly format zero-width fields... but kdb_printf()
+will also inject the empty string into the log if running with
+LOGGING=1. It is true the dmesg output with LOGGING=1 is pretty nasty
+when doing line editing but I still didn't want to make it worse!
 
----
-base-commit: 71b1543c83d65af8215d7558d70fc2ecbee77dcf
-change-id: 20240423-core-scheduling-cookie-b0551c40b086
+Oh... and we can't combine into one call to kdb_printf() since that
+renders into a fixed length static buffer and we could get unwanted
+truncation. I might just add a comment about that.
 
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
 
+Daniel.
 
