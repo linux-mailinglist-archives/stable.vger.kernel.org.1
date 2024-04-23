@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BEF8AFA30
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21EC78AFA99
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00B4428A9B2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 538261C22070
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2171448EA;
-	Tue, 23 Apr 2024 21:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0D414A088;
+	Tue, 23 Apr 2024 21:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9YaamZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyenvKWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08518143C6B;
-	Tue, 23 Apr 2024 21:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A080143882;
+	Tue, 23 Apr 2024 21:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908651; cv=none; b=SHCrzqt8SjLLwpWd038XtgF/hZno1SvyjWMP5vNHTQSw/geh83xAyarTmyx2SF975ZzGqFCFlJQ5MzQjzku5muPbiICb/DA37DfXSJH9ecKJHL4s4fylo5wN74ig8ee45ZDTi501yAGi/jI1HwibqKnV6qL2a1lB/Q0A6jBJLIs=
+	t=1713908733; cv=none; b=CkLvmWUmCeY8kvorXKtvEiCmMvnRtnN96lLoMLWUWbojAXtgcDDy+lp3RrG4/CNO9bkVyQHkQl1CWelD/8QwxAXS9hneIOklyME2XPpfJPmgEx+e46XEaRgcKTP4p7aqsMCu6qdI9Hbl1ckoM7OB8oBN39ZkDiBD3pdULGRiKEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908651; c=relaxed/simple;
-	bh=hDC2DQ5A4DH32svvLaMWEuSiuJzkyjOrFMM/qB1Ko/8=;
+	s=arc-20240116; t=1713908733; c=relaxed/simple;
+	bh=ihSLyGQnrcOcs7Z1m6pc6g0RJJFeJj16q+ErUFDJ8Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrl8h7TjOPCv35I8dszooJ0Tj/4RO2AZjfDX1bzpfoDX3ud98dxeHY0fXRL9LcKMvqDOFU/v97QyyZ1dtyYCKBmZkaIdjP0+msUV1muoMeRfsfk/ktpN5m1qFJDBqr3In9nqMDkNcnqhERuC4cxXyy/ZDJvyvrAaz9fCBSr934U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9YaamZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC507C3277B;
-	Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
+	 MIME-Version; b=gN9eNIEO1CgfL4zgpeLO6rriKVhxiLTBXL3bSMffhzuciu9x3wwIEOJzrvbUTnZbs+VfvJOGUfWTYyAHJ3IRDyhed3gvbjNF7nKkRDV55sjzll4uDqK+7PyG0kKiZ76i617J5oRvifhCa7KM8V0Cw1oUa9k+1pbDIP9c/235Y48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyenvKWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50602C116B1;
+	Tue, 23 Apr 2024 21:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908650;
-	bh=hDC2DQ5A4DH32svvLaMWEuSiuJzkyjOrFMM/qB1Ko/8=;
+	s=korg; t=1713908733;
+	bh=ihSLyGQnrcOcs7Z1m6pc6g0RJJFeJj16q+ErUFDJ8Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9YaamZBLWLo+Tpr6e5kjaw8bGUqvms7dQwrpw5lpFCHD2T9LHzozwV71+jngkn3k
-	 Pxc0+UzHa4jtel7xADeHPV+COqX36RcALzWtLWLafaHnOi59qWaI1rdfXZfL+0d06P
-	 95xB1FVNiSdrighRRJ5Vf8op1j5aIWoE+Zm1ILnk=
+	b=WyenvKWWJ30kiqrcF/CKo/+HYtaph3f0MqhMopgnpS/Y0S+3DEhH0LH0stYOYwWAQ
+	 whQc9vIiktD7UM9iky9pAhHS+UKn1o7Gt0XglN2JbWW+GSjsZh4G+MmcA7VZcs4Fs3
+	 OMkFL5sGyfQYZA3FOVQVs62eR0dqbDISeNo2u0dY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 131/158] KVM: x86/pmu: Do not mask LVTPC when handling a PMI on AMD platforms
+	Carlos Llamas <cmllamas@google.com>,
+	Todd Kjos <tkjos@google.com>
+Subject: [PATCH 6.1 100/141] binder: check offset alignment in binder_get_object()
 Date: Tue, 23 Apr 2024 14:39:28 -0700
-Message-ID: <20240423213859.966676304@linuxfoundation.org>
+Message-ID: <20240423213856.420942169@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit 49ff3b4aec51e3abfc9369997cc603319b02af9a upstream.
+commit aaef73821a3b0194a01bd23ca77774f704a04d40 upstream.
 
-On AMD and Hygon platforms, the local APIC does not automatically set
-the mask bit of the LVTPC register when handling a PMI and there is
-no need to clear it in the kernel's PMI handler.
+Commit 6d98eb95b450 ("binder: avoid potential data leakage when copying
+txn") introduced changes to how binder objects are copied. In doing so,
+it unintentionally removed an offset alignment check done through calls
+to binder_alloc_copy_from_buffer() -> check_buffer().
 
-For guests, the mask bit is currently set by kvm_apic_local_deliver()
-and unless it is cleared by the guest kernel's PMI handler, PMIs stop
-arriving and break use-cases like sampling with perf record.
+These calls were replaced in binder_get_object() with copy_from_user(),
+so now an explicit offset alignment check is needed here. This avoids
+later complications when unwinding the objects gets harder.
 
-This does not affect non-PerfMonV2 guests because PMIs are handled in
-the guest kernel by x86_pmu_handle_irq() which always clears the LVTPC
-mask bit irrespective of the vendor.
+It is worth noting this check existed prior to commit 7a67a39320df
+("binder: add function to copy binder object from buffer"), likely
+removed due to redundancy at the time.
 
-Before:
-
-  $ perf record -e cycles:u true
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.001 MB perf.data (1 samples) ]
-
-After:
-
-  $ perf record -e cycles:u true
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.002 MB perf.data (19 samples) ]
-
-Fixes: a16eb25b09c0 ("KVM: x86: Mask LVTPC when handling a PMI")
+Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-[sean: use is_intel_compatible instead of !is_amd_or_hygon()]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20240405235603.1173076-3-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Acked-by: Todd Kjos <tkjos@google.com>
+Link: https://lore.kernel.org/r/20240330190115.1877819-1-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/android/binder.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2772,7 +2772,8 @@ int kvm_apic_local_deliver(struct kvm_la
- 		trig_mode = reg & APIC_LVT_LEVEL_TRIGGER;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -1707,8 +1707,10 @@ static size_t binder_get_object(struct b
+ 	size_t object_size = 0;
  
- 		r = __apic_accept_irq(apic, mode, vector, 1, trig_mode, NULL);
--		if (r && lvt_type == APIC_LVTPC)
-+		if (r && lvt_type == APIC_LVTPC &&
-+		    guest_cpuid_is_intel_compatible(apic->vcpu))
- 			kvm_lapic_set_reg(apic, APIC_LVTPC, reg | APIC_LVT_MASKED);
- 		return r;
- 	}
+ 	read_size = min_t(size_t, sizeof(*object), buffer->data_size - offset);
+-	if (offset > buffer->data_size || read_size < sizeof(*hdr))
++	if (offset > buffer->data_size || read_size < sizeof(*hdr) ||
++	    !IS_ALIGNED(offset, sizeof(u32)))
+ 		return 0;
++
+ 	if (u) {
+ 		if (copy_from_user(object, u + offset, read_size))
+ 			return 0;
 
 
 
