@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-40987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4958AF9E5
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDF88AFA62
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC277B2A8C8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F383F1F296C5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149911474CD;
-	Tue, 23 Apr 2024 21:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5734B149C5E;
+	Tue, 23 Apr 2024 21:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik4V5ayE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdLWMcPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FCE143889;
-	Tue, 23 Apr 2024 21:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B17146D5A;
+	Tue, 23 Apr 2024 21:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908600; cv=none; b=ThwN++/7BeuNkaXwwXyIQEiVfRUogC6N5QM/078t9AXUQcxhviZEg3ZGO0oKq5bpgWx7ZLRPJi256s0ll5gppcrsylpJPwEtWL5Mgr2bW3oo8KEd+ldPMYCiKmcIpyQRr8LnkXWqtgIE0qZBh8K1Zy8td3qelYTl0MXZ5afHisQ=
+	t=1713908687; cv=none; b=rIt0NUBoXTbAPKv/lPYE9kLqhaTy6VBNsZjKjB2+HQCWC52+olQwQCuxeJR4/qVREbdxRbYPy6dUeh/nUa0l7q1urCptsLenw+Koaqm/KfHkeJVHxBakrFJxNdk7C5nXDzVTfpFBie6xnxG/zOH/zZO3fPNwuIA3pmmESweSJQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908600; c=relaxed/simple;
-	bh=kZXoggI0bkUvgD+a6GeqHGwmwbFZORqrxg/yr4VZcGE=;
+	s=arc-20240116; t=1713908687; c=relaxed/simple;
+	bh=RyTgzor2LnU/hqVjNgP2SRUoRZZyx36V/q1B1aHZVMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s0IqWnFuQN4NwFOBRKZIcVEyTpVbWLbUgE5pRbl8pfWVIiS1gY2I/hNrMKLpAvcQjrTiRcAyfM/P7htIl2fmDAPhe0qy8bsMIonVf/4XeBCSQ41UXF5bx2tG6I5Lqayu6arhqkDpFV6f5bxSNW3+S3RuJGPIqO797SqRJlObmo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik4V5ayE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D3EC116B1;
-	Tue, 23 Apr 2024 21:43:20 +0000 (UTC)
+	 MIME-Version; b=T8uSNwUI53NYpuq0ytpkVnIBp5HD07EXw4RQpGplqy3dreGWDJPMEj7XiOs8CMnpiDkgCUVaCgahRrn1eI5Wu68BSZ4b4aIVFvNyv8a39HxhRnmc1VKWqabFojdfklHTigpW5h22ooAoC45Dosmm7+4NV8SkHQgoTM9i0Cj8+rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdLWMcPR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46AAC32783;
+	Tue, 23 Apr 2024 21:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908600;
-	bh=kZXoggI0bkUvgD+a6GeqHGwmwbFZORqrxg/yr4VZcGE=;
+	s=korg; t=1713908686;
+	bh=RyTgzor2LnU/hqVjNgP2SRUoRZZyx36V/q1B1aHZVMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ik4V5ayEHWA6kyJBOARdQho7CcPRzHf94JOzCbcEUQM7JMmIcFQbhnzUapk/3KiCu
-	 bD/MsMuYJLwtiP2QYH+tvvdkpOl86H/IjhD68i8EX2CpOZaaQjyhMUW2cw5wJOM98s
-	 zXyewwXi0NfVZWKr3AzXa+UeHwRqNvkiHnRCSNs0=
+	b=IdLWMcPRJXJbK28sgL2Cwih7zaU4/AUSFgsrzNxTOQRzlr7gtr7q+7t3WZaImDytF
+	 v1S7mtF4yAOB4VdmCUh6KUZGrIK+q5OwD1NRAlKv0P0H5lonDYeImJPH6MQPEwlvuf
+	 M6BEPQRxCdLOkzs3Ib4Th6qbwlvB8msgIcUl3KG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/158] s390/qdio: handle deferred cc1
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.1 033/141] x86/efistub: Remap kernel text read-only before dropping NX attribute
 Date: Tue, 23 Apr 2024 14:38:21 -0700
-Message-ID: <20240423213857.852969117@linuxfoundation.org>
+Message-ID: <20240423213854.377796037@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +60,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 607638faf2ff1cede37458111496e7cc6c977f6f ]
+[ Commit 9c55461040a9264b7e44444c53d26480b438eda6 upstream ]
 
-A deferred condition code 1 response indicates that I/O was not started
-and should be retried. The current QDIO implementation handles a cc1
-response as I/O error, resulting in a failed QDIO setup. This can happen
-for example when a path verification request arrives at the same time
-as QDIO setup I/O is started.
+Currently, the EFI stub invokes the EFI memory attributes protocol to
+strip any NX restrictions from the entire loaded kernel, resulting in
+all code and data being mapped read-write-execute.
 
-Fix this by retrying the QDIO setup I/O when a cc1 response is received.
+The point of the EFI memory attributes protocol is to remove the need
+for all memory allocations to be mapped with both write and execute
+permissions by default, and make it the OS loader's responsibility to
+transition data mappings to code mappings where appropriate.
 
-Note that since
+Even though the UEFI specification does not appear to leave room for
+denying memory attribute changes based on security policy, let's be
+cautious and avoid relying on the ability to create read-write-execute
+mappings. This is trivially achievable, given that the amount of kernel
+code executing via the firmware's 1:1 mapping is rather small and
+limited to the .head.text region. So let's drop the NX restrictions only
+on that subregion, but not before remapping it as read-only first.
 
-commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-commit 5ef1dc40ffa6 ("s390/cio: fix invalid -EBUSY on ccw_device_start")
-
-deferred cc1 responses are much more likely to occur. See the commit
-message of the latter for more background information.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/qdio_main.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ arch/x86/boot/compressed/Makefile       |    2 +-
+ arch/x86/boot/compressed/misc.c         |    1 +
+ arch/x86/include/asm/boot.h             |    1 +
+ drivers/firmware/efi/libstub/x86-stub.c |   11 ++++++++++-
+ 4 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
-index 9cde55730b65a..ebcb535809882 100644
---- a/drivers/s390/cio/qdio_main.c
-+++ b/drivers/s390/cio/qdio_main.c
-@@ -722,8 +722,8 @@ static void qdio_handle_activate_check(struct qdio_irq *irq_ptr,
- 	lgr_info_log();
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -84,7 +84,7 @@ LDFLAGS_vmlinux += -T
+ hostprogs	:= mkpiggy
+ HOST_EXTRACFLAGS += -I$(srctree)/tools/include
+ 
+-sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABCDGRSTVW] \(_text\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
++sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABCDGRSTVW] \(_text\|__start_rodata\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
+ 
+ quiet_cmd_voffset = VOFFSET $@
+       cmd_voffset = $(NM) $< | sed -n $(sed-voffset) > $@
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -330,6 +330,7 @@ static size_t parse_elf(void *output)
+ 	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
  }
  
--static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
--				      int dstat)
-+static int qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
-+				     int dstat, int dcc)
- {
- 	DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qest irq");
++const unsigned long kernel_text_size = VO___start_rodata - VO__text;
+ const unsigned long kernel_total_size = VO__end - VO__text;
  
-@@ -731,15 +731,18 @@ static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
- 		goto error;
- 	if (dstat & ~(DEV_STAT_DEV_END | DEV_STAT_CHN_END))
- 		goto error;
-+	if (dcc == 1)
-+		return -EAGAIN;
- 	if (!(dstat & DEV_STAT_DEV_END))
- 		goto error;
- 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ESTABLISHED);
--	return;
-+	return 0;
+ static u8 boot_heap[BOOT_HEAP_SIZE] __aligned(4);
+--- a/arch/x86/include/asm/boot.h
++++ b/arch/x86/include/asm/boot.h
+@@ -81,6 +81,7 @@
  
- error:
- 	DBF_ERROR("%4x EQ:error", irq_ptr->schid.sch_no);
- 	DBF_ERROR("ds: %2x cs:%2x", dstat, cstat);
- 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
-+	return -EIO;
- }
+ #ifndef __ASSEMBLY__
+ extern unsigned int output_len;
++extern const unsigned long kernel_text_size;
+ extern const unsigned long kernel_total_size;
  
- /* qdio interrupt handler */
-@@ -748,7 +751,7 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
- {
- 	struct qdio_irq *irq_ptr = cdev->private->qdio_data;
- 	struct subchannel_id schid;
--	int cstat, dstat;
-+	int cstat, dstat, rc, dcc;
+ unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -227,6 +227,15 @@ efi_status_t efi_adjust_memory_range_pro
+ 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
  
- 	if (!intparm || !irq_ptr) {
- 		ccw_device_get_schid(cdev, &schid);
-@@ -768,10 +771,12 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
- 	qdio_irq_check_sense(irq_ptr, irb);
- 	cstat = irb->scsw.cmd.cstat;
- 	dstat = irb->scsw.cmd.dstat;
-+	dcc   = scsw_cmd_is_valid_cc(&irb->scsw) ? irb->scsw.cmd.cc : 0;
-+	rc    = 0;
- 
- 	switch (irq_ptr->state) {
- 	case QDIO_IRQ_STATE_INACTIVE:
--		qdio_establish_handle_irq(irq_ptr, cstat, dstat);
-+		rc = qdio_establish_handle_irq(irq_ptr, cstat, dstat, dcc);
- 		break;
- 	case QDIO_IRQ_STATE_CLEANUP:
- 		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_INACTIVE);
-@@ -785,12 +790,25 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
- 		if (cstat || dstat)
- 			qdio_handle_activate_check(irq_ptr, intparm, cstat,
- 						   dstat);
-+		else if (dcc == 1)
-+			rc = -EAGAIN;
- 		break;
- 	case QDIO_IRQ_STATE_STOPPED:
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 	}
+ 	if (memattr != NULL) {
++		status = efi_call_proto(memattr, set_memory_attributes,
++					rounded_start,
++					rounded_end - rounded_start,
++					EFI_MEMORY_RO);
++		if (status != EFI_SUCCESS) {
++			efi_warn("Failed to set EFI_MEMORY_RO attribute\n");
++			return status;
++		}
 +
-+	if (rc == -EAGAIN) {
-+		DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qint retry");
-+		rc = ccw_device_start(cdev, irq_ptr->ccw, intparm, 0, 0);
-+		if (!rc)
-+			return;
-+		DBF_ERROR("%4x RETRY ERR", irq_ptr->schid.sch_no);
-+		DBF_ERROR("rc:%4x", rc);
-+		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
-+	}
-+
- 	wake_up(&cdev->private->wait_q);
+ 		status = efi_call_proto(memattr, clear_memory_attributes,
+ 					rounded_start,
+ 					rounded_end - rounded_start,
+@@ -778,7 +787,7 @@ static efi_status_t efi_decompress_kerne
+ 
+ 	*kernel_entry = addr + entry;
+ 
+-	return efi_adjust_memory_range_protection(addr, kernel_total_size);
++	return efi_adjust_memory_range_protection(addr, kernel_text_size);
  }
  
--- 
-2.43.0
-
+ static void __noreturn enter_kernel(unsigned long kernel_addr,
 
 
 
