@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-41115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2258E8AFA63
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F20DB8AF9E3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1F3A2883E0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF988282B4C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BAA149C4E;
-	Tue, 23 Apr 2024 21:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7313C144313;
+	Tue, 23 Apr 2024 21:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYGclpkJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAjs9Iae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B121E146D6D;
-	Tue, 23 Apr 2024 21:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326A0147C67;
+	Tue, 23 Apr 2024 21:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908687; cv=none; b=nQ/xZFrWhuBTBNJqFZfZkGfuDGYCPCQ7ERKa8r5ebMUZBf3VEUiZaxBaqNGyWnUmrRe13waMv699Wztjrg0pRQI/I2S10Fz/25zFh0w1YFjXrO/zV9gllRj/tuh3LcK9JxezZIMP+wKzYg1eLFg1eAYMyFF2Q9vbH+IbyzmrRog=
+	t=1713908601; cv=none; b=ledaJx8Hv3FRc/MHoCJznuaR8LoTEOMv4B/kCADYoZWkazG3cXqkFlDAm/NJOqnAVfOtCXIUH7jTVxcDanCfAFE8fIyRTMWFE2fxz2qbYxozjOjelXAvKbBPPuLFvQyD4BgW8OK/JGb5EyVZG65Wr4+XG200YxTERI27m8Pvg4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908687; c=relaxed/simple;
-	bh=PT6TjXZ0mdOmQChCjY8Svm7sDis8OE3cPTp7k7vJK5E=;
+	s=arc-20240116; t=1713908601; c=relaxed/simple;
+	bh=y//j4ij5Iq4m10W32Y+fYyhTp1NhhA3pRUmvQrQ2/jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uqg4yar3fY2ONAC6nQNFOBkHlKIBX0qY27QVS7KRiN7rP8PiabZbVJY7g4h9WDkn4lg3aLCQlgiAk8Kin+/+M6H1Tiw08104loQrXA1Sw0ivVTP/Mz2Dx2dY0yjr/2IcHeWTFbHhRSH6Mf0PItmMV6iPPjNjMQjqRW8b4QP1dLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYGclpkJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82412C116B1;
-	Tue, 23 Apr 2024 21:44:47 +0000 (UTC)
+	 MIME-Version; b=N+2FOrTpiztNiviGkgu7fzm8/JGcavxz8UuwIWNixri/zer8s+y0OqdWNe3uqoao5ea1cH05yohNWqmCF6faRil9OlalC0HQFO/4fn+zREMyMjR/SHWgaKRrXX9fFWdZCdwEG3bB0KyjEsqTEx0oJw7roNVpH0WyjUvZa5BnTbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAjs9Iae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08090C3277B;
+	Tue, 23 Apr 2024 21:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908687;
-	bh=PT6TjXZ0mdOmQChCjY8Svm7sDis8OE3cPTp7k7vJK5E=;
+	s=korg; t=1713908601;
+	bh=y//j4ij5Iq4m10W32Y+fYyhTp1NhhA3pRUmvQrQ2/jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYGclpkJkIfMUuFDopbDpf2Gqjgtbp7bQoseAuflRcPke6f8Nqk+OAs9oI1mVdTXl
-	 N4F4HBt6JXeLujG7+j1MPFJNvEIspmw/69/2VtcIPscYmkFHcKyJRRsKVySkS+yqWd
-	 M5bN00gjN08FQlIfwcC9kRW8gKwXJAUVI/CVkfFM=
+	b=kAjs9IaeSprqLfPTXpH35iNik7fhrOIoiZ1CqimAqLdIeGVR26Ukq/D0gT/v0aYKJ
+	 CvmsqEE2yLcJBDy19h2AtnwOFTNrgqYDdzJqCk7JWqFHzUvXyVAzCEu9+e8t/1p3cg
+	 VqKN3l4dk2PpH9s4EugwmGRct7bxZeCBPtsrT5XU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Xuan <william.xuanziyang@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/141] netfilter: nf_tables: Fix potential data-race in __nft_expr_type_get()
+Subject: [PATCH 6.6 065/158] s390/cio: fix race condition during online processing
 Date: Tue, 23 Apr 2024 14:38:22 -0700
-Message-ID: <20240423213854.411688737@linuxfoundation.org>
+Message-ID: <20240423213857.879666471@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit f969eb84ce482331a991079ab7a5c4dc3b7f89bf ]
+[ Upstream commit 2d8527f2f911fab84aec04df4788c0c23af3df48 ]
 
-nft_unregister_expr() can concurrent with __nft_expr_type_get(),
-and there is not any protection when iterate over nf_tables_expressions
-list in __nft_expr_type_get(). Therefore, there is potential data-race
-of nf_tables_expressions list entry.
+A race condition exists in ccw_device_set_online() that can cause the
+online process to fail, leaving the affected device in an inconsistent
+state. As a result, subsequent attempts to set that device online fail
+with return code ENODEV.
 
-Use list_for_each_entry_rcu() to iterate over nf_tables_expressions
-list in __nft_expr_type_get(), and use rcu_read_lock() in the caller
-nft_expr_type_get() to protect the entire type query process.
+The problem occurs when a path verification request arrives after
+a wait for final device state completed, but before the result state
+is evaluated.
 
-Fixes: ef1f7df9170d ("netfilter: nf_tables: expression ops overloading")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fix this by ensuring that the CCW-device lock is held between
+determining final state and checking result state.
+
+Note that since:
+
+commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+
+path verification requests are much more likely to occur during boot,
+resulting in an increased chance of this race condition occurring.
+
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/s390/cio/device.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 8152a69d82681..ba63866914f18 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2891,7 +2891,7 @@ static const struct nft_expr_type *__nft_expr_type_get(u8 family,
- {
- 	const struct nft_expr_type *type, *candidate = NULL;
+diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
+index 4ca5adce91079..57e0050dbaa53 100644
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -363,10 +363,8 @@ int ccw_device_set_online(struct ccw_device *cdev)
  
--	list_for_each_entry(type, &nf_tables_expressions, list) {
-+	list_for_each_entry_rcu(type, &nf_tables_expressions, list) {
- 		if (!nla_strcmp(nla, type->name)) {
- 			if (!type->family && !candidate)
- 				candidate = type;
-@@ -2923,9 +2923,13 @@ static const struct nft_expr_type *nft_expr_type_get(struct net *net,
- 	if (nla == NULL)
- 		return ERR_PTR(-EINVAL);
- 
-+	rcu_read_lock();
- 	type = __nft_expr_type_get(family, nla);
--	if (type != NULL && try_module_get(type->owner))
-+	if (type != NULL && try_module_get(type->owner)) {
-+		rcu_read_unlock();
- 		return type;
+ 	spin_lock_irq(cdev->ccwlock);
+ 	ret = ccw_device_online(cdev);
+-	spin_unlock_irq(cdev->ccwlock);
+-	if (ret == 0)
+-		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
+-	else {
++	if (ret) {
++		spin_unlock_irq(cdev->ccwlock);
+ 		CIO_MSG_EVENT(0, "ccw_device_online returned %d, "
+ 			      "device 0.%x.%04x\n",
+ 			      ret, cdev->private->dev_id.ssid,
+@@ -375,7 +373,12 @@ int ccw_device_set_online(struct ccw_device *cdev)
+ 		put_device(&cdev->dev);
+ 		return ret;
+ 	}
+-	spin_lock_irq(cdev->ccwlock);
++	/* Wait until a final state is reached */
++	while (!dev_fsm_final_state(cdev)) {
++		spin_unlock_irq(cdev->ccwlock);
++		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
++		spin_lock_irq(cdev->ccwlock);
 +	}
-+	rcu_read_unlock();
- 
- 	lockdep_nfnl_nft_mutex_not_held();
- #ifdef CONFIG_MODULES
+ 	/* Check if online processing was successful */
+ 	if ((cdev->private->state != DEV_STATE_ONLINE) &&
+ 	    (cdev->private->state != DEV_STATE_W4SENSE)) {
 -- 
 2.43.0
 
