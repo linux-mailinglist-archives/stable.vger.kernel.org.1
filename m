@@ -1,216 +1,156 @@
-Return-Path: <stable+bounces-40723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B5C8AEA38
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 17:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4F68AEAF6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 17:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 780201C22348
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:10:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02AF71C21D67
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C6813B7AE;
-	Tue, 23 Apr 2024 15:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="RQAs3pWT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF5513BADD;
+	Tue, 23 Apr 2024 15:25:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B53319BBA
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 15:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28B17F499
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 15:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713885018; cv=none; b=YRsNH+N3nk5vZTeDcjDfs2ixnGgQ6mc0pTnDSGHkGDbCHE2oUAI5LxWtvrnUAOZvwowT+r8l47hF4bp1t75ZWsN6tXPTnoRKBpG88VNiIqQ+x8qLYonJAAe9L+X+xynPNQgOwa+V9G/Wa9dXxPXmYwquvJWO+cyhNPSJrY9lyQk=
+	t=1713885906; cv=none; b=eLwgPpZjZhaB6U1I82e5SQ/tdopDH+N/y7qJQI95ThEbIrHWNYp1+gjVqe3Pj5k6SY2lt9rkEu6afug4MCpoKkMGShqPiacH+b4RogDGUAzyn7c2tuxLzgS9Gp8rJmlEfJfDghdJmcHPSMZAgUB33Ddp9D5ZpKs1nGcWS423Iu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713885018; c=relaxed/simple;
-	bh=84AUFf0foJnSmBlX9HPAcRjtAjatYeA61J9LKrFXBnU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JVHu6w5pqlFRN0ZVAnxYUYWPIqD6uUVULmAFRJiKkxD2odRmbE1DWc7sqU+FQhC54XKS+pXEtC6uuVTF85/vZCH7XhHY4XZ5UZUgh4BQc6IhLIIhhVmrw1FTUmcC/Wk/qJKHVz4hA5dL3/hkVmUlCQwKOCgkSM5dqhhnCv/VPKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=RQAs3pWT; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3c750fd1202so1875623b6e.2
-        for <stable@vger.kernel.org>; Tue, 23 Apr 2024 08:10:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1713885014; x=1714489814; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1c7sC01lqcDH+H4+0eNwjxUVDf+LGV3FDlIiOAhdlzg=;
-        b=RQAs3pWT3I9U6Y2mTMFY+QK1hQgCkBYWUAwR7pNcUxisDYt2AMtnxnm20/EWg7GXcl
-         CjjsXTUWNLWjtHL8ik2B+YO4qkvtvCU/c2HuiBtn4RjGLaSoeVwKNobwcFOQdQHkqWk1
-         ZMJiymSNboFWR6CKwb8MR5ApigO5unRine0O4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713885014; x=1714489814;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1c7sC01lqcDH+H4+0eNwjxUVDf+LGV3FDlIiOAhdlzg=;
-        b=feWFugwNHgulGTHKB/mO5GFHSS0aWKMe7bKgmJmI1b6faTnvHteiTwwtY6TmOpx9UF
-         PV5SBrExBmwN+jKDuYG7rRi8fsYrxl04nGjQ4Dwkt3UnNNvD6k2ILuWen7G7qPIlceuA
-         45vq5VE2+2UUqPUAp4gLlxYe2+0qFxy2J8UObBM2yU8ejvQWxdjbG5tVlErW/4zml0jj
-         t+b5KhpQ/hlB9o3bTlhHrTjtqPsL5Sfbk1gvXrRIg7XQgmJvUFHFvj/3vBxp7LdMc9iI
-         7aonCnRn6osB6DZd+VRRyihZKD0MEOwDl4bXbuBFUJ076Q4nEQN2FxXbSk1GGLuoInYS
-         a9Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCXKK2XpvNA44apIm91t+9f8Y6jiDQVTNeGSXsPN9JPVsQHqUjI8vJOgTQHZDiP8yatbKWgHwg7UB2M7DjVmYfwFsf7vv4wK
-X-Gm-Message-State: AOJu0YyMNFxuJV7qOH1YodK4Mza1rGon/UzQzYPjVzbSs0Z4IpG31rgo
-	wm7o9h6ZVV3GwZyibEqiR57MLu6oY1FJGt4eN1zdg6rmhtGVS5GLfHxrNEmDg0lIR+KuXkbmqB5
-	0xJ//
-X-Google-Smtp-Source: AGHT+IEZiqORh0WRYKCem+JEXmDUfe0KiYZWWin/GlrBjHDwmRsXkZtDno0M2N4kMAXDfZJ+uWlW4g==
-X-Received: by 2002:a05:6808:4398:b0:3c6:13c8:16d with SMTP id dz24-20020a056808439800b003c613c8016dmr14372817oib.33.1713885014059;
-        Tue, 23 Apr 2024 08:10:14 -0700 (PDT)
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com. [209.85.160.170])
-        by smtp.gmail.com with ESMTPSA id e7-20020a0caa47000000b006a074ded34dsm3000371qvb.27.2024.04.23.08.10.12
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Apr 2024 08:10:12 -0700 (PDT)
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-439b1c72676so476071cf.1
-        for <stable@vger.kernel.org>; Tue, 23 Apr 2024 08:10:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXr5maStg3uAWAGCxePItuAnhSP7SSfVeROSrDHQKxp513Cqhp6vvQ5GYt/3huWKOmW5M7FFaMVjYZpr4lxbnAh88r7K5zF
-X-Received: by 2002:ac8:568a:0:b0:439:f138:3691 with SMTP id
- h10-20020ac8568a000000b00439f1383691mr229060qta.19.1713885012110; Tue, 23 Apr
- 2024 08:10:12 -0700 (PDT)
+	s=arc-20240116; t=1713885906; c=relaxed/simple;
+	bh=mADyzFtFPTrL0Ew3/frBE7gKimsxCan2ktRjhg6ggoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l+eq8qI0TQXAF/8zjvjqjy3yaF67grpV76yQwcEbICDsbhhQNgu+4UgJMwS8LEMI5VrtQgZwauDWD3h6rN88w/EfKIHVTFIqKZCpTKdjaEXatNaPYZBytx6Y3MbhTKykzN6HYIof2j3IUYir+tT31HvXiKxmyXZsUw3VDmr49og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rzI0z-0000Kz-VF; Tue, 23 Apr 2024 17:25:01 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rzI0z-00Dv27-IB; Tue, 23 Apr 2024 17:25:01 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rzI0z-0078xG-1Y;
+	Tue, 23 Apr 2024 17:25:01 +0200
+Date: Tue, 23 Apr 2024 17:25:01 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] serial: stm32: Return IRQ_NONE in the ISR
+ if no handling" failed to apply to 5.15-stable tree
+Message-ID: <k5twtnplrzkqw3fi5th2s6qdtk6ds7wgjjabhitkm3i2llsnve@ir76mfzyj5nk>
+References: <2024042344-phonics-simile-0b3c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240416091509.19995-1-johan+linaro@kernel.org>
- <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com> <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
-In-Reply-To: <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Tue, 23 Apr 2024 08:09:55 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
-Message-ID: <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
-Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
-To: Johan Hovold <johan@kernel.org>
-Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>, Johan Hovold <johan+linaro@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Matthias Kaehlcke <mka@chromium.org>, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Stephen Boyd <swboyd@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uhmzfqdmrknfty6w"
+Content-Disposition: inline
+In-Reply-To: <2024042344-phonics-simile-0b3c@gregkh>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+
+
+--uhmzfqdmrknfty6w
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hello,
 
-On Tue, Apr 23, 2024 at 2:08=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
-te:
->
-> Hi Doug and Janaki,
->
-> On Mon, Apr 22, 2024 at 10:50:33AM -0700, Doug Anderson wrote:
-> > On Tue, Apr 16, 2024 at 2:17=E2=80=AFAM Johan Hovold <johan+linaro@kern=
-el.org> wrote:
->
-> > > As Chromium is the only known user of the 'local-bd-address' property=
-,
-> > > could you please confirm that your controllers use the 00:00:00:00:5a=
-:ad
-> > > address by default so that the quirk continues to be set as intended?
-> >
-> > I was at EOSS last week so didn't get a chance to test this, but I
-> > just tested it now and I can confirm that it breaks trogdor. It
-> > appears that trogdor devices seem to have a variant of your "default"
-> > address. Instead of:
-> >
-> > 00:00:00:00:5a:ad
-> >
-> > We seem to have a default of this:
-> >
-> > 39:98:00:00:5a:ad
-> >
-> > ...so almost the same, but not enough the same to make it work with
-> > your code. I checked 3 different trogdor boards and they were all the
-> > same, though I can't 100% commit to saying that every trogdor device
-> > out there has that same default address...
-> >
-> > Given that this breaks devices and also that it's already landed and
-> > tagged for stable, what's the plan here? Do we revert? Do we add the
-> > second address in and hope that there aren't trogdor devices out in
-> > the wild that somehow have a different default?
->
-> This patch is currently queued for 6.10 so there should be time to get
-> this sorted.
->
-> My fallback plan was to add further (device-specific) default addresses
-> in case this turned out to be needed (e.g. this is what the Broadcom
-> driver does).
->
-> I assume all Trogdor boards use the same controller, WCN3991 IIUC, but
-> if you're worried about there being devices out there using a different
-> address we could possibly also use the new
-> "qcom,local-bd-address-broken" DT property as an indicator to set the
-> bdaddr quirk.
+On Tue, Apr 23, 2024 at 05:36:44AM -0700, gregkh@linuxfoundation.org wrote:
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>=20
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>=20
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-5.15.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 13c785323b36b845300b256d0e5963c3727667d7
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042344-=
+phonics-simile-0b3c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+>=20
+> Possible dependencies:
+>=20
+> 13c785323b36 ("serial: stm32: Return IRQ_NONE in the ISR if no handling h=
+append")
+> c5d06662551c ("serial: stm32: Use port lock wrappers")
+> a01ae50d7eae ("serial: stm32: replace access to DMAR bit by dmaengine_pau=
+se/resume")
+> 7f28bcea824e ("serial: stm32: group dma pause/resume error handling into =
+single function")
+> 00d1f9c6af0d ("serial: stm32: modify parameter and rename stm32_usart_rx_=
+dma_enabled")
+> db89728abad5 ("serial: stm32: avoid clearing DMAT bit during transfer")
+> 3f6c02fa712b ("serial: stm32: Merge hard IRQ and threaded IRQ handling in=
+to single IRQ handler")
+> d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS=
+485 mode")
+> 3bcea529b295 ("serial: stm32: Factor out GPIO RTS toggling into separate =
+function")
+> 037b91ec7729 ("serial: stm32: fix software flow control transfer")
+> d3d079bde07e ("serial: stm32: prevent TDR register overwrite when sending=
+ x_char")
+> 195437d14fb4 ("serial: stm32: correct loop for dma error handling")
+> 2a3bcfe03725 ("serial: stm32: fix flow control transfer in DMA mode")
+> 9a135f16d228 ("serial: stm32: rework TX DMA state condition")
+> 56a23f9319e8 ("serial: stm32: move tx dma terminate DMA to shutdown")
+> 6333a4850621 ("serial: stm32: push DMA RX data before suspending")
+> 6eeb348c8482 ("serial: stm32: terminate / restart DMA transfer at suspend=
+ / resume")
+> e0abc903deea ("serial: stm32: rework RX dma initialization and release")
+> d1ec8a2eabe9 ("serial: stm32: update throttle and unthrottle ops for dma =
+mode")
+> 33bb2f6ac308 ("serial: stm32: rework RX over DMA")
 
-They all should use the same controller, but I'm just worried because
-I don't personally know anything about how this address gets
-programmed nor if there is any guarantee from Qualcomm that it'll be
-consistent. There are a whole pile of boards in the field, so unless
-we have some certainty that they all have the same address it feels
-risky.
+I think it's not that important to backport this patch further than 6.1.
+It only improves the behaviour in the presence of another bug. If
+someone wants to look anyhow, it would probably make sense to backport
+13c785323b36 on top of a backport of 3f6c02fa712b.
 
+Best regards
+Uwe
 
-> We have Qualcomm on CC here so perhaps Janaki, who should have access to
-> the documentation, can tell us what the default address on these older
-> controllers looks like?
->
-> Janaki, are there further default addresses out there that we need to
-> consider?
->
-> Perhaps "39:98" can even be inferred from the hardware id somehow (cf.
-> bcm4377_is_valid_bdaddr())?
->
-> Doug, could you please also post the QCA version info for Trogdor that's
-> printed on boot?
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-You want this:
+--uhmzfqdmrknfty6w
+Content-Type: application/pgp-signature; name="signature.asc"
 
-[    9.610575] ath10k_snoc 18800000.wifi: qmi chip_id 0x320
-chip_family 0x4001 board_id 0x67 soc_id 0x400c0000
-[    9.620634] ath10k_snoc 18800000.wifi: qmi fw_version 0x322102f2
-fw_build_timestamp 2021-08-02 05:27 fw_build_id
-QC_IMAGE_VERSION_STRING=3DWLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-[   14.607163] ath10k_snoc 18800000.wifi: wcn3990 hw1.0 target
-0x00000008 chip_id 0x00000000 sub 0000:0000
-[   14.616917] ath10k_snoc 18800000.wifi: kconfig debug 1 debugfs 1
-tracing 0 dfs 0 testmode 1
-[   14.625543] ath10k_snoc 18800000.wifi: firmware ver  api 5 features
-wowlan,mfp,mgmt-tx-by-reference,non-bmi,single-chan-info-per-channel
-crc32 3f19f7c1
-[   14.682372] ath10k_snoc 18800000.wifi: htt-ver 3.87 wmi-op 4 htt-op
-3 cal file max-sta 32 raw 0 hwcrypto 1
-[   14.797210] ath: EEPROM regdomain: 0x406c
-[   14.797223] ath: EEPROM indicates we should expect a direct regpair map
-[   14.797231] ath: Country alpha2 being used: 00
-[   14.797236] ath: Regpair used: 0x6c
+-----BEGIN PGP SIGNATURE-----
 
-...or this...
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmYn0swACgkQj4D7WH0S
+/k5J9Af/fVtGANGhUAsi/MN8Y3e9OSI8OuTFvSAdZIoxTPZJMk17cb763NarKhE3
+IGXErWseUGJRPV7QxP0EcLFQY4iGS/X2Ov41e8q/kh5xZDZYRfl9CNV3LXVTufBK
+eraPQYG2gLT1xw565FYlxkzUuK3PmBIMQrPJMy6lya7oySaBc4qv9wboW3O1h7+o
+cjxYE/Nbb8xym9LUIxDpelVce1zsclMOpWZZ7uiFpxF/zi4u3aVoOb+DUPAqqqAX
+ptOzIv2ERcoKMhD++7NN7vpXR5C+0nZBLprlRmBaKH3XyVIST3SGM9R+UlesOFhK
+2kqJk9ThkfyAlJTGFZ9ZsxRNH+k/iw==
+=K9O0
+-----END PGP SIGNATURE-----
 
-[   12.899095] Bluetooth: hci0: setting up wcn399x
-[   13.526154] Bluetooth: hci0: QCA Product ID   :0x0000000a
-[   13.531805] Bluetooth: hci0: QCA SOC Version  :0x40010320
-[   13.537384] Bluetooth: hci0: QCA ROM Version  :0x00000302
-[   13.543002] Bluetooth: hci0: QCA Patch Version:0x00000de9
-[   13.565775] Bluetooth: hci0: QCA controller version 0x03200302
-[   13.571838] Bluetooth: hci0: QCA Downloading qca/crbtfw32.tlv
-[   14.096362] Bluetooth: hci0: QCA Downloading qca/crnv32.bin
-[   14.770148] Bluetooth: hci0: QCA setup on UART is completed
-[   14.805807] Bluetooth: hci0: AOSP extensions version v0.98
-[   14.814793] Bluetooth: hci0: AOSP quality report is supported
-[   15.011398] Bluetooth: hci0: unsupported parameter 28
-[   15.016649] Bluetooth: hci0: unsupported parameter 28
-
-Just as a random guess from looking at "8" in the logs, maybe the
-extra 8 in 3998 is the "target" above?
-
-...though that also makes me think that perhaps this chip doesn't
-actually have space for a MAC address at all. Maybe they decided to
-re-use the space to store the hardware ID and other information on all
-of these devices?
-
--Doug
+--uhmzfqdmrknfty6w--
 
