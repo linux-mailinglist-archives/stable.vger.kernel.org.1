@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959558AFA1A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A0B8AFABF
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0910E1F28E47
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9F21B276FE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847AA148843;
-	Tue, 23 Apr 2024 21:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25E71482EB;
+	Tue, 23 Apr 2024 21:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDPIzz/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3Re5Xxr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432821448D2;
-	Tue, 23 Apr 2024 21:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AEC143882;
+	Tue, 23 Apr 2024 21:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908635; cv=none; b=FgZ5iteS/vd0aM/MncjDlxzQR95i4eSxVdrq0AMCeB09makPoLLZOlL9yT6BzIksRy0AA5Frd/JQvm92wZ47Vxle3vQX1yzobD+3idnQh/MyCaxU3hRxSlOgPS2gLQ6DJYAM5SqebL0VrNtiJP3qpqI3CxwWyd14wi7VZmp+suo=
+	t=1713908739; cv=none; b=Qla4RLG0o5qBZExxdVMd1tMckPOyCCW6sT7clxwd2ymfP45eqdP4Y/4CD+O62OrPCWBWMPtKRVPq+TnXwKc0KCgPB++a5x6OMgBhq8BuwftX7coOn+VtwB6leAN7JWaCUoPsbjhTr1oaXm94aJy8bJ/kdJyavXFDfMjVyXl3TPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908635; c=relaxed/simple;
-	bh=3dCoWIMaxb2ncAUwdSCYzNpxP8evocjtTrMkSh8RoFs=;
+	s=arc-20240116; t=1713908739; c=relaxed/simple;
+	bh=2X92Uejevxo1td8OtS6QPdxhcJguC4qzCKKSCOAEAyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAbM84/gVzVNGR/qgVqSuYNaiXVYhJeg3Kl8kcRWrOsVsX+0iuZn2qtx7Wiv1l1oyz966hVPqhRvfUdLQavmAJ5PAkN8QLm/+x9mYck9L6Tb+o3z1J3auM7umvPirtbwJdGpzCBmPb0x4NO25tN0RdTVjEw5RTBPTrSrgn5O0xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDPIzz/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B07BC4AF09;
-	Tue, 23 Apr 2024 21:43:55 +0000 (UTC)
+	 MIME-Version; b=t9d336aclMoJHLBiPz9hCHeILSeCdZW9zr5h1K54LzhGg9X+VqWZcC5XZf142hQJ0ax1fyHemkj9UptLOI45bhQeuBAGBwy0TaGHsW3Q8Q/kREuzxjo6lyBz+f5lf+hyXKZmjxr6fmNLaVyY89bCiWXTjn3PgY9dwYQadW1MPg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3Re5Xxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78894C116B1;
+	Tue, 23 Apr 2024 21:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908635;
-	bh=3dCoWIMaxb2ncAUwdSCYzNpxP8evocjtTrMkSh8RoFs=;
+	s=korg; t=1713908739;
+	bh=2X92Uejevxo1td8OtS6QPdxhcJguC4qzCKKSCOAEAyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tDPIzz/KGxLXvFp9ZcniG17/1VlCrCdKm+WYWcizilNrnlj/k41OUNaQPEO+luMcJ
-	 heR5kypl8fm9xT9Jt5LzhBE1ccKDp9CofgIx0zpTCnlyGOzXC9K04OsD5zQfSMF6pj
-	 aZwAzMRM/7JM5sanyZBgzGy5f8oSWa1ng0paJ7fw=
+	b=s3Re5Xxr4x9IocHtA4iAeJFomc4Tl55hbzWlC8fZ73lG6l+qUg40VXHIiOAn1DN2Z
+	 PP1soMHDZvoEHXCDGsr9LAdT5ZbBP1waZYHobMbgpiPfbcDrb8QiqCbbrxsVxlmGrV
+	 u8ZE0UCibv7CS0YOM3i7B5LuXQiHSONnkS3ZmR/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuanhong Guo <gch981213@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 116/158] USB: serial: option: add support for Fibocom FM650/FG650
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/141] clk: Initialize struct clk_core kref earlier
 Date: Tue, 23 Apr 2024 14:39:13 -0700
-Message-ID: <20240423213859.508762663@linuxfoundation.org>
+Message-ID: <20240423213855.937872157@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,144 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuanhong Guo <gch981213@gmail.com>
+From: Stephen Boyd <sboyd@kernel.org>
 
-commit fb1f4584b1215e8c209f6b3a4028ed8351a0e961 upstream.
+[ Upstream commit 9d05ae531c2cff20d5d527f04e28d28e04379929 ]
 
-Fibocom FM650/FG650 are 5G modems with ECM/NCM/RNDIS/MBIM modes.
-This patch adds support to all 4 modes.
+Initialize this kref once we allocate memory for the struct clk_core so
+that we can reuse the release function to free any memory associated
+with the structure. This mostly consolidates code, but also clarifies
+that the kref lifetime exists once the container structure (struct
+clk_core) is allocated instead of leaving it in a half-baked state for
+most of __clk_core_init().
 
-In all 4 modes, the first serial port is the AT console while the other
-3 appear to be diagnostic interfaces for dumping modem logs.
-
-usb-devices output for all modes:
-
-ECM:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a04 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 5 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-NCM:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a05 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-RNDIS:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a06 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-MBIM:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a07 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240325184204.745706-4-sboyd@kernel.org
+Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/clk.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2279,6 +2279,10 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
- 	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a04, 0xff) },			/* Fibocom FM650-CN (ECM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index d841a9d7281c6..4f9f55cff9231 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -3838,8 +3838,6 @@ static int __clk_core_init(struct clk_core *core)
+ 	}
+ 
+ 	clk_core_reparent_orphans_nolock();
+-
+-	kref_init(&core->ref);
+ out:
+ 	clk_pm_runtime_put(core);
+ unlock:
+@@ -4068,6 +4066,16 @@ static void clk_core_free_parent_map(struct clk_core *core)
+ 	kfree(core->parents);
+ }
+ 
++/* Free memory allocated for a struct clk_core */
++static void __clk_release(struct kref *ref)
++{
++	struct clk_core *core = container_of(ref, struct clk_core, ref);
++
++	clk_core_free_parent_map(core);
++	kfree_const(core->name);
++	kfree(core);
++}
++
+ static struct clk *
+ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
+ {
+@@ -4088,6 +4096,8 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
+ 		goto fail_out;
+ 	}
+ 
++	kref_init(&core->ref);
++
+ 	core->name = kstrdup_const(init->name, GFP_KERNEL);
+ 	if (!core->name) {
+ 		ret = -ENOMEM;
+@@ -4142,12 +4152,10 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
+ 	hw->clk = NULL;
+ 
+ fail_create_clk:
+-	clk_core_free_parent_map(core);
+ fail_parents:
+ fail_ops:
+-	kfree_const(core->name);
+ fail_name:
+-	kfree(core);
++	kref_put(&core->ref, __clk_release);
+ fail_out:
+ 	return ERR_PTR(ret);
+ }
+@@ -4227,16 +4235,6 @@ int of_clk_hw_register(struct device_node *node, struct clk_hw *hw)
+ }
+ EXPORT_SYMBOL_GPL(of_clk_hw_register);
+ 
+-/* Free memory allocated for a clock. */
+-static void __clk_release(struct kref *ref)
+-{
+-	struct clk_core *core = container_of(ref, struct clk_core, ref);
+-
+-	clk_core_free_parent_map(core);
+-	kfree_const(core->name);
+-	kfree(core);
+-}
+-
+ /*
+  * Empty clk_ops for unregistered clocks. These are used temporarily
+  * after clk_unregister() was called on a clock and until last clock
+-- 
+2.43.0
+
 
 
 
