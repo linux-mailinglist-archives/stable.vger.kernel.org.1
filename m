@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE088AFA73
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A9F8AF9DD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 189D2282C1D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02AEA28C933
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAD71474C7;
-	Tue, 23 Apr 2024 21:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665B714430E;
+	Tue, 23 Apr 2024 21:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymZ9CGqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESTZ0TDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADD81420BE;
-	Tue, 23 Apr 2024 21:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25982143889;
+	Tue, 23 Apr 2024 21:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908701; cv=none; b=qpYAQ9MyvjTMPS6kXV8MsELvz88fnHe2RqqhicAwTNDCTZR0YCfZVpoAVZs9MfXsEuq0ZUNxeKAfugE9IrJVjXSGWAM1a3il8u3WEUKSXfQn/qm1g+iFMzna/hjoJJzJAATLde+RJtqndz/uY9p6yFKCCPsEM1oKXH8qub+HpVg=
+	t=1713908597; cv=none; b=LmNuBsBcoEk8jXkQPDuMkWhj0bjo5nuocaTGwAUBZwgT0gLlzvQNj9GCMgZsTg5EABeqAL2WQQXCv0RPMVLG5rnROIe292FR3IW3UCTb+nLq+DyaIXt5cG84rLaL7tkoRnjAZr8rutNB0PU5k4ZjjdZupcvvKiPc3+i0SPsV8Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908701; c=relaxed/simple;
-	bh=E/R1dS2whryx+4FPwD4MYQHUoHerC/6YcGENFwFHJrw=;
+	s=arc-20240116; t=1713908597; c=relaxed/simple;
+	bh=aK1pxSY6eU+PY+j6QJnj+Wk6MviXlRqwtoiMo/+O/Cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0cUgvfGZM/ZwzcWhwGfI1/+xc3w0xiKXYzBo0kVcwiUKu7lhImWm4/5eVg2MGxkTVNW08BuVtbvItH4OKw89u4cI+W3/ln7cIIFuVBJuLOCPJXkbLYu3hQcuRTjK9uZMSz3WRGOh8Go4CfYO1XIzzie6AiK9eBK/LCyqeX/xSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymZ9CGqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E95C116B1;
-	Tue, 23 Apr 2024 21:45:01 +0000 (UTC)
+	 MIME-Version; b=jRQVCimwLfEF1JL0NFYF6+uk8sBKLc6V2nU7pyka652+prK4Xbj7RIbJD4S7MCo9qyoU68AZYImGPVGRxaiMVrTzeD0glz4V1HDrw+Jm4S6+KFgcapk9UbDAMNkevEUYtPm9JWaAxmgaqYdZW4UbQXOSkEo9Iztir4GJ5qZ8Tzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESTZ0TDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDEBC3277B;
+	Tue, 23 Apr 2024 21:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908701;
-	bh=E/R1dS2whryx+4FPwD4MYQHUoHerC/6YcGENFwFHJrw=;
+	s=korg; t=1713908597;
+	bh=aK1pxSY6eU+PY+j6QJnj+Wk6MviXlRqwtoiMo/+O/Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymZ9CGqOHhvL6zD0iDBI2amgZD7W2+bvx9h9M5B7aA/l5J9KMs0MXltgy4sDbCmuK
-	 MEMqCceoEfrd4+VXeVUGNnlf9xlfbLyFm3XGgSesQVpqFZ2FKxahYfFAkYu9Y6rCua
-	 GtH7dVLjvnzRM3o+6klvW2Rfh8yjG7SHwuxQu3Qw=
+	b=ESTZ0TDZbkm/8kYGxGeVfHZi8esgh9it6ENEcyQ9JG9MUlzFQTetpCGytjQvTkCo3
+	 O+OQ4lhoxAqoqgnoPjXh81e52ObBltPVs6kLEqXnJiSl8ROJvSNWmApC0oPJ4V+Vl7
+	 bYNS8tictMsX/XnbIOzgGCVvkgaC8s4pxUXMrCq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 029/141] x86/head/64: Add missing __head annotation to startup_64_load_idt()
+	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
+	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 060/158] RDMA/rxe: Fix the problem "mutex_destroy missing"
 Date: Tue, 23 Apr 2024 14:38:17 -0700
-Message-ID: <20240423213854.257272518@linuxfoundation.org>
+Message-ID: <20240423213857.727781334@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+From: Yanjun.Zhu <yanjun.zhu@linux.dev>
 
-[ Commit 7f6874eddd81cb2ed784642a7a4321671e158ffe upstream ]
+[ Upstream commit 481047d7e8391d3842ae59025806531cdad710d9 ]
 
-This function is currently only used in the head code and is only called
-from startup_64_setup_env(). Although it would be inlined by the
-compiler, it would be better to mark it as __head too in case it doesn't.
+When a mutex lock is not used any more, the function mutex_destroy
+should be called to mark the mutex lock uninitialized.
 
-Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/efcc5b5e18af880e415d884e072bf651c1fa7c34.1689130310.git.houwenlong.hwl@antgroup.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Yanjun.Zhu <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240314065140.27468-1-yanjun.zhu@linux.dev
+Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/head64.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -588,7 +588,7 @@ static void set_bringup_idt_handler(gate
+diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
+index 54c723a6eddac..6f9ec8db014c7 100644
+--- a/drivers/infiniband/sw/rxe/rxe.c
++++ b/drivers/infiniband/sw/rxe/rxe.c
+@@ -33,6 +33,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
+ 
+ 	if (rxe->tfm)
+ 		crypto_free_shash(rxe->tfm);
++
++	mutex_destroy(&rxe->usdev_lock);
  }
  
- /* This runs while still in the direct mapping */
--static void startup_64_load_idt(unsigned long physbase)
-+static void __head startup_64_load_idt(unsigned long physbase)
- {
- 	struct desc_ptr *desc = fixup_pointer(&bringup_idt_descr, physbase);
- 	gate_desc *idt = fixup_pointer(bringup_idt_table, physbase);
+ /* initialize rxe device parameters */
+-- 
+2.43.0
+
 
 
 
