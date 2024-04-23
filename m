@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-41241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786AE8AFADD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0818AFA9C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C3971F22311
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CF441C223BC
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0B9145B18;
-	Tue, 23 Apr 2024 21:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBEC14A08B;
+	Tue, 23 Apr 2024 21:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgA5wnFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ep14U+0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EAE143C5F;
-	Tue, 23 Apr 2024 21:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAEB143882;
+	Tue, 23 Apr 2024 21:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908774; cv=none; b=JK8XSoe1tpQuTI60IrDmzKtyVVlbAS+hfxj6LhDbnEX19TFT+i7QDJ1ELPoCz8zueToiSOpgr5foN3zQo581GtDsbgGaidYxA8osGo1YkEROfx9eEuhQIDgkV4dXk3Csw+yTsP1Y8auAnZwdAR+s59Ad7mCQKZKTQfaJ1YiYEy0=
+	t=1713908735; cv=none; b=TLGVhNDzF5/ddl1BezPw3TW1voX0ntod1GHakbYVPnteDeDOp9vDkDUCalo+kk2I23tJUnB2DW/rdp5x84/nJI+v3sGQn9mlY6C+rnPSc5/qNXuiY4CzNSYmn81/p84poovvVgROrQMICfDqSFo9lB8FL+J48eBcsj4Qy861ULA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908774; c=relaxed/simple;
-	bh=9e7C15Tmm1FQvlYdKQLjjdXPhwQI8k3onDC3keqqHcM=;
+	s=arc-20240116; t=1713908735; c=relaxed/simple;
+	bh=9CXDgbllqoBEbk6AuR+tNQr/RyYjO5ngvtE+/QpLByU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsWYe1FKQ882jgAmEZaEVQdYC/QrWuJIt2Jny8DQLmZnKlanG3UvQ1gHm9y3WxyO1H/WVTGYPh3bItQAquqXg4j1kytPDt3tRD9cy6RD9GppTjBoTlCeSeCKyhXeiT+K0G6CRfEKVF8xo/mbDKbiMPAQUEFJJrPl5FfsxsJGhno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgA5wnFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE09C3277B;
-	Tue, 23 Apr 2024 21:46:13 +0000 (UTC)
+	 MIME-Version; b=O4yIo4FVRorxIA6038y/k4G9YBlbN+6wAwGuxyq2Eoy9b/mL0KJBt7HhKVBT1AqH6jDLQodbj+ja2mBoMpO4XAeMRO8MsbN9VYZQq0oWSJkHnLaWxXQdXn8l+I1OYAT8t1WKWkhwG6xpndFneHl5IwK41jJ8HATO2Vpfpvebkfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ep14U+0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5C1C3277B;
+	Tue, 23 Apr 2024 21:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908773;
-	bh=9e7C15Tmm1FQvlYdKQLjjdXPhwQI8k3onDC3keqqHcM=;
+	s=korg; t=1713908735;
+	bh=9CXDgbllqoBEbk6AuR+tNQr/RyYjO5ngvtE+/QpLByU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgA5wnFzl4DPNCAgPxOdnffpEUP3Ti3Pl6ImC0MBIqJqVeVI6UKzIgpsR6w8sAk1s
-	 ArA3CJxI9F6+9eEMd2TztZe3/YwkbuM8En8M1xmxFN9/umS0gCF3RhNfONckiLoFPF
-	 p/oQtd6CqvU64Aw8ldZ9kt1fLuEBP3fmP7BabKRs=
+	b=Ep14U+0CjF4t4AR+VhWHr3Wwibqry4QT3zN+u0n1LEFVKyzLHkUkwovLnwtIFG8iA
+	 P+drHZSsW5MLqA8I/BPY2gDlRUR50PiEHGM3lhNBqW6O2BVu8YGMFaZiFiZE4wSJRm
+	 f0wdGLRX2+PSd4N3N+HdxSt/YWiUDVogr8lEXYVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/71] netfilter: nft_set_pipapo: do not free live element
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 103/141] comedi: vmk80xx: fix incomplete endpoint checking
 Date: Tue, 23 Apr 2024 14:39:31 -0700
-Message-ID: <20240423213844.752636865@linuxfoundation.org>
+Message-ID: <20240423213856.516891295@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 3cfc9ec039af60dbd8965ae085b2c2ccdcfbe1cc ]
+commit d1718530e3f640b7d5f0050e725216eab57a85d8 upstream.
 
-Pablo reports a crash with large batches of elements with a
-back-to-back add/remove pattern.  Quoting Pablo:
+While vmk80xx does have endpoint checking implemented, some things
+can fall through the cracks. Depending on the hardware model,
+URBs can have either bulk or interrupt type, and current version
+of vmk80xx_find_usb_endpoints() function does not take that fully
+into account. While this warning does not seem to be too harmful,
+at the very least it will crash systems with 'panic_on_warn' set on
+them.
 
-  add_elem("00000000") timeout 100 ms
-  ...
-  add_elem("0000000X") timeout 100 ms
-  del_elem("0000000X") <---------------- delete one that was just added
-  ...
-  add_elem("00005000") timeout 100 ms
+Fix the issue found by Syzkaller [1] by somewhat simplifying the
+endpoint checking process with usb_find_common_endpoints() and
+ensuring that only expected endpoint types are present.
 
-  1) nft_pipapo_remove() removes element 0000000X
-  Then, KASAN shows a splat.
+This patch has not been tested on real hardware.
 
-Looking at the remove function there is a chance that we will drop a
-rule that maps to a non-deactivated element.
+[1] Syzkaller report:
+usb 1-1: BOGUS urb xfer, pipe 1 != type 3
+WARNING: CPU: 0 PID: 781 at drivers/usb/core/urb.c:504 usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
+...
+Call Trace:
+ <TASK>
+ usb_start_wait_urb+0x113/0x520 drivers/usb/core/message.c:59
+ vmk80xx_reset_device drivers/comedi/drivers/vmk80xx.c:227 [inline]
+ vmk80xx_auto_attach+0xa1c/0x1a40 drivers/comedi/drivers/vmk80xx.c:818
+ comedi_auto_config+0x238/0x380 drivers/comedi/drivers.c:1067
+ usb_probe_interface+0x5cd/0xb00 drivers/usb/core/driver.c:399
+...
 
-Removal happens in two steps, first we do a lookup for key k and return the
-to-be-removed element and mark it as inactive in the next generation.
-Then, in a second step, the element gets removed from the set/map.
+Similar issue also found by Syzkaller:
+Link: https://syzkaller.appspot.com/bug?extid=5205eb2f17de3e01946e
 
-The _remove function does not work correctly if we have more than one
-element that share the same key.
-
-This can happen if we insert an element into a set when the set already
-holds an element with same key, but the element mapping to the existing
-key has timed out or is not active in the next generation.
-
-In such case its possible that removal will unmap the wrong element.
-If this happens, we will leak the non-deactivated element, it becomes
-unreachable.
-
-The element that got deactivated (and will be freed later) will
-remain reachable in the set data structure, this can result in
-a crash when such an element is retrieved during lookup (stale
-pointer).
-
-Add a check that the fully matching key does in fact map to the element
-that we have marked as inactive in the deactivation step.
-If not, we need to continue searching.
-
-Add a bug/warn trap at the end of the function as well, the remove
-function must not ever be called with an invisible/unreachable/non-existent
-element.
-
-v2: avoid uneeded temporary variable (Stefano)
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Fixes: 49253d542cc0 ("staging: comedi: vmk80xx: factor out usb endpoint detection")
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240408171633.31649-1-n.zhandarovich@fintech.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/comedi/drivers/vmk80xx.c |   35 ++++++++++++-----------------------
+ 1 file changed, 12 insertions(+), 23 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 58eca26162735..2299ced939c47 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1994,6 +1994,8 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
- 		rules_fx = rules_f0;
+--- a/drivers/comedi/drivers/vmk80xx.c
++++ b/drivers/comedi/drivers/vmk80xx.c
+@@ -641,33 +641,22 @@ static int vmk80xx_find_usb_endpoints(st
+ 	struct vmk80xx_private *devpriv = dev->private;
+ 	struct usb_interface *intf = comedi_to_usb_interface(dev);
+ 	struct usb_host_interface *iface_desc = intf->cur_altsetting;
+-	struct usb_endpoint_descriptor *ep_desc;
+-	int i;
++	struct usb_endpoint_descriptor *ep_rx_desc, *ep_tx_desc;
++	int ret;
  
- 		nft_pipapo_for_each_field(f, i, m) {
-+			bool last = i == m->field_count - 1;
-+
- 			if (!pipapo_match_field(f, start, rules_fx,
- 						match_start, match_end))
- 				break;
-@@ -2006,16 +2008,18 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
- 
- 			match_start += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
- 			match_end += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
+-	if (iface_desc->desc.bNumEndpoints != 2)
+-		return -ENODEV;
+-
+-	for (i = 0; i < iface_desc->desc.bNumEndpoints; i++) {
+-		ep_desc = &iface_desc->endpoint[i].desc;
+-
+-		if (usb_endpoint_is_int_in(ep_desc) ||
+-		    usb_endpoint_is_bulk_in(ep_desc)) {
+-			if (!devpriv->ep_rx)
+-				devpriv->ep_rx = ep_desc;
+-			continue;
 -		}
++	if (devpriv->model == VMK8061_MODEL)
++		ret = usb_find_common_endpoints(iface_desc, &ep_rx_desc,
++						&ep_tx_desc, NULL, NULL);
++	else
++		ret = usb_find_common_endpoints(iface_desc, NULL, NULL,
++						&ep_rx_desc, &ep_tx_desc);
  
--		if (i == m->field_count) {
--			priv->dirty = true;
--			pipapo_drop(m, rulemap);
--			return;
-+			if (last && f->mt[rulemap[i].to].e == e) {
-+				priv->dirty = true;
-+				pipapo_drop(m, rulemap);
-+				return;
-+			}
- 		}
+-		if (usb_endpoint_is_int_out(ep_desc) ||
+-		    usb_endpoint_is_bulk_out(ep_desc)) {
+-			if (!devpriv->ep_tx)
+-				devpriv->ep_tx = ep_desc;
+-			continue;
+-		}
+-	}
+-
+-	if (!devpriv->ep_rx || !devpriv->ep_tx)
++	if (ret)
+ 		return -ENODEV;
  
- 		first_rule += rules_f0;
- 	}
++	devpriv->ep_rx = ep_rx_desc;
++	devpriv->ep_tx = ep_tx_desc;
 +
-+	WARN_ON_ONCE(1); /* elem_priv not found */
- }
+ 	if (!usb_endpoint_maxp(devpriv->ep_rx) || !usb_endpoint_maxp(devpriv->ep_tx))
+ 		return -EINVAL;
  
- /**
--- 
-2.43.0
-
 
 
 
