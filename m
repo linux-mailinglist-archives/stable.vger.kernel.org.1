@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-41146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C278AFA7C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A678AFA09
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1F891F296F8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C461BB229CE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426F61474D1;
-	Tue, 23 Apr 2024 21:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B351487F2;
+	Tue, 23 Apr 2024 21:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APr+NIyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7DCEDGG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D611420BE;
-	Tue, 23 Apr 2024 21:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2158E145B0F;
+	Tue, 23 Apr 2024 21:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908709; cv=none; b=ExcaQEA+29nhfy/QPYBpG4tFsNnF0YqH9RnK41yggERrFljvl/zcyMLPgCldFtAo6KdnyK9VVDn3oXe83HI1pIwKJiEZvY7lvlQTSjtclVjdsRTr+Pa1qVciDm71LudYfxN5nrvbvLN7PgL0ZtMkQAK7iqPJdsDYDWsDmgUWqkg=
+	t=1713908622; cv=none; b=c5eq6YW0p7HtuANLPfBRfOIKIxDzyp18vAe6Vx3eE6y3BcpsZb9CZGBoboSOYvhMnXeFJbk+SAw1Jv1ugVCREK3l70bhGbCtwRohSpL3vp2SePHkgohx1FebO2fMjuZEop3bIMerKzWS+L9nCBahGiui3G0fvh/tpblRzFq7Eqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908709; c=relaxed/simple;
-	bh=W5R/gXNLsubgP1ofWaa2232rch0CXbxaisOYUVs7VPM=;
+	s=arc-20240116; t=1713908622; c=relaxed/simple;
+	bh=QxYsMVWMynwM9XeE+ticMddsfMXnXsoh5udqcyf4uA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMlUIrqXZtqjT/9PNmuv24jjooJOfOliILldkLzXqa0Gczb6iaq+i4NwsI8EZLNe6ed8padMDZWpODLsz/CNw7hEoEQxnYQyzOBRW3qaCP3FWp/h37vdzWXWqEvBKv9AC6+A9sufBuwCyklSYiPIdszkYiQIR21l/cogoRof5Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APr+NIyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2370C116B1;
-	Tue, 23 Apr 2024 21:45:08 +0000 (UTC)
+	 MIME-Version; b=QK4SyqBpLO8f8PdK6HRMGpxs6qKWa4R+aQ8ITHpYDlH1mTLBcKGojs0wxK6i+iDk0JOu2VOmmxVK1enMB0Bn6ak9dyhy9Y8wbIoBLAk5/MfON/SUES4hJcOvONLhRDw54MeeQUYus682Hw+yOxvVkgqhFR6AxU/r1b+74wp3yXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7DCEDGG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9380C3277B;
+	Tue, 23 Apr 2024 21:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908708;
-	bh=W5R/gXNLsubgP1ofWaa2232rch0CXbxaisOYUVs7VPM=;
+	s=korg; t=1713908622;
+	bh=QxYsMVWMynwM9XeE+ticMddsfMXnXsoh5udqcyf4uA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APr+NIyHtmT9Fd+9lFCYn3ABB9BqseYM/rNSTox8TiBI9yT5uDdA2GhuUoDwvUaUf
-	 d2w5k8gyVQT3hSgMsFEEueV/w7L2CWhIWxIRXYaKZv+1Uw3WwcyzTTdoEBxDI73auM
-	 dSKrdLzX4nxdRWpoGxagRXnuTraQgWP5mFTEJxiM=
+	b=F7DCEDGGWLEP8UFzY3Cj8/N65X/ev4Y62rzIp5Sw0OKGOIWenW1Bg9yffcuXb3/pN
+	 HGEPO+Ko3J4Xx1mFOe5V0QjqokiWGhcgs8TN0YawO9d3MgFYmWodagUisLSNYy88h6
+	 ko2Khi1GAe3SNAqc5ykQaMf3reOBGa6Rgyi2Eik4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@kernel.org>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Pin-yen Lin <treapking@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/141] PCI: Make quirk using inw() depend on HAS_IOPORT
+Subject: [PATCH 6.6 096/158] clk: mediatek: Do a runtime PM get on controllers during probe
 Date: Tue, 23 Apr 2024 14:38:53 -0700
-Message-ID: <20240423213855.355112439@linuxfoundation.org>
+Message-ID: <20240423213858.867439612@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit f768c75d61582b011962f9dcb9ff8eafb8da0383 ]
+[ Upstream commit 2f7b1d8b5505efb0057cd1ab85fca206063ea4c3 ]
 
-In the future inw() and friends will not be compiled on architectures
-without I/O port support.
+mt8183-mfgcfg has a mutual dependency with genpd during the probing
+stage, which leads to a deadlock in the following call stack:
 
-Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-Link: https://lore.kernel.org/r/20230703135255.2202721-2-schnelle@linux.ibm.com
-Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+CPU0:  genpd_lock --> clk_prepare_lock
+genpd_power_off_work_fn()
+ genpd_lock()
+ generic_pm_domain::power_off()
+    clk_unprepare()
+      clk_prepare_lock()
+
+CPU1: clk_prepare_lock --> genpd_lock
+clk_register()
+  __clk_core_init()
+    clk_prepare_lock()
+    clk_pm_runtime_get()
+      genpd_lock()
+
+Do a runtime PM get at the probe function to make sure clk_register()
+won't acquire the genpd lock. Instead of only modifying mt8183-mfgcfg,
+do this on all mediatek clock controller probings because we don't
+believe this would cause any regression.
+
+Verified on MT8183 and MT8192 Chromebooks.
+
+Fixes: acddfc2c261b ("clk: mediatek: Add MT8183 clock support")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+
+Link: https://lore.kernel.org/r/20240312115249.3341654-1-treapking@chromium.org
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/mediatek/clk-mtk.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 3959ea7b106b6..5aca621dd1c22 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -268,6 +268,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_NEC,	PCI_DEVICE_ID_NEC_CBUS_2,	quirk_isa_d
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_NEC,	PCI_DEVICE_ID_NEC_CBUS_3,	quirk_isa_dma_hangs);
- #endif
+diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
+index 2e55368dc4d82..bd37ab4d1a9bb 100644
+--- a/drivers/clk/mediatek/clk-mtk.c
++++ b/drivers/clk/mediatek/clk-mtk.c
+@@ -13,6 +13,7 @@
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/slab.h>
  
-+#ifdef CONFIG_HAS_IOPORT
- /*
-  * Intel NM10 "TigerPoint" LPC PM1a_STS.BM_STS must be clear
-  * for some HT machines to use C4 w/o hanging.
-@@ -287,6 +288,7 @@ static void quirk_tigerpoint_bm_sts(struct pci_dev *dev)
+ #include "clk-mtk.h"
+@@ -494,6 +495,16 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 			return IS_ERR(base) ? PTR_ERR(base) : -ENOMEM;
  	}
- }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_TGP_LPC, quirk_tigerpoint_bm_sts);
-+#endif
  
- /* Chipsets where PCI->PCI transfers vanish or hang */
- static void quirk_nopcipci(struct pci_dev *dev)
++
++	devm_pm_runtime_enable(&pdev->dev);
++	/*
++	 * Do a pm_runtime_resume_and_get() to workaround a possible
++	 * deadlock between clk_register() and the genpd framework.
++	 */
++	r = pm_runtime_resume_and_get(&pdev->dev);
++	if (r)
++		return r;
++
+ 	/* Calculate how many clk_hw_onecell_data entries to allocate */
+ 	num_clks = mcd->num_clks + mcd->num_composite_clks;
+ 	num_clks += mcd->num_fixed_clks + mcd->num_factor_clks;
+@@ -574,6 +585,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 			goto unregister_clks;
+ 	}
+ 
++	pm_runtime_put(&pdev->dev);
++
+ 	return r;
+ 
+ unregister_clks:
+@@ -604,6 +617,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ free_base:
+ 	if (mcd->shared_io && base)
+ 		iounmap(base);
++
++	pm_runtime_put(&pdev->dev);
+ 	return r;
+ }
+ 
 -- 
 2.43.0
 
