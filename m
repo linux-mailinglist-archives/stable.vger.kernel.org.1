@@ -1,239 +1,154 @@
-Return-Path: <stable+bounces-40685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6984B8AE771
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:08:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E828AE773
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E61F286A67
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:08:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60670286EE7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2869B134751;
-	Tue, 23 Apr 2024 13:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5EC1350CD;
+	Tue, 23 Apr 2024 13:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qmKMFT0m";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9nRhQWg3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qmKMFT0m";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9nRhQWg3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEVioWIj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F161745E2;
-	Tue, 23 Apr 2024 13:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F608134CF7
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713877686; cv=none; b=XK/k0Xl3CAZLwZEK/rlpXrfiJBJblGr28K90NF3wVG4Y3ThSY5zvMoN2EkeOcDXDdXnidQxOk7oXo7csggDesEbU45UMtgxc+TbmH8agfus79m2l3zYAtfKIaVXtFlKR1K/9FcSpi/lEAHsDIB3vj8QKXfjtSUNhw/JviMNHswU=
+	t=1713877688; cv=none; b=Y9wVpg03jW7NAjfOv6nuHxerr8DmZ6gTMQq6xQLSUmIw3v+8mgNsuH/GNuyOxlgeii4HvY8STo38HvQiLoXdIe8Gno/hZ4c4TMsTvgiLjqOto2AdFfiokwX8KMNQJpthXvibtj8tr5H3NuUG2j3XXAVCT2s8fSPmEups//nxjtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713877686; c=relaxed/simple;
-	bh=iLUrBbUOU5gdH+eZbJLreYBsbpQPZFCk+4aYIpqdju4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nuowu7ss6z5fe596EZzrdSHioUuL32Ph0n6zQoGTpZmrN/TER2qPHuuTQ7+4heQVJOp+ccejVpssCrguWUlv5ebxbctnds7f4cAXpepRkc0oPrS9hoFYQcRK+gslAcE642gKEf5nafrBeXFTZeSuuLOTKX9ULcK2w/ycTjdzwPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qmKMFT0m; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9nRhQWg3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qmKMFT0m; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9nRhQWg3; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6778F37F9F;
-	Tue, 23 Apr 2024 13:07:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1713877676; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1Id41yHvdTscUsFAax+DNoLOYykqRWumjAUWJN9I2VY=;
-	b=qmKMFT0mlZ5lMemlzm3IMqpOJgMMdFt7iU2esq1/LeqFi9+L+zuwXWN8NLBj3YLBcJcqyp
-	NLxQi+wz7v5+y/etBqCdyehMvdlqGLm1/cljwq9XN9lDdXQnztGYvnJ8PTbjMLDZzn5NHb
-	tuWwNQHLLnl5BYFeZaUGklviJgswXyc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1713877676;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1Id41yHvdTscUsFAax+DNoLOYykqRWumjAUWJN9I2VY=;
-	b=9nRhQWg3Lddeb3Ejm5yfTgZXrZNOJ8ErCcBzqxhu11oVqyX0ubIOBNgAVW1iCAc1maYNLz
-	CM5qwk08G/5TIPAg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1713877676; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1Id41yHvdTscUsFAax+DNoLOYykqRWumjAUWJN9I2VY=;
-	b=qmKMFT0mlZ5lMemlzm3IMqpOJgMMdFt7iU2esq1/LeqFi9+L+zuwXWN8NLBj3YLBcJcqyp
-	NLxQi+wz7v5+y/etBqCdyehMvdlqGLm1/cljwq9XN9lDdXQnztGYvnJ8PTbjMLDZzn5NHb
-	tuWwNQHLLnl5BYFeZaUGklviJgswXyc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1713877676;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1Id41yHvdTscUsFAax+DNoLOYykqRWumjAUWJN9I2VY=;
-	b=9nRhQWg3Lddeb3Ejm5yfTgZXrZNOJ8ErCcBzqxhu11oVqyX0ubIOBNgAVW1iCAc1maYNLz
-	CM5qwk08G/5TIPAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 162F013894;
-	Tue, 23 Apr 2024 13:07:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7DhbBKyyJ2btXwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 23 Apr 2024 13:07:56 +0000
-Message-ID: <1722c1b6-59a5-429d-905c-bc1951a68a68@suse.de>
-Date: Tue, 23 Apr 2024 15:07:51 +0200
+	s=arc-20240116; t=1713877688; c=relaxed/simple;
+	bh=igF0AdoS8lFRMqE5mrOCHsdbz/qLcX3S6jt2bBfGAe0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iN6wEExin/M5T8Kb5LE/AMH8f2d6ByQyqlvBbsdKYvArWQ/mUhvUm+WR0nolHXcsXasvfG94zmLtMWzGGnmtGiKN7cepzdXki48XrxC5hi+2cf8/Lxbo1Sxd/m1uHLWeljUCHFhWdZJOEGXBcLqYpNCHR+7nJpZ/Mkl2cjDRR3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEVioWIj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24183C2BD11;
+	Tue, 23 Apr 2024 13:08:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1713877688;
+	bh=igF0AdoS8lFRMqE5mrOCHsdbz/qLcX3S6jt2bBfGAe0=;
+	h=Subject:To:Cc:From:Date:From;
+	b=lEVioWIjaB0nsJdMYOAwiE3U0JpcyxlhXs9rWTn0pfqfq/BBVM8JzfmCJ97Kc3CCB
+	 kBSD1oCSEc3vL9pwVz9T8nc6fozVmlNALochcVwPNaEw2556U2pAt6KEjTKxxDy0Ts
+	 Xok+GsPKPOn8756rmIGbyfAmQoXjEKVxAR8ERhTk=
+Subject: FAILED: patch "[PATCH] drm/xe/vm: prevent UAF with asid based lookup" failed to apply to 6.8-stable tree
+To: matthew.auld@intel.com,lucas.demarchi@intel.com,matthew.brost@intel.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 23 Apr 2024 06:07:58 -0700
+Message-ID: <2024042358-esteemed-fastball-c2d8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fbdev: fix incorrect address computation in deferred
- IO
-To: Nam Cao <namcao@linutronix.de>, Jaya Kumar <jayalk@intworks.biz>,
- Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
- Javier Martinez Canillas <javierm@redhat.com>, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Cc: tiwai@suse.de, bigeasy@linutronix.de, patrik.r.jakobsson@gmail.com,
- Vegard Nossum <vegard.nossum@oracle.com>,
- George Kennedy <george.kennedy@oracle.com>,
- Darren Kenny <darren.kenny@oracle.com>, chuansheng.liu@intel.com,
- Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- stable@vger.kernel.org
-References: <20240423115053.4490-1-namcao@linutronix.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20240423115053.4490-1-namcao@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.79 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FREEMAIL_TO(0.00)[linutronix.de,intworks.biz,ffwll.ch,gmx.de,redhat.com,vger.kernel.org,lists.freedesktop.org];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.de,linutronix.de,gmail.com,oracle.com,intel.com,vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email]
-X-Spam-Score: -2.79
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Hi
 
-Am 23.04.24 um 13:50 schrieb Nam Cao:
-> With deferred IO enabled, a page fault happens when data is written to the
-> framebuffer device. Then driver determines which page is being updated by
-> calculating the offset of the written virtual address within the virtual
-> memory area, and uses this offset to get the updated page within the
-> internal buffer. This page is later copied to hardware (thus the name
-> "deferred IO").
->
-> This offset calculation is only correct if the virtual memory area is
-> mapped to the beginning of the internal buffer. Otherwise this is wrong.
-> For example, if users do:
->      mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
->
-> Then the virtual memory area will mapped at offset 0xff000 within the
-> internal buffer. This offset 0xff000 is not accounted for, and wrong page
-> is updated.
->
-> Correct the calculation by using vmf->pgoff instead. With this change, the
-> variable "offset" will no longer hold the exact offset value, but it is
-> rounded down to multiples of PAGE_SIZE. But this is still correct, because
-> this variable is only used to calculate the page offset.
->
-> Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-> Closes: https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4ab341a@oracle.com
-> Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
+The patch below does not apply to the 6.8-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Thank you so much. I'll take care of merging the patch later this week.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git checkout FETCH_HEAD
+git cherry-pick -x ca7c52ac7ad384bcf299d89482c45fec7cd00da9
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042358-esteemed-fastball-c2d8@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
 
-Best regards
-Thomas
+Possible dependencies:
 
-> ---
-> v2:
->    - simplify the patch by using vfg->pgoff
->    - remove tested-by tag, as the patch is now different
->
->   drivers/video/fbdev/core/fb_defio.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
-> index 1ae1d35a5942..b9607d5a370d 100644
-> --- a/drivers/video/fbdev/core/fb_defio.c
-> +++ b/drivers/video/fbdev/core/fb_defio.c
-> @@ -196,7 +196,7 @@ static vm_fault_t fb_deferred_io_track_page(struct fb_info *info, unsigned long
->    */
->   static vm_fault_t fb_deferred_io_page_mkwrite(struct fb_info *info, struct vm_fault *vmf)
->   {
-> -	unsigned long offset = vmf->address - vmf->vma->vm_start;
-> +	unsigned long offset = vmf->pgoff << PAGE_SHIFT;
->   	struct page *page = vmf->page;
->   
->   	file_update_time(vmf->vma->vm_file);
+ca7c52ac7ad3 ("drm/xe/vm: prevent UAF with asid based lookup")
+0eb2a18a8fad ("drm/xe: Implement VM snapshot support for BO's and userptr")
+be7d51c5b468 ("drm/xe: Add batch buffer addresses to devcoredump")
+4376cee62092 ("drm/xe: Print more device information in devcoredump")
+98fefec8c381 ("drm/xe: Change devcoredump functions parameters to xe_sched_job")
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ca7c52ac7ad384bcf299d89482c45fec7cd00da9 Mon Sep 17 00:00:00 2001
+From: Matthew Auld <matthew.auld@intel.com>
+Date: Fri, 12 Apr 2024 12:31:45 +0100
+Subject: [PATCH] drm/xe/vm: prevent UAF with asid based lookup
+
+The asid is only erased from the xarray when the vm refcount reaches
+zero, however this leads to potential UAF since the xe_vm_get() only
+works on a vm with refcount != 0. Since the asid is allocated in the vm
+create ioctl, rather erase it when closing the vm, prior to dropping the
+potential last ref. This should also work when user closes driver fd
+without explicit vm destroy.
+
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1594
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240412113144.259426-4-matthew.auld@intel.com
+(cherry picked from commit 83967c57320d0d01ae512f10e79213f81e4bf594)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 62d1ef8867a8..3d4c8f342e21 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1577,6 +1577,16 @@ void xe_vm_close_and_put(struct xe_vm *vm)
+ 		xe->usm.num_vm_in_fault_mode--;
+ 	else if (!(vm->flags & XE_VM_FLAG_MIGRATION))
+ 		xe->usm.num_vm_in_non_fault_mode--;
++
++	if (vm->usm.asid) {
++		void *lookup;
++
++		xe_assert(xe, xe->info.has_asid);
++		xe_assert(xe, !(vm->flags & XE_VM_FLAG_MIGRATION));
++
++		lookup = xa_erase(&xe->usm.asid_to_vm, vm->usm.asid);
++		xe_assert(xe, lookup == vm);
++	}
+ 	mutex_unlock(&xe->usm.lock);
+ 
+ 	for_each_tile(tile, xe, id)
+@@ -1592,24 +1602,15 @@ static void vm_destroy_work_func(struct work_struct *w)
+ 	struct xe_device *xe = vm->xe;
+ 	struct xe_tile *tile;
+ 	u8 id;
+-	void *lookup;
+ 
+ 	/* xe_vm_close_and_put was not called? */
+ 	xe_assert(xe, !vm->size);
+ 
+ 	mutex_destroy(&vm->snap_mutex);
+ 
+-	if (!(vm->flags & XE_VM_FLAG_MIGRATION)) {
++	if (!(vm->flags & XE_VM_FLAG_MIGRATION))
+ 		xe_device_mem_access_put(xe);
+ 
+-		if (xe->info.has_asid && vm->usm.asid) {
+-			mutex_lock(&xe->usm.lock);
+-			lookup = xa_erase(&xe->usm.asid_to_vm, vm->usm.asid);
+-			xe_assert(xe, lookup == vm);
+-			mutex_unlock(&xe->usm.lock);
+-		}
+-	}
+-
+ 	for_each_tile(tile, xe, id)
+ 		XE_WARN_ON(vm->pt_root[id]);
+ 
 
 
