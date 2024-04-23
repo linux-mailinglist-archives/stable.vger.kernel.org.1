@@ -1,225 +1,130 @@
-Return-Path: <stable+bounces-40562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1F48AE051
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 10:53:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1CA8AE0B7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DF011C21022
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 08:53:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA8371F2283B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 09:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554C654BF9;
-	Tue, 23 Apr 2024 08:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A887580A;
+	Tue, 23 Apr 2024 09:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ACqwC38t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRlUWBb5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B5847F51
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 08:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF587441E;
+	Tue, 23 Apr 2024 09:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713862383; cv=none; b=OyPol5RxQa/kusWg+Bn8u5TsDBAVmMgswvN5epS6QCuqw+YVlLNVEHouujLUNgFUyZs+80OukTxzF3UUfEaFIZwfJnuLelmvoUD6RwwzoH6OJBZfiwyjNodkvSEJXb4pQFeIPv5V7k5rLjXjeJPy1xrH83pzwz9KatxVicx4j5k=
+	t=1713863321; cv=none; b=FcG5Cj7jlSDhH40SVE/EAoND9aplRctY1zV47S6OWvomHKYpNkpelU1SWWWX59obtrwjCOH3kFzCjVofnncbj/kh5RnQZ1iTm82V1v/krghU2pVSGpOFhHFuZ+qwh1Rz41zZYyXmh2/4PynKPrUeKy20/GdcZkje2pWQ4AhdrKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713862383; c=relaxed/simple;
-	bh=vmGKk8QfbCJLHyA/vTdFNvla0GjMsTsITrM85VN3KT8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCvZ32nGPIyzxt0yTMQwgAAe/ZOJPuMGpGsUqdfOW6qvBcNZbnKB2fGiOfIzs1MbliiP7ffCh3Uxk20dbV5FlHWwZFF4UeWiFp4mw6CrQgZ0vmVV4SYST6udvAQq8DSUNtcWe4kU/w0VmjOcGq3WKMLNov8yhJ9BZzD6BHv4BWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ACqwC38t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CB3C2BD11;
-	Tue, 23 Apr 2024 08:53:01 +0000 (UTC)
+	s=arc-20240116; t=1713863321; c=relaxed/simple;
+	bh=15a83D1JMHWclRfM/z678s+f7sq6QGUXYdBCaTmBd8w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m0uvwokBtJJIobXxoK9BxA2ZO8ZcZAY85WMcD4uMvJt46IKMtTLSw0tNNcteJ9hNvjDTHqjcQyqM43/WOvR96WVukR2plCYqVA77Y6r+qeUcFuhn6emSLDL49CczpMWWBB36OCkHywXFu0Eh190bEWfidPy7mv3FOnoDfmSrQ8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRlUWBb5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C034EC116B1;
+	Tue, 23 Apr 2024 09:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713862382;
-	bh=vmGKk8QfbCJLHyA/vTdFNvla0GjMsTsITrM85VN3KT8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACqwC38tXGqS5kIY2MboEdPG4aGyGluSghRk3iXYJyCSn7qzw7gj84BhpFVa3mSqJ
-	 XZ1w0cZoyYB98zUGISEoU2Mk/Mny1pRdxpkELLFNRqk83o5rU3HuqEshoimF5bL6NF
-	 b557ZJRguxc4UzQK0AC5+ma0eXUviw6gpAmlGgSbfYkMCpotSlFQ1j9o4hvHc4zRmb
-	 0OYVyxVMKZ0j46dPagtyxKMe1CXt67IVHTLEOUpHcL9ZH4V7MsV7aipct5qXQtii59
-	 Yyizg+1VcEkfAFDMcMHFvpNkZOHVj9U9iek7QbBpn994Hf6uRQ3Rkme46CmEzk2o9k
-	 iKCMnOCoMK73A==
-From: Naveen N Rao <naveen@kernel.org>
-To: stable@vger.kernel.org
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Subject: [PATCH 6.6.y] powerpc/ftrace: Ignore ftrace locations in exit text sections
-Date: Tue, 23 Apr 2024 14:17:17 +0530
-Message-ID: <20240423084717.286596-1-naveen@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <2024021902-authentic-handpick-da09@gregkh>
-References: <2024021902-authentic-handpick-da09@gregkh>
+	s=k20201202; t=1713863320;
+	bh=15a83D1JMHWclRfM/z678s+f7sq6QGUXYdBCaTmBd8w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iRlUWBb50EHmT13m11xXOZt/qv+NF9r1gZSuMiRTkn2aq0AHwO10LHACFR8qUt2Gb
+	 qR7BbU69LqMNVN/sycmEM+0/fIlf42BNqkHOmK5Sv7NAF32yDE0iN2I6HrvkYeAdFo
+	 svkMcS3cRLaRAd8Gk0UhlxHEj6kTmlednqdmvcyTPOVH79WExHraiwOw4+eFPBL1Pq
+	 lvVqIX2pc7QxhHBF96xVH5krgO3GR8BrWKYhgAE/YEKyhM7RxqWXSlLQosDm8eNmYx
+	 arbMgT9xseU4Sw2zu4pU1atN6SHAytlMKr2XEYXpzOCMCpLqTD0beQsWERnPx7Sg4a
+	 CWhSk32WtHqdQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rzC8j-000000003Lp-1TNJ;
+	Tue, 23 Apr 2024 11:08:38 +0200
+Date: Tue, 23 Apr 2024 11:08:37 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Doug Anderson <dianders@chromium.org>,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Matthias Kaehlcke <mka@chromium.org>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Stephen Boyd <swboyd@chromium.org>
+Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
+Message-ID: <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
+References: <20240416091509.19995-1-johan+linaro@kernel.org>
+ <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
 
-commit ea73179e64131bcd29ba6defd33732abdf8ca14b upstream.
+Hi Doug and Janaki,
 
-Michael reported that we are seeing an ftrace bug on bootup when KASAN
-is enabled and we are using -fpatchable-function-entry:
+On Mon, Apr 22, 2024 at 10:50:33AM -0700, Doug Anderson wrote:
+> On Tue, Apr 16, 2024 at 2:17 AM Johan Hovold <johan+linaro@kernel.org> wrote:
 
-  ftrace: allocating 47780 entries in 18 pages
-  ftrace-powerpc: 0xc0000000020b3d5c: No module provided for non-kernel address
-  ------------[ ftrace bug ]------------
-  ftrace faulted on modifying
-  [<c0000000020b3d5c>] 0xc0000000020b3d5c
-  Initializing ftrace call sites
-  ftrace record flags: 0
-   (0)
-   expected tramp: c00000000008cef4
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 0 at kernel/trace/ftrace.c:2180 ftrace_bug+0x3c0/0x424
-  Modules linked in:
-  CPU: 0 PID: 0 Comm: swapper Not tainted 6.5.0-rc3-00120-g0f71dcfb4aef #860
-  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
-  NIP:  c0000000003aa81c LR: c0000000003aa818 CTR: 0000000000000000
-  REGS: c0000000033cfab0 TRAP: 0700   Not tainted  (6.5.0-rc3-00120-g0f71dcfb4aef)
-  MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 28028240  XER: 00000000
-  CFAR: c0000000002781a8 IRQMASK: 3
-  ...
-  NIP [c0000000003aa81c] ftrace_bug+0x3c0/0x424
-  LR [c0000000003aa818] ftrace_bug+0x3bc/0x424
-  Call Trace:
-   ftrace_bug+0x3bc/0x424 (unreliable)
-   ftrace_process_locs+0x5f4/0x8a0
-   ftrace_init+0xc0/0x1d0
-   start_kernel+0x1d8/0x484
+> > As Chromium is the only known user of the 'local-bd-address' property,
+> > could you please confirm that your controllers use the 00:00:00:00:5a:ad
+> > address by default so that the quirk continues to be set as intended?
+> 
+> I was at EOSS last week so didn't get a chance to test this, but I
+> just tested it now and I can confirm that it breaks trogdor. It
+> appears that trogdor devices seem to have a variant of your "default"
+> address. Instead of:
+> 
+> 00:00:00:00:5a:ad
+> 
+> We seem to have a default of this:
+> 
+> 39:98:00:00:5a:ad
+> 
+> ...so almost the same, but not enough the same to make it work with
+> your code. I checked 3 different trogdor boards and they were all the
+> same, though I can't 100% commit to saying that every trogdor device
+> out there has that same default address...
+> 
+> Given that this breaks devices and also that it's already landed and
+> tagged for stable, what's the plan here? Do we revert? Do we add the
+> second address in and hope that there aren't trogdor devices out in
+> the wild that somehow have a different default?
 
-With CONFIG_FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY=y and
-CONFIG_KASAN=y, compiler emits nops in functions that it generates for
-registering and unregistering global variables (unlike with -pg and
--mprofile-kernel where calls to _mcount() are not generated in those
-functions). Those functions then end up in INIT_TEXT and EXIT_TEXT
-respectively. We don't expect to see any profiled functions in
-EXIT_TEXT, so ftrace_init_nop() assumes that all addresses that aren't
-in the core kernel text belongs to a module. Since these functions do
-not match that criteria, we see the above bug.
+This patch is currently queued for 6.10 so there should be time to get
+this sorted.
 
-Address this by having ftrace ignore all locations in the text exit
-sections of vmlinux.
+My fallback plan was to add further (device-specific) default addresses
+in case this turned out to be needed (e.g. this is what the Broadcom
+driver does).
 
-Fixes: 0f71dcfb4aef ("powerpc/ftrace: Add support for -fpatchable-function-entry")
-Cc: stable@vger.kernel.org # v6.6+
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Reviewed-by: Benjamin Gray <bgray@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240213175410.1091313-1-naveen@kernel.org
----
- arch/powerpc/include/asm/ftrace.h        | 10 ++--------
- arch/powerpc/include/asm/sections.h      |  1 +
- arch/powerpc/kernel/trace/ftrace.c       | 12 ++++++++++++
- arch/powerpc/kernel/trace/ftrace_64_pg.c |  5 +++++
- arch/powerpc/kernel/vmlinux.lds.S        |  2 ++
- 5 files changed, 22 insertions(+), 8 deletions(-)
+I assume all Trogdor boards use the same controller, WCN3991 IIUC, but
+if you're worried about there being devices out there using a different
+address we could possibly also use the new
+"qcom,local-bd-address-broken" DT property as an indicator to set the
+bdaddr quirk.
 
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index 9e5a39b6a311..107fc5a48456 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -20,14 +20,6 @@
- #ifndef __ASSEMBLY__
- extern void _mcount(void);
- 
--static inline unsigned long ftrace_call_adjust(unsigned long addr)
--{
--	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
--		addr += MCOUNT_INSN_SIZE;
--
--       return addr;
--}
--
- unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
- 				    unsigned long sp);
- 
-@@ -142,8 +134,10 @@ static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
- #ifdef CONFIG_FUNCTION_TRACER
- extern unsigned int ftrace_tramp_text[], ftrace_tramp_init[];
- void ftrace_free_init_tramp(void);
-+unsigned long ftrace_call_adjust(unsigned long addr);
- #else
- static inline void ftrace_free_init_tramp(void) { }
-+static inline unsigned long ftrace_call_adjust(unsigned long addr) { return addr; }
- #endif
- #endif /* !__ASSEMBLY__ */
- 
-diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-index ea26665f82cf..f43f3a6b0051 100644
---- a/arch/powerpc/include/asm/sections.h
-+++ b/arch/powerpc/include/asm/sections.h
-@@ -14,6 +14,7 @@ typedef struct func_desc func_desc_t;
- 
- extern char __head_end[];
- extern char __srwx_boundary[];
-+extern char __exittext_begin[], __exittext_end[];
- 
- /* Patch sites */
- extern s32 patch__call_flush_branch_caches1;
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 82010629cf88..d8d6b4fd9a14 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -27,10 +27,22 @@
- #include <asm/ftrace.h>
- #include <asm/syscall.h>
- #include <asm/inst.h>
-+#include <asm/sections.h>
- 
- #define	NUM_FTRACE_TRAMPS	2
- static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
- 
-+unsigned long ftrace_call_adjust(unsigned long addr)
-+{
-+	if (addr >= (unsigned long)__exittext_begin && addr < (unsigned long)__exittext_end)
-+		return 0;
-+
-+	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
-+		addr += MCOUNT_INSN_SIZE;
-+
-+	return addr;
-+}
-+
- static ppc_inst_t ftrace_create_branch_inst(unsigned long ip, unsigned long addr, int link)
- {
- 	ppc_inst_t op;
-diff --git a/arch/powerpc/kernel/trace/ftrace_64_pg.c b/arch/powerpc/kernel/trace/ftrace_64_pg.c
-index 7b85c3b460a3..12fab1803bcf 100644
---- a/arch/powerpc/kernel/trace/ftrace_64_pg.c
-+++ b/arch/powerpc/kernel/trace/ftrace_64_pg.c
-@@ -37,6 +37,11 @@
- #define	NUM_FTRACE_TRAMPS	8
- static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
- 
-+unsigned long ftrace_call_adjust(unsigned long addr)
-+{
-+	return addr;
-+}
-+
- static ppc_inst_t
- ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
- {
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 1c5970df3233..f420df7888a7 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -281,7 +281,9 @@ SECTIONS
- 	 * to deal with references from __bug_table
- 	 */
- 	.exit.text : AT(ADDR(.exit.text) - LOAD_OFFSET) {
-+		__exittext_begin = .;
- 		EXIT_TEXT
-+		__exittext_end = .;
- 	}
- 
- 	. = ALIGN(PAGE_SIZE);
+We have Qualcomm on CC here so perhaps Janaki, who should have access to
+the documentation, can tell us what the default address on these older
+controllers looks like?
 
-base-commit: ba151416051a45ffca565f708584b9cd5c971481
--- 
-2.44.0
+Janaki, are there further default addresses out there that we need to
+consider?
 
+Perhaps "39:98" can even be inferred from the hardware id somehow (cf.
+bcm4377_is_valid_bdaddr())?
+
+Doug, could you please also post the QCA version info for Trogdor that's
+printed on boot?
+
+Johan
 
