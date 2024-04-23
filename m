@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C748AFAA5
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACAE38AFA2D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E7CE1F2976F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 666AF28A72E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6981E1482FD;
-	Tue, 23 Apr 2024 21:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2001448E8;
+	Tue, 23 Apr 2024 21:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDp18Wam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2H6+df7U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25694145B05;
-	Tue, 23 Apr 2024 21:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F0D14389F;
+	Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908741; cv=none; b=jtBdZ2S8Fp1x80B5pK/RnVbgTuegXWcPCCeWJOerUts2ioWpxpml9qJZRQglZwb2uNcWfLl8BtfIIv69iZVJK7C4IzfiAOfaWvdwOuLTyed2ZQvnIg4gDAXSQLTt/vCTh7/D3oDeC6SJC7/Dz7FAION6Kniu/EgTedmSmW/513k=
+	t=1713908649; cv=none; b=c4f8wKunxEUDYzqeyzZEPlJFz54eQUQDJQnk2hZHaYDGtkWbJqEENwfK65qfRoD6qUSJJcQSxyj4Xc8pzNKM4wrCSUsM8KF8TFRCP1clx8lPpffJLvG25N3Lg/M4e0GziorbcM6PkkgmDzvrNC71tFmSxgyEq48l5f7WfwTvnJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908741; c=relaxed/simple;
-	bh=/oC+TQbW4X8vEySm5K0FjAuzL4GA6ksU/acUoGYJI+A=;
+	s=arc-20240116; t=1713908649; c=relaxed/simple;
+	bh=LVVq99EWinDeS7H4FNPeTppxNvhdpEuPz0V4WXVUfF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D31jfAle0CoTitj8p1s8NnFAZ+jI/mc8PB5euNdhQXlveeQtBwnNV5d9yb97EHorV707phkcPXj4W1WDw3HsDYgRIP0AQwO3ZeLc9QF+3uG/1UTaLhB+pq3OtzEYVxgangkpvXNJ4KvYsv3+UXpfPYWH9UFvoeYAyWfFbBZ9gHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDp18Wam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65DEC3277B;
-	Tue, 23 Apr 2024 21:45:40 +0000 (UTC)
+	 MIME-Version; b=Ey+WhP5BgH7Kplz5ewyM3fduNLKrL6aPr1lw8/gdWVmnlFBf1VchwcAbNdBlzpFPh7ASxKM/OQOOX9rYGEt15QqLdaPyAaJsWmKF5Fc/uLCxAML2ILZzWAHQkmErvZqsi2TPcFjC6PnB/B2onI9mHn6BXS8GZDfKW+ZBgZxre18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2H6+df7U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39E3C32781;
+	Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908741;
-	bh=/oC+TQbW4X8vEySm5K0FjAuzL4GA6ksU/acUoGYJI+A=;
+	s=korg; t=1713908648;
+	bh=LVVq99EWinDeS7H4FNPeTppxNvhdpEuPz0V4WXVUfF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yDp18WamFEQk+w4UVts24Pdq71pmPnNCdH9luhPZWl821ifqxnZOKMrWXVssqoHuA
-	 3achrzVy/Z1J71kY+oawVKm6TPC9XeTkYzXrO7u4kaU3dhjuyWXPw0U7LRzxCb5lD0
-	 RtE1RcTVEUbcItZiwc6c4VVo+LBpHY1oq9wVOYqI=
+	b=2H6+df7UamryrFdqE08kknJjEUStCpaePOGu+RRzn2Nr3iR5iapy/V/cziwoSTc4l
+	 rSZ8ZxsBCOPMfg6juPdqlG9oBShLzYuWkPItQgvrT8Kc7zBVFpF/K3X1ZRGVJcwo0Z
+	 EaEIASZtHmq5vlVl7VaOMCOxlGZ+RQ7ufIvA8XXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/141] PCI/DPC: Use FIELD_GET()
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 108/158] comedi: vmk80xx: fix incomplete endpoint checking
 Date: Tue, 23 Apr 2024 14:39:05 -0700
-Message-ID: <20240423213855.701061587@linuxfoundation.org>
+Message-ID: <20240423213859.260995725@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +61,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 9a9eec4765737b9b2a8d6ae03de6480a5f12dd5c ]
+commit d1718530e3f640b7d5f0050e725216eab57a85d8 upstream.
 
-Use FIELD_GET() to remove dependencies on the field position, i.e., the
-shift value. No functional change intended.
+While vmk80xx does have endpoint checking implemented, some things
+can fall through the cracks. Depending on the hardware model,
+URBs can have either bulk or interrupt type, and current version
+of vmk80xx_find_usb_endpoints() function does not take that fully
+into account. While this warning does not seem to be too harmful,
+at the very least it will crash systems with 'panic_on_warn' set on
+them.
 
-Link: https://lore.kernel.org/r/20231018113254.17616-5-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the issue found by Syzkaller [1] by somewhat simplifying the
+endpoint checking process with usb_find_common_endpoints() and
+ensuring that only expected endpoint types are present.
+
+This patch has not been tested on real hardware.
+
+[1] Syzkaller report:
+usb 1-1: BOGUS urb xfer, pipe 1 != type 3
+WARNING: CPU: 0 PID: 781 at drivers/usb/core/urb.c:504 usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
+...
+Call Trace:
+ <TASK>
+ usb_start_wait_urb+0x113/0x520 drivers/usb/core/message.c:59
+ vmk80xx_reset_device drivers/comedi/drivers/vmk80xx.c:227 [inline]
+ vmk80xx_auto_attach+0xa1c/0x1a40 drivers/comedi/drivers/vmk80xx.c:818
+ comedi_auto_config+0x238/0x380 drivers/comedi/drivers.c:1067
+ usb_probe_interface+0x5cd/0xb00 drivers/usb/core/driver.c:399
+...
+
+Similar issue also found by Syzkaller:
+Link: https://syzkaller.appspot.com/bug?extid=5205eb2f17de3e01946e
+
+Reported-and-tested-by: syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Fixes: 49253d542cc0 ("staging: comedi: vmk80xx: factor out usb endpoint detection")
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240408171633.31649-1-n.zhandarovich@fintech.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pcie/dpc.c        |    5 +++--
- drivers/pci/quirks.c          |    2 +-
- include/uapi/linux/pci_regs.h |    1 +
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/comedi/drivers/vmk80xx.c |   35 ++++++++++++-----------------------
+ 1 file changed, 12 insertions(+), 23 deletions(-)
 
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -9,6 +9,7 @@
- #define dev_fmt(fmt) "DPC: " fmt
+--- a/drivers/comedi/drivers/vmk80xx.c
++++ b/drivers/comedi/drivers/vmk80xx.c
+@@ -641,33 +641,22 @@ static int vmk80xx_find_usb_endpoints(st
+ 	struct vmk80xx_private *devpriv = dev->private;
+ 	struct usb_interface *intf = comedi_to_usb_interface(dev);
+ 	struct usb_host_interface *iface_desc = intf->cur_altsetting;
+-	struct usb_endpoint_descriptor *ep_desc;
+-	int i;
++	struct usb_endpoint_descriptor *ep_rx_desc, *ep_tx_desc;
++	int ret;
  
- #include <linux/aer.h>
-+#include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/init.h>
-@@ -203,7 +204,7 @@ static void dpc_process_rp_pio_error(str
+-	if (iface_desc->desc.bNumEndpoints != 2)
+-		return -ENODEV;
+-
+-	for (i = 0; i < iface_desc->desc.bNumEndpoints; i++) {
+-		ep_desc = &iface_desc->endpoint[i].desc;
+-
+-		if (usb_endpoint_is_int_in(ep_desc) ||
+-		    usb_endpoint_is_bulk_in(ep_desc)) {
+-			if (!devpriv->ep_rx)
+-				devpriv->ep_rx = ep_desc;
+-			continue;
+-		}
++	if (devpriv->model == VMK8061_MODEL)
++		ret = usb_find_common_endpoints(iface_desc, &ep_rx_desc,
++						&ep_tx_desc, NULL, NULL);
++	else
++		ret = usb_find_common_endpoints(iface_desc, NULL, NULL,
++						&ep_rx_desc, &ep_tx_desc);
  
- 	/* Get First Error Pointer */
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &dpc_status);
--	first_error = (dpc_status & 0x1f00) >> 8;
-+	first_error = FIELD_GET(PCI_EXP_DPC_RP_PIO_FEP, dpc_status);
+-		if (usb_endpoint_is_int_out(ep_desc) ||
+-		    usb_endpoint_is_bulk_out(ep_desc)) {
+-			if (!devpriv->ep_tx)
+-				devpriv->ep_tx = ep_desc;
+-			continue;
+-		}
+-	}
+-
+-	if (!devpriv->ep_rx || !devpriv->ep_tx)
++	if (ret)
+ 		return -ENODEV;
  
- 	for (i = 0; i < ARRAY_SIZE(rp_pio_error_string); i++) {
- 		if ((status & ~mask) & (1 << i))
-@@ -339,7 +340,7 @@ void pci_dpc_init(struct pci_dev *pdev)
- 	/* Quirks may set dpc_rp_log_size if device or firmware is buggy */
- 	if (!pdev->dpc_rp_log_size) {
- 		pdev->dpc_rp_log_size =
--			(cap & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8;
-+				FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, cap);
- 		if (pdev->dpc_rp_log_size < 4 || pdev->dpc_rp_log_size > 9) {
- 			pci_err(pdev, "RP PIO log size %u is invalid\n",
- 				pdev->dpc_rp_log_size);
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6105,7 +6105,7 @@ static void dpc_log_size(struct pci_dev
- 	if (!(val & PCI_EXP_DPC_CAP_RP_EXT))
- 		return;
- 
--	if (!((val & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8)) {
-+	if (FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, val) == 0) {
- 		pci_info(dev, "Overriding RP PIO Log Size to 4\n");
- 		dev->dpc_rp_log_size = 4;
- 	}
---- a/include/uapi/linux/pci_regs.h
-+++ b/include/uapi/linux/pci_regs.h
-@@ -1043,6 +1043,7 @@
- #define  PCI_EXP_DPC_STATUS_INTERRUPT	    0x0008 /* Interrupt Status */
- #define  PCI_EXP_DPC_RP_BUSY		    0x0010 /* Root Port Busy */
- #define  PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT 0x0060 /* Trig Reason Extension */
-+#define  PCI_EXP_DPC_RP_PIO_FEP		    0x1f00 /* RP PIO First Err Ptr */
- 
- #define PCI_EXP_DPC_SOURCE_ID		 0x0A	/* DPC Source Identifier */
++	devpriv->ep_rx = ep_rx_desc;
++	devpriv->ep_tx = ep_tx_desc;
++
+ 	if (!usb_endpoint_maxp(devpriv->ep_rx) || !usb_endpoint_maxp(devpriv->ep_tx))
+ 		return -EINVAL;
  
 
 
