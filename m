@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-41194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97D68AFB34
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:55:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E188AFA43
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0BF0B2BF08
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25C2E1C22AF0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DF414A0A7;
-	Tue, 23 Apr 2024 21:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1181494C5;
+	Tue, 23 Apr 2024 21:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQD5Kwq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJ6gOGI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7999145B05;
-	Tue, 23 Apr 2024 21:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C341494C3;
+	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908741; cv=none; b=AJEWVv2yLk8+jWWGucWSJmbZ2JRxxw/78I72/etjJDBOMjD5RcmAifozOuiSphxf2rdxNfqkgpFp1Te7IwW7yU9AP27tsv2UsHezbl0XvJ3p5HpqXt8eodu6D5p+ieTmXnYqhhxIfXRhkNwJaX9WlqJVWt+a6EEZ/VdPN9NaqO4=
+	t=1713908666; cv=none; b=KgcNZTZ94jqtRRLDojA4/Slt86jjzJ/S8nsL5FLKDqcEBzJl66voVStgZYJRVg3KyAUgNI+Of4SSwfoP9vSeSTYHLg4Ed2J//Uhbcwnv4XNMfxOCJhBJj1Mvawq2lmVybzP5AveZ/TosA4zf3aA2h5jVmgsZWDfxhNPa8Ho7QCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908741; c=relaxed/simple;
-	bh=m0uAMkohJosyV30IYHPRZXip8z1DqXThWX6blJ+chTM=;
+	s=arc-20240116; t=1713908666; c=relaxed/simple;
+	bh=C6Bz1pyJg1sKNcsZnlfP919m0MVianviUb4OKEHcqyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pClsvCUsGrUORe8HC7RCwENBVN3bW1AzTQsmeyIszsdzZGlZnkiRbfihuRHywTRVTjMPVQgfqmg8PZTTSylyEdjvB2ka1a/SXxxH2USkk6t9xwRuSe/xmD3qdQ6vYMNSh6wclKBBwu/6Yn6rX1hEi+XaWDCi+EWv6ylB+oJPUUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQD5Kwq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959B8C116B1;
-	Tue, 23 Apr 2024 21:45:41 +0000 (UTC)
+	 MIME-Version; b=Txe1j8IJT+3JTbXs+Yn04tHK4qAaZwu+NQBt2SUxIOkTVhY9dRLgS551iL7o43hepo84aVUHba4SfuT9+TermvKF6BcGBbgpRG6yZwK6sMadIGd/S/tHck6B9KQuFIDu0s+FwsLGGZg+EqJifoHw2jd74fp2Qpn+gNePj1/ACkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJ6gOGI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D65C3277B;
+	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908741;
-	bh=m0uAMkohJosyV30IYHPRZXip8z1DqXThWX6blJ+chTM=;
+	s=korg; t=1713908665;
+	bh=C6Bz1pyJg1sKNcsZnlfP919m0MVianviUb4OKEHcqyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQD5Kwq+hffgXfvkzczQxku1FxJatnpKXajl/mR1O1yEaSLhCyUhd2Q16lCEUm6V4
-	 yj50Dm6NdN4iRqy+IiFCmVs1dDExdYTSjeHLYtGkLNyD9pOyPQqFsoSGgMycLrD6lp
-	 GzSW3/zvPYE8BnB56idKF8E3xu2y2lvOfWFNSmu8=
+	b=aJ6gOGI9RDUCl54/4XJmzyUSNmIF5oqDRWjJ2KB/QTLnojnj16IOCqlM3F9lcMTm8
+	 8Qa9pvAtXEL4mOvMKFYPxiyCtO6aKXozNfHKOcxs4YZl6gh9/2Ad4l6YldEfG2jcLC
+	 I9lYcjzhhEWrISnh/+IQu1PM+RrUTQE4FpOTGXWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	stable@kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH 6.1 105/141] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
+	Peter Xu <peterx@redhat.com>,
+	syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com,
+	David Hildenbrand <david@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 136/158] mm/userfaultfd: allow hugetlb change protection upon poison entry
 Date: Tue, 23 Apr 2024 14:39:33 -0700
-Message-ID: <20240423213856.599116722@linuxfoundation.org>
+Message-ID: <20240423213900.122009374@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Peter Xu <peterx@redhat.com>
 
-commit 1be3226445362bfbf461c92a5bcdb1723f2e4907 upstream.
+commit c5977c95dff182d6ee06f4d6f60bcb0284912969 upstream.
 
-The mitigation was intended to stop the irq completely. That may be
-better than a hard lock-up but it turns out that you get a crash anyway
-if you're using pmac_zilog as a serial console:
+After UFFDIO_POISON, there can be two kinds of hugetlb pte markers, either
+the POISON one or UFFD_WP one.
 
-ttyPZ0: pmz: rx irq flood !
-BUG: spinlock recursion on CPU#0, swapper/0
+Allow change protection to run on a poisoned marker just like !hugetlb
+cases, ignoring the marker irrelevant of the permission.
 
-That's because the pr_err() call in pmz_receive_chars() results in
-pmz_console_write() attempting to lock a spinlock already locked in
-pmz_interrupt(). With CONFIG_DEBUG_SPINLOCK=y, this produces a fatal
-BUG splat. The spinlock in question is the one in struct uart_port.
+Here the two bits are mutual exclusive.  For example, when install a
+poisoned entry it must not be UFFD_WP already (by checking pte_none()
+before such install).  And it also means if UFFD_WP is set there must have
+no POISON bit set.  It makes sense because UFFD_WP is a bit to reflect
+permission, and permissions do not apply if the pte is poisoned and
+destined to sigbus.
 
-Even when it's not fatal, the serial port rx function ceases to work.
-Also, the iteration limit doesn't play nicely with QEMU, as can be
-seen in the bug report linked below.
+So here we simply check uffd_wp bit set first, do nothing otherwise.
 
-A web search for other reports of the error message "pmz: rx irq flood"
-didn't produce anything. So I don't think this code is needed any more.
-Remove it.
+Attach the Fixes to UFFDIO_POISON work, as before that it should not be
+possible to have poison entry for hugetlb (e.g., hugetlb doesn't do swap,
+so no chance of swapin errors).
 
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: stable@kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Link: https://github.com/vivier/qemu-m68k/issues/44
-Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Link: https://lore.kernel.org/r/e853cf2c762f23101cd2ddec0cc0c2be0e72685f.1712568223.git.fthain@linux-m68k.org
+Link: https://lkml.kernel.org/r/20240405231920.1772199-1-peterx@redhat.com
+Link: https://lore.kernel.org/r/000000000000920d5e0615602dd1@google.com
+Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reported-by: syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/pmac_zilog.c |   14 --------------
- 1 file changed, 14 deletions(-)
+ mm/hugetlb.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/pmac_zilog.c
-+++ b/drivers/tty/serial/pmac_zilog.c
-@@ -210,7 +210,6 @@ static bool pmz_receive_chars(struct uar
- {
- 	struct tty_port *port;
- 	unsigned char ch, r1, drop, flag;
--	int loops = 0;
- 
- 	/* Sanity check, make sure the old bug is no longer happening */
- 	if (uap->port.state == NULL) {
-@@ -291,25 +290,12 @@ static bool pmz_receive_chars(struct uar
- 		if (r1 & Rx_OVR)
- 			tty_insert_flip_char(port, 0, TTY_OVERRUN);
- 	next_char:
--		/* We can get stuck in an infinite loop getting char 0 when the
--		 * line is in a wrong HW state, we break that here.
--		 * When that happens, I disable the receive side of the driver.
--		 * Note that what I've been experiencing is a real irq loop where
--		 * I'm getting flooded regardless of the actual port speed.
--		 * Something strange is going on with the HW
--		 */
--		if ((++loops) > 1000)
--			goto flood;
- 		ch = read_zsreg(uap, R0);
- 		if (!(ch & Rx_CH_AV))
- 			break;
- 	}
- 
- 	return true;
-- flood:
--	pmz_interrupt_control(uap, 0);
--	pmz_error("pmz: rx irq flood !\n");
--	return true;
- }
- 
- static void pmz_status_handle(struct uart_pmac_port *uap)
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6653,9 +6653,13 @@ long hugetlb_change_protection(struct vm
+ 			if (!pte_same(pte, newpte))
+ 				set_huge_pte_at(mm, address, ptep, newpte, psize);
+ 		} else if (unlikely(is_pte_marker(pte))) {
+-			/* No other markers apply for now. */
+-			WARN_ON_ONCE(!pte_marker_uffd_wp(pte));
+-			if (uffd_wp_resolve)
++			/*
++			 * Do nothing on a poison marker; page is
++			 * corrupted, permissons do not apply.  Here
++			 * pte_marker_uffd_wp()==true implies !poison
++			 * because they're mutual exclusive.
++			 */
++			if (pte_marker_uffd_wp(pte) && uffd_wp_resolve)
+ 				/* Safe to modify directly (non-present->none). */
+ 				huge_pte_clear(mm, address, ptep, psize);
+ 		} else if (!huge_pte_none(pte)) {
 
 
 
