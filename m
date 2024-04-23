@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E6A8AFACD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBEFA8AFB3C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09C581F29800
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E9BBB23BAB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91820145B13;
-	Tue, 23 Apr 2024 21:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3832E14BF92;
+	Tue, 23 Apr 2024 21:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xv6s/ZUW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+K70F4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508A114A63C;
-	Tue, 23 Apr 2024 21:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FEE143888;
+	Tue, 23 Apr 2024 21:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908762; cv=none; b=HUq/IbF4s46oMkgn9z4vn+MRLXXtkU+zKr7zNU4s4jR6LmtChG1AlUuIFfly+3yD06rrtmzZc8V82xV+nUpZgaIQd6fviD9twy9vkifYbx1E6RUUSOPHjnvS7fR1+mXkdeOekhd8Q9NjqzyvhGUp9fw5a6VgSnUU3WKSIeU0D24=
+	t=1713908797; cv=none; b=D85U0VNLBH9/Ky+htwVM32QHjNghiKBDMGmcqqGYsKvQOYXAknNOC+mcnWf7hliCKO0d5oHcD0NxxoNnB1V1OI/UOkUNn34o2eRgE2PMMVZHC0eFO76h0n1+cVRyrpHeIqn9O4IkmIUgAxTvJWFn687pLuzmOR7+f7vBMshzd3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908762; c=relaxed/simple;
-	bh=hDK3SLSPUfQiM1J1Ql5f7uRqrLib9qZJN+e3zvG2FDc=;
+	s=arc-20240116; t=1713908797; c=relaxed/simple;
+	bh=ReRdyQ3spKrtIOl44mWjrpAlJOwskJRpOpgORvnfwQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nqdUqlskgKre1DkjOVty7XnYDThZeFG3RrUECRALEXDKsy7TaUFw9k9etbt7tP5WNTH4PhnpNbdVs3zc3EFrb9/tX1+gS+dXzID46OfroitIW9vOpEtrVHilS3xJcsBMQt+6t6UHSvFAez34VGliQ4FHTpRtjeOyHITho42tFTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xv6s/ZUW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D91C3277B;
-	Tue, 23 Apr 2024 21:46:02 +0000 (UTC)
+	 MIME-Version; b=al0t1sQ81XhiBDWDqe8IpPAX3HO4DhbnGsNOvLahgXY/A4McTLwOU36ZfYE475AwI4FxeZniQydIS2fKT450zM0JWm+BLac89h8I+NB3XX0oT7x0dU4oW8Ow5H/LgsWghWHxoSQMyFFv1NsS61ZmmfG7r9HyLG47LWhEL44hsiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+K70F4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E3AC32782;
+	Tue, 23 Apr 2024 21:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908762;
-	bh=hDK3SLSPUfQiM1J1Ql5f7uRqrLib9qZJN+e3zvG2FDc=;
+	s=korg; t=1713908796;
+	bh=ReRdyQ3spKrtIOl44mWjrpAlJOwskJRpOpgORvnfwQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xv6s/ZUWNp7wP+SbP9dgR3zfo7VBrHtdEZxAjFeSsJD0/Qmq2J/WTbHG67dzVJNLh
-	 XZlxALJwEWIbZ7Fz8U3dKBuwFFm62uv2BQL16NqWka404kPf5k+5HD4CJbGS2TBdvF
-	 X2NxbrfYA0XjwBQwZgoex/MTva+JiH3R3gwfnPB4=
+	b=N+K70F4BgQjfuvLqLcsbbb55zqxq3jqKSCiQZcMFYrSegc9wLrv9g+HdlqaWlORxR
+	 30dnBAld//dhk6su9GLhKvfzMBjHERXH2TAruj8Oid5oRB0UdC6UFRdkf/3yIOzjKV
+	 xOscP4vxPqWcwSIbyKmfkkQigv4l4/g2RJgVcov8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 135/141] net: dsa: mt7530: fix improper frames on all 25MHz and 40MHz XTAL MT7530
-Date: Tue, 23 Apr 2024 14:40:03 -0700
-Message-ID: <20240423213857.597364624@linuxfoundation.org>
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 51/71] USB: serial: option: add Telit FN920C04 rmnet compositions
+Date: Tue, 23 Apr 2024 14:40:04 -0700
+Message-ID: <20240423213845.940446901@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,83 +59,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-commit 5f563c31ff0c40ce395d0bae7daa94c7950dac97 upstream.
+commit 582ee2f9d268d302595db3e36b985e5cbb93284d upstream.
 
-The MT7530 switch after reset initialises with a core clock frequency that
-works with a 25MHz XTAL connected to it. For 40MHz XTAL, the core clock
-frequency must be set to 500MHz.
+Add the following Telit FN920C04 compositions:
 
-The mt7530_pll_setup() function is responsible of setting the core clock
-frequency. Currently, it runs on MT7530 with 25MHz and 40MHz XTAL. This
-causes MT7530 switch with 25MHz XTAL to egress and ingress frames
-improperly.
+0x10a0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  5 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Introduce a check to run it only on MT7530 with 40MHz XTAL.
+0x10a4: rmnet + tty (AT) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a4 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-The core clock frequency is set by writing to a switch PHY's register.
-Access to the PHY's register is done via the MDIO bus the switch is also
-on. Therefore, it works only when the switch makes switch PHYs listen on
-the MDIO bus the switch is on. This is controlled either by the state of
-the ESW_P1_LED_1 pin after reset deassertion or modifying bit 5 of the
-modifiable trap register.
+0x10a9: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a9 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-When ESW_P1_LED_1 is pulled high, PHY indirect access is used. That means
-accessing PHY registers via the PHY indirect access control register of the
-switch.
-
-When ESW_P1_LED_1 is pulled low, PHY direct access is used. That means
-accessing PHY registers via the MDIO bus the switch is on.
-
-For MT7530 switch with 40MHz XTAL on a board with ESW_P1_LED_1 pulled high,
-the core clock frequency won't be set to 500MHz, causing the switch to
-egress and ingress frames improperly.
-
-Run mt7530_pll_setup() after PHY direct access is set on the modifiable
-trap register.
-
-With these two changes, all MT7530 switches with 25MHz and 40MHz, and
-P1_LED_1 pulled high or low, will egress and ingress frames properly.
-
-Link: https://github.com/BPI-SINOVOIP/BPI-R2-bsp/blob/4a5dd143f2172ec97a2872fa29c7c4cd520f45b5/linux-mt/drivers/net/ethernet/mediatek/gsw_mt7623.c#L1039
-Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20240320-for-net-mt7530-fix-25mhz-xtal-with-direct-phy-access-v1-1-d92f605f1160@arinc9.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2434,8 +2434,6 @@ mt7530_setup(struct dsa_switch *ds)
- 		     SYS_CTRL_PHY_RST | SYS_CTRL_SW_RST |
- 		     SYS_CTRL_REG_RST);
- 
--	mt7530_pll_setup(priv);
--
- 	/* Lower Tx driving for TRGMII path */
- 	for (i = 0; i < NUM_TRGMII_CTRL; i++)
- 		mt7530_write(priv, MT7530_TRGMII_TD_ODT(i),
-@@ -2453,6 +2451,9 @@ mt7530_setup(struct dsa_switch *ds)
- 
- 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
- 
-+	if ((val & HWTRAP_XTAL_MASK) == HWTRAP_XTAL_40MHZ)
-+		mt7530_pll_setup(priv);
-+
- 	mt753x_trap_frames(priv);
- 
- 	/* Enable and reset MIB counters */
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1376,6 +1376,12 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990 (ECM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a9, 0xff),	/* Telit FN20C04 (rmnet) */
++	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
 
 
 
