@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-40782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4173B8AF90A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF7B8AF9AF
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED794280E1B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FEB31C21755
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A02143895;
-	Tue, 23 Apr 2024 21:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9709145B3A;
+	Tue, 23 Apr 2024 21:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4jFef2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MX/63uPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BFD143899;
-	Tue, 23 Apr 2024 21:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6802785274;
+	Tue, 23 Apr 2024 21:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908459; cv=none; b=MX6u+eWPGah1Q8cFJF3QGudhf3K13KzfiZPMs5DGJwRyuxPeKANXh8o7s7YEDWdSbLMjhkzMraDtLRdJpRrx2SY52dVOV0ZeRCVMbeA1txQ7cMwpRpJSpObarc2L4G+CdJMcUUR19o07xyanmI8EADpZVl5JYw69ewaX1+3LS0U=
+	t=1713908569; cv=none; b=tHTWFmbBNKKRlFAVU1K9iCA6oirapJs2y5t1+g8mnx4Nvk0QQpKdN0b+/ittW0q4rZoGNLlhGHwPtO9US9T3JnsOPQeF7aTRh7uix2kB8+itBdvEpqOoG5Y0NvrRmoyC/xNlTvDkpdsT0EJpJ+yWCNMD82uywD28eTDLZZPxdyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908459; c=relaxed/simple;
-	bh=1Qo3zLN/ucCgBWZJ9yrCto5BkpIgZX+4V8nF2x+Av5Q=;
+	s=arc-20240116; t=1713908569; c=relaxed/simple;
+	bh=1DNpKNDT2aKd7S4XrUQ0nm6r9BBx4hZhESJVRsVsEGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sslZr4FXmFZlbY8WHlHdQg8Y7EV5F9KXzYFZTZ/5HBbfxypqUeAoqu8tJoYJyHVi68jr5AaM5TbLEDwvT+0wjlI9GryJ9ZwddHa5RPux3Wwoe0PPMK1LdDwFPD9CX3BHbK1UvlKX34LMMMPgWSPFt7AVuzCrRX2dGpw4rGIBA74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4jFef2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E7CC3277B;
-	Tue, 23 Apr 2024 21:40:58 +0000 (UTC)
+	 MIME-Version; b=aBR7A1BcEDSxnBS/jH46FrHQjHGeRqtBog9LzBLeg9PH+nq28JbKAF/uvylvwJDOgZSRKdbvg8QJrMd9GRMgpyKBlFxVLD97//G8Zhq1zYMQMHW8BnnGZXw6jTqC83zEujH5gb5EfDX2kEeIOCWo4YD75AeQjc6I+eH0h3l3yXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MX/63uPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39839C4AF08;
+	Tue, 23 Apr 2024 21:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908458;
-	bh=1Qo3zLN/ucCgBWZJ9yrCto5BkpIgZX+4V8nF2x+Av5Q=;
+	s=korg; t=1713908569;
+	bh=1DNpKNDT2aKd7S4XrUQ0nm6r9BBx4hZhESJVRsVsEGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4jFef2yTtg9FTUfxFEdojN17jRZ10FKXh03eMnggh7XEUAQkZiMZX6SEk1N2gVSW
-	 PcljJKpcswIeRbiZBP4LGCkZVoDm+5TXiTkwgCgKNpqkJZG5hQIeiwtk2LgjBaONwf
-	 Km0wyBLX6pfJAd31mLIzB1PY+Q3naF41uU/BuFy8=
+	b=MX/63uPjsK1vp1+XBRZlk3P6nACoCdk/VNCyYZCvpcgv9FPGJYgGNR/hlByLomepC
+	 pmeZ4Ek/ppfPL6lMjCtywNWXl185/lc1qVxCA0YCLnt80XgMxN2EeggEMApBM9Y7ij
+	 TMec5Q3MoCnpwkF9ZaymzLRxPClMk7fmZwBSDHXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 019/158] netfilter: nft_set_pipapo: do not free live element
-Date: Tue, 23 Apr 2024 14:37:21 -0700
-Message-ID: <20240423213856.482883461@linuxfoundation.org>
+Subject: [PATCH 6.6 005/158] smb: client: refresh referral without acquiring refpath_lock
+Date: Tue, 23 Apr 2024 14:37:22 -0700
+Message-ID: <20240423213855.867965991@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 3cfc9ec039af60dbd8965ae085b2c2ccdcfbe1cc ]
+[ Upstream commit 0a05ad21d77a188d06481c36d6016805a881bcc0 ]
 
-Pablo reports a crash with large batches of elements with a
-back-to-back add/remove pattern.  Quoting Pablo:
+Avoid refreshing DFS referral with refpath_lock acquired as the I/O
+could block for a while due to a potentially disconnected or slow DFS
+root server and then making other threads - that use same @server and
+don't require a DFS root server - unable to make any progress.
 
-  add_elem("00000000") timeout 100 ms
-  ...
-  add_elem("0000000X") timeout 100 ms
-  del_elem("0000000X") <---------------- delete one that was just added
-  ...
-  add_elem("00005000") timeout 100 ms
-
-  1) nft_pipapo_remove() removes element 0000000X
-  Then, KASAN shows a splat.
-
-Looking at the remove function there is a chance that we will drop a
-rule that maps to a non-deactivated element.
-
-Removal happens in two steps, first we do a lookup for key k and return the
-to-be-removed element and mark it as inactive in the next generation.
-Then, in a second step, the element gets removed from the set/map.
-
-The _remove function does not work correctly if we have more than one
-element that share the same key.
-
-This can happen if we insert an element into a set when the set already
-holds an element with same key, but the element mapping to the existing
-key has timed out or is not active in the next generation.
-
-In such case its possible that removal will unmap the wrong element.
-If this happens, we will leak the non-deactivated element, it becomes
-unreachable.
-
-The element that got deactivated (and will be freed later) will
-remain reachable in the set data structure, this can result in
-a crash when such an element is retrieved during lookup (stale
-pointer).
-
-Add a check that the fully matching key does in fact map to the element
-that we have marked as inactive in the deactivation step.
-If not, we need to continue searching.
-
-Add a bug/warn trap at the end of the function as well, the remove
-function must not ever be called with an invisible/unreachable/non-existent
-element.
-
-v2: avoid uneeded temporary variable (Stefano)
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: stable@vger.kernel.org # 6.4+
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/smb/client/dfs_cache.c | 44 +++++++++++++++++++++------------------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 69b1ab6849e67..979b5e80c400b 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -2002,6 +2002,8 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
- 		rules_fx = rules_f0;
+diff --git a/fs/smb/client/dfs_cache.c b/fs/smb/client/dfs_cache.c
+index 0552a864ff08f..11c8efecf7aa1 100644
+--- a/fs/smb/client/dfs_cache.c
++++ b/fs/smb/client/dfs_cache.c
+@@ -1172,8 +1172,8 @@ static bool is_ses_good(struct cifs_ses *ses)
+ 	return ret;
+ }
  
- 		nft_pipapo_for_each_field(f, i, m) {
-+			bool last = i == m->field_count - 1;
+-/* Refresh dfs referral of tcon and mark it for reconnect if needed */
+-static int __refresh_tcon(const char *path, struct cifs_ses *ses, bool force_refresh)
++/* Refresh dfs referral of @ses and mark it for reconnect if needed */
++static void __refresh_ses_referral(struct cifs_ses *ses, bool force_refresh)
+ {
+ 	struct TCP_Server_Info *server = ses->server;
+ 	DFS_CACHE_TGT_LIST(old_tl);
+@@ -1181,10 +1181,21 @@ static int __refresh_tcon(const char *path, struct cifs_ses *ses, bool force_ref
+ 	bool needs_refresh = false;
+ 	struct cache_entry *ce;
+ 	unsigned int xid;
++	char *path = NULL;
+ 	int rc = 0;
+ 
+ 	xid = get_xid();
+ 
++	mutex_lock(&server->refpath_lock);
++	if (server->leaf_fullpath) {
++		path = kstrdup(server->leaf_fullpath + 1, GFP_ATOMIC);
++		if (!path)
++			rc = -ENOMEM;
++	}
++	mutex_unlock(&server->refpath_lock);
++	if (!path)
++		goto out;
 +
- 			if (!pipapo_match_field(f, start, rules_fx,
- 						match_start, match_end))
- 				break;
-@@ -2014,16 +2016,18 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
+ 	down_read(&htable_rw_lock);
+ 	ce = lookup_cache_entry(path);
+ 	needs_refresh = force_refresh || IS_ERR(ce) || cache_entry_expired(ce);
+@@ -1218,19 +1229,17 @@ static int __refresh_tcon(const char *path, struct cifs_ses *ses, bool force_ref
+ 	free_xid(xid);
+ 	dfs_cache_free_tgts(&old_tl);
+ 	dfs_cache_free_tgts(&new_tl);
+-	return rc;
++	kfree(path);
+ }
  
- 			match_start += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
- 			match_end += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
--		}
+-static int refresh_tcon(struct cifs_tcon *tcon, bool force_refresh)
++static inline void refresh_ses_referral(struct cifs_ses *ses)
+ {
+-	struct TCP_Server_Info *server = tcon->ses->server;
+-	struct cifs_ses *ses = tcon->ses;
++	__refresh_ses_referral(ses, false);
++}
  
--		if (i == m->field_count) {
--			priv->dirty = true;
--			pipapo_drop(m, rulemap);
--			return;
-+			if (last && f->mt[rulemap[i].to].e == e) {
-+				priv->dirty = true;
-+				pipapo_drop(m, rulemap);
-+				return;
-+			}
- 		}
- 
- 		first_rule += rules_f0;
- 	}
-+
-+	WARN_ON_ONCE(1); /* elem_priv not found */
+-	mutex_lock(&server->refpath_lock);
+-	if (server->leaf_fullpath)
+-		__refresh_tcon(server->leaf_fullpath + 1, ses, force_refresh);
+-	mutex_unlock(&server->refpath_lock);
+-	return 0;
++static inline void force_refresh_ses_referral(struct cifs_ses *ses)
++{
++	__refresh_ses_referral(ses, true);
  }
  
  /**
+@@ -1271,25 +1280,20 @@ int dfs_cache_remount_fs(struct cifs_sb_info *cifs_sb)
+ 	 */
+ 	cifs_sb->mnt_cifs_flags |= CIFS_MOUNT_USE_PREFIX_PATH;
+ 
+-	return refresh_tcon(tcon, true);
++	force_refresh_ses_referral(tcon->ses);
++	return 0;
+ }
+ 
+ /* Refresh all DFS referrals related to DFS tcon */
+ void dfs_cache_refresh(struct work_struct *work)
+ {
+-	struct TCP_Server_Info *server;
+ 	struct cifs_tcon *tcon;
+ 	struct cifs_ses *ses;
+ 
+ 	tcon = container_of(work, struct cifs_tcon, dfs_cache_work.work);
+ 
+-	for (ses = tcon->ses; ses; ses = ses->dfs_root_ses) {
+-		server = ses->server;
+-		mutex_lock(&server->refpath_lock);
+-		if (server->leaf_fullpath)
+-			__refresh_tcon(server->leaf_fullpath + 1, ses, false);
+-		mutex_unlock(&server->refpath_lock);
+-	}
++	for (ses = tcon->ses; ses; ses = ses->dfs_root_ses)
++		refresh_ses_referral(ses);
+ 
+ 	queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
+ 			   atomic_read(&dfs_cache_ttl) * HZ);
 -- 
 2.43.0
 
