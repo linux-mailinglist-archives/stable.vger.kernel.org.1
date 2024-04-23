@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EAD8AFB02
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3708AFAFC
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F3A0B2C0D6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1608B2847F6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1701487DF;
-	Tue, 23 Apr 2024 21:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB5714BFA5;
+	Tue, 23 Apr 2024 21:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yj7aYKxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPy1blqE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF46C14AD02;
-	Tue, 23 Apr 2024 21:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F91143888;
+	Tue, 23 Apr 2024 21:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908759; cv=none; b=BcfXy2LSt+C59RnQmYVzmdjafRu3LjFo+Z/smk6Muu5MjAy26tahLypFcHxz/NdmfBZ4aR9XOUUwV31lVz1Bin1DkZ4htQEd0OBns7EMUVDceqidB3Scz8Lk1h7appn4p5oy/c/6SAGPR7hAOmPeP51z3O8IdiPSBikmmSSYJuY=
+	t=1713908797; cv=none; b=OSzBCd7RR9of1YJd+Wz3W7/TOawdrX5RNWdiTicmIBmxVrZoyP/Vbg4IBE13t6m+YRuoyi3UnwHl3hgRhn13eghwyl2GFj0VgSk1i0CU3xv25y5AvIYhxH3QRLeuodn8HRLx6MtAuf6bzuEVCy6tlabsC7YWkR1Yo5Enx6BWb8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908759; c=relaxed/simple;
-	bh=iHKnVhMHT2M/hRRST9U7sAqWoE3QKsoCbvkvtsee7oY=;
+	s=arc-20240116; t=1713908797; c=relaxed/simple;
+	bh=c20M6SIjRLOEYgEn52OdPIQHzT1+1y1Gvnpg77YRVpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJrxcGWluA90UHj2XV3U/+T+Mr9otsQXBqp1425bN4O5TcEHR/vIEQFPSkDZz+E04sm1RR0TDR0/l0cW5twR2cXiF+dNOWAoELlwSz4Vbsrehtv6uX4R33wmbjtEf0v5KXnP6w2zSdp0T+FVi3ZSr9kpmIhsO6zUQG7B0YvAVgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yj7aYKxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97C6C32783;
-	Tue, 23 Apr 2024 21:45:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=awWeRVESv1TsI7uW6kiQLaV/JYqq5uubFcJOBLCmRsYFpb57aSoiK8mnUodGC2IxnBVcyCbC3zgXjlyu9PVtigw3BHo7EJA/T5clWg+y6pI9WKSUJcW9A8F+kt/XDbp72OUBc+nGuEbtfg4pztubiO91M4srhxx8+ATX1fVgi94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPy1blqE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0A5C3277B;
+	Tue, 23 Apr 2024 21:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908758;
-	bh=iHKnVhMHT2M/hRRST9U7sAqWoE3QKsoCbvkvtsee7oY=;
+	s=korg; t=1713908797;
+	bh=c20M6SIjRLOEYgEn52OdPIQHzT1+1y1Gvnpg77YRVpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yj7aYKxazmtk0YO+IJUJlV7ZF6oG2GCpz5ZOvvobzjRv/Qg+KWTn/shjzF3wwcSPF
-	 IMLNYOlFkLIKxuyfHoH1JX9W6HAFgVfVdqQs/K14VwsyhxL+ShXntW8qhptDR4hj28
-	 7mmW7s0DuFcyP1IL2OqJ7R63Yvq1bOj8B15+vUwY=
+	b=gPy1blqExUhqWjqFLlOZdpzIhsttmrjKjsEuZajR/vtEdACfe0/vk4I10971c+z6H
+	 ltA7VZcHrSkOrrFrWFDCAE79moXu6v8Iq2D8rRxQQomiXZEU07DANULbmQarqRJ0kT
+	 5epbEYL5cDlyVpMrhVkeWk+XFRKoBVNdQGi8DyFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coia Prant <coiaprant@gmail.com>,
-	Lars Melin <larsm17@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 110/141] USB: serial: option: add Lonsung U8300/U9300 product
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 25/71] net: dsa: mt7530: fix mirroring frames received on local port
 Date: Tue, 23 Apr 2024 14:39:38 -0700
-Message-ID: <20240423213856.761703209@linuxfoundation.org>
+Message-ID: <20240423213845.006690223@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,121 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coia Prant <coiaprant@gmail.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-commit cf16ffa17c398434a77b8a373e69287c95b60de2 upstream.
+[ Upstream commit d59cf049c8378677053703e724808836f180888e ]
 
-Update the USB serial option driver to support Longsung U8300/U9300.
+This switch intellectual property provides a bit on the ARL global control
+register which controls allowing mirroring frames which are received on the
+local port (monitor port). This bit is unset after reset.
 
-For U8300
+This ability must be enabled to fully support the port mirroring feature on
+this switch intellectual property.
 
-Interface 4 is used by for QMI interface in stock firmware of U8300, the
-router which uses U8300 modem.
-Interface 5 is used by for ADB interface in stock firmware of U8300, the
-router which uses U8300 modem.
+Therefore, this patch fixes the traffic not being reflected on a port,
+which would be configured like below:
 
-Interface mapping is:
-0: unknown (Debug), 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI, 5: ADB
+  tc qdisc add dev swp0 clsact
 
-T:  Bus=05 Lev=01 Prnt=03 Port=02 Cnt=01 Dev#=  4 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b05 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+  tc filter add dev swp0 ingress matchall skip_sw \
+  action mirred egress mirror dev swp0
 
-For U9300
+As a side note, this configuration provides the hairpinning feature for a
+single port.
 
-Interface 1 is used by for ADB interface in stock firmware of U9300, the
-router which uses U9300 modem.
-Interface 4 is used by for QMI interface in stock firmware of U9300, the
-router which uses U9300 modem.
-
-Interface mapping is:
-0: ADB, 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI
-
-Note: Interface 3 of some models of the U9300 series can send AT commands.
-
-T:  Bus=05 Lev=01 Prnt=05 Port=04 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b3c Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-
-Tested successfully using Modem Manager on U9300.
-Tested successfully AT commands using If=1, If=2 and If=3 on U9300.
-
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
-Reviewed-by: Lars Melin <larsm17@gmail.com>
-[ johan: drop product defines, trim commit message ]
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 37feab6076aa ("net: dsa: mt7530: add support for port mirroring")
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/dsa/mt7530.c | 6 ++++++
+ drivers/net/dsa/mt7530.h | 4 ++++
+ 2 files changed, 10 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2052,6 +2052,10 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(LONGCHEER_VENDOR_ID, 0x9803, 0xff),
- 	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b05),	/* Longsung U8300 */
-+	  .driver_info = RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b3c),	/* Longsung U9300 */
-+	  .driver_info = RSVD(0) | RSVD(4) },
- 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
- 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
- 	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index f291d1e70f807..053f1b4aa324c 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -2437,6 +2437,9 @@ mt7530_setup(struct dsa_switch *ds)
+ 			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
+ 	}
+ 
++	/* Allow mirroring frames received on the local port (monitor port). */
++	mt7530_set(priv, MT753X_AGC, LOCAL_EN);
++
+ 	/* Setup VLAN ID 0 for VLAN-unaware bridges */
+ 	ret = mt7530_setup_vlan0(priv);
+ 	if (ret)
+@@ -2553,6 +2556,9 @@ mt7531_setup_common(struct dsa_switch *ds)
+ 			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
+ 	}
+ 
++	/* Allow mirroring frames received on the local port (monitor port). */
++	mt7530_set(priv, MT753X_AGC, LOCAL_EN);
++
+ 	/* Flush the FDB table */
+ 	ret = mt7530_fdb_cmd(priv, MT7530_FDB_FLUSH, NULL);
+ 	if (ret < 0)
+diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
+index 299a26ad5809c..0247a58d5554c 100644
+--- a/drivers/net/dsa/mt7530.h
++++ b/drivers/net/dsa/mt7530.h
+@@ -32,6 +32,10 @@ enum mt753x_id {
+ #define SYSC_REG_RSTCTRL		0x34
+ #define  RESET_MCM			BIT(2)
+ 
++/* Register for ARL global control */
++#define MT753X_AGC			0xc
++#define  LOCAL_EN			BIT(7)
++
+ /* Registers to mac forward control for unknown frames */
+ #define MT7530_MFC			0x10
+ #define  BC_FFP(x)			(((x) & 0xff) << 24)
+-- 
+2.43.0
+
 
 
 
