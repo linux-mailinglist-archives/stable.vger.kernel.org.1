@@ -1,156 +1,115 @@
-Return-Path: <stable+bounces-40724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4F68AEAF6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 17:25:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DDC8AF390
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02AF71C21D67
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:25:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FB48B21A3D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF5513BADD;
-	Tue, 23 Apr 2024 15:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF29B13CAAD;
+	Tue, 23 Apr 2024 16:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PzG1UA5v"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28B17F499
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 15:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472A013CA98;
+	Tue, 23 Apr 2024 16:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713885906; cv=none; b=eLwgPpZjZhaB6U1I82e5SQ/tdopDH+N/y7qJQI95ThEbIrHWNYp1+gjVqe3Pj5k6SY2lt9rkEu6afug4MCpoKkMGShqPiacH+b4RogDGUAzyn7c2tuxLzgS9Gp8rJmlEfJfDghdJmcHPSMZAgUB33Ddp9D5ZpKs1nGcWS423Iu8=
+	t=1713888641; cv=none; b=TP0648ulkyXEDw5e1PEtr2lk1TwhJpcjkyELPuX/vDQa8O/dhLYMszOkwfz16dYSznuWir096B041fNPkuGHOEf+mOI6J57xf0Y4CAtMWJsJx2EFXv8AubfaeSIfZe34jP+az9LK28e1tX+F6+XJEFWMuhpKbGGyfEkY+OUeONE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713885906; c=relaxed/simple;
-	bh=mADyzFtFPTrL0Ew3/frBE7gKimsxCan2ktRjhg6ggoU=;
+	s=arc-20240116; t=1713888641; c=relaxed/simple;
+	bh=o1a72SriqCofRJAiL12cU0C8WO49MwZYhQEM8zzR6b4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+eq8qI0TQXAF/8zjvjqjy3yaF67grpV76yQwcEbICDsbhhQNgu+4UgJMwS8LEMI5VrtQgZwauDWD3h6rN88w/EfKIHVTFIqKZCpTKdjaEXatNaPYZBytx6Y3MbhTKykzN6HYIof2j3IUYir+tT31HvXiKxmyXZsUw3VDmr49og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rzI0z-0000Kz-VF; Tue, 23 Apr 2024 17:25:01 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rzI0z-00Dv27-IB; Tue, 23 Apr 2024 17:25:01 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rzI0z-0078xG-1Y;
-	Tue, 23 Apr 2024 17:25:01 +0200
-Date: Tue, 23 Apr 2024 17:25:01 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] serial: stm32: Return IRQ_NONE in the ISR
- if no handling" failed to apply to 5.15-stable tree
-Message-ID: <k5twtnplrzkqw3fi5th2s6qdtk6ds7wgjjabhitkm3i2llsnve@ir76mfzyj5nk>
-References: <2024042344-phonics-simile-0b3c@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gPf40Dgie/NnPbv6Z9Du8PoDibHNUVO+aGZbym8t4j5HD4Sx44CqHSa76uzW9QIuRxBrvZMDMX0ZphFQDOdLNzer5cqzfgkPYFNlVQKXRlfngX14vBW3sbN63tRiH7uEf6JklY/lIuy5rbyKoBDay75WZyDp2wdJ8P9Anih9guM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PzG1UA5v; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1e5b6e8f662so45900965ad.0;
+        Tue, 23 Apr 2024 09:10:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713888639; x=1714493439; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=89XsLxTIyZU/1YlCByEe65lWUqJGzh8blemR9I/n6po=;
+        b=PzG1UA5vjNoXi+HnIiVW4fD5unW/+h6n86ijNNxMBS8PTjyN4RAN7gHkTSQLljAb69
+         /uEHdX0UgNvLHlfvU1xdt3eN1rlk0jTbTsWzkmgAZds0GCRIthVv4bx6MNCHbHY/ovPK
+         SxnDlvIREXkVjqMiZP7JfNXk1EBmoyQVBd1nodLVRNEgGNoS54s5fv9eCk8N8aXCRHfY
+         ca8kfUWQ6d+Yhs5RsUqKMzEaGXp9RDTm+tKuKRhavavIHkS6oZscpUKUFa2OMjUj6Chr
+         bqRIrD0W+rmSUxkGVJKVRZyMUPm1Qjy8Zd1Zotckac3vwqjcz83DEuTiMqr4gqJqnoqP
+         +SKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713888639; x=1714493439;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=89XsLxTIyZU/1YlCByEe65lWUqJGzh8blemR9I/n6po=;
+        b=QtmC+yY5y+wXqgNn50lVj2y9MpEaQspcU/PvLnFGkCQ19pehlrjtS2EMM6r16Cd0xS
+         WgluQGV5Ape9UF0+9J7E76PVSonfUUsLKBpTNCbHwn5hn3pKp0lauc2YLfg7oel3L3p7
+         t4pGWgMrIB7QL354fGqqDelqRh41DnzRSsMOUumaCBUIoqvyO6NpQhM5BSbACkYghIHf
+         KyLbivZs3CAKUwXOneBczUZtqWqzJmE8Z4wqtLwUxd6ZOvCUGVYN7tKtRqtbEvU1qQhu
+         XjdGVcw2+BvUhNObh6PjKO4KdxweHlfmIH1HB5HrR2G39yyfWvKx3zcOWKfZYrq5lxg9
+         7TFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW+jWft8cyrhxD6V6wu/MH3nXOdjYljpHYrZY8dfzivt68WJxoPizC7Tw4OE7PMXgt5zEh9N/53NY8V8eGsqc2hYhVp0AAk
+X-Gm-Message-State: AOJu0YzWILBToEBDWsks+VWr0HnIppp/hoXxKxEigAnwjfpLNHhqIPJ6
+	PaWRdPTOrbp2fHWr4dvMtzkkQ5lOY/JKXS8P9qafPb08WtuxBvomSqRJhpei
+X-Google-Smtp-Source: AGHT+IHCRskPKThiqLtki3QqWsynFY74sXkHpV/B/WwPyjov7Ur/kIqVS1cbHVle23QYScT8y2QGOQ==
+X-Received: by 2002:a17:902:ce87:b0:1e5:d0e3:b960 with SMTP id f7-20020a170902ce8700b001e5d0e3b960mr15985656plg.11.1713888639407;
+        Tue, 23 Apr 2024 09:10:39 -0700 (PDT)
+Received: from localhost ([2620:10d:c090:400::5:6f51])
+        by smtp.gmail.com with ESMTPSA id r3-20020a170902be0300b001e27462b988sm10200288pls.61.2024.04.23.09.10.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Apr 2024 09:10:38 -0700 (PDT)
+Sender: Tejun Heo <htejun@gmail.com>
+Date: Tue, 23 Apr 2024 06:10:37 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Sam Sun <samsun1006219@gmail.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	syzkaller-bugs@googlegroups.com,
+	Lai Jiangshan <jiangshan.ljs@antgroup.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] workqueue: Fix divide error in
+ wq_update_node_max_active()
+Message-ID: <ZifdfQ_vjqGqNdPk@slm.duckdns.org>
+References: <CAEkJfYPGS1_4JqvpSo0=FM0S1ytB8CEbyreLTtWpR900dUZymw@mail.gmail.com>
+ <20240423124548.1253842-1-jiangshanlai@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uhmzfqdmrknfty6w"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2024042344-phonics-simile-0b3c@gregkh>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+In-Reply-To: <20240423124548.1253842-1-jiangshanlai@gmail.com>
 
+Hello, Lai.
 
---uhmzfqdmrknfty6w
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Apr 23, 2024 at 08:45:48PM +0800, Lai Jiangshan wrote:
+> diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+> index 0066c8f6c154..b31cd7faeb9f 100644
+> --- a/kernel/workqueue.c
+> +++ b/kernel/workqueue.c
+> @@ -1591,7 +1591,7 @@ static void wq_update_node_max_active(struct workqueue_struct *wq, int off_cpu)
+>  		off_cpu = -1;
+>  
+>  	total_cpus = cpumask_weight_and(effective, cpu_online_mask);
+> -	if (off_cpu >= 0)
+> +	if (off_cpu >= 0 && total_cpus > 1)
+>  		total_cpus--;
 
-Hello,
+Can we do this explicitly instead? ie. test total_cpus before using it as
+divisor and use max_active explicitly if it's zero.
 
-On Tue, Apr 23, 2024 at 05:36:44AM -0700, gregkh@linuxfoundation.org wrote:
-> The patch below does not apply to the 5.15-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->=20
-> To reproduce the conflict and resubmit, you may use the following command=
-s:
->=20
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/ linux-5.15.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 13c785323b36b845300b256d0e5963c3727667d7
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042344-=
-phonics-simile-0b3c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
->=20
-> Possible dependencies:
->=20
-> 13c785323b36 ("serial: stm32: Return IRQ_NONE in the ISR if no handling h=
-append")
-> c5d06662551c ("serial: stm32: Use port lock wrappers")
-> a01ae50d7eae ("serial: stm32: replace access to DMAR bit by dmaengine_pau=
-se/resume")
-> 7f28bcea824e ("serial: stm32: group dma pause/resume error handling into =
-single function")
-> 00d1f9c6af0d ("serial: stm32: modify parameter and rename stm32_usart_rx_=
-dma_enabled")
-> db89728abad5 ("serial: stm32: avoid clearing DMAT bit during transfer")
-> 3f6c02fa712b ("serial: stm32: Merge hard IRQ and threaded IRQ handling in=
-to single IRQ handler")
-> d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS=
-485 mode")
-> 3bcea529b295 ("serial: stm32: Factor out GPIO RTS toggling into separate =
-function")
-> 037b91ec7729 ("serial: stm32: fix software flow control transfer")
-> d3d079bde07e ("serial: stm32: prevent TDR register overwrite when sending=
- x_char")
-> 195437d14fb4 ("serial: stm32: correct loop for dma error handling")
-> 2a3bcfe03725 ("serial: stm32: fix flow control transfer in DMA mode")
-> 9a135f16d228 ("serial: stm32: rework TX DMA state condition")
-> 56a23f9319e8 ("serial: stm32: move tx dma terminate DMA to shutdown")
-> 6333a4850621 ("serial: stm32: push DMA RX data before suspending")
-> 6eeb348c8482 ("serial: stm32: terminate / restart DMA transfer at suspend=
- / resume")
-> e0abc903deea ("serial: stm32: rework RX dma initialization and release")
-> d1ec8a2eabe9 ("serial: stm32: update throttle and unthrottle ops for dma =
-mode")
-> 33bb2f6ac308 ("serial: stm32: rework RX over DMA")
+Thanks.
 
-I think it's not that important to backport this patch further than 6.1.
-It only improves the behaviour in the presence of another bug. If
-someone wants to look anyhow, it would probably make sense to backport
-13c785323b36 on top of a backport of 3f6c02fa712b.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---uhmzfqdmrknfty6w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmYn0swACgkQj4D7WH0S
-/k5J9Af/fVtGANGhUAsi/MN8Y3e9OSI8OuTFvSAdZIoxTPZJMk17cb763NarKhE3
-IGXErWseUGJRPV7QxP0EcLFQY4iGS/X2Ov41e8q/kh5xZDZYRfl9CNV3LXVTufBK
-eraPQYG2gLT1xw565FYlxkzUuK3PmBIMQrPJMy6lya7oySaBc4qv9wboW3O1h7+o
-cjxYE/Nbb8xym9LUIxDpelVce1zsclMOpWZZ7uiFpxF/zi4u3aVoOb+DUPAqqqAX
-ptOzIv2ERcoKMhD++7NN7vpXR5C+0nZBLprlRmBaKH3XyVIST3SGM9R+UlesOFhK
-2kqJk9ThkfyAlJTGFZ9ZsxRNH+k/iw==
-=K9O0
------END PGP SIGNATURE-----
-
---uhmzfqdmrknfty6w--
+-- 
+tejun
 
