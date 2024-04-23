@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-40993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4F58AF9E8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 279E88AF96A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A4E1F27C70
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5983A1C24B1A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5F2143C49;
-	Tue, 23 Apr 2024 21:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CB81448ED;
+	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibpR8O0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQAa8Tco"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0959914389A;
-	Tue, 23 Apr 2024 21:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055CF14389E;
+	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908605; cv=none; b=PLjIN4mNQhZrolpXOLos2OdM5X9iGA51RH/cbGOsaOCcCNfwH2d6FEdq9qDTpEp6TJRdGyBoELhbBkjDPzJALLKXXpp8CSO5PW1MKOzLcRnfNnY9UJgtO9CsatN2MUVRzP0ezI+23TlwXQomqAVNoSdtDYnrvSnJHq819zvzz34=
+	t=1713908521; cv=none; b=GZJS4KwxXJbySir5Y4Ue8L5mETTl2KJiD5BwVo6CElD33Z0BXSOPVtzFvQiURTqe6gWpXiVRFTo7WlF3mtEJjlAE86HGYjOoSmmfZGEM2nItAexKLQIIV+zkQxIyW1sfowOHUZDX+6pNI/+DK3kDR8SjkcG77XR94IN+1/57iZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908605; c=relaxed/simple;
-	bh=m4fgLZSsLVZgjWAZzO5IdBHB2ylrrEQ8xmIBHFNC2BA=;
+	s=arc-20240116; t=1713908521; c=relaxed/simple;
+	bh=mj00SjtXrPKwfq3d8KpnvOBK6pXp02n/jX8bXk1Mma4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3NzTphspEyHdH51ktgjS0eSEvfKEIgBtyCmlKDx4SEgRKFLgkx8YXrbSiaVblIQpcH+KqnJLMD4cm0ZeXVMPS7el5SdSp+AkA4euApLNdNdw3IyMjj5kdPIB+oBk1xtIQXLDEJzw1BnvHkXUfC/jMvjZHX4aBUlj+SB/dy3IFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibpR8O0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856DCC3277B;
-	Tue, 23 Apr 2024 21:43:24 +0000 (UTC)
+	 MIME-Version; b=M/PXtU8u88O4McbMv8uhw3sQp/372pAPSfoFpYephQPWbk6UOqRJvmZwHPHjzDwYhifYyTDOb/3Pe2t1ukVr8ru6AMJAumka4/ssuUylvdmiwjZObJKSf0vGktl4b+eApPiKRAD301zfakAndR6oIvToSSGp94hPp9eCNMRCXGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQAa8Tco; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7D1C3277B;
+	Tue, 23 Apr 2024 21:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908604;
-	bh=m4fgLZSsLVZgjWAZzO5IdBHB2ylrrEQ8xmIBHFNC2BA=;
+	s=korg; t=1713908520;
+	bh=mj00SjtXrPKwfq3d8KpnvOBK6pXp02n/jX8bXk1Mma4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibpR8O0iCU4SEGHS/JcHuz0yb89snrljpzLSwc0GA8Iatu1emGn/fFXIo07tnD6/A
-	 vL7TIapmNZJdtevUk7l4G825qUe2zxSdsO2b1hSkLtAOFzumJ6/xdQyfeJvK6GpFiY
-	 HSwNR8Amzj+KzmfqBZ9AazfCCeI4XcwQ1WsuDWow=
+	b=oQAa8TcoeYbRwTK6GlAiaWmACwyFR6/4141OPXAsKMPre/os/1FRjg6uI2Zwo7kLl
+	 Y8140MGdAEgxupOEXlai6l2ygqsm2sSKFPJuaAm4gIvmIABiR+MaITk1D4bu7wjAfy
+	 2/R4hfJxNm7I5FpiqconeQYBNyRSgQgIici2ZWdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philippe Perrot <philippe@perrot-net.fr>,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/158] ALSA: scarlett2: Add support for Clarett 8Pre USB
+Subject: [PATCH 6.8 085/158] x86/bugs: Fix BHI retpoline check
 Date: Tue, 23 Apr 2024 14:38:27 -0700
-Message-ID: <20240423213858.038586729@linuxfoundation.org>
+Message-ID: <20240423213858.707765289@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit b9a98cdd3ac7b80d8ea0f6acd81c88ad3d8bcb4a ]
+[ Upstream commit 69129794d94c544810e68b2b4eaa7e44063f9bf2 ]
 
-The Clarett 8Pre USB works the same as the Clarett+ 8Pre, only the USB
-ID is different.
+Confusingly, X86_FEATURE_RETPOLINE doesn't mean retpolines are enabled,
+as it also includes the original "AMD retpoline" which isn't a retpoline
+at all.
 
-Tested-by: Philippe Perrot <philippe@perrot-net.fr>
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://lore.kernel.org/r/e59f47b29e2037f031b56bde10474c6e96e31ba5.1694705811.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Also replace cpu_feature_enabled() with boot_cpu_has() because this is
+before alternatives are patched and cpu_feature_enabled()'s fallback
+path is slower than plain old boot_cpu_has().
+
+Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/ad3807424a3953f0323c011a643405619f2a4927.1712944776.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c        |  1 +
- sound/usb/mixer_scarlett_gen2.c | 11 ++++++++---
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 1f32e3ae3aa31..b122d7aedb443 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -3447,6 +3447,7 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 	case USB_ID(0x1235, 0x8213): /* Focusrite Scarlett 8i6 3rd Gen */
- 	case USB_ID(0x1235, 0x8214): /* Focusrite Scarlett 18i8 3rd Gen */
- 	case USB_ID(0x1235, 0x8215): /* Focusrite Scarlett 18i20 3rd Gen */
-+	case USB_ID(0x1235, 0x8208): /* Focusrite Clarett 8Pre USB */
- 	case USB_ID(0x1235, 0x820c): /* Focusrite Clarett+ 8Pre */
- 		err = snd_scarlett_gen2_init(mixer);
- 		break;
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index cfb7345ee7a8c..bf3d916d5a13c 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -1,13 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- *   Focusrite Scarlett Gen 2/3 and Clarett+ Driver for ALSA
-+ *   Focusrite Scarlett Gen 2/3 and Clarett USB/Clarett+ Driver for ALSA
-  *
-  *   Supported models:
-  *   - 6i6/18i8/18i20 Gen 2
-  *   - Solo/2i2/4i4/8i6/18i8/18i20 Gen 3
-+ *   - Clarett 8Pre USB
-  *   - Clarett+ 8Pre
-  *
-- *   Copyright (c) 2018-2022 by Geoffrey D. Bennett <g at b4.vu>
-+ *   Copyright (c) 2018-2023 by Geoffrey D. Bennett <g at b4.vu>
-  *   Copyright (c) 2020-2021 by Vladimir Sadovnikov <sadko4u@gmail.com>
-  *   Copyright (c) 2022 by Christian Colglazier <christian@cacolglazier.com>
-  *
-@@ -56,6 +57,9 @@
-  * Support for Clarett+ 8Pre added in Aug 2022 by Christian
-  * Colglazier.
-  *
-+ * Support for Clarett 8Pre USB added in Sep 2023 (thanks to Philippe
-+ * Perrot for confirmation).
-+ *
-  * This ALSA mixer gives access to (model-dependent):
-  *  - input, output, mixer-matrix muxes
-  *  - mixer-matrix gain stages
-@@ -899,7 +903,8 @@ static const struct scarlett2_device_entry scarlett2_devices[] = {
- 	{ USB_ID(0x1235, 0x8214), &s18i8_gen3_info },
- 	{ USB_ID(0x1235, 0x8215), &s18i20_gen3_info },
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index cbc8c88144e47..e7ceee008bd09 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1651,7 +1651,8 @@ static void __init bhi_select_mitigation(void)
+ 		return;
  
--	/* Supported Clarett+ devices */
-+	/* Supported Clarett USB/Clarett+ devices */
-+	{ USB_ID(0x1235, 0x8208), &clarett_8pre_info },
- 	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info },
- 
- 	/* End of list */
+ 	/* Retpoline mitigates against BHI unless the CPU has RRSBA behavior */
+-	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE)) {
++	if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
++	    !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE)) {
+ 		spec_ctrl_disable_kernel_rrsba();
+ 		if (rrsba_disabled)
+ 			return;
+@@ -2803,11 +2804,13 @@ static const char *spectre_bhi_state(void)
+ {
+ 	if (!boot_cpu_has_bug(X86_BUG_BHI))
+ 		return "; BHI: Not affected";
+-	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
++	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
+ 		return "; BHI: BHI_DIS_S";
+-	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
++	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
+ 		return "; BHI: SW loop, KVM: SW loop";
+-	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) && rrsba_disabled)
++	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
++		 !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE) &&
++		 rrsba_disabled)
+ 		return "; BHI: Retpoline";
+ 	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
+ 		return "; BHI: Vulnerable, KVM: SW loop";
 -- 
 2.43.0
 
