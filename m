@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566858AE702
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2138AE707
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79A461C22D22
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:53:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF8581C22D48
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1E3127E0A;
-	Tue, 23 Apr 2024 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9474912CD86;
+	Tue, 23 Apr 2024 12:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0BYTrAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzxmrK7h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20CC1E4B3
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B9184A20
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713876648; cv=none; b=nx8Syllb057Ha9W30iDuzTrZU1f7vavSh3hU8w6ox3CwjRLdlS2VMD6SouNu7xp1K1SUSeYqQtjdGpeMAgDPgT6RXO1YqCgyBfZKPH5JpUMvNxjKbSZZIeUgq1KMhEH8KY//OQbRFLYHI60NBkpnUiv4AzHC3QZJxjoa+5VxU28=
+	t=1713876680; cv=none; b=JxTggu5qSmYWRwfzg8UI4pCajiDZVoZvN6k/8AVYdvgNe7fGKMYX537VcIiS+Yc++n97Q1b18mzVG4a2Grkg7/HEh9ym3hA+E0ORgx0qSvpNyFEy6rm1LQz9lckI1Gii4JRM6kYIBBONWhTKWbN7b85efS8qzIMrPQbuZ1caH4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713876648; c=relaxed/simple;
-	bh=fLoFi/Nq0xVlFgErkfu1aLfEXN69hXn28BApStvYFCg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vGhBvpHadXwnVxS5ChIoke5SbEltgBiSIEqQbK+0u3co/pQQgFXXMKcIFKIaBT9pckmeHc7s/BWOvvnt1R2CLeAcC8NMTMZaQ8y6U9uvf4oEuCw2hiu0s8lOmVFL1j0Q+OYr76dNgElQIg8N1yxxr1m1hXGbSAs0cv4AtLPnuWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0BYTrAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2E2C2BD11;
-	Tue, 23 Apr 2024 12:50:48 +0000 (UTC)
+	s=arc-20240116; t=1713876680; c=relaxed/simple;
+	bh=0ZR2Upxy4Cil5pA8Y7nU/c392vQ6JhulLRqNd9Pc6uQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Jyq+SUZrBJFQV853cliYTeoWV2fxTf6XWLNWK6L0PcR/G1HFpGs9roeNf3BQz9I1gQ0DAr3ltoU9tOZJ/43lAb9OZMhW7hQokLFz3z806qE1NgQtzCr2/GvdW1O177Pw+lwDwZITQnuRBsGkS4ZHbqhrGHFLfLBo+Sv3H7Gppek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzxmrK7h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD03C116B1;
+	Tue, 23 Apr 2024 12:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713876648;
-	bh=fLoFi/Nq0xVlFgErkfu1aLfEXN69hXn28BApStvYFCg=;
+	s=korg; t=1713876679;
+	bh=0ZR2Upxy4Cil5pA8Y7nU/c392vQ6JhulLRqNd9Pc6uQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=b0BYTrAfCheWFBjWO8TgTjL6I0ge9Fy8L0iSp0MqX5FGjaqwu93xPcONi18qjxCon
-	 m0hb7CKg851WmNOkXh526HNlpyI6D3YKVs3R7jD69b4Z7Ju6OhZjylwea1i8KUeC9S
-	 ZOOuYITgD0HFAft0v626L8FbZLfe1BzTzesPOhUI=
-Subject: FAILED: patch "[PATCH] mm/madvise: make MADV_POPULATE_(READ|WRITE) handle" failed to apply to 5.15-stable tree
-To: david@redhat.com,akpm@linux-foundation.org,djwong@kernel.org,hughd@google.com,jgg@nvidia.com,jhubbard@nvidia.com,stable@vger.kernel.org
+	b=WzxmrK7hPG3a2tcpC+/H+ADkSdd0sdGtPnFv+WT8Vk91gXG3LxIrz50bmp/HkOQot
+	 eJ8B6HUrhq4KfAm3y3O1sKZDPkBf7rtLRAyx8kBLivbyrO5XO7pDa8fAmxomszZZJP
+	 l8I3zU3RmcoD3KT+JEU2nuiZdxGCULdPYVn+cLGY=
+Subject: FAILED: patch "[PATCH] mm,swapops: update check in is_pfn_swap_entry for hwpoison" failed to apply to 6.1-stable tree
+To: osalvador@suse.de,akpm@linux-foundation.org,david@redhat.com,linmiaohe@huawei.com,peterx@redhat.com,stable@vger.kernel.org,tony.luck@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 05:50:39 -0700
-Message-ID: <2024042338-ideally-setting-9717@gregkh>
+Date: Tue, 23 Apr 2024 05:51:09 -0700
+Message-ID: <2024042309-rural-overlying-190b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 631426ba1d45a8672b177ee85ad4cabe760dd131
+git cherry-pick -x 07a57a338adb6ec9e766d6a6790f76527f45ceb5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042338-ideally-setting-9717@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042309-rural-overlying-190b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-631426ba1d45 ("mm/madvise: make MADV_POPULATE_(READ|WRITE) handle VM_FAULT_RETRY properly")
-0f20bba1688b ("mm/gup: explicitly define and check internal GUP flags, disallow FOLL_TOUCH")
-6cd06ab12d1a ("gup: make the stack expansion warning a bit more targeted")
-9471f1f2f502 ("Merge branch 'expand-stack'")
+07a57a338adb ("mm,swapops: update check in is_pfn_swap_entry for hwpoison entries")
+d027122d8363 ("mm/hwpoison: move definitions of num_poisoned_pages_* to memory-failure.c")
+e591ef7d96d6 ("mm,hwpoison,hugetlb,memory_hotplug: hotremove memory section with hwpoisoned hugepage")
 
 thanks,
 
@@ -80,236 +79,137 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 631426ba1d45a8672b177ee85ad4cabe760dd131 Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@redhat.com>
-Date: Thu, 14 Mar 2024 17:12:59 +0100
-Subject: [PATCH] mm/madvise: make MADV_POPULATE_(READ|WRITE) handle
- VM_FAULT_RETRY properly
+From 07a57a338adb6ec9e766d6a6790f76527f45ceb5 Mon Sep 17 00:00:00 2001
+From: Oscar Salvador <osalvador@suse.de>
+Date: Sun, 7 Apr 2024 15:05:37 +0200
+Subject: [PATCH] mm,swapops: update check in is_pfn_swap_entry for hwpoison
+ entries
 
-Darrick reports that in some cases where pread() would fail with -EIO and
-mmap()+access would generate a SIGBUS signal, MADV_POPULATE_READ /
-MADV_POPULATE_WRITE will keep retrying forever and not fail with -EFAULT.
+Tony reported that the Machine check recovery was broken in v6.9-rc1, as
+he was hitting a VM_BUG_ON when injecting uncorrectable memory errors to
+DRAM.
 
-While the madvise() call can be interrupted by a signal, this is not the
-desired behavior.  MADV_POPULATE_READ / MADV_POPULATE_WRITE should behave
-like page faults in that case: fail and not retry forever.
+After some more digging and debugging on his side, he realized that this
+went back to v6.1, with the introduction of 'commit 0d206b5d2e0d
+("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")'.  That
+commit, among other things, introduced swp_offset_pfn(), replacing
+hwpoison_entry_to_pfn() in its favour.
 
-A reproducer can be found at [1].
+The patch also introduced a VM_BUG_ON() check for is_pfn_swap_entry(), but
+is_pfn_swap_entry() never got updated to cover hwpoison entries, which
+means that we would hit the VM_BUG_ON whenever we would call
+swp_offset_pfn() for such entries on environments with CONFIG_DEBUG_VM
+set.  Fix this by updating the check to cover hwpoison entries as well,
+and update the comment while we are it.
 
-The reason is that __get_user_pages(), as called by
-faultin_vma_page_range(), will not handle VM_FAULT_RETRY in a proper way:
-it will simply return 0 when VM_FAULT_RETRY happened, making
-madvise_populate()->faultin_vma_page_range() retry again and again, never
-setting FOLL_TRIED->FAULT_FLAG_TRIED for __get_user_pages().
-
-__get_user_pages_locked() does what we want, but duplicating that logic in
-faultin_vma_page_range() feels wrong.
-
-So let's use __get_user_pages_locked() instead, that will detect
-VM_FAULT_RETRY and set FOLL_TRIED when retrying, making the fault handler
-return VM_FAULT_SIGBUS (VM_FAULT_ERROR) at some point, propagating -EFAULT
-from faultin_page() to __get_user_pages(), all the way to
-madvise_populate().
-
-But, there is an issue: __get_user_pages_locked() will end up re-taking
-the MM lock and then __get_user_pages() will do another VMA lookup.  In
-the meantime, the VMA layout could have changed and we'd fail with
-different error codes than we'd want to.
-
-As __get_user_pages() will currently do a new VMA lookup either way, let
-it do the VMA handling in a different way, controlled by a new
-FOLL_MADV_POPULATE flag, effectively moving these checks from
-madvise_populate() + faultin_page_range() in there.
-
-With this change, Darricks reproducer properly fails with -EFAULT, as
-documented for MADV_POPULATE_READ / MADV_POPULATE_WRITE.
-
-[1] https://lore.kernel.org/all/20240313171936.GN1927156@frogsfrogsfrogs/
-
-Link: https://lkml.kernel.org/r/20240314161300.382526-1-david@redhat.com
-Link: https://lkml.kernel.org/r/20240314161300.382526-2-david@redhat.com
-Fixes: 4ca9b3859dac ("mm/madvise: introduce MADV_POPULATE_(READ|WRITE) to prefault page tables")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Darrick J. Wong <djwong@kernel.org>
-Closes: https://lore.kernel.org/all/20240311223815.GW1927156@frogsfrogsfrogs/
-Cc: Darrick J. Wong <djwong@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20240407130537.16977-1-osalvador@suse.de
+Fixes: 0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
+Signed-off-by: Oscar Salvador <osalvador@suse.de>
+Reported-by: Tony Luck <tony.luck@intel.com>
+Closes: https://lore.kernel.org/all/Zg8kLSl2yAlA3o5D@agluck-desk3/
+Tested-by: Tony Luck <tony.luck@intel.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.1.x]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/gup.c b/mm/gup.c
-index af8edadc05d1..1611e73b1121 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1206,6 +1206,22 @@ static long __get_user_pages(struct mm_struct *mm,
- 
- 		/* first iteration or cross vma bound */
- 		if (!vma || start >= vma->vm_end) {
-+			/*
-+			 * MADV_POPULATE_(READ|WRITE) wants to handle VMA
-+			 * lookups+error reporting differently.
-+			 */
-+			if (gup_flags & FOLL_MADV_POPULATE) {
-+				vma = vma_lookup(mm, start);
-+				if (!vma) {
-+					ret = -ENOMEM;
-+					goto out;
-+				}
-+				if (check_vma_flags(vma, gup_flags)) {
-+					ret = -EINVAL;
-+					goto out;
-+				}
-+				goto retry;
-+			}
- 			vma = gup_vma_lookup(mm, start);
- 			if (!vma && in_gate_area(mm, start)) {
- 				ret = get_gate_page(mm, start & PAGE_MASK,
-@@ -1685,35 +1701,35 @@ long populate_vma_page_range(struct vm_area_struct *vma,
+diff --git a/include/linux/swapops.h b/include/linux/swapops.h
+index 48b700ba1d18..a5c560a2f8c2 100644
+--- a/include/linux/swapops.h
++++ b/include/linux/swapops.h
+@@ -390,6 +390,35 @@ static inline bool is_migration_entry_dirty(swp_entry_t entry)
  }
+ #endif	/* CONFIG_MIGRATION */
+ 
++#ifdef CONFIG_MEMORY_FAILURE
++
++/*
++ * Support for hardware poisoned pages
++ */
++static inline swp_entry_t make_hwpoison_entry(struct page *page)
++{
++	BUG_ON(!PageLocked(page));
++	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
++}
++
++static inline int is_hwpoison_entry(swp_entry_t entry)
++{
++	return swp_type(entry) == SWP_HWPOISON;
++}
++
++#else
++
++static inline swp_entry_t make_hwpoison_entry(struct page *page)
++{
++	return swp_entry(0, 0);
++}
++
++static inline int is_hwpoison_entry(swp_entry_t swp)
++{
++	return 0;
++}
++#endif
++
+ typedef unsigned long pte_marker;
+ 
+ #define  PTE_MARKER_UFFD_WP			BIT(0)
+@@ -483,8 +512,9 @@ static inline struct folio *pfn_swap_entry_folio(swp_entry_t entry)
  
  /*
-- * faultin_vma_page_range() - populate (prefault) page tables inside the
-- *			      given VMA range readable/writable
-+ * faultin_page_range() - populate (prefault) page tables inside the
-+ *			  given range readable/writable
-  *
-  * This takes care of mlocking the pages, too, if VM_LOCKED is set.
-  *
-- * @vma: target vma
-+ * @mm: the mm to populate page tables in
-  * @start: start address
-  * @end: end address
-  * @write: whether to prefault readable or writable
-  * @locked: whether the mmap_lock is still held
-  *
-- * Returns either number of processed pages in the vma, or a negative error
-- * code on error (see __get_user_pages()).
-+ * Returns either number of processed pages in the MM, or a negative error
-+ * code on error (see __get_user_pages()). Note that this function reports
-+ * errors related to VMAs, such as incompatible mappings, as expected by
-+ * MADV_POPULATE_(READ|WRITE).
-  *
-- * vma->vm_mm->mmap_lock must be held. The range must be page-aligned and
-- * covered by the VMA. If it's released, *@locked will be set to 0.
-+ * The range must be page-aligned.
-+ *
-+ * mm->mmap_lock must be held. If it's released, *@locked will be set to 0.
+  * A pfn swap entry is a special type of swap entry that always has a pfn stored
+- * in the swap offset. They are used to represent unaddressable device memory
+- * and to restrict access to a page undergoing migration.
++ * in the swap offset. They can either be used to represent unaddressable device
++ * memory, to restrict access to a page undergoing migration or to represent a
++ * pfn which has been hwpoisoned and unmapped.
   */
--long faultin_vma_page_range(struct vm_area_struct *vma, unsigned long start,
--			    unsigned long end, bool write, int *locked)
-+long faultin_page_range(struct mm_struct *mm, unsigned long start,
-+			unsigned long end, bool write, int *locked)
+ static inline bool is_pfn_swap_entry(swp_entry_t entry)
  {
--	struct mm_struct *mm = vma->vm_mm;
- 	unsigned long nr_pages = (end - start) / PAGE_SIZE;
- 	int gup_flags;
- 	long ret;
+@@ -492,7 +522,7 @@ static inline bool is_pfn_swap_entry(swp_entry_t entry)
+ 	BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
  
- 	VM_BUG_ON(!PAGE_ALIGNED(start));
- 	VM_BUG_ON(!PAGE_ALIGNED(end));
--	VM_BUG_ON_VMA(start < vma->vm_start, vma);
--	VM_BUG_ON_VMA(end > vma->vm_end, vma);
- 	mmap_assert_locked(mm);
- 
- 	/*
-@@ -1725,19 +1741,13 @@ long faultin_vma_page_range(struct vm_area_struct *vma, unsigned long start,
- 	 *		  a poisoned page.
- 	 * !FOLL_FORCE: Require proper access permissions.
- 	 */
--	gup_flags = FOLL_TOUCH | FOLL_HWPOISON | FOLL_UNLOCKABLE;
-+	gup_flags = FOLL_TOUCH | FOLL_HWPOISON | FOLL_UNLOCKABLE |
-+		    FOLL_MADV_POPULATE;
- 	if (write)
- 		gup_flags |= FOLL_WRITE;
- 
--	/*
--	 * We want to report -EINVAL instead of -EFAULT for any permission
--	 * problems or incompatible mappings.
--	 */
--	if (check_vma_flags(vma, gup_flags))
--		return -EINVAL;
--
--	ret = __get_user_pages(mm, start, nr_pages, gup_flags,
--			       NULL, locked);
-+	ret = __get_user_pages_locked(mm, start, nr_pages, NULL, locked,
-+				      gup_flags);
- 	lru_add_drain();
- 	return ret;
+ 	return is_migration_entry(entry) || is_device_private_entry(entry) ||
+-	       is_device_exclusive_entry(entry);
++	       is_device_exclusive_entry(entry) || is_hwpoison_entry(entry);
  }
-diff --git a/mm/internal.h b/mm/internal.h
-index 7e486f2c502c..07ad2675a88b 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -686,9 +686,8 @@ struct anon_vma *folio_anon_vma(struct folio *folio);
- void unmap_mapping_folio(struct folio *folio);
- extern long populate_vma_page_range(struct vm_area_struct *vma,
- 		unsigned long start, unsigned long end, int *locked);
--extern long faultin_vma_page_range(struct vm_area_struct *vma,
--				   unsigned long start, unsigned long end,
--				   bool write, int *locked);
-+extern long faultin_page_range(struct mm_struct *mm, unsigned long start,
-+		unsigned long end, bool write, int *locked);
- extern bool mlock_future_ok(struct mm_struct *mm, unsigned long flags,
- 			       unsigned long bytes);
  
-@@ -1127,10 +1126,13 @@ enum {
- 	FOLL_FAST_ONLY = 1 << 20,
- 	/* allow unlocking the mmap lock */
- 	FOLL_UNLOCKABLE = 1 << 21,
-+	/* VMA lookup+checks compatible with MADV_POPULATE_(READ|WRITE) */
-+	FOLL_MADV_POPULATE = 1 << 22,
- };
+ struct page_vma_mapped_walk;
+@@ -561,35 +591,6 @@ static inline int is_pmd_migration_entry(pmd_t pmd)
+ }
+ #endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
  
- #define INTERNAL_GUP_FLAGS (FOLL_TOUCH | FOLL_TRIED | FOLL_REMOTE | FOLL_PIN | \
--			    FOLL_FAST_ONLY | FOLL_UNLOCKABLE)
-+			    FOLL_FAST_ONLY | FOLL_UNLOCKABLE | \
-+			    FOLL_MADV_POPULATE)
- 
- /*
-  * Indicates for which pages that are write-protected in the page table,
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 44a498c94158..1a073fcc4c0c 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -908,27 +908,14 @@ static long madvise_populate(struct vm_area_struct *vma,
- {
- 	const bool write = behavior == MADV_POPULATE_WRITE;
- 	struct mm_struct *mm = vma->vm_mm;
--	unsigned long tmp_end;
- 	int locked = 1;
- 	long pages;
- 
- 	*prev = vma;
- 
- 	while (start < end) {
--		/*
--		 * We might have temporarily dropped the lock. For example,
--		 * our VMA might have been split.
--		 */
--		if (!vma || start >= vma->vm_end) {
--			vma = vma_lookup(mm, start);
--			if (!vma)
--				return -ENOMEM;
--		}
+-#ifdef CONFIG_MEMORY_FAILURE
 -
--		tmp_end = min_t(unsigned long, end, vma->vm_end);
- 		/* Populate (prefault) page tables readable/writable. */
--		pages = faultin_vma_page_range(vma, start, tmp_end, write,
--					       &locked);
-+		pages = faultin_page_range(mm, start, end, write, &locked);
- 		if (!locked) {
- 			mmap_read_lock(mm);
- 			locked = 1;
-@@ -949,7 +936,7 @@ static long madvise_populate(struct vm_area_struct *vma,
- 				pr_warn_once("%s: unhandled return value: %ld\n",
- 					     __func__, pages);
- 				fallthrough;
--			case -ENOMEM:
-+			case -ENOMEM: /* No VMA or out of memory. */
- 				return -ENOMEM;
- 			}
- 		}
+-/*
+- * Support for hardware poisoned pages
+- */
+-static inline swp_entry_t make_hwpoison_entry(struct page *page)
+-{
+-	BUG_ON(!PageLocked(page));
+-	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
+-}
+-
+-static inline int is_hwpoison_entry(swp_entry_t entry)
+-{
+-	return swp_type(entry) == SWP_HWPOISON;
+-}
+-
+-#else
+-
+-static inline swp_entry_t make_hwpoison_entry(struct page *page)
+-{
+-	return swp_entry(0, 0);
+-}
+-
+-static inline int is_hwpoison_entry(swp_entry_t swp)
+-{
+-	return 0;
+-}
+-#endif
+-
+ static inline int non_swap_entry(swp_entry_t entry)
+ {
+ 	return swp_type(entry) >= MAX_SWAPFILES;
 
 
