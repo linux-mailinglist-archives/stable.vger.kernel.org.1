@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB138AFAE9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D62478AF96B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA012B2C09C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76DBC1F26365
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66749149C73;
-	Tue, 23 Apr 2024 21:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F206E145330;
+	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QD7CuUtT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouCZr327"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2491B149C4D;
-	Tue, 23 Apr 2024 21:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2535143C75;
+	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908691; cv=none; b=GagNaeKI0gzpDZ+OsbFzgW7O5grUEc0TdPEENIDsChc3AIXDKYjXUN2Jkn7FI1EcwZKiE/v+2asaz3vbAJ6ysdaNzJZliWCjn63ScFRcjohGH/kYB4DddAAPRkTMZUOkwQMGJOwUJ+bDq+c36HzWFNRU5XtW50LRVzTl3Pf2Gwo=
+	t=1713908521; cv=none; b=ooqZJjYrACb0tWBJGyBIc+my3j9GSPHsibpfLAwVLavlhOPh5lP9C3/2NbWo7ykkq3zNiUdRyLyDq4QeNvSkpIT9nklV6qXtXZDuFCT1kZdUeHeTwQyORc5GeIIIxmRjn0xLaZHRdfmmOaspJWOmh4D4H7gsZ7hIsSVPE/zWhIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908691; c=relaxed/simple;
-	bh=fs7tQUjhRGSc4McIEZ9CmFMlphNI3UTE1x9l9E9z1Jo=;
+	s=arc-20240116; t=1713908521; c=relaxed/simple;
+	bh=77YS7CTjad9YeYH2HBm+wMaaPgoDiIYi1LEuYh9mXMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMebP9KIyEN+feqMNvWcFazVHeyIDJa5Kuyhdospuhr9+a8GNCgd+8Q2PER+moopctdjOS1Yo04zpAR9VLu2SZb71C+ykr9t3CIXJ1C3Zx28KDPC2vBAomDlBgX6b4sID13TIvkuHNtO25o24amwO3jw85huExB5g0Xm4Kulrio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QD7CuUtT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91A1C116B1;
-	Tue, 23 Apr 2024 21:44:50 +0000 (UTC)
+	 MIME-Version; b=MgYC2J+iMk+WnK7lEPmCH5CC0btV4mscPI6yPjQIwrKvK9+mXIguuW6WTZiErK5CFSEbjTHpUazgg813vmwhSNxTUDTsWhHOimckA7XpT2kDxBWWIwa/3T8ON2fCh24MuIbyYo8yDxg39h7qMswG3hFDgHbqpjcSd8m7cLKPeyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouCZr327; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8603CC116B1;
+	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908691;
-	bh=fs7tQUjhRGSc4McIEZ9CmFMlphNI3UTE1x9l9E9z1Jo=;
+	s=korg; t=1713908521;
+	bh=77YS7CTjad9YeYH2HBm+wMaaPgoDiIYi1LEuYh9mXMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QD7CuUtTsfQcWaVv4Z6m+p9p+viO3kre4Eg0jw/ExCeTljkSWoccdQvZMeAhWGY01
-	 BPIT1Gz26Lt5IgRT2x5JFuAeJMrRQr4gAzHfolBRwIT2T/d2azFph5JmLMoOVJYhm4
-	 G/3ioAqwH/5LKWyzmbLS6jjXbM0YqOwJsTo4Ztls=
+	b=ouCZr327NcS1G5lcm00l0vwMIENzEFq88ocXrEUewaHjp98e3W5Kzb8ukYrPya/Vk
+	 l/5EXKVOplbMONeWk4wXzognpeIdYRUhYGr+u/50bBMN2CSM1Y1z9yYx6m/W1BUaTe
+	 OC9PsJTFjjpAMc1xG6Z52VFxpuH0EtQsg8bEg4wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Eric Biggers <ebiggers@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/141] netfilter: flowtable: incorrect pppoe tuple
-Date: Tue, 23 Apr 2024 14:38:27 -0700
-Message-ID: <20240423213854.549957738@linuxfoundation.org>
+Subject: [PATCH 6.8 086/158] x86/cpufeatures: Fix dependencies for GFNI, VAES, and VPCLMULQDQ
+Date: Tue, 23 Apr 2024 14:38:28 -0700
+Message-ID: <20240423213858.737006459@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 6db5dc7b351b9569940cd1cf445e237c42cd6d27 ]
+[ Upstream commit 9543f6e26634537997b6e909c20911b7bf4876de ]
 
-pppoe traffic reaching ingress path does not match the flowtable entry
-because the pppoe header is expected to be at the network header offset.
-This bug causes a mismatch in the flow table lookup, so pppoe packets
-enter the classical forwarding path.
+Fix cpuid_deps[] to list the correct dependencies for GFNI, VAES, and
+VPCLMULQDQ.  These features don't depend on AVX512, and there exist CPUs
+that support these features but not AVX512.  GFNI actually doesn't even
+depend on AVX.
 
-Fixes: 72efd585f714 ("netfilter: flowtable: add pppoe support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+This prevents GFNI from being unnecessarily disabled if AVX is disabled
+to mitigate the GDS vulnerability.
+
+This also prevents all three features from being unnecessarily disabled
+if AVX512VL (or its dependency AVX512F) were to be disabled, but it
+looks like there isn't any case where this happens anyway.
+
+Fixes: c128dbfa0f87 ("x86/cpufeatures: Enable new SSE/AVX/AVX512 CPU features")
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240417060434.47101-1-ebiggers@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_flow_table_ip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/cpuid-deps.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index 306e1ba6012e2..22bc0e3d8a0b5 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -156,7 +156,7 @@ static void nf_flow_tuple_encap(struct sk_buff *skb,
- 		tuple->encap[i].proto = skb->protocol;
- 		break;
- 	case htons(ETH_P_PPP_SES):
--		phdr = (struct pppoe_hdr *)skb_mac_header(skb);
-+		phdr = (struct pppoe_hdr *)skb_network_header(skb);
- 		tuple->encap[i].id = ntohs(phdr->sid);
- 		tuple->encap[i].proto = skb->protocol;
- 		break;
+diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+index e462c1d3800a6..6fb6d8a57ceca 100644
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -44,7 +44,10 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_F16C,			X86_FEATURE_XMM2,     },
+ 	{ X86_FEATURE_AES,			X86_FEATURE_XMM2      },
+ 	{ X86_FEATURE_SHA_NI,			X86_FEATURE_XMM2      },
++	{ X86_FEATURE_GFNI,			X86_FEATURE_XMM2      },
+ 	{ X86_FEATURE_FMA,			X86_FEATURE_AVX       },
++	{ X86_FEATURE_VAES,			X86_FEATURE_AVX       },
++	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX       },
+ 	{ X86_FEATURE_AVX2,			X86_FEATURE_AVX,      },
+ 	{ X86_FEATURE_AVX512F,			X86_FEATURE_AVX,      },
+ 	{ X86_FEATURE_AVX512IFMA,		X86_FEATURE_AVX512F   },
+@@ -56,9 +59,6 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_AVX512VL,			X86_FEATURE_AVX512F   },
+ 	{ X86_FEATURE_AVX512VBMI,		X86_FEATURE_AVX512F   },
+ 	{ X86_FEATURE_AVX512_VBMI2,		X86_FEATURE_AVX512VL  },
+-	{ X86_FEATURE_GFNI,			X86_FEATURE_AVX512VL  },
+-	{ X86_FEATURE_VAES,			X86_FEATURE_AVX512VL  },
+-	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_VNNI,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_BITALG,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_4VNNIW,		X86_FEATURE_AVX512F   },
 -- 
 2.43.0
 
