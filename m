@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-41282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653368AFB44
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:58:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 227E68AFB2F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:54:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FC6BB2BD53
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:53:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C55CAB27FD4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0508C145327;
-	Tue, 23 Apr 2024 21:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D41D14A0A0;
+	Tue, 23 Apr 2024 21:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpuTlY3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJqSOdUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90B014885D;
-	Tue, 23 Apr 2024 21:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02BD143882;
+	Tue, 23 Apr 2024 21:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908801; cv=none; b=lG6MUWnLPRj5XyKnOiopb0uvxzqhy51uzWeYdFKe3smhPbEZmlkk6DVtTjsWhludsWmMLSf5Th1giRr+JEaqKRHLd1jHjfT+KYyQERSuD55vURsFJMcKehXhK+c6jg6uhg/v8hNARjRHCuaB62DEGuN01Qa6eOwOsFJ4S8wS9k0=
+	t=1713908743; cv=none; b=U57C4Ztyb4R0cCKpIda8QogCYWyQgPNWJUAmAv3Wu/YGEBSt+3LEze5PvPEfR/Piv0iYhPfQIBZ9tlg0Vp57XgA5McNGznfRFVV7ANIdto6NqrIvIreEqPsMJM6NLUqemR7R03K/kGhJV/aF2RLRFY7HraGOu2xQa4QFQUkTmsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908801; c=relaxed/simple;
-	bh=lfRiVeCKGpNZGcN6abY447E2tmz/sBLHlIYH/C2KTaM=;
+	s=arc-20240116; t=1713908743; c=relaxed/simple;
+	bh=sgZpUd54EbvFm5rMRUfJmK8/Eri65ono9oYxVOWbsQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aMCEn/jDPuKsjmy/Zni3Pj2rGVHph0rXHwoZPe6gyButgan6UIc9wzY09FzWsXN464RzTCA6Fs+gVFvMNHQEIiwgYWMVFl8K+8GdI0Vf7/MfMITxe5iSfjkgOYDkOa0JWVQLpzQYnd2jD5xrUbcyau4c5D+SPTeQ8OBvzHZZIn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpuTlY3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82972C116B1;
-	Tue, 23 Apr 2024 21:46:41 +0000 (UTC)
+	 MIME-Version; b=H6WqpUnYeV1pV+f7G1Tcje/BH8v6k06RpwaySOJp33f4ycj1lRhhSdo5DeWvsp3/+lmvjpiK7V8VHKuINjMLUUVLJVE3Q8HYUhkaahl6Xl5HNGVbOBrkBAT1WHm0+LEvvuDIKS3tQAmA/w94mCXiLGK66g9ug8Gde6NnfYtvR6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJqSOdUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A351BC3277B;
+	Tue, 23 Apr 2024 21:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908801;
-	bh=lfRiVeCKGpNZGcN6abY447E2tmz/sBLHlIYH/C2KTaM=;
+	s=korg; t=1713908743;
+	bh=sgZpUd54EbvFm5rMRUfJmK8/Eri65ono9oYxVOWbsQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpuTlY3dSYJCIo1AzO/QJ8CS+QUxrHCyhjP+tdpHjiqLipw+bPSLyp0mpDTYa+gSh
-	 xSlwmJPyShzjFfpjopRIlMept8lQLwgzmszdq6psJssRZDKt0HgW2LTG75YBSw2ZmJ
-	 1yjrLJGzXgJ5+fYvC8g2wPCfBB72LUVeEhTbbptU=
+	b=rJqSOdUK+CW+SkqZOYpex4Th8y3r9/wX9ygBYCkKNMfFIHpPb33FBggD2iAAlRobT
+	 GoV3ig9WG7rfKZBIw5QNQnbgXfCzOFrw/5XhW1VbXDfQHyPwwJ7KeTQ9xFugXyB7mz
+	 cwgVMXGu0QmvKQBcNNxT5KrP4rSwfJHhHqAYIenM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/71] s390/cio: fix race condition during online processing
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 116/141] usb: Disable USB3 LPM at shutdown
 Date: Tue, 23 Apr 2024 14:39:44 -0700
-Message-ID: <20240423213845.218489248@linuxfoundation.org>
+Message-ID: <20240423213856.977754812@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-[ Upstream commit 2d8527f2f911fab84aec04df4788c0c23af3df48 ]
+commit d920a2ed8620be04a3301e1a9c2b7cc1de65f19d upstream.
 
-A race condition exists in ccw_device_set_online() that can cause the
-online process to fail, leaving the affected device in an inconsistent
-state. As a result, subsequent attempts to set that device online fail
-with return code ENODEV.
+SanDisks USB3 storage may disapper after system reboot:
 
-The problem occurs when a path verification request arrives after
-a wait for final device state completed, but before the result state
-is evaluated.
+usb usb2-port3: link state change
+xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
+usb usb2-port3: do warm reset, port only
+xhci_hcd 0000:00:14.0: xhci_hub_status_data: stopping usb2 port polling
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2b0, return 0x2b0
+usb usb2-port3: not warm reset yet, waiting 50ms
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2f0, return 0x2f0
+usb usb2-port3: not warm reset yet, waiting 200ms
+...
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x6802c0, return 0x7002c0
+usb usb2-port3: not warm reset yet, waiting 200ms
+xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x4802c0
+xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x4002c0
+xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2c0, return 0x2c0
+usb usb2-port3: not enabled, trying warm reset again...
 
-Fix this by ensuring that the CCW-device lock is held between
-determining final state and checking result state.
+This is due to the USB device still cause port change event after xHCI is
+shuted down:
 
-Note that since:
+xhci_hcd 0000:38:00.0: // Setting command ring address to 0xffffe001
+xhci_hcd 0000:38:00.0: xhci_resume: starting usb3 port polling.
+xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb4 port polling
+xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb3 port polling
+xhci_hcd 0000:38:00.0: hcd_pci_runtime_resume: 0
+xhci_hcd 0000:38:00.0: xhci_shutdown: stopping usb3 port polling.
+xhci_hcd 0000:38:00.0: // Halt the HC
+xhci_hcd 0000:38:00.0: xhci_shutdown completed - status = 1
+xhci_hcd 0000:00:14.0: xhci_shutdown: stopping usb1 port polling.
+xhci_hcd 0000:00:14.0: // Halt the HC
+xhci_hcd 0000:00:14.0: xhci_shutdown completed - status = 1
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
+xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1311
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x201203, return 0x100203
+xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: clear port3 connect change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
+usb 2-3: device not accepting address 2, error -108
+xhci_hcd 0000:00:14.0: xHCI dying or halted, can't queue_command
+xhci_hcd 0000:00:14.0: Set port 2-3 link state, portsc: 0x1203, write 0x11261
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1263, return 0x263
+xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1271
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12b1, return 0x2b1
+usb usb2-port3: not reset yet, waiting 60ms
+ACPI: PM: Preparing to enter system sleep state S5
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12f1, return 0x2f1
+usb usb2-port3: not reset yet, waiting 200ms
+reboot: Restarting system
 
-commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+The port change event is caused by LPM transition, so disabling LPM at shutdown
+to make sure the device is in U0 for warmboot.
 
-path verification requests are much more likely to occur during boot,
-resulting in an increased chance of this race condition occurring.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240305065140.66801-1-kai.heng.feng@canonical.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/device.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/usb/core/port.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index a111154a90465..c16f18cfeed72 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -360,10 +360,8 @@ int ccw_device_set_online(struct ccw_device *cdev)
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -409,8 +409,10 @@ static void usb_port_shutdown(struct dev
+ {
+ 	struct usb_port *port_dev = to_usb_port(dev);
  
- 	spin_lock_irq(cdev->ccwlock);
- 	ret = ccw_device_online(cdev);
--	spin_unlock_irq(cdev->ccwlock);
--	if (ret == 0)
--		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
--	else {
-+	if (ret) {
-+		spin_unlock_irq(cdev->ccwlock);
- 		CIO_MSG_EVENT(0, "ccw_device_online returned %d, "
- 			      "device 0.%x.%04x\n",
- 			      ret, cdev->private->dev_id.ssid,
-@@ -372,7 +370,12 @@ int ccw_device_set_online(struct ccw_device *cdev)
- 		put_device(&cdev->dev);
- 		return ret;
- 	}
--	spin_lock_irq(cdev->ccwlock);
-+	/* Wait until a final state is reached */
-+	while (!dev_fsm_final_state(cdev)) {
-+		spin_unlock_irq(cdev->ccwlock);
-+		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
-+		spin_lock_irq(cdev->ccwlock);
+-	if (port_dev->child)
++	if (port_dev->child) {
+ 		usb_disable_usb2_hardware_lpm(port_dev->child);
++		usb_unlocked_disable_lpm(port_dev->child);
 +	}
- 	/* Check if online processing was successful */
- 	if ((cdev->private->state != DEV_STATE_ONLINE) &&
- 	    (cdev->private->state != DEV_STATE_W4SENSE)) {
--- 
-2.43.0
-
+ }
+ 
+ static const struct dev_pm_ops usb_port_pm_ops = {
 
 
 
