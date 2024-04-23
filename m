@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679D18AFAA7
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB008AFA14
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5839B24F36
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D21671C22CD8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516F6143C5A;
-	Tue, 23 Apr 2024 21:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABB0148837;
+	Tue, 23 Apr 2024 21:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LInUS4U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r834XD+H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105191474D6;
-	Tue, 23 Apr 2024 21:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699C2143895;
+	Tue, 23 Apr 2024 21:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908713; cv=none; b=tcTrh16soHSVxSJILx7d7S1aznpQ5h0p4zguRfySYF/WUQWJsNxfdSYSvlcHqU7q4qrjaPvnO9idKGdDuRvcE56PpNEEqHbg1R9Zlu63KBMouoqcvOiiE9Y9D+c18ZD2LEZ4FsKXsygIE8xHYXCtX671Fw1WAgL8wI14PdHYnl4=
+	t=1713908630; cv=none; b=kg5YkuUxOKbYH7ZFSpLzAyF1/V0IYQoF9iEUkr/V1kVaCsv/LQKtIVnoNUlfWLvl7qQUIsvFWa1OstJfcH2nKZd0i3qKnSadaTHVjttfyZcKBOj8KkCHLEe6br/638iQzDFIzN2n4mIBDwuSMvrFWcizsaXsQmCvHiEHDsmWCAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908713; c=relaxed/simple;
-	bh=lRT14J3Dy5A4J9zER+4d1r8pDhbQGPaLLXhzzw0h8ho=;
+	s=arc-20240116; t=1713908630; c=relaxed/simple;
+	bh=cTldsEPYIxGg/Gyn1YFb/3eF8zCP95BaxL7cmExIeek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWU2wqxFgiqVc2k54i7ctdYgCVSiPRPQTtIUdco4Vyx6vyz0EStAss3iH2n9uYtUQM+GsZ/VW0zlG0lYGCskkFuNGwpn86Iey8uOyh13NjHV2bdH9wRjJhdteFm/3Kbfegh9R6ekVo2IwMBvY8cJbUJ9LQ1WjKMTko0R74oanVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LInUS4U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D709CC116B1;
-	Tue, 23 Apr 2024 21:45:12 +0000 (UTC)
+	 MIME-Version; b=fkd83S510BVbGkEqe5Ezb5ay3bQIAL852hFnzwizNEgJKV4D/Q7uibd/OTw2s6NuUMrmksOIUQczexv34YNAlXDXs+vpCjc9Z3UB6qQxGZm7V1S4osxd47xFNEDuITjBhw6KpaQ8l9ZFzh/+GoagH3f+EqTNJC+qQmyjsjeNgb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r834XD+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4C4C3277B;
+	Tue, 23 Apr 2024 21:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908712;
-	bh=lRT14J3Dy5A4J9zER+4d1r8pDhbQGPaLLXhzzw0h8ho=;
+	s=korg; t=1713908630;
+	bh=cTldsEPYIxGg/Gyn1YFb/3eF8zCP95BaxL7cmExIeek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2LInUS4U82QdaGk9o6A+IjaiPdp0TALWXbuZSTI0bF5/B9tHod+bUd6Gh5HcmWxLK
-	 ulGUBzL/s08NKOiy/SbTXIokmBVz+rlDArH/jdrG8JTNascHw8YdQvZkso1ff0iDE/
-	 yatpvJtFkQ2E/MqLxHAm4ZikkH+wtIoUTVw3SBCA=
+	b=r834XD+HcWRj+0+exGjpuFf3LGCpldE9bVlK75+ukb7NBXgZoN7Z0E/iloSmbObfA
+	 UfKZ8QzgpKrqqGYPwMrEy56a81Od8vBoYrVCkzPPj5X69Fyzq9kZKQfYnToVvRkb+F
+	 oMnXCw2B5H86/YYNZxERzA6V0bnaOgT0RX0mhGgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philippe Perrot <philippe@perrot-net.fr>,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/141] ALSA: scarlett2: Add support for Clarett 8Pre USB
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 101/158] ALSA: hda/tas2781: correct the register for pow calibrated data
 Date: Tue, 23 Apr 2024 14:38:58 -0700
-Message-ID: <20240423213855.496027102@linuxfoundation.org>
+Message-ID: <20240423213859.037359218@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit b9a98cdd3ac7b80d8ea0f6acd81c88ad3d8bcb4a ]
+commit 0b6f0ff01a4a8c1b66c600263465976d57dcc1a3 upstream.
 
-The Clarett 8Pre USB works the same as the Clarett+ 8Pre, only the USB
-ID is different.
+Calibrated data was written into an incorrect register, which cause
+speaker protection sometimes malfuctions
 
-Tested-by: Philippe Perrot <philippe@perrot-net.fr>
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://lore.kernel.org/r/e59f47b29e2037f031b56bde10474c6e96e31ba5.1694705811.git.g@b4.vu
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Cc: <stable@vger.kernel.org>
+Message-ID: <20240406132010.341-1-shenghao-ding@ti.com>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c        |  1 +
- sound/usb/mixer_scarlett_gen2.c | 11 ++++++++---
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ sound/pci/hda/tas2781_hda_i2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 1f32e3ae3aa31..b122d7aedb443 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -3447,6 +3447,7 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 	case USB_ID(0x1235, 0x8213): /* Focusrite Scarlett 8i6 3rd Gen */
- 	case USB_ID(0x1235, 0x8214): /* Focusrite Scarlett 18i8 3rd Gen */
- 	case USB_ID(0x1235, 0x8215): /* Focusrite Scarlett 18i20 3rd Gen */
-+	case USB_ID(0x1235, 0x8208): /* Focusrite Clarett 8Pre USB */
- 	case USB_ID(0x1235, 0x820c): /* Focusrite Clarett+ 8Pre */
- 		err = snd_scarlett_gen2_init(mixer);
- 		break;
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index 2668bc1b918ba..f949d22da382d 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -1,13 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- *   Focusrite Scarlett Gen 2/3 and Clarett+ Driver for ALSA
-+ *   Focusrite Scarlett Gen 2/3 and Clarett USB/Clarett+ Driver for ALSA
-  *
-  *   Supported models:
-  *   - 6i6/18i8/18i20 Gen 2
-  *   - Solo/2i2/4i4/8i6/18i8/18i20 Gen 3
-+ *   - Clarett 8Pre USB
-  *   - Clarett+ 8Pre
-  *
-- *   Copyright (c) 2018-2022 by Geoffrey D. Bennett <g at b4.vu>
-+ *   Copyright (c) 2018-2023 by Geoffrey D. Bennett <g at b4.vu>
-  *   Copyright (c) 2020-2021 by Vladimir Sadovnikov <sadko4u@gmail.com>
-  *   Copyright (c) 2022 by Christian Colglazier <christian@cacolglazier.com>
-  *
-@@ -56,6 +57,9 @@
-  * Support for Clarett+ 8Pre added in Aug 2022 by Christian
-  * Colglazier.
-  *
-+ * Support for Clarett 8Pre USB added in Sep 2023 (thanks to Philippe
-+ * Perrot for confirmation).
-+ *
-  * This ALSA mixer gives access to (model-dependent):
-  *  - input, output, mixer-matrix muxes
-  *  - mixer-matrix gain stages
-@@ -899,7 +903,8 @@ static const struct scarlett2_device_entry scarlett2_devices[] = {
- 	{ USB_ID(0x1235, 0x8214), &s18i8_gen3_info },
- 	{ USB_ID(0x1235, 0x8215), &s18i20_gen3_info },
- 
--	/* Supported Clarett+ devices */
-+	/* Supported Clarett USB/Clarett+ devices */
-+	{ USB_ID(0x1235, 0x8208), &clarett_8pre_info },
- 	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info },
- 
- 	/* End of list */
--- 
-2.43.0
-
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -420,10 +420,10 @@ static const struct snd_kcontrol_new tas
+ static void tas2781_apply_calib(struct tasdevice_priv *tas_priv)
+ {
+ 	static const unsigned char page_array[CALIB_MAX] = {
+-		0x17, 0x18, 0x18, 0x0d, 0x18
++		0x17, 0x18, 0x18, 0x13, 0x18,
+ 	};
+ 	static const unsigned char rgno_array[CALIB_MAX] = {
+-		0x74, 0x0c, 0x14, 0x3c, 0x7c
++		0x74, 0x0c, 0x14, 0x70, 0x7c,
+ 	};
+ 	unsigned char *data;
+ 	int i, j, rc;
 
 
 
