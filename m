@@ -1,55 +1,51 @@
-Return-Path: <stable+bounces-40783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6966B8AF90B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F058AF913
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21D8D281D4D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0521C227F7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA63143882;
-	Tue, 23 Apr 2024 21:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E24E143C55;
+	Tue, 23 Apr 2024 21:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsNcxXIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8rPiVIO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD19F20B3E;
-	Tue, 23 Apr 2024 21:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECA814388C;
+	Tue, 23 Apr 2024 21:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908460; cv=none; b=m8trShmyRqui6TrP0cN/Il491un9BXU1LnUrIYnoqxi+B99KPqltyC84oP6ZTO8kPSTz5a718bbXSeDrbYpCQ9uLSPh/CDIMp7irnn3/LW2wLVv4z5NsmEeasj3ndYN7sz1L74GwMXlOD2UnNFh3dp/7fM9XXSl4tqwxoQaIQgU=
+	t=1713908464; cv=none; b=ayxg4lwMAAqYxznmlqInRjZKvxU3nro4q/2M1wno25LCOtIM8Lr8P8aMx7O9fiTVN+0vhCUVLHO7d5aeKdJlyxF6G9XMeQLzlAoZRWIX+GRPjCLm/nllYCNupVHft9/M/K5JVYX/La1fp3+ZyympxsCDubmWwRG+WtyG4DNXQ1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908460; c=relaxed/simple;
-	bh=VLEZAEAobQYCHft0RSL/dTCC84qxW88MKTJwI5ULTow=;
+	s=arc-20240116; t=1713908464; c=relaxed/simple;
+	bh=m+HdP0/vLrRT4vJvsRr7OO7F+XvdqS68S4tvrMEo2WQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n4T7Mqdkwt53dtVRWRbIMv1nYs4YzBzIPEHfZHA2S+drwutus/KFLG3sfwKtQZapv0dd7kUXWnIpZZZphTye/kYixerBFuvZD06zaKeJa2SMXLMYXhh3Oh/UU6ms5fnkk2WqFnONmXMJf09zifSSSEmIwcAy01Gsu7NME6pFOY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsNcxXIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB20C116B1;
-	Tue, 23 Apr 2024 21:40:59 +0000 (UTC)
+	 MIME-Version; b=PEwI6fisIT2sJ70xwLxXH2HbF6FxIyG5Tgc1alI30TkdBtn2ezlYjbFMd7AvDNrl8wMN7h2zZ8/L/dVmQOqpJFBCFobVg131GE0nwHKWgBVhpmSh+f5zqy4xGiYV4/O74bNiwdSyEho9CJxxa57pin7T5QDT1xXnLKlPgZA92vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8rPiVIO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2C5C116B1;
+	Tue, 23 Apr 2024 21:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908459;
-	bh=VLEZAEAobQYCHft0RSL/dTCC84qxW88MKTJwI5ULTow=;
+	s=korg; t=1713908464;
+	bh=m+HdP0/vLrRT4vJvsRr7OO7F+XvdqS68S4tvrMEo2WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsNcxXIfxvTB4F4lpkY+zESKawNmt1ElXHtPg3+ZuiCowtn3xcAdhW9suAf5E8s2Y
-	 FI9pZrohHvapAZcKLxOiMkrJc+EHIyBV6exw01D42S7OoWb4TFTNclqK6klHS6rkQZ
-	 h1FxFkCpXbEC1tLyge6Zsi52uThr2wxDfvqafuG4=
+	b=H8rPiVIOeGVF1T5uR4H8Z0UkjMVh5/lR5Hq3KT9RMrWENnEbJHLAvZmqKgaCMd/5/
+	 R8AEQ4mb0zECZGtEEYCET/cCWA0W//Qf5h+uvZTa7nN/Zy7L1WB6jA5J4L/zfm+kX3
+	 4F/EeocLcOwdCYClV6sg4KLTylv1lMqfFeqAk4uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Uma Shankar <uma.shankar@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 002/158] drm/i915/cdclk: Fix voltage_level programming edge case
-Date: Tue, 23 Apr 2024 14:37:04 -0700
-Message-ID: <20240423213855.907918037@linuxfoundation.org>
+	"Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: [PATCH 6.8 003/158] Revert "vmgenid: emit uevent when VMGENID updates"
+Date: Tue, 23 Apr 2024 14:37:05 -0700
+Message-ID: <20240423213855.942877739@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
 References: <20240423213855.824778126@linuxfoundation.org>
@@ -62,131 +58,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[ Upstream commit 6154cc9177ccea00c89ce0bf93352e474b819ff2 ]
+commit 3aadf100f93d80815685493d60cd8cab206403df upstream.
 
-Currently we only consider the relationship of the
-old and new CDCLK frequencies when determining whether
-to do the repgramming from intel_set_cdclk_pre_plane_update()
-or intel_set_cdclk_post_plane_update().
+This reverts commit ad6bcdad2b6724e113f191a12f859a9e8456b26d. I had
+nak'd it, and Greg said on the thread that it links that he wasn't going
+to take it either, especially since it's not his code or his tree, but
+then, seemingly accidentally, it got pushed up some months later, in
+what looks like a mistake, with no further discussion in the linked
+thread. So revert it, since it's clearly not intended.
 
-It is technically possible to have a situation where the
-CDCLK frequency is decreasing, but the voltage_level is
-increasing due a DDI port. In this case we should bump
-the voltage level already in intel_set_cdclk_pre_plane_update()
-(so that the voltage_level will have been increased by the
-time the port gets enabled), while leaving the CDCLK frequency
-unchanged (as active planes/etc. may still depend on it).
-We can then reduce the CDCLK frequency to its final value
-from intel_set_cdclk_post_plane_update().
-
-In order to handle that correctly we shall construct a
-suitable amalgam of the old and new cdclk states in
-intel_set_cdclk_pre_plane_update().
-
-And we can simply call intel_set_cdclk() unconditionally
-in both places as it will not do anything if nothing actually
-changes vs. the current hw state.
-
-v2: Handle cdclk_state->disable_pipes
-v3: Only synchronize the cd2x update against the pipe's vblank
-    when the cdclk frequency is changing during the current
-    commit phase (Gustavo)
-
+Fixes: ad6bcdad2b67 ("vmgenid: emit uevent when VMGENID updates")
 Cc: stable@vger.kernel.org
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240402155016.13733-3-ville.syrjala@linux.intel.com
-(cherry picked from commit 34d127e2bdef73a923aa0dcd95cbc3257ad5af52)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230531095119.11202-2-bchalios@amazon.es
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_cdclk.c | 37 ++++++++++++++++------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ drivers/virt/vmgenid.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_cdclk.c b/drivers/gpu/drm/i915/display/intel_cdclk.c
-index 6e36a15284537..7ba30d26f620c 100644
---- a/drivers/gpu/drm/i915/display/intel_cdclk.c
-+++ b/drivers/gpu/drm/i915/display/intel_cdclk.c
-@@ -2512,7 +2512,8 @@ intel_set_cdclk_pre_plane_update(struct intel_atomic_state *state)
- 		intel_atomic_get_old_cdclk_state(state);
- 	const struct intel_cdclk_state *new_cdclk_state =
- 		intel_atomic_get_new_cdclk_state(state);
--	enum pipe pipe = new_cdclk_state->pipe;
-+	struct intel_cdclk_config cdclk_config;
-+	enum pipe pipe;
+diff --git a/drivers/virt/vmgenid.c b/drivers/virt/vmgenid.c
+index b67a28da4702..a1c467a0e9f7 100644
+--- a/drivers/virt/vmgenid.c
++++ b/drivers/virt/vmgenid.c
+@@ -68,7 +68,6 @@ static int vmgenid_add(struct acpi_device *device)
+ static void vmgenid_notify(struct acpi_device *device, u32 event)
+ {
+ 	struct vmgenid_state *state = acpi_driver_data(device);
+-	char *envp[] = { "NEW_VMGENID=1", NULL };
+ 	u8 old_id[VMGENID_SIZE];
  
- 	if (!intel_cdclk_changed(&old_cdclk_state->actual,
- 				 &new_cdclk_state->actual))
-@@ -2521,12 +2522,25 @@ intel_set_cdclk_pre_plane_update(struct intel_atomic_state *state)
- 	if (IS_DG2(i915))
- 		intel_cdclk_pcode_pre_notify(state);
- 
--	if (new_cdclk_state->disable_pipes ||
--	    old_cdclk_state->actual.cdclk <= new_cdclk_state->actual.cdclk) {
--		drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
-+	if (new_cdclk_state->disable_pipes) {
-+		cdclk_config = new_cdclk_state->actual;
-+		pipe = INVALID_PIPE;
-+	} else {
-+		if (new_cdclk_state->actual.cdclk >= old_cdclk_state->actual.cdclk) {
-+			cdclk_config = new_cdclk_state->actual;
-+			pipe = new_cdclk_state->pipe;
-+		} else {
-+			cdclk_config = old_cdclk_state->actual;
-+			pipe = INVALID_PIPE;
-+		}
- 
--		intel_set_cdclk(i915, &new_cdclk_state->actual, pipe);
-+		cdclk_config.voltage_level = max(new_cdclk_state->actual.voltage_level,
-+						 old_cdclk_state->actual.voltage_level);
- 	}
-+
-+	drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
-+
-+	intel_set_cdclk(i915, &cdclk_config, pipe);
+ 	memcpy(old_id, state->this_id, sizeof(old_id));
+@@ -76,7 +75,6 @@ static void vmgenid_notify(struct acpi_device *device, u32 event)
+ 	if (!memcmp(old_id, state->this_id, sizeof(old_id)))
+ 		return;
+ 	add_vmfork_randomness(state->this_id, sizeof(state->this_id));
+-	kobject_uevent_env(&device->dev.kobj, KOBJ_CHANGE, envp);
  }
  
- /**
-@@ -2544,7 +2558,7 @@ intel_set_cdclk_post_plane_update(struct intel_atomic_state *state)
- 		intel_atomic_get_old_cdclk_state(state);
- 	const struct intel_cdclk_state *new_cdclk_state =
- 		intel_atomic_get_new_cdclk_state(state);
--	enum pipe pipe = new_cdclk_state->pipe;
-+	enum pipe pipe;
- 
- 	if (!intel_cdclk_changed(&old_cdclk_state->actual,
- 				 &new_cdclk_state->actual))
-@@ -2554,11 +2568,14 @@ intel_set_cdclk_post_plane_update(struct intel_atomic_state *state)
- 		intel_cdclk_pcode_post_notify(state);
- 
- 	if (!new_cdclk_state->disable_pipes &&
--	    old_cdclk_state->actual.cdclk > new_cdclk_state->actual.cdclk) {
--		drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
-+	    new_cdclk_state->actual.cdclk < old_cdclk_state->actual.cdclk)
-+		pipe = new_cdclk_state->pipe;
-+	else
-+		pipe = INVALID_PIPE;
- 
--		intel_set_cdclk(i915, &new_cdclk_state->actual, pipe);
--	}
-+	drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
-+
-+	intel_set_cdclk(i915, &new_cdclk_state->actual, pipe);
- }
- 
- static int intel_pixel_rate_to_cdclk(const struct intel_crtc_state *crtc_state)
+ static const struct acpi_device_id vmgenid_ids[] = {
 -- 
-2.43.0
+2.44.0
 
 
 
