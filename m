@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9208AFA4F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FBC8AF952
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB7651C22CD8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 223DE1C245B9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA23146A87;
-	Tue, 23 Apr 2024 21:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4F1143C5C;
+	Tue, 23 Apr 2024 21:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5yQ8USf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/pax02b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEAF143C45;
-	Tue, 23 Apr 2024 21:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D90214388D;
+	Tue, 23 Apr 2024 21:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908674; cv=none; b=mE6/zzrKWBiWy/N+gMadFEFBRhEZN1FCrltn3bEcO9SEYcJfdZvd/gthUyjP+lo03XsySe/8FPIyWhj5t4cbpNiFu1rWADhyyltpQSVaiuNgYdSipJY2Ftjm3bD33fbQ7EjseK2UhchZL6QwvDW/jTYUyhJVrGHzcEC+4vhkKPM=
+	t=1713908506; cv=none; b=ZmdNqnBeMV2h+JSwv3BInr0i6uN1UnAlKviTz3MIFHhCu8W6ppVYSDbFE9H8Z3AeR2pasbd//QocWI8d2tM3DoZ2D3HHhGLv/VTsY9ryaoLMtZ5BygW0LIeF7myyZF+vtXtFVw3TFmsXj7349UgFEV1pd0BPJpv4gNr8RIlNQbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908674; c=relaxed/simple;
-	bh=PRecqQqoI/JA1/cPpPcLdF8iEszhBTfSyCQ9YyGSc7w=;
+	s=arc-20240116; t=1713908506; c=relaxed/simple;
+	bh=DQs11mPTJXtwbSraGcFT9lf9/fH+sFlpK8cLrbFNhHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SyYcMX35WhobxWPkXDBMO5Vaoe/C7y3j4CyWZ1S1fGwMwKtsHSxGyQNrGNnsjL7RtE6UZKR079/Ry5thTLNHADGT6/K2fHyTwzLBTD7Pru8B3yM8byRCvH/fTVBdmF2rjIfR5b4D/Ziw25ViS8jhuQmrHvqD5uBECSsclqW/NOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5yQ8USf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEDAC116B1;
-	Tue, 23 Apr 2024 21:44:33 +0000 (UTC)
+	 MIME-Version; b=d6g7upY7B5e2x9rAAmvr9374KJWHDZJ3lIgjL6EnKT0vTIzRxweB5SoPwdlzc8XMtXySqiDlnlORFSe8oC0+lZ5iRBJOQ4C6RbJcl8aeaBmyO3Jdp6BQPfqRNB2Zjsf1mfiaiT/oQKo+6gwX2Lih3GbFeg1ZxsncvROFi6o2/i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/pax02b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F299AC116B1;
+	Tue, 23 Apr 2024 21:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908674;
-	bh=PRecqQqoI/JA1/cPpPcLdF8iEszhBTfSyCQ9YyGSc7w=;
+	s=korg; t=1713908506;
+	bh=DQs11mPTJXtwbSraGcFT9lf9/fH+sFlpK8cLrbFNhHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5yQ8USf5EhoUVCOmKBzMJ3ZEVqNpttnHqAll4FxWc29Bs6Ls/5OcZHOx+ldATVoC
-	 L/DK0TWmAm2ZlEf6vErdooLbvn3DEFLzJQ5baP36IdsuXJBJf19eYBagk6ZifD1LHP
-	 P5Myzb+2DEEZ+lAKdHGV9tbwO5P1zr6HHPFpamqs=
+	b=q/pax02bNeoRIyXmH+qWFs2EjopHswhKI6WT6YfKXGW/PeWDY5Mqo9edlUThe87a9
+	 bY0shgUEL4IWk9kl3Ux6wRuZhOYhZOvgWQNBkBF1ZgAw45HLKJ0BU8mIq1uUSF3wVx
+	 qK5jrivzwvobqeFj9n5hQ1YvNpQHjXnM1bhc3L58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 014/141] x86/efi: Drop alignment flags from PE section headers
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 060/158] s390/qdio: handle deferred cc1
 Date: Tue, 23 Apr 2024 14:38:02 -0700
-Message-ID: <20240423213853.810073642@linuxfoundation.org>
+Message-ID: <20240423213857.908507504@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Commit bfab35f552ab3dd6d017165bf9de1d1d20f198cc upstream ]
+[ Upstream commit 607638faf2ff1cede37458111496e7cc6c977f6f ]
 
-The section header flags for alignment are documented in the PE/COFF
-spec as being applicable to PE object files only, not to PE executables
-such as the Linux bzImage, so let's drop them from the PE header.
+A deferred condition code 1 response indicates that I/O was not started
+and should be retried. The current QDIO implementation handles a cc1
+response as I/O error, resulting in a failed QDIO setup. This can happen
+for example when a path verification request arrives at the same time
+as QDIO setup I/O is started.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-20-ardb@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by retrying the QDIO setup I/O when a cc1 response is received.
+
+Note that since
+
+commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+commit 5ef1dc40ffa6 ("s390/cio: fix invalid -EBUSY on ccw_device_start")
+
+deferred cc1 responses are much more likely to occur. See the commit
+message of the latter for more background information.
+
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/header.S |   12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/s390/cio/qdio_main.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -208,8 +208,7 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	IMAGE_SCN_CNT_CODE		| \
- 		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_EXECUTE		| \
--		IMAGE_SCN_ALIGN_16BYTES		# Characteristics
-+		IMAGE_SCN_MEM_EXECUTE		# Characteristics
+diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
+index 9cde55730b65a..ebcb535809882 100644
+--- a/drivers/s390/cio/qdio_main.c
++++ b/drivers/s390/cio/qdio_main.c
+@@ -722,8 +722,8 @@ static void qdio_handle_activate_check(struct qdio_irq *irq_ptr,
+ 	lgr_info_log();
+ }
  
- 	#
- 	# The EFI application loader requires a relocation section
-@@ -229,8 +228,7 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
- 		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_DISCARDABLE	| \
--		IMAGE_SCN_ALIGN_1BYTES		# Characteristics
-+		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
+-static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
+-				      int dstat)
++static int qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
++				     int dstat, int dcc)
+ {
+ 	DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qest irq");
  
- #ifdef CONFIG_EFI_MIXED
- 	#
-@@ -248,8 +246,7 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
- 		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_DISCARDABLE	| \
--		IMAGE_SCN_ALIGN_1BYTES		# Characteristics
-+		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
- #endif
+@@ -731,15 +731,18 @@ static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
+ 		goto error;
+ 	if (dstat & ~(DEV_STAT_DEV_END | DEV_STAT_CHN_END))
+ 		goto error;
++	if (dcc == 1)
++		return -EAGAIN;
+ 	if (!(dstat & DEV_STAT_DEV_END))
+ 		goto error;
+ 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ESTABLISHED);
+-	return;
++	return 0;
  
- 	#
-@@ -270,8 +267,7 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	IMAGE_SCN_CNT_CODE		| \
- 		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_EXECUTE		| \
--		IMAGE_SCN_ALIGN_16BYTES		# Characteristics
-+		IMAGE_SCN_MEM_EXECUTE		# Characteristics
+ error:
+ 	DBF_ERROR("%4x EQ:error", irq_ptr->schid.sch_no);
+ 	DBF_ERROR("ds: %2x cs:%2x", dstat, cstat);
+ 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
++	return -EIO;
+ }
  
- 	.set	section_count, (. - section_table) / 40
- #endif /* CONFIG_EFI_STUB */
+ /* qdio interrupt handler */
+@@ -748,7 +751,7 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+ {
+ 	struct qdio_irq *irq_ptr = cdev->private->qdio_data;
+ 	struct subchannel_id schid;
+-	int cstat, dstat;
++	int cstat, dstat, rc, dcc;
+ 
+ 	if (!intparm || !irq_ptr) {
+ 		ccw_device_get_schid(cdev, &schid);
+@@ -768,10 +771,12 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+ 	qdio_irq_check_sense(irq_ptr, irb);
+ 	cstat = irb->scsw.cmd.cstat;
+ 	dstat = irb->scsw.cmd.dstat;
++	dcc   = scsw_cmd_is_valid_cc(&irb->scsw) ? irb->scsw.cmd.cc : 0;
++	rc    = 0;
+ 
+ 	switch (irq_ptr->state) {
+ 	case QDIO_IRQ_STATE_INACTIVE:
+-		qdio_establish_handle_irq(irq_ptr, cstat, dstat);
++		rc = qdio_establish_handle_irq(irq_ptr, cstat, dstat, dcc);
+ 		break;
+ 	case QDIO_IRQ_STATE_CLEANUP:
+ 		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_INACTIVE);
+@@ -785,12 +790,25 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+ 		if (cstat || dstat)
+ 			qdio_handle_activate_check(irq_ptr, intparm, cstat,
+ 						   dstat);
++		else if (dcc == 1)
++			rc = -EAGAIN;
+ 		break;
+ 	case QDIO_IRQ_STATE_STOPPED:
+ 		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 	}
++
++	if (rc == -EAGAIN) {
++		DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qint retry");
++		rc = ccw_device_start(cdev, irq_ptr->ccw, intparm, 0, 0);
++		if (!rc)
++			return;
++		DBF_ERROR("%4x RETRY ERR", irq_ptr->schid.sch_no);
++		DBF_ERROR("rc:%4x", rc);
++		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
++	}
++
+ 	wake_up(&cdev->private->wait_q);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
