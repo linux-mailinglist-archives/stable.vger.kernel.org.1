@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CB78AFA58
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AA38AF9C8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 459E31F2966F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AE471F27C00
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325A81442F1;
-	Tue, 23 Apr 2024 21:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF8C145339;
+	Tue, 23 Apr 2024 21:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9dPv1d4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRF2QHew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4875143C46;
-	Tue, 23 Apr 2024 21:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F308E1420BE;
+	Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908681; cv=none; b=hh/zH16DEpt4i3oaUolbanbm6UrsWOzRiBYzHOlLOb3u9Q1a+kSGqNCxJIOCLDJKVQDz/48KB4IlUrF/AP4UfLPEXi9kUTzMxT1M83cLjTd4NEpKqN7Ehj/omAR2mZntY6QzQQRg/AVULPh60TfIkCzVQFS7ZveE7IW0gT0g/jo=
+	t=1713908583; cv=none; b=G3LAs2KvLoraG7GttHUd1krjtuYyAMagYCE64BK+pUvGyo4iM9ZgCabsj/g/DP0uftOnaEITNEnR54IBewkkye10QV0Jxy27/Z8nyLcs84xnapww4g1mWDbG4ep8CJ+UdX+PUkV5QfaFj2/iQCyUWW7p+KTJdpeND32PzY5XnZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908681; c=relaxed/simple;
-	bh=iTfIx4KeeRUszMS3oIObfvNQi39Kg/E2FrL8fOSP/Lg=;
+	s=arc-20240116; t=1713908583; c=relaxed/simple;
+	bh=fMjNMjYn27v0uaw0c/XDyj88Ovc7IODYOU96uyY0hbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcnUeXuvx3BkH0tkapADUlyasTy7S8ltTTumXZCJrMUPCI2yChpP+Fj0YxwllmYofaJ5cF1Q5jeN54tQRRJjrx4oU+IB5D86VZNk+nivJWK8BIu1OWvtSeK2Xd0tvMMaC/0a48ewIQkS8CaibhHEOlKoETy8LX4qBvhbwQIwnDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9dPv1d4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAB5C116B1;
-	Tue, 23 Apr 2024 21:44:40 +0000 (UTC)
+	 MIME-Version; b=uXYpEtM64Z6Mn904gEMRRREQtFg+TEuMgv/HLhGGWQyptzw+nnECqiLHPulLTRQfz+l1pabdFiM13pd7q6GCu3jxvukCzmbyYrxmaOCuFX40W2P/tD5/SQqk/iOamA6yEhe5nK7MvEf82+AhoVB6krOoOPjKlTDrd0ZO2JUp4KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRF2QHew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F39C32783;
+	Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908680;
-	bh=iTfIx4KeeRUszMS3oIObfvNQi39Kg/E2FrL8fOSP/Lg=;
+	s=korg; t=1713908582;
+	bh=fMjNMjYn27v0uaw0c/XDyj88Ovc7IODYOU96uyY0hbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9dPv1d4SW6kduplRDbuWcU89JGG49yI1viGbMT5IDDC0yBEJjjLiVIWHl+/CyenL
-	 dTevMjtjNd2FfS8MhPhKRvdliCGOeoZZuC7+misEadq2aO3C/CeEakXB1V8VDlb08h
-	 uzMhXU4BBCgeeYtYqRuBKPAa3b3BREurY0d09Hq4=
+	b=LRF2QHewBFbkOe/xczk5UCyz/kON9tlcKEBI3rnkOe+ny7A1JoJyCZJx9uVLk26Uk
+	 vxPQQJlNLTDUfHTDuPhZ1M7DTTzoRXPO3QqUGAUTan8RMS8gKohQUmKg+NtnmEClky
+	 nRa8cEugQTcEl5X3W4ONvNPCUl78C43ca3YV5Mj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 006/141] SUNRPC: Fix rpcgss_context trace event acceptor field
-Date: Tue, 23 Apr 2024 14:37:54 -0700
-Message-ID: <20240423213853.566444432@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 038/158] netfilter: flowtable: incorrect pppoe tuple
+Date: Tue, 23 Apr 2024 14:37:55 -0700
+Message-ID: <20240423213856.984782518@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit a4833e3abae132d613ce7da0e0c9a9465d1681fa upstream.
+[ Upstream commit 6db5dc7b351b9569940cd1cf445e237c42cd6d27 ]
 
-The rpcgss_context trace event acceptor field is a dynamically sized
-string that records the "data" parameter. But this parameter is also
-dependent on the "len" field to determine the size of the data.
+pppoe traffic reaching ingress path does not match the flowtable entry
+because the pppoe header is expected to be at the network header offset.
+This bug causes a mismatch in the flow table lookup, so pppoe packets
+enter the classical forwarding path.
 
-It needs to use __string_len() helper macro where the length can be passed
-in. It also incorrectly uses strncpy() to save it instead of
-__assign_str(). As these macros can change, it is not wise to open code
-them in trace events.
-
-As of commit c759e609030c ("tracing: Remove __assign_str_len()"),
-__assign_str() can be used for both __string() and __string_len() fields.
-Before that commit, __assign_str_len() is required to be used. This needs
-to be noted for backporting. (In actuality, commit c1fa617caeb0 ("tracing:
-Rework __assign_str() and __string() to not duplicate getting the string")
-is the commit that makes __string_str_len() obsolete).
-
-Cc: stable@vger.kernel.org
-Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 72efd585f714 ("netfilter: flowtable: add pppoe support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/rpcgss.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_flow_table_ip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/trace/events/rpcgss.h
-+++ b/include/trace/events/rpcgss.h
-@@ -587,7 +587,7 @@ TRACE_EVENT(rpcgss_context,
- 		__field(unsigned int, timeout)
- 		__field(u32, window_size)
- 		__field(int, len)
--		__string(acceptor, data)
-+		__string_len(acceptor, data, len)
- 	),
- 
- 	TP_fast_assign(
-@@ -596,7 +596,7 @@ TRACE_EVENT(rpcgss_context,
- 		__entry->timeout = timeout;
- 		__entry->window_size = window_size;
- 		__entry->len = len;
--		strncpy(__get_str(acceptor), data, len);
-+		__assign_str(acceptor, data);
- 	),
- 
- 	TP_printk("win_size=%u expiry=%lu now=%lu timeout=%u acceptor=%.*s",
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index 9e9e105052dae..5383bed3d3e00 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -157,7 +157,7 @@ static void nf_flow_tuple_encap(struct sk_buff *skb,
+ 		tuple->encap[i].proto = skb->protocol;
+ 		break;
+ 	case htons(ETH_P_PPP_SES):
+-		phdr = (struct pppoe_hdr *)skb_mac_header(skb);
++		phdr = (struct pppoe_hdr *)skb_network_header(skb);
+ 		tuple->encap[i].id = ntohs(phdr->sid);
+ 		tuple->encap[i].proto = skb->protocol;
+ 		break;
+-- 
+2.43.0
+
 
 
 
