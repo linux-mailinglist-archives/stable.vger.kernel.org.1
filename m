@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-40818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0108AF92F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6085A8AF9D4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B108281FB5
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 915801C22514
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165A1143C6E;
-	Tue, 23 Apr 2024 21:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568521474B3;
+	Tue, 23 Apr 2024 21:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liO/1QJz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6ZI5x1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA72320B3E;
-	Tue, 23 Apr 2024 21:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15311143889;
+	Tue, 23 Apr 2024 21:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908483; cv=none; b=XtCLjEdOYoTY8bNETevUJVe+Kwe1a9uiCQkgVqt5wdDdDAL3kNzyQXx124TepCBo/jrV5B0xuF84Lf5r2yzHsR6all4YT2wSpuKc2neTeUsgznmIeUI4g4MlRvFR1vvwjpB09ZY0OL2wSIaf5zPPo3U5ERD9LMFaHymgGvRjbD8=
+	t=1713908591; cv=none; b=CwYUq3NmXma5buuekoAiHK6L+Ti3AiNxYtCRQoPsBmY6jP1w500T1TlPg1s2BtnaXRRl0NaY/POQfyzraTe6r36zNl0W7Z/yz+yf6dQnWjbiwmUF9/42vNmm63MgoPovcncDpbHQe4YI+K3xphp0XCzMvBktt3CA27UZL8zEmxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908483; c=relaxed/simple;
-	bh=Q6pwuAY4Ly0u6EBvNW0Sxtk3ppkIEga11vFMnBbXGN8=;
+	s=arc-20240116; t=1713908591; c=relaxed/simple;
+	bh=Zo6C0NzIp4kzncTAnAH0pcT8HxFndaZgLA9sjmN9mCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dapnt2I1bqQu0MoP9yZydje2uyltQBJhD5KP9GUG72iQHZjfKgYraRFfpAi9vRJix9CU8qQU6EJKrI9XscnIMFP0ntXSoryuyYmuB3oDo/DAL1n0fvuECJ39/kyRVNRpRe84Xrsp+OnkVUsKCo1wt1PLHCQ8eDkqWiXsLqxpWfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liO/1QJz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95563C32783;
-	Tue, 23 Apr 2024 21:41:23 +0000 (UTC)
+	 MIME-Version; b=r2I9ugHfVqpk+2h3PFOv8vAPmkVDNFctMgnFptAQnAX2QUwnLqYYUEVTAO7U/KeKQ0IxsFvuvKBt8UVn8i1mPfYhcDNsZYXWl30sVyVWNh06vRSCzUMBt6bQS02xtbY4MP9wDSOp2z/JncxdK6moIIuyD8ZcQSKuXfgVcXxk+m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6ZI5x1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5459C3277B;
+	Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908483;
-	bh=Q6pwuAY4Ly0u6EBvNW0Sxtk3ppkIEga11vFMnBbXGN8=;
+	s=korg; t=1713908590;
+	bh=Zo6C0NzIp4kzncTAnAH0pcT8HxFndaZgLA9sjmN9mCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=liO/1QJztm/ZXB2LF5cy/P2bTvjNaEsWtf8nFxmMK2LfBH/ZKcnfrJQC4ZEEYi89J
-	 d/iYbPZZC8KDlDr8PZJ1pGqvKCTpxslLBEOl/hbj4CfDo+NkCTjGe0tmjIxVXP1hz5
-	 zv98ezi6UOGD7fDNXw1b/ndkimh58FuAXtYNlCKo=
+	b=e6ZI5x1ruRu799lK1QErAzekoEWd0Qq5pvyOUr0SnCAov3t9G37eQKimKoYL1t4AW
+	 SEhhr9z7y+2oXklF3tj2e1u0HBL6+8a/GXiAQptD4tLv4aZfTt4x/+DG6M0/LK56LJ
+	 hfVJWfFWC/7KgT6I4Iut++jD8M+k4l8/AmNeWQ9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 031/158] selftests/tcp_ao: Zero-init tcp_ao_info_opt
+Subject: [PATCH 6.6 016/158] drm/amd/display: Do not recursively call manual trigger programming
 Date: Tue, 23 Apr 2024 14:37:33 -0700
-Message-ID: <20240423213856.901801643@linuxfoundation.org>
+Message-ID: <20240423213856.243448160@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Safonov <0x7f454c46@gmail.com>
+From: Dillon Varone <dillon.varone@amd.com>
 
-[ Upstream commit b089b3bead532419cdcbd8e4e0a3e23c49d11573 ]
+[ Upstream commit 953927587f37b731abdeabe46ad44a3b3ec67a52 ]
 
-The structure is on the stack and has to be zero-initialized as
-the kernel checks for:
->	if (in.reserved != 0 || in.reserved2 != 0)
->		return -EINVAL;
+[WHY&HOW]
+We should not be recursively calling the manual trigger programming function when
+FAMS is not in use.
 
-Fixes: b26660531cf6 ("selftests/net: Add test for TCP-AO add setsockopt() command")
-Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/tcp_ao/setsockopt-closed.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/tcp_ao/setsockopt-closed.c b/tools/testing/selftests/net/tcp_ao/setsockopt-closed.c
-index 452de131fa3a9..517930f9721bd 100644
---- a/tools/testing/selftests/net/tcp_ao/setsockopt-closed.c
-+++ b/tools/testing/selftests/net/tcp_ao/setsockopt-closed.c
-@@ -21,7 +21,7 @@ static void make_listen(int sk)
- static void test_vefify_ao_info(int sk, struct tcp_ao_info_opt *info,
- 				const char *tst)
- {
--	struct tcp_ao_info_opt tmp;
-+	struct tcp_ao_info_opt tmp = {};
- 	socklen_t len = sizeof(tmp);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+index e817fa4efeee5..058dee76054ea 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+@@ -236,9 +236,6 @@ static void optc32_setup_manual_trigger(struct timing_generator *optc)
+ 				OTG_V_TOTAL_MAX_SEL, 1,
+ 				OTG_FORCE_LOCK_ON_EVENT, 0,
+ 				OTG_SET_V_TOTAL_MIN_MASK, (1 << 1)); /* TRIGA */
+-
+-		// Setup manual flow control for EOF via TRIG_A
+-		optc->funcs->setup_manual_trigger(optc);
+ 	}
+ }
  
- 	if (getsockopt(sk, IPPROTO_TCP, TCP_AO_INFO, &tmp, &len))
 -- 
 2.43.0
 
