@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-40971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C76B8AF9D1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08018AF91F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 249A328C0F0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A735F1F22179
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF1E144D0D;
-	Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D7E1442EF;
+	Tue, 23 Apr 2024 21:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdvOeg1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kjnIIrg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0D7143889;
-	Tue, 23 Apr 2024 21:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA83143C47;
+	Tue, 23 Apr 2024 21:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908589; cv=none; b=uekUUBrI0qlMcMsiv3Zki794Abf9jRcoyWoz+ssCFA5mLt0efvZLUF7dFbIVK4S0a3GfjZSsDIbxrxxmreX0Or5EpMzyYSW6zQUw/5QdnRlxxLmgv6jUhR97KtV9TPjTIq8orJd8XWIlZlPC8uU+pQJaesEb4ZJlyGHxcS7V2Os=
+	t=1713908472; cv=none; b=D4Bso8zwuiVFcbNZCGVeeB9TGDzS6uxvvVrJ70Q3WLC7WY2zSv9fm1J8/z5q9cs0JFvTVYOPJ0JFxuNxZmNn7lUummPeIXSZQUZDGNGBk+NOutX9gZ3/lOdUhUTCm9snhoLRMv61MmUyypRIB7TUvpAUEoMwWr2Blw06LjEuGOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908589; c=relaxed/simple;
-	bh=n0k4vGp1D1sbDjlPYvQuHLuvc8jjTW5/waAWeZb8KVo=;
+	s=arc-20240116; t=1713908472; c=relaxed/simple;
+	bh=u3XzlOJpkHPy0QSjNfl3ac2uPANi0KxVNaaT7jmzb5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZlIDWx3XRLfJn2GnYw8CYMKIxehQUDTgm6NvP65eMT1pPHnQbLGG5+Rm9ABfa4wwIfi8vpMO2uvINxdn5mo7XhxjIWGcRk8XyhA++T1RUEnfznfn7p1IHz4O8RVhtD4FgwiamsyUsO4iMJux59JjcqU4O4fZNFYed7azwWsD3Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdvOeg1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9315CC32781;
-	Tue, 23 Apr 2024 21:43:09 +0000 (UTC)
+	 MIME-Version; b=oxIkzA4U10Oh8k/WMfdxAhxuTfpF1W0bUH+Eaa3V5/zTixi0q7mdxzAmN/1QA4+JCvpoZrIKjcg0+xhdJhJ/zRsLWyfUM/tVTsAJ1BbNWfFsZUkm4Cksb+5mOabl5wu2SIbQHeQetlTmNmLGI96dDFPpqe+Ow6lnpEM4tgjEmFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kjnIIrg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9AEC32783;
+	Tue, 23 Apr 2024 21:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908589;
-	bh=n0k4vGp1D1sbDjlPYvQuHLuvc8jjTW5/waAWeZb8KVo=;
+	s=korg; t=1713908472;
+	bh=u3XzlOJpkHPy0QSjNfl3ac2uPANi0KxVNaaT7jmzb5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdvOeg1udNRB3XezSmq/0ay0RrFhRXMbSVNfIijRv3H2Sd3U1DV3wzULH4X8ZjsYp
-	 jDRMPLBPZr/IEGmcEQceNBGcRNpK0CkFmw8ZJ/V216tjC5uQUJFQ+4yNp8W1N2SDcx
-	 NQuUS0W8HvfIzGInfbbwDScZm427gKHtI8iLBCsw=
+	b=1kjnIIrgmNJQjt2RtqBIL625mEwpXlNXnAOSG2HP9/rptK7WHN30HF7IUkbjfZcOl
+	 1n8Q9BxCzc0FplwoYVo4CltBwW4q1DeGcRr8kY0HBVKFjyWVM9V2GzFV1P3J61qr0k
+	 pssKyFS0wfB1s+OFpOnu0DwJ9glRoBt4LoLDZt7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.6 024/158] drm/i915/vma: Fix UAF on destroy against retire race
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 039/158] ice: Fix checking for unsupported keys on non-tunnel device
 Date: Tue, 23 Apr 2024 14:37:41 -0700
-Message-ID: <20240423213856.520033705@linuxfoundation.org>
+Message-ID: <20240423213857.176123107@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +63,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-commit 0e45882ca829b26b915162e8e86dbb1095768e9e upstream.
+[ Upstream commit 2cca35f5dd78b9f8297c879c5db5ab137c5d86c3 ]
 
-Object debugging tools were sporadically reporting illegal attempts to
-free a still active i915 VMA object when parking a GT believed to be idle.
+Add missing FLOW_DISSECTOR_KEY_ENC_* checks to TC flower filter parsing.
+Without these checks, it would be possible to add filters with tunnel
+options on non-tunnel devices. enc_* options are only valid for tunnel
+devices.
 
-[161.359441] ODEBUG: free active (active state 0) object: ffff88811643b958 object type: i915_active hint: __i915_vma_active+0x0/0x50 [i915]
-[161.360082] WARNING: CPU: 5 PID: 276 at lib/debugobjects.c:514 debug_print_object+0x80/0xb0
-...
-[161.360304] CPU: 5 PID: 276 Comm: kworker/5:2 Not tainted 6.5.0-rc1-CI_DRM_13375-g003f860e5577+ #1
-[161.360314] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
-[161.360322] Workqueue: i915-unordered __intel_wakeref_put_work [i915]
-[161.360592] RIP: 0010:debug_print_object+0x80/0xb0
-...
-[161.361347] debug_object_free+0xeb/0x110
-[161.361362] i915_active_fini+0x14/0x130 [i915]
-[161.361866] release_references+0xfe/0x1f0 [i915]
-[161.362543] i915_vma_parked+0x1db/0x380 [i915]
-[161.363129] __gt_park+0x121/0x230 [i915]
-[161.363515] ____intel_wakeref_put_last+0x1f/0x70 [i915]
+Example:
+  devlink dev eswitch set $PF1_PCI mode switchdev
+  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
+  tc qdisc add dev $VF1_PR ingress
+  ethtool -K $PF1 hw-tc-offload on
+  tc filter add dev $VF1_PR ingress flower enc_ttl 12 skip_sw action drop
 
-That has been tracked down to be happening when another thread is
-deactivating the VMA inside __active_retire() helper, after the VMA's
-active counter has been already decremented to 0, but before deactivation
-of the VMA's object is reported to the object debugging tool.
-
-We could prevent from that race by serializing i915_active_fini() with
-__active_retire() via ref->tree_lock, but that wouldn't stop the VMA from
-being used, e.g. from __i915_vma_retire() called at the end of
-__active_retire(), after that VMA has been already freed by a concurrent
-i915_vma_destroy() on return from the i915_active_fini().  Then, we should
-rather fix the issue at the VMA level, not in i915_active.
-
-Since __i915_vma_parked() is called from __gt_park() on last put of the
-GT's wakeref, the issue could be addressed by holding the GT wakeref long
-enough for __active_retire() to complete before that wakeref is released
-and the GT parked.
-
-I believe the issue was introduced by commit d93939730347 ("drm/i915:
-Remove the vma refcount") which moved a call to i915_active_fini() from
-a dropped i915_vma_release(), called on last put of the removed VMA kref,
-to i915_vma_parked() processing path called on last put of a GT wakeref.
-However, its visibility to the object debugging tool was suppressed by a
-bug in i915_active that was fixed two weeks later with commit e92eb246feb9
-("drm/i915/active: Fix missing debug object activation").
-
-A VMA associated with a request doesn't acquire a GT wakeref by itself.
-Instead, it depends on a wakeref held directly by the request's active
-intel_context for a GT associated with its VM, and indirectly on that
-intel_context's engine wakeref if the engine belongs to the same GT as the
-VMA's VM.  Those wakerefs are released asynchronously to VMA deactivation.
-
-Fix the issue by getting a wakeref for the VMA's GT when activating it,
-and putting that wakeref only after the VMA is deactivated.  However,
-exclude global GTT from that processing path, otherwise the GPU never goes
-idle.  Since __i915_vma_retire() may be called from atomic contexts, use
-async variant of wakeref put.  Also, to avoid circular locking dependency,
-take care of acquiring the wakeref before VM mutex when both are needed.
-
-v7: Add inline comments with justifications for:
-    - using untracked variants of intel_gt_pm_get/put() (Nirmoy),
-    - using async variant of _put(),
-    - not getting the wakeref in case of a global GTT,
-    - always getting the first wakeref outside vm->mutex.
-v6: Since __i915_vma_active/retire() callbacks are not serialized, storing
-    a wakeref tracking handle inside struct i915_vma is not safe, and
-    there is no other good place for that.  Use untracked variants of
-    intel_gt_pm_get/put_async().
-v5: Replace "tile" with "GT" across commit description (Rodrigo),
-  - avoid mentioning multi-GT case in commit description (Rodrigo),
-  - explain why we need to take a temporary wakeref unconditionally inside
-    i915_vma_pin_ww() (Rodrigo).
-v4: Refresh on top of commit 5e4e06e4087e ("drm/i915: Track gt pm
-    wakerefs") (Andi),
-  - for more easy backporting, split out removal of former insufficient
-    workarounds and move them to separate patches (Nirmoy).
-  - clean up commit message and description a bit.
-v3: Identify root cause more precisely, and a commit to blame,
-  - identify and drop former workarounds,
-  - update commit message and description.
-v2: Get the wakeref before VM mutex to avoid circular locking dependency,
-  - drop questionable Fixes: tag.
-
-Fixes: d93939730347 ("drm/i915: Remove the vma refcount")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/8875
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: stable@vger.kernel.org # v5.19+
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240305143747.335367-6-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit f3c71b2ded5c4367144a810ef25f998fd1d6c381)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9e300987d4a8 ("ice: VXLAN and Geneve TC support")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_vma.c |   42 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/i915_vma.c
-+++ b/drivers/gpu/drm/i915/i915_vma.c
-@@ -33,6 +33,7 @@
- #include "gt/intel_engine.h"
- #include "gt/intel_engine_heartbeat.h"
- #include "gt/intel_gt.h"
-+#include "gt/intel_gt_pm.h"
- #include "gt/intel_gt_requests.h"
- #include "gt/intel_tlb.h"
- 
-@@ -102,12 +103,34 @@ static inline struct i915_vma *active_to
- 
- static int __i915_vma_active(struct i915_active *ref)
- {
--	return i915_vma_tryget(active_to_vma(ref)) ? 0 : -ENOENT;
-+	struct i915_vma *vma = active_to_vma(ref);
-+
-+	if (!i915_vma_tryget(vma))
-+		return -ENOENT;
-+
-+	/*
-+	 * Exclude global GTT VMA from holding a GT wakeref
-+	 * while active, otherwise GPU never goes idle.
-+	 */
-+	if (!i915_vma_is_ggtt(vma))
-+		intel_gt_pm_get(vma->vm->gt);
-+
-+	return 0;
- }
- 
- static void __i915_vma_retire(struct i915_active *ref)
- {
--	i915_vma_put(active_to_vma(ref));
-+	struct i915_vma *vma = active_to_vma(ref);
-+
-+	if (!i915_vma_is_ggtt(vma)) {
-+		/*
-+		 * Since we can be called from atomic contexts,
-+		 * use an async variant of intel_gt_pm_put().
-+		 */
-+		intel_gt_pm_put_async(vma->vm->gt);
-+	}
-+
-+	i915_vma_put(vma);
- }
- 
- static struct i915_vma *
-@@ -1403,7 +1426,7 @@ int i915_vma_pin_ww(struct i915_vma *vma
- 	struct i915_vma_work *work = NULL;
- 	struct dma_fence *moving = NULL;
- 	struct i915_vma_resource *vma_res = NULL;
--	intel_wakeref_t wakeref = 0;
-+	intel_wakeref_t wakeref;
- 	unsigned int bound;
- 	int err;
- 
-@@ -1423,8 +1446,14 @@ int i915_vma_pin_ww(struct i915_vma *vma
- 	if (err)
- 		return err;
- 
--	if (flags & PIN_GLOBAL)
--		wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
-+	/*
-+	 * In case of a global GTT, we must hold a runtime-pm wakeref
-+	 * while global PTEs are updated.  In other cases, we hold
-+	 * the rpm reference while the VMA is active.  Since runtime
-+	 * resume may require allocations, which are forbidden inside
-+	 * vm->mutex, get the first rpm wakeref outside of the mutex.
-+	 */
-+	wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
- 
- 	if (flags & vma->vm->bind_async_flags) {
- 		/* lock VM */
-@@ -1560,8 +1589,7 @@ err_fence:
- 	if (work)
- 		dma_fence_work_commit_imm(&work->base);
- err_rpm:
--	if (wakeref)
--		intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
-+	intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
- 
- 	if (moving)
- 		dma_fence_put(moving);
+diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+index bcbcfc67e5606..688ccb0615ab9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+@@ -1489,7 +1489,10 @@ ice_parse_cls_flower(struct net_device *filter_dev, struct ice_vsi *vsi,
+ 		  (BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IPV4_ADDRS) |
+ 		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IPV6_ADDRS) |
+ 		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_KEYID) |
+-		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_PORTS))) {
++		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_PORTS) |
++		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IP) |
++		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_OPTS) |
++		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_CONTROL))) {
+ 		NL_SET_ERR_MSG_MOD(fltr->extack, "Tunnel key used, but device isn't a tunnel");
+ 		return -EOPNOTSUPP;
+ 	} else {
+-- 
+2.43.0
+
 
 
 
