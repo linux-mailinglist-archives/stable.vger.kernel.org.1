@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0D38AF9C7
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BAE8AF954
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99CF41F27BB4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D32231F24716
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83675146D4C;
-	Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3328144315;
+	Tue, 23 Apr 2024 21:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLYWxcC3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GY9NcvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426BC143C4D;
-	Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E9144D3A;
+	Tue, 23 Apr 2024 21:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908582; cv=none; b=PuPF2bft16LggSmff9Tz+eGF8qOt5d5xbp+whvzBQyCmK0X9C4kZ6wyxqWAyBAHnDjOJqSaSNQ1cFsrGAVsRhU6WS9V5hBpJruZ9LbImK3GMiKvL1CqAspys08zRDtEQIXDsRuTcv3Hj/jPpwKw+d6TIzwbpACIBbO20kozycAE=
+	t=1713908507; cv=none; b=KN5X7CStim24CPn/AS6fvG29rgbupbJtSDDdoLpMS9mpMLcyJ/RTzdTNRRaBnyQCNBSd1W5nAnC/FPplxUc0fVUdmSkrbaoARvpU2fu6ArMLpJKpSiQOkg4j5haUKmKjGaX+cdBFz/2QfaypuypKcHjOf7XDGJjTAhllh7jHTf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908582; c=relaxed/simple;
-	bh=BIZvpLMvgjw3uQjx89AJtMYdCwd+hFLgMGi+EG1anCQ=;
+	s=arc-20240116; t=1713908507; c=relaxed/simple;
+	bh=qc9utWjZtW8UIMHMG8EKUV1TxzrI4vQ2FHaC+BJNZjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hd5tG0D9eWX6YuVpGcXpkDu/k3VlUW6Yy6sD0zgLgus2Lw+smaUop1sHxiv/X+FCahyypBoHGRzASnv0ePNfArcSL/HUNkAsYHkiiKB/sCcwZoEsEO2Rd7LdX/rHvlOndeS3AjiKIojQ1se3RAaKhkJuXxAjABNtUFSyXp5GgUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLYWxcC3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C36C3277B;
-	Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
+	 MIME-Version; b=B153mhnaSsSFKSlR8U6kj75ZfkQeHPHyEbRWSy+2MOFUV5XS4gidxOsr2LPgsPfboYrlfqxGfNdv5m85Z1LF4pq0JAU8dwkmRNmYw0GdmS0304q47IosgklnhYucg6OeOzzoin5PP/zk41cideM1LgEyp7sNo91qC8IY7RSE+B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GY9NcvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5858CC116B1;
+	Tue, 23 Apr 2024 21:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908582;
-	bh=BIZvpLMvgjw3uQjx89AJtMYdCwd+hFLgMGi+EG1anCQ=;
+	s=korg; t=1713908507;
+	bh=qc9utWjZtW8UIMHMG8EKUV1TxzrI4vQ2FHaC+BJNZjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLYWxcC3Y7EdOeVHGNkEs9snbSfWA1b1mci5jwFV3PhqLwPki0eqlB03qegZ1fd7r
-	 0l/mg28KHtlFS4v/yCH88qh69aiqrptjwqdpLo8ALVLsgvgLA5QO/hQuatj+YGq6V2
-	 IPXk8geoDTMwUltv4mkk7z6njpdANaVYPsJu2UJ4=
+	b=1GY9NcvDTIh4hAxj3LCucDQLexzwqHsGXv+f+ACUchln2/G3KCgIdFTTU+kpAmWj+
+	 9zHAK3ZpPsvzmBBVCNGaTa2gJVxU9+mGXV+h06zc5bQvuLdTsYNNkH6xM+wGx+nk2i
+	 IRPq4OE/eo7gy2BK77G5DLG0+YSChrHOj+RRYqnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b6f07e1c07ef40199081@syzkaller.appspotmail.com,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/158] netfilter: flowtable: validate pppoe header
+Subject: [PATCH 6.8 052/158] net: ravb: Allow RX loop to move past DMA mapping errors
 Date: Tue, 23 Apr 2024 14:37:54 -0700
-Message-ID: <20240423213856.955643934@linuxfoundation.org>
+Message-ID: <20240423213857.618693899@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Paul Barker <paul.barker.ct@bp.renesas.com>
 
-[ Upstream commit 87b3593bed1868b2d9fe096c01bcdf0ea86cbebf ]
+[ Upstream commit a892493a343494bd6bab9d098593932077ff3c43 ]
 
-Ensure there is sufficient room to access the protocol field of the
-PPPoe header. Validate it once before the flowtable lookup, then use a
-helper function to access protocol field.
+The RX loops in ravb_rx_gbeth() and ravb_rx_rcar() skip to the next loop
+iteration if a zero-length descriptor is seen (indicating a DMA mapping
+error). However, the current RX descriptor index `priv->cur_rx[q]` was
+incremented at the end of the loop and so would not be incremented when
+we skip to the next loop iteration. This would cause the loop to keep
+seeing the same zero-length descriptor instead of moving on to the next
+descriptor.
 
-Reported-by: syzbot+b6f07e1c07ef40199081@syzkaller.appspotmail.com
-Fixes: 72efd585f714 ("netfilter: flowtable: add pppoe support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+As the loop counter `i` still increments, the loop would eventually
+terminate so there is no risk of being stuck here forever - but we
+should still fix this to avoid wasting cycles.
+
+To fix this, the RX descriptor index is incremented at the top of the
+loop, in the for statement itself. The assignments of `entry` and `desc`
+are brought into the loop to avoid the need for duplication.
+
+Fixes: d8b48911fd24 ("ravb: fix ring memory allocation")
+Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_flow_table.h | 12 +++++++++++-
- net/netfilter/nf_flow_table_inet.c    |  3 ++-
- net/netfilter/nf_flow_table_ip.c      |  8 +++++---
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 25 ++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index 4a767b3d20b9d..df7775afb92b9 100644
---- a/include/net/netfilter/nf_flow_table.h
-+++ b/include/net/netfilter/nf_flow_table.h
-@@ -335,7 +335,7 @@ int nf_flow_rule_route_ipv6(struct net *net, struct flow_offload *flow,
- int nf_flow_table_offload_init(void);
- void nf_flow_table_offload_exit(void);
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 60c1cfc501304..853c2a0d4e259 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -781,12 +781,15 @@ static bool ravb_rx_gbeth(struct net_device *ndev, int *quota, int q)
+ 	int limit;
+ 	int i;
  
--static inline __be16 nf_flow_pppoe_proto(const struct sk_buff *skb)
-+static inline __be16 __nf_flow_pppoe_proto(const struct sk_buff *skb)
- {
- 	__be16 proto;
+-	entry = priv->cur_rx[q] % priv->num_rx_ring[q];
+ 	limit = priv->dirty_rx[q] + priv->num_rx_ring[q] - priv->cur_rx[q];
+ 	stats = &priv->stats[q];
  
-@@ -351,6 +351,16 @@ static inline __be16 nf_flow_pppoe_proto(const struct sk_buff *skb)
- 	return 0;
- }
- 
-+static inline bool nf_flow_pppoe_proto(struct sk_buff *skb, __be16 *inner_proto)
-+{
-+	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
-+		return false;
+-	desc = &priv->rx_ring[q].desc[entry];
+-	for (i = 0; i < limit && rx_packets < *quota && desc->die_dt != DT_FEMPTY; i++) {
++	for (i = 0; i < limit; i++, priv->cur_rx[q]++) {
++		entry = priv->cur_rx[q] % priv->num_rx_ring[q];
++		desc = &priv->rx_ring[q].desc[entry];
++		if (rx_packets == *quota || desc->die_dt == DT_FEMPTY)
++			break;
 +
-+	*inner_proto = __nf_flow_pppoe_proto(skb);
-+
-+	return true;
-+}
-+
- #define NF_FLOW_TABLE_STAT_INC(net, count) __this_cpu_inc((net)->ft.stat->count)
- #define NF_FLOW_TABLE_STAT_DEC(net, count) __this_cpu_dec((net)->ft.stat->count)
- #define NF_FLOW_TABLE_STAT_INC_ATOMIC(net, count)	\
-diff --git a/net/netfilter/nf_flow_table_inet.c b/net/netfilter/nf_flow_table_inet.c
-index 9505f9d188ff2..6eef15648b7b0 100644
---- a/net/netfilter/nf_flow_table_inet.c
-+++ b/net/netfilter/nf_flow_table_inet.c
-@@ -21,7 +21,8 @@ nf_flow_offload_inet_hook(void *priv, struct sk_buff *skb,
- 		proto = veth->h_vlan_encapsulated_proto;
- 		break;
- 	case htons(ETH_P_PPP_SES):
--		proto = nf_flow_pppoe_proto(skb);
-+		if (!nf_flow_pppoe_proto(skb, &proto))
-+			return NF_ACCEPT;
- 		break;
- 	default:
- 		proto = skb->protocol;
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index e45fade764096..9e9e105052dae 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -273,10 +273,11 @@ static unsigned int nf_flow_xmit_xfrm(struct sk_buff *skb,
- 	return NF_STOLEN;
- }
- 
--static bool nf_flow_skb_encap_protocol(const struct sk_buff *skb, __be16 proto,
-+static bool nf_flow_skb_encap_protocol(struct sk_buff *skb, __be16 proto,
- 				       u32 *offset)
- {
- 	struct vlan_ethhdr *veth;
-+	__be16 inner_proto;
- 
- 	switch (skb->protocol) {
- 	case htons(ETH_P_8021Q):
-@@ -287,7 +288,8 @@ static bool nf_flow_skb_encap_protocol(const struct sk_buff *skb, __be16 proto,
+ 		/* Descriptor type must be checked before all other reads */
+ 		dma_rmb();
+ 		desc_status = desc->msc;
+@@ -850,9 +853,6 @@ static bool ravb_rx_gbeth(struct net_device *ndev, int *quota, int q)
+ 				break;
+ 			}
  		}
- 		break;
- 	case htons(ETH_P_PPP_SES):
--		if (nf_flow_pppoe_proto(skb) == proto) {
-+		if (nf_flow_pppoe_proto(skb, &inner_proto) &&
-+		    inner_proto == proto) {
- 			*offset += PPPOE_SES_HLEN;
- 			return true;
+-
+-		entry = (++priv->cur_rx[q]) % priv->num_rx_ring[q];
+-		desc = &priv->rx_ring[q].desc[entry];
+ 	}
+ 
+ 	/* Refill the RX ring buffers. */
+@@ -894,7 +894,6 @@ static bool ravb_rx_rcar(struct net_device *ndev, int *quota, int q)
+ {
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *info = priv->info;
+-	int entry = priv->cur_rx[q] % priv->num_rx_ring[q];
+ 	struct net_device_stats *stats = &priv->stats[q];
+ 	struct ravb_ex_rx_desc *desc;
+ 	unsigned int limit, i;
+@@ -904,10 +903,15 @@ static bool ravb_rx_rcar(struct net_device *ndev, int *quota, int q)
+ 	int rx_packets = 0;
+ 	u8  desc_status;
+ 	u16 pkt_len;
++	int entry;
+ 
+ 	limit = priv->dirty_rx[q] + priv->num_rx_ring[q] - priv->cur_rx[q];
+-	desc = &priv->rx_ring[q].ex_desc[entry];
+-	for (i = 0; i < limit && rx_packets < *quota && desc->die_dt != DT_FEMPTY; i++) {
++	for (i = 0; i < limit; i++, priv->cur_rx[q]++) {
++		entry = priv->cur_rx[q] % priv->num_rx_ring[q];
++		desc = &priv->rx_ring[q].ex_desc[entry];
++		if (rx_packets == *quota || desc->die_dt == DT_FEMPTY)
++			break;
++
+ 		/* Descriptor type must be checked before all other reads */
+ 		dma_rmb();
+ 		desc_status = desc->msc;
+@@ -961,9 +965,6 @@ static bool ravb_rx_rcar(struct net_device *ndev, int *quota, int q)
+ 			rx_packets++;
+ 			stats->rx_bytes += pkt_len;
  		}
-@@ -316,7 +318,7 @@ static void nf_flow_encap_pop(struct sk_buff *skb,
- 			skb_reset_network_header(skb);
- 			break;
- 		case htons(ETH_P_PPP_SES):
--			skb->protocol = nf_flow_pppoe_proto(skb);
-+			skb->protocol = __nf_flow_pppoe_proto(skb);
- 			skb_pull(skb, PPPOE_SES_HLEN);
- 			skb_reset_network_header(skb);
- 			break;
+-
+-		entry = (++priv->cur_rx[q]) % priv->num_rx_ring[q];
+-		desc = &priv->rx_ring[q].ex_desc[entry];
+ 	}
+ 
+ 	/* Refill the RX ring buffers. */
 -- 
 2.43.0
 
