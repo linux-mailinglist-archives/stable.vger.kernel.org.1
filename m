@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-41067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DD08AFA36
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141D98AFAB6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6656B1F29483
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 387ECB28044
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DC3145FF5;
-	Tue, 23 Apr 2024 21:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4C8148306;
+	Tue, 23 Apr 2024 21:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuNSA7Dp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TClcCy4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10222145FFC;
-	Tue, 23 Apr 2024 21:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F791482F9;
+	Tue, 23 Apr 2024 21:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908655; cv=none; b=ThSwl160nb1EkgWncAIA+UwZ8WKL7bo0oXEF1Vuh6bXwbofxYWOb8pQo+HQIUAVV+PI4MPzgQht143vz5mlv3RIQ/+4EsOGiF78+vMmtIs3L4msHd4OMA4FsLJSgb8gQ+zJsKWTjn5QmkipVUJeVb08NV8hJnACMcaw7PiiC0R4=
+	t=1713908742; cv=none; b=eULQissOsj85Q+iwL8LgAYb93GlC7hAyUUn5nu3R8ct8SLerWp/TIigmN5UJyIiIQvvl1j2UM6UcGc7Dnhq3pxenVSDpwplOIM1VGivry43JEo2mCmBtLlvKF1yVOhzqwx/BBlMG0wt2wGCiWklJE5hetq1PtRT4zdVmouBnBkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908655; c=relaxed/simple;
-	bh=1Wh6xDdr5nRnacWW6kTtC5AQgTimLV3tc1qnKw456Bw=;
+	s=arc-20240116; t=1713908742; c=relaxed/simple;
+	bh=N2c7L7FvTiEskAbBi2XT/uo/BtOvdwJ4mntyIxWuFls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNVYpzQMz0nKgIdUg7WnBTxLoUfLsPgAsYp29H7C5qheoSW2bBTnQ0i14BAeuMftiiZP2wHUyzjh+75Ys4hO8o3JqI/2VH+PR2paaotDmR4lQ+/+wHa4ZiDBr7v90iV5uGGjCOHfa1cL+vi43bBgotpEdOpzSaCvLqQQoOpzHSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuNSA7Dp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE8CC3277B;
-	Tue, 23 Apr 2024 21:44:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kEszkmXCtJAu8Io5XdSoCdzCjPMiTitvn2mTpqraGOT+Q9+XwDDQ3bLgy+8DAOCF0EOIXqaKiJsj54lee/LgqOO8CZI4Uaw9avsHGq1fCPnHijjUPrOARqlqHI+PNHxWadcEkZENiUrw0yya2hASB1MEcw4vu7PRpVRC5M91IPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TClcCy4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556ECC3277B;
+	Tue, 23 Apr 2024 21:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908654;
-	bh=1Wh6xDdr5nRnacWW6kTtC5AQgTimLV3tc1qnKw456Bw=;
+	s=korg; t=1713908742;
+	bh=N2c7L7FvTiEskAbBi2XT/uo/BtOvdwJ4mntyIxWuFls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TuNSA7Dp3Ilw4+gqDaH3F4cI0nTzUA3Ax/7oQUvNT2KUDMVbtVkQP4kBgEClyo1q7
-	 XXV4osIKbgJSQoSBmhBxIGKIZOWG5mioqvN4Qoy/59FOswpLeT+65LoVdVReBJIKYz
-	 OJzsTa8sbwEW/DYaowJQKHdP5WkZYLPrqE5JDd6Q=
+	b=TClcCy4AtqH+cyuWTo3xOW/uQ/AVWwfjmQkOoV6F5M33QWX6nt4/oX/OEiHG3XJZR
+	 oH0NuOKEvokdrFC6PTkoaaoOBkXSVwNeLGLrv+3vHzoLaK/dSElxOUl7/RrDVdDu2S
+	 kQ1/+u/tMA3t6WOkzgFqIWkFh8XpW93cU6QnfbSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Pekka Paalanen <pekka.paalanen@collabora.com>
-Subject: [PATCH 6.6 145/158] drm/vmwgfx: Sort primary plane formats by order of preference
+	": Aleksander Morgado" <aleksandermj@chromium.org>,
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
+Subject: [PATCH 6.1 114/141] Revert "usb: cdc-wdm: close race between read and workqueue"
 Date: Tue, 23 Apr 2024 14:39:42 -0700
-Message-ID: <20240423213900.393804458@linuxfoundation.org>
+Message-ID: <20240423213856.906960201@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit d4c972bff3129a9dd4c22a3999fd8eba1a81531a upstream.
+commit 1607830dadeefc407e4956336d9fcd9e9defd810 upstream.
 
-The table of primary plane formats wasn't sorted at all, leading to
-applications picking our least desirable formats by defaults.
+This reverts commit 339f83612f3a569b194680768b22bf113c26a29d.
 
-Sort the primary plane formats according to our order of preference.
+It has been found to cause problems in a number of Chromebook devices,
+so revert the change until it can be brought back in a safe way.
 
-Nice side-effect of this change is that it makes IGT's kms_atomic
-plane-invalid-params pass because the test picks the first format
-which for vmwgfx was DRM_FORMAT_XRGB1555 and uses fb's with odd sizes
-which make Pixman, which IGT depends on assert due to the fact that our
-16bpp formats aren't 32 bit aligned like Pixman requires all formats
-to be.
-
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 36cc79bc9077 ("drm/vmwgfx: Add universal plane support")
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.12+
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240412025511.78553-6-zack.rusin@broadcom.com
+Link: https://lore.kernel.org/r/385a3519-b45d-48c5-a6fd-a3fdb6bec92f@chromium.org
+Reported-by:: Aleksander Morgado <aleksandermj@chromium.org>
+Fixes: 339f83612f3a ("usb: cdc-wdm: close race between read and workqueue")
+Cc: stable <stable@kernel.org>
+Cc: Oliver Neukum <oneukum@suse.com>
+Cc: Bjørn Mork <bjorn@mork.no>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/class/cdc-wdm.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-@@ -243,10 +243,10 @@ struct vmw_framebuffer_bo {
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -485,7 +485,6 @@ out_free_mem:
+ static int service_outstanding_interrupt(struct wdm_device *desc)
+ {
+ 	int rv = 0;
+-	int used;
  
+ 	/* submit read urb only if the device is waiting for it */
+ 	if (!desc->resp_count || !--desc->resp_count)
+@@ -500,10 +499,7 @@ static int service_outstanding_interrupt
+ 		goto out;
+ 	}
  
- static const uint32_t __maybe_unused vmw_primary_plane_formats[] = {
--	DRM_FORMAT_XRGB1555,
--	DRM_FORMAT_RGB565,
- 	DRM_FORMAT_XRGB8888,
- 	DRM_FORMAT_ARGB8888,
-+	DRM_FORMAT_RGB565,
-+	DRM_FORMAT_XRGB1555,
- };
- 
- static const uint32_t __maybe_unused vmw_cursor_plane_formats[] = {
+-	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
+-	if (used)
+-		goto out;
+-
++	set_bit(WDM_RESPONDING, &desc->flags);
+ 	spin_unlock_irq(&desc->iuspin);
+ 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
+ 	spin_lock_irq(&desc->iuspin);
 
 
 
