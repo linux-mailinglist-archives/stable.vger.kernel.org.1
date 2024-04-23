@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-40779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89DD8AF909
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F418AF9AC
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04F8DB2033D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13B551C226E3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D73143889;
-	Tue, 23 Apr 2024 21:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52AD1448E0;
+	Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7uCVMxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x146WF+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0535143888;
-	Tue, 23 Apr 2024 21:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6494C85274;
+	Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908456; cv=none; b=nl9k4Wz9ihtgaW/vE4q6u+Vdw7/VlDjCwu96SJjH64jBLvcL0P+iSVz/Qq9Su85VWy+UOVywSpMY5dPBZrwT5H2Nip2+uKOcu8+VQsM7dED4Vn13tYdMpWo1QRCyPb5HD0VjeaSgspRYruLrMh+t96/LKJB3QUBaRGxHXsMs370=
+	t=1713908567; cv=none; b=cBuIhIurxO4fdzbxHGJSWPcs/tozWA6J0EUPLbO8dlz/Yj5OERcflPOMTsrXE3Rh0oovz8JBlITx4l7TSIQo0MYF4edaLZSLAhOASugTobqriNfD93g+B4r0wC0XJMZrGiSnRjVE3SHDJyjN4cJVWTqmtKD4LUgMlhsZzQ/D+cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908456; c=relaxed/simple;
-	bh=6RNwVzLGrJLDNU9IQw94dhXtHdh5N0hTOLXiMe/YJ3U=;
+	s=arc-20240116; t=1713908567; c=relaxed/simple;
+	bh=igbRRTy7T0K4FecNtEs5ykgYDI5c7JqaU//XFl68mGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=liHftjHsUiJ1t3UKpNQVVOw86xAg2KWNZRKQkSIUrM9AuL3OzZO5f4PUwvv5PPi2rq427WD8oSwdOYB8Cqp9FvLFfZbuqUW2SkMy8RY21zKJe9SFr2QHJGxP+LHbQ1VxAlpOVrf3t3FE/ERNU3Gn2eFCjvYlKOtsrdxmPxHRWjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7uCVMxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14C9C32781;
-	Tue, 23 Apr 2024 21:40:56 +0000 (UTC)
+	 MIME-Version; b=X5QDlAjZBeiIWkgRwBNsMcRrEC99fGZqS+d1waKxw8WFeShuddAdV0VM9vpcOy19DpL2Ha3imHnlm1cZx97EARUAw8MDqh7xgehbuACcNi5uy5vf2f2Kj7KUej8kX5KkMCbLqRvvlEyFeuHRbrTQpZzO0KpoyjI9lf+rWOUamu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x146WF+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3275DC32781;
+	Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908456;
-	bh=6RNwVzLGrJLDNU9IQw94dhXtHdh5N0hTOLXiMe/YJ3U=;
+	s=korg; t=1713908567;
+	bh=igbRRTy7T0K4FecNtEs5ykgYDI5c7JqaU//XFl68mGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7uCVMxGgqhP021rWCWR3Z6Wyc9C/GNz4qKQ9LmlvXXGKGfwxtGFr1JaCFdWUHTfX
-	 jxt6nTc3iv6v2/aPSOBBhfUORvR9Ulc39nciuZQaTScRyPrg7MM5xUQXj2mbGGoHGn
-	 AOpNRd1jZoT8VncUzcj1MltgIDsWSLClJDrxua6w=
+	b=x146WF+wYPHybZizcuHGLhfvynQU4W10Aj88/KDgv5zrorT75pMLI+9qBTq0p5eOf
+	 XuctOlzvm/Fw5I3iyOMiOzmYxiKuf9pfv+M/+/ela23i5e5GN2dlSaAEFgfdgZBhUt
+	 hz7rsGOpDCaaj6QJdeLQWRibs/2e8ItMbPKoqcu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 016/158] netfilter: br_netfilter: skip conntrack input hook for promisc packets
-Date: Tue, 23 Apr 2024 14:37:18 -0700
-Message-ID: <20240423213856.381704139@linuxfoundation.org>
+Subject: [PATCH 6.6 002/158] smb: client: fix UAF in smb2_reconnect_server()
+Date: Tue, 23 Apr 2024 14:37:19 -0700
+Message-ID: <20240423213855.776896638@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,221 +62,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 751de2012eafa4d46d8081056761fa0e9cc8a178 ]
+[ Upstream commit 24a9799aa8efecd0eb55a75e35f9d8e6400063aa ]
 
-For historical reasons, when bridge device is in promisc mode, packets
-that are directed to the taps follow bridge input hook path. This patch
-adds a workaround to reset conntrack for these packets.
+The UAF bug is due to smb2_reconnect_server() accessing a session that
+is already being teared down by another thread that is executing
+__cifs_put_smb_ses().  This can happen when (a) the client has
+connection to the server but no session or (b) another thread ends up
+setting @ses->ses_status again to something different than
+SES_EXITING.
 
-Jianbo Liu reports warning splats in their test infrastructure where
-cloned packets reach the br_netfilter input hook to confirm the
-conntrack object.
+To fix this, we need to make sure to unconditionally set
+@ses->ses_status to SES_EXITING and prevent any other threads from
+setting a new status while we're still tearing it down.
 
-Scratch one bit from BR_INPUT_SKB_CB to annotate that this packet has
-reached the input hook because it is passed up to the bridge device to
-reach the taps.
+The following can be reproduced by adding some delay to right after
+the ipc is freed in __cifs_put_smb_ses() - which will give
+smb2_reconnect_server() worker a chance to run and then accessing
+@ses->ipc:
 
-[   57.571874] WARNING: CPU: 1 PID: 0 at net/bridge/br_netfilter_hooks.c:616 br_nf_local_in+0x157/0x180 [br_netfilter]
-[   57.572749] Modules linked in: xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat xt_addrtype xt_conntrack nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay rpcrdma rdma_ucm ib_iser libiscsi scsi_transport_isc si ib_umad rdma_cm ib_ipoib iw_cm ib_cm mlx5_ib ib_uverbs ib_core mlx5ctl mlx5_core
-[   57.575158] CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.8.0+ #19
-[   57.575700] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-[   57.576662] RIP: 0010:br_nf_local_in+0x157/0x180 [br_netfilter]
-[   57.577195] Code: fe ff ff 41 bd 04 00 00 00 be 04 00 00 00 e9 4a ff ff ff be 04 00 00 00 48 89 ef e8 f3 a9 3c e1 66 83 ad b4 00 00 00 04 eb 91 <0f> 0b e9 f1 fe ff ff 0f 0b e9 df fe ff ff 48 89 df e8 b3 53 47 e1
-[   57.578722] RSP: 0018:ffff88885f845a08 EFLAGS: 00010202
-[   57.579207] RAX: 0000000000000002 RBX: ffff88812dfe8000 RCX: 0000000000000000
-[   57.579830] RDX: ffff88885f845a60 RSI: ffff8881022dc300 RDI: 0000000000000000
-[   57.580454] RBP: ffff88885f845a60 R08: 0000000000000001 R09: 0000000000000003
-[   57.581076] R10: 00000000ffff1300 R11: 0000000000000002 R12: 0000000000000000
-[   57.581695] R13: ffff8881047ffe00 R14: ffff888108dbee00 R15: ffff88814519b800
-[   57.582313] FS:  0000000000000000(0000) GS:ffff88885f840000(0000) knlGS:0000000000000000
-[   57.583040] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   57.583564] CR2: 000000c4206aa000 CR3: 0000000103847001 CR4: 0000000000370eb0
-[   57.584194] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-0000000000000000
-[   57.584820] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:
-0000000000000400
-[   57.585440] Call Trace:
-[   57.585721]  <IRQ>
-[   57.585976]  ? __warn+0x7d/0x130
-[   57.586323]  ? br_nf_local_in+0x157/0x180 [br_netfilter]
-[   57.586811]  ? report_bug+0xf1/0x1c0
-[   57.587177]  ? handle_bug+0x3f/0x70
-[   57.587539]  ? exc_invalid_op+0x13/0x60
-[   57.587929]  ? asm_exc_invalid_op+0x16/0x20
-[   57.588336]  ? br_nf_local_in+0x157/0x180 [br_netfilter]
-[   57.588825]  nf_hook_slow+0x3d/0xd0
-[   57.589188]  ? br_handle_vlan+0x4b/0x110
-[   57.589579]  br_pass_frame_up+0xfc/0x150
-[   57.589970]  ? br_port_flags_change+0x40/0x40
-[   57.590396]  br_handle_frame_finish+0x346/0x5e0
-[   57.590837]  ? ipt_do_table+0x32e/0x430
-[   57.591221]  ? br_handle_local_finish+0x20/0x20
-[   57.591656]  br_nf_hook_thresh+0x4b/0xf0 [br_netfilter]
-[   57.592286]  ? br_handle_local_finish+0x20/0x20
-[   57.592802]  br_nf_pre_routing_finish+0x178/0x480 [br_netfilter]
-[   57.593348]  ? br_handle_local_finish+0x20/0x20
-[   57.593782]  ? nf_nat_ipv4_pre_routing+0x25/0x60 [nf_nat]
-[   57.594279]  br_nf_pre_routing+0x24c/0x550 [br_netfilter]
-[   57.594780]  ? br_nf_hook_thresh+0xf0/0xf0 [br_netfilter]
-[   57.595280]  br_handle_frame+0x1f3/0x3d0
-[   57.595676]  ? br_handle_local_finish+0x20/0x20
-[   57.596118]  ? br_handle_frame_finish+0x5e0/0x5e0
-[   57.596566]  __netif_receive_skb_core+0x25b/0xfc0
-[   57.597017]  ? __napi_build_skb+0x37/0x40
-[   57.597418]  __netif_receive_skb_list_core+0xfb/0x220
+kinit ...
+mount.cifs //srv/share /mnt/1 -o sec=krb5,nohandlecache,echo_interval=10
+[disconnect srv]
+ls /mnt/1 &>/dev/null
+sleep 30
+kdestroy
+[reconnect srv]
+sleep 10
+umount /mnt/1
+...
+CIFS: VFS: Verify user has a krb5 ticket and keyutils is installed
+CIFS: VFS: \\srv Send error in SessSetup = -126
+CIFS: VFS: Verify user has a krb5 ticket and keyutils is installed
+CIFS: VFS: \\srv Send error in SessSetup = -126
+general protection fault, probably for non-canonical address
+0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 50 Comm: kworker/3:1 Not tainted 6.9.0-rc2 #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-1.fc39
+04/01/2014
+Workqueue: cifsiod smb2_reconnect_server [cifs]
+RIP: 0010:__list_del_entry_valid_or_report+0x33/0xf0
+Code: 4f 08 48 85 d2 74 42 48 85 c9 74 59 48 b8 00 01 00 00 00 00 ad
+de 48 39 c2 74 61 48 b8 22 01 00 00 00 00 74 69 <48> 8b 01 48 39 f8 75
+7b 48 8b 72 08 48 39 c6 0f 85 88 00 00 00 b8
+RSP: 0018:ffffc900001bfd70 EFLAGS: 00010a83
+RAX: dead000000000122 RBX: ffff88810da53838 RCX: 6b6b6b6b6b6b6b6b
+RDX: 6b6b6b6b6b6b6b6b RSI: ffffffffc02f6878 RDI: ffff88810da53800
+RBP: ffff88810da53800 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: ffff88810c064000
+R13: 0000000000000001 R14: ffff88810c064000 R15: ffff8881039cc000
+FS: 0000000000000000(0000) GS:ffff888157c00000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fe3728b1000 CR3: 000000010caa4000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? die_addr+0x36/0x90
+ ? exc_general_protection+0x1c1/0x3f0
+ ? asm_exc_general_protection+0x26/0x30
+ ? __list_del_entry_valid_or_report+0x33/0xf0
+ __cifs_put_smb_ses+0x1ae/0x500 [cifs]
+ smb2_reconnect_server+0x4ed/0x710 [cifs]
+ process_one_work+0x205/0x6b0
+ worker_thread+0x191/0x360
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe2/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x34/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-Fixes: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
-Reported-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_input.c                      | 15 +++++++++++----
- net/bridge/br_netfilter_hooks.c            |  6 ++++++
- net/bridge/br_private.h                    |  1 +
- net/bridge/netfilter/nf_conntrack_bridge.c | 14 ++++++++++----
- 4 files changed, 28 insertions(+), 8 deletions(-)
+ fs/smb/client/connect.c | 83 +++++++++++++++++------------------------
+ 1 file changed, 34 insertions(+), 49 deletions(-)
 
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index f21097e734827..ceaa5a89b947f 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -30,7 +30,7 @@ br_netif_receive_skb(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	return netif_receive_skb(skb);
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 556f3c31aedc7..ae35855966afd 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -237,7 +237,13 @@ cifs_mark_tcp_ses_conns_for_reconnect(struct TCP_Server_Info *server,
+ 
+ 	spin_lock(&cifs_tcp_ses_lock);
+ 	list_for_each_entry_safe(ses, nses, &pserver->smb_ses_list, smb_ses_list) {
+-		/* check if iface is still active */
++		spin_lock(&ses->ses_lock);
++		if (ses->ses_status == SES_EXITING) {
++			spin_unlock(&ses->ses_lock);
++			continue;
++		}
++		spin_unlock(&ses->ses_lock);
++
+ 		spin_lock(&ses->chan_lock);
+ 		if (cifs_ses_get_chan_index(ses, server) ==
+ 		    CIFS_INVAL_CHAN_INDEX) {
+@@ -1960,31 +1966,6 @@ cifs_setup_ipc(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+ 	return rc;
  }
  
--static int br_pass_frame_up(struct sk_buff *skb)
-+static int br_pass_frame_up(struct sk_buff *skb, bool promisc)
+-/**
+- * cifs_free_ipc - helper to release the session IPC tcon
+- * @ses: smb session to unmount the IPC from
+- *
+- * Needs to be called everytime a session is destroyed.
+- *
+- * On session close, the IPC is closed and the server must release all tcons of the session.
+- * No need to send a tree disconnect here.
+- *
+- * Besides, it will make the server to not close durable and resilient files on session close, as
+- * specified in MS-SMB2 3.3.5.6 Receiving an SMB2 LOGOFF Request.
+- */
+-static int
+-cifs_free_ipc(struct cifs_ses *ses)
+-{
+-	struct cifs_tcon *tcon = ses->tcon_ipc;
+-
+-	if (tcon == NULL)
+-		return 0;
+-
+-	tconInfoFree(tcon);
+-	ses->tcon_ipc = NULL;
+-	return 0;
+-}
+-
+ static struct cifs_ses *
+ cifs_find_smb_ses(struct TCP_Server_Info *server, struct smb3_fs_context *ctx)
  {
- 	struct net_device *indev, *brdev = BR_INPUT_SKB_CB(skb)->brdev;
- 	struct net_bridge *br = netdev_priv(brdev);
-@@ -65,6 +65,8 @@ static int br_pass_frame_up(struct sk_buff *skb)
- 	br_multicast_count(br, NULL, skb, br_multicast_igmp_type(skb),
- 			   BR_MCAST_DIR_TX);
+@@ -2016,48 +1997,52 @@ cifs_find_smb_ses(struct TCP_Server_Info *server, struct smb3_fs_context *ctx)
+ void __cifs_put_smb_ses(struct cifs_ses *ses)
+ {
+ 	struct TCP_Server_Info *server = ses->server;
++	struct cifs_tcon *tcon;
+ 	unsigned int xid;
+ 	size_t i;
++	bool do_logoff;
+ 	int rc;
  
-+	BR_INPUT_SKB_CB(skb)->promisc = promisc;
-+
- 	return NF_HOOK(NFPROTO_BRIDGE, NF_BR_LOCAL_IN,
- 		       dev_net(indev), NULL, skb, indev, NULL,
- 		       br_netif_receive_skb);
-@@ -82,6 +84,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 	struct net_bridge_mcast *brmctx;
- 	struct net_bridge_vlan *vlan;
- 	struct net_bridge *br;
-+	bool promisc;
- 	u16 vid = 0;
- 	u8 state;
++	spin_lock(&cifs_tcp_ses_lock);
+ 	spin_lock(&ses->ses_lock);
+-	if (ses->ses_status == SES_EXITING) {
++	cifs_dbg(FYI, "%s: id=0x%llx ses_count=%d ses_status=%u ipc=%s\n",
++		 __func__, ses->Suid, ses->ses_count, ses->ses_status,
++		 ses->tcon_ipc ? ses->tcon_ipc->tree_name : "none");
++	if (ses->ses_status == SES_EXITING || --ses->ses_count > 0) {
+ 		spin_unlock(&ses->ses_lock);
++		spin_unlock(&cifs_tcp_ses_lock);
+ 		return;
+ 	}
+-	spin_unlock(&ses->ses_lock);
++	/* ses_count can never go negative */
++	WARN_ON(ses->ses_count < 0);
  
-@@ -137,7 +140,9 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 	if (p->flags & BR_LEARNING)
- 		br_fdb_update(br, p, eth_hdr(skb)->h_source, vid, 0);
+-	cifs_dbg(FYI, "%s: ses_count=%d\n", __func__, ses->ses_count);
+-	cifs_dbg(FYI,
+-		 "%s: ses ipc: %s\n", __func__, ses->tcon_ipc ? ses->tcon_ipc->tree_name : "NONE");
++	spin_lock(&ses->chan_lock);
++	cifs_chan_clear_need_reconnect(ses, server);
++	spin_unlock(&ses->chan_lock);
  
--	local_rcv = !!(br->dev->flags & IFF_PROMISC);
-+	promisc = !!(br->dev->flags & IFF_PROMISC);
-+	local_rcv = promisc;
-+
- 	if (is_multicast_ether_addr(eth_hdr(skb)->h_dest)) {
- 		/* by definition the broadcast is also a multicast address */
- 		if (is_broadcast_ether_addr(eth_hdr(skb)->h_dest)) {
-@@ -200,7 +205,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 		unsigned long now = jiffies;
+-	spin_lock(&cifs_tcp_ses_lock);
+-	if (--ses->ses_count > 0) {
+-		spin_unlock(&cifs_tcp_ses_lock);
+-		return;
+-	}
+-	spin_lock(&ses->ses_lock);
+-	if (ses->ses_status == SES_GOOD)
+-		ses->ses_status = SES_EXITING;
++	do_logoff = ses->ses_status == SES_GOOD && server->ops->logoff;
++	ses->ses_status = SES_EXITING;
++	tcon = ses->tcon_ipc;
++	ses->tcon_ipc = NULL;
+ 	spin_unlock(&ses->ses_lock);
+ 	spin_unlock(&cifs_tcp_ses_lock);
  
- 		if (test_bit(BR_FDB_LOCAL, &dst->flags))
--			return br_pass_frame_up(skb);
-+			return br_pass_frame_up(skb, false);
- 
- 		if (now != dst->used)
- 			dst->used = now;
-@@ -213,7 +218,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+-	/* ses_count can never go negative */
+-	WARN_ON(ses->ses_count < 0);
+-
+-	spin_lock(&ses->ses_lock);
+-	if (ses->ses_status == SES_EXITING && server->ops->logoff) {
+-		spin_unlock(&ses->ses_lock);
+-		cifs_free_ipc(ses);
++	/*
++	 * On session close, the IPC is closed and the server must release all
++	 * tcons of the session.  No need to send a tree disconnect here.
++	 *
++	 * Besides, it will make the server to not close durable and resilient
++	 * files on session close, as specified in MS-SMB2 3.3.5.6 Receiving an
++	 * SMB2 LOGOFF Request.
++	 */
++	tconInfoFree(tcon);
++	if (do_logoff) {
+ 		xid = get_xid();
+ 		rc = server->ops->logoff(xid, ses);
+ 		if (rc)
+ 			cifs_server_dbg(VFS, "%s: Session Logoff failure rc=%d\n",
+ 				__func__, rc);
+ 		_free_xid(xid);
+-	} else {
+-		spin_unlock(&ses->ses_lock);
+-		cifs_free_ipc(ses);
  	}
  
- 	if (local_rcv)
--		return br_pass_frame_up(skb);
-+		return br_pass_frame_up(skb, promisc);
- 
- out:
- 	return 0;
-@@ -386,6 +391,8 @@ static rx_handler_result_t br_handle_frame(struct sk_buff **pskb)
- 				goto forward;
- 		}
- 
-+		BR_INPUT_SKB_CB(skb)->promisc = false;
-+
- 		/* The else clause should be hit when nf_hook():
- 		 *   - returns < 0 (drop/error)
- 		 *   - returns = 0 (stolen/nf_queue)
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 35e10c5a766d5..22e35623c148a 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -600,11 +600,17 @@ static unsigned int br_nf_local_in(void *priv,
- 				   struct sk_buff *skb,
- 				   const struct nf_hook_state *state)
- {
-+	bool promisc = BR_INPUT_SKB_CB(skb)->promisc;
- 	struct nf_conntrack *nfct = skb_nfct(skb);
- 	const struct nf_ct_hook *ct_hook;
- 	struct nf_conn *ct;
- 	int ret;
- 
-+	if (promisc) {
-+		nf_reset_ct(skb);
-+		return NF_ACCEPT;
-+	}
-+
- 	if (!nfct || skb->pkt_type == PACKET_HOST)
- 		return NF_ACCEPT;
- 
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 86ea5e6689b5c..d4bedc87b1d8f 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -589,6 +589,7 @@ struct br_input_skb_cb {
- #endif
- 	u8 proxyarp_replied:1;
- 	u8 src_port_isolated:1;
-+	u8 promisc:1;
- #ifdef CONFIG_BRIDGE_VLAN_FILTERING
- 	u8 vlan_filtered:1;
- #endif
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index 6f877e31709ba..c3c51b9a68265 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -294,18 +294,24 @@ static unsigned int nf_ct_bridge_pre(void *priv, struct sk_buff *skb,
- static unsigned int nf_ct_bridge_in(void *priv, struct sk_buff *skb,
- 				    const struct nf_hook_state *state)
- {
--	enum ip_conntrack_info ctinfo;
-+	bool promisc = BR_INPUT_SKB_CB(skb)->promisc;
-+	struct nf_conntrack *nfct = skb_nfct(skb);
- 	struct nf_conn *ct;
- 
--	if (skb->pkt_type == PACKET_HOST)
-+	if (promisc) {
-+		nf_reset_ct(skb);
-+		return NF_ACCEPT;
-+	}
-+
-+	if (!nfct || skb->pkt_type == PACKET_HOST)
- 		return NF_ACCEPT;
- 
- 	/* nf_conntrack_confirm() cannot handle concurrent clones,
- 	 * this happens for broad/multicast frames with e.g. macvlan on top
- 	 * of the bridge device.
- 	 */
--	ct = nf_ct_get(skb, &ctinfo);
--	if (!ct || nf_ct_is_confirmed(ct) || nf_ct_is_template(ct))
-+	ct = container_of(nfct, struct nf_conn, ct_general);
-+	if (nf_ct_is_confirmed(ct) || nf_ct_is_template(ct))
- 		return NF_ACCEPT;
- 
- 	/* let inet prerouting call conntrack again */
+ 	spin_lock(&cifs_tcp_ses_lock);
 -- 
 2.43.0
 
