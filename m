@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-41272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDDD8AFAFA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FAE8AFB07
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9791E2840B9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AF77B28594
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2533214BF97;
-	Tue, 23 Apr 2024 21:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822BD14A616;
+	Tue, 23 Apr 2024 21:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPQ1bVkb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMr3UOhM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83B114388A;
-	Tue, 23 Apr 2024 21:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F96514A611;
+	Tue, 23 Apr 2024 21:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908794; cv=none; b=uPgrtv7/8/Vn5gfB7NaL075N2yTdY0bkYiIU0+8l6KekELT+ci2oY0FpFQCH7EK4Zmner5LoGsw42mDIpaiONoy85duZL37zJalDRecawHFEPU0hIPYed0ZaSHBAPffpKgRnktCn9bYwPZtVvACUYhDQp/P3NnQnHomTWQpy8dc=
+	t=1713908756; cv=none; b=YwB2QCQGNoyh2g6fxzSB7W01Sij8tmQKkqKtzwx0bvolZ31Mh1w5+p5Rs4Xe0jyycv4/lJ4exlBBudSka69H0CApt6RLpn/6JnAicX41/ZMTSsb5P9sPfoUSNID6SRnOKhxq2AMA+j/RXXj3xOHj6E4w889yNSps920yPp1CeVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908794; c=relaxed/simple;
-	bh=oWGgAmBiTmkb7pcijPbUbpUprS9AIzuq4n+aC6VmVy8=;
+	s=arc-20240116; t=1713908756; c=relaxed/simple;
+	bh=kEWh2pEzcPidfcOPyHyV6XC3PCpP81alyyGGmmSZXT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJEFAmRY8TWVeWjN6HIjogGY0t1wLdVot+bXJQaPRZkbv82X4ntDOSxEwo+kVx2ktSMghyBY8AR3rCehEvZbVHwrtjJnNHWVgOAPdZGKhBiGu0Uy3NS80fYlmjoz1cUYUXg3RVY0WMPRlUtIMfRfDHxRvvYG6Skglw1/dV0HU6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPQ1bVkb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB122C32786;
-	Tue, 23 Apr 2024 21:46:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SgqjE6VWy7HEAKZ2BCsTdbO47EDusFb+4gfG5xnN2h5mk4CkAfKcgneKKIC6Ks+jxEmrmUcJhuAk3KpTBi4NUkaw9U+X5c2IuVkL1CPXM3z5FJbsR6covrm2M8ihP5DTQtt+24guhzJpqkozIYoCsdMjKye9+wbPvCUqJvSgu9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMr3UOhM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14991C116B1;
+	Tue, 23 Apr 2024 21:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908794;
-	bh=oWGgAmBiTmkb7pcijPbUbpUprS9AIzuq4n+aC6VmVy8=;
+	s=korg; t=1713908756;
+	bh=kEWh2pEzcPidfcOPyHyV6XC3PCpP81alyyGGmmSZXT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CPQ1bVkb5N4KM4GA5RWS9mDdBruRPA9b/pCUmKT8CURghnzZuNb+sZZAm5SW8xozl
-	 mL+/amQOsYg++BaW9e023jgz42+pcvOfxE6rOdyCnxAR4hCwOpuqD7c/nVzY68xeD2
-	 cYWeB1fgoT4WbffaFbyr1tfEMcvsR4m5AGMsYV/E=
+	b=QMr3UOhMqbTHLU/mzSbH7vFxlhpPl9ECchhI7uZEWK3LdUPsxw1nYxc+GK2wpGXdM
+	 StKPwrDMITXE578q05cjbylSYumzg7MpQNF9oDsmUtcSNc+df/rmn4RG/OywchrfiY
+	 gk/WqcrqYN4pwOFpGML0tOwO5jAaObW9+BiPV6Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coia Prant <coiaprant@gmail.com>,
-	Lars Melin <larsm17@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 48/71] USB: serial: option: add Lonsung U8300/U9300 product
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 133/141] net: dsa: mt7530: set all CPU ports in MT7531_CPU_PMAP
 Date: Tue, 23 Apr 2024 14:40:01 -0700
-Message-ID: <20240423213845.817243767@linuxfoundation.org>
+Message-ID: <20240423213857.532615626@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,121 +63,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coia Prant <coiaprant@gmail.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-commit cf16ffa17c398434a77b8a373e69287c95b60de2 upstream.
+commit ff221029a51fd54cacac66e193e0c75e4de940e7 upstream.
 
-Update the USB serial option driver to support Longsung U8300/U9300.
+MT7531_CPU_PMAP represents the destination port mask for trapped-to-CPU
+frames (further restricted by PCR_MATRIX).
 
-For U8300
+Currently the driver sets the first CPU port as the single port in this bit
+mask, which works fine regardless of whether the device tree defines port
+5, 6 or 5+6 as CPU ports. This is because the logic coincides with DSA's
+logic of picking the first CPU port as the CPU port that all user ports are
+affine to, by default.
 
-Interface 4 is used by for QMI interface in stock firmware of U8300, the
-router which uses U8300 modem.
-Interface 5 is used by for ADB interface in stock firmware of U8300, the
-router which uses U8300 modem.
+An upcoming change would like to influence DSA's selection of the default
+CPU port to no longer be the first one, and in that case, this logic needs
+adaptation.
 
-Interface mapping is:
-0: unknown (Debug), 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI, 5: ADB
+Since there is no observed leakage or duplication of frames if all CPU
+ports are defined in this bit mask, simply include them all.
 
-T:  Bus=05 Lev=01 Prnt=03 Port=02 Cnt=01 Dev#=  4 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b05 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-For U9300
-
-Interface 1 is used by for ADB interface in stock firmware of U9300, the
-router which uses U9300 modem.
-Interface 4 is used by for QMI interface in stock firmware of U9300, the
-router which uses U9300 modem.
-
-Interface mapping is:
-0: ADB, 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI
-
-Note: Interface 3 of some models of the U9300 series can send AT commands.
-
-T:  Bus=05 Lev=01 Prnt=05 Port=04 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b3c Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-
-Tested successfully using Modem Manager on U9300.
-Tested successfully AT commands using If=1, If=2 and If=3 on U9300.
-
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
-Reviewed-by: Lars Melin <larsm17@gmail.com>
-[ johan: drop product defines, trim commit message ]
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
+Suggested-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/dsa/mt7530.c |   15 +++++++--------
+ drivers/net/dsa/mt7530.h |    1 +
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2052,6 +2052,10 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(LONGCHEER_VENDOR_ID, 0x9803, 0xff),
- 	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b05),	/* Longsung U8300 */
-+	  .driver_info = RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b3c),	/* Longsung U9300 */
-+	  .driver_info = RSVD(0) | RSVD(4) },
- 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
- 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
- 	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -1236,6 +1236,13 @@ mt753x_cpu_port_enable(struct dsa_switch
+ 	if (priv->id == ID_MT7530 || priv->id == ID_MT7621)
+ 		mt7530_rmw(priv, MT7530_MFC, CPU_MASK, CPU_EN | CPU_PORT(port));
+ 
++	/* Add the CPU port to the CPU port bitmap for MT7531. Trapped frames
++	 * will be forwarded to the CPU port that is affine to the inbound user
++	 * port.
++	 */
++	if (priv->id == ID_MT7531)
++		mt7530_set(priv, MT7531_CFC, MT7531_CPU_PMAP(BIT(port)));
++
+ 	/* CPU port gets connected to all user ports of
+ 	 * the switch.
+ 	 */
+@@ -2534,16 +2541,8 @@ static int
+ mt7531_setup_common(struct dsa_switch *ds)
+ {
+ 	struct mt7530_priv *priv = ds->priv;
+-	struct dsa_port *cpu_dp;
+ 	int ret, i;
+ 
+-	/* BPDU to CPU port */
+-	dsa_switch_for_each_cpu_port(cpu_dp, ds) {
+-		mt7530_rmw(priv, MT7531_CFC, MT7531_CPU_PMAP_MASK,
+-			   BIT(cpu_dp->index));
+-		break;
+-	}
+-
+ 	mt753x_trap_frames(priv);
+ 
+ 	/* Enable and reset MIB counters */
+--- a/drivers/net/dsa/mt7530.h
++++ b/drivers/net/dsa/mt7530.h
+@@ -57,6 +57,7 @@ enum mt753x_id {
+ #define  MT7531_MIRROR_PORT_GET(x)	(((x) >> 16) & MIRROR_MASK)
+ #define  MT7531_MIRROR_PORT_SET(x)	(((x) & MIRROR_MASK) << 16)
+ #define  MT7531_CPU_PMAP_MASK		GENMASK(7, 0)
++#define  MT7531_CPU_PMAP(x)		FIELD_PREP(MT7531_CPU_PMAP_MASK, x)
+ 
+ #define MT753X_MIRROR_REG(id)		(((id) == ID_MT7531) ? \
+ 					 MT7531_CFC : MT7530_MFC)
 
 
 
