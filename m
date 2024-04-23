@@ -1,184 +1,354 @@
-Return-Path: <stable+bounces-40754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC8E8AF6E8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 20:54:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC75E8AF6ED
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 20:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B50EB284A29
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:54:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3BFC286B63
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E8413DDC4;
-	Tue, 23 Apr 2024 18:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F4913E8BF;
+	Tue, 23 Apr 2024 18:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="etheaJjs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KakpBc77"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2075.outbound.protection.outlook.com [40.107.243.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A26413D516
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 18:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713898473; cv=fail; b=MpoJkwWxzd+P5aScY/AJ2+JSbA4DBSdpYPYb8eXJhswOLrIiS+7XTtDK3PdxXjl09/NKLjk5cnSLVbsEmsXVQiRZG6B9oRc6eb5hrTLD4UCsNnFH3m5/LhvvpKFKkBfVp5w8WcyYHqEsVhkQ0Mn00oeO0qa6hAgNScn7NNIgxQQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713898473; c=relaxed/simple;
-	bh=laxKJ5GIxAw3N9hgYqcrYg9QNd85XDDj5fflbJf2VQ8=;
-	h=Message-ID:Date:To:From:Subject:Content-Type:MIME-Version; b=rFSjE7G49jM1th0LeHnW0RDlSC3aekMRsUfbqzncTOLqL8YYXLX66TmKNpqDXehvWSdsykxWYIOwKGzKaIkbTuOVkLh4wGTmp1IMk0btAYZ6bPClcotNM1wUqEdYo0bA9zZfhO8WnlE7zgd/w5M5dzASTpgQJtYJx3ZkTAgwvOI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=etheaJjs; arc=fail smtp.client-ip=40.107.243.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Jx9az9lgQYmNWpn4rw+klFA8CgF6brNWKUs3wlqKWNA/P27KWWOGkaVFX9ERptazxrpNAYIexTnvRqECG0Sv5OXqOVtJoxRkNI1UiTaZDnSiq97Mz3qRdj8GklEPhmTkF6x0RkR7YZuMWZ6ydhv+xzjsUMvmt8aN/uyzhfU14o84Ue8I29EC8+d6DVxDNqOBhGeelTipOLF0kPR52tIpP7dvdGXRz2EpmhmIsMrj6xglphEvbULtNCCj66OKQd7ExBqMIgclxEqQvgJdAcX+HELzUOlwFiNESYFOwlBXcKohg8/VwSezqG+rnigFwahnBSCsoAssHL3bVkq5Zjbluw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wEjDzKJEsHemLKqw1ijahof4+Q1/WiCB2iatDsO1BuI=;
- b=X1nk5GC0ma+NxhJLKtLvzOOT6uf/kczEOQuuzQiGhYhTd5FJ6IoQy8uTJ+yRHJwVeRoposAyAdSFLtVRdP9jNRFp6Ji9zsTrCMU2JEg5sWg1FZNyiKR126ynyx7gtsawm9KC1ZW5clyk0Xf5K61wbRvsWgVBd8PxIM+GBaUMN2Omr+2JMrI/NuVIFD+56S64jD4n7fVSTDDhAU2psfKLKGlLjcK4Djqr6Imcs/IOSHmXuSlOeQBK6iMLiOs8L81YpTepRGpxBAOV7t26uqkZbqLcnA3LaujCHQApT7P+H8MXzJpFeFmIucRDLjFllKWdHWmnd6Anvtn6IHquF7sltQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wEjDzKJEsHemLKqw1ijahof4+Q1/WiCB2iatDsO1BuI=;
- b=etheaJjsRaKJnnIyplb8nnCWEZdtHYXbfPeJiyCAXinPbC9Fr4mwNa6k5tZQJzE7A+ecmWxiG6MU2CO7zvSIl161fW1e5gdJbuXZHZB7BpqqdtLNKrIpUPudOa0QZElsK3cDyKsbAMquwJnWDyfwhuOrFceaMBPVfD561XOfEhk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DS0PR12MB9273.namprd12.prod.outlook.com (2603:10b6:8:193::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Tue, 23 Apr
- 2024 18:54:29 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::d9b0:364f:335d:bb5b]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::d9b0:364f:335d:bb5b%4]) with mapi id 15.20.7472.044; Tue, 23 Apr 2024
- 18:54:29 +0000
-Message-ID: <a06d9047-114f-4e63-b3b4-efcd83ca6d1e@amd.com>
-Date: Tue, 23 Apr 2024 13:54:27 -0500
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-From: Mario Limonciello <mario.limonciello@amd.com>
-Subject: Reset thunderbolt topologies at bootup
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0088.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:35e::15) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C14113DBB1;
+	Tue, 23 Apr 2024 18:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713898665; cv=none; b=fYUJ89xNP7vPrePG1qDi34hmBCqoqMVA0KUBVLXRZan8wksA5CVna1SY8ORiU6j1PWHgqOogoWqx4PVqFwOj1j0VRtvJPD5c9aXZl58r2uNH6dZktsYwdI921k5qAIxBRyj6iDAIltzc+CwE/5bO2pMKBIH/zyXHc8YK0hDruew=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713898665; c=relaxed/simple;
+	bh=+2kzb4WKU7aALeByjwgZnAVJbH2zBMaXXdVsv6eW8vs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B3VRyec36na5cpgzEqcSDijffGpFlmzaN+AiT5za7ILcdNfnoPym7AtltWLeNhlGkOp4r2CeWw0q+dxKJtB6OjD180VUj+gs+7yAvdi85SkZnhg565IBNDofPWvzZWVa5I6A47fiXedgOiKsBtclyshwor1u72i2u5SpOfYzxY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KakpBc77; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d895e2c6efso91652041fa.0;
+        Tue, 23 Apr 2024 11:57:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713898662; x=1714503462; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nsPyp10OeuKCiKp5cBxCcE/H7nRREeJ5Tm8uW6q5gxA=;
+        b=KakpBc77mbis/sxyVIZYH194CVo1hqeHzon+6ZMP8NHnvw1pahea4b22t2saztuZoy
+         S1xmc6tkwW1HHDyGrYE9WhIFZBIzrMCJTBAvVYYDYi4grOfJVFusFgoXKte3TJUaRzq3
+         w3Cx2j5dc7C+gsDCkZ4Ahfzu+byo2+/qDmNgX4no9rzGQn0O9MjloqWtFZgPO0yfptUC
+         Me+B8sUTD8A+bBAYo+cNa1gAyqZsH1V1Ran+SYi1dHmLA2pBde3HpzcVg2zuyt78U99t
+         O1YLR3WJGFNoCOWtVeUltTCD0aGY4n7VuvMjMc4qe8zMpXePBRQt76sw9WwK9Q+kS5O9
+         b1Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713898662; x=1714503462;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nsPyp10OeuKCiKp5cBxCcE/H7nRREeJ5Tm8uW6q5gxA=;
+        b=nVlCQ9RCBOe1s9pK4XRiCYc2pG+l4jjHlZi11MckTfmufGHbFNbkjIJDi/TI2bgLC9
+         aFboKtAtrZvaZLFvhLjU6gGWolEN/WVW8zGuLv9IwJlYBsAgB6TqkithHuFnh/fa0+hu
+         2nagOd0stAqtnMlV3rB3kLZ9kB52RmT/odMRQ8RO+8llemxw/mxabY6h+6o1tUzGQU0H
+         cAkooE2ZqQW9SlKd18RLjCi3CuIQJCv9IJUhQQ2GQY5b+yucG5N6oRDMbLSZyxH14Y2j
+         5CNjK4ygYsOHDYY4MOpkujei7JgatS/6H22o1o8tb28iaQZjyTwW3T7BtLbEqt3j2ipo
+         76Mg==
+X-Forwarded-Encrypted: i=1; AJvYcCWULU8E+qlbUPFE7wSJ3Qzf/luQYT/vzTsGQaTW+9nttyvDe87V31Ked7rtAclk4/NexhClpT2FoLRJm+1PnwsJcwo05nJsQOLLoRuq9HkOZqrNS4hS7MnaxW7dUQEmQq8pKw==
+X-Gm-Message-State: AOJu0YxBvtvwnrjCqfJoxluXRHSGzn4Cub3T+lU3uxLgnQ5LPEDcPHtX
+	+CxUINwAHjKW6I+xq82LI93WUSKJ3CzQ0zOLbwNn3WChrTovs//ASPdkU57vXs0mXYWONsPKP8a
+	GAO6VGe1HMMz1cpKuyF8jUFC9veg=
+X-Google-Smtp-Source: AGHT+IHyUbgmTQf8WX/KSODwBX8UO62Tz1THto0rGm8zXU1bsDSgxeFNTae5Mwrjovdr+Z0pnTT4lcY1hnZFn8QvvTo=
+X-Received: by 2002:a2e:be8c:0:b0:2da:78e:f766 with SMTP id
+ a12-20020a2ebe8c000000b002da078ef766mr94273ljr.38.1713898661255; Tue, 23 Apr
+ 2024 11:57:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DS0PR12MB9273:EE_
-X-MS-Office365-Filtering-Correlation-Id: f10f3079-d835-46c7-0771-08dc63c6cdf1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?emYxbFRrTDZ3SldhVDMwZ3JyOUpEKzBqRlRlR2k1bXlEcEpiKytCOG80VWEv?=
- =?utf-8?B?cGNQTE9PblF1S2FCWDZXVUlMaE5VcEJsNWM3VTZVQXFrblA4T3FiYmN1UzA5?=
- =?utf-8?B?eEtIR0lQR3htQjA1ZDl0bkt0MGRoRkRkcVg2WWIrdGdZaTJkR3c5OExxN01w?=
- =?utf-8?B?dkdKWlRRaWFxWWdLOEw0RVJuaW0rZGZjR1l1SSt3dnpJMC9WZW1TL3NSeFFk?=
- =?utf-8?B?eW5IY3pyYmJUTDB3eWpuL09EQjFFTHBxdVBEdGc5ZzlOQkxZb1hra1lYMVpy?=
- =?utf-8?B?c0pzZW05elJTbEVqVFg3T2IxRlY3eEhiQ2lzbGtJLzhFalJrZmFUaktTeHda?=
- =?utf-8?B?OWZCZzRMcjhoSml6NWtDaFUya0pFZ21Hb3NrSUdJMHVQa3dnU0FNTzlFdFlw?=
- =?utf-8?B?d3pFOVlMOUxNSTlLK0VaZUdrL1kzeWpJTDdYOXdnckltRFpDMGZYZHAvbmF4?=
- =?utf-8?B?N3ZIdFRCSWxsQlJKSTgzald0VEJLaDJJaHk1dTZ6KzJkVVF3Q2lqZ0NSNklK?=
- =?utf-8?B?dlorT2x6QnpyTmtqcHJTNW9XOSt5Mm01VDFVVS83U1ExOEZ3cHMzMGt0MUh3?=
- =?utf-8?B?K25DMVpwVGpQdlk2cW8wZFllNjZkYjdUWUtOZ0NqNkJPcXVNTWx5V05YeHFm?=
- =?utf-8?B?STRCODBqK050TC9ua2JJa01lSjhHaTMvMXdWUDRJRW05R3NaWktPYWFGaHA4?=
- =?utf-8?B?Y0FMaVZ1VGs3YUhMd0JhRFJ5U2Z0ZlU2MDJaR0VrdmdlWWpxd0laWUdQU1li?=
- =?utf-8?B?bVZkb3hvb1RYQTM5Uzh4bTNrUmFFUTB1YnZaYVM5QlRjMUczeko2bU45WkZC?=
- =?utf-8?B?Q21YR2pCTVMvcG1aWWlLRHArWHY1dVhRNkZmdU5sRmM0WVE2VEZ3bDBlZjh0?=
- =?utf-8?B?T2NTcHZyL1dyaUJxaFlwUTNkWnRKWkZKcW5NMHZOemVGNVV3UktyRmhrMUZr?=
- =?utf-8?B?REsrTGZzMkxjNkYxT2k1MVB2bFlFK1VGSnVyNXUwUk9BMHhBWTU0RHBlKzFq?=
- =?utf-8?B?THlIVkZVSjV4WFFwTzExbTFBVVJ4Y0oxdGFXckFkODdUMVN0bFlTN3RNTDJa?=
- =?utf-8?B?eXFvUTViSDB3UXl5V0dzVnVTTkNwbG9pUzA1TXgxakYrQXQwSGszcmZhbldx?=
- =?utf-8?B?RENwQnJDWTFrbzk4WVBoaFAwZ2lQL2VOLytWamNpbG5FMWZXeDBrMjFPOVJC?=
- =?utf-8?B?TFc0K3Uwa0JObXBONWN3UTZZNDVza2paNjhyb3dhMGJvYlg1bDZRU0MwK1ZS?=
- =?utf-8?B?VG9BTU1uc0VZdlZneGlWUHRYU1l1MHNrODV4VDArNEcxTkhocGl5bnJTQWRh?=
- =?utf-8?B?NElvWXBBdmNkK0RQM01qWDd5Q0tzdFp3TzN2QlJpQzBTbFZxY1kxb0xITlg1?=
- =?utf-8?B?cXlHWEhlQ0VHWi80ZmpQeEJCOGFhOXVuenVEOVZoN1ByTUhsUDlFTmVreHhL?=
- =?utf-8?B?UHgrdjZDejc1K1plQTYyZm1qMExVbjhSR2UrSytSRTFpWnQwOURqSnc5T2RP?=
- =?utf-8?B?YS9xMTBwRUN0TjFRKy9VeDRHUXlSNVJaMUlvT3gxeFQ2eEdSTE9yMmxkcVlr?=
- =?utf-8?B?WjdzRWlyeDhNRWFDd21NMzNEdUU5NUtXWVFPMEFmbHhBTGd1OXI3azBSR3FC?=
- =?utf-8?B?RGVrSHIwSGpMdUdpSW1LL3ZMVEc0cXgrbUpsYnNtcWdORzBvcUIrK1BtUFpI?=
- =?utf-8?B?K21HV2JNTjQ3U2JwbDNoazljVnVpNkVkVHBvWGxlZlU1ZTNXczFGOElnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SFBlS0Q4dkwvT2ZxaFJxNjFFc08zWUtwOWo4SmZhb0c2UmhITUNWam9CME81?=
- =?utf-8?B?Ri8yNWpjN0YzbEVNU004aWJRMkc4djVUVkd1WmUxOWttYzhSK0hhT2hoTHdC?=
- =?utf-8?B?S2NxcExOcEN5NVpIeVd5QjI2bjJ1bHBORGROTzF4VnIzZmV5ODZIMzFPZFZE?=
- =?utf-8?B?N3VyZGRCVXFkazZ1aENaMGtpR3YzUzVWdm9OdmhQMVQvWXR0N3lvSFpWbm5T?=
- =?utf-8?B?YXpTdDdRN0VGS0VodU9ZUExheTZzclN6Y2pXK3NybkVqenJUU3UzSTZnU0RD?=
- =?utf-8?B?UUorUGhpaExUdmhxUzNqMkpSYWErUXZNd0dHUWlGMldURnBQQnZRQS9wMlYx?=
- =?utf-8?B?cDRIT2M1WDBMNSt3eUJOSk8wTHd2TVZhUUxzbFRCSkJyY0hmeUliTmFwSFQv?=
- =?utf-8?B?VHE4dklZeTlWNm9JMVRZN2k3OFZGS0s0QnpqZitLMWk0cS8rSjBPbU9aNGxO?=
- =?utf-8?B?WkYwMmp0ejJzZGdjVGg1V3dXVWg3dk91cXl5aGJFZHRYYmtXR0dmdm8zUS96?=
- =?utf-8?B?K3RvdDJ0dUJFTmJyRFlsT2x1SGd2bHhXWFBRYitvL2laUkxySi9DK2FyZWRo?=
- =?utf-8?B?YVQ2MzlENmFMdmhTeWY3L2dxcFUycncyeThEajZaQ2F6MEZMc3NNamp4MmZW?=
- =?utf-8?B?Tm5TNGtoci9FbWtZa0JEUlFYV3VKWXdhU0FJMnNmdlBxRHRUT2xMUDhZZU1B?=
- =?utf-8?B?RzFjSndDUzJIeStUVHdaamxmZnlMKzRUVFFJN3dteVQxR3ZGaXlrdHlTWnpl?=
- =?utf-8?B?QnJiTERXTkV2ZDdETVFqL2U5MXBXLzNSekgvSFhEUDl3YVBSVzJDZWRZSkkr?=
- =?utf-8?B?cjZ4aXZ2S1NOMzdmd3VOSURNaEwxeFVhV1NKQzByREg4aDBCRFBQY3c2NHly?=
- =?utf-8?B?R3ZDbllZeHJZRUswYjBXeXM1MWxhbGI0VXpGY0ZrTWd2UGZTWDZVNnlISlR3?=
- =?utf-8?B?cHhra25IdFFuQk1LVUZqRTdrbGZBYzVrcU1qK3kzUnVrQ2tDSnJrUm1IN3lj?=
- =?utf-8?B?YzhxZlNEL2EraituUnQwYjVBdlF0SFVYc1ppSUp2bDU2bGNESXE4NnNVYzBN?=
- =?utf-8?B?d3IveVF1Y0tQRkh6NDRyWjVlVUNCZEwwRU9lSVpQOEpMdEp3cWhSNUIyRytW?=
- =?utf-8?B?eU1qODJIRkpWcHNKUE42MWFENkVrOVIxUm8vVGVDNmFUZ2VLa3psbGRnNG9C?=
- =?utf-8?B?ME16akIyd3BrbXFyWmpDTDd4Rm0yOHlyN21hMllBWkVpeWJHUGpUTXVFdkFC?=
- =?utf-8?B?T21oUSt2dHZrcjd3b1VIYktXWmo5czhDQ2pUYW1kU1FLRnRjZ28rZXJvcnBx?=
- =?utf-8?B?UnBDQ2RTNk4vK213cFdoMFN6eVZOeHA5RTZLSnJyT00wZG12US80cnJOT0Rj?=
- =?utf-8?B?VXBhTXRZUENtMHo5RWg3TzN2djFFc0g5WVQ1WVo1b050dGtZYnVTM1J1eVFi?=
- =?utf-8?B?QU1qU0R6cFdPMHN4Mk51UGZOOGlERjdXZEFRMHNXckVFNG9EM0tHYzFBYUJE?=
- =?utf-8?B?YzFZUm00RFExSitNSDNOTm1qWGREdzYxbHV6cmJ3SU12dWRxL3ZHMU1Vem5L?=
- =?utf-8?B?N2t0QUw4THExQ1czMWY1ellxV3phNTZWbzZjYlFwalpwcHN5K0hiUGdjNEtL?=
- =?utf-8?B?MjdqMi9HTDJXVzFYenltQjZLMVBYbTdVMTJYaWZVN2wwRlJnNUxmNWt4TTRI?=
- =?utf-8?B?VmhPMmJyRGZVaWhvdVc3R0dNdmxqUjBuL1ZPaVV0ckRVUmM0VHVLRDhJYnhR?=
- =?utf-8?B?eHlvZEJJY3owaDJBam9jaXFsUVBvNmYxL3hpQ2RQcXRCRzcvdmVtZXBEZjNV?=
- =?utf-8?B?ZmtET0Yrb1k2Zm9BdjBNSXd4Zkgza2MrWUk2S0ZFREtSTkhRL1dmTUdZdnlu?=
- =?utf-8?B?cVFmMzVzYVlVTS9iZFpGRWp2SFFGVFY4M2pBUHFNRXExV082S2JhbnBiZEdm?=
- =?utf-8?B?QkhOL3dGN2p5RlI4VDF2amhBeitMcEQ0WkZZaUNwTUl0L3pEQ2pkYk41T3ZV?=
- =?utf-8?B?WTNBaSt4T0lIYndrbHNLM1F2Q1Qza1RDQWJzYXRiNHprMHpVZXo2ZU5JRDQx?=
- =?utf-8?B?WkwyVjExN2NUQ0FPcllML2FmZWVIWXN0VVFTRTkxMkxMTUxlZ21PRGMxQXNH?=
- =?utf-8?Q?xjT0oAHJPNJjuTWxotaO92DPY?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f10f3079-d835-46c7-0771-08dc63c6cdf1
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2024 18:54:29.1738
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cdYJjiEK/FF+8rX5lT7Ms6Q1OMTNdtLo5VPFoi/b+1IEh9FnkvlgCPFG9fwFRowRLBkQwUB0JeB3155ZW58t4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9273
+References: <20231204203514.2093855-1-sashal@kernel.org> <20231204203514.2093855-15-sashal@kernel.org>
+In-Reply-To: <20231204203514.2093855-15-sashal@kernel.org>
+From: Steve French <smfrench@gmail.com>
+Date: Tue, 23 Apr 2024 13:57:29 -0500
+Message-ID: <CAH2r5mt2gwyyAqotBv5U1esJQggGUbz8_J=6k_Z69X2dRRK8Ug@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.1 15/17] smb: client, common: fix fortify warnings
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Dmitry Antipov <dmantipov@yandex.ru>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Steve French <stfrench@microsoft.com>, sfrench@samba.org, linux-cifs@vger.kernel.org, 
+	samba-technical@lists.samba.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Note that kernels that backported this fix will also need this ksmbd
+fix (fixes a bug when Macs mount to ksmbd)
 
-We've got a collection of bug reports about how if a Thunderbolt device 
-is connected at bootup it doesn't behave the same as if it were 
-hotplugged by the user after bootup.  Issues range from non-functional 
-devices or display devices working at lower performance.
+commit 0268a7cc7fdc47d90b6c18859de7718d5059f6f1
+Author: Namjae Jeon <linkinjeon@kernel.org>
+Date:   Fri Apr 19 23:46:34 2024 +0900
 
-All of the issues stem from a pre-OS firmware initializing the USB4 
-controller and the OS re-using those tunnels.  This has been fixed in 
-6.9-rc1 by resetting the controller to a fresh state and discarding 
-whatever firmware has done.  I'd like to bring it back to 6.6.y LTS and 
-6.8.y stable.
+    ksmbd: common: use struct_group_attr instead of struct_group for
+network_open_info
 
-01da6b99d49f6 thunderbolt: Introduce tb_port_reset()
-b35c1d7b11da8 thunderbolt: Introduce tb_path_deactivate_hop()
-ec8162b3f0683 thunderbolt: Make tb_switch_reset() support Thunderbolt 2, 
-3 and USB4 routers
-9a54c5f3dbde thunderbolt: Reset topology created by the boot firmware
+    4byte padding cause the connection issue with the applications of MacOS=
+.
+    smb2_close response size increases by 4 bytes by padding, And the smb
+    client of MacOS check it and stop the connection. This patch use
+    struct_group_attr instead of struct_group for network_open_info to use
+     __packed to avoid padding.
 
-Thanks!
+    Fixes: 0015eb6e1238 ("smb: client, common: fix fortify warnings")
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+    Signed-off-by: Steve French <stfrench@microsoft.com>
+
+On Mon, Dec 4, 2023 at 2:36=E2=80=AFPM Sasha Levin <sashal@kernel.org> wrot=
+e:
+>
+> From: Dmitry Antipov <dmantipov@yandex.ru>
+>
+> [ Upstream commit 0015eb6e12384ff1c589928e84deac2ad1ceb236 ]
+>
+> When compiling with gcc version 14.0.0 20231126 (experimental)
+> and CONFIG_FORTIFY_SOURCE=3Dy, I've noticed the following:
+>
+> In file included from ./include/linux/string.h:295,
+>                  from ./include/linux/bitmap.h:12,
+>                  from ./include/linux/cpumask.h:12,
+>                  from ./arch/x86/include/asm/paravirt.h:17,
+>                  from ./arch/x86/include/asm/cpuid.h:62,
+>                  from ./arch/x86/include/asm/processor.h:19,
+>                  from ./arch/x86/include/asm/cpufeature.h:5,
+>                  from ./arch/x86/include/asm/thread_info.h:53,
+>                  from ./include/linux/thread_info.h:60,
+>                  from ./arch/x86/include/asm/preempt.h:9,
+>                  from ./include/linux/preempt.h:79,
+>                  from ./include/linux/spinlock.h:56,
+>                  from ./include/linux/wait.h:9,
+>                  from ./include/linux/wait_bit.h:8,
+>                  from ./include/linux/fs.h:6,
+>                  from fs/smb/client/smb2pdu.c:18:
+> In function 'fortify_memcpy_chk',
+>     inlined from '__SMB2_close' at fs/smb/client/smb2pdu.c:3480:4:
+> ./include/linux/fortify-string.h:588:25: warning: call to '__read_overflo=
+w2_field'
+> declared with attribute warning: detected read beyond size of field (2nd =
+parameter);
+> maybe use struct_group()? [-Wattribute-warning]
+>   588 |                         __read_overflow2_field(q_size_field, size=
+);
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~
+>
+> and:
+>
+> In file included from ./include/linux/string.h:295,
+>                  from ./include/linux/bitmap.h:12,
+>                  from ./include/linux/cpumask.h:12,
+>                  from ./arch/x86/include/asm/paravirt.h:17,
+>                  from ./arch/x86/include/asm/cpuid.h:62,
+>                  from ./arch/x86/include/asm/processor.h:19,
+>                  from ./arch/x86/include/asm/cpufeature.h:5,
+>                  from ./arch/x86/include/asm/thread_info.h:53,
+>                  from ./include/linux/thread_info.h:60,
+>                  from ./arch/x86/include/asm/preempt.h:9,
+>                  from ./include/linux/preempt.h:79,
+>                  from ./include/linux/spinlock.h:56,
+>                  from ./include/linux/wait.h:9,
+>                  from ./include/linux/wait_bit.h:8,
+>                  from ./include/linux/fs.h:6,
+>                  from fs/smb/client/cifssmb.c:17:
+> In function 'fortify_memcpy_chk',
+>     inlined from 'CIFS_open' at fs/smb/client/cifssmb.c:1248:3:
+> ./include/linux/fortify-string.h:588:25: warning: call to '__read_overflo=
+w2_field'
+> declared with attribute warning: detected read beyond size of field (2nd =
+parameter);
+> maybe use struct_group()? [-Wattribute-warning]
+>   588 |                         __read_overflow2_field(q_size_field, size=
+);
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~
+>
+> In both cases, the fortification logic inteprets calls to 'memcpy()' as a=
+n
+> attempts to copy an amount of data which exceeds the size of the specifie=
+d
+> field (i.e. more than 8 bytes from __le64 value) and thus issues an overr=
+ead
+> warning. Both of these warnings may be silenced by using the convenient
+> 'struct_group()' quirk.
+>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+> Signed-off-by: Steve French <stfrench@microsoft.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/smb/client/cifspdu.h | 24 ++++++++++++++----------
+>  fs/smb/client/cifssmb.c |  6 ++++--
+>  fs/smb/client/smb2pdu.c |  8 +++-----
+>  fs/smb/client/smb2pdu.h | 16 +++++++++-------
+>  fs/smb/common/smb2pdu.h | 17 ++++++++++-------
+>  5 files changed, 40 insertions(+), 31 deletions(-)
+>
+> diff --git a/fs/smb/client/cifspdu.h b/fs/smb/client/cifspdu.h
+> index c403816d0b6c1..97bb1838555b4 100644
+> --- a/fs/smb/client/cifspdu.h
+> +++ b/fs/smb/client/cifspdu.h
+> @@ -882,11 +882,13 @@ typedef struct smb_com_open_rsp {
+>         __u8 OplockLevel;
+>         __u16 Fid;
+>         __le32 CreateAction;
+> -       __le64 CreationTime;
+> -       __le64 LastAccessTime;
+> -       __le64 LastWriteTime;
+> -       __le64 ChangeTime;
+> -       __le32 FileAttributes;
+> +       struct_group(common_attributes,
+> +               __le64 CreationTime;
+> +               __le64 LastAccessTime;
+> +               __le64 LastWriteTime;
+> +               __le64 ChangeTime;
+> +               __le32 FileAttributes;
+> +       );
+>         __le64 AllocationSize;
+>         __le64 EndOfFile;
+>         __le16 FileType;
+> @@ -2268,11 +2270,13 @@ typedef struct {
+>  /* QueryFileInfo/QueryPathinfo (also for SetPath/SetFile) data buffer fo=
+rmats */
+>  /***********************************************************************=
+*******/
+>  typedef struct { /* data block encoding of response to level 263 QPathIn=
+fo */
+> -       __le64 CreationTime;
+> -       __le64 LastAccessTime;
+> -       __le64 LastWriteTime;
+> -       __le64 ChangeTime;
+> -       __le32 Attributes;
+> +       struct_group(common_attributes,
+> +               __le64 CreationTime;
+> +               __le64 LastAccessTime;
+> +               __le64 LastWriteTime;
+> +               __le64 ChangeTime;
+> +               __le32 Attributes;
+> +       );
+>         __u32 Pad1;
+>         __le64 AllocationSize;
+>         __le64 EndOfFile;       /* size ie offset to first free byte in f=
+ile */
+> diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+> index c90d4ec9292ca..67c5fc2b2db94 100644
+> --- a/fs/smb/client/cifssmb.c
+> +++ b/fs/smb/client/cifssmb.c
+> @@ -1234,8 +1234,10 @@ CIFS_open(const unsigned int xid, struct cifs_open=
+_parms *oparms, int *oplock,
+>                 *oplock |=3D CIFS_CREATE_ACTION;
+>
+>         if (buf) {
+> -               /* copy from CreationTime to Attributes */
+> -               memcpy((char *)buf, (char *)&rsp->CreationTime, 36);
+> +               /* copy commonly used attributes */
+> +               memcpy(&buf->common_attributes,
+> +                      &rsp->common_attributes,
+> +                      sizeof(buf->common_attributes));
+>                 /* the file_info buf is endian converted by caller */
+>                 buf->AllocationSize =3D rsp->AllocationSize;
+>                 buf->EndOfFile =3D rsp->EndOfFile;
+> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+> index 847d69d327c2a..aea7770fb5631 100644
+> --- a/fs/smb/client/smb2pdu.c
+> +++ b/fs/smb/client/smb2pdu.c
+> @@ -3425,12 +3425,10 @@ __SMB2_close(const unsigned int xid, struct cifs_=
+tcon *tcon,
+>         } else {
+>                 trace_smb3_close_done(xid, persistent_fid, tcon->tid,
+>                                       ses->Suid);
+> -               /*
+> -                * Note that have to subtract 4 since struct network_open=
+_info
+> -                * has a final 4 byte pad that close response does not ha=
+ve
+> -                */
+>                 if (pbuf)
+> -                       memcpy(pbuf, (char *)&rsp->CreationTime, sizeof(*=
+pbuf) - 4);
+> +                       memcpy(&pbuf->network_open_info,
+> +                              &rsp->network_open_info,
+> +                              sizeof(pbuf->network_open_info));
+>         }
+>
+>         atomic_dec(&tcon->num_remote_opens);
+> diff --git a/fs/smb/client/smb2pdu.h b/fs/smb/client/smb2pdu.h
+> index 1237bb86e93a8..8ac99563487c1 100644
+> --- a/fs/smb/client/smb2pdu.h
+> +++ b/fs/smb/client/smb2pdu.h
+> @@ -339,13 +339,15 @@ struct smb2_file_reparse_point_info {
+>  } __packed;
+>
+>  struct smb2_file_network_open_info {
+> -       __le64 CreationTime;
+> -       __le64 LastAccessTime;
+> -       __le64 LastWriteTime;
+> -       __le64 ChangeTime;
+> -       __le64 AllocationSize;
+> -       __le64 EndOfFile;
+> -       __le32 Attributes;
+> +       struct_group(network_open_info,
+> +               __le64 CreationTime;
+> +               __le64 LastAccessTime;
+> +               __le64 LastWriteTime;
+> +               __le64 ChangeTime;
+> +               __le64 AllocationSize;
+> +               __le64 EndOfFile;
+> +               __le32 Attributes;
+> +       );
+>         __le32 Reserved;
+>  } __packed; /* level 34 Query also similar returned in close rsp and ope=
+n rsp */
+>
+> diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
+> index 9619015d78f29..778c1e3b70bc1 100644
+> --- a/fs/smb/common/smb2pdu.h
+> +++ b/fs/smb/common/smb2pdu.h
+> @@ -699,13 +699,16 @@ struct smb2_close_rsp {
+>         __le16 StructureSize; /* 60 */
+>         __le16 Flags;
+>         __le32 Reserved;
+> -       __le64 CreationTime;
+> -       __le64 LastAccessTime;
+> -       __le64 LastWriteTime;
+> -       __le64 ChangeTime;
+> -       __le64 AllocationSize;  /* Beginning of FILE_STANDARD_INFO equiva=
+lent */
+> -       __le64 EndOfFile;
+> -       __le32 Attributes;
+> +       struct_group(network_open_info,
+> +               __le64 CreationTime;
+> +               __le64 LastAccessTime;
+> +               __le64 LastWriteTime;
+> +               __le64 ChangeTime;
+> +               /* Beginning of FILE_STANDARD_INFO equivalent */
+> +               __le64 AllocationSize;
+> +               __le64 EndOfFile;
+> +               __le32 Attributes;
+> +       );
+>  } __packed;
+>
+>
+> --
+> 2.42.0
+>
+>
+
+
+--=20
+Thanks,
+
+Steve
 
