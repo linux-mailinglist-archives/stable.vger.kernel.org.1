@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575418AE6CA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:48:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5288AE6CB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8D5282396
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:48:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D441A1F21477
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A2812C474;
-	Tue, 23 Apr 2024 12:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D4312E1EA;
+	Tue, 23 Apr 2024 12:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0liEbypA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jlGonFj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439B485C48
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7645A85C48
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713876272; cv=none; b=nj8KTBCny8tN2So5HpqIh/4REkoZHUSHLck0iWZfFvCqj4QIpjX/X64LhVkwMjLeWlOBNZlaLCA/rt43zNF9BejLXw/8wlorLZE306pKFofl4RbWV/pwkLCmiX/FwMStsZRgaMUOhDZCgMjsBGPI5N1+2teL2I8tJCLfC206uwY=
+	t=1713876273; cv=none; b=P3Qf3GyfIh/rQ81BG6H2Od99t8K4gPoSlDSszdAD21VLIIo8+g0Ma91y324nRtYQtxcSVK3+x4gDhU5FKBmJRRQ5OL/tldnMW7olx7qTqRbuy6uHUQ2E0sUbv+EGZejM2NbfWf71szSKrmeczHHgG56KXvBJDYymmlS74ECFDAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713876272; c=relaxed/simple;
-	bh=rDYVPXYJn2Qx7YaN0XQS6DOHw39w8xvFtUfrvPbaklM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c1U6puZXqa7te+TlZ1RESnTTZ4WrN3KRtYjrrn1mx+DIvUesmGziqosEulaEw8vQ/oxY7DZvmvJwcmJT9OX/UvpsbXqeCDm24PRa3dTc+oZGQlh8e90Gc5Fk0h8ZesNKYR/BbJHJlBG5iymhHekFvPgbhnebl6m1qt23hcC1uhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0liEbypA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5C7C116B1;
-	Tue, 23 Apr 2024 12:44:31 +0000 (UTC)
+	s=arc-20240116; t=1713876273; c=relaxed/simple;
+	bh=INE8UaNFO/Vxxb0/5j7EDNx0ME1ozd1Vqy1eghVT3W8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OrnwBWVp79vPtc1jr1ii3jVfsUClNInjs0rtZLU/q4B+TVUtTs+c8PCeyR1i3F5Xx5SWYTDFyahhs9XcwwAK25/9oesRqnEb51XNlhliOYGWlcjXcjKB+R/qwZxB9+yb8Iaq0T3IgdxP27MyPwqQb+dQRKxP07Rl2ysU3MH3tkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jlGonFj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB00FC4AF11;
+	Tue, 23 Apr 2024 12:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713876271;
-	bh=rDYVPXYJn2Qx7YaN0XQS6DOHw39w8xvFtUfrvPbaklM=;
+	s=korg; t=1713876273;
+	bh=INE8UaNFO/Vxxb0/5j7EDNx0ME1ozd1Vqy1eghVT3W8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0liEbypABzu+I7F0iYUSABDEAmcoA8qMNWWiCenev7D+cftoiMbqCDiAPnZDlBu58
-	 wUodNJHQ44awkVlpY879e/e1nJEbNMl/MMcXXg31Jz5eZqNRMZBwIn0vSh0l4wuwoQ
-	 Y8tYFwnqubfG/4T0ajPZcQaw32VZCgRh4s/Grlgo=
-Subject: FAILED: patch "[PATCH] usb: xhci: correct return value in case of STS_HCE" failed to apply to 6.8-stable tree
+	b=0jlGonFjikwuy4a6BusxDY4MOxaoWuInttXLB0dHtrQFYgnI2x23RCrJWzeCJcGYg
+	 vIiQpy1pkpRhkyxpxxdHK6wBJA1G7Yfrb/PM81EnXy5+eMyK7mjDyECBlLp/y2PF0i
+	 AU2Ut1CPyNYC4/Ww/dYlUOqmGN1uAMgYp/Zc5U4s=
+Subject: FAILED: patch "[PATCH] usb: xhci: correct return value in case of STS_HCE" failed to apply to 6.6-stable tree
 To: oneukum@suse.com,gregkh@linuxfoundation.org,mathias.nyman@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 05:44:22 -0700
-Message-ID: <2024042322-lunchbox-flint-5a2b@gregkh>
+Date: Tue, 23 Apr 2024 05:44:23 -0700
+Message-ID: <2024042323-ransack-tightness-3eba@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.8-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5bfc311dd6c376d350b39028b9000ad766ddc934
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042322-lunchbox-flint-5a2b@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042323-ransack-tightness-3eba@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,12 @@ e30e9ad9ed66 ("xhci: update event ring dequeue pointer position to controller co
 143e64df1bda ("xhci: remove unnecessary event_ring_deq parameter from xhci_handle_event()")
 becbd202af84 ("xhci: make isoc_bei_interval variable interrupter specific.")
 4f022aad80dc ("xhci: Add interrupt pending autoclear flag to each interrupter")
+c99b38c41234 ("xhci: add support to allocate several interrupters")
+47f503cf5f79 ("xhci: split free interrupter into separate remove and free parts")
+d1830364e963 ("xhci: Simplify event ring dequeue pointer update for port change events")
+08cc5616798d ("xhci: Clean up ERST_PTR_MASK inversion")
+28084d3fcc3c ("xhci: Use more than one Event Ring segment")
+044818a6cd80 ("xhci: Set DESI bits in ERDP register correctly")
 
 thanks,
 
