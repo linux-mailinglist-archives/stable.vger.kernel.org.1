@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0B48AFB23
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:54:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6E58AF99E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5268CB2C8B6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57F51289C5A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2999214AD23;
-	Tue, 23 Apr 2024 21:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01022145B12;
+	Tue, 23 Apr 2024 21:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiOwgLhv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3rP5aDX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8B0143C5F;
-	Tue, 23 Apr 2024 21:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D7F85274;
+	Tue, 23 Apr 2024 21:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908770; cv=none; b=VvxcowUYmyZO2LSqGDCoAoC+f6MHExuAYsBmW05xOMMgW5s4mCQtY8+gVtF143+dMNrQA9iusPGKf2rNPZX4CkVEWWi/RKgeg/gLjxcye/9njDfaHuhIhi5NKh856kzdA7waNwn9cDGPlW1d9aRYnk63xgZ+38nEydP+l/GsS2c=
+	t=1713908557; cv=none; b=ZC3xWs3uidSmOS51lNb2iTPcGEDWz7AFJvSpHUauluxscqnhFBAspdzt8kuFlMjhvFHKlxoHcH/ytZyU/9Qz1qPV7nDbvTRY84tRF31MNdzXYvH15G/OCyV7b1sn9UG0JrTTKkTquh/6JIIermonNcW7DY8VPgB6gbiWCLEwcJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908770; c=relaxed/simple;
-	bh=4al6bcW7LOCfN7wNjCP1IUqQ8Zjp44NaNtKL//LmxHI=;
+	s=arc-20240116; t=1713908557; c=relaxed/simple;
+	bh=1HAtiFcCjFyGfI0IiI+flOZ1FxsFuO16oSRcEKjnoIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cchmDU0F+u8KISl0soom3hLIfCtcdE+RZw4Q+5QPc2g+vuPJIaIte0d9SlkcUds6SgWqnat0geW5NuuzzWYit0ST/vM7JajBgj6GFup2ZqdkpUMAMBeoDwpthDO9LWuUrhtaYJK2NJowSzk7kgONFO3ageoD2dK+EjDKf3SeORQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiOwgLhv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE353C32781;
-	Tue, 23 Apr 2024 21:46:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TDgSqFlKyj/g1p19pabp9Gb51C/uPKTqQ97BdmMBezxCM3fWjt17g4LNQlrYoBnI/Olg/Zrkd4HxcdJeIJ8/JTaF4nqdnGs/e13OnGjQiWZyC3nJLm5FFDqvQ4nxVSvpsJHLxwvAPU5Psq+eHo32io6hGhhK/h2ru5NeevkTHM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3rP5aDX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A96EC3277B;
+	Tue, 23 Apr 2024 21:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908769;
-	bh=4al6bcW7LOCfN7wNjCP1IUqQ8Zjp44NaNtKL//LmxHI=;
+	s=korg; t=1713908557;
+	bh=1HAtiFcCjFyGfI0IiI+flOZ1FxsFuO16oSRcEKjnoIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xiOwgLhviz2zz9xQ8d/qzuAw2P/SUxOHdnbrrfcZ0K8mL55sV6CQ0/kv8JCpn2SVt
-	 OOit/05f6RgnJjOhHukLYsQVo23m6KmS6zlSB81olwavHTaZQV8N6HtUfLsxpjN0sT
-	 nfuZKvuWhSiIvHfLt+bdA+SwfCg70mdJttrHRM7E=
+	b=M3rP5aDXMmDd9aXu9g2FFEQP/ytp/rC28Ba6AZne2RzfUQST1CK35Wu+C/AsOTQHU
+	 Zf7OzyudXN97Hraw7oW85SxcbQp4AH3B6RUkEwC0wD4FudzIhs6tnIImp5zBNY86Gw
+	 ZIkhyALpsHNNBMroyX0oG+e2DFZLz7jRKtIVs+ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.15 12/71] kprobes: Fix possible use-after-free issue on kprobe registration
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>
+Subject: [PATCH 6.8 143/158] drm/ttm: stop pooling cached NUMA pages v2
 Date: Tue, 23 Apr 2024 14:39:25 -0700
-Message-ID: <20240423213844.541474428@linuxfoundation.org>
+Message-ID: <20240423213900.511839153@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +59,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Christian König <ckoenig.leichtzumerken@gmail.com>
 
-commit 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8 upstream.
+commit b6976f323a8687cc0d55bc92c2086fd934324ed5 upstream.
 
-When unloading a module, its state is changing MODULE_STATE_LIVE ->
- MODULE_STATE_GOING -> MODULE_STATE_UNFORMED. Each change will take
-a time. `is_module_text_address()` and `__module_text_address()`
-works with MODULE_STATE_LIVE and MODULE_STATE_GOING.
-If we use `is_module_text_address()` and `__module_text_address()`
-separately, there is a chance that the first one is succeeded but the
-next one is failed because module->state becomes MODULE_STATE_UNFORMED
-between those operations.
+We only pool write combined and uncached allocations because they
+require extra overhead on allocation and release.
 
-In `check_kprobe_address_safe()`, if the second `__module_text_address()`
-is failed, that is ignored because it expected a kernel_text address.
-But it may have failed simply because module->state has been changed
-to MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify
-non-exist module text address (use-after-free).
+If we also pool cached NUMA it not only means some extra unnecessary
+overhead, but also that under memory pressure it can happen that
+pages from the wrong NUMA node enters the pool and are re-used
+over and over again.
 
-To fix this problem, we should not use separated `is_module_text_address()`
-and `__module_text_address()`, but use only `__module_text_address()`
-once and do `try_module_get(module)` which is only available with
-MODULE_STATE_LIVE.
+This can lead to performance reduction after running into memory
+pressure.
 
-Link: https://lore.kernel.org/all/20240410015802.265220-1-zhengyejian1@huawei.com/
+v2: restructure and cleanup the code a bit from the internal hack to
+    test this.
 
-Fixes: 28f6c37a2910 ("kprobes: Forbid probing on trampoline and BPF code areas")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-[Fix conflict due to lack dependency
-commit 223a76b268c9 ("kprobes: Fix coding style issues")]
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: 4482d3c94d7f ("drm/ttm: add NUMA node id to the pool")
+CC: stable@vger.kernel.org
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415134821.1919-1-christian.koenig@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kprobes.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/ttm/ttm_pool.c |   38 ++++++++++++++++++++++++++++----------
+ 1 file changed, 28 insertions(+), 10 deletions(-)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1564,10 +1564,17 @@ static int check_kprobe_address_safe(str
- 	jump_label_lock();
- 	preempt_disable();
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -288,17 +288,23 @@ static struct ttm_pool_type *ttm_pool_se
+ 						  enum ttm_caching caching,
+ 						  unsigned int order)
+ {
+-	if (pool->use_dma_alloc || pool->nid != NUMA_NO_NODE)
++	if (pool->use_dma_alloc)
+ 		return &pool->caching[caching].orders[order];
  
--	/* Ensure it is not in reserved area nor out of text */
--	if (!(core_kernel_text((unsigned long) p->addr) ||
--	    is_module_text_address((unsigned long) p->addr)) ||
--	    in_gate_area_no_mm((unsigned long) p->addr) ||
-+	/* Ensure the address is in a text area, and find a module if exists. */
-+	*probed_mod = NULL;
-+	if (!core_kernel_text((unsigned long) p->addr)) {
-+		*probed_mod = __module_text_address((unsigned long) p->addr);
-+		if (!(*probed_mod)) {
-+			ret = -EINVAL;
-+			goto out;
+ #ifdef CONFIG_X86
+ 	switch (caching) {
+ 	case ttm_write_combined:
++		if (pool->nid != NUMA_NO_NODE)
++			return &pool->caching[caching].orders[order];
++
+ 		if (pool->use_dma32)
+ 			return &global_dma32_write_combined[order];
+ 
+ 		return &global_write_combined[order];
+ 	case ttm_uncached:
++		if (pool->nid != NUMA_NO_NODE)
++			return &pool->caching[caching].orders[order];
++
+ 		if (pool->use_dma32)
+ 			return &global_dma32_uncached[order];
+ 
+@@ -566,11 +572,17 @@ void ttm_pool_init(struct ttm_pool *pool
+ 	pool->use_dma_alloc = use_dma_alloc;
+ 	pool->use_dma32 = use_dma32;
+ 
+-	if (use_dma_alloc || nid != NUMA_NO_NODE) {
+-		for (i = 0; i < TTM_NUM_CACHING_TYPES; ++i)
+-			for (j = 0; j < NR_PAGE_ORDERS; ++j)
+-				ttm_pool_type_init(&pool->caching[i].orders[j],
+-						   pool, i, j);
++	for (i = 0; i < TTM_NUM_CACHING_TYPES; ++i) {
++		for (j = 0; j < NR_PAGE_ORDERS; ++j) {
++			struct ttm_pool_type *pt;
++
++			/* Initialize only pool types which are actually used */
++			pt = ttm_pool_select_type(pool, i, j);
++			if (pt != &pool->caching[i].orders[j])
++				continue;
++
++			ttm_pool_type_init(pt, pool, i, j);
 +		}
-+	}
-+	/* Ensure it is not in reserved area. */
-+	if (in_gate_area_no_mm((unsigned long) p->addr) ||
- 	    within_kprobe_blacklist((unsigned long) p->addr) ||
- 	    jump_label_text_reserved(p->addr, p->addr) ||
- 	    static_call_text_reserved(p->addr, p->addr) ||
-@@ -1577,8 +1584,7 @@ static int check_kprobe_address_safe(str
- 		goto out;
+ 	}
+ }
+ EXPORT_SYMBOL(ttm_pool_init);
+@@ -599,10 +611,16 @@ void ttm_pool_fini(struct ttm_pool *pool
+ {
+ 	unsigned int i, j;
+ 
+-	if (pool->use_dma_alloc || pool->nid != NUMA_NO_NODE) {
+-		for (i = 0; i < TTM_NUM_CACHING_TYPES; ++i)
+-			for (j = 0; j < NR_PAGE_ORDERS; ++j)
+-				ttm_pool_type_fini(&pool->caching[i].orders[j]);
++	for (i = 0; i < TTM_NUM_CACHING_TYPES; ++i) {
++		for (j = 0; j < NR_PAGE_ORDERS; ++j) {
++			struct ttm_pool_type *pt;
++
++			pt = ttm_pool_select_type(pool, i, j);
++			if (pt != &pool->caching[i].orders[j])
++				continue;
++
++			ttm_pool_type_fini(pt);
++		}
  	}
  
--	/* Check if are we probing a module */
--	*probed_mod = __module_text_address((unsigned long) p->addr);
-+	/* Get module refcount and reject __init functions for loaded modules. */
- 	if (*probed_mod) {
- 		/*
- 		 * We must hold a refcount of the probed module while updating
+ 	/* We removed the pool types from the LRU, but we need to also make sure
 
 
 
