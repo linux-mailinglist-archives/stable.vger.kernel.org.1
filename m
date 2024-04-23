@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-40848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242CC8AF94E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AD28AFA4C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4DB8283CDF
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 543251C209C0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAEF3143C57;
-	Tue, 23 Apr 2024 21:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB23143C52;
+	Tue, 23 Apr 2024 21:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxKF+sgU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bZrzecY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6821D14388D;
-	Tue, 23 Apr 2024 21:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCBE1494D1;
+	Tue, 23 Apr 2024 21:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908504; cv=none; b=NOILMsq3aQb7V25oJcFgEIClkpqJ0RjiUXSd5aoqE50EI0Fiv7xYMrXTS78uAlEfk9RSUyqzxYIUkg41+vXI2Yyo2rojDFiQ0wuyJHe3+wjqDFuYu/a9cLU/lyZYMmgBid7RJByZUEYM969+hcDnEUN/ALeqqah9iBIPVLuzFWg=
+	t=1713908672; cv=none; b=QEjiCW3bb17iaaiWfO+kAZfUQEornmWmrxXfTFCQ11h+X0oCHFkvjEeAcfjHkhEdrqP4uYfLvx24L/vLTSUfZC5kJR6H2zlg/6GPoyUMnRKL19M14u3yl4U1VyQ5A1FkD8dJlm4u/7gnkFDrbqznHb0ewRDjUSvVsMDjidEDzzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908504; c=relaxed/simple;
-	bh=JPxduFrp/QjGOjVyh8sREju9oE/QVAca3trAicn4eYI=;
+	s=arc-20240116; t=1713908672; c=relaxed/simple;
+	bh=cm0h1YoBN/cR7KJQrxTby9NGn/WUgErE5mljhnpBzZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDA6ZZ9dy3rbFMky/x14Xq8VOTCKiWTtGkpGj8Ettnq69mO8gaM2FcuOnwty2r7kmohS8hjZdXvxZSD1J3Zf0Uv3+Dmw5jNUOjVJOBwOi+ZSrqMYAP6qa9rvQ4FFyQOaJWwss6RUK6Tus4iOaANCTb0PnQDVHi9N2CVFGJwJtRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxKF+sgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E52C32781;
-	Tue, 23 Apr 2024 21:41:43 +0000 (UTC)
+	 MIME-Version; b=iZfPMFLQvMqrMwcun1YZa9ElgwY5tzYm0OQRKONyFipBilctoNfB/e755Jh/m5+XUvlL74SNR/oQ12e3PjngvEY1A+9UYq0Ucd2VUsyfCKvYBOQXlvk/h4PR4EycwvTFIdSYyDaF3iX8OtLH2Y9ZLj978iqTiTkwNKWjb9iV7Vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bZrzecY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3B4C32782;
+	Tue, 23 Apr 2024 21:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908504;
-	bh=JPxduFrp/QjGOjVyh8sREju9oE/QVAca3trAicn4eYI=;
+	s=korg; t=1713908671;
+	bh=cm0h1YoBN/cR7KJQrxTby9NGn/WUgErE5mljhnpBzZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YxKF+sgUN/oLk0lN5nRPAD0ug8kvN4I2SgTjSv7DhLbb3OcNuMX0HZ3ly8cItn3Zq
-	 lkd7OS7JefAAevm8Z36vGe9+89oLntCXNNO7LjN8AcV+qOyCXaxsJG6kWoQwtL+x8t
-	 SYaVGm9IQjowIu0w/jBZv85QS24FfnDV2IK+U5Yw=
+	b=0bZrzecYEH9oZvCmuht+diqVPoxIyIW0+bsCfn37M+z0992aWqTbZxudxP9cy9DBM
+	 kwR4HvLkBU3vIw1TCjuHufCiUtiZvbU+owMsAhAbjyA8VL8EwjYBIFlckrzsnTYnfE
+	 /Z1O012BT+eKRCLO1MW1pug1gfwPEzPZvwLXIgtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 057/158] RDMA/mlx5: Fix port number for counter query in multi-port configuration
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.1 011/141] x86/efi: Drop EFI stub .bss from .data section
 Date: Tue, 23 Apr 2024 14:37:59 -0700
-Message-ID: <20240423213857.789246472@linuxfoundation.org>
+Message-ID: <20240423213853.722219408@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit be121ffb384f53e966ee7299ffccc6eeb61bc73d ]
+[ Commit 5f51c5d0e905608ba7be126737f7c84a793ae1aa upstream ]
 
-Set the correct port when querying PPCNT in multi-port configuration.
-Distinguish between cases where switchdev mode was enabled to multi-port
-configuration and don't overwrite the queried port to 1 in multi-port
-case.
+Now that the EFI stub always zero inits its BSS section upon entry,
+there is no longer a need to place the BSS symbols carried by the stub
+into the .data section.
 
-Fixes: 74b30b3ad5ce ("RDMA/mlx5: Set local port to one when accessing counters")
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://lore.kernel.org/r/9bfcc8ade958b760a51408c3ad654a01b11f7d76.1712134988.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230912090051.4014114-18-ardb@google.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/mad.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/boot/compressed/vmlinux.lds.S |    1 -
+ drivers/firmware/efi/libstub/Makefile  |    7 -------
+ 2 files changed, 8 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mad.c b/drivers/infiniband/hw/mlx5/mad.c
-index 0c3c4e64812c5..3e43687a7f6f7 100644
---- a/drivers/infiniband/hw/mlx5/mad.c
-+++ b/drivers/infiniband/hw/mlx5/mad.c
-@@ -188,7 +188,8 @@ static int process_pma_cmd(struct mlx5_ib_dev *dev, u32 port_num,
- 		mdev = dev->mdev;
- 		mdev_port_num = 1;
+--- a/arch/x86/boot/compressed/vmlinux.lds.S
++++ b/arch/x86/boot/compressed/vmlinux.lds.S
+@@ -46,7 +46,6 @@ SECTIONS
+ 		_data = . ;
+ 		*(.data)
+ 		*(.data.*)
+-		*(.bss.efistub)
+ 		_edata = . ;
  	}
--	if (MLX5_CAP_GEN(dev->mdev, num_ports) == 1) {
-+	if (MLX5_CAP_GEN(dev->mdev, num_ports) == 1 &&
-+	    !mlx5_core_mp_enabled(mdev)) {
- 		/* set local port to one for Function-Per-Port HCA. */
- 		mdev = dev->mdev;
- 		mdev_port_num = 1;
--- 
-2.43.0
-
+ 	. = ALIGN(L1_CACHE_BYTES);
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -102,13 +102,6 @@ lib-y				:= $(patsubst %.o,%.stub.o,$(li
+ # https://bugs.llvm.org/show_bug.cgi?id=46480
+ STUBCOPY_FLAGS-y		+= --remove-section=.note.gnu.property
+ 
+-#
+-# For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
+-# .bss section, so the .bss section of the EFI stub needs to be included in the
+-# .data section of the compressed kernel to ensure initialization. Rename the
+-# .bss section here so it's easy to pick out in the linker script.
+-#
+-STUBCOPY_FLAGS-$(CONFIG_X86)	+= --rename-section .bss=.bss.efistub,load,alloc
+ STUBCOPY_RELOC-$(CONFIG_X86_32)	:= R_386_32
+ STUBCOPY_RELOC-$(CONFIG_X86_64)	:= R_X86_64_64
+ 
 
 
 
