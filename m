@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-40881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EAF8AF971
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C278AFA7C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E1F71F267BE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1F891F296F8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63481448F3;
-	Tue, 23 Apr 2024 21:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426F61474D1;
+	Tue, 23 Apr 2024 21:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBjOoPHj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APr+NIyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652C420B3E;
-	Tue, 23 Apr 2024 21:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D611420BE;
+	Tue, 23 Apr 2024 21:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908526; cv=none; b=k9bSeYDr9EAsfEvD/Q1i8EVLffOw2JbvXgO3lsWLuoQ5KqKTxitPcjtmjyB5p2EHBKjwbDLt6d0BTaOYr9wbL3Eq6aGHgXUsCtKuXZAmrkGwE9T86stHm4xxJcxW+8sd+hqGa6A+eGIKBZjSyyATb+FM0mtUcySMnewIYKLTXt0=
+	t=1713908709; cv=none; b=ExcaQEA+29nhfy/QPYBpG4tFsNnF0YqH9RnK41yggERrFljvl/zcyMLPgCldFtAo6KdnyK9VVDn3oXe83HI1pIwKJiEZvY7lvlQTSjtclVjdsRTr+Pa1qVciDm71LudYfxN5nrvbvLN7PgL0ZtMkQAK7iqPJdsDYDWsDmgUWqkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908526; c=relaxed/simple;
-	bh=32Ibyg6hqKR7TvqW8QZaB8C9EpZJ2Vj5+afxHa6JrKw=;
+	s=arc-20240116; t=1713908709; c=relaxed/simple;
+	bh=W5R/gXNLsubgP1ofWaa2232rch0CXbxaisOYUVs7VPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eK5LcALdW7dpxkYU4zfjavVA/HspByac2Nc6UHnAWqytAhPQSXPYn+/4dCN+PbsErqsFNhRnc2q4E7j71tNXSIJIgpjL/Us07j/phkcwx38zyB1ktKc9iZtp2rdETCyyLO0qbFzbtJR5l9aVNShCbjHc/YoZBLeieb3PSuWxB+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBjOoPHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A14AC32782;
-	Tue, 23 Apr 2024 21:42:06 +0000 (UTC)
+	 MIME-Version; b=mMlUIrqXZtqjT/9PNmuv24jjooJOfOliILldkLzXqa0Gczb6iaq+i4NwsI8EZLNe6ed8padMDZWpODLsz/CNw7hEoEQxnYQyzOBRW3qaCP3FWp/h37vdzWXWqEvBKv9AC6+A9sufBuwCyklSYiPIdszkYiQIR21l/cogoRof5Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APr+NIyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2370C116B1;
+	Tue, 23 Apr 2024 21:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908526;
-	bh=32Ibyg6hqKR7TvqW8QZaB8C9EpZJ2Vj5+afxHa6JrKw=;
+	s=korg; t=1713908708;
+	bh=W5R/gXNLsubgP1ofWaa2232rch0CXbxaisOYUVs7VPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBjOoPHjISYTgOGWKrKt3QYIH/bd8Z3a72qadqkBZfc4+K5GsDWe/52y/kM15un7f
-	 cTqqV4FRwV7DlhmCAylvaculso/DdsE7MkrjXBCl8pPWvoANDocljqMN0RWSgJnIbP
-	 qRa06SSdeJE5sbSCjzGN7vmQQlXq6RKOwdUGRw4A=
+	b=APr+NIyHtmT9Fd+9lFCYn3ABB9BqseYM/rNSTox8TiBI9yT5uDdA2GhuUoDwvUaUf
+	 d2w5k8gyVQT3hSgMsFEEueV/w7L2CWhIWxIRXYaKZv+1Uw3WwcyzTTdoEBxDI73auM
+	 dSKrdLzX4nxdRWpoGxagRXnuTraQgWP5mFTEJxiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuanhong Guo <gch981213@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.8 110/158] USB: serial: option: add support for Fibocom FM650/FG650
-Date: Tue, 23 Apr 2024 14:38:52 -0700
-Message-ID: <20240423213859.509221178@linuxfoundation.org>
+	Arnd Bergmann <arnd@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 065/141] PCI: Make quirk using inw() depend on HAS_IOPORT
+Date: Tue, 23 Apr 2024 14:38:53 -0700
+Message-ID: <20240423213855.355112439@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,144 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuanhong Guo <gch981213@gmail.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit fb1f4584b1215e8c209f6b3a4028ed8351a0e961 upstream.
+[ Upstream commit f768c75d61582b011962f9dcb9ff8eafb8da0383 ]
 
-Fibocom FM650/FG650 are 5G modems with ECM/NCM/RNDIS/MBIM modes.
-This patch adds support to all 4 modes.
+In the future inw() and friends will not be compiled on architectures
+without I/O port support.
 
-In all 4 modes, the first serial port is the AT console while the other
-3 appear to be diagnostic interfaces for dumping modem logs.
-
-usb-devices output for all modes:
-
-ECM:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a04 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 5 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-NCM:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a05 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-RNDIS:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a06 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-MBIM:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a07 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+Link: https://lore.kernel.org/r/20230703135255.2202721-2-schnelle@linux.ibm.com
+Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2279,6 +2279,10 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
- 	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a04, 0xff) },			/* Fibocom FM650-CN (ECM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 3959ea7b106b6..5aca621dd1c22 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -268,6 +268,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_NEC,	PCI_DEVICE_ID_NEC_CBUS_2,	quirk_isa_d
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_NEC,	PCI_DEVICE_ID_NEC_CBUS_3,	quirk_isa_dma_hangs);
+ #endif
+ 
++#ifdef CONFIG_HAS_IOPORT
+ /*
+  * Intel NM10 "TigerPoint" LPC PM1a_STS.BM_STS must be clear
+  * for some HT machines to use C4 w/o hanging.
+@@ -287,6 +288,7 @@ static void quirk_tigerpoint_bm_sts(struct pci_dev *dev)
+ 	}
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_TGP_LPC, quirk_tigerpoint_bm_sts);
++#endif
+ 
+ /* Chipsets where PCI->PCI transfers vanish or hang */
+ static void quirk_nopcipci(struct pci_dev *dev)
+-- 
+2.43.0
+
 
 
 
