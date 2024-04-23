@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805018AFAA1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD178AFA17
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D2F11F29668
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7C851F28D98
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF30F14A096;
-	Tue, 23 Apr 2024 21:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F33B148838;
+	Tue, 23 Apr 2024 21:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMMEf2qv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8wWelJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A66A143882;
-	Tue, 23 Apr 2024 21:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE05143888;
+	Tue, 23 Apr 2024 21:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908737; cv=none; b=gwawvfr4qxTztTYjGdQMMf5eAUVmFeDTXlIY/b8kJV9M9o2d5xKF7SNKpwOFxXU1NA20nZpLztcCcuTRkEvDaXR6+xFMT39LUsdum09f27b7IW0NfuBJmPJO2SaYmqtc5SsWgNqAtPF0RKmcI+t+/J+OcVR9ITW3384yy52VdnY=
+	t=1713908633; cv=none; b=MB/Xy1ZdbZl2ckUCmdNXxagaw0KK/M+V7gFBlZLbk/RkU0qlez2SLJNiAvL9bNSrBlwPFuJFaiidCs3ewkbDNibogwojSH8UfBxTcjyYvYR576+6IEAU4eu0+WOykPkxJLCvbJT88Di4sWuaLCgj4o5ObFwg1CV+c1mUxHELM8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908737; c=relaxed/simple;
-	bh=Y1FZyTDuY2qYbw6E/xhFlpNzzW5pDCq7tLoxfZaQPWM=;
+	s=arc-20240116; t=1713908633; c=relaxed/simple;
+	bh=jsaM5oU1fwbv0OwfNF8oaMkpQ1xompy4OkJDJH4Q9eQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEZN7hekf/BjM2pUvV3qhD+vuDWSxSRC5ZNEjenM2hK1dMl0Nbz+B3713k9Q0xk9b/88W1I1pDUI2QG10TQrfHxXNV1gf3H29OnRJvrSxq9Naq3Xck+JSOa9jj18wPvquVAXRO+erWRUtwXb5v/DTmlKoEbIMtDmoYEPfu6jBVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMMEf2qv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70182C3277B;
-	Tue, 23 Apr 2024 21:45:37 +0000 (UTC)
+	 MIME-Version; b=cg4qj05EcUK+EIbkdOcOVN2Oa7i07/G3PqpFjMMhtbTSQwWuBl6zrdx6Sj9X2bh3oIWl1i+XRadvalKgcq3riQSRw6iK5a4miENqYUeJcGZr0S5A8kQx1vTktKvz/kdWZ2nyFEWB2hPx1CrRbW+qgrH5pxnCXBSCeDcv0HZMHd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8wWelJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86BDC32782;
+	Tue, 23 Apr 2024 21:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908737;
-	bh=Y1FZyTDuY2qYbw6E/xhFlpNzzW5pDCq7tLoxfZaQPWM=;
+	s=korg; t=1713908633;
+	bh=jsaM5oU1fwbv0OwfNF8oaMkpQ1xompy4OkJDJH4Q9eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMMEf2qvA4Un+tmqRvGHsuxRfAYgvXPUBsonT9sxY/xX2d5JS3VRhP44sX5Ls7E60
-	 kyvsQCuzy9/Uz5hsbChK1tv8JnX/l1jLVp6cit2h8ZSzkFnUnHIcGCCBMsx1lKCAWT
-	 44mSDqwx0k7Z6up0Lf1xVETg0buOTTYtHeWMpaZI=
+	b=w8wWelJT1rt8oDvIY+oqbXRJj61M0pY2JOKI+g9u7G9kWWjTCvPF4WETZYWVIMEKS
+	 EeAs4rSdE2+jY22ydCQKUuk1e4rQBVW3GAtuXn7TM704f3yLIzSDWUidcx0yQWaR2b
+	 DU5uaThaaUPmTOtgBabFnMaahDP8+nhdS0M1lyE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hardik Gajjar <hgajjar@de.adit-jv.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/141] usb: new quirk to reduce the SET_ADDRESS request timeout
+	stable <stable@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.6 113/158] serial: core: Clearing the circular buffer before NULLifying it
 Date: Tue, 23 Apr 2024 14:39:10 -0700
-Message-ID: <20240423213855.836309484@linuxfoundation.org>
+Message-ID: <20240423213859.416573484@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,172 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hardik Gajjar <hgajjar@de.adit-jv.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 5a1ccf0c72cf917ff3ccc131d1bb8d19338ffe52 ]
+commit 9cf7ea2eeb745213dc2a04103e426b960e807940 upstream.
 
-This patch introduces a new USB quirk,
-USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT, which modifies the timeout value
-for the SET_ADDRESS request. The standard timeout for USB request/command
-is 5000 ms, as recommended in the USB 3.2 specification (section 9.2.6.1).
+The circular buffer is NULLified in uart_tty_port_shutdown()
+under the spin lock. However, the PM or other timer based callbacks
+may still trigger after this event without knowning that buffer pointer
+is not valid. Since the serial code is a bit inconsistent in checking
+the buffer state (some rely on the head-tail positions, some on the
+buffer pointer), it's better to have both aligned, i.e. buffer pointer
+to be NULL and head-tail possitions to be the same, meaning it's empty.
+This will prevent asynchronous calls to dereference NULL pointer as
+reported recently in 8250 case:
 
-However, certain scenarios, such as connecting devices through an APTIV
-hub, can lead to timeout errors when the device enumerates as full speed
-initially and later switches to high speed during chirp negotiation.
+  BUG: kernel NULL pointer dereference, address: 00000cf5
+  Workqueue: pm pm_runtime_work
+  EIP: serial8250_tx_chars (drivers/tty/serial/8250/8250_port.c:1809)
+  ...
+  ? serial8250_tx_chars (drivers/tty/serial/8250/8250_port.c:1809)
+  __start_tx (drivers/tty/serial/8250/8250_port.c:1551)
+  serial8250_start_tx (drivers/tty/serial/8250/8250_port.c:1654)
+  serial_port_runtime_suspend (include/linux/serial_core.h:667 drivers/tty/serial/serial_port.c:63)
+  __rpm_callback (drivers/base/power/runtime.c:393)
+  ? serial_port_remove (drivers/tty/serial/serial_port.c:50)
+  rpm_suspend (drivers/base/power/runtime.c:447)
 
-In such cases, USB analyzer logs reveal that the bus suspends for
-5 seconds due to incorrect chirp parsing and resumes only after two
-consecutive timeout errors trigger a hub driver reset.
+The proposed change will prevent ->start_tx() to be called during
+suspend on shut down port.
 
-Packet(54) Dir(?) Full Speed J(997.100 us) Idle(  2.850 us)
-_______| Time Stamp(28 . 105 910 682)
-_______|_____________________________________________________________Ch0
-Packet(55) Dir(?) Full Speed J(997.118 us) Idle(  2.850 us)
-_______| Time Stamp(28 . 106 910 632)
-_______|_____________________________________________________________Ch0
-Packet(56) Dir(?) Full Speed J(399.650 us) Idle(222.582 us)
-_______| Time Stamp(28 . 107 910 600)
-_______|_____________________________________________________________Ch0
-Packet(57) Dir Chirp J( 23.955 ms) Idle(115.169 ms)
-_______| Time Stamp(28 . 108 532 832)
-_______|_____________________________________________________________Ch0
-Packet(58) Dir(?) Full Speed J (Suspend)( 5.347 sec) Idle(  5.366 us)
-_______| Time Stamp(28 . 247 657 600)
-_______|_____________________________________________________________Ch0
-
-This 5-second delay in device enumeration is undesirable, particularly
-in automotive applications where quick enumeration is crucial
-(ideally within 3 seconds).
-
-The newly introduced quirks provide the flexibility to align with a
-3-second time limit, as required in specific contexts like automotive
-applications.
-
-By reducing the SET_ADDRESS request timeout to 500 ms, the
-system can respond more swiftly to errors, initiate rapid recovery, and
-ensure efficient device enumeration. This change is vital for scenarios
-where rapid smartphone enumeration and screen projection are essential.
-
-To use the quirk, please write "vendor_id:product_id:p" to
-/sys/bus/usb/drivers/hub/module/parameter/quirks
-
-For example,
-echo "0x2c48:0x0132:p" > /sys/bus/usb/drivers/hub/module/parameters/quirks"
-
-Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20231027152029.104363-2-hgajjar@de.adit-jv.com
+Fixes: 43066e32227e ("serial: port: Don't suspend if the port is still busy")
+Cc: stable <stable@kernel.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202404031607.2e92eebe-lkp@intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240404150034.41648-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  3 +++
- drivers/usb/core/hub.c                          | 15 +++++++++++++--
- drivers/usb/core/quirks.c                       |  7 +++++++
- include/linux/usb/quirks.h                      |  3 +++
- 4 files changed, 26 insertions(+), 2 deletions(-)
+ drivers/tty/serial/serial_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index aebbe2981241a..e6f0570cf4900 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6603,6 +6603,9 @@
- 					pause after every control message);
- 				o = USB_QUIRK_HUB_SLOW_RESET (Hub needs extra
- 					delay after resetting its port);
-+				p = USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT
-+					(Reduce timeout of the SET_ADDRESS
-+					request from 5000 ms to 500 ms);
- 			Example: quirks=0781:5580:bk,0a5c:5834:gij
- 
- 	usbhid.mousepoll=
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index a661f6ac1ad14..dea110241ee71 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -60,6 +60,12 @@
- #define USB_PING_RESPONSE_TIME		400	/* ns */
- #define USB_REDUCE_FRAME_INTR_BINTERVAL	9
- 
-+/*
-+ * The SET_ADDRESS request timeout will be 500 ms when
-+ * USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT quirk flag is set.
-+ */
-+#define USB_SHORT_SET_ADDRESS_REQ_TIMEOUT	500  /* ms */
-+
- /* Protect struct usb_device->state and ->children members
-  * Note: Both are also protected by ->dev.sem, except that ->state can
-  * change to USB_STATE_NOTATTACHED even when the semaphore isn't held. */
-@@ -4648,7 +4654,12 @@ EXPORT_SYMBOL_GPL(usb_ep0_reinit);
- static int hub_set_address(struct usb_device *udev, int devnum)
- {
- 	int retval;
-+	unsigned int timeout_ms = USB_CTRL_SET_TIMEOUT;
- 	struct usb_hcd *hcd = bus_to_hcd(udev->bus);
-+	struct usb_hub *hub = usb_hub_to_struct_hub(udev->parent);
-+
-+	if (hub->hdev->quirks & USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT)
-+		timeout_ms = USB_SHORT_SET_ADDRESS_REQ_TIMEOUT;
- 
- 	/*
- 	 * The host controller will choose the device address,
-@@ -4661,11 +4672,11 @@ static int hub_set_address(struct usb_device *udev, int devnum)
- 	if (udev->state != USB_STATE_DEFAULT)
- 		return -EINVAL;
- 	if (hcd->driver->address_device)
--		retval = hcd->driver->address_device(hcd, udev, USB_CTRL_SET_TIMEOUT);
-+		retval = hcd->driver->address_device(hcd, udev, timeout_ms);
- 	else
- 		retval = usb_control_msg(udev, usb_sndaddr0pipe(),
- 				USB_REQ_SET_ADDRESS, 0, devnum, 0,
--				NULL, 0, USB_CTRL_SET_TIMEOUT);
-+				NULL, 0, timeout_ms);
- 	if (retval == 0) {
- 		update_devnum(udev, devnum);
- 		/* Device now using proper address. */
-diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
-index 15e9bd180a1d2..b4783574b8e66 100644
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -138,6 +138,9 @@ static int quirks_param_set(const char *value, const struct kernel_param *kp)
- 			case 'o':
- 				flags |= USB_QUIRK_HUB_SLOW_RESET;
- 				break;
-+			case 'p':
-+				flags |= USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT;
-+				break;
- 			/* Ignore unrecognized flag characters */
- 			}
- 		}
-@@ -527,6 +530,10 @@ static const struct usb_device_id usb_quirk_list[] = {
- 
- 	{ USB_DEVICE(0x2386, 0x350e), .driver_info = USB_QUIRK_NO_LPM },
- 
-+	/* APTIV AUTOMOTIVE HUB */
-+	{ USB_DEVICE(0x2c48, 0x0132), .driver_info =
-+			USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT },
-+
- 	/* DJI CineSSD */
- 	{ USB_DEVICE(0x2ca3, 0x0031), .driver_info = USB_QUIRK_NO_LPM },
- 
-diff --git a/include/linux/usb/quirks.h b/include/linux/usb/quirks.h
-index eeb7c2157c72f..59409c1fc3dee 100644
---- a/include/linux/usb/quirks.h
-+++ b/include/linux/usb/quirks.h
-@@ -72,4 +72,7 @@
- /* device has endpoints that should be ignored */
- #define USB_QUIRK_ENDPOINT_IGNORE		BIT(15)
- 
-+/* short SET_ADDRESS request timeout */
-+#define USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT	BIT(16)
-+
- #endif /* __LINUX_USB_QUIRKS_H */
--- 
-2.43.0
-
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1782,6 +1782,7 @@ static void uart_tty_port_shutdown(struc
+ 	 * Free the transmit buffer.
+ 	 */
+ 	spin_lock_irq(&uport->lock);
++	uart_circ_clear(&state->xmit);
+ 	buf = state->xmit.buf;
+ 	state->xmit.buf = NULL;
+ 	spin_unlock_irq(&uport->lock);
 
 
 
