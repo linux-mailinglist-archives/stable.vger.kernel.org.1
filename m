@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56DF8AFAAD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB598AF978
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EB57B2C89C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750AC1F26995
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DCE147C70;
-	Tue, 23 Apr 2024 21:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF521442FE;
+	Tue, 23 Apr 2024 21:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8pkSVgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNUxJ/vl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224D7143C49;
-	Tue, 23 Apr 2024 21:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9A020B3E;
+	Tue, 23 Apr 2024 21:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908723; cv=none; b=a6sQKwMDXu55KXEffda0BLsinkosrGMcz+wR+CdqZFgvdPkB78ICiplxRoequM9qG4rKR0y969dwmPccc2ux/wiBmsrupJe6APOuIhspS0aoaT1Y/VK9fL8UQRj8o7pUAYBhnvmr3EnqkBsn4Bou765Y99ESbp5W5IbYJ74oFjA=
+	t=1713908532; cv=none; b=FCoX6ldzlAvPLrdUVeJEtEBCvgtdBQP9l6lT7OwhsJmAkVjuTP2s8+dQYA0FfBbIK+osvwWkkd6C9sdZSj7iQ03CsFAocIGmjvNafiM1vSiSYWnXm5Q5JeuxGpq+HvUBPLLOc4Id22RIJFKxupMnV30fhD1sTSF8jk08jb8kUas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908723; c=relaxed/simple;
-	bh=CUpCWBkfJ0kL3HhBayatLNFps5OeA8mvuEH1O/HHN4w=;
+	s=arc-20240116; t=1713908532; c=relaxed/simple;
+	bh=KR8Z7cRdAq00yvj+OjgBDZmn8oZJgAerkO0tN0BVdA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H4ArAip9AR7rS5h6M5PKtgAiRA1HxN9iF1fnAW03A7sUycVf9iHPcllRJSj7dzVa0u8Mpv+HiHguB3W0Kapt68u1i5CsnhgxNmYgZDX4Fgs860AOcuZr8/vZnFFolD6flJM//8itb1OhmF0mrCoy8aIH7zYH5KVuKNWMc7K8ouc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8pkSVgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8407C3277B;
-	Tue, 23 Apr 2024 21:45:22 +0000 (UTC)
+	 MIME-Version; b=DkGQhZ5k+YEkXKRA01obkgAJCcuTZ2OgTnN4oq7HX6dJBmbXt3lETpLk6T6OvrfM+JZ3Dp63kkD5SpWoZI1MxsR2lcsuuGqMZIZpO0z8iNNe9+9GSknRdAcbPEg+dKM94p87NJ6mfUZMvCY+uRMzaJfPIAe0s1CS5vGchy4+WIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNUxJ/vl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F7FC116B1;
+	Tue, 23 Apr 2024 21:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908723;
-	bh=CUpCWBkfJ0kL3HhBayatLNFps5OeA8mvuEH1O/HHN4w=;
+	s=korg; t=1713908532;
+	bh=KR8Z7cRdAq00yvj+OjgBDZmn8oZJgAerkO0tN0BVdA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s8pkSVgs/dUOls2wb3uTVAMtKG0FhVvCd5ROfppuCXNrelOID2nqlhtg5V018QhbO
-	 NDSkVApz4zlAxriKVUE2oDrIk9lp8ArEepTGzNO1cAZ//syWVQ6mIiIF3nPFf//wgm
-	 kDnatBYMJEX78U5YPS9cEP7dsabE2qKY7/ItpKeE=
+	b=BNUxJ/vl/EqvK85sFI5wIR4DDmQUG3m6WmQGfBIW77UuPGrA3Ap+OOu9nOT4PUqdj
+	 v8slVqMXQ8zh0SYQRZP0x0rr1cD6/KugpNsqvTLGfQr81SiTDWhYLLZgPiYV4usIdg
+	 fxf+vnUQWCb097r8l89Rhx1kVMj3fJuwPD/uaqWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/141] PCI: Simplify pcie_capability_clear_and_set_word() to ..._clear_word()
+	Alan Stern <stern@rowland.harvard.edu>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.8 124/158] fs: sysfs: Fix reference leak in sysfs_break_active_protection()
 Date: Tue, 23 Apr 2024 14:39:06 -0700
-Message-ID: <20240423213855.732564009@linuxfoundation.org>
+Message-ID: <20240423213859.941147376@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 0fce6e5c87faec2c8bf28d2abc8cb595f4e244b6 ]
+commit a90bca2228c0646fc29a72689d308e5fe03e6d78 upstream.
 
-When using pcie_capability_clear_and_set_word() but not actually *setting*
-anything, use pcie_capability_clear_word() instead.
+The sysfs_break_active_protection() routine has an obvious reference
+leak in its error path.  If the call to kernfs_find_and_get() fails then
+kn will be NULL, so the companion sysfs_unbreak_active_protection()
+routine won't get called (and would only cause an access violation by
+trying to dereference kn->parent if it was called).  As a result, the
+reference to kobj acquired at the start of the function will never be
+released.
 
-Link: https://lore.kernel.org/r/20231026121924.2164-1-ilpo.jarvinen@linux.intel.com
-Link: https://lore.kernel.org/r/20231026121924.2164-2-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-[bhelgaas: squash]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the leak by adding an explicit kobject_put() call when kn is NULL.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 2afc9166f79b ("scsi: sysfs: Introduce sysfs_{un,}break_active_protection()")
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/8a4d3f0f-c5e3-4b70-a188-0ca433f9e6f9@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pcie/aspm.c | 8 ++++----
- drivers/pci/quirks.c    | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ fs/sysfs/file.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 25736d408e88e..2a3d973658dac 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -743,10 +743,10 @@ static void pcie_config_aspm_l1ss(struct pcie_link_state *link, u32 state)
- 	 * in pcie_config_aspm_link().
- 	 */
- 	if (enable_req & (ASPM_STATE_L1_1 | ASPM_STATE_L1_2)) {
--		pcie_capability_clear_and_set_word(child, PCI_EXP_LNKCTL,
--						   PCI_EXP_LNKCTL_ASPM_L1, 0);
--		pcie_capability_clear_and_set_word(parent, PCI_EXP_LNKCTL,
--						   PCI_EXP_LNKCTL_ASPM_L1, 0);
-+		pcie_capability_clear_word(child, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPM_L1);
-+		pcie_capability_clear_word(parent, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPM_L1);
- 	}
- 
- 	val = 0;
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index e4951b30b923b..ba353b37ba526 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4478,9 +4478,9 @@ static void quirk_disable_root_port_attributes(struct pci_dev *pdev)
- 
- 	pci_info(root_port, "Disabling No Snoop/Relaxed Ordering Attributes to avoid PCIe Completion erratum in %s\n",
- 		 dev_name(&pdev->dev));
--	pcie_capability_clear_and_set_word(root_port, PCI_EXP_DEVCTL,
--					   PCI_EXP_DEVCTL_RELAX_EN |
--					   PCI_EXP_DEVCTL_NOSNOOP_EN, 0);
-+	pcie_capability_clear_word(root_port, PCI_EXP_DEVCTL,
-+				   PCI_EXP_DEVCTL_RELAX_EN |
-+				   PCI_EXP_DEVCTL_NOSNOOP_EN);
+--- a/fs/sysfs/file.c
++++ b/fs/sysfs/file.c
+@@ -463,6 +463,8 @@ struct kernfs_node *sysfs_break_active_p
+ 	kn = kernfs_find_and_get(kobj->sd, attr->name);
+ 	if (kn)
+ 		kernfs_break_active_protection(kn);
++	else
++		kobject_put(kobj);
+ 	return kn;
  }
- 
- /*
--- 
-2.43.0
-
+ EXPORT_SYMBOL_GPL(sysfs_break_active_protection);
 
 
 
