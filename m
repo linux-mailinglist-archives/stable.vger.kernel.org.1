@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-41094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CEF8AFA4E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978CE8AF950
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6742D1F2929D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53BAA284D82
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE62F146599;
-	Tue, 23 Apr 2024 21:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12F5144D28;
+	Tue, 23 Apr 2024 21:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5ZCmqdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlOD8sg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE0B143C45;
-	Tue, 23 Apr 2024 21:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798EC14388D;
+	Tue, 23 Apr 2024 21:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908673; cv=none; b=t5n7xWDxA769XNJ2LremIlusZqJSGG2xH/eTX2BPAOybev+lPcB0upy+BPWlP356GWrmj7+4QBgXHmjStxeRaIMcNoZRjtGGVK0EKwe6fLlA/vKrs6C4jJFXKrMzJALRiZC0m91iHd6ZxWApPm34+3IUz3SnEE4hSPbZVziy4t0=
+	t=1713908505; cv=none; b=rXfuyV9XR05wcC54klvUsYzLLcPZKJq96+jfjudm25uQzIaglkeV6HCPxKaJZLFDx7f1mPYBkLmRyydyTq9XbRGmKbvnkEi6saEvelFTwLRdLsRm35tem5nBlmDb5rPelgL0rxHn67UULHumWtzJDNWkdTtUHXv+X39zB0Vpiwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908673; c=relaxed/simple;
-	bh=+PppuDcipJEgWLibt0U0o299CoYqGOh6oJYq7gKhKM0=;
+	s=arc-20240116; t=1713908505; c=relaxed/simple;
+	bh=CExlSkHgH0tyCbljyaKTd5oE2X8dmxwpHc61O1PkWUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvoi+Mr3zL6tVupz7rykyXKk8W1/SI6BibnaE7YZxTqkhGtqdS7ytchB0lvr9h3T1UhkjsI+UZpQ4hemHK9Ta9fPiMgmKUthza2bNEyblCmpQamH7ZQA3dw+IYgwxT+guaaORTIpa7aPfm6STb8QIOcqFm/kFNo/chk0znqzdUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5ZCmqdl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301BCC32781;
-	Tue, 23 Apr 2024 21:44:33 +0000 (UTC)
+	 MIME-Version; b=O6R8B02pCpJLhOH8WQQoJN6o/I2DlbGD+VoYIHCm4gVCUC13wD3DQ3/cB7vcKeBtyA44BW2UkvgRZt7OvkYWVqkw5LL5KqzZnbuxFyyYyzvj5vfWeAtIVFqSGa5wuWM+XAIlZQOVQHnheH/j3Ft8yxYS8CM0vnBnXQdRDAbxk2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlOD8sg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB23C32783;
+	Tue, 23 Apr 2024 21:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908673;
-	bh=+PppuDcipJEgWLibt0U0o299CoYqGOh6oJYq7gKhKM0=;
+	s=korg; t=1713908505;
+	bh=CExlSkHgH0tyCbljyaKTd5oE2X8dmxwpHc61O1PkWUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5ZCmqdlsKwEuYUdUF1/Hh4qnCmSoZd4vzcScYisp/93AUUuK2IV0CyJ7SGCwt0rk
-	 X83a/CFAwQARcT5Hb3ygYou4LLHCZcGKCyRrtOd9GcgkejJGYnH08Z5cq8FBZ3BV3B
-	 Ir3Xwxk8+wHaesiGF0FEnxjeXULwZija2DUvtsS4=
+	b=LlOD8sg/6ximsKtgmGyO57L6OrMAAqBu3CrTMql5sy5W8T4ExRsI4BnVReiZ1b9G1
+	 nIiHBbHUYqhL50rwSWL6YWeLmyaXafn8wM67zKi6XNlK7FHdj/A7FG5VHce8rfsKnE
+	 c4lMUwdQFtGM8Csyuhmx4j5Djykz1QaoozTt+//E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radek Podgorny <radek@podgorny.cz>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 013/141] x86/efistub: Reinstate soft limit for initrd loading
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Song Liu <song@kernel.org>,
+	bpf@vger.kernel.org,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 059/158] perf lock contention: Add a missing NULL check
 Date: Tue, 23 Apr 2024 14:38:01 -0700
-Message-ID: <20240423213853.779168760@linuxfoundation.org>
+Message-ID: <20240423213857.872307501@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Commit decd347c2a75d32984beb8807d470b763a53b542 upstream ]
+[ Upstream commit f3408580bac8ce5cd76e7391e529c0a22e7c7eb2 ]
 
-Commit
+I got a report for a failure in BPF verifier on a recent kernel with
+perf lock contention command.  It checks task->sighand->siglock without
+checking if sighand is NULL or not.  Let's add one.
 
-  8117961d98fb2 ("x86/efi: Disregard setup header of loaded image")
+  ; if (&curr->sighand->siglock == (void *)lock)
+  265: (79) r1 = *(u64 *)(r0 +2624)     ; frame1: R0_w=trusted_ptr_task_struct(off=0,imm=0)
+                                        ;         R1_w=rcu_ptr_or_null_sighand_struct(off=0,imm=0)
+  266: (b7) r2 = 0                      ; frame1: R2_w=0
+  267: (0f) r1 += r2
+  R1 pointer arithmetic on rcu_ptr_or_null_ prohibited, null-check it first
+  processed 164 insns (limit 1000000) max_states_per_insn 1 total_states 15 peak_states 15 mark_read 5
+  -- END PROG LOAD LOG --
+  libbpf: prog 'contention_end': failed to load: -13
+  libbpf: failed to load object 'lock_contention_bpf'
+  libbpf: failed to load BPF skeleton 'lock_contention_bpf': -13
+  Failed to load lock-contention BPF skeleton
+  lock contention BPF setup failed
+  lock contention did not detect any lock contention
 
-dropped the memcopy of the image's setup header into the boot_params
-struct provided to the core kernel, on the basis that EFI boot does not
-need it and should rely only on a single protocol to interface with the
-boot chain. It is also a prerequisite for being able to increase the
-section alignment to 4k, which is needed to enable memory protections
-when running in the boot services.
-
-So only the setup_header fields that matter to the core kernel are
-populated explicitly, and everything else is ignored. One thing was
-overlooked, though: the initrd_addr_max field in the setup_header is not
-used by the core kernel, but it is used by the EFI stub itself when it
-loads the initrd, where its default value of INT_MAX is used as the soft
-limit for memory allocation.
-
-This means that, in the old situation, the initrd was virtually always
-loaded in the lower 2G of memory, but now, due to initrd_addr_max being
-0x0, the initrd may end up anywhere in memory. This should not be an
-issue principle, as most systems can deal with this fine. However, it
-does appear to tickle some problems in older UEFI implementations, where
-the memory ends up being corrupted, resulting in errors when unpacking
-the initramfs.
-
-So set the initrd_addr_max field to INT_MAX like it was before.
-
-Fixes: 8117961d98fb2 ("x86/efi: Disregard setup header of loaded image")
-Reported-by: Radek Podgorny <radek@podgorny.cz>
-Closes: https://lore.kernel.org/all/a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1811e82767dcc ("perf lock contention: Track and show siglock with address")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Song Liu <song@kernel.org>
+Cc: bpf@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240409225542.1870999-1-namhyung@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/bpf_skel/lock_contention.bpf.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -453,6 +453,7 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 	hdr->vid_mode	= 0xffff;
+diff --git a/tools/perf/util/bpf_skel/lock_contention.bpf.c b/tools/perf/util/bpf_skel/lock_contention.bpf.c
+index 95cd8414f6ef8..e5d78565f479f 100644
+--- a/tools/perf/util/bpf_skel/lock_contention.bpf.c
++++ b/tools/perf/util/bpf_skel/lock_contention.bpf.c
+@@ -289,6 +289,7 @@ static inline __u32 check_lock_type(__u64 lock, __u32 flags)
+ 	struct task_struct *curr;
+ 	struct mm_struct___old *mm_old;
+ 	struct mm_struct___new *mm_new;
++	struct sighand_struct *sighand;
  
- 	hdr->type_of_loader = 0x21;
-+	hdr->initrd_addr_max = INT_MAX;
- 
- 	/* Convert unicode cmdline to ascii */
- 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
+ 	switch (flags) {
+ 	case LCB_F_READ:  /* rwsem */
+@@ -310,7 +311,9 @@ static inline __u32 check_lock_type(__u64 lock, __u32 flags)
+ 		break;
+ 	case LCB_F_SPIN:  /* spinlock */
+ 		curr = bpf_get_current_task_btf();
+-		if (&curr->sighand->siglock == (void *)lock)
++		sighand = curr->sighand;
++
++		if (sighand && &sighand->siglock == (void *)lock)
+ 			return LCD_F_SIGHAND_LOCK;
+ 		break;
+ 	default:
+-- 
+2.43.0
+
 
 
 
