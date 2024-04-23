@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-41075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E128AFAAB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8924D8AFAA9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B909B2B19D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44001281DCA
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2407A1494A0;
-	Tue, 23 Apr 2024 21:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8754914A0B8;
+	Tue, 23 Apr 2024 21:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1L1CPTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfeLXMgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6680143C69;
-	Tue, 23 Apr 2024 21:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4469614A0AE;
+	Tue, 23 Apr 2024 21:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908660; cv=none; b=nzwSggJYdE9c41x5hrfOC/lshDlTsQ64ThEym/T2ZnAdoK354k3vRejL6HHlf6EpQmFHJyGiFjcfvvLZqMbAoOmkaf+JsJ2GgSuXgSOJAdAi7xvFs2emcA2/FjgAbJO6+B0QCmimdfx7iUd8HEaQicjHoBHzpfoFvqF0YuuAUIE=
+	t=1713908747; cv=none; b=Whb6r/aK+Z74fgT10UFdBbhzMzR/bS0KVcJZaby0z0McfEv3ND56QiOLkCvULby8sARpGljt8GI0c+PAiccVRHU2yxYTdAUNawh13d2pmBdgLQ1n1Q+UgnUmEPvxGx0jU/LAy2S1fsiLHnhJTe31EyCsCcQDdCai5Vk3C91iYUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908660; c=relaxed/simple;
-	bh=UjoA6V0036zekFPRJZHvdkpX+1cdG39k2bgLXgJFrkk=;
+	s=arc-20240116; t=1713908747; c=relaxed/simple;
+	bh=g3j46AlQX8Y3qSx351+3oTuwJQp71R9pOPzNF7txDqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iqc+SIu3EMZ/fzTrOQJqYHHGEGVDXDDzlufHNlk97risKN4LtTADN0ewk9Tsw2gZA8RyZuudk9WOpkUidIEHtOFybv/nWIYhAmwxUBKJRFfrJS9Q46SKGDQ1yaI2V6cVmuHDyIX7jR0U4APzDbKDG39QJTZtSGXZqjMtl9/EYMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1L1CPTN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A239C116B1;
-	Tue, 23 Apr 2024 21:44:20 +0000 (UTC)
+	 MIME-Version; b=Bqim8AdMdR3rypCnrPt1y2l173I1MQSQ3JjQDbKJqo6g2hwrBgSxFOlsFor92+ar7R5mRsA7iS9Iq8GbDtGKGzp8yNL8i6KQurVwkf2qvH9H6PeFtHoG4EngrLbXRTbACDs6HorijcNvze/nkMHFjKWT9hahiayivfzBmfmhnec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfeLXMgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DA9C116B1;
+	Tue, 23 Apr 2024 21:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908660;
-	bh=UjoA6V0036zekFPRJZHvdkpX+1cdG39k2bgLXgJFrkk=;
+	s=korg; t=1713908747;
+	bh=g3j46AlQX8Y3qSx351+3oTuwJQp71R9pOPzNF7txDqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1L1CPTNKSyXJ8WEyxYmUIw04+7p0v/+Bkl+Io4Fqr7y7Jg5tZ5Rh6csHyUnaQBle
-	 5YZVjgoWsGOvUhRX0/zm/d2AzKO9gAAQ8YTcOqzbvXQD1gKS9F5iBllZ/8qMup+DfE
-	 tEIdqX1xioKzGSQ3pJkQJp+EqleTkGg/pQQ8kEU8=
+	b=mfeLXMgxAwxaZmQHpIGhPaIqBiSsHwzhYFSOrWKjAalQsrfpoLV/VzlBRJNlviBTA
+	 9NyPkSmZMiY3xHa9P0aRX2cTjUWAxClLnoNZJ+Uah9igviJ+tDaoqfyKDIrhqlmVc9
+	 7PlXGAItR6zts5HdKKzKWJzUXD1FCb7p+q+fjTqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	qemu-devel@nongnu.org,
-	Breno Leitao <leitao@debian.org>,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Vlad Poenaru <vlad.wing@gmail.com>
-Subject: [PATCH 6.6 152/158] virtio_net: Do not send RSS key if it is not supported
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 121/141] KVM: x86: Snapshot if a vCPUs vendor model is AMD vs. Intel compatible
 Date: Tue, 23 Apr 2024 14:39:49 -0700
-Message-ID: <20240423213900.607828253@linuxfoundation.org>
+Message-ID: <20240423213857.138371526@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,135 +61,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream.
+commit fd706c9b1674e2858766bfbf7430534c2b26fbef upstream.
 
-There is a bug when setting the RSS options in virtio_net that can break
-the whole machine, getting the kernel into an infinite loop.
+Add kvm_vcpu_arch.is_amd_compatible to cache if a vCPU's vendor model is
+compatible with AMD, i.e. if the vCPU vendor is AMD or Hygon, along with
+helpers to check if a vCPU is compatible AMD vs. Intel.  To handle Intel
+vs. AMD behavior related to masking the LVTPC entry, KVM will need to
+check for vendor compatibility on every PMI injection, i.e. querying for
+AMD will soon be a moderately hot path.
 
-Running the following command in any QEMU virtual machine with virtionet
-will reproduce this problem:
+Note!  This subtly (or maybe not-so-subtly) makes "Intel compatible" KVM's
+default behavior, both if userspace omits (or never sets) CPUID 0x0 and if
+userspace sets a completely unknown vendor.  One could argue that KVM
+should treat such vCPUs as not being compatible with Intel *or* AMD, but
+that would add useless complexity to KVM.
 
-    # ethtool -X eth0  hfunc toeplitz
+KVM needs to do *something* in the face of vendor specific behavior, and
+so unless KVM conjured up a magic third option, choosing to treat unknown
+vendors as neither Intel nor AMD means that checks on AMD compatibility
+would yield Intel behavior, and checks for Intel compatibility would yield
+AMD behavior.  And that's far worse as it would effectively yield random
+behavior depending on whether KVM checked for AMD vs. Intel vs. !AMD vs.
+!Intel.  And practically speaking, all x86 CPUs follow either Intel or AMD
+architecture, i.e. "supporting" an unknown third architecture adds no
+value.
 
-This is how the problem happens:
+Deliberately don't convert any of the existing guest_cpuid_is_intel()
+checks, as the Intel side of things is messier due to some flows explicitly
+checking for exactly vendor==Intel, versus some flows assuming anything
+that isn't "AMD compatible" gets Intel behavior.  The Intel code will be
+cleaned up in the future.
 
-1) ethtool_set_rxfh() calls virtnet_set_rxfh()
-
-2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
-
-3) virtnet_commit_rss_command() populates 4 entries for the rss
-scatter-gather
-
-4) Since the command above does not have a key, then the last
-scatter-gatter entry will be zeroed, since rss_key_size == 0.
-sg_buf_size = vi->rss_key_size;
-
-5) This buffer is passed to qemu, but qemu is not happy with a buffer
-with zero length, and do the following in virtqueue_map_desc() (QEMU
-function):
-
-  if (!sz) {
-      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
-
-6) virtio_error() (also QEMU function) set the device as broken
-
-    vdev->broken = true;
-
-7) Qemu bails out, and do not repond this crazy kernel.
-
-8) The kernel is waiting for the response to come back (function
-virtnet_send_command())
-
-9) The kernel is waiting doing the following :
-
-      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
-	     !virtqueue_is_broken(vi->cvq))
-	      cpu_relax();
-
-10) None of the following functions above is true, thus, the kernel
-loops here forever. Keeping in mind that virtqueue_is_broken() does
-not look at the qemu `vdev->broken`, so, it never realizes that the
-vitio is broken at QEMU side.
-
-Fix it by not sending RSS commands if the feature is not available in
-the device.
-
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
 Cc: stable@vger.kernel.org
-Cc: qemu-devel@nongnu.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240405235603.1173076-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |   25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/kvm_host.h |    1 +
+ arch/x86/kvm/cpuid.c            |    1 +
+ arch/x86/kvm/cpuid.h            |   10 ++++++++++
+ arch/x86/kvm/mmu/mmu.c          |    2 +-
+ arch/x86/kvm/x86.c              |    2 +-
+ 5 files changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3570,19 +3570,34 @@ static int virtnet_get_rxfh(struct net_d
- static int virtnet_set_rxfh(struct net_device *dev, const u32 *indir, const u8 *key, const u8 hfunc)
- {
- 	struct virtnet_info *vi = netdev_priv(dev);
-+	bool update = false;
- 	int i;
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -773,6 +773,7 @@ struct kvm_vcpu_arch {
+ 	int cpuid_nent;
+ 	struct kvm_cpuid_entry2 *cpuid_entries;
+ 	u32 kvm_cpuid_base;
++	bool is_amd_compatible;
  
- 	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
- 		return -EOPNOTSUPP;
+ 	u64 reserved_gpa_bits;
+ 	int maxphyaddr;
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -340,6 +340,7 @@ static void kvm_vcpu_after_set_cpuid(str
  
- 	if (indir) {
-+		if (!vi->has_rss)
-+			return -EOPNOTSUPP;
-+
- 		for (i = 0; i < vi->rss_indir_table_size; ++i)
- 			vi->ctrl->rss.indirection_table[i] = indir[i];
-+		update = true;
- 	}
--	if (key)
-+	if (key) {
-+		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
-+		 * device provides hash calculation capabilities, that is,
-+		 * hash_key is configured.
-+		 */
-+		if (!vi->has_rss && !vi->has_rss_hash_report)
-+			return -EOPNOTSUPP;
-+
- 		memcpy(vi->ctrl->rss.key, key, vi->rss_key_size);
-+		update = true;
-+	}
+ 	kvm_update_pv_runtime(vcpu);
  
--	virtnet_commit_rss_command(vi);
-+	if (update)
-+		virtnet_commit_rss_command(vi);
++	vcpu->arch.is_amd_compatible = guest_cpuid_is_amd_or_hygon(vcpu);
+ 	vcpu->arch.maxphyaddr = cpuid_query_maxphyaddr(vcpu);
+ 	vcpu->arch.reserved_gpa_bits = kvm_vcpu_reserved_gpa_bits_raw(vcpu);
  
- 	return 0;
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -125,6 +125,16 @@ static inline bool guest_cpuid_is_intel(
+ 	return best && is_guest_vendor_intel(best->ebx, best->ecx, best->edx);
  }
-@@ -4491,13 +4506,15 @@ static int virtnet_probe(struct virtio_d
- 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
- 		vi->has_rss_hash_report = true;
  
--	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
-+	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
- 		vi->has_rss = true;
- 
--	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_indir_table_size =
- 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
- 				rss_max_indirection_table_length));
-+	}
++static inline bool guest_cpuid_is_amd_compatible(struct kvm_vcpu *vcpu)
++{
++	return vcpu->arch.is_amd_compatible;
++}
 +
-+	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_key_size =
- 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
++static inline bool guest_cpuid_is_intel_compatible(struct kvm_vcpu *vcpu)
++{
++	return !guest_cpuid_is_amd_compatible(vcpu);
++}
++
+ static inline int guest_cpuid_family(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_cpuid_entry2 *best;
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4649,7 +4649,7 @@ static void reset_guest_rsvds_bits_mask(
+ 				context->cpu_role.base.level, is_efer_nx(context),
+ 				guest_can_use_gbpages(vcpu),
+ 				is_cr4_pse(context),
+-				guest_cpuid_is_amd_or_hygon(vcpu));
++				guest_cpuid_is_amd_compatible(vcpu));
+ }
  
+ static void
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3278,7 +3278,7 @@ static bool is_mci_status_msr(u32 msr)
+ static bool can_set_mci_status(struct kvm_vcpu *vcpu)
+ {
+ 	/* McStatusWrEn enabled? */
+-	if (guest_cpuid_is_amd_or_hygon(vcpu))
++	if (guest_cpuid_is_amd_compatible(vcpu))
+ 		return !!(vcpu->arch.msr_hwcr & BIT_ULL(18));
+ 
+ 	return false;
 
 
 
