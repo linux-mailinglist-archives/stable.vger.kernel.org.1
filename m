@@ -1,152 +1,207 @@
-Return-Path: <stable+bounces-40557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656218ADDE8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 08:56:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759968ADE02
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 09:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88C581C217E2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 06:56:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3CF51F22693
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 07:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0046F505;
-	Tue, 23 Apr 2024 06:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09152E633;
+	Tue, 23 Apr 2024 07:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="LpukcurI"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SjOutRJt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7501CA80;
-	Tue, 23 Apr 2024 06:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CD928DBC
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 07:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713855374; cv=none; b=WQ4EtFnSz/QSGmcZ3OF7scKi92seHUZV7t/6E7phAyeVgLkFuPkPVCKins3e13gPkJPssE3asJNdAbjH7qFEvSlLFW1TNyAdB14KxUeHkA9AfghkcDub4J1KZWl8l6ZIWzerI8SgFUvfgX6dIDvItmGc0or3c/7Yt6dRTyAF+Dc=
+	t=1713856217; cv=none; b=UaZrzJzG+/piBYvHRFA+Lls/DMEcjq3CCRZXWSEDcKnZygsdEXROps2TGtNjSujVBAl+h8zJJJv0bsgZaWG43AZMJV+qVebK7X7q/lAa8jbloJqbpMwXudhLrZCE8R6TLOnRdsk0QjPyKNJJYE+luIxbQ3fw6hn36H7/ocPdpRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713855374; c=relaxed/simple;
-	bh=msVKNZSZ3SCjlXs5INzdTEgIQ+MbVTJl66c0+wIwGsM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XLE2DDgG61MGn/8NL37a8gadoeZz+qMQZ0U7Ci6SmPtKZY3D/ig72+KvZhUn3/WxUsW9VWiUIk1/bjoF+HTZ2bKI/Fa2b7c8NWZ2yvzdhPpIGe95G9+Eo3SY+6hKwPLevTyaoxbBnAs+18sa9YLckNHBKlX579LG6PAcvsg84DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=LpukcurI; arc=none smtp.client-ip=72.21.196.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1713856217; c=relaxed/simple;
+	bh=yBIV7zaqZvrg/tg/0BisDRTKHzM1BXfxz5hj9GRS73o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=LgKSoxYJS9M7bctD8ldR7Ss3817l99XZxecngfEJ9p1bwjL6CQB4Nir49ttp19ghQ2DlAQeLVs/XaH7scLTqG7HhsxuT5YHb3RQDWLrvkyF0+06VFKjal0K68emeOSlCRb1mgvnLNgTtoNq7gHkF24KCm2aRkdY8yjReq5/Wv/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SjOutRJt; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2dd7e56009cso23214081fa.3
+        for <stable@vger.kernel.org>; Tue, 23 Apr 2024 00:10:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1713855373; x=1745391373;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=msVKNZSZ3SCjlXs5INzdTEgIQ+MbVTJl66c0+wIwGsM=;
-  b=LpukcurIu6ijpZWid6FTXDtbxH2VrLrdid0lYkZm10acIfg5fvHTCMkc
-   BIyVWZYNkdIMTJ1bqd3kakLfaqmvHVoY45Eq7llQriYoJodxW/Wfh+skg
-   M9/Mn1u4MSe3KsIbtAZmgayvsi/+d+DdFTY+rZ9ruD/zOsQXrFRo/TB6E
-   o=;
-X-IronPort-AV: E=Sophos;i="6.07,222,1708387200"; 
-   d="scan'208";a="396670875"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 06:56:10 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:62617]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.53.166:2525] with esmtp (Farcaster)
- id aee83917-a4f4-44f3-8672-33801ff084cd; Tue, 23 Apr 2024 06:56:09 +0000 (UTC)
-X-Farcaster-Flow-ID: aee83917-a4f4-44f3-8672-33801ff084cd
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Tue, 23 Apr 2024 06:56:08 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Tue, 23 Apr
- 2024 06:56:05 +0000
-Message-ID: <bccdbe9d-c30f-4e52-b4a6-886ac06472f9@amazon.com>
-Date: Tue, 23 Apr 2024 08:56:03 +0200
+        d=linaro.org; s=google; t=1713856213; x=1714461013; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wNtgb93EKXjvpP7lBU0smspsckMSUnUQVOfoYoovNGA=;
+        b=SjOutRJtQE2F14utSPilZJvRysEoR1YRtJ3vEWqjKk26kuSV6OhgyaCscmArSZ6u0n
+         aTJrouUJ1fWOu0TrWKlyKes6aOvnzPL6/+YJGj8+yeS9AYBAFUSZmEVOj1afckSCjWlg
+         8iwAI7IlY3m1lsavjJYY25/qQtXvVNzSMXOjkDpPLRnw4aOxfhJoQEZsWgxjac4YSbBH
+         t4MeDkwyFGvUd3W1R08tozfIgH4Zo4neYIWieJGfgB4EZmufqGfVsW+QUdgR1mBX0H6D
+         PWR7E+2ymQeo+VyCRvYM53NIzEHRNm4cvpMHvUArEiBEhoqQXZTBrlWfr7HNrXhKEpDJ
+         Nc4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713856213; x=1714461013;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wNtgb93EKXjvpP7lBU0smspsckMSUnUQVOfoYoovNGA=;
+        b=XfOv5HM3AtnlRc3loftd8gNBQJvoqQjFEdhDGiHmpjHMA0Y9kIk6/So9O+Iffsi4QI
+         WBCQlDZN32nmmO7MQDcqrs+WQuxuJkyhlcLwArLI68sc0gKvW0+b8Ay5WSHS3MiunANA
+         l6zv+bEbMWuWVc6WOrs8qH9XhcBymhjJLa0LzP2hFBxj8ZNYtfEI3bA7QJTG/Jyl+CI1
+         TogERYpDdGHKdgUtpus+i+r7UadSBshsJvdDiNm32Ji+POg0nsVNcNWB+c47QBSQPTqR
+         M6ukxwcxTLW1MrlxUZFZBciprw1r7ob9Fi6SGPgK3LmgxaII+xjopBLw1RcbnmLyJsiy
+         OS/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWBuoNQIKiedjRcOdRV+jHzBbcqDJls97l4pkj6p7rL002lg4NzriMDMpfeJcYnLSao4lGm9gd+nmVJzVJR1DxV9QiGwhxL
+X-Gm-Message-State: AOJu0YwebS4nDNKXqUuZYuHEDUpPTPTtGVVWsF/H/dWRJNAZWVwgJasu
+	8ea6n5hh8C/JBSspQPns41SQof8uHlC4VEb8wKLuIBQ5iM1mVoZLrDP7eMunekc=
+X-Google-Smtp-Source: AGHT+IHESngGEjaTUV55LrK4cQ6o/pIuWEi1SD7AjVauRAH3j0Pyo9KShhcL6+N1ff5xMADJssFuqA==
+X-Received: by 2002:a05:651c:2010:b0:2d8:3eaf:86d2 with SMTP id s16-20020a05651c201000b002d83eaf86d2mr7773324ljo.47.1713856212449;
+        Tue, 23 Apr 2024 00:10:12 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id e6-20020a056402148600b005702c757af2sm6305825edv.30.2024.04.23.00.10.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Apr 2024 00:10:09 -0700 (PDT)
+Date: Tue, 23 Apr 2024 10:10:04 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 3/3] HID: bpf: lazy load the hid_tail_call entrypoint
+Message-ID: <74d0e9d1-7ac6-4f08-bab6-76c51e69cebf@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when
- VMGENID updates"
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Linus Torvalds
-	<torvalds@linux-foundation.org>, Lennart Poettering <mzxreary@0pointer.de>,
-	Babis Chalios <bchalios@amazon.es>, Theodore Ts'o <tytso@mit.edu>, "Cali,
- Marco" <xmarcalx@amazon.co.uk>, Arnd Bergmann <arnd@arndb.de>,
-	"rostedt@goodmis.org" <rostedt@goodmis.org>, Christian Brauner
-	<brauner@kernel.org>, <linux@leemhuis.info>, <regressions@lists.linux.dev>,
-	"Woodhouse, David" <dwmw@amazon.co.uk>
-References: <20240418114814.24601-1-Jason@zx2c4.com>
- <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
- <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
-Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
-X-ClientProxiedBy: EX19D039UWA003.ant.amazon.com (10.13.139.49) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240419-hid_bpf_lazy_skel-v1-3-9210bcd4b61c@kernel.org>
 
-SGV5IEphc29uLAoKT24gMjMuMDQuMjQgMDM6MjEsIEphc29uIEEuIERvbmVuZmVsZCB3cm90ZToK
-PiBIaSBBbGV4YW5kZXIsCj4KPiBUaGUgcHJvY2VzcyBoZXJlIHNlZW1zIHdlaXJkbHkgYWdncmVz
-c2l2ZSBhbmQgc25lYWt5Lgo+Cj4gT24gMjAyMy0wNi0xOSwgSSB3cm90ZSB0aGF0IEkgZGlkbid0
-IHdhbnQgdG8gdGFrZSB0aGlzIHJvdXRlIGZvcgo+IHVzZXJzcGFjZSBub3RpZmljYXRpb25zLgo+
-Cj4gVGhlbiBvbiAyMDIzLTA2LTI4LCB5b3Ugd3JvdGUgdG8gR3JlZyBhc2tpbmcgaGltIHRvIHRh
-a2UgaXQgaW5zdGVhZCBvZgo+IG1lLiBOaW5lIG1pbnV0ZXMgbGF0ZXIsIEdyZWcgc2FpZCAieWVh
-IHN1cmUuIiBUaGVuIGhlIGNhdWdodCB1cCBvbiB0aGUKPiB0aHJlYWQgYW5kIHNvbWUgaG91cnMg
-bGF0ZXIgd3JvdGU6Cj4KPj4gV2FpdCwgbm8sIEknbSBub3QgdGhlIG1haW50YWluZXIgb2YgdGhp
-cywgSmFzb24gaXMuICBBbmQgaGUgYWxyZWFkeQo+PiByZWplY3RlZCBpdCAoYW5kIGJhc2VkIG9u
-IHRoZSBjaGFuZ2Vsb2cgdGV4dCwgSSB3b3VsZCB0b28pLCBzbyB3aHkgYXJlCj4+IHlvdSBhc2tp
-bmcgbWUgYSBtb250aCBsYXRlciB0byB0YWtlIHRoaXM/Cj4+Cj4+IFdvcmsgd2l0aCB0aGUgbWFp
-bnRhaW5lciBwbGVhc2UsIGRvbid0IHRyeSB0byByb3V0ZSBhcm91bmQgdGhlbSwgeW91Cj4+IGJv
-dGgga25vdyBiZXR0ZXIgdGhhbiB0aGlzLgo+IFRoZW4gb24gMjAyMy0xMS0xNCB5b3Ugd3JvdGUg
-dG8gbWUgYWdhaW4gYXNraW5nIG1lIHRvIHRha2UgaXQsIGRlc3BpdGUKPiBteSBlYXJsaWVyIHJl
-c2VydmF0aW9ucyBub3QgY2hhbmdpbmcgaW4gdGhlIGludGVyaW0uIEkgZGlkbid0IGhhdmUgYQo+
-IGNoYW5jZSB0byByZXBseS4KPgo+IFRoZW4gb24gMjAyMy0xMS0zMCwgR3JlZyB3ZWlyZGx5IHRv
-b2sgaXQgYW55d2F5LCB3aXRoIHplcm8gZGlzY3Vzc2lvbgo+IG9yIGV2aWRlbmNlIG9uIHRoZSBt
-YWlsaW5nIGxpc3QgYXMgdG8gd2hhdCBoYWQgaGFwcGVuZWQuCj4KPiBXaGVuIEkgbm90aWNlZCB3
-aGF0IGhhZCBoYXBwZW5lZCAod2hpbGUgd29ya2luZyBvbiBoaXMgZHJpdmVyIGluIHRoZQo+IHBy
-b2Nlc3Mgb2YgY2xlYW5pbmcgdXAvcmV3b3JraW5nIHBhdGNoZXMgdGhhdCB5b3VyIEFtYXpvbiBl
-bXBsb3llZXMKPiBzZW50IG1lIHRoYXQgbmVlZGVkIHdvcmspLCBzdXNwaWNpb3VzIHRoYXQgeW91
-IHRyaWVkIHRvICJyb3V0ZSBhcm91bmQiCj4gdGhlIHByb3BlciB3YXkgb2YgZ2V0dGluZyB0aGlz
-IGRvbmUgYW5kIHRyaWNrIEdyZWcgYWdhaW4gaW50byB0YWtpbmcgYQo+IHBhdGNoIHRoYXQncyBu
-b3QgaGlzIHB1cnZpZXcsIEkgYXNrZWQgaGltIHd0ZiBoYXBwZW5lZCBvbiBJUkM6Cj4KPiA8Z3Jl
-Z2toPiB1Z2gsIHNvcnJ5LCBJIGRvbid0IHJlbWVtYmVyIHRoYXQuICBJIHRoaW5rIEFsZXhhbmRl
-ciB0YWxrZWQKPiB0byBtZSBhdCBwbHVtYmVycyBhbmQgc2FpZCwgImhleSwgcGxlYXNlIHRha2Ug
-dGhpcyB2aXJ0IHBhdGNoIgo+IDxncmVna2g+IGJ1dCB5b3UgYXJlIHJpZ2h0LCB5b3UgTkFLZWQg
-aXQgaW4gdGhhdCB0aHJlYWQsIEkgZm9yZ290Cj4gdGhhdCwgc29ycnkuICBZZXMsIHJldmVydCBp
-dCBpZiB0aGF0J3MgbmVlZGVkLgo+Cj4gR3JlZyB0aGVuIEFDSydkIHRoZSByZXZlcnQgY29tbWl0
-IHdoaWNoIGNhbWUgd2l0aCBhIHN0YWJsZUAgbWFya2luZwo+IGFuZCBhIEZpeGVzOiB0YWcgKGZv
-ciA2LjgsIHdoaWNoIGlzbid0IHZlcnkgb2xkKS4KPgo+IFNvIGl0IGxvb2tzIHRvIG1lIGxpa2Ug
-eW91IHR3aWNlIHRyaWVkIHRvIHRyaWNrIEdyZWcgaW50byB0YWtpbmcgdGhpcywKPiBzdWNjZWVk
-ZWQgdGhlIHNlY29uZCB0aW1lLCBnb3QgY2F1Z2h0LCBhbmQgbm93IGFyZSB0cnlpbmcgdG8gbWFr
-ZSBhCj4gcmVncmVzc2lvbiBhcmd1bWVudCBhcyBhIG1lYW5zIG9mIGtlZXBpbmcgeW91ciBzbmVh
-a3kgY29tbWl0IGluIHRoZXJlLgo+IEFsbCBvZiB0aGlzIHJlYWxseSBfcmVhbGx5XyBydWJzIG1l
-IHRoZSB3cm9uZyB3YXksIEkgaGF2ZSB0byBzYXkuCj4KPiBJIGRvbid0IGtub3cgd2hhdCBob2xk
-cyBtb3JlIHdlaWdodCBoZXJlIC0tIHRoZSBwcmVkaWN0YWJsZSByZWdyZXNzaW9uCj4gYXJndW1l
-bnQsIG9yIHRoZSBmYWN0IHRoYXQgeW91IHNudWNrIG5hY2snZCBjaGFuZ2VzIGludG8gYSB2ZXJ5
-IHZlcnkKPiByZWNlbnQga2VybmVsIHRoYXQgY2FuIHN0aWxsIGJlIHJlbW92ZWQgd2hpbGUgcHJv
-YmFibHkgb25seSBhZmZlY3RpbmcKPiB5b3UuIEJ1dCBJJ20gb2J2aW91c2x5IG5vdCBoYXBweSBh
-Ym91dCB0aGlzLgoKCkknbSBwZXJzb25hbGx5IG11Y2ggbW9yZSBjb25jZXJuZWQgYWJvdXQgTGlu
-dXgnIGFiaWxpdHkgdG8gZGVhbCB3aXRoIFZNIApDbG9uZSBldmVudHMgdGhhbiAibXkgcGVyc29u
-YWwgdXNlIGNhc2UiLiBUaGUgZ3JvdXAgYXQgQW1hem9uIHlvdSBzZWUgCndvcmtpbmcgb24gdGhp
-cyBpcyB3b3JraW5nIG9uIEFXUyBMYW1iZGEgd2hpY2ggb3ducyB0aGUgZnVsbCBob3N0IGFuZCAK
-Z3Vlc3Qgc3RhY2ssIGluY2x1ZGluZyBMaW51eCBvbiBib3RoIGVuZHMuIFRoZXkgY291bGQgaGFw
-cGlseSBwYXRjaCAKdGhlaXIgb3duIExpbnV4IGtlcm5lbC4gSW5zdGVhZCwgSSBoYXZlIG1hbmFn
-ZWQgdG8gZ2V0IHRoZW0gdG8gZG8gInRoZSAKcmlnaHQgdGhpbmciIGFuZCB3b3JrIHdpdGggdGhl
-IExpbnV4IHVwc3RyZWFtIGNvbW11bml0eSB0byBidWlsZCBhIAp2aWFibGUgc29sdXRpb24gdGhh
-dCB3b3JrcyBmb3IgZXZlcnlvbmUuCgpIb3dldmVyLCBldmVyeSB0aW1lIHRoZXkgZG8gdGhhdCwg
-YWxsIHRoZXkgZ2V0IGJhY2sgaXMgdmdldHJhbmRvbSgpIAphcmd1bWVudHMgd2hpY2ggYXJlIGNv
-bXBsZXRlbHkgaXJyZWxldmFudCB0byB0aGUgY29udmVyc2F0aW9uIGFuZCAKZGV0ZXJpb3JhdGUg
-bXkgZWZmb3J0cyB0byBnZXQgQVdTIHRvIHdvcmsgKm1vcmUqIHJhdGhlciB0aGFuIGxlc3MgCnVw
-c3RyZWFtLiBDYW4gd2UgcGxlYXNlIG1vdmUgdGhpcyBiYWNrIHRvIGEgdGVjaG5pY2FsIGRpc2N1
-c3Npb24gYW5kIApiYXNlZCBvbiB0ZWNobmljYWwgZ3JvdW5kcyBkZXRlcm1pbmUgd2h5IHNlbmRp
-bmcgYSBub3RpZmljYXRpb24gdG8gdXNlciAKc3BhY2Ugd2hlbiBhIFZNIHdhcyBjbG9uZWQgdmlh
-IHVldmVudHMgaXMgZXZlbiByZW1vdGVseSBhIGJhZCBpZGVhPwoKClRoYW5rcywKCkFsZXgKCgoK
-CkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4CjEw
-MTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpvbmF0
-aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVudGVy
-IEhSQiAxNDkxNzMgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAyODkgMjM3IDg3OQoKCg==
+Hi Benjamin,
+
+kernel test robot noticed the following build warnings:
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Benjamin-Tissoires/HID-bpf-fix-a-comment-in-a-define/20240419-225110
+base:   b912cf042072e12e93faa874265b30cc0aa521b9
+patch link:    https://lore.kernel.org/r/20240419-hid_bpf_lazy_skel-v1-3-9210bcd4b61c%40kernel.org
+patch subject: [PATCH 3/3] HID: bpf: lazy load the hid_tail_call entrypoint
+config: i386-randconfig-141-20240423 (https://download.01.org/0day-ci/archive/20240423/202404231109.h2IRrMMD-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202404231109.h2IRrMMD-lkp@intel.com/
+
+smatch warnings:
+drivers/hid/bpf/hid_bpf_jmp_table.c:478 __hid_bpf_attach_prog() error: uninitialized symbol 'link'.
+
+vim +/link +478 drivers/hid/bpf/hid_bpf_jmp_table.c
+
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  396  noinline int
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  397  __hid_bpf_attach_prog(struct hid_device *hdev, enum hid_bpf_prog_type prog_type,
+7cdd2108903a4e3 Benjamin Tissoires 2024-01-24  398  		      int prog_fd, struct bpf_prog *prog, __u32 flags)
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  399  {
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  400  	struct bpf_link_primer link_primer;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  401  	struct hid_bpf_link *link;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  402  	struct hid_bpf_prog_entry *prog_entry;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  403  	int cnt, err = -EINVAL, prog_table_idx = -1;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  404  
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  405  	mutex_lock(&hid_bpf_attach_lock);
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  406  
+60caa381da7dc38 Benjamin Tissoires 2024-04-19  407  	if (!jmp_table.map) {
+60caa381da7dc38 Benjamin Tissoires 2024-04-19  408  		err = hid_bpf_preload_skel();
+60caa381da7dc38 Benjamin Tissoires 2024-04-19  409  		WARN_ONCE(err, "error while preloading HID BPF dispatcher: %d", err);
+60caa381da7dc38 Benjamin Tissoires 2024-04-19  410  		if (err)
+60caa381da7dc38 Benjamin Tissoires 2024-04-19  411  			goto err_unlock;
+                                                                        ^^^^^^^^^^^^^^^^
+link isn't initialized.
+
+60caa381da7dc38 Benjamin Tissoires 2024-04-19  412  	}
+60caa381da7dc38 Benjamin Tissoires 2024-04-19  413  
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  414  	link = kzalloc(sizeof(*link), GFP_USER);
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  415  	if (!link) {
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  416  		err = -ENOMEM;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  417  		goto err_unlock;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  418  	}
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  419  
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  420  	bpf_link_init(&link->link, BPF_LINK_TYPE_UNSPEC,
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  421  		      &hid_bpf_link_lops, prog);
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  422  
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  423  	/* do not attach too many programs to a given HID device */
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  424  	cnt = hid_bpf_program_count(hdev, NULL, prog_type);
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  425  	if (cnt < 0) {
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  426  		err = cnt;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  427  		goto err_unlock;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  428  	}
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  429  
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  430  	if (cnt >= hid_bpf_max_programs(prog_type)) {
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  431  		err = -E2BIG;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  432  		goto err_unlock;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  433  	}
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  434  
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  435  	prog_table_idx = hid_bpf_insert_prog(prog_fd, prog);
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  436  	/* if the jmp table is full, abort */
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  437  	if (prog_table_idx < 0) {
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  438  		err = prog_table_idx;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  439  		goto err_unlock;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  440  	}
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  441  
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  442  	if (flags & HID_BPF_FLAG_INSERT_HEAD) {
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  443  		/* take the previous prog_entry slot */
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  444  		jmp_table.tail = PREV(jmp_table.tail);
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  445  		prog_entry = &jmp_table.entries[jmp_table.tail];
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  446  	} else {
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  447  		/* take the next prog_entry slot */
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  448  		prog_entry = &jmp_table.entries[jmp_table.head];
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  449  		jmp_table.head = NEXT(jmp_table.head);
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  450  	}
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  451  
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  452  	/* we steal the ref here */
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  453  	prog_entry->prog = prog;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  454  	prog_entry->idx = prog_table_idx;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  455  	prog_entry->hdev = hdev;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  456  	prog_entry->type = prog_type;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  457  
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  458  	/* finally store the index in the device list */
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  459  	err = hid_bpf_populate_hdev(hdev, prog_type);
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  460  	if (err) {
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  461  		hid_bpf_release_prog_at(prog_table_idx);
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  462  		goto err_unlock;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  463  	}
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  464  
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  465  	link->hid_table_index = prog_table_idx;
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  466  
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  467  	err = bpf_link_prime(&link->link, &link_primer);
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  468  	if (err)
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  469  		goto err_unlock;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  470  
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  471  	mutex_unlock(&hid_bpf_attach_lock);
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  472  
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  473  	return bpf_link_settle(&link_primer);
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  474  
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  475   err_unlock:
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  476  	mutex_unlock(&hid_bpf_attach_lock);
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  477  
+4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13 @478  	kfree(link);
+                                                              ^^^^
+
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  479  
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  480  	return err;
+f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  481  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
