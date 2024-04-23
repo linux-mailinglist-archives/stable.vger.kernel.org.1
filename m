@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67F98AFAD1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A65468AFB12
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CB881F29820
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D78AE1C2212B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E04144D2F;
-	Tue, 23 Apr 2024 21:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E0D14C5A5;
+	Tue, 23 Apr 2024 21:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="003oD9ni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYcEIEwv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41883145B14;
-	Tue, 23 Apr 2024 21:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0B7145B38;
+	Tue, 23 Apr 2024 21:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908766; cv=none; b=VHAiBetMDiF0/xofo2KD+yvBfoTPOsa0kdvCg+PyuYTk8oi5PGiO0gRrd/O3FCnlbGNiT8RfTnDf4eSuKBrPucI1CZalHJLf33bNlPCkjaHPjdaEPtJMXckHU+h0toRYNCpqW1W9EI+RCXHU919fZPHARSp7TrAbioO1Bqs75HM=
+	t=1713908812; cv=none; b=dNzZCaxY98BBnQIZg9/zS+nTXietU74FGOCJNTY9GumS7+4/JjL1Q07cfvtMQxSJxhCBrsPmtyGOTBwWRIMPwpWlK7z8QcuGdv85TZhmDn18bN4kijCXy7/lczg79d6rQblmft060GUWo7pSYRtAOyWWD4A19jVHtDy7dzwn1lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908766; c=relaxed/simple;
-	bh=oFY/Mb3YlbCm6X3GDVfTH7KcsT+Ql7Xf1jzuaILk5nI=;
+	s=arc-20240116; t=1713908812; c=relaxed/simple;
+	bh=I8tvUOgZ0cAXCaIbo0Shl6WnAtSYuVAzuAGifAj9WVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POlxqTEtd3h5wI/RbYN7JaQkcEJQYh+1wbur/xQcM3jc/mCmqB8Hc1W3JBueRo6uhf+tDBCKa/GcYUCfpmHbDZ6O1R5xXyzInWa0/dinPm1bxLKMiTKF/42VL/ejX9X15R9Xpfr+YvUhGVoVV7DObwiam/LWJ6V95qGrbGI4AWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=003oD9ni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6175C116B1;
-	Tue, 23 Apr 2024 21:46:05 +0000 (UTC)
+	 MIME-Version; b=HlsFndaFpJRAjItlVVUTQ5AyK6zK7hCArt+BQBL8eTDk0onePpG5uGi7rvU+msdCKkr8wcVOfNyy1EDkPEIYKXwk1AMUHoZVRQkoNbY6EqOgA9Q6kcpGXRuN86ldg+LT0y2ivEnnQ2KmL8qMVs+y2KwVtoGpEThdeqXZfOXJN/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYcEIEwv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C7CC32782;
+	Tue, 23 Apr 2024 21:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908765;
-	bh=oFY/Mb3YlbCm6X3GDVfTH7KcsT+Ql7Xf1jzuaILk5nI=;
+	s=korg; t=1713908811;
+	bh=I8tvUOgZ0cAXCaIbo0Shl6WnAtSYuVAzuAGifAj9WVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=003oD9niqACAAqXkzVq9yQ5p+r7xKTKA2GbkaV5APMVbMgpqSPav9iXC09P6MY3Do
-	 AHZOnT/jWjwpdqcYlBAhCiaoZTlvZjKl7Y1A9dmLR5eJwK0p/CApKm57kc/f62d0XS
-	 eWelQ5wRH1C/WtU9POf3n0XFp1TDY5tld2uovldg=
+	b=cYcEIEwvU3KIIEkk0huOIH0Zx1na9N3Z4D7R1BYfLh58CZwkk8jqA0IgkUbxMVMSo
+	 ruBboWjjrv54tXQliszrUzrk3tjPYbSMj3sVmoNffpogqsg29nMyPH621AnAwDhdHH
+	 XK7HfgEltMtJMF+WJi3Agyqzj8waWtIaE8XFIEnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 140/141] ksmbd: common: use struct_group_attr instead of struct_group for network_open_info
-Date: Tue, 23 Apr 2024 14:40:08 -0700
-Message-ID: <20240423213857.758001962@linuxfoundation.org>
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 5.15 56/71] mei: me: disable RPL-S on SPS and IGN firmwares
+Date: Tue, 23 Apr 2024 14:40:09 -0700
+Message-ID: <20240423213846.108023588@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit 0268a7cc7fdc47d90b6c18859de7718d5059f6f1 upstream.
+commit 0dc04112bee6fdd6eb847ccb32214703022c0269 upstream.
 
-4byte padding cause the connection issue with the applications of MacOS.
-smb2_close response size increases by 4 bytes by padding, And the smb
-client of MacOS check it and stop the connection. This patch use
-struct_group_attr instead of struct_group for network_open_info to use
- __packed to avoid padding.
+Extend the quirk to disable MEI interface on Intel PCH Ignition (IGN)
+and SPS firmwares for RPL-S devices. These firmwares do not support
+the MEI protocol.
 
-Fixes: 0015eb6e1238 ("smb: client, common: fix fortify warnings")
+Fixes: 3ed8c7d39cfe ("mei: me: add raptor lake point S DID")
 Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240312051958.118478-1-tomas.winkler@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/common/smb2pdu.h |    2 +-
+ drivers/misc/mei/pci-me.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/common/smb2pdu.h
-+++ b/fs/smb/common/smb2pdu.h
-@@ -699,7 +699,7 @@ struct smb2_close_rsp {
- 	__le16 StructureSize; /* 60 */
- 	__le16 Flags;
- 	__le32 Reserved;
--	struct_group(network_open_info,
-+	struct_group_attr(network_open_info, __packed,
- 		__le64 CreationTime;
- 		__le64 LastAccessTime;
- 		__le64 LastWriteTime;
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -115,7 +115,7 @@ static const struct pci_device_id mei_me
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_P, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_N, MEI_ME_PCH15_CFG)},
+ 
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
++	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_SPS_CFG)},
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
 
 
 
