@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-40810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716908AF928
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9C68AFA49
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DF2A282138
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AB4C1C22754
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803C5143C5C;
-	Tue, 23 Apr 2024 21:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FDD1448F4;
+	Tue, 23 Apr 2024 21:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVZBkMct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GK7U/j6g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3796414388A;
-	Tue, 23 Apr 2024 21:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32AE14533D;
+	Tue, 23 Apr 2024 21:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908478; cv=none; b=K29/lklUyhHD2R/PxMLwYRkBApdPU5nTNiHJWzOegSgWrifk4s3Y98O0B029fkc8VVw7EGo+tmsKR/HoZ7XO+pvtrCNKVpSzN+y6gJIEEDhHDMMOybYZG15Jfoom70QjS3caV5EcuM2jJetSz6jau6l078tvjPzP7r606fNw3bQ=
+	t=1713908670; cv=none; b=dv5EgeJWpfBHlzCzPcFrz0g5ouqYgCSAe/zcg5X3R4+4Fq6T78VIoBY+TaAgO9W6FDvCG7WVTmpml6+aW+cUzYbJcUysilCxGPb/1BrmJtPN8dY6UX5nR9KnEUO0nwo9bst4I29R8yOnhlsPFzgin5o/qy9DFEbr37kzrsRK/Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908478; c=relaxed/simple;
-	bh=muykViqdHxRq4mEuLU21icDJX1nhi5XMc7xGUguUvgg=;
+	s=arc-20240116; t=1713908670; c=relaxed/simple;
+	bh=VHCnlKquvVOtnkxjzK6/ACbVX1C4gxB1O3lKrAFYC6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkIZv9eqTQEgnSOi1tKbizPhVdIBGLKIgLHfAqIJ3T1PXueY2Fdkv66DEfScjwAC5W3XEyNbwRODb2IdlEr1eDvpP+ZMCwcD++dAW2CUiZlgBivJyIbvRgE+wZmobjpAKKy1UTJEC+fnZVffPb+GYxzo3x3FVUEn/9q+88yqA4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVZBkMct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEFCC4AF07;
-	Tue, 23 Apr 2024 21:41:18 +0000 (UTC)
+	 MIME-Version; b=NB9ar0FDx058p+jxpn1vc/g5zLBJmwa2D+iu/wJ0oljqkQxPmRYCruQt9IhLSSf2YmInkDCuca49JpsaEl8FTCkuzArCT6jZ161lGsV04j28nAwLMb33ApkQWZ+WqW+o3eRXwtJZZlIOrnMQJ9NbYbfv8pLJQxZeCkyc0FAXRFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GK7U/j6g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D262C116B1;
+	Tue, 23 Apr 2024 21:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908478;
-	bh=muykViqdHxRq4mEuLU21icDJX1nhi5XMc7xGUguUvgg=;
+	s=korg; t=1713908670;
+	bh=VHCnlKquvVOtnkxjzK6/ACbVX1C4gxB1O3lKrAFYC6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVZBkMctVduONLDZksyTIZPqFB3FZUqOm0DZ6iozqL/WrZxQkDqLzIsX5xOEAlrsc
-	 p2jJfrEZBYPxJXGuCxgSisW+Q8n85FCI9GW3D6p4EDXKHYtLNU/DFLIM53MIPCSmCo
-	 Glqp1fDswNs7folBoj4VLjMJC9NFYnH3/O+n+LP4=
+	b=GK7U/j6gmPpvdmBypfv5LHCVRppF9xuU8sAbHZutKbf0U/wNmd0EB/HYmHaffrC8t
+	 nmlSMi0/7RFxPvjUEBkOKefRshvIXQDgv0ZE0j32qXhgYgrjRVa6eOiDywl2YJ2OS2
+	 CRyOuTzezJMR8ICyCzNhHME6/mXjbDISvEC/1ypo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Ye Li <ye.li@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Martin Krastev <martin.krastev@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 046/158] gpiolib: swnode: Remove wrong header inclusion
-Date: Tue, 23 Apr 2024 14:37:48 -0700
-Message-ID: <20240423213857.407527367@linuxfoundation.org>
+Subject: [PATCH 6.1 001/141] drm/vmwgfx: Enable DMA mappings with SEV
+Date: Tue, 23 Apr 2024 14:37:49 -0700
+Message-ID: <20240423213853.403789102@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit 69ffed4b62523bbc85511f150500329d28aba356 ]
+[ Upstream commit 4c08f01934ab67d1d283d5cbaa52b923abcfe4cd ]
 
-The flags in the software node properties are supposed to be
-the GPIO lookup flags, which are provided by gpio/machine.h,
-as the software nodes are the kernel internal thing and doesn't
-need to rely to any of ABIs.
+Enable DMA mappings in vmwgfx after TTM has been fixed in commit
+3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for page-based iomem")
 
-Fixes: e7f9ff5dc90c ("gpiolib: add support for software nodes")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+This enables full guest-backed memory support and in particular allows
+usage of screen targets as the presentation mechanism.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Reported-by: Ye Li <ye.li@broadcom.com>
+Tested-by: Ye Li <ye.li@broadcom.com>
+Fixes: 3b0d6458c705 ("drm/vmwgfx: Refuse DMA operation when SEV encryption is active")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.6+
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240408022802.358641-1-zack.rusin@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/gpio/property.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/gpio/property.h b/include/linux/gpio/property.h
-index 6c75c8bd44a0b..1a14e239221f7 100644
---- a/include/linux/gpio/property.h
-+++ b/include/linux/gpio/property.h
-@@ -2,7 +2,6 @@
- #ifndef __LINUX_GPIO_PROPERTY_H
- #define __LINUX_GPIO_PROPERTY_H
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+index 9d7a1b710f48f..53f63ad656a41 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -663,11 +663,12 @@ static int vmw_dma_select_mode(struct vmw_private *dev_priv)
+ 		[vmw_dma_map_populate] = "Caching DMA mappings.",
+ 		[vmw_dma_map_bind] = "Giving up DMA mappings early."};
  
--#include <dt-bindings/gpio/gpio.h> /* for GPIO_* flags */
- #include <linux/property.h>
- 
- #define PROPERTY_ENTRY_GPIO(_name_, _chip_node_, _idx_, _flags_) \
+-	/* TTM currently doesn't fully support SEV encryption. */
+-	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+-		return -EINVAL;
+-
+-	if (vmw_force_coherent)
++	/*
++	 * When running with SEV we always want dma mappings, because
++	 * otherwise ttm tt pool pages will bounce through swiotlb running
++	 * out of available space.
++	 */
++	if (vmw_force_coherent || cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+ 		dev_priv->map_mode = vmw_dma_alloc_coherent;
+ 	else if (vmw_restrict_iommu)
+ 		dev_priv->map_mode = vmw_dma_map_bind;
 -- 
 2.43.0
 
