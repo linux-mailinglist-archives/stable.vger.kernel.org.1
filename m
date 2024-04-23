@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-41247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEBC78AFB3F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:57:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716AC8AF984
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C212B2CAD4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D7AD288C58
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D52143C4E;
-	Tue, 23 Apr 2024 21:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6991144D1F;
+	Tue, 23 Apr 2024 21:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzC3FU7y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSpb4Knj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E829A143895;
-	Tue, 23 Apr 2024 21:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50F220B3E;
+	Tue, 23 Apr 2024 21:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908778; cv=none; b=PkV5hos5h2l5LFob7zoI7OEwGJmhYlc9Kkgr6TyNgUBdfOxDi5nFp7ggBtD5RMYEXk9jExU7nEx1dOy5j3ECCtgT4F6cquUGBkJAhS2UhxBo9/4V1qvkb4xhyPjfmB0eNzXMJoaN+2GCUSkyY8XsXX6Oi/3Zx6dQDeAtEhekDnM=
+	t=1713908540; cv=none; b=trZTMg4cjMMwNA4kNqbWihBRiYO5l9xo8sVIOpT4x2MgRaXICHQUwYDkE+amj1J96mr4psFhbUdv5Uy7x8spGXNSy+EyHQfYrGveg2D6bfL89xAa4jSg00bIpw3+4MRreEpIk2CFsOwaqR4trR3V1R1Trtw3MYiKE5b3Yeq+BFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908778; c=relaxed/simple;
-	bh=p79EzAmFA8VT2brkKgODJotqRWiFbvthXMnVg6CdI0s=;
+	s=arc-20240116; t=1713908540; c=relaxed/simple;
+	bh=Y8adk3WgtCqy9su74nP70t3kbl6l3wjCebrmkAF80AI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFnK9fFgdUmiR1WfaPNRGqINuwTx+aVvdSE0zfhPVj3HZznD1mLqe/kOeG+lW/lQlUrTx8ovHmQFGdg7GnVY/3TCsSZeY4q4jbZRb5P4aoxocUqs8EsL7ZudEF0/unE/XGa3YOBlCpWimIqMtttS5V0VxTRaokCRYGAvtyVC/E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzC3FU7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36D8C116B1;
-	Tue, 23 Apr 2024 21:46:17 +0000 (UTC)
+	 MIME-Version; b=GiG1YmPmpxTnf+4nKM9tZF66kOHW9JHhLrzSnWicODYI954coDFLi9CF7PF+TjGoeYaD5G+fa8B/38kjlw1zhjE1duJ2+NOErXynDWHw0cVAy/Qxj5I2M0Of0q/xzYhl1Rm4x/hmI8ju364cSIY+JhBzD9c3uWJnHgdp9ThJwB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSpb4Knj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C21C3277B;
+	Tue, 23 Apr 2024 21:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908777;
-	bh=p79EzAmFA8VT2brkKgODJotqRWiFbvthXMnVg6CdI0s=;
+	s=korg; t=1713908540;
+	bh=Y8adk3WgtCqy9su74nP70t3kbl6l3wjCebrmkAF80AI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qzC3FU7yDOiGQwWR1fU1eBnjS/B8zdPZGF2EIX8spPcadpT1zFsZLiuV8EieOHNwD
-	 ZaPi6Q94G1F61REqV/fY4bvbzGXiMzEWQXqEYjcAVr9h3V1dFCoWj+rvuTv7pk02IE
-	 A3HLSTAmIvaS5htdaVEuUoOtPm5yqbKxSot/8kqg=
+	b=KSpb4KnjhXUCoO5KkvUjOUyQF8864oXRltzYwcY81U36/DuKPSzyze6z3USicC8iF
+	 J8ZcNtkaH1wMXgFf5pVmLomEBuzoI4218bRc776cC6ZbxbjzuvLE94jYOkvLjjvV1P
+	 oirTONMblDB13uOQ7aQiBdaeiW9FBimlcaMXPgx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 04/71] btrfs: record delayed inode root in transaction
+	Peter Xu <peterx@redhat.com>,
+	syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com,
+	David Hildenbrand <david@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 135/158] mm/userfaultfd: allow hugetlb change protection upon poison entry
 Date: Tue, 23 Apr 2024 14:39:17 -0700
-Message-ID: <20240423213844.279293591@linuxfoundation.org>
+Message-ID: <20240423213900.272242357@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Peter Xu <peterx@redhat.com>
 
-[ Upstream commit 71537e35c324ea6fbd68377a4f26bb93a831ae35 ]
+commit c5977c95dff182d6ee06f4d6f60bcb0284912969 upstream.
 
-When running delayed inode updates, we do not record the inode's root in
-the transaction, but we do allocate PREALLOC and thus converted PERTRANS
-space for it. To be sure we free that PERTRANS meta rsv, we must ensure
-that we record the root in the transaction.
+After UFFDIO_POISON, there can be two kinds of hugetlb pte markers, either
+the POISON one or UFFD_WP one.
 
-Fixes: 4f5427ccce5d ("btrfs: delayed-inode: Use new qgroup meta rsv for delayed inode and item")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Allow change protection to run on a poisoned marker just like !hugetlb
+cases, ignoring the marker irrelevant of the permission.
+
+Here the two bits are mutual exclusive.  For example, when install a
+poisoned entry it must not be UFFD_WP already (by checking pte_none()
+before such install).  And it also means if UFFD_WP is set there must have
+no POISON bit set.  It makes sense because UFFD_WP is a bit to reflect
+permission, and permissions do not apply if the pte is poisoned and
+destined to sigbus.
+
+So here we simply check uffd_wp bit set first, do nothing otherwise.
+
+Attach the Fixes to UFFDIO_POISON work, as before that it should not be
+possible to have poison entry for hugetlb (e.g., hugetlb doesn't do swap,
+so no chance of swapin errors).
+
+Link: https://lkml.kernel.org/r/20240405231920.1772199-1-peterx@redhat.com
+Link: https://lore.kernel.org/r/000000000000920d5e0615602dd1@google.com
+Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reported-by: syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-inode.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/hugetlb.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index 5a98c5da12250..8d8b455992362 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -1046,6 +1046,9 @@ __btrfs_commit_inode_delayed_items(struct btrfs_trans_handle *trans,
- 	if (ret)
- 		return ret;
- 
-+	ret = btrfs_record_root_in_trans(trans, node->root);
-+	if (ret)
-+		return ret;
- 	ret = btrfs_update_delayed_inode(trans, node->root, path, node);
- 	return ret;
- }
--- 
-2.43.0
-
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6943,9 +6943,13 @@ long hugetlb_change_protection(struct vm
+ 			if (!pte_same(pte, newpte))
+ 				set_huge_pte_at(mm, address, ptep, newpte, psize);
+ 		} else if (unlikely(is_pte_marker(pte))) {
+-			/* No other markers apply for now. */
+-			WARN_ON_ONCE(!pte_marker_uffd_wp(pte));
+-			if (uffd_wp_resolve)
++			/*
++			 * Do nothing on a poison marker; page is
++			 * corrupted, permissons do not apply.  Here
++			 * pte_marker_uffd_wp()==true implies !poison
++			 * because they're mutual exclusive.
++			 */
++			if (pte_marker_uffd_wp(pte) && uffd_wp_resolve)
+ 				/* Safe to modify directly (non-present->none). */
+ 				huge_pte_clear(mm, address, ptep, psize);
+ 		} else if (!huge_pte_none(pte)) {
 
 
 
