@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-41281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15BF8AFB01
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D43CC8AFA37
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A85862853C0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87A8A2829F6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F4114BFBC;
-	Tue, 23 Apr 2024 21:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039B214901C;
+	Tue, 23 Apr 2024 21:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbJI4sTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cle/FF7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149F7148FE3;
-	Tue, 23 Apr 2024 21:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D9D145335;
+	Tue, 23 Apr 2024 21:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908801; cv=none; b=Na00wM2Gx4BTUXZnV1oUzijrM5OqQS1pdav7RpR4Ott9JjiGIeekvfl/FJEZWOz6L0qTunqmv25J8NCAi87KCcvnESInT2C13ssGdYfBjW7rSrpJH7Nw/4DZiwSKTu92dZ0wNtOm8rbCOQaNCprDtzMMKkfTcSS3oJXqz/sy0/E=
+	t=1713908655; cv=none; b=tOugSx83+OXXsAj4bu6rRmj7OOzN8gnDaGvdPJ7Jw67UvJX//uIfied2pcZISL/L36ejlxWHZ38kuH36vTO9AEdz1gLv1heQ7tcMmPqfyv6PI1epMKK3EJepDJh6DqlPe9trS2eaJnnPjZ5RCz8XA8+VSkc8FIzjDFwJaZ5lcF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908801; c=relaxed/simple;
-	bh=q6xoSVBxvAtu3pbsfhN3RnXM1lfz7zfYyrMfZxOpog4=;
+	s=arc-20240116; t=1713908655; c=relaxed/simple;
+	bh=lIt6A7pXU3CaNX42C5oZocoMxqbTli/2ubo7orE+p88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qdggv+pVHgc7KAGgxvcRp1P0Ukw8sB3ZR9QfNV8ENNK9kJ0Uyv/3l1Ne2Zl3Q24Xgd/YaWaC27i+qH3YyKmg4BXYFsE+xl+0TwCVP8yYmALAgMAtiKxTmXvTEpb2n64S1jCaarzrpVkY/8/UovBiQlFiJrFtJHk0ZcgorGK/uB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PbJI4sTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9654C32782;
-	Tue, 23 Apr 2024 21:46:40 +0000 (UTC)
+	 MIME-Version; b=A0/48y4IYZVA5T6eQgjWbUcX7Ew0T75V6qmN+L7iO6K4AVN6EfTLVLb6fRlsjO8U2gX4t/b53zUxuFMj12J3Yhj++LCb4grQxSOfJYrEzl0h316MpsQUjMpOcM03VYNu0MD2cf2TPY5+K5q1zI8v54k4MsPM4SyLJwDV+KDv930=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cle/FF7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCBAC4AF0A;
+	Tue, 23 Apr 2024 21:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908800;
-	bh=q6xoSVBxvAtu3pbsfhN3RnXM1lfz7zfYyrMfZxOpog4=;
+	s=korg; t=1713908655;
+	bh=lIt6A7pXU3CaNX42C5oZocoMxqbTli/2ubo7orE+p88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PbJI4sTQnFYHLmGTzedWdS6mx59lSce0/+0uqUrb2IG7yNYSmJ0ml48hZzglr7lhb
-	 z8nJgynpQhhuNIIn+suTAUFTT9CJkOBmrDRTsxNEhx4dSfMT3CsC9Lh7xfODl5dcYa
-	 BeOUOggAbkofgapRPvQowhunytaC3XB3yIGTh/qY=
+	b=cle/FF7oLdz2syHlpDLDsq1ExStq+EfKnfx4VIh4vDwvOQh6RA1jdVATIGEnvSaPO
+	 Ap4xdY26Ln7FUldxwhqae01gfe/eVrddWNxDCHwy142ZQ6yFBjWtvN1iROYfLsrYWC
+	 PSxzMienyiZiVeNphr0nFGK+XNyyFJhJq9wqJDZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 30/71] s390/qdio: handle deferred cc1
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>
+Subject: [PATCH 6.6 146/158] drm/vmwgfx: Fix crtcs atomic check conditional
 Date: Tue, 23 Apr 2024 14:39:43 -0700
-Message-ID: <20240423213845.183133128@linuxfoundation.org>
+Message-ID: <20240423213900.426478772@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit 607638faf2ff1cede37458111496e7cc6c977f6f ]
+commit a60ccade88f926e871a57176e86a34bbf0db0098 upstream.
 
-A deferred condition code 1 response indicates that I/O was not started
-and should be retried. The current QDIO implementation handles a cc1
-response as I/O error, resulting in a failed QDIO setup. This can happen
-for example when a path verification request arrives at the same time
-as QDIO setup I/O is started.
+The conditional was supposed to prevent enabling of a crtc state
+without a set primary plane. Accidently it also prevented disabling
+crtc state with a set primary plane. Neither is correct.
 
-Fix this by retrying the QDIO setup I/O when a cc1 response is received.
+Fix the conditional and just driver-warn when a crtc state has been
+enabled without a primary plane which will help debug broken userspace.
 
-Note that since
+Fixes IGT's kms_atomic_interruptible and kms_atomic_transition tests.
 
-commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-commit 5ef1dc40ffa6 ("s390/cio: fix invalid -EBUSY on ccw_device_start")
-
-deferred cc1 responses are much more likely to occur. See the commit
-message of the latter for more background information.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 06ec41909e31 ("drm/vmwgfx: Add and connect CRTC helper functions")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v4.12+
+Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240412025511.78553-5-zack.rusin@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/qdio_main.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
-index 45e810c6ea3ba..6c186bbd84417 100644
---- a/drivers/s390/cio/qdio_main.c
-+++ b/drivers/s390/cio/qdio_main.c
-@@ -679,8 +679,8 @@ static void qdio_handle_activate_check(struct qdio_irq *irq_ptr,
- 	lgr_info_log();
- }
- 
--static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
--				      int dstat)
-+static int qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
-+				     int dstat, int dcc)
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -926,6 +926,7 @@ int vmw_du_cursor_plane_atomic_check(str
+ int vmw_du_crtc_atomic_check(struct drm_crtc *crtc,
+ 			     struct drm_atomic_state *state)
  {
- 	DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qest irq");
++	struct vmw_private *vmw = vmw_priv(crtc->dev);
+ 	struct drm_crtc_state *new_state = drm_atomic_get_new_crtc_state(state,
+ 									 crtc);
+ 	struct vmw_display_unit *du = vmw_crtc_to_du(new_state->crtc);
+@@ -933,9 +934,13 @@ int vmw_du_crtc_atomic_check(struct drm_
+ 	bool has_primary = new_state->plane_mask &
+ 			   drm_plane_mask(crtc->primary);
  
-@@ -688,15 +688,18 @@ static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
- 		goto error;
- 	if (dstat & ~(DEV_STAT_DEV_END | DEV_STAT_CHN_END))
- 		goto error;
-+	if (dcc == 1)
-+		return -EAGAIN;
- 	if (!(dstat & DEV_STAT_DEV_END))
- 		goto error;
- 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ESTABLISHED);
--	return;
-+	return 0;
+-	/* We always want to have an active plane with an active CRTC */
+-	if (has_primary != new_state->enable)
+-		return -EINVAL;
++	/*
++	 * This is fine in general, but broken userspace might expect
++	 * some actual rendering so give a clue as why it's blank.
++	 */
++	if (new_state->enable && !has_primary)
++		drm_dbg_driver(&vmw->drm,
++			       "CRTC without a primary plane will be blank.\n");
  
- error:
- 	DBF_ERROR("%4x EQ:error", irq_ptr->schid.sch_no);
- 	DBF_ERROR("ds: %2x cs:%2x", dstat, cstat);
- 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
-+	return -EIO;
- }
  
- /* qdio interrupt handler */
-@@ -705,7 +708,7 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
- {
- 	struct qdio_irq *irq_ptr = cdev->private->qdio_data;
- 	struct subchannel_id schid;
--	int cstat, dstat;
-+	int cstat, dstat, rc, dcc;
- 
- 	if (!intparm || !irq_ptr) {
- 		ccw_device_get_schid(cdev, &schid);
-@@ -725,10 +728,12 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
- 	qdio_irq_check_sense(irq_ptr, irb);
- 	cstat = irb->scsw.cmd.cstat;
- 	dstat = irb->scsw.cmd.dstat;
-+	dcc   = scsw_cmd_is_valid_cc(&irb->scsw) ? irb->scsw.cmd.cc : 0;
-+	rc    = 0;
- 
- 	switch (irq_ptr->state) {
- 	case QDIO_IRQ_STATE_INACTIVE:
--		qdio_establish_handle_irq(irq_ptr, cstat, dstat);
-+		rc = qdio_establish_handle_irq(irq_ptr, cstat, dstat, dcc);
- 		break;
- 	case QDIO_IRQ_STATE_CLEANUP:
- 		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_INACTIVE);
-@@ -742,12 +747,25 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
- 		if (cstat || dstat)
- 			qdio_handle_activate_check(irq_ptr, intparm, cstat,
- 						   dstat);
-+		else if (dcc == 1)
-+			rc = -EAGAIN;
- 		break;
- 	case QDIO_IRQ_STATE_STOPPED:
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 	}
-+
-+	if (rc == -EAGAIN) {
-+		DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qint retry");
-+		rc = ccw_device_start(cdev, irq_ptr->ccw, intparm, 0, 0);
-+		if (!rc)
-+			return;
-+		DBF_ERROR("%4x RETRY ERR", irq_ptr->schid.sch_no);
-+		DBF_ERROR("rc:%4x", rc);
-+		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
-+	}
-+
- 	wake_up(&cdev->private->wait_q);
- }
- 
--- 
-2.43.0
-
+ 	if (new_state->connector_mask != connector_mask &&
 
 
 
