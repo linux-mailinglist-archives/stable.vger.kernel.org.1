@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45EB98AFA65
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3477A8AF973
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A5711C221C0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 656E0B2A422
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60730149C68;
-	Tue, 23 Apr 2024 21:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CE814533E;
+	Tue, 23 Apr 2024 21:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZv1jnpW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+EkjVLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB3C144D01;
-	Tue, 23 Apr 2024 21:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB69D20B3E;
+	Tue, 23 Apr 2024 21:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908689; cv=none; b=i/m5Czrj1DWt+CDZ2Gm4Jh4mOK27bC7Vw85//yVVXzI/tHI+rrlxHehe/D8fgNGVneAJuKRJHxwiwOzj7vOcf0CgzwTtsktjWr+zFC5G0i2gEMdLHwIEAG6aoGgaK3D8Vd/ZKZ96gf6DTT0a7eDYJDYWaCmFRV5ZgTVSNG59yrc=
+	t=1713908525; cv=none; b=m5n18aM9UrldToOGtYqstjRCeJ1YSy0zl/PihoNJLCdXA8kiXguL16if2cDcLn0xz8weYULaP+Yu+d6FqVIGSp/XZ5jF+nIiTgMVncbXgyWa1xHc/mFC2d5gDR/LrTWz+3EXzicW61xEQGfRcn/KDWbMMk0rZE71dFqkrscSDr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908689; c=relaxed/simple;
-	bh=Z2Kc5WD2GKr0JWvxmjJDDO71jKM5OaR0PWJV/S5kQLI=;
+	s=arc-20240116; t=1713908525; c=relaxed/simple;
+	bh=ZBJVbYC8ylBF7v5JDL1USv1pjgZvt5q5aqafTq0PoYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqBwciRGEEKfUisApc8jYRiKvIfGuhYMRS94ZH36ihiWl/IARAunl721/OjqlRpT6SCx6AZ1hfpbGVKLQetKCLH1UTbOls3fUdxdpgajeGwvooUjZGFxMNsUZEyEq6ap9aHG+3ITJ9gsjjOeZKHX2+iMwyw4pnTflI51IFePfhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZv1jnpW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E637FC3277B;
-	Tue, 23 Apr 2024 21:44:48 +0000 (UTC)
+	 MIME-Version; b=FArUqQ2QQCx9v9YB9cQRPE/J6MlghURPhtRygfenZffk2sfHy27oBS3xNCdxXzM8GOrXpDBci7WY9vmgCllLcfus2Chh4ZS4Naf6pfGoLfqiI8l0sjwgOODurX5Jq15d+xI1OJ5xMEuvUvg27RLj0omNI2nduKOe/bYbtjBzBBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+EkjVLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CEFC116B1;
+	Tue, 23 Apr 2024 21:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908689;
-	bh=Z2Kc5WD2GKr0JWvxmjJDDO71jKM5OaR0PWJV/S5kQLI=;
+	s=korg; t=1713908525;
+	bh=ZBJVbYC8ylBF7v5JDL1USv1pjgZvt5q5aqafTq0PoYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZv1jnpW6Qsk5ZW4Xen3OJ0Eg6ewTg60pC4IfOZ+mZP5viGnHTuXcz66hDjwLQm6L
-	 rTHwvh3KuBgmrzV4fIg+eB0T85MpGTDoCzJzoZja1mjxywxUw8Ar6fPtkJFIc4Qqh8
-	 MGNbqyjIh7XKb09OIRMCTWbti+ZMOTFatJszb5lA=
+	b=Q+EkjVLzQxuE2MJ35OBkMnJ5kutRu+9piKHwsiNDr4MfldoCJgIqFNW/WZ9QTrmaQ
+	 TjXwVIMr9nR0h8+L11PP16vBi8i4WLcjKko8aX0VH1Suv2TU9b4difXglYB3P0sQHl
+	 gxJt/PbEN0V38K3PUR2+6nmu/G+NPVSnCi/96AlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Pin-yen Lin <treapking@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/141] netfilter: br_netfilter: skip conntrack input hook for promisc packets
+Subject: [PATCH 6.8 082/158] clk: mediatek: Do a runtime PM get on controllers during probe
 Date: Tue, 23 Apr 2024 14:38:24 -0700
-Message-ID: <20240423213854.468154284@linuxfoundation.org>
+Message-ID: <20240423213858.617961652@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,221 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit 751de2012eafa4d46d8081056761fa0e9cc8a178 ]
+[ Upstream commit 2f7b1d8b5505efb0057cd1ab85fca206063ea4c3 ]
 
-For historical reasons, when bridge device is in promisc mode, packets
-that are directed to the taps follow bridge input hook path. This patch
-adds a workaround to reset conntrack for these packets.
+mt8183-mfgcfg has a mutual dependency with genpd during the probing
+stage, which leads to a deadlock in the following call stack:
 
-Jianbo Liu reports warning splats in their test infrastructure where
-cloned packets reach the br_netfilter input hook to confirm the
-conntrack object.
+CPU0:  genpd_lock --> clk_prepare_lock
+genpd_power_off_work_fn()
+ genpd_lock()
+ generic_pm_domain::power_off()
+    clk_unprepare()
+      clk_prepare_lock()
 
-Scratch one bit from BR_INPUT_SKB_CB to annotate that this packet has
-reached the input hook because it is passed up to the bridge device to
-reach the taps.
+CPU1: clk_prepare_lock --> genpd_lock
+clk_register()
+  __clk_core_init()
+    clk_prepare_lock()
+    clk_pm_runtime_get()
+      genpd_lock()
 
-[   57.571874] WARNING: CPU: 1 PID: 0 at net/bridge/br_netfilter_hooks.c:616 br_nf_local_in+0x157/0x180 [br_netfilter]
-[   57.572749] Modules linked in: xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat xt_addrtype xt_conntrack nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay rpcrdma rdma_ucm ib_iser libiscsi scsi_transport_isc si ib_umad rdma_cm ib_ipoib iw_cm ib_cm mlx5_ib ib_uverbs ib_core mlx5ctl mlx5_core
-[   57.575158] CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.8.0+ #19
-[   57.575700] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-[   57.576662] RIP: 0010:br_nf_local_in+0x157/0x180 [br_netfilter]
-[   57.577195] Code: fe ff ff 41 bd 04 00 00 00 be 04 00 00 00 e9 4a ff ff ff be 04 00 00 00 48 89 ef e8 f3 a9 3c e1 66 83 ad b4 00 00 00 04 eb 91 <0f> 0b e9 f1 fe ff ff 0f 0b e9 df fe ff ff 48 89 df e8 b3 53 47 e1
-[   57.578722] RSP: 0018:ffff88885f845a08 EFLAGS: 00010202
-[   57.579207] RAX: 0000000000000002 RBX: ffff88812dfe8000 RCX: 0000000000000000
-[   57.579830] RDX: ffff88885f845a60 RSI: ffff8881022dc300 RDI: 0000000000000000
-[   57.580454] RBP: ffff88885f845a60 R08: 0000000000000001 R09: 0000000000000003
-[   57.581076] R10: 00000000ffff1300 R11: 0000000000000002 R12: 0000000000000000
-[   57.581695] R13: ffff8881047ffe00 R14: ffff888108dbee00 R15: ffff88814519b800
-[   57.582313] FS:  0000000000000000(0000) GS:ffff88885f840000(0000) knlGS:0000000000000000
-[   57.583040] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   57.583564] CR2: 000000c4206aa000 CR3: 0000000103847001 CR4: 0000000000370eb0
-[   57.584194] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-0000000000000000
-[   57.584820] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:
-0000000000000400
-[   57.585440] Call Trace:
-[   57.585721]  <IRQ>
-[   57.585976]  ? __warn+0x7d/0x130
-[   57.586323]  ? br_nf_local_in+0x157/0x180 [br_netfilter]
-[   57.586811]  ? report_bug+0xf1/0x1c0
-[   57.587177]  ? handle_bug+0x3f/0x70
-[   57.587539]  ? exc_invalid_op+0x13/0x60
-[   57.587929]  ? asm_exc_invalid_op+0x16/0x20
-[   57.588336]  ? br_nf_local_in+0x157/0x180 [br_netfilter]
-[   57.588825]  nf_hook_slow+0x3d/0xd0
-[   57.589188]  ? br_handle_vlan+0x4b/0x110
-[   57.589579]  br_pass_frame_up+0xfc/0x150
-[   57.589970]  ? br_port_flags_change+0x40/0x40
-[   57.590396]  br_handle_frame_finish+0x346/0x5e0
-[   57.590837]  ? ipt_do_table+0x32e/0x430
-[   57.591221]  ? br_handle_local_finish+0x20/0x20
-[   57.591656]  br_nf_hook_thresh+0x4b/0xf0 [br_netfilter]
-[   57.592286]  ? br_handle_local_finish+0x20/0x20
-[   57.592802]  br_nf_pre_routing_finish+0x178/0x480 [br_netfilter]
-[   57.593348]  ? br_handle_local_finish+0x20/0x20
-[   57.593782]  ? nf_nat_ipv4_pre_routing+0x25/0x60 [nf_nat]
-[   57.594279]  br_nf_pre_routing+0x24c/0x550 [br_netfilter]
-[   57.594780]  ? br_nf_hook_thresh+0xf0/0xf0 [br_netfilter]
-[   57.595280]  br_handle_frame+0x1f3/0x3d0
-[   57.595676]  ? br_handle_local_finish+0x20/0x20
-[   57.596118]  ? br_handle_frame_finish+0x5e0/0x5e0
-[   57.596566]  __netif_receive_skb_core+0x25b/0xfc0
-[   57.597017]  ? __napi_build_skb+0x37/0x40
-[   57.597418]  __netif_receive_skb_list_core+0xfb/0x220
+Do a runtime PM get at the probe function to make sure clk_register()
+won't acquire the genpd lock. Instead of only modifying mt8183-mfgcfg,
+do this on all mediatek clock controller probings because we don't
+believe this would cause any regression.
 
-Fixes: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
-Reported-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Verified on MT8183 and MT8192 Chromebooks.
+
+Fixes: acddfc2c261b ("clk: mediatek: Add MT8183 clock support")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+
+Link: https://lore.kernel.org/r/20240312115249.3341654-1-treapking@chromium.org
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_input.c                      | 15 +++++++++++----
- net/bridge/br_netfilter_hooks.c            |  6 ++++++
- net/bridge/br_private.h                    |  1 +
- net/bridge/netfilter/nf_conntrack_bridge.c | 14 ++++++++++----
- 4 files changed, 28 insertions(+), 8 deletions(-)
+ drivers/clk/mediatek/clk-mtk.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index 6bb272894c960..b94a1783902ea 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -30,7 +30,7 @@ br_netif_receive_skb(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	return netif_receive_skb(skb);
- }
+diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
+index 2e55368dc4d82..bd37ab4d1a9bb 100644
+--- a/drivers/clk/mediatek/clk-mtk.c
++++ b/drivers/clk/mediatek/clk-mtk.c
+@@ -13,6 +13,7 @@
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/slab.h>
  
--static int br_pass_frame_up(struct sk_buff *skb)
-+static int br_pass_frame_up(struct sk_buff *skb, bool promisc)
- {
- 	struct net_device *indev, *brdev = BR_INPUT_SKB_CB(skb)->brdev;
- 	struct net_bridge *br = netdev_priv(brdev);
-@@ -65,6 +65,8 @@ static int br_pass_frame_up(struct sk_buff *skb)
- 	br_multicast_count(br, NULL, skb, br_multicast_igmp_type(skb),
- 			   BR_MCAST_DIR_TX);
- 
-+	BR_INPUT_SKB_CB(skb)->promisc = promisc;
-+
- 	return NF_HOOK(NFPROTO_BRIDGE, NF_BR_LOCAL_IN,
- 		       dev_net(indev), NULL, skb, indev, NULL,
- 		       br_netif_receive_skb);
-@@ -82,6 +84,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 	struct net_bridge_mcast *brmctx;
- 	struct net_bridge_vlan *vlan;
- 	struct net_bridge *br;
-+	bool promisc;
- 	u16 vid = 0;
- 	u8 state;
- 
-@@ -120,7 +123,9 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 	if (p->flags & BR_LEARNING)
- 		br_fdb_update(br, p, eth_hdr(skb)->h_source, vid, 0);
- 
--	local_rcv = !!(br->dev->flags & IFF_PROMISC);
-+	promisc = !!(br->dev->flags & IFF_PROMISC);
-+	local_rcv = promisc;
-+
- 	if (is_multicast_ether_addr(eth_hdr(skb)->h_dest)) {
- 		/* by definition the broadcast is also a multicast address */
- 		if (is_broadcast_ether_addr(eth_hdr(skb)->h_dest)) {
-@@ -183,7 +188,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 		unsigned long now = jiffies;
- 
- 		if (test_bit(BR_FDB_LOCAL, &dst->flags))
--			return br_pass_frame_up(skb);
-+			return br_pass_frame_up(skb, false);
- 
- 		if (now != dst->used)
- 			dst->used = now;
-@@ -196,7 +201,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+ #include "clk-mtk.h"
+@@ -494,6 +495,16 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 			return IS_ERR(base) ? PTR_ERR(base) : -ENOMEM;
  	}
  
- 	if (local_rcv)
--		return br_pass_frame_up(skb);
-+		return br_pass_frame_up(skb, promisc);
- 
- out:
- 	return 0;
-@@ -368,6 +373,8 @@ static rx_handler_result_t br_handle_frame(struct sk_buff **pskb)
- 				goto forward;
- 		}
- 
-+		BR_INPUT_SKB_CB(skb)->promisc = false;
 +
- 		/* The else clause should be hit when nf_hook():
- 		 *   - returns < 0 (drop/error)
- 		 *   - returns = 0 (stolen/nf_queue)
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index bff48d5763635..9ac70c27da835 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -600,11 +600,17 @@ static unsigned int br_nf_local_in(void *priv,
- 				   struct sk_buff *skb,
- 				   const struct nf_hook_state *state)
- {
-+	bool promisc = BR_INPUT_SKB_CB(skb)->promisc;
- 	struct nf_conntrack *nfct = skb_nfct(skb);
- 	const struct nf_ct_hook *ct_hook;
- 	struct nf_conn *ct;
- 	int ret;
- 
-+	if (promisc) {
-+		nf_reset_ct(skb);
-+		return NF_ACCEPT;
-+	}
++	devm_pm_runtime_enable(&pdev->dev);
++	/*
++	 * Do a pm_runtime_resume_and_get() to workaround a possible
++	 * deadlock between clk_register() and the genpd framework.
++	 */
++	r = pm_runtime_resume_and_get(&pdev->dev);
++	if (r)
++		return r;
 +
- 	if (!nfct || skb->pkt_type == PACKET_HOST)
- 		return NF_ACCEPT;
+ 	/* Calculate how many clk_hw_onecell_data entries to allocate */
+ 	num_clks = mcd->num_clks + mcd->num_composite_clks;
+ 	num_clks += mcd->num_fixed_clks + mcd->num_factor_clks;
+@@ -574,6 +585,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 			goto unregister_clks;
+ 	}
  
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 51d010f64e066..940de95167689 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -559,6 +559,7 @@ struct br_input_skb_cb {
- #endif
- 	u8 proxyarp_replied:1;
- 	u8 src_port_isolated:1;
-+	u8 promisc:1;
- #ifdef CONFIG_BRIDGE_VLAN_FILTERING
- 	u8 vlan_filtered:1;
- #endif
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index c7c27ada67044..e60c38670f220 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -294,18 +294,24 @@ static unsigned int nf_ct_bridge_pre(void *priv, struct sk_buff *skb,
- static unsigned int nf_ct_bridge_in(void *priv, struct sk_buff *skb,
- 				    const struct nf_hook_state *state)
- {
--	enum ip_conntrack_info ctinfo;
-+	bool promisc = BR_INPUT_SKB_CB(skb)->promisc;
-+	struct nf_conntrack *nfct = skb_nfct(skb);
- 	struct nf_conn *ct;
- 
--	if (skb->pkt_type == PACKET_HOST)
-+	if (promisc) {
-+		nf_reset_ct(skb);
-+		return NF_ACCEPT;
-+	}
++	pm_runtime_put(&pdev->dev);
 +
-+	if (!nfct || skb->pkt_type == PACKET_HOST)
- 		return NF_ACCEPT;
+ 	return r;
  
- 	/* nf_conntrack_confirm() cannot handle concurrent clones,
- 	 * this happens for broad/multicast frames with e.g. macvlan on top
- 	 * of the bridge device.
- 	 */
--	ct = nf_ct_get(skb, &ctinfo);
--	if (!ct || nf_ct_is_confirmed(ct) || nf_ct_is_template(ct))
-+	ct = container_of(nfct, struct nf_conn, ct_general);
-+	if (nf_ct_is_confirmed(ct) || nf_ct_is_template(ct))
- 		return NF_ACCEPT;
+ unregister_clks:
+@@ -604,6 +617,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ free_base:
+ 	if (mcd->shared_io && base)
+ 		iounmap(base);
++
++	pm_runtime_put(&pdev->dev);
+ 	return r;
+ }
  
- 	/* let inet prerouting call conntrack again */
 -- 
 2.43.0
 
