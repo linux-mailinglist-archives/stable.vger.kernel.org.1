@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88758AF9AA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76DCC8AF932
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC5031C22591
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D6F6B23E7E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9D8143C6C;
-	Tue, 23 Apr 2024 21:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BD61448D7;
+	Tue, 23 Apr 2024 21:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqCrQd1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGUCkBLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0E485274;
-	Tue, 23 Apr 2024 21:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1149C20B3E;
+	Tue, 23 Apr 2024 21:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908566; cv=none; b=KHb0jRQJzVJ+x83f6lNyYGArAaFckt0W+Z4Soc++bLkFTBmmJOj/qzPUFstfK7rJKdIs/7B+VvMga/Qs8dsD24dS0SqoBdtgrtKBLXg8TdSg8aKbGyWSlcr+iT1z6KIM3zfloqZQ3jXGqcUzxxfUbkICQuzUp47XkFhCYzUWm+o=
+	t=1713908483; cv=none; b=oNkk/dusbEy7kXLMsGbs1hwX9O+AVsRvfTi1/PlfCTlNAc3gS1VLa4B7h11geSujarG/FTvDXggr/iQ09okkHA75QjvQKWFAVg8fc0n5PgNhIK4IT6N1xU7Vwa0JD4uSY8bQUwF8lsBVcDnWie8I5+dUB2M/AS8WVPrXo3M4ERo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908566; c=relaxed/simple;
-	bh=/aNMV6ngNeMoHqec/50lit2FRmmxo/gAd94LglwTr8g=;
+	s=arc-20240116; t=1713908483; c=relaxed/simple;
+	bh=qfkyt+jrNfmNMRqsq80ZTMzPgdI+g/XL395Wrx8sB/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c/VnAa+4bFAG/U8rEMqxHe22dubL0boUTK/Okqpxxy1fxGxLAXzgwwDmJYDDF/3hoH5aySnSuR/XQbz6Vyi+mDphpv+mEGtf+QnlNOaD1rXZ+tT8xy1307VKsxH/0fSL75L6lJY3oen5NLqGXhyOCiFKIIGSp9BddCSnHEwrh9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqCrQd1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF177C3277B;
-	Tue, 23 Apr 2024 21:42:45 +0000 (UTC)
+	 MIME-Version; b=ILF91OkRJghpxoOUGrW3xWEOQSw2xhvfybUbY70GCB0AFcOzs2ruvJRYYPrTyCtNGinp40snjfCvJNXueajprXflT0fDZjcI/XdzEUBPoyxFf4qdydrICXcWPJu+YShz2VAIEkk09HoAt7n7HH8VywcEZ58wWVksEzP6FZtqlM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGUCkBLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AD5C32786;
+	Tue, 23 Apr 2024 21:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908565;
-	bh=/aNMV6ngNeMoHqec/50lit2FRmmxo/gAd94LglwTr8g=;
+	s=korg; t=1713908482;
+	bh=qfkyt+jrNfmNMRqsq80ZTMzPgdI+g/XL395Wrx8sB/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqCrQd1XHAHPvp09gYF/U0cbClSPb9ht7/0NazQJfZhk6eg0P7NBwVnBsf3pDZNUB
-	 GVI7VveSmtzwYmHXmKBGrMgohjQ3aLMRdMs/7CPy4oIt6gkjH0IFEWTOunvxy6M5ne
-	 b8z/stWJIiM+wlQZx3Z52ogc1jk3mC3quDBloCeo=
+	b=SGUCkBLzWWCZNwxNuxgfvXoK8hZMhpGVEMMB8aM2YByEtGHeqw8RobhyQ64TSe8Rn
+	 zbKtNcQW5PQmm/LM1Z47o3FiWYkEf6k/cv6V7Z677U44uvmi6haZ9+UoW5jPkFOcyQ
+	 Ui5GrWTwbEPljq3nkgkdDbrcX1cEkgSMRiA1Zcjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/158] selftests: timers: Convert posix_timers test to generate KTAP output
-Date: Tue, 23 Apr 2024 14:37:31 -0700
-Message-ID: <20240423213856.177773079@linuxfoundation.org>
+Subject: [PATCH 6.8 030/158] selftests/tcp_ao: Make RST tests less flaky
+Date: Tue, 23 Apr 2024 14:37:32 -0700
+Message-ID: <20240423213856.857617275@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,239 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Dmitry Safonov <0x7f454c46@gmail.com>
 
-[ Upstream commit 071af0c9e582bc47e379e39490a2bc1adfe4ec68 ]
+[ Upstream commit 4225dfa4535f219b03ae14147d9c6e7e82ec8df4 ]
 
-Currently the posix_timers test does not produce KTAP output but rather a
-custom format. This means that we only get a pass/fail for the suite, not
-for each individual test that the suite does. Convert to using the standard
-kselftest output functions which result in KTAP output being generated.
+Currently, "active reset" cases are flaky, because select() is called
+for 3 sockets, while only 2 are expected to receive RST.
+The idea of the third socket was to get into request_sock_queue,
+but the test mistakenly attempted to connect() after the listener
+socket was shut down.
 
-As part of this fix the printing of diagnostics in the unlikely event that
-the pthread APIs fail, these were using perror() but the API functions
-directly return an error code instead of setting errno.
+Repair this test, it's important to check the different kernel
+code-paths for signing RST TCP-AO segments.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: 6d029c25b71f ("selftests/timers/posix_timers: Reimplement check_timer_distribution()")
+Fixes: c6df7b2361d7 ("selftests/net: Add TCP-AO RST test")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/timers/posix_timers.c | 81 ++++++++++---------
- 1 file changed, 41 insertions(+), 40 deletions(-)
+ tools/testing/selftests/net/tcp_ao/rst.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/timers/posix_timers.c b/tools/testing/selftests/timers/posix_timers.c
-index 9a42403eaff70..2669c45316b3d 100644
---- a/tools/testing/selftests/timers/posix_timers.c
-+++ b/tools/testing/selftests/timers/posix_timers.c
-@@ -76,22 +76,21 @@ static int check_diff(struct timeval start, struct timeval end)
+diff --git a/tools/testing/selftests/net/tcp_ao/rst.c b/tools/testing/selftests/net/tcp_ao/rst.c
+index 7df8b8700e39e..a2fe88d35ac06 100644
+--- a/tools/testing/selftests/net/tcp_ao/rst.c
++++ b/tools/testing/selftests/net/tcp_ao/rst.c
+@@ -256,8 +256,6 @@ static int test_wait_fds(int sk[], size_t nr, bool is_writable[],
  
- static int check_itimer(int which)
+ static void test_client_active_rst(unsigned int port)
  {
-+	const char *name;
- 	int err;
- 	struct timeval start, end;
- 	struct itimerval val = {
- 		.it_value.tv_sec = DELAY,
- 	};
- 
--	printf("Check itimer ");
+-	/* one in queue, another accept()ed */
+-	unsigned int wait_for = backlog + 2;
+ 	int i, sk[3], err;
+ 	bool is_writable[ARRAY_SIZE(sk)] = {false};
+ 	unsigned int last = ARRAY_SIZE(sk) - 1;
+@@ -275,16 +273,20 @@ static void test_client_active_rst(unsigned int port)
+ 	for (i = 0; i < last; i++) {
+ 		err = _test_connect_socket(sk[i], this_ip_dest, port,
+ 					       (i == 0) ? TEST_TIMEOUT_SEC : -1);
 -
- 	if (which == ITIMER_VIRTUAL)
--		printf("virtual... ");
-+		name = "ITIMER_VIRTUAL";
- 	else if (which == ITIMER_PROF)
--		printf("prof... ");
-+		name = "ITIMER_PROF";
- 	else if (which == ITIMER_REAL)
--		printf("real... ");
--
--	fflush(stdout);
-+		name = "ITIMER_REAL";
-+	else
-+		return -1;
- 
- 	done = 0;
- 
-@@ -104,13 +103,13 @@ static int check_itimer(int which)
- 
- 	err = gettimeofday(&start, NULL);
- 	if (err < 0) {
--		perror("Can't call gettimeofday()\n");
-+		ksft_perror("Can't call gettimeofday()");
- 		return -1;
+ 		if (err < 0)
+ 			test_error("failed to connect()");
  	}
  
- 	err = setitimer(which, &val, NULL);
- 	if (err < 0) {
--		perror("Can't set timer\n");
-+		ksft_perror("Can't set timer");
- 		return -1;
- 	}
+-	synchronize_threads(); /* 2: connection accept()ed, another queued */
+-	err = test_wait_fds(sk, last, is_writable, wait_for, TEST_TIMEOUT_SEC);
++	synchronize_threads(); /* 2: two connections: one accept()ed, another queued */
++	err = test_wait_fds(sk, last, is_writable, last, TEST_TIMEOUT_SEC);
+ 	if (err < 0)
+ 		test_error("test_wait_fds(): %d", err);
  
-@@ -123,20 +122,18 @@ static int check_itimer(int which)
- 
- 	err = gettimeofday(&end, NULL);
- 	if (err < 0) {
--		perror("Can't call gettimeofday()\n");
-+		ksft_perror("Can't call gettimeofday()");
- 		return -1;
- 	}
- 
--	if (!check_diff(start, end))
--		printf("[OK]\n");
--	else
--		printf("[FAIL]\n");
-+	ksft_test_result(check_diff(start, end) == 0, "%s\n", name);
- 
- 	return 0;
- }
- 
- static int check_timer_create(int which)
- {
-+	const char *type;
- 	int err;
- 	timer_t id;
- 	struct timeval start, end;
-@@ -144,31 +141,32 @@ static int check_timer_create(int which)
- 		.it_value.tv_sec = DELAY,
- 	};
- 
--	printf("Check timer_create() ");
- 	if (which == CLOCK_THREAD_CPUTIME_ID) {
--		printf("per thread... ");
-+		type = "thread";
- 	} else if (which == CLOCK_PROCESS_CPUTIME_ID) {
--		printf("per process... ");
-+		type = "process";
-+	} else {
-+		ksft_print_msg("Unknown timer_create() type %d\n", which);
-+		return -1;
- 	}
--	fflush(stdout);
- 
- 	done = 0;
- 	err = timer_create(which, NULL, &id);
- 	if (err < 0) {
--		perror("Can't create timer\n");
-+		ksft_perror("Can't create timer");
- 		return -1;
- 	}
- 	signal(SIGALRM, sig_handler);
- 
- 	err = gettimeofday(&start, NULL);
- 	if (err < 0) {
--		perror("Can't call gettimeofday()\n");
-+		ksft_perror("Can't call gettimeofday()");
- 		return -1;
- 	}
- 
- 	err = timer_settime(id, 0, &val, NULL);
- 	if (err < 0) {
--		perror("Can't set timer\n");
-+		ksft_perror("Can't set timer");
- 		return -1;
- 	}
- 
-@@ -176,14 +174,12 @@ static int check_timer_create(int which)
- 
- 	err = gettimeofday(&end, NULL);
- 	if (err < 0) {
--		perror("Can't call gettimeofday()\n");
-+		ksft_perror("Can't call gettimeofday()");
- 		return -1;
- 	}
- 
--	if (!check_diff(start, end))
--		printf("[OK]\n");
--	else
--		printf("[FAIL]\n");
-+	ksft_test_result(check_diff(start, end) == 0,
-+			 "timer_create() per %s\n", type);
- 
- 	return 0;
- }
-@@ -220,25 +216,25 @@ static int check_timer_distribution(void)
- 		.it_interval.tv_nsec = 1000 * 1000,
- 	};
- 
--	printf("Check timer_create() per process signal distribution... ");
--	fflush(stdout);
--
- 	remain = nthreads + 1;  /* worker threads + this thread */
- 	signal(SIGALRM, distribution_handler);
- 	err = timer_create(CLOCK_PROCESS_CPUTIME_ID, NULL, &id);
- 	if (err < 0) {
--		perror("Can't create timer\n");
-+		ksft_perror("Can't create timer");
- 		return -1;
- 	}
- 	err = timer_settime(id, 0, &val, NULL);
- 	if (err < 0) {
--		perror("Can't set timer\n");
-+		ksft_perror("Can't set timer");
- 		return -1;
- 	}
- 
- 	for (i = 0; i < nthreads; i++) {
--		if (pthread_create(&threads[i], NULL, distribution_thread, NULL)) {
--			perror("Can't create thread\n");
-+		err = pthread_create(&threads[i], NULL, distribution_thread,
-+				     NULL);
-+		if (err) {
-+			ksft_print_msg("Can't create thread: %s (%d)\n",
-+				       strerror(errno), errno);
- 			return -1;
- 		}
- 	}
-@@ -247,25 +243,30 @@ static int check_timer_distribution(void)
- 	while (__atomic_load_n(&remain, __ATOMIC_RELAXED));
- 
- 	for (i = 0; i < nthreads; i++) {
--		if (pthread_join(threads[i], NULL)) {
--			perror("Can't join thread\n");
-+		err = pthread_join(threads[i], NULL);
-+		if (err) {
-+			ksft_print_msg("Can't join thread: %s (%d)\n",
-+				       strerror(errno), errno);
- 			return -1;
- 		}
- 	}
- 
- 	if (timer_delete(id)) {
--		perror("Can't delete timer\n");
-+		ksft_perror("Can't delete timer");
- 		return -1;
- 	}
- 
--	printf("[OK]\n");
-+	ksft_test_result_pass("check_timer_distribution\n");
- 	return 0;
- }
- 
- int main(int argc, char **argv)
- {
--	printf("Testing posix timers. False negative may happen on CPU execution \n");
--	printf("based timers if other threads run on the CPU...\n");
-+	ksft_print_header();
-+	ksft_set_plan(6);
++	/* async connect() with third sk to get into request_sock_queue */
++	err = _test_connect_socket(sk[last], this_ip_dest, port, -1);
++	if (err < 0)
++		test_error("failed to connect()");
 +
-+	ksft_print_msg("Testing posix timers. False negative may happen on CPU execution \n");
-+	ksft_print_msg("based timers if other threads run on the CPU...\n");
+ 	synchronize_threads(); /* 3: close listen socket */
+ 	if (test_client_verify(sk[0], packet_sz, quota / packet_sz, TEST_TIMEOUT_SEC))
+ 		test_fail("Failed to send data on connected socket");
+@@ -292,13 +294,14 @@ static void test_client_active_rst(unsigned int port)
+ 		test_ok("Verified established tcp connection");
  
- 	if (check_itimer(ITIMER_VIRTUAL) < 0)
- 		return ksft_exit_fail();
-@@ -294,5 +295,5 @@ int main(int argc, char **argv)
- 	if (check_timer_distribution() < 0)
- 		return ksft_exit_fail();
+ 	synchronize_threads(); /* 4: finishing up */
+-	err = _test_connect_socket(sk[last], this_ip_dest, port, -1);
+-	if (err < 0)
+-		test_error("failed to connect()");
  
--	return ksft_exit_pass();
-+	ksft_finished();
- }
+ 	synchronize_threads(); /* 5: closed active sk */
+-	err = test_wait_fds(sk, ARRAY_SIZE(sk), NULL,
+-			    wait_for, TEST_TIMEOUT_SEC);
++	/*
++	 * Wait for 2 connections: one accepted, another in the accept queue,
++	 * the one in request_sock_queue won't get fully established, so
++	 * doesn't receive an active RST, see inet_csk_listen_stop().
++	 */
++	err = test_wait_fds(sk, last, NULL, last, TEST_TIMEOUT_SEC);
+ 	if (err < 0)
+ 		test_error("select(): %d", err);
+ 
 -- 
 2.43.0
 
