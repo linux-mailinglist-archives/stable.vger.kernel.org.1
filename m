@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-40607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4F58AE4AB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:47:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229DE8AE4B0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95B1028168D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:47:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0DFD28495C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501EF13DDD4;
-	Tue, 23 Apr 2024 11:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C805C13E3EB;
+	Tue, 23 Apr 2024 11:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9I9/qeb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qP8f49jh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019E813DDBC;
-	Tue, 23 Apr 2024 11:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFE513E04F;
+	Tue, 23 Apr 2024 11:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872455; cv=none; b=YW5HJHG4Eldt+KLfOc42FfxIeLC9yCWNQ4yHVNwO4+7vxAeolMQCjwdyv6GCWSs3+UqKWg8/xT8S8efuxfWGlIHxHL8DR5JLVhKSPk+Qv9GZ3Why1XPV86y+FNFyPtL/l1Llf1SliVBsxDb/XQq7dMnh6KZ89c1CFiyI45KUYrM=
+	t=1713872456; cv=none; b=nKrItd9HfMlUgwMk0F9ludd41YT3/lboN7vZ7YDMSwqiiIMFDG7nslJARkkL8/eRquaXcZ6U2LSLS4g85NUcrkii8LI4IoRH4tZaslJycTuOHfUH1rlhIcDH2Ixh4ztuA7DygOs05kNF4ybOjSBHqzEZh/MD7gxfkZXeLZ90vM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872455; c=relaxed/simple;
-	bh=bbrNrPUDBlJV1SknRifjapzJJRouBy1DEiZ5Rmr4KWA=;
+	s=arc-20240116; t=1713872456; c=relaxed/simple;
+	bh=4g0p/N75RcsA9tw6EzoYo7lJL11XjAoHwbaElJQ0eXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRNndD7q/jvf6FYX9Mp1b5QfjbdjDs5KlQH8S0JgHlz6EOn+wuLC/REem9HJKzr6dpvjuGO69hI/Ij12MzKDDDr+rP62oO5RDgblBfzILsO8EDfoccm53M+3/r3LJkruqCruFt0uQZApzApykEjqAyywv7lx15Er9LzWk4wruLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9I9/qeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB60CC4AF08;
-	Tue, 23 Apr 2024 11:40:53 +0000 (UTC)
+	 MIME-Version; b=Oq9IFKDBTR2qTVD23wQPCOk7m44ocO6fD4Yvm0zVM/MPDEuvnETMRg4o6YSkKjk9TTLfCB5QLuQ4JVTQL33k6f07K25XnUdHSAvq/0rxewTKIokJpSSKySAwwv0Wh+Jmx3uSPHx/HAngaQG45lk9aIgu0H3EJb3dJZb0MxUx9Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qP8f49jh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477EBC3277B;
+	Tue, 23 Apr 2024 11:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713872454;
-	bh=bbrNrPUDBlJV1SknRifjapzJJRouBy1DEiZ5Rmr4KWA=;
+	s=k20201202; t=1713872456;
+	bh=4g0p/N75RcsA9tw6EzoYo7lJL11XjAoHwbaElJQ0eXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9I9/qebZ1ZnvVGB4c4THh3mao1o6WNM6FtPHfXPbp33MV/PL3v56R5ehbTAsQ6ph
-	 eGhHhqaqA0VLHBNinY1ashVcUHuKZVjrjVXFDrmaHj28Jn9NpdBAhC7nNSG/4/3+Sg
-	 TTYzze/3vgzKrYPAidrgptJ71oYXb4LafKi7sJYvZr8Ftan7BXquMDP2W7+xX5U6xn
-	 T2k8D83U9TVamBD6g+BwOEyhuqXdtmX0PiCp6P3z7jq9nRrkbAix0cXXcV0IqLWSX4
-	 iGY7zfzqFo+8OHXtxFofNgeb6lwf8Iaqg1eEpLwByjCGh+IfWtMK1wWg56F4QzvThM
-	 1XWJY4HlwLr1g==
+	b=qP8f49jhoReQ+QzJI13lpFWv9+RLGpv7kyNPIXO3b0IAELyHRHwGR5TLOA5iWFLhg
+	 hcADCbRBrCWUjhNEGBJ7D4+qNkvHI4paCPETWNbToXHPXG9D3kpWzmSD9dtqKYg/2R
+	 gQ5Bc4JY8JOB45ZNPGixD5qYC3Zq/smhanYa3NsanTAkBhwCMjKiH7TQ4av739vxu7
+	 M1OQQuM2aLHs0v2sp7UC2p/U1N9Mqg4AJf3S4L4/S+SyU444yRu5iIIOiegmtJbTl2
+	 mvOyU6XoScVsdbJ7rB9sTr4GhUf1I40c4xezkahAoPmksMW94BM9Mdu2TmGz9SSi4f
+	 YLpsHGs/voMYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vanillan Wang <vanillanwang@163.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	bjorn@mork.no,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 15/16] net:usb:qmi_wwan: support Rolling modules
-Date: Tue, 23 Apr 2024 07:01:48 -0400
-Message-ID: <20240423110151.1658546-15-sashal@kernel.org>
+	josef@toxicpanda.com,
+	cgroups@vger.kernel.org,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 16/16] blk-iocost: do not WARN if iocg was already offlined
+Date: Tue, 23 Apr 2024 07:01:49 -0400
+Message-ID: <20240423110151.1658546-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240423110151.1658546-1-sashal@kernel.org>
 References: <20240423110151.1658546-1-sashal@kernel.org>
@@ -70,68 +69,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.28
 Content-Transfer-Encoding: 8bit
 
-From: Vanillan Wang <vanillanwang@163.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit d362046021ea122309da8c8e0b6850c792ca97b5 ]
+[ Upstream commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 ]
 
-Update the qmi_wwan driver support for the Rolling
-LTE modules.
+In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
+is intended to confirm iocg is active when it has debt. However, warn
+can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
+is run at that time:
 
-- VID:PID 33f8:0104, RW101-GL for laptop debug M.2 cards(with RMNET
-interface for /Linux/Chrome OS)
-0x0104: RMNET, diag, at, pipe
+  WARNING: CPU: 0 PID: 2344971 at block/blk-iocost.c:1402 iocg_pay_debt+0x14c/0x190
+  Call trace:
+  iocg_pay_debt+0x14c/0x190
+  iocg_kick_waitq+0x438/0x4c0
+  iocg_waitq_timer_fn+0xd8/0x130
+  __run_hrtimer+0x144/0x45c
+  __hrtimer_run_queues+0x16c/0x244
+  hrtimer_interrupt+0x2cc/0x7b0
 
-Here are the outputs of usb-devices:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0104 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=ba2eb033
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+The warn in this situation is meaningless. Since this iocg is being
+removed, the state of the 'active_list' is irrelevant, and 'waitq_timer'
+is canceled after removing 'active_list' in ioc_pd_free(), which ensures
+iocg is freed after iocg_waitq_timer_fn() returns.
 
-Signed-off-by: Vanillan Wang <vanillanwang@163.com>
-Link: https://lore.kernel.org/r/20240416120713.24777-1-vanillanwang@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Therefore, add the check if iocg was already offlined to avoid warn
+when removing a blkcg or disk.
+
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/blk-iocost.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index e2e181378f412..edc34402e787f 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1431,6 +1431,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1312, 4)},	/* u-blox LARA-R6 01B */
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
-+	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 7ee8d85c2c68d..b2e913fe61e67 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1438,8 +1438,11 @@ static void iocg_pay_debt(struct ioc_gq *iocg, u64 abs_vpay,
+ 	lockdep_assert_held(&iocg->ioc->lock);
+ 	lockdep_assert_held(&iocg->waitq.lock);
  
- 	/* 4. Gobi 1000 devices */
- 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
+-	/* make sure that nobody messed with @iocg */
+-	WARN_ON_ONCE(list_empty(&iocg->active_list));
++	/*
++	 * make sure that nobody messed with @iocg. Check iocg->pd.online
++	 * to avoid warn when removing blkcg or disk.
++	 */
++	WARN_ON_ONCE(list_empty(&iocg->active_list) && iocg->pd.online);
+ 	WARN_ON_ONCE(iocg->inuse > 1);
+ 
+ 	iocg->abs_vdebt -= min(abs_vpay, iocg->abs_vdebt);
 -- 
 2.43.0
 
