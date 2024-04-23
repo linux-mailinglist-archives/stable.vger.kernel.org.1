@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-41217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198798AFAC8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78E58AFA45
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1D0B285BFD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79FDD1F29682
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6B914A62F;
-	Tue, 23 Apr 2024 21:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD6B1448EF;
+	Tue, 23 Apr 2024 21:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaD/j8xX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7qpvYiq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC414A629;
-	Tue, 23 Apr 2024 21:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09294143C45;
+	Tue, 23 Apr 2024 21:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908757; cv=none; b=bnhyokAG+u3Qkm+Ig9pVVjZP2ZwWdrrF7qbczmL0mXINDrNMR81K5Oi/A05Zd5rLHdGMRC/+Eu2wjAs88AV+baCF//Cm6Tqzi/2RMJ/tzXupoQhRiGY/yKA9TixE7ka3ebvFauJ/ZTs39VlqfgTgFRFnOutl2/9ldB/phk5fuUQ=
+	t=1713908668; cv=none; b=nBVdE+VWB5HgwJnXc4T36btEX4vgDq7Wo9D7ff+m7WfWUdSGc2e/G7/OGiI19D+fpLjT4afQr9ckSSyKrIlmtgYvI21DXdgrDVyK+j1LMcL0QryfwUM8N+8nepNTGnz/1KhaRNt52b3Zyxs0CGifFjX8R3ZWIzXfCEsNnwsNeE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908757; c=relaxed/simple;
-	bh=/NAfNWdnOxxa/DMO9aUWTMQvy3X7svxWf7aCymRxBos=;
+	s=arc-20240116; t=1713908668; c=relaxed/simple;
+	bh=Qc99/znq5HposHo8rzUzGGvgxZPpzM0dJcUDCLPkaDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggErxjM3+FKLEcDRabWsgVuE0jxUOPD3SZHpmbJKoclMDfBM3JFrttANKnrXmsA1hfvkmM67NjGrpvHXxw0oqPM6HxNtNSdQqR9qg4nlekd5p+UBx15I+FVN4bHb/omEe0twiLy7YfMC4rBHKCAc+C0vdoa9ZzpPNdp2JHsXc98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaD/j8xX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EB8C32781;
-	Tue, 23 Apr 2024 21:45:57 +0000 (UTC)
+	 MIME-Version; b=LACmqdQxH1BMjtCrRvHO6vivX0V09uC5jNtm/WiqV1Iq4nsLD0D+DOMk8s9C95MOReM29QvvSiiUs8NYrfVlQ/JO/3BN5jHFg9sezBYf0h7g0vn7au0bbzSdgeCbxdb3p0WAhdhpUzLpMTaPJZ5Sn5VR7rJmgXozCd1Lr7wodjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7qpvYiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA205C116B1;
+	Tue, 23 Apr 2024 21:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908757;
-	bh=/NAfNWdnOxxa/DMO9aUWTMQvy3X7svxWf7aCymRxBos=;
+	s=korg; t=1713908667;
+	bh=Qc99/znq5HposHo8rzUzGGvgxZPpzM0dJcUDCLPkaDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PaD/j8xXoY0OchOfJTCrswv2DH9VPHWC9xbIWfyixgqJHOiPDdThfQcEREpi660nq
-	 5JYs8RwOnGRgm6JZwxbXB/B4RPW+xMMZaeutacGcg7grw6nN/K9LLnUZZeQ5l9ka3i
-	 5dN0mB1YckDtui0OY6yN0rpSpFPrNyANKWGUAkl0=
+	b=c7qpvYiqS5mrTWlMVTjsMYQGmxGND7g8F74CmI4ADsGI21PfuVqU7ApqwFLNQ6JjS
+	 Iz2QDl5RTysiXFE0diaQ62rC407d3dQS2DOiGkgkPKWW8Y2oxzj6Cwxj7vtVmT1VxD
+	 SxsxNmmuOdSD7XeK2Qylv/Lo0xzMwtOQIsV/GeYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bolan wang <bolan.wang@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 108/141] USB: serial: option: add Fibocom FM135-GL variants
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 139/158] mm/shmem: inline shmem_is_huge() for disabled transparent hugepages
 Date: Tue, 23 Apr 2024 14:39:36 -0700
-Message-ID: <20240423213856.691527813@linuxfoundation.org>
+Message-ID: <20240423213900.218680796@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +67,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: bolan wang <bolan.wang@fibocom.com>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-commit 356952b13af5b2c338df1e06889fd1b5e12cbbf4 upstream.
+commit 1f737846aa3c45f07a06fa0d018b39e1afb8084a upstream.
 
-Update the USB serial option driver support for the Fibocom
-FM135-GL LTE modules.
-- VID:PID 2cb7:0115, FM135-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
+In order to  minimize code size (CONFIG_CC_OPTIMIZE_FOR_SIZE=y),
+compiler might choose to make a regular function call (out-of-line) for
+shmem_is_huge() instead of inlining it. When transparent hugepages are
+disabled (CONFIG_TRANSPARENT_HUGEPAGE=n), it can cause compilation
+error.
 
-0x0115: mbim, diag, at, pipe
+mm/shmem.c: In function `shmem_getattr':
+./include/linux/huge_mm.h:383:27: note: in expansion of macro `BUILD_BUG'
+  383 | #define HPAGE_PMD_SIZE ({ BUILD_BUG(); 0; })
+      |                           ^~~~~~~~~
+mm/shmem.c:1148:33: note: in expansion of macro `HPAGE_PMD_SIZE'
+ 1148 |                 stat->blksize = HPAGE_PMD_SIZE;
 
-Here are the outputs of usb-devices:
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0115 Rev=05.15
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom Module
-S:  SerialNumber=12345678
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+To prevent the possible error, always inline shmem_is_huge() when
+transparent hugepages are disabled.
 
-Signed-off-by: bolan wang <bolan.wang@fibocom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lkml.kernel.org/r/20240409155407.2322714-1-sumanthk@linux.ibm.com
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/shmem_fs.h |    9 +++++++++
+ mm/shmem.c               |    6 ------
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2272,6 +2272,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -110,8 +110,17 @@ extern struct page *shmem_read_mapping_p
+ extern void shmem_truncate_range(struct inode *inode, loff_t start, loff_t end);
+ int shmem_unuse(unsigned int type);
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ extern bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
+ 			  struct mm_struct *mm, unsigned long vm_flags);
++#else
++static __always_inline bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
++					  struct mm_struct *mm, unsigned long vm_flags)
++{
++	return false;
++}
++#endif
++
+ #ifdef CONFIG_SHMEM
+ extern unsigned long shmem_swap_usage(struct vm_area_struct *vma);
+ #else
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -742,12 +742,6 @@ static long shmem_unused_huge_count(stru
+ 
+ #define shmem_huge SHMEM_HUGE_DENY
+ 
+-bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
+-		   struct mm_struct *mm, unsigned long vm_flags)
+-{
+-	return false;
+-}
+-
+ static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
+ 		struct shrink_control *sc, unsigned long nr_to_split)
+ {
 
 
 
