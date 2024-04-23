@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-40805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A308AF923
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D648AF9B8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38D621F21C82
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EDD028AADD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F43144303;
-	Tue, 23 Apr 2024 21:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEF5143C69;
+	Tue, 23 Apr 2024 21:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvskIORr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kffLNFuj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C107014389A;
-	Tue, 23 Apr 2024 21:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8917B143C7E;
+	Tue, 23 Apr 2024 21:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908474; cv=none; b=RctHoexlJEvceDdJQDze1x/e6zxBXuNf4lZuVc8kMYp3Vyn48dN2VBxKv3gChvK2DFKkBiKm7/1zckKUkl9lYQvLZuOyr1ty+E+4mVqdzGD5cLhK7bly0ddJhKZiTHVrpv61J/kdTLiWXTcMO01gRdmWvcxU/o2IoLw/cMuosAA=
+	t=1713908575; cv=none; b=SKzVfqmfN0t0bu8RInb/SDaIsp9/KMB5U7yh9PEzdktXdGirMPfRH+7KeE4rc7i//kk1IMLi9e7QI6i1gqRy/C7XPp6EG1tdFxVqfBFpy8F2rdg08fhXDsdht/dkp/L2+PbL3tJMpbK4IcN3YuS/zb6qkyl73oRQuiqrk2TePOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908474; c=relaxed/simple;
-	bh=D5eW49wq4pHJPo8zew5zlz/vCWfy5WUWwvq8H9tL2mQ=;
+	s=arc-20240116; t=1713908575; c=relaxed/simple;
+	bh=5hLOuSHJOKMyKg/KuimfLSsxVuKpq3g1vMgYTIFGK6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QNzOtgRdBwTEw/7s1FMUULST1HbMmKRE6qPlYv/TUIY1TS8Oyjsg62j7y0SJ1EJXBr+c9U1nrUfOAHoLSXQK+YKrLMqsTcJsQyxcjUhCpTR9LMPDTEV0pMtG2Rmbz1UGfbT8FzTybuPcLKNK+osdjOhQCvIdhvFEjdjl/fBulTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvskIORr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95523C4AF08;
-	Tue, 23 Apr 2024 21:41:14 +0000 (UTC)
+	 MIME-Version; b=KLanQNGuw50hvScitNSfW7MxCJkSjYUI/HxVBRG89ptf/DLv1hp+7L5YMWPJ92YM9g4YxWY+pry1RlIJsemEENhxteg9i4TkDJfCIcjp5FTLJYL3hfCbQnDnOFHr4l2EAdwO3zM1/qnDspY90cacO8hktIOPk0DGg0aPStl9FEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kffLNFuj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE85C3277B;
+	Tue, 23 Apr 2024 21:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908474;
-	bh=D5eW49wq4pHJPo8zew5zlz/vCWfy5WUWwvq8H9tL2mQ=;
+	s=korg; t=1713908575;
+	bh=5hLOuSHJOKMyKg/KuimfLSsxVuKpq3g1vMgYTIFGK6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RvskIORravxlOxgEq2Xm7BTSeiYLRRVxr9R7k8s+SQ1VH6bZ4Mp41af5eFQ6q2C1s
-	 VMR5UXwiguKsodXlb4MP8IZb2RjKVljgjDOU1I6jbTegLEkHQeTjqWrXg+Gba+fEZt
-	 JLkbWZb6keyupV23es4eOhVgnksVG34UL8BGhnac=
+	b=kffLNFujEdj4gd0U73jrxNwLJZLWostqfmnQeQI0T49s6SflIeMQhk4MWh4mt2g6x
+	 mCbYb+p8BkqZt/PelGDS0ZUMkiBFmsarg4VX82RklcGBabLSQcCTtY6Qn+A13QUooq
+	 6qUkH/iydX9y+bKJFwxKuXUi/c2ElU9ctfJSF0FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 042/158] net: dsa: mt7530: fix port mirroring for MT7988 SoC switch
-Date: Tue, 23 Apr 2024 14:37:44 -0700
-Message-ID: <20240423213857.272699746@linuxfoundation.org>
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 028/158] scsi: core: Fix handling of SCMD_FAIL_IF_RECOVERING
+Date: Tue, 23 Apr 2024 14:37:45 -0700
+Message-ID: <20240423213856.657014228@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 2c606d138518cc69f09c35929abc414a99e3a28f ]
+commit ca91259b775f6fd98ae5d23bb4eec101d468ba8d upstream.
 
-The "MT7988A Wi-Fi 7 Generation Router Platform: Datasheet (Open Version)
-v0.1" document shows bits 16 to 18 as the MIRROR_PORT field of the CPU
-forward control register. Currently, the MT7530 DSA subdriver configures
-bits 0 to 2 of the CPU forward control register which breaks the port
-mirroring feature for the MT7988 SoC switch.
+There is code in the SCSI core that sets the SCMD_FAIL_IF_RECOVERING
+flag but there is no code that clears this flag. Instead of only clearing
+SCMD_INITIALIZED in scsi_end_request(), clear all flags. It is never
+necessary to preserve any command flags inside scsi_end_request().
 
-Fix this by using the MT7531_MIRROR_PORT_GET() and MT7531_MIRROR_PORT_SET()
-macros which utilise the correct bits.
-
-Fixes: 110c18bfed41 ("net: dsa: mt7530: introduce driver for MT7988 built-in switch")
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Acked-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 310bcaef6d7e ("scsi: core: Support failing requests while recovering")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240325224417.1477135-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/scsi/scsi_lib.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 14f1b8d08153f..f37dc22356f15 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -1947,14 +1947,16 @@ mt7530_port_vlan_del(struct dsa_switch *ds, int port,
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -543,10 +543,9 @@ static bool scsi_end_request(struct requ
+ 	if (blk_queue_add_random(q))
+ 		add_disk_randomness(req->q->disk);
  
- static int mt753x_mirror_port_get(unsigned int id, u32 val)
- {
--	return (id == ID_MT7531) ? MT7531_MIRROR_PORT_GET(val) :
--				   MIRROR_PORT(val);
-+	return (id == ID_MT7531 || id == ID_MT7988) ?
-+		       MT7531_MIRROR_PORT_GET(val) :
-+		       MIRROR_PORT(val);
- }
+-	if (!blk_rq_is_passthrough(req)) {
+-		WARN_ON_ONCE(!(cmd->flags & SCMD_INITIALIZED));
+-		cmd->flags &= ~SCMD_INITIALIZED;
+-	}
++	WARN_ON_ONCE(!blk_rq_is_passthrough(req) &&
++		     !(cmd->flags & SCMD_INITIALIZED));
++	cmd->flags = 0;
  
- static int mt753x_mirror_port_set(unsigned int id, u32 val)
- {
--	return (id == ID_MT7531) ? MT7531_MIRROR_PORT_SET(val) :
--				   MIRROR_PORT(val);
-+	return (id == ID_MT7531 || id == ID_MT7988) ?
-+		       MT7531_MIRROR_PORT_SET(val) :
-+		       MIRROR_PORT(val);
- }
- 
- static int mt753x_port_mirror_add(struct dsa_switch *ds, int port,
--- 
-2.43.0
-
+ 	/*
+ 	 * Calling rcu_barrier() is not necessary here because the
 
 
 
