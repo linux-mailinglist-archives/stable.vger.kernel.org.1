@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390C28AF922
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE008AF9B6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B40A1C22B70
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DD601C20C54
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650FD1442FD;
-	Tue, 23 Apr 2024 21:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F62146000;
+	Tue, 23 Apr 2024 21:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwtiE60X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCtJ9xdP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C1214389A;
-	Tue, 23 Apr 2024 21:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2195A143C7E;
+	Tue, 23 Apr 2024 21:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908474; cv=none; b=pkHId16vPXBOpl6htcEfMbkyoAiLMluMmnLwxxjF3oMa4CFSOFx7hnhTtBIeIg8/BT7m9Yta/tbn3OEmlX1pMqcOpnFaCo2Jax+2O5QFC4XnaRV+etXYyc98yWC3C8c9xUUBnF+ivMlAwQ7yMTk4nwyNrouPO7tO8k/+Dc+Ruww=
+	t=1713908574; cv=none; b=KcKSUbMtzmJkdT6VE+AFPgL7sIbyqDmDE6akHisi1qrSVtSsqk1DrE8hUiRDeTcW9HZOCmL7HesDc+cnuW9476yKjQELL5ipFLzLHngx0YYCfKgaSCaq6yJ/i155j1KsiLxy5KLluoTXd410r+8awnr38ITNh6WrJXTfxIqeYnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908474; c=relaxed/simple;
-	bh=D/RAtUzINKMj8uAhS4D6wF+rtYFFVNMD4zio75A4SY8=;
+	s=arc-20240116; t=1713908574; c=relaxed/simple;
+	bh=FsMlwNEoFMxcwpt8q8Mc+QStKkZLNBdxSKyOF+4Z9ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rnfxKURD5lAExrvcUtqtjur8P7FaPmoazUMmOMWYj1H+SWrmMXiNB6cXqnOdz3bgPJV6vMY6YpjaLVy4LovrxiLW+kaahEkXElCPYKhj8VxNJsrkaBZz+Uw06DAWPjupB5WpyqMt1CFdUEbzvRlTCbJYJhJ+kfm/bzW/6+oCgNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwtiE60X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC101C116B1;
-	Tue, 23 Apr 2024 21:41:13 +0000 (UTC)
+	 MIME-Version; b=NWEBLFdzkZH3N1VwyPeG7ePVRIEv7fA7jy8LCFVITUkoq4SG0wlc+GYz4KAFYU7JEBHq8sMn4Qs8GZLpsxVSw5Raj4C/lG3aNb6JZ5dU92eBYahzjKGe3upIg1RnRuKXqGRgw2yLUp2K/ofIKU40E/lGQfh/vxDSP+g3/3jxpdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCtJ9xdP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB28BC4AF07;
+	Tue, 23 Apr 2024 21:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908474;
-	bh=D/RAtUzINKMj8uAhS4D6wF+rtYFFVNMD4zio75A4SY8=;
+	s=korg; t=1713908574;
+	bh=FsMlwNEoFMxcwpt8q8Mc+QStKkZLNBdxSKyOF+4Z9ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwtiE60XAxevXSh49XQsEqq+RYibhzwHhiOjXSUf3FrxiRh8EhsFxCywpaxDRA1MX
-	 wucK5eD7rPwJCoIsRkf5uFqu3qCfAVtZ2ZkGcoHYnjD4EDK52STZGHnRYJuq+KPcW0
-	 iM3n7NjfTmIh0Tc+Oehno9tajJ5Mi+DtlLXSF/78=
+	b=RCtJ9xdPKPy683pE70idxKtkPub96O7ICyH+SoSqKCmYQyt+oWM/W3FdKbiJcRK2j
+	 uYEr8QnvYR87RDandE8WpQW6vXWp8w+jvETCJ1LN44Q3e/O10vF59zwbC+VyHMkiDf
+	 9uIDtfbfO1BudRfqpPAeuulfX1vFNFxgKHYJtJxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 041/158] net: dsa: mt7530: fix mirroring frames received on local port
+	Yuanhe Shu <xiangzao@linux.alibaba.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.6 026/158] selftests/ftrace: Limit length in subsystem-enable tests
 Date: Tue, 23 Apr 2024 14:37:43 -0700
-Message-ID: <20240423213857.241897446@linuxfoundation.org>
+Message-ID: <20240423213856.595700337@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Yuanhe Shu <xiangzao@linux.alibaba.com>
 
-[ Upstream commit d59cf049c8378677053703e724808836f180888e ]
+commit 1a4ea83a6e67f1415a1f17c1af5e9c814c882bb5 upstream.
 
-This switch intellectual property provides a bit on the ARL global control
-register which controls allowing mirroring frames which are received on the
-local port (monitor port). This bit is unset after reset.
+While sched* events being traced and sched* events continuously happen,
+"[xx] event tracing - enable/disable with subsystem level files" would
+not stop as on some slower systems it seems to take forever.
+Select the first 100 lines of output would be enough to judge whether
+there are more than 3 types of sched events.
 
-This ability must be enabled to fully support the port mirroring feature on
-this switch intellectual property.
-
-Therefore, this patch fixes the traffic not being reflected on a port,
-which would be configured like below:
-
-  tc qdisc add dev swp0 clsact
-
-  tc filter add dev swp0 ingress matchall skip_sw \
-  action mirred egress mirror dev swp0
-
-As a side note, this configuration provides the hairpinning feature for a
-single port.
-
-Fixes: 37feab6076aa ("net: dsa: mt7530: add support for port mirroring")
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 815b18ea66d6 ("ftracetest: Add basic event tracing test cases")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c | 6 ++++++
- drivers/net/dsa/mt7530.h | 4 ++++
- 2 files changed, 10 insertions(+)
+ tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 22b97505fa536..14f1b8d08153f 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2517,6 +2517,9 @@ mt7530_setup(struct dsa_switch *ds)
- 			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
- 	}
+--- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
++++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
+@@ -18,7 +18,7 @@ echo 'sched:*' > set_event
  
-+	/* Allow mirroring frames received on the local port (monitor port). */
-+	mt7530_set(priv, MT753X_AGC, LOCAL_EN);
-+
- 	/* Setup VLAN ID 0 for VLAN-unaware bridges */
- 	ret = mt7530_setup_vlan0(priv);
- 	if (ret)
-@@ -2625,6 +2628,9 @@ mt7531_setup_common(struct dsa_switch *ds)
- 			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
- 	}
+ yield
  
-+	/* Allow mirroring frames received on the local port (monitor port). */
-+	mt7530_set(priv, MT753X_AGC, LOCAL_EN);
-+
- 	/* Flush the FDB table */
- 	ret = mt7530_fdb_cmd(priv, MT7530_FDB_FLUSH, NULL);
- 	if (ret < 0)
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index ddefeb69afda1..9388c1205bea2 100644
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -32,6 +32,10 @@ enum mt753x_id {
- #define SYSC_REG_RSTCTRL		0x34
- #define  RESET_MCM			BIT(2)
+-count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
+@@ -29,7 +29,7 @@ echo 1 > events/sched/enable
  
-+/* Register for ARL global control */
-+#define MT753X_AGC			0xc
-+#define  LOCAL_EN			BIT(7)
-+
- /* Registers to mac forward control for unknown frames */
- #define MT7530_MFC			0x10
- #define  BC_FFP(x)			(((x) & 0xff) << 24)
--- 
-2.43.0
-
+ yield
+ 
+-count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
+@@ -40,7 +40,7 @@ echo 0 > events/sched/enable
+ 
+ yield
+ 
+-count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
+ if [ $count -ne 0 ]; then
+     fail "any of scheduler events should not be recorded"
+ fi
 
 
 
