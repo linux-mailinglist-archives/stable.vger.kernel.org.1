@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-40644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA088AE514
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:57:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EB98AE516
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:57:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC8261F2240A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:57:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FCDA282F40
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C2514A4D6;
-	Tue, 23 Apr 2024 11:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D7C14A4EC;
+	Tue, 23 Apr 2024 11:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u+i7ow8Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LfrJshIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C56712F391;
-	Tue, 23 Apr 2024 11:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA4714A4DE;
+	Tue, 23 Apr 2024 11:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872522; cv=none; b=Uw2Fi1abkqNn+DBW9x9Kt4i6v+8LotZVNRzxtiU0DWTc2rX2OCYIJfXolE+Kqm67dQdYFOMWwzELl/I3lkw2CEOK85sdUIgbbMEPhbokDDGhmbYYuQbolpX/RWRP9gA3I839MTVNuE+xD1HQD1ovf12R2BqRVDKpSGblSAmjeVA=
+	t=1713872523; cv=none; b=ClrB4sfLcEZlXJ++Cc9uZBi2TmCbD+dl77T1fVMoYzNHINYKmCWI/I2z4xCoWko1N/SEKzETChAeCXDmwZjz4nmJJ6dqbLurh8dW2zStDYqGzbzOeN588YVA39TRUjHTaprSr9X1YIvacHdZ74o863X9PKvm9d8fkpv3nRzcgps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872522; c=relaxed/simple;
-	bh=0Ud8R7l2CREUg8OpwRFygPTfBNVAqjuYQEv9QhtbshA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TKbS77c6ArYyGxTmRIg5zZwFj7wohbXBMmLWdqu2QxfQpvnSEiFGvEGU7F4lLFr4HNsykdkufrxjr7oBeew4uHb5LtF3nJ5TB/MlfHBltxjGVrs7db7nxn5VwVVY6o+M8oyJ+CmMntit+lTfRB79Jc/YfODKLmx0iT7bl6E01xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u+i7ow8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F98C116B1;
-	Tue, 23 Apr 2024 11:42:00 +0000 (UTC)
+	s=arc-20240116; t=1713872523; c=relaxed/simple;
+	bh=8qv5nn3QTCh8dHUbzLVT7MhZOXQov3Pz+CHyf9UKg/Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OWQRYefNzODcNOjY3Q53J4L4Yd1eQSSQe6AZmy0yKAo+8VgMKiH42qoX3aiv0rEgK1oExnho+bWr3yMT/esLWSguTO2EhXgVWnZGPhgtgcSsC1rjWjzvJCAYIdsw7gGxjlW3S1YEOhxGV8ZtqWfvN/osQfgsR7R1aXB0cNGI11w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LfrJshIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B17C2BD11;
+	Tue, 23 Apr 2024 11:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713872521;
-	bh=0Ud8R7l2CREUg8OpwRFygPTfBNVAqjuYQEv9QhtbshA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=u+i7ow8YWVTNSA85iUhyogeEwXDnawg7OI8tsnstqgcVLddwW3wIH/O6eG4c+wvJb
-	 +deYdxZiYgKOlQLUcv9eC4CHgRfmpV8QiHT/yws8qdXg/+VzlvgitP14yMiBTTehmS
-	 PuGWH3xuZ8G59iGTACNj0QyJIonN/6YZ+IEOeSbsI1q4fsLk4z+p4kzSnuuyEIbiNW
-	 rW8D8kx6Vh5Qz6g/hKH9aBkYDlvqbzXyCTk4tw0qypA7h3yWKX1lfZBhOlvK+qLqVj
-	 nDUJ1sXsHn3G6RKxCnRE28Ziy9cywc6A02Iusn4FaAUV9vKR4v5OP5sHsLM6leXGfg
-	 sVBsotMJlYVYA==
+	s=k20201202; t=1713872523;
+	bh=8qv5nn3QTCh8dHUbzLVT7MhZOXQov3Pz+CHyf9UKg/Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LfrJshIVhBDa0ncKrjDyXJjwlRf7AMMY4MGj3MtbwbhpU0u+y2cxWq6TMlV8baC66
+	 TNvN61EzwwIEawj6gx7Ij68sx5/hpKITjslUDALe9FoCPitYAGoYsnIUrL90IZq9ki
+	 5afR6KcwxCv8XSr6JuS9L5rtBLg9wxOrkNb25KEhphxStjX5zOcaLhPOfBW89dt+iS
+	 28VAbk53iAK4eaOuKmMrbogliOVsO0zaKKIEznrdlBOo0tH+zq244CC/jhzN+ssTS0
+	 GA9+eDtZ8E0gXgTxFOAFrsvKlDyGlz+fFBzADE7ZKN6AFzIYXO+6hQtXIy1ykY/0yq
+	 vxF2NudxxGHgA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,10 +50,12 @@ Cc: Joakim Sindholt <opensource@zhasha.com>,
 	lucho@ionkov.net,
 	asmadeus@codewreck.org,
 	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 4.19 1/7] fs/9p: only translate RWX permissions for plain 9P2000
-Date: Tue, 23 Apr 2024 07:03:11 -0400
-Message-ID: <20240423110318.1659628-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 2/7] fs/9p: translate O_TRUNC into OTRUNC
+Date: Tue, 23 Apr 2024 07:03:12 -0400
+Message-ID: <20240423110318.1659628-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240423110318.1659628-1-sashal@kernel.org>
+References: <20240423110318.1659628-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,33 +69,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit cd25e15e57e68a6b18dc9323047fe9c68b99290b ]
+[ Upstream commit 87de39e70503e04ddb58965520b15eb9efa7eef3 ]
 
-Garbage in plain 9P2000's perm bits is allowed through, which causes it
-to be able to set (among others) the suid bit. This was presumably not
-the intent since the unix extended bits are handled explicitly and
-conditionally on .u.
+This one hits both 9P2000 and .u as it appears v9fs has never translated
+the O_TRUNC flag.
 
 Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
 Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/9p/vfs_inode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 72b779bc09422..d1a0f36dcdd43 100644
+index d1a0f36dcdd43..ea32af83729d9 100644
 --- a/fs/9p/vfs_inode.c
 +++ b/fs/9p/vfs_inode.c
-@@ -101,7 +101,7 @@ static int p9mode2perm(struct v9fs_session_info *v9ses,
- 	int res;
- 	int mode = stat->mode;
+@@ -192,6 +192,9 @@ int v9fs_uflags2omode(int uflags, int extended)
+ 		break;
+ 	}
  
--	res = mode & S_IALLUGO;
-+	res = mode & 0777; /* S_IRWXUGO */
- 	if (v9fs_proto_dotu(v9ses)) {
- 		if ((mode & P9_DMSETUID) == P9_DMSETUID)
- 			res |= S_ISUID;
++	if (uflags & O_TRUNC)
++		ret |= P9_OTRUNC;
++
+ 	if (extended) {
+ 		if (uflags & O_EXCL)
+ 			ret |= P9_OEXCL;
 -- 
 2.43.0
 
