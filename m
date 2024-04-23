@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-40605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD378AE4A5
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:47:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39808AE4A8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2893B2878B6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:47:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30D0E1C22243
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29A713D52C;
-	Tue, 23 Apr 2024 11:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95D413DBA2;
+	Tue, 23 Apr 2024 11:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T9lay7NM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kckn1+TF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3348564F;
-	Tue, 23 Apr 2024 11:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D09313D8B1;
+	Tue, 23 Apr 2024 11:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872451; cv=none; b=i0Zp8ZLFTzASxghoCrtiuB8KV2iSfTiYPREY6QyyqKFa36PunO/X4rP+EGYmoELNpdzJlv76S62gmnT7XNQhS6NaeazoMdJYA7n9fDQSXV0i7HfVtBfC/Cin4gjbuDmT2cG6kN0msfDG9DgSdJpGWWIIGTVYyW49nV5LH1N63sA=
+	t=1713872453; cv=none; b=ZpUL09OffylU7V65wQ8zDDCm+Jjz0A7zMCk4xkKHQ98pmYudm6WqSRN3O/rXfuJeukUhX/rN9j4T+lUZXlHpMudHIR9EGoQamtqCe0Q0Y9Kerm2/dBCHg2kxkNWJMFfi+p2wNLx0lf60WH4dhtdbdF1mJP+lmgfXNm7SpHUP/zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872451; c=relaxed/simple;
-	bh=TkcNi1fQ9TF91KAuebmGAZ3Sag/oWc+wWRlrwOCiSVw=;
+	s=arc-20240116; t=1713872453; c=relaxed/simple;
+	bh=F5YyWvdNkv8DKw0T3YI20djvYl+RtxbGRqQQS14nsNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R5RLZA5BMTKWwTC72eoRAoeb6SO1qWP2VzrR189Un9s4Uo6rZ/pH4n4SplZKjF81Z87SueTURBayt1+xTnbVLQoBaYLFfs+3PEWpmqIYuHb2x08wUN1Q8vUCxUlk+x2jKwiaCyVKUA0gf2WtghmbWIrWueh4lRnp5Mlmb3waz+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T9lay7NM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A246C2BD11;
-	Tue, 23 Apr 2024 11:40:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k/E+puHQvaJUfKY/izN2qo22oP/zDDQ2TXOvSt0iDFIIocC0ZDY30hi4gVpGOwvbP6CQXF10tOlayPpiJVOFIKjw3yLAEv0JGVxmzTpc8JFFUDE4DrKmcD1Q0xzcXHnClsXSH2z0louZgo5k+Co45F3AhMzlQxNO0oHcJPIh/GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kckn1+TF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEA9C2BD11;
+	Tue, 23 Apr 2024 11:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713872451;
-	bh=TkcNi1fQ9TF91KAuebmGAZ3Sag/oWc+wWRlrwOCiSVw=;
+	s=k20201202; t=1713872453;
+	bh=F5YyWvdNkv8DKw0T3YI20djvYl+RtxbGRqQQS14nsNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9lay7NMoNn2VbPU05cPG1jaLT4S2+HWlgyEpD8IoIlhxZetVvkEqel9a9Eo73hvp
-	 tzrFKn2l7pV/mPiLaEvnOpHaZZVWs5H/ciTAbKqRfarbG5/5IS444FvjTSS2XURq3O
-	 CFD+veACevhWyhcBeToY+Xbvk1LbiWgv2F2+ktlkOi/ZxzH7N8Wkulh33sEPbt3Jsf
-	 zd4jWl6Bo57wOr4Gm2XgHNLkI7q5w4YdNyGt0cPDpgTFSdZcTR88IuaFiaHA+PbGJK
-	 3nMRyu/J01N9RfJ3B3s1jzOD7SZeGTnl4M0T6D7BmlZxElZySKhp3R9fUShKmjxRpj
-	 9ofeaQ9nvrfaA==
+	b=Kckn1+TFznkwbzHSn9b8SEuqXxSUHLdCFJ9DIckD1Nm1ln/ymm9jEuKPhZVPqXG+8
+	 XeDgiFxUnCqZiFAPle8jA05j9u5CMTcCj4V6u87+T6kMSCqoTA5nNgP0u0EDjXi/VG
+	 dJWmRaLM5Rai0oUjrWD3ZGLQlPcUAdkv/+g/rA6rvokQsRCexIaW8kxBYZVMvf1Bt4
+	 50zuvGxXgGixmhHfqcN6yq3TAN5kRk1cD+uVmoPDMwv4dKsuXz43sunD8YQ/mnvQg6
+	 c7He5CodDZ7cQFQl9YInAJII1+DlPKNsVx974nK/PjfooQvc0vMTemPtvEFcsgmG9t
+	 te02n4pBHNomw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	Kees Cook <keescook@chromium.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Shyam-sundar.S-k@amd.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 13/16] platform/x86/amd/pmc: Extend Framework 13 quirk to more BIOSes
-Date: Tue, 23 Apr 2024 07:01:46 -0400
-Message-ID: <20240423110151.1658546-13-sashal@kernel.org>
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 14/16] drm/radeon: silence UBSAN warning (v3)
+Date: Tue, 23 Apr 2024 07:01:47 -0400
+Message-ID: <20240423110151.1658546-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240423110151.1658546-1-sashal@kernel.org>
 References: <20240423110151.1658546-1-sashal@kernel.org>
@@ -68,46 +73,73 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.28
 Content-Transfer-Encoding: 8bit
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f609e7b1b49e4d15cf107d2069673ee63860c398 ]
+[ Upstream commit 781d41fed19caf900c8405064676813dc9921d32 ]
 
-BIOS 03.05 still hasn't fixed the spurious IRQ1 issue.  As it's still
-being worked on there is still a possibility that it won't need to
-apply to future BIOS releases.
+Convert a variable sized array from [1] to [].
 
-Add a quirk for BIOS 03.05 as well.
+v2: fix up a few more.
+v3: integrate comments from Kees.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240410141046.433-1-mario.limonciello@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Tested-by: Jeff Johnson <quic_jjohnson@quicinc.com> (v2)
+Acked-by: Christian König <christian.koenig@amd.com> (v1)
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: keescook@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/radeon/pptable.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index b456370166b6b..b4f49720c87f6 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -208,6 +208,15 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "03.03"),
- 		}
- 	},
-+	{
-+		.ident = "Framework Laptop 13 (Phoenix)",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Laptop 13 (AMD Ryzen 7040Series)"),
-+			DMI_MATCH(DMI_BIOS_VERSION, "03.05"),
-+		}
-+	},
- 	{}
- };
+diff --git a/drivers/gpu/drm/radeon/pptable.h b/drivers/gpu/drm/radeon/pptable.h
+index 4c2eec49dadc9..844f0490bf31f 100644
+--- a/drivers/gpu/drm/radeon/pptable.h
++++ b/drivers/gpu/drm/radeon/pptable.h
+@@ -424,7 +424,7 @@ typedef struct _ATOM_PPLIB_SUMO_CLOCK_INFO{
+ typedef struct _ATOM_PPLIB_STATE_V2
+ {
+       //number of valid dpm levels in this state; Driver uses it to calculate the whole 
+-      //size of the state: sizeof(ATOM_PPLIB_STATE_V2) + (ucNumDPMLevels - 1) * sizeof(UCHAR)
++      //size of the state: struct_size(ATOM_PPLIB_STATE_V2, clockInfoIndex, ucNumDPMLevels)
+       UCHAR ucNumDPMLevels;
+       
+       //a index to the array of nonClockInfos
+@@ -432,14 +432,14 @@ typedef struct _ATOM_PPLIB_STATE_V2
+       /**
+       * Driver will read the first ucNumDPMLevels in this array
+       */
+-      UCHAR clockInfoIndex[1];
++      UCHAR clockInfoIndex[] __counted_by(ucNumDPMLevels);
+ } ATOM_PPLIB_STATE_V2;
  
+ typedef struct _StateArray{
+     //how many states we have 
+     UCHAR ucNumEntries;
+     
+-    ATOM_PPLIB_STATE_V2 states[1];
++    ATOM_PPLIB_STATE_V2 states[] __counted_by(ucNumEntries);
+ }StateArray;
+ 
+ 
+@@ -450,7 +450,7 @@ typedef struct _ClockInfoArray{
+     //sizeof(ATOM_PPLIB_CLOCK_INFO)
+     UCHAR ucEntrySize;
+     
+-    UCHAR clockInfo[1];
++    UCHAR clockInfo[] __counted_by(ucNumEntries);
+ }ClockInfoArray;
+ 
+ typedef struct _NonClockInfoArray{
+@@ -460,7 +460,7 @@ typedef struct _NonClockInfoArray{
+     //sizeof(ATOM_PPLIB_NONCLOCK_INFO)
+     UCHAR ucEntrySize;
+     
+-    ATOM_PPLIB_NONCLOCK_INFO nonClockInfo[1];
++    ATOM_PPLIB_NONCLOCK_INFO nonClockInfo[] __counted_by(ucNumEntries);
+ }NonClockInfoArray;
+ 
+ typedef struct _ATOM_PPLIB_Clock_Voltage_Dependency_Record
 -- 
 2.43.0
 
