@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-40852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CE38AF953
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D6E8AF9EB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3A3E2838F5
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B51B1F284A1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6815E14431C;
-	Tue, 23 Apr 2024 21:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F82147C8C;
+	Tue, 23 Apr 2024 21:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DzfKxBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6M8dN3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2342A14388D;
-	Tue, 23 Apr 2024 21:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A502C143C57;
+	Tue, 23 Apr 2024 21:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908507; cv=none; b=PuSic12XvkFn8Iy8GcEkhxbNIGmksKNizOAVaHfxAuzB31HPyaOO5Og2S0sqVQIhHs7pv4+nYxoeoUggUrVAci884dKwlJyThS4VMbciJbOVHPUOKaV4MgRgMZVhRqC1PzQqUr8enxbVnoYaBAqo8qvCNdpZcOqcojBrGlxgPlU=
+	t=1713908606; cv=none; b=LoAg+eTLi0f3oaEux/lviZSpmow+mwN2g0unIBSW+qotQ0TVEDfbowyGsYTf/Peq3663EfVUsMnck/XYG7cVig96dbN8nXN6yJTwVK0YhpTYDwKpPkE/FmatiDN4ikS+LlvZv/1gJwye8Q3G+PbWzANn7D5Y1VT3tt+ULdh9Fsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908507; c=relaxed/simple;
-	bh=b2cCcWMIVXxsIev2qylYjowVRScIDiv/6mgsw9i6HtM=;
+	s=arc-20240116; t=1713908606; c=relaxed/simple;
+	bh=RtN8jqDVelFusVvxk5vHl5Yj3x6aYhnMinjBLFhgx70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=te9z13bmQzjAXOOX6H+dbLDinhA59DP41A2iHiHzfyo9NHuCbkGiSmQaAf5SyN9V+ez1M4NYMpFY//UH+X6gylxtuju4xYxjz+xxgY0vfWPtrdZw8RT3ZYC0wN/Go7ZgXCABuKhdOz6c5YkhNGrij2eNF0KVFnVa4XD8CLFlKns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DzfKxBX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD5CC32781;
-	Tue, 23 Apr 2024 21:41:46 +0000 (UTC)
+	 MIME-Version; b=uyz13jRrITUUA37qUQoGKYkpprfIxTUgU1Yo3OpWBrCo3t+UMTbPIFh1eTkYMZUmlEhBLtS3lbh6CMGy2DdV1dUjrhlh8boNLpOu1XcAZy5dIkW2De9c5vPzTig4V4byaAcKoFEcGVm74K47xrNWpGBWiUln7pIrd1b2FrAVNds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6M8dN3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EB9C116B1;
+	Tue, 23 Apr 2024 21:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908506;
-	bh=b2cCcWMIVXxsIev2qylYjowVRScIDiv/6mgsw9i6HtM=;
+	s=korg; t=1713908606;
+	bh=RtN8jqDVelFusVvxk5vHl5Yj3x6aYhnMinjBLFhgx70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2DzfKxBXFH6T2OWCjFZR3uFLCYThJAwhAQoKuTuc0ZdwSI2fr69G67idd6Qk5F02a
-	 qjzgPkhBCohEJFLOgzRjVbKwuDkptZb8I/oTVhOpIa8E1eNC2UYo3TrsaZWDVuH9fz
-	 Yw2O0kDo1h5kXPssG/+5FiSSfM3SqbuKQVzz06Ng=
+	b=i6M8dN3+yxpvn+sylenDamT70hKoNmwUD0e+klCckBAc0u+jXosYFvJOWv/cCiDzM
+	 GOYJ51ffJM5YTmPY1Ze9brhogUmN3kL1Y55t0Zt9d+79II62a9x8xP1hKhL/fcqKhH
+	 l6qRUwxEJogUfIVWapPqD+clKmiUWXxD3sc63TCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 061/158] s390/cio: fix race condition during online processing
+Subject: [PATCH 6.6 046/158] net: stmmac: Apply half-duplex-less constraint for DW QoS Eth only
 Date: Tue, 23 Apr 2024 14:38:03 -0700
-Message-ID: <20240423213857.945308670@linuxfoundation.org>
+Message-ID: <20240423213857.272080205@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 2d8527f2f911fab84aec04df4788c0c23af3df48 ]
+[ Upstream commit 0ebd96f5da4410c0cb8fc75e44f1009530b2f90b ]
 
-A race condition exists in ccw_device_set_online() that can cause the
-online process to fail, leaving the affected device in an inconsistent
-state. As a result, subsequent attempts to set that device online fail
-with return code ENODEV.
+There are three DW MAC IP-cores which can have the multiple Tx/Rx queues
+enabled:
+DW GMAC v3.7+ with AV feature,
+DW QoS Eth v4.x/v5.x,
+DW XGMAC/XLGMAC
+Based on the respective HW databooks, only the DW QoS Eth IP-core doesn't
+support the half-duplex link mode in case if more than one queues enabled:
 
-The problem occurs when a path verification request arrives after
-a wait for final device state completed, but before the result state
-is evaluated.
+"In multiple queue/channel configurations, for half-duplex operation,
+enable only the Q0/CH0 on Tx and Rx. For single queue/channel in
+full-duplex operation, any queue/channel can be enabled."
 
-Fix this by ensuring that the CCW-device lock is held between
-determining final state and checking result state.
+The rest of the IP-cores don't have such constraint. Thus in order to have
+the constraint applied for the DW QoS Eth MACs only, let's move the it'
+implementation to the respective MAC-capabilities getter and make sure the
+getter is called in the queues re-init procedure.
 
-Note that since:
-
-commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-
-path verification requests are much more likely to occur during boot,
-resulting in an increased chance of this race condition occurring.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: b6cfffa7ad92 ("stmmac: fix DMA channel hang in half-duplex mode")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Romain Gantois <romain.gantois@bootlin.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/device.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ .../net/ethernet/stmicro/stmmac/dwmac4_core.c |  7 +++++++
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 19 +++----------------
+ 2 files changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index 0cfb179e1bcb6..34b2567b8df49 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -363,10 +363,8 @@ int ccw_device_set_online(struct ccw_device *cdev)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+index 683c34e609638..434e306876b41 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -71,6 +71,13 @@ static void dwmac4_core_init(struct mac_device_info *hw,
+ static void dwmac4_phylink_get_caps(struct stmmac_priv *priv)
+ {
+ 	priv->phylink_config.mac_capabilities |= MAC_2500FD;
++
++	if (priv->plat->tx_queues_to_use > 1)
++		priv->phylink_config.mac_capabilities &=
++			~(MAC_10HD | MAC_100HD | MAC_1000HD);
++	else
++		priv->phylink_config.mac_capabilities |=
++			(MAC_10HD | MAC_100HD | MAC_1000HD);
+ }
  
- 	spin_lock_irq(cdev->ccwlock);
- 	ret = ccw_device_online(cdev);
--	spin_unlock_irq(cdev->ccwlock);
--	if (ret == 0)
--		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
--	else {
-+	if (ret) {
-+		spin_unlock_irq(cdev->ccwlock);
- 		CIO_MSG_EVENT(0, "ccw_device_online returned %d, "
- 			      "device 0.%x.%04x\n",
- 			      ret, cdev->private->dev_id.ssid,
-@@ -375,7 +373,12 @@ int ccw_device_set_online(struct ccw_device *cdev)
- 		put_device(&cdev->dev);
- 		return ret;
- 	}
--	spin_lock_irq(cdev->ccwlock);
-+	/* Wait until a final state is reached */
-+	while (!dev_fsm_final_state(cdev)) {
-+		spin_unlock_irq(cdev->ccwlock);
-+		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
-+		spin_lock_irq(cdev->ccwlock);
-+	}
- 	/* Check if online processing was successful */
- 	if ((cdev->private->state != DEV_STATE_ONLINE) &&
- 	    (cdev->private->state != DEV_STATE_W4SENSE)) {
+ static void dwmac4_rx_queue_enable(struct mac_device_info *hw,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index d1adb102a1d49..f3dbbc900d498 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1198,17 +1198,6 @@ static int stmmac_init_phy(struct net_device *dev)
+ 	return ret;
+ }
+ 
+-static void stmmac_set_half_duplex(struct stmmac_priv *priv)
+-{
+-	/* Half-Duplex can only work with single tx queue */
+-	if (priv->plat->tx_queues_to_use > 1)
+-		priv->phylink_config.mac_capabilities &=
+-			~(MAC_10HD | MAC_100HD | MAC_1000HD);
+-	else
+-		priv->phylink_config.mac_capabilities |=
+-			(MAC_10HD | MAC_100HD | MAC_1000HD);
+-}
+-
+ static int stmmac_phy_setup(struct stmmac_priv *priv)
+ {
+ 	struct stmmac_mdio_bus_data *mdio_bus_data;
+@@ -1237,10 +1226,7 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
+ 				    priv->phylink_config.supported_interfaces);
+ 
+ 	priv->phylink_config.mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+-						MAC_10FD | MAC_100FD |
+-						MAC_1000FD;
+-
+-	stmmac_set_half_duplex(priv);
++						MAC_10 | MAC_100 | MAC_1000;
+ 
+ 	/* Get the MAC specific capabilities */
+ 	stmmac_mac_phylink_get_caps(priv);
+@@ -7197,7 +7183,8 @@ int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
+ 			priv->rss.table[i] = ethtool_rxfh_indir_default(i,
+ 									rx_cnt);
+ 
+-	stmmac_set_half_duplex(priv);
++	stmmac_mac_phylink_get_caps(priv);
++
+ 	stmmac_napi_add(dev);
+ 
+ 	if (netif_running(dev))
 -- 
 2.43.0
 
