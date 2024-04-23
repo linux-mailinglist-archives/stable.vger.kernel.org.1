@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-41001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0687B8AF9F1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCE58AF93A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 383251C2233C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8BFD1F24716
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BA9145B03;
-	Tue, 23 Apr 2024 21:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558461448F3;
+	Tue, 23 Apr 2024 21:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSNbFYeW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYMOvFoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B75143C57;
-	Tue, 23 Apr 2024 21:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A481448F1;
+	Tue, 23 Apr 2024 21:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908610; cv=none; b=q9uSlSeegMesHw8Y21LN+8Arq1jKnc01FA7mSAP2J0bSMwy0fEtn/ROlVeiqL4BvLioMJIO9ZtkTZKfvfbcVpowhDODIFyKfkWWdeYJbe1m8pOv+WjGNDEXMHlfFIPRceN9ryxr9ZUWckYoAXYBCXp44OQCVcEA7It1BRHRj79g=
+	t=1713908491; cv=none; b=MCw1ZXvd/tdbrvILV2HfZ+A9Az8f+PQIcQXjtyqEjQL39gmG0VbPvC0V7WVBFLhHobzIDBTS/zqJXQSWVZLV4QMts5gHfRCIhgNX5hRnXneVt/K59zkXVe+vVJNl8S9X0kASKyBZY5KM1UOJYiDQKoy3o1NWXPNoOYF7la68Vn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908610; c=relaxed/simple;
-	bh=GeyLBrV5fuK0RptIRICI7y063hcv44xSW5YwLjWSbXA=;
+	s=arc-20240116; t=1713908491; c=relaxed/simple;
+	bh=82a8pXAkIzByzUtzYOQ7vGVgDBRNhiGXE0YoIkdQBnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AT4P1gGYUztirvDhB1u55/g23ivrjrxCnss9RWioVLtyEYrKl4jRXCPfe0+LjO/6342h3wFJcAPFUZ6OkixwDhaHKDS/Giv2IEHjvlX5FFA/rZBwihIHe0jEnsC6qiJazdZalbdCV1Bq9L8K0neUI0z7qweDHKvlVs7NcFeg0YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSNbFYeW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C645BC3277B;
-	Tue, 23 Apr 2024 21:43:29 +0000 (UTC)
+	 MIME-Version; b=NnoKExi+ZhIiFH+9I1GbdHLm1KeHsP4XJ7YKcAoYu/ptfBoiF9c7pFW7TpoIW0ZFKt3zWhjnSwVvhD4ZMbtWtLjuPfTjwDRcNvoG5DZOcHZ27iuaoUnpbGfgjOl09iHh56vOe8MKARqMjNlL1+QoQt7kypIzvPOR3xm3+N3mL2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYMOvFoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FA2C3277B;
+	Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908609;
-	bh=GeyLBrV5fuK0RptIRICI7y063hcv44xSW5YwLjWSbXA=;
+	s=korg; t=1713908491;
+	bh=82a8pXAkIzByzUtzYOQ7vGVgDBRNhiGXE0YoIkdQBnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSNbFYeW9NZDBr6AQs8wKHcnkIs0Q9y3IcNGzBJ885Dy+5SqItj6OckUN7JnweGOD
-	 LW1CK18xnfMTd5AryWVKk5HVZXMevghu2RvxhzGofxbnIVmaiaZd1jqgeoA2MeBzDR
-	 tKcFhgd+NbEJb0uoX4D7K9WWUJbOmCmsQl9c3mGQ=
+	b=XYMOvFoh41oNAJ5a+OBNUuOwQ7EhZHUpZOZmJE1M78Tbr4jUu0vreF3vKbZqwCNbC
+	 XfVxJy5KCZDmhacE1h2lIrBcaNan3OtWGufZHGJvjByMgvenmH15ON7BHYem6VcRBa
+	 Xm9REgvmQaBph9wizEkq7YkFYcyxgs76TNeJDAns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/158] ice: Fix checking for unsupported keys on non-tunnel device
+	Lokesh Gidra <lokeshgidra@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Nicolas Geoffray <ngeoffray@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 066/158] userfaultfd: change src_folio after ensuring its unpinned in UFFDIO_MOVE
 Date: Tue, 23 Apr 2024 14:38:08 -0700
-Message-ID: <20240423213857.429083896@linuxfoundation.org>
+Message-ID: <20240423213858.104342461@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +68,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Lokesh Gidra <lokeshgidra@google.com>
 
-[ Upstream commit 2cca35f5dd78b9f8297c879c5db5ab137c5d86c3 ]
+commit c0205eaf3af9f5db14d4b5ee4abacf4a583c3c50 upstream.
 
-Add missing FLOW_DISSECTOR_KEY_ENC_* checks to TC flower filter parsing.
-Without these checks, it would be possible to add filters with tunnel
-options on non-tunnel devices. enc_* options are only valid for tunnel
-devices.
+Commit d7a08838ab74 ("mm: userfaultfd: fix unexpected change to src_folio
+when UFFDIO_MOVE fails") moved the src_folio->{mapping, index} changing to
+after clearing the page-table and ensuring that it's not pinned.  This
+avoids failure of swapout+migration and possibly memory corruption.
 
-Example:
-  devlink dev eswitch set $PF1_PCI mode switchdev
-  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
-  tc qdisc add dev $VF1_PR ingress
-  ethtool -K $PF1 hw-tc-offload on
-  tc filter add dev $VF1_PR ingress flower enc_ttl 12 skip_sw action drop
+However, the commit missed fixing it in the huge-page case.
 
-Fixes: 9e300987d4a8 ("ice: VXLAN and Geneve TC support")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240404171726.2302435-1-lokeshgidra@google.com
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Nicolas Geoffray <ngeoffray@google.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_tc_lib.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/huge_memory.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index 9c97c99feac3d..76ad5930c0102 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -1448,7 +1448,10 @@ ice_parse_cls_flower(struct net_device *filter_dev, struct ice_vsi *vsi,
- 		  (BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IPV4_ADDRS) |
- 		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IPV6_ADDRS) |
- 		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_KEYID) |
--		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_PORTS))) {
-+		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_PORTS) |
-+		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IP) |
-+		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_OPTS) |
-+		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_CONTROL))) {
- 		NL_SET_ERR_MSG_MOD(fltr->extack, "Tunnel key used, but device isn't a tunnel");
- 		return -EOPNOTSUPP;
- 	} else {
--- 
-2.43.0
-
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2244,9 +2244,6 @@ int move_pages_huge_pmd(struct mm_struct
+ 		goto unlock_ptls;
+ 	}
+ 
+-	folio_move_anon_rmap(src_folio, dst_vma);
+-	WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
+-
+ 	src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
+ 	/* Folio got pinned from under us. Put it back and fail the move. */
+ 	if (folio_maybe_dma_pinned(src_folio)) {
+@@ -2255,6 +2252,9 @@ int move_pages_huge_pmd(struct mm_struct
+ 		goto unlock_ptls;
+ 	}
+ 
++	folio_move_anon_rmap(src_folio, dst_vma);
++	WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
++
+ 	_dst_pmd = mk_huge_pmd(&src_folio->page, dst_vma->vm_page_prot);
+ 	/* Follow mremap() behavior and treat the entry dirty after the move */
+ 	_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
 
 
 
