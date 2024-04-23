@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-40822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AD18AF933
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA18E8AF9CE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587411C22EDB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBDEE1C2206D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E491448E7;
-	Tue, 23 Apr 2024 21:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E7913FD67;
+	Tue, 23 Apr 2024 21:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y73Nge7D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/6bsfFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DE420B3E;
-	Tue, 23 Apr 2024 21:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1846A143889;
+	Tue, 23 Apr 2024 21:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908486; cv=none; b=GkmiMkCF9zQfhYEyFia6W+29R1ogGkwJWIGd7Y7KhQiTd9OdMHKIVYK4hZHosLDvDUUdHKmXDCYsoOu8vCyOx4+F1mki9W4vJqWbGdrviOxaooBgew1/HO13cRTFRy8wwzmdxXxdhULv3UdBPep57oPw+U3pDUH58PuWTWN02kU=
+	t=1713908587; cv=none; b=KyiKUwRlVLhRtwpHedFIVKvodGyke4sAJKU2yHcoA7qcbmyD5QL2pgiVI/EcQyHMq6hcq+uFoeOd4UCAd/mam6iYpydC5cFf2sP+cD4rGjmthXBATpd8p5w6OyCL0LngHLzYDhKTMhqRxmiD6dJFOcxfFbf6ksexSmkV4KoWepM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908486; c=relaxed/simple;
-	bh=kR1K/5EMF7T2dHJ7047eKQMAPCvgo+KjdNx4HX3+6lw=;
+	s=arc-20240116; t=1713908587; c=relaxed/simple;
+	bh=DXEW5zkkK3tk1nkeAQHxa4WKGBIIGjRAr6VvIxYb9hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=un88+Q0Y25+XKjuU4xykg5oUwxzHRP383lCCOuowZgo8E3TwcjNVXjV9vK7MXpvVFGa723Yt4gxbRFY6q3qgmfr9YiN26Ytw83UWjOp7BT49VpxJXJiHWOil5sPk5hK5Mk5f6LOBp7JEnjnPxiCKOn/cPSAhsmI2EpfZ7qq7ZTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y73Nge7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33429C32782;
-	Tue, 23 Apr 2024 21:41:26 +0000 (UTC)
+	 MIME-Version; b=HMXuE4CSIo47Y+eaaDImplwFRL2qik1bAPs2e/hMGlJ1KQb2X7BoZ3EbrIDAnntW5agWj0KZiMnGCs3dVtN/IGGZzELCAvKHC+0oLqfl4KHoAaWRK55WlhELNoL2hfmjh1wUunJNv460sRN+/asnBM859uonIFZkYMZ6JwdxtJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/6bsfFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E045FC116B1;
+	Tue, 23 Apr 2024 21:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908486;
-	bh=kR1K/5EMF7T2dHJ7047eKQMAPCvgo+KjdNx4HX3+6lw=;
+	s=korg; t=1713908587;
+	bh=DXEW5zkkK3tk1nkeAQHxa4WKGBIIGjRAr6VvIxYb9hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y73Nge7DeL3Rou6YTH3WOsxBiQR/F9BlyWoOkKB2yrcxo7szVhreUGWm89Ac6Lwjb
-	 G380MQuJAqLU1lAvUa5fQa5DfgW3/usnmW+lxd6ZmwykkWIMBjBzDNoTbZUELKg0ou
-	 bZP8fRlX2gA0NFQK2QQZzyhaia+yjNNd82jgKnuU=
+	b=U/6bsfFZoBPYK+Rt/eZkxoNX69yOm9JaXNTXotIO74pRuneTy6LnVaXzXwWtwKKjK
+	 EZCBLJedjXcnJ69ekDw9papzbSsMr/J89sjI9R0z+6dhe9YWZXLXM3dh0kHEWV/58d
+	 dDPLYKVbH4jP6QEM06XCkq76CnIMrG+6727THtxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Justin Stitt <justinstitt@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 035/158] net: stmmac: Fix max-speed being ignored on queue re-init
+Subject: [PATCH 6.6 020/158] selftests: timers: Fix posix_timers ksft_print_msg() warning
 Date: Tue, 23 Apr 2024 14:37:37 -0700
-Message-ID: <20240423213857.043051488@linuxfoundation.org>
+Message-ID: <20240423213856.384807402@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <fancer.lancer@gmail.com>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 59c3d6ca6cbded6c6599e975b42a9d6a27fcbaf2 ]
+[ Upstream commit e4a6bceac98eba3c00e874892736b34ea5fdaca3 ]
 
-It's possible to have the maximum link speed being artificially limited on
-the platform-specific basis. It's done either by setting up the
-plat_stmmacenet_data::max_speed field or by specifying the "max-speed"
-DT-property. In such cases it's required that any specific
-MAC-capabilities re-initializations would take the limit into account. In
-particular the link speed capabilities may change during the number of
-active Tx/Rx queues re-initialization. But the currently implemented
-procedure doesn't take the speed limit into account.
+After commit 6d029c25b71f ("selftests/timers/posix_timers: Reimplement
+check_timer_distribution()") the following warning occurs when building
+with an older gcc:
 
-Fix that by calling phylink_limit_mac_speed() in the
-stmmac_reinit_queues() method if the speed limitation was required in the
-same way as it's done in the stmmac_phy_setup() function.
+posix_timers.c:250:2: warning: format not a string literal and no format arguments [-Wformat-security]
+  250 |  ksft_print_msg(errmsg);
+      |  ^~~~~~~~~~~~~~
 
-Fixes: 95201f36f395 ("net: stmmac: update MAC capabilities when tx queues are updated")
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Romain Gantois <romain.gantois@bootlin.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix this up by changing it to ksft_print_msg("%s", errmsg)
+
+Fixes: 6d029c25b71f ("selftests/timers/posix_timers: Reimplement check_timer_distribution()")
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Justin Stitt <justinstitt@google.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410232637.4135564-1-jstultz@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/timers/posix_timers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index cbb00ca23a7c3..2a48277ed614f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7272,6 +7272,7 @@ int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	int ret = 0, i;
-+	int max_speed;
+diff --git a/tools/testing/selftests/timers/posix_timers.c b/tools/testing/selftests/timers/posix_timers.c
+index 14355d8472110..c001dd79179d5 100644
+--- a/tools/testing/selftests/timers/posix_timers.c
++++ b/tools/testing/selftests/timers/posix_timers.c
+@@ -247,7 +247,7 @@ static int check_timer_distribution(void)
+ 		ksft_test_result_skip("check signal distribution (old kernel)\n");
+ 	return 0;
+ err:
+-	ksft_print_msg(errmsg);
++	ksft_print_msg("%s", errmsg);
+ 	return -1;
+ }
  
- 	if (netif_running(dev))
- 		stmmac_release(dev);
-@@ -7287,6 +7288,10 @@ int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
- 
- 	stmmac_mac_phylink_get_caps(priv);
- 
-+	max_speed = priv->plat->max_speed;
-+	if (max_speed)
-+		phylink_limit_mac_speed(&priv->phylink_config, max_speed);
-+
- 	stmmac_napi_add(dev);
- 
- 	if (netif_running(dev))
 -- 
 2.43.0
 
