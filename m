@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4D98AFA5E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4278AFAE7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 441CFB2B2EE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E116F1C23C5D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923DF148FE1;
-	Tue, 23 Apr 2024 21:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A20148838;
+	Tue, 23 Apr 2024 21:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwKiKs2H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0IjoD0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A9314885A;
-	Tue, 23 Apr 2024 21:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B8B143895;
+	Tue, 23 Apr 2024 21:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908641; cv=none; b=bFXJw6gjofYaDJyxFUoM0j9N+V0hgOpgp6biRu+6H2AcXT9kjW5g+GHsIp/mV20u84r7oNqiVwqRFJMKxeBuh6Q4fS498FnDOuKYbwDS2+pwNV26etK0Ng8BC/Su3OLI7n15ASjB8cRWmu6HufCbfE+lpCItUfurNQAkdbLaw9c=
+	t=1713908781; cv=none; b=eLXYfzIdCP2HV7Ts6mFyYXEXjmFlaIDXDSWQJUSiErAQ3iTotrwg9/fEVH1gHmuJ1bIlufOwAfEwBx8V7OBpgjI+GWjh7xqPTnxs1qu3Wb/6DCgTw4T39/NPkIP5XclsS9LatBuSjgJmnzACNDfpX6wgrNnvSubjkoaXe4zAC4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908641; c=relaxed/simple;
-	bh=xhyZwrIfNievX6mmH16x3u32/7AyTaMIHdT8ThRdpZA=;
+	s=arc-20240116; t=1713908781; c=relaxed/simple;
+	bh=kW1B9vneb8i8hQY16iKBxlXnjQuBYofLtX9EUhLGOlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7190VV7e2G+CtjA20SSHTf7wkbD66pLCbipuqe1K5MzUosnLvo1G8JEvASs3upAOd7cc3lVymtecX7dM58DsDSshIwNGkfXZc4V0mv/ZBL6sxrCJiknkCAhkNqu4ipodk1BoxS7PAtnanCRt+medSs8WEHhOILDoI04aqRYK5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwKiKs2H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243C0C116B1;
-	Tue, 23 Apr 2024 21:44:01 +0000 (UTC)
+	 MIME-Version; b=HyntV9jGcUMByyGpbb5kJkOEirQQmZeO0I36dLVEvh4EkiIfCCHlEYYHn+PJLmsHAugzj1F9oqptDdJZGA5yynlBwwcl0ZNGFiHM3GJYFDmr71ywfen7xs5ksyswmHjYBub1Vp1m0f4C65Q641EWfDCjsM+SUj3ioCA/GTCzZkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0IjoD0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F226C32782;
+	Tue, 23 Apr 2024 21:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908641;
-	bh=xhyZwrIfNievX6mmH16x3u32/7AyTaMIHdT8ThRdpZA=;
+	s=korg; t=1713908780;
+	bh=kW1B9vneb8i8hQY16iKBxlXnjQuBYofLtX9EUhLGOlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UwKiKs2HZpj9k1nKAeT8rQUjo6IIf2AKD/6sox0/dQtrQA363qgm0IuOBry/UKVr9
-	 Z9MMkQ6Ao2bTFdI9hLKzLnz9ct81i8C5xMwtFSNXQbW9kk/Rz5qbww9dMhBy/ryE0Q
-	 +XVEChHT+nJovNyawuK/i1+1rkc8ofElFZ26qe90=
+	b=G0IjoD0ja31ijq7BYlM9/0EpdbUxRlvopcmfUG7wmHTo1wJ4/Ye1FrvxryX7YjHgS
+	 t9Ic9kRoTlCVg2rLUeze0jzk4ZlA7WDPmulZhvB8cbBUIwkgGVJg4t5iO9PWdkUTuH
+	 GglUsynXOg9pRzPqJmnLkuSgRhnDbpE1W2NcFe5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norihiko Hama <Norihiko.Hama@alpsalpine.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 124/158] usb: gadget: f_ncm: Fix UAF ncm object at re-bind after usb ep transport error
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Edward Liaw <edliaw@google.com>
+Subject: [PATCH 5.15 08/71] bpf: Generalize check_ctx_reg for reuse with other types
 Date: Tue, 23 Apr 2024 14:39:21 -0700
-Message-ID: <20240423213859.760535486@linuxfoundation.org>
+Message-ID: <20240423213844.404702983@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norihiko Hama <Norihiko.Hama@alpsalpine.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 6334b8e4553cc69f51e383c9de545082213d785e upstream.
+commit be80a1d3f9dbe5aee79a325964f7037fe2d92f30 upstream.
 
-When ncm function is working and then stop usb0 interface for link down,
-eth_stop() is called. At this piont, accidentally if usb transport error
-should happen in usb_ep_enable(), 'in_ep' and/or 'out_ep' may not be enabled.
+Generalize the check_ctx_reg() helper function into a more generic named one
+so that it can be reused for other register types as well to check whether
+their offset is non-zero. No functional change.
 
-After that, ncm_disable() is called to disable for ncm unbind
-but gether_disconnect() is never called since 'in_ep' is not enabled.
-
-As the result, ncm object is released in ncm unbind
-but 'dev->port_usb' associated to 'ncm->port' is not NULL.
-
-And when ncm bind again to recover netdev, ncm object is reallocated
-but usb0 interface is already associated to previous released ncm object.
-
-Therefore, once usb0 interface is up and eth_start_xmit() is called,
-released ncm object is dereferrenced and it might cause use-after-free memory.
-
-[function unlink via configfs]
-  usb0: eth_stop dev->port_usb=ffffff9b179c3200
-  --> error happens in usb_ep_enable().
-  NCM: ncm_disable: ncm=ffffff9b179c3200
-  --> no gether_disconnect() since ncm->port.in_ep->enabled is false.
-  NCM: ncm_unbind: ncm unbind ncm=ffffff9b179c3200
-  NCM: ncm_free: ncm free ncm=ffffff9b179c3200   <-- released ncm
-
-[function link via configfs]
-  NCM: ncm_alloc: ncm alloc ncm=ffffff9ac4f8a000
-  NCM: ncm_bind: ncm bind ncm=ffffff9ac4f8a000
-  NCM: ncm_set_alt: ncm=ffffff9ac4f8a000 alt=0
-  usb0: eth_open dev->port_usb=ffffff9b179c3200  <-- previous released ncm
-  usb0: eth_start dev->port_usb=ffffff9b179c3200 <--
-  eth_start_xmit()
-  --> dev->wrap()
-  Unable to handle kernel paging request at virtual address dead00000000014f
-
-This patch addresses the issue by checking if 'ncm->netdev' is not NULL at
-ncm_disable() to call gether_disconnect() to deassociate 'dev->port_usb'.
-It's more reasonable to check 'ncm->netdev' to call gether_connect/disconnect
-rather than check 'ncm->port.in_ep->enabled' since it might not be enabled
-but the gether connection might be established.
-
-Signed-off-by: Norihiko Hama <Norihiko.Hama@alpsalpine.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240327023550.51214-1-Norihiko.Hama@alpsalpine.com
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Edward Liaw <edliaw@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/bpf_verifier.h |    4 ++--
+ kernel/bpf/btf.c             |    2 +-
+ kernel/bpf/verifier.c        |   21 +++++++++++----------
+ 3 files changed, 14 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -869,7 +869,7 @@ static int ncm_set_alt(struct usb_functi
- 		if (alt > 1)
- 			goto fail;
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -541,8 +541,8 @@ bpf_prog_offload_replace_insn(struct bpf
+ void
+ bpf_prog_offload_remove_insns(struct bpf_verifier_env *env, u32 off, u32 cnt);
  
--		if (ncm->port.in_ep->enabled) {
-+		if (ncm->netdev) {
- 			DBG(cdev, "reset ncm\n");
- 			ncm->netdev = NULL;
- 			gether_disconnect(&ncm->port);
-@@ -1354,7 +1354,7 @@ static void ncm_disable(struct usb_funct
+-int check_ctx_reg(struct bpf_verifier_env *env,
+-		  const struct bpf_reg_state *reg, int regno);
++int check_ptr_off_reg(struct bpf_verifier_env *env,
++		      const struct bpf_reg_state *reg, int regno);
+ int check_mem_reg(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
+ 		   u32 regno, u32 mem_size);
  
- 	DBG(cdev, "ncm deactivated\n");
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -5558,7 +5558,7 @@ static int btf_check_func_arg_match(stru
+ 					i, btf_type_str(t));
+ 				return -EINVAL;
+ 			}
+-			if (check_ctx_reg(env, reg, regno))
++			if (check_ptr_off_reg(env, reg, regno))
+ 				return -EINVAL;
+ 		} else if (is_kfunc && (reg->type == PTR_TO_BTF_ID ||
+ 			   (reg2btf_ids[base_type(reg->type)] && !type_flag(reg->type)))) {
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -3980,16 +3980,16 @@ static int get_callee_stack_depth(struct
+ }
+ #endif
  
--	if (ncm->port.in_ep->enabled) {
-+	if (ncm->netdev) {
- 		ncm->netdev = NULL;
- 		gether_disconnect(&ncm->port);
+-int check_ctx_reg(struct bpf_verifier_env *env,
+-		  const struct bpf_reg_state *reg, int regno)
++int check_ptr_off_reg(struct bpf_verifier_env *env,
++		      const struct bpf_reg_state *reg, int regno)
+ {
+-	/* Access to ctx or passing it to a helper is only allowed in
+-	 * its original, unmodified form.
++	/* Access to this pointer-typed register or passing it to a helper
++	 * is only allowed in its original, unmodified form.
+ 	 */
+ 
+ 	if (reg->off) {
+-		verbose(env, "dereference of modified ctx ptr R%d off=%d disallowed\n",
+-			regno, reg->off);
++		verbose(env, "dereference of modified %s ptr R%d off=%d disallowed\n",
++			reg_type_str(env, reg->type), regno, reg->off);
+ 		return -EACCES;
  	}
+ 
+@@ -3997,7 +3997,8 @@ int check_ctx_reg(struct bpf_verifier_en
+ 		char tn_buf[48];
+ 
+ 		tnum_strn(tn_buf, sizeof(tn_buf), reg->var_off);
+-		verbose(env, "variable ctx access var_off=%s disallowed\n", tn_buf);
++		verbose(env, "variable %s access var_off=%s disallowed\n",
++			reg_type_str(env, reg->type), tn_buf);
+ 		return -EACCES;
+ 	}
+ 
+@@ -4447,7 +4448,7 @@ static int check_mem_access(struct bpf_v
+ 			return -EACCES;
+ 		}
+ 
+-		err = check_ctx_reg(env, reg, regno);
++		err = check_ptr_off_reg(env, reg, regno);
+ 		if (err < 0)
+ 			return err;
+ 
+@@ -5327,7 +5328,7 @@ static int check_func_arg(struct bpf_ver
+ 		return err;
+ 
+ 	if (type == PTR_TO_CTX) {
+-		err = check_ctx_reg(env, reg, regno);
++		err = check_ptr_off_reg(env, reg, regno);
+ 		if (err < 0)
+ 			return err;
+ 	}
+@@ -9561,7 +9562,7 @@ static int check_ld_abs(struct bpf_verif
+ 			return err;
+ 	}
+ 
+-	err = check_ctx_reg(env, &regs[ctx_reg], ctx_reg);
++	err = check_ptr_off_reg(env, &regs[ctx_reg], ctx_reg);
+ 	if (err < 0)
+ 		return err;
+ 
 
 
 
