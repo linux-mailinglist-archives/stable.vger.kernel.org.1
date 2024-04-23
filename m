@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-40855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4D18AF956
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0CA8AFA8F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0B131F24A54
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76302289AF2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260AF143899;
-	Tue, 23 Apr 2024 21:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AE514431B;
+	Tue, 23 Apr 2024 21:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU5OuED+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCihTU6G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D857C143C5F;
-	Tue, 23 Apr 2024 21:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6623A143C49;
+	Tue, 23 Apr 2024 21:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908508; cv=none; b=dlRmBX2pg+zjU4ld+v9rMTHn8L+bKsgKT2zAGZZ3kualMhDW8zHLmUD9xvvMtUyH2XYwDpQONvenqpD5dk9DxJBajvy8R1h0l4jGqdU1e0dBFuf7zoy0LFPZ8c4iNuVepaJ+jyDkZON0NBUlK/cAsFmBqbCvZStR0ynMvcYOVjA=
+	t=1713908722; cv=none; b=BAPD0+L6RIR8V9+1YOfehLy61nl5JIQHwHFEhMvCFuKuM2KalpMmbyi2zAV8G+lzk7GUlYBCWehCeBg7/Qqx4UoL3EWGheYr/0hqk9L0RqvJnqeRPg7YWUKpvEZtsiOb/AdoFtKHCBT+ZGCSBebAHV6Y1eAFM8/Rsoxt2FPJYsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908508; c=relaxed/simple;
-	bh=t0g2+Sh36IZt1BtuSgL5MVZFAtcQ9MDN0y2huZBVdHM=;
+	s=arc-20240116; t=1713908722; c=relaxed/simple;
+	bh=q8AzzETJ75LJq/aQZNV4MF8V+jha1tQqpLqM/kmnxAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhLTsIAGenwyg3AA9fjFsl4rVFX7bp+Ttqg8jxRd16PZG3RTFaJVp2CdE5U/r1MSBsaIO68624FsRBx8Yk5e1iSiV7t9yPJQ4GxHtJq39uEZKQ5fHBk/J1Cgjik7Axd4sbEl4NJ6D4rNULXJItHbAVh2qTWTCsGuTTFmzbKBG1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU5OuED+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC59BC116B1;
-	Tue, 23 Apr 2024 21:41:48 +0000 (UTC)
+	 MIME-Version; b=qCZvL1xHHyxxZ8FbCkkycWZVsQtL8gOS3axQ4RAyGF697a0Nn20TU75onGAYT9WvlhG/ad218iN9k4EFrdYz7fj/iMRMbvuj15mtswZylM1/jr4ABDYXC2Z67dx1BseclkC5ktcZsR9NwRFGEjaOjqZG/JRwCOqITrAEkkcBdTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCihTU6G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6B8C32782;
+	Tue, 23 Apr 2024 21:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908508;
-	bh=t0g2+Sh36IZt1BtuSgL5MVZFAtcQ9MDN0y2huZBVdHM=;
+	s=korg; t=1713908722;
+	bh=q8AzzETJ75LJq/aQZNV4MF8V+jha1tQqpLqM/kmnxAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UU5OuED+TLCz1+4u8eiuLGvPmxpD96bP0oqVb6GXg8TBnsNIgWpLRzkAiwE4Ner1/
-	 eW0rYyw5boJ451V+xGyvS3dy/ro6NRP6swx3NclDV+RWP65pjRk13oQIqryOXp36ka
-	 MPBcomjt9vxIf3OyWJ7ANQk4OPzSgKUDhtLx5944=
+	b=RCihTU6GlYpcPAl3TM6dYihoa6gzq1c4vfEzolTXx+gALegwRmj2VZGrsCXgHWpgR
+	 RAxPCRPBOQJn19jnjfNirOHlkQnYhITpqHUIX59oYazxl13oGUBHZuZrGuifjzsOm3
+	 LYfAqGUkF8+oILctK4zUN24xljzkwUCRlU+HqAcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.8 092/158] ALSA: hda/realtek: Add quirks for Huawei Matebook D14 NBLB-WAX9N
-Date: Tue, 23 Apr 2024 14:38:34 -0700
-Message-ID: <20240423213858.944980722@linuxfoundation.org>
+	Schuyler Patton <spatton@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 047/141] net: ethernet: ti: am65-cpsw-nuss: cleanup DMA Channels before using them
+Date: Tue, 23 Apr 2024 14:38:35 -0700
+Message-ID: <20240423213854.785404499@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 7caf3daaaf0436fe370834c72c667a97d3671d1a upstream.
+[ Upstream commit c24cd679b075b0e953ea167b0aa2b2d59e4eba7f ]
 
-The headset mic requires a fixup to be properly detected/used.
+The TX and RX DMA Channels used by the driver to exchange data with CPSW
+are not guaranteed to be in a clean state during driver initialization.
+The Bootloader could have used the same DMA Channels without cleaning them
+up in the event of failure. Thus, reset and disable the DMA Channels to
+ensure that they are in a clean state before using them.
 
-As a reference, this specific model from 2021 reports
-the following devices:
-	https://alsa-project.org/db/?f=1a5ddeb0b151db8fe051407f5bb1c075b7dd3e4a
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: <stable@vger.kernel.org>
-Message-ID: <b92a9e49fb504eec8416bcc6882a52de89450102.1713370457.git.mchehab@kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Reported-by: Schuyler Patton <spatton@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20240417095425.2253876-1-s-vadapalli@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10215,6 +10215,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1462, 0xb171, "Cubi N 8GL (MS-B171)", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x152d, 0x1082, "Quanta NL3", ALC269_FIXUP_LIFEBOOK),
-+	SND_PCI_QUIRK(0x152d, 0x1262, "Huawei NBLB-WAX9N", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1558, 0x0353, "Clevo V35[05]SN[CDE]Q", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x1323, "Clevo N130ZU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x1325, "Clevo N15[01][CW]U", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 76fabeae512db..33df06a2de13a 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2549,6 +2549,8 @@ static void am65_cpsw_unregister_devlink(struct am65_cpsw_common *common)
+ 
+ static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
+ {
++	struct am65_cpsw_rx_chn *rx_chan = &common->rx_chns;
++	struct am65_cpsw_tx_chn *tx_chan = common->tx_chns;
+ 	struct device *dev = common->dev;
+ 	struct devlink_port *dl_port;
+ 	struct am65_cpsw_port *port;
+@@ -2567,6 +2569,22 @@ static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
+ 		return ret;
+ 	}
+ 
++	/* The DMA Channels are not guaranteed to be in a clean state.
++	 * Reset and disable them to ensure that they are back to the
++	 * clean state and ready to be used.
++	 */
++	for (i = 0; i < common->tx_ch_num; i++) {
++		k3_udma_glue_reset_tx_chn(tx_chan[i].tx_chn, &tx_chan[i],
++					  am65_cpsw_nuss_tx_cleanup);
++		k3_udma_glue_disable_tx_chn(tx_chan[i].tx_chn);
++	}
++
++	for (i = 0; i < AM65_CPSW_MAX_RX_FLOWS; i++)
++		k3_udma_glue_reset_rx_chn(rx_chan->rx_chn, i, rx_chan,
++					  am65_cpsw_nuss_rx_cleanup, !!i);
++
++	k3_udma_glue_disable_rx_chn(rx_chan->rx_chn);
++
+ 	ret = am65_cpsw_nuss_register_devlink(common);
+ 	if (ret)
+ 		return ret;
+-- 
+2.43.0
+
 
 
 
