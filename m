@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-40834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E498AF940
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 311BF8AF942
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4672F1C22F1A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E09AB282F66
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA165144D09;
-	Tue, 23 Apr 2024 21:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11733144D0C;
+	Tue, 23 Apr 2024 21:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZO761nH+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyalK1AR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87422143C47;
-	Tue, 23 Apr 2024 21:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C423A143C47;
+	Tue, 23 Apr 2024 21:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908494; cv=none; b=BekvWGluGBrXmsRjDBnJEILmAsuphvzBgFxTXo/+SYYky/CvtebMyNSmUuaSt7hMfIlbQshxlJwmXCvoPOEA//tdM/fdN3ATcIBf48NUtijoHGk1zjb1FJdrgLH/663hHZT5Pe9GEo74y6ia2BhNQP7mAUPduy3ltAaIShveWN8=
+	t=1713908495; cv=none; b=V8g1X9Grvq7Xckt3TQvqZ2sg/41rrsxCz9CdpZ8MVA67bXOPvvGt15W3gcM2XzeNO02roJIf5nQonXOkgokYz8xNpKrGqFFqAuUzdBKzOkYGhYU39BF0G7LCjuqxF7YLuUgYNzPVN7UEfb9RioKqH5dJHw8Q7OdDkP5nqqZJKeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908494; c=relaxed/simple;
-	bh=uhzWqBPAbGAJ3UKh0FuBd/SRKlOgqFhjDireZ5ITBGo=;
+	s=arc-20240116; t=1713908495; c=relaxed/simple;
+	bh=FtHRsMj1aq9t2UnmQjpXI6cOYBlBcyVfbkLgB6B8ojU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0gdcwY2JUw8k8KPQwxwoS2HxhEkfa1mkkyzpW4tNTDSgWGlLqOZ2VWaHYhkIkWJ5HW2Vm77+UFgXq8r8eFWQ57l83XmbqPg3/U8jYA/YkGt2CSBoJ+6QoKQ0fisjzdS1wUpmMHrmODq5znqHDSafokAOVoVJ1FApqfuYLoWOrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZO761nH+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C2DC32782;
-	Tue, 23 Apr 2024 21:41:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VoqIA8Ip3BhgiI/Wb9KGoDv5HOWZ4HXwNBAXmiNoTZ8ASci7K5mmE4sd1Wk7EAWlG8tV/k0mpL3lWY5un2+2fC4jno653KZvk1S7WcSRno3KuO0HkzRtPPyPslRq2VP7kyfWwxFwqVbw5gmkmlQ5i8/prZkJhTE2IPeF04vh6ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyalK1AR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B696C32783;
+	Tue, 23 Apr 2024 21:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908494;
-	bh=uhzWqBPAbGAJ3UKh0FuBd/SRKlOgqFhjDireZ5ITBGo=;
+	s=korg; t=1713908495;
+	bh=FtHRsMj1aq9t2UnmQjpXI6cOYBlBcyVfbkLgB6B8ojU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZO761nH+Cyms8FoiDR+Om0Cv1q3lvJvtW++JJ44KGMOHKSRvkcK/XbUvRULuk5YPX
-	 /I+wU5+iRPSpUdLauz4gLcll0JtCaQaDAC9Qnzvf66Zb0VLCDGaI2RIEvdAPSaU1yZ
-	 h77SaHEHRuGl/iq4Erkl/7FGuhTqQbRgUWIFH9hY=
+	b=LyalK1ARX/RqqZgKCBHS8jQ4QxNrq8bXgfCCCheWvAO+GB1uze5IxIw/sm1lYIudt
+	 jD3UiN2GpJAINEpPtBwFv2coRZRnj5977s5Bx6dQpab8RNoLB17+65tZ73T/Xt1Ber
+	 UYwP1TORShUUdx2gVVRDR5yAnENVHHfQvjOcazBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Kees Cook <keescook@chromium.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 071/158] drm/panel: visionox-rm69299: dont unregister DSI device
-Date: Tue, 23 Apr 2024 14:38:13 -0700
-Message-ID: <20240423213858.269815504@linuxfoundation.org>
+Subject: [PATCH 6.8 072/158] drm/radeon: make -fstrict-flex-arrays=3 happy
+Date: Tue, 23 Apr 2024 14:38:14 -0700
+Message-ID: <20240423213858.298407374@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
 References: <20240423213855.824778126@linuxfoundation.org>
@@ -60,41 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 9e4d3f4f34455abbaa9930bf6b7575a5cd081496 ]
+[ Upstream commit 0ba753bc7e79e49556e81b0d09b2de1aa558553b ]
 
-The DSI device for the panel was registered by the DSI host, so it is an
-error to unregister it from the panel driver. Drop the call to
-mipi_dsi_device_unregister().
+The driver parses a union where the layout up through the first
+array is the same, however, the array has different sizes
+depending on the elements in the union.  Be explicit to
+fix the UBSAN checker.
 
-Fixes: c7f66d32dd43 ("drm/panel: add support for rm69299 visionox panel")
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404-drop-panel-unregister-v1-1-9f56953c5fb9@linaro.org
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3323
+Fixes: df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3")
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/radeon/radeon_atombios.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-index 775144695283f..b15ca56a09a74 100644
---- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-+++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-@@ -253,8 +253,6 @@ static void visionox_rm69299_remove(struct mipi_dsi_device *dsi)
- 	struct visionox_rm69299 *ctx = mipi_dsi_get_drvdata(dsi);
+diff --git a/drivers/gpu/drm/radeon/radeon_atombios.c b/drivers/gpu/drm/radeon/radeon_atombios.c
+index 3596ea4a8b60f..fc7b0e8f1ca15 100644
+--- a/drivers/gpu/drm/radeon/radeon_atombios.c
++++ b/drivers/gpu/drm/radeon/radeon_atombios.c
+@@ -923,8 +923,12 @@ bool radeon_get_atom_connector_info_from_supported_devices_table(struct
+ 		max_device = ATOM_MAX_SUPPORTED_DEVICE_INFO;
  
- 	mipi_dsi_detach(ctx->dsi);
--	mipi_dsi_device_unregister(ctx->dsi);
--
- 	drm_panel_remove(&ctx->panel);
- }
+ 	for (i = 0; i < max_device; i++) {
+-		ATOM_CONNECTOR_INFO_I2C ci =
+-		    supported_devices->info.asConnInfo[i];
++		ATOM_CONNECTOR_INFO_I2C ci;
++
++		if (frev > 1)
++			ci = supported_devices->info_2d1.asConnInfo[i];
++		else
++			ci = supported_devices->info.asConnInfo[i];
+ 
+ 		bios_connectors[i].valid = false;
  
 -- 
 2.43.0
