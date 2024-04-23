@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-40873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279E88AF96A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB138AFAE9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5983A1C24B1A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA012B2C09C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CB81448ED;
-	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66749149C73;
+	Tue, 23 Apr 2024 21:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQAa8Tco"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QD7CuUtT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055CF14389E;
-	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2491B149C4D;
+	Tue, 23 Apr 2024 21:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908521; cv=none; b=GZJS4KwxXJbySir5Y4Ue8L5mETTl2KJiD5BwVo6CElD33Z0BXSOPVtzFvQiURTqe6gWpXiVRFTo7WlF3mtEJjlAE86HGYjOoSmmfZGEM2nItAexKLQIIV+zkQxIyW1sfowOHUZDX+6pNI/+DK3kDR8SjkcG77XR94IN+1/57iZ0=
+	t=1713908691; cv=none; b=GagNaeKI0gzpDZ+OsbFzgW7O5grUEc0TdPEENIDsChc3AIXDKYjXUN2Jkn7FI1EcwZKiE/v+2asaz3vbAJ6ysdaNzJZliWCjn63ScFRcjohGH/kYB4DddAAPRkTMZUOkwQMGJOwUJ+bDq+c36HzWFNRU5XtW50LRVzTl3Pf2Gwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908521; c=relaxed/simple;
-	bh=mj00SjtXrPKwfq3d8KpnvOBK6pXp02n/jX8bXk1Mma4=;
+	s=arc-20240116; t=1713908691; c=relaxed/simple;
+	bh=fs7tQUjhRGSc4McIEZ9CmFMlphNI3UTE1x9l9E9z1Jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/PXtU8u88O4McbMv8uhw3sQp/372pAPSfoFpYephQPWbk6UOqRJvmZwHPHjzDwYhifYyTDOb/3Pe2t1ukVr8ru6AMJAumka4/ssuUylvdmiwjZObJKSf0vGktl4b+eApPiKRAD301zfakAndR6oIvToSSGp94hPp9eCNMRCXGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQAa8Tco; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7D1C3277B;
-	Tue, 23 Apr 2024 21:42:00 +0000 (UTC)
+	 MIME-Version; b=mMebP9KIyEN+feqMNvWcFazVHeyIDJa5Kuyhdospuhr9+a8GNCgd+8Q2PER+moopctdjOS1Yo04zpAR9VLu2SZb71C+ykr9t3CIXJ1C3Zx28KDPC2vBAomDlBgX6b4sID13TIvkuHNtO25o24amwO3jw85huExB5g0Xm4Kulrio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QD7CuUtT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91A1C116B1;
+	Tue, 23 Apr 2024 21:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908520;
-	bh=mj00SjtXrPKwfq3d8KpnvOBK6pXp02n/jX8bXk1Mma4=;
+	s=korg; t=1713908691;
+	bh=fs7tQUjhRGSc4McIEZ9CmFMlphNI3UTE1x9l9E9z1Jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQAa8TcoeYbRwTK6GlAiaWmACwyFR6/4141OPXAsKMPre/os/1FRjg6uI2Zwo7kLl
-	 Y8140MGdAEgxupOEXlai6l2ygqsm2sSKFPJuaAm4gIvmIABiR+MaITk1D4bu7wjAfy
-	 2/R4hfJxNm7I5FpiqconeQYBNyRSgQgIici2ZWdc=
+	b=QD7CuUtTsfQcWaVv4Z6m+p9p+viO3kre4Eg0jw/ExCeTljkSWoccdQvZMeAhWGY01
+	 BPIT1Gz26Lt5IgRT2x5JFuAeJMrRQr4gAzHfolBRwIT2T/d2azFph5JmLMoOVJYhm4
+	 G/3ioAqwH/5LKWyzmbLS6jjXbM0YqOwJsTo4Ztls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 085/158] x86/bugs: Fix BHI retpoline check
+Subject: [PATCH 6.1 039/141] netfilter: flowtable: incorrect pppoe tuple
 Date: Tue, 23 Apr 2024 14:38:27 -0700
-Message-ID: <20240423213858.707765289@linuxfoundation.org>
+Message-ID: <20240423213854.549957738@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 69129794d94c544810e68b2b4eaa7e44063f9bf2 ]
+[ Upstream commit 6db5dc7b351b9569940cd1cf445e237c42cd6d27 ]
 
-Confusingly, X86_FEATURE_RETPOLINE doesn't mean retpolines are enabled,
-as it also includes the original "AMD retpoline" which isn't a retpoline
-at all.
+pppoe traffic reaching ingress path does not match the flowtable entry
+because the pppoe header is expected to be at the network header offset.
+This bug causes a mismatch in the flow table lookup, so pppoe packets
+enter the classical forwarding path.
 
-Also replace cpu_feature_enabled() with boot_cpu_has() because this is
-before alternatives are patched and cpu_feature_enabled()'s fallback
-path is slower than plain old boot_cpu_has().
-
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/ad3807424a3953f0323c011a643405619f2a4927.1712944776.git.jpoimboe@kernel.org
+Fixes: 72efd585f714 ("netfilter: flowtable: add pppoe support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/netfilter/nf_flow_table_ip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index cbc8c88144e47..e7ceee008bd09 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1651,7 +1651,8 @@ static void __init bhi_select_mitigation(void)
- 		return;
- 
- 	/* Retpoline mitigates against BHI unless the CPU has RRSBA behavior */
--	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE)) {
-+	if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
-+	    !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE)) {
- 		spec_ctrl_disable_kernel_rrsba();
- 		if (rrsba_disabled)
- 			return;
-@@ -2803,11 +2804,13 @@ static const char *spectre_bhi_state(void)
- {
- 	if (!boot_cpu_has_bug(X86_BUG_BHI))
- 		return "; BHI: Not affected";
--	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
-+	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
- 		return "; BHI: BHI_DIS_S";
--	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
-+	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
- 		return "; BHI: SW loop, KVM: SW loop";
--	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) && rrsba_disabled)
-+	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
-+		 !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE) &&
-+		 rrsba_disabled)
- 		return "; BHI: Retpoline";
- 	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
- 		return "; BHI: Vulnerable, KVM: SW loop";
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index 306e1ba6012e2..22bc0e3d8a0b5 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -156,7 +156,7 @@ static void nf_flow_tuple_encap(struct sk_buff *skb,
+ 		tuple->encap[i].proto = skb->protocol;
+ 		break;
+ 	case htons(ETH_P_PPP_SES):
+-		phdr = (struct pppoe_hdr *)skb_mac_header(skb);
++		phdr = (struct pppoe_hdr *)skb_network_header(skb);
+ 		tuple->encap[i].id = ntohs(phdr->sid);
+ 		tuple->encap[i].proto = skb->protocol;
+ 		break;
 -- 
 2.43.0
 
