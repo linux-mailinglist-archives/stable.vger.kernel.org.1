@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BEE58AFAB7
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE338AF993
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5240B2BA71
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD41A1F26E35
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC651494B5;
-	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE1314388D;
+	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjpFnvSk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uy4EQ6Dw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502AC14600E;
-	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD40C20B3E;
+	Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908665; cv=none; b=RGRBktZgKkE3k3miNP9qN1v6hMUobZSW5ndXelJTFjaoraZoRHzMtN7pIdJ3rwKFBprKwmmRDAhyY3Xg6hTOQXf9xaj4pKCb2FxaVria5SGhe8url3QxHQo+EcDe4YzVM1Fp65YqBs5fUGl4TJDuFMtFDnOaJkvr0ZVw8fL0FBk=
+	t=1713908550; cv=none; b=p8iezFv89hKBjWIn6Ew6bFuGVn+BF11SOO+hCzp3wJsXloTjwCtQb1Zd5SXDezx+bSw79xH5UEESUFD7dgAgb/B3RJZjJD35p3NGujdMVCzFJ2NvWREDDQPp2pXvqwBlS53Vq8xcaXXYuRU+yoRceIPMaJ8Jt4iUzN0omgfBeAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908665; c=relaxed/simple;
-	bh=ECwpEBAbLLwM6geBmzOnetMeDWndm8wa/Se50Km4uXE=;
+	s=arc-20240116; t=1713908550; c=relaxed/simple;
+	bh=0EsYeqxOXVeTuFYhsvYcZBqT33KcCLvf/1V70QX3uNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSeVoh8O/Z19tw7cGMqfgrvlXDI46MG/IZwMJxO0ylEjIYErMMqYXS/QH0SbEp35DIVV1GoKedDzD6qTcCfPQ615moa9Fserscjh0mk0r1e5jpm1u2Yt16B2YpjyhPrNcWaEyc+uNFGKbe66kYRq2Td8bB2jPPXQr0YKUZWYJz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjpFnvSk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F53C116B1;
-	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
+	 MIME-Version; b=pClnSOGZsTatd4zDAj9tjb77Zn298v7pQ5Jsj9+TCRh60mlKzWB+cRMy6Ulm3fWZ59vZKpWf0v/eQO5tvTgKFMQRkypZCU3DWleI4bZTbJh/CzZUelyd3i+gKqy3+nhUMBtX/gzxh2Cj9BBt/gXI+v1lMtWXHplxyg1hgP+hLiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy4EQ6Dw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94079C32781;
+	Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908665;
-	bh=ECwpEBAbLLwM6geBmzOnetMeDWndm8wa/Se50Km4uXE=;
+	s=korg; t=1713908550;
+	bh=0EsYeqxOXVeTuFYhsvYcZBqT33KcCLvf/1V70QX3uNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjpFnvSkGJ0MeR8LpGX3OlpX9Nu2R1Afz9PQ/eUz36qajDKXD4QVj4u2F1h+R6OiO
-	 +e9XMl9vF9yp15d1Oa9TLtPbdvQh+HUjf4ytAwtVmxjz9VYvWowdu0wOK1gnxDWetA
-	 opIyhKqoQC8J98CY+C5xG7M/CzYD2gxdXB51Dqpk=
+	b=Uy4EQ6Dwi6egHeQCPhlFFxjgVxldUzuu2p+x5jOkBjBvUYLfQSujMf7XqBTt1OUbf
+	 gqQ3lTFKxTaHaCX7YtbAUybq1fymW57Vl891PhPQM8yzpwk20bi0fQQHo83JfEhtU3
+	 8epGd+VvHPj9NuZBNw4T3NSEwhMxE7LT0XRLeuSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <ytcoode@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 135/158] init/main.c: Fix potential static_command_line memory overflow
-Date: Tue, 23 Apr 2024 14:39:32 -0700
-Message-ID: <20240423213900.089152680@linuxfoundation.org>
+	syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 151/158] nilfs2: fix OOB in nilfs_set_de_type
+Date: Tue, 23 Apr 2024 14:39:33 -0700
+Message-ID: <20240423213900.750798855@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <ytcoode@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 46dad3c1e57897ab9228332f03e1c14798d2d3b9 upstream.
+commit c4a7dc9523b59b3e73fd522c73e95e072f876b16 upstream.
 
-We allocate memory of size 'xlen + strlen(boot_command_line) + 1' for
-static_command_line, but the strings copied into static_command_line are
-extra_command_line and command_line, rather than extra_command_line and
-boot_command_line.
+The size of the nilfs_type_by_mode array in the fs/nilfs2/dir.c file is
+defined as "S_IFMT >> S_SHIFT", but the nilfs_set_de_type() function,
+which uses this array, specifies the index to read from the array in the
+same way as "(mode & S_IFMT) >> S_SHIFT".
 
-When strlen(command_line) > strlen(boot_command_line), static_command_line
-will overflow.
+static void nilfs_set_de_type(struct nilfs_dir_entry *de, struct inode
+ *inode)
+{
+	umode_t mode = inode->i_mode;
 
-This patch just recovers strlen(command_line) which was miss-consolidated
-with strlen(boot_command_line) in the commit f5c7310ac73e ("init/main: add
-checks for the return value of memblock_alloc*()")
+	de->file_type = nilfs_type_by_mode[(mode & S_IFMT)>>S_SHIFT]; // oob
+}
 
-Link: https://lore.kernel.org/all/20240412081733.35925-2-ytcoode@gmail.com/
+However, when the index is determined this way, an out-of-bounds (OOB)
+error occurs by referring to an index that is 1 larger than the array size
+when the condition "mode & S_IFMT == S_IFMT" is satisfied.  Therefore, a
+patch to resize the nilfs_type_by_mode array should be applied to prevent
+OOB errors.
 
-Fixes: f5c7310ac73e ("init/main: add checks for the return value of memblock_alloc*()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lkml.kernel.org/r/20240415182048.7144-1-konishi.ryusuke@gmail.com
+Reported-by: syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e22057de05b9f3b30d8
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/main.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nilfs2/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/init/main.c
-+++ b/init/main.c
-@@ -630,6 +630,8 @@ static void __init setup_command_line(ch
- 	if (!saved_command_line)
- 		panic("%s: Failed to allocate %zu bytes\n", __func__, len + ilen);
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -240,7 +240,7 @@ nilfs_filetype_table[NILFS_FT_MAX] = {
  
-+	len = xlen + strlen(command_line) + 1;
-+
- 	static_command_line = memblock_alloc(len, SMP_CACHE_BYTES);
- 	if (!static_command_line)
- 		panic("%s: Failed to allocate %zu bytes\n", __func__, len);
+ #define S_SHIFT 12
+ static unsigned char
+-nilfs_type_by_mode[S_IFMT >> S_SHIFT] = {
++nilfs_type_by_mode[(S_IFMT >> S_SHIFT) + 1] = {
+ 	[S_IFREG >> S_SHIFT]	= NILFS_FT_REG_FILE,
+ 	[S_IFDIR >> S_SHIFT]	= NILFS_FT_DIR,
+ 	[S_IFCHR >> S_SHIFT]	= NILFS_FT_CHRDEV,
 
 
 
