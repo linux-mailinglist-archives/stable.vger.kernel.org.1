@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C108AFA3C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9598AFAED
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163B91F2944E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23BBE280A04
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C8E1494A5;
-	Tue, 23 Apr 2024 21:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF321448D4;
+	Tue, 23 Apr 2024 21:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0m3ds1gE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVTmCmyV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87182146008;
-	Tue, 23 Apr 2024 21:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA15148843;
+	Tue, 23 Apr 2024 21:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908659; cv=none; b=NfHBzNAFUMGEjbQbWBLZu0OuMzxM4RPWYesmOCyL4wC0X6PkuPDCL8SiRy29+eOMDbrnazFtjtAmzHpoVhM5jNbRyl6tEjz/bFrqyJlDS2B7wl+NWpg5pAoRMQ9FHiu7cexs1T5piO88GdIZiJp1j467QJWGnUbOlyzBYQ2mdfs=
+	t=1713908784; cv=none; b=XayYLrlQQmMSPBlLI8nhJYsKLsY6paOJIJXx0g0SxPIHTOF/uoh9uCn7Go9P7eMPWtPyettpaNVEIZiwiyb6f33JXn2gdVjuoNCXQHVgipKogW/GHTdvwB6KHAf1VJOspiDj6TqjtmT5qHpe7Goj9whTPZuZn3tQ3h7knglM7zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908659; c=relaxed/simple;
-	bh=Z6ftZHBcInFWaTLbA4gPLJNS0bAA2IlVGDVMmflZr+E=;
+	s=arc-20240116; t=1713908784; c=relaxed/simple;
+	bh=i2/xI4+BMSO8x6qBg8+29o+xGCBF2kK6BA1N7w6IJtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xx24m5E+mcH6X0AzoJC0uX5FSR7zADSKEsYkHIW8LaceVlegKgc2ks4PTFuP6hAiGeBEZc2qVHrxtGquvzwQPaEau5izDDEkkMp8IyREhLXNSh+ZjJ2fm3Z8wJrGlfO02848btOio9gzssaZt06Oqdvvr2Ben9aob3YnQyB0U5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0m3ds1gE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA52C116B1;
-	Tue, 23 Apr 2024 21:44:19 +0000 (UTC)
+	 MIME-Version; b=KFxRvhqGXGYDU/wlTi2DPWIiDlFcgOsO2ws0jWsYf09F1vQFzyn7LITH8ooPJ5PnAZQy0wWesWAW6Dd5lAnUWuSQiVqPulCk5AYyjMXdE2CPQ7jH1WIOAv7FJ86rCD5kTBa2p5NOtaEyuNk6PfB0N6qJfEIy4Bbh+SA4iYJ4aiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVTmCmyV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702C9C32782;
+	Tue, 23 Apr 2024 21:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908659;
-	bh=Z6ftZHBcInFWaTLbA4gPLJNS0bAA2IlVGDVMmflZr+E=;
+	s=korg; t=1713908784;
+	bh=i2/xI4+BMSO8x6qBg8+29o+xGCBF2kK6BA1N7w6IJtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0m3ds1gEdqEdpl2jN677rnpXrZDCjALDkzHLwjDrmTXlkA5+DG5bXlffffr1aLg1z
-	 9CVdA5VXM5F9b8VVNQNrG87mHQNG4/ukfQzUDXQWrsIvAVyQ7UG+wQCg6C21bSNBne
-	 +pFKllUk4CQufw+Ef65vlUodq0sBdDx92ntXd0WE=
+	b=tVTmCmyVH3e3M5OR4mLdWl22hfhEBGSUCbiu0+YA3K3rG4UZTP5wUy0bcf/uODeB9
+	 kR95OqMptM4P2q+VqQqhmtSKdoEWKEDwiiLnMsHU4l8bI3BkXk+Oab3lISZ3DaDwkt
+	 0/s3eW/wwW+bvaPj6fnt77wTweV1VulkISSmGWSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 150/158] net: dsa: mt7530: fix improper frames on all 25MHz and 40MHz XTAL MT7530
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 34/71] clk: Remove prepare_lock hold assertion in __clk_release()
 Date: Tue, 23 Apr 2024 14:39:47 -0700
-Message-ID: <20240423213900.545656951@linuxfoundation.org>
+Message-ID: <20240423213845.320807665@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Stephen Boyd <sboyd@kernel.org>
 
-commit 5f563c31ff0c40ce395d0bae7daa94c7950dac97 upstream.
+[ Upstream commit 8358a76cfb47c9a5af627a0c4e7168aa14fa25f6 ]
 
-The MT7530 switch after reset initialises with a core clock frequency that
-works with a 25MHz XTAL connected to it. For 40MHz XTAL, the core clock
-frequency must be set to 500MHz.
+Removing this assertion lets us move the kref_put() call outside the
+prepare_lock section. We don't need to hold the prepare_lock here to
+free memory and destroy the clk_core structure. We've already unlinked
+the clk from the clk tree and by the time the release function runs
+nothing holds a reference to the clk_core anymore so anything with the
+pointer can't access the memory that's being freed anyway. Way back in
+commit 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of
+prepare_lock") we didn't need to have this assertion either.
 
-The mt7530_pll_setup() function is responsible of setting the core clock
-frequency. Currently, it runs on MT7530 with 25MHz and 40MHz XTAL. This
-causes MT7530 switch with 25MHz XTAL to egress and ingress frames
-improperly.
-
-Introduce a check to run it only on MT7530 with 40MHz XTAL.
-
-The core clock frequency is set by writing to a switch PHY's register.
-Access to the PHY's register is done via the MDIO bus the switch is also
-on. Therefore, it works only when the switch makes switch PHYs listen on
-the MDIO bus the switch is on. This is controlled either by the state of
-the ESW_P1_LED_1 pin after reset deassertion or modifying bit 5 of the
-modifiable trap register.
-
-When ESW_P1_LED_1 is pulled high, PHY indirect access is used. That means
-accessing PHY registers via the PHY indirect access control register of the
-switch.
-
-When ESW_P1_LED_1 is pulled low, PHY direct access is used. That means
-accessing PHY registers via the MDIO bus the switch is on.
-
-For MT7530 switch with 40MHz XTAL on a board with ESW_P1_LED_1 pulled high,
-the core clock frequency won't be set to 500MHz, causing the switch to
-egress and ingress frames improperly.
-
-Run mt7530_pll_setup() after PHY direct access is set on the modifiable
-trap register.
-
-With these two changes, all MT7530 switches with 25MHz and 40MHz, and
-P1_LED_1 pulled high or low, will egress and ingress frames properly.
-
-Link: https://github.com/BPI-SINOVOIP/BPI-R2-bsp/blob/4a5dd143f2172ec97a2872fa29c7c4cd520f45b5/linux-mt/drivers/net/ethernet/mediatek/gsw_mt7623.c#L1039
-Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20240320-for-net-mt7530-fix-25mhz-xtal-with-direct-phy-access-v1-1-d92f605f1160@arinc9.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of prepare_lock")
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240325184204.745706-2-sboyd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/clk/clk.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2472,8 +2472,6 @@ mt7530_setup(struct dsa_switch *ds)
- 		     SYS_CTRL_PHY_RST | SYS_CTRL_SW_RST |
- 		     SYS_CTRL_REG_RST);
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 84397af4fb336..acbe917cbe775 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -4047,8 +4047,6 @@ static void __clk_release(struct kref *ref)
+ {
+ 	struct clk_core *core = container_of(ref, struct clk_core, ref);
  
--	mt7530_pll_setup(priv);
+-	lockdep_assert_held(&prepare_lock);
 -
- 	/* Lower Tx driving for TRGMII path */
- 	for (i = 0; i < NUM_TRGMII_CTRL; i++)
- 		mt7530_write(priv, MT7530_TRGMII_TD_ODT(i),
-@@ -2491,6 +2489,9 @@ mt7530_setup(struct dsa_switch *ds)
- 
- 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
- 
-+	if ((val & HWTRAP_XTAL_MASK) == HWTRAP_XTAL_40MHZ)
-+		mt7530_pll_setup(priv);
-+
- 	mt753x_trap_frames(priv);
- 
- 	/* Enable and reset MIB counters */
+ 	clk_core_free_parent_map(core);
+ 	kfree_const(core->name);
+ 	kfree(core);
+-- 
+2.43.0
+
 
 
 
