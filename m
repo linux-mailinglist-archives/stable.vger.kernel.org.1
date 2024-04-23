@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-40753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD2A8AF664
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 20:14:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE728AF663
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 20:14:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B29E1C229A7
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:14:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F6A01C22396
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E417C1411DE;
-	Tue, 23 Apr 2024 18:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1699A140368;
+	Tue, 23 Apr 2024 18:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TsvzfDtj"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZZ+IPijC"
 X-Original-To: stable@vger.kernel.org
 Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2058.outbound.protection.outlook.com [40.107.93.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A52413E41A;
-	Tue, 23 Apr 2024 18:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769B9140361;
+	Tue, 23 Apr 2024 18:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713896017; cv=fail; b=PDeKwTxm53VD8AEZWoSXBeorhqqG1qC5Bl5mPnljOd6+YcfJPQEXxHRTCgl17UpBatWzdEYwG5T/qK0Phd9n7+4rbatMtyUXG/zGyorv+SGezfLQbcdkQerKAS7RpLJ11ybFhFxPLLy+EVXUGtXxcRozXo1WL0O625Gh7oStz+A=
+	t=1713896015; cv=fail; b=Fn74+nTFYRHVGQ8FLB6R7z5mOHJsrhDjPV6DU3R3+aiDTmOtqURsg0Q8s9GE6Kiq1L7gJkvnLOaanoIv1RibFL1aYnblAdBrn1JkK/w8WIg6j5AsEboQUV+iV3KUZA6/X5Zv+yI9DWiVq5WMExX6PzHvGmQp++RCdgexpwsySog=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713896017; c=relaxed/simple;
-	bh=ZSRDmpw+11K0lshwUvrp+IrNu5Ba0+vnhIYdjw+Llno=;
+	s=arc-20240116; t=1713896015; c=relaxed/simple;
+	bh=wlNxrNZT6VtVgr+St5xHk9CM9YwyQIld5BZC051NgzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cKKTxD6SUvqXZcQunLPLUNe8FPXwAmxY6mYr50bEsE4v4PliYBsj8kZGp9AdmTfHw/NmE9EuIljq06rls0jxG1keCq98XsdKqh+cApEBwslbaX+u63Ls7SSTV9dEY1kwOXDtBp56AvdfJqbICT/UBB1rg2LMM6VuaabPrg9VABY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TsvzfDtj; arc=fail smtp.client-ip=40.107.93.58
+	 Content-Type:MIME-Version; b=LW1LjNY6Vct6dslJR0ihNtwOG4JMEizQp90Hk1eKCb19EZPsln9sg21DuqHMwvtDytzgdihTl/l+JSSwlGcDAz9Mx4uNKWPpqnO/OcMnqQsz27n2XHdy+/5Th9WLueu+engKe/go5uTatSHUUo/kYaIYFSGEMZh8bzCR6vNARMU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZZ+IPijC; arc=fail smtp.client-ip=40.107.93.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Fko1QbdlF51hn1V1ymk+cedDY0EgPPVzvdF1FfRP7WSzN6+y6+c6i9LsksGoPHKrZOuRlege5tFy5wP2GF4gB/FgxHLFjaLBmFAvoGwu0vPCP4J4r7f7mW4HTz7DvVQrZZhaxRhai0snirwOD1N1oK+PQKZKgij9ri0mWv9QowNuxZEQB4G7zXewtxVZ/bbxq3nPUOUf3ijo6/ErCkEQCTChzXPtIaWoBpCBl/uvp7+6pw4jBT4i8ZOna47p7coBcH11p622R4mvYJdTH+IYWmKqQZfy2NZhptlKK9pXVMVua44ip/q396/Osv57gY1xmLsI2z2kdyHdsnZfUsObdA==
+ b=PIme1XC0EjHtVYFcQZDKyorpD0XNNe8B0PwaETGFBuOBGZ/UssZS00U3vJFsouWdFLqmh6u7mYUNT8GQdtYTocEpLUAoPXBGbRy4ID2CqKNVDHGUjLYtJSHbirTk6Qa5LE1W0GthpvLCqY+oLssc2Kx2O9q3UUcniSj49VuEhHcltt9CsVG1UwNxnk+PJCfk4TXcPujZp+ufD+JhmP7Xj0CP5iQRVVgwt9DjpqTNg0bGUYIsgt8TSO8DTYzjZHcxQwFpAfXnVpcN/kMaCeQgIGufaQ2+YwfKWpS5B36PPV+MS+CWsTyMYymfGspCqOGAmOmVpdtYfiGrRcVu0056ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XVrGf85eSBj90MtLP/dwbEl7uBxndrW0yabcQrZUF9E=;
- b=GSK/TQBgFYEfGWybsX4C9VlgzaTojyrLyqbjggabjKY+cVUUyQaoLWnXG1hF91JGZ2D7u+PdAiH39+1K9CuPapIoT+TzDXVt07cA7zziqtB3wsb6wIJVAJ8qozJey4dnLvER6+Skhbasi4+TcYj/NRmNYAg43SOhhJHm8Puq+2QR3E3urZ4gKSzPJGaQot1lda0UEIUs7vdbnxNJxNKdho7WbXI90OooLl4tZFgA38XdwOe26DHa5bQD7EiUT+qso9Q+budod5ITq7jyLSgAb4ruJdBihBBCS6OG/OEx1wDyfHv7RqExkOutUye1mZOLALD7Lt7OejXAEmk6oxaYZA==
+ bh=eCTQ4Tq6NI7rX1L0FMlB2I4qV4lqKOSFAGQSBwlW6oQ=;
+ b=Tbt0mvSFn46u6sMDQyCdy/hCjw7elrW1oV6dNNgNwID2n73ggv+02cuRx6q0G0j4q8wULz4YLHdKTyzmX13mrgh9E91WclyTuVj0qOakhhhl1rEoT+8udg6hdDFCv+EhYmk6HrvBEKyiSyIR80tZP/csJvK7z0wugv/YrMm+pVi/HS/b0qDdHQv9KqQRHS/HYhwNtXS+ABQUb7lfFWzqtTmbJ3CWqKGBVwikE4hEPCwxiQhLnW8VcVbjr5RHGSMbMhX4QK8i7gQrQugy1599jaJzq/siXnpTgNFTXJBzTxjeECe11TfvRDsdIlgEjI8IatJ+XQvfb6ohIokQx2Kfaw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XVrGf85eSBj90MtLP/dwbEl7uBxndrW0yabcQrZUF9E=;
- b=TsvzfDtjpzO/qtR8lGfZAJ6ckuuMG0DAd/lxaO0uf2zlyRl+sLJn8kbwU0khbb2Dpil3EAHmVh0G5ERRxRsNtQIR/bVKcHB9RsAs1CULRdV2f+AAQcmxZ5aehVMCuWs8ssqAGbFZmXjGQXygzTSbVreeSRhYTT8m6+dBr2lYEmlMhCotrR2njIaqm+IPvHcfDQV/xxqrOOVVcCZcezSXnX763vSA0It0mZaGpGpcS7H6Zkjx+1R20i8OvGRBhgwYoo/Z79g0V+7UUU4+wcg/O/SoeJBOWCP5sWqs1wadxwL6u5A10aF0yfjgwef52qdn+n4QYCFBemp3BDxmSy8VEw==
+ bh=eCTQ4Tq6NI7rX1L0FMlB2I4qV4lqKOSFAGQSBwlW6oQ=;
+ b=ZZ+IPijCH5yVh6qud+3fLAOiT2fL8+XLqHJFUUFQCchMRVdGkfRLA/GjhrVMbJci6rQ9z5OUruRX/7zdztFaywwCdtNTVSc+i7fZWFN6Qgm0L2OV8L//Cs+t2EaqIQLves8VaQWnff0wYT3nJbxFsK6dMolfZZ5/OfBrVwugjISf0JxWfqtsdoREoGv55EybNgnn6z5S2QQRaG9IFOeY+SVBsnyjevXT2iOOsVNNg7pTxwLAqqhGfVZSMR/B2i63Mef8P5zxYaWPTFp798QKOgfWS8CKVOnK4N6P7cJIWj3p4Ig5jhVxktNk9GMfNO+yr5qqm4to7vrHjACs3Z4rwA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from BYAPR12MB2743.namprd12.prod.outlook.com (2603:10b6:a03:61::28)
  by SA1PR12MB6799.namprd12.prod.outlook.com (2603:10b6:806:25b::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Tue, 23 Apr
- 2024 18:13:26 +0000
+ 2024 18:13:27 +0000
 Received: from BYAPR12MB2743.namprd12.prod.outlook.com
  ([fe80::3ec0:1215:f4ed:9535]) by BYAPR12MB2743.namprd12.prod.outlook.com
  ([fe80::3ec0:1215:f4ed:9535%4]) with mapi id 15.20.7472.044; Tue, 23 Apr 2024
- 18:13:26 +0000
+ 18:13:27 +0000
 From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 To: netdev@vger.kernel.org,
 	stable@vger.kernel.org
@@ -71,16 +71,16 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	Benjamin Poirier <bpoirier@nvidia.com>,
 	Cosmin Ratiu <cratiu@nvidia.com>,
 	Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Subject: [PATCH net v3 3/4] macsec: Detect if Rx skb is macsec-related for offloading devices that update md_dst
-Date: Tue, 23 Apr 2024 11:13:04 -0700
-Message-ID: <20240423181319.115860-4-rrameshbabu@nvidia.com>
+Subject: [PATCH net v3 4/4] net/mlx5e: Advertise mlx5 ethernet driver updates sk_buff md_dst for MACsec
+Date: Tue, 23 Apr 2024 11:13:05 -0700
+Message-ID: <20240423181319.115860-5-rrameshbabu@nvidia.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240423181319.115860-1-rrameshbabu@nvidia.com>
 References: <20240423181319.115860-1-rrameshbabu@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY3PR04CA0006.namprd04.prod.outlook.com
- (2603:10b6:a03:217::11) To BYAPR12MB2743.namprd12.prod.outlook.com
+X-ClientProxiedBy: BYAPR21CA0030.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::40) To BYAPR12MB2743.namprd12.prod.outlook.com
  (2603:10b6:a03:61::28)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -90,179 +90,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BYAPR12MB2743:EE_|SA1PR12MB6799:EE_
-X-MS-Office365-Filtering-Correlation-Id: de06bd56-25d8-499c-f302-08dc63c1121a
+X-MS-Office365-Filtering-Correlation-Id: 160aedb0-501c-432e-f329-08dc63c112cc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?J90vi20e/NumQcRDEfomzpZwnyRAfip/G0TdkmxW+LPt/4M5ePuuo2stOyV1?=
- =?us-ascii?Q?5r0T36T6RfMEGfqB8NxrTzXHmyIK+ozmt1dN4bCfTi2oxF5/P0zzu25IQBwC?=
- =?us-ascii?Q?QsUzdM8JLOB7/OhYjUgxZ4dSjmZldA+drYCTqVjYTzFsltVCae/kqnpgzUOq?=
- =?us-ascii?Q?nwvqbeAbDRp9i3UQ4+0HEzfJLUMLVaWuuEBUV49ZZsxD9MBBzq9DFcLRfL8J?=
- =?us-ascii?Q?H2BGvw4qL1lDGI8q8tn3rxilyz62zcyqfX59tTeShCbiJR4iMHXYNHue+/tv?=
- =?us-ascii?Q?YdGkzjvNgO3R1o4fIdcOTGtVvZ8CJBryhKirr7K5ycrDgu/6bNTHrOB8/wgy?=
- =?us-ascii?Q?6ZbAhrZmXKyr6qr/JRMmZWgw6CuGyLbZKgPMr4GFkF9rK/JDxzByvHn2msp9?=
- =?us-ascii?Q?acd14XpgNrZzTXSL61H0QEi0u65T3FY5GZrv5t0ZbGapczpYVY25SvcPQbzy?=
- =?us-ascii?Q?5SPeTMptiJONi7C7qMGqY2W8pm+6XnJ52aOUn71+I6luf2mnyrLWCjtKA/1n?=
- =?us-ascii?Q?S8GBkCYyjp55ByiDcpOOsbcj9alWy8pN7FZ4hJh0HhYHzxfimsROFE2exhGj?=
- =?us-ascii?Q?Hd7070yUbKF36zDeToBFuUUsn6ccQ13k80jLShYyEkeOF7K4L1ts32nXZNtw?=
- =?us-ascii?Q?MPGyGuFF0eOILNu0yq+h5mdUWXeZxyvd8RSTdOmAcRSpNcO4wTop0qg0FAQJ?=
- =?us-ascii?Q?8v6OZpiyrBCUggCTIpE/snyrgk/twrH8Tzp2Xj0zBFnNfL1nKkx9WUZccW9m?=
- =?us-ascii?Q?kj1jyAUsDZfMunC1Kg+qB5cWSSo9i68jcxXpJNTe6kqXXWsB9II+kCBAMuKK?=
- =?us-ascii?Q?+LfwJbhlvXHBdgn6274GELSvbDS5qs6kpb1mnf2v1ufP53DO12GqXOFeTWFV?=
- =?us-ascii?Q?HU+SilLXhesGnkHiTBKi2iQI1fjl3DZ1eNkhq9YSxIDsDIYUwL9Q47hUxmCe?=
- =?us-ascii?Q?l95P/K9aRIAbX9Jr4jir/J7VE58rhi+YKuyAmPIkK+KoXqxM1zdf8zpq/FVM?=
- =?us-ascii?Q?Sc8gN+IGTnRv145fdaoxTSCBGI1/VnxZRymy3sGfoWJ+5lZjMiS8mLrYs2Qz?=
- =?us-ascii?Q?ZuUBWImtG4xtsFkJzC9/eesR/2jCDk8CbqVQTyRR6Yt0LucqUDHbS5k7SwwQ?=
- =?us-ascii?Q?7vdaLYOw9aR4vpjiHyiI7Gpiab8NyBLdaZgaxdHOLuP+r0vYSlB/c2bAd7q0?=
- =?us-ascii?Q?F6Mp89Y1nVY/TN9FdK+A7Dt+29zs8VYW1jUgIzO+fHuEPuCklF/ASUe7hoax?=
- =?us-ascii?Q?UOtKsCeoGJSqWzno7qbA9hm+c+YBOYiianZZFN7VnA=3D=3D?=
+	=?us-ascii?Q?1WZBjjx34CR5DzcHSNmoduRNdc7BwSfIeX2BqUfUCfKhadf8qXB9xn7VSI1Z?=
+ =?us-ascii?Q?UO7lGVx1WFkRWqbKmgJ36mliOhfnLnPFSXgclj31TPgm44WgZpWTf/7VmL63?=
+ =?us-ascii?Q?ij6N0z9lZ6roLZmL0T/zD0zmE6C9jaMoApXXd2If6iw4bjGsrwihbLBFu+3j?=
+ =?us-ascii?Q?O9FR4FXSfTicnRcWl4cvuvjd8JEGdWo4NnXrf3j3Yq/Lx2Q3GWWXCcAL+Ahl?=
+ =?us-ascii?Q?a/vDj0444WCwKM07/AKbHirjWLcPjKbsVt0zLldsIwhX6ZSSg1yujeNeRt9+?=
+ =?us-ascii?Q?ssH0f3SO/x2ETfqZupxEtBKSkjB2RGtnWZBHXJ3boGvK4e0Thc5LUd9FOGRy?=
+ =?us-ascii?Q?3dXp9PAnNd6xWjHTEhF5yBlp2riog4Q3JSgQVbCKXxlSchXMYiDduupEquTk?=
+ =?us-ascii?Q?nsrhltLc2MNKbXuIKA0fPzUoZZlWVgFjKheloKqiGt4MnSQUrJ+iB9g7ReJC?=
+ =?us-ascii?Q?pACSeuopJnrtCjZsy/l7hLQR7L0VFtMO/uTlIUXMKqBAL0DHUiQgUrR2bykB?=
+ =?us-ascii?Q?RlUGmu8hbXdKOAPZZufCjkGHAqmlZxwZgwDJMcU2ALNuA0wcfr8Hdm1xFntl?=
+ =?us-ascii?Q?KYynRJY2RfXUmmr8I4oIf0nNTiMdBL7yzPpmSVYY3JAewAzorbgBJ0SivvvE?=
+ =?us-ascii?Q?E8wIvybDq53NSridDv8rFS5rYAcwDURiqqOz53Xh3zVmcTjHz31YLUuYEUd2?=
+ =?us-ascii?Q?pyxoYngDEZ/09r/pdRtDtnODy2zUkdmyytx5M2We4WW62SRW0fyElLLGoqfU?=
+ =?us-ascii?Q?ZK1M5JrPRULuAY5c5SpkznIOj5WC6e8BSiBd97gEkNGaPkyXr1CQ9TV3cBM/?=
+ =?us-ascii?Q?3MPQOxj5Up5DQYhjtWPUW1VaeMrzgufeKzJeNHSPRXXgAhJoQQcF2/0mSwMo?=
+ =?us-ascii?Q?TKYKsKNeyKy4P5gYX0PCrp6x9DYNKC+eaYJ8G+XB/sgbScXXznLZEpSbzwY0?=
+ =?us-ascii?Q?m0Avl4f/oj5cgygCg1NPd4ygJsKbkvimj9IR45spVU90WdDkTvaAP1mCtQXJ?=
+ =?us-ascii?Q?OWZIAMWjnbllaJ7U5OkSoJx3eb92HBPhBD1Rr82ywsg8Wn5oR3MsmoqHLpo0?=
+ =?us-ascii?Q?5Jh88fPCLt0LN4iRAuLA5OPqkPEzjr0amhAiub15L74bmo6kcGQfVIopuTP/?=
+ =?us-ascii?Q?z6KZQOI15NnhwGyP+rG6r0sl9wjrJJykiHGY6aGVnZyYnIL1Oo2xa6oJxkuz?=
+ =?us-ascii?Q?WRO7dZsMA2W1O758Zt1iFxOyYwz85zOMl81r+e5atYQXoIA06O9CS3K225Tc?=
+ =?us-ascii?Q?RuKOyxaVEcSnVAlaP+9Y6cbul2HDlLoCSMxASsSmoQ=3D=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2743.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?P1o1lBEm4TukQluWr/FN7iy1kag3m3C5diqV0PxciE6azfFTvxqo6vFTYzyd?=
- =?us-ascii?Q?9/RiB3y41mvMowBtgLJmVnbZftdgTmVs5hOzbCXM+cgNip76jDon4zecZ+UW?=
- =?us-ascii?Q?YGR/bxZVTLbSeDahkgq3Vj3iDBdU6eBib56XjFCv3QwqG9PBwbhTqAFc5BDB?=
- =?us-ascii?Q?t3QPgG5D7JE8aER0dUMhE91vZ8PpRB9Q47mBxWm3xQ0ZNTWYTR4a/2XdC0KE?=
- =?us-ascii?Q?oqLUrfW3Zuv/XHHvY6DB1aaM/8S1wWoLSAE/QVNSywo5dh2VfMh6MSYAz1lj?=
- =?us-ascii?Q?nkvSVGHa2aes5XFA8FXe02fpB1y47u+E3YQaypeR/zUgl49MbVl0Ovd/yl1c?=
- =?us-ascii?Q?KtAur0E+IaOmsFCH7izE0aiW8hM7Zyk9dzP3km3L+JHWedvWaFLCGgfVahN6?=
- =?us-ascii?Q?2t+Cmp0fESksYX6BxcncXyMr4GoO6kB+7r5TsoQJw/IlNtAAbh04YO8dIFKr?=
- =?us-ascii?Q?HH//sIGphcQ6FUwf2NXkCYcbq8S6uFaux1Q3CpA/kQOdtFWY9XG9pU7v+jEo?=
- =?us-ascii?Q?vef+tllrvB7f6Fo6QKurCXD16kdNpXgHIElejsACjCze2BKRcLkcE79YAd4C?=
- =?us-ascii?Q?NWf4RDKP6uqW3PhKnQ9MaplOIDlg4msuiaap9JjrjlZIUlg6xQgsQk3fK3Wm?=
- =?us-ascii?Q?mB7pWhF2gnH9rlDWEySSWSRWOiKr3+UCnXVaNor77FB0o37Tl70wTdUPnTYT?=
- =?us-ascii?Q?lKGsHx71n0N3ocMCDMybeGlB31lt9nBmrnFMqmMSAHRQh8UnOUPgafV43ZXM?=
- =?us-ascii?Q?C9wlTT0MiZH1rPvgcmPwkad4mfVspijkRBNEWCxdUIlBc9OT7hV80odcYAVe?=
- =?us-ascii?Q?ld0yvyRfOQgqrwyZnEWApGpr/ZTGSIxDH6BUSBi50qn56tBPHqMXRTCN4Ggs?=
- =?us-ascii?Q?t+PQVEjEaYckvcR9wpXnsBQT2NOFlL9lIYlZCP+XyhlwkuK9dbaMiKYqaAla?=
- =?us-ascii?Q?OETdrveI2JocANxpBPQi6pPssng7Rh83JtIgxSTJhO+j6vcmzriwRWEMFdpf?=
- =?us-ascii?Q?xousd1RpoppykheaUauuHvoRdOtzovcCaHxvpli3yNdIt34K1rdss13yfkbk?=
- =?us-ascii?Q?dfqQU/C2g7cVFJjUeC8QPhG1pHtg0xqrtEWojEqX+84RrjFqRcX+A0WD1YBb?=
- =?us-ascii?Q?JxOnYZg3WVahEgUArmI/t7e6FAfZJHP7f7f9aI/i1iJUrNOZsxnG+vX904LT?=
- =?us-ascii?Q?luZaQOO5r86brkVcTPwbTKCYayI9hamybvYsaxJiLpDWpFGU6BR+cpEWsGS3?=
- =?us-ascii?Q?48nyTm/rX+KOjhJbfcdjOUY8TXOByaQixDS/f2JlQ4t53+DZ+5pccvDzbMTf?=
- =?us-ascii?Q?E/pt4nAfEiHCUrhdyN07vIg8Vp/MsHqwPxg6/nHp9RFeTYoAWOhL5QIP9DYe?=
- =?us-ascii?Q?MnUA62RIsSc6Yqql1gQo976KY30GccTDjoR0cECdSFs86POZo0zC5J79JHVg?=
- =?us-ascii?Q?EZjFWNSkeKFGdDY2yShwuWVOmDfT7nnjB52BOIKRA845Sy062EzMywvvyIWu?=
- =?us-ascii?Q?kF69vZ8JjUVXjHFibmjcDdcqaKAfvLFbzSODLLggxtcdu3xnsoEQCch2sXAP?=
- =?us-ascii?Q?TWXtoRLvsnd8qQpuBEhlFLEZcbzMZ/8V+XU2uxFy6E/uCzc8dUgf1MwhQikU?=
- =?us-ascii?Q?PQ=3D=3D?=
+	=?us-ascii?Q?JGF7IkM09/gC6zwlKBB+gudBVJXeKhe3E2F4MRsYOLEHTi2mW352tumD8fyl?=
+ =?us-ascii?Q?yLB7PybKnrU8VkJGkyEFiW9d3N6ZAJfVT3zS5EL89J4usTLkxV/Qdx6mbIbB?=
+ =?us-ascii?Q?LLYgQuEDuSPYyFxFzqRULN8dhBkC2ikbwZ/wyHI8BPWA/ncNBGt9I/6ykn8H?=
+ =?us-ascii?Q?9dHHl0Kma3QzImdCqPjseu18keuUVETHx+YZmzVv4EhH7NRhADK46jSIIYF1?=
+ =?us-ascii?Q?fQrjzZRIwFBe3VB8ruYCPe9iCnhonypJRTp1mwaHzZg75Wn087SOuIsANe62?=
+ =?us-ascii?Q?H5Cvq4Om2RMpII289EuaYEegHDwiNDWMBfdA3Q3jOcjFS5sAMuy8fBmaYLmZ?=
+ =?us-ascii?Q?V0zRL7eGU59gOVRXJDnkUhhgmr/r6rxWPbDERztaKItZpIMbP6m6Lyhcw/WO?=
+ =?us-ascii?Q?RXGprhr5wkHSLg0QZjLkrYWdOKIEQh/9fIj7kTx0onyWelJy0tYbFbE2bYz3?=
+ =?us-ascii?Q?uJCOqYqRDE/UKOyp6u6IILHwHVdKct/6HCVFvBmjmz33c2Ga5B925RFrPv1N?=
+ =?us-ascii?Q?EMMada9y3LIVJlXTAlZ5D0JL0FSVzcEgtr5Fvax1NOvYnbJaCyGjA4VBIWnk?=
+ =?us-ascii?Q?ELlMOn2yGlvKqGAUdRUPGrhp4MLiZxLcMC0+6SnbrVh6V4EloRFcVHT4w+sz?=
+ =?us-ascii?Q?UHfU1Vddzo9/NOY3ftTCsaWSS9GsP/yJeI8IDT2fkrNNAjnU/37DXJycEkQF?=
+ =?us-ascii?Q?OiYqPXhsSLo6EGmNhU/2cmcB/Emecs03hf4QWsa37HHW1Z0IxeZoBV6/1awj?=
+ =?us-ascii?Q?T4kCM9M8y1+EEtkK+VGHTC39vu9fZ1pDsLrmeD30cTY2rIcy+kRXU4CimcNu?=
+ =?us-ascii?Q?4nxyOV/mRdq1OHOSfNuqg8o2ijD/SByCg6tHpXXgLKFc6OJySrJLrPzB4Rut?=
+ =?us-ascii?Q?MoDh/bpnEcN82mJjtsiR7FYJerqsk9JO1IgtmHysH7iMg5mq3OUQHXEd5gkF?=
+ =?us-ascii?Q?RPTkORhXKLyNFtwNfPazuEf996LKJ/OZPPHe69yMKH6jmtGeKMjTIL4M7JRb?=
+ =?us-ascii?Q?4dx1+VEZvd7WOef+pOJXBz5hHD9KnKqkkzJYNkvoCRQU3/Qvsr2JmWSJ1kmZ?=
+ =?us-ascii?Q?dpfAgeBdv1D4M3jHGhLZzfjBc5fLuucCxuY4pscrTlO7Y0FWfcGsYhHhxVeK?=
+ =?us-ascii?Q?ajCTjuyPiOu70HHOUZu0GG/6QYsodtWwLBZBj9nP3pNpJWZsTsT8dUKXQ+SX?=
+ =?us-ascii?Q?FqK0vNj0Ox1x38S/yG+QBmMwxecXgWreRfJ/9dJPUtt2lqe5ckIKPZp6hZ24?=
+ =?us-ascii?Q?B6T3/j+V0vo0ocnE7EE5M7eDWNy1dWQdw8HqNd4e8CAZKzhQhQE9sFKKQPh1?=
+ =?us-ascii?Q?oKmjVfGW8S7Lh2/gryhe0k9FfGHE4YpoJpzNShMt6lifL4qYt8PN5/hWsogj?=
+ =?us-ascii?Q?s3S6pvb34ia8FmF4Ki7e4MkuPZsk3Osvk86UfxgzxmvqzCoFOSPmnxZAIwBh?=
+ =?us-ascii?Q?hNw8rwokk9uKEFgqXp9NDUbdKaR6lG970FyhpfhiyROSiEx/CmNsN02YrJzo?=
+ =?us-ascii?Q?9ZD8uwfgk+RSSgPTYa4SzojZXgzB+H9fsT1thqdQYEyX3wuQlUJWywnyqBq8?=
+ =?us-ascii?Q?IDyAVqs5WHLl8UkUhlsDwGzRTg9HKOmBpmgcAQz/I964wGPE27Z4jfLyAMr9?=
+ =?us-ascii?Q?qg=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de06bd56-25d8-499c-f302-08dc63c1121a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 160aedb0-501c-432e-f329-08dc63c112cc
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2743.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2024 18:13:26.4461
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2024 18:13:27.6510
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GGWrGg+5CeO71vkMC3NqO+bKfNieIuPRcAEyY75HHbBQpyzqj0hezSpG5rotd1gz5hn/D7VfLNe+MH60CQfZ9g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: UHN/d1yoU893ueeLkjUiLtOcxltqJISx9Gzq30lTttrE6fqyd9LBdZ8fbPjUBpwP5AeL6rDqKg1VUqRonhkgKw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6799
 
-Can now correctly identify where the packets should be delivered by using
-md_dst or its absence on devices that provide it.
+mlx5 Rx flow steering and CQE handling enable the driver to be able to
+update an skb's md_dst attribute as MACsec when MACsec traffic arrives when
+a device is configured for offloading. Advertise this to the core stack to
+take advantage of this capability.
 
-This detection is not possible without device drivers that update md_dst. A
-fallback pattern should be used for supporting such device drivers. This
-fallback mode causes multicast messages to be cloned to both the non-macsec
-and macsec ports, independent of whether the multicast message received was
-encrypted over MACsec or not. Other non-macsec traffic may also fail to be
-handled correctly for devices in promiscuous mode.
-
-Link: https://lore.kernel.org/netdev/ZULRxX9eIbFiVi7v@hog/
-Cc: Sabrina Dubroca <sd@queasysnail.net>
 Cc: stable@vger.kernel.org
-Fixes: 860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path support")
+Fixes: b7c9400cbc48 ("net/mlx5e: Implement MACsec Rx data path using MACsec skb_metadata_dst")
 Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
 Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
 ---
- drivers/net/macsec.c | 46 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 0206b84284ab..ff016c11b4a0 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -999,10 +999,12 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 	struct metadata_dst *md_dst;
- 	struct macsec_rxh_data *rxd;
- 	struct macsec_dev *macsec;
-+	bool is_macsec_md_dst;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+index b2cabd6ab86c..cc9bcc420032 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+@@ -1640,6 +1640,7 @@ static const struct macsec_ops macsec_offload_ops = {
+ 	.mdo_add_secy = mlx5e_macsec_add_secy,
+ 	.mdo_upd_secy = mlx5e_macsec_upd_secy,
+ 	.mdo_del_secy = mlx5e_macsec_del_secy,
++	.rx_uses_md_dst = true,
+ };
  
- 	rcu_read_lock();
- 	rxd = macsec_data_rcu(skb->dev);
- 	md_dst = skb_metadata_dst(skb);
-+	is_macsec_md_dst = md_dst && md_dst->type == METADATA_MACSEC;
- 
- 	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
- 		struct sk_buff *nskb;
-@@ -1013,14 +1015,42 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 		 * the SecTAG, so we have to deduce which port to deliver to.
- 		 */
- 		if (macsec_is_offloaded(macsec) && netif_running(ndev)) {
--			struct macsec_rx_sc *rx_sc = NULL;
-+			const struct macsec_ops *ops;
- 
--			if (md_dst && md_dst->type == METADATA_MACSEC)
--				rx_sc = find_rx_sc(&macsec->secy, md_dst->u.macsec_info.sci);
-+			ops = macsec_get_ops(macsec, NULL);
- 
--			if (md_dst && md_dst->type == METADATA_MACSEC && !rx_sc)
-+			if (ops->rx_uses_md_dst && !is_macsec_md_dst)
- 				continue;
- 
-+			if (is_macsec_md_dst) {
-+				struct macsec_rx_sc *rx_sc;
-+
-+				/* All drivers that implement MACsec offload
-+				 * support using skb metadata destinations must
-+				 * indicate that they do so.
-+				 */
-+				DEBUG_NET_WARN_ON_ONCE(!ops->rx_uses_md_dst);
-+				rx_sc = find_rx_sc(&macsec->secy,
-+						   md_dst->u.macsec_info.sci);
-+				if (!rx_sc)
-+					continue;
-+				/* device indicated macsec offload occurred */
-+				skb->dev = ndev;
-+				skb->pkt_type = PACKET_HOST;
-+				eth_skb_pkt_type(skb, ndev);
-+				ret = RX_HANDLER_ANOTHER;
-+				goto out;
-+			}
-+
-+			/* This datapath is insecure because it is unable to
-+			 * enforce isolation of broadcast/multicast traffic and
-+			 * unicast traffic with promiscuous mode on the macsec
-+			 * netdev. Since the core stack has no mechanism to
-+			 * check that the hardware did indeed receive MACsec
-+			 * traffic, it is possible that the response handling
-+			 * done by the MACsec port was to a plaintext packet.
-+			 * This violates the MACsec protocol standard.
-+			 */
- 			if (ether_addr_equal_64bits(hdr->h_dest,
- 						    ndev->dev_addr)) {
- 				/* exact match, divert skb to this port */
-@@ -1036,14 +1066,10 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 					break;
- 
- 				nskb->dev = ndev;
--				if (ether_addr_equal_64bits(hdr->h_dest,
--							    ndev->broadcast))
--					nskb->pkt_type = PACKET_BROADCAST;
--				else
--					nskb->pkt_type = PACKET_MULTICAST;
-+				eth_skb_pkt_type(nskb, ndev);
- 
- 				__netif_rx(nskb);
--			} else if (rx_sc || ndev->flags & IFF_PROMISC) {
-+			} else if (ndev->flags & IFF_PROMISC) {
- 				skb->dev = ndev;
- 				skb->pkt_type = PACKET_HOST;
- 				ret = RX_HANDLER_ANOTHER;
+ bool mlx5e_macsec_handle_tx_skb(struct mlx5e_macsec *macsec, struct sk_buff *skb)
 -- 
 2.42.0
 
