@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-40884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7B08AF975
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CA68AFA82
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A15481C221A8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18E7BB2B5C3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F951448FB;
-	Tue, 23 Apr 2024 21:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB662145B39;
+	Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHreVTcC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVf0qocp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E7520B3E;
-	Tue, 23 Apr 2024 21:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A13A14389F;
+	Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908528; cv=none; b=tGiUSGYKJFAleUAQLuax3/O4Xs4dsx1nrog7EpWSFvWkqVSQo7o1SpBvT0Am++hUvR6xFN37ZZFTHYkUGXxVAynobYDJDe9g/VBmtQwIEiE5lgIhOFCPLojofY9AK9oN0xYFcr+d3EwnjEtuS1WXPhUZ5twnvJPhuUixnqs/qd4=
+	t=1713908647; cv=none; b=avy5/MB4HplWMfzhzuefPEvBAJ9pGm4PfjIJwHkg5ziqpP518GnlweiSSskCw3x5y0bIEqJVtf1IPjgnNKATFpF0i2vbjkXPpGRTpQi503QkMLGoI5adikRJjGk2CS50o5T4cpcykDyo2QDDPV5cp2sMTo7EXAX+In1lcFvrOu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908528; c=relaxed/simple;
-	bh=GCNOPttGHyjkNtSa4vuMW2YBAPGF/2jyBZkRJ52E57Q=;
+	s=arc-20240116; t=1713908647; c=relaxed/simple;
+	bh=nVcmpjzNwg6u8suOQfCL0qpT8Vi5DPs3Gej+XSJ7FRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpZr+7gmwFJvy5NAZoOj5h4cSC8ZDJsiegIRQVjVrr3QNIfN9Yb8c6LZFvwx6e6R3cerJoeTDumBNYeYl2GH7RbdXnZkuegk8goDXF184JWxvbDVRIzAhX9EbFECy+U9tvErGz1XF1JSmI6ojCcG+VTGqBgz6DZzpX9HcSB4iWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHreVTcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E0EC3277B;
-	Tue, 23 Apr 2024 21:42:08 +0000 (UTC)
+	 MIME-Version; b=nUojd82PUfUaqg2yJF/R7yUJZVaGvGWcOSV9pKGcgstWkjyoBgdLO3+Y0TddOXA0m9UpECcSZK/Y80HxGr+jXxrziav4Zk5vuGAQ47NPcRRbSA1egicYNGIiA8FLSDWzK0FKCyXY45Gj6Q2K6XUDblP4E5ndQQYd/YpJyx8Xpq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVf0qocp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA98C32783;
+	Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908528;
-	bh=GCNOPttGHyjkNtSa4vuMW2YBAPGF/2jyBZkRJ52E57Q=;
+	s=korg; t=1713908647;
+	bh=nVcmpjzNwg6u8suOQfCL0qpT8Vi5DPs3Gej+XSJ7FRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHreVTcCQX0pTFk7GtDsJdP7eRy5Y80p0fthz612QFQ1hNL9k2ZAIOioCHknAxuWv
-	 VE+KIixVUaIti/xMJDCNu9FYmzHbcTjBH4zz33WTnhORUPjUO0QdCgK8ghnFV1m38n
-	 yoh2jngi896w2x7PhQEQnLcxFLE7zxCCTxeDFw5s=
+	b=DVf0qocpP5bpeSB09ISqYEjI755CYUTpLYJF7w9/LO51zcNZoa81iOAib1H7K5VXt
+	 m0aRXPIb7QAI506Cih2BslQ7zxeTzf6OfO1lW33nbT814r+4aiysGUkEIrQOgGP1ZP
+	 veS2Bo++fjReDhY4cY8UibKAw8FsmNuV/RMkb8xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
-	Wentong Wu <wentong.wu@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 6.8 121/158] mei: vsc: Unregister interrupt handler for system suspend
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.6 106/158] thunderbolt: Avoid notify PM core about runtime PM resume
 Date: Tue, 23 Apr 2024 14:39:03 -0700
-Message-ID: <20240423213859.848874352@linuxfoundation.org>
+Message-ID: <20240423213859.199989220@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,219 +61,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Gil Fine <gil.fine@linux.intel.com>
 
-commit f6085a96c97387154be7eaebd1a5420eb3cd55dc upstream.
+commit dcd12acaf384c30437fa5a9a1f71df06fc9835fd upstream.
 
-Unregister the MEI VSC interrupt handler before system suspend and
-re-register it at system resume time. This mirrors implementation of other
-MEI devices.
+Currently we notify PM core about occurred wakes after any resume. This
+is not actually needed after resume from runtime suspend. Hence, notify
+PM core about occurred wakes only after resume from system sleep. Also,
+if the wake occurred in USB4 router upstream port, we don't notify the
+PM core about it since it is not actually needed and can cause
+unexpected autowake (e.g. if /sys/power/wakeup_count is used).
 
-This patch fixes the bug that causes continuous stream of MEI VSC errors
-after system resume.
+While there add the missing kernel-doc for tb_switch_resume().
 
-Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
-Cc: stable@vger.kernel.org # for 6.8
-Reported-by: Dominik Brodowski <linux@dominikbrodowski.net>
-Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Acked-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240403051341.3534650-2-wentong.wu@intel.com
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/platform-vsc.c |   17 +++++++-
- drivers/misc/mei/vsc-tp.c       |   84 ++++++++++++++++++++++++++++------------
- drivers/misc/mei/vsc-tp.h       |    3 +
- 3 files changed, 78 insertions(+), 26 deletions(-)
+ drivers/thunderbolt/switch.c |   27 +++++++++++++++++++++++++--
+ drivers/thunderbolt/tb.c     |    4 ++--
+ drivers/thunderbolt/tb.h     |    3 ++-
+ drivers/thunderbolt/usb4.c   |   13 +++++++------
+ 4 files changed, 36 insertions(+), 11 deletions(-)
 
---- a/drivers/misc/mei/platform-vsc.c
-+++ b/drivers/misc/mei/platform-vsc.c
-@@ -402,25 +402,40 @@ static int mei_vsc_remove(struct platfor
- static int mei_vsc_suspend(struct device *dev)
- {
- 	struct mei_device *mei_dev = dev_get_drvdata(dev);
-+	struct mei_vsc_hw *hw = mei_dev_to_vsc_hw(mei_dev);
- 
- 	mei_stop(mei_dev);
- 
-+	mei_disable_interrupts(mei_dev);
-+
-+	vsc_tp_free_irq(hw->tp);
-+
- 	return 0;
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -3208,7 +3208,26 @@ static int tb_switch_set_wake(struct tb_
+ 	return tb_lc_set_wake(sw, flags);
  }
  
- static int mei_vsc_resume(struct device *dev)
+-int tb_switch_resume(struct tb_switch *sw)
++static void tb_switch_check_wakes(struct tb_switch *sw)
++{
++	if (device_may_wakeup(&sw->dev)) {
++		if (tb_switch_is_usb4(sw))
++			usb4_switch_check_wakes(sw);
++	}
++}
++
++/**
++ * tb_switch_resume() - Resume a switch after sleep
++ * @sw: Switch to resume
++ * @runtime: Is this resume from runtime suspend or system sleep
++ *
++ * Resumes and re-enumerates router (and all its children), if still plugged
++ * after suspend. Don't enumerate device router whose UID was changed during
++ * suspend. If this is resume from system sleep, notifies PM core about the
++ * wakes occurred during suspend. Disables all wakes, except USB4 wake of
++ * upstream port for USB4 routers that shall be always enabled.
++ */
++int tb_switch_resume(struct tb_switch *sw, bool runtime)
  {
- 	struct mei_device *mei_dev = dev_get_drvdata(dev);
-+	struct mei_vsc_hw *hw = mei_dev_to_vsc_hw(mei_dev);
+ 	struct tb_port *port;
+ 	int err;
+@@ -3257,6 +3276,9 @@ int tb_switch_resume(struct tb_switch *s
+ 	if (err)
+ 		return err;
+ 
++	if (!runtime)
++		tb_switch_check_wakes(sw);
++
+ 	/* Disable wakes */
+ 	tb_switch_set_wake(sw, 0);
+ 
+@@ -3286,7 +3308,8 @@ int tb_switch_resume(struct tb_switch *s
+ 			 */
+ 			if (tb_port_unlock(port))
+ 				tb_port_warn(port, "failed to unlock port\n");
+-			if (port->remote && tb_switch_resume(port->remote->sw)) {
++			if (port->remote &&
++			    tb_switch_resume(port->remote->sw, runtime)) {
+ 				tb_port_warn(port,
+ 					     "lost during suspend, disconnecting\n");
+ 				tb_sw_set_unplugged(port->remote->sw);
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -2262,7 +2262,7 @@ static int tb_resume_noirq(struct tb *tb
+ 	/* remove any pci devices the firmware might have setup */
+ 	tb_switch_reset(tb->root_switch);
+ 
+-	tb_switch_resume(tb->root_switch);
++	tb_switch_resume(tb->root_switch, false);
+ 	tb_free_invalid_tunnels(tb);
+ 	tb_free_unplugged_children(tb->root_switch);
+ 	tb_restore_children(tb->root_switch);
+@@ -2388,7 +2388,7 @@ static int tb_runtime_resume(struct tb *
+ 	struct tb_tunnel *tunnel, *n;
+ 
+ 	mutex_lock(&tb->lock);
+-	tb_switch_resume(tb->root_switch);
++	tb_switch_resume(tb->root_switch, true);
+ 	tb_free_invalid_tunnels(tb);
+ 	tb_restore_children(tb->root_switch);
+ 	list_for_each_entry_safe(tunnel, n, &tcm->tunnel_list, list)
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -802,7 +802,7 @@ int tb_switch_configuration_valid(struct
+ int tb_switch_add(struct tb_switch *sw);
+ void tb_switch_remove(struct tb_switch *sw);
+ void tb_switch_suspend(struct tb_switch *sw, bool runtime);
+-int tb_switch_resume(struct tb_switch *sw);
++int tb_switch_resume(struct tb_switch *sw, bool runtime);
+ int tb_switch_reset(struct tb_switch *sw);
+ int tb_switch_wait_for_bit(struct tb_switch *sw, u32 offset, u32 bit,
+ 			   u32 value, int timeout_msec);
+@@ -1224,6 +1224,7 @@ static inline bool tb_switch_is_usb4(con
+ 	return usb4_switch_version(sw) > 0;
+ }
+ 
++void usb4_switch_check_wakes(struct tb_switch *sw);
+ int usb4_switch_setup(struct tb_switch *sw);
+ int usb4_switch_configuration_valid(struct tb_switch *sw);
+ int usb4_switch_read_uid(struct tb_switch *sw, u64 *uid);
+--- a/drivers/thunderbolt/usb4.c
++++ b/drivers/thunderbolt/usb4.c
+@@ -155,7 +155,13 @@ static inline int usb4_switch_op_data(st
+ 				tx_dwords, rx_data, rx_dwords);
+ }
+ 
+-static void usb4_switch_check_wakes(struct tb_switch *sw)
++/**
++ * usb4_switch_check_wakes() - Check for wakes and notify PM core about them
++ * @sw: Router whose wakes to check
++ *
++ * Checks wakes occurred during suspend and notify the PM core about them.
++ */
++void usb4_switch_check_wakes(struct tb_switch *sw)
+ {
+ 	bool wakeup_usb4 = false;
+ 	struct usb4_port *usb4;
+@@ -163,9 +169,6 @@ static void usb4_switch_check_wakes(stru
+ 	bool wakeup = false;
+ 	u32 val;
+ 
+-	if (!device_may_wakeup(&sw->dev))
+-		return;
+-
+ 	if (tb_route(sw)) {
+ 		if (tb_sw_read(sw, &val, TB_CFG_SWITCH, ROUTER_CS_6, 1))
+ 			return;
+@@ -244,8 +247,6 @@ int usb4_switch_setup(struct tb_switch *
+ 	u32 val = 0;
  	int ret;
  
--	ret = mei_restart(mei_dev);
-+	ret = vsc_tp_request_irq(hw->tp);
- 	if (ret)
- 		return ret;
- 
-+	ret = mei_restart(mei_dev);
-+	if (ret)
-+		goto err_free;
-+
- 	/* start timer if stopped in suspend */
- 	schedule_delayed_work(&mei_dev->timer_work, HZ);
- 
- 	return 0;
-+
-+err_free:
-+	vsc_tp_free_irq(hw->tp);
-+
-+	return ret;
- }
- 
- static DEFINE_SIMPLE_DEV_PM_OPS(mei_vsc_pm_ops, mei_vsc_suspend, mei_vsc_resume);
---- a/drivers/misc/mei/vsc-tp.c
-+++ b/drivers/misc/mei/vsc-tp.c
-@@ -94,6 +94,27 @@ static const struct acpi_gpio_mapping vs
- 	{}
- };
- 
-+static irqreturn_t vsc_tp_isr(int irq, void *data)
-+{
-+	struct vsc_tp *tp = data;
-+
-+	atomic_inc(&tp->assert_cnt);
-+
-+	wake_up(&tp->xfer_wait);
-+
-+	return IRQ_WAKE_THREAD;
-+}
-+
-+static irqreturn_t vsc_tp_thread_isr(int irq, void *data)
-+{
-+	struct vsc_tp *tp = data;
-+
-+	if (tp->event_notify)
-+		tp->event_notify(tp->event_notify_context);
-+
-+	return IRQ_HANDLED;
-+}
-+
- /* wakeup firmware and wait for response */
- static int vsc_tp_wakeup_request(struct vsc_tp *tp)
- {
-@@ -384,6 +405,37 @@ int vsc_tp_register_event_cb(struct vsc_
- EXPORT_SYMBOL_NS_GPL(vsc_tp_register_event_cb, VSC_TP);
- 
- /**
-+ * vsc_tp_request_irq - request irq for vsc_tp device
-+ * @tp: vsc_tp device handle
-+ */
-+int vsc_tp_request_irq(struct vsc_tp *tp)
-+{
-+	struct spi_device *spi = tp->spi;
-+	struct device *dev = &spi->dev;
-+	int ret;
-+
-+	irq_set_status_flags(spi->irq, IRQ_DISABLE_UNLAZY);
-+	ret = request_threaded_irq(spi->irq, vsc_tp_isr, vsc_tp_thread_isr,
-+				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-+				   dev_name(dev), tp);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(vsc_tp_request_irq, VSC_TP);
-+
-+/**
-+ * vsc_tp_free_irq - free irq for vsc_tp device
-+ * @tp: vsc_tp device handle
-+ */
-+void vsc_tp_free_irq(struct vsc_tp *tp)
-+{
-+	free_irq(tp->spi->irq, tp);
-+}
-+EXPORT_SYMBOL_NS_GPL(vsc_tp_free_irq, VSC_TP);
-+
-+/**
-  * vsc_tp_intr_synchronize - synchronize vsc_tp interrupt
-  * @tp: vsc_tp device handle
-  */
-@@ -413,27 +465,6 @@ void vsc_tp_intr_disable(struct vsc_tp *
- }
- EXPORT_SYMBOL_NS_GPL(vsc_tp_intr_disable, VSC_TP);
- 
--static irqreturn_t vsc_tp_isr(int irq, void *data)
--{
--	struct vsc_tp *tp = data;
+-	usb4_switch_check_wakes(sw);
 -
--	atomic_inc(&tp->assert_cnt);
--
--	wake_up(&tp->xfer_wait);
--
--	return IRQ_WAKE_THREAD;
--}
--
--static irqreturn_t vsc_tp_thread_isr(int irq, void *data)
--{
--	struct vsc_tp *tp = data;
--
--	if (tp->event_notify)
--		tp->event_notify(tp->event_notify_context);
--
--	return IRQ_HANDLED;
--}
--
- static int vsc_tp_match_any(struct acpi_device *adev, void *data)
- {
- 	struct acpi_device **__adev = data;
-@@ -485,10 +516,9 @@ static int vsc_tp_probe(struct spi_devic
- 	tp->spi = spi;
+ 	if (!tb_route(sw))
+ 		return 0;
  
- 	irq_set_status_flags(spi->irq, IRQ_DISABLE_UNLAZY);
--	ret = devm_request_threaded_irq(dev, spi->irq, vsc_tp_isr,
--					vsc_tp_thread_isr,
--					IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
--					dev_name(dev), tp);
-+	ret = request_threaded_irq(spi->irq, vsc_tp_isr, vsc_tp_thread_isr,
-+				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-+				   dev_name(dev), tp);
- 	if (ret)
- 		return ret;
- 
-@@ -522,6 +552,8 @@ static int vsc_tp_probe(struct spi_devic
- err_destroy_lock:
- 	mutex_destroy(&tp->mutex);
- 
-+	free_irq(spi->irq, tp);
-+
- 	return ret;
- }
- 
-@@ -532,6 +564,8 @@ static void vsc_tp_remove(struct spi_dev
- 	platform_device_unregister(tp->pdev);
- 
- 	mutex_destroy(&tp->mutex);
-+
-+	free_irq(spi->irq, tp);
- }
- 
- static const struct acpi_device_id vsc_tp_acpi_ids[] = {
---- a/drivers/misc/mei/vsc-tp.h
-+++ b/drivers/misc/mei/vsc-tp.h
-@@ -37,6 +37,9 @@ int vsc_tp_xfer(struct vsc_tp *tp, u8 cm
- int vsc_tp_register_event_cb(struct vsc_tp *tp, vsc_tp_event_cb_t event_cb,
- 			     void *context);
- 
-+int vsc_tp_request_irq(struct vsc_tp *tp);
-+void vsc_tp_free_irq(struct vsc_tp *tp);
-+
- void vsc_tp_intr_enable(struct vsc_tp *tp);
- void vsc_tp_intr_disable(struct vsc_tp *tp);
- void vsc_tp_intr_synchronize(struct vsc_tp *tp);
 
 
 
