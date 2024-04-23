@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-40816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72468AF92E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88758AF9AA
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48B3C1F22BA2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC5031C22591
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9637B1448D4;
-	Tue, 23 Apr 2024 21:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9D8143C6C;
+	Tue, 23 Apr 2024 21:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLYJnbxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqCrQd1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535F720B3E;
-	Tue, 23 Apr 2024 21:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0E485274;
+	Tue, 23 Apr 2024 21:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908482; cv=none; b=LYR6k9xvyvirJLXAkXcle16SdcZ864vNR3our/0BUWNMP3XFw03lqhsmZX9JXRSFV9r7pl1z5nF6uYX87Cbhps32MPcIWFsBIeQzbOlmtGeRRr785Mg9AqDIyrqAUApxLBq3s1AhzdrngI1Tk+DYyMmT/1VzkOjZe6VuQnvmT94=
+	t=1713908566; cv=none; b=KHb0jRQJzVJ+x83f6lNyYGArAaFckt0W+Z4Soc++bLkFTBmmJOj/qzPUFstfK7rJKdIs/7B+VvMga/Qs8dsD24dS0SqoBdtgrtKBLXg8TdSg8aKbGyWSlcr+iT1z6KIM3zfloqZQ3jXGqcUzxxfUbkICQuzUp47XkFhCYzUWm+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908482; c=relaxed/simple;
-	bh=z5CwRZU23E3V5UhGjAuNJrMffkE1T7f8c5CQuI49/TI=;
+	s=arc-20240116; t=1713908566; c=relaxed/simple;
+	bh=/aNMV6ngNeMoHqec/50lit2FRmmxo/gAd94LglwTr8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hncjap9NM/r6YfL8gnhjlYj4OUZJ1LLmO7dR9vVeZ5VvFLSdKEcn2tc1azoAQ6ayqcDtsV0iYV3PwJHsxBDdXTbjme9H+s9M+4KfXmXRFFGbrN8n2QB6/3uLbsppXbSwAiJecuJu5bJPJZOMOQTSJwmYrgg/mDm5JIpxXhKALXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLYJnbxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28142C116B1;
-	Tue, 23 Apr 2024 21:41:22 +0000 (UTC)
+	 MIME-Version; b=c/VnAa+4bFAG/U8rEMqxHe22dubL0boUTK/Okqpxxy1fxGxLAXzgwwDmJYDDF/3hoH5aySnSuR/XQbz6Vyi+mDphpv+mEGtf+QnlNOaD1rXZ+tT8xy1307VKsxH/0fSL75L6lJY3oen5NLqGXhyOCiFKIIGSp9BddCSnHEwrh9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqCrQd1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF177C3277B;
+	Tue, 23 Apr 2024 21:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908482;
-	bh=z5CwRZU23E3V5UhGjAuNJrMffkE1T7f8c5CQuI49/TI=;
+	s=korg; t=1713908565;
+	bh=/aNMV6ngNeMoHqec/50lit2FRmmxo/gAd94LglwTr8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLYJnbxJbiFmDHf2efClvIvmLuUKDdJO6YZ8DmeMlE7FRWZG+KmTrQ4Onlctm6iXq
-	 Qu8pKonkfRUZAARJRFoq0QIZNb8KwrrEWaS0YVahSEhtV/aOjb6lf+5ZGkTaq0eCvu
-	 RyFwqnnAsxoycnyU/l/DemEdUo+sjNXGa3Tlgf1I=
+	b=yqCrQd1XHAHPvp09gYF/U0cbClSPb9ht7/0NazQJfZhk6eg0P7NBwVnBsf3pDZNUB
+	 GVI7VveSmtzwYmHXmKBGrMgohjQ3aLMRdMs/7CPy4oIt6gkjH0IFEWTOunvxy6M5ne
+	 b8z/stWJIiM+wlQZx3Z52ogc1jk3mC3quDBloCeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mark Brown <broonie@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 029/158] octeontx2-pf: fix FLOW_DIS_IS_FRAGMENT implementation
+Subject: [PATCH 6.6 014/158] selftests: timers: Convert posix_timers test to generate KTAP output
 Date: Tue, 23 Apr 2024 14:37:31 -0700
-Message-ID: <20240423213856.818713473@linuxfoundation.org>
+Message-ID: <20240423213856.177773079@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +60,241 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 75ce9506ee3dc66648a7d74ab3b0acfa364d6d43 ]
+[ Upstream commit 071af0c9e582bc47e379e39490a2bc1adfe4ec68 ]
 
-Upon reviewing the flower control flags handling in
-this driver, I notice that the key wasn't being used,
-only the mask.
+Currently the posix_timers test does not produce KTAP output but rather a
+custom format. This means that we only get a pass/fail for the suite, not
+for each individual test that the suite does. Convert to using the standard
+kselftest output functions which result in KTAP output being generated.
 
-Ie. `tc flower ... ip_flags nofrag` was hardware
-offloaded as `... ip_flags frag`.
+As part of this fix the printing of diagnostics in the unlikely event that
+the pthread APIs fail, these were using perror() but the API functions
+directly return an error code instead of setting errno.
 
-Only compile tested, no access to HW.
-
-Fixes: c672e3727989 ("octeontx2-pf: Add support to filter packet based on IP fragment")
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: 6d029c25b71f ("selftests/timers/posix_timers: Reimplement check_timer_distribution()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/timers/posix_timers.c | 81 ++++++++++---------
+ 1 file changed, 41 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index 4fd44b6eecea6..60ee7ae2c4097 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -688,6 +688,7 @@ static int otx2_tc_prepare_flow(struct otx2_nic *nic, struct otx2_tc_flow *node,
+diff --git a/tools/testing/selftests/timers/posix_timers.c b/tools/testing/selftests/timers/posix_timers.c
+index 9a42403eaff70..2669c45316b3d 100644
+--- a/tools/testing/selftests/timers/posix_timers.c
++++ b/tools/testing/selftests/timers/posix_timers.c
+@@ -76,22 +76,21 @@ static int check_diff(struct timeval start, struct timeval end)
  
- 	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_CONTROL)) {
- 		struct flow_match_control match;
-+		u32 val;
+ static int check_itimer(int which)
+ {
++	const char *name;
+ 	int err;
+ 	struct timeval start, end;
+ 	struct itimerval val = {
+ 		.it_value.tv_sec = DELAY,
+ 	};
  
- 		flow_rule_match_control(rule, &match);
- 		if (match.mask->flags & FLOW_DIS_FIRST_FRAG) {
-@@ -696,12 +697,14 @@ static int otx2_tc_prepare_flow(struct otx2_nic *nic, struct otx2_tc_flow *node,
+-	printf("Check itimer ");
+-
+ 	if (which == ITIMER_VIRTUAL)
+-		printf("virtual... ");
++		name = "ITIMER_VIRTUAL";
+ 	else if (which == ITIMER_PROF)
+-		printf("prof... ");
++		name = "ITIMER_PROF";
+ 	else if (which == ITIMER_REAL)
+-		printf("real... ");
+-
+-	fflush(stdout);
++		name = "ITIMER_REAL";
++	else
++		return -1;
+ 
+ 	done = 0;
+ 
+@@ -104,13 +103,13 @@ static int check_itimer(int which)
+ 
+ 	err = gettimeofday(&start, NULL);
+ 	if (err < 0) {
+-		perror("Can't call gettimeofday()\n");
++		ksft_perror("Can't call gettimeofday()");
+ 		return -1;
+ 	}
+ 
+ 	err = setitimer(which, &val, NULL);
+ 	if (err < 0) {
+-		perror("Can't set timer\n");
++		ksft_perror("Can't set timer");
+ 		return -1;
+ 	}
+ 
+@@ -123,20 +122,18 @@ static int check_itimer(int which)
+ 
+ 	err = gettimeofday(&end, NULL);
+ 	if (err < 0) {
+-		perror("Can't call gettimeofday()\n");
++		ksft_perror("Can't call gettimeofday()");
+ 		return -1;
+ 	}
+ 
+-	if (!check_diff(start, end))
+-		printf("[OK]\n");
+-	else
+-		printf("[FAIL]\n");
++	ksft_test_result(check_diff(start, end) == 0, "%s\n", name);
+ 
+ 	return 0;
+ }
+ 
+ static int check_timer_create(int which)
+ {
++	const char *type;
+ 	int err;
+ 	timer_t id;
+ 	struct timeval start, end;
+@@ -144,31 +141,32 @@ static int check_timer_create(int which)
+ 		.it_value.tv_sec = DELAY,
+ 	};
+ 
+-	printf("Check timer_create() ");
+ 	if (which == CLOCK_THREAD_CPUTIME_ID) {
+-		printf("per thread... ");
++		type = "thread";
+ 	} else if (which == CLOCK_PROCESS_CPUTIME_ID) {
+-		printf("per process... ");
++		type = "process";
++	} else {
++		ksft_print_msg("Unknown timer_create() type %d\n", which);
++		return -1;
+ 	}
+-	fflush(stdout);
+ 
+ 	done = 0;
+ 	err = timer_create(which, NULL, &id);
+ 	if (err < 0) {
+-		perror("Can't create timer\n");
++		ksft_perror("Can't create timer");
+ 		return -1;
+ 	}
+ 	signal(SIGALRM, sig_handler);
+ 
+ 	err = gettimeofday(&start, NULL);
+ 	if (err < 0) {
+-		perror("Can't call gettimeofday()\n");
++		ksft_perror("Can't call gettimeofday()");
+ 		return -1;
+ 	}
+ 
+ 	err = timer_settime(id, 0, &val, NULL);
+ 	if (err < 0) {
+-		perror("Can't set timer\n");
++		ksft_perror("Can't set timer");
+ 		return -1;
+ 	}
+ 
+@@ -176,14 +174,12 @@ static int check_timer_create(int which)
+ 
+ 	err = gettimeofday(&end, NULL);
+ 	if (err < 0) {
+-		perror("Can't call gettimeofday()\n");
++		ksft_perror("Can't call gettimeofday()");
+ 		return -1;
+ 	}
+ 
+-	if (!check_diff(start, end))
+-		printf("[OK]\n");
+-	else
+-		printf("[FAIL]\n");
++	ksft_test_result(check_diff(start, end) == 0,
++			 "timer_create() per %s\n", type);
+ 
+ 	return 0;
+ }
+@@ -220,25 +216,25 @@ static int check_timer_distribution(void)
+ 		.it_interval.tv_nsec = 1000 * 1000,
+ 	};
+ 
+-	printf("Check timer_create() per process signal distribution... ");
+-	fflush(stdout);
+-
+ 	remain = nthreads + 1;  /* worker threads + this thread */
+ 	signal(SIGALRM, distribution_handler);
+ 	err = timer_create(CLOCK_PROCESS_CPUTIME_ID, NULL, &id);
+ 	if (err < 0) {
+-		perror("Can't create timer\n");
++		ksft_perror("Can't create timer");
+ 		return -1;
+ 	}
+ 	err = timer_settime(id, 0, &val, NULL);
+ 	if (err < 0) {
+-		perror("Can't set timer\n");
++		ksft_perror("Can't set timer");
+ 		return -1;
+ 	}
+ 
+ 	for (i = 0; i < nthreads; i++) {
+-		if (pthread_create(&threads[i], NULL, distribution_thread, NULL)) {
+-			perror("Can't create thread\n");
++		err = pthread_create(&threads[i], NULL, distribution_thread,
++				     NULL);
++		if (err) {
++			ksft_print_msg("Can't create thread: %s (%d)\n",
++				       strerror(errno), errno);
+ 			return -1;
  		}
+ 	}
+@@ -247,25 +243,30 @@ static int check_timer_distribution(void)
+ 	while (__atomic_load_n(&remain, __ATOMIC_RELAXED));
  
- 		if (match.mask->flags & FLOW_DIS_IS_FRAGMENT) {
-+			val = match.key->flags & FLOW_DIS_IS_FRAGMENT;
- 			if (ntohs(flow_spec->etype) == ETH_P_IP) {
--				flow_spec->ip_flag = IPV4_FLAG_MORE;
-+				flow_spec->ip_flag = val ? IPV4_FLAG_MORE : 0;
- 				flow_mask->ip_flag = IPV4_FLAG_MORE;
- 				req->features |= BIT_ULL(NPC_IPFRAG_IPV4);
- 			} else if (ntohs(flow_spec->etype) == ETH_P_IPV6) {
--				flow_spec->next_header = IPPROTO_FRAGMENT;
-+				flow_spec->next_header = val ?
-+							 IPPROTO_FRAGMENT : 0;
- 				flow_mask->next_header = 0xff;
- 				req->features |= BIT_ULL(NPC_IPFRAG_IPV6);
- 			} else {
+ 	for (i = 0; i < nthreads; i++) {
+-		if (pthread_join(threads[i], NULL)) {
+-			perror("Can't join thread\n");
++		err = pthread_join(threads[i], NULL);
++		if (err) {
++			ksft_print_msg("Can't join thread: %s (%d)\n",
++				       strerror(errno), errno);
+ 			return -1;
+ 		}
+ 	}
+ 
+ 	if (timer_delete(id)) {
+-		perror("Can't delete timer\n");
++		ksft_perror("Can't delete timer");
+ 		return -1;
+ 	}
+ 
+-	printf("[OK]\n");
++	ksft_test_result_pass("check_timer_distribution\n");
+ 	return 0;
+ }
+ 
+ int main(int argc, char **argv)
+ {
+-	printf("Testing posix timers. False negative may happen on CPU execution \n");
+-	printf("based timers if other threads run on the CPU...\n");
++	ksft_print_header();
++	ksft_set_plan(6);
++
++	ksft_print_msg("Testing posix timers. False negative may happen on CPU execution \n");
++	ksft_print_msg("based timers if other threads run on the CPU...\n");
+ 
+ 	if (check_itimer(ITIMER_VIRTUAL) < 0)
+ 		return ksft_exit_fail();
+@@ -294,5 +295,5 @@ int main(int argc, char **argv)
+ 	if (check_timer_distribution() < 0)
+ 		return ksft_exit_fail();
+ 
+-	return ksft_exit_pass();
++	ksft_finished();
+ }
 -- 
 2.43.0
 
