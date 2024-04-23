@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A479E8AFAD9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFFE8AF9A0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8D9B1C238FE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 685CA1F26F10
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DF2148827;
-	Tue, 23 Apr 2024 21:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A57143C4E;
+	Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daY3AsVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1EeKnjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411E9143C5F;
-	Tue, 23 Apr 2024 21:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD5F85274;
+	Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908771; cv=none; b=nMnarLIsRz0T/YWZVh1ZOibkwbV5dLGBr0SF4hMeUC6wEtlvmMcSFPIi12m4wVbNcDaxm6XfPh68Z5GOcN8sxlxeyQXsWQpoj404rRvx4plnbQUCkRwtMO+0R6e66eK8W7Kg57P/n2pEF8/udxcJ9JwJ694DvB/RFjrLpxicDH0=
+	t=1713908559; cv=none; b=W9Za+WhFcwLSEzVL1p6h/znYeOHlTWhY7M5ustNKVCl+9u2ygrozVlm8rMKg8ZW4a7iCzOUB4Qs8Y7vRwk59FqtrBQIeuBzH9+dUbf6ZO/E25lElYR2SfKV46fSC6d/sq3Ta8J0kfPFQu+1Vc2XeqdzmYXahJ7A0JHzelJJxJj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908771; c=relaxed/simple;
-	bh=fynO7DWlZL0R67QWeqB+0uCbpAUK+yKrqXOij8Kv5qw=;
+	s=arc-20240116; t=1713908559; c=relaxed/simple;
+	bh=hVKWeuK07QzDlfYG0zwWdVObg1LZ/TQFxeM3+PTsS3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnuOgfeUawjSUvSujzQT8BJbUQsWB7ihekzKrd0VZ71zHNMUvFwXNXPQXA6o5KylwIAzrK38cpisfcFpu0/0pKQyA5gVBhFdwaFZcHiggviIIeKUeCE8NRRViXttznXXjmKV5CpjrIXe+E4SXAqLquGg7j1xaT+BGFFG3XBiUgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daY3AsVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6F2C32782;
-	Tue, 23 Apr 2024 21:46:11 +0000 (UTC)
+	 MIME-Version; b=RjX2EbAFjFokDZ/WRotBhRqBZbjBERmLdQOU2ne0tfbjmj73JKKx36S1Skcl201rSK6SFSlDC6+4+bFVHLHxOCQTaXXPH7InsbPdblfnHh/4cTC3v0oNTufUKVuOM1jN5Uc95m6oVbMzur3VDAlpidLp41c4GEqO94ccMz+DLPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1EeKnjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED75C3277B;
+	Tue, 23 Apr 2024 21:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908771;
-	bh=fynO7DWlZL0R67QWeqB+0uCbpAUK+yKrqXOij8Kv5qw=;
+	s=korg; t=1713908558;
+	bh=hVKWeuK07QzDlfYG0zwWdVObg1LZ/TQFxeM3+PTsS3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=daY3AsVJSvuyf1sZtzPg0m0q8/zaPjtDnC1tRLImKehGa5ARumLBpl0eM3WQQlPZU
-	 tipw2JMaDKDCUc4naxgfOURiFJmlttWknNOr4H5kLfsP5QBZY1YohffVDx4pEZOVc6
-	 jw9gmxWXbGL+UB7nx5FDT5G3liE1j+cOoyVgVUUM=
+	b=S1EeKnjKzGxeIFBN13H8DXKikbUNLBzYpKFyw0J1ifkutEwYHfECmzdNhjIIyvW9U
+	 Bj0iswmgHNQuXlcf4jfDwSRyWfxQYZgGgW3YfP4SwyXxDO9s3gttwJn31VlStaV4rp
+	 gENNQiDoV4uMxw/tZuc/f/6y5CFACZuOBQ61/xxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 14/71] Revert "lockd: introduce safe async lock op"
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>
+Subject: [PATCH 6.8 145/158] drm/vmwgfx: Fix prime import/export
 Date: Tue, 23 Apr 2024 14:39:27 -0700
-Message-ID: <20240423213844.611210465@linuxfoundation.org>
+Message-ID: <20240423213900.573114361@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,135 +61,324 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-This reverts commit 2267b2e84593bd3d61a1188e68fba06307fa9dab.
+commit b32233accefff1338806f064fb9b62cf5bc0609f upstream.
 
-ltp test fcntl17 fails on v5.15.154. This was bisected to commit
-2267b2e84593 ("lockd: introduce safe async lock op").
+vmwgfx never supported prime import of external buffers. Furthermore the
+driver exposes two different objects to userspace: vmw_surface's and
+gem buffers but prime import/export only worked with vmw_surfaces.
 
-Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Because gem buffers are used through the dumb_buffer interface this meant
+that the driver created buffers couldn't have been prime exported or
+imported.
+
+Fix prime import/export. Makes IGT's kms_prime pass.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 8afa13a0583f ("drm/vmwgfx: Implement DRIVER_GEM")
+Cc: <stable@vger.kernel.org> # v6.6+
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240412025511.78553-4-zack.rusin@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/filesystems/nfs/exporting.rst |    7 -------
- fs/lockd/svclock.c                          |    4 +++-
- fs/nfsd/nfs4state.c                         |   10 +++-------
- include/linux/exportfs.h                    |   14 --------------
- 4 files changed, 6 insertions(+), 29 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_blit.c       |   35 +++++++++++++++++++++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.c         |    7 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.h         |    2 +
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c        |    1 
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h        |    3 +
+ drivers/gpu/drm/vmwgfx/vmwgfx_gem.c        |   32 +++++++++++++++++++++
+ drivers/gpu/drm/vmwgfx/vmwgfx_prime.c      |   15 ++++++++-
+ drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c |   44 +++++++++++++++++++----------
+ 8 files changed, 117 insertions(+), 22 deletions(-)
 
---- a/Documentation/filesystems/nfs/exporting.rst
-+++ b/Documentation/filesystems/nfs/exporting.rst
-@@ -241,10 +241,3 @@ following flags are defined:
-     all of an inode's dirty data on last close. Exports that behave this
-     way should set EXPORT_OP_FLUSH_ON_CLOSE so that NFSD knows to skip
-     waiting for writeback when closing such files.
--
--  EXPORT_OP_ASYNC_LOCK - Indicates a capable filesystem to do async lock
--    requests from lockd. Only set EXPORT_OP_ASYNC_LOCK if the filesystem has
--    it's own ->lock() functionality as core posix_lock_file() implementation
--    has no async lock request handling yet. For more information about how to
--    indicate an async lock request from a ->lock() file_operations struct, see
--    fs/locks.c and comment for the function vfs_lock_file().
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -470,7 +470,9 @@ nlmsvc_lock(struct svc_rqst *rqstp, stru
- 	    struct nlm_host *host, struct nlm_lock *lock, int wait,
- 	    struct nlm_cookie *cookie, int reclaim)
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
+@@ -456,8 +456,10 @@ int vmw_bo_cpu_blit(struct ttm_buffer_ob
+ 		.no_wait_gpu = false
+ 	};
+ 	u32 j, initial_line = dst_offset / dst_stride;
+-	struct vmw_bo_blit_line_data d;
++	struct vmw_bo_blit_line_data d = {0};
+ 	int ret = 0;
++	struct page **dst_pages = NULL;
++	struct page **src_pages = NULL;
+ 
+ 	/* Buffer objects need to be either pinned or reserved: */
+ 	if (!(dst->pin_count))
+@@ -477,12 +479,35 @@ int vmw_bo_cpu_blit(struct ttm_buffer_ob
+ 			return ret;
+ 	}
+ 
++	if (!src->ttm->pages && src->ttm->sg) {
++		src_pages = kvmalloc_array(src->ttm->num_pages,
++					   sizeof(struct page *), GFP_KERNEL);
++		if (!src_pages)
++			return -ENOMEM;
++		ret = drm_prime_sg_to_page_array(src->ttm->sg, src_pages,
++						 src->ttm->num_pages);
++		if (ret)
++			goto out;
++	}
++	if (!dst->ttm->pages && dst->ttm->sg) {
++		dst_pages = kvmalloc_array(dst->ttm->num_pages,
++					   sizeof(struct page *), GFP_KERNEL);
++		if (!dst_pages) {
++			ret = -ENOMEM;
++			goto out;
++		}
++		ret = drm_prime_sg_to_page_array(dst->ttm->sg, dst_pages,
++						 dst->ttm->num_pages);
++		if (ret)
++			goto out;
++	}
++
+ 	d.mapped_dst = 0;
+ 	d.mapped_src = 0;
+ 	d.dst_addr = NULL;
+ 	d.src_addr = NULL;
+-	d.dst_pages = dst->ttm->pages;
+-	d.src_pages = src->ttm->pages;
++	d.dst_pages = dst->ttm->pages ? dst->ttm->pages : dst_pages;
++	d.src_pages = src->ttm->pages ? src->ttm->pages : src_pages;
+ 	d.dst_num_pages = PFN_UP(dst->resource->size);
+ 	d.src_num_pages = PFN_UP(src->resource->size);
+ 	d.dst_prot = ttm_io_prot(dst, dst->resource, PAGE_KERNEL);
+@@ -504,6 +529,10 @@ out:
+ 		kunmap_atomic(d.src_addr);
+ 	if (d.dst_addr)
+ 		kunmap_atomic(d.dst_addr);
++	if (src_pages)
++		kvfree(src_pages);
++	if (dst_pages)
++		kvfree(dst_pages);
+ 
+ 	return ret;
+ }
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+@@ -377,7 +377,8 @@ static int vmw_bo_init(struct vmw_privat
  {
-+#if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
- 	struct inode		*inode = nlmsvc_file_inode(file);
-+#endif
- 	struct nlm_block	*block = NULL;
- 	int			error;
- 	int			mode;
-@@ -484,7 +486,7 @@ nlmsvc_lock(struct svc_rqst *rqstp, stru
- 				(long long)lock->fl.fl_end,
- 				wait);
+ 	struct ttm_operation_ctx ctx = {
+ 		.interruptible = params->bo_type != ttm_bo_type_kernel,
+-		.no_wait_gpu = false
++		.no_wait_gpu = false,
++		.resv = params->resv,
+ 	};
+ 	struct ttm_device *bdev = &dev_priv->bdev;
+ 	struct drm_device *vdev = &dev_priv->drm;
+@@ -394,8 +395,8 @@ static int vmw_bo_init(struct vmw_privat
  
--	if (!exportfs_lock_op_is_async(inode->i_sb->s_export_op)) {
-+	if (nlmsvc_file_file(file)->f_op->lock) {
- 		async_block = wait;
- 		wait = 0;
- 	}
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -7420,7 +7420,6 @@ nfsd4_lock(struct svc_rqst *rqstp, struc
- 	struct nfsd4_blocked_lock *nbl = NULL;
- 	struct file_lock *file_lock = NULL;
- 	struct file_lock *conflock = NULL;
--	struct super_block *sb;
- 	__be32 status = 0;
- 	int lkflg;
- 	int err;
-@@ -7442,7 +7441,6 @@ nfsd4_lock(struct svc_rqst *rqstp, struc
- 		dprintk("NFSD: nfsd4_lock: permission denied!\n");
- 		return status;
- 	}
--	sb = cstate->current_fh.fh_dentry->d_sb;
+ 	vmw_bo_placement_set(vmw_bo, params->domain, params->busy_domain);
+ 	ret = ttm_bo_init_reserved(bdev, &vmw_bo->tbo, params->bo_type,
+-				   &vmw_bo->placement, 0, &ctx, NULL,
+-				   NULL, destroy);
++				   &vmw_bo->placement, 0, &ctx,
++				   params->sg, params->resv, destroy);
+ 	if (unlikely(ret))
+ 		return ret;
  
- 	if (lock->lk_is_new) {
- 		if (nfsd4_has_session(cstate))
-@@ -7494,8 +7492,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struc
- 	fp = lock_stp->st_stid.sc_file;
- 	switch (lock->lk_type) {
- 		case NFS4_READW_LT:
--			if (nfsd4_has_session(cstate) ||
--			    exportfs_lock_op_is_async(sb->s_export_op))
-+			if (nfsd4_has_session(cstate))
- 				fl_flags |= FL_SLEEP;
- 			fallthrough;
- 		case NFS4_READ_LT:
-@@ -7507,8 +7504,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struc
- 			fl_type = F_RDLCK;
- 			break;
- 		case NFS4_WRITEW_LT:
--			if (nfsd4_has_session(cstate) ||
--			    exportfs_lock_op_is_async(sb->s_export_op))
-+			if (nfsd4_has_session(cstate))
- 				fl_flags |= FL_SLEEP;
- 			fallthrough;
- 		case NFS4_WRITE_LT:
-@@ -7536,7 +7532,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struc
- 	 * for file locks), so don't attempt blocking lock notifications
- 	 * on those filesystems:
- 	 */
--	if (!exportfs_lock_op_is_async(sb->s_export_op))
-+	if (nf->nf_file->f_op->lock)
- 		fl_flags &= ~FL_SLEEP;
- 
- 	nbl = find_or_allocate_block(lock_sop, &fp->fi_fhandle, nn);
---- a/include/linux/exportfs.h
-+++ b/include/linux/exportfs.h
-@@ -222,23 +222,9 @@ struct export_operations {
- 						  atomic attribute updates
- 						*/
- #define EXPORT_OP_FLUSH_ON_CLOSE	(0x20) /* fs flushes file data on close */
--#define EXPORT_OP_ASYNC_LOCK		(0x40) /* fs can do async lock request */
- 	unsigned long	flags;
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+@@ -55,6 +55,8 @@ struct vmw_bo_params {
+ 	enum ttm_bo_type bo_type;
+ 	size_t size;
+ 	bool pin;
++	struct dma_resv *resv;
++	struct sg_table *sg;
  };
  
--/**
-- * exportfs_lock_op_is_async() - export op supports async lock operation
-- * @export_ops:	the nfs export operations to check
-- *
-- * Returns true if the nfs export_operations structure has
-- * EXPORT_OP_ASYNC_LOCK in their flags set
-- */
--static inline bool
--exportfs_lock_op_is_async(const struct export_operations *export_ops)
--{
--	return export_ops->flags & EXPORT_OP_ASYNC_LOCK;
--}
--
- extern int exportfs_encode_inode_fh(struct inode *inode, struct fid *fid,
- 				    int *max_len, struct inode *parent);
- extern int exportfs_encode_fh(struct dentry *dentry, struct fid *fid,
+ /**
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -1628,6 +1628,7 @@ static const struct drm_driver driver =
+ 
+ 	.prime_fd_to_handle = vmw_prime_fd_to_handle,
+ 	.prime_handle_to_fd = vmw_prime_handle_to_fd,
++	.gem_prime_import_sg_table = vmw_prime_import_sg_table,
+ 
+ 	.fops = &vmwgfx_driver_fops,
+ 	.name = VMWGFX_DRIVER_NAME,
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -1131,6 +1131,9 @@ extern int vmw_prime_handle_to_fd(struct
+ 				  struct drm_file *file_priv,
+ 				  uint32_t handle, uint32_t flags,
+ 				  int *prime_fd);
++struct drm_gem_object *vmw_prime_import_sg_table(struct drm_device *dev,
++						 struct dma_buf_attachment *attach,
++						 struct sg_table *table);
+ 
+ /*
+  * MemoryOBject management -  vmwgfx_mob.c
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
+@@ -149,6 +149,38 @@ out_no_bo:
+ 	return ret;
+ }
+ 
++struct drm_gem_object *vmw_prime_import_sg_table(struct drm_device *dev,
++						 struct dma_buf_attachment *attach,
++						 struct sg_table *table)
++{
++	int ret;
++	struct vmw_private *dev_priv = vmw_priv(dev);
++	struct drm_gem_object *gem = NULL;
++	struct vmw_bo *vbo;
++	struct vmw_bo_params params = {
++		.domain = (dev_priv->has_mob) ? VMW_BO_DOMAIN_SYS : VMW_BO_DOMAIN_VRAM,
++		.busy_domain = VMW_BO_DOMAIN_SYS,
++		.bo_type = ttm_bo_type_sg,
++		.size = attach->dmabuf->size,
++		.pin = false,
++		.resv = attach->dmabuf->resv,
++		.sg = table,
++
++	};
++
++	dma_resv_lock(params.resv, NULL);
++
++	ret = vmw_bo_create(dev_priv, &params, &vbo);
++	if (ret != 0)
++		goto out_no_bo;
++
++	vbo->tbo.base.funcs = &vmw_gem_object_funcs;
++
++	gem = &vbo->tbo.base;
++out_no_bo:
++	dma_resv_unlock(params.resv);
++	return gem;
++}
+ 
+ int vmw_gem_object_create_ioctl(struct drm_device *dev, void *data,
+ 				struct drm_file *filp)
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_prime.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_prime.c
+@@ -75,8 +75,12 @@ int vmw_prime_fd_to_handle(struct drm_de
+ 			   int fd, u32 *handle)
+ {
+ 	struct ttm_object_file *tfile = vmw_fpriv(file_priv)->tfile;
++	int ret = ttm_prime_fd_to_handle(tfile, fd, handle);
+ 
+-	return ttm_prime_fd_to_handle(tfile, fd, handle);
++	if (ret)
++		ret = drm_gem_prime_fd_to_handle(dev, file_priv, fd, handle);
++
++	return ret;
+ }
+ 
+ int vmw_prime_handle_to_fd(struct drm_device *dev,
+@@ -85,5 +89,12 @@ int vmw_prime_handle_to_fd(struct drm_de
+ 			   int *prime_fd)
+ {
+ 	struct ttm_object_file *tfile = vmw_fpriv(file_priv)->tfile;
+-	return ttm_prime_handle_to_fd(tfile, handle, flags, prime_fd);
++	int ret;
++
++	if (handle > VMWGFX_NUM_MOB)
++		ret = ttm_prime_handle_to_fd(tfile, handle, flags, prime_fd);
++	else
++		ret = drm_gem_prime_handle_to_fd(dev, file_priv, handle, flags, prime_fd);
++
++	return ret;
+ }
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c
+@@ -220,13 +220,18 @@ static int vmw_ttm_map_dma(struct vmw_tt
+ 	switch (dev_priv->map_mode) {
+ 	case vmw_dma_map_bind:
+ 	case vmw_dma_map_populate:
+-		vsgt->sgt = &vmw_tt->sgt;
+-		ret = sg_alloc_table_from_pages_segment(
+-			&vmw_tt->sgt, vsgt->pages, vsgt->num_pages, 0,
+-			(unsigned long)vsgt->num_pages << PAGE_SHIFT,
+-			dma_get_max_seg_size(dev_priv->drm.dev), GFP_KERNEL);
+-		if (ret)
+-			goto out_sg_alloc_fail;
++		if (vmw_tt->dma_ttm.page_flags  & TTM_TT_FLAG_EXTERNAL) {
++			vsgt->sgt = vmw_tt->dma_ttm.sg;
++		} else {
++			vsgt->sgt = &vmw_tt->sgt;
++			ret = sg_alloc_table_from_pages_segment(&vmw_tt->sgt,
++				vsgt->pages, vsgt->num_pages, 0,
++				(unsigned long)vsgt->num_pages << PAGE_SHIFT,
++				dma_get_max_seg_size(dev_priv->drm.dev),
++				GFP_KERNEL);
++			if (ret)
++				goto out_sg_alloc_fail;
++		}
+ 
+ 		ret = vmw_ttm_map_for_dma(vmw_tt);
+ 		if (unlikely(ret != 0))
+@@ -241,8 +246,9 @@ static int vmw_ttm_map_dma(struct vmw_tt
+ 	return 0;
+ 
+ out_map_fail:
+-	sg_free_table(vmw_tt->vsgt.sgt);
+-	vmw_tt->vsgt.sgt = NULL;
++	drm_warn(&dev_priv->drm, "VSG table map failed!");
++	sg_free_table(vsgt->sgt);
++	vsgt->sgt = NULL;
+ out_sg_alloc_fail:
+ 	return ret;
+ }
+@@ -388,15 +394,17 @@ static void vmw_ttm_destroy(struct ttm_d
+ static int vmw_ttm_populate(struct ttm_device *bdev,
+ 			    struct ttm_tt *ttm, struct ttm_operation_ctx *ctx)
+ {
+-	int ret;
++	bool external = (ttm->page_flags & TTM_TT_FLAG_EXTERNAL) != 0;
+ 
+-	/* TODO: maybe completely drop this ? */
+ 	if (ttm_tt_is_populated(ttm))
+ 		return 0;
+ 
+-	ret = ttm_pool_alloc(&bdev->pool, ttm, ctx);
++	if (external && ttm->sg)
++		return  drm_prime_sg_to_dma_addr_array(ttm->sg,
++						       ttm->dma_address,
++						       ttm->num_pages);
+ 
+-	return ret;
++	return ttm_pool_alloc(&bdev->pool, ttm, ctx);
+ }
+ 
+ static void vmw_ttm_unpopulate(struct ttm_device *bdev,
+@@ -404,6 +412,10 @@ static void vmw_ttm_unpopulate(struct tt
+ {
+ 	struct vmw_ttm_tt *vmw_tt = container_of(ttm, struct vmw_ttm_tt,
+ 						 dma_ttm);
++	bool external = (ttm->page_flags & TTM_TT_FLAG_EXTERNAL) != 0;
++
++	if (external)
++		return;
+ 
+ 	vmw_ttm_unbind(bdev, ttm);
+ 
+@@ -422,6 +434,7 @@ static struct ttm_tt *vmw_ttm_tt_create(
+ {
+ 	struct vmw_ttm_tt *vmw_be;
+ 	int ret;
++	bool external = bo->type == ttm_bo_type_sg;
+ 
+ 	vmw_be = kzalloc(sizeof(*vmw_be), GFP_KERNEL);
+ 	if (!vmw_be)
+@@ -430,7 +443,10 @@ static struct ttm_tt *vmw_ttm_tt_create(
+ 	vmw_be->dev_priv = vmw_priv_from_ttm(bo->bdev);
+ 	vmw_be->mob = NULL;
+ 
+-	if (vmw_be->dev_priv->map_mode == vmw_dma_alloc_coherent)
++	if (external)
++		page_flags |= TTM_TT_FLAG_EXTERNAL | TTM_TT_FLAG_EXTERNAL_MAPPABLE;
++
++	if (vmw_be->dev_priv->map_mode == vmw_dma_alloc_coherent || external)
+ 		ret = ttm_sg_tt_init(&vmw_be->dma_ttm, bo, page_flags,
+ 				     ttm_cached);
+ 	else
 
 
 
