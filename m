@@ -1,130 +1,168 @@
-Return-Path: <stable+bounces-40563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1CA8AE0B7
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:10:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 127EA8AE177
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA8371F2283B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 09:10:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F1D2B21C43
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 09:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A887580A;
-	Tue, 23 Apr 2024 09:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74595E091;
+	Tue, 23 Apr 2024 09:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRlUWBb5"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="p6fHOGvL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZIDmakrX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF587441E;
-	Tue, 23 Apr 2024 09:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8196C5FB8A;
+	Tue, 23 Apr 2024 09:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713863321; cv=none; b=FcG5Cj7jlSDhH40SVE/EAoND9aplRctY1zV47S6OWvomHKYpNkpelU1SWWWX59obtrwjCOH3kFzCjVofnncbj/kh5RnQZ1iTm82V1v/krghU2pVSGpOFhHFuZ+qwh1Rz41zZYyXmh2/4PynKPrUeKy20/GdcZkje2pWQ4AhdrKM=
+	t=1713866154; cv=none; b=r1OJ6RWmWV5r31lsUxbbEVjZk7Y/1Y1PNhQISFWxgqIjnUccTSsgjkRZN0mUtc784wfRbtgPq8OaS4sRVjCPsVr4UNK1pIeyMAbyf8HYw/VF5UbUDKtXXpI3uW45bXW0NJwuLREwSUbi/GNc5FPda8jp0axvXTRAHFrmXDe59po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713863321; c=relaxed/simple;
-	bh=15a83D1JMHWclRfM/z678s+f7sq6QGUXYdBCaTmBd8w=;
+	s=arc-20240116; t=1713866154; c=relaxed/simple;
+	bh=DDWpt3khOTNI7W+Fcpu9tbc/QD9yO4O+KnzheVduoaw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m0uvwokBtJJIobXxoK9BxA2ZO8ZcZAY85WMcD4uMvJt46IKMtTLSw0tNNcteJ9hNvjDTHqjcQyqM43/WOvR96WVukR2plCYqVA77Y6r+qeUcFuhn6emSLDL49CczpMWWBB36OCkHywXFu0Eh190bEWfidPy7mv3FOnoDfmSrQ8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRlUWBb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C034EC116B1;
-	Tue, 23 Apr 2024 09:08:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713863320;
-	bh=15a83D1JMHWclRfM/z678s+f7sq6QGUXYdBCaTmBd8w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iRlUWBb50EHmT13m11xXOZt/qv+NF9r1gZSuMiRTkn2aq0AHwO10LHACFR8qUt2Gb
-	 qR7BbU69LqMNVN/sycmEM+0/fIlf42BNqkHOmK5Sv7NAF32yDE0iN2I6HrvkYeAdFo
-	 svkMcS3cRLaRAd8Gk0UhlxHEj6kTmlednqdmvcyTPOVH79WExHraiwOw4+eFPBL1Pq
-	 lvVqIX2pc7QxhHBF96xVH5krgO3GR8BrWKYhgAE/YEKyhM7RxqWXSlLQosDm8eNmYx
-	 arbMgT9xseU4Sw2zu4pU1atN6SHAytlMKr2XEYXpzOCMCpLqTD0beQsWERnPx7Sg4a
-	 CWhSk32WtHqdQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rzC8j-000000003Lp-1TNJ;
-	Tue, 23 Apr 2024 11:08:38 +0200
-Date: Tue, 23 Apr 2024 11:08:37 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Doug Anderson <dianders@chromium.org>,
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Matthias Kaehlcke <mka@chromium.org>,
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Stephen Boyd <swboyd@chromium.org>
-Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
-Message-ID: <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
-References: <20240416091509.19995-1-johan+linaro@kernel.org>
- <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=X6MrLiGbhtjtkdpvNkU4qRs4T2Qk+TT1IriG2KEfTYJXo3D2VMez2acgXybXa04ku7s6lOqn1bTEh3AVZbCGA5c/UjOSdJH4/USrGqJa59GW1A30XhQOPe+hMXhujiZkjre9ZpSP8CobeJyUXUuo5XLuBwa4FINaWYDDTt3RS8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=p6fHOGvL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZIDmakrX; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 23 Apr 2024 11:55:38 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713866143;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Nx8yqSMqk6NdlHtzGLr2MTDXlYiWPZXvaqNERsKydY=;
+	b=p6fHOGvLuVoHHVptkxTjdyLfrBv/WEUM0rlQrTqhpX36rDzQgjzSH+hNseUJgQJw3RlhBd
+	f8lnqsFU+t9HaTzU2cRZx0NlRwQTQjjto9V8iSC2ceGA2EnsuZxnbO/V0z9R8CiLrLHKxq
+	jlRjQ/8rtKy5Lz7nCFi7ocnZdCgUWcGNv8i5PlIh/Wl4HVOiS5NwPbnMpfkAG3UPkAT0Rm
+	8cOBxJ/omnplMWI7TJtQRCYsndrmztP0kllxBqvnpFtww9Z/+QM+dTzWYv6UFVIFhIT7WZ
+	Cnw2VgLBbSqBu61KpWwpUuHDxV5nollqMpd5HxiTdAlityU74JEbrmhGRlQ2Eg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713866143;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Nx8yqSMqk6NdlHtzGLr2MTDXlYiWPZXvaqNERsKydY=;
+	b=ZIDmakrXTzr5H1pBUDD/Ih1wjrZUweXTIe9y3xeNQ8KsXbLpFS48/EwqhFaTi1uw3a1skv
+	ZD1y/oO8yHSofBAg==
+From: Nam Cao <namcao@linutronix.de>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jaya Kumar <jayalk@intworks.biz>, Daniel Vetter <daniel@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, tiwai@suse.de, bigeasy@linutronix.de,
+	patrik.r.jakobsson@gmail.com,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	George Kennedy <george.kennedy@oracle.com>,
+	Darren Kenny <darren.kenny@oracle.com>, chuansheng.liu@intel.com,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fbdev: fix incorrect address computation in deferred IO
+Message-ID: <20240423095538.m79ML6a0@linutronix.de>
+References: <20240419190032.40490-1-namcao@linutronix.de>
+ <666d986e-5227-4b6d-829c-95ff16115488@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
+In-Reply-To: <666d986e-5227-4b6d-829c-95ff16115488@suse.de>
 
-Hi Doug and Janaki,
-
-On Mon, Apr 22, 2024 at 10:50:33AM -0700, Doug Anderson wrote:
-> On Tue, Apr 16, 2024 at 2:17 AM Johan Hovold <johan+linaro@kernel.org> wrote:
-
-> > As Chromium is the only known user of the 'local-bd-address' property,
-> > could you please confirm that your controllers use the 00:00:00:00:5a:ad
-> > address by default so that the quirk continues to be set as intended?
+On Tue, Apr 23, 2024 at 10:37:41AM +0200, Thomas Zimmermann wrote:
+> Hi,
 > 
-> I was at EOSS last week so didn't get a chance to test this, but I
-> just tested it now and I can confirm that it breaks trogdor. It
-> appears that trogdor devices seem to have a variant of your "default"
-> address. Instead of:
+> thanks for following through with the bug and sending the patch
 > 
-> 00:00:00:00:5a:ad
+> Am 19.04.24 um 21:00 schrieb Nam Cao:
+> > With deferred IO enabled, a page fault happens when data is written to the
+> > framebuffer device. Then driver determines which page is being updated by
+> > calculating the offset of the written virtual address within the virtual
+> > memory area, and uses this offset to get the updated page within the
+> > internal buffer. This page is later copied to hardware (thus the name
+> > "deferred IO").
+> > 
+> > This calculation is only correct if the virtual memory area is mapped to
+> > the beginning of the internal buffer. Otherwise this is wrong. For example,
+> > if users do:
+> >      mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
+> > 
+> > Then the virtual memory area will mapped at offset 0xff000 within the
+> > internal buffer. This offset 0xff000 is not accounted for, and wrong page
+> > is updated. This will lead to wrong pixels being updated on the device.
+> > 
+> > However, it gets worse: if users do 2 mmap to the same virtual address, for
+> > example:
+> > 
+> >      int fd = open("/dev/fb0", O_RDWR, 0);
+> >      char *ptr = (char *) 0x20000000ul;
+> >      mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
+> >      *ptr = 0; // write #1
+> >      mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0);
+> >      *ptr = 0; // write #2
+> > 
+> > In this case, both write #1 and write #2 apply to the same virtual address
+> > (0x20000000ul), and the driver mistakenly thinks the same page is being
+> > written to. When the second write happens, the driver thinks this is the
+> > same page as the last time, and reuse the page from write #1. The driver
+> > then lock_page() an incorrect page, and returns VM_FAULT_LOCKED with the
+> > correct page unlocked. It is unclear what will happen with memory
+> > management subsystem after that, but likely something terrible.
 > 
-> We seem to have a default of this:
+> Please tone down the drama. :)
+
+Sorry, that wasn't intentional. Writing is hard :(
+
+Let me just cut this out, this info is not really needed to justify the
+changes.
+
 > 
-> 39:98:00:00:5a:ad
+> > 
+> > Fix this by taking the mapping offset into account.
+> > 
+> > Reported-and-tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+> > Closes: https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4ab341a@oracle.com
+> > Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Nam Cao <namcao@linutronix.de>
+> > ---
+> >   drivers/video/fbdev/core/fb_defio.c | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
+> > index dae96c9f61cf..d5d6cd9e8b29 100644
+> > --- a/drivers/video/fbdev/core/fb_defio.c
+> > +++ b/drivers/video/fbdev/core/fb_defio.c
+> > @@ -196,7 +196,8 @@ static vm_fault_t fb_deferred_io_track_page(struct fb_info *info, unsigned long
+> >    */
+> >   static vm_fault_t fb_deferred_io_page_mkwrite(struct fb_info *info, struct vm_fault *vmf)
+> >   {
+> > -	unsigned long offset = vmf->address - vmf->vma->vm_start;
+> > +	unsigned long offset = vmf->address - vmf->vma->vm_start
+> > +			+ (vmf->vma->vm_pgoff << PAGE_SHIFT);
 > 
-> ...so almost the same, but not enough the same to make it work with
-> your code. I checked 3 different trogdor boards and they were all the
-> same, though I can't 100% commit to saying that every trogdor device
-> out there has that same default address...
-> 
-> Given that this breaks devices and also that it's already landed and
-> tagged for stable, what's the plan here? Do we revert? Do we add the
-> second address in and hope that there aren't trogdor devices out in
-> the wild that somehow have a different default?
+> The page-fault handler at [1] use vm_fault.pgoff to retrieve the page
+> structure. Can we do the same here and avoid that computation?
 
-This patch is currently queued for 6.10 so there should be time to get
-this sorted.
+Yes, thanks for the suggestion.
 
-My fallback plan was to add further (device-specific) default addresses
-in case this turned out to be needed (e.g. this is what the Broadcom
-driver does).
+It will change things a bit: offset will not be the exact value anymore,
+but will be rounded down to multiple of PAGE_SIZE. But that doesn't matter,
+because it will only be used to calculate the page offset later on.
 
-I assume all Trogdor boards use the same controller, WCN3991 IIUC, but
-if you're worried about there being devices out there using a different
-address we could possibly also use the new
-"qcom,local-bd-address-broken" DT property as an indicator to set the
-bdaddr quirk.
+We can clean this up and rename this "offset" to "pg_offset". But that's
+for another day.
 
-We have Qualcomm on CC here so perhaps Janaki, who should have access to
-the documentation, can tell us what the default address on these older
-controllers looks like?
-
-Janaki, are there further default addresses out there that we need to
-consider?
-
-Perhaps "39:98" can even be inferred from the hardware id somehow (cf.
-bcm4377_is_valid_bdaddr())?
-
-Doug, could you please also post the QCA version info for Trogdor that's
-printed on boot?
-
-Johan
+Best regards,
+Nam
 
