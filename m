@@ -1,104 +1,149 @@
-Return-Path: <stable+bounces-40716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381A18AE90F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:06:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D18648AE9CA
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBB071F22BAE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:06:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00DF51C218FE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3A6137752;
-	Tue, 23 Apr 2024 14:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C958C85287;
+	Tue, 23 Apr 2024 14:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H0yEoq0A"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="kYHpLDkH";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="iDgKYK0Q";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="1evyy4Cl";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="V3cxaLrz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3534280040
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 14:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDD88F5E;
+	Tue, 23 Apr 2024 14:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713881157; cv=none; b=nhbLmBpQXpjJZ+eoXNqZLwWV2x9z/68Z0YREmeN/UHpTYQMG2qAZkrLdRHZg6oQxLXn5QfboSsa44iqbrGZ+3ddLG2RpEP98ZHIaR9kacelNWyyVnsJmGYM4+mauc8nj4lPH4pj7Y9zaTz4hl3w2J4VAASmevle19TE/sN+5Lmw=
+	t=1713883538; cv=none; b=UTVEySOiiJmVhxSdwZbOTrOdeXjxRD2VgAQuG9kuY0KgHYLI/ihGd4drhF8fsl7idjn5zuvdHwfQ8guBD33VUs1sdpV0fM8NFr5iIkA4Ej6zms2Q4KyAu++HV/wsGDIzUWolC/ucXSd9LncaNXmikx55j53uPHkkPmVdY50pdjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713881157; c=relaxed/simple;
-	bh=d9Bm1WhOQdr4Rta0AMWh7LzeJO0HpgVpWy/bbXjQwQ8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ABwv3IHxOnOkDOVPQ3xKcJ5c4kbicWmNlyf2BLkdWbLPdUTw/lIrPTra0dAy6hLZuufoSr6Ovw7NhpWtms6jWVp80LABXjmB5H1v4vpAbdhXCi/VcgmQ2ULtdobH1x0cbMrs3yFAQJ60RbedTz14EKZguAtXhNOLkohWbX0EpiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H0yEoq0A; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6dbdcfd39so11453009276.2
-        for <stable@vger.kernel.org>; Tue, 23 Apr 2024 07:05:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713881155; x=1714485955; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ywoHegdckyc2kc9q8KKYzLqn2Hlpw+/QiT0Zcc0zz+U=;
-        b=H0yEoq0APPu5Eur7TnOK5jLzVJUGbT9DO8Dg5wsSPbLsid38hWhCvoWq3MUomjQQoT
-         OVHlY/0VfFgwtXRfRG2pdWTeFoYBr5u558iiFqzqa3Zcj+VD64+6CaaOnIgmgtn1gN7J
-         JuJT4qVJSjQ0aaUXhUMFYaDJvwvBLwDS0vQZLz8XgNF0O+flLKHYGrcjjRpMshUpa9UO
-         7g8IzGMXjh+11UlNkHaNnTxzvPXJtX13xeFuyNB4QIEyQ231FZ2o42m2p4ZNk3VGMUud
-         pq0Fp0PqcLBIxDRYc/Zk5Pr0U9M6ph0vG4t8K2ozXCFarnihlrBW9j2DwdS8xveEy+++
-         G8dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713881155; x=1714485955;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ywoHegdckyc2kc9q8KKYzLqn2Hlpw+/QiT0Zcc0zz+U=;
-        b=Uu+MJ+Xh/PeTD/dQbCAUByyzoPqa0hi70LFOd/XCNKgOYXrEsqJNIMYPaTJJAHyQpR
-         QzzbhSd+o8FhQNfNSxoZuiaoo+ZOJzwtvsCz7uRfsV7aPwP+eG3GEWJWFA2xPImUB2/a
-         Kg0/VqcVwglrbRxkyx4PaTKmPamoJEKN10h01++QkQL+eFD/81E8SXCW+idwTuTTcqB+
-         ZeZtiKvlWyb4XcsULAjFFCMZ0V9qO0zPfMbK9PDjuRqdPH59wnXFkXEAWEGs+maG9Vpt
-         nGGyxVUH7wdKiD0MIr2yYUvIudMRYOuNjciNezhGBS6ntffps0Atg4KIro37br42AFhS
-         RQNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHpe7QdstfmrZ5IpXPwrV3/u2OrALBP2FYUcCZk4Zv9LCRfeSWRR/6lUdrvXTOFm+BK3rRBUbSstqpIEsKtqVNy7uoj+4a
-X-Gm-Message-State: AOJu0YyuQngLVQB1A51gUU2OifYyhCadTOeRci8ZOpwoCBv7TFRe+uma
-	BJXuErSy/fmBdH3jdlE9P3TmfQCY03yUNoQlBMxKBaCM1jRc9/Z8E5ODVDGblrZ0ymC2GGwc9o5
-	TAA==
-X-Google-Smtp-Source: AGHT+IHbDuY06ri7HefBWokNt0j4rfiXvA7toVdltviloE4D4hhhUr8Fo45UnsV6yWKsY6PE8yzd9/+srAk=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:c03:b0:de5:2b18:3b74 with SMTP id
- fs3-20020a0569020c0300b00de52b183b74mr1794704ybb.2.1713881155316; Tue, 23 Apr
- 2024 07:05:55 -0700 (PDT)
-Date: Tue, 23 Apr 2024 07:05:53 -0700
-In-Reply-To: <20240423045548.1324969-1-song@kernel.org>
+	s=arc-20240116; t=1713883538; c=relaxed/simple;
+	bh=gPByzlowu52gZBR0jPs98e/qH0LAV1N1EdaNJp9k5pU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q9edEq/S4EC2QfnlXWQXU+px8aSlsMGRKvnGpK1RZFviLVoyVNOxfnEkzJV+KJjYs4P71mX4r2O1X8h1ZPD8qL8EMfunLNR2XBiv8v8k921N/NbVYXfJlsoGG9nnkovhkrIwsAEH/T4wRhko422LWfjkT8NtCgOEY1OAfu2CCRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=kYHpLDkH; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=iDgKYK0Q; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=1evyy4Cl; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=V3cxaLrz; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E128D600B8;
+	Tue, 23 Apr 2024 14:45:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1713883535;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ERxOOMezRAufIKqgnoffsNNUlab+BjMEAF6+1TvdqL0=;
+	b=kYHpLDkHdRQHUO1ImpunLE2b+SuGC8tpIhIpKCZ3ftKd3KHoFYV0RoM07n6lxcqokvr2Sm
+	7cnoUIUEi2KVdSuiUTYx8CJ8sDJkSZ1tQjYoEiNC//Ea9w6saukAwUi8thmUw4EbqUTWzm
+	tqSKhTzFHTVMA626W0tBctGtN6mUF3Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1713883535;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ERxOOMezRAufIKqgnoffsNNUlab+BjMEAF6+1TvdqL0=;
+	b=iDgKYK0Qtdgpl1cAc8B+ZT8wMjb8Fks1FJhQJht044mBoApnXedDU1NrW5lYMjiXcgptoC
+	YGEwQFgEDkW4K7Ag==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1713883534;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ERxOOMezRAufIKqgnoffsNNUlab+BjMEAF6+1TvdqL0=;
+	b=1evyy4Cl+UoOgOnUIXg1/q4G5gjdSMMfixQ9AUFI3ZH1o4Ji3ZEE7xe6lduUFDUScD9NRC
+	U+AoxYUdaKdUEymg+XTYyoA/OlCGQGJOFflWUcTAiJhTqG7+8L6hNXmyMTmVyOtLp+oUAg
+	oI1Z3yPCLULJo7wFclpk/jYpNxpDkWI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1713883534;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ERxOOMezRAufIKqgnoffsNNUlab+BjMEAF6+1TvdqL0=;
+	b=V3cxaLrzAwF9PoRBfy+nEXrfs7bAIm0jGSbLKDT06xCnPrOa+fQwscTdxYcbeoWNhVGS/G
+	CE18HfQ/g2ubJ+Dg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C4D4113894;
+	Tue, 23 Apr 2024 14:45:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ESPiL47JJ2ZyAwAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Tue, 23 Apr 2024 14:45:34 +0000
+Date: Tue, 23 Apr 2024 16:38:01 +0200
+From: David Sterba <dsterba@suse.cz>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>, Anand Jain <anand.jain@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	Pavel Machek <pavel@denx.de>, stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: add missing mutex_unlock in
+ btrfs_relocate_sys_chunks()
+Message-ID: <20240423143801.GI3492@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20240419-btrfs_unlock-v1-1-c3557976a691@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240423045548.1324969-1-song@kernel.org>
-Message-ID: <ZifAQY9yS4U3oEkT@google.com>
-Subject: Re: [PATCH] arch/Kconfig: Move SPECULATION_MITIGATIONS to arch/Kconfig
-From: Sean Christopherson <seanjc@google.com>
-To: Song Liu <song@kernel.org>
-Cc: linux-kernel@vger.kernel.org, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	kernel-team@meta.com, stable@vger.kernel.org, Ingo Molnar <mingo@kernel.org>, 
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>, Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240419-btrfs_unlock-v1-1-c3557976a691@codewreck.org>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.69 / 50.00];
+	BAYES_HAM(-2.69)[98.66%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:replyto]
+X-Spam-Score: -3.69
+X-Spam-Flag: NO
 
-On Mon, Apr 22, 2024, Song Liu wrote:
-> SPECULATION_MITIGATIONS is currently defined only for x86. As a result,
-> IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) is always false for other
-> archs. f337a6a21e2f effectively set "mitigations=off" by default on
-> non-x86 archs, which is not desired behavior. Jakub observed this
-> change when running bpf selftests on s390 and arm64.
+On Fri, Apr 19, 2024 at 11:22:48AM +0900, Dominique Martinet wrote:
+> From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 > 
-> Fix this by moving SPECULATION_MITIGATIONS to arch/Kconfig so that it is
-> available in all archs and thus can be used safely in kernel/cpu.c
+> The previous patch forgot to unlock in the error path
+> 
+> Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
+> Reported-by: Pavel Machek <pavel@denx.de>
+> Cc: stable@vger.kernel.org
+> Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
+> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-Yeah, it's a known issue that we've been slow to fix because we've haven't come
-to an agreement on exactly what the Kconfig should look like[1], though there's
-general consensus to add CPU_MITIGATIONS in common code[2][3].
-
-I'll poke Josh's thread and make sure a fix gets into rc6.
-
-[1] https://lore.kernel.org/all/20240417001507.2264512-2-seanjc@google.com
-[2] https://lore.kernel.org/all/20240420000556.2645001-2-seanjc@google.com
-[3] https://lore.kernel.org/all/9d3c997264829d0e2b28718222724ae8f9e7d8b4.1713559768.git.jpoimboe@kernel.org
+Added to for-next, thanks for catching it.
 
