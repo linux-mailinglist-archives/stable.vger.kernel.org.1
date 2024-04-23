@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EFA8AF968
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 361208AFA79
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 224FB1F2622E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D21D81F29699
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D6614532C;
-	Tue, 23 Apr 2024 21:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CD3149DF1;
+	Tue, 23 Apr 2024 21:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8zN/HMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RerSEZe9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DC614389E;
-	Tue, 23 Apr 2024 21:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E5D143C41;
+	Tue, 23 Apr 2024 21:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908519; cv=none; b=IQZQWzKR4VBO0CSSHGPqc7XG564O5OqjQXwiHVt84GoCI+06BECHERCEh1htAHQGGIm4CLRx5AALVw5ge8Z4hspaohMdxTLoDqk/KrRlzr6jIA7Td7zemLm11vRn3aWFO0uDUKzbvHMi9ibXw2bmEiwMrP8Nmv/GsTEbgiqUXGA=
+	t=1713908706; cv=none; b=DxJI058gxAUinzFzq+8SZwDtMxjrmTXMLw/tDXHn7pzwEQH6MVlVWozjcXyTrLbByIseJTvqMMLLPFJNj7XgZlx0dOTmQC174bmgUXyE9UoPKdsQQ5e8nKwC7SeFzKnEitKQKj8jJn4p770Zjep8r/U2uj2CxLb6RzntOsNlFco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908519; c=relaxed/simple;
-	bh=LbnetHrY63/kNcC+ga5wC5L5zR/PmHSZ2QQwoyWQuVI=;
+	s=arc-20240116; t=1713908706; c=relaxed/simple;
+	bh=ttOxlreeqC4NVbTete9S1dmmkXekuNoW7gz4VktxoOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIUzldhi84oHxLSRB7Z16M5IoGveqedxMHX9N6gB+GTZ1VtHZ4RqNyPxENFuGGK/Ccl4TWGNrH4LyCVc868YHmhXIQKVPkZcCAKQ9sLJQ7NOlNb1RuQXIV0q7jBntQU/44o+uUW4TelI5AKEO1Vu6vIMfknOgX0nMkwJHH57wHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8zN/HMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2B1C32781;
-	Tue, 23 Apr 2024 21:41:59 +0000 (UTC)
+	 MIME-Version; b=ImPzZ2pSb9zWLK+lYmA/e6ubROidby2rZmS5T1rybqNnMNPsnUB2ngcn20/QY2HhZ0lqiIWLKQqD4a5NzTRImJGsHdwIOiHJMc/M7DpEwBxlWs0G7lknqyYdbSez8SafrPJ3iH/sUT2fEmtJFKRpSK46MfcKCYCeyeDC3TLoe+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RerSEZe9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE33C116B1;
+	Tue, 23 Apr 2024 21:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908519;
-	bh=LbnetHrY63/kNcC+ga5wC5L5zR/PmHSZ2QQwoyWQuVI=;
+	s=korg; t=1713908706;
+	bh=ttOxlreeqC4NVbTete9S1dmmkXekuNoW7gz4VktxoOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8zN/HMJj+Kxe4LbaXa0VyaWeBDbPk96ceTIIho+I9jN0R0TlZ4PgvtjqjVmjyE/t
-	 XHVFc1ZoRpWQqd3llDvHbB53zf6APCJZ1kbLG3p19In5mKiFQaf1z4ZxsDj0f/jzaC
-	 NVhgTlAH2YMhTmn1kLLhPOrn1qNpj85S+HPKmyZY=
+	b=RerSEZe9qUEF29smjOdYCABtVTvBjHKzTj+17aJeYI+x7AtSUE4yIYHMLZIiybHhA
+	 8wfLfU165jfd1nFgwoJ3g7VX/2MF/Pako1Vv/kA9OybWHaNckXUJ3xr3v3kwdWg+YC
+	 0CXMwrEMa8ML5PNhj6iX4cOFrYfpCM3+hzNC4SWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	kernel test robot <oliver.sang@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.8 107/158] serial: core: Clearing the circular buffer before NULLifying it
+	Arnd Bergmann <arnd@arndb.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 061/141] x86/quirks: Include linux/pnp.h for arch_pnpbios_disabled()
 Date: Tue, 23 Apr 2024 14:38:49 -0700
-Message-ID: <20240423213859.416046605@linuxfoundation.org>
+Message-ID: <20240423213855.230977851@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9cf7ea2eeb745213dc2a04103e426b960e807940 upstream.
+[ Upstream commit 056b44a4d10907ec8153863b2a0564e808ef1440 ]
 
-The circular buffer is NULLified in uart_tty_port_shutdown()
-under the spin lock. However, the PM or other timer based callbacks
-may still trigger after this event without knowning that buffer pointer
-is not valid. Since the serial code is a bit inconsistent in checking
-the buffer state (some rely on the head-tail positions, some on the
-buffer pointer), it's better to have both aligned, i.e. buffer pointer
-to be NULL and head-tail possitions to be the same, meaning it's empty.
-This will prevent asynchronous calls to dereference NULL pointer as
-reported recently in 8250 case:
+arch_pnpbios_disabled() is defined in architecture code on x86, but this
+does not include the appropriate header, causing a warning:
 
-  BUG: kernel NULL pointer dereference, address: 00000cf5
-  Workqueue: pm pm_runtime_work
-  EIP: serial8250_tx_chars (drivers/tty/serial/8250/8250_port.c:1809)
-  ...
-  ? serial8250_tx_chars (drivers/tty/serial/8250/8250_port.c:1809)
-  __start_tx (drivers/tty/serial/8250/8250_port.c:1551)
-  serial8250_start_tx (drivers/tty/serial/8250/8250_port.c:1654)
-  serial_port_runtime_suspend (include/linux/serial_core.h:667 drivers/tty/serial/serial_port.c:63)
-  __rpm_callback (drivers/base/power/runtime.c:393)
-  ? serial_port_remove (drivers/tty/serial/serial_port.c:50)
-  rpm_suspend (drivers/base/power/runtime.c:447)
+arch/x86/kernel/platform-quirks.c:42:13: error: no previous prototype for 'arch_pnpbios_disabled' [-Werror=missing-prototypes]
 
-The proposed change will prevent ->start_tx() to be called during
-suspend on shut down port.
-
-Fixes: 43066e32227e ("serial: port: Don't suspend if the port is still busy")
-Cc: stable <stable@kernel.org>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202404031607.2e92eebe-lkp@intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240404150034.41648-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://lore.kernel.org/all/20230516193549.544673-10-arnd%40kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c |    1 +
+ arch/x86/kernel/platform-quirks.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1788,6 +1788,7 @@ static void uart_tty_port_shutdown(struc
- 	 * Free the transmit buffer.
- 	 */
- 	uart_port_lock_irq(uport);
-+	uart_circ_clear(&state->xmit);
- 	buf = state->xmit.buf;
- 	state->xmit.buf = NULL;
- 	uart_port_unlock_irq(uport);
+diff --git a/arch/x86/kernel/platform-quirks.c b/arch/x86/kernel/platform-quirks.c
+index b348a672f71d5..b525fe6d66571 100644
+--- a/arch/x86/kernel/platform-quirks.c
++++ b/arch/x86/kernel/platform-quirks.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/kernel.h>
+ #include <linux/init.h>
++#include <linux/pnp.h>
+ 
+ #include <asm/setup.h>
+ #include <asm/bios_ebda.h>
+-- 
+2.43.0
+
 
 
 
