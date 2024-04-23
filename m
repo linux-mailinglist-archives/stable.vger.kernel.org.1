@@ -1,222 +1,126 @@
-Return-Path: <stable+bounces-40736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766358AF455
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:37:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565E38AF490
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C9191F23E23
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:37:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B937281539
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB3E13D290;
-	Tue, 23 Apr 2024 16:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5773313D512;
+	Tue, 23 Apr 2024 16:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMBSjNuf"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="s4OVlS28";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TaKCTVM0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout4-smtp.messagingengine.com (fout4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC551C2A1
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 16:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3358813D505
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 16:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713890234; cv=none; b=X9m0gAoRqyV4hzFc59BreNNwCtWwII3WdUTU0jpptjPkvkWjOWpfz+aSvy/RL2JA0AnnnPa7nhJKqmf7Zis65AfJBvJ9+TdGOY5QNZP8gH0f/9V51gI5myveJka0c/VvtjYNg3uGrDDzziGPirTJFqT4wCocI9Sy4RiGjuyBasM=
+	t=1713890830; cv=none; b=L18Y03O/8aX8GUjY2kGM8WlnD+IiYbHT9Sd0riczq6VCtgFFy6JdJ6BTvRgTyWdFOlesFMGHx5lP5ORHBHLpUGq8HGvUhPUfRO6aGoRk9Ex72o5zSqApz08wBmnrRG+R3tdzRnjMTpKQ8r3QdIw7CsP5WhBzLGDaykKIYmH/klc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713890234; c=relaxed/simple;
-	bh=MWHPU2rYveny7F3fXwebnCtQcWYKSYZP7WcQOuHysQY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntmG4FxnqcqIfKf41qU3ZKrEszzNecWzVdO9AP4fVRXucWpx/dRcSDoOYKpzxPNLdMgl1XCNS99Qc7IvOJKWtHsaSVa+2tc+9FTglAelbWDMKUG9D5vzF5geo5UVUZDsTljvzELVjrg+R2bVMxIpGBeUCpZ5v7H7FmpW2dYrCY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMBSjNuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82606C116B1;
-	Tue, 23 Apr 2024 16:37:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713890233;
-	bh=MWHPU2rYveny7F3fXwebnCtQcWYKSYZP7WcQOuHysQY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMBSjNufL70m0Gkl6RAevxmeanynLfr+nj6Xg78T4refXkmzjdgTshu5hyK1Jy0vT
-	 fc48s7KIhyl4/kS5o/McsOdel0v2XwOcgpXyQjgf9//L1gyZXmO8377+NC6C298WCe
-	 yibOivBOsPEl2GT6UXlJLFyTcoLVF+ut7H8A5U83OfkUaQJ3PXWfauNYUNABoGQpU7
-	 gUA5TWKC8uBXW7o35uAVLjEAEHfXCEO8tfLBdEBlRNEk8HWTreEIlqeGYqnejI0rA4
-	 NKRt3YSMv5GKH1BmfNfAQ8mrYn4niuiF2C+sOSUhi4h0t2oUiGbikhDFW3ZKQsDZqT
-	 bfBlKJJL0AO8A==
-From: cel@kernel.org
-To: stable@kernel.org
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-	stable@vger.kernel.org,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 6.8.y] NFSD: fix endianness issue in nfsd4_encode_fattr4
-Date: Tue, 23 Apr 2024 12:37:02 -0400
-Message-ID: <20240423163702.11681-1-cel@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024041908-sandblast-sullen-2eed@gregkh>
+	s=arc-20240116; t=1713890830; c=relaxed/simple;
+	bh=WoeIrVltUTV3SQ/SEvCatSZ9a600iRbNsoNSieJomgg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b2f0+i6mbjzC+xv/hryDKPPF4EVJZtCsPJNYLvu2hvk/aMV7+6hVEJQBdSPj5N5hcRyOfXGFvB/FHwfQxHBX3nZeHeJ6bQPNuDTPYrjf7YI3oy8gOKKAf2oBa2hjxpCgA8jtScwpkEG0l1ulrpgbb5pbffug4RP5CwtYkLqPiOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=s4OVlS28; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TaKCTVM0; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 25CC013800DF;
+	Tue, 23 Apr 2024 12:47:07 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Tue, 23 Apr 2024 12:47:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1713890827; x=1713977227; bh=AZ7MHfrHJg
+	of32IYcbhgz3VfP2oNKOZQvC0Z5FMt9Rk=; b=s4OVlS289OL8OJqDatFWesshxv
+	KjmKmt+x+jMp+mLXnwvTsxPtNQHPMoFALuk4uqybJ+UiaqCZhQFV7rh7uqWn/aw4
+	L++wahLxV05PIwWavmJUKrseScYciLUggUNypPij/2/eAT8PjA6boZklE5NdFAvT
+	7Pqtl5vw8TVEHzeLFMLIeH6chLRIG39IUsAraTTqaYrFx9Gxa8qUIAB/CsyGkXdv
+	Kk/CsFCcMDks3qSbHi1qnGMpjH0ZXRtAIpmN2V+DfSdDnjXPZtk4rQaG50KcP/Nm
+	/kwM7qlN+p/qIt2B8rasa2Fs0WVuhIuIVpsHbGTFRGi9w2CbninSnc05LXzQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1713890827; x=1713977227; bh=AZ7MHfrHJgof32IYcbhgz3VfP2oN
+	KOZQvC0Z5FMt9Rk=; b=TaKCTVM0PpngQK7cZsKpmd7C2R8ioA7qPgZvJB6v8evy
+	SlA/fFn1i381BCOio6PvIL/PoSu026NnxD8sd88jFiHslAcWYdTmZcp8jaHr3iRX
+	buvsW539Y12cgUBvr+Emd7XAW4MU4HQQswK8/z0RUedJRP0tcywYXqUsS5hc/T2F
+	oSikYTBD17QeeOSF5YLt0UboN9r9Za15QGuFXZLV5+mwnY2CD1qbVWEtV7hR/nGu
+	rQmTXkodDCVrCxq6hTMUdMq9Uo80GnCOW5Pze9/9keFJwA3h5A1j7ZU6xqQvFRgo
+	mri9mIQH8ArkoOIf0/pW0Atb8F4/If9DqmDEdkXhEw==
+X-ME-Sender: <xms:CuYnZljCKDSxXg8B5cH9MVGxWfitLY7xp6FJZw4elXung7L_CMB-eQ>
+    <xme:CuYnZqDrC5V6ta3_qP9eCoGxbqKItZgJU_KZVWbiyPkJQmcvfoK4ySMbbCg1qWMCK
+    C2rVBnbHs6N5Q>
+X-ME-Received: <xmr:CuYnZlFrpRoTmNqsntlNvsU2c1kaJvLcrbtXnqfDwjr59I5dZAx9vsxLulyj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeluddguddtiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehff
+    efgffgvddvkeffhffgleejheffhfelheeljeffffevueeuudehgfevueekjeenucffohhm
+    rghinheplhgruhhntghhphgrugdrnhgvthenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:CuYnZqTjaGhf0bT9N4rTnI8X37d0tuOJ7gxR_m5aOFCdbRty2e5STQ>
+    <xmx:CuYnZiwJogAoFID-TJSb07V86inPXbx5jqeRXvUrVqLGsqYRCasZmA>
+    <xmx:CuYnZg4MsvZBCoTHboN93x7EWWrpFzzcdtM3N6R-KjjNBg3znbvMnw>
+    <xmx:CuYnZnxHKbR0_VwmCvoUKH7HekZUTADgjcPmGpz1lGq2ji-AVmpSRQ>
+    <xmx:C-YnZno-jaUgXQGhCU1k6uqUpH8Lt3yYWM_2xI9mWsU9mpuptdIFX7Cl>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 23 Apr 2024 12:47:06 -0400 (EDT)
+Date: Tue, 23 Apr 2024 09:46:56 -0700
+From: Greg KH <greg@kroah.com>
+To: cel@kernel.org
+Cc: stable@kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+	stable@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
+Subject: Re: [PATCH 6.8.y] NFSD: fix endianness issue in nfsd4_encode_fattr4
+Message-ID: <2024042332-feminize-showing-b4a4@gregkh>
 References: <2024041908-sandblast-sullen-2eed@gregkh>
+ <20240423163702.11681-1-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240423163702.11681-1-cel@kernel.org>
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+On Tue, Apr 23, 2024 at 12:37:02PM -0400, cel@kernel.org wrote:
+> From: Vasily Gorbik <gor@linux.ibm.com>
+> 
+> [ Upstream commit f488138b526715c6d2568d7329c4477911be4210 ]
+> 
+> The nfs4 mount fails with EIO on 64-bit big endian architectures since
+> v6.7. The issue arises from employing a union in the nfsd4_encode_fattr4()
+> function to overlay a 32-bit array with a 64-bit values based bitmap,
+> which does not function as intended. Address the endianness issue by
+> utilizing bitmap_from_arr32() to copy 32-bit attribute masks into a
+> bitmap in an endianness-agnostic manner.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: fce7913b13d0 ("NFSD: Use a bitmask loop to encode FATTR4 results")
+> Link: https://bugs.launchpad.net/ubuntu/+source/nfs-utils/+bug/2060217
+> Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+> Reviewed-by: Jeff Layton <jlayton@kernel.org>
+> [ cel: adjusted to apply on 6.8.y ]
 
-[ Upstream commit f488138b526715c6d2568d7329c4477911be4210 ]
+This is already in the queue for 6.8.y, perhaps you missed the email
+saying that.
 
-The nfs4 mount fails with EIO on 64-bit big endian architectures since
-v6.7. The issue arises from employing a union in the nfsd4_encode_fattr4()
-function to overlay a 32-bit array with a 64-bit values based bitmap,
-which does not function as intended. Address the endianness issue by
-utilizing bitmap_from_arr32() to copy 32-bit attribute masks into a
-bitmap in an endianness-agnostic manner.
+Anyway, thanks for the patch, all should be good now.
 
-Cc: stable@vger.kernel.org
-Fixes: fce7913b13d0 ("NFSD: Use a bitmask loop to encode FATTR4 results")
-Link: https://bugs.launchpad.net/ubuntu/+source/nfs-utils/+bug/2060217
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-[ cel: adjusted to apply on 6.8.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
----
- fs/nfsd/nfs4xdr.c | 47 +++++++++++++++++++++++------------------------
- 1 file changed, 23 insertions(+), 24 deletions(-)
-
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index c719c475a068..c17bdf973c18 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3490,11 +3490,13 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 		    struct dentry *dentry, const u32 *bmval,
- 		    int ignore_crossmnt)
- {
-+	DECLARE_BITMAP(attr_bitmap, ARRAY_SIZE(nfsd4_enc_fattr4_encode_ops));
- 	struct nfsd4_fattr_args args;
- 	struct svc_fh *tempfh = NULL;
- 	int starting_len = xdr->buf->len;
- 	__be32 *attrlen_p, status;
- 	int attrlen_offset;
-+	u32 attrmask[3];
- 	int err;
- 	struct nfsd4_compoundres *resp = rqstp->rq_resp;
- 	u32 minorversion = resp->cstate.minorversion;
-@@ -3502,10 +3504,6 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 		.mnt	= exp->ex_path.mnt,
- 		.dentry	= dentry,
- 	};
--	union {
--		u32		attrmask[3];
--		unsigned long	mask[2];
--	} u;
- 	unsigned long bit;
- 
- 	WARN_ON_ONCE(bmval[1] & NFSD_WRITEONLY_ATTRS_WORD1);
-@@ -3519,20 +3517,19 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 	/*
- 	 * Make a local copy of the attribute bitmap that can be modified.
- 	 */
--	memset(&u, 0, sizeof(u));
--	u.attrmask[0] = bmval[0];
--	u.attrmask[1] = bmval[1];
--	u.attrmask[2] = bmval[2];
-+	attrmask[0] = bmval[0];
-+	attrmask[1] = bmval[1];
-+	attrmask[2] = bmval[2];
- 
- 	args.rdattr_err = 0;
- 	if (exp->ex_fslocs.migrated) {
--		status = fattr_handle_absent_fs(&u.attrmask[0], &u.attrmask[1],
--						&u.attrmask[2], &args.rdattr_err);
-+		status = fattr_handle_absent_fs(&attrmask[0], &attrmask[1],
-+						&attrmask[2], &args.rdattr_err);
- 		if (status)
- 			goto out;
- 	}
- 	args.size = 0;
--	if (u.attrmask[0] & (FATTR4_WORD0_CHANGE | FATTR4_WORD0_SIZE)) {
-+	if (attrmask[0] & (FATTR4_WORD0_CHANGE | FATTR4_WORD0_SIZE)) {
- 		status = nfsd4_deleg_getattr_conflict(rqstp, d_inode(dentry));
- 		if (status)
- 			goto out;
-@@ -3547,16 +3544,16 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 
- 	if (!(args.stat.result_mask & STATX_BTIME))
- 		/* underlying FS does not offer btime so we can't share it */
--		u.attrmask[1] &= ~FATTR4_WORD1_TIME_CREATE;
--	if ((u.attrmask[0] & (FATTR4_WORD0_FILES_AVAIL | FATTR4_WORD0_FILES_FREE |
-+		attrmask[1] &= ~FATTR4_WORD1_TIME_CREATE;
-+	if ((attrmask[0] & (FATTR4_WORD0_FILES_AVAIL | FATTR4_WORD0_FILES_FREE |
- 			FATTR4_WORD0_FILES_TOTAL | FATTR4_WORD0_MAXNAME)) ||
--	    (u.attrmask[1] & (FATTR4_WORD1_SPACE_AVAIL | FATTR4_WORD1_SPACE_FREE |
-+	    (attrmask[1] & (FATTR4_WORD1_SPACE_AVAIL | FATTR4_WORD1_SPACE_FREE |
- 		       FATTR4_WORD1_SPACE_TOTAL))) {
- 		err = vfs_statfs(&path, &args.statfs);
- 		if (err)
- 			goto out_nfserr;
- 	}
--	if ((u.attrmask[0] & (FATTR4_WORD0_FILEHANDLE | FATTR4_WORD0_FSID)) &&
-+	if ((attrmask[0] & (FATTR4_WORD0_FILEHANDLE | FATTR4_WORD0_FSID)) &&
- 	    !fhp) {
- 		tempfh = kmalloc(sizeof(struct svc_fh), GFP_KERNEL);
- 		status = nfserr_jukebox;
-@@ -3571,10 +3568,10 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 		args.fhp = fhp;
- 
- 	args.acl = NULL;
--	if (u.attrmask[0] & FATTR4_WORD0_ACL) {
-+	if (attrmask[0] & FATTR4_WORD0_ACL) {
- 		err = nfsd4_get_nfs4_acl(rqstp, dentry, &args.acl);
- 		if (err == -EOPNOTSUPP)
--			u.attrmask[0] &= ~FATTR4_WORD0_ACL;
-+			attrmask[0] &= ~FATTR4_WORD0_ACL;
- 		else if (err == -EINVAL) {
- 			status = nfserr_attrnotsupp;
- 			goto out;
-@@ -3586,17 +3583,17 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 
- #ifdef CONFIG_NFSD_V4_SECURITY_LABEL
- 	args.context = NULL;
--	if ((u.attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) ||
--	     u.attrmask[0] & FATTR4_WORD0_SUPPORTED_ATTRS) {
-+	if ((attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) ||
-+	     attrmask[0] & FATTR4_WORD0_SUPPORTED_ATTRS) {
- 		if (exp->ex_flags & NFSEXP_SECURITY_LABEL)
- 			err = security_inode_getsecctx(d_inode(dentry),
- 						&args.context, &args.contextlen);
- 		else
- 			err = -EOPNOTSUPP;
- 		args.contextsupport = (err == 0);
--		if (u.attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) {
-+		if (attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) {
- 			if (err == -EOPNOTSUPP)
--				u.attrmask[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
-+				attrmask[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
- 			else if (err)
- 				goto out_nfserr;
- 		}
-@@ -3604,8 +3601,8 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- #endif /* CONFIG_NFSD_V4_SECURITY_LABEL */
- 
- 	/* attrmask */
--	status = nfsd4_encode_bitmap4(xdr, u.attrmask[0],
--				      u.attrmask[1], u.attrmask[2]);
-+	status = nfsd4_encode_bitmap4(xdr, attrmask[0], attrmask[1],
-+				      attrmask[2]);
- 	if (status)
- 		goto out;
- 
-@@ -3614,7 +3611,9 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 	attrlen_p = xdr_reserve_space(xdr, XDR_UNIT);
- 	if (!attrlen_p)
- 		goto out_resource;
--	for_each_set_bit(bit, (const unsigned long *)&u.mask,
-+	bitmap_from_arr32(attr_bitmap, attrmask,
-+			  ARRAY_SIZE(nfsd4_enc_fattr4_encode_ops));
-+	for_each_set_bit(bit, attr_bitmap,
- 			 ARRAY_SIZE(nfsd4_enc_fattr4_encode_ops)) {
- 		status = nfsd4_enc_fattr4_encode_ops[bit](xdr, &args);
- 		if (status != nfs_ok)
--- 
-2.43.0
-
+greg k-h
 
