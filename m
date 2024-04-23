@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DC98AFB11
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C67F98AFAD1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 767181C23562
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:53:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CB881F29820
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBE9148FF5;
-	Tue, 23 Apr 2024 21:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E04144D2F;
+	Tue, 23 Apr 2024 21:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBvc1eb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="003oD9ni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9B814885A;
-	Tue, 23 Apr 2024 21:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41883145B14;
+	Tue, 23 Apr 2024 21:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908811; cv=none; b=s1+IPxXlvXyEgAU3yA9eqvPmDIz+Lxtv9vA7m8ENn3dhTuMaY2fZ8PvSGkf8KXqwsV4zxllPsB0nz2/2x7+NqIt1MVZJODPwkxNQC4v92GoPWnxn1NRd4oBZoaQ0CoYscESnR0LlcsJaHRAcBRrY2SQzdvXs48fGUhfC8ZVhasw=
+	t=1713908766; cv=none; b=VHAiBetMDiF0/xofo2KD+yvBfoTPOsa0kdvCg+PyuYTk8oi5PGiO0gRrd/O3FCnlbGNiT8RfTnDf4eSuKBrPucI1CZalHJLf33bNlPCkjaHPjdaEPtJMXckHU+h0toRYNCpqW1W9EI+RCXHU919fZPHARSp7TrAbioO1Bqs75HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908811; c=relaxed/simple;
-	bh=LBwP5xNEZJRWH+wiyiQ9zaXlBP1s7QklJsiO8LLkbxA=;
+	s=arc-20240116; t=1713908766; c=relaxed/simple;
+	bh=oFY/Mb3YlbCm6X3GDVfTH7KcsT+Ql7Xf1jzuaILk5nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1zJQUdHvTX2dE5Oqf49DKPUyl265gFJEIMNn+y5ZSX+H+y+COkHPU+nHqJa4NwaN0vGhjLTQrqxvCPKTnASk56FNEshRR0tdvfsS6pxZzNyEnIYiFkHm/G9SOu/hxJupztamwKQhWm/BJ63EoXKY2Ire5zWcum5O1AcozTe5cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBvc1eb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217D6C116B1;
-	Tue, 23 Apr 2024 21:46:51 +0000 (UTC)
+	 MIME-Version; b=POlxqTEtd3h5wI/RbYN7JaQkcEJQYh+1wbur/xQcM3jc/mCmqB8Hc1W3JBueRo6uhf+tDBCKa/GcYUCfpmHbDZ6O1R5xXyzInWa0/dinPm1bxLKMiTKF/42VL/ejX9X15R9Xpfr+YvUhGVoVV7DObwiam/LWJ6V95qGrbGI4AWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=003oD9ni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6175C116B1;
+	Tue, 23 Apr 2024 21:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908811;
-	bh=LBwP5xNEZJRWH+wiyiQ9zaXlBP1s7QklJsiO8LLkbxA=;
+	s=korg; t=1713908765;
+	bh=oFY/Mb3YlbCm6X3GDVfTH7KcsT+Ql7Xf1jzuaILk5nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hBvc1eb2kK1iPjizB1c5HbfEy/eqID3ZvDpFpMeVF/mj+dHHIkHQs3PhYFvBAzsGC
-	 H/Z69ZeLhv4xll8N8pDwGo4mS/L94t9gbRkATP04NLMpcZWPKgVisKqdc/JM6oQVAo
-	 QLxF2gj1P4zk7eULddZTpWsbv3VxFgQV+QcNGSbE=
+	b=003oD9niqACAAqXkzVq9yQ5p+r7xKTKA2GbkaV5APMVbMgpqSPav9iXC09P6MY3Do
+	 AHZOnT/jWjwpdqcYlBAhCiaoZTlvZjKl7Y1A9dmLR5eJwK0p/CApKm57kc/f62d0XS
+	 eWelQ5wRH1C/WtU9POf3n0XFp1TDY5tld2uovldg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norihiko Hama <Norihiko.Hama@alpsalpine.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 55/71] usb: gadget: f_ncm: Fix UAF ncm object at re-bind after usb ep transport error
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 140/141] ksmbd: common: use struct_group_attr instead of struct_group for network_open_info
 Date: Tue, 23 Apr 2024 14:40:08 -0700
-Message-ID: <20240423213846.074476206@linuxfoundation.org>
+Message-ID: <20240423213857.758001962@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norihiko Hama <Norihiko.Hama@alpsalpine.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 6334b8e4553cc69f51e383c9de545082213d785e upstream.
+commit 0268a7cc7fdc47d90b6c18859de7718d5059f6f1 upstream.
 
-When ncm function is working and then stop usb0 interface for link down,
-eth_stop() is called. At this piont, accidentally if usb transport error
-should happen in usb_ep_enable(), 'in_ep' and/or 'out_ep' may not be enabled.
+4byte padding cause the connection issue with the applications of MacOS.
+smb2_close response size increases by 4 bytes by padding, And the smb
+client of MacOS check it and stop the connection. This patch use
+struct_group_attr instead of struct_group for network_open_info to use
+ __packed to avoid padding.
 
-After that, ncm_disable() is called to disable for ncm unbind
-but gether_disconnect() is never called since 'in_ep' is not enabled.
-
-As the result, ncm object is released in ncm unbind
-but 'dev->port_usb' associated to 'ncm->port' is not NULL.
-
-And when ncm bind again to recover netdev, ncm object is reallocated
-but usb0 interface is already associated to previous released ncm object.
-
-Therefore, once usb0 interface is up and eth_start_xmit() is called,
-released ncm object is dereferrenced and it might cause use-after-free memory.
-
-[function unlink via configfs]
-  usb0: eth_stop dev->port_usb=ffffff9b179c3200
-  --> error happens in usb_ep_enable().
-  NCM: ncm_disable: ncm=ffffff9b179c3200
-  --> no gether_disconnect() since ncm->port.in_ep->enabled is false.
-  NCM: ncm_unbind: ncm unbind ncm=ffffff9b179c3200
-  NCM: ncm_free: ncm free ncm=ffffff9b179c3200   <-- released ncm
-
-[function link via configfs]
-  NCM: ncm_alloc: ncm alloc ncm=ffffff9ac4f8a000
-  NCM: ncm_bind: ncm bind ncm=ffffff9ac4f8a000
-  NCM: ncm_set_alt: ncm=ffffff9ac4f8a000 alt=0
-  usb0: eth_open dev->port_usb=ffffff9b179c3200  <-- previous released ncm
-  usb0: eth_start dev->port_usb=ffffff9b179c3200 <--
-  eth_start_xmit()
-  --> dev->wrap()
-  Unable to handle kernel paging request at virtual address dead00000000014f
-
-This patch addresses the issue by checking if 'ncm->netdev' is not NULL at
-ncm_disable() to call gether_disconnect() to deassociate 'dev->port_usb'.
-It's more reasonable to check 'ncm->netdev' to call gether_connect/disconnect
-rather than check 'ncm->port.in_ep->enabled' since it might not be enabled
-but the gether connection might be established.
-
-Signed-off-by: Norihiko Hama <Norihiko.Hama@alpsalpine.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240327023550.51214-1-Norihiko.Hama@alpsalpine.com
+Fixes: 0015eb6e1238 ("smb: client, common: fix fortify warnings")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/common/smb2pdu.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -888,7 +888,7 @@ static int ncm_set_alt(struct usb_functi
- 		if (alt > 1)
- 			goto fail;
- 
--		if (ncm->port.in_ep->enabled) {
-+		if (ncm->netdev) {
- 			DBG(cdev, "reset ncm\n");
- 			ncm->netdev = NULL;
- 			gether_disconnect(&ncm->port);
-@@ -1373,7 +1373,7 @@ static void ncm_disable(struct usb_funct
- 
- 	DBG(cdev, "ncm deactivated\n");
- 
--	if (ncm->port.in_ep->enabled) {
-+	if (ncm->netdev) {
- 		ncm->netdev = NULL;
- 		gether_disconnect(&ncm->port);
- 	}
+--- a/fs/smb/common/smb2pdu.h
++++ b/fs/smb/common/smb2pdu.h
+@@ -699,7 +699,7 @@ struct smb2_close_rsp {
+ 	__le16 StructureSize; /* 60 */
+ 	__le16 Flags;
+ 	__le32 Reserved;
+-	struct_group(network_open_info,
++	struct_group_attr(network_open_info, __packed,
+ 		__le64 CreationTime;
+ 		__le64 LastAccessTime;
+ 		__le64 LastWriteTime;
 
 
 
