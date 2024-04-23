@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FEB28AFA31
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F248AF998
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 720C91C217C0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93050B26ED3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7E6149011;
-	Tue, 23 Apr 2024 21:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF37B145B0D;
+	Tue, 23 Apr 2024 21:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3ASc+zk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwX/K47S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD16D143C6B;
-	Tue, 23 Apr 2024 21:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAF120B3E;
+	Tue, 23 Apr 2024 21:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908651; cv=none; b=YCXFt1OATy7LYOjPsBPlC0lCOGw0HZtIKTA4kH4+nwSUs2t033Gl5wjknuLb+qjJCIffpx6anLtKe9FUaW7shuhIEkeX3Af+3MeSDbBS7R/7j3Ymo/gAhFuneLAvsUAHpTov3N4n+C/isuTZthToPpITvAzGHoPOz1s56CQRv44=
+	t=1713908553; cv=none; b=swJgA526BLKusU5D1Ez5/BEODgIwFXXZVjoCyu1z7HC7lab7C09XnQ8RkLCg8ROPY9PXcpxg5HLC5CO9MdejB0T73RBIcsssyPsCMRmA3wV//ur/KsWdiPcW0684DWrecIc6y+KswCrzGe2whbnIKByCpLbErJF0nL7LOVHfDZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908651; c=relaxed/simple;
-	bh=it3ytTe7aRU1UvssAj7N70lvDZkOz3f/hCh75jThKWg=;
+	s=arc-20240116; t=1713908553; c=relaxed/simple;
+	bh=2Z2sQUj6p+fZJkaFVZEyWEZKoHqqrUM5vwJzxCneUJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGZ2PjARn09PUmLPsGWefMjV/Buymhuhey+bFK5cZkAKDN+u7nIuG4J9dzWKhpZodieTmZ/Z6SanCKpwgvHuHEnvYeDsGAoytffp7vdK71pyynvJQYCPqZoCvecGWPIFJG0yg+ZHaoZgotzAnEfitBA6luJTw9vnJ6SoKCVOos8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3ASc+zk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81226C116B1;
-	Tue, 23 Apr 2024 21:44:11 +0000 (UTC)
+	 MIME-Version; b=DiJq1NFMWN4gbeoCK6XHLrEbHF5ruYQ/+zdcrE/kgDHugfW40OPg2dqNn0UVO1YRWFIrmzwkgjxc+2pw/+yacb+9yCyHPE3/GoxIDbtLRMIvEpcY7weHxlvfhzEs5I5fs/vPBXmupnVFU2SH6gWc6by06g3vrmNHkejvXP+8y1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwX/K47S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511E8C32781;
+	Tue, 23 Apr 2024 21:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908651;
-	bh=it3ytTe7aRU1UvssAj7N70lvDZkOz3f/hCh75jThKWg=;
+	s=korg; t=1713908553;
+	bh=2Z2sQUj6p+fZJkaFVZEyWEZKoHqqrUM5vwJzxCneUJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3ASc+zkpqXxjYq/6WbOqJim143bSAsJVF7CGKjO4QuKKUvmRP3ErIm6y/qPjCJV6
-	 fkW6x8jw9GdqtkhicHf03xYrhs++OvcIqakOVpVPfOi8pY7LIVvcjmC/jM4M9KG4ov
-	 8cEb/LLW9Ih+G66bTW9q45VcOP3ct2EQ1TVzFiNo=
+	b=rwX/K47SnWlAtFkxDj8624u26uwEQ9Vw+n3kgS+gzm8C8qlrb2fEQ5ZUj26opt0HE
+	 cF8WLmILGNqJBu7bD63i3+JUxAt/ET2NR+B5pMcn4tvvNRYXDFH4QNipvB9oqJqFn7
+	 XqMtcwVHZcicJV2wTdoXpUoD/yR1CM/laSOXQd5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danny Lin <danny@orbstack.dev>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.6 140/158] fuse: fix leaked ENOSYS error on first statx call
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.8 155/158] ksmbd: fix slab-out-of-bounds in smb2_allocate_rsp_buf
 Date: Tue, 23 Apr 2024 14:39:37 -0700
-Message-ID: <20240423213900.248253964@linuxfoundation.org>
+Message-ID: <20240423213900.885703760@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danny Lin <danny@orbstack.dev>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit eb4b691b9115fae4c844f5941418335575cf667f upstream.
+commit c119f4ede3fa90a9463f50831761c28f989bfb20 upstream.
 
-FUSE attempts to detect server support for statx by trying it once and
-setting no_statx=1 if it fails with ENOSYS, but consider the following
-scenario:
+If ->ProtocolId is SMB2_TRANSFORM_PROTO_NUM, smb2 request size
+validation could be skipped. if request size is smaller than
+sizeof(struct smb2_query_info_req), slab-out-of-bounds read can happen in
+smb2_allocate_rsp_buf(). This patch allocate response buffer after
+decrypting transform request. smb3_decrypt_req() will validate transform
+request size and avoid slab-out-of-bound in smb2_allocate_rsp_buf().
 
-- Userspace (e.g. sh) calls stat() on a file
-  * succeeds
-- Userspace (e.g. lsd) calls statx(BTIME) on the same file
-  - request_mask = STATX_BASIC_STATS | STATX_BTIME
-  - first pass: sync=true due to differing cache_mask
-  - statx fails and returns ENOSYS
-  - set no_statx and retry
-  - retry sets mask = STATX_BASIC_STATS
-  - now mask == cache_mask; sync=false (time_before: still valid)
-  - so we take the "else if (stat)" path
-  - "err" is still ENOSYS from the failed statx call
-
-Fix this by zeroing "err" before retrying the failed call.
-
-Fixes: d3045530bdd2 ("fuse: implement statx")
-Cc: stable@vger.kernel.org # v6.6
-Signed-off-by: Danny Lin <danny@orbstack.dev>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dir.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/server.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -1317,6 +1317,7 @@ retry:
- 			err = fuse_do_statx(inode, file, stat);
- 			if (err == -ENOSYS) {
- 				fc->no_statx = 1;
-+				err = 0;
- 				goto retry;
- 			}
- 		} else {
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -167,20 +167,17 @@ static void __handle_ksmbd_work(struct k
+ 	int rc;
+ 	bool is_chained = false;
+ 
+-	if (conn->ops->allocate_rsp_buf(work))
+-		return;
+-
+ 	if (conn->ops->is_transform_hdr &&
+ 	    conn->ops->is_transform_hdr(work->request_buf)) {
+ 		rc = conn->ops->decrypt_req(work);
+-		if (rc < 0) {
+-			conn->ops->set_rsp_status(work, STATUS_DATA_ERROR);
+-			goto send;
+-		}
+-
++		if (rc < 0)
++			return;
+ 		work->encrypted = true;
+ 	}
+ 
++	if (conn->ops->allocate_rsp_buf(work))
++		return;
++
+ 	rc = conn->ops->init_rsp_hdr(work);
+ 	if (rc) {
+ 		/* either uid or tid is not correct */
 
 
 
