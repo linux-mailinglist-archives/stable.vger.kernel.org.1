@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-41252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AEF38AFB1D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE658AFA26
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 333D0B2CB5B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18F6A289FF4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853BE145B2C;
-	Tue, 23 Apr 2024 21:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE5C148FF2;
+	Tue, 23 Apr 2024 21:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Puvj/PB+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7E9ho1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4213314AD3D;
-	Tue, 23 Apr 2024 21:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA63C145B33;
+	Tue, 23 Apr 2024 21:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908781; cv=none; b=gf4XH4Ygu+zOqpt4x9hMhje89dSIXRMBeB5z1akWxNd6vZu5OJ/k1r+IGiFRx7daHbu7n1EtVhOPFFlBKc7yqJnisd3kmjhP/92asbxi81Oyy7RSVTnfSfH2pszO3snXm7mclVhnqIO74hUBWx5gszUjYFHp994NELEMOaYOn2k=
+	t=1713908642; cv=none; b=Sw5WbAv709FJCg22L43o++90zeWm+aTU3ReVnE3z92Ia7A4MJ8tG3dtEif5i/TV8p7DFer1kS75f8sU392SUPuIVykkYt6IeF14h1X2jLTj+Ct/jEdYPx6o1X4yRy2qHV/zU2RPG83pNwhrzI11AQEZH4/MjZOXxFRaV6nFTc6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908781; c=relaxed/simple;
-	bh=2xMS3LJ0MfukB+wNS6lksbBw76cEgRPsc2KYA94HZLI=;
+	s=arc-20240116; t=1713908642; c=relaxed/simple;
+	bh=1+/PhaVopLjuHpB9YZtYbHjjxdn928VLJxryxmJCcVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jctk/Jqc55nbXMiZDGdxacfN5BpfoCNwxM+h4ewc3+zIi2ssKGqIb1x1hgjOWU3nnB+fnv+rDyWSH1ZXAg0QSpXXWufL0yFW/brR71Bauu+x8TYjE64KHd+YaIpfW6QdKkoFT7HBTiruj7tqEUrlnn5cjHdjlxUuNwHLLgLsdKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Puvj/PB+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137AEC116B1;
-	Tue, 23 Apr 2024 21:46:21 +0000 (UTC)
+	 MIME-Version; b=i48y1kQkmp556xYMHIZqQm86sw1wsgQ8D1nExOj9SwLfv6VZMKQdzknXFBHuznds+JKMm+cQAgiK7lehekaX6Ur3eJuVL24nwk/Y77DiI5YOEEoE3036objwOHgpFr9KeNUKId4UU+XyfZ/vmJ8Pc28C9MIk5klzKhDhxEruUIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7E9ho1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5D7C116B1;
+	Tue, 23 Apr 2024 21:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908781;
-	bh=2xMS3LJ0MfukB+wNS6lksbBw76cEgRPsc2KYA94HZLI=;
+	s=korg; t=1713908642;
+	bh=1+/PhaVopLjuHpB9YZtYbHjjxdn928VLJxryxmJCcVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Puvj/PB+gV5x/eBssXFPqY8HyELwTSy5CHstPYgzlD1mukgi2GvRYkHhceI1QfDOR
-	 RJul0xTmFyFyHmfkpl0YQ+g5+fces6kqAYO/1uqAa5qnprJX/7O3Y6DvNx2rzuomyY
-	 2ixejUdstsgGQgnEMca6D+Mg7M3NUZyk8/wfzCiY=
+	b=K7E9ho1Fp4CwRiPyYf/xME6Kj0qhmb3hmFNW14Hzc1Yq0z8M6WqHfDJ6sSO2oMNpe
+	 byvA27wmn1zBYD/ubzpv7W4RafePug+JKy2+jyQomTr9zapmvKz/xzg7CX/Qa9AjHq
+	 Gxro2o4bvImWXJE2MCOlgS9utBrg368rsf5tYQGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Edward Liaw <edliaw@google.com>
-Subject: [PATCH 5.15 09/71] bpf: Generally fix helper register offset check
-Date: Tue, 23 Apr 2024 14:39:22 -0700
-Message-ID: <20240423213844.438481100@linuxfoundation.org>
+	Samuel Thibault <samuel.thibault@ens-lyon.org>
+Subject: [PATCH 6.6 126/158] speakup: Avoid crash on very long word
+Date: Tue, 23 Apr 2024 14:39:23 -0700
+Message-ID: <20240423213859.815492907@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Samuel Thibault <samuel.thibault@ens-lyon.org>
 
-commit 6788ab23508bddb0a9d88e104284922cb2c22b77 upstream.
+commit c8d2f34ea96ea3bce6ba2535f867f0d4ee3b22e1 upstream.
 
-Right now the assertion on check_ptr_off_reg() is only enforced for register
-types PTR_TO_CTX (and open coded also for PTR_TO_BTF_ID), however, this is
-insufficient since many other PTR_TO_* register types such as PTR_TO_FUNC do
-not handle/expect register offsets when passed to helper functions.
+In case a console is set up really large and contains a really long word
+(> 256 characters), we have to stop before the length of the word buffer.
 
-Given this can slip-through easily when adding new types, make this an explicit
-allow-list and reject all other current and future types by default if this is
-encountered.
-
-Also, extend check_ptr_off_reg() to handle PTR_TO_BTF_ID as well instead of
-duplicating it. For PTR_TO_BTF_ID, reg->off is used for BTF to match expected
-BTF ids if struct offset is used. This part still needs to be allowed, but the
-dynamic off from the tnum must be rejected.
-
-Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
-Fixes: eaa6bcb71ef6 ("bpf: Introduce bpf_per_cpu_ptr()")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Edward Liaw <edliaw@google.com>
+Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Fixes: c6e3fd22cd538 ("Staging: add speakup to the staging directory")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240323164843.1426997-1-samuel.thibault@ens-lyon.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c |   39 ++++++++++++++++++++++++++++-----------
- 1 file changed, 28 insertions(+), 11 deletions(-)
+ drivers/accessibility/speakup/main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3980,14 +3980,15 @@ static int get_callee_stack_depth(struct
- }
- #endif
- 
--int check_ptr_off_reg(struct bpf_verifier_env *env,
--		      const struct bpf_reg_state *reg, int regno)
-+static int __check_ptr_off_reg(struct bpf_verifier_env *env,
-+			       const struct bpf_reg_state *reg, int regno,
-+			       bool fixed_off_ok)
- {
- 	/* Access to this pointer-typed register or passing it to a helper
- 	 * is only allowed in its original, unmodified form.
- 	 */
- 
--	if (reg->off) {
-+	if (!fixed_off_ok && reg->off) {
- 		verbose(env, "dereference of modified %s ptr R%d off=%d disallowed\n",
- 			reg_type_str(env, reg->type), regno, reg->off);
- 		return -EACCES;
-@@ -4005,6 +4006,12 @@ int check_ptr_off_reg(struct bpf_verifie
- 	return 0;
- }
- 
-+int check_ptr_off_reg(struct bpf_verifier_env *env,
-+		      const struct bpf_reg_state *reg, int regno)
-+{
-+	return __check_ptr_off_reg(env, reg, regno, false);
-+}
-+
- static int __check_buffer_access(struct bpf_verifier_env *env,
- 				 const char *buf_info,
- 				 const struct bpf_reg_state *reg,
-@@ -5267,12 +5274,6 @@ found:
- 				kernel_type_name(btf_vmlinux, *arg_btf_id));
- 			return -EACCES;
- 		}
--
--		if (!tnum_is_const(reg->var_off) || reg->var_off.value) {
--			verbose(env, "R%d is a pointer to in-kernel struct with non-zero offset\n",
--				regno);
--			return -EACCES;
--		}
+--- a/drivers/accessibility/speakup/main.c
++++ b/drivers/accessibility/speakup/main.c
+@@ -574,7 +574,7 @@ static u_long get_word(struct vc_data *v
  	}
- 
- 	return 0;
-@@ -5327,10 +5328,26 @@ static int check_func_arg(struct bpf_ver
- 	if (err)
- 		return err;
- 
--	if (type == PTR_TO_CTX) {
--		err = check_ptr_off_reg(env, reg, regno);
-+	switch ((u32)type) {
-+	case SCALAR_VALUE:
-+	/* Pointer types where reg offset is explicitly allowed: */
-+	case PTR_TO_PACKET:
-+	case PTR_TO_PACKET_META:
-+	case PTR_TO_MAP_KEY:
-+	case PTR_TO_MAP_VALUE:
-+	case PTR_TO_MEM:
-+	case PTR_TO_MEM | MEM_RDONLY:
-+	case PTR_TO_BUF:
-+	case PTR_TO_BUF | MEM_RDONLY:
-+	case PTR_TO_STACK:
-+		break;
-+	/* All the rest must be rejected: */
-+	default:
-+		err = __check_ptr_off_reg(env, reg, regno,
-+					  type == PTR_TO_BTF_ID);
- 		if (err < 0)
- 			return err;
-+		break;
- 	}
- 
- skip_type_check:
+ 	attr_ch = get_char(vc, (u_short *)tmp_pos, &spk_attr);
+ 	buf[cnt++] = attr_ch;
+-	while (tmpx < vc->vc_cols - 1) {
++	while (tmpx < vc->vc_cols - 1 && cnt < sizeof(buf) - 1) {
+ 		tmp_pos += 2;
+ 		tmpx++;
+ 		ch = get_char(vc, (u_short *)tmp_pos, &temp);
 
 
 
