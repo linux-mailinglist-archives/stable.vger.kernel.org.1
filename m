@@ -1,138 +1,115 @@
-Return-Path: <stable+bounces-40650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518468AE523
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:58:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBEA98AE354
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 834471C22206
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:58:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE9271C21C7D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252CF14BFAB;
-	Tue, 23 Apr 2024 11:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476276CDCC;
+	Tue, 23 Apr 2024 11:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRhYq85D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XR2KeAFH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBB114BF8B;
-	Tue, 23 Apr 2024 11:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908384691
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 11:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713872530; cv=none; b=F/0Jq1sU5P+TY+r833pkoqiawLUZg42GvmeoyMaBnJqpuj8AssA3ZOXnmsxU9YxuHx/Mwl9LuBaP4VClxYrzcyAhAObpryzJuEZ/8ccOh0nSbhhDSU4Nel7lHFUif1AQEccf/N8lRpcGcAiJ0UwQuvJIvnMXGNZJdDslxcK8yGM=
+	t=1713870268; cv=none; b=rqghj1gwOTAzWmvMFgXWirtyaCNHrohJ2wnMZbCrqNPgOsgCku/V8nn0/4jtEwVwDKQ0j7LTAXtyxzw/doiAw4ABK0nX2IEaTCuxKMYVcMuCh1RDYMYfoUTSWeqqJLGeltQDt0JEij4249dfCty/SW3EhDDvDIPXAlKSsBC4jWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713872530; c=relaxed/simple;
-	bh=4xatCGuHGLqZax6DdkckXQorsV++62erOzujYkCsy4M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSAqxLp2IRoFq8atHiv6RqNDh2LiYI6tbdHPR2OttxvFDw8EegQeaMs+uXAbb+GvgkjIjuNAWWY5lidg3m2GP/5TvsZEOnoWeaeYYJa0M1C9aRNHpxEE4JPGohjSiZabmp3eWnjSjmSuTJ5rABAZ5dE7SBrn1nrMU0schM5FBTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRhYq85D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB7CC116B1;
-	Tue, 23 Apr 2024 11:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713872530;
-	bh=4xatCGuHGLqZax6DdkckXQorsV++62erOzujYkCsy4M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RRhYq85DjhOpOxMG0VJwwynMq3anphrKISgK01I3nlHYG2sSbS2G3icIacogP4DGH
-	 jCVFHXrasftB/6dnBo/55EgsVSPg373IWGrtd5OKCmVwFrDW+Ib2k+goVYlsIs1vu8
-	 CvI/zrufJw//pLRgcfGbLBbDTXDAxdeUWY231ueKEjxA6G7e+9Eo2Rgedt3vspS7Cq
-	 vXFuyayxLzvMN6YUrbFtR3g4d8i+LHlf75MG+9OsVlC463rKSHyZSgCAQxk8BnOOJA
-	 iwBzGtWjgtxMWxswfl/g6TedhSiwjCDf0j6Ls5oigNUyg7+ti4d65Zg7R5wHDr/ov/
-	 3WSIWXTXyRDnQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Vanillan Wang <vanillanwang@163.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	bjorn@mork.no,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 7/7] net:usb:qmi_wwan: support Rolling modules
-Date: Tue, 23 Apr 2024 07:03:17 -0400
-Message-ID: <20240423110318.1659628-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240423110318.1659628-1-sashal@kernel.org>
-References: <20240423110318.1659628-1-sashal@kernel.org>
+	s=arc-20240116; t=1713870268; c=relaxed/simple;
+	bh=DPXUSPQEUnEjHQ/Pp6wI9M3Ge96OWj5w4ZVkia6nETw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n/fFHH5XAmqJ+DKMvAhev07RWBPiv7+Xq0EKTmWecc0P3puACRtB3frfmSSt8/lr31pW+UbxMZo6grEkrscnl/JkhuofYLEdLuqvMVv2z/PGUsCTCU8U2WQLw/qt7XbGo56fm6JOh4+FVyK0rgeB8dkqUvaUK222ubI44GoulUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XR2KeAFH; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2dd6c14d000so27863601fa.0
+        for <stable@vger.kernel.org>; Tue, 23 Apr 2024 04:04:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713870265; x=1714475065; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DPXUSPQEUnEjHQ/Pp6wI9M3Ge96OWj5w4ZVkia6nETw=;
+        b=XR2KeAFHO5vii41GmAna7yc2xs0An3QOpEtFCATVa4Ck8JmDjC4ZssF4nt2WPiz4EL
+         3KMjSA6kDJEN+CCZga2gvQjYEEq+BuQxBEpMNO+ErZSIXjGcezxpkaQOPwepPHIK6P3t
+         WCm853iiLscbBhbUiLgvqyEip/QG/w36P/Ej3kdiadXlMo2RjCf8NrUAezno/JY6KeZp
+         pN8vvSuwyHHhibCaoXHgxn5oioX1B8I0E4JDisUbUxdUr2yAQZg3zxboSEOWIAHH3Pes
+         34bxXluMVUH8iexgf8NEUkn9O4hgnuG62gHyvVeyq5Kivurfg4+WTQwGeeX1tY481pKr
+         +2lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713870265; x=1714475065;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DPXUSPQEUnEjHQ/Pp6wI9M3Ge96OWj5w4ZVkia6nETw=;
+        b=d+r76TDdmDTicC6myw+k9O5we8EN1UZcLURSwqhG/rALmtGQxzVWoi4W1CYIHcemB0
+         g2UfIUqBCmmEBGeBCQ3oem0+WrvDd3GejdCfl5XcTUuHKgNZlEG4nmKvWuAUD2MOkDH/
+         T52NasFfARfJj+bm8YaaMwIm4Q4GLu/VOJVp5QmqO8YYNiWYcui3t7LFm37fqjRpWC1P
+         kWF/MjWRYXjeVy+U61MrB6JEZy6DLIKD85N2Jq1prrsMsnhNJyiNEeeaVbFAL3C4mUiL
+         Xo/L0jMTowZK+RqeAoWRHtXjrUTiRW1znLPeQrjHzjePYipmHajZCdnUP8HB3PyPf2K+
+         SAxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6XcQU2/YRr4ZqBf7vDAbU0iiVapQkOI6YlfriLyqhfc8oMPC+grs/tlxxAd6eksYp3jhgryZw/8x9J7ROzUFsq3hV9MS4
+X-Gm-Message-State: AOJu0YxdEOV9xX+kIck9pBmI5ox1FVodGSIWcCm3GN585b2vLnrg9Nps
+	gtLXYBXY9u3XPCXGez4afjfgGRXwTUnqmT/ctlw8cs44G7WxUTfkU6dOesn19TODleiujbEKQ4G
+	ghpQjd67u2DHxAL4WlLL8xeoDqDXKMh2gIVQ=
+X-Google-Smtp-Source: AGHT+IFpRiRA7x6atazZQkbP3x3P1CJiaM9KtrW5nGtf5tlpPeZtBy7C+TKlnoBNTkowo1Wg9FQ+J3/GKf7+Mue933M=
+X-Received: by 2002:a2e:b80b:0:b0:2d8:636c:b4ad with SMTP id
+ u11-20020a2eb80b000000b002d8636cb4admr9067449ljo.35.1713870264456; Tue, 23
+ Apr 2024 04:04:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.312
-Content-Transfer-Encoding: 8bit
+References: <715eaf46.7523.18f098372d3.Coremail.zhulei_szu@163.com>
+In-Reply-To: <715eaf46.7523.18f098372d3.Coremail.zhulei_szu@163.com>
+From: Taehee Yoo <ap420073@gmail.com>
+Date: Tue, 23 Apr 2024 20:04:13 +0900
+Message-ID: <CAMArcTW_m8Bjnx0YGHajQOi99qvo_TgD4_TLMs_HC+kCyxRY=A@mail.gmail.com>
+Subject: Re: 4.19 stable kernel crash caused by vxlan testing
+To: zhulei <zhulei_szu@163.com>
+Cc: davem@davemloft.net, jbenc@redhat.com, sashal@kernel.org, 
+	stable@vger.kernel.org, gregkh@linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Vanillan Wang <vanillanwang@163.com>
+On Tue, Apr 23, 2024 at 2:53=E2=80=AFPM zhulei <zhulei_szu@163.com> wrote:
+>
+> Hey all,
+>
+> I recently used a testing program to test the 4.19 stable branch kernel a=
+nd found that a crash occurred immediately. The test source code link is:
+> https://github.com/Backmyheart/src0358/blob/master/vxlan_fdb_destroy.c
+>
+> The test command is as follows:
+> gcc vxlan_fdb_destroy.c -o vxlan_fdb_destroy -lpthread
+>
+> According to its stack, upstream has relevant repair patch, the commit id=
+ is 7c31e54aeee517d1318dfc0bde9fa7de75893dc6.
+>
+> May i ask if the 4.19 kernel will port this patch ?
 
-[ Upstream commit d362046021ea122309da8c8e0b6850c792ca97b5 ]
+Hi zhulei,
 
-Update the qmi_wwan driver support for the Rolling
-LTE modules.
+The commit 7c31e54aeee5 ("vxlan: do not destroy fdb if
+register_netdevice() is failed") was not backported to 4.19-stable
+tree.
+https://lore.kernel.org/stable/15641355392228@kroah.com/
 
-- VID:PID 33f8:0104, RW101-GL for laptop debug M.2 cards(with RMNET
-interface for /Linux/Chrome OS)
-0x0104: RMNET, diag, at, pipe
+So, you can request a backport.
+Please check the URL:
+https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
 
-Here are the outputs of usb-devices:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0104 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=ba2eb033
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Vanillan Wang <vanillanwang@163.com>
-Link: https://lore.kernel.org/r/20240416120713.24777-1-vanillanwang@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index f787b9a4f9a9e..b4d436f985cfb 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1383,6 +1383,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
- 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
-+	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
- 
- 	/* 4. Gobi 1000 devices */
- 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
--- 
-2.43.0
-
+Thanks a lot!
+Taehee Yoo
 
