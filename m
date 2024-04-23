@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-40800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54A38AF91E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FB58AF9D0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 079A8B22BC7
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E806F28BF8E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99209143C52;
-	Tue, 23 Apr 2024 21:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5920F146D73;
+	Tue, 23 Apr 2024 21:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eei2m4Rb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YORQrAZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5635B143C4D;
-	Tue, 23 Apr 2024 21:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186A4143889;
+	Tue, 23 Apr 2024 21:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908471; cv=none; b=fJb4RQ2O+5s9TXg4NfLCEhCu1JU1KYUh6H4WhNA533hX47CyJE6vPlVJ9gju8jTQ5u68D+UpBwNffjfkWKZ9JaxQ+yh1Nk0Py+CD/+hLh8FrBMKBHuAethV4DrEjEtP8OWf5OzCm1PoYkD6FphegNFBaTAAaYGY0fPuvsflu+dc=
+	t=1713908589; cv=none; b=WrTxI7TPREsvyGBYUQQhLgC+28Yg1qSHVy2fRkuEdy7o6YWQqe4VKhpk4Ab4nZD2baykeHMC+U2PodthtzYOEw7gsaUBvNmXNTQO+74LYKpDLC43aPQbEq2y2QJryXhGOg5TVjnhj9u4u871k2e7rh3KdK4reQcTmYxHtr1vMRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908471; c=relaxed/simple;
-	bh=D+tHfRfMJ2Jqj81deDmhN2uDX/gbdBMIhXWKaB07Acs=;
+	s=arc-20240116; t=1713908589; c=relaxed/simple;
+	bh=12txO5VIjoINW6a3vAA+wOa5YDaG/Uss8xnjiOuW464=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hluUY3c1M30SiiJcBPgfAPYv9wPWVataMASx9sSxp30L29lb4LZK0y+shrIS/JfHMeFU7qMZ2fPXJ+sGhmxwqxRWWOK8oHS+EIsJJZlrhI4su7HtbGlUNHe6H92LBF9i27zLjMG8Sdf2meJX6l+TLj7H4Fzy5fRitxePMQCsH0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eei2m4Rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A4AC116B1;
-	Tue, 23 Apr 2024 21:41:11 +0000 (UTC)
+	 MIME-Version; b=IRuGURhFJ7urt5O8SxdcMPPOyXE4UZf/yXObYOPiQL73ztY0tivdjiij7U4/4JPjETulkEulMotJQpVpgKbxNzI0TAsHQ+nVLcYEbMAhi0Uc3RSK1MMaPg+5WK8FMMn0SRVmx5rS+EMjE0o816kgLo+vPTpYk90jaH5liJIoslE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YORQrAZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28F7C116B1;
+	Tue, 23 Apr 2024 21:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908471;
-	bh=D+tHfRfMJ2Jqj81deDmhN2uDX/gbdBMIhXWKaB07Acs=;
+	s=korg; t=1713908589;
+	bh=12txO5VIjoINW6a3vAA+wOa5YDaG/Uss8xnjiOuW464=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eei2m4RbGBM9T4vQhzCsTpNNFyU5KhCohUB+yqkvRbNxOGC9Zo+MCK0ouIrp7ksiw
-	 Ngx4uNMAdi7zh4E6UzQmITu/wBYC4+o6StCZRQ1w4m2gfR+YliqZfc33In4B4sIUhD
-	 WC20bWgf+8Cq3qPmBQ5UGLx363BCntv/kJfjTFXo=
+	b=YORQrAZR1sYhW1R1Ep85CHwN5hMGL243dRyXe+rGj+aWKjLUI89eaYso8HP5TLIEU
+	 TN0/3UygLUkzDyx6o6AKMu8jAKouEq5Ae8ZRwkLkP8Q78PC4tUBCIM2uCJyYr+YNCM
+	 mysaEu/HgSjDv71vs/RMNrze7u8Dw4Yr1vvXB9CI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 037/158] ice: tc: check src_vsi in case of traffic from VF
-Date: Tue, 23 Apr 2024 14:37:39 -0700
-Message-ID: <20240423213857.106549939@linuxfoundation.org>
+	Alexey Izbyshev <izbyshev@ispras.ru>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 023/158] io_uring: Fix io_cqring_wait() not restoring sigmask on get_timespec64() failure
+Date: Tue, 23 Apr 2024 14:37:40 -0700
+Message-ID: <20240423213856.489936855@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Alexey Izbyshev <izbyshev@ispras.ru>
 
-[ Upstream commit 428051600cb4e5a61d81aba3f8009b6c4f5e7582 ]
+Commit 978e5c19dfefc271e5550efba92fcef0d3f62864 upstream.
 
-In case of traffic going from the VF (so ingress for port representor)
-source VSI should be consider during packet classification. It is
-needed for hardware to not match packets from different ports with
-filters added on other port.
+This bug was introduced in commit 950e79dd7313 ("io_uring: minor
+io_cqring_wait() optimization"), which was made in preparation for
+adc8682ec690 ("io_uring: Add support for napi_busy_poll"). The latter
+got reverted in cb3182167325 ("Revert "io_uring: Add support for
+napi_busy_poll""), so simply undo the former as well.
 
-It is only for "from VF" traffic, because other traffic direction
-doesn't have source VSI.
-
-Set correct ::src_vsi in rule_info to pass it to the hardware filter.
-
-For example this rule should drop only ipv4 packets from eth10, not from
-the others VF PRs. It is needed to check source VSI in this case.
-$tc filter add dev eth10 ingress protocol ip flower skip_sw action drop
-
-Fixes: 0d08a441fb1a ("ice: ndo_setup_tc implementation for PF")
-Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 950e79dd7313 ("io_uring: minor io_cqring_wait() optimization")
+Signed-off-by: Alexey Izbyshev <izbyshev@ispras.ru>
+Link: https://lore.kernel.org/r/20240405125551.237142-1-izbyshev@ispras.ru
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_tc_lib.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ io_uring/io_uring.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index b890410a2bc0b..49ed5fd7db107 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -28,6 +28,8 @@ ice_tc_count_lkups(u32 flags, struct ice_tc_flower_lyr_2_4_hdrs *headers,
- 	 * - ICE_TC_FLWR_FIELD_VLAN_TPID (present if specified)
- 	 * - Tunnel flag (present if tunnel)
- 	 */
-+	if (fltr->direction == ICE_ESWITCH_FLTR_EGRESS)
-+		lkups_cnt++;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2559,19 +2559,6 @@ static int io_cqring_wait(struct io_ring
+ 	if (__io_cqring_events_user(ctx) >= min_events)
+ 		return 0;
  
- 	if (flags & ICE_TC_FLWR_FIELD_TENANT_ID)
- 		lkups_cnt++;
-@@ -363,6 +365,11 @@ ice_tc_fill_rules(struct ice_hw *hw, u32 flags,
- 	/* Always add direction metadata */
- 	ice_rule_add_direction_metadata(&list[ICE_TC_METADATA_LKUP_IDX]);
+-	if (sig) {
+-#ifdef CONFIG_COMPAT
+-		if (in_compat_syscall())
+-			ret = set_compat_user_sigmask((const compat_sigset_t __user *)sig,
+-						      sigsz);
+-		else
+-#endif
+-			ret = set_user_sigmask(sig, sigsz);
+-
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	init_waitqueue_func_entry(&iowq.wq, io_wake_function);
+ 	iowq.wq.private = current;
+ 	INIT_LIST_HEAD(&iowq.wq.entry);
+@@ -2588,6 +2575,19 @@ static int io_cqring_wait(struct io_ring
+ 		iowq.timeout = ktime_add_ns(timespec64_to_ktime(ts), ktime_get_ns());
+ 	}
  
-+	if (tc_fltr->direction == ICE_ESWITCH_FLTR_EGRESS) {
-+		ice_rule_add_src_vsi_metadata(&list[i]);
-+		i++;
++	if (sig) {
++#ifdef CONFIG_COMPAT
++		if (in_compat_syscall())
++			ret = set_compat_user_sigmask((const compat_sigset_t __user *)sig,
++						      sigsz);
++		else
++#endif
++			ret = set_user_sigmask(sig, sigsz);
++
++		if (ret)
++			return ret;
 +	}
 +
- 	rule_info->tun_type = ice_sw_type_from_tunnel(tc_fltr->tunnel_type);
- 	if (tc_fltr->tunnel_type != TNL_LAST) {
- 		i = ice_tc_fill_tunnel_outer(flags, tc_fltr, list, i);
-@@ -820,6 +827,7 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 
- 	/* specify the cookie as filter_rule_id */
- 	rule_info.fltr_rule_id = fltr->cookie;
-+	rule_info.src_vsi = vsi->idx;
- 
- 	ret = ice_add_adv_rule(hw, list, lkups_cnt, &rule_info, &rule_added);
- 	if (ret == -EEXIST) {
--- 
-2.43.0
-
+ 	trace_io_uring_cqring_wait(ctx, min_events);
+ 	do {
+ 		int nr_wait = (int) iowq.cq_tail - READ_ONCE(ctx->rings->cq.tail);
 
 
 
