@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-40828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFA68AF938
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B72F18AFA53
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 139F01F246DD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D69F1F29690
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBB41442EA;
-	Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55A51494DF;
+	Tue, 23 Apr 2024 21:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq0Xkamw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYHArx26"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6984A20B3E;
-	Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855EB146A94;
+	Tue, 23 Apr 2024 21:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908490; cv=none; b=on5z47BKHNwajle3+URHx7+BmvT1mlOnLRxqukUzlRB3zsBHOS4DVx7unFKYVbGtHqi3lhdboKmDS4uIQhhiluJpypbpvDPn9+AwYiIq7BXbW+utksDnCB5wAiagk9i7g6ESRxzjaz16IiHqbtBuzPF9b7h2aFoGbEFzMSBRslA=
+	t=1713908677; cv=none; b=AtEWUncYJ+Xeyny2Z0+aPVS2ZahioLjotZLjuY6dPM+SZkO/iy+AVNjdOns0yYDZ8u0WPML5MDIwAe7+WiNv1pcxK9bIJfnYFvGtCBQKAgJEgUsrVtSqtIgqoyopBsxIqeKpNYVZ65I+yclhesLyLmh0KNu5f/zErp83Xv0+t3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908490; c=relaxed/simple;
-	bh=BSXwlkmgEluoKho7D7hIwu4R8o7nKijOGLjnU3ITD0E=;
+	s=arc-20240116; t=1713908677; c=relaxed/simple;
+	bh=qqz+eoE+pIxt5I69W3X7UUtgNRjdwparQfkjy9Kkm6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fdIhbH2XtWe5192FVWzzReSADg1cxzSBUG8OdeZk7MMjoNeRroRP9Vl5EYRa6BRNmuF9VFQndeanJ/wZL8W5Otv8aVlzQbSJD1h8M2BRDLg+JL9sw4tT/Mkfbk1DYfZpZo3BN8I2gSmseDR5kDjcrN5GortklE1BMmylyg4xrpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq0Xkamw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3882BC32783;
-	Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
+	 MIME-Version; b=AFALizL8B623ncD7GHDcPG6YRvInkyYqgiKQX5LXCpPNHC1+SV9I/Pb4c25nKFZq6sYsIbX7usY5Xxap6hQ0bvD9ouwzNrekoC/CLEbi9Gp9tLv4JCS7XUMAIrHHU7/bXPr4RE7mwuFCAdUI9W2m7bUOwpa5r1GkZlHY7ha1d4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYHArx26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59542C116B1;
+	Tue, 23 Apr 2024 21:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908490;
-	bh=BSXwlkmgEluoKho7D7hIwu4R8o7nKijOGLjnU3ITD0E=;
+	s=korg; t=1713908677;
+	bh=qqz+eoE+pIxt5I69W3X7UUtgNRjdwparQfkjy9Kkm6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tq0Xkamw8OyCaeqcTkSzj/Ie/Qi60HBlzMjpecQbx+CjGUa4clmFCDoLGWgq8i3gG
-	 AJo+kkh9OggwE7TXWLWJGhP/Odrf9R4l8Ckdx3F7K2XfuAar1I7JxCBuFwjqC2MUtd
-	 fLg0EgVXZ803MNFOQmNsC1yYEi7gnAu2AkOJUmgs=
+	b=QYHArx26iwoP+CGq7DGZF3ObSd/7y2tK1/hqIci1/NSfSkUx/qkFZ/Q0QtN3AkhG+
+	 nZJPHEViYj0lU9Y5QKIcLGfvQRaSMazIAjPlqB9sX1E0WFv2YEPxlei4b36vcQjP0D
+	 oAaNV26LtPq0xkYs/EQ103WEZ8scV766Ox3hQBIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tursulin@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 065/158] drm/v3d: Dont increment `enabled_ns` twice
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.1 019/141] x86/boot: Grab kernel_info offset from zoffset header directly
 Date: Tue, 23 Apr 2024 14:38:07 -0700
-Message-ID: <20240423213858.074572206@linuxfoundation.org>
+Message-ID: <20240423213853.950783770@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 35f4f8c9fc972248055096d63b782060e473311b ]
+[ Commit 2e765c02dcbfc2a8a4527c621a84b9502f6b9bd2 upstream ]
 
-The commit 509433d8146c ("drm/v3d: Expose the total GPU usage stats on sysfs")
-introduced the calculation of global GPU stats. For the regards, it used
-the already existing infrastructure provided by commit 09a93cc4f7d1 ("drm/v3d:
-Implement show_fdinfo() callback for GPU usage stats"). While adding
-global GPU stats calculation ability, the author forgot to delete the
-existing one.
+Instead of parsing zoffset.h and poking the kernel_info offset value
+into the header from the build tool, just grab the value directly in the
+asm file that describes this header.
 
-Currently, the value of `enabled_ns` is incremented twice by the end of
-the job, when it should be added just once. Therefore, delete the
-leftovers from commit 509433d8146c ("drm/v3d: Expose the total GPU usage
-stats on sysfs").
+This change has no impact on the resulting bzImage binary.
 
-Fixes: 509433d8146c ("drm/v3d: Expose the total GPU usage stats on sysfs")
-Reported-by: Tvrtko Ursulin <tursulin@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240403203517.731876-2-mcanal@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230915171623.655440-11-ardb@google.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_irq.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/x86/boot/header.S      |    2 +-
+ arch/x86/boot/tools/build.c |    4 ----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index afc76390a197a..b8f9f2a3d2fb3 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -105,7 +105,6 @@ v3d_irq(int irq, void *arg)
- 		struct v3d_file_priv *file = v3d->bin_job->base.file->driver_priv;
- 		u64 runtime = local_clock() - file->start_ns[V3D_BIN];
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -525,7 +525,7 @@ pref_address:		.quad LOAD_PHYSICAL_ADDR
  
--		file->enabled_ns[V3D_BIN] += local_clock() - file->start_ns[V3D_BIN];
- 		file->jobs_sent[V3D_BIN]++;
- 		v3d->queue[V3D_BIN].jobs_sent++;
+ init_size:		.long INIT_SIZE		# kernel initialization size
+ handover_offset:	.long 0			# Filled in by build.c
+-kernel_info_offset:	.long 0			# Filled in by build.c
++kernel_info_offset:	.long ZO_kernel_info
  
-@@ -126,7 +125,6 @@ v3d_irq(int irq, void *arg)
- 		struct v3d_file_priv *file = v3d->render_job->base.file->driver_priv;
- 		u64 runtime = local_clock() - file->start_ns[V3D_RENDER];
+ # End of setup header #####################################################
  
--		file->enabled_ns[V3D_RENDER] += local_clock() - file->start_ns[V3D_RENDER];
- 		file->jobs_sent[V3D_RENDER]++;
- 		v3d->queue[V3D_RENDER].jobs_sent++;
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -59,7 +59,6 @@ static unsigned long efi32_stub_entry;
+ static unsigned long efi64_stub_entry;
+ static unsigned long efi_pe_entry;
+ static unsigned long efi32_pe_entry;
+-static unsigned long kernel_info;
+ static unsigned long _end;
  
-@@ -147,7 +145,6 @@ v3d_irq(int irq, void *arg)
- 		struct v3d_file_priv *file = v3d->csd_job->base.file->driver_priv;
- 		u64 runtime = local_clock() - file->start_ns[V3D_CSD];
+ /*----------------------------------------------------------------------*/
+@@ -337,7 +336,6 @@ static void parse_zoffset(char *fname)
+ 		PARSE_ZOFS(p, efi64_stub_entry);
+ 		PARSE_ZOFS(p, efi_pe_entry);
+ 		PARSE_ZOFS(p, efi32_pe_entry);
+-		PARSE_ZOFS(p, kernel_info);
+ 		PARSE_ZOFS(p, _end);
  
--		file->enabled_ns[V3D_CSD] += local_clock() - file->start_ns[V3D_CSD];
- 		file->jobs_sent[V3D_CSD]++;
- 		v3d->queue[V3D_CSD].jobs_sent++;
+ 		p = strchr(p, '\n');
+@@ -419,8 +417,6 @@ int main(int argc, char ** argv)
+ 	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
  
-@@ -195,7 +192,6 @@ v3d_hub_irq(int irq, void *arg)
- 		struct v3d_file_priv *file = v3d->tfu_job->base.file->driver_priv;
- 		u64 runtime = local_clock() - file->start_ns[V3D_TFU];
+ 	efi_stub_entry_update();
+-	/* Update kernel_info offset. */
+-	put_unaligned_le32(kernel_info, &buf[0x268]);
  
--		file->enabled_ns[V3D_TFU] += local_clock() - file->start_ns[V3D_TFU];
- 		file->jobs_sent[V3D_TFU]++;
- 		v3d->queue[V3D_TFU].jobs_sent++;
- 
--- 
-2.43.0
-
+ 	crc = partial_crc32(buf, i, crc);
+ 	if (fwrite(buf, 1, i, dest) != i)
 
 
 
