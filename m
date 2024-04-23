@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-40943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA548AF9B1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036FE8AF90E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 794D328A44E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EF4C1C22892
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D16145FE1;
-	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247D0143C4D;
+	Tue, 23 Apr 2024 21:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLHSOMAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISBLtfwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D3A85274;
-	Tue, 23 Apr 2024 21:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A1D14389F;
+	Tue, 23 Apr 2024 21:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908570; cv=none; b=esUvN5NHKVmWd9KG4dfcAUpnC4Tv7pqbL1ekA5d1acxY8uwiZ45aT3ulK+Moxm/a0KEUusrrWicdqI3kDqDOva72wGaNAsOBTIY0Quc3vyZuEXy6q39A+9XTlhYLFSXQ/tZPHDP59gd9utfKFF/YiWTj5tyfaTaRc1HFHN8uO50=
+	t=1713908461; cv=none; b=pQTVFWTsgEy0kGEi4krtj04tAWV2dO2BDKE0nG0GGUoEY5OG/mmob1ZndTDYKp76b6Jt8vSPK81zZr6o2PXk8jPwi5JOCdxcka2ViCKCs/Mg7POeborM2GOAVQol/mgZkfxEkonl/mSRf2D+A5ks/L3vvVgQ06a58RD2I1sMz54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908570; c=relaxed/simple;
-	bh=HmyfBRrYOEEA/ex9BCHDIjv5uFnGre5tmX3yqO00Ep8=;
+	s=arc-20240116; t=1713908461; c=relaxed/simple;
+	bh=l/WpknqcGPHaCzXjdbYzRGDZUBKfdM5Mk1j2yOkUihM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sEaea9SM3kZFEySuHgZedYosX4SvZOTHJseGUEUY53AFoqfKCZISCZEHHLx9pOE7YjKlqqQiFXHXzW/Ley0TKf4cTJe5KfvaZ0zv8E03bw9f3i6jlTdpQ+Sof6oaE1Asq8x7eLOj1IQDqi0jyjBf3ZBvy9bySq4wlClQWyCk/+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLHSOMAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9290DC32782;
-	Tue, 23 Apr 2024 21:42:50 +0000 (UTC)
+	 MIME-Version; b=VOt+Hp/03Ax06j0siM76cGQyPSfSxHY0Gy6olT1nupiTo81utWjuOdeQRdT7qD/yycW8BpcbPFsVl+XJ13fwuzApcoY5QYm9uNA7k/1qiJrFL49xd7ed0UjThL4ZF+H5+nKPSM4IKT6Qqwbds5Zy386Z0QH5CfFQRk7ZH99ilfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISBLtfwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D607C32782;
+	Tue, 23 Apr 2024 21:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908570;
-	bh=HmyfBRrYOEEA/ex9BCHDIjv5uFnGre5tmX3yqO00Ep8=;
+	s=korg; t=1713908461;
+	bh=l/WpknqcGPHaCzXjdbYzRGDZUBKfdM5Mk1j2yOkUihM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLHSOMAcLl+5lavtB/PaUgaDmvH57VzA/0CQqx/dYZqX/vs2qnuWn9Ic1bfEx0uaK
-	 NS40yrTyziurt9EaRRqW0NOZm+TRHKh+XDG+79PKS1JqAfa2i8bDGfra/iCfLV7L2S
-	 GG6OTtJmS1wyOBxosVhD3sN1PTXhp3e9E222WoNk=
+	b=ISBLtfwaEJyvV4Uq2hohjG1Fix2drFJLfRKTrzAx/0PE5xxCF1KDUDar8ltVRTdm8
+	 e4T1Kw5XaXSGMgNEkkQIdsjbIKmgw/fphBJ5moS3FXAdHr1E1UULwpSiQmTQ0S+zcF
+	 2rbzguzABYuol1Mqs7iUQWC8AMEGsQS2v4Bya6ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uma Shankar <uma.shankar@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/158] drm/i915/mst: Reject FEC+MST on ICL
+Subject: [PATCH 6.8 022/158] af_unix: Call manage_oob() for every skb in unix_stream_read_generic().
 Date: Tue, 23 Apr 2024 14:37:24 -0700
-Message-ID: <20240423213855.936087997@linuxfoundation.org>
+Message-ID: <20240423213856.590968398@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 99f855082f228cdcecd6ab768d3b8b505e0eb028 ]
+[ Upstream commit 283454c8a123072e5c386a5a2b5fc576aa455b6f ]
 
-ICL supposedly doesn't support FEC on MST. Reject it.
+When we call recv() for AF_UNIX socket, we first peek one skb and
+calls manage_oob() to check if the skb is sent with MSG_OOB.
 
-Cc: stable@vger.kernel.org
-Fixes: d51f25eb479a ("drm/i915: Add DSC support to MST path")
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240402135148.23011-7-ville.syrjala@linux.intel.com
-(cherry picked from commit b648ce2a28ba83c4fa67c61fcc5983e15e9d4afb)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+However, when we fetch the next (and the following) skb, manage_oob()
+is not called now, leading a wrong behaviour.
+
+Let's say a socket send()s "hello" with MSG_OOB and the peer tries
+to recv() 5 bytes with MSG_PEEK.  Here, we should get only "hell"
+without 'o', but actually not:
+
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  >>> c1.send(b'hello', MSG_OOB)
+  5
+  >>> c2.recv(5, MSG_PEEK)
+  b'hello'
+
+The first skb fills 4 bytes, and the next skb is peeked but not
+properly checked by manage_oob().
+
+Let's move up the again label to call manage_oob() for evry skb.
+
+With this patch:
+
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  >>> c1.send(b'hello', MSG_OOB)
+  5
+  >>> c2.recv(5, MSG_PEEK)
+  b'hell'
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240410171016.7621-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index fff008955cb2c..d712cb9b81e1e 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -1316,7 +1316,8 @@ static bool intel_dp_source_supports_fec(struct intel_dp *intel_dp,
- 	if (DISPLAY_VER(dev_priv) >= 12)
- 		return true;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index e37cf913818a1..fd931f3005cd8 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2680,6 +2680,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 		last = skb = skb_peek(&sk->sk_receive_queue);
+ 		last_len = last ? last->len : 0;
  
--	if (DISPLAY_VER(dev_priv) == 11 && encoder->port != PORT_A)
-+	if (DISPLAY_VER(dev_priv) == 11 && encoder->port != PORT_A &&
-+	    !intel_crtc_has_type(pipe_config, INTEL_OUTPUT_DP_MST))
- 		return true;
- 
- 	return false;
++again:
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+ 		if (skb) {
+ 			skb = manage_oob(skb, sk, flags, copied);
+@@ -2691,7 +2692,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 			}
+ 		}
+ #endif
+-again:
+ 		if (skb == NULL) {
+ 			if (copied >= target)
+ 				goto unlock;
 -- 
 2.43.0
 
