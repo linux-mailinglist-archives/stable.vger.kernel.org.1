@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-40785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2158AF90D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA548AF9B1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1041E1F222FC
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 794D328A44E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E3620B3E;
-	Tue, 23 Apr 2024 21:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D16145FE1;
+	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAg3dv90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLHSOMAc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCB2143C4D;
-	Tue, 23 Apr 2024 21:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D3A85274;
+	Tue, 23 Apr 2024 21:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908461; cv=none; b=FDNy5JyA4UP5uwcne6CpES8MRCE37hoiylagEvYYhI2OIR10pALkT6WM4VutCkgLqJE4pGP6Y1+9bzCzLp56YRHQLiD79WLQql+DOdbQINyLlHm0fDsawdYMv7CvpfHlBps9z5Ol6IKHsO0omVmevEjT05/ZCuDt/YCM/fyddho=
+	t=1713908570; cv=none; b=esUvN5NHKVmWd9KG4dfcAUpnC4Tv7pqbL1ekA5d1acxY8uwiZ45aT3ulK+Moxm/a0KEUusrrWicdqI3kDqDOva72wGaNAsOBTIY0Quc3vyZuEXy6q39A+9XTlhYLFSXQ/tZPHDP59gd9utfKFF/YiWTj5tyfaTaRc1HFHN8uO50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908461; c=relaxed/simple;
-	bh=UXmCDytUbbSuPNncs0zyjQ3bicZRDjk4ma71+9DeC20=;
+	s=arc-20240116; t=1713908570; c=relaxed/simple;
+	bh=HmyfBRrYOEEA/ex9BCHDIjv5uFnGre5tmX3yqO00Ep8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXOquj9tIgwEYlomaBdxLH6pGMtaHUg8ZOoBfMEnVNC9QaUzCSGhEKxVlh/tD9qftMvC2f+06Ro/gxY7w4Y7vuBYWwgGDfbVSVEqnh7gpAcZQGLA//wDZ23W5z14d988ETjELgrRPaLMDStM07jPPz0fTuqInv1UTW0Dtblm8+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAg3dv90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53E5C116B1;
-	Tue, 23 Apr 2024 21:41:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sEaea9SM3kZFEySuHgZedYosX4SvZOTHJseGUEUY53AFoqfKCZISCZEHHLx9pOE7YjKlqqQiFXHXzW/Ley0TKf4cTJe5KfvaZ0zv8E03bw9f3i6jlTdpQ+Sof6oaE1Asq8x7eLOj1IQDqi0jyjBf3ZBvy9bySq4wlClQWyCk/+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLHSOMAc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9290DC32782;
+	Tue, 23 Apr 2024 21:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908460;
-	bh=UXmCDytUbbSuPNncs0zyjQ3bicZRDjk4ma71+9DeC20=;
+	s=korg; t=1713908570;
+	bh=HmyfBRrYOEEA/ex9BCHDIjv5uFnGre5tmX3yqO00Ep8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xAg3dv90J+Toywt4xHc294512DKqEviqygJls/ToisRJ9zJlrbevuwnO/VdbleO64
-	 3Bz8qlOlJI7Enjyj+VbEnR2+2UorEArWzUPnRTuMdXW2Gg4A2dia2V9n+J/DrU6yhA
-	 +HjVAWG2cWpVC/YnW2/8s8QkQzH8Rsct0mz58NnE=
+	b=xLHSOMAcLl+5lavtB/PaUgaDmvH57VzA/0CQqx/dYZqX/vs2qnuWn9Ic1bfEx0uaK
+	 NS40yrTyziurt9EaRRqW0NOZm+TRHKh+XDG+79PKS1JqAfa2i8bDGfra/iCfLV7L2S
+	 GG6OTtJmS1wyOBxosVhD3sN1PTXhp3e9E222WoNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Uma Shankar <uma.shankar@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 021/158] netfilter: flowtable: incorrect pppoe tuple
-Date: Tue, 23 Apr 2024 14:37:23 -0700
-Message-ID: <20240423213856.554308440@linuxfoundation.org>
+Subject: [PATCH 6.6 007/158] drm/i915/mst: Reject FEC+MST on ICL
+Date: Tue, 23 Apr 2024 14:37:24 -0700
+Message-ID: <20240423213855.936087997@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 6db5dc7b351b9569940cd1cf445e237c42cd6d27 ]
+[ Upstream commit 99f855082f228cdcecd6ab768d3b8b505e0eb028 ]
 
-pppoe traffic reaching ingress path does not match the flowtable entry
-because the pppoe header is expected to be at the network header offset.
-This bug causes a mismatch in the flow table lookup, so pppoe packets
-enter the classical forwarding path.
+ICL supposedly doesn't support FEC on MST. Reject it.
 
-Fixes: 72efd585f714 ("netfilter: flowtable: add pppoe support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: stable@vger.kernel.org
+Fixes: d51f25eb479a ("drm/i915: Add DSC support to MST path")
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240402135148.23011-7-ville.syrjala@linux.intel.com
+(cherry picked from commit b648ce2a28ba83c4fa67c61fcc5983e15e9d4afb)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_flow_table_ip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_dp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index 9e9e105052dae..5383bed3d3e00 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -157,7 +157,7 @@ static void nf_flow_tuple_encap(struct sk_buff *skb,
- 		tuple->encap[i].proto = skb->protocol;
- 		break;
- 	case htons(ETH_P_PPP_SES):
--		phdr = (struct pppoe_hdr *)skb_mac_header(skb);
-+		phdr = (struct pppoe_hdr *)skb_network_header(skb);
- 		tuple->encap[i].id = ntohs(phdr->sid);
- 		tuple->encap[i].proto = skb->protocol;
- 		break;
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index fff008955cb2c..d712cb9b81e1e 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -1316,7 +1316,8 @@ static bool intel_dp_source_supports_fec(struct intel_dp *intel_dp,
+ 	if (DISPLAY_VER(dev_priv) >= 12)
+ 		return true;
+ 
+-	if (DISPLAY_VER(dev_priv) == 11 && encoder->port != PORT_A)
++	if (DISPLAY_VER(dev_priv) == 11 && encoder->port != PORT_A &&
++	    !intel_crtc_has_type(pipe_config, INTEL_OUTPUT_DP_MST))
+ 		return true;
+ 
+ 	return false;
 -- 
 2.43.0
 
