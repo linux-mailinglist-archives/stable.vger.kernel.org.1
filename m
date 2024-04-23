@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-40875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BED8AF96C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A208AFA69
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4B271C24C30
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C70E41C22AF0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0211448E6;
-	Tue, 23 Apr 2024 21:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9026C144D09;
+	Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NR5dtowu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dR1E4tSx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B114143C74;
-	Tue, 23 Apr 2024 21:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECC81420BE;
+	Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908522; cv=none; b=TLBfdKaFRNQfm2k0fys652uCWomNh4XoKeV1eHDS4Q3aZ35UU2pdd+TM066HTwyohnRJEo9lPPo9KAMesvYWXlGAKwzhY6FXVFOJf4uVGcNn1XBfYm74tuXc+pD/hM5KM9fpdK1Ny+2ZFwxs5suka9tLRHUGzeYHVPpSGc3ayNo=
+	t=1713908693; cv=none; b=LOmsuOAIJx9czUAs/TFdy8lPZY9Z1CKanUWlH6FJXGpiY886HkA7ciKPSm2p9qEj+pl7ZWLCSHLTBHLp2XM2k+u3cU7jRtfxDCocrrvb/Mcptgnikttm4EH/FTOdwoBrUzZr1kBgm+UtfoCmKO57fnOwZqcPF6+ZVu34rALYs1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908522; c=relaxed/simple;
-	bh=pYDMjtPiTnEuMhs4xwA/RoA041LOmMbgzadS/QBUFuk=;
+	s=arc-20240116; t=1713908693; c=relaxed/simple;
+	bh=SVuihGkICe0yqTPq6ROZuDvS4cRylPJMkjEm1iTaiDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fra1M0pOV9XGhffqp3hmg4fqeJzibU4DO+ETWGVhKfkjJ4HUB+FMOYJUKBSFXk7fC6mKqjkMsv7OtvQNYCd9Vo7h8kg4DWVQ9SR3kuNK/YZWxnfWZQYnwuDy/FCloMmml0+FCme9h1gZojHKR4AymquM3S/17lJ5dOjhZ76HqlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NR5dtowu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F553C32781;
-	Tue, 23 Apr 2024 21:42:02 +0000 (UTC)
+	 MIME-Version; b=KHWsAvNIysGkvZoC93vgOSiKqAoadhdiNdgVSTzhr2LfiMQLn7XKShnoJ/RVk7glMaGBtVfLPZBjUrShkxWod71jFbMNNtFzuPua83aR8RuNYTa2xGKKeXQUgMlCZmtTKWKP3I59QBORlYbK+nVgyxFexHZCL1KqxeHV15e2+0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dR1E4tSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BADFC32782;
+	Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908522;
-	bh=pYDMjtPiTnEuMhs4xwA/RoA041LOmMbgzadS/QBUFuk=;
+	s=korg; t=1713908693;
+	bh=SVuihGkICe0yqTPq6ROZuDvS4cRylPJMkjEm1iTaiDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NR5dtowu7+7Z1/Civuj9y6jPlRdGPhcRDR+FYvuhURvkOeWglxwHD6D7pp/dWxqHW
-	 BCQ5Ai0YQybmpEs9V8u8k/g0L8XYCMOkWz4SFQHfOkYxmZG5n2YjvP6joSGEZCsiCP
-	 g+XgKV98T02QkIxtYB62m6WEj3duqs8e8t3HHrHY=
+	b=dR1E4tSxgcsk1J8pHDUDhxCG3++PU1VYzm/HsHHmBhd5HEegOdulZ/iFqokyqeNyD
+	 3ZHyNuIcobonaNriEbm0yuI4T4E3lBQKQqRNcWJwbSCDNhm/dl3ei32NnMR3PR7U8L
+	 +SuRcfAyzTnwcP08c50mM+zz3faVJXlklqEaKbc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saranya Muruganandam <saranyamohan@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 087/158] block: propagate partition scanning errors to the BLKRRPART ioctl
+Subject: [PATCH 6.1 041/141] af_unix: Dont peek OOB data without MSG_OOB.
 Date: Tue, 23 Apr 2024 14:38:29 -0700
-Message-ID: <20240423213858.765982038@linuxfoundation.org>
+Message-ID: <20240423213854.605817900@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,116 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 752863bddacab6b5c5164b1df8c8b2e3a175ee28 ]
+[ Upstream commit 22dd70eb2c3d754862964377a75abafd3167346b ]
 
-Commit 4601b4b130de ("block: reopen the device in blkdev_reread_part")
-lost the propagation of I/O errors from the low-level read of the
-partition table to the user space caller of the BLKRRPART.
+Currently, we can read OOB data without MSG_OOB by using MSG_PEEK
+when OOB data is sitting on the front row, which is apparently
+wrong.
 
-Apparently some user space relies on, so restore the propagation.  This
-isn't exactly pretty as other block device open calls explicitly do not
-are about these errors, so add a new BLK_OPEN_STRICT_SCAN to opt into
-the error propagation.
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  >>> c1.send(b'a', MSG_OOB)
+  1
+  >>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+  b'a'
 
-Fixes: 4601b4b130de ("block: reopen the device in blkdev_reread_part")
-Reported-by: Saranya Muruganandam <saranyamohan@google.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Link: https://lore.kernel.org/r/20240417144743.2277601-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+If manage_oob() is called when no data has been copied, we only
+check if the socket enables SO_OOBINLINE or MSG_PEEK is not used.
+Otherwise, the skb is returned as is.
+
+However, here we should return NULL if MSG_PEEK is set and no data
+has been copied.
+
+Also, in such a case, we should not jump to the redo label because
+we will be caught in the loop and hog the CPU until normal data
+comes in.
+
+Then, we need to handle skb == NULL case with the if-clause below
+the manage_oob() block.
+
+With this patch:
+
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  >>> c1.send(b'a', MSG_OOB)
+  1
+  >>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+  BlockingIOError: [Errno 11] Resource temporarily unavailable
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240410171016.7621-3-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bdev.c           | 29 +++++++++++++++++++----------
- block/ioctl.c          |  3 ++-
- include/linux/blkdev.h |  2 ++
- 3 files changed, 23 insertions(+), 11 deletions(-)
+ net/unix/af_unix.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/block/bdev.c b/block/bdev.c
-index 678807bcd0034..2b0f97651a0a7 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -639,6 +639,14 @@ static void blkdev_flush_mapping(struct block_device *bdev)
- 	bdev_write_inode(bdev);
- }
- 
-+static void blkdev_put_whole(struct block_device *bdev)
-+{
-+	if (atomic_dec_and_test(&bdev->bd_openers))
-+		blkdev_flush_mapping(bdev);
-+	if (bdev->bd_disk->fops->release)
-+		bdev->bd_disk->fops->release(bdev->bd_disk);
-+}
-+
- static int blkdev_get_whole(struct block_device *bdev, blk_mode_t mode)
- {
- 	struct gendisk *disk = bdev->bd_disk;
-@@ -657,20 +665,21 @@ static int blkdev_get_whole(struct block_device *bdev, blk_mode_t mode)
- 
- 	if (!atomic_read(&bdev->bd_openers))
- 		set_init_blocksize(bdev);
--	if (test_bit(GD_NEED_PART_SCAN, &disk->state))
--		bdev_disk_changed(disk, false);
- 	atomic_inc(&bdev->bd_openers);
-+	if (test_bit(GD_NEED_PART_SCAN, &disk->state)) {
-+		/*
-+		 * Only return scanning errors if we are called from contexts
-+		 * that explicitly want them, e.g. the BLKRRPART ioctl.
-+		 */
-+		ret = bdev_disk_changed(disk, false);
-+		if (ret && (mode & BLK_OPEN_STRICT_SCAN)) {
-+			blkdev_put_whole(bdev);
-+			return ret;
-+		}
-+	}
- 	return 0;
- }
- 
--static void blkdev_put_whole(struct block_device *bdev)
--{
--	if (atomic_dec_and_test(&bdev->bd_openers))
--		blkdev_flush_mapping(bdev);
--	if (bdev->bd_disk->fops->release)
--		bdev->bd_disk->fops->release(bdev->bd_disk);
--}
--
- static int blkdev_get_part(struct block_device *part, blk_mode_t mode)
- {
- 	struct gendisk *disk = part->bd_disk;
-diff --git a/block/ioctl.c b/block/ioctl.c
-index 438f79c564cfc..5f8c988239c68 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -556,7 +556,8 @@ static int blkdev_common_ioctl(struct block_device *bdev, blk_mode_t mode,
- 			return -EACCES;
- 		if (bdev_is_partition(bdev))
- 			return -EINVAL;
--		return disk_scan_partitions(bdev->bd_disk, mode);
-+		return disk_scan_partitions(bdev->bd_disk,
-+				mode | BLK_OPEN_STRICT_SCAN);
- 	case BLKTRACESTART:
- 	case BLKTRACESTOP:
- 	case BLKTRACETEARDOWN:
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 99e4f5e722132..b43ca3b9d2a26 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -126,6 +126,8 @@ typedef unsigned int __bitwise blk_mode_t;
- #define BLK_OPEN_WRITE_IOCTL	((__force blk_mode_t)(1 << 4))
- /* open is exclusive wrt all other BLK_OPEN_WRITE opens to the device */
- #define BLK_OPEN_RESTRICT_WRITES	((__force blk_mode_t)(1 << 5))
-+/* return partition scanning errors */
-+#define BLK_OPEN_STRICT_SCAN	((__force blk_mode_t)(1 << 6))
- 
- struct gendisk {
- 	/*
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 6af6f82e89464..f28e2956fea58 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2675,7 +2675,9 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 					WRITE_ONCE(u->oob_skb, NULL);
+ 					consume_skb(skb);
+ 				}
+-			} else if (!(flags & MSG_PEEK)) {
++			} else if (flags & MSG_PEEK) {
++				skb = NULL;
++			} else {
+ 				skb_unlink(skb, &sk->sk_receive_queue);
+ 				WRITE_ONCE(u->oob_skb, NULL);
+ 				if (!WARN_ON_ONCE(skb_unref(skb)))
+@@ -2757,11 +2759,9 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+ 		if (skb) {
+ 			skb = manage_oob(skb, sk, flags, copied);
+-			if (!skb) {
++			if (!skb && copied) {
+ 				unix_state_unlock(sk);
+-				if (copied)
+-					break;
+-				goto redo;
++				break;
+ 			}
+ 		}
+ #endif
 -- 
 2.43.0
 
