@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-40965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97CC8AF9CC
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 242CC8AF94E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875491F27C46
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4DB8283CDF
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563DE1448FF;
-	Tue, 23 Apr 2024 21:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAEF3143C57;
+	Tue, 23 Apr 2024 21:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVm4B7rz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxKF+sgU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C5113FD67;
-	Tue, 23 Apr 2024 21:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6821D14388D;
+	Tue, 23 Apr 2024 21:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908586; cv=none; b=RLgpBjTTzPJkQOwY553jo2HjRQ/HfH4ZBY+6ZWa5cF7kyZesvke3uBK0wVgvC+L++QME808kRruDAC1Q9BJ7AKbJLZNsnny4lpoFsWMR5l4sCI/bOompNKZ+Yco1t3SN8EHTdNmyffkkSmReU+u2p+cWnzgIvipIL4GGLnqE3TA=
+	t=1713908504; cv=none; b=NOILMsq3aQb7V25oJcFgEIClkpqJ0RjiUXSd5aoqE50EI0Fiv7xYMrXTS78uAlEfk9RSUyqzxYIUkg41+vXI2Yyo2rojDFiQ0wuyJHe3+wjqDFuYu/a9cLU/lyZYMmgBid7RJByZUEYM969+hcDnEUN/ALeqqah9iBIPVLuzFWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908586; c=relaxed/simple;
-	bh=rk/fSAOpzS/oD0v4R4RxWd09UDVpByrihHWLGkysx3Q=;
+	s=arc-20240116; t=1713908504; c=relaxed/simple;
+	bh=JPxduFrp/QjGOjVyh8sREju9oE/QVAca3trAicn4eYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRLk2DcHALHTI247PdcWg7zZ7GV9si/suO8pXeGNm5thkS2iTaY3c3+UZ1UvPsKuDd1FiXEOT3nbpD+r9jbHvA29CmmMRn9eA+ZkX7nyusmmHj3tPmZXvVr84sePEn0hTRN0YivUfTRDYH5+IzemUUbIcz9UOTuJ2ZHlCHlCuM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVm4B7rz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FA3C4AF07;
-	Tue, 23 Apr 2024 21:43:05 +0000 (UTC)
+	 MIME-Version; b=eDA6ZZ9dy3rbFMky/x14Xq8VOTCKiWTtGkpGj8Ettnq69mO8gaM2FcuOnwty2r7kmohS8hjZdXvxZSD1J3Zf0Uv3+Dmw5jNUOjVJOBwOi+ZSrqMYAP6qa9rvQ4FFyQOaJWwss6RUK6Tus4iOaANCTb0PnQDVHi9N2CVFGJwJtRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxKF+sgU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E52C32781;
+	Tue, 23 Apr 2024 21:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908585;
-	bh=rk/fSAOpzS/oD0v4R4RxWd09UDVpByrihHWLGkysx3Q=;
+	s=korg; t=1713908504;
+	bh=JPxduFrp/QjGOjVyh8sREju9oE/QVAca3trAicn4eYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVm4B7rz7ECHldrT2uu35nbndJcUgXHnPVh/IIYVGqdIoHGoqCKnqvNiqLfWl+fvm
-	 2TGbY8jkorQKQrZLdAkEE0nRFnXjZtcaF6e+WHf4TChu/9XRFyBlpstWXFp1zp9m5C
-	 tuU5tQB1yOsY+Ee8tM7uN3Y3wekRq5cMS85gkCMU=
+	b=YxKF+sgUN/oLk0lN5nRPAD0ug8kvN4I2SgTjSv7DhLbb3OcNuMX0HZ3ly8cItn3Zq
+	 lkd7OS7JefAAevm8Z36vGe9+89oLntCXNNO7LjN8AcV+qOyCXaxsJG6kWoQwtL+x8t
+	 SYaVGm9IQjowIu0w/jBZv85QS24FfnDV2IK+U5Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/158] net/mlx5: Lag, restore buckets number to default after hash LAG deactivation
+Subject: [PATCH 6.8 057/158] RDMA/mlx5: Fix port number for counter query in multi-port configuration
 Date: Tue, 23 Apr 2024 14:37:59 -0700
-Message-ID: <20240423213857.129605625@linuxfoundation.org>
+Message-ID: <20240423213857.789246472@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit 37cc10da3a50e6d0cb9808a90b7da9b4868794dd ]
+[ Upstream commit be121ffb384f53e966ee7299ffccc6eeb61bc73d ]
 
-The cited patch introduces the concept of buckets in LAG in hash mode.
-However, the patch doesn't clear the number of buckets in the LAG
-deactivation. This results in using the wrong number of buckets in
-case user create a hash mode LAG and afterwards create a non-hash
-mode LAG.
+Set the correct port when querying PPCNT in multi-port configuration.
+Distinguish between cases where switchdev mode was enabled to multi-port
+configuration and don't overwrite the queried port to 1 in multi-port
+case.
 
-Hence, restore buckets number to default after hash mode LAG
-deactivation.
-
-Fixes: 352899f384d4 ("net/mlx5: Lag, use buckets in hash mode")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240411115444.374475-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 74b30b3ad5ce ("RDMA/mlx5: Set local port to one when accessing counters")
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://lore.kernel.org/r/9bfcc8ade958b760a51408c3ad654a01b11f7d76.1712134988.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/mad.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index af3fac090b828..e51cac1e1811e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -703,8 +703,10 @@ int mlx5_deactivate_lag(struct mlx5_lag *ldev)
- 		return err;
+diff --git a/drivers/infiniband/hw/mlx5/mad.c b/drivers/infiniband/hw/mlx5/mad.c
+index 0c3c4e64812c5..3e43687a7f6f7 100644
+--- a/drivers/infiniband/hw/mlx5/mad.c
++++ b/drivers/infiniband/hw/mlx5/mad.c
+@@ -188,7 +188,8 @@ static int process_pma_cmd(struct mlx5_ib_dev *dev, u32 port_num,
+ 		mdev = dev->mdev;
+ 		mdev_port_num = 1;
  	}
- 
--	if (test_bit(MLX5_LAG_MODE_FLAG_HASH_BASED, &flags))
-+	if (test_bit(MLX5_LAG_MODE_FLAG_HASH_BASED, &flags)) {
- 		mlx5_lag_port_sel_destroy(ldev);
-+		ldev->buckets = 1;
-+	}
- 	if (mlx5_lag_has_drop_rule(ldev))
- 		mlx5_lag_drop_rule_cleanup(ldev);
- 
+-	if (MLX5_CAP_GEN(dev->mdev, num_ports) == 1) {
++	if (MLX5_CAP_GEN(dev->mdev, num_ports) == 1 &&
++	    !mlx5_core_mp_enabled(mdev)) {
+ 		/* set local port to one for Function-Per-Port HCA. */
+ 		mdev = dev->mdev;
+ 		mdev_port_num = 1;
 -- 
 2.43.0
 
