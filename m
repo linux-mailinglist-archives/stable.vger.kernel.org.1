@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBC08AE7A0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:10:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB54B8AE7A2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFE7A1C23512
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:10:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D694DB27314
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD10126F10;
-	Tue, 23 Apr 2024 13:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA37C12C528;
+	Tue, 23 Apr 2024 13:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQuyq/01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj74VDOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACD2134427
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AECA131181
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713877829; cv=none; b=hJX5ajghs0SNySWiGvZZ4jdY7XRoFXzzwe7kALZw21ONKtI5oaoSRnUeroYP7lBwldUdRUEnKCVJHukDH8tEo6oCjIDeah7ERH7IDtyFNut/VmLSO5TbFgDiNKYJLBzQQoYn989P9+SSK4NgCIhY0rmvcR8kJFLZFW0qxWdXFnQ=
+	t=1713877830; cv=none; b=JKHWQeLLNLzJEwyFecosC5qD/bViTbgRjYnB9v6yUlz0lX0UJBzJxsSz32r+6OPjktACuwweZnpbJsG2FePK8wx2+qIunveA06/vkTtHpzG6Dhc65X2hj/Y1CoJlhPKvYVuqSORFlbFLFo7xiAEl4IS0xcri6iBoE5+HlCDDXNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713877829; c=relaxed/simple;
-	bh=fmrz6UDnel8j05vui1cQvEaAnu3YYxQM59P6HYl8DiQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sJXyI1gyxMckBU0iudK8mWiOT+asVWr/94mcEWsPFiAHqk9/N+6kx9gNpA8CHNWTWHF/b2ujFULimbsOkLmheInnPV4eAWIDDw8RJl/9FGDkqyCgw3sICQ4kUcCIKk4yec13jb3fEdfWpaU2WDnvX2oOzBIqoPnHMYFQ2bRCRNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQuyq/01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E2DC116B1;
-	Tue, 23 Apr 2024 13:10:28 +0000 (UTC)
+	s=arc-20240116; t=1713877830; c=relaxed/simple;
+	bh=J4qnZWRuoOueERzGHGVcN2DvXQjiehrJ+syCmDuz5FU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mNoOZVxvn2D1OVSIrFtMtbqlqxstlNEL/P5BmHToU4ghF5gl/9fpN3BUWxVgBuMKNDiC/TwGGJ5lcw0cc5o1zoH+ZAGdF4mLLL4n5ugTgy+vCsba/WJH+COoZb7z9VQve2pfwvf/rTmF5OZ0tBXoILVhYTOeMqqpQI8FssovxyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj74VDOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F66AC116B1;
+	Tue, 23 Apr 2024 13:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713877829;
-	bh=fmrz6UDnel8j05vui1cQvEaAnu3YYxQM59P6HYl8DiQ=;
+	s=korg; t=1713877830;
+	bh=J4qnZWRuoOueERzGHGVcN2DvXQjiehrJ+syCmDuz5FU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RQuyq/01KK3hjejlGG8StW6vBzKjlMYVgj/CvrMAsyZ/KtnaaoqdAfxrUK8UAPbL1
-	 oYDOigNdbwEd1gvJ9axG+D3rkEwPJACaYcvJnOy52UVtOAr8vyAHlk2p+VnqYWKFik
-	 Chcy3t63IARPDfEXlSDTKOOyrxS5aBOH7cfv490o=
-Subject: FAILED: patch "[PATCH] fork: defer linking file vma until vma is fully initialized" failed to apply to 6.6-stable tree
+	b=Rj74VDOHn/MtF/z1NWVIqiJyIwJtmwkP8nlHMg+Esskpy4cBt1t5uTSPnNkoHXF7e
+	 ibR3iSfoMndWNkWRiL0xgSWF3TCRL2gkWKdGCe4u0lS9MLjMkBxCG1N1CeGH+KFkPu
+	 f2cYfPQG1KOwl1BH130/YYzfLcBEZwnDzWiEk9xg=
+Subject: FAILED: patch "[PATCH] fork: defer linking file vma until vma is fully initialized" failed to apply to 6.1-stable tree
 To: linmiaohe@huawei.com,Liam.Howlett@oracle.com,akpm@linux-foundation.org,brauner@kernel.org,hca@linux.ibm.com,jane.chu@oracle.com,kent.overstreet@linux.dev,mjguzik@gmail.com,muchun.song@linux.dev,oleg@redhat.com,stable@vger.kernel.org,tandersen@netflix.com,thorvald@google.com,willy@infradead.org,zhangpeng.00@bytedance.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 06:10:19 -0700
-Message-ID: <2024042319-freeing-degree-ca0d@gregkh>
+Date: Tue, 23 Apr 2024 06:10:21 -0700
+Message-ID: <2024042320-angled-goldmine-2cd7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,35 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 35e351780fa9d8240dd6f7e4f245f9ea37e96c19
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042319-freeing-degree-ca0d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042320-angled-goldmine-2cd7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 35e351780fa9 ("fork: defer linking file vma until vma is fully initialized")
 d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup_mmap()")
+2820b0f09be9 ("hugetlbfs: close race between MADV_DONTNEED and page fault")
+b5df09226450 ("mm: set up vma iterator for vma_iter_prealloc() calls")
+f72cf24a8686 ("mm: use vma_iter_clear_gfp() in nommu")
+da0892547b10 ("maple_tree: re-introduce entry to mas_preallocate() arguments")
+fd892593d44d ("mm: change do_vmi_align_munmap() tracking of VMAs to remove")
+5502ea44f5ad ("mm/hugetlb: add page_mask for hugetlb_follow_page_mask()")
+dd767aaa2fc8 ("mm/hugetlb: handle FOLL_DUMP well in follow_page_mask()")
+1279aa0656bb ("mm: make show_free_areas() static")
+408579cd627a ("mm: Update do_vmi_align_munmap() return semantics")
+e4bd84c069f2 ("mm: Always downgrade mmap_lock if requested")
+43ec8a620b38 ("Merge tag 'unmap-fix-20230629' of git://git.infradead.org/users/dwmw2/linux")
 
 thanks,
 
