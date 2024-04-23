@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-41015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0CE8AFA02
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442E18AFA6B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 601D91C22769
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01693288EE2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE831487C1;
-	Tue, 23 Apr 2024 21:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853FC144304;
+	Tue, 23 Apr 2024 21:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiXVRVkc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z43HQfp2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2122143C5F;
-	Tue, 23 Apr 2024 21:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440931420BE;
+	Tue, 23 Apr 2024 21:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908619; cv=none; b=T+Oe/Q3cW++vW/e51szjDVZD7DYwEJ2bvzmhHN73LcsbXB4MeLzkPhcIU43ZUhFJm0+Cqw8owldYIAdFngO0RkMhRPuHvMkBmCUilgkBYBsP6NiEVTvrdNNglfrxlYytaCHeLJYRo1sl/gWn9n3JNxU/UknQ+rSBf3TYcEZzFO8=
+	t=1713908695; cv=none; b=nhRbyiPlKo1LzQHjN/6rVh0cg4sFBsomvVYvGpCOQa3ts8nJCsZpfoMFQLn/3WqKDHTCWrgjuNB2kVmTpfEpgoxFw+uNW0Y8GCJDln3vPbyeYuT9EcmcJYzSNLiH7Lhe0J+3L7MgLeOXuzAYfl0NP5xf1rj4q5sK0BGcdpDyC7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908619; c=relaxed/simple;
-	bh=jjQ++cEJQihTa7Vg8LmW2DdsRGpGy0iwr1WwlnSoVRU=;
+	s=arc-20240116; t=1713908695; c=relaxed/simple;
+	bh=A43twmQEzg4L8zn/5Rrv5uvp/jads3y7OZST9BOR6vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RV9E6c66DjKcupEUNcwU1GKUPgC1ukSNpYl+Uwo4rbkbTjHz4fncbcv3sXMTqcinFRH+saLu5JDJexfA6w041QPKsuxBe3NhNufpCzHwtG0fyQXfnZm6E5TKoexeMAzryhuR5WYlZvOx4ghNdLTwMrUH7Ac8iI2eYORll9/dhQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiXVRVkc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C98BC116B1;
-	Tue, 23 Apr 2024 21:43:39 +0000 (UTC)
+	 MIME-Version; b=TIzIx9yIDXoI3sQNjXulEQya8M+Ty792XAHc4TZkNbLh7S3wERLb2scxOw6vwkX2nWPqsNliCMEFsWSK28XAlUxrGkWpVJx9RjMncR77Mkwx4OR+BafrmU3DZPqkdiYQ263jbspSSHpZajGNqdhKoDtFjfTP5c1vLAwcbAE1Is0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z43HQfp2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165F2C4AF07;
+	Tue, 23 Apr 2024 21:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908619;
-	bh=jjQ++cEJQihTa7Vg8LmW2DdsRGpGy0iwr1WwlnSoVRU=;
+	s=korg; t=1713908695;
+	bh=A43twmQEzg4L8zn/5Rrv5uvp/jads3y7OZST9BOR6vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FiXVRVkcrlpChtbpsmuirwVFub4sTDQQE7HcORQfFdEy1oXB/RfhFPHwBWrzTDwNN
-	 I+DsBP03+VVzBikWJnGO7ySyIMNC9WJ68uNMgi86K5HdvVay499wQvA5n1c9Uqblup
-	 tJe1helPS0Iahm6SGwJfG0PVDYC/523p0aOyPsH0=
+	b=z43HQfp2q2Uy6l657n/O5sr3c6YW5F34Kht6S9FDkBBNPlq7/ABSqBFZ9YYN9a1d3
+	 Nghceo8NX5lfZtPJdFOL0t1ByDTbrBmJdceS7o777Gk7dxrDH3IFz60etA+ne+LIh3
+	 tUQRrpSAnIWjzbBj68BcVVcz1vXEqMwEzFIBt7m4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanath S <Sanath.S@amd.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.6 075/158] thunderbolt: Introduce tb_port_reset()
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 044/141] ice: tc: allow zero flags in parsing tc flower
 Date: Tue, 23 Apr 2024 14:38:32 -0700
-Message-ID: <20240423213858.198867326@linuxfoundation.org>
+Message-ID: <20240423213854.692113030@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,192 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanath S <Sanath.S@amd.com>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-commit 01da6b99d49f60b1edead44e33569b1a2e9f49b7 upstream.
+[ Upstream commit 73278715725a8347032acf233082ca4eb31e6a56 ]
 
-Introduce a function that issues Downstream Port Reset to a USB4 port.
-This supports Thunderbolt 2, 3 and USB4 routers.
+The check for flags is done to not pass empty lookups to adding switch
+rule functions. Since metadata is always added to lookups there is no
+need to check against the flag.
 
-Signed-off-by: Sanath S <Sanath.S@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It is also fixing the problem with such rule:
+$ tc filter add dev gtp_dev ingress protocol ip prio 0 flower \
+	enc_dst_port 2123 action drop
+Switch block in case of GTP can't parse the destination port, because it
+should always be set to GTP specific value. The same with ethertype. The
+result is that there is no other matching criteria than GTP tunnel. In
+this case flags is 0, rule can't be added only because of defensive
+check against flags.
+
+Fixes: 9a225f81f540 ("ice: Support GTP-U and GTP-C offload in switchdev")
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/lc.c      |   45 ++++++++++++++++++++++++++++++++++++++++++
- drivers/thunderbolt/switch.c  |    7 ++++++
- drivers/thunderbolt/tb.h      |    2 +
- drivers/thunderbolt/tb_regs.h |    4 +++
- drivers/thunderbolt/usb4.c    |   39 ++++++++++++++++++++++++++++++++++++
- 5 files changed, 97 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/lc.c
-+++ b/drivers/thunderbolt/lc.c
-@@ -6,6 +6,8 @@
-  * Author: Mika Westerberg <mika.westerberg@linux.intel.com>
-  */
- 
-+#include <linux/delay.h>
-+
- #include "tb.h"
- 
- /**
-@@ -45,6 +47,49 @@ static int find_port_lc_cap(struct tb_po
- 	return sw->cap_lc + start + phys * size;
- }
- 
-+/**
-+ * tb_lc_reset_port() - Trigger downstream port reset through LC
-+ * @port: Port that is reset
-+ *
-+ * Triggers downstream port reset through link controller registers.
-+ * Returns %0 in case of success negative errno otherwise. Only supports
-+ * non-USB4 routers with link controller (that's Thunderbolt 2 and
-+ * Thunderbolt 3).
-+ */
-+int tb_lc_reset_port(struct tb_port *port)
-+{
-+	struct tb_switch *sw = port->sw;
-+	int cap, ret;
-+	u32 mode;
-+
-+	if (sw->generation < 2)
-+		return -EINVAL;
-+
-+	cap = find_port_lc_cap(port);
-+	if (cap < 0)
-+		return cap;
-+
-+	ret = tb_sw_read(sw, &mode, TB_CFG_SWITCH, cap + TB_LC_PORT_MODE, 1);
-+	if (ret)
-+		return ret;
-+
-+	mode |= TB_LC_PORT_MODE_DPR;
-+
-+	ret = tb_sw_write(sw, &mode, TB_CFG_SWITCH, cap + TB_LC_PORT_MODE, 1);
-+	if (ret)
-+		return ret;
-+
-+	fsleep(10000);
-+
-+	ret = tb_sw_read(sw, &mode, TB_CFG_SWITCH, cap + TB_LC_PORT_MODE, 1);
-+	if (ret)
-+		return ret;
-+
-+	mode &= ~TB_LC_PORT_MODE_DPR;
-+
-+	return tb_sw_write(sw, &mode, TB_CFG_SWITCH, cap + TB_LC_PORT_MODE, 1);
-+}
-+
- static int tb_lc_set_port_configured(struct tb_port *port, bool configured)
- {
- 	bool upstream = tb_is_upstream_port(port);
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -675,6 +675,13 @@ int tb_port_disable(struct tb_port *port
- 	return __tb_port_enable(port, false);
- }
- 
-+static int tb_port_reset(struct tb_port *port)
-+{
-+	if (tb_switch_is_usb4(port->sw))
-+		return port->cap_usb4 ? usb4_port_reset(port) : 0;
-+	return tb_lc_reset_port(port);
-+}
-+
- /*
-  * tb_init_port() - initialize a port
-  *
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -1119,6 +1119,7 @@ int tb_drom_read(struct tb_switch *sw);
- int tb_drom_read_uid_only(struct tb_switch *sw, u64 *uid);
- 
- int tb_lc_read_uuid(struct tb_switch *sw, u32 *uuid);
-+int tb_lc_reset_port(struct tb_port *port);
- int tb_lc_configure_port(struct tb_port *port);
- void tb_lc_unconfigure_port(struct tb_port *port);
- int tb_lc_configure_xdomain(struct tb_port *port);
-@@ -1251,6 +1252,7 @@ void usb4_switch_remove_ports(struct tb_
- 
- int usb4_port_unlock(struct tb_port *port);
- int usb4_port_hotplug_enable(struct tb_port *port);
-+int usb4_port_reset(struct tb_port *port);
- int usb4_port_configure(struct tb_port *port);
- void usb4_port_unconfigure(struct tb_port *port);
- int usb4_port_configure_xdomain(struct tb_port *port, struct tb_xdomain *xd);
---- a/drivers/thunderbolt/tb_regs.h
-+++ b/drivers/thunderbolt/tb_regs.h
-@@ -383,6 +383,7 @@ struct tb_regs_port_header {
- #define PORT_CS_18_WODS				BIT(17)
- #define PORT_CS_18_WOU4S			BIT(18)
- #define PORT_CS_19				0x13
-+#define PORT_CS_19_DPR				BIT(0)
- #define PORT_CS_19_PC				BIT(3)
- #define PORT_CS_19_PID				BIT(4)
- #define PORT_CS_19_WOC				BIT(16)
-@@ -579,6 +580,9 @@ struct tb_regs_hop {
- #define TB_LC_POWER				0x740
- 
- /* Link controller registers */
-+#define TB_LC_PORT_MODE				0x26
-+#define TB_LC_PORT_MODE_DPR			BIT(0)
-+
- #define TB_LC_CS_42				0x2a
- #define TB_LC_CS_42_USB_PLUGGED			BIT(31)
- 
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -1113,6 +1113,45 @@ int usb4_port_hotplug_enable(struct tb_p
- 	return tb_port_write(port, &val, TB_CFG_PORT, ADP_CS_5, 1);
- }
- 
-+/**
-+ * usb4_port_reset() - Issue downstream port reset
-+ * @port: USB4 port to reset
-+ *
-+ * Issues downstream port reset to @port.
-+ */
-+int usb4_port_reset(struct tb_port *port)
-+{
-+	int ret;
-+	u32 val;
-+
-+	if (!port->cap_usb4)
-+		return -EINVAL;
-+
-+	ret = tb_port_read(port, &val, TB_CFG_PORT,
-+			   port->cap_usb4 + PORT_CS_19, 1);
-+	if (ret)
-+		return ret;
-+
-+	val |= PORT_CS_19_DPR;
-+
-+	ret = tb_port_write(port, &val, TB_CFG_PORT,
-+			    port->cap_usb4 + PORT_CS_19, 1);
-+	if (ret)
-+		return ret;
-+
-+	fsleep(10000);
-+
-+	ret = tb_port_read(port, &val, TB_CFG_PORT,
-+			   port->cap_usb4 + PORT_CS_19, 1);
-+	if (ret)
-+		return ret;
-+
-+	val &= ~PORT_CS_19_DPR;
-+
-+	return tb_port_write(port, &val, TB_CFG_PORT,
-+			     port->cap_usb4 + PORT_CS_19, 1);
-+}
-+
- static int usb4_port_set_configured(struct tb_port *port, bool configured)
- {
+diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+index 652ef09eeb305..ec6628aacc13b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+@@ -663,7 +663,7 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
  	int ret;
+ 	int i;
+ 
+-	if (!flags || (flags & ICE_TC_FLWR_FIELD_ENC_SRC_L4_PORT)) {
++	if (flags & ICE_TC_FLWR_FIELD_ENC_SRC_L4_PORT) {
+ 		NL_SET_ERR_MSG_MOD(fltr->extack, "Unsupported encap field(s)");
+ 		return -EOPNOTSUPP;
+ 	}
+-- 
+2.43.0
+
 
 
 
