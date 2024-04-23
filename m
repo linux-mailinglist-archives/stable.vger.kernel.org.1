@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-40927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34938AF9A1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45BEF8AFA30
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F3C4289FEB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00B4428A9B2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A3D145320;
-	Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2171448EA;
+	Tue, 23 Apr 2024 21:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7c3TZt0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9YaamZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CB085274;
-	Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08518143C6B;
+	Tue, 23 Apr 2024 21:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908559; cv=none; b=e4Q4xE9kXghKBXdKYbXNqm2slJxZzIyX9exhzylbu9xde51I64FN1KuB2Cb98THrCf9Z9ZFfVQYebXQgY9nQ0QgtUDAm4e/6WtDRKU9K5BiRlLGXZlx5+QslHEPwaY8Do1WtF1FIYP4zwyHJB9wX8w2yQac9DKfviDbFTmPjciM=
+	t=1713908651; cv=none; b=SHCrzqt8SjLLwpWd038XtgF/hZno1SvyjWMP5vNHTQSw/geh83xAyarTmyx2SF975ZzGqFCFlJQ5MzQjzku5muPbiICb/DA37DfXSJH9ecKJHL4s4fylo5wN74ig8ee45ZDTi501yAGi/jI1HwibqKnV6qL2a1lB/Q0A6jBJLIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908559; c=relaxed/simple;
-	bh=wtIbt6hKLI9SYaTZFUwU2/J3b5auzSYLLV6jtbqPsfw=;
+	s=arc-20240116; t=1713908651; c=relaxed/simple;
+	bh=hDC2DQ5A4DH32svvLaMWEuSiuJzkyjOrFMM/qB1Ko/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmSjWuNd64fanHn/Y7vPqYVAx9/msmPkus2pyW7aKPnnci8VYN4GJYjbn8cRz+Nfv/yMCA2lEpwpagUr99+/jHCzsE1QTntPdZpUQJhuoaQvTRXeJvAJa+ypS+xPBj0qEseXbxbDyOPNy/vw+gn/6NC4qgmqsQl2dzqxyfyWwzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7c3TZt0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862A2C116B1;
-	Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
+	 MIME-Version; b=jrl8h7TjOPCv35I8dszooJ0Tj/4RO2AZjfDX1bzpfoDX3ud98dxeHY0fXRL9LcKMvqDOFU/v97QyyZ1dtyYCKBmZkaIdjP0+msUV1muoMeRfsfk/ktpN5m1qFJDBqr3In9nqMDkNcnqhERuC4cxXyy/ZDJvyvrAaz9fCBSr934U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9YaamZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC507C3277B;
+	Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908559;
-	bh=wtIbt6hKLI9SYaTZFUwU2/J3b5auzSYLLV6jtbqPsfw=;
+	s=korg; t=1713908650;
+	bh=hDC2DQ5A4DH32svvLaMWEuSiuJzkyjOrFMM/qB1Ko/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7c3TZt01Th3MyJ3C0nKnr+bcTzamLGc9nOh6FekG3Erb/2oGU/bm0Syg/PxCk/mI
-	 gvKXK3wAVy3shDKiPqPP1tjC5Xf+Cac3qsGwkRWxZPE8oXKO3sZiWgKeMx/HhKtoNP
-	 P6zx+7hrrCkx4unxw8MhP7M+7qs9kDhXJbNuVveo=
+	b=P9YaamZBLWLo+Tpr6e5kjaw8bGUqvms7dQwrpw5lpFCHD2T9LHzozwV71+jngkn3k
+	 Pxc0+UzHa4jtel7xADeHPV+COqX36RcALzWtLWLafaHnOi59qWaI1rdfXZfL+0d06P
+	 95xB1FVNiSdrighRRJ5Vf8op1j5aIWoE+Zm1ILnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Pekka Paalanen <pekka.paalanen@collabora.com>
-Subject: [PATCH 6.8 146/158] drm/vmwgfx: Sort primary plane formats by order of preference
+	Sandipan Das <sandipan.das@amd.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 131/158] KVM: x86/pmu: Do not mask LVTPC when handling a PMI on AMD platforms
 Date: Tue, 23 Apr 2024 14:39:28 -0700
-Message-ID: <20240423213900.605907888@linuxfoundation.org>
+Message-ID: <20240423213859.966676304@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Sandipan Das <sandipan.das@amd.com>
 
-commit d4c972bff3129a9dd4c22a3999fd8eba1a81531a upstream.
+commit 49ff3b4aec51e3abfc9369997cc603319b02af9a upstream.
 
-The table of primary plane formats wasn't sorted at all, leading to
-applications picking our least desirable formats by defaults.
+On AMD and Hygon platforms, the local APIC does not automatically set
+the mask bit of the LVTPC register when handling a PMI and there is
+no need to clear it in the kernel's PMI handler.
 
-Sort the primary plane formats according to our order of preference.
+For guests, the mask bit is currently set by kvm_apic_local_deliver()
+and unless it is cleared by the guest kernel's PMI handler, PMIs stop
+arriving and break use-cases like sampling with perf record.
 
-Nice side-effect of this change is that it makes IGT's kms_atomic
-plane-invalid-params pass because the test picks the first format
-which for vmwgfx was DRM_FORMAT_XRGB1555 and uses fb's with odd sizes
-which make Pixman, which IGT depends on assert due to the fact that our
-16bpp formats aren't 32 bit aligned like Pixman requires all formats
-to be.
+This does not affect non-PerfMonV2 guests because PMIs are handled in
+the guest kernel by x86_pmu_handle_irq() which always clears the LVTPC
+mask bit irrespective of the vendor.
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 36cc79bc9077 ("drm/vmwgfx: Add universal plane support")
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.12+
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240412025511.78553-6-zack.rusin@broadcom.com
+Before:
+
+  $ perf record -e cycles:u true
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.001 MB perf.data (1 samples) ]
+
+After:
+
+  $ perf record -e cycles:u true
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.002 MB perf.data (19 samples) ]
+
+Fixes: a16eb25b09c0 ("KVM: x86: Mask LVTPC when handling a PMI")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+[sean: use is_intel_compatible instead of !is_amd_or_hygon()]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240405235603.1173076-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/lapic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-@@ -243,10 +243,10 @@ struct vmw_framebuffer_bo {
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2772,7 +2772,8 @@ int kvm_apic_local_deliver(struct kvm_la
+ 		trig_mode = reg & APIC_LVT_LEVEL_TRIGGER;
  
- 
- static const uint32_t __maybe_unused vmw_primary_plane_formats[] = {
--	DRM_FORMAT_XRGB1555,
--	DRM_FORMAT_RGB565,
- 	DRM_FORMAT_XRGB8888,
- 	DRM_FORMAT_ARGB8888,
-+	DRM_FORMAT_RGB565,
-+	DRM_FORMAT_XRGB1555,
- };
- 
- static const uint32_t __maybe_unused vmw_cursor_plane_formats[] = {
+ 		r = __apic_accept_irq(apic, mode, vector, 1, trig_mode, NULL);
+-		if (r && lvt_type == APIC_LVTPC)
++		if (r && lvt_type == APIC_LVTPC &&
++		    guest_cpuid_is_intel_compatible(apic->vcpu))
+ 			kvm_lapic_set_reg(apic, APIC_LVTPC, reg | APIC_LVT_MASKED);
+ 		return r;
+ 	}
 
 
 
