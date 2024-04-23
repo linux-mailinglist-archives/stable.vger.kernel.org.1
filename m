@@ -1,157 +1,99 @@
-Return-Path: <stable+bounces-40567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DB48AE261
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4458B8AE444
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91F7C283EE1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 10:37:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3132286CD7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 11:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABF46311D;
-	Tue, 23 Apr 2024 10:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500E184A54;
+	Tue, 23 Apr 2024 11:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q82WsPe0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLWFKZLV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DD7219FD
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 10:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A6E824B1;
+	Tue, 23 Apr 2024 11:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713868642; cv=none; b=fddeAroq9796pEDrQ9jgq5+TfU0sH7ecHU9PqafGD+ewwpdKcJl1g2ZCdQmH+3SVgHMUXHIw5nkLY8CttcelQne34uyuXMjGhPOQEO1E7c0m+fwio08DuvblKUxKVE0BdUh0YfypMnHM60uEbKxkuCxtyiMk6Mbf7Nk5Dh8nFb0=
+	t=1713872402; cv=none; b=h+cXGDkJwgbhnDjti9hHfnsC09L1umIrctN0kq5F+ChwkLKz0v6Awcc8/y4NdopeKF9oM0PQ/LUmGPREwuxiDD5E0o/VRTiJLnjY+87nZp51UJq/HvR43TWrHl/pJT2+Bvk9Vcs0YUXVhbrbitCRf5MuRRZiGUftDWnTRVHdLYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713868642; c=relaxed/simple;
-	bh=GwRtUr6gtqGKN2XBp8si19LOYfDcQhuRzWg2az31ZlU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EUCns/qSCBnD65JXuoJtnQOB9yG82vkYTTEzb0EQtciIOBc3kzbGi4pvbpcuVIYX/xq2B+BfspxbhQI3yJD06uheUi3A4wKl80M+jmgUOtPRFrVpbXQmLrzJVncyGwWV4110pMv9us/tf6pTEA+zCk8CmTpBblPYSU+QbHhlwes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q82WsPe0; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-41a72f3a20dso13249845e9.0
-        for <stable@vger.kernel.org>; Tue, 23 Apr 2024 03:37:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713868638; x=1714473438; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=f1GtuAnGuJIGmi4Nj3I/YO3XIATvrNjSsCDRrmOKdN4=;
-        b=q82WsPe01V5/Sl0RcDNMdzwE63weQp4khO33A0ROpQqMUBM8uS+SvQhl4wT6oprLF3
-         m42okMIe46Tsj4+G1DSQ9wAZt7ClxlDToC9Q4tcmPblXLexaKRqmbkZkxWGgmyVNjKLw
-         WTU7TvVOAuE+++raMn4KxwkVaN3SnH3cTKhIUccpLe38KJZbZzjIyQM/uWRkw3PsXMAn
-         tylol34UF6aBDzQzroH0XQnqO3hyJv+ujhix1+Dr/8t6tvZyOGTdRP7duyN8MlPxgByZ
-         UJW2ZRTsX9oCns1U7yqR1uKXkLck/BAjt6a9u0VEYUSiBuZMj/lewP/TDMlfUTnQLsK6
-         mjlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713868638; x=1714473438;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f1GtuAnGuJIGmi4Nj3I/YO3XIATvrNjSsCDRrmOKdN4=;
-        b=nNICrXvX6H/ob5dvKdrAO+njTGhnSgACfE41f+pFVBpQZoCY9/oVx6j2Dt/u9GCCGX
-         FkBcjk6pHNaInHUbmjcA9kePDT1r0oZmHEbswHSVK8o0PhJeQ+fsifaG1szWbedCAYfJ
-         3yKMId+Z3fgWuXiJU2iUzfzfJIYeoWov+ZAcn/Sy0pwP95hNrfvZq3CvVbPhc7mikVMS
-         rMJW+59GJgIqdWGCcw6m2/UNkTeqgQeWR5j1m6l1UM7+QC8OY70FisjWdeXIsqjkLZlV
-         xnTgEjYGtRGZMfNVi1khWpqbsGDdbCMicr+NtbsAquaP8SaS+dnwDzYSGeD8fEkr6uH2
-         S+Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCWEcxMKg2PRp+xsJtRHgquFMcXhT4Ks0wGAt169tbL3Dw3abQb64fqrNkryQQhysP0yqLAJD9UH1A/R6AJcErjunJmrEXiE
-X-Gm-Message-State: AOJu0Yx66V2awPRJyp2IbH4/bui/GEsGatCv8lxMER3ALwMbHIZX9SCP
-	rmt4v9jAWhEIIGtcpEGpNPCfsUS2+3SjbWgxrhrP6BP+/buy33qjhCmj/T+LiVs=
-X-Google-Smtp-Source: AGHT+IEH4u6S6D3wRTzN4LoL8l6ZdRFVF5WlLyRo5GBP3Ye47cGr849oyji7omkAYtv3mN9qFEIfTw==
-X-Received: by 2002:a05:600c:3c95:b0:419:f126:a46d with SMTP id bg21-20020a05600c3c9500b00419f126a46dmr6803385wmb.30.1713868637635;
-        Tue, 23 Apr 2024 03:37:17 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id bd6-20020a05600c1f0600b0041a7aa23dbfsm5003551wmb.48.2024.04.23.03.37.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Apr 2024 03:37:16 -0700 (PDT)
-Date: Tue, 23 Apr 2024 11:37:14 +0100
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Jason Wessel <jason.wessel@windriver.com>,
-	kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1713872402; c=relaxed/simple;
+	bh=uxG/CkClSDymNnYyfIlf2Wp9gxXub3W6bIqP+YwWKvE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jY9bcRSBLnXeVt2kMocsgI8kiqNdUm8Sp8+ktgEUWwu+fUhXFvsQJmJ/FoWQP43DrSUuv8esBQIwAP83Ozct0zWjljciSG0YCK0BTvHFbfSuwYkSYoNHIlYC3Ve++3BaRqoFFBHpnMteJrk3gDpzVV1olDz/l0QcEBKYEBJ6sG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLWFKZLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8557AC116B1;
+	Tue, 23 Apr 2024 11:40:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713872401;
+	bh=uxG/CkClSDymNnYyfIlf2Wp9gxXub3W6bIqP+YwWKvE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lLWFKZLVRhTGthnayGFse3ryC6sBCPPRKAPeVAtE0J+LrWdhmSeSzj/Bj/aWn4271
+	 e6rBSCP6iHgdx+C29TUh/OAgGP87pxNDXuyi2ao45Iv5qgYkkOghCsW8msIDGKDv0w
+	 j+c3Xe7puLGMn0lvY370CLlOeLknf8c50Ftnkd4r7RTQ+Zmb4NfziDi7enElSxPups
+	 gpHe6ybE74sw/d3dwcI5EpKlvqEV43JATLyH9Fm8yBdaz5UfL5j0uM8/xvUT9++koa
+	 GwZn1DHXIRR5vPsZ4wV/1FlVJRG4jxhiy8i3sY9SVbYyQT4bSZg/mypLZi4YuSHs+o
+	 IVb90y/x2HZqA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/7] kdb: Use format-strings rather than '\0'
- injection in kdb_read()
-Message-ID: <20240423103714.GB1567803@aspen.lan>
-References: <20240422-kgdb_read_refactor-v2-0-ed51f7d145fe@linaro.org>
- <20240422-kgdb_read_refactor-v2-2-ed51f7d145fe@linaro.org>
- <CAD=FV=VXFHqOatn3cvwvYCey53+zuzB7ie4gYdvDVbfGL=Qm1Q@mail.gmail.com>
+Cc: Joakim Sindholt <opensource@zhasha.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org,
+	v9fs@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.8 01/18] fs/9p: only translate RWX permissions for plain 9P2000
+Date: Tue, 23 Apr 2024 07:00:57 -0400
+Message-ID: <20240423110118.1652940-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.8.7
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=VXFHqOatn3cvwvYCey53+zuzB7ie4gYdvDVbfGL=Qm1Q@mail.gmail.com>
 
-On Mon, Apr 22, 2024 at 04:52:04PM -0700, Doug Anderson wrote:
-> Hi,
->
-> On Mon, Apr 22, 2024 at 9:37 AM Daniel Thompson
-> <daniel.thompson@linaro.org> wrote:
-> >
-> > Currently when kdb_read() needs to reposition the cursor it uses copy and
-> > paste code that works by injecting an '\0' at the cursor position before
-> > delivering a carriage-return and reprinting the line (which stops at the
-> > '\0').
-> >
-> > Tidy up the code by hoisting the copy and paste code into an appropriately
-> > named function. Additionally let's replace the '\0' injection with a
-> > proper field width parameter so that the string will be abridged during
-> > formatting instead.
-> >
-> > Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
-> > Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-> > ---
-> >  kernel/debug/kdb/kdb_io.c | 34 ++++++++++++++--------------------
-> >  1 file changed, 14 insertions(+), 20 deletions(-)
->
-> Looks like a nice fix, but I think this'll create a compile warning on
-> some compilers. The variable "tmp" is no longer used, I think.
->
-> Once the "tmp" variable is deleted, feel free to add my Reviewed-by.
+From: Joakim Sindholt <opensource@zhasha.com>
 
-Good spot. I'll fix that.
+[ Upstream commit cd25e15e57e68a6b18dc9323047fe9c68b99290b ]
 
+Garbage in plain 9P2000's perm bits is allowed through, which causes it
+to be able to set (among others) the suid bit. This was presumably not
+the intent since the unix extended bits are handled explicitly and
+conditionally on .u.
 
-> NOTE: patch #7 in your series re-adds a user of "tmp", but since this
-> one is "Cc: stable" you will need to delete it here and then re-add it
-> in patch #7.
->
->
-> > diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
-> > index 06dfbccb10336..a42607e4d1aba 100644
-> > --- a/kernel/debug/kdb/kdb_io.c
-> > +++ b/kernel/debug/kdb/kdb_io.c
-> > @@ -184,6 +184,13 @@ char kdb_getchar(void)
-> >         unreachable();
-> >  }
-> >
-> > +static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
-> > +{
-> > +       kdb_printf("\r%s", kdb_prompt_str);
-> > +       if (cp > buffer)
-> > +               kdb_printf("%.*s", (int)(cp - buffer), buffer);
->
-> nit: personally, I'd take the "if" statement out. I'm nearly certain
-> that kdb_printf() can handle zero-length for the width argument and
-> "buffer" can never be _after_ cp (so you can't get negative).
+Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/9p/vfs_inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The kernel will correctly format zero-width fields... but kdb_printf()
-will also inject the empty string into the log if running with
-LOGGING=1. It is true the dmesg output with LOGGING=1 is pretty nasty
-when doing line editing but I still didn't want to make it worse!
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 32572982f72e6..e337fec9b18e1 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -83,7 +83,7 @@ static int p9mode2perm(struct v9fs_session_info *v9ses,
+ 	int res;
+ 	int mode = stat->mode;
+ 
+-	res = mode & S_IALLUGO;
++	res = mode & 0777; /* S_IRWXUGO */
+ 	if (v9fs_proto_dotu(v9ses)) {
+ 		if ((mode & P9_DMSETUID) == P9_DMSETUID)
+ 			res |= S_ISUID;
+-- 
+2.43.0
 
-Oh... and we can't combine into one call to kdb_printf() since that
-renders into a fixed length static buffer and we could get unwanted
-truncation. I might just add a comment about that.
-
-
-Daniel.
 
