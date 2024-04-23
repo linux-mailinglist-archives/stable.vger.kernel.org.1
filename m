@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-40969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26C88AF9D2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C54A38AF91E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08195B2AAB9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 079A8B22BC7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C80145340;
-	Tue, 23 Apr 2024 21:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99209143C52;
+	Tue, 23 Apr 2024 21:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxqXs4s/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eei2m4Rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D73143889;
-	Tue, 23 Apr 2024 21:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5635B143C4D;
+	Tue, 23 Apr 2024 21:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908588; cv=none; b=OPCijgxC4bAAteJpDkJmqbtwqy8/qkRgcAtdS6RRK11+Ni6YQb0gBoBiYUWFjKb0LKgvme3c0uSo/As8D1gPr2NOWPS+3UCyqJ0TNB2Jti2H0GQFkW6yz97hFRoUg/jl7qQBQlYe8guOvHfh/FQRP2ORDU/7zLBXeOxTe4NJlTM=
+	t=1713908471; cv=none; b=fJb4RQ2O+5s9TXg4NfLCEhCu1JU1KYUh6H4WhNA533hX47CyJE6vPlVJ9gju8jTQ5u68D+UpBwNffjfkWKZ9JaxQ+yh1Nk0Py+CD/+hLh8FrBMKBHuAethV4DrEjEtP8OWf5OzCm1PoYkD6FphegNFBaTAAaYGY0fPuvsflu+dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908588; c=relaxed/simple;
-	bh=OyedTjjy+XCMhuXxDkKQ0nNFVRTJvKx/Pq60/SVPdTE=;
+	s=arc-20240116; t=1713908471; c=relaxed/simple;
+	bh=D+tHfRfMJ2Jqj81deDmhN2uDX/gbdBMIhXWKaB07Acs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqiVDEaRMPi8tVckK1XRNC5wRtOEngPFDxRVtan9Aa+xUKPRNCmgccCF7cLZRCzklXwGwqynmCUQBqBf3LiUna9Fu5aSLetg53N76XcSnNdFzK6eR+tN5GklIVIaQ/tfLUEbvdbXxc8bfK2Up1DSmRd9XUs7jQME7uFcUPFEycM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxqXs4s/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45759C32783;
-	Tue, 23 Apr 2024 21:43:08 +0000 (UTC)
+	 MIME-Version; b=hluUY3c1M30SiiJcBPgfAPYv9wPWVataMASx9sSxp30L29lb4LZK0y+shrIS/JfHMeFU7qMZ2fPXJ+sGhmxwqxRWWOK8oHS+EIsJJZlrhI4su7HtbGlUNHe6H92LBF9i27zLjMG8Sdf2meJX6l+TLj7H4Fzy5fRitxePMQCsH0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eei2m4Rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A4AC116B1;
+	Tue, 23 Apr 2024 21:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908588;
-	bh=OyedTjjy+XCMhuXxDkKQ0nNFVRTJvKx/Pq60/SVPdTE=;
+	s=korg; t=1713908471;
+	bh=D+tHfRfMJ2Jqj81deDmhN2uDX/gbdBMIhXWKaB07Acs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxqXs4s/6yU/2l9Qd2ADOE54gBF0ZPnXq+mNDG2FLGihSleKCjlD0qlvDzCC1qmn6
-	 nigrmdx4uXMelDSiGeI03BuE3Fsm7uHszxH0bVxBswrZu2PiOSa44LEej+1qPEmBgo
-	 flXrjUjb4eEJtWNSy8jrXC/hDAY5DSiur6iupMtc=
+	b=Eei2m4RbGBM9T4vQhzCsTpNNFyU5KhCohUB+yqkvRbNxOGC9Zo+MCK0ouIrp7ksiw
+	 Ngx4uNMAdi7zh4E6UzQmITu/wBYC4+o6StCZRQ1w4m2gfR+YliqZfc33In4B4sIUhD
+	 WC20bWgf+8Cq3qPmBQ5UGLx363BCntv/kJfjTFXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Dr. David Alan Gilbert" <dave@treblig.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/158] media: videobuf2: request more buffers for vb2_read
+Subject: [PATCH 6.8 037/158] ice: tc: check src_vsi in case of traffic from VF
 Date: Tue, 23 Apr 2024 14:37:39 -0700
-Message-ID: <20240423213856.458697122@linuxfoundation.org>
+Message-ID: <20240423213857.106549939@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 350ab13e1382f2afcc2285041a1e75b80d771c2c ]
+[ Upstream commit 428051600cb4e5a61d81aba3f8009b6c4f5e7582 ]
 
-The vb2 read support requests 1 buffer, leaving it to the driver
-to increase this number to something that works.
+In case of traffic going from the VF (so ingress for port representor)
+source VSI should be consider during packet classification. It is
+needed for hardware to not match packets from different ports with
+filters added on other port.
 
-Unfortunately, drivers do not deal with this reliably, and in fact
-this caused problems for the bttv driver and reading from /dev/vbiX,
-causing every other VBI frame to be all 0.
+It is only for "from VF" traffic, because other traffic direction
+doesn't have source VSI.
 
-Instead, request as the number of buffers whatever is the maximum of
-2 and q->min_buffers_needed+1.
+Set correct ::src_vsi in rule_info to pass it to the hardware filter.
 
-In order to start streaming you need at least q->min_buffers_needed
-queued buffers, so add 1 buffer for processing. And if that field
-is 0, then choose 2 (again, one buffer is being filled while the
-other one is being processed).
+For example this rule should drop only ipv4 packets from eth10, not from
+the others VF PRs. It is needed to check source VSI in this case.
+$tc filter add dev eth10 ingress protocol ip flower skip_sw action drop
 
-This certainly makes more sense than requesting just 1 buffer, and
-the VBI bttv support is now working again.
-
-It turns out that the old videobuf1 behavior of bttv was to allocate
-8 (video) and 4 (vbi) buffers when used with read(). After the vb2
-conversion that changed to 2 for both. With this patch it is 3, which
-is really all you need.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: b7ec3212a73a ("media: bttv: convert to vb2")
-Tested-by: Dr. David Alan Gilbert <dave@treblig.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 0d08a441fb1a ("ice: ndo_setup_tc implementation for PF")
+Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/common/videobuf2/videobuf2-core.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
-index cf6727d9c81f3..468191438849e 100644
---- a/drivers/media/common/videobuf2/videobuf2-core.c
-+++ b/drivers/media/common/videobuf2/videobuf2-core.c
-@@ -2648,9 +2648,14 @@ static int __vb2_init_fileio(struct vb2_queue *q, int read)
- 		return -EBUSY;
- 
- 	/*
--	 * Start with count 1, driver can increase it in queue_setup()
-+	 * Start with q->min_buffers_needed + 1, driver can increase it in
-+	 * queue_setup()
-+	 *
-+	 * 'min_buffers_needed' buffers need to be queued up before you
-+	 * can start streaming, plus 1 for userspace (or in this case,
-+	 * kernelspace) processing.
+diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+index b890410a2bc0b..49ed5fd7db107 100644
+--- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+@@ -28,6 +28,8 @@ ice_tc_count_lkups(u32 flags, struct ice_tc_flower_lyr_2_4_hdrs *headers,
+ 	 * - ICE_TC_FLWR_FIELD_VLAN_TPID (present if specified)
+ 	 * - Tunnel flag (present if tunnel)
  	 */
--	count = 1;
-+	count = max(2, q->min_buffers_needed + 1);
++	if (fltr->direction == ICE_ESWITCH_FLTR_EGRESS)
++		lkups_cnt++;
  
- 	dprintk(q, 3, "setting up file io: mode %s, count %d, read_once %d, write_immediately %d\n",
- 		(read) ? "read" : "write", count, q->fileio_read_once,
+ 	if (flags & ICE_TC_FLWR_FIELD_TENANT_ID)
+ 		lkups_cnt++;
+@@ -363,6 +365,11 @@ ice_tc_fill_rules(struct ice_hw *hw, u32 flags,
+ 	/* Always add direction metadata */
+ 	ice_rule_add_direction_metadata(&list[ICE_TC_METADATA_LKUP_IDX]);
+ 
++	if (tc_fltr->direction == ICE_ESWITCH_FLTR_EGRESS) {
++		ice_rule_add_src_vsi_metadata(&list[i]);
++		i++;
++	}
++
+ 	rule_info->tun_type = ice_sw_type_from_tunnel(tc_fltr->tunnel_type);
+ 	if (tc_fltr->tunnel_type != TNL_LAST) {
+ 		i = ice_tc_fill_tunnel_outer(flags, tc_fltr, list, i);
+@@ -820,6 +827,7 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
+ 
+ 	/* specify the cookie as filter_rule_id */
+ 	rule_info.fltr_rule_id = fltr->cookie;
++	rule_info.src_vsi = vsi->idx;
+ 
+ 	ret = ice_add_adv_rule(hw, list, lkups_cnt, &rule_info, &rule_added);
+ 	if (ret == -EEXIST) {
 -- 
 2.43.0
 
