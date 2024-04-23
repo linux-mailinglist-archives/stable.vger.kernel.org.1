@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB61E8AFACC
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2A68AF992
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDB2C1C236B6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B92DE1F26DC5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA151487E6;
-	Tue, 23 Apr 2024 21:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C067145B09;
+	Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyCkxUIP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6TNK9i/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF48B20B3E;
-	Tue, 23 Apr 2024 21:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1E020B3E;
+	Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908762; cv=none; b=PKwug/fEkTt/uiZ9JfR6eALEg82wMA0M1C7XwrpAfKHcGO9ECJHzuikNvH5wMJY7HwzJ2RW4u3Mqib9QMVq7DDjT+hK6UiyjTajSukIceCaW7eaaaQKcaWZmA9Opooj+oytYBlyOGGYs6kH2iB78wtUkOoD/yubnzuMgcTuLsDQ=
+	t=1713908550; cv=none; b=hFDgM4F3CT1WS1TlcG0XJSz+JVwlSriSWwoke4Sr3L51jJXF4eUK/IcJdHWuIlO2qLWnJ+568tOBF8K5zZMH17LJFrfBhG6vylHOyQD0answHWuf3QCZ970NJn/XJYFgdZPcfFGriu2nnre2BeE57MtV2O4qKFRT6oP7ct5R82E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908762; c=relaxed/simple;
-	bh=LSYM7nRDsC6OBT73WIn4AWDRdZy1+F5hugbqOa82oQc=;
+	s=arc-20240116; t=1713908550; c=relaxed/simple;
+	bh=SRU5OYpDbHY1aP2PGMiF0y7Zse+N9Smgu/kXgnocBkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJIIcJplJptXmUWXNx8cdX52M3XDAzIkFXYwxvRUPbDRnUFVt5fkrVG4b46Jwpnnmoe3x9cBQKldgcVzZ+dunCMpqXTER0L0ga0Fp1D26TSTGge/LvjqxWyfPiDt7xvVmqGHbhk6FwQag+SczzrQgDOp/n4TeseimbuKmFhxpAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyCkxUIP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C65CC116B1;
-	Tue, 23 Apr 2024 21:46:01 +0000 (UTC)
+	 MIME-Version; b=TerKeqy9d5sOh1hf3EipGUhqASpZUjDbWLtDWBM54ky/fMahui1kVS3Id36wQSdNY7H0bmDQryDfnbK2NMX+T18q+KYis9GnBFZFMx7c3S/Dz/7WgKX3pYJRKvsgigGcfik19i3jVPC188F55649m4R4xPb0BE+QWz1SIANycq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6TNK9i/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A39C32782;
+	Tue, 23 Apr 2024 21:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908761;
-	bh=LSYM7nRDsC6OBT73WIn4AWDRdZy1+F5hugbqOa82oQc=;
+	s=korg; t=1713908550;
+	bh=SRU5OYpDbHY1aP2PGMiF0y7Zse+N9Smgu/kXgnocBkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyCkxUIP42Yxglx0sKW2w+97YkyAlhE+6Usv+UwpnjZLy8Gfy2nMFOXwNnTJ+BeS6
-	 p/eI5yeVSeuXad0F1V1LhuaRk27ufTBtRGJD1eEpA4qr8CQAQH8twU6daQB+bY6zFE
-	 4hqEwXapgwOmYk6cNI7k8Nj46/07UvQDdGAprl9Y=
+	b=U6TNK9i//j0iYaqMzR7uw9pxaFDGlfq7yvbNQLl7R/KC4qsR17QuVq0t3Zxm3SDlR
+	 dyq5b/xQIjKRR/XZ2i4iuvlq4AJZrUoNUozcziGN16T5sNHH4tSbtAA6ieoUSKfycV
+	 8Srz1+EoMzCvZCFJmgehaT9iWJgXxGnctzg9pbew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Emil Kronborg <emil.kronborg@protonmail.com>
-Subject: [PATCH 6.1 104/141] serial: mxs-auart: add spinlock around changing cts state
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	"Ubisectech Sirius" <bugreport@ubisectech.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 150/158] Squashfs: check the inode number is not the invalid value of zero
 Date: Tue, 23 Apr 2024 14:39:32 -0700
-Message-ID: <20240423213856.554899978@linuxfoundation.org>
+Message-ID: <20240423213900.722105945@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Kronborg <emil.kronborg@protonmail.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit 54c4ec5f8c471b7c1137a1f769648549c423c026 upstream.
+commit 9253c54e01b6505d348afbc02abaa4d9f8a01395 upstream.
 
-The uart_handle_cts_change() function in serial_core expects the caller
-to hold uport->lock. For example, I have seen the below kernel splat,
-when the Bluetooth driver is loaded on an i.MX28 board.
+Syskiller has produced an out of bounds access in fill_meta_index().
 
-    [   85.119255] ------------[ cut here ]------------
-    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_core.c:3453 uart_handle_cts_change+0xb4/0xec
-    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc wlcore_sdio configfs
-    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-00021-gd62a2f068f92 #1
-    [   85.151396] Hardware name: Freescale MXS (Device Tree)
-    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
-    (...)
-    [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/0x3f4
-    [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x88/0x210
-    (...)
+That out of bounds access is ultimately caused because the inode
+has an inode number with the invalid value of zero, which was not checked.
 
-Cc: stable@vger.kernel.org
-Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements for irq helpers")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
-Link: https://lore.kernel.org/r/20240320121530.11348-1-emil.kronborg@protonmail.com
+The reason this causes the out of bounds access is due to following
+sequence of events:
+
+1. Fill_meta_index() is called to allocate (via empty_meta_index())
+   and fill a metadata index.  It however suffers a data read error
+   and aborts, invalidating the newly returned empty metadata index.
+   It does this by setting the inode number of the index to zero,
+   which means unused (zero is not a valid inode number).
+
+2. When fill_meta_index() is subsequently called again on another
+   read operation, locate_meta_index() returns the previous index
+   because it matches the inode number of 0.  Because this index
+   has been returned it is expected to have been filled, and because
+   it hasn't been, an out of bounds access is performed.
+
+This patch adds a sanity check which checks that the inode number
+is not zero when the inode is created and returns -EINVAL if it is.
+
+[phillip@squashfs.org.uk: whitespace fix]
+  Link: https://lkml.kernel.org/r/20240409204723.446925-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
+Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/mxs-auart.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/squashfs/inode.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -1094,11 +1094,13 @@ static void mxs_auart_set_ldisc(struct u
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct sup
+ 	gid_t i_gid;
+ 	int err;
  
- static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
- {
--	u32 istat;
-+	u32 istat, stat;
- 	struct mxs_auart_port *s = context;
- 	u32 mctrl_temp = s->mctrl_prev;
--	u32 stat = mxs_read(s, REG_STAT);
- 
-+	uart_port_lock(&s->port);
++	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
++	if (inode->i_ino == 0)
++		return -EINVAL;
 +
-+	stat = mxs_read(s, REG_STAT);
- 	istat = mxs_read(s, REG_INTR);
+ 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
+ 	if (err)
+ 		return err;
+@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct sup
  
- 	/* ack irq */
-@@ -1134,6 +1136,8 @@ static irqreturn_t mxs_auart_irq_handle(
- 		istat &= ~AUART_INTR_TXIS;
- 	}
- 
-+	uart_port_unlock(&s->port);
-+
- 	return IRQ_HANDLED;
- }
- 
+ 	i_uid_write(inode, i_uid);
+ 	i_gid_write(inode, i_gid);
+-	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
+ 	inode_set_mtime(inode, le32_to_cpu(sqsh_ino->mtime), 0);
+ 	inode_set_atime(inode, inode_get_mtime_sec(inode), 0);
+ 	inode_set_ctime(inode, inode_get_mtime_sec(inode), 0);
 
 
 
