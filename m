@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52B88AFADA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34938AF9A1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 235891C23785
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F3C4289FEB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A6C14882C;
-	Tue, 23 Apr 2024 21:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A3D145320;
+	Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foB7HUtu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7c3TZt0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB336143C5F;
-	Tue, 23 Apr 2024 21:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CB085274;
+	Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908772; cv=none; b=oUdv4iV07jm06NqKu8Ijon9uVdFMFhJBUPdY+nOT2WLxxonUkF0NVF/vQnPJwZnhYLyvf157APpxhuJKWVrFmhgl6fMmtTNTCmafjqD98UqLHj/5VWmBzY2z9m+ufY01eg1dLseHn/K+v2vXK8yI++vpYUeV4V5AxBZpWf3L6ig=
+	t=1713908559; cv=none; b=e4Q4xE9kXghKBXdKYbXNqm2slJxZzIyX9exhzylbu9xde51I64FN1KuB2Cb98THrCf9Z9ZFfVQYebXQgY9nQ0QgtUDAm4e/6WtDRKU9K5BiRlLGXZlx5+QslHEPwaY8Do1WtF1FIYP4zwyHJB9wX8w2yQac9DKfviDbFTmPjciM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908772; c=relaxed/simple;
-	bh=if+bOVbHuK4VIidfWsYabxUBx0GHCS3a3un9gUOBMp0=;
+	s=arc-20240116; t=1713908559; c=relaxed/simple;
+	bh=wtIbt6hKLI9SYaTZFUwU2/J3b5auzSYLLV6jtbqPsfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwcQYYmcCK7X/oaM2EuP8U59HEXMbNzzyxVN9P0/BF93d0IZj3jlxDSukE3/VqUicjX4eDYtnyn2679SW9ZWjXXYf2gCppB2B3W3zBwifq2O8eV4zkE8RDYt5WtjhKip85CRiTIQKXjN85jEf90qqGmdnQb/DvfHozJWR7Ys+M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foB7HUtu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0518C3277B;
-	Tue, 23 Apr 2024 21:46:11 +0000 (UTC)
+	 MIME-Version; b=kmSjWuNd64fanHn/Y7vPqYVAx9/msmPkus2pyW7aKPnnci8VYN4GJYjbn8cRz+Nfv/yMCA2lEpwpagUr99+/jHCzsE1QTntPdZpUQJhuoaQvTRXeJvAJa+ypS+xPBj0qEseXbxbDyOPNy/vw+gn/6NC4qgmqsQl2dzqxyfyWwzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7c3TZt0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862A2C116B1;
+	Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908771;
-	bh=if+bOVbHuK4VIidfWsYabxUBx0GHCS3a3un9gUOBMp0=;
+	s=korg; t=1713908559;
+	bh=wtIbt6hKLI9SYaTZFUwU2/J3b5auzSYLLV6jtbqPsfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=foB7HUtuyBfgDprxnmttNs5cGCYwsKpKbIqDVTcsck0BtCDt1z3VsHBfKoKqLSBPR
-	 QJ8HqJjGpM6pfRgKcc33/+glPLtYrbvwMZlrq6nAhM+rq+2JrrPBeg87uI91PHacOr
-	 ngT8epVOGiwup1ic8AQq/+DmdXfHpK2ECmyH7FrE=
+	b=o7c3TZt01Th3MyJ3C0nKnr+bcTzamLGc9nOh6FekG3Erb/2oGU/bm0Syg/PxCk/mI
+	 gvKXK3wAVy3shDKiPqPP1tjC5Xf+Cac3qsGwkRWxZPE8oXKO3sZiWgKeMx/HhKtoNP
+	 P6zx+7hrrCkx4unxw8MhP7M+7qs9kDhXJbNuVveo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Xuan <william.xuanziyang@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 15/71] netfilter: nf_tables: Fix potential data-race in __nft_expr_type_get()
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Pekka Paalanen <pekka.paalanen@collabora.com>
+Subject: [PATCH 6.8 146/158] drm/vmwgfx: Sort primary plane formats by order of preference
 Date: Tue, 23 Apr 2024 14:39:28 -0700
-Message-ID: <20240423213844.646362225@linuxfoundation.org>
+Message-ID: <20240423213900.605907888@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit f969eb84ce482331a991079ab7a5c4dc3b7f89bf ]
+commit d4c972bff3129a9dd4c22a3999fd8eba1a81531a upstream.
 
-nft_unregister_expr() can concurrent with __nft_expr_type_get(),
-and there is not any protection when iterate over nf_tables_expressions
-list in __nft_expr_type_get(). Therefore, there is potential data-race
-of nf_tables_expressions list entry.
+The table of primary plane formats wasn't sorted at all, leading to
+applications picking our least desirable formats by defaults.
 
-Use list_for_each_entry_rcu() to iterate over nf_tables_expressions
-list in __nft_expr_type_get(), and use rcu_read_lock() in the caller
-nft_expr_type_get() to protect the entire type query process.
+Sort the primary plane formats according to our order of preference.
 
-Fixes: ef1f7df9170d ("netfilter: nf_tables: expression ops overloading")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Nice side-effect of this change is that it makes IGT's kms_atomic
+plane-invalid-params pass because the test picks the first format
+which for vmwgfx was DRM_FORMAT_XRGB1555 and uses fb's with odd sizes
+which make Pixman, which IGT depends on assert due to the fact that our
+16bpp formats aren't 32 bit aligned like Pixman requires all formats
+to be.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 36cc79bc9077 ("drm/vmwgfx: Add universal plane support")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v4.12+
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240412025511.78553-6-zack.rusin@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 113c1ebe4a5be..d0712553d2b06 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2821,7 +2821,7 @@ static const struct nft_expr_type *__nft_expr_type_get(u8 family,
- {
- 	const struct nft_expr_type *type, *candidate = NULL;
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+@@ -243,10 +243,10 @@ struct vmw_framebuffer_bo {
  
--	list_for_each_entry(type, &nf_tables_expressions, list) {
-+	list_for_each_entry_rcu(type, &nf_tables_expressions, list) {
- 		if (!nla_strcmp(nla, type->name)) {
- 			if (!type->family && !candidate)
- 				candidate = type;
-@@ -2853,9 +2853,13 @@ static const struct nft_expr_type *nft_expr_type_get(struct net *net,
- 	if (nla == NULL)
- 		return ERR_PTR(-EINVAL);
  
-+	rcu_read_lock();
- 	type = __nft_expr_type_get(family, nla);
--	if (type != NULL && try_module_get(type->owner))
-+	if (type != NULL && try_module_get(type->owner)) {
-+		rcu_read_unlock();
- 		return type;
-+	}
-+	rcu_read_unlock();
+ static const uint32_t __maybe_unused vmw_primary_plane_formats[] = {
+-	DRM_FORMAT_XRGB1555,
+-	DRM_FORMAT_RGB565,
+ 	DRM_FORMAT_XRGB8888,
+ 	DRM_FORMAT_ARGB8888,
++	DRM_FORMAT_RGB565,
++	DRM_FORMAT_XRGB1555,
+ };
  
- 	lockdep_nfnl_nft_mutex_not_held();
- #ifdef CONFIG_MODULES
--- 
-2.43.0
-
+ static const uint32_t __maybe_unused vmw_cursor_plane_formats[] = {
 
 
 
