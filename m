@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504888AFA6F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7658AF9DA
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D036C1F29676
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEC85B2ABE5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353C0149C4D;
-	Tue, 23 Apr 2024 21:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E03E143C41;
+	Tue, 23 Apr 2024 21:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkhg0ywP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBq6euM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74251420BE;
-	Tue, 23 Apr 2024 21:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A50144309;
+	Tue, 23 Apr 2024 21:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908698; cv=none; b=feoi9TJuhg8e2chMuio/451hTU94k/vG80RmoIGtaRThYP0ioZzJV8aOa5IlNu3/a6dSD4PhR7p1glsp/sfTzp7F7ypf4NGQksBpirX0E5dC9447PwdpiYWPWMy5ODIW4CmavMswif6lZujxiflyQDYIA7fs7b4idEzea3gXUyo=
+	t=1713908593; cv=none; b=V/TeNVUl8sfdqcYSfYAh62HyUCpiFh5cPSJnY7veq8EtXfnWrKyeMgzuPUIuNkSIzaNvgvlo5tHlx9nI/Tx5buv82UewHLxe7xPWUiWVyl070m/PceLz7CVOroiKSRzXf3kcq7U+DTRKQdJ3WYe3726QG9+anw0iWPPP+qpUk2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908698; c=relaxed/simple;
-	bh=9U+M2VN7kKZIxQ6Xe4nFHWo7aD+Jw56i3Wcrb5G0D8k=;
+	s=arc-20240116; t=1713908593; c=relaxed/simple;
+	bh=CYB5wuLHj+78m9tgHq2LYbB+NA3OgoOEYDpukNdmo9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqKpMlQ2OCD06QQmYkAZB6aDJWZD37ACguiuhrWNR0GTAt+ZfwSLYqZVDqIsGSmbMbwMl5weCXvQ2B1daVPiYQ6R2tcOY+vDSjTstk2YWCT7s+D6k6QWmDsJ7HgL+pn0F7U5b9PA5kN3/fhxQRN9+JHONixnTgNTrbhiDOqm0Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkhg0ywP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB13EC3277B;
-	Tue, 23 Apr 2024 21:44:57 +0000 (UTC)
+	 MIME-Version; b=M8ntquA8pAs5PBQmxEhozRGRE9s8Udyj62AM9uw/RluAvZGkVQk6eW790cgE4Yj6998Uel5Wt9A7SBUJalDonxvm4gFV1SZ51b8Tz+E3TvvaXcr6TW5JAJ5Y55ezZccBS/v4g/4Qj5girxO1FFcPrcmT8T4JceUllqV752RSvKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBq6euM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56B9C4AF07;
+	Tue, 23 Apr 2024 21:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908697;
-	bh=9U+M2VN7kKZIxQ6Xe4nFHWo7aD+Jw56i3Wcrb5G0D8k=;
+	s=korg; t=1713908593;
+	bh=CYB5wuLHj+78m9tgHq2LYbB+NA3OgoOEYDpukNdmo9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkhg0ywPtcPJZY10pq0ttuNKaSR7GX3lyEx+85jPxh/dLU+90cznEcf7jMKMHeNTa
-	 irg9aQGS0WbqMWQklQTj/4rNghFWtPLlHgnQ6H7BTiph9TVQMJkF9tl2u+hgQbu3UG
-	 35xW5joj87U4qc4rGK1cKBD4sipq+2zfmNhigS8k=
+	b=YBq6euM9h4btyH5bvvCh67nKBaGWEGLlQjN3PZJYbUtVBxc9DJF36TLyKGp5LuKav
+	 qfU+1zj5ae0exM/XLzQNweFShnomQ/LBJ9HFlSxvg63AiYxovsN3npepU0hfZq6hh3
+	 tQmX9CC13ioVMETGyYLKAt6JH21ZPF30ZCKab0xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 024/141] x86/boot: Drop PE/COFF .reloc section
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 055/158] s390/ism: Properly fix receive message buffer allocation
 Date: Tue, 23 Apr 2024 14:38:12 -0700
-Message-ID: <20240423213854.110855725@linuxfoundation.org>
+Message-ID: <20240423213857.567117988@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,149 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Commit fa5750521e0a4efbc1af05223da9c4bbd6c21c83 upstream ]
+[ Upstream commit 83781384a96b95e2b6403d3c8a002b2c89031770 ]
 
-Ancient buggy EFI loaders may have required a .reloc section to be
-present at some point in time, but this has not been true for a long
-time so the .reloc section can just be dropped.
+Since [1], dma_alloc_coherent() does not accept requests for GFP_COMP
+anymore, even on archs that may be able to fulfill this. Functionality that
+relied on the receive buffer being a compound page broke at that point:
+The SMC-D protocol, that utilizes the ism device driver, passes receive
+buffers to the splice processor in a struct splice_pipe_desc with a
+single entry list of struct pages. As the buffer is no longer a compound
+page, the splice processor now rejects requests to handle more than a
+page worth of data.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230915171623.655440-16-ardb@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace dma_alloc_coherent() and allocate a buffer with folio_alloc and
+create a DMA map for it with dma_map_page(). Since only receive buffers
+on ISM devices use DMA, qualify the mapping as FROM_DEVICE.
+Since ISM devices are available on arch s390, only, and on that arch all
+DMA is coherent, there is no need to introduce and export some kind of
+dma_sync_to_cpu() method to be called by the SMC-D protocol layer.
+
+Analogously, replace dma_free_coherent by a two step dma_unmap_page,
+then folio_put to free the receive buffer.
+
+[1] https://lore.kernel.org/all/20221113163535.884299-1-hch@lst.de/
+
+Fixes: c08004eede4b ("s390/ism: don't pass bogus GFP_ flags to dma_alloc_coherent")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/header.S      |   20 --------------------
- arch/x86/boot/setup.ld      |    4 ++--
- arch/x86/boot/tools/build.c |   34 +++++-----------------------------
- 3 files changed, 7 insertions(+), 51 deletions(-)
+ drivers/s390/net/ism_drv.c | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -154,26 +154,6 @@ section_table:
- 		IMAGE_SCN_MEM_READ		| \
- 		IMAGE_SCN_MEM_EXECUTE		# Characteristics
- 
--	#
--	# The EFI application loader requires a relocation section
--	# because EFI applications must be relocatable. The .reloc
--	# offset & size fields are filled in by build.c.
--	#
--	.ascii	".reloc"
--	.byte	0
--	.byte	0
--	.long	0
--	.long	0
--	.long	0				# SizeOfRawData
--	.long	0				# PointerToRawData
--	.long	0				# PointerToRelocations
--	.long	0				# PointerToLineNumbers
--	.word	0				# NumberOfRelocations
--	.word	0				# NumberOfLineNumbers
--	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
--		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
--
- #ifdef CONFIG_EFI_MIXED
- 	#
- 	# The offset & size fields are filled in by build.c.
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -40,8 +40,8 @@ SECTIONS
- 		setup_sig = .;
- 		LONG(0x5a5aaa55)
- 
--		/* Reserve some extra space for the reloc and compat sections */
--		setup_size = ALIGN(ABSOLUTE(.) + 64, 512);
-+		/* Reserve some extra space for the compat section */
-+		setup_size = ALIGN(ABSOLUTE(.) + 32, 512);
- 		setup_sects = ABSOLUTE(setup_size / 512);
- 	}
- 
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -47,7 +47,6 @@ typedef unsigned int   u32;
- /* This must be large enough to hold the entire setup */
- u8 buf[SETUP_SECT_MAX*512];
- 
--#define PECOFF_RELOC_RESERVE 0x20
- #define PECOFF_COMPAT_RESERVE 0x20
- 
- static unsigned long efi32_pe_entry;
-@@ -180,24 +179,13 @@ static void update_pecoff_section_header
- 	update_pecoff_section_header_fields(section_name, offset, size, size, offset);
- }
- 
--static void update_pecoff_setup_and_reloc(unsigned int size)
-+static void update_pecoff_setup(unsigned int size)
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index 81aabbfbbe2ca..622a61f8a3b84 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -291,13 +291,16 @@ static int ism_read_local_gid(struct ism_dev *ism)
+ static void ism_free_dmb(struct ism_dev *ism, struct ism_dmb *dmb)
  {
- 	u32 setup_offset = 0x200;
--	u32 reloc_offset = size - PECOFF_RELOC_RESERVE - PECOFF_COMPAT_RESERVE;
--#ifdef CONFIG_EFI_MIXED
--	u32 compat_offset = reloc_offset + PECOFF_RELOC_RESERVE;
--#endif
--	u32 setup_size = reloc_offset - setup_offset;
-+	u32 compat_offset = size - PECOFF_COMPAT_RESERVE;
-+	u32 setup_size = compat_offset - setup_offset;
- 
- 	update_pecoff_section_header(".setup", setup_offset, setup_size);
--	update_pecoff_section_header(".reloc", reloc_offset, PECOFF_RELOC_RESERVE);
--
--	/*
--	 * Modify .reloc section contents with a single entry. The
--	 * relocation is applied to offset 10 of the relocation section.
--	 */
--	put_unaligned_le32(reloc_offset + 10, &buf[reloc_offset]);
--	put_unaligned_le32(10, &buf[reloc_offset + 4]);
- 
- #ifdef CONFIG_EFI_MIXED
- 	update_pecoff_section_header(".compat", compat_offset, PECOFF_COMPAT_RESERVE);
-@@ -214,21 +202,10 @@ static void update_pecoff_setup_and_relo
- #endif
+ 	clear_bit(dmb->sba_idx, ism->sba_bitmap);
+-	dma_free_coherent(&ism->pdev->dev, dmb->dmb_len,
+-			  dmb->cpu_addr, dmb->dma_addr);
++	dma_unmap_page(&ism->pdev->dev, dmb->dma_addr, dmb->dmb_len,
++		       DMA_FROM_DEVICE);
++	folio_put(virt_to_folio(dmb->cpu_addr));
  }
  
--static int reserve_pecoff_reloc_section(int c)
--{
--	/* Reserve 0x20 bytes for .reloc section */
--	memset(buf+c, 0, PECOFF_RELOC_RESERVE);
--	return PECOFF_RELOC_RESERVE;
--}
--
- #else
+ static int ism_alloc_dmb(struct ism_dev *ism, struct ism_dmb *dmb)
+ {
++	struct folio *folio;
+ 	unsigned long bit;
++	int rc;
  
--static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
-+static inline void update_pecoff_setup(unsigned int size) {}
+ 	if (PAGE_ALIGN(dmb->dmb_len) > dma_get_max_seg_size(&ism->pdev->dev))
+ 		return -EINVAL;
+@@ -314,14 +317,30 @@ static int ism_alloc_dmb(struct ism_dev *ism, struct ism_dmb *dmb)
+ 	    test_and_set_bit(dmb->sba_idx, ism->sba_bitmap))
+ 		return -EINVAL;
  
--static inline int reserve_pecoff_reloc_section(int c)
--{
--	return 0;
--}
- #endif /* CONFIG_EFI_STUB */
+-	dmb->cpu_addr = dma_alloc_coherent(&ism->pdev->dev, dmb->dmb_len,
+-					   &dmb->dma_addr,
+-					   GFP_KERNEL | __GFP_NOWARN |
+-					   __GFP_NOMEMALLOC | __GFP_NORETRY);
+-	if (!dmb->cpu_addr)
+-		clear_bit(dmb->sba_idx, ism->sba_bitmap);
++	folio = folio_alloc(GFP_KERNEL | __GFP_NOWARN | __GFP_NOMEMALLOC |
++			    __GFP_NORETRY, get_order(dmb->dmb_len));
  
- static int reserve_pecoff_compat_section(int c)
-@@ -307,7 +284,6 @@ int main(int argc, char ** argv)
- 	fclose(file);
+-	return dmb->cpu_addr ? 0 : -ENOMEM;
++	if (!folio) {
++		rc = -ENOMEM;
++		goto out_bit;
++	}
++
++	dmb->cpu_addr = folio_address(folio);
++	dmb->dma_addr = dma_map_page(&ism->pdev->dev,
++				     virt_to_page(dmb->cpu_addr), 0,
++				     dmb->dmb_len, DMA_FROM_DEVICE);
++	if (dma_mapping_error(&ism->pdev->dev, dmb->dma_addr)) {
++		rc = -ENOMEM;
++		goto out_free;
++	}
++
++	return 0;
++
++out_free:
++	kfree(dmb->cpu_addr);
++out_bit:
++	clear_bit(dmb->sba_idx, ism->sba_bitmap);
++	return rc;
+ }
  
- 	c += reserve_pecoff_compat_section(c);
--	c += reserve_pecoff_reloc_section(c);
- 
- 	/* Pad unused space with zeros */
- 	setup_sectors = (c + 511) / 512;
-@@ -316,7 +292,7 @@ int main(int argc, char ** argv)
- 	i = setup_sectors*512;
- 	memset(buf+c, 0, i-c);
- 
--	update_pecoff_setup_and_reloc(i);
-+	update_pecoff_setup(i);
- 
- 	/* Open and stat the kernel file */
- 	fd = open(argv[2], O_RDONLY);
+ int ism_register_dmb(struct ism_dev *ism, struct ism_dmb *dmb,
+-- 
+2.43.0
+
 
 
 
