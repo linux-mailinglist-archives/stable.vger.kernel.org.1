@@ -1,121 +1,130 @@
-Return-Path: <stable+bounces-40551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC8B8ADC90
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 06:02:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF18B8ADCF9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 06:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77BB51C21559
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 04:02:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A48C7283101
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 04:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4EA1CAA2;
-	Tue, 23 Apr 2024 04:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB1820322;
+	Tue, 23 Apr 2024 04:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jvdsn.com header.i=@jvdsn.com header.b="NeVqRsmq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="le/Pv/qX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.jvdsn.com (smtp.jvdsn.com [129.153.194.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B621946B;
-	Tue, 23 Apr 2024 04:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.153.194.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584EB1CAB3;
+	Tue, 23 Apr 2024 04:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713844968; cv=none; b=OqNjiC4JT/H00TKolkgVKOBTKa8qpZxEJq79kyvGrD7YhUhv1hvaf0wRUTncyzvaTLSNvu9byX5DmjZXrUPdWeLHrqXDrfpl95NNcn0naAYcWYOv524ASpmOTu/qxTPb7OXlrRamppXhBLiNS8wvEe6LYkPAX8pr4dE/8UvpWVE=
+	t=1713848154; cv=none; b=YAI7VeOIskTlQoJr0dkE4SIkHRzT/gq/nosGvkjBBR0V8etm3he1i1R2LVs9QQOUbiDsZ+mgCNWqJD50NkP42lOvPKwTv9vFeyKKTT4Bu83qhpmtzysxEGqTI8xx9jMZ6vuZiYMI4yVJ1CeEb0VlUT1UnlFrRjKIaCCb6MZVINA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713844968; c=relaxed/simple;
-	bh=vhzq0N45gGQV1PgabGARl3LmJh7oOAEKzl/9R6dIHj4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jImKVjGxlVK1ro2P853qCNpDTPijPPrPftgTzDqgwxNRUcb97KsilLc5fqT5DkhvNK6/noLyJIQfmn4yti4YJZna3nnG+cOEhiO8612ybfHhO3mpm1zghScVGpo41I/B+P7gfmkHgVKBDvgplSrGey+ul7EVBFkofTmNAph1SB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jvdsn.com; spf=pass smtp.mailfrom=jvdsn.com; dkim=pass (2048-bit key) header.d=jvdsn.com header.i=@jvdsn.com header.b=NeVqRsmq; arc=none smtp.client-ip=129.153.194.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jvdsn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvdsn.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=jvdsn.com; s=mail;
-	t=1713844960; bh=vhzq0N45gGQV1PgabGARl3LmJh7oOAEKzl/9R6dIHj4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NeVqRsmqAo4YjlmHAr8CFyo8V3qZ5HYT2nuCPv4h+1WHrz0wzEMgFzDYmVvhGSXOm
-	 QPWtyvNBgygbzfwN+9q8rxcusGmPc6oJ6OdHm0tflfHqvhxlPNYDs2G8JAgXYRYivR
-	 NreF0xCg3WRWITVJgXRo48MSC/b24MCIFuewfQBsfniyWAHo5+IG4cuBT45dKiFeA8
-	 eZnlZ5Tjy21FU+TNqN5M+NZE+JxyZbWrkUY63ftOndka0a5NZyq+0Xpd+pDeqOj6ct
-	 pLVUpY95DvDq2jHUI1c1/TvGCGi8rXpRBDJBaRNrbM2yMZWeoy2mvsWAS+CeUfIjh7
-	 G55dnRhV4otmg==
-Message-ID: <908bc808-f8bd-4cc2-8644-c6c84e8cd4ea@jvdsn.com>
-Date: Mon, 22 Apr 2024 23:02:38 -0500
+	s=arc-20240116; t=1713848154; c=relaxed/simple;
+	bh=puryQ1J6mzWbCrUfIOEYUOuYeQHliVuNmWN99eIePwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b109HJHGIDbifzIPlkC5K8UgwXKspwDf2Rw0SNNNALaGHu8JVcP6dtsHuw9n03HOMYxAtBkFP1oMbxdMpVq2FoU0ukZaGsdmZSBCoz8dKhh2mcRM7/2DlOgnNgwgqdkU5KHnLKrpP54tUV6UqWE5tCMElC0tieIpzifTGQMK3dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=le/Pv/qX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F34BC116B1;
+	Tue, 23 Apr 2024 04:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713848153;
+	bh=puryQ1J6mzWbCrUfIOEYUOuYeQHliVuNmWN99eIePwQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=le/Pv/qXNH6cmU/bEapqQld8Xy6qptw1W4yy3w76kNBPQoyRaCQ0eDU8aW4OhYWvQ
+	 5Mw11o+v7XwagPHZlhU0O3PzlDxaSNWLya2r6tfJ2eLh6f061eRrKx2Aax9CCNIi40
+	 9btXUZVsTznHsEP/H1yEccKQOxUkoFa5bdqrxukAQowOZhhLU7AzfKPatKfViNJz8F
+	 YlPKOkmW98paCxbsin3DxJ2//NPjoEEvFPmVbXH0uiYwYiMJb0X4DKvMA+EqLHRt7z
+	 uXd8GQaU2PNSFL2wkl7+gq+reYJfXzAQ0Hi/4hMHQK4jllydhVPYg3fUcJ0p+39rmQ
+	 BWvJQ5CtWZjFA==
+From: Song Liu <song@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: kernel-team@meta.com,
+	Song Liu <song@kernel.org>,
+	stable@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH] arch/Kconfig: Move SPECULATION_MITIGATIONS to arch/Kconfig
+Date: Mon, 22 Apr 2024 21:55:48 -0700
+Message-ID: <20240423045548.1324969-1-song@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] KEYS: asymmetric: Add missing dependencies of
- FIPS_SIGNATURE_SELFTEST
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
- stable@vger.kernel.org, Simo Sorce <simo@redhat.com>,
- David Howells <dhowells@redhat.com>,
- kernel test robot <oliver.sang@intel.com>
-References: <20240422211041.322370-1-ebiggers@kernel.org>
-Content-Language: en-US
-From: Joachim Vandersmissen <git@jvdsn.com>
-Autocrypt: addr=joachim@jvdsn.com; keydata=
- xjMEYFm2zhYJKwYBBAHaRw8BAQdAa0ToltLs88MRtcZT3AnfaX4y9z7tNuQumkFnraoacSrN
- KUpvYWNoaW0gVmFuZGVyc21pc3NlbiA8am9hY2hpbUBqdmRzbi5jb20+wosEExYIADMWIQTl
- ppuIImvmYHZckHHNOH6x9cuKxQUCYFm2zgIbAwULCQgHAgYVCAkKCwIFFgIDAQAACgkQzTh+
- sfXLisVD7wEAufvtZXIMlofHV5P3O4Cj+J/npvpmxnNPBqd+2AdJ8GAA+wS1j7TvvtPhTccG
- DYXZbrGlvTrCrGyGdTRdK0ZcTgQLzjgEYFm2zhIKKwYBBAGXVQEFAQEHQHUI004BPYxgvmBd
- PTzZYgyko/t3ZlPeWcSQen0JEOZ2AwEIB8J4BBgWCAAgFiEE5aabiCJr5mB2XJBxzTh+sfXL
- isUFAmBZts4CGwwACgkQzTh+sfXLisVlRQD/XXtpe2kyEJ4rkRHNxS/0yHi4B26uyyutGaZN
- t/aaUDQA/RweY9tHblOuDvCCMnRSI+HDambm+2OgKwe45MXNdssK
-In-Reply-To: <20240422211041.322370-1-ebiggers@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Eric,
+SPECULATION_MITIGATIONS is currently defined only for x86. As a result,
+IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) is always false for other
+archs. f337a6a21e2f effectively set "mitigations=off" by default on
+non-x86 archs, which is not desired behavior. Jakub observed this
+change when running bpf selftests on s390 and arm64.
 
-On 4/22/24 4:10 PM, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
->
-> Since the signature self-test uses RSA and SHA-256, it must only be
-> enabled when those algorithms are enabled.  Otherwise it fails and
-> panics the kernel on boot-up.
+Fix this by moving SPECULATION_MITIGATIONS to arch/Kconfig so that it is
+available in all archs and thus can be used safely in kernel/cpu.c
 
-I actually submitted two related patch recently which change the 
-structure of the PKCS#7 self-tests and add an ECDSA self-test. See 
-"[PATCH v2 1/2] certs: Move RSA self-test data to separate file" and 
-"[PATCH v2 2/2] certs: Add ECDSA signature verification self-test" on 
-2024-04-20. The explicit dependency on CRYPTO_RSA shouldn't be necessary 
-with those patches (I think).
+Fixes: f337a6a21e2f ("x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n")
+Cc: stable@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+---
+ arch/Kconfig     | 10 ++++++++++
+ arch/x86/Kconfig | 10 ----------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-However, I didn't consider CRYPTO_SHA256 there. I think it can remain 
-since both the RSA and proposed ECDSA self-tests use SHA-256.
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 9f066785bb71..8f4af75005f8 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -1609,4 +1609,14 @@ config CC_HAS_SANE_FUNCTION_ALIGNMENT
+ 	# strict alignment always, even with -falign-functions.
+ 	def_bool CC_HAS_MIN_FUNCTION_ALIGNMENT || CC_IS_CLANG
+ 
++menuconfig SPECULATION_MITIGATIONS
++	bool "Mitigations for speculative execution vulnerabilities"
++	default y
++	help
++	  Say Y here to enable options which enable mitigations for
++	  speculative execution hardware vulnerabilities.
++
++	  If you say N, all mitigations will be disabled. You really
++	  should know what you are doing to say so.
++
+ endmenu
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 39886bab943a..50c890fce5e0 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2486,16 +2486,6 @@ config PREFIX_SYMBOLS
+ 	def_bool y
+ 	depends on CALL_PADDING && !CFI_CLANG
+ 
+-menuconfig SPECULATION_MITIGATIONS
+-	bool "Mitigations for speculative execution vulnerabilities"
+-	default y
+-	help
+-	  Say Y here to enable options which enable mitigations for
+-	  speculative execution hardware vulnerabilities.
+-
+-	  If you say N, all mitigations will be disabled. You really
+-	  should know what you are doing to say so.
+-
+ if SPECULATION_MITIGATIONS
+ 
+ config MITIGATION_PAGE_TABLE_ISOLATION
+-- 
+2.43.0
 
->
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202404221528.51d75177-lkp@intel.com
-> Fixes: 3cde3174eb91 ("certs: Add FIPS selftests")
-> Cc: stable@vger.kernel.org
-> Cc: Simo Sorce <simo@redhat.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
->   crypto/asymmetric_keys/Kconfig | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
-> index 59ec726b7c77..4abc58c55efa 100644
-> --- a/crypto/asymmetric_keys/Kconfig
-> +++ b/crypto/asymmetric_keys/Kconfig
-> @@ -83,7 +83,9 @@ config FIPS_SIGNATURE_SELFTEST
->   	  for FIPS.
->   	depends on KEYS
->   	depends on ASYMMETRIC_KEY_TYPE
->   	depends on PKCS7_MESSAGE_PARSER=X509_CERTIFICATE_PARSER
->   	depends on X509_CERTIFICATE_PARSER
-> +	depends on CRYPTO_RSA
-> +	depends on CRYPTO_SHA256
->   
->   endif # ASYMMETRIC_KEY_TYPE
->
-> base-commit: ed30a4a51bb196781c8058073ea720133a65596f
 
