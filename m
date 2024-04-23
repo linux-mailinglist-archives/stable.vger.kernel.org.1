@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-40889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954568AF97A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33668AFA16
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5266F288690
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E510F1C21B9A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2909714388C;
-	Tue, 23 Apr 2024 21:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17852145323;
+	Tue, 23 Apr 2024 21:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w19UQFs3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVRquKLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC33320B3E;
-	Tue, 23 Apr 2024 21:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA68D143888;
+	Tue, 23 Apr 2024 21:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908533; cv=none; b=M0l0QkZtC1EF6Sy+m+IB27lCfsPjZAq41WQh4IiKIYPvFrYOc1RZ2g2j3YDoGaM+0J6CQrly8iefwAkaztRJGkMj/6t++0XGGQCWaCajRXPAXGMjNcpaEnUtjx//ezRn+bz6vC+x/fkRqjsU8/8SDKsUMSrD2IfMPQ03tQq3s4A=
+	t=1713908631; cv=none; b=kbPhAd0PKzlMEMwBHvHty2vQbMeZyfy68kfZKS73zlrSroYBrlNr/14Vk18rH+URjsaCf5i3C/OhBpIN35akAHHwqezDGVGUsMrfU5c8CmhI/dFmR6gZOu5sE0owqPQFXiqYRl+G+EnprdMvoQwJsjruu0XKsqBC7kH8hDKQ7Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908533; c=relaxed/simple;
-	bh=xA15Qg5eZ86NPEgxjC/cyb17sUXI42YSkxlAhF7NPVs=;
+	s=arc-20240116; t=1713908631; c=relaxed/simple;
+	bh=MfoT0RlPWWbruz5KfyNMTjg0AtOLDXCTaWcdlBywGv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbssvjlgdj5jHo1HZDs8CmBFqx+49rfxaBdM5BAM+X9/ln4PPlEcpybHXlfBmG223h6hJWMdZ8A7j9lCduNqJcHgd0PXnb9Z1/XIeObo/tOU3Wcvq1xiGCJxSXGJjxG67TK9xsKe8sqZSakiOgkFsuqeuFNK1KUd56BFqhi5XHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w19UQFs3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B259FC3277B;
-	Tue, 23 Apr 2024 21:42:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ErQbOUxm8vIHuFZpUo+FGDK+AaJwEOoM2/SEM4RTgaU5gOQZDEMpqrTVGdO5rXAi/Q46eetocZSs1U/b3uNVFVgSA7r4U5dFiaCWiAyNWr/VIBJXowXo6aNRxKHno9+Q+5LqP0Wmru+MDa3wqtcSzE762AJxkZsHj2j7iH4Xk8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVRquKLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02E6C3277B;
+	Tue, 23 Apr 2024 21:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908533;
-	bh=xA15Qg5eZ86NPEgxjC/cyb17sUXI42YSkxlAhF7NPVs=;
+	s=korg; t=1713908631;
+	bh=MfoT0RlPWWbruz5KfyNMTjg0AtOLDXCTaWcdlBywGv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w19UQFs3BW0AxHffoTX2vcenJGYlOKMPFisK7OsIzhYO0TTV5CvtDPtTUy0unEhCb
-	 uzRylDLvtdwWPaaUd+gHrGDWkzdbP+ba6+lPnY0lIaKrbIX/i0p36UFKDbiDnm9tIK
-	 GH0BLUWWPJB0MNtq8l5/eFhV47QsFqi7GZXhg/3s=
+	b=ZVRquKLewkyViWvvfEb0/Cb57vVt0nLZY0k+aE/oaP4YFg1eYmCAVQyzihcyPU1sb
+	 p9uTIq+G3/+GsP7nCjqs34NhTtnIvPcw5o25eB6bKNbj6LISAbdMaA35vlNesVj+Z+
+	 QaFme/kqOIk9WkaUt02g/MFrxRE6HpmnoutQHKLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.8 126/158] KVM: x86: Snapshot if a vCPUs vendor model is AMD vs. Intel compatible
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 6.6 111/158] serial: stm32: Return IRQ_NONE in the ISR if no handling happend
 Date: Tue, 23 Apr 2024 14:39:08 -0700
-Message-ID: <20240423213900.000274338@linuxfoundation.org>
+Message-ID: <20240423213859.352676091@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,119 +58,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit fd706c9b1674e2858766bfbf7430534c2b26fbef upstream.
+commit 13c785323b36b845300b256d0e5963c3727667d7 upstream.
 
-Add kvm_vcpu_arch.is_amd_compatible to cache if a vCPU's vendor model is
-compatible with AMD, i.e. if the vCPU vendor is AMD or Hygon, along with
-helpers to check if a vCPU is compatible AMD vs. Intel.  To handle Intel
-vs. AMD behavior related to masking the LVTPC entry, KVM will need to
-check for vendor compatibility on every PMI injection, i.e. querying for
-AMD will soon be a moderately hot path.
+If there is a stuck irq that the handler doesn't address, returning
+IRQ_HANDLED unconditionally makes it impossible for the irq core to
+detect the problem and disable the irq. So only return IRQ_HANDLED if
+an event was handled.
 
-Note!  This subtly (or maybe not-so-subtly) makes "Intel compatible" KVM's
-default behavior, both if userspace omits (or never sets) CPUID 0x0 and if
-userspace sets a completely unknown vendor.  One could argue that KVM
-should treat such vCPUs as not being compatible with Intel *or* AMD, but
-that would add useless complexity to KVM.
+A stuck irq is still problematic, but with this change at least it only
+makes the UART nonfunctional instead of occupying the (usually only) CPU
+by 100% and so stall the whole machine.
 
-KVM needs to do *something* in the face of vendor specific behavior, and
-so unless KVM conjured up a magic third option, choosing to treat unknown
-vendors as neither Intel nor AMD means that checks on AMD compatibility
-would yield Intel behavior, and checks for Intel compatibility would yield
-AMD behavior.  And that's far worse as it would effectively yield random
-behavior depending on whether KVM checked for AMD vs. Intel vs. !AMD vs.
-!Intel.  And practically speaking, all x86 CPUs follow either Intel or AMD
-architecture, i.e. "supporting" an unknown third architecture adds no
-value.
-
-Deliberately don't convert any of the existing guest_cpuid_is_intel()
-checks, as the Intel side of things is messier due to some flows explicitly
-checking for exactly vendor==Intel, versus some flows assuming anything
-that isn't "AMD compatible" gets Intel behavior.  The Intel code will be
-cleaned up in the future.
-
+Fixes: 48a6092fb41f ("serial: stm32-usart: Add STM32 USART Driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20240405235603.1173076-2-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/5f92603d0dfd8a5b8014b2b10a902d91e0bb881f.1713344161.git.u.kleine-koenig@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm_host.h |    1 +
- arch/x86/kvm/cpuid.c            |    1 +
- arch/x86/kvm/cpuid.h            |   10 ++++++++++
- arch/x86/kvm/mmu/mmu.c          |    2 +-
- arch/x86/kvm/x86.c              |    2 +-
- 5 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/tty/serial/stm32-usart.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -854,6 +854,7 @@ struct kvm_vcpu_arch {
- 	int cpuid_nent;
- 	struct kvm_cpuid_entry2 *cpuid_entries;
- 	struct kvm_hypervisor_cpuid kvm_cpuid;
-+	bool is_amd_compatible;
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -857,6 +857,7 @@ static irqreturn_t stm32_usart_interrupt
+ 	const struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
+ 	u32 sr;
+ 	unsigned int size;
++	irqreturn_t ret = IRQ_NONE;
+ 
+ 	sr = readl_relaxed(port->membase + ofs->isr);
+ 
+@@ -865,11 +866,14 @@ static irqreturn_t stm32_usart_interrupt
+ 	    (sr & USART_SR_TC)) {
+ 		stm32_usart_tc_interrupt_disable(port);
+ 		stm32_usart_rs485_rts_disable(port);
++		ret = IRQ_HANDLED;
+ 	}
+ 
+-	if ((sr & USART_SR_RTOF) && ofs->icr != UNDEF_REG)
++	if ((sr & USART_SR_RTOF) && ofs->icr != UNDEF_REG) {
+ 		writel_relaxed(USART_ICR_RTOCF,
+ 			       port->membase + ofs->icr);
++		ret = IRQ_HANDLED;
++	}
+ 
+ 	if ((sr & USART_SR_WUF) && ofs->icr != UNDEF_REG) {
+ 		/* Clear wake up flag and disable wake up interrupt */
+@@ -878,6 +882,7 @@ static irqreturn_t stm32_usart_interrupt
+ 		stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_WUFIE);
+ 		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
+ 			pm_wakeup_event(tport->tty->dev, 0);
++		ret = IRQ_HANDLED;
+ 	}
  
  	/*
- 	 * FIXME: Drop this macro and use KVM_NR_GOVERNED_FEATURES directly
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -366,6 +366,7 @@ static void kvm_vcpu_after_set_cpuid(str
+@@ -892,6 +897,7 @@ static irqreturn_t stm32_usart_interrupt
+ 			uart_unlock_and_check_sysrq(port);
+ 			if (size)
+ 				tty_flip_buffer_push(tport);
++			ret = IRQ_HANDLED;
+ 		}
+ 	}
  
- 	kvm_update_pv_runtime(vcpu);
+@@ -899,6 +905,7 @@ static irqreturn_t stm32_usart_interrupt
+ 		spin_lock(&port->lock);
+ 		stm32_usart_transmit_chars(port);
+ 		spin_unlock(&port->lock);
++		ret = IRQ_HANDLED;
+ 	}
  
-+	vcpu->arch.is_amd_compatible = guest_cpuid_is_amd_or_hygon(vcpu);
- 	vcpu->arch.maxphyaddr = cpuid_query_maxphyaddr(vcpu);
- 	vcpu->arch.reserved_gpa_bits = kvm_vcpu_reserved_gpa_bits_raw(vcpu);
+ 	/* Receiver timeout irq for DMA RX */
+@@ -908,9 +915,10 @@ static irqreturn_t stm32_usart_interrupt
+ 		uart_unlock_and_check_sysrq(port);
+ 		if (size)
+ 			tty_flip_buffer_push(tport);
++		ret = IRQ_HANDLED;
+ 	}
  
---- a/arch/x86/kvm/cpuid.h
-+++ b/arch/x86/kvm/cpuid.h
-@@ -120,6 +120,16 @@ static inline bool guest_cpuid_is_intel(
- 	return best && is_guest_vendor_intel(best->ebx, best->ecx, best->edx);
+-	return IRQ_HANDLED;
++	return ret;
  }
  
-+static inline bool guest_cpuid_is_amd_compatible(struct kvm_vcpu *vcpu)
-+{
-+	return vcpu->arch.is_amd_compatible;
-+}
-+
-+static inline bool guest_cpuid_is_intel_compatible(struct kvm_vcpu *vcpu)
-+{
-+	return !guest_cpuid_is_amd_compatible(vcpu);
-+}
-+
- static inline int guest_cpuid_family(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_cpuid_entry2 *best;
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4922,7 +4922,7 @@ static void reset_guest_rsvds_bits_mask(
- 				context->cpu_role.base.level, is_efer_nx(context),
- 				guest_can_use(vcpu, X86_FEATURE_GBPAGES),
- 				is_cr4_pse(context),
--				guest_cpuid_is_amd_or_hygon(vcpu));
-+				guest_cpuid_is_amd_compatible(vcpu));
- }
- 
- static void __reset_rsvds_bits_mask_ept(struct rsvd_bits_validate *rsvd_check,
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3422,7 +3422,7 @@ static bool is_mci_status_msr(u32 msr)
- static bool can_set_mci_status(struct kvm_vcpu *vcpu)
- {
- 	/* McStatusWrEn enabled? */
--	if (guest_cpuid_is_amd_or_hygon(vcpu))
-+	if (guest_cpuid_is_amd_compatible(vcpu))
- 		return !!(vcpu->arch.msr_hwcr & BIT_ULL(18));
- 
- 	return false;
+ static void stm32_usart_set_mctrl(struct uart_port *port, unsigned int mctrl)
 
 
 
