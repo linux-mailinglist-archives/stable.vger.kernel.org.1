@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDA08AFA9B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE648AFAC4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF93E1C22070
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7348B2B1BA
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F221482E2;
-	Tue, 23 Apr 2024 21:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BC4146594;
+	Tue, 23 Apr 2024 21:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZiouMWv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYtkvQLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A02143882;
-	Tue, 23 Apr 2024 21:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9258D14600E;
+	Tue, 23 Apr 2024 21:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908734; cv=none; b=ehMHqhBIZJgMFSVqGruuRSFoQAJITZlbfvYJW7igSjNkDsGaN/KZPI/uOP6u7r+R2WXOmNcDcKeKJ7wZpnCC1hjnv7O8YNnpcdUAwm3Fjd+jv1D+p934hDXlQIVm4xyAUcrjvevxO4uwi51/v077QXQ7BBJ6abmYgEXtx64Pv34=
+	t=1713908664; cv=none; b=EdnbicmPuTosyRO1em63gLk9AibpezJrQCLLKXxZ7wlTEqG6luQqR5kPTPvMF6l7ICQV7We4Tmubdz+DKVUTpJElvFwLeIYYmVpVzYlZF9/G0FFw0aFx4x/GXxlM8XckzMlJ9/5TJ9i20/HZJgUPS5NWHPgnzkZ3qPwLPx9v1wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908734; c=relaxed/simple;
-	bh=h4O1h7+5TSYiLWyUg3wFWDxwRhS/QfqQiYT10FJUcBs=;
+	s=arc-20240116; t=1713908664; c=relaxed/simple;
+	bh=CuRpxykkO9JQtN9uipTMTIFm06CUtBvIV6uewmfi7mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azvqHVj/IKdtknpWlTfH65Y5aiqIcXTtAVK4TbHC+rbZw6uQfSyu0LFMC63+P4E9OmNkO0sOMHDDL8gyEaXTNlSv1EQjdNisu7Z3cwVhQgBXXIxCdi9gWxgconIfgfiVdLk3m1fv+R3yEjN5Oe/eKOJ7F0/Z9aecEDH9Eygpr+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZiouMWv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB318C116B1;
-	Tue, 23 Apr 2024 21:45:34 +0000 (UTC)
+	 MIME-Version; b=I4z/4n/sos/iwDd3QKyTNmIgHq7HGlranJAzT5tbQBKjSlqVKvb4x+EPdqYjSinkEF5JtCUprTGUkpe/avc6U3YRrR3ySPwG3t2Ipad6Tr87u9In31e/F0IXfgPzK4njnIYGpbSbB5gSpP5UaYIJFlGoPNtcUMUoHN/ub9L1xqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYtkvQLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6778DC116B1;
+	Tue, 23 Apr 2024 21:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908734;
-	bh=h4O1h7+5TSYiLWyUg3wFWDxwRhS/QfqQiYT10FJUcBs=;
+	s=korg; t=1713908664;
+	bh=CuRpxykkO9JQtN9uipTMTIFm06CUtBvIV6uewmfi7mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZiouMWvAF2aJx9G7kSpvRM+8ztVv6Hg1kRZrlvYZxgvy+Ubwj7iimbq4w9X2DdVz
-	 kqA+KGYCDeO6AxQNCEyofVdoxXtjq1n1hG2DZWUD6rMw52F6x15prkcbcevzwZIv97
-	 kdVxhws5cBHD9S76Gub/W3wYVw0PAMquvrMo5CII=
+	b=pYtkvQLOFlIsdusRy9VFaFw4cOmrKoE1KMZK9X/8v1PCvU2BybUTpHGpZbO1weDep
+	 wjyKf6jt8unk5QU7/s71lrc8ECAFirXPuQGLBs5+cRJvvmjquic6dy3mNb9KbTa9f7
+	 q5IjQ+8K1fYmSlwgr0enwzfGaEou0nwGLq9ZYuvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gil Fine <gil.fine@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.1 102/141] thunderbolt: Fix wake configurations after device unplug
-Date: Tue, 23 Apr 2024 14:39:30 -0700
-Message-ID: <20240423213856.481295294@linuxfoundation.org>
+	Mike Rapoport <rppt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	xiongxin <xiongxin@kylinos.cn>,
+	Yaxiong Tian <tianyaxiong@kylinos.cn>
+Subject: [PATCH 6.6 134/158] arm64: hibernate: Fix level3 translation fault in swsusp_save()
+Date: Tue, 23 Apr 2024 14:39:31 -0700
+Message-ID: <20240423213900.058936630@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Fine <gil.fine@linux.intel.com>
+From: Yaxiong Tian <tianyaxiong@kylinos.cn>
 
-commit c38fa07dc69f0b9e6f43ecab96dc7861a70c827c upstream.
+commit 50449ca66cc5a8cbc64749cf4b9f3d3fc5f4b457 upstream.
 
-Currently we don't configure correctly the wake events after unplug of device
-router. What can happen is that the downstream ports of host router will be
-configured to wake on: USB4-wake and wake-on-disconnect, but not on
-wake-on-connect. This may cause the later plugged device not to wake the
-domain and fail in enumeration. Fix this by clearing downstream port's "USB4
-Port is Configured" bit, after unplug of a device router.
+On arm64 machines, swsusp_save() faults if it attempts to access
+MEMBLOCK_NOMAP memory ranges. This can be reproduced in QEMU using UEFI
+when booting with rodata=off debug_pagealloc=off and CONFIG_KFENCE=n:
 
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+  Unable to handle kernel paging request at virtual address ffffff8000000000
+  Mem abort info:
+    ESR = 0x0000000096000007
+    EC = 0x25: DABT (current EL), IL = 32 bits
+    SET = 0, FnV = 0
+    EA = 0, S1PTW = 0
+    FSC = 0x07: level 3 translation fault
+  Data abort info:
+    ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+    CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+    GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+  swapper pgtable: 4k pages, 39-bit VAs, pgdp=00000000eeb0b000
+  [ffffff8000000000] pgd=180000217fff9803, p4d=180000217fff9803, pud=180000217fff9803, pmd=180000217fff8803, pte=0000000000000000
+  Internal error: Oops: 0000000096000007 [#1] SMP
+  Internal error: Oops: 0000000096000007 [#1] SMP
+  Modules linked in: xt_multiport ipt_REJECT nf_reject_ipv4 xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c iptable_filter bpfilter rfkill at803x snd_hda_codec_hdmi snd_hda_intel snd_intel_dspcfg dwmac_generic stmmac_platform snd_hda_codec stmmac joydev pcs_xpcs snd_hda_core phylink ppdev lp parport ramoops reed_solomon ip_tables x_tables nls_iso8859_1 vfat multipath linear amdgpu amdxcp drm_exec gpu_sched drm_buddy hid_generic usbhid hid radeon video drm_suballoc_helper drm_ttm_helper ttm i2c_algo_bit drm_display_helper cec drm_kms_helper drm
+  CPU: 0 PID: 3663 Comm: systemd-sleep Not tainted 6.6.2+ #76
+  Source Version: 4e22ed63a0a48e7a7cff9b98b7806d8d4add7dc0
+  Hardware name: Greatwall GW-XXXXXX-XXX/GW-XXXXXX-XXX, BIOS KunLun BIOS V4.0 01/19/2021
+  pstate: 600003c5 (nZCv DAIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : swsusp_save+0x280/0x538
+  lr : swsusp_save+0x280/0x538
+  sp : ffffffa034a3fa40
+  x29: ffffffa034a3fa40 x28: ffffff8000001000 x27: 0000000000000000
+  x26: ffffff8001400000 x25: ffffffc08113e248 x24: 0000000000000000
+  x23: 0000000000080000 x22: ffffffc08113e280 x21: 00000000000c69f2
+  x20: ffffff8000000000 x19: ffffffc081ae2500 x18: 0000000000000000
+  x17: 6666662074736420 x16: 3030303030303030 x15: 3038666666666666
+  x14: 0000000000000b69 x13: ffffff9f89088530 x12: 00000000ffffffea
+  x11: 00000000ffff7fff x10: 00000000ffff7fff x9 : ffffffc08193f0d0
+  x8 : 00000000000bffe8 x7 : c0000000ffff7fff x6 : 0000000000000001
+  x5 : ffffffa0fff09dc8 x4 : 0000000000000000 x3 : 0000000000000027
+  x2 : 0000000000000000 x1 : 0000000000000000 x0 : 000000000000004e
+  Call trace:
+   swsusp_save+0x280/0x538
+   swsusp_arch_suspend+0x148/0x190
+   hibernation_snapshot+0x240/0x39c
+   hibernate+0xc4/0x378
+   state_store+0xf0/0x10c
+   kobj_attr_store+0x14/0x24
+
+The reason is swsusp_save() -> copy_data_pages() -> page_is_saveable()
+-> kernel_page_present() assuming that a page is always present when
+can_set_direct_map() is false (all of rodata_full,
+debug_pagealloc_enabled() and arm64_kfence_can_set_direct_map() false),
+irrespective of the MEMBLOCK_NOMAP ranges. Such MEMBLOCK_NOMAP regions
+should not be saved during hibernation.
+
+This problem was introduced by changes to the pfn_valid() logic in
+commit a7d9f306ba70 ("arm64: drop pfn_valid_within() and simplify
+pfn_valid()").
+
+Similar to other architectures, drop the !can_set_direct_map() check in
+kernel_page_present() so that page_is_savable() skips such pages.
+
+Fixes: a7d9f306ba70 ("arm64: drop pfn_valid_within() and simplify pfn_valid()")
+Cc: <stable@vger.kernel.org> # 5.14.x
+Suggested-by: Mike Rapoport <rppt@kernel.org>
+Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+Co-developed-by: xiongxin <xiongxin@kylinos.cn>
+Signed-off-by: xiongxin <xiongxin@kylinos.cn>
+Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Link: https://lore.kernel.org/r/20240417025248.386622-1-tianyaxiong@kylinos.cn
+[catalin.marinas@arm.com: rework commit message]
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/switch.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ arch/arm64/mm/pageattr.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -2880,22 +2880,29 @@ void tb_switch_unconfigure_link(struct t
- {
- 	struct tb_port *up, *down;
+--- a/arch/arm64/mm/pageattr.c
++++ b/arch/arm64/mm/pageattr.c
+@@ -219,9 +219,6 @@ bool kernel_page_present(struct page *pa
+ 	pte_t *ptep;
+ 	unsigned long addr = (unsigned long)page_address(page);
  
--	if (sw->is_unplugged)
--		return;
- 	if (!tb_route(sw) || tb_switch_is_icm(sw))
- 		return;
- 
-+	/*
-+	 * Unconfigure downstream port so that wake-on-connect can be
-+	 * configured after router unplug. No need to unconfigure upstream port
-+	 * since its router is unplugged.
-+	 */
- 	up = tb_upstream_port(sw);
--	if (tb_switch_is_usb4(up->sw))
--		usb4_port_unconfigure(up);
--	else
--		tb_lc_unconfigure_port(up);
+-	if (!can_set_direct_map())
+-		return true;
 -
- 	down = up->remote;
- 	if (tb_switch_is_usb4(down->sw))
- 		usb4_port_unconfigure(down);
- 	else
- 		tb_lc_unconfigure_port(down);
-+
-+	if (sw->is_unplugged)
-+		return;
-+
-+	up = tb_upstream_port(sw);
-+	if (tb_switch_is_usb4(up->sw))
-+		usb4_port_unconfigure(up);
-+	else
-+		tb_lc_unconfigure_port(up);
- }
- 
- static void tb_switch_credits_init(struct tb_switch *sw)
+ 	pgdp = pgd_offset_k(addr);
+ 	if (pgd_none(READ_ONCE(*pgdp)))
+ 		return false;
 
 
 
