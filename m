@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE578AFA7F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C668AF989
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D93D3288A2A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99572288DFC
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D44149DF4;
-	Tue, 23 Apr 2024 21:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3C5145354;
+	Tue, 23 Apr 2024 21:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTw/98kj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihohofLd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585191420BE;
-	Tue, 23 Apr 2024 21:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D90420B3E;
+	Tue, 23 Apr 2024 21:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908711; cv=none; b=Xd1WfLoWTEUIfSYWJBJNaqobqwp9hxI+y5PPRJxbJbqzGQ3HhsQ694Q6/Os8zlUxGFJaQjWoaf2LcY9KeB+olt44YKyoHs/3+Q/vAmLNC5aJ9mj5YJMi059tFi1Mx6sf0qkj10BKxULy2IZ0N1ZN2Dl5p+1lc4ISZR8qBlCfMto=
+	t=1713908544; cv=none; b=OdHH0kKacYGt/LvqlgOjNvToISPiSgGor8Uwb8CMSY8Wfaf1zGc7SLKqpAEBvOMuBsBDrimoAiyd1QCIh4zgevnIsnw4MOM9mmSqhmzXe+7pM2d3smFT6XevkaDgKauaA2NzUoJiuR5FcYdblNkWTjSvpimI1Z+FcVWqt0OEsBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908711; c=relaxed/simple;
-	bh=7K5JGgVmz37SZc3zBX2Y6RnF3bR5ssC/2JDX9G4/FX4=;
+	s=arc-20240116; t=1713908544; c=relaxed/simple;
+	bh=NIIO+PizXhQs/ek/JT3Ye6gU0wsbxA3BlxCmmUO5OOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qg2+fuPeNah5fyFvCRCnOeXw859rxez/JyXYhRE7rluJd/oDkJm4NZqNjdzI7OQOQvcgfTb3vOd6d2lx2nGerZUYIcAWAjOw260WsCSQZ84RX0K16g0Yjib/nG9/OPC60xTNfiYrrzD0nzd1M+3xPk5G2tkQmWXO9SntFTt9wtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTw/98kj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD475C32782;
-	Tue, 23 Apr 2024 21:45:10 +0000 (UTC)
+	 MIME-Version; b=GBYYetjXiRLIiwX4n5jUK2jlK9muBaZ/UZF/F2gBXDYE/5IKRK3BGcFy0CJfRkHOmqjx9virAyPPB7AlsPSLk6JIbzdIMiLgtmgniJ7X4G4lA1D/0+IRyLa+ZoQTNX6iskflJZXnfWzZE+HDGMryxkPMsNW8WodpjtC4+KFZgwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihohofLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0117FC32786;
+	Tue, 23 Apr 2024 21:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908710;
-	bh=7K5JGgVmz37SZc3zBX2Y6RnF3bR5ssC/2JDX9G4/FX4=;
+	s=korg; t=1713908544;
+	bh=NIIO+PizXhQs/ek/JT3Ye6gU0wsbxA3BlxCmmUO5OOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTw/98kjsrR/iqu7chcWkQUiAYrhHxZPxBy7pogC0QuhQ3Xolt3qzSecE02TL2X2C
-	 oFO/9LanosyuMK4Pzp3eI56MVs/hkfUFpBzzZmaf/hC2ZSVa097XOAG/TvQSEnUf8i
-	 4ZUeJLdoPjYuuS38GU7r2bVejIFfv5eFzWKJ93kE=
+	b=ihohofLdS3OjZ2vnpSZp0BdgANaSndPezlsPZIqF8Q7piI+6BW4WIbLbvTwMzwsEf
+	 5+rPofgSRg1j7pCcxD2XvD7XGEtWxJcBXu87pPNf7tsa05ALYEQv5Xt3E89lZG+24w
+	 4q3XGGEdKA+6/jrMMpTT89zb/lWgPOFvTZskX06g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kelvin Cao <kelvin.cao@microchip.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/141] PCI: switchtec: Add support for PCIe Gen5 devices
+	Vanillan Wang <vanillanwang@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.8 113/158] USB: serial: option: add Rolling RW101-GL and RW135-GL support
 Date: Tue, 23 Apr 2024 14:38:55 -0700
-Message-ID: <20240423213855.409264809@linuxfoundation.org>
+Message-ID: <20240423213859.612290968@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,174 +61,180 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kelvin Cao <kelvin.cao@microchip.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-[ Upstream commit 0fb53e64705ae0fabd9593102e0f0e6812968802 ]
+commit 311f97a4c7c22a01f8897bddf00428dfd0668e79 upstream.
 
-Advertise support of Gen5 devices in the driver's device ID table and
-add the same IDs for the switchtec quirks. Also update driver code to
-accommodate them.
+Update the USB serial option driver support for the Rolling
+LTE modules.
 
-Link: https://lore.kernel.org/r/20230624000003.2315364-3-kelvin.cao@microchip.com
-Signed-off-by: Kelvin Cao <kelvin.cao@microchip.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- VID:PID 33f8:01a2, RW101-GL for laptop debug M.2 cards(with MBIM
+interface for /Linux/Chrome OS)
+0x01a2: mbim, diag, at, pipe
+- VID:PID 33f8:01a3, RW101-GL for laptop debug M.2 cards(with MBIM
+interface for /Linux/Chrome OS)
+0x01a3: mbim, pipe
+- VID:PID 33f8:01a4, RW101-GL for laptop debug M.2 cards(with MBIM
+interface for /Linux/Chrome OS)
+0x01a4: mbim, diag, at, pipe
+- VID:PID 33f8:0104, RW101-GL for laptop debug M.2 cards(with RMNET
+interface for /Linux/Chrome OS)
+0x0104: RMNET, diag, at, pipe
+- VID:PID 33f8:0115, RW135-GL for laptop debug M.2 cards(with MBIM
+interface for /Linux/Chrome OS)
+0x0115: MBIM, diag, at, pipe
+
+Here are the outputs of usb-devices:
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a2 Rev=05.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling Module
+S:  SerialNumber=12345678
+C:  #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a3 Rev=05.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling Module
+S:  SerialNumber=12345678
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 17 Spd=480 MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a4 Rev=05.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling Module
+S:  SerialNumber=12345678
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0104 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling Module
+S:  SerialNumber=ba2eb033
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0115 Rev=05.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling Module
+S:  SerialNumber=12345678
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c           | 36 ++++++++++++++++++++++++++++
- drivers/pci/switch/switchtec.c | 44 ++++++++++++++++++++++++++++++----
- include/linux/switchtec.h      |  1 +
- 3 files changed, 77 insertions(+), 4 deletions(-)
+ drivers/usb/serial/option.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 5aca621dd1c22..7e5b3186db78b 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5820,6 +5820,42 @@ SWITCHTEC_QUIRK(0x4428);  /* PSXA 28XG4 */
- SWITCHTEC_QUIRK(0x4552);  /* PAXA 52XG4 */
- SWITCHTEC_QUIRK(0x4536);  /* PAXA 36XG4 */
- SWITCHTEC_QUIRK(0x4528);  /* PAXA 28XG4 */
-+SWITCHTEC_QUIRK(0x5000);  /* PFX 100XG5 */
-+SWITCHTEC_QUIRK(0x5084);  /* PFX 84XG5 */
-+SWITCHTEC_QUIRK(0x5068);  /* PFX 68XG5 */
-+SWITCHTEC_QUIRK(0x5052);  /* PFX 52XG5 */
-+SWITCHTEC_QUIRK(0x5036);  /* PFX 36XG5 */
-+SWITCHTEC_QUIRK(0x5028);  /* PFX 28XG5 */
-+SWITCHTEC_QUIRK(0x5100);  /* PSX 100XG5 */
-+SWITCHTEC_QUIRK(0x5184);  /* PSX 84XG5 */
-+SWITCHTEC_QUIRK(0x5168);  /* PSX 68XG5 */
-+SWITCHTEC_QUIRK(0x5152);  /* PSX 52XG5 */
-+SWITCHTEC_QUIRK(0x5136);  /* PSX 36XG5 */
-+SWITCHTEC_QUIRK(0x5128);  /* PSX 28XG5 */
-+SWITCHTEC_QUIRK(0x5200);  /* PAX 100XG5 */
-+SWITCHTEC_QUIRK(0x5284);  /* PAX 84XG5 */
-+SWITCHTEC_QUIRK(0x5268);  /* PAX 68XG5 */
-+SWITCHTEC_QUIRK(0x5252);  /* PAX 52XG5 */
-+SWITCHTEC_QUIRK(0x5236);  /* PAX 36XG5 */
-+SWITCHTEC_QUIRK(0x5228);  /* PAX 28XG5 */
-+SWITCHTEC_QUIRK(0x5300);  /* PFXA 100XG5 */
-+SWITCHTEC_QUIRK(0x5384);  /* PFXA 84XG5 */
-+SWITCHTEC_QUIRK(0x5368);  /* PFXA 68XG5 */
-+SWITCHTEC_QUIRK(0x5352);  /* PFXA 52XG5 */
-+SWITCHTEC_QUIRK(0x5336);  /* PFXA 36XG5 */
-+SWITCHTEC_QUIRK(0x5328);  /* PFXA 28XG5 */
-+SWITCHTEC_QUIRK(0x5400);  /* PSXA 100XG5 */
-+SWITCHTEC_QUIRK(0x5484);  /* PSXA 84XG5 */
-+SWITCHTEC_QUIRK(0x5468);  /* PSXA 68XG5 */
-+SWITCHTEC_QUIRK(0x5452);  /* PSXA 52XG5 */
-+SWITCHTEC_QUIRK(0x5436);  /* PSXA 36XG5 */
-+SWITCHTEC_QUIRK(0x5428);  /* PSXA 28XG5 */
-+SWITCHTEC_QUIRK(0x5500);  /* PAXA 100XG5 */
-+SWITCHTEC_QUIRK(0x5584);  /* PAXA 84XG5 */
-+SWITCHTEC_QUIRK(0x5568);  /* PAXA 68XG5 */
-+SWITCHTEC_QUIRK(0x5552);  /* PAXA 52XG5 */
-+SWITCHTEC_QUIRK(0x5536);  /* PAXA 36XG5 */
-+SWITCHTEC_QUIRK(0x5528);  /* PAXA 28XG5 */
- 
- /*
-  * The PLX NTB uses devfn proxy IDs to move TLPs between NT endpoints.
-diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
-index f0322e9dbee93..332af6938d7fd 100644
---- a/drivers/pci/switch/switchtec.c
-+++ b/drivers/pci/switch/switchtec.c
-@@ -372,7 +372,7 @@ static ssize_t field ## _show(struct device *dev, \
- 	if (stdev->gen == SWITCHTEC_GEN3) \
- 		return io_string_show(buf, &si->gen3.field, \
- 				      sizeof(si->gen3.field)); \
--	else if (stdev->gen == SWITCHTEC_GEN4) \
-+	else if (stdev->gen >= SWITCHTEC_GEN4) \
- 		return io_string_show(buf, &si->gen4.field, \
- 				      sizeof(si->gen4.field)); \
- 	else \
-@@ -663,7 +663,7 @@ static int ioctl_flash_info(struct switchtec_dev *stdev,
- 	if (stdev->gen == SWITCHTEC_GEN3) {
- 		info.flash_length = ioread32(&fi->gen3.flash_length);
- 		info.num_partitions = SWITCHTEC_NUM_PARTITIONS_GEN3;
--	} else if (stdev->gen == SWITCHTEC_GEN4) {
-+	} else if (stdev->gen >= SWITCHTEC_GEN4) {
- 		info.flash_length = ioread32(&fi->gen4.flash_length);
- 		info.num_partitions = SWITCHTEC_NUM_PARTITIONS_GEN4;
- 	} else {
-@@ -870,7 +870,7 @@ static int ioctl_flash_part_info(struct switchtec_dev *stdev,
- 		ret = flash_part_info_gen3(stdev, &info);
- 		if (ret)
- 			return ret;
--	} else if (stdev->gen == SWITCHTEC_GEN4) {
-+	} else if (stdev->gen >= SWITCHTEC_GEN4) {
- 		ret = flash_part_info_gen4(stdev, &info);
- 		if (ret)
- 			return ret;
-@@ -1606,7 +1606,7 @@ static int switchtec_init_pci(struct switchtec_dev *stdev,
- 
- 	if (stdev->gen == SWITCHTEC_GEN3)
- 		part_id = &stdev->mmio_sys_info->gen3.partition_id;
--	else if (stdev->gen == SWITCHTEC_GEN4)
-+	else if (stdev->gen >= SWITCHTEC_GEN4)
- 		part_id = &stdev->mmio_sys_info->gen4.partition_id;
- 	else
- 		return -EOPNOTSUPP;
-@@ -1797,6 +1797,42 @@ static const struct pci_device_id switchtec_pci_tbl[] = {
- 	SWITCHTEC_PCI_DEVICE(0x4552, SWITCHTEC_GEN4),  /* PAXA 52XG4 */
- 	SWITCHTEC_PCI_DEVICE(0x4536, SWITCHTEC_GEN4),  /* PAXA 36XG4 */
- 	SWITCHTEC_PCI_DEVICE(0x4528, SWITCHTEC_GEN4),  /* PAXA 28XG4 */
-+	SWITCHTEC_PCI_DEVICE(0x5000, SWITCHTEC_GEN5),  /* PFX 100XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5084, SWITCHTEC_GEN5),  /* PFX 84XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5068, SWITCHTEC_GEN5),  /* PFX 68XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5052, SWITCHTEC_GEN5),  /* PFX 52XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5036, SWITCHTEC_GEN5),  /* PFX 36XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5028, SWITCHTEC_GEN5),  /* PFX 28XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5100, SWITCHTEC_GEN5),  /* PSX 100XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5184, SWITCHTEC_GEN5),  /* PSX 84XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5168, SWITCHTEC_GEN5),  /* PSX 68XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5152, SWITCHTEC_GEN5),  /* PSX 52XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5136, SWITCHTEC_GEN5),  /* PSX 36XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5128, SWITCHTEC_GEN5),  /* PSX 28XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5200, SWITCHTEC_GEN5),  /* PAX 100XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5284, SWITCHTEC_GEN5),  /* PAX 84XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5268, SWITCHTEC_GEN5),  /* PAX 68XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5252, SWITCHTEC_GEN5),  /* PAX 52XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5236, SWITCHTEC_GEN5),  /* PAX 36XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5228, SWITCHTEC_GEN5),  /* PAX 28XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5300, SWITCHTEC_GEN5),  /* PFXA 100XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5384, SWITCHTEC_GEN5),  /* PFXA 84XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5368, SWITCHTEC_GEN5),  /* PFXA 68XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5352, SWITCHTEC_GEN5),  /* PFXA 52XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5336, SWITCHTEC_GEN5),  /* PFXA 36XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5328, SWITCHTEC_GEN5),  /* PFXA 28XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5400, SWITCHTEC_GEN5),  /* PSXA 100XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5484, SWITCHTEC_GEN5),  /* PSXA 84XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5468, SWITCHTEC_GEN5),  /* PSXA 68XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5452, SWITCHTEC_GEN5),  /* PSXA 52XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5436, SWITCHTEC_GEN5),  /* PSXA 36XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5428, SWITCHTEC_GEN5),  /* PSXA 28XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5500, SWITCHTEC_GEN5),  /* PAXA 100XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5584, SWITCHTEC_GEN5),  /* PAXA 84XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5568, SWITCHTEC_GEN5),  /* PAXA 68XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5552, SWITCHTEC_GEN5),  /* PAXA 52XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5536, SWITCHTEC_GEN5),  /* PAXA 36XG5 */
-+	SWITCHTEC_PCI_DEVICE(0x5528, SWITCHTEC_GEN5),  /* PAXA 28XG5 */
- 	{0}
- };
- MODULE_DEVICE_TABLE(pci, switchtec_pci_tbl);
-diff --git a/include/linux/switchtec.h b/include/linux/switchtec.h
-index 48fabe36509ee..8d8fac1626bd9 100644
---- a/include/linux/switchtec.h
-+++ b/include/linux/switchtec.h
-@@ -41,6 +41,7 @@ enum {
- enum switchtec_gen {
- 	SWITCHTEC_GEN3,
- 	SWITCHTEC_GEN4,
-+	SWITCHTEC_GEN5,
- };
- 
- struct mrpc_regs {
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2307,6 +2307,14 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
++	{ USB_DEVICE(0x33f8, 0x0104),						/* Rolling RW101-GL (laptop RMNET) */
++	  .driver_info = RSVD(4) | RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a2, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a3, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a4, 0xff),			/* Rolling RW101-GL (laptop MBIM) */
++	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
 
 
 
