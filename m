@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503788AFA72
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064E68AF943
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF8528962D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 394571C24171
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CCF149DE7;
-	Tue, 23 Apr 2024 21:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8419144D07;
+	Tue, 23 Apr 2024 21:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AG7JhRZw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeDo4PWS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38521420BE;
-	Tue, 23 Apr 2024 21:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78301144D0D;
+	Tue, 23 Apr 2024 21:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908700; cv=none; b=YhT0cNJjJyqLESVd5dA1hxoibnLCJ4nMNNlYaSRsODeT6woa1yDWp7Syis6Y27pssKBTtUoNRPItfjUuFiK4p3K7aG48b/JAkC64poXgc3f1w1mEtGQoWLmb9WXO4ppT1NOKH8e6vNQnn6I0CM+LRYVYlcBEZfE9kS+dQyUqnWs=
+	t=1713908496; cv=none; b=r12AeryHmwHQELLfyrxZ9OBrNkkKb03/PHjw06zBky9ref4Ud64ShblL906bk/EfQ79u44P8iu1uff7eN05XUfJEKJJfI2isbJ/xOqn0YVQDqF+bE+FofjHqeunh6POKPdLty+pqCwf/uyO+Im1P9QePlIiX0dHiU01TeAP44N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908700; c=relaxed/simple;
-	bh=WSaTloa8OI7Zm/+7ALURZMX5rCahwdSRLDyRPEcdhy8=;
+	s=arc-20240116; t=1713908496; c=relaxed/simple;
+	bh=2Qv738hF7mYg/PS+doPkQwHk0h7Vpwg0dj1T/AgBeO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nr59bQeH3PTOm1b6sdhvTcQLwCohzXg5qa4urI4L4HaKotXVKQ3Vj5OEPoNNjaidjnUCyPqWgrprw9DfLZ06Ke9jZ+KvqpZcclsYhpS3oeThbOEr8g/7bnZIctvr9PnBkZ9AvLQiIUj9w7CbIMqGIIYvrOaE7ESeLtNLGCcuWOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AG7JhRZw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DB4C3277B;
-	Tue, 23 Apr 2024 21:44:59 +0000 (UTC)
+	 MIME-Version; b=OVvOoCDe3PFRxVOFQr2QwkCPWM+2ku+kLUQgwNLjN2IC7hfoc1W66ajPqaJmz4ZnVH+bUIdh0LMxrSimK064+Ms9Nu8gJ9SeXzhXiESOzj04FvDgWQpkTXF8OPNaIM9YuSoGQThuYVY8ZyQSB4GIz9aDedTs6e2XkiqrOgO3Nbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeDo4PWS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E531C4AF0B;
+	Tue, 23 Apr 2024 21:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908699;
-	bh=WSaTloa8OI7Zm/+7ALURZMX5rCahwdSRLDyRPEcdhy8=;
+	s=korg; t=1713908496;
+	bh=2Qv738hF7mYg/PS+doPkQwHk0h7Vpwg0dj1T/AgBeO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AG7JhRZwBfu4Bwot/uIqxgYEnuq9SUlw+IbxAXycjc1YuTeRhi2tFmhgske/C3Q3B
-	 vXX/Fq17+c1+n7UNdae+6eUJXpgrW13r7Km9uowAiJzFw0aMwmjWPIDvGnUra+AkbX
-	 x5GEPNJ/FBqoJnFUJqlflBm2LWT20KO3n+Rz1Cec=
+	b=ZeDo4PWSO50+/loMxG8cbGaZ9kWsmbyLHYTh4NwqHL5q98yD1tf1FxRGDA3Z4Vs5w
+	 rhvhisTm7zeq+4GQYvs6bwSywtc9XpjJH6/f9u8u+nUp+HRnEaOhYQpa3kNvEcPv6+
+	 bATlNyKjiMy0WHss0d6BYyVwba4oyvxc6vaK97F0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Beaton <mjsbeaton@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 027/141] x86/efistub: Use 1:1 file:memory mapping for PE/COFF .compat section
+	Huayu Zhang <zhanghuayu1233@qq.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 073/158] ALSA: hda/realtek: Fix volumn control of ThinkBook 16P Gen4
 Date: Tue, 23 Apr 2024 14:38:15 -0700
-Message-ID: <20240423213854.194091432@linuxfoundation.org>
+Message-ID: <20240423213858.333205328@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,118 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Huayu Zhang <zhanghuayu1233@qq.com>
 
-[ Commit 1ad55cecf22f05f1c884adf63cc09d3c3e609ebf upstream ]
+[ Upstream commit dca5f4dfa925b51becee65031869e917e6229620 ]
 
-The .compat section is a dummy PE section that contains the address of
-the 32-bit entrypoint of the 64-bit kernel image if it is bootable from
-32-bit firmware (i.e., CONFIG_EFI_MIXED=y)
+change HDA & AMP configuration from ALC287_FIXUP_CS35L41_I2C_2 to
+ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD for ThinkBook 16P Gen4
+models to fix volumn control issue (cannot fully mute).
 
-This section is only 8 bytes in size and is only referenced from the
-loader, and so it is placed at the end of the memory view of the image,
-to avoid the need for padding it to 4k, which is required for sections
-appearing in the middle of the image.
-
-Unfortunately, this violates the PE/COFF spec, and even if most EFI
-loaders will work correctly (including the Tianocore reference
-implementation), PE loaders do exist that reject such images, on the
-basis that both the file and memory views of the file contents should be
-described by the section headers in a monotonically increasing manner
-without leaving any gaps.
-
-So reorganize the sections to avoid this issue. This results in a slight
-padding overhead (< 4k) which can be avoided if desired by disabling
-CONFIG_EFI_MIXED (which is only needed in rare cases these days)
-
-Fixes: 3e3eabe26dc8 ("x86/boot: Increase section and file alignment to 4k/512")
-Reported-by: Mike Beaton <mjsbeaton@gmail.com>
-Link: https://lkml.kernel.org/r/CAHzAAWQ6srV6LVNdmfbJhOwhBw5ZzxxZZ07aHt9oKkfYAdvuQQ%40mail.gmail.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Huayu Zhang <zhanghuayu1233@qq.com>
+Fixes: 6214e24cae9b ("ALSA: hda/realtek: Add quirks for Lenovo Thinkbook 16P laptops")
+Message-ID: <tencent_37EB880C5E5BD99D21C16B288115C4545F06@qq.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/header.S |   14 ++++++--------
- arch/x86/boot/setup.ld |    6 +++---
- 2 files changed, 9 insertions(+), 11 deletions(-)
+ sound/pci/hda/patch_realtek.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -105,8 +105,7 @@ extra_header_fields:
- 	.word	0				# MinorSubsystemVersion
- 	.long	0				# Win32VersionValue
- 
--	.long	setup_size + ZO__end + pecompat_vsize
--						# SizeOfImage
-+	.long	setup_size + ZO__end		# SizeOfImage
- 
- 	.long	salign				# SizeOfHeaders
- 	.long	0				# CheckSum
-@@ -142,7 +141,7 @@ section_table:
- 	.ascii	".setup"
- 	.byte	0
- 	.byte	0
--	.long	setup_size - salign 		# VirtualSize
-+	.long	pecompat_fstart - salign 	# VirtualSize
- 	.long	salign				# VirtualAddress
- 	.long	pecompat_fstart - salign	# SizeOfRawData
- 	.long	salign				# PointerToRawData
-@@ -155,8 +154,8 @@ section_table:
- #ifdef CONFIG_EFI_MIXED
- 	.asciz	".compat"
- 
--	.long	8				# VirtualSize
--	.long	setup_size + ZO__end		# VirtualAddress
-+	.long	pecompat_fsize			# VirtualSize
-+	.long	pecompat_fstart			# VirtualAddress
- 	.long	pecompat_fsize			# SizeOfRawData
- 	.long	pecompat_fstart			# PointerToRawData
- 
-@@ -171,17 +170,16 @@ section_table:
- 	 * modes this image supports.
- 	 */
- 	.pushsection ".pecompat", "a", @progbits
--	.balign	falign
--	.set	pecompat_vsize, salign
-+	.balign	salign
- 	.globl	pecompat_fstart
- pecompat_fstart:
- 	.byte	0x1				# Version
- 	.byte	8				# Size
- 	.word	IMAGE_FILE_MACHINE_I386		# PE machine type
- 	.long	setup_size + ZO_efi32_pe_entry	# Entrypoint
-+	.byte	0x0				# Sentinel
- 	.popsection
- #else
--	.set	pecompat_vsize, 0
- 	.set	pecompat_fstart, setup_size
- #endif
- 	.ascii	".text"
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -24,6 +24,9 @@ SECTIONS
- 	.text		: { *(.text .text.*) }
- 	.text32		: { *(.text32) }
- 
-+	.pecompat	: { *(.pecompat) }
-+	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
-+
- 	. = ALIGN(16);
- 	.rodata		: { *(.rodata*) }
- 
-@@ -36,9 +39,6 @@ SECTIONS
- 	. = ALIGN(16);
- 	.data		: { *(.data*) }
- 
--	.pecompat	: { *(.pecompat) }
--	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
--
- 	.signature	: {
- 		setup_sig = .;
- 		LONG(0x5a5aaa55)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 8c2467ed127ee..a57f5a02b498d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10381,8 +10381,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38a8, "Y780P AMD VECO dual", ALC287_FIXUP_TAS2781_I2C),
+-	SND_PCI_QUIRK(0x17aa, 0x38a9, "Thinkbook 16P", ALC287_FIXUP_CS35L41_I2C_2),
+-	SND_PCI_QUIRK(0x17aa, 0x38ab, "Thinkbook 16P", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x17aa, 0x38a9, "Thinkbook 16P", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
++	SND_PCI_QUIRK(0x17aa, 0x38ab, "Thinkbook 16P", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+ 	SND_PCI_QUIRK(0x17aa, 0x38b4, "Legion Slim 7 16IRH8", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x38b5, "Legion Slim 7 16IRH8", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x38b6, "Legion Slim 7 16APH8", ALC287_FIXUP_CS35L41_I2C_2),
+-- 
+2.43.0
+
 
 
 
