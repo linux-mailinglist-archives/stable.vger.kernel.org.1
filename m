@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-40939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526E38AF9AD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE558AF908
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 088831F27299
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40CCB1C226EB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426E11448E2;
-	Tue, 23 Apr 2024 21:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F8B143890;
+	Tue, 23 Apr 2024 21:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZi797Uq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uj8Klp/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A2085274;
-	Tue, 23 Apr 2024 21:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F1220B3E;
+	Tue, 23 Apr 2024 21:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908568; cv=none; b=n68Y8kIoWU/fJ5y+bm1wwIJfvTE1mSRhYNP8+K1LcMxEsuSJ206KwhDWSzaKgcCZE1+W4om2iW3aOM0ywXU4PvHSW1uCMR0nxmOZdChTwqmmDIXp2hexVk3nbnfJDTHGAsNh4xEfxxn4dc8dfqqnVZhTMieYNhKJuunR6zm4qN8=
+	t=1713908458; cv=none; b=fSuVF6GSWGvELYoShrjMsgaz9YpFN+W05bpssP6YjPqxKi/dXqNmGNw2rW+L4G3nDPAGRkhry4A2rQRhf2jyCvHd11mmTAdDIPd+bVEcLPML19NseOy+H9irrZhJA6QDTJgYaYW9uShNWb53F1gM6UpigfR5fXfxeuz3qWMpHvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908568; c=relaxed/simple;
-	bh=5qfcQsJ11VJDHWcL6albcm6k/9d62aZm5FogVVVdAxc=;
+	s=arc-20240116; t=1713908458; c=relaxed/simple;
+	bh=kiYSqaOZPtve26X4nclrugcShxIvqWRaB4mx2+o4W3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFgqShNrFUE7srgDnIBwyTvGHRU+7XDk2WozO2SDFmttCAbKLc4ZFHl6odklhUei3zTmwAUHr81IxJNoleU8CaKKIw23yZwLmYcZRM709h4PE4KSZsdHOaNImyVP0nj/6fMXPlU+Q6oGaoRmdorCe4bnUtRb7M53VS6jIirtOew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZi797Uq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE168C32782;
-	Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
+	 MIME-Version; b=pd708EJYSIB/H4tYhFJ/Q04J92CZAgngWYxHuQc4aAyw/eniDf+a9gbCTxKpZ5akSwEAdnu4s2dVu+xxjq+QZJF7ftXLc4OtDd691KhJoP2f4CZflsBJgfe+cEhTBKlkzmN/0LEH+wxiEOSlH4B5qeUWYg3iRhuEwTgfqXumTYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uj8Klp/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A37C116B1;
+	Tue, 23 Apr 2024 21:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908567;
-	bh=5qfcQsJ11VJDHWcL6albcm6k/9d62aZm5FogVVVdAxc=;
+	s=korg; t=1713908458;
+	bh=kiYSqaOZPtve26X4nclrugcShxIvqWRaB4mx2+o4W3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZi797Uq+Q0LSf5r5BD+NhLt41lADiFPofMtXaMvVyCtAxT1QnPHMPtrp3iErElj9
-	 c6EoA7X2AnxWH0/ExIoxcsMPRiL7TD2w/zFcQ17NlfABmnqevRQD+Cb+EvcX4WRF0A
-	 JiI4N2ez13YR3GzYjZp37pubchGgO39w8JbBCsjY=
+	b=uj8Klp/lCT0UIbt4/Vc0s7c+qRerX8FRPcBpBt4WzmGdtltRds0xvHhEMQz67/xrS
+	 vYOiv/WB7mUYyGHggeoIOaElKtMno2KyUbVMYMjL1385YudfT2DEYWxTbNsbJtHn1U
+	 8FFEqPSztUpbRh8geGsy7N5Mu5kd1rKO3RAX8Thc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/158] smb3: show beginning time for per share stats
+Subject: [PATCH 6.8 018/158] netfilter: nft_set_pipapo: walk over current view on netlink dump
 Date: Tue, 23 Apr 2024 14:37:20 -0700
-Message-ID: <20240423213855.802187668@linuxfoundation.org>
+Message-ID: <20240423213856.456187401@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +61,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit d8392c203e84ec7daa2afecdb8f4db69bc32416a ]
+[ Upstream commit 29b359cf6d95fd60730533f7f10464e95bd17c73 ]
 
-In analyzing problems, one missing piece of debug data is when the
-mount occurred.  A related problem is when collecting stats we don't
-know the  period of time the stats covered, ie when this set of stats
-for the tcon started to be collected.  To make debugging easier track
-the stats begin time. Set it when the mount occurred at mount time,
-and reset it to current time whenever stats are reset. For example,
+The generation mask can be updated while netlink dump is in progress.
+The pipapo set backend walk iterator cannot rely on it to infer what
+view of the datastructure is to be used. Add notation to specify if user
+wants to read/update the set.
 
-...
-1) \\localhost\test
-SMBs: 14 since 2024-01-17 22:17:30 UTC
-Bytes read: 0  Bytes written: 0
-Open files: 0 total (local), 0 open on server
-TreeConnects: 1 total 0 failed
-TreeDisconnects: 0 total 0 failed
-...
-2) \\localhost\scratch
-SMBs: 24 since 2024-01-17 22:16:04 UTC
-Bytes read: 0  Bytes written: 0
-Open files: 0 total (local), 0 open on server
-TreeConnects: 1 total 0 failed
-TreeDisconnects: 0 total 0 failed
-...
+Based on patch from Florian Westphal.
 
-Note the time "since ... UTC" is now displayed in /proc/fs/cifs/Stats
-for each share that is mounted.
-
-Suggested-by: Shyam Prasad N <sprasad@microsoft.com>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 062a7f0ff46e ("smb: client: guarantee refcounted children from parent session")
+Fixes: 2b84e215f874 ("netfilter: nft_set_pipapo: .walk does not deal with generations")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifs_debug.c | 6 ++++--
- fs/smb/client/cifsglob.h   | 1 +
- fs/smb/client/misc.c       | 1 +
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ include/net/netfilter/nf_tables.h | 14 ++++++++++++++
+ net/netfilter/nf_tables_api.c     |  6 ++++++
+ net/netfilter/nft_set_pipapo.c    |  5 +++--
+ 3 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
-index 6c85edb8635d0..c53d516459fc4 100644
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -663,6 +663,7 @@ static ssize_t cifs_stats_proc_write(struct file *file,
- 					spin_lock(&tcon->stat_lock);
- 					tcon->bytes_read = 0;
- 					tcon->bytes_written = 0;
-+					tcon->stats_from_time = ktime_get_real_seconds();
- 					spin_unlock(&tcon->stat_lock);
- 					if (server->ops->clear_stats)
- 						server->ops->clear_stats(tcon);
-@@ -743,8 +744,9 @@ static int cifs_stats_proc_show(struct seq_file *m, void *v)
- 				seq_printf(m, "\n%d) %s", i, tcon->tree_name);
- 				if (tcon->need_reconnect)
- 					seq_puts(m, "\tDISCONNECTED ");
--				seq_printf(m, "\nSMBs: %d",
--					   atomic_read(&tcon->num_smbs_sent));
-+				seq_printf(m, "\nSMBs: %d since %ptTs UTC",
-+					   atomic_read(&tcon->num_smbs_sent),
-+					   &tcon->stats_from_time);
- 				if (server->ops->print_stats)
- 					server->ops->print_stats(m, tcon);
- 			}
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index a878b1e5aa313..01d7031194671 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1208,6 +1208,7 @@ struct cifs_tcon {
- 	__u64    bytes_read;
- 	__u64    bytes_written;
- 	spinlock_t stat_lock;  /* protects the two fields above */
-+	time64_t stats_from_time;
- 	FILE_SYSTEM_DEVICE_INFO fsDevInfo;
- 	FILE_SYSTEM_ATTRIBUTE_INFO fsAttrInfo; /* ok if fs name truncated */
- 	FILE_SYSTEM_UNIX_INFO fsUnixInfo;
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index ef573e3f8e52a..51413cb00e199 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -140,6 +140,7 @@ tcon_info_alloc(bool dir_leases_enabled)
- 	spin_lock_init(&ret_buf->stat_lock);
- 	atomic_set(&ret_buf->num_local_opens, 0);
- 	atomic_set(&ret_buf->num_remote_opens, 0);
-+	ret_buf->stats_from_time = ktime_get_real_seconds();
- #ifdef CONFIG_CIFS_DFS_UPCALL
- 	INIT_LIST_HEAD(&ret_buf->dfs_ses_list);
- #endif
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 510244cc0f8f0..1cf9cb0f0a975 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -307,9 +307,23 @@ static inline void *nft_elem_priv_cast(const struct nft_elem_priv *priv)
+ 	return (void *)priv;
+ }
+ 
++
++/**
++ * enum nft_iter_type - nftables set iterator type
++ *
++ * @NFT_ITER_READ: read-only iteration over set elements
++ * @NFT_ITER_UPDATE: iteration under mutex to update set element state
++ */
++enum nft_iter_type {
++	NFT_ITER_UNSPEC,
++	NFT_ITER_READ,
++	NFT_ITER_UPDATE,
++};
++
+ struct nft_set;
+ struct nft_set_iter {
+ 	u8		genmask;
++	enum nft_iter_type type:8;
+ 	unsigned int	count;
+ 	unsigned int	skip;
+ 	int		err;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ad9fb019684b3..8a3fa7f5b456d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -626,6 +626,7 @@ static void nft_map_deactivate(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+ 	struct nft_set_iter iter = {
+ 		.genmask	= nft_genmask_next(ctx->net),
++		.type		= NFT_ITER_UPDATE,
+ 		.fn		= nft_mapelem_deactivate,
+ 	};
+ 
+@@ -5441,6 +5442,7 @@ int nf_tables_bind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 		}
+ 
+ 		iter.genmask	= nft_genmask_next(ctx->net);
++		iter.type	= NFT_ITER_UPDATE;
+ 		iter.skip 	= 0;
+ 		iter.count	= 0;
+ 		iter.err	= 0;
+@@ -5514,6 +5516,7 @@ static void nft_map_activate(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+ 	struct nft_set_iter iter = {
+ 		.genmask	= nft_genmask_next(ctx->net),
++		.type		= NFT_ITER_UPDATE,
+ 		.fn		= nft_mapelem_activate,
+ 	};
+ 
+@@ -5888,6 +5891,7 @@ static int nf_tables_dump_set(struct sk_buff *skb, struct netlink_callback *cb)
+ 	args.skb		= skb;
+ 	args.reset		= dump_ctx->reset;
+ 	args.iter.genmask	= nft_genmask_cur(net);
++	args.iter.type		= NFT_ITER_READ;
+ 	args.iter.skip		= cb->args[0];
+ 	args.iter.count		= 0;
+ 	args.iter.err		= 0;
+@@ -7372,6 +7376,7 @@ static int nft_set_flush(struct nft_ctx *ctx, struct nft_set *set, u8 genmask)
+ {
+ 	struct nft_set_iter iter = {
+ 		.genmask	= genmask,
++		.type		= NFT_ITER_UPDATE,
+ 		.fn		= nft_setelem_flush,
+ 	};
+ 
+@@ -10871,6 +10876,7 @@ static int nf_tables_check_loops(const struct nft_ctx *ctx,
+ 				continue;
+ 
+ 			iter.genmask	= nft_genmask_next(ctx->net);
++			iter.type	= NFT_ITER_UPDATE;
+ 			iter.skip 	= 0;
+ 			iter.count	= 0;
+ 			iter.err	= 0;
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 7756d70af868c..69b1ab6849e67 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -2040,13 +2040,14 @@ static void nft_pipapo_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 			    struct nft_set_iter *iter)
+ {
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+-	struct net *net = read_pnet(&set->net);
+ 	const struct nft_pipapo_match *m;
+ 	const struct nft_pipapo_field *f;
+ 	int i, r;
+ 
++	WARN_ON_ONCE(iter->type == NFT_ITER_UNSPEC);
++
+ 	rcu_read_lock();
+-	if (iter->genmask == nft_genmask_cur(net))
++	if (iter->type == NFT_ITER_READ)
+ 		m = rcu_dereference(priv->match);
+ 	else
+ 		m = priv->clone;
 -- 
 2.43.0
 
