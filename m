@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-40856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE548AF957
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E25E8AFA0F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3B111F24B71
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FA721C22994
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92591448C7;
-	Tue, 23 Apr 2024 21:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DA2148826;
+	Tue, 23 Apr 2024 21:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6BK+ZH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6yKIuEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F6D14388F;
-	Tue, 23 Apr 2024 21:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022C4143895;
+	Tue, 23 Apr 2024 21:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908509; cv=none; b=a+teRE/0g42FUJ43JO2A1SL1PwkOZu3NAzQZfs1EaaNutB7XuhuGuVrAvoFijVPMiRKZFs/Pm5z8kWzzCMM/YwwEdYWOC9omJE89SXkBBtvX06EltnQLtF1nq/JpjuDWBXiTECUV5Xip5025Ypq7xQwpPx2bUp/+3oshXgyAVjQ=
+	t=1713908627; cv=none; b=g1U/Bmsjgcgf4GthNvnv0tYj+uuNNFD0ExIojaSdu6yzaHlK/BD4UFpL5/vJFu8JGcOtA4Oc0gFFuy2/DwmtDUYoaj5Qxj3j3/N1O6eNa9IQFZR14LdqtiSWjHdHbhbjDvSvHEnrpjmvrpq72ebaLykOAeB1oqFivLMXbJLO88g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908509; c=relaxed/simple;
-	bh=xnRvX7HOn618nWbRmW5jqDDF1xWyfMWAReY/enHeFu4=;
+	s=arc-20240116; t=1713908627; c=relaxed/simple;
+	bh=fXppmqJD2nM/nT+MrwGcMo1slrukO3wA6eU+ieTm7Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZc7mk5DMFkLFTeYgrm1M3fNUnHz11tjsFNF4f8vT4/ogiTTpkLCc/p3M78fZe8htJke+sUYe7RfX6AYlYnBzm4b0ixEEgOMnwvFLvhNb1keZ61zBQG8kf1+9u2rLgzkpxvCxLP/+vwL0kZeHa4zXztWT9OsUbxVelY3FivRHPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6BK+ZH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C533C32786;
-	Tue, 23 Apr 2024 21:41:49 +0000 (UTC)
+	 MIME-Version; b=HKsixWBc47lr250+uekmtVW5EYu7cZVsMCyUmvFYTTPcVCrs7bZ8RmGma6qsv+hr4O3pNekBjcsg1JHajU4W58sVbUerbRXTOMeponGKi7MgA79ypww0Wx2MI67ztzoRVd21Z/Oo3lXPmD4kWvVG09K+0tGKeiY3V0UTzR1y69I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6yKIuEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC665C116B1;
+	Tue, 23 Apr 2024 21:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908509;
-	bh=xnRvX7HOn618nWbRmW5jqDDF1xWyfMWAReY/enHeFu4=;
+	s=korg; t=1713908626;
+	bh=fXppmqJD2nM/nT+MrwGcMo1slrukO3wA6eU+ieTm7Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6BK+ZH4PTFdKKZb7gTjRbCYpl9HNFJYs1BHnRlOGQFGNrDRDG9nbVyezXh+bWHME
-	 o2ZF0uwZuq+lE32NFUt1BxiM/Rvd+xNmZlfr7htH9YjcuRCbt8wy8XLsveG/3lOh2q
-	 WR68gDGlAMVUq88MU3naxfA8TGViDZGG0+pBpEc8=
+	b=J6yKIuEmrH3kQonh235JoEzJASPqZz0HE4F5glD94AB8N23d04Je4d6VEL9tgvNIK
+	 H6iFH6v+2S01W6MFWsQjW7o/69KXbHKMoAt1/KTQix1ZndIGdnZhECoGxtxPD0Aq5P
+	 xpwSlfigWfkwGVX2F2qsvduX6pReFXqQJUyyq8R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ai Chao <aichao@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.8 093/158] ALSA: hda/realtek - Enable audio jacks of Haier Boyue G42 with ALC269VC
-Date: Tue, 23 Apr 2024 14:38:35 -0700
-Message-ID: <20240423213858.977739528@linuxfoundation.org>
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 079/158] ALSA: scarlett2: Default mixer driver to enabled
+Date: Tue, 23 Apr 2024 14:38:36 -0700
+Message-ID: <20240423213858.337307060@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ai Chao <aichao@kylinos.cn>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-commit 7ee5faad0f8c3ad86c8cfc2f6aac91d2ba29790f upstream.
+[ Upstream commit bc83058f598757a908b30f8f536338cb1478ab5b ]
 
-The Haier Boyue G42 with ALC269VC cannot detect the MIC of headset,
-the line out and internal speaker until
-ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS quirk applied.
+Early versions of this mixer driver did not work on all hardware, so
+out of caution the driver was disabled by default and had to be
+explicitly enabled with device_setup=1.
 
-Signed-off-by: Ai Chao <aichao@kylinos.cn>
-Cc: <stable@vger.kernel.org>
-Message-ID: <20240419082159.476879-1-aichao@kylinos.cn>
+Since commit 764fa6e686e0 ("ALSA: usb-audio: scarlett2: Fix device
+hang with ehci-pci") no more problems of this nature have been
+reported. Therefore, enable the driver by default but provide a new
+device_setup option to disable the driver in case that is needed.
+
+- device_setup value of 0 now means "enable" rather than "disable".
+- device_setup value of 1 is now ignored.
+- device_setup value of 4 now means "disable".
+
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://lore.kernel.org/r/89600a35b40307f2766578ad1ca2f21801286b58.1694705811.git.g@b4.vu
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: b61a3acada00 ("ALSA: scarlett2: Add Focusrite Clarett+ 2Pre and 4Pre support")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/mixer_scarlett_gen2.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10444,6 +10444,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1d05, 0x115c, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x121b, "TongFang GMxAGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1d17, 0x3288, "Haier Boyue G42", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
- 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index bf3d916d5a13c..c53ce9b81a7bb 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -145,12 +145,12 @@
+ 
+ #include "mixer_scarlett_gen2.h"
+ 
+-/* device_setup value to enable */
+-#define SCARLETT2_ENABLE 0x01
+-
+ /* device_setup value to allow turning MSD mode back on */
+ #define SCARLETT2_MSD_ENABLE 0x02
+ 
++/* device_setup value to disable this mixer driver */
++#define SCARLETT2_DISABLE 0x04
++
+ /* some gui mixers can't handle negative ctl values */
+ #define SCARLETT2_VOLUME_BIAS 127
+ 
+@@ -4237,19 +4237,20 @@ int snd_scarlett_gen2_init(struct usb_mixer_interface *mixer)
+ 	if (!mixer->protocol)
+ 		return 0;
+ 
+-	if (!(chip->setup & SCARLETT2_ENABLE)) {
++	if (chip->setup & SCARLETT2_DISABLE) {
+ 		usb_audio_info(chip,
+-			"Focusrite Scarlett Gen 2/3 Mixer Driver disabled; "
+-			"use options snd_usb_audio vid=0x%04x pid=0x%04x "
+-			"device_setup=1 to enable and report any issues "
+-			"to g@b4.vu",
++			"Focusrite Scarlett Gen 2/3 Mixer Driver disabled "
++			"by modprobe options (snd_usb_audio "
++			"vid=0x%04x pid=0x%04x device_setup=%d)\n",
+ 			USB_ID_VENDOR(chip->usb_id),
+-			USB_ID_PRODUCT(chip->usb_id));
++			USB_ID_PRODUCT(chip->usb_id),
++			SCARLETT2_DISABLE);
+ 		return 0;
+ 	}
+ 
+ 	usb_audio_info(chip,
+-		"Focusrite Scarlett Gen 2/3 Mixer Driver enabled pid=0x%04x",
++		"Focusrite Scarlett Gen 2/3 Mixer Driver enabled (pid=0x%04x); "
++		"report any issues to g@b4.vu",
+ 		USB_ID_PRODUCT(chip->usb_id));
+ 
+ 	err = snd_scarlett_gen2_controls_create(mixer);
+-- 
+2.43.0
+
 
 
 
