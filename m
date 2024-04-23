@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-40944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8338AF9B2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9F58AF911
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7700E28A776
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 160FC1F2278A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD603145FE3;
-	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68A8143C47;
+	Tue, 23 Apr 2024 21:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvcNf0pz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jg/4UHwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1251420BE;
-	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8359214389A;
+	Tue, 23 Apr 2024 21:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908571; cv=none; b=jm6RTp+gbirYhpHZlX1fWJyFrctH9pOX+Vsyi6pKO1WgdSKqm0rOh1kcEzj6MDQ+sjwdhOtfziLoJsgKtGpICHgn/SYKA4YjtLZQUAwrflcKw+7q6ycBMWE8fhMwslONY6g5vZX6FG+wqE2etdqurgnRlL0/Z0SITm0ptfSwNvI=
+	t=1713908463; cv=none; b=mo/MuuVYAoRQ28Sb7XDLuWkKPpJ5i3Y49bdTKxTcw1NkrDsOvq87hIgO00V0eFad7t3QhIiWAacZwrOJCcFGss0OTStaMFvChwqWMZoLnkXlHDRYtLPcez7gon9r+Od74vGEhEtHHb5/28ySWNSCbjG+bd4OT0V7UGfD8XrIqVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908571; c=relaxed/simple;
-	bh=7xbKKTS3xQmpwzOOyW9+2Ua+CDOqX+kPFYvCxu5LfAg=;
+	s=arc-20240116; t=1713908463; c=relaxed/simple;
+	bh=psCRXsKWLilvFIeD30pplC1gDaEgytWMGxkGawvO5xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F9ErD3xSqkIwAFatkx7NjEu4vjmI9zH8+R9bHT4fjxkEAQ7DlnOruxdqNF5jt3wFZ3TEyxFks28Ls49m5KYQk4FrCS9zmKIuBm9V4Mrk34CBp8FPenNczMISLbEzNHQOHtu0P1VcZbrS2tWcypDwF0T8r+3SYQpH1zSbAa+7zpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvcNf0pz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CF8C3277B;
-	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m4S00N+ZBbNfGScbQoBAfLlnkS0my5uhjtYy33P3qOv0fULMuTIZbgOQvQU1A2IJYGMXq7xjtyl4UznwPvNSe+RDQoRJO++LqyFwxqc+AvFl7RLRzfYVES4fyGqqTQV/7c/+MO0GQuwd+LJg9Omnraf0+wdAXVzw0kI4dZVEm+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jg/4UHwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A55C32781;
+	Tue, 23 Apr 2024 21:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908571;
-	bh=7xbKKTS3xQmpwzOOyW9+2Ua+CDOqX+kPFYvCxu5LfAg=;
+	s=korg; t=1713908463;
+	bh=psCRXsKWLilvFIeD30pplC1gDaEgytWMGxkGawvO5xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvcNf0pz10wupG4StoCS7k+aByvq5thQrvhTnvtSt+JfPIK8cytf8PSThWVX9BE18
-	 f1I93UhdOcBZbWR1thXZ7eLUgFhQPrb/PDebuzyLKXC6UUwPKLKdbloN76hOY3yOlQ
-	 QNvRJ+EV973lYu49bR4e1NCGh85d0Hixc120HspE=
+	b=Jg/4UHwBmjDiPH+9mqfs48pOnPtGBbNgPuCEhvmUBEmEiA4x8VMaJVaiXOBuQQZGU
+	 dySvxmxyZrCuSsXVlLyIMlEmgU+Xj2MM1jALy88eRP2b6ZflyVaaSd+wVIqC+w8kNb
+	 eyhFHd43Vdy3BoGEwdk4DiRQ/WuxdACOnccUQnw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Uma Shankar <uma.shankar@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/158] drm/i915/cdclk: Fix voltage_level programming edge case
-Date: Tue, 23 Apr 2024 14:37:25 -0700
-Message-ID: <20240423213855.976722633@linuxfoundation.org>
+Subject: [PATCH 6.8 024/158] net: sparx5: flower: fix fragment flags handling
+Date: Tue, 23 Apr 2024 14:37:26 -0700
+Message-ID: <20240423213856.660986435@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +66,167 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-[ Upstream commit 6154cc9177ccea00c89ce0bf93352e474b819ff2 ]
+[ Upstream commit 68aba00483c7c4102429bcdfdece7289a8ab5c8e ]
 
-Currently we only consider the relationship of the
-old and new CDCLK frequencies when determining whether
-to do the repgramming from intel_set_cdclk_pre_plane_update()
-or intel_set_cdclk_post_plane_update().
+I noticed that only 3 out of the 4 input bits were used,
+mt.key->flags & FLOW_DIS_IS_FRAGMENT was never checked.
 
-It is technically possible to have a situation where the
-CDCLK frequency is decreasing, but the voltage_level is
-increasing due a DDI port. In this case we should bump
-the voltage level already in intel_set_cdclk_pre_plane_update()
-(so that the voltage_level will have been increased by the
-time the port gets enabled), while leaving the CDCLK frequency
-unchanged (as active planes/etc. may still depend on it).
-We can then reduce the CDCLK frequency to its final value
-from intel_set_cdclk_post_plane_update().
+In order to avoid a complicated maze, I converted it to
+use a 16 byte mapping table.
 
-In order to handle that correctly we shall construct a
-suitable amalgam of the old and new cdclk states in
-intel_set_cdclk_pre_plane_update().
+As shown in the table below the old heuristics doesn't
+always do the right thing, ie. when FLOW_DIS_IS_FRAGMENT=1/1
+then it used to only match follow-up fragment packets.
 
-And we can simply call intel_set_cdclk() unconditionally
-in both places as it will not do anything if nothing actually
-changes vs. the current hw state.
+Here are all the combinations, and their resulting new/old
+VCAP key/mask filter:
 
-v2: Handle cdclk_state->disable_pipes
-v3: Only synchronize the cd2x update against the pipe's vblank
-    when the cdclk frequency is changing during the current
-    commit phase (Gustavo)
+  /- FLOW_DIS_IS_FRAGMENT (key/mask)
+  |    /- FLOW_DIS_FIRST_FRAG (key/mask)
+  |    |    /-- new VCAP fragment (key/mask)
+  v    v    v    v- old VCAP fragment (key/mask)
 
-Cc: stable@vger.kernel.org
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240402155016.13733-3-ville.syrjala@linux.intel.com
-(cherry picked from commit 34d127e2bdef73a923aa0dcd95cbc3257ad5af52)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+ 0/0  0/0  -/-  -/-     impossible (due to entry cond. on mask)
+ 0/0  0/1  -/-  0/3 !!  invalid (can't match non-fragment + follow-up frag)
+ 0/0  1/0  -/-  -/-     impossible (key > mask)
+ 0/0  1/1  1/3  1/3     first fragment
+
+ 0/1  0/0  0/3  3/3 !!  not fragmented
+ 0/1  0/1  0/3  3/3 !!  not fragmented (+ not first fragment)
+ 0/1  1/0  -/-  -/-     impossible (key > mask)
+ 0/1  1/1  -/-  1/3 !!  invalid (non-fragment and first frag)
+
+ 1/0  0/0  -/-  -/-     impossible (key > mask)
+ 1/0  0/1  -/-  -/-     impossible (key > mask)
+ 1/0  1/0  -/-  -/-     impossible (key > mask)
+ 1/0  1/1  -/-  -/-     impossible (key > mask)
+
+ 1/1  0/0  1/1  3/3 !!  some fragment
+ 1/1  0/1  3/3  3/3     follow-up fragment
+ 1/1  1/0  -/-  -/-     impossible (key > mask)
+ 1/1  1/1  1/3  1/3     first fragment
+
+In the datasheet the VCAP fragment values are documented as:
+ 0 = no fragment
+ 1 = initial fragment
+ 2 = suspicious fragment
+ 3 = valid follow-up fragment
+
+Result: 3 combinations match the old behavior,
+        3 combinations have been corrected,
+        2 combinations are now invalid, and fail,
+        8 combinations are impossible.
+
+It should now be aligned with how FLOW_DIS_IS_FRAGMENT
+and FLOW_DIS_FIRST_FRAG is set in __skb_flow_dissect() in
+net/core/flow_dissector.c
+
+Since the VCAP fragment values are not a bitfield, we have
+to ignore the suspicious fragment value, eg. when matching
+on any kind of fragment with FLOW_DIS_IS_FRAGMENT=1/1.
+
+Only compile tested, and logic tested in userspace, as I
+unfortunately don't have access to this switch chip (yet).
+
+Fixes: d6c2964db3fe ("net: microchip: sparx5: Adding more tc flower keys for the IS2 VCAP")
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
+Tested-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240411111321.114095-1-ast@fiberby.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_cdclk.c | 37 ++++++++++++++++------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ .../microchip/sparx5/sparx5_tc_flower.c       | 61 ++++++++++++-------
+ 1 file changed, 40 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_cdclk.c b/drivers/gpu/drm/i915/display/intel_cdclk.c
-index 5aa6b998a1cb1..fc3a6eb1de741 100644
---- a/drivers/gpu/drm/i915/display/intel_cdclk.c
-+++ b/drivers/gpu/drm/i915/display/intel_cdclk.c
-@@ -2453,7 +2453,8 @@ intel_set_cdclk_pre_plane_update(struct intel_atomic_state *state)
- 		intel_atomic_get_old_cdclk_state(state);
- 	const struct intel_cdclk_state *new_cdclk_state =
- 		intel_atomic_get_new_cdclk_state(state);
--	enum pipe pipe = new_cdclk_state->pipe;
-+	struct intel_cdclk_config cdclk_config;
-+	enum pipe pipe;
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
+index 523e0c470894f..55f255a3c9db6 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
+@@ -36,6 +36,27 @@ struct sparx5_tc_flower_template {
+ 	u16 l3_proto; /* protocol specified in the template */
+ };
  
- 	if (!intel_cdclk_changed(&old_cdclk_state->actual,
- 				 &new_cdclk_state->actual))
-@@ -2462,12 +2463,25 @@ intel_set_cdclk_pre_plane_update(struct intel_atomic_state *state)
- 	if (IS_DG2(i915))
- 		intel_cdclk_pcode_pre_notify(state);
- 
--	if (new_cdclk_state->disable_pipes ||
--	    old_cdclk_state->actual.cdclk <= new_cdclk_state->actual.cdclk) {
--		drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
-+	if (new_cdclk_state->disable_pipes) {
-+		cdclk_config = new_cdclk_state->actual;
-+		pipe = INVALID_PIPE;
-+	} else {
-+		if (new_cdclk_state->actual.cdclk >= old_cdclk_state->actual.cdclk) {
-+			cdclk_config = new_cdclk_state->actual;
-+			pipe = new_cdclk_state->pipe;
-+		} else {
-+			cdclk_config = old_cdclk_state->actual;
-+			pipe = INVALID_PIPE;
-+		}
- 
--		intel_set_cdclk(i915, &new_cdclk_state->actual, pipe);
-+		cdclk_config.voltage_level = max(new_cdclk_state->actual.voltage_level,
-+						 old_cdclk_state->actual.voltage_level);
- 	}
++/* SparX-5 VCAP fragment types:
++ * 0 = no fragment, 1 = initial fragment,
++ * 2 = suspicious fragment, 3 = valid follow-up fragment
++ */
++enum {                   /* key / mask */
++	FRAG_NOT   = 0x03, /* 0 / 3 */
++	FRAG_SOME  = 0x11, /* 1 / 1 */
++	FRAG_FIRST = 0x13, /* 1 / 3 */
++	FRAG_LATER = 0x33, /* 3 / 3 */
++	FRAG_INVAL = 0xff, /* invalid */
++};
 +
-+	drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
++/* Flower fragment flag to VCAP fragment type mapping */
++static const u8 sparx5_vcap_frag_map[4][4] = {		  /* is_frag */
++	{ FRAG_INVAL, FRAG_INVAL, FRAG_INVAL, FRAG_FIRST }, /* 0/0 */
++	{ FRAG_NOT,   FRAG_NOT,   FRAG_INVAL, FRAG_INVAL }, /* 0/1 */
++	{ FRAG_INVAL, FRAG_INVAL, FRAG_INVAL, FRAG_INVAL }, /* 1/0 */
++	{ FRAG_SOME,  FRAG_LATER, FRAG_INVAL, FRAG_FIRST }  /* 1/1 */
++	/* 0/0	      0/1	  1/0	      1/1 <-- first_frag */
++};
 +
-+	intel_set_cdclk(i915, &cdclk_config, pipe);
- }
+ static int
+ sparx5_tc_flower_es0_tpid(struct vcap_tc_flower_parse_usage *st)
+ {
+@@ -145,29 +166,27 @@ sparx5_tc_flower_handler_control_usage(struct vcap_tc_flower_parse_usage *st)
+ 	flow_rule_match_control(st->frule, &mt);
  
- /**
-@@ -2485,7 +2499,7 @@ intel_set_cdclk_post_plane_update(struct intel_atomic_state *state)
- 		intel_atomic_get_old_cdclk_state(state);
- 	const struct intel_cdclk_state *new_cdclk_state =
- 		intel_atomic_get_new_cdclk_state(state);
--	enum pipe pipe = new_cdclk_state->pipe;
-+	enum pipe pipe;
- 
- 	if (!intel_cdclk_changed(&old_cdclk_state->actual,
- 				 &new_cdclk_state->actual))
-@@ -2495,11 +2509,14 @@ intel_set_cdclk_post_plane_update(struct intel_atomic_state *state)
- 		intel_cdclk_pcode_post_notify(state);
- 
- 	if (!new_cdclk_state->disable_pipes &&
--	    old_cdclk_state->actual.cdclk > new_cdclk_state->actual.cdclk) {
--		drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
-+	    new_cdclk_state->actual.cdclk < old_cdclk_state->actual.cdclk)
-+		pipe = new_cdclk_state->pipe;
-+	else
-+		pipe = INVALID_PIPE;
- 
--		intel_set_cdclk(i915, &new_cdclk_state->actual, pipe);
--	}
-+	drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
+ 	if (mt.mask->flags) {
+-		if (mt.mask->flags & FLOW_DIS_FIRST_FRAG) {
+-			if (mt.key->flags & FLOW_DIS_FIRST_FRAG) {
+-				value = 1; /* initial fragment */
+-				mask = 0x3;
+-			} else {
+-				if (mt.mask->flags & FLOW_DIS_IS_FRAGMENT) {
+-					value = 3; /* follow up fragment */
+-					mask = 0x3;
+-				} else {
+-					value = 0; /* no fragment */
+-					mask = 0x3;
+-				}
+-			}
+-		} else {
+-			if (mt.mask->flags & FLOW_DIS_IS_FRAGMENT) {
+-				value = 3; /* follow up fragment */
+-				mask = 0x3;
+-			} else {
+-				value = 0; /* no fragment */
+-				mask = 0x3;
+-			}
++		u8 is_frag_key = !!(mt.key->flags & FLOW_DIS_IS_FRAGMENT);
++		u8 is_frag_mask = !!(mt.mask->flags & FLOW_DIS_IS_FRAGMENT);
++		u8 is_frag_idx = (is_frag_key << 1) | is_frag_mask;
 +
-+	intel_set_cdclk(i915, &new_cdclk_state->actual, pipe);
- }
++		u8 first_frag_key = !!(mt.key->flags & FLOW_DIS_FIRST_FRAG);
++		u8 first_frag_mask = !!(mt.mask->flags & FLOW_DIS_FIRST_FRAG);
++		u8 first_frag_idx = (first_frag_key << 1) | first_frag_mask;
++
++		/* Lookup verdict based on the 2 + 2 input bits */
++		u8 vdt = sparx5_vcap_frag_map[is_frag_idx][first_frag_idx];
++
++		if (vdt == FRAG_INVAL) {
++			NL_SET_ERR_MSG_MOD(st->fco->common.extack,
++					   "Match on invalid fragment flag combination");
++			return -EINVAL;
+ 		}
  
- static int intel_pixel_rate_to_cdclk(const struct intel_crtc_state *crtc_state)
++		/* Extract VCAP fragment key and mask from verdict */
++		value = (vdt >> 4) & 0x3;
++		mask = vdt & 0x3;
++
+ 		err = vcap_rule_add_key_u32(st->vrule,
+ 					    VCAP_KF_L3_FRAGMENT_TYPE,
+ 					    value, mask);
 -- 
 2.43.0
 
