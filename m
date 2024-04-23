@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-41000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F748AF9EF
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DFA68AF938
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 277D71C21D9C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 139F01F246DD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931A4145B01;
-	Tue, 23 Apr 2024 21:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBB41442EA;
+	Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xo/sm28I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq0Xkamw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522B2143C57;
-	Tue, 23 Apr 2024 21:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6984A20B3E;
+	Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908609; cv=none; b=fgGfHrTkYbdurfSa6FgamP+hxfBnKPjjwtRa0e1/cLrPs4rv5Pr/+wA2Cb3LPt8PqrAOePv9DXFEtpA8vNe11qqIrqBnQv02jkD9r+PExUO9s4DvNPvBYMKs+tjMRuImSYjAewMQwewrMR+GtehgX6NFIqL3DjTSH+zR7aRQMMs=
+	t=1713908490; cv=none; b=on5z47BKHNwajle3+URHx7+BmvT1mlOnLRxqukUzlRB3zsBHOS4DVx7unFKYVbGtHqi3lhdboKmDS4uIQhhiluJpypbpvDPn9+AwYiIq7BXbW+utksDnCB5wAiagk9i7g6ESRxzjaz16IiHqbtBuzPF9b7h2aFoGbEFzMSBRslA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908609; c=relaxed/simple;
-	bh=Gz3Mi0cGY+rkE8/CNPZYbZY0P9U2hYfC9mLhtcftBS4=;
+	s=arc-20240116; t=1713908490; c=relaxed/simple;
+	bh=BSXwlkmgEluoKho7D7hIwu4R8o7nKijOGLjnU3ITD0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gogLU9YlRNQbDI7c50lN8qFdTvSVroVxcz7TJsM+VNv0xsofZLyn17ygJ7tCfEllTSsT94V9Ns9mI5aSaWOeHz4kqZPPeMh5aUVq4Hyal9Zju4uNrgk+CtEeC1y+GKZciyWXgz4ugaH2wXSAVcrPuzKHUCAFPsfM0a0Qclv31go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xo/sm28I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4CFC32781;
-	Tue, 23 Apr 2024 21:43:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fdIhbH2XtWe5192FVWzzReSADg1cxzSBUG8OdeZk7MMjoNeRroRP9Vl5EYRa6BRNmuF9VFQndeanJ/wZL8W5Otv8aVlzQbSJD1h8M2BRDLg+JL9sw4tT/Mkfbk1DYfZpZo3BN8I2gSmseDR5kDjcrN5GortklE1BMmylyg4xrpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq0Xkamw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3882BC32783;
+	Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908609;
-	bh=Gz3Mi0cGY+rkE8/CNPZYbZY0P9U2hYfC9mLhtcftBS4=;
+	s=korg; t=1713908490;
+	bh=BSXwlkmgEluoKho7D7hIwu4R8o7nKijOGLjnU3ITD0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xo/sm28I/9gqKYScMhPZt+20L0FGq0tYMg8/hUmYDASfkhPUz1IPECwriV4qZnbrS
-	 mzCXPIj8WPtihrWcb42/9I4w0eYK4DlKb10+OdOcBpBJjPqCFDvALBq4YXOXobUwdf
-	 /6Hp5bfwidGF6EEUGUiCckuJNI4/irYyq3TLtOqo=
+	b=Tq0Xkamw8OyCaeqcTkSzj/Ie/Qi60HBlzMjpecQbx+CjGUa4clmFCDoLGWgq8i3gG
+	 AJo+kkh9OggwE7TXWLWJGhP/Odrf9R4l8Ckdx3F7K2XfuAar1I7JxCBuFwjqC2MUtd
+	 fLg0EgVXZ803MNFOQmNsC1yYEi7gnAu2AkOJUmgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Tvrtko Ursulin <tursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/158] ice: tc: allow zero flags in parsing tc flower
+Subject: [PATCH 6.8 065/158] drm/v3d: Dont increment `enabled_ns` twice
 Date: Tue, 23 Apr 2024 14:38:07 -0700
-Message-ID: <20240423213857.400450360@linuxfoundation.org>
+Message-ID: <20240423213858.074572206@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 73278715725a8347032acf233082ca4eb31e6a56 ]
+[ Upstream commit 35f4f8c9fc972248055096d63b782060e473311b ]
 
-The check for flags is done to not pass empty lookups to adding switch
-rule functions. Since metadata is always added to lookups there is no
-need to check against the flag.
+The commit 509433d8146c ("drm/v3d: Expose the total GPU usage stats on sysfs")
+introduced the calculation of global GPU stats. For the regards, it used
+the already existing infrastructure provided by commit 09a93cc4f7d1 ("drm/v3d:
+Implement show_fdinfo() callback for GPU usage stats"). While adding
+global GPU stats calculation ability, the author forgot to delete the
+existing one.
 
-It is also fixing the problem with such rule:
-$ tc filter add dev gtp_dev ingress protocol ip prio 0 flower \
-	enc_dst_port 2123 action drop
-Switch block in case of GTP can't parse the destination port, because it
-should always be set to GTP specific value. The same with ethertype. The
-result is that there is no other matching criteria than GTP tunnel. In
-this case flags is 0, rule can't be added only because of defensive
-check against flags.
+Currently, the value of `enabled_ns` is incremented twice by the end of
+the job, when it should be added just once. Therefore, delete the
+leftovers from commit 509433d8146c ("drm/v3d: Expose the total GPU usage
+stats on sysfs").
 
-Fixes: 9a225f81f540 ("ice: Support GTP-U and GTP-C offload in switchdev")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 509433d8146c ("drm/v3d: Expose the total GPU usage stats on sysfs")
+Reported-by: Tvrtko Ursulin <tursulin@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240403203517.731876-2-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_tc_lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_irq.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index f111fdd6a6ef7..9c97c99feac3d 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -738,7 +738,7 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 	int ret;
- 	int i;
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index afc76390a197a..b8f9f2a3d2fb3 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -105,7 +105,6 @@ v3d_irq(int irq, void *arg)
+ 		struct v3d_file_priv *file = v3d->bin_job->base.file->driver_priv;
+ 		u64 runtime = local_clock() - file->start_ns[V3D_BIN];
  
--	if (!flags || (flags & ICE_TC_FLWR_FIELD_ENC_SRC_L4_PORT)) {
-+	if (flags & ICE_TC_FLWR_FIELD_ENC_SRC_L4_PORT) {
- 		NL_SET_ERR_MSG_MOD(fltr->extack, "Unsupported encap field(s)");
- 		return -EOPNOTSUPP;
- 	}
+-		file->enabled_ns[V3D_BIN] += local_clock() - file->start_ns[V3D_BIN];
+ 		file->jobs_sent[V3D_BIN]++;
+ 		v3d->queue[V3D_BIN].jobs_sent++;
+ 
+@@ -126,7 +125,6 @@ v3d_irq(int irq, void *arg)
+ 		struct v3d_file_priv *file = v3d->render_job->base.file->driver_priv;
+ 		u64 runtime = local_clock() - file->start_ns[V3D_RENDER];
+ 
+-		file->enabled_ns[V3D_RENDER] += local_clock() - file->start_ns[V3D_RENDER];
+ 		file->jobs_sent[V3D_RENDER]++;
+ 		v3d->queue[V3D_RENDER].jobs_sent++;
+ 
+@@ -147,7 +145,6 @@ v3d_irq(int irq, void *arg)
+ 		struct v3d_file_priv *file = v3d->csd_job->base.file->driver_priv;
+ 		u64 runtime = local_clock() - file->start_ns[V3D_CSD];
+ 
+-		file->enabled_ns[V3D_CSD] += local_clock() - file->start_ns[V3D_CSD];
+ 		file->jobs_sent[V3D_CSD]++;
+ 		v3d->queue[V3D_CSD].jobs_sent++;
+ 
+@@ -195,7 +192,6 @@ v3d_hub_irq(int irq, void *arg)
+ 		struct v3d_file_priv *file = v3d->tfu_job->base.file->driver_priv;
+ 		u64 runtime = local_clock() - file->start_ns[V3D_TFU];
+ 
+-		file->enabled_ns[V3D_TFU] += local_clock() - file->start_ns[V3D_TFU];
+ 		file->jobs_sent[V3D_TFU]++;
+ 		v3d->queue[V3D_TFU].jobs_sent++;
+ 
 -- 
 2.43.0
 
