@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C188AFAA3
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBF38AFA19
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46CBB1F29781
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A8371F288A4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D22514A098;
-	Tue, 23 Apr 2024 21:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE932148841;
+	Tue, 23 Apr 2024 21:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTKQmPrJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C74/xUXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEAA143882;
-	Tue, 23 Apr 2024 21:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3BD1448D4;
+	Tue, 23 Apr 2024 21:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908738; cv=none; b=nZLRIxoG1hD/3tA05h3tdzd4a9IUB7PhH+1sQW/3JnknZsZ2GDQuO8bipYKsdUUfOU/5aMdJW2dRnRYEZf89uShwQc3I8xltD2ddiMMU/oRg1kslMUFCc1UcRblcCg6x4QQX9UlWfmQ6mrhamjuvKSo2KlxDjO76k3s/855kIk4=
+	t=1713908634; cv=none; b=HiFz7mrkiLhIPSNQGD7dnSpjyM/wI4l1nvsjL7QzfW1Wn2RcysHpcjlfu73uhwJfr0RMXcC5TrNpXiuTWx4Z7K+o/6ECSRFjnJpaElQRFF/hwdSeHH0Y/VYsD5MUbzmIorxXSxzvMFFKy+YF+v5qiknG4UtgldONAgm7KmjRefo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908738; c=relaxed/simple;
-	bh=Jd3Zg8FsQlVWHidA6i+Z4Ax1rvZUZAadq4tRIGE127k=;
+	s=arc-20240116; t=1713908634; c=relaxed/simple;
+	bh=RDg6onv+qGCLeIEh10jwJ30VlF8GjQIKGMYB5jA/48E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNihtAraO+u5Sn/8m89+ApfE4kg96RtRVOefkKOybgXLJA0g6SWxZIbuSv92wTMc2DX9SaJoGgPWcNAprWVppMBzu7VsgYpPdL19VB0a5JdvuKVCbUvzl91b29v1Q0f3FagH0EyhTNRrgUtxCCHmbnagfF6c+OVrYhSBbPzvx38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTKQmPrJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A30C116B1;
-	Tue, 23 Apr 2024 21:45:38 +0000 (UTC)
+	 MIME-Version; b=urx9uwndEdKnfMkNoZgIq7a8VGKikG9vT7l2zPJwazRn+HlQWIKFMwAMnB42K7iKcdMGQ+ztIOWYjc+ZT0IRQu/FlPVh8tt2/2+OlA0BJx6lc6VSQJuTlmoUc+80CwATawzGw95Foe+so2meR0TdKq6BEpN2Jgvg7L04lz/u5Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C74/xUXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C093C32786;
+	Tue, 23 Apr 2024 21:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908738;
-	bh=Jd3Zg8FsQlVWHidA6i+Z4Ax1rvZUZAadq4tRIGE127k=;
+	s=korg; t=1713908634;
+	bh=RDg6onv+qGCLeIEh10jwJ30VlF8GjQIKGMYB5jA/48E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTKQmPrJa+azZ1cwAN+xAbTtKBhcWoiu/ArE+Bx6NW/48yhZhGd18twMz2tsJkEZ+
-	 R4DSDxhB671tBztOa9NEJ5WmyChyHlVYewGFguUONu3soWCIIr4t6BsoNm5eta2A8P
-	 mztkjEqRUQt2+/DprrE895WqNAc3/cGNpy5qYJrg=
+	b=C74/xUXWR1d/frKCc1CHLmk+/RXQV8wOZGZOvCp44tXUKno485zGc++nDmX4YIvJv
+	 EtUL6KS2WwsCvUt91IA2QBEO5xcovH1yHh72P2kr+GaNHenHqzQa5uWLqHBBieZi+k
+	 0+yadq2Y3V26lp38gGm0OmKUyAXCLkmsvdvSjQe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/141] clk: Remove prepare_lock hold assertion in __clk_release()
-Date: Tue, 23 Apr 2024 14:39:11 -0700
-Message-ID: <20240423213855.864887822@linuxfoundation.org>
+	bolan wang <bolan.wang@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 115/158] USB: serial: option: add Fibocom FM135-GL variants
+Date: Tue, 23 Apr 2024 14:39:12 -0700
+Message-ID: <20240423213859.480448079@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: bolan wang <bolan.wang@fibocom.com>
 
-[ Upstream commit 8358a76cfb47c9a5af627a0c4e7168aa14fa25f6 ]
+commit 356952b13af5b2c338df1e06889fd1b5e12cbbf4 upstream.
 
-Removing this assertion lets us move the kref_put() call outside the
-prepare_lock section. We don't need to hold the prepare_lock here to
-free memory and destroy the clk_core structure. We've already unlinked
-the clk from the clk tree and by the time the release function runs
-nothing holds a reference to the clk_core anymore so anything with the
-pointer can't access the memory that's being freed anyway. Way back in
-commit 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of
-prepare_lock") we didn't need to have this assertion either.
+Update the USB serial option driver support for the Fibocom
+FM135-GL LTE modules.
+- VID:PID 2cb7:0115, FM135-GL for laptop debug M.2 cards(with MBIM
+interface for /Linux/Chrome OS)
 
-Fixes: 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of prepare_lock")
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-2-sboyd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x0115: mbim, diag, at, pipe
+
+Here are the outputs of usb-devices:
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0115 Rev=05.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=12345678
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: bolan wang <bolan.wang@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 9004e07182259..ad40913d80a8b 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4230,8 +4230,6 @@ static void __clk_release(struct kref *ref)
- {
- 	struct clk_core *core = container_of(ref, struct clk_core, ref);
- 
--	lockdep_assert_held(&prepare_lock);
--
- 	clk_core_free_parent_map(core);
- 	kfree_const(core->name);
- 	kfree(core);
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2272,6 +2272,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
 
 
 
