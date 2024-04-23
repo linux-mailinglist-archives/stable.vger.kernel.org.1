@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-41165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517518AFA8E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877D68AFA76
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8415A1C22CDE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4871F295CD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0411E14535A;
-	Tue, 23 Apr 2024 21:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B64149DEC;
+	Tue, 23 Apr 2024 21:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bG0Glk6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3YBLKIa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45A7143C49;
-	Tue, 23 Apr 2024 21:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5979A1420BE;
+	Tue, 23 Apr 2024 21:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908721; cv=none; b=gMui3ZJLWiBrFLbS9KI7RAs3znz3Z1T5ffSgyLrO09FzVUFqEQkIkVVOk5cmOGpP1tIZ5OSwdf7ZSRKHcp9IXlYtxLm5FArXtursYxZjQBynpWuQl9wUtXCmWz/B0Hsf+i6Da2pn6OzbqjgIwhcDvWQDjniObLx9+g/ebUu0yIU=
+	t=1713908703; cv=none; b=R3DXZuVWbHRt079T99e3BGgJZPD/PgU5y1jVAp0Gu5tgnUWezY9vnobdRLzwoc4fGnJHEldGJv9zZvWRlsz4Typ1pZWGewSoC5dLEwyuPMNAOJ9qHWvzHit301V5DKTdKamLot48/NCp/QoRY6pScG7iJByIXh19felrv0VdFXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908721; c=relaxed/simple;
-	bh=nvNwe2AZ5EplEbeIho2azQcGrz3Qw6/AHicc+XdF54Q=;
+	s=arc-20240116; t=1713908703; c=relaxed/simple;
+	bh=j4ltxH9hS632REIZ9fYID9Y7WCaurUzOErmE5aolq10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKIw1dUdPN5HbRCEhTI1VhhtY8NsgWguNAieqH6zqLVUa9ObSD+QFdq5hSZaMC1JhQ43PP8eRmXvdVflfRtjYx7S1ft3XOOx3nTqpmUCf1TucGObg5tLQTuIP7NDMRVYnz3dcTgnGcKAJSKB+UeENGUH3IMrS8RSBM4wb5IUtfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bG0Glk6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866BAC3277B;
-	Tue, 23 Apr 2024 21:45:21 +0000 (UTC)
+	 MIME-Version; b=oOwzAWmjxwu19BPrCONVE+hnxj7AF0u8LGCIFa1aNmDKOTFNAIBelhghzoNUzvu3hVv7C6qCH4AG5npsacnd849UQFo1lyGs9+2G2+l2wvS70YR1QL/DNlVLT/8P1+FkDnhg9yjQhxF2t1PcrwIBa4k6gIZF35EntJpOCOpGuwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3YBLKIa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25209C116B1;
+	Tue, 23 Apr 2024 21:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908721;
-	bh=nvNwe2AZ5EplEbeIho2azQcGrz3Qw6/AHicc+XdF54Q=;
+	s=korg; t=1713908703;
+	bh=j4ltxH9hS632REIZ9fYID9Y7WCaurUzOErmE5aolq10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bG0Glk6QG8YFzHEq3//d4yCXBFIC44INYsVjCWbr2KI+hP9YHL+77iuV4JEPQeXPv
-	 r7LplyxokbNTHFpYcGVsm/RXxu/5pLb3Y3soYC9W8QgDqB/C//QG+mRMZbM3I71Ju4
-	 oSjihb6N+IglTFl75y9SvoNq9Z82FnmNpA/N3JDw=
+	b=r3YBLKIatghesDtMXPVvd2OswD1XNv4b3kYv4nVebiIkFZdrxOFFtHXxtRZ6JOefv
+	 8Qjjgvlps8ikra9+hNaCUNtmuiPHJ7p7GfoS2L2KY0gVtFIImjTxDoNKYS0VArCViq
+	 XdwFQfxOOmHpmz8Njs/dh961FE1FyMeKMRET0XPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Alvaro Karsz <alvaro.karsz@solid-run.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/141] ARM: OMAP2+: pdata-quirks: stop including wl12xx.h
-Date: Tue, 23 Apr 2024 14:38:44 -0700
-Message-ID: <20240423213855.075035569@linuxfoundation.org>
+Subject: [PATCH 6.1 057/141] PCI: Avoid FLR for SolidRun SNET DPU rev 1
+Date: Tue, 23 Apr 2024 14:38:45 -0700
+Message-ID: <20240423213855.100233583@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
 References: <20240423213853.356988651@linuxfoundation.org>
@@ -67,35 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Alvaro Karsz <alvaro.karsz@solid-run.com>
 
-[ Upstream commit e14e4c933e0047653f835e30d7d740ebb2a530cc ]
+[ Upstream commit d089d69cc1f824936eeaa4fa172f8fa1a0949eaa ]
 
-As of commit 2398c41d6432 ("omap: pdata-quirks: remove openpandora
-quirks for mmc3 and wl1251") the code no longer creates an instance of
-wl1251_platform_data, so there is no need for including this header.
+This patch fixes a FLR bug on the SNET DPU rev 1 by setting the
+PCI_DEV_FLAGS_NO_FLR_RESET flag.
 
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20221109224250.2885119-1-dmitry.torokhov@gmail.com
+As there is a quirk to avoid FLR (quirk_no_flr), I added a new quirk
+to check the rev ID before calling to quirk_no_flr.
+
+Without this patch, a SNET DPU rev 1 may hang when FLR is applied.
+
+Signed-off-by: Alvaro Karsz <alvaro.karsz@solid-run.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Message-Id: <20230110165638.123745-3-alvaro.karsz@solid-run.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/pdata-quirks.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/quirks.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
-index 9deba798cc919..baba73fd6f11e 100644
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -10,7 +10,6 @@
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/of_platform.h>
--#include <linux/wl12xx.h>
- #include <linux/mmc/card.h>
- #include <linux/mmc/host.h>
- #include <linux/power/smartreflex.h>
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 289ba6902e41b..d8d3f817e95cb 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5403,6 +5403,14 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_AMD, 0x7901, quirk_no_flr);
+ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1502, quirk_no_flr);
+ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1503, quirk_no_flr);
+ 
++/* FLR may cause the SolidRun SNET DPU (rev 0x1) to hang */
++static void quirk_no_flr_snet(struct pci_dev *dev)
++{
++	if (dev->revision == 0x1)
++		quirk_no_flr(dev);
++}
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SOLIDRUN, 0x1000, quirk_no_flr_snet);
++
+ static void quirk_no_ext_tags(struct pci_dev *pdev)
+ {
+ 	struct pci_host_bridge *bridge = pci_find_host_bridge(pdev->bus);
 -- 
 2.43.0
 
