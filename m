@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-40980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F1F8AF9DB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503788AFA72
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2730E1C22036
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF8528962D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123EE145349;
-	Tue, 23 Apr 2024 21:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CCF149DE7;
+	Tue, 23 Apr 2024 21:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEbmhZt5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AG7JhRZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60B5143889;
-	Tue, 23 Apr 2024 21:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38521420BE;
+	Tue, 23 Apr 2024 21:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908595; cv=none; b=NPVhKeyrIYXn9zyaaQQ5+q9Gd1Mt0puZsWyRDxpdnPW/I+Df5P4dt7GXXSzhlkEIB2rfRMy+M1olr+C7v8p0bviSCNsn74WU3UFajGWGPjMV46En2vFbjrLPi9cq0EsxGh0rna7VzDAAg0qZHdTuK42ypezrbzIzrJn+AgGhpxc=
+	t=1713908700; cv=none; b=YhT0cNJjJyqLESVd5dA1hxoibnLCJ4nMNNlYaSRsODeT6woa1yDWp7Syis6Y27pssKBTtUoNRPItfjUuFiK4p3K7aG48b/JAkC64poXgc3f1w1mEtGQoWLmb9WXO4ppT1NOKH8e6vNQnn6I0CM+LRYVYlcBEZfE9kS+dQyUqnWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908595; c=relaxed/simple;
-	bh=d/G8t6GJ5zYpeFwgZFbo1cFG4Qv31Yadbiz0IOKvh4I=;
+	s=arc-20240116; t=1713908700; c=relaxed/simple;
+	bh=WSaTloa8OI7Zm/+7ALURZMX5rCahwdSRLDyRPEcdhy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhQ5EM7MUEblet3TlehvTXDXkcdaTzdwjx/7vwI+FA6N/5umVlT+lfl8HipgO4ddmBv+zots8XkjbTErks+vVh5H3fXVHGkJSHrj2lSS20Y1xLKAdB8Wf3eWz0KlLAAzklvaVurg3f5QFax0BzeNdANq4fl67J5ae98tBcOddp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEbmhZt5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C422C116B1;
-	Tue, 23 Apr 2024 21:43:15 +0000 (UTC)
+	 MIME-Version; b=Nr59bQeH3PTOm1b6sdhvTcQLwCohzXg5qa4urI4L4HaKotXVKQ3Vj5OEPoNNjaidjnUCyPqWgrprw9DfLZ06Ke9jZ+KvqpZcclsYhpS3oeThbOEr8g/7bnZIctvr9PnBkZ9AvLQiIUj9w7CbIMqGIIYvrOaE7ESeLtNLGCcuWOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AG7JhRZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DB4C3277B;
+	Tue, 23 Apr 2024 21:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908595;
-	bh=d/G8t6GJ5zYpeFwgZFbo1cFG4Qv31Yadbiz0IOKvh4I=;
+	s=korg; t=1713908699;
+	bh=WSaTloa8OI7Zm/+7ALURZMX5rCahwdSRLDyRPEcdhy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rEbmhZt5qrpq/akM67687fk135qODU/SpjUy0qK1La+oc0xOi6Rg6SctTSTNpOowU
-	 taFxamABSNBoM63xJ0qe8Q9hw66lWdAeEncDWuPMkhhaTSuACA3n144O36xfHlgJBh
-	 ByzS3J+J49o/VLdyNDC35bCn3OmEdac4dZmsxIiw=
+	b=AG7JhRZwBfu4Bwot/uIqxgYEnuq9SUlw+IbxAXycjc1YuTeRhi2tFmhgske/C3Q3B
+	 vXX/Fq17+c1+n7UNdae+6eUJXpgrW13r7Km9uowAiJzFw0aMwmjWPIDvGnUra+AkbX
+	 x5GEPNJ/FBqoJnFUJqlflBm2LWT20KO3n+Rz1Cec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Schuyler Patton <spatton@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/158] net: ethernet: ti: am65-cpsw-nuss: cleanup DMA Channels before using them
+	Mike Beaton <mjsbeaton@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.1 027/141] x86/efistub: Use 1:1 file:memory mapping for PE/COFF .compat section
 Date: Tue, 23 Apr 2024 14:38:15 -0700
-Message-ID: <20240423213857.661224106@linuxfoundation.org>
+Message-ID: <20240423213854.194091432@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit c24cd679b075b0e953ea167b0aa2b2d59e4eba7f ]
+[ Commit 1ad55cecf22f05f1c884adf63cc09d3c3e609ebf upstream ]
 
-The TX and RX DMA Channels used by the driver to exchange data with CPSW
-are not guaranteed to be in a clean state during driver initialization.
-The Bootloader could have used the same DMA Channels without cleaning them
-up in the event of failure. Thus, reset and disable the DMA Channels to
-ensure that they are in a clean state before using them.
+The .compat section is a dummy PE section that contains the address of
+the 32-bit entrypoint of the 64-bit kernel image if it is bootable from
+32-bit firmware (i.e., CONFIG_EFI_MIXED=y)
 
-Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-Reported-by: Schuyler Patton <spatton@ti.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20240417095425.2253876-1-s-vadapalli@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This section is only 8 bytes in size and is only referenced from the
+loader, and so it is placed at the end of the memory view of the image,
+to avoid the need for padding it to 4k, which is required for sections
+appearing in the middle of the image.
+
+Unfortunately, this violates the PE/COFF spec, and even if most EFI
+loaders will work correctly (including the Tianocore reference
+implementation), PE loaders do exist that reject such images, on the
+basis that both the file and memory views of the file contents should be
+described by the section headers in a monotonically increasing manner
+without leaving any gaps.
+
+So reorganize the sections to avoid this issue. This results in a slight
+padding overhead (< 4k) which can be avoided if desired by disabling
+CONFIG_EFI_MIXED (which is only needed in rare cases these days)
+
+Fixes: 3e3eabe26dc8 ("x86/boot: Increase section and file alignment to 4k/512")
+Reported-by: Mike Beaton <mjsbeaton@gmail.com>
+Link: https://lkml.kernel.org/r/CAHzAAWQ6srV6LVNdmfbJhOwhBw5ZzxxZZ07aHt9oKkfYAdvuQQ%40mail.gmail.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/x86/boot/header.S |   14 ++++++--------
+ arch/x86/boot/setup.ld |    6 +++---
+ 2 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index c62b0f99f2bc4..d556e705ec000 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2716,6 +2716,8 @@ static void am65_cpsw_unregister_devlink(struct am65_cpsw_common *common)
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -105,8 +105,7 @@ extra_header_fields:
+ 	.word	0				# MinorSubsystemVersion
+ 	.long	0				# Win32VersionValue
  
- static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
- {
-+	struct am65_cpsw_rx_chn *rx_chan = &common->rx_chns;
-+	struct am65_cpsw_tx_chn *tx_chan = common->tx_chns;
- 	struct device *dev = common->dev;
- 	struct am65_cpsw_port *port;
- 	int ret = 0, i;
-@@ -2728,6 +2730,22 @@ static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
- 	if (ret)
- 		return ret;
+-	.long	setup_size + ZO__end + pecompat_vsize
+-						# SizeOfImage
++	.long	setup_size + ZO__end		# SizeOfImage
  
-+	/* The DMA Channels are not guaranteed to be in a clean state.
-+	 * Reset and disable them to ensure that they are back to the
-+	 * clean state and ready to be used.
-+	 */
-+	for (i = 0; i < common->tx_ch_num; i++) {
-+		k3_udma_glue_reset_tx_chn(tx_chan[i].tx_chn, &tx_chan[i],
-+					  am65_cpsw_nuss_tx_cleanup);
-+		k3_udma_glue_disable_tx_chn(tx_chan[i].tx_chn);
-+	}
+ 	.long	salign				# SizeOfHeaders
+ 	.long	0				# CheckSum
+@@ -142,7 +141,7 @@ section_table:
+ 	.ascii	".setup"
+ 	.byte	0
+ 	.byte	0
+-	.long	setup_size - salign 		# VirtualSize
++	.long	pecompat_fstart - salign 	# VirtualSize
+ 	.long	salign				# VirtualAddress
+ 	.long	pecompat_fstart - salign	# SizeOfRawData
+ 	.long	salign				# PointerToRawData
+@@ -155,8 +154,8 @@ section_table:
+ #ifdef CONFIG_EFI_MIXED
+ 	.asciz	".compat"
+ 
+-	.long	8				# VirtualSize
+-	.long	setup_size + ZO__end		# VirtualAddress
++	.long	pecompat_fsize			# VirtualSize
++	.long	pecompat_fstart			# VirtualAddress
+ 	.long	pecompat_fsize			# SizeOfRawData
+ 	.long	pecompat_fstart			# PointerToRawData
+ 
+@@ -171,17 +170,16 @@ section_table:
+ 	 * modes this image supports.
+ 	 */
+ 	.pushsection ".pecompat", "a", @progbits
+-	.balign	falign
+-	.set	pecompat_vsize, salign
++	.balign	salign
+ 	.globl	pecompat_fstart
+ pecompat_fstart:
+ 	.byte	0x1				# Version
+ 	.byte	8				# Size
+ 	.word	IMAGE_FILE_MACHINE_I386		# PE machine type
+ 	.long	setup_size + ZO_efi32_pe_entry	# Entrypoint
++	.byte	0x0				# Sentinel
+ 	.popsection
+ #else
+-	.set	pecompat_vsize, 0
+ 	.set	pecompat_fstart, setup_size
+ #endif
+ 	.ascii	".text"
+--- a/arch/x86/boot/setup.ld
++++ b/arch/x86/boot/setup.ld
+@@ -24,6 +24,9 @@ SECTIONS
+ 	.text		: { *(.text .text.*) }
+ 	.text32		: { *(.text32) }
+ 
++	.pecompat	: { *(.pecompat) }
++	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
 +
-+	for (i = 0; i < AM65_CPSW_MAX_RX_FLOWS; i++)
-+		k3_udma_glue_reset_rx_chn(rx_chan->rx_chn, i, rx_chan,
-+					  am65_cpsw_nuss_rx_cleanup, !!i);
-+
-+	k3_udma_glue_disable_rx_chn(rx_chan->rx_chn);
-+
- 	ret = am65_cpsw_nuss_register_devlink(common);
- 	if (ret)
- 		return ret;
--- 
-2.43.0
-
+ 	. = ALIGN(16);
+ 	.rodata		: { *(.rodata*) }
+ 
+@@ -36,9 +39,6 @@ SECTIONS
+ 	. = ALIGN(16);
+ 	.data		: { *(.data*) }
+ 
+-	.pecompat	: { *(.pecompat) }
+-	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
+-
+ 	.signature	: {
+ 		setup_sig = .;
+ 		LONG(0x5a5aaa55)
 
 
 
