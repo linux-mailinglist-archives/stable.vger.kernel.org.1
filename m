@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CAD8AFB36
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:55:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7CF8AFA3A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44FAAB2BCB2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7F801F2949B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6945D14A0AF;
-	Tue, 23 Apr 2024 21:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328B41494A4;
+	Tue, 23 Apr 2024 21:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1dpkAhl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p71IBHMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28911145B05;
-	Tue, 23 Apr 2024 21:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CAF145330;
+	Tue, 23 Apr 2024 21:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908745; cv=none; b=u1qceWuYlS1YZ0t4nCXEfSsgDC9G4RlxosUhIybQz5a3xFmdHNm9O2Inp/J+f1aZg+/1mhI/ViAeK8CUNuPLSKe9BIjRhlkdx0AIgVQpse07Fx/OFQs2oMYKapO2xplZDzVTOiMGlbusq1c07UvRvznNif5cNznglgKIFlBhBJI=
+	t=1713908658; cv=none; b=Y4doooLG2ngC+UEHZR37OCDB8bOCVn6Aez9EUDXlP3Awrpn9hSrVNWopCJxGMwn2jtuTyuaFeuTgKSQpww9JtUwTOf7pVblFeHUsca3ChnLyPXjl2Ee1J4gkZcQMQH8SxUedW/T49XLmIKR+OJucqUQOeHN/HgALvSOCQ3MUnCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908745; c=relaxed/simple;
-	bh=htpgL12qoj6GTkTEG6RBiJjGxaeOLyNY/4nPnAQ58r8=;
+	s=arc-20240116; t=1713908658; c=relaxed/simple;
+	bh=kAfp8+2TJw0y1R2OqBt0mWqYzn7rW7Ny6/nXGBLnAYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmLQtINY+RozZp51gfIz5Jq3DvI8ojy9lSrMGXxBvuAUZi9PRC6OaUiC/UUXi81fLjJKJ8qJ4CeXDA5PA4cgNhBl7ZQBdekVJpswFV02+v5Re5vvDL8W6gQskcookyXXkfT4liC0N3WPqvzCeiktSupGQj+S9plXiYI8X9FtD1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1dpkAhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0ED8C3277B;
-	Tue, 23 Apr 2024 21:45:44 +0000 (UTC)
+	 MIME-Version; b=XpRUu7TzknCSsLYxZwgGgMMeVN9+qAwU6xMjncxfhDL0kypjvUDxuGiLKcoQWDMFj4+JmzGQhHwelPlN+RQ8DcfrISkSW6WEXqM8YRPTzx5uZcKBaX0TurJWgOGY2vDb6QuDr++FAxn04XwPEiVic3lVGAAdF+5C85EYQtHyvqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p71IBHMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A1EC116B1;
+	Tue, 23 Apr 2024 21:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908745;
-	bh=htpgL12qoj6GTkTEG6RBiJjGxaeOLyNY/4nPnAQ58r8=;
+	s=korg; t=1713908657;
+	bh=kAfp8+2TJw0y1R2OqBt0mWqYzn7rW7Ny6/nXGBLnAYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1dpkAhl0PsbZzqyozxwvP4y31y4ke1URm2fxeQTef3z9sw+7lwUNljV/sK+AkmR4
-	 kOTPtJw38NzdxSzqiA18i3kLoRItravg/cTT6G6YLjkkWdwC24OzYKiAiXmbQ5OEIc
-	 7I2DS7D1aJEa1E+heRYhLGLj1oaalsIibiQ1EETc=
+	b=p71IBHMAa0Xs9l/gOVmPOJr+8gLWUhI1rcFVst55ks8OvAxXFtVBiAPz1kS+p2l9+
+	 v/dtaHTsS/DSwCO//kV0zVyhitgRhnXFJOR7L3d2ZJ9FFEp82yOkIRCHI9stWv/HEZ
+	 AvMoji0+GZROgXOuSsU2on3NCa8q/mSAIGHZFKWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 6.1 118/141] mei: me: disable RPL-S on SPS and IGN firmwares
+	syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 149/158] nilfs2: fix OOB in nilfs_set_de_type
 Date: Tue, 23 Apr 2024 14:39:46 -0700
-Message-ID: <20240423213857.037091156@linuxfoundation.org>
+Message-ID: <20240423213900.512192438@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 0dc04112bee6fdd6eb847ccb32214703022c0269 upstream.
+commit c4a7dc9523b59b3e73fd522c73e95e072f876b16 upstream.
 
-Extend the quirk to disable MEI interface on Intel PCH Ignition (IGN)
-and SPS firmwares for RPL-S devices. These firmwares do not support
-the MEI protocol.
+The size of the nilfs_type_by_mode array in the fs/nilfs2/dir.c file is
+defined as "S_IFMT >> S_SHIFT", but the nilfs_set_de_type() function,
+which uses this array, specifies the index to read from the array in the
+same way as "(mode & S_IFMT) >> S_SHIFT".
 
-Fixes: 3ed8c7d39cfe ("mei: me: add raptor lake point S DID")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240312051958.118478-1-tomas.winkler@intel.com
+static void nilfs_set_de_type(struct nilfs_dir_entry *de, struct inode
+ *inode)
+{
+	umode_t mode = inode->i_mode;
+
+	de->file_type = nilfs_type_by_mode[(mode & S_IFMT)>>S_SHIFT]; // oob
+}
+
+However, when the index is determined this way, an out-of-bounds (OOB)
+error occurs by referring to an index that is 1 larger than the array size
+when the condition "mode & S_IFMT == S_IFMT" is satisfied.  Therefore, a
+patch to resize the nilfs_type_by_mode array should be applied to prevent
+OOB errors.
+
+Link: https://lkml.kernel.org/r/20240415182048.7144-1-konishi.ryusuke@gmail.com
+Reported-by: syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e22057de05b9f3b30d8
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/pci-me.c |    2 +-
+ fs/nilfs2/dir.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -116,7 +116,7 @@ static const struct pci_device_id mei_me
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_P, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_N, MEI_ME_PCH15_CFG)},
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -243,7 +243,7 @@ nilfs_filetype_table[NILFS_FT_MAX] = {
  
--	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_SPS_CFG)},
- 
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
+ #define S_SHIFT 12
+ static unsigned char
+-nilfs_type_by_mode[S_IFMT >> S_SHIFT] = {
++nilfs_type_by_mode[(S_IFMT >> S_SHIFT) + 1] = {
+ 	[S_IFREG >> S_SHIFT]	= NILFS_FT_REG_FILE,
+ 	[S_IFDIR >> S_SHIFT]	= NILFS_FT_DIR,
+ 	[S_IFCHR >> S_SHIFT]	= NILFS_FT_CHRDEV,
 
 
 
