@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-40973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6085A8AF9D4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 765C18AF930
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 915801C22514
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31536282B54
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568521474B3;
-	Tue, 23 Apr 2024 21:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14DF1448DA;
+	Tue, 23 Apr 2024 21:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6ZI5x1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvChE/Dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15311143889;
-	Tue, 23 Apr 2024 21:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE2F20B3E;
+	Tue, 23 Apr 2024 21:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908591; cv=none; b=CwYUq3NmXma5buuekoAiHK6L+Ti3AiNxYtCRQoPsBmY6jP1w500T1TlPg1s2BtnaXRRl0NaY/POQfyzraTe6r36zNl0W7Z/yz+yf6dQnWjbiwmUF9/42vNmm63MgoPovcncDpbHQe4YI+K3xphp0XCzMvBktt3CA27UZL8zEmxs=
+	t=1713908484; cv=none; b=Zki5UElw+Cs1BZVg3N9q1yH/HLNC7n5mPR86lW80p1N8F/JeRpuQRiPEVjjwU0Af24Y7hIarHDbPV+zDjbkkJ0ho+s9CfMWkuHne8pI0s4f3nTB40Gj0jSwI3IgtsQhztcCOvqEdvxj0UwYog4v6j6ZMSKOAcMaMVG5UumWlDN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908591; c=relaxed/simple;
-	bh=Zo6C0NzIp4kzncTAnAH0pcT8HxFndaZgLA9sjmN9mCw=;
+	s=arc-20240116; t=1713908484; c=relaxed/simple;
+	bh=fD3Ro56gEYjetf67xso6knueKLse6Jpak9UT6/NIKEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2I9ugHfVqpk+2h3PFOv8vAPmkVDNFctMgnFptAQnAX2QUwnLqYYUEVTAO7U/KeKQ0IxsFvuvKBt8UVn8i1mPfYhcDNsZYXWl30sVyVWNh06vRSCzUMBt6bQS02xtbY4MP9wDSOp2z/JncxdK6moIIuyD8ZcQSKuXfgVcXxk+m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6ZI5x1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5459C3277B;
-	Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pycoQ03SmZc5g1PE6DQRaxbXSdD8eHgZ+gnKVDZKImOch7och6zjbEDl6Rj8G4H3zkDnWs/pqLM4a58MSzuykZQQRs/t4/Oe7M0NGfn7J7I+nOzWnXPOl55mYRLiJAnYzxATm5EwGA7iU/agH0VB0NcZIwy8OSFBcL0XX+zoXPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvChE/Dy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41018C32782;
+	Tue, 23 Apr 2024 21:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908590;
-	bh=Zo6C0NzIp4kzncTAnAH0pcT8HxFndaZgLA9sjmN9mCw=;
+	s=korg; t=1713908484;
+	bh=fD3Ro56gEYjetf67xso6knueKLse6Jpak9UT6/NIKEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6ZI5x1ruRu799lK1QErAzekoEWd0Qq5pvyOUr0SnCAov3t9G37eQKimKoYL1t4AW
-	 SEhhr9z7y+2oXklF3tj2e1u0HBL6+8a/GXiAQptD4tLv4aZfTt4x/+DG6M0/LK56LJ
-	 hfVJWfFWC/7KgT6I4Iut++jD8M+k4l8/AmNeWQ9E=
+	b=bvChE/DyS0ah8Nq3zRA91A00pb3Lc9/+MhDOouJZMmy/I2ymE4oJ1EzZO2+IhuI0f
+	 JPexbePFwdXHgT9KwSbqruWom8IFsSHwpvIeLkME1BWopdMJcbPGMWPnZSbg9Qm/0B
+	 0owjM2C9A4K/gZgXeRZFK7V+MJ+laALjlxnzDilM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/158] drm/amd/display: Do not recursively call manual trigger programming
-Date: Tue, 23 Apr 2024 14:37:33 -0700
-Message-ID: <20240423213856.243448160@linuxfoundation.org>
+Subject: [PATCH 6.8 032/158] selftests/tcp_ao: Fix fscanf() call for format-security
+Date: Tue, 23 Apr 2024 14:37:34 -0700
+Message-ID: <20240423213856.931300791@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dillon Varone <dillon.varone@amd.com>
+From: Dmitry Safonov <0x7f454c46@gmail.com>
 
-[ Upstream commit 953927587f37b731abdeabe46ad44a3b3ec67a52 ]
+[ Upstream commit beb78cd1329d039d73487ca05633d1b92e1ab2ea ]
 
-[WHY&HOW]
-We should not be recursively calling the manual trigger programming function when
-FAMS is not in use.
+On my new laptop with packages from nixos-unstable, gcc 12.3.0 produces:
+> lib/proc.c: In function ‘netstat_read_type’:
+> lib/proc.c:89:9: error: format not a string literal and no format arguments [-Werror=format-security]
+>    89 |         if (fscanf(fnetstat, type->header_name) == EOF)
+>       |         ^~
+> cc1: some warnings being treated as errors
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Here the selftests lib parses header name, while expectes non-space word
+ending with a column.
+
+Fixes: cfbab37b3da0 ("selftests/net: Add TCP-AO library")
+Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 3 ---
- 1 file changed, 3 deletions(-)
+ tools/testing/selftests/net/tcp_ao/lib/proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-index e817fa4efeee5..058dee76054ea 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-@@ -236,9 +236,6 @@ static void optc32_setup_manual_trigger(struct timing_generator *optc)
- 				OTG_V_TOTAL_MAX_SEL, 1,
- 				OTG_FORCE_LOCK_ON_EVENT, 0,
- 				OTG_SET_V_TOTAL_MIN_MASK, (1 << 1)); /* TRIGA */
--
--		// Setup manual flow control for EOF via TRIG_A
--		optc->funcs->setup_manual_trigger(optc);
- 	}
- }
+diff --git a/tools/testing/selftests/net/tcp_ao/lib/proc.c b/tools/testing/selftests/net/tcp_ao/lib/proc.c
+index 2fb6dd8adba69..8b984fa042869 100644
+--- a/tools/testing/selftests/net/tcp_ao/lib/proc.c
++++ b/tools/testing/selftests/net/tcp_ao/lib/proc.c
+@@ -86,7 +86,7 @@ static void netstat_read_type(FILE *fnetstat, struct netstat **dest, char *line)
  
+ 	pos = strchr(line, ' ') + 1;
+ 
+-	if (fscanf(fnetstat, type->header_name) == EOF)
++	if (fscanf(fnetstat, "%[^ :]", type->header_name) == EOF)
+ 		test_error("fscanf(%s)", type->header_name);
+ 	if (fread(&tmp, 1, 1, fnetstat) != 1 || tmp != ':')
+ 		test_error("Unexpected netstat format (%c)", tmp);
 -- 
 2.43.0
 
