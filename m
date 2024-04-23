@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B333A8AF991
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 786AE8AFADD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E56CE1C24055
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C3971F22311
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1F1143882;
-	Tue, 23 Apr 2024 21:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0B9145B18;
+	Tue, 23 Apr 2024 21:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUfRGmVI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgA5wnFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A39C20B3E;
-	Tue, 23 Apr 2024 21:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EAE143C5F;
+	Tue, 23 Apr 2024 21:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908549; cv=none; b=Ni6oc3wgkphQF2EAHeviRnCSmuPQMqfq7yARL6JCSPp+nu3YPE3PBM32pW9IsZHCdBtAuKVHRPfho8kHSGWA05GnFCOfgBz+h9QvhbIyiGWRDzvatao3nnwZKqT9sTYFAV23plOxXJeqUCnulRhoczOsTuxV6K0MZopyM2Kbmy0=
+	t=1713908774; cv=none; b=JK8XSoe1tpQuTI60IrDmzKtyVVlbAS+hfxj6LhDbnEX19TFT+i7QDJ1ELPoCz8zueToiSOpgr5foN3zQo581GtDsbgGaidYxA8osGo1YkEROfx9eEuhQIDgkV4dXk3Csw+yTsP1Y8auAnZwdAR+s59Ad7mCQKZKTQfaJ1YiYEy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908549; c=relaxed/simple;
-	bh=/k2kTire9eVYD93V7/1OfQG1wBOrseO+Fr1pHN8RECo=;
+	s=arc-20240116; t=1713908774; c=relaxed/simple;
+	bh=9e7C15Tmm1FQvlYdKQLjjdXPhwQI8k3onDC3keqqHcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1c5/qsbblDbsPDfSurBad+3MDvc/9ZXoRdfA8j2MhFValYUrRklns5cDrqxuVOB0HoUdWpIrquMwoaBhx4CMAluUiced2SW1aVkG941J5BvgDXnFHDaH0ry06sB+Y8rZVJHSVmFbykgZ/MUL9xJq5z7m70DNaz/OBefqZYNPgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUfRGmVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408DFC3277B;
-	Tue, 23 Apr 2024 21:42:29 +0000 (UTC)
+	 MIME-Version; b=PsWYe1FKQ882jgAmEZaEVQdYC/QrWuJIt2Jny8DQLmZnKlanG3UvQ1gHm9y3WxyO1H/WVTGYPh3bItQAquqXg4j1kytPDt3tRD9cy6RD9GppTjBoTlCeSeCKyhXeiT+K0G6CRfEKVF8xo/mbDKbiMPAQUEFJJrPl5FfsxsJGhno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgA5wnFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE09C3277B;
+	Tue, 23 Apr 2024 21:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908549;
-	bh=/k2kTire9eVYD93V7/1OfQG1wBOrseO+Fr1pHN8RECo=;
+	s=korg; t=1713908773;
+	bh=9e7C15Tmm1FQvlYdKQLjjdXPhwQI8k3onDC3keqqHcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UUfRGmVI1F4HgfXXEvAHYb9HW50J0CE9wTsMhKNudWdCDqR82BTWjCOwHyy+AL7g4
-	 bsUEBbBIzfGE6vcXUutqUO3hE4dsK9Y3At9fEumCYDPlQZBW/KV3kNOeL1KsRacqJG
-	 L7hhfKISTmiLekYTynuhBegdoSP3tQxQii+ippLE=
+	b=XgA5wnFzl4DPNCAgPxOdnffpEUP3Ti3Pl6ImC0MBIqJqVeVI6UKzIgpsR6w8sAk1s
+	 ArA3CJxI9F6+9eEMd2TztZe3/YwkbuM8En8M1xmxFN9/umS0gCF3RhNfONckiLoFPF
+	 p/oQtd6CqvU64Aw8ldZ9kt1fLuEBP3fmP7BabKRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Qiang Zhang <qiang4.zhang@intel.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.8 149/158] bootconfig: use memblock_free_late to free xbc memory to buddy
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 18/71] netfilter: nft_set_pipapo: do not free live element
 Date: Tue, 23 Apr 2024 14:39:31 -0700
-Message-ID: <20240423213900.696329715@linuxfoundation.org>
+Message-ID: <20240423213844.752636865@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,160 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Zhang <qiang4.zhang@intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 89f9a1e876b5a7ad884918c03a46831af202c8a0 upstream.
+[ Upstream commit 3cfc9ec039af60dbd8965ae085b2c2ccdcfbe1cc ]
 
-On the time to free xbc memory in xbc_exit(), memblock may has handed
-over memory to buddy allocator. So it doesn't make sense to free memory
-back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
-on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
-Following KASAN logs shows this case.
+Pablo reports a crash with large batches of elements with a
+back-to-back add/remove pattern.  Quoting Pablo:
 
-This patch fixes the xbc memory free problem by calling memblock_free()
-in early xbc init error rewind path and calling memblock_free_late() in
-xbc exit path to free memory to buddy allocator.
+  add_elem("00000000") timeout 100 ms
+  ...
+  add_elem("0000000X") timeout 100 ms
+  del_elem("0000000X") <---------------- delete one that was just added
+  ...
+  add_elem("00005000") timeout 100 ms
 
-[    9.410890] ==================================================================
-[    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
-[    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
+  1) nft_pipapo_remove() removes element 0000000X
+  Then, KASAN shows a splat.
 
-[    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
-[    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
-[    9.460789] Call Trace:
-[    9.463518]  <TASK>
-[    9.465859]  dump_stack_lvl+0x53/0x70
-[    9.469949]  print_report+0xce/0x610
-[    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
-[    9.478619]  ? memblock_isolate_range+0x12d/0x260
-[    9.483877]  kasan_report+0xc6/0x100
-[    9.487870]  ? memblock_isolate_range+0x12d/0x260
-[    9.493125]  memblock_isolate_range+0x12d/0x260
-[    9.498187]  memblock_phys_free+0xb4/0x160
-[    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
-[    9.508021]  ? mutex_unlock+0x7e/0xd0
-[    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
-[    9.516786]  ? kernel_init_freeable+0x2d4/0x430
-[    9.521850]  ? __pfx_kernel_init+0x10/0x10
-[    9.526426]  xbc_exit+0x17/0x70
-[    9.529935]  kernel_init+0x38/0x1e0
-[    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
-[    9.538601]  ret_from_fork+0x2c/0x50
-[    9.542596]  ? __pfx_kernel_init+0x10/0x10
-[    9.547170]  ret_from_fork_asm+0x1a/0x30
-[    9.551552]  </TASK>
+Looking at the remove function there is a chance that we will drop a
+rule that maps to a non-deactivated element.
 
-[    9.555649] The buggy address belongs to the physical page:
-[    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
-[    9.570821] flags: 0x200000000000000(node=0|zone=2)
-[    9.576271] page_type: 0xffffffff()
-[    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
-[    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
-[    9.597476] page dumped because: kasan: bad access detected
+Removal happens in two steps, first we do a lookup for key k and return the
+to-be-removed element and mark it as inactive in the next generation.
+Then, in a second step, the element gets removed from the set/map.
 
-[    9.605362] Memory state around the buggy address:
-[    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[    9.634930]                    ^
-[    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[    9.654675] ==================================================================
+The _remove function does not work correctly if we have more than one
+element that share the same key.
 
-Link: https://lore.kernel.org/all/20240414114944.1012359-1-qiang4.zhang@linux.intel.com/
+This can happen if we insert an element into a set when the set already
+holds an element with same key, but the element mapping to the existing
+key has timed out or is not active in the next generation.
 
-Fixes: 40caa127f3c7 ("init: bootconfig: Remove all bootconfig data when the init memory is removed")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In such case its possible that removal will unmap the wrong element.
+If this happens, we will leak the non-deactivated element, it becomes
+unreachable.
+
+The element that got deactivated (and will be freed later) will
+remain reachable in the set data structure, this can result in
+a crash when such an element is retrieved during lookup (stale
+pointer).
+
+Add a check that the fully matching key does in fact map to the element
+that we have marked as inactive in the deactivation step.
+If not, we need to continue searching.
+
+Add a bug/warn trap at the end of the function as well, the remove
+function must not ever be called with an invisible/unreachable/non-existent
+element.
+
+v2: avoid uneeded temporary variable (Stefano)
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bootconfig.h |    7 ++++++-
- lib/bootconfig.c           |   19 +++++++++++--------
- 2 files changed, 17 insertions(+), 9 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/include/linux/bootconfig.h
-+++ b/include/linux/bootconfig.h
-@@ -288,7 +288,12 @@ int __init xbc_init(const char *buf, siz
- int __init xbc_get_info(int *node_size, size_t *data_size);
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 58eca26162735..2299ced939c47 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1994,6 +1994,8 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
+ 		rules_fx = rules_f0;
  
- /* XBC cleanup data structures */
--void __init xbc_exit(void);
-+void __init _xbc_exit(bool early);
+ 		nft_pipapo_for_each_field(f, i, m) {
++			bool last = i == m->field_count - 1;
 +
-+static inline void xbc_exit(void)
-+{
-+	_xbc_exit(false);
-+}
+ 			if (!pipapo_match_field(f, start, rules_fx,
+ 						match_start, match_end))
+ 				break;
+@@ -2006,16 +2008,18 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
  
- /* XBC embedded bootconfig data in kernel */
- #ifdef CONFIG_BOOT_CONFIG_EMBED
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_me
- 	return memblock_alloc(size, SMP_CACHE_BYTES);
- }
+ 			match_start += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
+ 			match_end += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
+-		}
  
--static inline void __init xbc_free_mem(void *addr, size_t size)
-+static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
- {
--	memblock_free(addr, size);
-+	if (early)
-+		memblock_free(addr, size);
-+	else if (addr)
-+		memblock_free_late(__pa(addr), size);
- }
+-		if (i == m->field_count) {
+-			priv->dirty = true;
+-			pipapo_drop(m, rulemap);
+-			return;
++			if (last && f->mt[rulemap[i].to].e == e) {
++				priv->dirty = true;
++				pipapo_drop(m, rulemap);
++				return;
++			}
+ 		}
  
- #else /* !__KERNEL__ */
-@@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t
- 	return malloc(size);
- }
- 
--static inline void xbc_free_mem(void *addr, size_t size)
-+static inline void xbc_free_mem(void *addr, size_t size, bool early)
- {
- 	free(addr);
- }
-@@ -904,13 +907,13 @@ static int __init xbc_parse_tree(void)
-  * If you need to reuse xbc_init() with new boot config, you can
-  * use this.
-  */
--void __init xbc_exit(void)
-+void __init _xbc_exit(bool early)
- {
--	xbc_free_mem(xbc_data, xbc_data_size);
-+	xbc_free_mem(xbc_data, xbc_data_size, early);
- 	xbc_data = NULL;
- 	xbc_data_size = 0;
- 	xbc_node_num = 0;
--	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
-+	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
- 	xbc_nodes = NULL;
- 	brace_index = 0;
- }
-@@ -963,7 +966,7 @@ int __init xbc_init(const char *data, si
- 	if (!xbc_nodes) {
- 		if (emsg)
- 			*emsg = "Failed to allocate bootconfig nodes";
--		xbc_exit();
-+		_xbc_exit(true);
- 		return -ENOMEM;
+ 		first_rule += rules_f0;
  	}
- 	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
-@@ -977,7 +980,7 @@ int __init xbc_init(const char *data, si
- 			*epos = xbc_err_pos;
- 		if (emsg)
- 			*emsg = xbc_err_msg;
--		xbc_exit();
-+		_xbc_exit(true);
- 	} else
- 		ret = xbc_node_num;
++
++	WARN_ON_ONCE(1); /* elem_priv not found */
+ }
  
+ /**
+-- 
+2.43.0
+
 
 
 
