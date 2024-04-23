@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-40876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF918AF96D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0794D8AFA1F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E3A21C2434C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A55E2B207B2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1C7143C75;
-	Tue, 23 Apr 2024 21:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B83148831;
+	Tue, 23 Apr 2024 21:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwZyVyVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlEaXb2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6B7143C46;
-	Tue, 23 Apr 2024 21:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0772143895;
+	Tue, 23 Apr 2024 21:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908523; cv=none; b=RHeTluumrTw+klqkFF4jjlKAqpu9v1O9AjXhdaPvBkUCc61DVO326E3QJB7D5oP37yloRju7GcQfKTosDT4ZMh9HQa7UQDCa0xq8ZcLIZfZUrafNCTER8js8OtlocplYALL9byJD/0cwyKimc2KCw9VcRgf0h+TcffSCxgGfIHE=
+	t=1713908629; cv=none; b=CV8nGRsElX/yHWEr6J4+/obkSrEULjocmvdeioN2eeTWNv8vqKdos5PD/35/Ju+qAhx++ksXnhOld3BKxQr3D8i9PtB2PhqjfK+IZedwe+Armp3YVQ2g5mD0PqwAN/ydmR9aj14ShVYM9qDAqsQO0XeXMqdUARHW05oyDshv/Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908523; c=relaxed/simple;
-	bh=20Z+/bKG1JVrhMkmylVRYoiQvip/LB9lkAgUZL4wpEA=;
+	s=arc-20240116; t=1713908629; c=relaxed/simple;
+	bh=LF2NKiLOcfBKSrq6olUhtwOqkC83ooJl/9Cu5LeEOIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFwGS8ectljxCFS7jNRJO2bLdcBAkA1l6ZGJnIkwBH1oxof/jHIV9DNF8elBrwfHaMCp7MP33+zjE6SvgagpNQUW4CwRyVrvVz7c+a3oPbltPYz1UsPDu25hth4q+PAxuC/16SsTNowPhFIdgoqM8PEVddiVNFzTch/mbHUYJTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwZyVyVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3ECDC4AF08;
-	Tue, 23 Apr 2024 21:42:02 +0000 (UTC)
+	 MIME-Version; b=RqUh/u/LQ/jym1kTo+eImBJnIIEvitq6YK3nqqHrU6exhLcpZ9KTpm48v3ZkFqfon8o4GaPPRNCnVHHVs6gBjh1a6aYsZbvSOet14ICFOcT1aMXELZuSNYAdscgy3gvTmRHxfE+b/rsKX+A4kViyFDssbH+nCxmFupjTafJdtEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlEaXb2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85794C116B1;
+	Tue, 23 Apr 2024 21:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908522;
-	bh=20Z+/bKG1JVrhMkmylVRYoiQvip/LB9lkAgUZL4wpEA=;
+	s=korg; t=1713908629;
+	bh=LF2NKiLOcfBKSrq6olUhtwOqkC83ooJl/9Cu5LeEOIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WwZyVyVXBqqVDM52+3Ha4CRIJV6AJ0o6ygYzsVT8tAmbv2ERCe079hvpQApsgSMM1
-	 6Q4NJhAfK4NXLETun4x4YEe53GKmcOk1XVnrrXvGaaTiXyKgqPv6XkGld3RQY3feNm
-	 m0D+P7Gzk9vtx06JP0jlbeZX8eBqgHZKU9TTe+y4=
+	b=YlEaXb2fJ0vP4ugusX5sMvsYAN44ygeQwSNMmczsxYQbydSg1vgR8f1xpzU+5ZW/c
+	 HBwFU6oC5R2uc89BkY4n655eUifLw2thD5CcJfqYhxgocv0/ZMyWLH6pmlFfHLDCQH
+	 4Pw4i9lpfpbWzaA7fmL8S1kE75JsrjQ0Q5yArbOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 088/158] net/mlx5: E-switch, store eswitch pointer before registering devlink_param
+Subject: [PATCH 6.6 073/158] usb: pci-quirks: handle HAS_IOPORT dependency for AMD quirk
 Date: Tue, 23 Apr 2024 14:38:30 -0700
-Message-ID: <20240423213858.803345927@linuxfoundation.org>
+Message-ID: <20240423213858.137949890@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +62,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 0553e753ea9ee724acaf6b3dfc7354702af83567 ]
+[ Upstream commit 52e24f8c0a102ac76649c6b71224fadcc82bd5da ]
 
-Next patch will move devlink register to be first. Therefore, whenever
-mlx5 will register a param, the user will be notified.
-In order to notify the user, devlink is using the get() callback of
-the param. Hence, resources that are being used by the get() callback
-must be set before the devlink param is registered.
+In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+not being declared. In the pci-quirks case the I/O port acceses are
+used in the quirks for several AMD south bridges, Add a config option
+for the AMD quirks to depend on HAS_IOPORT and #ifdef the quirk code.
 
-Therefore, store eswitch pointer inside mdev before registering the
-param.
-
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230911125653.1393895-3-schnelle@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.c        | 9 +++------
- .../net/ethernet/mellanox/mlx5/core/eswitch_offloads.c   | 4 ++++
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/usb/Kconfig           | 10 ++++++++++
+ drivers/usb/core/hcd-pci.c    |  3 +--
+ drivers/usb/host/pci-quirks.c |  2 ++
+ drivers/usb/host/pci-quirks.h | 30 ++++++++++++++++++++++--------
+ include/linux/usb/hcd.h       | 17 +++++++++++++++++
+ 5 files changed, 52 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 3047d7015c525..1789800faaeb6 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1868,6 +1868,7 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
- 	if (err)
- 		goto abort;
+diff --git a/drivers/usb/Kconfig b/drivers/usb/Kconfig
+index 7f33bcc315f27..abf8c6cdea9ea 100644
+--- a/drivers/usb/Kconfig
++++ b/drivers/usb/Kconfig
+@@ -91,6 +91,16 @@ config USB_PCI
+ 	  If you have such a device you may say N here and PCI related code
+ 	  will not be built in the USB driver.
  
-+	dev->priv.eswitch = esw;
- 	err = esw_offloads_init(esw);
- 	if (err)
- 		goto reps_err;
-@@ -1892,11 +1893,6 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
- 		esw->offloads.encap = DEVLINK_ESWITCH_ENCAP_MODE_BASIC;
- 	else
- 		esw->offloads.encap = DEVLINK_ESWITCH_ENCAP_MODE_NONE;
--	if (MLX5_ESWITCH_MANAGER(dev) &&
--	    mlx5_esw_vport_match_metadata_supported(esw))
--		esw->flags |= MLX5_ESWITCH_VPORT_MATCH_METADATA;
--
--	dev->priv.eswitch = esw;
- 	BLOCKING_INIT_NOTIFIER_HEAD(&esw->n_head);
- 
- 	esw_info(dev,
-@@ -1908,6 +1904,7 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
- 
- reps_err:
- 	mlx5_esw_vports_cleanup(esw);
-+	dev->priv.eswitch = NULL;
- abort:
- 	if (esw->work_queue)
- 		destroy_workqueue(esw->work_queue);
-@@ -1926,7 +1923,6 @@ void mlx5_eswitch_cleanup(struct mlx5_eswitch *esw)
- 
- 	esw_info(esw->dev, "cleanup\n");
- 
--	esw->dev->priv.eswitch = NULL;
- 	destroy_workqueue(esw->work_queue);
- 	WARN_ON(refcount_read(&esw->qos.refcnt));
- 	mutex_destroy(&esw->state_lock);
-@@ -1937,6 +1933,7 @@ void mlx5_eswitch_cleanup(struct mlx5_eswitch *esw)
- 	mutex_destroy(&esw->offloads.encap_tbl_lock);
- 	mutex_destroy(&esw->offloads.decap_tbl_lock);
- 	esw_offloads_cleanup(esw);
-+	esw->dev->priv.eswitch = NULL;
- 	mlx5_esw_vports_cleanup(esw);
- 	debugfs_remove_recursive(esw->debugfs_root);
- 	devl_params_unregister(priv_to_devlink(esw->dev), mlx5_eswitch_params,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index baaae628b0a0f..e3cce110e52fd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -2476,6 +2476,10 @@ int esw_offloads_init(struct mlx5_eswitch *esw)
- 	if (err)
- 		return err;
- 
-+	if (MLX5_ESWITCH_MANAGER(esw->dev) &&
-+	    mlx5_esw_vport_match_metadata_supported(esw))
-+		esw->flags |= MLX5_ESWITCH_VPORT_MATCH_METADATA;
++config USB_PCI_AMD
++	bool "AMD PCI USB host support"
++	depends on USB_PCI && HAS_IOPORT
++	default X86 || MACH_LOONGSON64 || PPC_PASEMI
++	help
++	  Enable workarounds for USB implementation quirks in SB600/SB700/SB800
++	  and later south bridge implementations. These are common on x86 PCs
++	  with AMD CPUs but rarely used elsewhere, with the exception of a few
++	  powerpc and mips desktop machines.
 +
- 	err = devl_params_register(priv_to_devlink(esw->dev),
- 				   esw_devlink_params,
- 				   ARRAY_SIZE(esw_devlink_params));
+ if USB
+ 
+ source "drivers/usb/core/Kconfig"
+diff --git a/drivers/usb/core/hcd-pci.c b/drivers/usb/core/hcd-pci.c
+index 990280688b254..ee3156f495338 100644
+--- a/drivers/usb/core/hcd-pci.c
++++ b/drivers/usb/core/hcd-pci.c
+@@ -206,8 +206,7 @@ int usb_hcd_pci_probe(struct pci_dev *dev, const struct hc_driver *driver)
+ 		goto free_irq_vectors;
+ 	}
+ 
+-	hcd->amd_resume_bug = (usb_hcd_amd_remote_wakeup_quirk(dev) &&
+-			driver->flags & (HCD_USB11 | HCD_USB3)) ? 1 : 0;
++	hcd->amd_resume_bug = usb_hcd_amd_resume_bug(dev, driver);
+ 
+ 	if (driver->flags & HCD_MEMORY) {
+ 		/* EHCI, OHCI */
+diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
+index 5e06fad82a228..10813096d00c6 100644
+--- a/drivers/usb/host/pci-quirks.c
++++ b/drivers/usb/host/pci-quirks.c
+@@ -76,6 +76,7 @@
+ #define USB_INTEL_USB3_PSSEN   0xD8
+ #define USB_INTEL_USB3PRM      0xDC
+ 
++#ifdef CONFIG_USB_PCI_AMD
+ /* AMD quirk use */
+ #define	AB_REG_BAR_LOW		0xe0
+ #define	AB_REG_BAR_HIGH		0xe1
+@@ -587,6 +588,7 @@ bool usb_amd_pt_check_port(struct device *device, int port)
+ 	return !(value & BIT(port_shift));
+ }
+ EXPORT_SYMBOL_GPL(usb_amd_pt_check_port);
++#endif /* CONFIG_USB_PCI_AMD */
+ 
+ static int usb_asmedia_wait_write(struct pci_dev *pdev)
+ {
+diff --git a/drivers/usb/host/pci-quirks.h b/drivers/usb/host/pci-quirks.h
+index cde2263a9d2e4..a5230b0b9e913 100644
+--- a/drivers/usb/host/pci-quirks.h
++++ b/drivers/usb/host/pci-quirks.h
+@@ -2,7 +2,7 @@
+ #ifndef __LINUX_USB_PCI_QUIRKS_H
+ #define __LINUX_USB_PCI_QUIRKS_H
+ 
+-#ifdef CONFIG_USB_PCI
++#ifdef CONFIG_USB_PCI_AMD
+ int usb_hcd_amd_remote_wakeup_quirk(struct pci_dev *pdev);
+ bool usb_amd_hang_symptom_quirk(void);
+ bool usb_amd_prefetch_quirk(void);
+@@ -12,23 +12,37 @@ void usb_amd_quirk_pll_disable(void);
+ void usb_amd_quirk_pll_enable(void);
+ void sb800_prefetch(struct device *dev, int on);
+ bool usb_amd_pt_check_port(struct device *device, int port);
+-
+-void uhci_reset_hc(struct pci_dev *pdev, unsigned long base);
+-int uhci_check_and_reset_hc(struct pci_dev *pdev, unsigned long base);
+-void usb_asmedia_modifyflowcontrol(struct pci_dev *pdev);
+-void usb_enable_intel_xhci_ports(struct pci_dev *xhci_pdev);
+-void usb_disable_xhci_ports(struct pci_dev *xhci_pdev);
+ #else
+-struct pci_dev;
++static inline bool usb_amd_hang_symptom_quirk(void)
++{
++	return false;
++};
++static inline bool usb_amd_prefetch_quirk(void)
++{
++	return false;
++}
+ static inline void usb_amd_quirk_pll_disable(void) {}
+ static inline void usb_amd_quirk_pll_enable(void) {}
+ static inline void usb_amd_dev_put(void) {}
++static inline bool usb_amd_quirk_pll_check(void)
++{
++	return false;
++}
+ static inline void sb800_prefetch(struct device *dev, int on) {}
+ static inline bool usb_amd_pt_check_port(struct device *device, int port)
+ {
+ 	return false;
+ }
++#endif /* CONFIG_USB_PCI_AMD */
+ 
++#ifdef CONFIG_USB_PCI
++void uhci_reset_hc(struct pci_dev *pdev, unsigned long base);
++int uhci_check_and_reset_hc(struct pci_dev *pdev, unsigned long base);
++void usb_asmedia_modifyflowcontrol(struct pci_dev *pdev);
++void usb_enable_intel_xhci_ports(struct pci_dev *xhci_pdev);
++void usb_disable_xhci_ports(struct pci_dev *xhci_pdev);
++#else
++struct pci_dev;
+ static inline void usb_asmedia_modifyflowcontrol(struct pci_dev *pdev) {}
+ static inline void usb_disable_xhci_ports(struct pci_dev *xhci_pdev) {}
+ #endif  /* CONFIG_USB_PCI */
+diff --git a/include/linux/usb/hcd.h b/include/linux/usb/hcd.h
+index 61d4f0b793dcd..00724b4f6e122 100644
+--- a/include/linux/usb/hcd.h
++++ b/include/linux/usb/hcd.h
+@@ -484,8 +484,25 @@ extern int usb_hcd_pci_probe(struct pci_dev *dev,
+ extern void usb_hcd_pci_remove(struct pci_dev *dev);
+ extern void usb_hcd_pci_shutdown(struct pci_dev *dev);
+ 
++#ifdef CONFIG_USB_PCI_AMD
+ extern int usb_hcd_amd_remote_wakeup_quirk(struct pci_dev *dev);
+ 
++static inline bool usb_hcd_amd_resume_bug(struct pci_dev *dev,
++					  const struct hc_driver *driver)
++{
++	if (!usb_hcd_amd_remote_wakeup_quirk(dev))
++		return false;
++	if (driver->flags & (HCD_USB11 | HCD_USB3))
++		return true;
++	return false;
++}
++#else /* CONFIG_USB_PCI_AMD */
++static inline bool usb_hcd_amd_resume_bug(struct pci_dev *dev,
++					  const struct hc_driver *driver)
++{
++	return false;
++}
++#endif
+ extern const struct dev_pm_ops usb_hcd_pci_pm_ops;
+ #endif /* CONFIG_USB_PCI */
+ 
 -- 
 2.43.0
 
