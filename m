@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-40932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756C88AF9A6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D888B8AF937
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14B8B1F271C8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D755B242EF
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF71D143C6E;
-	Tue, 23 Apr 2024 21:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF6D1448E8;
+	Tue, 23 Apr 2024 21:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTmeDcev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0qGiv2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F97E85274;
-	Tue, 23 Apr 2024 21:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF5820B3E;
+	Tue, 23 Apr 2024 21:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908563; cv=none; b=AQoiOw0NeKsJlA+6CKCNRvy/eGoe79jH4nPEUuhSZdxT9YDE4FrsiNA2k4kHhRUbianQwKuOBpBXHjAK7L48G3NTZl8GILnIj/DrBjZRdWqG65AAiQghWBypNpjlLswm3q34ncSeIYrQMyESBixYSl/UcAApvlMmpArM/1//tWM=
+	t=1713908487; cv=none; b=CKG/oFbNUe5+oLNZ6fHSuDo1toZJc4Nzc4hu4uoWlfUoxdSFxHFw3J/r3g2iPlX7rp9KCCVKjOjulZLlCwRHgrgVDQ9mrw0jEUQAL2i8qyLjY+Rf6YDl8TJiGo7qpxVuW2HI2wwv9Z/LqqUAbG783HxOe0rRwzyQMi47I8inZqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908563; c=relaxed/simple;
-	bh=0ZFcTo6ehWh21FS9BJBnC5AY+kvVcRYlkQy1X7ogLh8=;
+	s=arc-20240116; t=1713908487; c=relaxed/simple;
+	bh=i1r9BUuiZ1Vyhza9ZEPA78pYhEIlnIgTheRTq4mvbBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A+A0Fr+MF9h0yVPcf7n5vizMqOBRDtBP0MPVqqGPvVEOVJZfueRrc0GrBo3AfaHYNnHXfCBqYAcFhwBQ+nazQyKof0WEVZLXswqXpaik/5rCOFfQxeKJiQWGnC4JokVZOBCAMmdHwGTxC988a74UwgFk5GGXEoMmBEmycScbBm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTmeDcev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8D5C4AF07;
-	Tue, 23 Apr 2024 21:42:42 +0000 (UTC)
+	 MIME-Version; b=kHg3JPrjYh2e2UMyHpKgrBtSKPDTF3rLCuNMLGQpbc91K71UHt6ZkItVbXfPNIHD1LAPLf8q/Q7j01EHOVW9rxAx1VkeyIc647i58iCxj4YbF64rBnlNhdF/KSlxtMqOrxUSL27bepTbTXhrhbbUW/OQNcBEdH0UzZIMMzjjnXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0qGiv2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D263CC3277B;
+	Tue, 23 Apr 2024 21:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908563;
-	bh=0ZFcTo6ehWh21FS9BJBnC5AY+kvVcRYlkQy1X7ogLh8=;
+	s=korg; t=1713908486;
+	bh=i1r9BUuiZ1Vyhza9ZEPA78pYhEIlnIgTheRTq4mvbBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTmeDcevnMqPgkl20ewIZVU7XDdPWTWPAGs35N7TQywci/Le77+Jtjs4LHqKggbEV
-	 XFnpiHgAMKQc+Y4LcM5RsuEaxf9SP0HNkj2R8/mKDJsi1UVQqA1w+QWUkxzcGyIx2L
-	 mn00+gVjG//Gn5YVhPjue5XaNAfm5ZkXJOP9IkbQ=
+	b=w0qGiv2zdMUktc2ve1Rs/0iFw4EAhHjAReRrBwdux9gysx9nPOQPftD5oCbsUlkhg
+	 wYLHOfcOs+0rosUUGJ/nNE49Em3xszFT9WKRC2+vBXFL8D5j9lWguxN//6PHJAwb9d
+	 WSqLz5GlnPEYoMID9PJEuzAI9U24DfamA0zudlOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manasi Navare <navaremanasi@chromium.org>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/158] drm/i915: Extract intel_crtc_vblank_evade_scanlines()
-Date: Tue, 23 Apr 2024 14:37:27 -0700
-Message-ID: <20240423213856.051408075@linuxfoundation.org>
+Subject: [PATCH 6.8 026/158] net/mlx5: Restore mistakenly dropped parts in register devlink flow
+Date: Tue, 23 Apr 2024 14:37:28 -0700
+Message-ID: <20240423213856.718923812@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit f4b0cece716c95e16d973a774d5a5c5cc8cb335d ]
+[ Upstream commit bf729988303a27833a86acb561f42b9a3cc12728 ]
 
-Pull the vblank evasion scanline calculations into their own helper
-to declutter intel_pipe_update_start() a bit.
+Code parts from cited commit were mistakenly dropped while rebasing
+before submission. Add them here.
 
-Reviewed-by: Manasi Navare <navaremanasi@chromium.org>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230901130440.2085-4-ville.syrjala@linux.intel.com
-Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Stable-dep-of: 4a36e46df7aa ("drm/i915: Disable live M/N updates when using bigjoiner")
+Fixes: c6e77aa9dd82 ("net/mlx5: Register devlink first under devlink lock")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240411115444.374475-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_crtc.c | 53 +++++++++++++----------
- 1 file changed, 31 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c          | 5 ++++-
+ drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c | 1 -
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_crtc.c b/drivers/gpu/drm/i915/display/intel_crtc.c
-index 65d91c7ad22ff..9693747a18c66 100644
---- a/drivers/gpu/drm/i915/display/intel_crtc.c
-+++ b/drivers/gpu/drm/i915/display/intel_crtc.c
-@@ -468,6 +468,36 @@ static int intel_mode_vblank_start(const struct drm_display_mode *mode)
- 	return vblank_start;
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 131a836c127e3..e285823bd08f0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1699,12 +1699,15 @@ int mlx5_init_one_light(struct mlx5_core_dev *dev)
+ 	err = mlx5_devlink_params_register(priv_to_devlink(dev));
+ 	if (err) {
+ 		mlx5_core_warn(dev, "mlx5_devlink_param_reg err = %d\n", err);
+-		goto query_hca_caps_err;
++		goto params_reg_err;
+ 	}
  
-+static void intel_crtc_vblank_evade_scanlines(struct intel_atomic_state *state,
-+					      struct intel_crtc *crtc,
-+					      int *min, int *max, int *vblank_start)
-+{
-+	const struct intel_crtc_state *new_crtc_state =
-+		intel_atomic_get_new_crtc_state(state, crtc);
-+	const struct drm_display_mode *adjusted_mode = &new_crtc_state->hw.adjusted_mode;
-+
-+	if (new_crtc_state->vrr.enable) {
-+		if (intel_vrr_is_push_sent(new_crtc_state))
-+			*vblank_start = intel_vrr_vmin_vblank_start(new_crtc_state);
-+		else
-+			*vblank_start = intel_vrr_vmax_vblank_start(new_crtc_state);
-+	} else {
-+		*vblank_start = intel_mode_vblank_start(adjusted_mode);
-+	}
-+
-+	/* FIXME needs to be calibrated sensibly */
-+	*min = *vblank_start - intel_usecs_to_scanlines(adjusted_mode,
-+							VBLANK_EVASION_TIME_US);
-+	*max = *vblank_start - 1;
-+
-+	/*
-+	 * M/N is double buffered on the transcoder's undelayed vblank,
-+	 * so with seamless M/N we must evade both vblanks.
-+	 */
-+	if (new_crtc_state->seamless_m_n && intel_crtc_needs_fastset(new_crtc_state))
-+		*min -= adjusted_mode->crtc_vblank_start - adjusted_mode->crtc_vdisplay;
-+}
-+
- /**
-  * intel_pipe_update_start() - start update of a set of display registers
-  * @state: the atomic state
-@@ -487,7 +517,6 @@ void intel_pipe_update_start(struct intel_atomic_state *state,
- 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
- 	struct intel_crtc_state *new_crtc_state =
- 		intel_atomic_get_new_crtc_state(state, crtc);
--	const struct drm_display_mode *adjusted_mode = &new_crtc_state->hw.adjusted_mode;
- 	long timeout = msecs_to_jiffies_timeout(1);
- 	int scanline, min, max, vblank_start;
- 	wait_queue_head_t *wq = drm_crtc_vblank_waitqueue(&crtc->base);
-@@ -503,27 +532,7 @@ void intel_pipe_update_start(struct intel_atomic_state *state,
- 	if (intel_crtc_needs_vblank_work(new_crtc_state))
- 		intel_crtc_vblank_work_init(new_crtc_state);
+ 	devl_unlock(devlink);
+ 	return 0;
  
--	if (new_crtc_state->vrr.enable) {
--		if (intel_vrr_is_push_sent(new_crtc_state))
--			vblank_start = intel_vrr_vmin_vblank_start(new_crtc_state);
--		else
--			vblank_start = intel_vrr_vmax_vblank_start(new_crtc_state);
--	} else {
--		vblank_start = intel_mode_vblank_start(adjusted_mode);
--	}
--
--	/* FIXME needs to be calibrated sensibly */
--	min = vblank_start - intel_usecs_to_scanlines(adjusted_mode,
--						      VBLANK_EVASION_TIME_US);
--	max = vblank_start - 1;
--
--	/*
--	 * M/N is double buffered on the transcoder's undelayed vblank,
--	 * so with seamless M/N we must evade both vblanks.
--	 */
--	if (new_crtc_state->seamless_m_n && intel_crtc_needs_fastset(new_crtc_state))
--		min -= adjusted_mode->crtc_vblank_start - adjusted_mode->crtc_vdisplay;
--
-+	intel_crtc_vblank_evade_scanlines(state, crtc, &min, &max, &vblank_start);
- 	if (min <= 0 || max <= 0)
- 		goto irq_disable;
++params_reg_err:
++	devl_unregister(devlink);
++	devl_unlock(devlink);
+ query_hca_caps_err:
+ 	devl_unregister(devlink);
+ 	devl_unlock(devlink);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+index e3bf8c7e4baa6..7ebe712808275 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+@@ -75,7 +75,6 @@ static int mlx5_sf_dev_probe(struct auxiliary_device *adev, const struct auxilia
+ 		goto peer_devlink_set_err;
+ 	}
  
+-	devlink_register(devlink);
+ 	return 0;
+ 
+ peer_devlink_set_err:
 -- 
 2.43.0
 
