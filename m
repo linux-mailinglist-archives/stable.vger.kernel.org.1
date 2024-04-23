@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-40802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08018AF91F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40EFE8AF9D3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A735F1F22179
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730291C21C0B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D7E1442EF;
-	Tue, 23 Apr 2024 21:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3C3146D7C;
+	Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kjnIIrg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkKzjcP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA83143C47;
-	Tue, 23 Apr 2024 21:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3DB143889;
+	Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908472; cv=none; b=D4Bso8zwuiVFcbNZCGVeeB9TGDzS6uxvvVrJ70Q3WLC7WY2zSv9fm1J8/z5q9cs0JFvTVYOPJ0JFxuNxZmNn7lUummPeIXSZQUZDGNGBk+NOutX9gZ3/lOdUhUTCm9snhoLRMv61MmUyypRIB7TUvpAUEoMwWr2Blw06LjEuGOo=
+	t=1713908590; cv=none; b=mHHndNBzrcsUlVX07Jldg7IPj8XaWtXVHAXVFbYp97dBpzTmfnbaEb71KXx+IPDM1Uue1UEWeYOWDfkglUs3gGnimM/Mbkm+xvvgQVIyKFkLfMUSRtLZ/WK2GFbUPhfZikd8XNGFwYcCYNjPQ6c56wNaQe1AsoDNhc31lWa9JFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908472; c=relaxed/simple;
-	bh=u3XzlOJpkHPy0QSjNfl3ac2uPANi0KxVNaaT7jmzb5k=;
+	s=arc-20240116; t=1713908590; c=relaxed/simple;
+	bh=0EBA2RYi756TiFfMHYMGVCsqMQcC64MMKfM4J8ktKas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxIkzA4U10Oh8k/WMfdxAhxuTfpF1W0bUH+Eaa3V5/zTixi0q7mdxzAmN/1QA4+JCvpoZrIKjcg0+xhdJhJ/zRsLWyfUM/tVTsAJ1BbNWfFsZUkm4Cksb+5mOabl5wu2SIbQHeQetlTmNmLGI96dDFPpqe+Ow6lnpEM4tgjEmFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kjnIIrg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9AEC32783;
-	Tue, 23 Apr 2024 21:41:12 +0000 (UTC)
+	 MIME-Version; b=mufQ1ghICL+lTlNQGLjujkcT1COBmOwTQppr2z+C53S1phYczqxZyUVr2/S9giaVZgFKTaC4CHYtyjB9VZPUQDLgtkoQP3bHBtDUBPOZufqtRRBECzEdJ1W5KmlPxSkWyyeLfx/sOGMK/w+pA1XbIWdt/Gx+7sAKeW5WAUSSeHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkKzjcP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A65C116B1;
+	Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908472;
-	bh=u3XzlOJpkHPy0QSjNfl3ac2uPANi0KxVNaaT7jmzb5k=;
+	s=korg; t=1713908590;
+	bh=0EBA2RYi756TiFfMHYMGVCsqMQcC64MMKfM4J8ktKas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1kjnIIrgmNJQjt2RtqBIL625mEwpXlNXnAOSG2HP9/rptK7WHN30HF7IUkbjfZcOl
-	 1n8Q9BxCzc0FplwoYVo4CltBwW4q1DeGcRr8kY0HBVKFjyWVM9V2GzFV1P3J61qr0k
-	 pssKyFS0wfB1s+OFpOnu0DwJ9glRoBt4LoLDZt7M=
+	b=mkKzjcP/5EhPjwXTlf9cYEYH9tsfm2dHaQiQt0sb4A17nbTYijWz0pYieomG/K4oP
+	 eT2Z/aQA2mrXcAJwzdmLrMmtySbGFLeyuFrIXLeprMrnSRqANc8UsS7i4E6tFwWOQ7
+	 N0Rpv9S3QpIOtxSPt/inC8ECWzYBFdQEfyGV3aL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 039/158] ice: Fix checking for unsupported keys on non-tunnel device
-Date: Tue, 23 Apr 2024 14:37:41 -0700
-Message-ID: <20240423213857.176123107@linuxfoundation.org>
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 025/158] SUNRPC: Fix rpcgss_context trace event acceptor field
+Date: Tue, 23 Apr 2024 14:37:42 -0700
+Message-ID: <20240423213856.558697811@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 2cca35f5dd78b9f8297c879c5db5ab137c5d86c3 ]
+commit a4833e3abae132d613ce7da0e0c9a9465d1681fa upstream.
 
-Add missing FLOW_DISSECTOR_KEY_ENC_* checks to TC flower filter parsing.
-Without these checks, it would be possible to add filters with tunnel
-options on non-tunnel devices. enc_* options are only valid for tunnel
-devices.
+The rpcgss_context trace event acceptor field is a dynamically sized
+string that records the "data" parameter. But this parameter is also
+dependent on the "len" field to determine the size of the data.
 
-Example:
-  devlink dev eswitch set $PF1_PCI mode switchdev
-  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
-  tc qdisc add dev $VF1_PR ingress
-  ethtool -K $PF1 hw-tc-offload on
-  tc filter add dev $VF1_PR ingress flower enc_ttl 12 skip_sw action drop
+It needs to use __string_len() helper macro where the length can be passed
+in. It also incorrectly uses strncpy() to save it instead of
+__assign_str(). As these macros can change, it is not wise to open code
+them in trace events.
 
-Fixes: 9e300987d4a8 ("ice: VXLAN and Geneve TC support")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As of commit c759e609030c ("tracing: Remove __assign_str_len()"),
+__assign_str() can be used for both __string() and __string_len() fields.
+Before that commit, __assign_str_len() is required to be used. This needs
+to be noted for backporting. (In actuality, commit c1fa617caeb0 ("tracing:
+Rework __assign_str() and __string() to not duplicate getting the string")
+is the commit that makes __string_str_len() obsolete).
+
+Cc: stable@vger.kernel.org
+Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_tc_lib.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/trace/events/rpcgss.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index bcbcfc67e5606..688ccb0615ab9 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -1489,7 +1489,10 @@ ice_parse_cls_flower(struct net_device *filter_dev, struct ice_vsi *vsi,
- 		  (BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IPV4_ADDRS) |
- 		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IPV6_ADDRS) |
- 		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_KEYID) |
--		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_PORTS))) {
-+		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_PORTS) |
-+		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IP) |
-+		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_OPTS) |
-+		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_CONTROL))) {
- 		NL_SET_ERR_MSG_MOD(fltr->extack, "Tunnel key used, but device isn't a tunnel");
- 		return -EOPNOTSUPP;
- 	} else {
--- 
-2.43.0
-
+--- a/include/trace/events/rpcgss.h
++++ b/include/trace/events/rpcgss.h
+@@ -609,7 +609,7 @@ TRACE_EVENT(rpcgss_context,
+ 		__field(unsigned int, timeout)
+ 		__field(u32, window_size)
+ 		__field(int, len)
+-		__string(acceptor, data)
++		__string_len(acceptor, data, len)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -618,7 +618,7 @@ TRACE_EVENT(rpcgss_context,
+ 		__entry->timeout = timeout;
+ 		__entry->window_size = window_size;
+ 		__entry->len = len;
+-		strncpy(__get_str(acceptor), data, len);
++		__assign_str(acceptor, data);
+ 	),
+ 
+ 	TP_printk("win_size=%u expiry=%lu now=%lu timeout=%u acceptor=%.*s",
 
 
 
