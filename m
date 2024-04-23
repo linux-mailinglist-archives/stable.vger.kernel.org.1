@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056908AFABE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FFE8AFB2B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28D7C1C22D35
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC08DB2709C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196E414A4F9;
-	Tue, 23 Apr 2024 21:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB56148856;
+	Tue, 23 Apr 2024 21:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hFuGCdJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJ65nTSN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA38144D34;
-	Tue, 23 Apr 2024 21:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C16E14388A;
+	Tue, 23 Apr 2024 21:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908754; cv=none; b=X7iWOCyR3Sja2fkZclv/YM54mebZ3DL55J899yNHftEhL6ExdrrvUDo5e7iqQ5wvUQXgGkjlkeBt48OUJYiM6TvplCMnb4e0nz/CILrbwDSLBjKayf8Fp2sqMUlNV0SSw3wuNWkefjMZsAykZPnPUnymQY4Lel5U/JJ5s2a5gHc=
+	t=1713908793; cv=none; b=sDMYWFh7C8y8D04UjtKYktQe6XOfpJNwzKvpqkFNX+QYBID9BzMP2C2VPfgoq0XzNOkekxpKNZ0KPZb2hIBFCIy18iAsS+kQUgNk5wJ0Gtr7DX8s5qanMs0Kn48JEInnKQGIbFNBY/33UXpEvuYEpm5Z2IrngACMIcqNImSYYeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908754; c=relaxed/simple;
-	bh=zIuKW2NyVfR90hraTHP40jwbIUx0WYIdoM/cpxo2S6k=;
+	s=arc-20240116; t=1713908793; c=relaxed/simple;
+	bh=3Sjl6kfgwYzZeJBYH1Oomb0l243v+FrNboBXfc6vXio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrlrW3oUbePAbvPZ/Q+Mzoi3tg3+jnGFE30Ch5B1UY6aaZ11gFavbm6Oc1pm07cM2eTUoX0FsgNblQ5V8v1GmFeix8OyDjbfVlS0T8qoxis3dabeKg5rr2I2LGypaI4e6o9sv52Yex+/MnExKur8aBmyl5wWD7IbHFmz9SWV2V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hFuGCdJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D91FC116B1;
-	Tue, 23 Apr 2024 21:45:54 +0000 (UTC)
+	 MIME-Version; b=s7a9FRG5NKL45CgVsRqoeZiMiZZLZfDRmr24aX49plgYxfLDGq7E4nfBUBpzS9DE6g5wfpPXr5aHiu7cx7qaGHxRACNn8kua8jnJy3MBduCC+Kbm8AgOfRd6o1hLieT47VHUABI88mwlh9yLJps+bQ7AugZ7UesrHuodFwXadAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJ65nTSN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 525DCC3277B;
+	Tue, 23 Apr 2024 21:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908754;
-	bh=zIuKW2NyVfR90hraTHP40jwbIUx0WYIdoM/cpxo2S6k=;
+	s=korg; t=1713908793;
+	bh=3Sjl6kfgwYzZeJBYH1Oomb0l243v+FrNboBXfc6vXio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2hFuGCdJ/lYTwibgeptx6EH8Dk2mK5wHujT2gnnml1MXKyfkxb6sDsNClzyq5veum
-	 qDtpC30+izetz4x+zeBRnYp8YpwBMxXcYkjFfUeR7t7yxtCl7BRCJdgxbzqC3Qq1NN
-	 wn4Hxqu5jLgWRP1tODjo4119LsaKKY1p8R2G8vwk=
+	b=oJ65nTSN8xFlIhZEPhvdAKAiJFFuEI+RdQg02JjjeR4ebecOc6NxMDHjEbJ/xE6no
+	 JyxM60E9BVdnnxr3xc7hLpaMxoGMSKf/em0F1XUt4R9iDmfZ+oLSTormom6w1v183n
+	 Qxgm3vBeGix6XDh4tpfQnTzshfEPIP4E3li8maz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Qiang Zhang <qiang4.zhang@intel.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.1 131/141] bootconfig: use memblock_free_late to free xbc memory to buddy
+	bolan wang <bolan.wang@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 46/71] USB: serial: option: add Fibocom FM135-GL variants
 Date: Tue, 23 Apr 2024 14:39:59 -0700
-Message-ID: <20240423213857.470510888@linuxfoundation.org>
+Message-ID: <20240423213845.743514677@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,160 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Zhang <qiang4.zhang@intel.com>
+From: bolan wang <bolan.wang@fibocom.com>
 
-commit 89f9a1e876b5a7ad884918c03a46831af202c8a0 upstream.
+commit 356952b13af5b2c338df1e06889fd1b5e12cbbf4 upstream.
 
-On the time to free xbc memory in xbc_exit(), memblock may has handed
-over memory to buddy allocator. So it doesn't make sense to free memory
-back to memblock. memblock_free() called by xbc_exit() even causes UAF bugs
-on architectures with CONFIG_ARCH_KEEP_MEMBLOCK disabled like x86.
-Following KASAN logs shows this case.
+Update the USB serial option driver support for the Fibocom
+FM135-GL LTE modules.
+- VID:PID 2cb7:0115, FM135-GL for laptop debug M.2 cards(with MBIM
+interface for /Linux/Chrome OS)
 
-This patch fixes the xbc memory free problem by calling memblock_free()
-in early xbc init error rewind path and calling memblock_free_late() in
-xbc exit path to free memory to buddy allocator.
+0x0115: mbim, diag, at, pipe
 
-[    9.410890] ==================================================================
-[    9.418962] BUG: KASAN: use-after-free in memblock_isolate_range+0x12d/0x260
-[    9.426850] Read of size 8 at addr ffff88845dd30000 by task swapper/0/1
+Here are the outputs of usb-devices:
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0115 Rev=05.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=12345678
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-[    9.435901] CPU: 9 PID: 1 Comm: swapper/0 Tainted: G     U             6.9.0-rc3-00208-g586b5dfb51b9 #5
-[    9.446403] Hardware name: Intel Corporation RPLP LP5 (CPU:RaptorLake)/RPLP LP5 (ID:13), BIOS IRPPN02.01.01.00.00.19.015.D-00000000 Dec 28 2023
-[    9.460789] Call Trace:
-[    9.463518]  <TASK>
-[    9.465859]  dump_stack_lvl+0x53/0x70
-[    9.469949]  print_report+0xce/0x610
-[    9.473944]  ? __virt_addr_valid+0xf5/0x1b0
-[    9.478619]  ? memblock_isolate_range+0x12d/0x260
-[    9.483877]  kasan_report+0xc6/0x100
-[    9.487870]  ? memblock_isolate_range+0x12d/0x260
-[    9.493125]  memblock_isolate_range+0x12d/0x260
-[    9.498187]  memblock_phys_free+0xb4/0x160
-[    9.502762]  ? __pfx_memblock_phys_free+0x10/0x10
-[    9.508021]  ? mutex_unlock+0x7e/0xd0
-[    9.512111]  ? __pfx_mutex_unlock+0x10/0x10
-[    9.516786]  ? kernel_init_freeable+0x2d4/0x430
-[    9.521850]  ? __pfx_kernel_init+0x10/0x10
-[    9.526426]  xbc_exit+0x17/0x70
-[    9.529935]  kernel_init+0x38/0x1e0
-[    9.533829]  ? _raw_spin_unlock_irq+0xd/0x30
-[    9.538601]  ret_from_fork+0x2c/0x50
-[    9.542596]  ? __pfx_kernel_init+0x10/0x10
-[    9.547170]  ret_from_fork_asm+0x1a/0x30
-[    9.551552]  </TASK>
-
-[    9.555649] The buggy address belongs to the physical page:
-[    9.561875] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x1 pfn:0x45dd30
-[    9.570821] flags: 0x200000000000000(node=0|zone=2)
-[    9.576271] page_type: 0xffffffff()
-[    9.580167] raw: 0200000000000000 ffffea0011774c48 ffffea0012ba1848 0000000000000000
-[    9.588823] raw: 0000000000000001 0000000000000000 00000000ffffffff 0000000000000000
-[    9.597476] page dumped because: kasan: bad access detected
-
-[    9.605362] Memory state around the buggy address:
-[    9.610714]  ffff88845dd2ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    9.618786]  ffff88845dd2ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    9.626857] >ffff88845dd30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[    9.634930]                    ^
-[    9.638534]  ffff88845dd30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[    9.646605]  ffff88845dd30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[    9.654675] ==================================================================
-
-Link: https://lore.kernel.org/all/20240414114944.1012359-1-qiang4.zhang@linux.intel.com/
-
-Fixes: 40caa127f3c7 ("init: bootconfig: Remove all bootconfig data when the init memory is removed")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: bolan wang <bolan.wang@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bootconfig.h |    7 ++++++-
- lib/bootconfig.c           |   19 +++++++++++--------
- 2 files changed, 17 insertions(+), 9 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/linux/bootconfig.h
-+++ b/include/linux/bootconfig.h
-@@ -287,7 +287,12 @@ int __init xbc_init(const char *buf, siz
- int __init xbc_get_info(int *node_size, size_t *data_size);
- 
- /* XBC cleanup data structures */
--void __init xbc_exit(void);
-+void __init _xbc_exit(bool early);
-+
-+static inline void xbc_exit(void)
-+{
-+	_xbc_exit(false);
-+}
- 
- /* XBC embedded bootconfig data in kernel */
- #ifdef CONFIG_BOOT_CONFIG_EMBED
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -61,9 +61,12 @@ static inline void * __init xbc_alloc_me
- 	return memblock_alloc(size, SMP_CACHE_BYTES);
- }
- 
--static inline void __init xbc_free_mem(void *addr, size_t size)
-+static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
- {
--	memblock_free(addr, size);
-+	if (early)
-+		memblock_free(addr, size);
-+	else if (addr)
-+		memblock_free_late(__pa(addr), size);
- }
- 
- #else /* !__KERNEL__ */
-@@ -73,7 +76,7 @@ static inline void *xbc_alloc_mem(size_t
- 	return malloc(size);
- }
- 
--static inline void xbc_free_mem(void *addr, size_t size)
-+static inline void xbc_free_mem(void *addr, size_t size, bool early)
- {
- 	free(addr);
- }
-@@ -904,13 +907,13 @@ static int __init xbc_parse_tree(void)
-  * If you need to reuse xbc_init() with new boot config, you can
-  * use this.
-  */
--void __init xbc_exit(void)
-+void __init _xbc_exit(bool early)
- {
--	xbc_free_mem(xbc_data, xbc_data_size);
-+	xbc_free_mem(xbc_data, xbc_data_size, early);
- 	xbc_data = NULL;
- 	xbc_data_size = 0;
- 	xbc_node_num = 0;
--	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX);
-+	xbc_free_mem(xbc_nodes, sizeof(struct xbc_node) * XBC_NODE_MAX, early);
- 	xbc_nodes = NULL;
- 	brace_index = 0;
- }
-@@ -963,7 +966,7 @@ int __init xbc_init(const char *data, si
- 	if (!xbc_nodes) {
- 		if (emsg)
- 			*emsg = "Failed to allocate bootconfig nodes";
--		xbc_exit();
-+		_xbc_exit(true);
- 		return -ENOMEM;
- 	}
- 	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
-@@ -977,7 +980,7 @@ int __init xbc_init(const char *data, si
- 			*epos = xbc_err_pos;
- 		if (emsg)
- 			*emsg = xbc_err_msg;
--		xbc_exit();
-+		_xbc_exit(true);
- 	} else
- 		ret = xbc_node_num;
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2272,6 +2272,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
 
 
 
