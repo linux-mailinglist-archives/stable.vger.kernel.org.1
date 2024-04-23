@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2612A8AFADE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 691228AF9FF
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C0AEB2C3BE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6AD1C2257B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0634614430E;
-	Tue, 23 Apr 2024 21:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9501487C5;
+	Tue, 23 Apr 2024 21:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxsB1HHd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1sKtoTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B3F143C41;
-	Tue, 23 Apr 2024 21:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE22B144D34;
+	Tue, 23 Apr 2024 21:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908704; cv=none; b=B3gIEMSLdRV4gGbivuTkP+uFhpgOH303Iv+nNUAqFf+jhchS7QadtbYRQNEPwoPfxouRuZF24wqTGfmpDsdBj/ZD/dKDf2xIEcJiWC+gVXueAifPtO4HtAgR8QpucMjmz6p10zagSrpthpnXW71bCFY2P4rsfCVHGQLk/kFVELc=
+	t=1713908617; cv=none; b=fu02S4ZNVs4rOLSdXnN7BS1Uu21JZj7EYF3l/zlu7qAagz3JhvqWvO84DKsSP8HazFiRR0WgCkKBpaWmhG7nHSZs2XUtSEJDNn7+sFri9R2lEjwHhYW93cmqUAOt/vF6k8dkDWTeD2ZsPfi5UcvpKz0mQ8q4OB5ku3wH3OUe+oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908704; c=relaxed/simple;
-	bh=nzXLCl206iRdzUYra+XcDGDF9iMSC4clgmkZup6ZrK4=;
+	s=arc-20240116; t=1713908617; c=relaxed/simple;
+	bh=+vaw1aOFdaP5F9H/cin+7MIpPGDPkx8IdMONAuIPqek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRnSchvnKwi42f5e0qOf6qFQqIbte29STbeEiwIQRGcLqYo53/qRxHq0v+Q70FDaY/B5j/bB93y42FR/ayJlXu42YE0+nmoRUWMH6ImnXUA9I8xEJCkz6ZHkFs2SGLoQpSjWFpwO8ejeXvFBvtybs4/mG7o5jbA0Tatd3MgPr3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxsB1HHd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3B0C116B1;
-	Tue, 23 Apr 2024 21:45:04 +0000 (UTC)
+	 MIME-Version; b=kwSImzzMyFz2IXAZ5vEK/RKreYBqChVaCtzrySoypQDhLofGF1qWXe2Kyt1EXMjDOmEzPzW6Kq5Z79IMRqHHVDmGGghck6XSNAQmWzBwE34X5L5/CbCL5WeelRqrKaNNB77LZrs4UNHRWjeLGkSQ+H7mMDXGTJckAc+/eDsOvjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1sKtoTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB20C116B1;
+	Tue, 23 Apr 2024 21:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908704;
-	bh=nzXLCl206iRdzUYra+XcDGDF9iMSC4clgmkZup6ZrK4=;
+	s=korg; t=1713908617;
+	bh=+vaw1aOFdaP5F9H/cin+7MIpPGDPkx8IdMONAuIPqek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxsB1HHdxXHr4+zYsYYx5sD8vyuqAbsQ9abrZv2dx7xLw15ZXBFSRAOfr62e4UFKW
-	 pVbox2qEKlP55T9W4eGQGyv5QhtdJsIK/OFdJpE0nfrQqE8IrnIV4e9Z8RhPoDlAqb
-	 XNZ+TWqgiWnDlD+vhHQhVDSzSuXZLkO81kMg8m9U=
+	b=l1sKtoTdaVxXPMdpyeS7Htb524ITD7S0VWcPPsNbQFSYP08HDuY2h3iAwGrbGdSkk
+	 BMaAa4cMxc7VNsH8cugK+KLKy96bhx6adaQrSpqAshjaxPNf+nfW/leOAp2rkll9uI
+	 H/crYsHNHI4v+RTdbImpWsoAYaJ2zRISkGV94a7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Mike Tipton <quic_mdtipton@quicinc.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/141] usb: pci-quirks: Reduce the length of a spinlock section in usb_amd_find_chipset_info()
+Subject: [PATCH 6.6 090/158] interconnect: Dont access req_list while its being manipulated
 Date: Tue, 23 Apr 2024 14:38:47 -0700
-Message-ID: <20240423213855.165849068@linuxfoundation.org>
+Message-ID: <20240423213858.675063680@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Mike Tipton <quic_mdtipton@quicinc.com>
 
-[ Upstream commit c03ff66dc0e0cbad9ed0c29500843e1da8533118 ]
+[ Upstream commit de1bf25b6d771abdb52d43546cf57ad775fb68a1 ]
 
-'info' is local to the function. There is no need to zeroing it within
-a spin_lock section. Moreover, there is no need to explicitly initialize
-the .need_pll_quirk field.
+The icc_lock mutex was split into separate icc_lock and icc_bw_lock
+mutexes in [1] to avoid lockdep splats. However, this didn't adequately
+protect access to icc_node::req_list.
 
-Initialize the structure when defined and remove the now useless memset().
+The icc_set_bw() function will eventually iterate over req_list while
+only holding icc_bw_lock, but req_list can be modified while only
+holding icc_lock. This causes races between icc_set_bw(), of_icc_get(),
+and icc_put().
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/08ee42fced6af6bd56892cd14f2464380ab071fa.1679600396.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Example A:
+
+  CPU0                               CPU1
+  ----                               ----
+  icc_set_bw(path_a)
+    mutex_lock(&icc_bw_lock);
+                                     icc_put(path_b)
+                                       mutex_lock(&icc_lock);
+    aggregate_requests()
+      hlist_for_each_entry(r, ...
+                                       hlist_del(...
+        <r = invalid pointer>
+
+Example B:
+
+  CPU0                               CPU1
+  ----                               ----
+  icc_set_bw(path_a)
+    mutex_lock(&icc_bw_lock);
+                                     path_b = of_icc_get()
+                                       of_icc_get_by_index()
+                                         mutex_lock(&icc_lock);
+                                         path_find()
+                                           path_init()
+    aggregate_requests()
+      hlist_for_each_entry(r, ...
+                                             hlist_add_head(...
+        <r = invalid pointer>
+
+Fix this by ensuring icc_bw_lock is always held before manipulating
+icc_node::req_list. The additional places icc_bw_lock is held don't
+perform any memory allocations, so we should still be safe from the
+original lockdep splats that motivated the separate locks.
+
+[1] commit af42269c3523 ("interconnect: Fix locking for runpm vs reclaim")
+
+Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+Fixes: af42269c3523 ("interconnect: Fix locking for runpm vs reclaim")
+Reviewed-by: Rob Clark <robdclark@chromium.org>
+Link: https://lore.kernel.org/r/20240305225652.22872-1-quic_mdtipton@quicinc.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/pci-quirks.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/interconnect/core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
-index ef08d68b97149..2665832f9addf 100644
---- a/drivers/usb/host/pci-quirks.c
-+++ b/drivers/usb/host/pci-quirks.c
-@@ -207,8 +207,7 @@ EXPORT_SYMBOL_GPL(sb800_prefetch);
- static void usb_amd_find_chipset_info(void)
- {
- 	unsigned long flags;
--	struct amd_chipset_info info;
--	info.need_pll_quirk = false;
-+	struct amd_chipset_info info = { };
+diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
+index 50bac2d79d9b5..68edb07d4443e 100644
+--- a/drivers/interconnect/core.c
++++ b/drivers/interconnect/core.c
+@@ -176,6 +176,8 @@ static struct icc_path *path_init(struct device *dev, struct icc_node *dst,
  
- 	spin_lock_irqsave(&amd_lock, flags);
+ 	path->num_nodes = num_nodes;
  
-@@ -218,7 +217,6 @@ static void usb_amd_find_chipset_info(void)
- 		spin_unlock_irqrestore(&amd_lock, flags);
- 		return;
++	mutex_lock(&icc_bw_lock);
++
+ 	for (i = num_nodes - 1; i >= 0; i--) {
+ 		node->provider->users++;
+ 		hlist_add_head(&path->reqs[i].req_node, &node->req_list);
+@@ -186,6 +188,8 @@ static struct icc_path *path_init(struct device *dev, struct icc_node *dst,
+ 		node = node->reverse;
  	}
--	memset(&info, 0, sizeof(info));
- 	spin_unlock_irqrestore(&amd_lock, flags);
  
- 	if (!amd_chipset_sb_type_init(&info)) {
++	mutex_unlock(&icc_bw_lock);
++
+ 	return path;
+ }
+ 
+@@ -792,12 +796,16 @@ void icc_put(struct icc_path *path)
+ 		pr_err("%s: error (%d)\n", __func__, ret);
+ 
+ 	mutex_lock(&icc_lock);
++	mutex_lock(&icc_bw_lock);
++
+ 	for (i = 0; i < path->num_nodes; i++) {
+ 		node = path->reqs[i].node;
+ 		hlist_del(&path->reqs[i].req_node);
+ 		if (!WARN_ON(!node->provider->users))
+ 			node->provider->users--;
+ 	}
++
++	mutex_unlock(&icc_bw_lock);
+ 	mutex_unlock(&icc_lock);
+ 
+ 	kfree_const(path->name);
 -- 
 2.43.0
 
