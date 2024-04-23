@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-40966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D387A8AF9CD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26AD18AF933
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D7DD28BAC9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587411C22EDB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4215146D64;
-	Tue, 23 Apr 2024 21:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E491448E7;
+	Tue, 23 Apr 2024 21:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMu2t7BW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y73Nge7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A4B145340;
-	Tue, 23 Apr 2024 21:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DE420B3E;
+	Tue, 23 Apr 2024 21:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908586; cv=none; b=S128nvZB8wL0a7YFjdc8+5ZA+WsKMb6RNJ5cpErEptVKS1CIqjUxHBDteKhYY5IHokxTQn2jga7wwecdzT9QkdRd3Tm3SgUvAQm8UGmtqXUqZVU+HY86fWJihOTOtWm88XiVi9VxWg9RP00G5YoCZR0eya64avoU67gMiHjk0Lo=
+	t=1713908486; cv=none; b=GkmiMkCF9zQfhYEyFia6W+29R1ogGkwJWIGd7Y7KhQiTd9OdMHKIVYK4hZHosLDvDUUdHKmXDCYsoOu8vCyOx4+F1mki9W4vJqWbGdrviOxaooBgew1/HO13cRTFRy8wwzmdxXxdhULv3UdBPep57oPw+U3pDUH58PuWTWN02kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908586; c=relaxed/simple;
-	bh=ZF/P/pkpJqH0tM/Q03iNgOLwdpt+zn8pMIm/XMXbeVc=;
+	s=arc-20240116; t=1713908486; c=relaxed/simple;
+	bh=kR1K/5EMF7T2dHJ7047eKQMAPCvgo+KjdNx4HX3+6lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOFnyNSedwU/Vgz6+rmEjkrZxHAVx5EVfVEtxWunHiW2bcY/eR/O0sLcwpCiFO/Kw6pfwrmFOUt60e37mz0SyV9gFIJgEszoxqfMnmCRTbwIcTb16ItHbSZD+rDsYqJ9KxTKo0Z9Soa1eNR3cGKVfTIsRlmJy74LEH+OWos156E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMu2t7BW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4313DC3277B;
-	Tue, 23 Apr 2024 21:43:06 +0000 (UTC)
+	 MIME-Version; b=un88+Q0Y25+XKjuU4xykg5oUwxzHRP383lCCOuowZgo8E3TwcjNVXjV9vK7MXpvVFGa723Yt4gxbRFY6q3qgmfr9YiN26Ytw83UWjOp7BT49VpxJXJiHWOil5sPk5hK5Mk5f6LOBp7JEnjnPxiCKOn/cPSAhsmI2EpfZ7qq7ZTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y73Nge7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33429C32782;
+	Tue, 23 Apr 2024 21:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908586;
-	bh=ZF/P/pkpJqH0tM/Q03iNgOLwdpt+zn8pMIm/XMXbeVc=;
+	s=korg; t=1713908486;
+	bh=kR1K/5EMF7T2dHJ7047eKQMAPCvgo+KjdNx4HX3+6lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YMu2t7BWMxmPubZttMl9UuDErzv62MKl65dVbGzKGMpMMx67DFROTYD7D/tbKRIKZ
-	 El+9JbY8nDAIvqz2dsx9wSIvcqij1cCAxUt1Cu4UmkzOhp3HBf9ET6TwQg3lBMC/C6
-	 mJMCWjfUiGMJSUxYAM3+yKi1IRKMWm1avYMmq+bM=
+	b=Y73Nge7DeL3Rou6YTH3WOsxBiQR/F9BlyWoOkKB2yrcxo7szVhreUGWm89Ac6Lwjb
+	 G380MQuJAqLU1lAvUa5fQa5DfgW3/usnmW+lxd6ZmwykkWIMBjBzDNoTbZUELKg0ou
+	 bZP8fRlX2gA0NFQK2QQZzyhaia+yjNNd82jgKnuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Xiubo Li <xiubli@redhat.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/158] ceph: redirty page before returning AOP_WRITEPAGE_ACTIVATE
-Date: Tue, 23 Apr 2024 14:37:36 -0700
-Message-ID: <20240423213856.343963071@linuxfoundation.org>
+Subject: [PATCH 6.8 035/158] net: stmmac: Fix max-speed being ignored on queue re-init
+Date: Tue, 23 Apr 2024 14:37:37 -0700
+Message-ID: <20240423213857.043051488@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit b372e96bd0a32729d55d27f613c8bc80708a82e1 ]
+[ Upstream commit 59c3d6ca6cbded6c6599e975b42a9d6a27fcbaf2 ]
 
-The page has been marked clean before writepage is called.  If we don't
-redirty it before postponing the write, it might never get written.
+It's possible to have the maximum link speed being artificially limited on
+the platform-specific basis. It's done either by setting up the
+plat_stmmacenet_data::max_speed field or by specifying the "max-speed"
+DT-property. In such cases it's required that any specific
+MAC-capabilities re-initializations would take the limit into account. In
+particular the link speed capabilities may change during the number of
+active Tx/Rx queues re-initialization. But the currently implemented
+procedure doesn't take the speed limit into account.
 
-Cc: stable@vger.kernel.org
-Fixes: 503d4fa6ee28 ("ceph: remove reliance on bdi congestion")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Xiubo Li <xiubli@redhat.org>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fix that by calling phylink_limit_mac_speed() in the
+stmmac_reinit_queues() method if the speed limitation was required in the
+same way as it's done in the stmmac_phy_setup() function.
+
+Fixes: 95201f36f395 ("net: stmmac: update MAC capabilities when tx queues are updated")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Romain Gantois <romain.gantois@bootlin.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/addr.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 28fa05a9d4d2f..da64bb7325dbc 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -803,8 +803,10 @@ static int ceph_writepage(struct page *page, struct writeback_control *wbc)
- 	ihold(inode);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index cbb00ca23a7c3..2a48277ed614f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7272,6 +7272,7 @@ int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	int ret = 0, i;
++	int max_speed;
  
- 	if (wbc->sync_mode == WB_SYNC_NONE &&
--	    ceph_inode_to_fs_client(inode)->write_congested)
-+	    ceph_inode_to_fs_client(inode)->write_congested) {
-+		redirty_page_for_writepage(wbc, page);
- 		return AOP_WRITEPAGE_ACTIVATE;
-+	}
+ 	if (netif_running(dev))
+ 		stmmac_release(dev);
+@@ -7287,6 +7288,10 @@ int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
  
- 	wait_on_page_fscache(page);
+ 	stmmac_mac_phylink_get_caps(priv);
  
++	max_speed = priv->plat->max_speed;
++	if (max_speed)
++		phylink_limit_mac_speed(&priv->phylink_config, max_speed);
++
+ 	stmmac_napi_add(dev);
+ 
+ 	if (netif_running(dev))
 -- 
 2.43.0
 
