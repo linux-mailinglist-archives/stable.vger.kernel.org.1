@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEFA8AFB3C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:56:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BA08AFACE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E9BBB23BAB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 596951F2980C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3832E14BF92;
-	Tue, 23 Apr 2024 21:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E3F14AD0E;
+	Tue, 23 Apr 2024 21:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+K70F4B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BuH+KeBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FEE143888;
-	Tue, 23 Apr 2024 21:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0506F143C5F;
+	Tue, 23 Apr 2024 21:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908797; cv=none; b=D85U0VNLBH9/Ky+htwVM32QHjNghiKBDMGmcqqGYsKvQOYXAknNOC+mcnWf7hliCKO0d5oHcD0NxxoNnB1V1OI/UOkUNn34o2eRgE2PMMVZHC0eFO76h0n1+cVRyrpHeIqn9O4IkmIUgAxTvJWFn687pLuzmOR7+f7vBMshzd3o=
+	t=1713908763; cv=none; b=r2VXowMKi0tl18tiw0QkGaAYCvYEyDACFC39UodJ6IlJ2LEWK6JR0OnQTmVpt6v05j30FlTUNgNYihhD1eOY3DVycTK+3yrTex6BpLak/07HdkUzy3RnVN6frKOayfhsnRmRH0dMTaOeK/gjUmQ4dYYpmyXBKPlWjy19x//BQpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908797; c=relaxed/simple;
-	bh=ReRdyQ3spKrtIOl44mWjrpAlJOwskJRpOpgORvnfwQw=;
+	s=arc-20240116; t=1713908763; c=relaxed/simple;
+	bh=WJw128m+YmOq/MAwN+VwwjDSuN3qxLulLbXp7x2MNNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=al0t1sQ81XhiBDWDqe8IpPAX3HO4DhbnGsNOvLahgXY/A4McTLwOU36ZfYE475AwI4FxeZniQydIS2fKT450zM0JWm+BLac89h8I+NB3XX0oT7x0dU4oW8Ow5H/LgsWghWHxoSQMyFFv1NsS61ZmmfG7r9HyLG47LWhEL44hsiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+K70F4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E3AC32782;
-	Tue, 23 Apr 2024 21:46:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g0znNGX5vwO6bQ3nJhzvlGtWtMDGAqV6FmWu05FQkcjEn/y+j6yIwQzfeklAX/+J61LQDxaQFnzd0/v3nnaMUpCF9v9q5cVvmyDx7PVeQjpmQstBHoNkZjM9v1RuZS15JVQBWK8Dtdj5N563hIPw4PbOd19wfO9IUwKPNtW6avA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BuH+KeBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC85DC32782;
+	Tue, 23 Apr 2024 21:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908796;
-	bh=ReRdyQ3spKrtIOl44mWjrpAlJOwskJRpOpgORvnfwQw=;
+	s=korg; t=1713908762;
+	bh=WJw128m+YmOq/MAwN+VwwjDSuN3qxLulLbXp7x2MNNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+K70F4BgQjfuvLqLcsbbb55zqxq3jqKSCiQZcMFYrSegc9wLrv9g+HdlqaWlORxR
-	 30dnBAld//dhk6su9GLhKvfzMBjHERXH2TAruj8Oid5oRB0UdC6UFRdkf/3yIOzjKV
-	 xOscP4vxPqWcwSIbyKmfkkQigv4l4/g2RJgVcov8=
+	b=BuH+KeBefEViojsqVnxZ7ouuWRyXqzLWPHnCTP+4E8AXqTJ0CwAw61JnchyzkXDPL
+	 S//hpD64MUMNZcrIHI5s/FsPTtbaUUn9KQzmNwdAGtaEEiTxyF1wzV6P9s0SJuIZVc
+	 ELXYVPTmPS2iUQ+uPuPEms8yW5kAjeIyhqrmTbjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 51/71] USB: serial: option: add Telit FN920C04 rmnet compositions
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 136/141] net: dsa: mt7530: fix enabling EEE on MT7531 switch on all boards
 Date: Tue, 23 Apr 2024 14:40:04 -0700
-Message-ID: <20240423213845.940446901@linuxfoundation.org>
+Message-ID: <20240423213857.636133589@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,114 +61,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-commit 582ee2f9d268d302595db3e36b985e5cbb93284d upstream.
+commit 06dfcd4098cfdc4d4577d94793a4f9125386da8b upstream.
 
-Add the following Telit FN920C04 compositions:
+The commit 40b5d2f15c09 ("net: dsa: mt7530: Add support for EEE features")
+brought EEE support but did not enable EEE on MT7531 switch MACs. EEE is
+enabled on MT7531 switch MACs by pulling the LAN2LED0 pin low on the board
+(bootstrapping), unsetting the EEE_DIS bit on the trap register, or setting
+the internal EEE switch bit on the CORE_PLL_GROUP4 register. Thanks to
+SkyLake Huang (黃啟澤) from MediaTek for providing information on the
+internal EEE switch bit.
 
-0x10a0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  5 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+There are existing boards that were not designed to pull the pin low.
+Because of that, the EEE status currently depends on the board design.
 
-0x10a4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+The EEE_DIS bit on the trap pertains to the LAN2LED0 pin which is usually
+used to control an LED. Once the bit is unset, the pin will be low. That
+will make the active low LED turn on. The pin is controlled by the switch
+PHY. It seems that the PHY controls the pin in the way that it inverts the
+pin state. That means depending on the wiring of the LED connected to
+LAN2LED0 on the board, the LED may be on without an active link.
 
-0x10a9: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a9 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+To not cause this unwanted behaviour whilst enabling EEE on all boards, set
+the internal EEE switch bit on the CORE_PLL_GROUP4 register.
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+My testing on MT7531 shows a certain amount of traffic loss when EEE is
+enabled. That said, I haven't come across a board that enables EEE. So
+enable EEE on the switch MACs but disable EEE advertisement on the switch
+PHYs. This way, we don't change the behaviour of the majority of the boards
+that have this switch. The mediatek-ge PHY driver already disables EEE
+advertisement on the switch PHYs but my testing shows that it is somehow
+enabled afterwards. Disabling EEE advertisement before the PHY driver
+initialises keeps it off.
+
+With this change, EEE can now be enabled using ethtool.
+
+Fixes: 40b5d2f15c09 ("net: dsa: mt7530: Add support for EEE features")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://lore.kernel.org/r/20240408-for-net-mt7530-fix-eee-for-mt7531-mt7988-v3-1-84fdef1f008b@arinc9.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/dsa/mt7530.c |   17 ++++++++++++-----
+ drivers/net/dsa/mt7530.h |    1 +
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1376,6 +1376,12 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990 (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a9, 0xff),	/* Telit FN20C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -2675,18 +2675,25 @@ mt7531_setup(struct dsa_switch *ds)
+ 	priv->p5_interface = PHY_INTERFACE_MODE_NA;
+ 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
+ 
+-	/* Enable PHY core PLL, since phy_device has not yet been created
+-	 * provided for phy_[read,write]_mmd_indirect is called, we provide
+-	 * our own mt7531_ind_mmd_phy_[read,write] to complete this
+-	 * function.
++	/* Enable Energy-Efficient Ethernet (EEE) and PHY core PLL, since
++	 * phy_device has not yet been created provided for
++	 * phy_[read,write]_mmd_indirect is called, we provide our own
++	 * mt7531_ind_mmd_phy_[read,write] to complete this function.
+ 	 */
+ 	val = mt7531_ind_c45_phy_read(priv, MT753X_CTRL_PHY_ADDR,
+ 				      MDIO_MMD_VEND2, CORE_PLL_GROUP4);
+-	val |= MT7531_PHY_PLL_BYPASS_MODE;
++	val |= MT7531_RG_SYSPLL_DMY2 | MT7531_PHY_PLL_BYPASS_MODE;
+ 	val &= ~MT7531_PHY_PLL_OFF;
+ 	mt7531_ind_c45_phy_write(priv, MT753X_CTRL_PHY_ADDR, MDIO_MMD_VEND2,
+ 				 CORE_PLL_GROUP4, val);
+ 
++	/* Disable EEE advertisement on the switch PHYs. */
++	for (i = MT753X_CTRL_PHY_ADDR;
++	     i < MT753X_CTRL_PHY_ADDR + MT7530_NUM_PHYS; i++) {
++		mt7531_ind_c45_phy_write(priv, i, MDIO_MMD_AN, MDIO_AN_EEE_ADV,
++					 0);
++	}
++
+ 	mt7531_setup_common(ds);
+ 
+ 	/* Setup VLAN ID 0 for VLAN-unaware bridges */
+--- a/drivers/net/dsa/mt7530.h
++++ b/drivers/net/dsa/mt7530.h
+@@ -673,6 +673,7 @@ enum mt7531_clk_skew {
+ #define  RG_SYSPLL_DDSFBK_EN		BIT(12)
+ #define  RG_SYSPLL_BIAS_EN		BIT(11)
+ #define  RG_SYSPLL_BIAS_LPF_EN		BIT(10)
++#define  MT7531_RG_SYSPLL_DMY2		BIT(6)
+ #define  MT7531_PHY_PLL_OFF		BIT(5)
+ #define  MT7531_PHY_PLL_BYPASS_MODE	BIT(4)
+ 
 
 
 
