@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-41083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E188AFA43
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 702E28AFAE1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25C2E1C22AF0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24DFD28232B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1181494C5;
-	Tue, 23 Apr 2024 21:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F873145B23;
+	Tue, 23 Apr 2024 21:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJ6gOGI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7rEEkTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C341494C3;
-	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F216914389D;
+	Tue, 23 Apr 2024 21:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908666; cv=none; b=KgcNZTZ94jqtRRLDojA4/Slt86jjzJ/S8nsL5FLKDqcEBzJl66voVStgZYJRVg3KyAUgNI+Of4SSwfoP9vSeSTYHLg4Ed2J//Uhbcwnv4XNMfxOCJhBJj1Mvawq2lmVybzP5AveZ/TosA4zf3aA2h5jVmgsZWDfxhNPa8Ho7QCo=
+	t=1713908776; cv=none; b=NOV+1+IB+x5NUzsp9xAz8Gi8JRqcbti4uBTdL0LKmG3/cEHrDi8Aeb/2ZX/kqiqHYV97R48p3q181Ed/Wbw5NT44ne6eWmFRiH4m0WE0jhl7yUpkX2KCtjtzknmczyeZGOIVrk7c2LZ6F7TQqRtCvTJVH9/f5Ga9jFmrFopTbc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908666; c=relaxed/simple;
-	bh=C6Bz1pyJg1sKNcsZnlfP919m0MVianviUb4OKEHcqyM=;
+	s=arc-20240116; t=1713908776; c=relaxed/simple;
+	bh=6gxcLYmE1kw3YFkNiR/95xQw9Wdo4Vr4oJ04jq8ToaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Txe1j8IJT+3JTbXs+Yn04tHK4qAaZwu+NQBt2SUxIOkTVhY9dRLgS551iL7o43hepo84aVUHba4SfuT9+TermvKF6BcGBbgpRG6yZwK6sMadIGd/S/tHck6B9KQuFIDu0s+FwsLGGZg+EqJifoHw2jd74fp2Qpn+gNePj1/ACkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJ6gOGI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D65C3277B;
-	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
+	 MIME-Version; b=HQd+k3mNwUWHfu+NS3NiFUrBbiPY3Nrg1QCYaQZh04afnFUv3l7rN+o0CmeQ1oCf5bHUz1Aix6mmJp6nvNGiL8pce6N8Zr63dOhBEoEdCYWjTnLaVDdE6Nvt6XDTlYk6XwAUWUEeEIzc3LBi1piMKaRX1FjV9AkudRbmkZcuDEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7rEEkTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C437AC116B1;
+	Tue, 23 Apr 2024 21:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908665;
-	bh=C6Bz1pyJg1sKNcsZnlfP919m0MVianviUb4OKEHcqyM=;
+	s=korg; t=1713908775;
+	bh=6gxcLYmE1kw3YFkNiR/95xQw9Wdo4Vr4oJ04jq8ToaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJ6gOGI9RDUCl54/4XJmzyUSNmIF5oqDRWjJ2KB/QTLnojnj16IOCqlM3F9lcMTm8
-	 8Qa9pvAtXEL4mOvMKFYPxiyCtO6aKXozNfHKOcxs4YZl6gh9/2Ad4l6YldEfG2jcLC
-	 I9lYcjzhhEWrISnh/+IQu1PM+RrUTQE4FpOTGXWU=
+	b=O7rEEkTffU36iLv68On+H7v30HwXMKuNWTW54Iw7vEzhToNKRaLWZyV0ZQZ0UAFq6
+	 9mUcKYfiVC8Vi/9I9roK67hEYib5r0KMfnfp2B2pc/kBeDc6Xb5dqh2znrzF8uSTYQ
+	 5o9LEiEHgiSoBuPop7CkSFlAtzmIaJFx3isZgAkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com,
-	David Hildenbrand <david@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 136/158] mm/userfaultfd: allow hugetlb change protection upon poison entry
+	syzbot+b6f07e1c07ef40199081@syzkaller.appspotmail.com,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 20/71] netfilter: flowtable: validate pppoe header
 Date: Tue, 23 Apr 2024 14:39:33 -0700
-Message-ID: <20240423213900.122009374@linuxfoundation.org>
+Message-ID: <20240423213844.822388120@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit c5977c95dff182d6ee06f4d6f60bcb0284912969 upstream.
+[ Upstream commit 87b3593bed1868b2d9fe096c01bcdf0ea86cbebf ]
 
-After UFFDIO_POISON, there can be two kinds of hugetlb pte markers, either
-the POISON one or UFFD_WP one.
+Ensure there is sufficient room to access the protocol field of the
+PPPoe header. Validate it once before the flowtable lookup, then use a
+helper function to access protocol field.
 
-Allow change protection to run on a poisoned marker just like !hugetlb
-cases, ignoring the marker irrelevant of the permission.
-
-Here the two bits are mutual exclusive.  For example, when install a
-poisoned entry it must not be UFFD_WP already (by checking pte_none()
-before such install).  And it also means if UFFD_WP is set there must have
-no POISON bit set.  It makes sense because UFFD_WP is a bit to reflect
-permission, and permissions do not apply if the pte is poisoned and
-destined to sigbus.
-
-So here we simply check uffd_wp bit set first, do nothing otherwise.
-
-Attach the Fixes to UFFDIO_POISON work, as before that it should not be
-possible to have poison entry for hugetlb (e.g., hugetlb doesn't do swap,
-so no chance of swapin errors).
-
-Link: https://lkml.kernel.org/r/20240405231920.1772199-1-peterx@redhat.com
-Link: https://lore.kernel.org/r/000000000000920d5e0615602dd1@google.com
-Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+b6f07e1c07ef40199081@syzkaller.appspotmail.com
+Fixes: 72efd585f714 ("netfilter: flowtable: add pppoe support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ include/net/netfilter/nf_flow_table.h | 12 +++++++++++-
+ net/netfilter/nf_flow_table_inet.c    |  3 ++-
+ net/netfilter/nf_flow_table_ip.c      |  8 +++++---
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6653,9 +6653,13 @@ long hugetlb_change_protection(struct vm
- 			if (!pte_same(pte, newpte))
- 				set_huge_pte_at(mm, address, ptep, newpte, psize);
- 		} else if (unlikely(is_pte_marker(pte))) {
--			/* No other markers apply for now. */
--			WARN_ON_ONCE(!pte_marker_uffd_wp(pte));
--			if (uffd_wp_resolve)
-+			/*
-+			 * Do nothing on a poison marker; page is
-+			 * corrupted, permissons do not apply.  Here
-+			 * pte_marker_uffd_wp()==true implies !poison
-+			 * because they're mutual exclusive.
-+			 */
-+			if (pte_marker_uffd_wp(pte) && uffd_wp_resolve)
- 				/* Safe to modify directly (non-present->none). */
- 				huge_pte_clear(mm, address, ptep, psize);
- 		} else if (!huge_pte_none(pte)) {
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index 6cc0cfbf69b86..8e98fb8edff8d 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -318,7 +318,7 @@ int nf_flow_rule_route_ipv6(struct net *net, const struct flow_offload *flow,
+ int nf_flow_table_offload_init(void);
+ void nf_flow_table_offload_exit(void);
+ 
+-static inline __be16 nf_flow_pppoe_proto(const struct sk_buff *skb)
++static inline __be16 __nf_flow_pppoe_proto(const struct sk_buff *skb)
+ {
+ 	__be16 proto;
+ 
+@@ -334,6 +334,16 @@ static inline __be16 nf_flow_pppoe_proto(const struct sk_buff *skb)
+ 	return 0;
+ }
+ 
++static inline bool nf_flow_pppoe_proto(struct sk_buff *skb, __be16 *inner_proto)
++{
++	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
++		return false;
++
++	*inner_proto = __nf_flow_pppoe_proto(skb);
++
++	return true;
++}
++
+ #define NF_FLOW_TABLE_STAT_INC(net, count) __this_cpu_inc((net)->ft.stat->count)
+ #define NF_FLOW_TABLE_STAT_DEC(net, count) __this_cpu_dec((net)->ft.stat->count)
+ #define NF_FLOW_TABLE_STAT_INC_ATOMIC(net, count)	\
+diff --git a/net/netfilter/nf_flow_table_inet.c b/net/netfilter/nf_flow_table_inet.c
+index 280fdd32965f6..6783ea220f8fe 100644
+--- a/net/netfilter/nf_flow_table_inet.c
++++ b/net/netfilter/nf_flow_table_inet.c
+@@ -21,7 +21,8 @@ nf_flow_offload_inet_hook(void *priv, struct sk_buff *skb,
+ 		proto = veth->h_vlan_encapsulated_proto;
+ 		break;
+ 	case htons(ETH_P_PPP_SES):
+-		proto = nf_flow_pppoe_proto(skb);
++		if (!nf_flow_pppoe_proto(skb, &proto))
++			return NF_ACCEPT;
+ 		break;
+ 	default:
+ 		proto = skb->protocol;
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index 28026467b54cd..448956fb52f69 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -246,10 +246,11 @@ static unsigned int nf_flow_xmit_xfrm(struct sk_buff *skb,
+ 	return NF_STOLEN;
+ }
+ 
+-static bool nf_flow_skb_encap_protocol(const struct sk_buff *skb, __be16 proto,
++static bool nf_flow_skb_encap_protocol(struct sk_buff *skb, __be16 proto,
+ 				       u32 *offset)
+ {
+ 	struct vlan_ethhdr *veth;
++	__be16 inner_proto;
+ 
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_8021Q):
+@@ -260,7 +261,8 @@ static bool nf_flow_skb_encap_protocol(const struct sk_buff *skb, __be16 proto,
+ 		}
+ 		break;
+ 	case htons(ETH_P_PPP_SES):
+-		if (nf_flow_pppoe_proto(skb) == proto) {
++		if (nf_flow_pppoe_proto(skb, &inner_proto) &&
++		    inner_proto == proto) {
+ 			*offset += PPPOE_SES_HLEN;
+ 			return true;
+ 		}
+@@ -289,7 +291,7 @@ static void nf_flow_encap_pop(struct sk_buff *skb,
+ 			skb_reset_network_header(skb);
+ 			break;
+ 		case htons(ETH_P_PPP_SES):
+-			skb->protocol = nf_flow_pppoe_proto(skb);
++			skb->protocol = __nf_flow_pppoe_proto(skb);
+ 			skb_pull(skb, PPPOE_SES_HLEN);
+ 			skb_reset_network_header(skb);
+ 			break;
+-- 
+2.43.0
+
 
 
 
