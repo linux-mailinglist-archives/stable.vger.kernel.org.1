@@ -1,115 +1,126 @@
-Return-Path: <stable+bounces-40546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624238ADB01
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 02:25:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154F68ADB38
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 02:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93A4B1C20B7A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 00:25:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2A13B21AD9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 00:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBE528E2;
-	Tue, 23 Apr 2024 00:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65046E574;
+	Tue, 23 Apr 2024 00:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pT/nm5iQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KxGac3A9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B62C23B1;
-	Tue, 23 Apr 2024 00:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B9F14F98;
+	Tue, 23 Apr 2024 00:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713830461; cv=none; b=JFEoDSXJRSaKQmfe9anBUFHJG0Nu0IGX5zOAPgLObE6Bsetu+HeW80EmJeHxxulk7yiNvFCEoy1rqrieR8Go6I8ngGSVfKd+sR85WClrHFyELQeLX/BHpjRzPPw5Yl+yvNt8/wSVwxrw7CPxoND2ReRYCDBzCVvjz8NPX2Ker6c=
+	t=1713833023; cv=none; b=ozQ+1ozc7pJKq6q7tRE7Vd/DY3c1Jb1F0J+qbnpbt060BkhkUEmaRH6+vbf+mTwh1iFB0NyVb0/ogUSuZr+Zi4O7oJcjm0QphgVS/kKSLNPfmpijPNVUW5+0Nmx3RQB0SmW3YlQ3HOHSjsYMFRvLUiFQ7R8cp+oWs0Lnlstbdnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713830461; c=relaxed/simple;
-	bh=ug7gjQbUFGjX6WE/w3oqS5QlblPAmsfItnDjXp3JKfg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tG0WwpqTbKsb3V4FJgVRYG/EIE90w2hCYALn5N8mRw9U4lTxBmFuGgyRlt6+qiRuL+IUdGIoM8ry2lY1g0ouX3vWsW9yurtFDMIbxQZUXRvKDYyXGfn/yOEncS1w+UpVHCwI6tbIHowO8HssmbAzvlNxBOe4j4pCDnHa12fOX70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pT/nm5iQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CFCC113CC;
-	Tue, 23 Apr 2024 00:01:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713830460;
-	bh=ug7gjQbUFGjX6WE/w3oqS5QlblPAmsfItnDjXp3JKfg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pT/nm5iQnFIkwFO12U/z5DCq3ecaDjibXn4I8xc09PzarzzxkRpEdyvKGRvZO3elF
-	 0NidLlSMxw/s34c1nCxNxD9RD3pF1dI1YPp1XkJJLFYCS2X5liFWn3Nt1sqlzzehW4
-	 TLQKkcE7I3OPNymlzfiJAAQL+aZmcrV7c4WFYPB93J7eIDvhn+nKFeDA91flEn6xiZ
-	 IIUnnZsOWYHiptWCVa2OrBBJAHp6bz6sJkZaMVp5+hR8O3uFzIFTkmW10QK3kryHOQ
-	 p7KshDoGMUyHZ1oqwkbC4o83t+Fwo+PxpByNFtb3vAL/Ge863P4g8JdDSfgp4rlP04
-	 UyXRGgFo0OASQ==
-Date: Mon, 22 Apr 2024 17:00:58 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: Patch "configs/hardening: Fix disabling UBSAN configurations"
- has been added to the 6.8-stable tree
-Message-ID: <20240423000058.GA3055980@dev-arch.thelio-3990X>
-References: <20240421171119.1444407-1-sashal@kernel.org>
- <20240422185433.GA10996@dev-arch.thelio-3990X>
- <Zibu1T0d8IEuf0UQ@sashalap>
+	s=arc-20240116; t=1713833023; c=relaxed/simple;
+	bh=b69z8MKu5WCo7Cd2DA4gTZQA8lpYkKyRqYcx1dxF34w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=syJVGsCNYg9S9VBSFiD1wylnR/mKawTXNlI3Cc0lFxsCjTvkhDrBUfNTJSv0iszcc3vQT8bKwF35cwSaSfUniLJggPkTvSbqFm/B3krZv/IlFNz9jNvtHw9DFE1wwL5BeQDwNvVvEmg5Y1KaLbnewxLRkSJ4zYms1HoIIEVo/ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KxGac3A9; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6ed691fb83eso3992371b3a.1;
+        Mon, 22 Apr 2024 17:43:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713833020; x=1714437820; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=84vJQPmZeH4flu8huGOV5q9Ft8py+u51GWOsQbHslr0=;
+        b=KxGac3A9r0gl3ptsFB0rbrAVkxelN/Bcj5qFPEv10E7SAkPs1ZNvfK4qSYOgsqVC/c
+         gVgcFkm27qTIijIwNxAoqgzpYu5u7bmtnTQpSaDPYlmyfLA/QnallktYE5mllmXKSOA8
+         al8THU2STO8Sp3GJqxwIdxV5ag13r5Sh2vNvNNn0XsZo4vT/0aKWV8sjn1kzKN6aUnoG
+         Wf0Vuz/jFJMO9FfzU9E/RGXrsfT8aUUYsE3VRxImNKSPPzwMqlz2o8cjwDZd4BYhR/dr
+         Zhr5hkCjTAxqxOakslwTG0UskTgwbB/Whe66I4klBicr7zIUSErWvZ1ma9qJxY1EprBP
+         +dng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713833020; x=1714437820;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=84vJQPmZeH4flu8huGOV5q9Ft8py+u51GWOsQbHslr0=;
+        b=EUwWvHgCHsTQEYZazTR/9rEdWlxy21MWbcLHZpn9u/C2Ep8DzbBeBKO1ecU9J+lF8M
+         KVavfyfCgYQW4FUrgtQXELULaTpmIX5tkoJyIS2CauWfy6Fom85/F9ktl6OtYhJ0BV6b
+         WUx6Jf6A+s01sSfG/s5lSid61HeRfuHfZ8HLP2PE+SZ2kuS80MvZ8LUV/ovsZ/LpDe3t
+         ZksRLsFjl2yU4JjON/IKm2CzeIo5ig2ZYaes0Jysk2CGXqYdQyrqMFQUG+T8WdSmIngP
+         8Jd9ER8eFU5EIUcaVwS/px38jncKXa9vj8Up4FV1KVYaV16y0uwSCb+sxHUQSYunasC2
+         8TfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkLz8ZjyWJhaFWC18JGuFGvPQLz1PnEbNJjf74il115kcALG00ut4vpw6hjWi4CEqccJ1D/PkBwZONf7reI/wpzgHv3cSiRkHr2zrcKMTvTqKUybgcuxtoYehXBPLeERK81ojtVACdCmSIQLmKuj2cOV/F+CuJidT8WWK+I//rTcGXbt4C5adHWqsfxu4HJIYmETWnkSSGNBGBv7KEgFLLpUChIRnm4xr/JLSah1lLyyupeeeL1ibCuYNHLH/3/kx/Byk=
+X-Gm-Message-State: AOJu0YwrACmE/i/ujLkEQX0z4WEr1/peJAPygfy08+m1PrcO7kf3+sZF
+	IRqnQgMtf8koMiJb0kjaRte+rPlELjYkKaY9Nj2gCd1rf9/UR2wkWUA8W69JXm3vGTnHxLKht7O
+	Dg9ZeFT0lFWODY4cJFqPh7EBFgzI=
+X-Google-Smtp-Source: AGHT+IGxeORm1TBskNYFb9Q9UnxlPWh+xAzteXrnLfX4ZhQxPREhBxwkngicmnabL/j5mMF9OrXzpySLTVciO2cdmAw=
+X-Received: by 2002:a05:6a20:9f43:b0:1a7:6a90:8820 with SMTP id
+ ml3-20020a056a209f4300b001a76a908820mr13612612pzb.4.1713833019802; Mon, 22
+ Apr 2024 17:43:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zibu1T0d8IEuf0UQ@sashalap>
+References: <20240422091215.526688-1-ojeda@kernel.org>
+In-Reply-To: <20240422091215.526688-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 23 Apr 2024 02:42:34 +0200
+Message-ID: <CANiq72=xkmSGNCiJOr5+YZhKUVYjMwfBZJVCXbDfdf7qEGBAag@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: rust: remove unneeded `@rustc_cfg` to avoid ICE
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Gow <davidgow@google.com>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 22, 2024 at 07:12:21PM -0400, Sasha Levin wrote:
-> On Mon, Apr 22, 2024 at 11:54:33AM -0700, Nathan Chancellor wrote:
-> > On Sun, Apr 21, 2024 at 01:11:19PM -0400, Sasha Levin wrote:
-> > > This is a note to let you know that I've just added the patch titled
-> > > 
-> > >     configs/hardening: Fix disabling UBSAN configurations
-> > > 
-> > > to the 6.8-stable tree which can be found at:
-> > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > > 
-> > > The filename of the patch is:
-> > >      configs-hardening-fix-disabling-ubsan-configurations.patch
-> > > and it can be found in the queue-6.8 subdirectory.
-> > > 
-> > > If you, or anyone else, feels it should not be added to the stable tree,
-> > > please let <stable@vger.kernel.org> know about it.
-> > > 
-> > > 
-> > > 
-> > > commit a54fba0bb1f52707b423c908e153d6429d08db58
-> > > Author: Nathan Chancellor <nathan@kernel.org>
-> > > Date:   Thu Apr 11 11:11:06 2024 -0700
-> > > 
-> > >     configs/hardening: Fix disabling UBSAN configurations
-> > > 
-> > >     [ Upstream commit e048d668f2969cf2b76e0fa21882a1b3bb323eca ]
-> > 
-> > While I think backporting this makes sense, I don't know that
-> > backporting 918327e9b7ff ("ubsan: Remove CONFIG_UBSAN_SANITIZE_ALL") to
-> > resolve the conflict with 6.8 is entirely necessary (or beneficial, I
-> > don't know how Kees feels about it though). I've attached a version that
-> > applies cleanly to 6.8, in case it is desirable.
-> 
-> I usually wouldn't do it, but 918327e9b7ff ("ubsan: Remove
-> CONFIG_UBSAN_SANITIZE_ALL") indicated that it's mostly a noop rather
-> than a change in behavior for existing config files.
+On Mon, Apr 22, 2024 at 11:13=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
+>
+> When KUnit tests are enabled, under very big kernel configurations
+> (e.g. `allyesconfig`), we can trigger a `rustdoc` ICE [1]:
+>
+>       RUSTDOC TK rust/kernel/lib.rs
+>     error: the compiler unexpectedly panicked. this is a bug.
+>
+> The reason is that this build step has a duplicated `@rustc_cfg` argument=
+,
+> which contains the kernel configuration, and thus a lot of arguments. The
+> factor 2 happens to be enough to reach the ICE.
+>
+> Thus remove the unneeded `@rustc_cfg`. By doing so, we clean up the
+> command and workaround the ICE.
+>
+> The ICE has been fixed in the upcoming Rust 1.79 [2].
+>
+> Cc: stable@vger.kernel.org
+> Fixes: a66d733da801 ("rust: support running Rust documentation tests as K=
+Unit ones")
+> Link: https://github.com/rust-lang/rust/issues/122722 [1]
+> Link: https://github.com/rust-lang/rust/pull/122840 [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-It is a change in behavior for architectures that did not select
-CONFIG_ARCH_HAS_UBSAN_SANITIZE_ALL because CONFIG_UBSAN_SANITIZE_ALL
-depends on that (for example, LoongArch). That change actually helped
-expose an issue in LoongArch's LLVM backend because UBSAN was now
-getting enabled on files in allmodconfig, which is good, but that shows
-the change is not risk free. However, given that it makes CONFIG_UBSAN
-perhaps work more expectedly (which could be considered a fix on its
-own), we can probably keep this as is and just back out of it if it is
-too disruptive to people.
+Applied to `rust-fixes` early to start getting some testing in -next.
+Please feel free to send tags for this one.
 
 Cheers,
-Nathan
+Miguel
 
