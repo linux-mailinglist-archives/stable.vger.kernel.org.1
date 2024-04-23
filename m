@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3708AFAFC
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0308AFA32
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1608B2847F6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CBE31F2937D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB5714BFA5;
-	Tue, 23 Apr 2024 21:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E6C149016;
+	Tue, 23 Apr 2024 21:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPy1blqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MF/x3gqV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F91143888;
-	Tue, 23 Apr 2024 21:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F027143C6B;
+	Tue, 23 Apr 2024 21:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908797; cv=none; b=OSzBCd7RR9of1YJd+Wz3W7/TOawdrX5RNWdiTicmIBmxVrZoyP/Vbg4IBE13t6m+YRuoyi3UnwHl3hgRhn13eghwyl2GFj0VgSk1i0CU3xv25y5AvIYhxH3QRLeuodn8HRLx6MtAuf6bzuEVCy6tlabsC7YWkR1Yo5Enx6BWb8o=
+	t=1713908652; cv=none; b=bIdrI+pDFQVgtbHv+rOQwRNE4GkmpIsee9EUXBDaO5C3n+v2/8SADLJpOzBaeA1fmZEEv+nbelx6hGl9h4cxvTNNAEG9IDf7XicbcwJ8mfNmLadVucdNfT6vc3mwRPzVlKsFmhG3Qo7hlQt8ZUvbOtSr3sl9c1nYBGdMLg9Rvrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908797; c=relaxed/simple;
-	bh=c20M6SIjRLOEYgEn52OdPIQHzT1+1y1Gvnpg77YRVpE=;
+	s=arc-20240116; t=1713908652; c=relaxed/simple;
+	bh=10bRul1BUpZw/Ntn9DZrTND03kGC0AZNVKMK878+X1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=awWeRVESv1TsI7uW6kiQLaV/JYqq5uubFcJOBLCmRsYFpb57aSoiK8mnUodGC2IxnBVcyCbC3zgXjlyu9PVtigw3BHo7EJA/T5clWg+y6pI9WKSUJcW9A8F+kt/XDbp72OUBc+nGuEbtfg4pztubiO91M4srhxx8+ATX1fVgi94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPy1blqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0A5C3277B;
-	Tue, 23 Apr 2024 21:46:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TuEMpE+PZGMREao39i6WCyybpuXyeMoxCKhxiV9jjuVJLiVNSFvrJGgYsav5HDvRZXCdMuzTHf5xwAngBkKhthgFFGOuKzPg1QwfJf6CzKisxtFvcL6E/GEsGC0pew8hic8xpYs+LnL/TNPwTM6c3eIaRH9oIVDl/4mzeAqGEb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF/x3gqV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9B3C3277B;
+	Tue, 23 Apr 2024 21:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908797;
-	bh=c20M6SIjRLOEYgEn52OdPIQHzT1+1y1Gvnpg77YRVpE=;
+	s=korg; t=1713908652;
+	bh=10bRul1BUpZw/Ntn9DZrTND03kGC0AZNVKMK878+X1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPy1blqExUhqWjqFLlOZdpzIhsttmrjKjsEuZajR/vtEdACfe0/vk4I10971c+z6H
-	 ltA7VZcHrSkOrrFrWFDCAE79moXu6v8Iq2D8rRxQQomiXZEU07DANULbmQarqRJ0kT
-	 5epbEYL5cDlyVpMrhVkeWk+XFRKoBVNdQGi8DyFs=
+	b=MF/x3gqVk5CLzwP/iQ5wBaCWsJqXoTxeGoD7Dy26ZcF+6lFAPTSx5VhZCSQhtJSP3
+	 knSFkNsNFNb9j7ru7KEc60VXstJKk2sfkjJ9HCJ/XQiJvfoL7BH8wYXZwCKz9jEWfs
+	 EV3tsCo5IJUNOYBuLeF/yOHuo6fA1IFhdjjdE1eE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 25/71] net: dsa: mt7530: fix mirroring frames received on local port
+	Vlad Stolyarov <hexed@google.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	xinhui pan <xinhui.pan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 141/158] drm/amdgpu: validate the parameters of bo mapping operations more clearly
 Date: Tue, 23 Apr 2024 14:39:38 -0700
-Message-ID: <20240423213845.006690223@linuxfoundation.org>
+Message-ID: <20240423213900.277052223@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,143 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: xinhui pan <xinhui.pan@amd.com>
 
-[ Upstream commit d59cf049c8378677053703e724808836f180888e ]
+commit 6fef2d4c00b5b8561ad68dd2b68173f5c6af1e75 upstream.
 
-This switch intellectual property provides a bit on the ARL global control
-register which controls allowing mirroring frames which are received on the
-local port (monitor port). This bit is unset after reset.
+Verify the parameters of
+amdgpu_vm_bo_(map/replace_map/clearing_mappings) in one common place.
 
-This ability must be enabled to fully support the port mirroring feature on
-this switch intellectual property.
-
-Therefore, this patch fixes the traffic not being reflected on a port,
-which would be configured like below:
-
-  tc qdisc add dev swp0 clsact
-
-  tc filter add dev swp0 ingress matchall skip_sw \
-  action mirred egress mirror dev swp0
-
-As a side note, this configuration provides the hairpinning feature for a
-single port.
-
-Fixes: 37feab6076aa ("net: dsa: mt7530: add support for port mirroring")
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dc54d3d1744d ("drm/amdgpu: implement AMDGPU_VA_OP_CLEAR v2")
+Cc: stable@vger.kernel.org
+Reported-by: Vlad Stolyarov <hexed@google.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: xinhui pan <xinhui.pan@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c | 6 ++++++
- drivers/net/dsa/mt7530.h | 4 ++++
- 2 files changed, 10 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |   72 +++++++++++++++++++++------------
+ 1 file changed, 46 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index f291d1e70f807..053f1b4aa324c 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2437,6 +2437,9 @@ mt7530_setup(struct dsa_switch *ds)
- 			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -1500,6 +1500,37 @@ static void amdgpu_vm_bo_insert_map(stru
+ 	trace_amdgpu_vm_bo_map(bo_va, mapping);
+ }
+ 
++/* Validate operation parameters to prevent potential abuse */
++static int amdgpu_vm_verify_parameters(struct amdgpu_device *adev,
++					  struct amdgpu_bo *bo,
++					  uint64_t saddr,
++					  uint64_t offset,
++					  uint64_t size)
++{
++	uint64_t tmp, lpfn;
++
++	if (saddr & AMDGPU_GPU_PAGE_MASK
++	    || offset & AMDGPU_GPU_PAGE_MASK
++	    || size & AMDGPU_GPU_PAGE_MASK)
++		return -EINVAL;
++
++	if (check_add_overflow(saddr, size, &tmp)
++	    || check_add_overflow(offset, size, &tmp)
++	    || size == 0 /* which also leads to end < begin */)
++		return -EINVAL;
++
++	/* make sure object fit at this offset */
++	if (bo && offset + size > amdgpu_bo_size(bo))
++		return -EINVAL;
++
++	/* Ensure last pfn not exceed max_pfn */
++	lpfn = (saddr + size - 1) >> AMDGPU_GPU_PAGE_SHIFT;
++	if (lpfn >= adev->vm_manager.max_pfn)
++		return -EINVAL;
++
++	return 0;
++}
++
+ /**
+  * amdgpu_vm_bo_map - map bo inside a vm
+  *
+@@ -1526,21 +1557,14 @@ int amdgpu_vm_bo_map(struct amdgpu_devic
+ 	struct amdgpu_bo *bo = bo_va->base.bo;
+ 	struct amdgpu_vm *vm = bo_va->base.vm;
+ 	uint64_t eaddr;
++	int r;
+ 
+-	/* validate the parameters */
+-	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
+-		return -EINVAL;
+-	if (saddr + size <= saddr || offset + size <= offset)
+-		return -EINVAL;
+-
+-	/* make sure object fit at this offset */
+-	eaddr = saddr + size - 1;
+-	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
+-	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+-		return -EINVAL;
++	r = amdgpu_vm_verify_parameters(adev, bo, saddr, offset, size);
++	if (r)
++		return r;
+ 
+ 	saddr /= AMDGPU_GPU_PAGE_SIZE;
+-	eaddr /= AMDGPU_GPU_PAGE_SIZE;
++	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
+ 
+ 	tmp = amdgpu_vm_it_iter_first(&vm->va, saddr, eaddr);
+ 	if (tmp) {
+@@ -1593,17 +1617,9 @@ int amdgpu_vm_bo_replace_map(struct amdg
+ 	uint64_t eaddr;
+ 	int r;
+ 
+-	/* validate the parameters */
+-	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
+-		return -EINVAL;
+-	if (saddr + size <= saddr || offset + size <= offset)
+-		return -EINVAL;
+-
+-	/* make sure object fit at this offset */
+-	eaddr = saddr + size - 1;
+-	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
+-	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+-		return -EINVAL;
++	r = amdgpu_vm_verify_parameters(adev, bo, saddr, offset, size);
++	if (r)
++		return r;
+ 
+ 	/* Allocate all the needed memory */
+ 	mapping = kmalloc(sizeof(*mapping), GFP_KERNEL);
+@@ -1617,7 +1633,7 @@ int amdgpu_vm_bo_replace_map(struct amdg
  	}
  
-+	/* Allow mirroring frames received on the local port (monitor port). */
-+	mt7530_set(priv, MT753X_AGC, LOCAL_EN);
-+
- 	/* Setup VLAN ID 0 for VLAN-unaware bridges */
- 	ret = mt7530_setup_vlan0(priv);
- 	if (ret)
-@@ -2553,6 +2556,9 @@ mt7531_setup_common(struct dsa_switch *ds)
- 			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
- 	}
+ 	saddr /= AMDGPU_GPU_PAGE_SIZE;
+-	eaddr /= AMDGPU_GPU_PAGE_SIZE;
++	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
  
-+	/* Allow mirroring frames received on the local port (monitor port). */
-+	mt7530_set(priv, MT753X_AGC, LOCAL_EN);
+ 	mapping->start = saddr;
+ 	mapping->last = eaddr;
+@@ -1704,10 +1720,14 @@ int amdgpu_vm_bo_clear_mappings(struct a
+ 	struct amdgpu_bo_va_mapping *before, *after, *tmp, *next;
+ 	LIST_HEAD(removed);
+ 	uint64_t eaddr;
++	int r;
 +
- 	/* Flush the FDB table */
- 	ret = mt7530_fdb_cmd(priv, MT7530_FDB_FLUSH, NULL);
- 	if (ret < 0)
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index 299a26ad5809c..0247a58d5554c 100644
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -32,6 +32,10 @@ enum mt753x_id {
- #define SYSC_REG_RSTCTRL		0x34
- #define  RESET_MCM			BIT(2)
++	r = amdgpu_vm_verify_parameters(adev, NULL, saddr, 0, size);
++	if (r)
++		return r;
  
-+/* Register for ARL global control */
-+#define MT753X_AGC			0xc
-+#define  LOCAL_EN			BIT(7)
-+
- /* Registers to mac forward control for unknown frames */
- #define MT7530_MFC			0x10
- #define  BC_FFP(x)			(((x) & 0xff) << 24)
--- 
-2.43.0
-
+-	eaddr = saddr + size - 1;
+ 	saddr /= AMDGPU_GPU_PAGE_SIZE;
+-	eaddr /= AMDGPU_GPU_PAGE_SIZE;
++	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
+ 
+ 	/* Allocate all the needed memory */
+ 	before = kzalloc(sizeof(*before), GFP_KERNEL);
 
 
 
