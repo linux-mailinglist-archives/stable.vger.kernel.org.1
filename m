@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-40867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB018AF962
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C348AFA77
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1055B1F25627
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EF9E289AD9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338D2145327;
-	Tue, 23 Apr 2024 21:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6B014430A;
+	Tue, 23 Apr 2024 21:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzBeYOGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Slc1nyrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62861448DF;
-	Tue, 23 Apr 2024 21:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD49143C41;
+	Tue, 23 Apr 2024 21:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908517; cv=none; b=g8eoEl049Z+lUrMC9ZNhZI1wogdWfFmS2cVGbS7CTT6Tg5OhqW0FlGQrJzptlUDMj0Si2Qy6jjT4seMC8hbw5SXQXA4G1kjRbB6QEhXYxMISHxfllG+dyOSJfYnsgJDSAdLGrLE6LqLNFRYy/EFJ7Lr/JjX6lWZRBD8aLqBXOSQ=
+	t=1713908704; cv=none; b=XmW0kbj+WawZp077oKXBdtqW8Mte+k6/HxR986KklW4HbenWYZFKLus8glAbQJN4yNv96TfBR0AwP3uHquGeynjAuvnoXLT24+jRQqarZw/QtxpbEygAFhUo12HlPDxEs/iHn3AvQx7MV/aC9OWWu/J71/7m77HoGEJWLIC7HTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908517; c=relaxed/simple;
-	bh=O9wdK6njTPYm1F7aHpRWw91Nx8rRq4asvP2UZRC+ny8=;
+	s=arc-20240116; t=1713908704; c=relaxed/simple;
+	bh=5+CVJ8flXCCw6Th7FklOt5yiLITg37hTxRPA/OYgj0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFVQF+9zOVmmrB+scnzf13afCM7cWLPq+C7rzH406VEEEZePzW59BpbjknqOmNvum+uR0wgUu4g2KES2cCTn0PUX3/qKZmidmtb6hWXcQ3C3OZprwuyg1ScoAozUliNK4enR5n2UgCemvhy8apFiysA/fsIDvBVKt1h2UsdL6MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzBeYOGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA766C116B1;
-	Tue, 23 Apr 2024 21:41:56 +0000 (UTC)
+	 MIME-Version; b=XFo0UTGIJ8zPljqxBGz9LR968HIIve6TiccO+j9a16n9KBZwBqj9nHAmjCJZjAp1mPxb3qWkiA2LB26i81L4Fg9ixZxGrWemILAiiscRzm5+xOXPAQ1h3CABRgQLD4zWmnrEkIfD04p4zqdmcYqXPS3FgEi6c2Qk9DTIi0Hykm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Slc1nyrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CF9C3277B;
+	Tue, 23 Apr 2024 21:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908516;
-	bh=O9wdK6njTPYm1F7aHpRWw91Nx8rRq4asvP2UZRC+ny8=;
+	s=korg; t=1713908703;
+	bh=5+CVJ8flXCCw6Th7FklOt5yiLITg37hTxRPA/OYgj0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mzBeYOGN6maSO4/6zJOR0hbDY6vzZgYwTdAjFho8JwpaJsvd8L10mjBBk7Kfy4wz9
-	 UQGF0+moKSb/TQHmiMBVYcubBR8+0n7pUMI2GjQhCqrhWub4G6mnvWg3golneGPMAp
-	 xc2J3LTeXhvXQq0Iiiu1ZqKFrW6gS2T8TpsaNdD8=
+	b=Slc1nyrILL5Gkx9q5Azecx/nrfxfJjBzoxaYwwqcF3Bm7Nm+5PZ3xdSfzsEQFHtjL
+	 gD2R3WBOb9EO1WC4pG9C4+1xvD4RG7uN99bInvOAcyEyDmhYsXKnwIGlGUCJGyMl79
+	 T20lCMQOF+PrRGVBgy+vLFy+PGNoK09mE0CtCmT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.8 103/158] serial: 8250_dw: Revert: Do not reclock if already at correct rate
-Date: Tue, 23 Apr 2024 14:38:45 -0700
-Message-ID: <20240423213859.294089905@linuxfoundation.org>
+	David Yang <mmyangfl@gmail.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 058/141] HID: kye: Sort kye devices
+Date: Tue, 23 Apr 2024 14:38:46 -0700
+Message-ID: <20240423213855.137512391@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: David Yang <mmyangfl@gmail.com>
 
-commit 7dfae6cbadc1ac99e38ad19fb08810b31ff167be upstream.
+[ Upstream commit 8c7b79bc04abb67e7f5864e94286a800b42aa96c ]
 
-Commit e5d6bd25f93d ("serial: 8250_dw: Do not reclock if already at
-correct rate") breaks the dw UARTs on Intel Bay Trail (BYT) and
-Cherry Trail (CHT) SoCs.
+Sort kye devices by their Produce IDs.
 
-Before this change the RTL8732BS Bluetooth HCI which is found
-connected over the dw UART on both BYT and CHT boards works properly:
-
-Bluetooth: hci0: RTL: examining hci_ver=06 hci_rev=000b lmp_ver=06 lmp_subver=8723
-Bluetooth: hci0: RTL: rom_version status=0 version=1
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_fw.bin
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_config-OBDA8723.bin
-Bluetooth: hci0: RTL: cfg_sz 64, total sz 24508
-Bluetooth: hci0: RTL: fw version 0x365d462e
-
-where as after this change probing it fails:
-
-Bluetooth: hci0: RTL: examining hci_ver=06 hci_rev=000b lmp_ver=06 lmp_subver=8723
-Bluetooth: hci0: RTL: rom_version status=0 version=1
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_fw.bin
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_config-OBDA8723.bin
-Bluetooth: hci0: RTL: cfg_sz 64, total sz 24508
-Bluetooth: hci0: command 0xfc20 tx timeout
-Bluetooth: hci0: RTL: download fw command failed (-110)
-
-Revert the changes to fix this regression.
-
-Fixes: e5d6bd25f93d ("serial: 8250_dw: Do not reclock if already at correct rate")
-Cc: stable@vger.kernel.org
-Cc: Peter Collingbourne <pcc@google.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Peter Collingbourne <pcc@google.com>
-Link: https://lore.kernel.org/r/20240317214123.34482-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/hid-ids.h    |  2 +-
+ drivers/hid/hid-kye.c    | 62 ++++++++++++++++++++--------------------
+ drivers/hid/hid-quirks.c |  6 ++--
+ 3 files changed, 35 insertions(+), 35 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -357,9 +357,9 @@ static void dw8250_set_termios(struct ua
- 	long rate;
- 	int ret;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 1be454bafcb91..405d88b08908d 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -717,10 +717,10 @@
+ #define USB_DEVICE_ID_KYE_GPEN_560	0x5003
+ #define USB_DEVICE_ID_KYE_EASYPEN_I405X	0x5010
+ #define USB_DEVICE_ID_KYE_MOUSEPEN_I608X	0x5011
+-#define USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2	0x501a
+ #define USB_DEVICE_ID_KYE_EASYPEN_M610X	0x5013
+ #define USB_DEVICE_ID_KYE_PENSKETCH_M912	0x5015
+ #define USB_DEVICE_ID_KYE_EASYPEN_M406XE	0x5019
++#define USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2	0x501A
  
-+	clk_disable_unprepare(d->clk);
- 	rate = clk_round_rate(d->clk, newrate);
--	if (rate > 0 && p->uartclk != rate) {
--		clk_disable_unprepare(d->clk);
-+	if (rate > 0) {
- 		/*
- 		 * Note that any clock-notifer worker will block in
- 		 * serial8250_update_uartclk() until we are done.
-@@ -367,8 +367,8 @@ static void dw8250_set_termios(struct ua
- 		ret = clk_set_rate(d->clk, newrate);
- 		if (!ret)
- 			p->uartclk = rate;
--		clk_prepare_enable(d->clk);
+ #define USB_VENDOR_ID_LABTEC		0x1020
+ #define USB_DEVICE_ID_LABTEC_WIRELESS_KEYBOARD	0x0006
+diff --git a/drivers/hid/hid-kye.c b/drivers/hid/hid-kye.c
+index da903138eee49..dc57e9d4a3e20 100644
+--- a/drivers/hid/hid-kye.c
++++ b/drivers/hid/hid-kye.c
+@@ -602,6 +602,18 @@ static __u8 *kye_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 			rdesc[74] = 0x08;
+ 		}
+ 		break;
++	case USB_DEVICE_ID_GENIUS_GILA_GAMING_MOUSE:
++		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 104,
++					"Genius Gila Gaming Mouse");
++		break;
++	case USB_DEVICE_ID_GENIUS_MANTICORE:
++		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 104,
++					"Genius Manticore Keyboard");
++		break;
++	case USB_DEVICE_ID_GENIUS_GX_IMPERATOR:
++		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 83,
++					"Genius Gx Imperator Keyboard");
++		break;
+ 	case USB_DEVICE_ID_KYE_EASYPEN_I405X:
+ 		if (*rsize == EASYPEN_I405X_RDESC_ORIG_SIZE) {
+ 			rdesc = easypen_i405x_rdesc_fixed;
+@@ -638,18 +650,6 @@ static __u8 *kye_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 			*rsize = sizeof(pensketch_m912_rdesc_fixed);
+ 		}
+ 		break;
+-	case USB_DEVICE_ID_GENIUS_GILA_GAMING_MOUSE:
+-		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 104,
+-					"Genius Gila Gaming Mouse");
+-		break;
+-	case USB_DEVICE_ID_GENIUS_GX_IMPERATOR:
+-		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 83,
+-					"Genius Gx Imperator Keyboard");
+-		break;
+-	case USB_DEVICE_ID_GENIUS_MANTICORE:
+-		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 104,
+-					"Genius Manticore Keyboard");
+-		break;
  	}
-+	clk_prepare_enable(d->clk);
- 
- 	dw8250_do_set_termios(p, termios, old);
+ 	return rdesc;
  }
+@@ -717,26 +717,26 @@ static int kye_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	}
+ 
+ 	switch (id->product) {
++	case USB_DEVICE_ID_GENIUS_MANTICORE:
++		/*
++		 * The manticore keyboard needs to have all the interfaces
++		 * opened at least once to be fully functional.
++		 */
++		if (hid_hw_open(hdev))
++			hid_hw_close(hdev);
++		break;
+ 	case USB_DEVICE_ID_KYE_EASYPEN_I405X:
+ 	case USB_DEVICE_ID_KYE_MOUSEPEN_I608X:
+-	case USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2:
+ 	case USB_DEVICE_ID_KYE_EASYPEN_M610X:
+-	case USB_DEVICE_ID_KYE_EASYPEN_M406XE:
+ 	case USB_DEVICE_ID_KYE_PENSKETCH_M912:
++	case USB_DEVICE_ID_KYE_EASYPEN_M406XE:
++	case USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2:
+ 		ret = kye_tablet_enable(hdev);
+ 		if (ret) {
+ 			hid_err(hdev, "tablet enabling failed\n");
+ 			goto enabling_err;
+ 		}
+ 		break;
+-	case USB_DEVICE_ID_GENIUS_MANTICORE:
+-		/*
+-		 * The manticore keyboard needs to have all the interfaces
+-		 * opened at least once to be fully functional.
+-		 */
+-		if (hid_hw_open(hdev))
+-			hid_hw_close(hdev);
+-		break;
+ 	}
+ 
+ 	return 0;
+@@ -749,23 +749,23 @@ static int kye_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ static const struct hid_device_id kye_devices[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_ERGO_525V) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
+-				USB_DEVICE_ID_KYE_EASYPEN_I405X) },
++				USB_DEVICE_ID_GENIUS_GILA_GAMING_MOUSE) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
+-				USB_DEVICE_ID_KYE_MOUSEPEN_I608X) },
++				USB_DEVICE_ID_GENIUS_MANTICORE) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
+-				USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2) },
++				USB_DEVICE_ID_GENIUS_GX_IMPERATOR) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
+-				USB_DEVICE_ID_KYE_EASYPEN_M610X) },
++				USB_DEVICE_ID_KYE_EASYPEN_I405X) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
+-				USB_DEVICE_ID_KYE_EASYPEN_M406XE) },
++				USB_DEVICE_ID_KYE_MOUSEPEN_I608X) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
+-				USB_DEVICE_ID_GENIUS_GILA_GAMING_MOUSE) },
++				USB_DEVICE_ID_KYE_EASYPEN_M610X) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
+-				USB_DEVICE_ID_GENIUS_GX_IMPERATOR) },
++				USB_DEVICE_ID_KYE_PENSKETCH_M912) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
+-				USB_DEVICE_ID_GENIUS_MANTICORE) },
++				USB_DEVICE_ID_KYE_EASYPEN_M406XE) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
+-				USB_DEVICE_ID_KYE_PENSKETCH_M912) },
++				USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2) },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, kye_devices);
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 60884066362a1..debc49272a5c0 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -107,12 +107,12 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE_1f4a), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_IDEACOM, USB_DEVICE_ID_IDEACOM_IDC6680), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_INNOMEDIA, USB_DEVICE_ID_INNEX_GENESIS_ATARI), HID_QUIRK_MULTI_INPUT },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_EASYPEN_M610X), HID_QUIRK_MULTI_INPUT },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_PIXART_USB_OPTICAL_MOUSE_ID2), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_MOUSEPEN_I608X), HID_QUIRK_MULTI_INPUT },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2), HID_QUIRK_MULTI_INPUT },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_EASYPEN_M610X), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_PENSKETCH_M912), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_EASYPEN_M406XE), HID_QUIRK_MULTI_INPUT },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_PIXART_USB_OPTICAL_MOUSE_ID2), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019), HID_QUIRK_ALWAYS_POLL },
+-- 
+2.43.0
+
 
 
 
