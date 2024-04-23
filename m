@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-40763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0268AF807
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 22:34:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C55538AF80D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 22:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 941AE28CE4D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 20:34:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9FE9B21BC4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 20:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6916B53361;
-	Tue, 23 Apr 2024 20:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD78D14198A;
+	Tue, 23 Apr 2024 20:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YejpAbcN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AccLvEu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D1D1DFD0
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 20:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D26E1F95E
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 20:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713904446; cv=none; b=FMn/equjkdMUSWI0zxWEdF12PqRsPD9HmWyRPbayxSfb347pYRv+OwrX349FgMCW0xMd+V+Ev1px8J6NgweBp91d/L/wDnDxXXqdNYeiDfjcRmkYsBWxZpqMyoCR6AAbAc9v4VhYP19HpN/A/qXjYDoIe+FesSB2kC0/0aeG7Qo=
+	t=1713904581; cv=none; b=ZcQnjaKxHpuJ/hcYPiKzCTwQUH/ybnQgMAVz0r1Fsl8IAJIrYB4w+bAcjAc3YborVxH8c2gPAOOPbcI5Z5HNWUawJCFFUDAbFneELV5/JbCecHJ2sFuidozpQ/pJ7porVYYMtBSHxLTb9ovEmv9rUkVqSZm6n/y23NyQpYbfV8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713904446; c=relaxed/simple;
-	bh=bqDSX/zr03XL1yfr3M+7QKPECnNynCi6cruBCVeYWtY=;
+	s=arc-20240116; t=1713904581; c=relaxed/simple;
+	bh=y8E9yAVYPm115SXNsPNii4IEfKzRkCHVvUcPHD3W8uU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=M8Tf0pv8PnN0JMLJn1p19n6xeSrnxABFrgXXr2R1Q1QneucKAFuqiwIX/tEYOINvKj7gvj/GTbeeuAbYhUp6R8l/2Pw2PxnSncOGl4JSQjx+yE3OncrsgxUReXuC/+kWFrvkazbgWOAy0msBkbLG8nEmOnI/84gY3vuxKhCVbP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YejpAbcN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E279C116B1;
-	Tue, 23 Apr 2024 20:34:05 +0000 (UTC)
+	 MIME-Version; b=isjAgTXVQj444LcLl+tjFWqaQXsxpATc2iDSyWT48iI2fz7UwBTdgNKRiSTBuJH0eamKzWQfg7EGGC2TLf4ZZRiMNkmvon9On0wcgwksgSHUuzF7yLlWaJV+NHn3OIxxLe/Ou+3NohULHtU+UBdQsIYRupBBWdIB6iYc3JjeUC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AccLvEu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3645C116B1;
+	Tue, 23 Apr 2024 20:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713904445;
-	bh=bqDSX/zr03XL1yfr3M+7QKPECnNynCi6cruBCVeYWtY=;
+	s=k20201202; t=1713904581;
+	bh=y8E9yAVYPm115SXNsPNii4IEfKzRkCHVvUcPHD3W8uU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YejpAbcNgTKU2fdUFceNXsnWo4ky/Lr7CAH7wgUaeFcnF2GGczif5r476C7Wrfx5c
-	 sMxm1kPGa6qNKMEuDbv3FTUcKcD64ksdEz/C1PUBc/Q+G2Cz3olF7i4gPKcHdPYSdV
-	 Sffwz8upRUJMirqnQCE642D8ExfwqGsTwA9S6MV7ybZXkxNDAxNX5LYRtNeQGdl8zF
-	 NG/4XcPx6Iqg1xwupDVDUqiJDLuIEfuwRt2lngDy1tTXk1ExjgTIfD2Pog7oqBaWIl
-	 QF+Jq3sxA4CPYkL9AwQcGbNUGw5TLDO0Bt8pqLR9uFOsUglRoBnvE3Y3WslQ3v1b9F
-	 nm+v/WYsNT8ag==
+	b=AccLvEu4WiDQtkXwjOz4JW4lN/AQXEPgwWxncr9M9gfQEPXel4+ejt9bfL5nzMhgM
+	 UzyXHcWIq3FbVwU+4d0tKYs3/0mcIwCzENtV+mKKQQUK784gbymN6Trl3n8Yi+YsZz
+	 KRvZprDs27CN1OdRhidSypXjFYQ0ebaVg7PSbh6IhNPbXJWBuIQe5f6nAQKpxUTkQ/
+	 3ijuqW9WQuMA7dxv+npCGHDdW8Q0SE5DTuYBXcW+DITYjvQGY3UzTXHE8qXxOm4vUE
+	 yuxTlOR3ZoyGEjmWEj/udQXHhQFRdoL9+Mw4OvefAay1lX0W1RXlLQGPR9tM6NTH0/
+	 GuYJlZi1xy1mA==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: stable@vger.kernel.org
 Cc: Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.1.y] PCI/ASPM: Fix deadlock when enabling ASPM
-Date: Tue, 23 Apr 2024 15:34:02 -0500
-Message-Id: <20240423203402.462761-1-helgaas@kernel.org>
+Subject: [PATCH 6.6.y] PCI/ASPM: Fix deadlock when enabling ASPM
+Date: Tue, 23 Apr 2024 15:36:11 -0500
+Message-Id: <20240423203611.463084-1-helgaas@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2024021334-each-residence-41ce@gregkh>
-References: <2024021334-each-residence-41ce@gregkh>
+In-Reply-To: <2024021328-stylus-ooze-f752@gregkh>
+References: <2024021328-stylus-ooze-f752@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -111,12 +111,12 @@ Link: https://lore.kernel.org/r/ZZu0qx2cmn7IwTyQ@hovoldconsulting.com
 Link: https://lore.kernel.org/r/20240130100243.11011-1-johan+linaro@kernel.org
 Fixes: f93e71aea6c6 ("Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()"")
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-[bhelgaas: backported to v6.1.y, which contains b9c370b61d73 ("Revert
+[bhelgaas: backported to v6.6.y, which contains 8cc22ba3f77c ("Revert
 "PCI/ASPM: Remove pcie_aspm_pm_state_change()""), a backport of
 f93e71aea6c6.  This omits the drivers/pci/controller/dwc/pcie-qcom.c hunk
 that updates qcom_pcie_enable_aspm(), which was added by 9f4f3dfad8cf
 ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0 ops"), which is not
-present in v6.1.87.]
+present in v6.6.28.]
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
  drivers/pci/bus.c       | 49 +++++++++++++++++---------
@@ -127,10 +127,10 @@ Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
  5 files changed, 100 insertions(+), 49 deletions(-)
 
 diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-index feafa378bf8e..aa2fba1c0f56 100644
+index 9c2137dae429..826b5016a101 100644
 --- a/drivers/pci/bus.c
 +++ b/drivers/pci/bus.c
-@@ -379,21 +379,8 @@ void pci_bus_add_devices(const struct pci_bus *bus)
+@@ -386,21 +386,8 @@ void pci_bus_add_devices(const struct pci_bus *bus)
  }
  EXPORT_SYMBOL(pci_bus_add_devices);
  
@@ -154,7 +154,7 @@ index feafa378bf8e..aa2fba1c0f56 100644
  {
  	struct pci_dev *dev;
  	struct pci_bus *bus;
-@@ -401,7 +388,8 @@ void pci_walk_bus(struct pci_bus *top, int (*cb)(struct pci_dev *, void *),
+@@ -408,7 +395,8 @@ void pci_walk_bus(struct pci_bus *top, int (*cb)(struct pci_dev *, void *),
  	int retval;
  
  	bus = top;
@@ -164,7 +164,7 @@ index feafa378bf8e..aa2fba1c0f56 100644
  	next = top->devices.next;
  	for (;;) {
  		if (next == &bus->devices) {
-@@ -424,10 +412,37 @@ void pci_walk_bus(struct pci_bus *top, int (*cb)(struct pci_dev *, void *),
+@@ -431,10 +419,37 @@ void pci_walk_bus(struct pci_bus *top, int (*cb)(struct pci_dev *, void *),
  		if (retval)
  			break;
  	}
@@ -204,10 +204,10 @@ index feafa378bf8e..aa2fba1c0f56 100644
  {
  	if (bus)
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 5368a37154cf..67956bfebf87 100644
+index 06fc6f532d6c..dddd30deea32 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -1258,6 +1258,7 @@ int pci_power_up(struct pci_dev *dev)
+@@ -1291,6 +1291,7 @@ int pci_power_up(struct pci_dev *dev)
  /**
   * pci_set_full_power_state - Put a PCI device into D0 and update its state
   * @dev: PCI device to power up
@@ -215,7 +215,7 @@ index 5368a37154cf..67956bfebf87 100644
   *
   * Call pci_power_up() to put @dev into D0, read from its PCI_PM_CTRL register
   * to confirm the state change, restore its BARs if they might be lost and
-@@ -1267,7 +1268,7 @@ int pci_power_up(struct pci_dev *dev)
+@@ -1300,7 +1301,7 @@ int pci_power_up(struct pci_dev *dev)
   * to D0, it is more efficient to use pci_power_up() directly instead of this
   * function.
   */
@@ -224,7 +224,7 @@ index 5368a37154cf..67956bfebf87 100644
  {
  	u16 pmcsr;
  	int ret;
-@@ -1303,7 +1304,7 @@ static int pci_set_full_power_state(struct pci_dev *dev)
+@@ -1336,7 +1337,7 @@ static int pci_set_full_power_state(struct pci_dev *dev)
  	}
  
  	if (dev->bus->self)
@@ -233,7 +233,7 @@ index 5368a37154cf..67956bfebf87 100644
  
  	return 0;
  }
-@@ -1332,10 +1333,22 @@ void pci_bus_set_current_state(struct pci_bus *bus, pci_power_t state)
+@@ -1365,10 +1366,22 @@ void pci_bus_set_current_state(struct pci_bus *bus, pci_power_t state)
  		pci_walk_bus(bus, __pci_dev_set_current_state, &state);
  }
  
@@ -256,7 +256,7 @@ index 5368a37154cf..67956bfebf87 100644
   *
   * Use the device's PCI_PM_CTRL register to put it into a low-power state.
   *
-@@ -1346,7 +1359,7 @@ void pci_bus_set_current_state(struct pci_bus *bus, pci_power_t state)
+@@ -1379,7 +1392,7 @@ void pci_bus_set_current_state(struct pci_bus *bus, pci_power_t state)
   * 0 if device already is in the requested state.
   * 0 if device's power state has been successfully changed.
   */
@@ -265,7 +265,7 @@ index 5368a37154cf..67956bfebf87 100644
  {
  	u16 pmcsr;
  
-@@ -1400,29 +1413,12 @@ static int pci_set_low_power_state(struct pci_dev *dev, pci_power_t state)
+@@ -1433,29 +1446,12 @@ static int pci_set_low_power_state(struct pci_dev *dev, pci_power_t state)
  				     pci_power_name(state));
  
  	if (dev->bus->self)
@@ -297,7 +297,7 @@ index 5368a37154cf..67956bfebf87 100644
  {
  	int error;
  
-@@ -1446,7 +1442,7 @@ int pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+@@ -1479,7 +1475,7 @@ int pci_set_power_state(struct pci_dev *dev, pci_power_t state)
  		return 0;
  
  	if (state == PCI_D0)
@@ -306,7 +306,7 @@ index 5368a37154cf..67956bfebf87 100644
  
  	/*
  	 * This device is quirked not to be put into D3, so don't put it in
-@@ -1460,16 +1456,16 @@ int pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+@@ -1493,16 +1489,16 @@ int pci_set_power_state(struct pci_dev *dev, pci_power_t state)
  		 * To put the device in D3cold, put it into D3hot in the native
  		 * way, then put it into D3cold using platform ops.
  		 */
@@ -326,7 +326,7 @@ index 5368a37154cf..67956bfebf87 100644
  
  		if (pci_platform_power_transition(dev, state))
  			return error;
-@@ -1477,8 +1473,38 @@ int pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+@@ -1510,8 +1506,38 @@ int pci_set_power_state(struct pci_dev *dev, pci_power_t state)
  
  	return 0;
  }
@@ -366,10 +366,10 @@ index 5368a37154cf..67956bfebf87 100644
  
  static struct pci_cap_saved_state *_pci_find_saved_cap(struct pci_dev *pci_dev,
 diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 9950deeb047a..88576a22fecb 100644
+index 1b4f94182972..2cc032e8cbb9 100644
 --- a/drivers/pci/pci.h
 +++ b/drivers/pci/pci.h
-@@ -556,12 +556,12 @@ bool pcie_wait_for_link(struct pci_dev *pdev, bool active);
+@@ -561,12 +561,12 @@ int pcie_retrain_link(struct pci_dev *pdev, bool use_lt);
  #ifdef CONFIG_PCIEASPM
  void pcie_aspm_init_link_state(struct pci_dev *pdev);
  void pcie_aspm_exit_link_state(struct pci_dev *pdev);
@@ -385,10 +385,10 @@ index 9950deeb047a..88576a22fecb 100644
  #endif
  
 diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 25736d408e88..334593b7bf6e 100644
+index 7e3b342215e5..cde1a5a63943 100644
 --- a/drivers/pci/pcie/aspm.c
 +++ b/drivers/pci/pcie/aspm.c
-@@ -1055,8 +1055,11 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
+@@ -1001,8 +1001,11 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
  	up_read(&pci_bus_sem);
  }
  
@@ -402,7 +402,7 @@ index 25736d408e88..334593b7bf6e 100644
  {
  	struct pcie_link_state *link = pdev->link_state;
  
-@@ -1066,12 +1069,14 @@ void pcie_aspm_pm_state_change(struct pci_dev *pdev)
+@@ -1012,12 +1015,14 @@ void pcie_aspm_pm_state_change(struct pci_dev *pdev)
  	 * Devices changed PM state, we should recheck if latency
  	 * meets all functions' requirement
  	 */
@@ -420,10 +420,10 @@ index 25736d408e88..334593b7bf6e 100644
  
  void pcie_aspm_powersave_config_link(struct pci_dev *pdev)
 diff --git a/include/linux/pci.h b/include/linux/pci.h
-index f5d89a4b811f..4da7411da9ba 100644
+index b548d5646a86..ee89a69817aa 100644
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -1383,6 +1383,7 @@ int pci_load_and_free_saved_state(struct pci_dev *dev,
+@@ -1391,6 +1391,7 @@ int pci_load_and_free_saved_state(struct pci_dev *dev,
  				  struct pci_saved_state **state);
  int pci_platform_power_transition(struct pci_dev *dev, pci_power_t state);
  int pci_set_power_state(struct pci_dev *dev, pci_power_t state);
@@ -431,7 +431,7 @@ index f5d89a4b811f..4da7411da9ba 100644
  pci_power_t pci_choose_state(struct pci_dev *dev, pm_message_t state);
  bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
  void pci_pme_active(struct pci_dev *dev, bool enable);
-@@ -1553,6 +1554,8 @@ int pci_scan_bridge(struct pci_bus *bus, struct pci_dev *dev, int max,
+@@ -1594,6 +1595,8 @@ int pci_scan_bridge(struct pci_bus *bus, struct pci_dev *dev, int max,
  
  void pci_walk_bus(struct pci_bus *top, int (*cb)(struct pci_dev *, void *),
  		  void *userdata);
@@ -440,7 +440,7 @@ index f5d89a4b811f..4da7411da9ba 100644
  int pci_cfg_space_size(struct pci_dev *dev);
  unsigned char pci_bus_max_busnr(struct pci_bus *bus);
  void pci_setup_bridge(struct pci_bus *bus);
-@@ -1884,6 +1887,8 @@ static inline int pci_save_state(struct pci_dev *dev) { return 0; }
+@@ -1990,6 +1993,8 @@ static inline int pci_save_state(struct pci_dev *dev) { return 0; }
  static inline void pci_restore_state(struct pci_dev *dev) { }
  static inline int pci_set_power_state(struct pci_dev *dev, pci_power_t state)
  { return 0; }
