@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-41269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484508AFB31
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:55:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EA88AFABC
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89507B2B1E3
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC3B61F296D8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAEC14B09F;
-	Tue, 23 Apr 2024 21:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E87F1487CE;
+	Tue, 23 Apr 2024 21:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMBeTc/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHbWNYss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5BB14388A;
-	Tue, 23 Apr 2024 21:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE65144D34;
+	Tue, 23 Apr 2024 21:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908792; cv=none; b=nK7YBpkhI3T5jh1FBalkxE50B2NlRSPKJpdVQ/POHUptkIY3F5y1npN0yoSp6uUsiaZM6xiIK63rN9XsdnxonxBVyEFY5zabGATF34dQwR6Qy0bjeCP96eRta0YCZWytInJC1XLznLVns5o6Z0VfeLF1TZiCleqPN18Zi2N0Q4w=
+	t=1713908754; cv=none; b=B3yd5mQegDsdSQaUQS76gQAFRf0DL76peNUkn4PzaBmw3W074TU17CcYsWpZlYzznRvVKxsJqiZQng86Bk0SJEs18KrftUEMidP3eHBpB9MBOrgVHFAm2GouSwzv1gAQbcL/eMF1pFOBcqkoancEWgGVZinsUkwrM9avaZjI0X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908792; c=relaxed/simple;
-	bh=FK4QFDsk1g+Qzo/l0+UQPfHZlg7eLiLVhQRCS3+w110=;
+	s=arc-20240116; t=1713908754; c=relaxed/simple;
+	bh=vJcCFZXnph6p+cL9EQdiHYudY+zD8cJ5Qi8K62LWE2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4KT5KAJG14/JqeWjxWMfP49n+0+BsZHk+9WALZaqjgTFX0CABrqT+/gBxhRAChkgF65dbfNf1qjFzs0GxVpOEAiYdG9auiXvOEwceN1s4sWSLNCJMsUUM6BHpcuEYcNUKVPGxpR8qal5M/AILAK8YRCRYKP/p5GTnshVkrgiNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMBeTc/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE54C116B1;
-	Tue, 23 Apr 2024 21:46:32 +0000 (UTC)
+	 MIME-Version; b=FCP+zfHipAQSQkaNBfiKs23IpmWM549TmgKQ7q6E1Ex2bBKRrLAJ7RiBERfgWxzpQK0Yv5+xi+DP9bYZ9SlOW9G+TgiUW3Th2FhyUdb/LU42fkkltGaALVbzvNSI5ifFtryHHmk+xZTf03u7JNK6ERH1TsiOKRzHF9kZw5uiP9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHbWNYss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D9BC32783;
+	Tue, 23 Apr 2024 21:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908792;
-	bh=FK4QFDsk1g+Qzo/l0+UQPfHZlg7eLiLVhQRCS3+w110=;
+	s=korg; t=1713908754;
+	bh=vJcCFZXnph6p+cL9EQdiHYudY+zD8cJ5Qi8K62LWE2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FMBeTc/v81+Mzt588sesHFk2gyo7AIGpmG8n2ryFBLeLJ4McAtaYOemF6+DYzN8xi
-	 IAVNZ9nrE5nC/Wxm+0oXnendtDCJA7IwvyiDNcVJNqRotf1XN6j3dYWsS5EV1HpOjA
-	 6Uh+VkzR6NnPnYWLHTroCf7SoBt6Aur4U8OhWCcw=
+	b=rHbWNYssY1ECrsnzQLSOVDb0aBrU3lrxPRjmNaVsg90D3eiI+hN4X1PC9I0UlZrOi
+	 IhVeqVKS03pLO44ifPSwPwUk51ygXJ4+y+1KRqgShy6OOKHbd2guOIPJm/YhOGORd9
+	 yaRtHKXFLtg4lVtm1uXBFkTVgv7HfICiwea8WbSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	stable@kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH 5.15 45/71] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@redhat.com>
+Subject: [PATCH 6.1 130/141] nouveau: fix instmem race condition around ptr stores
 Date: Tue, 23 Apr 2024 14:39:58 -0700
-Message-ID: <20240423213845.703846652@linuxfoundation.org>
+Message-ID: <20240423213857.441036885@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Dave Airlie <airlied@redhat.com>
 
-commit 1be3226445362bfbf461c92a5bcdb1723f2e4907 upstream.
+commit fff1386cc889d8fb4089d285f883f8cba62d82ce upstream.
 
-The mitigation was intended to stop the irq completely. That may be
-better than a hard lock-up but it turns out that you get a crash anyway
-if you're using pmac_zilog as a serial console:
+Running a lot of VK CTS in parallel against nouveau, once every
+few hours you might see something like this crash.
 
-ttyPZ0: pmz: rx irq flood !
-BUG: spinlock recursion on CPU#0, swapper/0
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+PGD 8000000114e6e067 P4D 8000000114e6e067 PUD 109046067 PMD 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 7 PID: 53891 Comm: deqp-vk Not tainted 6.8.0-rc6+ #27
+Hardware name: Gigabyte Technology Co., Ltd. Z390 I AORUS PRO WIFI/Z390 I AORUS PRO WIFI-CF, BIOS F8 11/05/2021
+RIP: 0010:gp100_vmm_pgt_mem+0xe3/0x180 [nouveau]
+Code: c7 48 01 c8 49 89 45 58 85 d2 0f 84 95 00 00 00 41 0f b7 46 12 49 8b 7e 08 89 da 42 8d 2c f8 48 8b 47 08 41 83 c7 01 48 89 ee <48> 8b 40 08 ff d0 0f 1f 00 49 8b 7e 08 48 89 d9 48 8d 75 04 48 c1
+RSP: 0000:ffffac20c5857838 EFLAGS: 00010202
+RAX: 0000000000000000 RBX: 00000000004d8001 RCX: 0000000000000001
+RDX: 00000000004d8001 RSI: 00000000000006d8 RDI: ffffa07afe332180
+RBP: 00000000000006d8 R08: ffffac20c5857ad0 R09: 0000000000ffff10
+R10: 0000000000000001 R11: ffffa07af27e2de0 R12: 000000000000001c
+R13: ffffac20c5857ad0 R14: ffffa07a96fe9040 R15: 000000000000001c
+FS:  00007fe395eed7c0(0000) GS:ffffa07e2c980000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000008 CR3: 000000011febe001 CR4: 00000000003706f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
 
-That's because the pr_err() call in pmz_receive_chars() results in
-pmz_console_write() attempting to lock a spinlock already locked in
-pmz_interrupt(). With CONFIG_DEBUG_SPINLOCK=y, this produces a fatal
-BUG splat. The spinlock in question is the one in struct uart_port.
+...
 
-Even when it's not fatal, the serial port rx function ceases to work.
-Also, the iteration limit doesn't play nicely with QEMU, as can be
-seen in the bug report linked below.
+ ? gp100_vmm_pgt_mem+0xe3/0x180 [nouveau]
+ ? gp100_vmm_pgt_mem+0x37/0x180 [nouveau]
+ nvkm_vmm_iter+0x351/0xa20 [nouveau]
+ ? __pfx_nvkm_vmm_ref_ptes+0x10/0x10 [nouveau]
+ ? __pfx_gp100_vmm_pgt_mem+0x10/0x10 [nouveau]
+ ? __pfx_gp100_vmm_pgt_mem+0x10/0x10 [nouveau]
+ ? __lock_acquire+0x3ed/0x2170
+ ? __pfx_gp100_vmm_pgt_mem+0x10/0x10 [nouveau]
+ nvkm_vmm_ptes_get_map+0xc2/0x100 [nouveau]
+ ? __pfx_nvkm_vmm_ref_ptes+0x10/0x10 [nouveau]
+ ? __pfx_gp100_vmm_pgt_mem+0x10/0x10 [nouveau]
+ nvkm_vmm_map_locked+0x224/0x3a0 [nouveau]
 
-A web search for other reports of the error message "pmz: rx irq flood"
-didn't produce anything. So I don't think this code is needed any more.
-Remove it.
+Adding any sort of useful debug usually makes it go away, so I hand
+wrote the function in a line, and debugged the asm.
 
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: stable@kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Link: https://github.com/vivier/qemu-m68k/issues/44
-Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Link: https://lore.kernel.org/r/e853cf2c762f23101cd2ddec0cc0c2be0e72685f.1712568223.git.fthain@linux-m68k.org
+Every so often pt->memory->ptrs is NULL. This ptrs ptr is set in
+the nv50_instobj_acquire called from nvkm_kmap.
+
+If Thread A and Thread B both get to nv50_instobj_acquire around
+the same time, and Thread A hits the refcount_set line, and in
+lockstep thread B succeeds at refcount_inc_not_zero, there is a
+chance the ptrs value won't have been stored since refcount_set
+is unordered. Force a memory barrier here, I picked smp_mb, since
+we want it on all CPUs and it's write followed by a read.
+
+v2: use paired smp_rmb/smp_wmb.
+
+Cc: <stable@vger.kernel.org>
+Fixes: be55287aa5ba ("drm/nouveau/imem/nv50: embed nvkm_instobj directly into nv04_instobj")
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240411011510.2546857-1-airlied@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/pmac_zilog.c |   14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/pmac_zilog.c
-+++ b/drivers/tty/serial/pmac_zilog.c
-@@ -217,7 +217,6 @@ static bool pmz_receive_chars(struct uar
- {
- 	struct tty_port *port;
- 	unsigned char ch, r1, drop, flag;
--	int loops = 0;
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c
+@@ -221,8 +221,11 @@ nv50_instobj_acquire(struct nvkm_memory
+ 	void __iomem *map = NULL;
  
- 	/* Sanity check, make sure the old bug is no longer happening */
- 	if (uap->port.state == NULL) {
-@@ -298,25 +297,12 @@ static bool pmz_receive_chars(struct uar
- 		if (r1 & Rx_OVR)
- 			tty_insert_flip_char(port, 0, TTY_OVERRUN);
- 	next_char:
--		/* We can get stuck in an infinite loop getting char 0 when the
--		 * line is in a wrong HW state, we break that here.
--		 * When that happens, I disable the receive side of the driver.
--		 * Note that what I've been experiencing is a real irq loop where
--		 * I'm getting flooded regardless of the actual port speed.
--		 * Something strange is going on with the HW
--		 */
--		if ((++loops) > 1000)
--			goto flood;
- 		ch = read_zsreg(uap, R0);
- 		if (!(ch & Rx_CH_AV))
- 			break;
+ 	/* Already mapped? */
+-	if (refcount_inc_not_zero(&iobj->maps))
++	if (refcount_inc_not_zero(&iobj->maps)) {
++		/* read barrier match the wmb on refcount set */
++		smp_rmb();
+ 		return iobj->map;
++	}
+ 
+ 	/* Take the lock, and re-check that another thread hasn't
+ 	 * already mapped the object in the meantime.
+@@ -249,6 +252,8 @@ nv50_instobj_acquire(struct nvkm_memory
+ 			iobj->base.memory.ptrs = &nv50_instobj_fast;
+ 		else
+ 			iobj->base.memory.ptrs = &nv50_instobj_slow;
++		/* barrier to ensure the ptrs are written before refcount is set */
++		smp_wmb();
+ 		refcount_set(&iobj->maps, 1);
  	}
  
- 	return true;
-- flood:
--	pmz_interrupt_control(uap, 0);
--	pmz_error("pmz: rx irq flood !\n");
--	return true;
- }
- 
- static void pmz_status_handle(struct uart_pmac_port *uap)
 
 
 
