@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-40985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E108AF9DF
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CE38AF953
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5229D1F2814D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3A3E2838F5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C01714430D;
-	Tue, 23 Apr 2024 21:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6815E14431C;
+	Tue, 23 Apr 2024 21:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZmxHU53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DzfKxBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9CC143889;
-	Tue, 23 Apr 2024 21:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2342A14388D;
+	Tue, 23 Apr 2024 21:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908599; cv=none; b=GUGWgW8z6b/+yRwvF50F/Qrgt4OoH2gRn/qBncE3LLl5tTKxsYfECx0lGKNFuLQ84CtOWgGfXSNirG/a/TCfmICSA/iVHCHtyK98GHbBsiNfsmBnkdKgfVRtsEZ34E+vs9TfphgFZSzmmEGxaWWim6oYM+F3Lykd8U5VfgehT5Y=
+	t=1713908507; cv=none; b=PuSic12XvkFn8Iy8GcEkhxbNIGmksKNizOAVaHfxAuzB31HPyaOO5Og2S0sqVQIhHs7pv4+nYxoeoUggUrVAci884dKwlJyThS4VMbciJbOVHPUOKaV4MgRgMZVhRqC1PzQqUr8enxbVnoYaBAqo8qvCNdpZcOqcojBrGlxgPlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908599; c=relaxed/simple;
-	bh=sXc3rfg34GbXZXY3rElCBaWh4sj1a0ziTLeEQlZo7kg=;
+	s=arc-20240116; t=1713908507; c=relaxed/simple;
+	bh=b2cCcWMIVXxsIev2qylYjowVRScIDiv/6mgsw9i6HtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D7DWGPbwqEome1fKCVi0PMORxACC8pskt8SEqDb8bIEQwq84S1fPu02sz5HUaSfacVvICRauIi8E1sXULPvQPONnZylgNnHC8snU55UmDimaKTFkZbukio1nQOhCgIymNPXdgK2uLUjpPSDtWrYrYfPXGiGPqFkFNQV2AWEYOP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZmxHU53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B87C4AF07;
-	Tue, 23 Apr 2024 21:43:19 +0000 (UTC)
+	 MIME-Version; b=te9z13bmQzjAXOOX6H+dbLDinhA59DP41A2iHiHzfyo9NHuCbkGiSmQaAf5SyN9V+ez1M4NYMpFY//UH+X6gylxtuju4xYxjz+xxgY0vfWPtrdZw8RT3ZYC0wN/Go7ZgXCABuKhdOz6c5YkhNGrij2eNF0KVFnVa4XD8CLFlKns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DzfKxBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD5CC32781;
+	Tue, 23 Apr 2024 21:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908599;
-	bh=sXc3rfg34GbXZXY3rElCBaWh4sj1a0ziTLeEQlZo7kg=;
+	s=korg; t=1713908506;
+	bh=b2cCcWMIVXxsIev2qylYjowVRScIDiv/6mgsw9i6HtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZmxHU530PdGXMiFYKZ3V7UxLyCWtNARAldjZLE6YU5QSt6DTXRhY8DbsnSA3m886
-	 Z14yMibqK+23a8AgUOfFKcYc6y9njFBpnbnvTlduQdIUIVeUuuhpSFwyShqsxBwFck
-	 FD4DY2ez9p9B8ZJxKSmXx3TFgSw72wUtYWPEvq2k=
+	b=2DzfKxBXFH6T2OWCjFZR3uFLCYThJAwhAQoKuTuc0ZdwSI2fr69G67idd6Qk5F02a
+	 qjzgPkhBCohEJFLOgzRjVbKwuDkptZb8I/oTVhOpIa8E1eNC2UYo3TrsaZWDVuH9fz
+	 Yw2O0kDo1h5kXPssG/+5FiSSfM3SqbuKQVzz06Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/158] octeontx2-pf: fix FLOW_DIS_IS_FRAGMENT implementation
-Date: Tue, 23 Apr 2024 14:38:02 -0700
-Message-ID: <20240423213857.238522628@linuxfoundation.org>
+Subject: [PATCH 6.8 061/158] s390/cio: fix race condition during online processing
+Date: Tue, 23 Apr 2024 14:38:03 -0700
+Message-ID: <20240423213857.945308670@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 75ce9506ee3dc66648a7d74ab3b0acfa364d6d43 ]
+[ Upstream commit 2d8527f2f911fab84aec04df4788c0c23af3df48 ]
 
-Upon reviewing the flower control flags handling in
-this driver, I notice that the key wasn't being used,
-only the mask.
+A race condition exists in ccw_device_set_online() that can cause the
+online process to fail, leaving the affected device in an inconsistent
+state. As a result, subsequent attempts to set that device online fail
+with return code ENODEV.
 
-Ie. `tc flower ... ip_flags nofrag` was hardware
-offloaded as `... ip_flags frag`.
+The problem occurs when a path verification request arrives after
+a wait for final device state completed, but before the result state
+is evaluated.
 
-Only compile tested, no access to HW.
+Fix this by ensuring that the CCW-device lock is held between
+determining final state and checking result state.
 
-Fixes: c672e3727989 ("octeontx2-pf: Add support to filter packet based on IP fragment")
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Note that since:
+
+commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+
+path verification requests are much more likely to occur during boot,
+resulting in an increased chance of this race condition occurring.
+
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/s390/cio/device.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index 423ce54eaea69..46bdbee9d38ad 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -588,6 +588,7 @@ static int otx2_tc_prepare_flow(struct otx2_nic *nic, struct otx2_tc_flow *node,
+diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
+index 0cfb179e1bcb6..34b2567b8df49 100644
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -363,10 +363,8 @@ int ccw_device_set_online(struct ccw_device *cdev)
  
- 	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_CONTROL)) {
- 		struct flow_match_control match;
-+		u32 val;
- 
- 		flow_rule_match_control(rule, &match);
- 		if (match.mask->flags & FLOW_DIS_FIRST_FRAG) {
-@@ -596,12 +597,14 @@ static int otx2_tc_prepare_flow(struct otx2_nic *nic, struct otx2_tc_flow *node,
- 		}
- 
- 		if (match.mask->flags & FLOW_DIS_IS_FRAGMENT) {
-+			val = match.key->flags & FLOW_DIS_IS_FRAGMENT;
- 			if (ntohs(flow_spec->etype) == ETH_P_IP) {
--				flow_spec->ip_flag = IPV4_FLAG_MORE;
-+				flow_spec->ip_flag = val ? IPV4_FLAG_MORE : 0;
- 				flow_mask->ip_flag = IPV4_FLAG_MORE;
- 				req->features |= BIT_ULL(NPC_IPFRAG_IPV4);
- 			} else if (ntohs(flow_spec->etype) == ETH_P_IPV6) {
--				flow_spec->next_header = IPPROTO_FRAGMENT;
-+				flow_spec->next_header = val ?
-+							 IPPROTO_FRAGMENT : 0;
- 				flow_mask->next_header = 0xff;
- 				req->features |= BIT_ULL(NPC_IPFRAG_IPV6);
- 			} else {
+ 	spin_lock_irq(cdev->ccwlock);
+ 	ret = ccw_device_online(cdev);
+-	spin_unlock_irq(cdev->ccwlock);
+-	if (ret == 0)
+-		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
+-	else {
++	if (ret) {
++		spin_unlock_irq(cdev->ccwlock);
+ 		CIO_MSG_EVENT(0, "ccw_device_online returned %d, "
+ 			      "device 0.%x.%04x\n",
+ 			      ret, cdev->private->dev_id.ssid,
+@@ -375,7 +373,12 @@ int ccw_device_set_online(struct ccw_device *cdev)
+ 		put_device(&cdev->dev);
+ 		return ret;
+ 	}
+-	spin_lock_irq(cdev->ccwlock);
++	/* Wait until a final state is reached */
++	while (!dev_fsm_final_state(cdev)) {
++		spin_unlock_irq(cdev->ccwlock);
++		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
++		spin_lock_irq(cdev->ccwlock);
++	}
+ 	/* Check if online processing was successful */
+ 	if ((cdev->private->state != DEV_STATE_ONLINE) &&
+ 	    (cdev->private->state != DEV_STATE_W4SENSE)) {
 -- 
 2.43.0
 
