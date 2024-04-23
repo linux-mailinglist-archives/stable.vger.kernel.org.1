@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-41029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A3F8AFA13
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A579D8AF9F4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74325288D45
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5899F1F284EB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55045145B18;
-	Tue, 23 Apr 2024 21:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62E0147C9F;
+	Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYwj4T03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzKPvg0P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14806143895;
-	Tue, 23 Apr 2024 21:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3262143C57;
+	Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908629; cv=none; b=eAkpbMbAROY8bU3K2NHhI+xPqF6s8ko/ICaEKD5ln18TxoMdKY3GWKSE0o+34jLjzb1C0w6cVvqes6Qyyj50FyGVXm7steGxQml8GOTSIO8Ccko+KIlJVajsdkv8QJupphP5ljE/v0lCVnaAdHfEqFgCBYZht9I3ob1iobABFoM=
+	t=1713908612; cv=none; b=I68+vX8+6SrKEa7ETpzWzkXQQkmNIViqP4eO2mhiUXIn7edSuQy+oGvYbhSfQmLhNsQ38eDqICamsvcHHfeINJ/Clkqh+ayCpfeMjA7jwiW3rSVEdEmuP7I3W9yxlStFT1X13dEP/gMpPIflIGbiV0Vhi2GPnTHk6TViRBhS3U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908629; c=relaxed/simple;
-	bh=PAfgC6AfPCAnRHDYbLnYB1OKuxlfXb1wMAs2lH+BfuQ=;
+	s=arc-20240116; t=1713908612; c=relaxed/simple;
+	bh=TUWd2auQxia9Bn16rfkiCn2YBR2c9in61RRr6ynOVcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIKztktRH2ACrKnAH1j4vBp64zYQLMI7b9HSaIXYdDjdB4skgpRWWq9d8/wSvbJMsIW4FzhEVwpbHK2kTknKt5AxukIAarsWzkogLGV6WITKSHG8qg7e2gFVbsM5An/bcHA+clSRzgT2Y19pybBlzwUHTzXuG1qB4j40RsL/0yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYwj4T03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA13C3277B;
-	Tue, 23 Apr 2024 21:43:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RK+ag/O+B8l+zhxNlzsS523uK7t/HUf8RCoqmFkw2jPBqMA/EYApvFLmGLJiCKmsVBSqogCVI/ZmnEkhTQG3pqBIR4E7uzuf5ndXC/Uob8lQ0BMW1k33Q7UnZyftDhSd/kxAGoQ8yt1mQfxigcb2dAmKqG0wY5mb4gBEXFaoaDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzKPvg0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77881C116B1;
+	Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908629;
-	bh=PAfgC6AfPCAnRHDYbLnYB1OKuxlfXb1wMAs2lH+BfuQ=;
+	s=korg; t=1713908612;
+	bh=TUWd2auQxia9Bn16rfkiCn2YBR2c9in61RRr6ynOVcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYwj4T03CNvrJ8sT2QdBHHPbh6+rHIc/fH5hXylOfja4psFyhwfsu5w/hB6Q+5srN
-	 AAHHq0QIzrBeF1oesTsLhRuHQbuSz/jQql8bVcHb+itB5juicdoh6UOsL+yKlOH9zQ
-	 TKhksiOBMfhMSaW6JCJNM2qknT11qvslVKR1witk=
+	b=MzKPvg0PV72kM/626FZcjmwfGbT2IprGDIftnpI11GiaE730FaoPqowxQ0jSQQ5qe
+	 ECUmVnr/UghAEE/A9sJNz0tToLpmxzdZyFr8hVq3L/xv7xb/84D1K+/4IXrEfdiVDE
+	 OqSF9W5v6Ngkk51ZXrelkc72bBDn7QhxvUt4/Lhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/158] ALSA: scarlett2: Add Focusrite Clarett 2Pre and 4Pre USB support
-Date: Tue, 23 Apr 2024 14:38:39 -0700
-Message-ID: <20240423213858.427834431@linuxfoundation.org>
+Subject: [PATCH 6.6 083/158] PCI/DPC: Use FIELD_GET()
+Date: Tue, 23 Apr 2024 14:38:40 -0700
+Message-ID: <20240423213858.460070742@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
 References: <20240423213855.696477232@linuxfoundation.org>
@@ -60,85 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 2b17b489e47a956c8e93c8f1bcabb0343c851d90 ]
+[ Upstream commit 9a9eec4765737b9b2a8d6ae03de6480a5f12dd5c ]
 
-It has been confirmed that all devices in the Focusrite Clarett USB
-series work the same as the devices in the Clarett+ series. Add the
-missing PIDs to enable support for the Clarett 2Pre and 4Pre USB.
+Use FIELD_GET() to remove dependencies on the field position, i.e., the
+shift value. No functional change intended.
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://lore.kernel.org/r/ZSFB8EVTG1PK1eq/@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20231018113254.17616-5-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c        | 2 ++
- sound/usb/mixer_scarlett_gen2.c | 8 ++++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/pci/pcie/dpc.c        |    5 +++--
+ drivers/pci/quirks.c          |    2 +-
+ include/uapi/linux/pci_regs.h |    1 +
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 3721d59a56809..a331732fed890 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -3447,6 +3447,8 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 	case USB_ID(0x1235, 0x8213): /* Focusrite Scarlett 8i6 3rd Gen */
- 	case USB_ID(0x1235, 0x8214): /* Focusrite Scarlett 18i8 3rd Gen */
- 	case USB_ID(0x1235, 0x8215): /* Focusrite Scarlett 18i20 3rd Gen */
-+	case USB_ID(0x1235, 0x8206): /* Focusrite Clarett 2Pre USB */
-+	case USB_ID(0x1235, 0x8207): /* Focusrite Clarett 4Pre USB */
- 	case USB_ID(0x1235, 0x8208): /* Focusrite Clarett 8Pre USB */
- 	case USB_ID(0x1235, 0x820a): /* Focusrite Clarett+ 2Pre */
- 	case USB_ID(0x1235, 0x820b): /* Focusrite Clarett+ 4Pre */
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index 653dc7d8fb47c..e5e70abf5286b 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -5,7 +5,7 @@
-  *   Supported models:
-  *   - 6i6/18i8/18i20 Gen 2
-  *   - Solo/2i2/4i4/8i6/18i8/18i20 Gen 3
-- *   - Clarett 8Pre USB
-+ *   - Clarett 2Pre/4Pre/8Pre USB
-  *   - Clarett+ 2Pre/4Pre/8Pre
-  *
-  *   Copyright (c) 2018-2023 by Geoffrey D. Bennett <g at b4.vu>
-@@ -64,6 +64,8 @@
-  * Gregory Rozzo for donating a 4Pre, and David Sherwood and Patrice
-  * Peterson for usbmon output).
-  *
-+ * Support for Clarett 2Pre and 4Pre USB added in Oct 2023.
-+ *
-  * This ALSA mixer gives access to (model-dependent):
-  *  - input, output, mixer-matrix muxes
-  *  - mixer-matrix gain stages
-@@ -999,6 +1001,8 @@ static const struct scarlett2_device_entry scarlett2_devices[] = {
- 	{ USB_ID(0x1235, 0x8215), &s18i20_gen3_info, "Scarlett Gen 3" },
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -9,6 +9,7 @@
+ #define dev_fmt(fmt) "DPC: " fmt
  
- 	/* Supported Clarett USB/Clarett+ devices */
-+	{ USB_ID(0x1235, 0x8206), &clarett_2pre_info, "Clarett USB" },
-+	{ USB_ID(0x1235, 0x8207), &clarett_4pre_info, "Clarett USB" },
- 	{ USB_ID(0x1235, 0x8208), &clarett_8pre_info, "Clarett USB" },
- 	{ USB_ID(0x1235, 0x820a), &clarett_2pre_info, "Clarett+" },
- 	{ USB_ID(0x1235, 0x820b), &clarett_4pre_info, "Clarett+" },
-@@ -1197,7 +1201,7 @@ static const struct scarlett2_config
- 	[SCARLETT2_CONFIG_TALKBACK_MAP] = {
- 		.offset = 0xb0, .size = 16, .activate = 10 },
+ #include <linux/aer.h>
++#include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <linux/interrupt.h>
+ #include <linux/init.h>
+@@ -202,7 +203,7 @@ static void dpc_process_rp_pio_error(str
  
--/* Clarett+ 8Pre */
-+/* Clarett USB and Clarett+ devices: 2Pre, 4Pre, 8Pre */
- }, {
- 	[SCARLETT2_CONFIG_DIM_MUTE] = {
- 		.offset = 0x31, .size = 8, .activate = 2 },
--- 
-2.43.0
-
+ 	/* Get First Error Pointer */
+ 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &dpc_status);
+-	first_error = (dpc_status & 0x1f00) >> 8;
++	first_error = FIELD_GET(PCI_EXP_DPC_RP_PIO_FEP, dpc_status);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(rp_pio_error_string); i++) {
+ 		if ((status & ~mask) & (1 << i))
+@@ -338,7 +339,7 @@ void pci_dpc_init(struct pci_dev *pdev)
+ 	/* Quirks may set dpc_rp_log_size if device or firmware is buggy */
+ 	if (!pdev->dpc_rp_log_size) {
+ 		pdev->dpc_rp_log_size =
+-			(cap & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8;
++				FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, cap);
+ 		if (pdev->dpc_rp_log_size < 4 || pdev->dpc_rp_log_size > 9) {
+ 			pci_err(pdev, "RP PIO log size %u is invalid\n",
+ 				pdev->dpc_rp_log_size);
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -6198,7 +6198,7 @@ static void dpc_log_size(struct pci_dev
+ 	if (!(val & PCI_EXP_DPC_CAP_RP_EXT))
+ 		return;
+ 
+-	if (!((val & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8)) {
++	if (FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, val) == 0) {
+ 		pci_info(dev, "Overriding RP PIO Log Size to 4\n");
+ 		dev->dpc_rp_log_size = 4;
+ 	}
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -1045,6 +1045,7 @@
+ #define  PCI_EXP_DPC_STATUS_INTERRUPT	    0x0008 /* Interrupt Status */
+ #define  PCI_EXP_DPC_RP_BUSY		    0x0010 /* Root Port Busy */
+ #define  PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT 0x0060 /* Trig Reason Extension */
++#define  PCI_EXP_DPC_RP_PIO_FEP		    0x1f00 /* RP PIO First Err Ptr */
+ 
+ #define PCI_EXP_DPC_SOURCE_ID		 0x0A	/* DPC Source Identifier */
+ 
 
 
 
