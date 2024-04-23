@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5488AFB10
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E31E8AF99F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73106B2C2CA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90A291C2349D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661F41482E1;
-	Tue, 23 Apr 2024 21:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D93144D3E;
+	Tue, 23 Apr 2024 21:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjt4Qfs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9fyUVLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249B8143882;
-	Tue, 23 Apr 2024 21:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511F585274;
+	Tue, 23 Apr 2024 21:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908732; cv=none; b=O9aPDjV1T9TEcwX4TpWxKaafw6jx+395ckqlC0Dc8PfmCOjXxtkL7eB4xQI5D+npEhkIAqLnTuJcmz7lzVEbJ6lUZDYvV69HwHXk23JkEbE1nqUam/f/xq+xBocFpJ5XWg59+UxHXK1R9WirFZZLsdUVZlT3M0atc1d5TQsIb+Y=
+	t=1713908558; cv=none; b=KVIjpeFRoLkL+sUrLUCTy2Ndf1MMoOTe67DyrdJViPPQxqUy21ZKqRX5UOGRNgIZrojeUTCD+wpdlYRhb7JsM00CmU5vL94rTCvnlmHQdBLgRFcdj2BBciS0fgeDr8AgvxSw/rzsMpu+FA0GwIpiV9lP6bPNyKElutWpP24GGbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908732; c=relaxed/simple;
-	bh=OHsCj3NhMpU4FyIpGdRNMN7xa9B64mKaEYytzhJoY+4=;
+	s=arc-20240116; t=1713908558; c=relaxed/simple;
+	bh=LCR5GUpLQ9h0ahYvxvegx9HFKXp6SZ8EFVExXNVDdn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdzraHP0hU9bWYs88y9pCKxIrr85hVj6Aw5wHrwZYe6+xW6/sRtgyVeEc7MJ7FNrGsJFYqSAExA5alhGWs+yB7eBnqaKIaxyDZNRQq6AS+OEL64JUFQ9HLJbVZeDgqlb+SiQK9sC4S/Sp5VSfRbxKqG7V64iOOKBFZElkJ3uNpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjt4Qfs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6C5C116B1;
-	Tue, 23 Apr 2024 21:45:31 +0000 (UTC)
+	 MIME-Version; b=eLz7/0wloqZXbxlMNrIhMndkqXnrmquTvyMyHqE9eSWvZXiImxBATNFpwuLQ6dYaijzpJm4aYqTGOh7O1XVJGb1glB7fALPfsNrC+EoT6+FsQXj4vc1bEpxAL4dxdXfsR4qOS2WCFG0rB8gmXgOKfua+o8X0IvOX4Dz4n/WlIKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9fyUVLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2613EC32783;
+	Tue, 23 Apr 2024 21:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908732;
-	bh=OHsCj3NhMpU4FyIpGdRNMN7xa9B64mKaEYytzhJoY+4=;
+	s=korg; t=1713908558;
+	bh=LCR5GUpLQ9h0ahYvxvegx9HFKXp6SZ8EFVExXNVDdn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjt4Qfs7yqU0weX+L6qPgxE4JQCaXnpfeLDhW0a9twD3V2nCuTRd0JT6VPKtVavgx
-	 geB8N/Zu4/rB7n5uS2y/Vd7p63WOmOmEY7IVFafOvS0K8zWLne1g4B9wypgJFjgiqa
-	 uzOAyz0+1C+UOct/m9tj/U87g45ePQTmBlZ0U+cc=
+	b=j9fyUVLH46Rm1NZxcoUFnoXxBPoy4aI3hSVgoHu/BWS0F7su/K9uTIR60gMl2o564
+	 HK3kVfLQwlWs2Y0aLKZie+5Zi5cdICslU3KBY3FliacHMaBntA2Jrb7hYN7IC6N7dI
+	 xcEjolWUICaiW/UhA6q5ySbl+Jf0iC5wacHh8CPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/141] x86/cpufeatures: Fix dependencies for GFNI, VAES, and VPCLMULQDQ
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.8 144/158] drm/xe: Fix bo leak in intel_fb_bo_framebuffer_init
 Date: Tue, 23 Apr 2024 14:39:26 -0700
-Message-ID: <20240423213856.351747503@linuxfoundation.org>
+Message-ID: <20240423213900.539304256@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 
-[ Upstream commit 9543f6e26634537997b6e909c20911b7bf4876de ]
+commit 652ead9b746a63e4e79d7ad66d3edf0a8a5b0c2f upstream.
 
-Fix cpuid_deps[] to list the correct dependencies for GFNI, VAES, and
-VPCLMULQDQ.  These features don't depend on AVX512, and there exist CPUs
-that support these features but not AVX512.  GFNI actually doesn't even
-depend on AVX.
+Add a unreference bo in the error path, to prevent leaking a bo ref.
 
-This prevents GFNI from being unnecessarily disabled if AVX is disabled
-to mitigate the GDS vulnerability.
+Return 0 on success to clarify the success path.
 
-This also prevents all three features from being unnecessarily disabled
-if AVX512VL (or its dependency AVX512F) were to be disabled, but it
-looks like there isn't any case where this happens anyway.
-
-Fixes: c128dbfa0f87 ("x86/cpufeatures: Enable new SSE/AVX/AVX512 CPU features")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240417060434.47101-1-ebiggers@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404090302.68422-1-maarten.lankhorst@linux.intel.com
+(cherry picked from commit a2f3d731be3893e730417ae3190760fcaffdf549)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/cpuid-deps.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/display/intel_fb_bo.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
-index c881bcafba7d7..9c19f40b1b272 100644
---- a/arch/x86/kernel/cpu/cpuid-deps.c
-+++ b/arch/x86/kernel/cpu/cpuid-deps.c
-@@ -44,7 +44,10 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_F16C,			X86_FEATURE_XMM2,     },
- 	{ X86_FEATURE_AES,			X86_FEATURE_XMM2      },
- 	{ X86_FEATURE_SHA_NI,			X86_FEATURE_XMM2      },
-+	{ X86_FEATURE_GFNI,			X86_FEATURE_XMM2      },
- 	{ X86_FEATURE_FMA,			X86_FEATURE_AVX       },
-+	{ X86_FEATURE_VAES,			X86_FEATURE_AVX       },
-+	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX       },
- 	{ X86_FEATURE_AVX2,			X86_FEATURE_AVX,      },
- 	{ X86_FEATURE_AVX512F,			X86_FEATURE_AVX,      },
- 	{ X86_FEATURE_AVX512IFMA,		X86_FEATURE_AVX512F   },
-@@ -56,9 +59,6 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_AVX512VL,			X86_FEATURE_AVX512F   },
- 	{ X86_FEATURE_AVX512VBMI,		X86_FEATURE_AVX512F   },
- 	{ X86_FEATURE_AVX512_VBMI2,		X86_FEATURE_AVX512VL  },
--	{ X86_FEATURE_GFNI,			X86_FEATURE_AVX512VL  },
--	{ X86_FEATURE_VAES,			X86_FEATURE_AVX512VL  },
--	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX512VL  },
- 	{ X86_FEATURE_AVX512_VNNI,		X86_FEATURE_AVX512VL  },
- 	{ X86_FEATURE_AVX512_BITALG,		X86_FEATURE_AVX512VL  },
- 	{ X86_FEATURE_AVX512_4VNNIW,		X86_FEATURE_AVX512F   },
+diff --git a/drivers/gpu/drm/xe/display/intel_fb_bo.c b/drivers/gpu/drm/xe/display/intel_fb_bo.c
+index b21da7b745a5..a9c1f9885c6b 100644
+--- a/drivers/gpu/drm/xe/display/intel_fb_bo.c
++++ b/drivers/gpu/drm/xe/display/intel_fb_bo.c
+@@ -31,7 +31,7 @@ int intel_fb_bo_framebuffer_init(struct intel_framebuffer *intel_fb,
+ 
+ 	ret = ttm_bo_reserve(&bo->ttm, true, false, NULL);
+ 	if (ret)
+-		return ret;
++		goto err;
+ 
+ 	if (!(bo->flags & XE_BO_SCANOUT_BIT)) {
+ 		/*
+@@ -42,12 +42,16 @@ int intel_fb_bo_framebuffer_init(struct intel_framebuffer *intel_fb,
+ 		 */
+ 		if (XE_IOCTL_DBG(i915, !list_empty(&bo->ttm.base.gpuva.list))) {
+ 			ttm_bo_unreserve(&bo->ttm);
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto err;
+ 		}
+ 		bo->flags |= XE_BO_SCANOUT_BIT;
+ 	}
+ 	ttm_bo_unreserve(&bo->ttm);
++	return 0;
+ 
++err:
++	xe_bo_put(bo);
+ 	return ret;
+ }
+ 
 -- 
-2.43.0
+2.44.0
 
 
 
