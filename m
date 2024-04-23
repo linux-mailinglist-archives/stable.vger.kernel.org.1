@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-41034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4FE8AFA27
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F3B8AF97E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4175B24F36
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7ECC0B2A48B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88A4145B27;
-	Tue, 23 Apr 2024 21:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7098F145343;
+	Tue, 23 Apr 2024 21:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIoqVkXa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lymFTJnQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78606143888;
-	Tue, 23 Apr 2024 21:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE9020B3E;
+	Tue, 23 Apr 2024 21:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908632; cv=none; b=D9rl8+voMWaC2XWXoCPop0zcRSlqf2GB8/TvSdl3wA6bB6HlFNA9WuUTyom40Or+XlsbgZ8xQdtcY/URV/GFQ0+mThimCl56qCQ03nclO6vIZfszGoBjkvaEgu0MehKprfCJG7NTfaibtibnyaNNWcr7vsK4Wkp7FoqZkEpufAc=
+	t=1713908535; cv=none; b=OZVsunO20dzGufA5ON16OWzcAkWE+8WhNWfN9deqqV4x6muePF5lAhFWmrdcJYKibhrBB3cKTiPa2CQrcREw7pV+MJToZeRpdYw8Pl2ngQM5aH6F/j0WjC/iJeg33l8S//1lpkhppfbMveP071Z2FNLtnteDcdGuZubFEP4zIyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908632; c=relaxed/simple;
-	bh=zqmklqN9JJWApvdEUQrF7l18EaySI4cA4Uft6v872BU=;
+	s=arc-20240116; t=1713908535; c=relaxed/simple;
+	bh=G9okE7Rpv31JyTuKttTfHfftOK0/1gULf43CXxFn2Mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hV6kjPPUf23F5/Oulg5YHNvSc1rFe+BCA1eOrYDNWSoCFNgYuBx+bzVeUYL8d0JX+BwMx7Wc3EU5yqIXgpB7kgcpYIRTUiFbrHukYPH88+YRSrQYxOwuaN68T27duRHLUNhQnP5Jke9JfE2GOCaIHQjOntQmKOt2utRxYmC9eac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIoqVkXa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA08C116B1;
-	Tue, 23 Apr 2024 21:43:52 +0000 (UTC)
+	 MIME-Version; b=exoovItWX88FDaKAm2xJcLH1Cdaz6gfEr3djKMXAqC4LmLarpc7ripkdCIMt0jICj8+sA/+7adeQvIaU2MivtYwfQqcJyV1mzNgywficPPVWQGqcYbbYYxiL26XVINlbY4X//POs9BTFFvbfkn7/cqhYdl4pK6SYUd5rxGbtwmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lymFTJnQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054CAC116B1;
+	Tue, 23 Apr 2024 21:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908632;
-	bh=zqmklqN9JJWApvdEUQrF7l18EaySI4cA4Uft6v872BU=;
+	s=korg; t=1713908535;
+	bh=G9okE7Rpv31JyTuKttTfHfftOK0/1gULf43CXxFn2Mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIoqVkXaO+LWfT5aaCXW3cgXn7AcMpSaZBcxtHvfASp/cXszb7o/KvC/+hahpuR3m
-	 hEOGMD5Q9dtd/jG2KB5gYVl/oVsx/ANpcL8+iFHNz4I891+dRR3e2ZMXwN+qiRWi58
-	 cYPOQbY8y8tXD8gTLSsRxSYc23YZx1xxXk8dmQUg=
+	b=lymFTJnQn1j0RE3mOoLb2mpJ6xU4GWGuX2IONXZObX1nuuPtqJ9YrFw+YoCEk0QMj
+	 LSQZO9PnnXoJhS0itBwtvP7nfGZOOfNe8LB3gsfAG2S1Ac0l7H6B/SxapmNZ997mpy
+	 H0KGSqCW/nt72QhVsYN1eZV4nXKkEugyJ9Mwhg1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 6.6 112/158] serial: stm32: Reset .throttled state in .startup()
-Date: Tue, 23 Apr 2024 14:39:09 -0700
-Message-ID: <20240423213859.383788185@linuxfoundation.org>
+	Sandipan Das <sandipan.das@amd.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.8 128/158] KVM: x86/pmu: Do not mask LVTPC when handling a PMI on AMD platforms
+Date: Tue, 23 Apr 2024 14:39:10 -0700
+Message-ID: <20240423213900.056351465@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,44 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Sandipan Das <sandipan.das@amd.com>
 
-commit ea2624b5b829b8f93c0dce25721d835969b34faf upstream.
+commit 49ff3b4aec51e3abfc9369997cc603319b02af9a upstream.
 
-When an UART is opened that still has .throttled set from a previous
-open, the RX interrupt is enabled but the irq handler doesn't consider
-it. This easily results in a stuck irq with the effect to occupy the CPU
-in a tight loop.
+On AMD and Hygon platforms, the local APIC does not automatically set
+the mask bit of the LVTPC register when handling a PMI and there is
+no need to clear it in the kernel's PMI handler.
 
-So reset the throttle state in .startup() to ensure that RX irqs are
-handled.
+For guests, the mask bit is currently set by kvm_apic_local_deliver()
+and unless it is cleared by the guest kernel's PMI handler, PMIs stop
+arriving and break use-cases like sampling with perf record.
 
-Fixes: d1ec8a2eabe9 ("serial: stm32: update throttle and unthrottle ops for dma mode")
+This does not affect non-PerfMonV2 guests because PMIs are handled in
+the guest kernel by x86_pmu_handle_irq() which always clears the LVTPC
+mask bit irrespective of the vendor.
+
+Before:
+
+  $ perf record -e cycles:u true
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.001 MB perf.data (1 samples) ]
+
+After:
+
+  $ perf record -e cycles:u true
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.002 MB perf.data (19 samples) ]
+
+Fixes: a16eb25b09c0 ("KVM: x86: Mask LVTPC when handling a PMI")
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/a784f80d3414f7db723b2ec66efc56e1ad666cbf.1713344161.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+[sean: use is_intel_compatible instead of !is_amd_or_hygon()]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240405235603.1173076-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/stm32-usart.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/lapic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -1077,6 +1077,7 @@ static int stm32_usart_startup(struct ua
- 		val |= USART_CR2_SWAP;
- 		writel_relaxed(val, port->membase + ofs->cr2);
- 	}
-+	stm32_port->throttled = false;
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2771,7 +2771,8 @@ int kvm_apic_local_deliver(struct kvm_la
+ 		trig_mode = reg & APIC_LVT_LEVEL_TRIGGER;
  
- 	/* RX FIFO Flush */
- 	if (ofs->rqr != UNDEF_REG)
+ 		r = __apic_accept_irq(apic, mode, vector, 1, trig_mode, NULL);
+-		if (r && lvt_type == APIC_LVTPC)
++		if (r && lvt_type == APIC_LVTPC &&
++		    guest_cpuid_is_intel_compatible(apic->vcpu))
+ 			kvm_lapic_set_reg(apic, APIC_LVTPC, reg | APIC_LVT_MASKED);
+ 		return r;
+ 	}
 
 
 
