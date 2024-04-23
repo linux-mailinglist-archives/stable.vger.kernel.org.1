@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-40874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62478AF96B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7428AFA68
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76DBC1F26365
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEFB9288A9E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F206E145330;
-	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C0A149C7C;
+	Tue, 23 Apr 2024 21:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouCZr327"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ5pPzzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2535143C75;
-	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F14C149C78;
+	Tue, 23 Apr 2024 21:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908521; cv=none; b=ooqZJjYrACb0tWBJGyBIc+my3j9GSPHsibpfLAwVLavlhOPh5lP9C3/2NbWo7ykkq3zNiUdRyLyDq4QeNvSkpIT9nklV6qXtXZDuFCT1kZdUeHeTwQyORc5GeIIIxmRjn0xLaZHRdfmmOaspJWOmh4D4H7gsZ7hIsSVPE/zWhIw=
+	t=1713908692; cv=none; b=UC7eNlrAkggtw8vP+fBemradXl9vN6PVvIy+c1BLcOXrBT6KUYdoLSr31GN+gKEGz4hFKHVr+7JPbjvYuo0PcRLs91ih1zTkvitBiszkjwiJJWrHY9RWGz/JU0GmxaQBSxt0XSeTLgbC0VylRGKN6KPz0JvT0iNNgWaj6xJMI5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908521; c=relaxed/simple;
-	bh=77YS7CTjad9YeYH2HBm+wMaaPgoDiIYi1LEuYh9mXMk=;
+	s=arc-20240116; t=1713908692; c=relaxed/simple;
+	bh=LmSB6H98JjhVHfj3pQPaROIw85pL6Z97xvYle7JD5vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MgYC2J+iMk+WnK7lEPmCH5CC0btV4mscPI6yPjQIwrKvK9+mXIguuW6WTZiErK5CFSEbjTHpUazgg813vmwhSNxTUDTsWhHOimckA7XpT2kDxBWWIwa/3T8ON2fCh24MuIbyYo8yDxg39h7qMswG3hFDgHbqpjcSd8m7cLKPeyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouCZr327; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8603CC116B1;
-	Tue, 23 Apr 2024 21:42:01 +0000 (UTC)
+	 MIME-Version; b=nJnTfWMJ9P3XxarlxKNVU2zzacfus8Js0DK1R/LHtQfVeZcxOJwfrY/vb/synSpTeWw/qEadqOA055/9MgwJ2yFryzGik8U6H29gNwHd/Zb2kFYnaNCUilftiM4EXsb6iTxdAdMJFJvKqhuaD2k8SlgfqAOxsAQQiO47WcfC61M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ5pPzzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AF8C32783;
+	Tue, 23 Apr 2024 21:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908521;
-	bh=77YS7CTjad9YeYH2HBm+wMaaPgoDiIYi1LEuYh9mXMk=;
+	s=korg; t=1713908692;
+	bh=LmSB6H98JjhVHfj3pQPaROIw85pL6Z97xvYle7JD5vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouCZr327NcS1G5lcm00l0vwMIENzEFq88ocXrEUewaHjp98e3W5Kzb8ukYrPya/Vk
-	 l/5EXKVOplbMONeWk4wXzognpeIdYRUhYGr+u/50bBMN2CSM1Y1z9yYx6m/W1BUaTe
-	 OC9PsJTFjjpAMc1xG6Z52VFxpuH0EtQsg8bEg4wY=
+	b=dJ5pPzzWQPDvo/xP9zvFXLtbd2PWVzPUFeoy+NkTm/1fJuN602sdO1/W1m6XrC8ls
+	 1qaMpFYOLp3QRvAro0Ml4n1KZY11l1iSea2YVEjf1B1LBBTWamhQiNSnS5tjY14wS8
+	 ka+ZIOppi23gF2VQfkth2+gUYRevS5PHGZREAdzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 086/158] x86/cpufeatures: Fix dependencies for GFNI, VAES, and VPCLMULQDQ
+Subject: [PATCH 6.1 040/141] af_unix: Call manage_oob() for every skb in unix_stream_read_generic().
 Date: Tue, 23 Apr 2024 14:38:28 -0700
-Message-ID: <20240423213858.737006459@linuxfoundation.org>
+Message-ID: <20240423213854.577452185@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 9543f6e26634537997b6e909c20911b7bf4876de ]
+[ Upstream commit 283454c8a123072e5c386a5a2b5fc576aa455b6f ]
 
-Fix cpuid_deps[] to list the correct dependencies for GFNI, VAES, and
-VPCLMULQDQ.  These features don't depend on AVX512, and there exist CPUs
-that support these features but not AVX512.  GFNI actually doesn't even
-depend on AVX.
+When we call recv() for AF_UNIX socket, we first peek one skb and
+calls manage_oob() to check if the skb is sent with MSG_OOB.
 
-This prevents GFNI from being unnecessarily disabled if AVX is disabled
-to mitigate the GDS vulnerability.
+However, when we fetch the next (and the following) skb, manage_oob()
+is not called now, leading a wrong behaviour.
 
-This also prevents all three features from being unnecessarily disabled
-if AVX512VL (or its dependency AVX512F) were to be disabled, but it
-looks like there isn't any case where this happens anyway.
+Let's say a socket send()s "hello" with MSG_OOB and the peer tries
+to recv() 5 bytes with MSG_PEEK.  Here, we should get only "hell"
+without 'o', but actually not:
 
-Fixes: c128dbfa0f87 ("x86/cpufeatures: Enable new SSE/AVX/AVX512 CPU features")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240417060434.47101-1-ebiggers@kernel.org
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  >>> c1.send(b'hello', MSG_OOB)
+  5
+  >>> c2.recv(5, MSG_PEEK)
+  b'hello'
+
+The first skb fills 4 bytes, and the next skb is peeked but not
+properly checked by manage_oob().
+
+Let's move up the again label to call manage_oob() for evry skb.
+
+With this patch:
+
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  >>> c1.send(b'hello', MSG_OOB)
+  5
+  >>> c2.recv(5, MSG_PEEK)
+  b'hell'
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240410171016.7621-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/cpuid-deps.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
-index e462c1d3800a6..6fb6d8a57ceca 100644
---- a/arch/x86/kernel/cpu/cpuid-deps.c
-+++ b/arch/x86/kernel/cpu/cpuid-deps.c
-@@ -44,7 +44,10 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_F16C,			X86_FEATURE_XMM2,     },
- 	{ X86_FEATURE_AES,			X86_FEATURE_XMM2      },
- 	{ X86_FEATURE_SHA_NI,			X86_FEATURE_XMM2      },
-+	{ X86_FEATURE_GFNI,			X86_FEATURE_XMM2      },
- 	{ X86_FEATURE_FMA,			X86_FEATURE_AVX       },
-+	{ X86_FEATURE_VAES,			X86_FEATURE_AVX       },
-+	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX       },
- 	{ X86_FEATURE_AVX2,			X86_FEATURE_AVX,      },
- 	{ X86_FEATURE_AVX512F,			X86_FEATURE_AVX,      },
- 	{ X86_FEATURE_AVX512IFMA,		X86_FEATURE_AVX512F   },
-@@ -56,9 +59,6 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_AVX512VL,			X86_FEATURE_AVX512F   },
- 	{ X86_FEATURE_AVX512VBMI,		X86_FEATURE_AVX512F   },
- 	{ X86_FEATURE_AVX512_VBMI2,		X86_FEATURE_AVX512VL  },
--	{ X86_FEATURE_GFNI,			X86_FEATURE_AVX512VL  },
--	{ X86_FEATURE_VAES,			X86_FEATURE_AVX512VL  },
--	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX512VL  },
- 	{ X86_FEATURE_AVX512_VNNI,		X86_FEATURE_AVX512VL  },
- 	{ X86_FEATURE_AVX512_BITALG,		X86_FEATURE_AVX512VL  },
- 	{ X86_FEATURE_AVX512_4VNNIW,		X86_FEATURE_AVX512F   },
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 0a75d76535f75..6af6f82e89464 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2753,6 +2753,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 		last = skb = skb_peek(&sk->sk_receive_queue);
+ 		last_len = last ? last->len : 0;
+ 
++again:
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+ 		if (skb) {
+ 			skb = manage_oob(skb, sk, flags, copied);
+@@ -2764,7 +2765,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 			}
+ 		}
+ #endif
+-again:
+ 		if (skb == NULL) {
+ 			if (copied >= target)
+ 				goto unlock;
 -- 
 2.43.0
 
