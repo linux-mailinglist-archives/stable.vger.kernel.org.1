@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A348AFAD0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 056428AFB0F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3569C1F29748
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37D9D1C231DD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD5714A63C;
-	Tue, 23 Apr 2024 21:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE83F14C5A1;
+	Tue, 23 Apr 2024 21:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzEPpMmj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xh/kn9A1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF1A143C5F;
-	Tue, 23 Apr 2024 21:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD1714885A;
+	Tue, 23 Apr 2024 21:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908765; cv=none; b=t/ZDSnfkBzMCn7mUlNWrwUjmfLtw4pkbRiNn8P/NNHqEtukqBWsnJMDDrHCnTOoQ3iy7iU9y7HNcGji4QPapgM9QBiIi9em3dhxOLDYgrx+fYhQ0qV22SVgaBYEGg8LDl+2K+P86GK1mYXqTnFI/eDEvv17zLsYNJk6+hVo86qI=
+	t=1713908810; cv=none; b=XG3cir5yHARxmkX1Xf5C0LOTf77MKoggGzRFw8+1oD/1yYgBtO+pYE4H1LCHnoQbVe2CUxR7WjVLDvD+bwIP8HrzaYdS/kc7PDyOlk8LXtHARjbCNUeuHvUPoZSaWl4ovrbErf2OFreqP5/XJoobEGuYTnMiyydm5/0Bbqwrj10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908765; c=relaxed/simple;
-	bh=wYyBywTJzTpLzlrYIHHu4i586AWslnQN6xsGRXChDNE=;
+	s=arc-20240116; t=1713908810; c=relaxed/simple;
+	bh=vq7fsIfQNn4x9er7yC4C7YRA7Jbzbm+wiDl7ME2JlKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5wGwnkQzTMbR2euyLJmOAhk6dt5Mx//sYfv4lPRXGF+9DG0Lgbz3WVb7iJL6pZ3a8k7unfOAm2bRUPv9aHRhXiF9iHPcWOUNAAShSVlMvP1OIJhhxxiisDMCd/KXzE5OVsP2vJCXKN8Yh8sR9IgA+T0+cpJ3Z4cAg928+dhQkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzEPpMmj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D24C4AF08;
-	Tue, 23 Apr 2024 21:46:04 +0000 (UTC)
+	 MIME-Version; b=IRRKtio86zEdGdU+uh/ejzGvh6y0TSGJBlKTCi+Z0z/Uhn8QFI8Iyf8pKO36p8GfjiAbBC9WMw+XPVLGpjM24s6Oq8wim8jD1hKW4JwX07ssDMGZ7FHRx+N7+if48JEiBn0AQ/j2nTT6B5cNUVvITdemCu7X30WTyLwBYZNyFlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xh/kn9A1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFA8C32783;
+	Tue, 23 Apr 2024 21:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908765;
-	bh=wYyBywTJzTpLzlrYIHHu4i586AWslnQN6xsGRXChDNE=;
+	s=korg; t=1713908810;
+	bh=vq7fsIfQNn4x9er7yC4C7YRA7Jbzbm+wiDl7ME2JlKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wzEPpMmjufIRDjVEl7mtp6+5zDq4FktIIFNPcsQbxIugz7/PaqYMsk/Z/0UkVC+nc
-	 VDwtsFTBBnlYKYi4jCD17h5WY1oN/qjKjtIb3flsFb6u+ZsqTlgJs+I9U92+qWWlD3
-	 k8n90yIcnzhsPHBHQWvJ3S+pbHfKmUnv6o+/L53E=
+	b=Xh/kn9A1j3J5b9UehqlqK0L7lVVFdh9xGv52Tam79q/RiL7FLitg/rcX5ma1bKlnr
+	 eGcF33eFPyQ0nnCUN68+gG49O7WjJCmTeCldLDau1X0T2/lFFreuOUZt0P/qVG9Qrs
+	 J/naAi4M0stvNRS5XXrYaM1rhQQfiBB8YR8SGd/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 139/141] ksmbd: clear RENAME_NOREPLACE before calling vfs_rename
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 54/71] usb: Disable USB3 LPM at shutdown
 Date: Tue, 23 Apr 2024 14:40:07 -0700
-Message-ID: <20240423213857.731684068@linuxfoundation.org>
+Message-ID: <20240423213846.044156444@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-commit 4973b04d3ea577db80c501c5f14e68ec69fe1794 upstream.
+commit d920a2ed8620be04a3301e1a9c2b7cc1de65f19d upstream.
 
-File overwrite case is explicitly handled, so it is not necessary to
-pass RENAME_NOREPLACE to vfs_rename.
+SanDisks USB3 storage may disapper after system reboot:
 
-Clearing the flag fixes rename operations when the share is a ntfs-3g
-mount. The latter uses an older version of fuse with no support for
-flags in the ->rename op.
+usb usb2-port3: link state change
+xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
+usb usb2-port3: do warm reset, port only
+xhci_hcd 0000:00:14.0: xhci_hub_status_data: stopping usb2 port polling
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2b0, return 0x2b0
+usb usb2-port3: not warm reset yet, waiting 50ms
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2f0, return 0x2f0
+usb usb2-port3: not warm reset yet, waiting 200ms
+...
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x6802c0, return 0x7002c0
+usb usb2-port3: not warm reset yet, waiting 200ms
+xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x4802c0
+xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x4002c0
+xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2c0, return 0x2c0
+usb usb2-port3: not enabled, trying warm reset again...
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This is due to the USB device still cause port change event after xHCI is
+shuted down:
+
+xhci_hcd 0000:38:00.0: // Setting command ring address to 0xffffe001
+xhci_hcd 0000:38:00.0: xhci_resume: starting usb3 port polling.
+xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb4 port polling
+xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb3 port polling
+xhci_hcd 0000:38:00.0: hcd_pci_runtime_resume: 0
+xhci_hcd 0000:38:00.0: xhci_shutdown: stopping usb3 port polling.
+xhci_hcd 0000:38:00.0: // Halt the HC
+xhci_hcd 0000:38:00.0: xhci_shutdown completed - status = 1
+xhci_hcd 0000:00:14.0: xhci_shutdown: stopping usb1 port polling.
+xhci_hcd 0000:00:14.0: // Halt the HC
+xhci_hcd 0000:00:14.0: xhci_shutdown completed - status = 1
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
+xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1311
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x201203, return 0x100203
+xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: clear port3 connect change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
+usb 2-3: device not accepting address 2, error -108
+xhci_hcd 0000:00:14.0: xHCI dying or halted, can't queue_command
+xhci_hcd 0000:00:14.0: Set port 2-3 link state, portsc: 0x1203, write 0x11261
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1263, return 0x263
+xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1271
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12b1, return 0x2b1
+usb usb2-port3: not reset yet, waiting 60ms
+ACPI: PM: Preparing to enter system sleep state S5
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12f1, return 0x2f1
+usb usb2-port3: not reset yet, waiting 200ms
+reboot: Restarting system
+
+The port change event is caused by LPM transition, so disabling LPM at shutdown
+to make sure the device is in U0 for warmboot.
+
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240305065140.66801-1-kai.heng.feng@canonical.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/core/port.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -746,10 +746,15 @@ retry:
- 		goto out4;
- 	}
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -295,8 +295,10 @@ static void usb_port_shutdown(struct dev
+ {
+ 	struct usb_port *port_dev = to_usb_port(dev);
  
-+	/*
-+	 * explicitly handle file overwrite case, for compatibility with
-+	 * filesystems that may not support rename flags (e.g: fuse)
-+	 */
- 	if ((flags & RENAME_NOREPLACE) && d_is_positive(new_dentry)) {
- 		err = -EEXIST;
- 		goto out4;
- 	}
-+	flags &= ~(RENAME_NOREPLACE);
+-	if (port_dev->child)
++	if (port_dev->child) {
+ 		usb_disable_usb2_hardware_lpm(port_dev->child);
++		usb_unlocked_disable_lpm(port_dev->child);
++	}
+ }
  
- 	if (old_child == trap) {
- 		err = -EINVAL;
+ static const struct dev_pm_ops usb_port_pm_ops = {
 
 
 
