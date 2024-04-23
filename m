@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EC28AFA6E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737598AF93E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91D01C21901
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01EE11F24A71
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80560149DE0;
-	Tue, 23 Apr 2024 21:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C711448FB;
+	Tue, 23 Apr 2024 21:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU1tJA8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvpBZdvj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF621420BE;
-	Tue, 23 Apr 2024 21:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354AB143889;
+	Tue, 23 Apr 2024 21:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908697; cv=none; b=l0hNf0AulEM7JVmrXr14kpHKoewpnxNbN9edcy5VIFl90FQM3j0mosDaHA2OSaMchAZOfHlNwRVaJ3SQ5w6j1j+HrKSPM7Nh4WVurPcRXNuO6IezveKBQ20noH3IIy1N4F7Xzcj/yZlbDlKBZMsHPtKocSuFvsK2xjkswHAZSZo=
+	t=1713908493; cv=none; b=I0W8X/Vl+XYka9HGWxepfzUhwe5wbsHAD9vN7GZuDiFv4sx7/idhdb4aYdeYVYVY6brrUvVdd3MmtIxi+2qyBCzcax1sPmTD8L9oYzJz9x7LIEFm9fL+hECNGlfIgrdpdqYdODBrE7U6z/90V2ymirBEFBt4wnXf7NMFEZdJFq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908697; c=relaxed/simple;
-	bh=RFf1ZnnsANlf+ITGLZrd7AUnXmyFQw3AizD+mqzCAzA=;
+	s=arc-20240116; t=1713908493; c=relaxed/simple;
+	bh=Ei7pTV09aG8RHGMbCJzgdcLqkT2k2TrE8f6ADZiccJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptPrcGXsSzVICx3dEO8e3p3u6/CJWN8JrPNYRdqXPAxQ3a+weTnfXieyPB7xrqH5e8W2LQvftepDJaGPvjYcobV0k0H2Z58ukPZCTM/8kjl4S+hMm1c8+TFF2EBOpmCXy/Ij9A2eqlW8kWiFgzZAVzI0LKQN/rNVqKPgNtzl04A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU1tJA8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127BCC116B1;
-	Tue, 23 Apr 2024 21:44:57 +0000 (UTC)
+	 MIME-Version; b=BhwdRPWR1QOTGn/Bgb7ivElqh8nrg5KEwVVTX4x3shOL7W+vgw13AxV28Ls4qhIs/mYn7vwnXEXTGWhLLedc9MH3Mbcic3HdtW+hndiYw2EMmTJDjHOdweJj1gaGQbDzdL1WNe/QJAufX4aGuWVeziGORi59EH3ss1ZrBCgkn10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvpBZdvj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00217C3277B;
+	Tue, 23 Apr 2024 21:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908697;
-	bh=RFf1ZnnsANlf+ITGLZrd7AUnXmyFQw3AizD+mqzCAzA=;
+	s=korg; t=1713908493;
+	bh=Ei7pTV09aG8RHGMbCJzgdcLqkT2k2TrE8f6ADZiccJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yU1tJA8LUyy7HvZc0h58sTCwrZgaDsG3iq0D5XN8VPd/HIV/zaNk6ZlhF2NAsMXAt
-	 0TjRPcFXY/umIIwLYknKR8P8Asx+K0PsvoteaB2DrpPUZ8ZPKdTMT/ehd6IDxdTC29
-	 F2PmyB08SNDg9h4GdD2RDd2M2ERITz/BWLsKvIIg=
+	b=RvpBZdvjBmE79eQGCJgkdmqD2s7MTrav9i3qdoFyfwL7c6x0eky2DajVzPQMFgiq/
+	 F1DWcab1Tk6qVf7+bb5BO+3goqFd3ysDF0UB89igbDuzTeRwisXXTqRrmE2ZvvgP0A
+	 YO7JVqNIwMA9pGF7w4Po3HRVZ5W0XiJmsf487qt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 023/141] x86/boot: Construct PE/COFF .text section from assembler
+	Sanath S <Sanath.S@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.8 069/158] thunderbolt: Make tb_switch_reset() support Thunderbolt 2, 3 and USB4 routers
 Date: Tue, 23 Apr 2024 14:38:11 -0700
-Message-ID: <20240423213854.078917417@linuxfoundation.org>
+Message-ID: <20240423213858.205362964@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,184 +62,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Sanath S <Sanath.S@amd.com>
 
-[ Commit efa089e63b56bdc5eca754b995cb039dd7a5457e upstream ]
+commit ec8162b3f0683ae08a21f20517cf49272b07ee0b upstream.
 
-Now that the size of the setup block is visible to the assembler, it is
-possible to populate the PE/COFF header fields from the asm code
-directly, instead of poking the values into the binary using the build
-tool. This will make it easier to reorganize the section layout without
-having to tweak the build tool in lockstep.
+Currently tb_switch_reset() only did something for Thunderbolt 1
+devices. Expand this to support all generations, including USB4, and
+both host and device routers.
 
-This change has no impact on the resulting bzImage binary.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230915171623.655440-15-ardb@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/header.S      |   22 ++++++--------------
- arch/x86/boot/tools/build.c |   47 --------------------------------------------
- 2 files changed, 7 insertions(+), 62 deletions(-)
+ drivers/thunderbolt/switch.c  |  123 +++++++++++++++++++++++++++++++++++++-----
+ drivers/thunderbolt/tb_regs.h |    2 
+ 2 files changed, 111 insertions(+), 14 deletions(-)
 
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -74,14 +74,12 @@ optional_header:
- 	.byte	0x02				# MajorLinkerVersion
- 	.byte	0x14				# MinorLinkerVersion
- 
--	# Filled in by build.c
--	.long	0				# SizeOfCode
-+	.long	setup_size + ZO__end - 0x200	# SizeOfCode
- 
- 	.long	0				# SizeOfInitializedData
- 	.long	0				# SizeOfUninitializedData
- 
--	# Filled in by build.c
--	.long	0x0000				# AddressOfEntryPoint
-+	.long	setup_size + ZO_efi_pe_entry	# AddressOfEntryPoint
- 
- 	.long	0x0200				# BaseOfCode
- #ifdef CONFIG_X86_32
-@@ -104,10 +102,7 @@ extra_header_fields:
- 	.word	0				# MinorSubsystemVersion
- 	.long	0				# Win32VersionValue
- 
--	#
--	# The size of the bzImage is written in tools/build.c
--	#
--	.long	0				# SizeOfImage
-+	.long	setup_size + ZO__end 		# SizeOfImage
- 
- 	.long	0x200				# SizeOfHeaders
- 	.long	0				# CheckSum
-@@ -198,18 +193,15 @@ section_table:
- 		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
- #endif
- 
--	#
--	# The offset & size fields are filled in by build.c.
--	#
- 	.ascii	".text"
- 	.byte	0
- 	.byte	0
- 	.byte	0
--	.long	0
--	.long	0x0				# startup_{32,64}
--	.long	0				# Size of initialized data
-+	.long	ZO__end
-+	.long	setup_size
-+	.long	ZO__edata			# Size of initialized data
- 						# on disk
--	.long	0x0				# startup_{32,64}
-+	.long	setup_size
- 	.long	0				# PointerToRelocations
- 	.long	0				# PointerToLineNumbers
- 	.word	0				# NumberOfRelocations
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -50,10 +50,8 @@ u8 buf[SETUP_SECT_MAX*512];
- #define PECOFF_RELOC_RESERVE 0x20
- #define PECOFF_COMPAT_RESERVE 0x20
- 
--static unsigned long efi_pe_entry;
- static unsigned long efi32_pe_entry;
- static unsigned long _edata;
--static unsigned long _end;
- 
- /*----------------------------------------------------------------------*/
- 
-@@ -216,32 +214,6 @@ static void update_pecoff_setup_and_relo
- #endif
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -1541,29 +1541,124 @@ static void tb_dump_switch(const struct
+ 	       regs->__unknown1, regs->__unknown4);
  }
  
--static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
--{
--	unsigned int pe_header;
--	unsigned int text_sz = file_sz - text_start;
--	unsigned int bss_sz = _end - text_sz;
--
--	pe_header = get_unaligned_le32(&buf[0x3c]);
--
--	/*
--	 * Size of code: Subtract the size of the first sector (512 bytes)
--	 * which includes the header.
--	 */
--	put_unaligned_le32(file_sz - 512 + bss_sz, &buf[pe_header + 0x1c]);
--
--	/* Size of image */
--	put_unaligned_le32(file_sz + bss_sz, &buf[pe_header + 0x50]);
--
--	/*
--	 * Address of entry point for PE/COFF executable
--	 */
--	put_unaligned_le32(text_start + efi_pe_entry, &buf[pe_header + 0x28]);
--
--	update_pecoff_section_header_fields(".text", text_start, text_sz + bss_sz,
--					    text_sz, text_start);
--}
--
- static int reserve_pecoff_reloc_section(int c)
++static int tb_switch_reset_host(struct tb_switch *sw)
++{
++	if (sw->generation > 1) {
++		struct tb_port *port;
++
++		tb_switch_for_each_port(sw, port) {
++			int i, ret;
++
++			/*
++			 * For lane adapters we issue downstream port
++			 * reset and clear up path config spaces.
++			 *
++			 * For protocol adapters we disable the path and
++			 * clear path config space one by one (from 8 to
++			 * Max Input HopID of the adapter).
++			 */
++			if (tb_port_is_null(port) && !tb_is_upstream_port(port)) {
++				ret = tb_port_reset(port);
++				if (ret)
++					return ret;
++			} else if (tb_port_is_usb3_down(port) ||
++				   tb_port_is_usb3_up(port)) {
++				tb_usb3_port_enable(port, false);
++			} else if (tb_port_is_dpin(port) ||
++				   tb_port_is_dpout(port)) {
++				tb_dp_port_enable(port, false);
++			} else if (tb_port_is_pcie_down(port) ||
++				   tb_port_is_pcie_up(port)) {
++				tb_pci_port_enable(port, false);
++			} else {
++				continue;
++			}
++
++			/* Cleanup path config space of protocol adapter */
++			for (i = TB_PATH_MIN_HOPID;
++			     i <= port->config.max_in_hop_id; i++) {
++				ret = tb_path_deactivate_hop(port, i);
++				if (ret)
++					return ret;
++			}
++		}
++	} else {
++		struct tb_cfg_result res;
++
++		/* Thunderbolt 1 uses the "reset" config space packet */
++		res.err = tb_sw_write(sw, ((u32 *) &sw->config) + 2,
++				      TB_CFG_SWITCH, 2, 2);
++		if (res.err)
++			return res.err;
++		res = tb_cfg_reset(sw->tb->ctl, tb_route(sw));
++		if (res.err > 0)
++			return -EIO;
++		else if (res.err < 0)
++			return res.err;
++	}
++
++	return 0;
++}
++
++static int tb_switch_reset_device(struct tb_switch *sw)
++{
++	return tb_port_reset(tb_switch_downstream_port(sw));
++}
++
++static bool tb_switch_enumerated(struct tb_switch *sw)
++{
++	u32 val;
++	int ret;
++
++	/*
++	 * Read directly from the hardware because we use this also
++	 * during system sleep where sw->config.enabled is already set
++	 * by us.
++	 */
++	ret = tb_sw_read(sw, &val, TB_CFG_SWITCH, ROUTER_CS_3, 1);
++	if (ret)
++		return false;
++
++	return !!(val & ROUTER_CS_3_V);
++}
++
+ /**
+- * tb_switch_reset() - reconfigure route, enable and send TB_CFG_PKG_RESET
+- * @sw: Switch to reset
++ * tb_switch_reset() - Perform reset to the router
++ * @sw: Router to reset
++ *
++ * Issues reset to the router @sw. Can be used for any router. For host
++ * routers, resets all the downstream ports and cleans up path config
++ * spaces accordingly. For device routers issues downstream port reset
++ * through the parent router, so as side effect there will be unplug
++ * soon after this is finished.
++ *
++ * If the router is not enumerated does nothing.
+  *
+- * Return: Returns 0 on success or an error code on failure.
++ * Returns %0 on success or negative errno in case of failure.
+  */
+ int tb_switch_reset(struct tb_switch *sw)
  {
- 	/* Reserve 0x20 bytes for .reloc section */
-@@ -249,22 +221,9 @@ static int reserve_pecoff_reloc_section(
- 	return PECOFF_RELOC_RESERVE;
+-	struct tb_cfg_result res;
++	int ret;
+ 
+-	if (sw->generation > 1)
++	/*
++	 * We cannot access the port config spaces unless the router is
++	 * already enumerated. If the router is not enumerated it is
++	 * equal to being reset so we can skip that here.
++	 */
++	if (!tb_switch_enumerated(sw))
+ 		return 0;
+ 
+-	tb_sw_dbg(sw, "resetting switch\n");
++	tb_sw_dbg(sw, "resetting\n");
++
++	if (tb_route(sw))
++		ret = tb_switch_reset_device(sw);
++	else
++		ret = tb_switch_reset_host(sw);
++
++	if (ret)
++		tb_sw_warn(sw, "failed to reset\n");
+ 
+-	res.err = tb_sw_write(sw, ((u32 *) &sw->config) + 2,
+-			      TB_CFG_SWITCH, 2, 2);
+-	if (res.err)
+-		return res.err;
+-	res = tb_cfg_reset(sw->tb->ctl, tb_route(sw));
+-	if (res.err > 0)
+-		return -EIO;
+-	return res.err;
++	return ret;
  }
  
--static void efi_stub_defaults(void)
--{
--	/* Defaults for old kernel */
--#ifdef CONFIG_X86_32
--	efi_pe_entry = 0x10;
--#else
--	efi_pe_entry = 0x210;
--#endif
--}
--
- #else
+ /**
+--- a/drivers/thunderbolt/tb_regs.h
++++ b/drivers/thunderbolt/tb_regs.h
+@@ -194,6 +194,8 @@ struct tb_regs_switch_header {
+ #define USB4_VERSION_MAJOR_MASK			GENMASK(7, 5)
  
- static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
--static inline void update_pecoff_text(unsigned int text_start,
--				      unsigned int file_sz) {}
--static inline void efi_stub_defaults(void) {}
- 
- static inline int reserve_pecoff_reloc_section(int c)
- {
-@@ -307,10 +266,8 @@ static void parse_zoffset(char *fname)
- 	p = (char *)buf;
- 
- 	while (p && *p) {
--		PARSE_ZOFS(p, efi_pe_entry);
- 		PARSE_ZOFS(p, efi32_pe_entry);
- 		PARSE_ZOFS(p, _edata);
--		PARSE_ZOFS(p, _end);
- 
- 		p = strchr(p, '\n');
- 		while (p && (*p == '\r' || *p == '\n'))
-@@ -328,8 +285,6 @@ int main(int argc, char ** argv)
- 	void *kernel;
- 	u32 crc = 0xffffffffUL;
- 
--	efi_stub_defaults();
--
- 	if (argc != 5)
- 		usage();
- 	parse_zoffset(argv[3]);
-@@ -376,8 +331,6 @@ int main(int argc, char ** argv)
- 	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
- 	if (kernel == MAP_FAILED)
- 		die("Unable to mmap '%s': %m", argv[2]);
--	update_pecoff_text(setup_sectors * 512, i + _edata);
--
- 
- 	crc = partial_crc32(buf, i, crc);
- 	if (fwrite(buf, 1, i, dest) != i)
+ #define ROUTER_CS_1				0x01
++#define ROUTER_CS_3				0x03
++#define ROUTER_CS_3_V				BIT(31)
+ #define ROUTER_CS_4				0x04
+ /* Used with the router cmuv field */
+ #define ROUTER_CS_4_CMUV_V1			0x10
 
 
 
