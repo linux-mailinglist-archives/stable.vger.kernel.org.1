@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A75A8AFABD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 106988AFA41
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5CF1B26155
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1675AB2B49D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D066147C97;
-	Tue, 23 Apr 2024 21:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA765148FE8;
+	Tue, 23 Apr 2024 21:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDM1pC6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tihq0yJZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B334143C49;
-	Tue, 23 Apr 2024 21:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A012148FED;
+	Tue, 23 Apr 2024 21:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908730; cv=none; b=WV4eIsWeyxbdwxtWJfhhUFAR2VAscmDnj4kS6NQA67h0uKODHlffZMDBSyPpnpn+iYFY+clTNBmqt060x0VOxteUuV4f1j122sweVOi4DsDs26cb3E4o86Hzu2/ScjBRkRW6xSKO+BMhRumId3bK823lI6zi7D5u/gGVVxkY4wY=
+	t=1713908643; cv=none; b=lIK2B1HdWENpDLjpSK1bG3u6Cv3o/72RE3BumIWQcOCEHvyaaFu/f0pk6gy/vqewZIIxjdI2JOVU9RQNkgQ+LDBVLeKqu1xs92fXaz2zoFKEjAOPR8oC2E2W/1ixWNVzQVFb7MsdNrFCEzuIwoNizHMjEOuLw+4QeHPfcOg9d14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908730; c=relaxed/simple;
-	bh=Q1gfKuUkkVdHhaiqH7vyGGMTAyuYdaQhdPHmNwl8wTk=;
+	s=arc-20240116; t=1713908643; c=relaxed/simple;
+	bh=UPA6eM/1SuH441km6SKSDL67bEDQPpH6FuKOnNEvqpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTapZJUyTiQL/f8ZDd5JXAXJ6mGYh1RtD1WQV6mX0AN4fD1/zElUvt3P0/o79DI9SJfkc+Z3Lnwl4Yl/eTgqbad+hBJQRV9wbCSyfbzrKH3NsDwJyi1iPABXBcWUtowTJ4RoWna0QbsuXAj95gsZ0CNAQC9SjsyVLLZKSQY8uEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDM1pC6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D642AC32781;
-	Tue, 23 Apr 2024 21:45:29 +0000 (UTC)
+	 MIME-Version; b=oYhG/2/YSMwQnGZ8OXtayx3pe1MF72WI0JFULG+RnyOHA8A9Pk0uS/btbxVlpvGX/z57t0ST3wHE/0VtDJMlzxL5kF9NurjWKpzlBcqmUJ+BRzXht7hBcC5mrN8XL8dSVp4a2C1RiF+Jvr2kvNbI3XPfCwaByUDJEiTV1s+TWMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tihq0yJZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3325DC32782;
+	Tue, 23 Apr 2024 21:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908729;
-	bh=Q1gfKuUkkVdHhaiqH7vyGGMTAyuYdaQhdPHmNwl8wTk=;
+	s=korg; t=1713908643;
+	bh=UPA6eM/1SuH441km6SKSDL67bEDQPpH6FuKOnNEvqpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDM1pC6zC+7hBi5rTRrdT+i3gJa1e78cAU5zHL3E18CUeX3yH1KzXBnbdz07g28Z7
-	 aGBOstIwsma/OJ/C7FlOn7cMXjCeplsxO1qOnhNedx7Pp/ETBIZpfk02B2txx/C1y2
-	 fxYwW6vQh/A2eqQAFiydahsI4V0L1k8kBuMpI0K4=
+	b=Tihq0yJZ98S0JfHRt6M+ckmDYVWWB1Ob//ewImpnZ0VYNYUSc2VYF4jzhE7V6k3MF
+	 adlyjqx3shdBNJGLFPnO5bP3ecDP/da7zDzaRaGicF0WSs23ZV62AEhzwIWd85pggb
+	 ee6ZwGgrOHHqhM2BQMZ6Mi0YMKo6f9FZVIzcVSfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/141] clk: mediatek: Do a runtime PM get on controllers during probe
+	Alan Stern <stern@rowland.harvard.edu>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.6 127/158] fs: sysfs: Fix reference leak in sysfs_break_active_protection()
 Date: Tue, 23 Apr 2024 14:39:24 -0700
-Message-ID: <20240423213856.292052852@linuxfoundation.org>
+Message-ID: <20240423213859.847784459@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 2f7b1d8b5505efb0057cd1ab85fca206063ea4c3 ]
+commit a90bca2228c0646fc29a72689d308e5fe03e6d78 upstream.
 
-mt8183-mfgcfg has a mutual dependency with genpd during the probing
-stage, which leads to a deadlock in the following call stack:
+The sysfs_break_active_protection() routine has an obvious reference
+leak in its error path.  If the call to kernfs_find_and_get() fails then
+kn will be NULL, so the companion sysfs_unbreak_active_protection()
+routine won't get called (and would only cause an access violation by
+trying to dereference kn->parent if it was called).  As a result, the
+reference to kobj acquired at the start of the function will never be
+released.
 
-CPU0:  genpd_lock --> clk_prepare_lock
-genpd_power_off_work_fn()
- genpd_lock()
- generic_pm_domain::power_off()
-    clk_unprepare()
-      clk_prepare_lock()
+Fix the leak by adding an explicit kobject_put() call when kn is NULL.
 
-CPU1: clk_prepare_lock --> genpd_lock
-clk_register()
-  __clk_core_init()
-    clk_prepare_lock()
-    clk_pm_runtime_get()
-      genpd_lock()
-
-Do a runtime PM get at the probe function to make sure clk_register()
-won't acquire the genpd lock. Instead of only modifying mt8183-mfgcfg,
-do this on all mediatek clock controller probings because we don't
-believe this would cause any regression.
-
-Verified on MT8183 and MT8192 Chromebooks.
-
-Fixes: acddfc2c261b ("clk: mediatek: Add MT8183 clock support")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-
-Link: https://lore.kernel.org/r/20240312115249.3341654-1-treapking@chromium.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 2afc9166f79b ("scsi: sysfs: Introduce sysfs_{un,}break_active_protection()")
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/8a4d3f0f-c5e3-4b70-a188-0ca433f9e6f9@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mtk.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/sysfs/file.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
-index bfabd94a474a5..fa2c1b1c7dee4 100644
---- a/drivers/clk/mediatek/clk-mtk.c
-+++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -14,6 +14,7 @@
- #include <linux/of_address.h>
- #include <linux/of_device.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/slab.h>
- 
- #include "clk-mtk.h"
-@@ -470,6 +471,16 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
- 			return IS_ERR(base) ? PTR_ERR(base) : -ENOMEM;
- 	}
- 
-+
-+	devm_pm_runtime_enable(&pdev->dev);
-+	/*
-+	 * Do a pm_runtime_resume_and_get() to workaround a possible
-+	 * deadlock between clk_register() and the genpd framework.
-+	 */
-+	r = pm_runtime_resume_and_get(&pdev->dev);
-+	if (r)
-+		return r;
-+
- 	/* Calculate how many clk_hw_onecell_data entries to allocate */
- 	num_clks = mcd->num_clks + mcd->num_composite_clks;
- 	num_clks += mcd->num_fixed_clks + mcd->num_factor_clks;
-@@ -531,6 +542,8 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
- 			goto unregister_clks;
- 	}
- 
-+	pm_runtime_put(&pdev->dev);
-+
- 	return r;
- 
- unregister_clks:
-@@ -556,6 +569,8 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
- 	mtk_free_clk_data(clk_data);
- 	if (mcd->shared_io && base)
- 		iounmap(base);
-+
-+	pm_runtime_put(&pdev->dev);
- 	return r;
+--- a/fs/sysfs/file.c
++++ b/fs/sysfs/file.c
+@@ -450,6 +450,8 @@ struct kernfs_node *sysfs_break_active_p
+ 	kn = kernfs_find_and_get(kobj->sd, attr->name);
+ 	if (kn)
+ 		kernfs_break_active_protection(kn);
++	else
++		kobject_put(kobj);
+ 	return kn;
  }
- EXPORT_SYMBOL_GPL(mtk_clk_simple_probe);
--- 
-2.43.0
-
+ EXPORT_SYMBOL_GPL(sysfs_break_active_protection);
 
 
 
