@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A678AFA09
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC618AF97B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C461BB229CE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEB101C233EE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B351487F2;
-	Tue, 23 Apr 2024 21:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B81145345;
+	Tue, 23 Apr 2024 21:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7DCEDGG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0prLTyzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2158E145B0F;
-	Tue, 23 Apr 2024 21:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FC320B3E;
+	Tue, 23 Apr 2024 21:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908622; cv=none; b=c5eq6YW0p7HtuANLPfBRfOIKIxDzyp18vAe6Vx3eE6y3BcpsZb9CZGBoboSOYvhMnXeFJbk+SAw1Jv1ugVCREK3l70bhGbCtwRohSpL3vp2SePHkgohx1FebO2fMjuZEop3bIMerKzWS+L9nCBahGiui3G0fvh/tpblRzFq7Eqs=
+	t=1713908535; cv=none; b=DsU4+DXumZeRPIfV7Or93md0Hmv5ciiZPE6sDDYAdwgKKxVN3ksqYuHRBhQ1uSXgw3AzDGqBlwIvd8dGcRm0wmuopgjXJo5dHE/Nh3nINZmJLKg937JOq7uFcvzvMKhaiUsG8VsK64TqtAP3Q/UZBq4/nIVjkJCkhMCzlTIqaxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908622; c=relaxed/simple;
-	bh=QxYsMVWMynwM9XeE+ticMddsfMXnXsoh5udqcyf4uA8=;
+	s=arc-20240116; t=1713908535; c=relaxed/simple;
+	bh=3p7qRu5RW/qCTSATi2UQBWEuios5R2smDm5tDb1FJEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QK4SyqBpLO8f8PdK6HRMGpxs6qKWa4R+aQ8ITHpYDlH1mTLBcKGojs0wxK6i+iDk0JOu2VOmmxVK1enMB0Bn6ak9dyhy9Y8wbIoBLAk5/MfON/SUES4hJcOvONLhRDw54MeeQUYus682Hw+yOxvVkgqhFR6AxU/r1b+74wp3yXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7DCEDGG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9380C3277B;
-	Tue, 23 Apr 2024 21:43:41 +0000 (UTC)
+	 MIME-Version; b=XmIQYj+8cFsihKTJWfGdYizpv85RwVQ9Vrjgy2Kn0MCb4rl4qi/EsHd67InDNxY09halqWVp1vEyFGLpelby2BkcYDPBwakgRYvS8L/YMWTVX7PQWE5qVxHOo1H/MUx8ZuHA1OwdQPoS4HgrFmHgzpXiqc16XxikRaSmwR+ZRYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0prLTyzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A19C3277B;
+	Tue, 23 Apr 2024 21:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908622;
-	bh=QxYsMVWMynwM9XeE+ticMddsfMXnXsoh5udqcyf4uA8=;
+	s=korg; t=1713908535;
+	bh=3p7qRu5RW/qCTSATi2UQBWEuios5R2smDm5tDb1FJEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7DCEDGGWLEP8UFzY3Cj8/N65X/ev4Y62rzIp5Sw0OKGOIWenW1Bg9yffcuXb3/pN
-	 HGEPO+Ko3J4Xx1mFOe5V0QjqokiWGhcgs8TN0YawO9d3MgFYmWodagUisLSNYy88h6
-	 ko2Khi1GAe3SNAqc5ykQaMf3reOBGa6Rgyi2Eik4=
+	b=0prLTyznO5FfumI4wd2ERpcWvYzZemqeHpCI46W69rw1zT5rkKj6i/4NXlsg0kOdg
+	 2f55IXClIfWEwgeSm2ULvulsuwvYGCorbIW/H2is4f4SA4sSOh3W9RXKbSaQH//MX0
+	 R1Z0ERfa+KK/8GMcaBn2WQT3Y0bhmYGOsTXZ+Zk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/158] clk: mediatek: Do a runtime PM get on controllers during probe
+	Coia Prant <coiaprant@gmail.com>,
+	Lars Melin <larsm17@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.8 111/158] USB: serial: option: add Lonsung U8300/U9300 product
 Date: Tue, 23 Apr 2024 14:38:53 -0700
-Message-ID: <20240423213858.867439612@linuxfoundation.org>
+Message-ID: <20240423213859.544492897@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Coia Prant <coiaprant@gmail.com>
 
-[ Upstream commit 2f7b1d8b5505efb0057cd1ab85fca206063ea4c3 ]
+commit cf16ffa17c398434a77b8a373e69287c95b60de2 upstream.
 
-mt8183-mfgcfg has a mutual dependency with genpd during the probing
-stage, which leads to a deadlock in the following call stack:
+Update the USB serial option driver to support Longsung U8300/U9300.
 
-CPU0:  genpd_lock --> clk_prepare_lock
-genpd_power_off_work_fn()
- genpd_lock()
- generic_pm_domain::power_off()
-    clk_unprepare()
-      clk_prepare_lock()
+For U8300
 
-CPU1: clk_prepare_lock --> genpd_lock
-clk_register()
-  __clk_core_init()
-    clk_prepare_lock()
-    clk_pm_runtime_get()
-      genpd_lock()
+Interface 4 is used by for QMI interface in stock firmware of U8300, the
+router which uses U8300 modem.
+Interface 5 is used by for ADB interface in stock firmware of U8300, the
+router which uses U8300 modem.
 
-Do a runtime PM get at the probe function to make sure clk_register()
-won't acquire the genpd lock. Instead of only modifying mt8183-mfgcfg,
-do this on all mediatek clock controller probings because we don't
-believe this would cause any regression.
+Interface mapping is:
+0: unknown (Debug), 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI, 5: ADB
 
-Verified on MT8183 and MT8192 Chromebooks.
+T:  Bus=05 Lev=01 Prnt=03 Port=02 Cnt=01 Dev#=  4 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1c9e ProdID=9b05 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=Android
+C:  #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: acddfc2c261b ("clk: mediatek: Add MT8183 clock support")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+For U9300
 
-Link: https://lore.kernel.org/r/20240312115249.3341654-1-treapking@chromium.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Interface 1 is used by for ADB interface in stock firmware of U9300, the
+router which uses U9300 modem.
+Interface 4 is used by for QMI interface in stock firmware of U9300, the
+router which uses U9300 modem.
+
+Interface mapping is:
+0: ADB, 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI
+
+Note: Interface 3 of some models of the U9300 series can send AT commands.
+
+T:  Bus=05 Lev=01 Prnt=05 Port=04 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1c9e ProdID=9b3c Rev=03.18
+S:  Manufacturer=Android
+S:  Product=Android
+C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+
+Tested successfully using Modem Manager on U9300.
+Tested successfully AT commands using If=1, If=2 and If=3 on U9300.
+
+Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Reviewed-by: Lars Melin <larsm17@gmail.com>
+[ johan: drop product defines, trim commit message ]
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mtk.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
-index 2e55368dc4d82..bd37ab4d1a9bb 100644
---- a/drivers/clk/mediatek/clk-mtk.c
-+++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -13,6 +13,7 @@
- #include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/slab.h>
- 
- #include "clk-mtk.h"
-@@ -494,6 +495,16 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
- 			return IS_ERR(base) ? PTR_ERR(base) : -ENOMEM;
- 	}
- 
-+
-+	devm_pm_runtime_enable(&pdev->dev);
-+	/*
-+	 * Do a pm_runtime_resume_and_get() to workaround a possible
-+	 * deadlock between clk_register() and the genpd framework.
-+	 */
-+	r = pm_runtime_resume_and_get(&pdev->dev);
-+	if (r)
-+		return r;
-+
- 	/* Calculate how many clk_hw_onecell_data entries to allocate */
- 	num_clks = mcd->num_clks + mcd->num_composite_clks;
- 	num_clks += mcd->num_fixed_clks + mcd->num_factor_clks;
-@@ -574,6 +585,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
- 			goto unregister_clks;
- 	}
- 
-+	pm_runtime_put(&pdev->dev);
-+
- 	return r;
- 
- unregister_clks:
-@@ -604,6 +617,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
- free_base:
- 	if (mcd->shared_io && base)
- 		iounmap(base);
-+
-+	pm_runtime_put(&pdev->dev);
- 	return r;
- }
- 
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2052,6 +2052,10 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(LONGCHEER_VENDOR_ID, 0x9803, 0xff),
+ 	  .driver_info = RSVD(4) },
++	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b05),	/* Longsung U8300 */
++	  .driver_info = RSVD(4) | RSVD(5) },
++	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b3c),	/* Longsung U9300 */
++	  .driver_info = RSVD(0) | RSVD(4) },
+ 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
+ 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
+ 	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
 
 
 
