@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31818AFAEB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C108AFA3C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC811C239E9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163B91F2944E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B97145B30;
-	Tue, 23 Apr 2024 21:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C8E1494A5;
+	Tue, 23 Apr 2024 21:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gbid60Gf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0m3ds1gE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CE1148843;
-	Tue, 23 Apr 2024 21:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87182146008;
+	Tue, 23 Apr 2024 21:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908784; cv=none; b=UBA0+7ynuyy/d4pEEYrRVlY00b29s1jZySJGVi4wfGSCn6mPz7NYRf7dGXsTxLlrqSM+I3TwoUDiMZTjyQYaxGG7gGHdLOb+KB+910l19JRKd8mh0U4Td64gu+Dt3A2BrgdC/be8mmjG2SSrCwDwH6Iv/GNkuv+TWjvv//7s4+c=
+	t=1713908659; cv=none; b=NfHBzNAFUMGEjbQbWBLZu0OuMzxM4RPWYesmOCyL4wC0X6PkuPDCL8SiRy29+eOMDbrnazFtjtAmzHpoVhM5jNbRyl6tEjz/bFrqyJlDS2B7wl+NWpg5pAoRMQ9FHiu7cexs1T5piO88GdIZiJp1j467QJWGnUbOlyzBYQ2mdfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908784; c=relaxed/simple;
-	bh=Ro2iV7xC4KDR1sQr2TSAHVCMiP1BmKFtG7JfHKF7v5I=;
+	s=arc-20240116; t=1713908659; c=relaxed/simple;
+	bh=Z6ftZHBcInFWaTLbA4gPLJNS0bAA2IlVGDVMmflZr+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sY5GzYTomSh4sCl0WRD7Y4RH/CPgiB80QNvITyFLJTfRS7H6YqnrIctgDmbePpO6LclQQxCPrKgd25VhXw5IOu2oiLL6kG3ZSR2Pyk08eHWSDrhIXpapuG4dznQYqmDwdixDvqhnL8jaFX8iamudsEMboclm0os2ZsTg7pcmjA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gbid60Gf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC034C32783;
-	Tue, 23 Apr 2024 21:46:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xx24m5E+mcH6X0AzoJC0uX5FSR7zADSKEsYkHIW8LaceVlegKgc2ks4PTFuP6hAiGeBEZc2qVHrxtGquvzwQPaEau5izDDEkkMp8IyREhLXNSh+ZjJ2fm3Z8wJrGlfO02848btOio9gzssaZt06Oqdvvr2Ben9aob3YnQyB0U5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0m3ds1gE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA52C116B1;
+	Tue, 23 Apr 2024 21:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908783;
-	bh=Ro2iV7xC4KDR1sQr2TSAHVCMiP1BmKFtG7JfHKF7v5I=;
+	s=korg; t=1713908659;
+	bh=Z6ftZHBcInFWaTLbA4gPLJNS0bAA2IlVGDVMmflZr+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gbid60GfYsT+23LNikiw3BuwuSV2JnkYbXX7QHS0ifcg0BUjEIrZ4mLf0Ed8zNfCr
-	 CPlc6LQwF/5k46assjkezUrdnC+M16/Ie2XWUtPPoea0s2/oSRHJHjQA+cxXI4L8gH
-	 XO+wIi/wFCSKz5unsX991ePePiEIehD/J6nfv54c=
+	b=0m3ds1gEdqEdpl2jN677rnpXrZDCjALDkzHLwjDrmTXlkA5+DG5bXlffffr1aLg1z
+	 9CVdA5VXM5F9b8VVNQNrG87mHQNG4/ukfQzUDXQWrsIvAVyQ7UG+wQCg6C21bSNBne
+	 +pFKllUk4CQufw+Ef65vlUodq0sBdDx92ntXd0WE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/71] drm/panel: visionox-rm69299: dont unregister DSI device
-Date: Tue, 23 Apr 2024 14:39:46 -0700
-Message-ID: <20240423213845.291699144@linuxfoundation.org>
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 150/158] net: dsa: mt7530: fix improper frames on all 25MHz and 40MHz XTAL MT7530
+Date: Tue, 23 Apr 2024 14:39:47 -0700
+Message-ID: <20240423213900.545656951@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-[ Upstream commit 9e4d3f4f34455abbaa9930bf6b7575a5cd081496 ]
+commit 5f563c31ff0c40ce395d0bae7daa94c7950dac97 upstream.
 
-The DSI device for the panel was registered by the DSI host, so it is an
-error to unregister it from the panel driver. Drop the call to
-mipi_dsi_device_unregister().
+The MT7530 switch after reset initialises with a core clock frequency that
+works with a 25MHz XTAL connected to it. For 40MHz XTAL, the core clock
+frequency must be set to 500MHz.
 
-Fixes: c7f66d32dd43 ("drm/panel: add support for rm69299 visionox panel")
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404-drop-panel-unregister-v1-1-9f56953c5fb9@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The mt7530_pll_setup() function is responsible of setting the core clock
+frequency. Currently, it runs on MT7530 with 25MHz and 40MHz XTAL. This
+causes MT7530 switch with 25MHz XTAL to egress and ingress frames
+improperly.
+
+Introduce a check to run it only on MT7530 with 40MHz XTAL.
+
+The core clock frequency is set by writing to a switch PHY's register.
+Access to the PHY's register is done via the MDIO bus the switch is also
+on. Therefore, it works only when the switch makes switch PHYs listen on
+the MDIO bus the switch is on. This is controlled either by the state of
+the ESW_P1_LED_1 pin after reset deassertion or modifying bit 5 of the
+modifiable trap register.
+
+When ESW_P1_LED_1 is pulled high, PHY indirect access is used. That means
+accessing PHY registers via the PHY indirect access control register of the
+switch.
+
+When ESW_P1_LED_1 is pulled low, PHY direct access is used. That means
+accessing PHY registers via the MDIO bus the switch is on.
+
+For MT7530 switch with 40MHz XTAL on a board with ESW_P1_LED_1 pulled high,
+the core clock frequency won't be set to 500MHz, causing the switch to
+egress and ingress frames improperly.
+
+Run mt7530_pll_setup() after PHY direct access is set on the modifiable
+trap register.
+
+With these two changes, all MT7530 switches with 25MHz and 40MHz, and
+P1_LED_1 pulled high or low, will egress and ingress frames properly.
+
+Link: https://github.com/BPI-SINOVOIP/BPI-R2-bsp/blob/4a5dd143f2172ec97a2872fa29c7c4cd520f45b5/linux-mt/drivers/net/ethernet/mediatek/gsw_mt7623.c#L1039
+Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Link: https://lore.kernel.org/r/20240320-for-net-mt7530-fix-25mhz-xtal-with-direct-phy-access-v1-1-d92f605f1160@arinc9.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/dsa/mt7530.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-index eb43503ec97b3..6134432e4918d 100644
---- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-+++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-@@ -261,8 +261,6 @@ static int visionox_rm69299_remove(struct mipi_dsi_device *dsi)
- 	struct visionox_rm69299 *ctx = mipi_dsi_get_drvdata(dsi);
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -2472,8 +2472,6 @@ mt7530_setup(struct dsa_switch *ds)
+ 		     SYS_CTRL_PHY_RST | SYS_CTRL_SW_RST |
+ 		     SYS_CTRL_REG_RST);
  
- 	mipi_dsi_detach(ctx->dsi);
--	mipi_dsi_device_unregister(ctx->dsi);
+-	mt7530_pll_setup(priv);
 -
- 	drm_panel_remove(&ctx->panel);
- 	return 0;
- }
--- 
-2.43.0
-
+ 	/* Lower Tx driving for TRGMII path */
+ 	for (i = 0; i < NUM_TRGMII_CTRL; i++)
+ 		mt7530_write(priv, MT7530_TRGMII_TD_ODT(i),
+@@ -2491,6 +2489,9 @@ mt7530_setup(struct dsa_switch *ds)
+ 
+ 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
+ 
++	if ((val & HWTRAP_XTAL_MASK) == HWTRAP_XTAL_40MHZ)
++		mt7530_pll_setup(priv);
++
+ 	mt753x_trap_frames(priv);
+ 
+ 	/* Enable and reset MIB counters */
 
 
 
