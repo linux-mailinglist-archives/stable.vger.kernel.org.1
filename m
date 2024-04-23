@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01B18AE681
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:43:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 575418AE6CA
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8241F21255
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:43:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8D5282396
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398C812C474;
-	Tue, 23 Apr 2024 12:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A2812C474;
+	Tue, 23 Apr 2024 12:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFqHE8e6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0liEbypA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEB812BF36
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439B485C48
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713876103; cv=none; b=F7AsEOf2cK/m5opU+IeJjKQ/jN9XB0BxJxUdMmRlUGNb7/DtgENnU5xcly4uKfzt5CMFYmYJrXY/gMOG5K7HRabcTc3oybGYpG6ymUVVnedN/Z2gNCavpJFnGK3feHwQWyse/hDXDbUr8NhWw0OkKLzM4u59B8pQCyKX6bp79R4=
+	t=1713876272; cv=none; b=nj8KTBCny8tN2So5HpqIh/4REkoZHUSHLck0iWZfFvCqj4QIpjX/X64LhVkwMjLeWlOBNZlaLCA/rt43zNF9BejLXw/8wlorLZE306pKFofl4RbWV/pwkLCmiX/FwMStsZRgaMUOhDZCgMjsBGPI5N1+2teL2I8tJCLfC206uwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713876103; c=relaxed/simple;
-	bh=CeSNmGY9Ogh5bnim8CPa7pFpYQ3+WLgHXYdmWDIz15M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OCudjzz0hy39tUb88zsSfSww6QmDXsr6Poc0WW+o3J6HgM4yQTX5f07qDGEY3IJiAdFExgpxuN9qEYdS7xf3mpX4UKnsuX+Rl6i5pWTjpLKn6IpYiI3q1s3VIFsCukevYs2NZa74TXt/Q6Rj360CrQWBBHTVQJvReVMMz2Qx8Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFqHE8e6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EACC116B1;
-	Tue, 23 Apr 2024 12:41:42 +0000 (UTC)
+	s=arc-20240116; t=1713876272; c=relaxed/simple;
+	bh=rDYVPXYJn2Qx7YaN0XQS6DOHw39w8xvFtUfrvPbaklM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c1U6puZXqa7te+TlZ1RESnTTZ4WrN3KRtYjrrn1mx+DIvUesmGziqosEulaEw8vQ/oxY7DZvmvJwcmJT9OX/UvpsbXqeCDm24PRa3dTc+oZGQlh8e90Gc5Fk0h8ZesNKYR/BbJHJlBG5iymhHekFvPgbhnebl6m1qt23hcC1uhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0liEbypA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5C7C116B1;
+	Tue, 23 Apr 2024 12:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713876102;
-	bh=CeSNmGY9Ogh5bnim8CPa7pFpYQ3+WLgHXYdmWDIz15M=;
+	s=korg; t=1713876271;
+	bh=rDYVPXYJn2Qx7YaN0XQS6DOHw39w8xvFtUfrvPbaklM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rFqHE8e696XaSpH6U7lm1tWtEOCK4+wU2gmwJGUG+zLmUKviYtkML07Kg770hr/y8
-	 AmG3Hj6XtJ4YnTc7fOzLpq51NmnWvZyjH+4nFmy1SxfCS4U8Ba874dD/QF8s9dcMT3
-	 O+5Jli/3ARBCkyNYmPo1YmKmrNuwWFlFOnPKEYMc=
-Subject: FAILED: patch "[PATCH] Revert "drm/amd/display: fix USB-C flag update after enc10" failed to apply to 6.8-stable tree
-To: alexander.deucher@amd.com,ahmed.ahmed@amd.com,charlene.liu@amd.com,chiahsuan.chung@amd.com,hamza.mahfooz@amd.com,harry.wentland@amd.com
+	b=0liEbypABzu+I7F0iYUSABDEAmcoA8qMNWWiCenev7D+cftoiMbqCDiAPnZDlBu58
+	 wUodNJHQ44awkVlpY879e/e1nJEbNMl/MMcXXg31Jz5eZqNRMZBwIn0vSh0l4wuwoQ
+	 Y8tYFwnqubfG/4T0ajPZcQaw32VZCgRh4s/Grlgo=
+Subject: FAILED: patch "[PATCH] usb: xhci: correct return value in case of STS_HCE" failed to apply to 6.8-stable tree
+To: oneukum@suse.com,gregkh@linuxfoundation.org,mathias.nyman@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 05:41:32 -0700
-Message-ID: <2024042332-depose-frenzy-e027@gregkh>
+Date: Tue, 23 Apr 2024 05:44:22 -0700
+Message-ID: <2024042322-lunchbox-flint-5a2b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,15 +62,19 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
 git checkout FETCH_HEAD
-git cherry-pick -x 91f10a3d21f2313485178d49efef8a3ba02bd8c7
+git cherry-pick -x 5bfc311dd6c376d350b39028b9000ad766ddc934
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042332-depose-frenzy-e027@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042322-lunchbox-flint-5a2b@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
 
 Possible dependencies:
 
-91f10a3d21f2 ("Revert "drm/amd/display: fix USB-C flag update after enc10 feature init"")
-7d1e9d0369e4 ("drm/amd/display: Check DP Alt mode DPCS state via DMUB")
+5bfc311dd6c3 ("usb: xhci: correct return value in case of STS_HCE")
+84ac5e4fa517 ("xhci: move event processing for one interrupter to a separate function")
+e30e9ad9ed66 ("xhci: update event ring dequeue pointer position to controller correctly")
+143e64df1bda ("xhci: remove unnecessary event_ring_deq parameter from xhci_handle_event()")
+becbd202af84 ("xhci: make isoc_bei_interval variable interrupter specific.")
+4f022aad80dc ("xhci: Add interrupt pending autoclear flag to each interrupter")
 
 thanks,
 
@@ -78,69 +82,66 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 91f10a3d21f2313485178d49efef8a3ba02bd8c7 Mon Sep 17 00:00:00 2001
-From: Alex Deucher <alexander.deucher@amd.com>
-Date: Fri, 29 Mar 2024 18:03:03 -0400
-Subject: [PATCH] Revert "drm/amd/display: fix USB-C flag update after enc10
- feature init"
+From 5bfc311dd6c376d350b39028b9000ad766ddc934 Mon Sep 17 00:00:00 2001
+From: Oliver Neukum <oneukum@suse.com>
+Date: Thu, 4 Apr 2024 15:11:05 +0300
+Subject: [PATCH] usb: xhci: correct return value in case of STS_HCE
 
-This reverts commit b5abd7f983e14054593dc91d6df2aa5f8cc67652.
+If we get STS_HCE we give up on the interrupt, but for the purpose
+of IRQ handling that still counts as ours. We may return IRQ_NONE
+only if we are positive that it wasn't ours. Hence correct the default.
 
-This change breaks DSC on 4k monitors at 144Hz over USB-C.
+Fixes: 2a25e66d676d ("xhci: print warning when HCE was set")
+Cc: stable@vger.kernel.org # v6.2+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240404121106.2842417-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3254
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Muhammad Ahmed <ahmed.ahmed@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Charlene Liu <charlene.liu@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: stable@vger.kernel.org
-
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dio_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dio_link_encoder.c
-index e224a028d68a..8a0460e86309 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dio_link_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dio_link_encoder.c
-@@ -248,14 +248,12 @@ void dcn32_link_encoder_construct(
- 	enc10->base.hpd_source = init_data->hpd_source;
- 	enc10->base.connector = init_data->connector;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 52278afea94b..575f0fd9c9f1 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -3133,7 +3133,7 @@ static int xhci_handle_events(struct xhci_hcd *xhci, struct xhci_interrupter *ir
+ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ {
+ 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
+-	irqreturn_t ret = IRQ_NONE;
++	irqreturn_t ret = IRQ_HANDLED;
+ 	u32 status;
  
-+	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
-+		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
-+
- 	enc10->base.preferred_engine = ENGINE_ID_UNKNOWN;
- 
- 	enc10->base.features = *enc_features;
--	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
--		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
--
--	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
--		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
- 
- 	enc10->base.transmitter = init_data->transmitter;
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c
-index 81e349d5835b..da94e5309fba 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c
-@@ -184,6 +184,8 @@ void dcn35_link_encoder_construct(
- 	enc10->base.hpd_source = init_data->hpd_source;
- 	enc10->base.connector = init_data->connector;
- 
-+	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
-+		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
- 
- 	enc10->base.preferred_engine = ENGINE_ID_UNKNOWN;
- 
-@@ -238,8 +240,6 @@ void dcn35_link_encoder_construct(
+ 	spin_lock(&xhci->lock);
+@@ -3141,12 +3141,13 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ 	status = readl(&xhci->op_regs->status);
+ 	if (status == ~(u32)0) {
+ 		xhci_hc_died(xhci);
+-		ret = IRQ_HANDLED;
+ 		goto out;
  	}
  
- 	enc10->base.features.flags.bits.HDMI_6GB_EN = 1;
--	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
--		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
+-	if (!(status & STS_EINT))
++	if (!(status & STS_EINT)) {
++		ret = IRQ_NONE;
+ 		goto out;
++	}
  
- 	if (bp_funcs->get_connector_speed_cap_info)
- 		result = bp_funcs->get_connector_speed_cap_info(enc10->base.ctx->dc_bios,
+ 	if (status & STS_HCE) {
+ 		xhci_warn(xhci, "WARNING: Host Controller Error\n");
+@@ -3156,7 +3157,6 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ 	if (status & STS_FATAL) {
+ 		xhci_warn(xhci, "WARNING: Host System Error\n");
+ 		xhci_halt(xhci);
+-		ret = IRQ_HANDLED;
+ 		goto out;
+ 	}
+ 
+@@ -3167,7 +3167,6 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ 	 */
+ 	status |= STS_EINT;
+ 	writel(status, &xhci->op_regs->status);
+-	ret = IRQ_HANDLED;
+ 
+ 	/* This is the handler of the primary interrupter */
+ 	xhci_handle_events(xhci, xhci->interrupters[0]);
 
 
