@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-41100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72F18AFA53
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0687B8AF9F1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D69F1F29690
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 383251C2233C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55A51494DF;
-	Tue, 23 Apr 2024 21:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BA9145B03;
+	Tue, 23 Apr 2024 21:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYHArx26"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSNbFYeW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855EB146A94;
-	Tue, 23 Apr 2024 21:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B75143C57;
+	Tue, 23 Apr 2024 21:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908677; cv=none; b=AtEWUncYJ+Xeyny2Z0+aPVS2ZahioLjotZLjuY6dPM+SZkO/iy+AVNjdOns0yYDZ8u0WPML5MDIwAe7+WiNv1pcxK9bIJfnYFvGtCBQKAgJEgUsrVtSqtIgqoyopBsxIqeKpNYVZ65I+yclhesLyLmh0KNu5f/zErp83Xv0+t3g=
+	t=1713908610; cv=none; b=q9uSlSeegMesHw8Y21LN+8Arq1jKnc01FA7mSAP2J0bSMwy0fEtn/ROlVeiqL4BvLioMJIO9ZtkTZKfvfbcVpowhDODIFyKfkWWdeYJbe1m8pOv+WjGNDEXMHlfFIPRceN9ryxr9ZUWckYoAXYBCXp44OQCVcEA7It1BRHRj79g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908677; c=relaxed/simple;
-	bh=qqz+eoE+pIxt5I69W3X7UUtgNRjdwparQfkjy9Kkm6s=;
+	s=arc-20240116; t=1713908610; c=relaxed/simple;
+	bh=GeyLBrV5fuK0RptIRICI7y063hcv44xSW5YwLjWSbXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFALizL8B623ncD7GHDcPG6YRvInkyYqgiKQX5LXCpPNHC1+SV9I/Pb4c25nKFZq6sYsIbX7usY5Xxap6hQ0bvD9ouwzNrekoC/CLEbi9Gp9tLv4JCS7XUMAIrHHU7/bXPr4RE7mwuFCAdUI9W2m7bUOwpa5r1GkZlHY7ha1d4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYHArx26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59542C116B1;
-	Tue, 23 Apr 2024 21:44:37 +0000 (UTC)
+	 MIME-Version; b=AT4P1gGYUztirvDhB1u55/g23ivrjrxCnss9RWioVLtyEYrKl4jRXCPfe0+LjO/6342h3wFJcAPFUZ6OkixwDhaHKDS/Giv2IEHjvlX5FFA/rZBwihIHe0jEnsC6qiJazdZalbdCV1Bq9L8K0neUI0z7qweDHKvlVs7NcFeg0YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSNbFYeW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C645BC3277B;
+	Tue, 23 Apr 2024 21:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908677;
-	bh=qqz+eoE+pIxt5I69W3X7UUtgNRjdwparQfkjy9Kkm6s=;
+	s=korg; t=1713908609;
+	bh=GeyLBrV5fuK0RptIRICI7y063hcv44xSW5YwLjWSbXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYHArx26iwoP+CGq7DGZF3ObSd/7y2tK1/hqIci1/NSfSkUx/qkFZ/Q0QtN3AkhG+
-	 nZJPHEViYj0lU9Y5QKIcLGfvQRaSMazIAjPlqB9sX1E0WFv2YEPxlei4b36vcQjP0D
-	 oAaNV26LtPq0xkYs/EQ103WEZ8scV766Ox3hQBIQ=
+	b=YSNbFYeW9NZDBr6AQs8wKHcnkIs0Q9y3IcNGzBJ885Dy+5SqItj6OckUN7JnweGOD
+	 LW1CK18xnfMTd5AryWVKk5HVZXMevghu2RvxhzGofxbnIVmaiaZd1jqgeoA2MeBzDR
+	 tKcFhgd+NbEJb0uoX4D7K9WWUJbOmCmsQl9c3mGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 019/141] x86/boot: Grab kernel_info offset from zoffset header directly
-Date: Tue, 23 Apr 2024 14:38:07 -0700
-Message-ID: <20240423213853.950783770@linuxfoundation.org>
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 051/158] ice: Fix checking for unsupported keys on non-tunnel device
+Date: Tue, 23 Apr 2024 14:38:08 -0700
+Message-ID: <20240423213857.429083896@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-[ Commit 2e765c02dcbfc2a8a4527c621a84b9502f6b9bd2 upstream ]
+[ Upstream commit 2cca35f5dd78b9f8297c879c5db5ab137c5d86c3 ]
 
-Instead of parsing zoffset.h and poking the kernel_info offset value
-into the header from the build tool, just grab the value directly in the
-asm file that describes this header.
+Add missing FLOW_DISSECTOR_KEY_ENC_* checks to TC flower filter parsing.
+Without these checks, it would be possible to add filters with tunnel
+options on non-tunnel devices. enc_* options are only valid for tunnel
+devices.
 
-This change has no impact on the resulting bzImage binary.
+Example:
+  devlink dev eswitch set $PF1_PCI mode switchdev
+  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
+  tc qdisc add dev $VF1_PR ingress
+  ethtool -K $PF1 hw-tc-offload on
+  tc filter add dev $VF1_PR ingress flower enc_ttl 12 skip_sw action drop
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230915171623.655440-11-ardb@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9e300987d4a8 ("ice: VXLAN and Geneve TC support")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/header.S      |    2 +-
- arch/x86/boot/tools/build.c |    4 ----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -525,7 +525,7 @@ pref_address:		.quad LOAD_PHYSICAL_ADDR
- 
- init_size:		.long INIT_SIZE		# kernel initialization size
- handover_offset:	.long 0			# Filled in by build.c
--kernel_info_offset:	.long 0			# Filled in by build.c
-+kernel_info_offset:	.long ZO_kernel_info
- 
- # End of setup header #####################################################
- 
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -59,7 +59,6 @@ static unsigned long efi32_stub_entry;
- static unsigned long efi64_stub_entry;
- static unsigned long efi_pe_entry;
- static unsigned long efi32_pe_entry;
--static unsigned long kernel_info;
- static unsigned long _end;
- 
- /*----------------------------------------------------------------------*/
-@@ -337,7 +336,6 @@ static void parse_zoffset(char *fname)
- 		PARSE_ZOFS(p, efi64_stub_entry);
- 		PARSE_ZOFS(p, efi_pe_entry);
- 		PARSE_ZOFS(p, efi32_pe_entry);
--		PARSE_ZOFS(p, kernel_info);
- 		PARSE_ZOFS(p, _end);
- 
- 		p = strchr(p, '\n');
-@@ -419,8 +417,6 @@ int main(int argc, char ** argv)
- 	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
- 
- 	efi_stub_entry_update();
--	/* Update kernel_info offset. */
--	put_unaligned_le32(kernel_info, &buf[0x268]);
- 
- 	crc = partial_crc32(buf, i, crc);
- 	if (fwrite(buf, 1, i, dest) != i)
+diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+index 9c97c99feac3d..76ad5930c0102 100644
+--- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+@@ -1448,7 +1448,10 @@ ice_parse_cls_flower(struct net_device *filter_dev, struct ice_vsi *vsi,
+ 		  (BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IPV4_ADDRS) |
+ 		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IPV6_ADDRS) |
+ 		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_KEYID) |
+-		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_PORTS))) {
++		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_PORTS) |
++		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_IP) |
++		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_OPTS) |
++		   BIT_ULL(FLOW_DISSECTOR_KEY_ENC_CONTROL))) {
+ 		NL_SET_ERR_MSG_MOD(fltr->extack, "Tunnel key used, but device isn't a tunnel");
+ 		return -EOPNOTSUPP;
+ 	} else {
+-- 
+2.43.0
+
 
 
 
