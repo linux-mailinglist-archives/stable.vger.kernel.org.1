@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-41190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158818AFB2E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:54:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1C78AF97F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6758B27E93
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D7B5287FCD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC9D1482EF;
-	Tue, 23 Apr 2024 21:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F1F144D07;
+	Tue, 23 Apr 2024 21:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlQ2RaQh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xilliDsw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB3B143882;
-	Tue, 23 Apr 2024 21:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3690420B3E;
+	Tue, 23 Apr 2024 21:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908739; cv=none; b=n8inIexemavhm0FdQ8tfmqzc+L8lpcgyJQ6d5x1QU0DWFD/7AIPX7oD/pMYx6fMr7FJx2uClYFmJOO9QH+9KxsDu0Jqy9clM/xljLP9CxSdsIDtulku0WU7jw4c5gaqpWOLht6tWcdbO/Hv70BtAdyJSbnMEqWODSH1hG1vAKTE=
+	t=1713908537; cv=none; b=ejiJ4sOl6HwiQgi8drN0wjB+EMBHMXeDlcnZAw3i6oS3m25HLA5PZNWvfcCWUvvKDHIXNaV4tV+N/etQiCnXeiuxLGaTbozsqKO39G4qyXYZ0+RuPJysdv1G6zVPHqbC9ocgrrFpwRO8jraAOQO9Dcf2SuQhLTVVpZnok6jgMMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908739; c=relaxed/simple;
-	bh=3e9QiZSM87HXoskk9malujogzkzAXnUnpvy//f2tXF8=;
+	s=arc-20240116; t=1713908537; c=relaxed/simple;
+	bh=P+rWb+3tDpBzmZEs+6/CZrPW+hNgL5We+C9z5LlX1mA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aAnUaTxrH52C7kS6WDJuOySJ7sUatOQiIt0ffDLoIejmyAymZpVNEToCBySLPXlJPLPoV8C7FTp7xE+JSSEErmCLEphWprPkvltYTPVH+ZWX3nWuy9BR9/Sz9JS0abonemtHAUmSPRQulVDUaML4gf1Be7gxVEwqO+CNWqbJWpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlQ2RaQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DB1C3277B;
-	Tue, 23 Apr 2024 21:45:38 +0000 (UTC)
+	 MIME-Version; b=jtakBYJZAudvuxyemOwlNJND3nnOqktDFEgSKdVMxll5QTah4yx+O7k9ktXiLiwlR6yaPLHsmUCVkGQGbvoIaGBEtHC5O8eyZsXJye24ZrkTiFTZM2cd4cpd+TYSwwbc6vHdCefF6XfE0hnHLJZ30HjTSiDwH517inMN3vIFCIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xilliDsw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032F5C116B1;
+	Tue, 23 Apr 2024 21:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908738;
-	bh=3e9QiZSM87HXoskk9malujogzkzAXnUnpvy//f2tXF8=;
+	s=korg; t=1713908537;
+	bh=P+rWb+3tDpBzmZEs+6/CZrPW+hNgL5We+C9z5LlX1mA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LlQ2RaQhVAtct+SyPjHHJCQ3YX9yzP7OGWErDZrmlrj5rJFDF7ua2+WbU5+HEeMJo
-	 a4HhaYbR9BPr4JkIgElng7tuJI4wDMJnZwRmLELoezj9FJjQCyZT8l4t0mDX/Q2TxW
-	 A7nAJAbQvn+aUpd91aEdNuAIfr2jcmWlHRpqf4Js=
+	b=xilliDsw+NHl7RBOKAlHNwXdE6awLulKjEC48C6f0LgRRnlx8qMYtmLO+37hnkpQ9
+	 RM/pGftkMMj8fTJYl3OEOElcbtOFzJKtST0LQEYFL2rHuRbTM10mudGHcRoMw4QpNS
+	 JKj5tuCb3gweBcsd0+pdmSpTybXzdjwj2ZATnvSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/141] clk: Print an info line before disabling unused clocks
+	syzbot+900d58a45dcaab9e4821@syzkaller.appspotmail.com,
+	Vipin Sharma <vipinsh@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	David Matlack <dmatlack@google.com>
+Subject: [PATCH 6.8 130/158] KVM: x86/mmu: Write-protect L2 SPTEs in TDP MMU when clearing dirty status
 Date: Tue, 23 Apr 2024 14:39:12 -0700
-Message-ID: <20240423213855.909687218@linuxfoundation.org>
+Message-ID: <20240423213900.124987826@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: David Matlack <dmatlack@google.com>
 
-[ Upstream commit 12ca59b91d04df32e41be5a52f0cabba912c11de ]
+commit 2673dfb591a359c75080dd5af3da484b89320d22 upstream.
 
-Currently, the regulator framework informs us before calling into
-their unused cleanup paths, which eases at least some debugging. The
-same could be beneficial for clocks, so that random shutdowns shortly
-after most initcalls are done can be less of a guess.
+Check kvm_mmu_page_ad_need_write_protect() when deciding whether to
+write-protect or clear D-bits on TDP MMU SPTEs, so that the TDP MMU
+accounts for any role-specific reasons for disabling D-bit dirty logging.
 
-Add a pr_info before disabling unused clocks to do so.
+Specifically, TDP MMU SPTEs must be write-protected when the TDP MMU is
+being used to run an L2 (i.e. L1 has disabled EPT) and PML is enabled.
+KVM always disables PML when running L2, even when L1 and L2 GPAs are in
+the some domain, so failing to write-protect TDP MMU SPTEs will cause
+writes made by L2 to not be reflected in the dirty log.
 
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230307132928.3887737-1-konrad.dybcio@linaro.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+900d58a45dcaab9e4821@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=900d58a45dcaab9e4821
+Fixes: 5982a5392663 ("KVM: x86/mmu: Use kvm_ad_enabled() to determine if TDP MMU SPTEs need wrprot")
+Cc: stable@vger.kernel.org
+Cc: Vipin Sharma <vipinsh@google.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
+Link: https://lore.kernel.org/r/20240315230541.1635322-2-dmatlack@google.com
+[sean: massage shortlog and changelog, tweak ternary op formatting]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/mmu/tdp_mmu.c |   21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index ad40913d80a8b..d841a9d7281c6 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -1388,6 +1388,8 @@ static int __init clk_disable_unused(void)
- 		return 0;
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1498,6 +1498,16 @@ void kvm_tdp_mmu_try_split_huge_pages(st
  	}
+ }
  
-+	pr_info("clk: Disabling unused clocks\n");
++static bool tdp_mmu_need_write_protect(struct kvm_mmu_page *sp)
++{
++	/*
++	 * All TDP MMU shadow pages share the same role as their root, aside
++	 * from level, so it is valid to key off any shadow page to determine if
++	 * write protection is needed for an entire tree.
++	 */
++	return kvm_mmu_page_ad_need_write_protect(sp) || !kvm_ad_enabled();
++}
 +
- 	clk_prepare_lock();
+ /*
+  * Clear the dirty status of all the SPTEs mapping GFNs in the memslot. If
+  * AD bits are enabled, this will involve clearing the dirty bit on each SPTE.
+@@ -1508,7 +1518,8 @@ void kvm_tdp_mmu_try_split_huge_pages(st
+ static bool clear_dirty_gfn_range(struct kvm *kvm, struct kvm_mmu_page *root,
+ 			   gfn_t start, gfn_t end)
+ {
+-	u64 dbit = kvm_ad_enabled() ? shadow_dirty_mask : PT_WRITABLE_MASK;
++	const u64 dbit = tdp_mmu_need_write_protect(root) ? PT_WRITABLE_MASK :
++							    shadow_dirty_mask;
+ 	struct tdp_iter iter;
+ 	bool spte_set = false;
  
- 	hlist_for_each_entry(core, &clk_root_list, child_node)
--- 
-2.43.0
-
+@@ -1523,7 +1534,7 @@ retry:
+ 		if (tdp_mmu_iter_cond_resched(kvm, &iter, false, true))
+ 			continue;
+ 
+-		KVM_MMU_WARN_ON(kvm_ad_enabled() &&
++		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
+ 				spte_ad_need_write_protect(iter.old_spte));
+ 
+ 		if (!(iter.old_spte & dbit))
+@@ -1570,8 +1581,8 @@ bool kvm_tdp_mmu_clear_dirty_slot(struct
+ static void clear_dirty_pt_masked(struct kvm *kvm, struct kvm_mmu_page *root,
+ 				  gfn_t gfn, unsigned long mask, bool wrprot)
+ {
+-	u64 dbit = (wrprot || !kvm_ad_enabled()) ? PT_WRITABLE_MASK :
+-						   shadow_dirty_mask;
++	const u64 dbit = (wrprot || tdp_mmu_need_write_protect(root)) ? PT_WRITABLE_MASK :
++									shadow_dirty_mask;
+ 	struct tdp_iter iter;
+ 
+ 	lockdep_assert_held_write(&kvm->mmu_lock);
+@@ -1583,7 +1594,7 @@ static void clear_dirty_pt_masked(struct
+ 		if (!mask)
+ 			break;
+ 
+-		KVM_MMU_WARN_ON(kvm_ad_enabled() &&
++		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
+ 				spte_ad_need_write_protect(iter.old_spte));
+ 
+ 		if (iter.level > PG_LEVEL_4K ||
 
 
 
