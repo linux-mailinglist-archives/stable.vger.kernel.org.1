@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-40916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344748AF995
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB99F8AFA44
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6F11F26E1D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CF7C1F29666
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9D3144D36;
-	Tue, 23 Apr 2024 21:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFC51494C6;
+	Tue, 23 Apr 2024 21:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNpuHXHl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGwiYNUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A84220B3E;
-	Tue, 23 Apr 2024 21:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2D7143C52;
+	Tue, 23 Apr 2024 21:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908552; cv=none; b=UJORPvo7Z8pqmohQhBDHKaW6wlID347dQReHGEkDlrkHquhoLVOfGTPyVSXC95mr0/Jz37x7Qj/fQ+G7PxlXE9IOLafOlqBAxMiQEWp0SwlLwUggsj9QIOD2f0wcVfC2wlZydC6nvMCPZQ7UJGFkgyCC7fFs1oSjNPJQm8/YFOw=
+	t=1713908667; cv=none; b=JbwGgDD9rmVBT+vanB35PW7LW05FjjzqDtIGaDl6MbUEhA9uSRABoqLMzq881MOTg2VJutFrAE81A5hNff+SLlub5wnVJwwOMgkYB/7YRp5TC+zHLGICYdaql3YVHgT4ZZwOyMMLGELPNrwHw1ESEj/Q/9Yeu3CxaQ+AJkoSnS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908552; c=relaxed/simple;
-	bh=MHWJTUZZDr0c7bwFuKVXnzjbR5GlMBQYeKR9vKJHLJk=;
+	s=arc-20240116; t=1713908667; c=relaxed/simple;
+	bh=ByfPTkQcIeXfTFX8HC97A42YMKDQP+VWD1LlGE207Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mqpkpY/FZjvCNs5gUvU63ge531fD0UuKcCYLUxD0+RHdsdIecUlRXv887IuhIDOYyoQF2/dU8zPzKcohE2a/C5puorAkxJGqPTVB1WSqhBxzR85BAGhhzhm0VlwP6/JANR1T9BOnQzdZeGAeafCjbMD04Hh5BR7HDavKv3PFMRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNpuHXHl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AE3C3277B;
-	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
+	 MIME-Version; b=RzyEyUlGZlGo4bpik+nZOv/tZw1p8B7aO5LnKUuPn6BOiqxNsIpfu8RPX1raVQDEvKNTK3AU8VRSVKrc5SdDK1Q5GJAlbbvItgNJJyZc1zEImB/+uCyYHrAIyo4rbKTDNiNe7w9t9HtCGBtETbhn4VC1IR95gkCwjZfqs5lcOh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGwiYNUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FDBC3277B;
+	Tue, 23 Apr 2024 21:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908552;
-	bh=MHWJTUZZDr0c7bwFuKVXnzjbR5GlMBQYeKR9vKJHLJk=;
+	s=korg; t=1713908667;
+	bh=ByfPTkQcIeXfTFX8HC97A42YMKDQP+VWD1LlGE207Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNpuHXHliZ+8iXs0ODVd3m9jAi+6U/DTz6Qe3vqEidLAXSLYLlDpMyKsaYE9Ig2/m
-	 MLXW5mzhYC6wXEFLC72rpmklZU7apErmcLvOZvRszm3NUUuQEqbwUz9Tm+ds04R5av
-	 GHdXC6zg/vGIp3nRoYIfVcrDv4AoMoXWFyyYjx64=
+	b=rGwiYNUFAUPgHx+7BVLunzi5mycwP1xGSGpUrVSOXkOYph8WexBZLBiu9G/7XQtt2
+	 oS3VttcFd8qPuCrqh2oNKauFyjvwjLZcLTHVHtYNOGQ/d4XFBKVR+P6xaJ1coqjPt/
+	 Z0LWQUzNaWWvxzl6Qycghb26gw1GRWrIUr7ZrFVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.8 153/158] net: dsa: mt7530: fix improper frames on all 25MHz and 40MHz XTAL MT7530
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jane Chu <jane.chu@oracle.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 138/158] mm/memory-failure: fix deadlock when hugetlb_optimize_vmemmap is enabled
 Date: Tue, 23 Apr 2024 14:39:35 -0700
-Message-ID: <20240423213900.817584586@linuxfoundation.org>
+Message-ID: <20240423213900.184963664@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +62,174 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-commit 5f563c31ff0c40ce395d0bae7daa94c7950dac97 upstream.
+commit 1983184c22dd84a4d95a71e5c6775c2638557dc7 upstream.
 
-The MT7530 switch after reset initialises with a core clock frequency that
-works with a 25MHz XTAL connected to it. For 40MHz XTAL, the core clock
-frequency must be set to 500MHz.
+When I did hard offline test with hugetlb pages, below deadlock occurs:
 
-The mt7530_pll_setup() function is responsible of setting the core clock
-frequency. Currently, it runs on MT7530 with 25MHz and 40MHz XTAL. This
-causes MT7530 switch with 25MHz XTAL to egress and ingress frames
-improperly.
+======================================================
+WARNING: possible circular locking dependency detected
+6.8.0-11409-gf6cef5f8c37f #1 Not tainted
+------------------------------------------------------
+bash/46904 is trying to acquire lock:
+ffffffffabe68910 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_slow_dec+0x16/0x60
 
-Introduce a check to run it only on MT7530 with 40MHz XTAL.
+but task is already holding lock:
+ffffffffabf92ea8 (pcp_batch_high_lock){+.+.}-{3:3}, at: zone_pcp_disable+0x16/0x40
 
-The core clock frequency is set by writing to a switch PHY's register.
-Access to the PHY's register is done via the MDIO bus the switch is also
-on. Therefore, it works only when the switch makes switch PHYs listen on
-the MDIO bus the switch is on. This is controlled either by the state of
-the ESW_P1_LED_1 pin after reset deassertion or modifying bit 5 of the
-modifiable trap register.
+which lock already depends on the new lock.
 
-When ESW_P1_LED_1 is pulled high, PHY indirect access is used. That means
-accessing PHY registers via the PHY indirect access control register of the
-switch.
+the existing dependency chain (in reverse order) is:
 
-When ESW_P1_LED_1 is pulled low, PHY direct access is used. That means
-accessing PHY registers via the MDIO bus the switch is on.
+-> #1 (pcp_batch_high_lock){+.+.}-{3:3}:
+       __mutex_lock+0x6c/0x770
+       page_alloc_cpu_online+0x3c/0x70
+       cpuhp_invoke_callback+0x397/0x5f0
+       __cpuhp_invoke_callback_range+0x71/0xe0
+       _cpu_up+0xeb/0x210
+       cpu_up+0x91/0xe0
+       cpuhp_bringup_mask+0x49/0xb0
+       bringup_nonboot_cpus+0xb7/0xe0
+       smp_init+0x25/0xa0
+       kernel_init_freeable+0x15f/0x3e0
+       kernel_init+0x15/0x1b0
+       ret_from_fork+0x2f/0x50
+       ret_from_fork_asm+0x1a/0x30
 
-For MT7530 switch with 40MHz XTAL on a board with ESW_P1_LED_1 pulled high,
-the core clock frequency won't be set to 500MHz, causing the switch to
-egress and ingress frames improperly.
+-> #0 (cpu_hotplug_lock){++++}-{0:0}:
+       __lock_acquire+0x1298/0x1cd0
+       lock_acquire+0xc0/0x2b0
+       cpus_read_lock+0x2a/0xc0
+       static_key_slow_dec+0x16/0x60
+       __hugetlb_vmemmap_restore_folio+0x1b9/0x200
+       dissolve_free_huge_page+0x211/0x260
+       __page_handle_poison+0x45/0xc0
+       memory_failure+0x65e/0xc70
+       hard_offline_page_store+0x55/0xa0
+       kernfs_fop_write_iter+0x12c/0x1d0
+       vfs_write+0x387/0x550
+       ksys_write+0x64/0xe0
+       do_syscall_64+0xca/0x1e0
+       entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-Run mt7530_pll_setup() after PHY direct access is set on the modifiable
-trap register.
+other info that might help us debug this:
 
-With these two changes, all MT7530 switches with 25MHz and 40MHz, and
-P1_LED_1 pulled high or low, will egress and ingress frames properly.
+ Possible unsafe locking scenario:
 
-Link: https://github.com/BPI-SINOVOIP/BPI-R2-bsp/blob/4a5dd143f2172ec97a2872fa29c7c4cd520f45b5/linux-mt/drivers/net/ethernet/mediatek/gsw_mt7623.c#L1039
-Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20240320-for-net-mt7530-fix-25mhz-xtal-with-direct-phy-access-v1-1-d92f605f1160@arinc9.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+       CPU0                    CPU1
+       ----                    ----
+  lock(pcp_batch_high_lock);
+                               lock(cpu_hotplug_lock);
+                               lock(pcp_batch_high_lock);
+  rlock(cpu_hotplug_lock);
+
+ *** DEADLOCK ***
+
+5 locks held by bash/46904:
+ #0: ffff98f6c3bb23f0 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x64/0xe0
+ #1: ffff98f6c328e488 (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter+0xf8/0x1d0
+ #2: ffff98ef83b31890 (kn->active#113){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x100/0x1d0
+ #3: ffffffffabf9db48 (mf_mutex){+.+.}-{3:3}, at: memory_failure+0x44/0xc70
+ #4: ffffffffabf92ea8 (pcp_batch_high_lock){+.+.}-{3:3}, at: zone_pcp_disable+0x16/0x40
+
+stack backtrace:
+CPU: 10 PID: 46904 Comm: bash Kdump: loaded Not tainted 6.8.0-11409-gf6cef5f8c37f #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x68/0xa0
+ check_noncircular+0x129/0x140
+ __lock_acquire+0x1298/0x1cd0
+ lock_acquire+0xc0/0x2b0
+ cpus_read_lock+0x2a/0xc0
+ static_key_slow_dec+0x16/0x60
+ __hugetlb_vmemmap_restore_folio+0x1b9/0x200
+ dissolve_free_huge_page+0x211/0x260
+ __page_handle_poison+0x45/0xc0
+ memory_failure+0x65e/0xc70
+ hard_offline_page_store+0x55/0xa0
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x387/0x550
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xca/0x1e0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+RIP: 0033:0x7fc862314887
+Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
+RSP: 002b:00007fff19311268 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007fc862314887
+RDX: 000000000000000c RSI: 000056405645fe10 RDI: 0000000000000001
+RBP: 000056405645fe10 R08: 00007fc8623d1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+R13: 00007fc86241b780 R14: 00007fc862417600 R15: 00007fc862416a00
+
+In short, below scene breaks the lock dependency chain:
+
+ memory_failure
+  __page_handle_poison
+   zone_pcp_disable -- lock(pcp_batch_high_lock)
+   dissolve_free_huge_page
+    __hugetlb_vmemmap_restore_folio
+     static_key_slow_dec
+      cpus_read_lock -- rlock(cpu_hotplug_lock)
+
+Fix this by calling drain_all_pages() instead.
+
+This issue won't occur until commit a6b40850c442 ("mm: hugetlb: replace
+hugetlb_free_vmemmap_enabled with a static_key").  As it introduced
+rlock(cpu_hotplug_lock) in dissolve_free_huge_page() code path while
+lock(pcp_batch_high_lock) is already in the __page_handle_poison().
+
+[linmiaohe@huawei.com: extend comment per Oscar]
+[akpm@linux-foundation.org: reflow block comment]
+Link: https://lkml.kernel.org/r/20240407085456.2798193-1-linmiaohe@huawei.com
+Fixes: a6b40850c442 ("mm: hugetlb: replace hugetlb_free_vmemmap_enabled with a static_key")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ mm/memory-failure.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2471,8 +2471,6 @@ mt7530_setup(struct dsa_switch *ds)
- 		     SYS_CTRL_PHY_RST | SYS_CTRL_SW_RST |
- 		     SYS_CTRL_REG_RST);
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -154,11 +154,23 @@ static int __page_handle_poison(struct p
+ {
+ 	int ret;
  
--	mt7530_pll_setup(priv);
--
- 	/* Lower Tx driving for TRGMII path */
- 	for (i = 0; i < NUM_TRGMII_CTRL; i++)
- 		mt7530_write(priv, MT7530_TRGMII_TD_ODT(i),
-@@ -2490,6 +2488,9 @@ mt7530_setup(struct dsa_switch *ds)
+-	zone_pcp_disable(page_zone(page));
++	/*
++	 * zone_pcp_disable() can't be used here. It will
++	 * hold pcp_batch_high_lock and dissolve_free_huge_page() might hold
++	 * cpu_hotplug_lock via static_key_slow_dec() when hugetlb vmemmap
++	 * optimization is enabled. This will break current lock dependency
++	 * chain and leads to deadlock.
++	 * Disabling pcp before dissolving the page was a deterministic
++	 * approach because we made sure that those pages cannot end up in any
++	 * PCP list. Draining PCP lists expels those pages to the buddy system,
++	 * but nothing guarantees that those pages do not get back to a PCP
++	 * queue if we need to refill those.
++	 */
+ 	ret = dissolve_free_huge_page(page);
+-	if (!ret)
++	if (!ret) {
++		drain_all_pages(page_zone(page));
+ 		ret = take_page_off_buddy(page);
+-	zone_pcp_enable(page_zone(page));
++	}
  
- 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
- 
-+	if ((val & HWTRAP_XTAL_MASK) == HWTRAP_XTAL_40MHZ)
-+		mt7530_pll_setup(priv);
-+
- 	mt753x_trap_frames(priv);
- 
- 	/* Enable and reset MIB counters */
+ 	return ret;
+ }
 
 
 
