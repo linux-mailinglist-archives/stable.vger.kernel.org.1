@@ -1,117 +1,99 @@
-Return-Path: <stable+bounces-40709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630448AE852
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:37:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A79A8AE866
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BED1F24E4F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:37:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86168B22D7D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E785F136657;
-	Tue, 23 Apr 2024 13:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C12136E2F;
+	Tue, 23 Apr 2024 13:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="OB7MF+1r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h5E6/EoA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CDF18E28;
-	Tue, 23 Apr 2024 13:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB900136E05
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713879445; cv=none; b=Nk/+eIZj65NO31IqTiMbLb/pWQVZcmD0w/gEE6tFl9axJGnoyaKftHYs/Q3GliJojMD/LX2kMp+IAqxin8ubcmpCiHZJajDcYOsHVwVeYLHFFezcXm0MGSBav/7cJvTucyr6rdEj2lZ2NmU3UCWMjkQoahRvGso0dDxj5t94i0c=
+	t=1713879635; cv=none; b=qGtSn95u20POgopo/GO03vpUfUv8HoPGtyVvuCUVnl8yXdcCwTMzcbA2153t7X1zXLQrlVRKdYHyPW150F8t4R6pToTfdixy5CZUDrb1KH6TlaeL/hTCJOdbIHeAz44/crx1/vE1CHe6ruV7GpHzjud64MWBD7dZN83fOwHxuBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713879445; c=relaxed/simple;
-	bh=dsVKS75rk/XJ1PdxuK8KFQuKjzQDb/YS3gKI282VATA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fIcPlJaTuecphgYN33QcYIgn8yLTZ7z22gKdg6IhqcAuH8q12FvZ5bpbB483uWUG8j3SyORb5AQvevpvSYB3YLIsDPdVbMc7coZ6wnegUk9DwAuOHD6e3xkJ2XOpJxaJJf0vgNBau2RsuHtWOmdvQJF5LbAX4LGuqMYAAGpCLJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=OB7MF+1r; arc=none smtp.client-ip=52.95.48.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1713879444; x=1745415444;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=QNgZ08cu6G7jRe5L0bfia3hVc4v0QPDb5H9DVfDn474=;
-  b=OB7MF+1rpTQrSRAlt1oqA8CN5W/fG10eNUQSGUKmC6zJSs8MMcaafpdu
-   iwvUMLE38w3SfmlXSBXTttfvQaGwmxj460GFnzoW5K5GIkkokQo2G66yj
-   IGu0h099DXeHcncMlF6M7lth5Q1Yl21vRF1iSqyctbp7VqfNFcuN/qRTx
-   Y=;
-X-IronPort-AV: E=Sophos;i="6.07,222,1708387200"; 
-   d="scan'208";a="391891265"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 13:37:21 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [10.0.10.100:14814]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.1.110:2525] with esmtp (Farcaster)
- id 99e54c7e-3d8e-4df9-a177-c498b08e7836; Tue, 23 Apr 2024 13:37:20 +0000 (UTC)
-X-Farcaster-Flow-ID: 99e54c7e-3d8e-4df9-a177-c498b08e7836
-Received: from EX19D002EUC001.ant.amazon.com (10.252.51.219) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Tue, 23 Apr 2024 13:37:20 +0000
-Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
- EX19D002EUC001.ant.amazon.com (10.252.51.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Tue, 23 Apr 2024 13:37:19 +0000
-Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com
- (10.253.65.58) by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP
- Server id 15.2.1258.28 via Frontend Transport; Tue, 23 Apr 2024 13:37:19
- +0000
-Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id BCAB820D4A; Tue, 23 Apr 2024 13:37:18 +0000 (UTC)
-From: Hagar Hemdan <hagarhem@amazon.com>
-To:
-CC: Maximilian Heyne <mheyne@amazon.de>, Pratyush Yadav <ptyadav@amazon.de>,
-	Norbert Manthey <nmanthey@amazon.de>, <stable@vger.kernel.org>, Hagar Hemdan
-	<hagarhem@amazon.com>, Ard Biesheuvel <ardb@kernel.org>,
-	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] efi: libstub: only free priv.runtime_map when allocated
-Date: Tue, 23 Apr 2024 13:36:33 +0000
-Message-ID: <20240423133635.19679-1-hagarhem@amazon.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1713879635; c=relaxed/simple;
+	bh=POjHCPvznE1oxaNvbe2aZrgfu9AtZIiNXguD5Qg4ohY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rAkKMsW53p1YgkDShXe5sH8VPiI72I4Pstmrnz0p3m3WDBWh+5MwjODzJ6n8JLsCuokJ+HhAOLzVqzgLE32IFMgHUW6P1hREaeNuLUrPzt9G8F+DQvGeXkhR72efOs0+ekaEpS8iKeGBQbO3ERpgipZPQy7iUrGW/wye39jmyKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h5E6/EoA; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713879634; x=1745415634;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=POjHCPvznE1oxaNvbe2aZrgfu9AtZIiNXguD5Qg4ohY=;
+  b=h5E6/EoAFWFud7uBIn6gE1pk3k9/spAv0TaVGrrDi0WH4bPuAhS7Z1s9
+   meeCdO/qpCIIpT1NC3L8hfaQhJ3KYvypDuz5ldq3/O28oCzaFIouEcte0
+   tL2EYQM0AbexGQUVdELcGm5+fXfx+z5L4sirH2ipkLTlHOUP4Ad0r1Wbf
+   9ogBQTzUnkWRN6QtiHUd3RbLnkTKmLNT1s65H6ZyunwT7RMsmiTXUMmaN
+   yvYHg/pgQXv5lN2Ob/di2DJQM+KNzU2PS13vtJqkJ2kEDgdFV59j6hr4u
+   1m6yNBSKwPoMhxP0HWMHUoaPZojwokmFqcGAhE5+K1DV/DjReW7loSafc
+   w==;
+X-CSE-ConnectionGUID: CeRlfMnZSFSsUx/hJ1rm3A==
+X-CSE-MsgGUID: sQOMnjrlTwSh63kT9XJ0eg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="9327530"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="9327530"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 06:40:33 -0700
+X-CSE-ConnectionGUID: YxbcsK/7QYakfF8boYX5pA==
+X-CSE-MsgGUID: pEANNhsmT3iL9Dg4TzjMVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="24972010"
+Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 23 Apr 2024 06:40:32 -0700
+Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rzGNp-0000DU-1r;
+	Tue, 23 Apr 2024 13:40:29 +0000
+Date: Tue, 23 Apr 2024 21:40:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Hagar Hemdan <hagarhem@amazon.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] efi: libstub: only free priv.runtime_map when allocated
+Message-ID: <Zie6PLl0bSO3ZdoY@c8dd4cee2bb9>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240423133635.19679-1-hagarhem@amazon.com>
 
-priv.runtime_map is only allocated when efi_novamap is not set.
-Otherwise, it is an uninitialized value.
-In the error path, it is freed unconditionally.
-Avoid passing an uninitialized value to free_pool.
-Free priv.runtime_map only when it was allocated.
+Hi,
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+Thanks for your patch.
 
-Fixes: f80d26043af9 ("efi: libstub: avoid efi_get_memory_map() for allocating the virt map")
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
----
- drivers/firmware/efi/libstub/fdt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-index 70e9789ff9de..6a337f1f8787 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -335,8 +335,8 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 
- fail:
- 	efi_free(fdt_size, fdt_addr);
--
--	efi_bs_call(free_pool, priv.runtime_map);
-+	if (!efi_novamap)
-+		efi_bs_call(free_pool, priv.runtime_map);
- 
- 	return EFI_LOAD_ERROR;
- }
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] efi: libstub: only free priv.runtime_map when allocated
+Link: https://lore.kernel.org/stable/20240423133635.19679-1-hagarhem%40amazon.com
+
 -- 
-2.40.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
