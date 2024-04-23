@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-41170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAD58AFAB4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEBC78AFB3F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C98BB251FB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C212B2CAD4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7284D144D2A;
-	Tue, 23 Apr 2024 21:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D52143C4E;
+	Tue, 23 Apr 2024 21:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drOy8IPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzC3FU7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D82143C49;
-	Tue, 23 Apr 2024 21:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E829A143895;
+	Tue, 23 Apr 2024 21:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908725; cv=none; b=NJJ3EPNzOzU6HB2jUTYsL2ljMz/GN38M2G1bH61BFMcCcGBCkOCF9N9Z3A1ctgGRZQD/LmtzTp+COxHTHJJa+VjB2vPP3HOpDfSYT1ZniBCpew+tGcWKAkd6dSvVROeGTDB9iD51a6ciTPogwWOK4uyuQG5u3yZgsfhHZCUyuwo=
+	t=1713908778; cv=none; b=PkV5hos5h2l5LFob7zoI7OEwGJmhYlc9Kkgr6TyNgUBdfOxDi5nFp7ggBtD5RMYEXk9jExU7nEx1dOy5j3ECCtgT4F6cquUGBkJAhS2UhxBo9/4V1qvkb4xhyPjfmB0eNzXMJoaN+2GCUSkyY8XsXX6Oi/3Zx6dQDeAtEhekDnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908725; c=relaxed/simple;
-	bh=0dna9pcrj1OIaP1tioC4eoqJZTNXlSkxRJwxQ1Q46Ss=;
+	s=arc-20240116; t=1713908778; c=relaxed/simple;
+	bh=p79EzAmFA8VT2brkKgODJotqRWiFbvthXMnVg6CdI0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDzxwjwdjjeY4l2AAdqfIYJFwdYOWcq9ilQo6jcIMHm4cDTkAmdnDoqnI2Zf4iBK6c/1F7ph2Wd3ZJEczl6xLMdiuDio4coTsqQEm420ZAn22xdbxhpPjZoUjWrgqVI0o8vqlE/JU9X0l/xs1NxiGoqjpgiP7rQ3nLnqkLL1+Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drOy8IPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AEFC3277B;
-	Tue, 23 Apr 2024 21:45:24 +0000 (UTC)
+	 MIME-Version; b=lFnK9fFgdUmiR1WfaPNRGqINuwTx+aVvdSE0zfhPVj3HZznD1mLqe/kOeG+lW/lQlUrTx8ovHmQFGdg7GnVY/3TCsSZeY4q4jbZRb5P4aoxocUqs8EsL7ZudEF0/unE/XGa3YOBlCpWimIqMtttS5V0VxTRaokCRYGAvtyVC/E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzC3FU7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36D8C116B1;
+	Tue, 23 Apr 2024 21:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908725;
-	bh=0dna9pcrj1OIaP1tioC4eoqJZTNXlSkxRJwxQ1Q46Ss=;
+	s=korg; t=1713908777;
+	bh=p79EzAmFA8VT2brkKgODJotqRWiFbvthXMnVg6CdI0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=drOy8IPlF0/dfQmVuIA6SwEdB6jz6if0JnMCEUwz/STI9UWm7vB5yPFpFl9BaBSdh
-	 kxCXCD4cTCfZhe/Hcu+Q6M6PlH8Uyx6JiirYIG/iu/GvILkA7/pU5iGe8MxZeNakAy
-	 myEOx6/qYgtklmTzCh4ImK/lyAXG+zkwmpyncrbg=
+	b=qzC3FU7yDOiGQwWR1fU1eBnjS/B8zdPZGF2EIX8spPcadpT1zFsZLiuV8EieOHNwD
+	 ZaPi6Q94G1F61REqV/fY4bvbzGXiMzEWQXqEYjcAVr9h3V1dFCoWj+rvuTv7pk02IE
+	 A3HLSTAmIvaS5htdaVEuUoOtPm5yqbKxSot/8kqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/141] clk: Get runtime PM before walking tree for clk_summary
+Subject: [PATCH 5.15 04/71] btrfs: record delayed inode root in transaction
 Date: Tue, 23 Apr 2024 14:39:17 -0700
-Message-ID: <20240423213856.074086570@linuxfoundation.org>
+Message-ID: <20240423213844.279293591@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 9d1e795f754db1ac3344528b7af0b17b8146f321 ]
+[ Upstream commit 71537e35c324ea6fbd68377a4f26bb93a831ae35 ]
 
-Similar to the previous commit, we should make sure that all devices are
-runtime resumed before printing the clk_summary through debugfs. Failure
-to do so would result in a deadlock if the thread is resuming a device
-to print clk state and that device is also runtime resuming in another
-thread, e.g the screen is turning on and the display driver is starting
-up. We remove the calls to clk_pm_runtime_{get,put}() in this path
-because they're superfluous now that we know the devices are runtime
-resumed. This also squashes a bug where the return value of
-clk_pm_runtime_get() wasn't checked, leading to an RPM count underflow
-on error paths.
+When running delayed inode updates, we do not record the inode's root in
+the transaction, but we do allocate PREALLOC and thus converted PERTRANS
+space for it. To be sure we free that PERTRANS meta rsv, we must ensure
+that we record the root in the transaction.
 
-Fixes: 1bb294a7981c ("clk: Enable/Disable runtime PM for clk_summary")
-Cc: Taniya Das <quic_tdas@quicinc.com>
-Cc: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-6-sboyd@kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Fixes: 4f5427ccce5d ("btrfs: delayed-inode: Use new qgroup meta rsv for delayed inode and item")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/btrfs/delayed-inode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index ded4a51323d2e..fe1d45eac837c 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -3247,9 +3247,7 @@ static void clk_summary_show_subtree(struct seq_file *s, struct clk_core *c,
- {
- 	struct clk_core *child;
+diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
+index 5a98c5da12250..8d8b455992362 100644
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -1046,6 +1046,9 @@ __btrfs_commit_inode_delayed_items(struct btrfs_trans_handle *trans,
+ 	if (ret)
+ 		return ret;
  
--	clk_pm_runtime_get(c);
- 	clk_summary_show_one(s, c, level);
--	clk_pm_runtime_put(c);
- 
- 	hlist_for_each_entry(child, &c->children, child_node)
- 		clk_summary_show_subtree(s, child, level + 1);
-@@ -3259,11 +3257,15 @@ static int clk_summary_show(struct seq_file *s, void *data)
- {
- 	struct clk_core *c;
- 	struct hlist_head **lists = s->private;
-+	int ret;
- 
- 	seq_puts(s, "                                 enable  prepare  protect                                duty  hardware                            connection\n");
- 	seq_puts(s, "   clock                          count    count    count        rate   accuracy phase  cycle    enable   consumer                         id\n");
- 	seq_puts(s, "---------------------------------------------------------------------------------------------------------------------------------------------\n");
- 
-+	ret = clk_pm_runtime_get_all();
++	ret = btrfs_record_root_in_trans(trans, node->root);
 +	if (ret)
 +		return ret;
- 
- 	clk_prepare_lock();
- 
-@@ -3272,6 +3274,7 @@ static int clk_summary_show(struct seq_file *s, void *data)
- 			clk_summary_show_subtree(s, c, 0);
- 
- 	clk_prepare_unlock();
-+	clk_pm_runtime_put_all();
- 
- 	return 0;
+ 	ret = btrfs_update_delayed_inode(trans, node->root, path, node);
+ 	return ret;
  }
-@@ -3319,8 +3322,14 @@ static int clk_dump_show(struct seq_file *s, void *data)
- 	struct clk_core *c;
- 	bool first_node = true;
- 	struct hlist_head **lists = s->private;
-+	int ret;
-+
-+	ret = clk_pm_runtime_get_all();
-+	if (ret)
-+		return ret;
- 
- 	seq_putc(s, '{');
-+
- 	clk_prepare_lock();
- 
- 	for (; *lists; lists++) {
-@@ -3333,6 +3342,7 @@ static int clk_dump_show(struct seq_file *s, void *data)
- 	}
- 
- 	clk_prepare_unlock();
-+	clk_pm_runtime_put_all();
- 
- 	seq_puts(s, "}\n");
- 	return 0;
 -- 
 2.43.0
 
