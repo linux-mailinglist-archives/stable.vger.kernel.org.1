@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A84E8AF9FD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2612A8AFADE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB45A2871AC
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C0AEB2C3BE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA651482FE;
-	Tue, 23 Apr 2024 21:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0634614430E;
+	Tue, 23 Apr 2024 21:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaEhQU/i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxsB1HHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5591482F6;
-	Tue, 23 Apr 2024 21:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B3F143C41;
+	Tue, 23 Apr 2024 21:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908616; cv=none; b=pvQ2CJZEoE4JzqRbMt5fnJSFDHz5GaeOSdmtS5SjhAkVu6tqJdCTLx6eFLs9Lup0CQuhP+6kDhErvuH0VKAVEZvu16bfdMhjREfz0yjq2xyu4TmihFORmhJEi41UaraPuBpJWMh7HIlbRqtq7BsrQpaKBGAv/rXXG6WR4S3oDQU=
+	t=1713908704; cv=none; b=B3gIEMSLdRV4gGbivuTkP+uFhpgOH303Iv+nNUAqFf+jhchS7QadtbYRQNEPwoPfxouRuZF24wqTGfmpDsdBj/ZD/dKDf2xIEcJiWC+gVXueAifPtO4HtAgR8QpucMjmz6p10zagSrpthpnXW71bCFY2P4rsfCVHGQLk/kFVELc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908616; c=relaxed/simple;
-	bh=s6dkfHRbfr9B7XT3lX7yyACEVQxiZjuH0Z5jDp3Ymm0=;
+	s=arc-20240116; t=1713908704; c=relaxed/simple;
+	bh=nzXLCl206iRdzUYra+XcDGDF9iMSC4clgmkZup6ZrK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MFP3zU7djyoAE6zQtbwpaM/rXzXnpN3RsPsxhsdfIcrU65x+GysqxqU+hzFXXK9nMvQiUGwTMXj68jrUofQGtoHxMvFseyYmLNySYyQvB/o9Uve6uHwrFBhqI2XNehvSA2tzmWLwg7tIVofIKaX6JCDpB3uadD4rQsi39Ccs6o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaEhQU/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E305C3277B;
-	Tue, 23 Apr 2024 21:43:36 +0000 (UTC)
+	 MIME-Version; b=uRnSchvnKwi42f5e0qOf6qFQqIbte29STbeEiwIQRGcLqYo53/qRxHq0v+Q70FDaY/B5j/bB93y42FR/ayJlXu42YE0+nmoRUWMH6ImnXUA9I8xEJCkz6ZHkFs2SGLoQpSjWFpwO8ejeXvFBvtybs4/mG7o5jbA0Tatd3MgPr3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxsB1HHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3B0C116B1;
+	Tue, 23 Apr 2024 21:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908616;
-	bh=s6dkfHRbfr9B7XT3lX7yyACEVQxiZjuH0Z5jDp3Ymm0=;
+	s=korg; t=1713908704;
+	bh=nzXLCl206iRdzUYra+XcDGDF9iMSC4clgmkZup6ZrK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XaEhQU/iM/0K1ZsIPdS+idg8OGTQaLaGzL+uGSzWMTCJ/VwOycjLpgjXl8H9QM6y+
-	 nfgkPu0wR8avsQbq+9W8Xd4SCriaPJaYR5Lc+fYIL6CDMkJYg414gXkffQo9NlVluH
-	 wXoVIOQPZr+Z5Pnc4Pfp8ribv2JLQ2jLfQ13rhTw=
+	b=fxsB1HHdxXHr4+zYsYYx5sD8vyuqAbsQ9abrZv2dx7xLw15ZXBFSRAOfr62e4UFKW
+	 pVbox2qEKlP55T9W4eGQGyv5QhtdJsIK/OFdJpE0nfrQqE8IrnIV4e9Z8RhPoDlAqb
+	 XNZ+TWqgiWnDlD+vhHQhVDSzSuXZLkO81kMg8m9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/158] platform/x86/amd/pmc: Extend Framework 13 quirk to more BIOSes
-Date: Tue, 23 Apr 2024 14:38:46 -0700
-Message-ID: <20240423213858.644454412@linuxfoundation.org>
+Subject: [PATCH 6.1 059/141] usb: pci-quirks: Reduce the length of a spinlock section in usb_amd_find_chipset_info()
+Date: Tue, 23 Apr 2024 14:38:47 -0700
+Message-ID: <20240423213855.165849068@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit f609e7b1b49e4d15cf107d2069673ee63860c398 ]
+[ Upstream commit c03ff66dc0e0cbad9ed0c29500843e1da8533118 ]
 
-BIOS 03.05 still hasn't fixed the spurious IRQ1 issue.  As it's still
-being worked on there is still a possibility that it won't need to
-apply to future BIOS releases.
+'info' is local to the function. There is no need to zeroing it within
+a spin_lock section. Moreover, there is no need to explicitly initialize
+the .need_pll_quirk field.
 
-Add a quirk for BIOS 03.05 as well.
+Initialize the structure when defined and remove the now useless memset().
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240410141046.433-1-mario.limonciello@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/08ee42fced6af6bd56892cd14f2464380ab071fa.1679600396.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/host/pci-quirks.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index b456370166b6b..b4f49720c87f6 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -208,6 +208,15 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "03.03"),
- 		}
- 	},
-+	{
-+		.ident = "Framework Laptop 13 (Phoenix)",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Laptop 13 (AMD Ryzen 7040Series)"),
-+			DMI_MATCH(DMI_BIOS_VERSION, "03.05"),
-+		}
-+	},
- 	{}
- };
+diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
+index ef08d68b97149..2665832f9addf 100644
+--- a/drivers/usb/host/pci-quirks.c
++++ b/drivers/usb/host/pci-quirks.c
+@@ -207,8 +207,7 @@ EXPORT_SYMBOL_GPL(sb800_prefetch);
+ static void usb_amd_find_chipset_info(void)
+ {
+ 	unsigned long flags;
+-	struct amd_chipset_info info;
+-	info.need_pll_quirk = false;
++	struct amd_chipset_info info = { };
  
+ 	spin_lock_irqsave(&amd_lock, flags);
+ 
+@@ -218,7 +217,6 @@ static void usb_amd_find_chipset_info(void)
+ 		spin_unlock_irqrestore(&amd_lock, flags);
+ 		return;
+ 	}
+-	memset(&info, 0, sizeof(info));
+ 	spin_unlock_irqrestore(&amd_lock, flags);
+ 
+ 	if (!amd_chipset_sb_type_init(&info)) {
 -- 
 2.43.0
 
