@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-40996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D6E8AF9EB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6408AFA50
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B51B1F284A1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04C641C22F05
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F82147C8C;
-	Tue, 23 Apr 2024 21:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12716146586;
+	Tue, 23 Apr 2024 21:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6M8dN3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbrxwkhR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A502C143C57;
-	Tue, 23 Apr 2024 21:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BD91494D1;
+	Tue, 23 Apr 2024 21:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908606; cv=none; b=LoAg+eTLi0f3oaEux/lviZSpmow+mwN2g0unIBSW+qotQ0TVEDfbowyGsYTf/Peq3663EfVUsMnck/XYG7cVig96dbN8nXN6yJTwVK0YhpTYDwKpPkE/FmatiDN4ikS+LlvZv/1gJwye8Q3G+PbWzANn7D5Y1VT3tt+ULdh9Fsc=
+	t=1713908674; cv=none; b=MpHBOBZ5+8iUGCtWYCRf0JuOMFqK+qrv2RTpSnTf5O1qLWTTlHeRDHnkHQzKtIlNE/EXj7isu4wUUvxf7KzzxB4GQknr/wkZxOqXZP6a1p+tkZizNk1FwSaleYCWfRSpK7vnrTZuEgCiyTIQ+rdGmbI62ygOTcqHO8JnUonP26c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908606; c=relaxed/simple;
-	bh=RtN8jqDVelFusVvxk5vHl5Yj3x6aYhnMinjBLFhgx70=;
+	s=arc-20240116; t=1713908674; c=relaxed/simple;
+	bh=bedFAg8llQ+CksIALuKjrapGphII4OHfZOleKPBuVvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uyz13jRrITUUA37qUQoGKYkpprfIxTUgU1Yo3OpWBrCo3t+UMTbPIFh1eTkYMZUmlEhBLtS3lbh6CMGy2DdV1dUjrhlh8boNLpOu1XcAZy5dIkW2De9c5vPzTig4V4byaAcKoFEcGVm74K47xrNWpGBWiUln7pIrd1b2FrAVNds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6M8dN3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EB9C116B1;
-	Tue, 23 Apr 2024 21:43:26 +0000 (UTC)
+	 MIME-Version; b=RkXweQQYBvNeNjL7+r8+MIcSqlZe2EnsqpFipiudeF9sGGwLosjMR0FcMSUq5Qn/eK+o9sFO4gOgkAWjX6kWoQ4IhJVkQ9cH4Y0Hr4aCjTekUXBp9hReUY/B/fE3MZ/ze3yO1cxCfpkF2f6Xe/uZAgpq7GdK4D2cv4rcJAJrNgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbrxwkhR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AC9C116B1;
+	Tue, 23 Apr 2024 21:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908606;
-	bh=RtN8jqDVelFusVvxk5vHl5Yj3x6aYhnMinjBLFhgx70=;
+	s=korg; t=1713908674;
+	bh=bedFAg8llQ+CksIALuKjrapGphII4OHfZOleKPBuVvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6M8dN3+yxpvn+sylenDamT70hKoNmwUD0e+klCckBAc0u+jXosYFvJOWv/cCiDzM
-	 GOYJ51ffJM5YTmPY1Ze9brhogUmN3kL1Y55t0Zt9d+79II62a9x8xP1hKhL/fcqKhH
-	 l6qRUwxEJogUfIVWapPqD+clKmiUWXxD3sc63TCU=
+	b=AbrxwkhRgze5diJnXtCWIzohllYEpdEV+gHOBYi8sfr/ROv7VFJBMseVvhjCghhCm
+	 wAejnb0CzqHPcbrJL6qU/lU1JzbGHKrk1EjGvmRS2Ft8mLflp/xvGrqFq/h1rDwni9
+	 m7lTo2khXGFecaBJ8XyQjsA6BZDoN1B4ytGbB/Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/158] net: stmmac: Apply half-duplex-less constraint for DW QoS Eth only
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>
+Subject: [PATCH 6.1 015/141] x86/boot: Remove the bugger off message
 Date: Tue, 23 Apr 2024 14:38:03 -0700
-Message-ID: <20240423213857.272080205@linuxfoundation.org>
+Message-ID: <20240423213853.835535793@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <fancer.lancer@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 0ebd96f5da4410c0cb8fc75e44f1009530b2f90b ]
+[ Commit 768171d7ebbce005210e1cf8456f043304805c15 upstream ]
 
-There are three DW MAC IP-cores which can have the multiple Tx/Rx queues
-enabled:
-DW GMAC v3.7+ with AV feature,
-DW QoS Eth v4.x/v5.x,
-DW XGMAC/XLGMAC
-Based on the respective HW databooks, only the DW QoS Eth IP-core doesn't
-support the half-duplex link mode in case if more than one queues enabled:
+Ancient (pre-2003) x86 kernels could boot from a floppy disk straight from
+the BIOS, using a small real mode boot stub at the start of the image
+where the BIOS would expect the boot record (or boot block) to appear.
 
-"In multiple queue/channel configurations, for half-duplex operation,
-enable only the Q0/CH0 on Tx and Rx. For single queue/channel in
-full-duplex operation, any queue/channel can be enabled."
+Due to its limitations (kernel size < 1 MiB, no support for IDE, USB or
+El Torito floppy emulation), this support was dropped, and a Linux aware
+bootloader is now always required to boot the kernel from a legacy BIOS.
 
-The rest of the IP-cores don't have such constraint. Thus in order to have
-the constraint applied for the DW QoS Eth MACs only, let's move the it'
-implementation to the respective MAC-capabilities getter and make sure the
-getter is called in the queues re-init procedure.
+To smoothen this transition, the boot stub was not removed entirely, but
+replaced with one that just prints an error message telling the user to
+install a bootloader.
 
-Fixes: b6cfffa7ad92 ("stmmac: fix DMA channel hang in half-duplex mode")
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Romain Gantois <romain.gantois@bootlin.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As it is unlikely that anyone doing direct floppy boot with such an
+ancient kernel is going to upgrade to v6.5+ and expect that this boot
+method still works, printing this message is kind of pointless, and so
+it should be possible to remove the logic that emits it.
+
+Let's free up this space so it can be used to expand the PE header in a
+subsequent patch.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20230912090051.4014114-21-ardb@google.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac4_core.c |  7 +++++++
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 19 +++----------------
- 2 files changed, 10 insertions(+), 16 deletions(-)
+ arch/x86/boot/header.S |   49 -------------------------------------------------
+ arch/x86/boot/setup.ld |    7 ++++---
+ 2 files changed, 4 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index 683c34e609638..434e306876b41 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -71,6 +71,13 @@ static void dwmac4_core_init(struct mac_device_info *hw,
- static void dwmac4_phylink_get_caps(struct stmmac_priv *priv)
- {
- 	priv->phylink_config.mac_capabilities |= MAC_2500FD;
-+
-+	if (priv->plat->tx_queues_to_use > 1)
-+		priv->phylink_config.mac_capabilities &=
-+			~(MAC_10HD | MAC_100HD | MAC_1000HD);
-+	else
-+		priv->phylink_config.mac_capabilities |=
-+			(MAC_10HD | MAC_100HD | MAC_1000HD);
- }
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -38,63 +38,14 @@ SYSSEG		= 0x1000		/* historical load add
  
- static void dwmac4_rx_queue_enable(struct mac_device_info *hw,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index d1adb102a1d49..f3dbbc900d498 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1198,17 +1198,6 @@ static int stmmac_init_phy(struct net_device *dev)
- 	return ret;
- }
- 
--static void stmmac_set_half_duplex(struct stmmac_priv *priv)
--{
--	/* Half-Duplex can only work with single tx queue */
--	if (priv->plat->tx_queues_to_use > 1)
--		priv->phylink_config.mac_capabilities &=
--			~(MAC_10HD | MAC_100HD | MAC_1000HD);
--	else
--		priv->phylink_config.mac_capabilities |=
--			(MAC_10HD | MAC_100HD | MAC_1000HD);
--}
+ 	.code16
+ 	.section ".bstext", "ax"
 -
- static int stmmac_phy_setup(struct stmmac_priv *priv)
- {
- 	struct stmmac_mdio_bus_data *mdio_bus_data;
-@@ -1237,10 +1226,7 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
- 				    priv->phylink_config.supported_interfaces);
- 
- 	priv->phylink_config.mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
--						MAC_10FD | MAC_100FD |
--						MAC_1000FD;
+-	.global bootsect_start
+-bootsect_start:
+ #ifdef CONFIG_EFI_STUB
+ 	# "MZ", MS-DOS header
+ 	.word	MZ_MAGIC
+-#endif
 -
--	stmmac_set_half_duplex(priv);
-+						MAC_10 | MAC_100 | MAC_1000;
+-	# Normalize the start address
+-	ljmp	$BOOTSEG, $start2
+-
+-start2:
+-	movw	%cs, %ax
+-	movw	%ax, %ds
+-	movw	%ax, %es
+-	movw	%ax, %ss
+-	xorw	%sp, %sp
+-	sti
+-	cld
+-
+-	movw	$bugger_off_msg, %si
+-
+-msg_loop:
+-	lodsb
+-	andb	%al, %al
+-	jz	bs_die
+-	movb	$0xe, %ah
+-	movw	$7, %bx
+-	int	$0x10
+-	jmp	msg_loop
+-
+-bs_die:
+-	# Allow the user to press a key, then reboot
+-	xorw	%ax, %ax
+-	int	$0x16
+-	int	$0x19
+-
+-	# int 0x19 should never return.  In case it does anyway,
+-	# invoke the BIOS reset code...
+-	ljmp	$0xf000,$0xfff0
+-
+-#ifdef CONFIG_EFI_STUB
+ 	.org	0x3c
+ 	#
+ 	# Offset to the PE header.
+ 	#
+ 	.long	pe_header
+-#endif /* CONFIG_EFI_STUB */
+-
+-	.section ".bsdata", "a"
+-bugger_off_msg:
+-	.ascii	"Use a boot loader.\r\n"
+-	.ascii	"\n"
+-	.ascii	"Remove disk and press any key to reboot...\r\n"
+-	.byte	0
+-
+-#ifdef CONFIG_EFI_STUB
+ pe_header:
+ 	.long	PE_MAGIC
  
- 	/* Get the MAC specific capabilities */
- 	stmmac_mac_phylink_get_caps(priv);
-@@ -7197,7 +7183,8 @@ int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
- 			priv->rss.table[i] = ethtool_rxfh_indir_default(i,
- 									rx_cnt);
+--- a/arch/x86/boot/setup.ld
++++ b/arch/x86/boot/setup.ld
+@@ -10,10 +10,11 @@ ENTRY(_start)
+ SECTIONS
+ {
+ 	. = 0;
+-	.bstext		: { *(.bstext) }
+-	.bsdata		: { *(.bsdata) }
++	.bstext	: {
++		*(.bstext)
++		. = 495;
++	} =0xffffffff
  
--	stmmac_set_half_duplex(priv);
-+	stmmac_mac_phylink_get_caps(priv);
-+
- 	stmmac_napi_add(dev);
- 
- 	if (netif_running(dev))
--- 
-2.43.0
-
+-	. = 495;
+ 	.header		: { *(.header) }
+ 	.entrytext	: { *(.entrytext) }
+ 	.inittext	: { *(.inittext) }
 
 
 
