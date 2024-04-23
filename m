@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-41123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A208AFA69
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF918AF96D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C70E41C22AF0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E3A21C2434C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9026C144D09;
-	Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1C7143C75;
+	Tue, 23 Apr 2024 21:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dR1E4tSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwZyVyVX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECC81420BE;
-	Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6B7143C46;
+	Tue, 23 Apr 2024 21:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908693; cv=none; b=LOmsuOAIJx9czUAs/TFdy8lPZY9Z1CKanUWlH6FJXGpiY886HkA7ciKPSm2p9qEj+pl7ZWLCSHLTBHLp2XM2k+u3cU7jRtfxDCocrrvb/Mcptgnikttm4EH/FTOdwoBrUzZr1kBgm+UtfoCmKO57fnOwZqcPF6+ZVu34rALYs1o=
+	t=1713908523; cv=none; b=RHeTluumrTw+klqkFF4jjlKAqpu9v1O9AjXhdaPvBkUCc61DVO326E3QJB7D5oP37yloRju7GcQfKTosDT4ZMh9HQa7UQDCa0xq8ZcLIZfZUrafNCTER8js8OtlocplYALL9byJD/0cwyKimc2KCw9VcRgf0h+TcffSCxgGfIHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908693; c=relaxed/simple;
-	bh=SVuihGkICe0yqTPq6ROZuDvS4cRylPJMkjEm1iTaiDk=;
+	s=arc-20240116; t=1713908523; c=relaxed/simple;
+	bh=20Z+/bKG1JVrhMkmylVRYoiQvip/LB9lkAgUZL4wpEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHWsAvNIysGkvZoC93vgOSiKqAoadhdiNdgVSTzhr2LfiMQLn7XKShnoJ/RVk7glMaGBtVfLPZBjUrShkxWod71jFbMNNtFzuPua83aR8RuNYTa2xGKKeXQUgMlCZmtTKWKP3I59QBORlYbK+nVgyxFexHZCL1KqxeHV15e2+0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dR1E4tSx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BADFC32782;
-	Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
+	 MIME-Version; b=QFwGS8ectljxCFS7jNRJO2bLdcBAkA1l6ZGJnIkwBH1oxof/jHIV9DNF8elBrwfHaMCp7MP33+zjE6SvgagpNQUW4CwRyVrvVz7c+a3oPbltPYz1UsPDu25hth4q+PAxuC/16SsTNowPhFIdgoqM8PEVddiVNFzTch/mbHUYJTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwZyVyVX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3ECDC4AF08;
+	Tue, 23 Apr 2024 21:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908693;
-	bh=SVuihGkICe0yqTPq6ROZuDvS4cRylPJMkjEm1iTaiDk=;
+	s=korg; t=1713908522;
+	bh=20Z+/bKG1JVrhMkmylVRYoiQvip/LB9lkAgUZL4wpEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dR1E4tSxgcsk1J8pHDUDhxCG3++PU1VYzm/HsHHmBhd5HEegOdulZ/iFqokyqeNyD
-	 3ZHyNuIcobonaNriEbm0yuI4T4E3lBQKQqRNcWJwbSCDNhm/dl3ei32NnMR3PR7U8L
-	 +SuRcfAyzTnwcP08c50mM+zz3faVJXlklqEaKbc0=
+	b=WwZyVyVXBqqVDM52+3Ha4CRIJV6AJ0o6ygYzsVT8tAmbv2ERCe079hvpQApsgSMM1
+	 6Q4NJhAfK4NXLETun4x4YEe53GKmcOk1XVnrrXvGaaTiXyKgqPv6XkGld3RQY3feNm
+	 m0D+P7Gzk9vtx06JP0jlbeZX8eBqgHZKU9TTe+y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/141] af_unix: Dont peek OOB data without MSG_OOB.
-Date: Tue, 23 Apr 2024 14:38:29 -0700
-Message-ID: <20240423213854.605817900@linuxfoundation.org>
+Subject: [PATCH 6.8 088/158] net/mlx5: E-switch, store eswitch pointer before registering devlink_param
+Date: Tue, 23 Apr 2024 14:38:30 -0700
+Message-ID: <20240423213858.803345927@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +65,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 22dd70eb2c3d754862964377a75abafd3167346b ]
+[ Upstream commit 0553e753ea9ee724acaf6b3dfc7354702af83567 ]
 
-Currently, we can read OOB data without MSG_OOB by using MSG_PEEK
-when OOB data is sitting on the front row, which is apparently
-wrong.
+Next patch will move devlink register to be first. Therefore, whenever
+mlx5 will register a param, the user will be notified.
+In order to notify the user, devlink is using the get() callback of
+the param. Hence, resources that are being used by the get() callback
+must be set before the devlink param is registered.
 
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'a', MSG_OOB)
-  1
-  >>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-  b'a'
+Therefore, store eswitch pointer inside mdev before registering the
+param.
 
-If manage_oob() is called when no data has been copied, we only
-check if the socket enables SO_OOBINLINE or MSG_PEEK is not used.
-Otherwise, the skb is returned as is.
-
-However, here we should return NULL if MSG_PEEK is set and no data
-has been copied.
-
-Also, in such a case, we should not jump to the redo label because
-we will be caught in the loop and hog the CPU until normal data
-comes in.
-
-Then, we need to handle skb == NULL case with the if-clause below
-the manage_oob() block.
-
-With this patch:
-
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'a', MSG_OOB)
-  1
-  >>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-  Traceback (most recent call last):
-    File "<stdin>", line 1, in <module>
-  BlockingIOError: [Errno 11] Resource temporarily unavailable
-
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240410171016.7621-3-kuniyu@amazon.com
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-2-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch.c        | 9 +++------
+ .../net/ethernet/mellanox/mlx5/core/eswitch_offloads.c   | 4 ++++
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 6af6f82e89464..f28e2956fea58 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2675,7 +2675,9 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 					WRITE_ONCE(u->oob_skb, NULL);
- 					consume_skb(skb);
- 				}
--			} else if (!(flags & MSG_PEEK)) {
-+			} else if (flags & MSG_PEEK) {
-+				skb = NULL;
-+			} else {
- 				skb_unlink(skb, &sk->sk_receive_queue);
- 				WRITE_ONCE(u->oob_skb, NULL);
- 				if (!WARN_ON_ONCE(skb_unref(skb)))
-@@ -2757,11 +2759,9 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
- 		if (skb) {
- 			skb = manage_oob(skb, sk, flags, copied);
--			if (!skb) {
-+			if (!skb && copied) {
- 				unix_state_unlock(sk);
--				if (copied)
--					break;
--				goto redo;
-+				break;
- 			}
- 		}
- #endif
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 3047d7015c525..1789800faaeb6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -1868,6 +1868,7 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
+ 	if (err)
+ 		goto abort;
+ 
++	dev->priv.eswitch = esw;
+ 	err = esw_offloads_init(esw);
+ 	if (err)
+ 		goto reps_err;
+@@ -1892,11 +1893,6 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
+ 		esw->offloads.encap = DEVLINK_ESWITCH_ENCAP_MODE_BASIC;
+ 	else
+ 		esw->offloads.encap = DEVLINK_ESWITCH_ENCAP_MODE_NONE;
+-	if (MLX5_ESWITCH_MANAGER(dev) &&
+-	    mlx5_esw_vport_match_metadata_supported(esw))
+-		esw->flags |= MLX5_ESWITCH_VPORT_MATCH_METADATA;
+-
+-	dev->priv.eswitch = esw;
+ 	BLOCKING_INIT_NOTIFIER_HEAD(&esw->n_head);
+ 
+ 	esw_info(dev,
+@@ -1908,6 +1904,7 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
+ 
+ reps_err:
+ 	mlx5_esw_vports_cleanup(esw);
++	dev->priv.eswitch = NULL;
+ abort:
+ 	if (esw->work_queue)
+ 		destroy_workqueue(esw->work_queue);
+@@ -1926,7 +1923,6 @@ void mlx5_eswitch_cleanup(struct mlx5_eswitch *esw)
+ 
+ 	esw_info(esw->dev, "cleanup\n");
+ 
+-	esw->dev->priv.eswitch = NULL;
+ 	destroy_workqueue(esw->work_queue);
+ 	WARN_ON(refcount_read(&esw->qos.refcnt));
+ 	mutex_destroy(&esw->state_lock);
+@@ -1937,6 +1933,7 @@ void mlx5_eswitch_cleanup(struct mlx5_eswitch *esw)
+ 	mutex_destroy(&esw->offloads.encap_tbl_lock);
+ 	mutex_destroy(&esw->offloads.decap_tbl_lock);
+ 	esw_offloads_cleanup(esw);
++	esw->dev->priv.eswitch = NULL;
+ 	mlx5_esw_vports_cleanup(esw);
+ 	debugfs_remove_recursive(esw->debugfs_root);
+ 	devl_params_unregister(priv_to_devlink(esw->dev), mlx5_eswitch_params,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index baaae628b0a0f..e3cce110e52fd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -2476,6 +2476,10 @@ int esw_offloads_init(struct mlx5_eswitch *esw)
+ 	if (err)
+ 		return err;
+ 
++	if (MLX5_ESWITCH_MANAGER(esw->dev) &&
++	    mlx5_esw_vport_match_metadata_supported(esw))
++		esw->flags |= MLX5_ESWITCH_VPORT_MATCH_METADATA;
++
+ 	err = devl_params_register(priv_to_devlink(esw->dev),
+ 				   esw_devlink_params,
+ 				   ARRAY_SIZE(esw_devlink_params));
 -- 
 2.43.0
 
