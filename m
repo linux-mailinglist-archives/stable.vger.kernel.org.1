@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901DA8AFA9F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5078AF93B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D0B9B2BC88
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35295B246E8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFA61448F3;
-	Tue, 23 Apr 2024 21:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C14C1448EE;
+	Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUtyne75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRQxHR6Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1965146A94;
-	Tue, 23 Apr 2024 21:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDD620B3E;
+	Tue, 23 Apr 2024 21:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908676; cv=none; b=cfPliw6iIGdpo0hYVf9PZn4kDPEBLO9uQLAjpT9ROGMhwJ3FgUqlIcv0CMtXxkn3P2Gm+f3ezOJEgE/pIdeKudjmFhLLBac/CYlz7rMeoEpilOYzJ5djM7QLhsPtpQwMn2zZpsdAAuLp4bDn1h/TEbKfaswqcFYYRWKyP0g7qKc=
+	t=1713908489; cv=none; b=tI5pvb94U7gTZxoVoJWnWuyZ8D7ndy9ZePQLcWNbWMI8DLblxuL8zlEfBBNP2PUpSFgd7IvDFUjw+AaOcaVloDqAeQsNjx8CgkrqnVG1YMWKxA/aTqz1BP7IA/wMIBEj5uzFFQy4RyhsoXdb/xJYhN0dQz85LL2G+yq+vlxy8Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908676; c=relaxed/simple;
-	bh=URVEljw9wPIIgNtGas089ZStdkK0x3A1InPwPtj9uWw=;
+	s=arc-20240116; t=1713908489; c=relaxed/simple;
+	bh=U1fcHeSEl2QQfNgrfqAoT3dJff74zP1ksVFkgTHr8lE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opcd3bsHvcJz+RXrLxQlb36LVgprWSwbLzeDq1kRVRj71Tl6E3P4hXERuxBVbtREF1LFtQaD6d6b/miDu1+pcg+QZ1LKEfr+sW6LChFIVYkRzqqghJ+RgePAe4IRrVAvX9/up6uu4zkmQzaIIzn0oHZ6M3HzDdgvxB6QeVaEsy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUtyne75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E91EC116B1;
-	Tue, 23 Apr 2024 21:44:36 +0000 (UTC)
+	 MIME-Version; b=I+hEqnqirw1WxDuBAIUyUKM9MR/JbZMCXdEeHgvQMulDYONSBX2lIxx3YmJhJa8eu1lqFMEvNRJryUNqzk6ErA6cWP0nsuv4p+52hM0KX8QLWI25+zXx0hFjaTKMZZA6gcT9oLiZXPG8Hsl99kZiYSmOZyEZL2GVBLA9NYpdaIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRQxHR6Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6C3C3277B;
+	Tue, 23 Apr 2024 21:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908676;
-	bh=URVEljw9wPIIgNtGas089ZStdkK0x3A1InPwPtj9uWw=;
+	s=korg; t=1713908489;
+	bh=U1fcHeSEl2QQfNgrfqAoT3dJff74zP1ksVFkgTHr8lE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUtyne75UmJs41YFtT49J/+xdxfx/Az3YC20LA8B7g6KpytTKgitBBMFCPPl7/Lds
-	 brbzNTJoetCukESDjfDfL2PnY/RXl9zXexL0t9JMSU2hZMyYw1V64FCOLEqLdf6d16
-	 VE1aZGefhhjqkvHGxalXnVQNW8FKNTPst+4WWUFU=
+	b=uRQxHR6Yemjql1aoJA3NLKDOzcPjH+auoUlErvoOKkobhJNaTkkx3ea0oPKZ5uj37
+	 XIBhazBvCCOkUCrteVRfOEmiYm9r5D3MMqtveWbCEtJCvARSTL0MljORbG2+jbPJ25
+	 oIxhH+7hotYDhoZz6ZqMtEM3SAjXgg6GMY3LeVuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 018/141] x86/boot: Drop references to startup_64
+	Mikhail Kobuk <m.kobuk@ispras.ru>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 064/158] drm: nv04: Fix out of bounds access
 Date: Tue, 23 Apr 2024 14:38:06 -0700
-Message-ID: <20240423213853.924006189@linuxfoundation.org>
+Message-ID: <20240423213858.038392446@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-[ Commit b618d31f112bea3d2daea19190d63e567f32a4db upstream ]
+[ Upstream commit cf92bb778eda7830e79452c6917efa8474a30c1e ]
 
-The x86 boot image generation tool assign a default value to startup_64
-and subsequently parses the actual value from zoffset.h but it never
-actually uses the value anywhere. So remove this code.
+When Output Resource (dcb->or) value is assigned in
+fabricate_dcb_output(), there may be out of bounds access to
+dac_users array in case dcb->or is zero because ffs(dcb->or) is
+used as index there.
+The 'or' argument of fabricate_dcb_output() must be interpreted as a
+number of bit to set, not value.
 
-This change has no impact on the resulting bzImage binary.
+Utilize macros from 'enum nouveau_or' in calls instead of hardcoding.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-25-ardb@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2e5702aff395 ("drm/nouveau: fabricate DCB encoder table for iMac G4")
+Fixes: 670820c0e6a9 ("drm/nouveau: Workaround incorrect DCB entry on a GeForce3 Ti 200.")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240411110854.16701-1-m.kobuk@ispras.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/Makefile      |    2 +-
- arch/x86/boot/tools/build.c |    3 ---
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_bios.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -91,7 +91,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vm
+diff --git a/drivers/gpu/drm/nouveau/nouveau_bios.c b/drivers/gpu/drm/nouveau/nouveau_bios.c
+index 479effcf607e2..79cfab53f80e2 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_bios.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
+@@ -23,6 +23,7 @@
+  */
  
- SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
- 
--sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
-+sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
- 
- quiet_cmd_zoffset = ZOFFSET $@
-       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -60,7 +60,6 @@ static unsigned long efi64_stub_entry;
- static unsigned long efi_pe_entry;
- static unsigned long efi32_pe_entry;
- static unsigned long kernel_info;
--static unsigned long startup_64;
- static unsigned long _end;
- 
- /*----------------------------------------------------------------------*/
-@@ -264,7 +263,6 @@ static void efi_stub_defaults(void)
- 	efi_pe_entry = 0x10;
- #else
- 	efi_pe_entry = 0x210;
--	startup_64 = 0x200;
+ #include "nouveau_drv.h"
++#include "nouveau_bios.h"
+ #include "nouveau_reg.h"
+ #include "dispnv04/hw.h"
+ #include "nouveau_encoder.h"
+@@ -1677,7 +1678,7 @@ apply_dcb_encoder_quirks(struct drm_device *dev, int idx, u32 *conn, u32 *conf)
+ 	 */
+ 	if (nv_match_device(dev, 0x0201, 0x1462, 0x8851)) {
+ 		if (*conn == 0xf2005014 && *conf == 0xffffffff) {
+-			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, 1);
++			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, DCB_OUTPUT_B);
+ 			return false;
+ 		}
+ 	}
+@@ -1763,26 +1764,26 @@ fabricate_dcb_encoder_table(struct drm_device *dev, struct nvbios *bios)
+ #ifdef __powerpc__
+ 	/* Apple iMac G4 NV17 */
+ 	if (of_machine_is_compatible("PowerMac4,5")) {
+-		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, 1);
+-		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, 2);
++		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, DCB_OUTPUT_B);
++		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, DCB_OUTPUT_C);
+ 		return;
+ 	}
  #endif
+ 
+ 	/* Make up some sane defaults */
+ 	fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG,
+-			     bios->legacy.i2c_indices.crt, 1, 1);
++			     bios->legacy.i2c_indices.crt, 1, DCB_OUTPUT_B);
+ 
+ 	if (nv04_tv_identify(dev, bios->legacy.i2c_indices.tv) >= 0)
+ 		fabricate_dcb_output(dcb, DCB_OUTPUT_TV,
+ 				     bios->legacy.i2c_indices.tv,
+-				     all_heads, 0);
++				     all_heads, DCB_OUTPUT_A);
+ 
+ 	else if (bios->tmds.output0_script_ptr ||
+ 		 bios->tmds.output1_script_ptr)
+ 		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS,
+ 				     bios->legacy.i2c_indices.panel,
+-				     all_heads, 1);
++				     all_heads, DCB_OUTPUT_B);
  }
  
-@@ -340,7 +338,6 @@ static void parse_zoffset(char *fname)
- 		PARSE_ZOFS(p, efi_pe_entry);
- 		PARSE_ZOFS(p, efi32_pe_entry);
- 		PARSE_ZOFS(p, kernel_info);
--		PARSE_ZOFS(p, startup_64);
- 		PARSE_ZOFS(p, _end);
- 
- 		p = strchr(p, '\n');
+ static int
+-- 
+2.43.0
+
 
 
 
