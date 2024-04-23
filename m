@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7CF8AFA3A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F31818AFAEB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7F801F2949B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC811C239E9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328B41494A4;
-	Tue, 23 Apr 2024 21:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B97145B30;
+	Tue, 23 Apr 2024 21:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p71IBHMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gbid60Gf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CAF145330;
-	Tue, 23 Apr 2024 21:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CE1148843;
+	Tue, 23 Apr 2024 21:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908658; cv=none; b=Y4doooLG2ngC+UEHZR37OCDB8bOCVn6Aez9EUDXlP3Awrpn9hSrVNWopCJxGMwn2jtuTyuaFeuTgKSQpww9JtUwTOf7pVblFeHUsca3ChnLyPXjl2Ee1J4gkZcQMQH8SxUedW/T49XLmIKR+OJucqUQOeHN/HgALvSOCQ3MUnCc=
+	t=1713908784; cv=none; b=UBA0+7ynuyy/d4pEEYrRVlY00b29s1jZySJGVi4wfGSCn6mPz7NYRf7dGXsTxLlrqSM+I3TwoUDiMZTjyQYaxGG7gGHdLOb+KB+910l19JRKd8mh0U4Td64gu+Dt3A2BrgdC/be8mmjG2SSrCwDwH6Iv/GNkuv+TWjvv//7s4+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908658; c=relaxed/simple;
-	bh=kAfp8+2TJw0y1R2OqBt0mWqYzn7rW7Ny6/nXGBLnAYU=;
+	s=arc-20240116; t=1713908784; c=relaxed/simple;
+	bh=Ro2iV7xC4KDR1sQr2TSAHVCMiP1BmKFtG7JfHKF7v5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XpRUu7TzknCSsLYxZwgGgMMeVN9+qAwU6xMjncxfhDL0kypjvUDxuGiLKcoQWDMFj4+JmzGQhHwelPlN+RQ8DcfrISkSW6WEXqM8YRPTzx5uZcKBaX0TurJWgOGY2vDb6QuDr++FAxn04XwPEiVic3lVGAAdF+5C85EYQtHyvqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p71IBHMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A1EC116B1;
-	Tue, 23 Apr 2024 21:44:17 +0000 (UTC)
+	 MIME-Version; b=sY5GzYTomSh4sCl0WRD7Y4RH/CPgiB80QNvITyFLJTfRS7H6YqnrIctgDmbePpO6LclQQxCPrKgd25VhXw5IOu2oiLL6kG3ZSR2Pyk08eHWSDrhIXpapuG4dznQYqmDwdixDvqhnL8jaFX8iamudsEMboclm0os2ZsTg7pcmjA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gbid60Gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC034C32783;
+	Tue, 23 Apr 2024 21:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908657;
-	bh=kAfp8+2TJw0y1R2OqBt0mWqYzn7rW7Ny6/nXGBLnAYU=;
+	s=korg; t=1713908783;
+	bh=Ro2iV7xC4KDR1sQr2TSAHVCMiP1BmKFtG7JfHKF7v5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p71IBHMAa0Xs9l/gOVmPOJr+8gLWUhI1rcFVst55ks8OvAxXFtVBiAPz1kS+p2l9+
-	 v/dtaHTsS/DSwCO//kV0zVyhitgRhnXFJOR7L3d2ZJ9FFEp82yOkIRCHI9stWv/HEZ
-	 AvMoji0+GZROgXOuSsU2on3NCa8q/mSAIGHZFKWc=
+	b=Gbid60GfYsT+23LNikiw3BuwuSV2JnkYbXX7QHS0ifcg0BUjEIrZ4mLf0Ed8zNfCr
+	 CPlc6LQwF/5k46assjkezUrdnC+M16/Ie2XWUtPPoea0s2/oSRHJHjQA+cxXI4L8gH
+	 XO+wIi/wFCSKz5unsX991ePePiEIehD/J6nfv54c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 149/158] nilfs2: fix OOB in nilfs_set_de_type
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 33/71] drm/panel: visionox-rm69299: dont unregister DSI device
 Date: Tue, 23 Apr 2024 14:39:46 -0700
-Message-ID: <20240423213900.512192438@linuxfoundation.org>
+Message-ID: <20240423213845.291699144@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit c4a7dc9523b59b3e73fd522c73e95e072f876b16 upstream.
+[ Upstream commit 9e4d3f4f34455abbaa9930bf6b7575a5cd081496 ]
 
-The size of the nilfs_type_by_mode array in the fs/nilfs2/dir.c file is
-defined as "S_IFMT >> S_SHIFT", but the nilfs_set_de_type() function,
-which uses this array, specifies the index to read from the array in the
-same way as "(mode & S_IFMT) >> S_SHIFT".
+The DSI device for the panel was registered by the DSI host, so it is an
+error to unregister it from the panel driver. Drop the call to
+mipi_dsi_device_unregister().
 
-static void nilfs_set_de_type(struct nilfs_dir_entry *de, struct inode
- *inode)
-{
-	umode_t mode = inode->i_mode;
-
-	de->file_type = nilfs_type_by_mode[(mode & S_IFMT)>>S_SHIFT]; // oob
-}
-
-However, when the index is determined this way, an out-of-bounds (OOB)
-error occurs by referring to an index that is 1 larger than the array size
-when the condition "mode & S_IFMT == S_IFMT" is satisfied.  Therefore, a
-patch to resize the nilfs_type_by_mode array should be applied to prevent
-OOB errors.
-
-Link: https://lkml.kernel.org/r/20240415182048.7144-1-konishi.ryusuke@gmail.com
-Reported-by: syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2e22057de05b9f3b30d8
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7f66d32dd43 ("drm/panel: add support for rm69299 visionox panel")
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404-drop-panel-unregister-v1-1-9f56953c5fb9@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -243,7 +243,7 @@ nilfs_filetype_table[NILFS_FT_MAX] = {
+diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+index eb43503ec97b3..6134432e4918d 100644
+--- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
++++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+@@ -261,8 +261,6 @@ static int visionox_rm69299_remove(struct mipi_dsi_device *dsi)
+ 	struct visionox_rm69299 *ctx = mipi_dsi_get_drvdata(dsi);
  
- #define S_SHIFT 12
- static unsigned char
--nilfs_type_by_mode[S_IFMT >> S_SHIFT] = {
-+nilfs_type_by_mode[(S_IFMT >> S_SHIFT) + 1] = {
- 	[S_IFREG >> S_SHIFT]	= NILFS_FT_REG_FILE,
- 	[S_IFDIR >> S_SHIFT]	= NILFS_FT_DIR,
- 	[S_IFCHR >> S_SHIFT]	= NILFS_FT_CHRDEV,
+ 	mipi_dsi_detach(ctx->dsi);
+-	mipi_dsi_device_unregister(ctx->dsi);
+-
+ 	drm_panel_remove(&ctx->panel);
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
