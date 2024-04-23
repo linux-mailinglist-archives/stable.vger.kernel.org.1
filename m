@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28928AFA85
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50088AF972
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 601D71F296A1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C31E1F267B4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501F7147C67;
-	Tue, 23 Apr 2024 21:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51910143C46;
+	Tue, 23 Apr 2024 21:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXvKaTN4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PKh+p2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F520149E01;
-	Tue, 23 Apr 2024 21:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1C820B3E;
+	Tue, 23 Apr 2024 21:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908715; cv=none; b=FFyeuUxve8cG3L+0l3mjFydL4uizmm2GFx1/MEARWjqI4Z5ykhYpAmbDo45j3z5wJu4APtGuGo+QgGSvNYaBmOBvspP3Ds/pOYL+UutQlCNXdGEQjVruyfiBklyIPeDxcio6ydtzQ4UCfHfQgvREOhMBC6iDs16dEf4oYtx2YNk=
+	t=1713908527; cv=none; b=Qu/gYDSBZB2vfejZJYwBqpQEuub6bZ5i5Ml8kr1s7tHxxTEV90J76VaravnlQE+hnC+D2Lc48LNDT+p4W2QcPgxVqnUew4LIgUd2Md51DmH6m6uZp12xwau44ED4HLqCw5yGMYVsQKNIKcMl0RSR3rbOpn7btnM/I/SIn4ShbfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908715; c=relaxed/simple;
-	bh=xiimkrwIWYMP4fV547r32SJzofMfVZB38pC79kPp9Js=;
+	s=arc-20240116; t=1713908527; c=relaxed/simple;
+	bh=liwvlhRhkfVsQl0Ix0QGzRGbFBOv1LgypwIlkpWfVks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6mKIbkzR3UmmAeTFZWx6aice/N7P3UVCY3BeIKutTKh2KeLQMlkj66iWPp+arCPbZDhKePtoLAn2iTK8fAef4VhT46qAlD2KcL8590cRWKUS0neo3BYPdv2tGibGqRm3kh1mQXTLzas73MtzBQ2uzI4IvrqqVk5caZDqMgqkiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXvKaTN4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FF4C3277B;
-	Tue, 23 Apr 2024 21:45:14 +0000 (UTC)
+	 MIME-Version; b=Prmfc30H2yGI2kxxKPCnPy5qRcsnf6TcOSM2MkiWHr2pwkhVEe+ZkJERTt2YL6jQZw9ln2I/kO/w6mEiV4ZTK6QSFwDYOoApySghlGQwVI6DPVfv7SQY6hwVw33kUlKw5c4FTlz/hSr6Dvv3GhFztTLze+i9z5QyAxWi2mJoCrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PKh+p2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7609C32781;
+	Tue, 23 Apr 2024 21:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908714;
-	bh=xiimkrwIWYMP4fV547r32SJzofMfVZB38pC79kPp9Js=;
+	s=korg; t=1713908526;
+	bh=liwvlhRhkfVsQl0Ix0QGzRGbFBOv1LgypwIlkpWfVks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXvKaTN4d+0RQmQXVhhxk3UxQnZDt7o/elrYbgNL1CwCCMzvkjiLtCRVAWqZV4QLF
-	 tMqDMkpPadA7ZBWBeGI6yRvTjBNGVjbesf7ymu1OZqNuI5+4a3keCCiWvZl60yaTng
-	 rbz9dXD8FE6e57xZ90j0ZmW1gLT+6zwymMwoop3A=
+	b=0PKh+p2Pljiw5ll7YC3CGgKgMB3nHe/zUKxpc7Pnk00y3R1edtxK0ezspKELL9UB/
+	 x8PEYIQZwSM0nKcXFBRAqs2GAczgAunuqPob9QReqInwUccWT+XVfQS/Zmt6rHU5Yv
+	 kPAsrkerM+RfoLyyb6anaD+yC3Z20GunI1oabD3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/141] ALSA: scarlett2: Default mixer driver to enabled
+	Norihiko Hama <Norihiko.Hama@alpsalpine.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.8 119/158] usb: gadget: f_ncm: Fix UAF ncm object at re-bind after usb ep transport error
 Date: Tue, 23 Apr 2024 14:39:01 -0700
-Message-ID: <20240423213855.576544346@linuxfoundation.org>
+Message-ID: <20240423213859.788670392@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Norihiko Hama <Norihiko.Hama@alpsalpine.com>
 
-[ Upstream commit bc83058f598757a908b30f8f536338cb1478ab5b ]
+commit 6334b8e4553cc69f51e383c9de545082213d785e upstream.
 
-Early versions of this mixer driver did not work on all hardware, so
-out of caution the driver was disabled by default and had to be
-explicitly enabled with device_setup=1.
+When ncm function is working and then stop usb0 interface for link down,
+eth_stop() is called. At this piont, accidentally if usb transport error
+should happen in usb_ep_enable(), 'in_ep' and/or 'out_ep' may not be enabled.
 
-Since commit 764fa6e686e0 ("ALSA: usb-audio: scarlett2: Fix device
-hang with ehci-pci") no more problems of this nature have been
-reported. Therefore, enable the driver by default but provide a new
-device_setup option to disable the driver in case that is needed.
+After that, ncm_disable() is called to disable for ncm unbind
+but gether_disconnect() is never called since 'in_ep' is not enabled.
 
-- device_setup value of 0 now means "enable" rather than "disable".
-- device_setup value of 1 is now ignored.
-- device_setup value of 4 now means "disable".
+As the result, ncm object is released in ncm unbind
+but 'dev->port_usb' associated to 'ncm->port' is not NULL.
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://lore.kernel.org/r/89600a35b40307f2766578ad1ca2f21801286b58.1694705811.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: b61a3acada00 ("ALSA: scarlett2: Add Focusrite Clarett+ 2Pre and 4Pre support")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And when ncm bind again to recover netdev, ncm object is reallocated
+but usb0 interface is already associated to previous released ncm object.
+
+Therefore, once usb0 interface is up and eth_start_xmit() is called,
+released ncm object is dereferrenced and it might cause use-after-free memory.
+
+[function unlink via configfs]
+  usb0: eth_stop dev->port_usb=ffffff9b179c3200
+  --> error happens in usb_ep_enable().
+  NCM: ncm_disable: ncm=ffffff9b179c3200
+  --> no gether_disconnect() since ncm->port.in_ep->enabled is false.
+  NCM: ncm_unbind: ncm unbind ncm=ffffff9b179c3200
+  NCM: ncm_free: ncm free ncm=ffffff9b179c3200   <-- released ncm
+
+[function link via configfs]
+  NCM: ncm_alloc: ncm alloc ncm=ffffff9ac4f8a000
+  NCM: ncm_bind: ncm bind ncm=ffffff9ac4f8a000
+  NCM: ncm_set_alt: ncm=ffffff9ac4f8a000 alt=0
+  usb0: eth_open dev->port_usb=ffffff9b179c3200  <-- previous released ncm
+  usb0: eth_start dev->port_usb=ffffff9b179c3200 <--
+  eth_start_xmit()
+  --> dev->wrap()
+  Unable to handle kernel paging request at virtual address dead00000000014f
+
+This patch addresses the issue by checking if 'ncm->netdev' is not NULL at
+ncm_disable() to call gether_disconnect() to deassociate 'dev->port_usb'.
+It's more reasonable to check 'ncm->netdev' to call gether_connect/disconnect
+rather than check 'ncm->port.in_ep->enabled' since it might not be enabled
+but the gether connection might be established.
+
+Signed-off-by: Norihiko Hama <Norihiko.Hama@alpsalpine.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240327023550.51214-1-Norihiko.Hama@alpsalpine.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/usb/gadget/function/f_ncm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index f949d22da382d..2bd46fe91394d 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -145,12 +145,12 @@
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -878,7 +878,7 @@ static int ncm_set_alt(struct usb_functi
+ 		if (alt > 1)
+ 			goto fail;
  
- #include "mixer_scarlett_gen2.h"
+-		if (ncm->port.in_ep->enabled) {
++		if (ncm->netdev) {
+ 			DBG(cdev, "reset ncm\n");
+ 			ncm->netdev = NULL;
+ 			gether_disconnect(&ncm->port);
+@@ -1367,7 +1367,7 @@ static void ncm_disable(struct usb_funct
  
--/* device_setup value to enable */
--#define SCARLETT2_ENABLE 0x01
--
- /* device_setup value to allow turning MSD mode back on */
- #define SCARLETT2_MSD_ENABLE 0x02
+ 	DBG(cdev, "ncm deactivated\n");
  
-+/* device_setup value to disable this mixer driver */
-+#define SCARLETT2_DISABLE 0x04
-+
- /* some gui mixers can't handle negative ctl values */
- #define SCARLETT2_VOLUME_BIAS 127
- 
-@@ -4237,19 +4237,20 @@ int snd_scarlett_gen2_init(struct usb_mixer_interface *mixer)
- 	if (!mixer->protocol)
- 		return 0;
- 
--	if (!(chip->setup & SCARLETT2_ENABLE)) {
-+	if (chip->setup & SCARLETT2_DISABLE) {
- 		usb_audio_info(chip,
--			"Focusrite Scarlett Gen 2/3 Mixer Driver disabled; "
--			"use options snd_usb_audio vid=0x%04x pid=0x%04x "
--			"device_setup=1 to enable and report any issues "
--			"to g@b4.vu",
-+			"Focusrite Scarlett Gen 2/3 Mixer Driver disabled "
-+			"by modprobe options (snd_usb_audio "
-+			"vid=0x%04x pid=0x%04x device_setup=%d)\n",
- 			USB_ID_VENDOR(chip->usb_id),
--			USB_ID_PRODUCT(chip->usb_id));
-+			USB_ID_PRODUCT(chip->usb_id),
-+			SCARLETT2_DISABLE);
- 		return 0;
+-	if (ncm->port.in_ep->enabled) {
++	if (ncm->netdev) {
+ 		ncm->netdev = NULL;
+ 		gether_disconnect(&ncm->port);
  	}
- 
- 	usb_audio_info(chip,
--		"Focusrite Scarlett Gen 2/3 Mixer Driver enabled pid=0x%04x",
-+		"Focusrite Scarlett Gen 2/3 Mixer Driver enabled (pid=0x%04x); "
-+		"report any issues to g@b4.vu",
- 		USB_ID_PRODUCT(chip->usb_id));
- 
- 	err = snd_scarlett_gen2_controls_create(mixer);
--- 
-2.43.0
-
 
 
 
