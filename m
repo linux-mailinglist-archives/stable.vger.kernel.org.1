@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-40859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B538AF95A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A758AFA89
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22E6D28662C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFABA1F29709
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDEF145320;
-	Tue, 23 Apr 2024 21:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1706145354;
+	Tue, 23 Apr 2024 21:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4sdsqox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzmKT5ad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F807144D3E;
-	Tue, 23 Apr 2024 21:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A1D143C58;
+	Tue, 23 Apr 2024 21:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908511; cv=none; b=GFHJs7MXLtCfTLcfDtbCZ8DVRrjTr8El2Xc1Q539VgrKkMpqkFok9tiM1zWBU4mW+fQN96/tpKZySRZcTHUuGl33pyy46zpotISKuoSEls1KLHGgM63wHOvAKbyfj3n4F5+TDXEIAAyEE5RIpnu2Z6X6DBq/b0kgfdDcPdE6hUs=
+	t=1713908718; cv=none; b=CR7y7mdS6sC7F2CyalxoJ0UYGAa9iEmW9vtQUwyttKQOi8pAUMkJUJJxpHja9qkyAciTBQCC0H4E/QjuQKpe9+yV9/h8l+Of5NIxYMpHIfAyXe4NUP83Q9Gh/oTGErCRzpKChMxMQRSeChjVrTmVosBiIAckJaikE57Q6NuSpZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908511; c=relaxed/simple;
-	bh=v72/BvHTJI+uiXBuQBpBDo04YVGC7j27LBq84+vGczo=;
+	s=arc-20240116; t=1713908718; c=relaxed/simple;
+	bh=w4hpCmcE8vZT0o6omv9QD05uBhbjQ/FtIGZZSlQ4uVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEU9WPnd/DdHj2uC48EPjoIFE3dWURtPf0yYfc7otAHNeK3bP4gNXMz2ooahR0kC0LqWTkEllwSiAE1iAWEW8U7UQfNGOq7AK3Xut8VRYoAyegoWD+vPs7wR8NKjmLMV9k8mrZF+JTcWtHptdbEGaKxL2H4vEYxyRxuoMuCRkns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4sdsqox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA45C116B1;
-	Tue, 23 Apr 2024 21:41:51 +0000 (UTC)
+	 MIME-Version; b=PMrFxtHkS60PGnGkfOYYtBLlP4JbTrhjEVgKK54ZudXAqDQVFRsrGbJwwHGuiFqEdojCmavMqKHCVdlEnSAL5Q2t1jLVS6842tUMH5v7c9XvQXOVKHOGurQQL40HnwXoylq44QutGZOzlTN6pD4vUWeE2uL7+I2SKzKVa+xO1IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzmKT5ad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36195C116B1;
+	Tue, 23 Apr 2024 21:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908511;
-	bh=v72/BvHTJI+uiXBuQBpBDo04YVGC7j27LBq84+vGczo=;
+	s=korg; t=1713908718;
+	bh=w4hpCmcE8vZT0o6omv9QD05uBhbjQ/FtIGZZSlQ4uVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4sdsqoxlVURkJQsoTrKtog5JIBDqfz3vKX9Lz1v4aCsQA5PdNzqPrRMZTubF6GHt
-	 tufClYZj7PcYLGtTBcXeu9T6X5DOGFz1EIoLMjYuGYA+Org4B9V5jCDA0yPFmrJXrb
-	 SFcsMd4tT4uBhwwyW/NjZD2Nu7khnHRAfM9102Ms=
+	b=BzmKT5adRC2gRIG6FTF2LMIyMV1G04j72bZnW7hgexHCNIgzxXIC5wpM1ogxSIy3c
+	 wptfB83UHla3OSwvPt4izIMiQ5YPNUXZ4u49qUihUcGloD34Ro0eYzNbA7K4v4b18g
+	 O+ZpYGk03Om+bSBs3TSHtgZ0f1dq8nDf/i21ulfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Todd Kjos <tkjos@google.com>
-Subject: [PATCH 6.8 096/158] binder: check offset alignment in binder_get_object()
-Date: Tue, 23 Apr 2024 14:38:38 -0700
-Message-ID: <20240423213859.072329948@linuxfoundation.org>
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 051/141] s390/qdio: handle deferred cc1
+Date: Tue, 23 Apr 2024 14:38:39 -0700
+Message-ID: <20240423213854.911645697@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-commit aaef73821a3b0194a01bd23ca77774f704a04d40 upstream.
+[ Upstream commit 607638faf2ff1cede37458111496e7cc6c977f6f ]
 
-Commit 6d98eb95b450 ("binder: avoid potential data leakage when copying
-txn") introduced changes to how binder objects are copied. In doing so,
-it unintentionally removed an offset alignment check done through calls
-to binder_alloc_copy_from_buffer() -> check_buffer().
+A deferred condition code 1 response indicates that I/O was not started
+and should be retried. The current QDIO implementation handles a cc1
+response as I/O error, resulting in a failed QDIO setup. This can happen
+for example when a path verification request arrives at the same time
+as QDIO setup I/O is started.
 
-These calls were replaced in binder_get_object() with copy_from_user(),
-so now an explicit offset alignment check is needed here. This avoids
-later complications when unwinding the objects gets harder.
+Fix this by retrying the QDIO setup I/O when a cc1 response is received.
 
-It is worth noting this check existed prior to commit 7a67a39320df
-("binder: add function to copy binder object from buffer"), likely
-removed due to redundancy at the time.
+Note that since
 
-Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Acked-by: Todd Kjos <tkjos@google.com>
-Link: https://lore.kernel.org/r/20240330190115.1877819-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+commit 5ef1dc40ffa6 ("s390/cio: fix invalid -EBUSY on ccw_device_start")
+
+deferred cc1 responses are much more likely to occur. See the commit
+message of the latter for more background information.
+
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/s390/cio/qdio_main.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -1708,8 +1708,10 @@ static size_t binder_get_object(struct b
- 	size_t object_size = 0;
+diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
+index 9cde55730b65a..ebcb535809882 100644
+--- a/drivers/s390/cio/qdio_main.c
++++ b/drivers/s390/cio/qdio_main.c
+@@ -722,8 +722,8 @@ static void qdio_handle_activate_check(struct qdio_irq *irq_ptr,
+ 	lgr_info_log();
+ }
  
- 	read_size = min_t(size_t, sizeof(*object), buffer->data_size - offset);
--	if (offset > buffer->data_size || read_size < sizeof(*hdr))
-+	if (offset > buffer->data_size || read_size < sizeof(*hdr) ||
-+	    !IS_ALIGNED(offset, sizeof(u32)))
- 		return 0;
+-static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
+-				      int dstat)
++static int qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
++				     int dstat, int dcc)
+ {
+ 	DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qest irq");
+ 
+@@ -731,15 +731,18 @@ static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
+ 		goto error;
+ 	if (dstat & ~(DEV_STAT_DEV_END | DEV_STAT_CHN_END))
+ 		goto error;
++	if (dcc == 1)
++		return -EAGAIN;
+ 	if (!(dstat & DEV_STAT_DEV_END))
+ 		goto error;
+ 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ESTABLISHED);
+-	return;
++	return 0;
+ 
+ error:
+ 	DBF_ERROR("%4x EQ:error", irq_ptr->schid.sch_no);
+ 	DBF_ERROR("ds: %2x cs:%2x", dstat, cstat);
+ 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
++	return -EIO;
+ }
+ 
+ /* qdio interrupt handler */
+@@ -748,7 +751,7 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+ {
+ 	struct qdio_irq *irq_ptr = cdev->private->qdio_data;
+ 	struct subchannel_id schid;
+-	int cstat, dstat;
++	int cstat, dstat, rc, dcc;
+ 
+ 	if (!intparm || !irq_ptr) {
+ 		ccw_device_get_schid(cdev, &schid);
+@@ -768,10 +771,12 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+ 	qdio_irq_check_sense(irq_ptr, irb);
+ 	cstat = irb->scsw.cmd.cstat;
+ 	dstat = irb->scsw.cmd.dstat;
++	dcc   = scsw_cmd_is_valid_cc(&irb->scsw) ? irb->scsw.cmd.cc : 0;
++	rc    = 0;
+ 
+ 	switch (irq_ptr->state) {
+ 	case QDIO_IRQ_STATE_INACTIVE:
+-		qdio_establish_handle_irq(irq_ptr, cstat, dstat);
++		rc = qdio_establish_handle_irq(irq_ptr, cstat, dstat, dcc);
+ 		break;
+ 	case QDIO_IRQ_STATE_CLEANUP:
+ 		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_INACTIVE);
+@@ -785,12 +790,25 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+ 		if (cstat || dstat)
+ 			qdio_handle_activate_check(irq_ptr, intparm, cstat,
+ 						   dstat);
++		else if (dcc == 1)
++			rc = -EAGAIN;
+ 		break;
+ 	case QDIO_IRQ_STATE_STOPPED:
+ 		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 	}
 +
- 	if (u) {
- 		if (copy_from_user(object, u + offset, read_size))
- 			return 0;
++	if (rc == -EAGAIN) {
++		DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qint retry");
++		rc = ccw_device_start(cdev, irq_ptr->ccw, intparm, 0, 0);
++		if (!rc)
++			return;
++		DBF_ERROR("%4x RETRY ERR", irq_ptr->schid.sch_no);
++		DBF_ERROR("rc:%4x", rc);
++		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
++	}
++
+ 	wake_up(&cdev->private->wait_q);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
