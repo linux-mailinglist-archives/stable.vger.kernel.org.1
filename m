@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565388AF949
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4958AF9E5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA8528210B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC277B2A8C8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0417144D13;
-	Tue, 23 Apr 2024 21:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149911474CD;
+	Tue, 23 Apr 2024 21:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhuWSg0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik4V5ayE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC1814388D;
-	Tue, 23 Apr 2024 21:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FCE143889;
+	Tue, 23 Apr 2024 21:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908500; cv=none; b=YqiqoANzG9SclWPF7S4crPJLyUoVs2mavOCYiokiWSQ57rNsXMuDzHvJhrUMur3acXEaiYm3TPufsxwY7wGO498a+iKEfvjA38G3lR9Lu5qaIzsQ1ZPMZHAcdmXL+xS1eKZexc4K83xqmSIU5P7e8OraJrwmyPhC1698F5g9NVw=
+	t=1713908600; cv=none; b=ThwN++/7BeuNkaXwwXyIQEiVfRUogC6N5QM/078t9AXUQcxhviZEg3ZGO0oKq5bpgWx7ZLRPJi256s0ll5gppcrsylpJPwEtWL5Mgr2bW3oo8KEd+ldPMYCiKmcIpyQRr8LnkXWqtgIE0qZBh8K1Zy8td3qelYTl0MXZ5afHisQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908500; c=relaxed/simple;
-	bh=6wKS8C6H6bVYIvF/lBw7Aj+S178kbhCSKmieUG0c71s=;
+	s=arc-20240116; t=1713908600; c=relaxed/simple;
+	bh=kZXoggI0bkUvgD+a6GeqHGwmwbFZORqrxg/yr4VZcGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7M9q9fQdmbHx3kB1q4YJt8k1g0Ki9F7bDwxy+rKOhquMxDthoU36Q2ccu8SPId5tu1uW8goEbrJSXrHFRDrRTbJ9/eNHYNMrRuP2Xd6N1NuYOk0wEIxIixFOtP8Dy4eihxInp78NnOky7x2SmlCOE5oyeD3CfyUXwYstgj0EYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhuWSg0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7110FC32782;
-	Tue, 23 Apr 2024 21:41:40 +0000 (UTC)
+	 MIME-Version; b=s0IqWnFuQN4NwFOBRKZIcVEyTpVbWLbUgE5pRbl8pfWVIiS1gY2I/hNrMKLpAvcQjrTiRcAyfM/P7htIl2fmDAPhe0qy8bsMIonVf/4XeBCSQ41UXF5bx2tG6I5Lqayu6arhqkDpFV6f5bxSNW3+S3RuJGPIqO797SqRJlObmo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik4V5ayE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D3EC116B1;
+	Tue, 23 Apr 2024 21:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908500;
-	bh=6wKS8C6H6bVYIvF/lBw7Aj+S178kbhCSKmieUG0c71s=;
+	s=korg; t=1713908600;
+	bh=kZXoggI0bkUvgD+a6GeqHGwmwbFZORqrxg/yr4VZcGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhuWSg0HPYn+DVMGatEmkbEvabGGaRuB4RstLXfBNLl+Dxjq9K0XmCMFftKfs5IOa
-	 hO6CNQ8LI4lOXGB2KLzqiPjBLhxjXauhw+mZnIiQowFNzO37kCLuk9JIodkjzd1cKZ
-	 fCKIuabGkwfYKMa6R5oS5K4KwkcBNOWrwhNKkhVA=
+	b=ik4V5ayEHWA6kyJBOARdQho7CcPRzHf94JOzCbcEUQM7JMmIcFQbhnzUapk/3KiCu
+	 bD/MsMuYJLwtiP2QYH+tvvdkpOl86H/IjhD68i8EX2CpOZaaQjyhMUW2cw5wJOM98s
+	 zXyewwXi0NfVZWKr3AzXa+UeHwRqNvkiHnRCSNs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 079/158] clk: Initialize struct clk_core kref earlier
+Subject: [PATCH 6.6 064/158] s390/qdio: handle deferred cc1
 Date: Tue, 23 Apr 2024 14:38:21 -0700
-Message-ID: <20240423213858.524644694@linuxfoundation.org>
+Message-ID: <20240423213857.852969117@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 9d05ae531c2cff20d5d527f04e28d28e04379929 ]
+[ Upstream commit 607638faf2ff1cede37458111496e7cc6c977f6f ]
 
-Initialize this kref once we allocate memory for the struct clk_core so
-that we can reuse the release function to free any memory associated
-with the structure. This mostly consolidates code, but also clarifies
-that the kref lifetime exists once the container structure (struct
-clk_core) is allocated instead of leaving it in a half-baked state for
-most of __clk_core_init().
+A deferred condition code 1 response indicates that I/O was not started
+and should be retried. The current QDIO implementation handles a cc1
+response as I/O error, resulting in a failed QDIO setup. This can happen
+for example when a path verification request arrives at the same time
+as QDIO setup I/O is started.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-4-sboyd@kernel.org
-Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
+Fix this by retrying the QDIO setup I/O when a cc1 response is received.
+
+Note that since
+
+commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+commit 5ef1dc40ffa6 ("s390/cio: fix invalid -EBUSY on ccw_device_start")
+
+deferred cc1 responses are much more likely to occur. See the commit
+message of the latter for more background information.
+
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/s390/cio/qdio_main.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index c6928dce50f23..d5a1e68ee20b7 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -3962,8 +3962,6 @@ static int __clk_core_init(struct clk_core *core)
- 	}
- 
- 	clk_core_reparent_orphans_nolock();
--
--	kref_init(&core->ref);
- out:
- 	clk_pm_runtime_put(core);
- unlock:
-@@ -4192,6 +4190,16 @@ static void clk_core_free_parent_map(struct clk_core *core)
- 	kfree(core->parents);
+diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
+index 9cde55730b65a..ebcb535809882 100644
+--- a/drivers/s390/cio/qdio_main.c
++++ b/drivers/s390/cio/qdio_main.c
+@@ -722,8 +722,8 @@ static void qdio_handle_activate_check(struct qdio_irq *irq_ptr,
+ 	lgr_info_log();
  }
  
-+/* Free memory allocated for a struct clk_core */
-+static void __clk_release(struct kref *ref)
-+{
-+	struct clk_core *core = container_of(ref, struct clk_core, ref);
-+
-+	clk_core_free_parent_map(core);
-+	kfree_const(core->name);
-+	kfree(core);
-+}
-+
- static struct clk *
- __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
+-static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
+-				      int dstat)
++static int qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
++				     int dstat, int dcc)
  {
-@@ -4212,6 +4220,8 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
- 		goto fail_out;
+ 	DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qest irq");
+ 
+@@ -731,15 +731,18 @@ static void qdio_establish_handle_irq(struct qdio_irq *irq_ptr, int cstat,
+ 		goto error;
+ 	if (dstat & ~(DEV_STAT_DEV_END | DEV_STAT_CHN_END))
+ 		goto error;
++	if (dcc == 1)
++		return -EAGAIN;
+ 	if (!(dstat & DEV_STAT_DEV_END))
+ 		goto error;
+ 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ESTABLISHED);
+-	return;
++	return 0;
+ 
+ error:
+ 	DBF_ERROR("%4x EQ:error", irq_ptr->schid.sch_no);
+ 	DBF_ERROR("ds: %2x cs:%2x", dstat, cstat);
+ 	qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
++	return -EIO;
+ }
+ 
+ /* qdio interrupt handler */
+@@ -748,7 +751,7 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+ {
+ 	struct qdio_irq *irq_ptr = cdev->private->qdio_data;
+ 	struct subchannel_id schid;
+-	int cstat, dstat;
++	int cstat, dstat, rc, dcc;
+ 
+ 	if (!intparm || !irq_ptr) {
+ 		ccw_device_get_schid(cdev, &schid);
+@@ -768,10 +771,12 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+ 	qdio_irq_check_sense(irq_ptr, irb);
+ 	cstat = irb->scsw.cmd.cstat;
+ 	dstat = irb->scsw.cmd.dstat;
++	dcc   = scsw_cmd_is_valid_cc(&irb->scsw) ? irb->scsw.cmd.cc : 0;
++	rc    = 0;
+ 
+ 	switch (irq_ptr->state) {
+ 	case QDIO_IRQ_STATE_INACTIVE:
+-		qdio_establish_handle_irq(irq_ptr, cstat, dstat);
++		rc = qdio_establish_handle_irq(irq_ptr, cstat, dstat, dcc);
+ 		break;
+ 	case QDIO_IRQ_STATE_CLEANUP:
+ 		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_INACTIVE);
+@@ -785,12 +790,25 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+ 		if (cstat || dstat)
+ 			qdio_handle_activate_check(irq_ptr, intparm, cstat,
+ 						   dstat);
++		else if (dcc == 1)
++			rc = -EAGAIN;
+ 		break;
+ 	case QDIO_IRQ_STATE_STOPPED:
+ 		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
  	}
- 
-+	kref_init(&core->ref);
 +
- 	core->name = kstrdup_const(init->name, GFP_KERNEL);
- 	if (!core->name) {
- 		ret = -ENOMEM;
-@@ -4266,12 +4276,10 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
- 	hw->clk = NULL;
- 
- fail_create_clk:
--	clk_core_free_parent_map(core);
- fail_parents:
- fail_ops:
--	kfree_const(core->name);
- fail_name:
--	kfree(core);
-+	kref_put(&core->ref, __clk_release);
- fail_out:
- 	return ERR_PTR(ret);
++	if (rc == -EAGAIN) {
++		DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qint retry");
++		rc = ccw_device_start(cdev, irq_ptr->ccw, intparm, 0, 0);
++		if (!rc)
++			return;
++		DBF_ERROR("%4x RETRY ERR", irq_ptr->schid.sch_no);
++		DBF_ERROR("rc:%4x", rc);
++		qdio_set_state(irq_ptr, QDIO_IRQ_STATE_ERR);
++	}
++
+ 	wake_up(&cdev->private->wait_q);
  }
-@@ -4351,16 +4359,6 @@ int of_clk_hw_register(struct device_node *node, struct clk_hw *hw)
- }
- EXPORT_SYMBOL_GPL(of_clk_hw_register);
  
--/* Free memory allocated for a clock. */
--static void __clk_release(struct kref *ref)
--{
--	struct clk_core *core = container_of(ref, struct clk_core, ref);
--
--	clk_core_free_parent_map(core);
--	kfree_const(core->name);
--	kfree(core);
--}
--
- /*
-  * Empty clk_ops for unregistered clocks. These are used temporarily
-  * after clk_unregister() was called on a clock and until last clock
 -- 
 2.43.0
 
