@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596B38AFA10
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 864958AFA7E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D61C1C22994
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7DB61C232AE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E130314882C;
-	Tue, 23 Apr 2024 21:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074451474D8;
+	Tue, 23 Apr 2024 21:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVUUhPXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oM5GKuA4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC67143895;
-	Tue, 23 Apr 2024 21:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB80B1420BE;
+	Tue, 23 Apr 2024 21:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908627; cv=none; b=H4qIKPVVyuRzntZGUcPPxYCLb79zXd8JlL3ubysy7GPRu9qA97KMdgtop+YyreQghb0rCIW16cL0kuAqXsbQSf6MnqVPUQPGMa19y0htZK9f2VQfwrCiA/a9jF8hRE9t7hsHzIm5bsDAEL8d6s0xQoRK7hUZCW/0yx6hVEP2lLk=
+	t=1713908710; cv=none; b=tuE9/OpLG+sonfm9oMS+7taBAsCzrkKRA29d/+YVtFwhyl72vdJPRZq2Gdncnn8tbEU6yXhX0qo679QmfyTuTuW0+Coxi8g2XCF2ZJA0fuHlwMddxOQq0zAlpaxgyYfer0cYAMxY4RXklR7VFVrwx0HcEkAQpVcAol+OgwrMzJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908627; c=relaxed/simple;
-	bh=EsKYU6f9N5aXFfdSUDMXcdS//w8A/ktuj8M6TGQrRvw=;
+	s=arc-20240116; t=1713908710; c=relaxed/simple;
+	bh=M/tvkICwdij00Lnbr0hk3LPdmBNwIgHDLmCfJja1aXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urEVJkf9Ajba2nkMuEFKo5s4hlNUqQ7y5DcWGxMta5m2jE/JJ1h0p1+XEjmupoPZdaeEm1Nl/fbtCc+ZVLU1KtLR2FeaHkgDlkkOnTjktvQT6kKjIj5y99JSxVTp831C3CsUZxT4lc/JwNdCEIbcEvEw1qOswkBUWS00xLnLONQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVUUhPXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C7BC32782;
-	Tue, 23 Apr 2024 21:43:47 +0000 (UTC)
+	 MIME-Version; b=NmkDVVNBKOEb2cwxizPHX1v1L7Un87Iu6/s7f264GCxQiWgnvZsPGpzx6U0syYIQJPXkDtKvzXiDn1qmczm/oTMZX3v+9vUbKDeZXVireVtqX/sLYBY3Ikt0okjltyGn/i0AExgr44yZZN5wcFTKA1GFMGllYUB+Jrv+pvFtI5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oM5GKuA4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312C2C3277B;
+	Tue, 23 Apr 2024 21:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908627;
-	bh=EsKYU6f9N5aXFfdSUDMXcdS//w8A/ktuj8M6TGQrRvw=;
+	s=korg; t=1713908710;
+	bh=M/tvkICwdij00Lnbr0hk3LPdmBNwIgHDLmCfJja1aXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVUUhPXVgquYAC+GryKMH7se9X/IuCItkIxRPn3hGBvIiRZtrcPmorNOSaQiD1zLb
-	 PK8DjUS3Z7oo0rZ4mjUjx0LRM4bdPFJ/kcxyfw9pMAOKzPFKQu/Yb5/8hXSLBiebcu
-	 /12Y8W6pi0WS1xcm43mD+CGQKsu/vOUW763BV/k0=
+	b=oM5GKuA4U8mH6Br4bUm6rikkfg10VmfB+0yFtTJ4keGhjP1lfLuYnQfiA6797sH9N
+	 SMhYgax7Fc+iN9vzAliQ4PjaMOBN8ll9ikpFc0iQMCY6jUI22YyUy2HOXbswEyopSX
+	 KiTTiq/uc3sEpKoCiDbN94ytEAgnTbSoxeYdQ0Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/158] ALSA: scarlett2: Add correct product series name to messages
+Subject: [PATCH 6.1 049/141] RDMA/cm: Print the old state when cm_destroy_id gets timeout
 Date: Tue, 23 Apr 2024 14:38:37 -0700
-Message-ID: <20240423213858.363435818@linuxfoundation.org>
+Message-ID: <20240423213854.854952892@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,222 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit 6e743781d62e28f5fa095e5f31f878819622c143 ]
+[ Upstream commit b68e1acb5834ed1a2ad42d9d002815a8bae7c0b6 ]
 
-This driver was originally developed for the Focusrite Scarlett Gen 2
-series, but now also supports the Scarlett Gen 3 series, the
-Clarett 8Pre USB, and the Clarett+ 8Pre. The messages output by the
-driver on initialisation and error include the identifying text
-"Scarlett Gen 2/3", but this is no longer accurate, and writing
-"Scarlett Gen 2/3/Clarett USB/Clarett+" would be unwieldy.
+The old state is helpful for debugging, as the current state is always
+IB_CM_IDLE when timeout happens.
 
-Add series_name field to the scarlett2_device_entry struct so that
-concise and accurate messages can be output.
-
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://lore.kernel.org/r/3774b9d35bf1fbdd6fdad9f3f4f97e9b82ac76bf.1694705811.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: b61a3acada00 ("ALSA: scarlett2: Add Focusrite Clarett+ 2Pre and 4Pre support")
+Fixes: 96d9cbe2f2ff ("RDMA/cm: add timeout to cm_destroy_id wait")
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/20240322112049.2022994-1-markzhang@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 81 ++++++++++++++++++++++-----------
- 1 file changed, 54 insertions(+), 27 deletions(-)
+ drivers/infiniband/core/cm.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index c53ce9b81a7bb..83df5621c98f5 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -391,6 +391,7 @@ struct scarlett2_data {
- 	struct mutex data_mutex; /* lock access to this data */
- 	struct delayed_work work;
- 	const struct scarlett2_device_info *info;
-+	const char *series_name;
- 	__u8 bInterfaceNumber;
- 	__u8 bEndpointAddress;
- 	__u16 wMaxPacketSize;
-@@ -887,25 +888,26 @@ static const struct scarlett2_device_info clarett_8pre_info = {
- struct scarlett2_device_entry {
- 	const u32 usb_id; /* USB device identifier */
- 	const struct scarlett2_device_info *info;
-+	const char *series_name;
- };
- 
- static const struct scarlett2_device_entry scarlett2_devices[] = {
- 	/* Supported Gen 2 devices */
--	{ USB_ID(0x1235, 0x8203), &s6i6_gen2_info },
--	{ USB_ID(0x1235, 0x8204), &s18i8_gen2_info },
--	{ USB_ID(0x1235, 0x8201), &s18i20_gen2_info },
-+	{ USB_ID(0x1235, 0x8203), &s6i6_gen2_info, "Scarlett Gen 2" },
-+	{ USB_ID(0x1235, 0x8204), &s18i8_gen2_info, "Scarlett Gen 2" },
-+	{ USB_ID(0x1235, 0x8201), &s18i20_gen2_info, "Scarlett Gen 2" },
- 
- 	/* Supported Gen 3 devices */
--	{ USB_ID(0x1235, 0x8211), &solo_gen3_info },
--	{ USB_ID(0x1235, 0x8210), &s2i2_gen3_info },
--	{ USB_ID(0x1235, 0x8212), &s4i4_gen3_info },
--	{ USB_ID(0x1235, 0x8213), &s8i6_gen3_info },
--	{ USB_ID(0x1235, 0x8214), &s18i8_gen3_info },
--	{ USB_ID(0x1235, 0x8215), &s18i20_gen3_info },
-+	{ USB_ID(0x1235, 0x8211), &solo_gen3_info, "Scarlett Gen 3" },
-+	{ USB_ID(0x1235, 0x8210), &s2i2_gen3_info, "Scarlett Gen 3" },
-+	{ USB_ID(0x1235, 0x8212), &s4i4_gen3_info, "Scarlett Gen 3" },
-+	{ USB_ID(0x1235, 0x8213), &s8i6_gen3_info, "Scarlett Gen 3" },
-+	{ USB_ID(0x1235, 0x8214), &s18i8_gen3_info, "Scarlett Gen 3" },
-+	{ USB_ID(0x1235, 0x8215), &s18i20_gen3_info, "Scarlett Gen 3" },
- 
- 	/* Supported Clarett USB/Clarett+ devices */
--	{ USB_ID(0x1235, 0x8208), &clarett_8pre_info },
--	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info },
-+	{ USB_ID(0x1235, 0x8208), &clarett_8pre_info, "Clarett USB" },
-+	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info, "Clarett+" },
- 
- 	/* End of list */
- 	{ 0, NULL },
-@@ -1205,8 +1207,8 @@ static int scarlett2_usb(
- 	if (err != req_buf_size) {
- 		usb_audio_err(
- 			mixer->chip,
--			"Scarlett Gen 2/3 USB request result cmd %x was %d\n",
--			cmd, err);
-+			"%s USB request result cmd %x was %d\n",
-+			private->series_name, cmd, err);
- 		err = -EINVAL;
- 		goto unlock;
+diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
+index 462a10d6a5762..950fe205995b7 100644
+--- a/drivers/infiniband/core/cm.c
++++ b/drivers/infiniband/core/cm.c
+@@ -1026,23 +1026,26 @@ static void cm_reset_to_idle(struct cm_id_private *cm_id_priv)
  	}
-@@ -1222,9 +1224,8 @@ static int scarlett2_usb(
- 	if (err != resp_buf_size) {
- 		usb_audio_err(
- 			mixer->chip,
--			"Scarlett Gen 2/3 USB response result cmd %x was %d "
--			"expected %zu\n",
--			cmd, err, resp_buf_size);
-+			"%s USB response result cmd %x was %d expected %zu\n",
-+			private->series_name, cmd, err, resp_buf_size);
- 		err = -EINVAL;
- 		goto unlock;
- 	}
-@@ -1240,9 +1241,10 @@ static int scarlett2_usb(
- 	    resp->pad) {
- 		usb_audio_err(
- 			mixer->chip,
--			"Scarlett Gen 2/3 USB invalid response; "
-+			"%s USB invalid response; "
- 			   "cmd tx/rx %d/%d seq %d/%d size %d/%d "
- 			   "error %d pad %d\n",
-+			private->series_name,
- 			le32_to_cpu(req->cmd), le32_to_cpu(resp->cmd),
- 			le16_to_cpu(req->seq), le16_to_cpu(resp->seq),
- 			resp_size, le16_to_cpu(resp->size),
-@@ -3798,7 +3800,7 @@ static int scarlett2_find_fc_interface(struct usb_device *dev,
- 
- /* Initialise private data */
- static int scarlett2_init_private(struct usb_mixer_interface *mixer,
--				  const struct scarlett2_device_info *info)
-+				  const struct scarlett2_device_entry *entry)
- {
- 	struct scarlett2_data *private =
- 		kzalloc(sizeof(struct scarlett2_data), GFP_KERNEL);
-@@ -3814,7 +3816,8 @@ static int scarlett2_init_private(struct usb_mixer_interface *mixer,
- 	mixer->private_free = scarlett2_private_free;
- 	mixer->private_suspend = scarlett2_private_suspend;
- 
--	private->info = info;
-+	private->info = entry->info;
-+	private->series_name = entry->series_name;
- 	scarlett2_count_mux_io(private);
- 	private->scarlett2_seq = 0;
- 	private->mixer = mixer;
-@@ -4135,19 +4138,28 @@ static int scarlett2_init_notify(struct usb_mixer_interface *mixer)
- 	return usb_submit_urb(mixer->urb, GFP_KERNEL);
  }
  
--static int snd_scarlett_gen2_controls_create(struct usb_mixer_interface *mixer)
-+static const struct scarlett2_device_entry *get_scarlett2_device_entry(
-+	struct usb_mixer_interface *mixer)
+-static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id)
++static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id,
++						enum ib_cm_state old_state)
  {
- 	const struct scarlett2_device_entry *entry = scarlett2_devices;
--	int err;
+ 	struct cm_id_private *cm_id_priv;
  
- 	/* Find entry in scarlett2_devices */
- 	while (entry->usb_id && entry->usb_id != mixer->chip->usb_id)
- 		entry++;
- 	if (!entry->usb_id)
--		return -EINVAL;
-+		return NULL;
-+
-+	return entry;
-+}
-+
-+static int snd_scarlett_gen2_controls_create(
-+	struct usb_mixer_interface *mixer,
-+	const struct scarlett2_device_entry *entry)
-+{
-+	int err;
+ 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
+-	pr_err("%s: cm_id=%p timed out. state=%d refcnt=%d\n", __func__,
+-	       cm_id, cm_id->state, refcount_read(&cm_id_priv->refcount));
++	pr_err("%s: cm_id=%p timed out. state %d -> %d, refcnt=%d\n", __func__,
++	       cm_id, old_state, cm_id->state, refcount_read(&cm_id_priv->refcount));
+ }
  
- 	/* Initialise private data */
--	err = scarlett2_init_private(mixer, entry->info);
-+	err = scarlett2_init_private(mixer, entry);
- 	if (err < 0)
- 		return err;
- 
-@@ -4231,17 +4243,30 @@ static int snd_scarlett_gen2_controls_create(struct usb_mixer_interface *mixer)
- int snd_scarlett_gen2_init(struct usb_mixer_interface *mixer)
+ static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
  {
- 	struct snd_usb_audio *chip = mixer->chip;
-+	const struct scarlett2_device_entry *entry;
- 	int err;
+ 	struct cm_id_private *cm_id_priv;
++	enum ib_cm_state old_state;
+ 	struct cm_work *work;
+ 	int ret;
  
- 	/* only use UAC_VERSION_2 */
- 	if (!mixer->protocol)
- 		return 0;
+ 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
+ 	spin_lock_irq(&cm_id_priv->lock);
++	old_state = cm_id->state;
+ retest:
+ 	switch (cm_id->state) {
+ 	case IB_CM_LISTEN:
+@@ -1151,7 +1154,7 @@ static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
+ 						  msecs_to_jiffies(
+ 						  CM_DESTROY_ID_WAIT_TIMEOUT));
+ 		if (!ret) /* timeout happened */
+-			cm_destroy_id_wait_timeout(cm_id);
++			cm_destroy_id_wait_timeout(cm_id, old_state);
+ 	} while (!ret);
  
-+	/* find entry in scarlett2_devices */
-+	entry = get_scarlett2_device_entry(mixer);
-+	if (!entry) {
-+		usb_audio_err(mixer->chip,
-+			      "%s: missing device entry for %04x:%04x\n",
-+			      __func__,
-+			      USB_ID_VENDOR(chip->usb_id),
-+			      USB_ID_PRODUCT(chip->usb_id));
-+		return 0;
-+	}
-+
- 	if (chip->setup & SCARLETT2_DISABLE) {
- 		usb_audio_info(chip,
--			"Focusrite Scarlett Gen 2/3 Mixer Driver disabled "
-+			"Focusrite %s Mixer Driver disabled "
- 			"by modprobe options (snd_usb_audio "
- 			"vid=0x%04x pid=0x%04x device_setup=%d)\n",
-+			entry->series_name,
- 			USB_ID_VENDOR(chip->usb_id),
- 			USB_ID_PRODUCT(chip->usb_id),
- 			SCARLETT2_DISABLE);
-@@ -4249,14 +4274,16 @@ int snd_scarlett_gen2_init(struct usb_mixer_interface *mixer)
- 	}
- 
- 	usb_audio_info(chip,
--		"Focusrite Scarlett Gen 2/3 Mixer Driver enabled (pid=0x%04x); "
-+		"Focusrite %s Mixer Driver enabled (pid=0x%04x); "
- 		"report any issues to g@b4.vu",
-+		entry->series_name,
- 		USB_ID_PRODUCT(chip->usb_id));
- 
--	err = snd_scarlett_gen2_controls_create(mixer);
-+	err = snd_scarlett_gen2_controls_create(mixer, entry);
- 	if (err < 0)
- 		usb_audio_err(mixer->chip,
--			      "Error initialising Scarlett Mixer Driver: %d",
-+			      "Error initialising %s Mixer Driver: %d",
-+			      entry->series_name,
- 			      err);
- 
- 	return err;
+ 	while ((work = cm_dequeue_work(cm_id_priv)) != NULL)
 -- 
 2.43.0
 
