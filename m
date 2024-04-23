@@ -1,293 +1,100 @@
-Return-Path: <stable+bounces-40707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB568AE81F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:27:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6808AE84A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 965821C2384F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:27:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59787285D53
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D52B135A64;
-	Tue, 23 Apr 2024 13:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49600136655;
+	Tue, 23 Apr 2024 13:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="JPmxDbJN";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="K89Ra+Vl"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WTKjNeqY";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="V+R4HkPd"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157A545BFD;
-	Tue, 23 Apr 2024 13:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713878849; cv=fail; b=QnLrGvDf3xxr9R+rxFT1aqkdm/teRFZC3EBOJbLZ97HXLwV/7/zhfQsus7Y+FuxkW6TBV8DR/mSIPbpLyVWvrqLHFT2nvpjdf8VSrB3jpJUs13ZqMEnvFcp+DTcuG+GU6eue3YTMBPmI29hbXfRTx9fQtPwnmkbTmbZFeUOSJjA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713878849; c=relaxed/simple;
-	bh=rWsZ0fceq/tn/qmmuPq+6VvQzfxhg0MoOyKKdaijmoo=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=R8Y4k8i2UjpYcCg8Bzawz7ezX2EPfhP4454TrHwDXjqfLKN0GiI7ytSK5eqihjAtQNIdwJfS9BxPrU71O5adnv2zB9nFN2dC1LiIOSQVm85GrI/bkhMW1zcC8blKHAVYiET+mXjREQUQA3MvQ4AtJzFiyphKNDsnS92ND4xLFcs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=JPmxDbJN; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=K89Ra+Vl; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43N7Y4A3031878;
-	Tue, 23 Apr 2024 13:27:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=U+dFQWNn3nRl/EDnKxKeI7RMW9xUWL5O+BDYykvJD00=;
- b=JPmxDbJN6H6iWz+ktjydf1a27VLLWR6qWuIFNeOVzy1ftaPJFgMC3MW99ntozM1IWsLq
- XKNsGWdmo6PqbiSjKJxo34FbwWLt6MM2C2lh7dTewvFRc8r0AozRUgWcqngqAyARIHpm
- ZNJ1NXpAdbwll4GWPn/4QN3CReojMRCCWXvWtsPXnVNnTnFaT8xN8nc1Ll3wdLrbkPRt
- yAU7qFqmfXGUvasWj819lTrRZlCquIAAZYhh+znGLAx0GAPA00STOolVqqMYdDwC6amZ
- uM0b9oOtg29WjHKaa4ca8oAWpTBiK6A3bDomjKpXOnVrYMEaGWIIBVLdsYJz0/rM3Eu8 zw== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xm5rdw6d9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Apr 2024 13:27:06 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 43NCDHQs025469;
-	Tue, 23 Apr 2024 13:27:06 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3xm45dffd0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Apr 2024 13:27:06 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E5iTE2rtAI3KougUDgftVjxCEJHin4fjFzctegeSVoxeQmoicrnwSjzorIKN0IfiWk1rzHr4L6/rsK9hg/k5jdLI3A0U1v8zqPuRv2Yzew/JozWvOSQPfcJW9+efXgIPzdhjc6rEMhaNGIqhXwdTKuqUcPBi/c9WHeC2U1k1vJyxXaW7eEWqTtsANhDINeuzBXajtQnqPY1Cjp1liMMpo3xkDlNXQy1RRV4f79sqADB5KleG51jbMIKxMnnjJq0qmZHLf2AjuwH2RXiKlsK1Lu3iRTrX7UtZoNWY5bAetf9xb3ahEI8lYXuI/qqgXvM2m6hr2WRWT1p4XWo0L04LzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U+dFQWNn3nRl/EDnKxKeI7RMW9xUWL5O+BDYykvJD00=;
- b=S17SJPmeNkBoKIH0Wkpo71X3zziQqztmBElQq1rV+guOT0m8WM+PGLWR12NrfY3ffJRBkV2zad1fhkfPm1ugSR7fdCxHSEd/3YYAenQ6e79fHRpwg/vyaD/VmLEbB3K+gxl3PACJBO62cQFjwF0Z+GzUkJvdX6Wg5JE+5x/6gz/3ugzePO9s06rMX9VnEu4OsW/sZl1LeUe+95DbuUKhrvKwgpG5eUmvvpOBXHMBbjP3M4RRRyRdAabDZDxp2VyrPNpk9p6XhNCmJFFAvOuq13bs7o61xyz/UHrESDqAVtS6SpZPrwT1Uc2RnrapBncmowz0rps79yGQk8JqPWCizg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=U+dFQWNn3nRl/EDnKxKeI7RMW9xUWL5O+BDYykvJD00=;
- b=K89Ra+Vl2BBhRH8scXUAMx5AE+Xo9SokTX9uXa7rz27qYPeMdil3Lejg6mJ7xp3AtCYyUoQhkOjZ6QY3KqMYl5ZG1Oqc9Z1rDZc5Wf2xtLfcBfdWgJgpON22pcslR4TCQK9s7NiNelHBa/0XbAS/MYgR/L/Zq64OnjSZqJExquo=
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
- by BN0PR10MB4869.namprd10.prod.outlook.com (2603:10b6:408:121::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Tue, 23 Apr
- 2024 13:27:03 +0000
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::309b:26bb:11d5:cc76]) by PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::309b:26bb:11d5:cc76%7]) with mapi id 15.20.7472.044; Tue, 23 Apr 2024
- 13:27:03 +0000
-Message-ID: <c2bf36b5-3145-491b-b272-d5afae73db7f@oracle.com>
-Date: Tue, 23 Apr 2024 18:56:52 +0530
-User-Agent: Mozilla Thunderbird
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD49418E28;
+	Tue, 23 Apr 2024 13:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713879294; cv=none; b=MQh2n/JiAxkgjUts71X9FvZFeo1pKfNfhLLP1PtBxJwubX5+bfcKA8uvJrMKmL7wlwhiBugzgP9fD0+UUN/1L9VORVJ75OR2C0XRXfAy9GSeXJOLqi4KNeRbBfQkyUO92+7rBIdcpU+Jk7sixg9fVy+lVlia7A9YxkbN/WWgngg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713879294; c=relaxed/simple;
+	bh=v53nYGkBU6Q0r8sX3eqF6g557Kt1fMudDeT4WFa7Y2o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dBLFxjSGOm413Y1Di7E0rA5TMPNTxV1LleKrmdvJwQoq49X5e2PCIzAOwz4FvvLjwuCFOG6iC0xWdfAgCiyVaJTo4ZfYutB1KMWTv0ba//bKs8vDHwjSB3Sftvp+COQ2AVV5DTtG1/8BWlKf2NRKTTNUhmj1koyRMXl76PwWZEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WTKjNeqY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=V+R4HkPd; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 23 Apr 2024 15:34:45 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713879290;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zQzgTOJxdV+4HqjR4K2Hng/ZiXcnP1iJM/wR6D3wAb4=;
+	b=WTKjNeqY8xkmjrafgK3JHTMFWg4OmmtvBoHyR86Fz5DQGc8/m4JRw1pNturj88beqVCLmT
+	u/3GvaY+7s3kCWvaUaDifQlr/v2fxGWoZwZRKq36MpJfVSR7U9iqQiDsb+Yaf1Yl8XWA6u
+	kUIMap3Meje3OFinYmlFLMk4SyWh/0Pynrwvhp1WDbZ3SJZggVNkDtsfGMKqyUt4fy/nSl
+	Gm04YqUim+3+mFh2FGUyWtktXFd37D71LIDKndamiMbkQgJczzSQOkBl0xmHIKKPAmT6QX
+	tH0EeGkij45IWOvEoXwmtEvj3nwaeCN4OEiiEDYVuvd/7eoSzjoma6p9BB98rg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713879290;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zQzgTOJxdV+4HqjR4K2Hng/ZiXcnP1iJM/wR6D3wAb4=;
+	b=V+R4HkPdnpgdtc0lWO90//+/pjHU2Wv+1ovkWI/lI/cCJ3k3ME+ubW3PIOsWmJQb2JUHs+
+	Kju2+Ap2WqZxpOAA==
+From: Nam Cao <namcao@linutronix.de>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Jaya Kumar <jayalk@intworks.biz>, Daniel Vetter <daniel@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, tiwai@suse.de, bigeasy@linutronix.de,
+	patrik.r.jakobsson@gmail.com,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	George Kennedy <george.kennedy@oracle.com>,
+	Darren Kenny <darren.kenny@oracle.com>, chuansheng.liu@intel.com,
+	stable@vger.kernel.org
 Subject: Re: [PATCH v2] fbdev: fix incorrect address computation in deferred
  IO
-To: Thomas Zimmermann <tzimmermann@suse.de>, Nam Cao <namcao@linutronix.de>,
-        Jaya Kumar <jayalk@intworks.biz>, Daniel Vetter <daniel@ffwll.ch>,
-        Helge Deller <deller@gmx.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Cc: tiwai@suse.de, bigeasy@linutronix.de, patrik.r.jakobsson@gmail.com,
-        Vegard Nossum <vegard.nossum@oracle.com>,
-        George Kennedy <george.kennedy@oracle.com>,
-        Darren Kenny <darren.kenny@oracle.com>, chuansheng.liu@intel.com,
-        stable@vger.kernel.org
+Message-ID: <20240423133445.h44pcNzq@linutronix.de>
 References: <20240423115053.4490-1-namcao@linutronix.de>
  <1722c1b6-59a5-429d-905c-bc1951a68a68@suse.de>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <1722c1b6-59a5-429d-905c-bc1951a68a68@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: JH0PR01CA0124.apcprd01.prod.exchangelabs.com
- (2603:1096:990:54::13) To PH8PR10MB6290.namprd10.prod.outlook.com
- (2603:10b6:510:1c1::7)
+ <c2bf36b5-3145-491b-b272-d5afae73db7f@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|BN0PR10MB4869:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0fb3b9e-714c-40f5-1a5f-08dc63990ff4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?ZEdiZ2VpUmxHcXQ0ZXVzUVQ1TFJzUVFlekpBcUhlMkVlY2QzbEFQM3VmYU4w?=
- =?utf-8?B?bSszRmFibHA3U2VjZVlEVW1nQnBXVUE2SlduNzY1U0JYMWVVWWRIYnltN2F0?=
- =?utf-8?B?T0hyU1RoVXFvaUpuazVScUJWdElBdWlIU2FDSm85OVN0QmVuTWZvTnV2bUxM?=
- =?utf-8?B?S1RkWWdwUXpaY1hKRFVrd2pUbUg3Mi9oR1JsMjRyeXB6V1k1VWwxb0VQNWJz?=
- =?utf-8?B?VklueEozZWh6M280Q3BvTmlaTUZxeDVXNHlOR214R2hrSlMveDhHLzhiTGJK?=
- =?utf-8?B?Ujh2c1A3QjJnQitYYVcvQjRpNTN3NnN5UHAxWU1aeDgxeStIMkZVTFRSK2VB?=
- =?utf-8?B?TDd2NGhRSThuVWdQa2tpYWluYk1ZVENWTEUzWGJsUXNzNnE1d1k4T1NOMHpy?=
- =?utf-8?B?eDNiUWxPOFJlakpueE0wZDJzbkljWUdVczNRYU42TVRGS3ZWT0JqRjM4K1Ax?=
- =?utf-8?B?RXh2MUJIMHg5TFlWUDEyaktWVkZPZVVkeHNpZjZ4QVVsbTFOYWJnNWFHYnJJ?=
- =?utf-8?B?SjVyQVphOEZIN1RLVUtkOXY1bFBoaEgwaFRWZXlpVEN2UXlaNVl2NEpoSHY1?=
- =?utf-8?B?TXdPRjdiakxmNzdzWENhTzNSL05vQ3BJOXFyK2V1ZnYxaG9IZXNoV3RmYUR3?=
- =?utf-8?B?UFIxV1JTRWxua3NlK21QRy93bGxBZ1dOaG5hdHBGT0ZjMHpHL1FOa09nVmRD?=
- =?utf-8?B?OStlZjc0Y0hSbzVhYmo4UGxYV0JlQlJqODhpbGQrbXJjS2FuR0M5dCt2VkxQ?=
- =?utf-8?B?UmhjMUoxWVBVRVk2OXNwVVlMMS8zNEN3T2hJZXVYOE5OcUhTM0tlM0c3NWFq?=
- =?utf-8?B?S0NMTVhEaDFOM0cxTkpWQnVYaWJTUWUwdk5TTCs3SmhaVWhsbXFXenYwalFH?=
- =?utf-8?B?NTJkWWhkSlVZRmh3aDIvRzBTZ1NLZEljYkJLREI2NTUzM01tZ0RuK1JGS1R0?=
- =?utf-8?B?VnUxd0JYQWwyM2N3dHdOeFJubUI1aGJ3ZEZ2ZitXWS8vSjNMWkVCRUVESkwy?=
- =?utf-8?B?RXR6VGdGeWJJT2lmZmo2NWZHRXdkdFNhcEdycUtQWGN2VTlSczJvdkJLQXk1?=
- =?utf-8?B?ZjQxUVNGdkhKZ202TE5LTXM5UzdRNmNGRk9GbWkyL2NLK0V6WXg4MVFDZGZt?=
- =?utf-8?B?ODMrY0FXWDN1UzRMYkJhR2pFeVU1SHd6OWRHeWx2VUxiQ3VrWEpFWXc2NTdL?=
- =?utf-8?B?amhOVUVSaFdDOFNhbFpHSUJDZmNFOWdFV0kvcXlYQ3dCU1cxd2IxRVNwcGVT?=
- =?utf-8?B?SHBoQ21jSmp5ek1DVXZvU1F0U1VSWjFDM1VnWXhCdFhFTWxURzh1LzlySFBa?=
- =?utf-8?B?WllhRjhQMVVMVkN6WmVRbVoreWdWeitpUGVBT2VGSWYvM1hvekhRTFo1QWln?=
- =?utf-8?B?ZkYxZUNqR2xTQS9aNTZGVTc0SkNPbzhKWDVyUGtGMWRWa3orOVROMmIxdm1m?=
- =?utf-8?B?L3M2UlpyN1RDN205dzV4NnBEcFNLWWtHS2ZjMVdZNWlHdzRVamhqQ0I2dVNs?=
- =?utf-8?B?K2ZlZFYrVHY4d0tpNm8rV29NYXl1UGowYzNIYi9CUW0rRjNiRHU3NEpMd2xF?=
- =?utf-8?B?WEc5UUVDZEJEZ3h5aG1CNnp4TEFleEVsSXJscWNkN1NNM0ExSDMvdnBRUGpj?=
- =?utf-8?B?eXpVa3lpLytDbnlkdVVIclp0SmtrajVsQTcxdW1VdnBXSE80dWhKeG9VN00x?=
- =?utf-8?B?ZUVFeUw3OWw2ZHlSWmlPdTNiR3Y0RlFGSU9PT3BlRzNWZE9DeXBxdll3PT0=?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?TzJhdE5PTkQwOVd4NkVyRjZLRDdXV3JBeElPYTR6WnlOL3ZiQ0wxenBDcHVa?=
- =?utf-8?B?cXZVVXFVZTN2Q0JQRnlrNDZSY3phUGdiQ1k0eUFIZHZ2RTlGR3NxTmVFOWN5?=
- =?utf-8?B?cDhvaDFTN0ZPUm1HVmdBNzJUdlkxR0tXWW5YYzVSVjRYR0N1NmhyMjdmNm5O?=
- =?utf-8?B?MkYxQk9MVWhpTlc0clpXaFVKTHV1ZWkrQVl6S1h5TW11TldyZEx2QU1XSm9R?=
- =?utf-8?B?K2luNkJxMTRUNEEwY2h6bmVwZkFIb2VhQ1BwMkpjSHUveWw1Z1pQVG55LzRC?=
- =?utf-8?B?dGVQRUxGZ1VmdUJTMVBjYXI4eCs4T2RoS1dRVlVJa2hsdjJCTXRKYXlvYVcz?=
- =?utf-8?B?YnNhcVEzeEowUDRBNFpTVEZic004VytZNzZNVHFmWmhZdXJGZ0wxNnJJYU1Q?=
- =?utf-8?B?dEpUK0NoUmFtYjFDV042S2I0S1JTMUsyQytYVGVKV3djL1g2T0FVWTU0NkJm?=
- =?utf-8?B?MHZvQVNKeFUzb1N0NDZWUXZDTEFBc1oxclF2eFhnMERyOE9KNVUwNmxJRVBN?=
- =?utf-8?B?T1FWUzkyR3pvWnpDV3N4VmN6bVJjZUlDMjMzSmdzNGRxMjQ2djlZQUNBbkZR?=
- =?utf-8?B?dUFyUTJkclQ5YWlFTm5TN2I2d0Fobjh4VGlDTUwwTnFQWitPSmpRWWd2MVpG?=
- =?utf-8?B?eHZ5T3ZQSGVaZEdVTFNHM3QralUvMGRPVDYvdVd6ODloc0JTM2U2dEp2OVpH?=
- =?utf-8?B?V3lnK0hJSWVOY2FSVzlVMWZLMGg2emRTcWlRWUdHbWFYajFlUXFQNlltUW1C?=
- =?utf-8?B?SVlBaWVoalRUczd3YzZZVUlkUS8rYmlybFliUXlKOExpOTZEVTJsNU1VbjRE?=
- =?utf-8?B?Sms5ejd5dFBhWlliY0s5TUs4dnI5Zk0vMWFEVlBHejlycWw4MGR6WDB2NjdE?=
- =?utf-8?B?N0tTeU5CN1JGSU1NazZPek9lT21oRXFTRGFuZ1ZqMTFXOFJYVmNiSFY0Q3hO?=
- =?utf-8?B?WE9FaEZPUXhKRjJpanBwYWlTdWkwZlV3VU5vQzBKYXgyb0RlYmttcDB6Tjhx?=
- =?utf-8?B?TEVmRUlIcmpCQXg2MTE0ZmJKcWxXYktCTlRKUkJaaXdiR2ZGNmtWUDhFdHp2?=
- =?utf-8?B?Q2lVYk1wcW43QXRDQ1pESWFMU2xrTG9oTDJmZzcyR21lSmZwdlBvcGdTZ3d1?=
- =?utf-8?B?aEpzczJnTENKS3hWamhuYkhKOEJUb3FqL1hnekxPZzNjay9ZYUZPZHJGb0Y4?=
- =?utf-8?B?MXQzVHJHdkpDUkRFZ255TmplTUtTOTlvbmViMGRLQUN3dE9qKzVRNVd3a0JV?=
- =?utf-8?B?MFZ1MDZMU2srVDcya0h1UXNwMjRSVnBFb292R2s0ZWRvZCs0WGw0YTgyallO?=
- =?utf-8?B?MFpuZFJZRmZNbHJObUNBWjViZitkV1EyenVzeERBV0ZvdTRvS28xOFJzeTFn?=
- =?utf-8?B?QWlvMHZyUnlCc3llNmx6ZXVxR2o4S01KblpRamhzZDFyQlk3VzlNNnFVZm9K?=
- =?utf-8?B?VVBpRnBYdzczZWsvRXFMdmEyTUd5V1ZtUkVqMXIvRFFvMWU5czVhdkFYOUNx?=
- =?utf-8?B?a2RYMUhPM2NaaUEyTWNCYVdhc2RaMFN3bXpLdnNORzFWN2hVdmUyQWNzVmxU?=
- =?utf-8?B?NjBocGpzNUdJRFVqb2R3Rnkra2hCcy9KUzlXZUcwUHFRYVNUSU14NzNiT0No?=
- =?utf-8?B?TG9UN3NibmpyRVBHc0Y4NVZTbWFBN3NHN2FIa2F2a2FNNUVDVkwrV0svQnc0?=
- =?utf-8?B?dlNUd3JHeURjM2FZZVNmWkNJSHpGYlhlWHJGam1SazJKeU1XWitXRVJRYXpy?=
- =?utf-8?B?MVdYczVzc29WblBsYmdCOFcyVzNZZE1hRVBrQ2NYZlpwNHZGTi9HOUlwR0pp?=
- =?utf-8?B?R01SL3JMQWpPcmhlRE53eWdmTXY3Wm5ZMWhBODNBREJyMnR4dFExMFk3Vis2?=
- =?utf-8?B?blp3Q2pDdXpoYmZoSHl4dGxjYXBtSkRDd1VGaWx5cUc4YzR6STFLc3BrUUhG?=
- =?utf-8?B?VG8rdkZvZ1hTb2gyaXEweDJFeXhvNkxtekFZVXVWY2NwZkdVSjVoaWxuUnk5?=
- =?utf-8?B?ZEMwT3AzSWZJNFdiYjE4YmpwRGNKOUF6Mm5GNzBMMXlIVVdPeEN6KzZOcE5J?=
- =?utf-8?B?bFNMbTVsekIrR0oyem5wNkNScndnL0duWWpCODF1eWhuVGVGZDRaQ1l4d2NQ?=
- =?utf-8?B?dy9pMlhNaC9TRzRlSkwzcXU2cXhHWnZaNjBBcFErNXlHRmNWbjFWUDhuOU5P?=
- =?utf-8?Q?3G4DvJUZHOhKIY/OPm424R0=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	9ERhjl2NqTaCb/nzIty9FZFqI5xr2G2fnRIpZOQzBx4Cg93AcCC+7/26PKHeOiL43gOKAzAPljQPHBhrgqaVWOBOzTzlAq44TqQycTpLm+IMmfdAijfw76Lpfxtd4ZIlV/p2+3bKxLLvSVA5nOI8dHZWDmDRFTYDFON4qdZ1PS0j+19iHTC5bOrfKSmi9to5f/X5+j0vPhW5GbNfAJq29XQRKbbo5nabZp2MAxXuHV57MNTYz+pXKHIwhooY/L2fP2hQDwY6a9V9TFu0OqvIoIfM90PSl/FqVN8eCq8VXQHsybYwGq1gEaZaMlwWpSIFcHV6390bgdMvPVev5KXI6JnfseHyEyN+x0z7lC6zxfZMJN4LFNuWCzEy9+cEVu19QGGSZf3sje2GKsnsdxp83R3rrXQwuSERYxJ2BmK0vp/hq0xzKkHKG2tQ/BSRUyq+PknCUUtxzOAKGv5c508qpcK/VX6Z8dNDheuxospnFCP75RH5t3JQ1f5dLjPxJxmtcMrYDcrDoRN+p4PPy8NnSOx17oVXKJkoekOC1w0V97ed8rmxrTBeS/LNMWHSpDSGahyjMOLp1P1nFbm5G2UrsHF8CBUfYjpkz6CMlcfUgdA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0fb3b9e-714c-40f5-1a5f-08dc63990ff4
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2024 13:27:03.2220
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z8cN3miNXP2dRpsbjEppHkhTPEo6xlyjO+wFPIqK6Uur2J9ZIW4qeLjlfzAVRBcux3I8bQsqlK0zz+1bnOfbjinU2UGGlP4ykGxxWfjTLshqBnNF8jyK7ZZOUtuE9uBM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB4869
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-23_11,2024-04-23_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
- mlxscore=0 phishscore=0 spamscore=0 malwarescore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404230034
-X-Proofpoint-ORIG-GUID: IxEP8HjvjfCcDORTbagzNIHyYdueev_-
-X-Proofpoint-GUID: IxEP8HjvjfCcDORTbagzNIHyYdueev_-
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c2bf36b5-3145-491b-b272-d5afae73db7f@oracle.com>
 
-Hi,
-
-On 23/04/24 18:37, Thomas Zimmermann wrote:
-> Hi
+On Tue, Apr 23, 2024 at 06:56:52PM +0530, Harshit Mogalapalli wrote:
+> Thanks everyone!
 > 
-> Am 23.04.24 um 13:50 schrieb Nam Cao:
->> With deferred IO enabled, a page fault happens when data is written to 
->> the
->> framebuffer device. Then driver determines which page is being updated by
->> calculating the offset of the written virtual address within the virtual
->> memory area, and uses this offset to get the updated page within the
->> internal buffer. This page is later copied to hardware (thus the name
->> "deferred IO").
->>
->> This offset calculation is only correct if the virtual memory area is
->> mapped to the beginning of the internal buffer. Otherwise this is wrong.
->> For example, if users do:
->>      mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
->>
->> Then the virtual memory area will mapped at offset 0xff000 within the
->> internal buffer. This offset 0xff000 is not accounted for, and wrong page
->> is updated.
->>
->> Correct the calculation by using vmf->pgoff instead. With this change, 
->> the
->> variable "offset" will no longer hold the exact offset value, but it is
->> rounded down to multiples of PAGE_SIZE. But this is still correct, 
->> because
->> this variable is only used to calculate the page offset.
->>
->> Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
->> Closes: 
->> https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4ab341a@oracle.com
->> Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> 
+> I have tested the patched kernel with the syzkaller reproducer and couldn't
+> see a problem.
 
-Thanks everyone!
+If you want to take credit for testing it, send us:
 
-I have tested the patched kernel with the syzkaller reproducer and 
-couldn't see a problem.
+	Tested-by: Your Name <your@email>
 
-Regards,
-Harshit
+And that tag will appear in the final commit.
 
-> Thank you so much. I'll take care of merging the patch later this week.
-> 
-> Best regards
-> Thomas
-> 
->> ---
->> v2:
->>    - simplify the patch by using vfg->pgoff
->>    - remove tested-by tag, as the patch is now different
->>
->>   drivers/video/fbdev/core/fb_defio.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/video/fbdev/core/fb_defio.c 
->> b/drivers/video/fbdev/core/fb_defio.c
->> index 1ae1d35a5942..b9607d5a370d 100644
->> --- a/drivers/video/fbdev/core/fb_defio.c
->> +++ b/drivers/video/fbdev/core/fb_defio.c
->> @@ -196,7 +196,7 @@ static vm_fault_t fb_deferred_io_track_page(struct 
->> fb_info *info, unsigned long
->>    */
->>   static vm_fault_t fb_deferred_io_page_mkwrite(struct fb_info *info, 
->> struct vm_fault *vmf)
->>   {
->> -    unsigned long offset = vmf->address - vmf->vma->vm_start;
->> +    unsigned long offset = vmf->pgoff << PAGE_SHIFT;
->>       struct page *page = vmf->page;
->>       file_update_time(vmf->vma->vm_file);
-> 
+But completely up to you.
 
+Best regards,
+Nam
 
