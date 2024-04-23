@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-41084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297D48AFAC5
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371228AF994
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B8C8B2BAD9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E11431F26E1F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62B31494C4;
-	Tue, 23 Apr 2024 21:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC127145B07;
+	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG8OXB2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryMBh/gG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D4F1448EF;
-	Tue, 23 Apr 2024 21:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AB720B3E;
+	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908666; cv=none; b=Imjt7ZVyXIGMmEPkFRpLhowJkDPzmRN6iP6XKeZdu1C9HiKBDAAmkZOCZFnGHgO8LdhTuMDRpHhrp6TsMj3iHSj4q8HFAz2688RJ8LLZz/vjJ55BDxfcw/Yocc5qZS2BNLd2YCVQ6TEknMltda0ToDXQumiEZYFZUvzNe2a7TW4=
+	t=1713908551; cv=none; b=oOrx7Ru7iz9Msr8CsO0SPynb7aUVRhJWlV7/nu+LFe5osntwJDXalf9HPWqvv+0no/kcPeN8nq1aYkkfvo5JukG1AfsN1hUfN/tAYEL72F5vyoM9t95vzvIBA6Y6QYH8475mXbju4PBq6n8krotoHGHo7+Jac1HJGvXR6lX2Ji0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908666; c=relaxed/simple;
-	bh=4W6FyvICcLJ+EEZf5qHyokIo9IPdgqIKpjjnH0WEwOE=;
+	s=arc-20240116; t=1713908551; c=relaxed/simple;
+	bh=TxZ12yq1/puCaLG4Q/uV82F/X6dPU3Cs2whN6dKGpgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ncp+diA/GUHE4yCqTxYjZG7lZYZ7i2MgTU0ZMSF2jbjL8j/HcDe94eInjneABs9bpuOO31QLo1Sm599g7sDQLS3fyK0RC6S1gxGevK1Gywej4taLgLrKJFklb9XM4u9ydFqvzDJFlJMgAft1hKhnWKkub/quZ56zhU8C9d3xW3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG8OXB2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75364C3277B;
-	Tue, 23 Apr 2024 21:44:26 +0000 (UTC)
+	 MIME-Version; b=IPgtjBWAxx0FWA2Xw6g6XcRHhYAKmsB0Ut0ifWAXfI3jk4NStJPMB9nbNKC2Uq+ROiHCDrNEIiHSEblGdBo4fCzmNUnvhAlzKajTarLJiVRUFshTp2VI/JKuJ7aNwmvChdzkIBfo8uHIsypqCxUke9fLen7YK0TaMvGeZe+GnU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryMBh/gG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468D4C32783;
+	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908666;
-	bh=4W6FyvICcLJ+EEZf5qHyokIo9IPdgqIKpjjnH0WEwOE=;
+	s=korg; t=1713908551;
+	bh=TxZ12yq1/puCaLG4Q/uV82F/X6dPU3Cs2whN6dKGpgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nG8OXB2v2e/GunOXoZ58fQEwmvVQ6wk8bhIjZ25IMgPX2dCkquutKMhrXjRqoecWm
-	 kMsqaK1go73GJ+WpjCO/prAJ7RFWBqW3cBMqbqbK4oRNIyvrCAJrXZt5wnPtHp84d5
-	 r5nEQqmU+AMCzjb+zZG2cpSAqQT727QiAuL4TsiU=
+	b=ryMBh/gGaMNXJwvnRPDWbLx/UBUq7/HiyS/BQgpqKDe4y9+xMIxZ6n6V66CXiTBhS
+	 y5bUFoWmVY1UYRt/ioPEIQZcGU+JdhQ3UnNZiXmQiyXbHWAaUjd3dzUnfkqv6PIPax
+	 hurep3/S//I5AunPnyajO9R89l+NFVJg5kQZ3AJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oscar Salvador <osalvador@suse.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
 	Miaohe Lin <linmiaohe@huawei.com>,
+	Thorvald Natvig <thorvald@google.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peng Zhang <zhangpeng.00@bytedance.com>,
+	Tycho Andersen <tandersen@netflix.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 137/158] mm,swapops: update check in is_pfn_swap_entry for hwpoison entries
+Subject: [PATCH 6.8 152/158] fork: defer linking file vma until vma is fully initialized
 Date: Tue, 23 Apr 2024 14:39:34 -0700
-Message-ID: <20240423213900.151202897@linuxfoundation.org>
+Message-ID: <20240423213900.780826104@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,142 +73,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oscar Salvador <osalvador@suse.de>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-commit 07a57a338adb6ec9e766d6a6790f76527f45ceb5 upstream.
+commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19 upstream.
 
-Tony reported that the Machine check recovery was broken in v6.9-rc1, as
-he was hitting a VM_BUG_ON when injecting uncorrectable memory errors to
-DRAM.
+Thorvald reported a WARNING [1]. And the root cause is below race:
 
-After some more digging and debugging on his side, he realized that this
-went back to v6.1, with the introduction of 'commit 0d206b5d2e0d
-("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")'.  That
-commit, among other things, introduced swp_offset_pfn(), replacing
-hwpoison_entry_to_pfn() in its favour.
+ CPU 1					CPU 2
+ fork					hugetlbfs_fallocate
+  dup_mmap				 hugetlbfs_punch_hole
+   i_mmap_lock_write(mapping);
+   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
+   i_mmap_unlock_write(mapping);
+   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
+					 i_mmap_lock_write(mapping);
+   					 hugetlb_vmdelete_list
+					  vma_interval_tree_foreach
+					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
+   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
+					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
+					 i_mmap_unlock_write(mapping);
 
-The patch also introduced a VM_BUG_ON() check for is_pfn_swap_entry(), but
-is_pfn_swap_entry() never got updated to cover hwpoison entries, which
-means that we would hit the VM_BUG_ON whenever we would call
-swp_offset_pfn() for such entries on environments with CONFIG_DEBUG_VM
-set.  Fix this by updating the check to cover hwpoison entries as well,
-and update the comment while we are it.
+hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
+i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
+by deferring linking file vma until vma is fully initialized.  Those vmas
+should be initialized first before they can be used.
 
-Link: https://lkml.kernel.org/r/20240407130537.16977-1-osalvador@suse.de
-Fixes: 0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
-Reported-by: Tony Luck <tony.luck@intel.com>
-Closes: https://lore.kernel.org/all/Zg8kLSl2yAlA3o5D@agluck-desk3/
-Tested-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.1.x]
+Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
+Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reported-by: Thorvald Natvig <thorvald@google.com>
+Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/swapops.h |   65 ++++++++++++++++++++++++------------------------
- 1 file changed, 33 insertions(+), 32 deletions(-)
+ kernel/fork.c |   33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -390,6 +390,35 @@ static inline bool is_migration_entry_di
- }
- #endif	/* CONFIG_MIGRATION */
- 
-+#ifdef CONFIG_MEMORY_FAILURE
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -712,6 +712,23 @@ static __latent_entropy int dup_mmap(str
+ 		} else if (anon_vma_fork(tmp, mpnt))
+ 			goto fail_nomem_anon_vma_fork;
+ 		vm_flags_clear(tmp, VM_LOCKED_MASK);
++		/*
++		 * Copy/update hugetlb private vma information.
++		 */
++		if (is_vm_hugetlb_page(tmp))
++			hugetlb_dup_vma_private(tmp);
 +
-+/*
-+ * Support for hardware poisoned pages
-+ */
-+static inline swp_entry_t make_hwpoison_entry(struct page *page)
-+{
-+	BUG_ON(!PageLocked(page));
-+	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
-+}
++		/*
++		 * Link the vma into the MT. After using __mt_dup(), memory
++		 * allocation is not necessary here, so it cannot fail.
++		 */
++		vma_iter_bulk_store(&vmi, tmp);
 +
-+static inline int is_hwpoison_entry(swp_entry_t entry)
-+{
-+	return swp_type(entry) == SWP_HWPOISON;
-+}
++		mm->map_count++;
 +
-+#else
++		if (tmp->vm_ops && tmp->vm_ops->open)
++			tmp->vm_ops->open(tmp);
 +
-+static inline swp_entry_t make_hwpoison_entry(struct page *page)
-+{
-+	return swp_entry(0, 0);
-+}
-+
-+static inline int is_hwpoison_entry(swp_entry_t swp)
-+{
-+	return 0;
-+}
-+#endif
-+
- typedef unsigned long pte_marker;
+ 		file = tmp->vm_file;
+ 		if (file) {
+ 			struct address_space *mapping = file->f_mapping;
+@@ -728,25 +745,9 @@ static __latent_entropy int dup_mmap(str
+ 			i_mmap_unlock_write(mapping);
+ 		}
  
- #define  PTE_MARKER_UFFD_WP			BIT(0)
-@@ -470,8 +499,9 @@ static inline struct page *pfn_swap_entr
+-		/*
+-		 * Copy/update hugetlb private vma information.
+-		 */
+-		if (is_vm_hugetlb_page(tmp))
+-			hugetlb_dup_vma_private(tmp);
+-
+-		/*
+-		 * Link the vma into the MT. After using __mt_dup(), memory
+-		 * allocation is not necessary here, so it cannot fail.
+-		 */
+-		vma_iter_bulk_store(&vmi, tmp);
+-
+-		mm->map_count++;
+ 		if (!(tmp->vm_flags & VM_WIPEONFORK))
+ 			retval = copy_page_range(tmp, mpnt);
  
- /*
-  * A pfn swap entry is a special type of swap entry that always has a pfn stored
-- * in the swap offset. They are used to represent unaddressable device memory
-- * and to restrict access to a page undergoing migration.
-+ * in the swap offset. They can either be used to represent unaddressable device
-+ * memory, to restrict access to a page undergoing migration or to represent a
-+ * pfn which has been hwpoisoned and unmapped.
-  */
- static inline bool is_pfn_swap_entry(swp_entry_t entry)
- {
-@@ -479,7 +509,7 @@ static inline bool is_pfn_swap_entry(swp
- 	BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
- 
- 	return is_migration_entry(entry) || is_device_private_entry(entry) ||
--	       is_device_exclusive_entry(entry);
-+	       is_device_exclusive_entry(entry) || is_hwpoison_entry(entry);
- }
- 
- struct page_vma_mapped_walk;
-@@ -548,35 +578,6 @@ static inline int is_pmd_migration_entry
- }
- #endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
- 
--#ifdef CONFIG_MEMORY_FAILURE
+-		if (tmp->vm_ops && tmp->vm_ops->open)
+-			tmp->vm_ops->open(tmp);
 -
--/*
-- * Support for hardware poisoned pages
-- */
--static inline swp_entry_t make_hwpoison_entry(struct page *page)
--{
--	BUG_ON(!PageLocked(page));
--	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
--}
--
--static inline int is_hwpoison_entry(swp_entry_t entry)
--{
--	return swp_type(entry) == SWP_HWPOISON;
--}
--
--#else
--
--static inline swp_entry_t make_hwpoison_entry(struct page *page)
--{
--	return swp_entry(0, 0);
--}
--
--static inline int is_hwpoison_entry(swp_entry_t swp)
--{
--	return 0;
--}
--#endif
--
- static inline int non_swap_entry(swp_entry_t entry)
- {
- 	return swp_type(entry) >= MAX_SWAPFILES;
+ 		if (retval) {
+ 			mpnt = vma_next(&vmi);
+ 			goto loop_out;
 
 
 
