@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-41132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50FD48AFA71
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F1F8AF9DB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05338289424
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2730E1C22036
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD2D149DE4;
-	Tue, 23 Apr 2024 21:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123EE145349;
+	Tue, 23 Apr 2024 21:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xh36Odvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEbmhZt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA8D1420BE;
-	Tue, 23 Apr 2024 21:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60B5143889;
+	Tue, 23 Apr 2024 21:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908699; cv=none; b=u3SHpu8lJAKYKD0wQCQfJ8kWFLqEuGzIpQrw1vId++nGYuOrXJXhrJC1v7Kk8eURuEFO57bPrzPi99OBVk8If/dJL9xOkU6tWT29r1AFbMx4RYj8AAlMnhUFZ8BTD9a+uGUMU7Q/t2gzGlFzyKGrQdX69dxmvQnUDE3dpS+kyp4=
+	t=1713908595; cv=none; b=NPVhKeyrIYXn9zyaaQQ5+q9Gd1Mt0puZsWyRDxpdnPW/I+Df5P4dt7GXXSzhlkEIB2rfRMy+M1olr+C7v8p0bviSCNsn74WU3UFajGWGPjMV46En2vFbjrLPi9cq0EsxGh0rna7VzDAAg0qZHdTuK42ypezrbzIzrJn+AgGhpxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908699; c=relaxed/simple;
-	bh=rwG+HKa0UItMR8ZZmZXgTTZVadPeivaBGeUPkY3ssIA=;
+	s=arc-20240116; t=1713908595; c=relaxed/simple;
+	bh=d/G8t6GJ5zYpeFwgZFbo1cFG4Qv31Yadbiz0IOKvh4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzjfyRqLl3uY4TLghNoiacsYMDbicaKhEUKO7yPpwYEOAYLr5XLE6+R8sC5lgP2W9UdPlSrz9wryg1YdK1lRAJQQ7lzIbbr+4gNDUum0uHYqfjl008ZO9LzcArbzFGLGB/rPT3d/GsoON2if83FWBWPDR9VfZ2Hdr0MoYf26npM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xh36Odvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23755C32783;
-	Tue, 23 Apr 2024 21:44:59 +0000 (UTC)
+	 MIME-Version; b=RhQ5EM7MUEblet3TlehvTXDXkcdaTzdwjx/7vwI+FA6N/5umVlT+lfl8HipgO4ddmBv+zots8XkjbTErks+vVh5H3fXVHGkJSHrj2lSS20Y1xLKAdB8Wf3eWz0KlLAAzklvaVurg3f5QFax0BzeNdANq4fl67J5ae98tBcOddp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEbmhZt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C422C116B1;
+	Tue, 23 Apr 2024 21:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908699;
-	bh=rwG+HKa0UItMR8ZZmZXgTTZVadPeivaBGeUPkY3ssIA=;
+	s=korg; t=1713908595;
+	bh=d/G8t6GJ5zYpeFwgZFbo1cFG4Qv31Yadbiz0IOKvh4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xh36OdvhjjSn3pVF1IYyGXxcPbc52jG0Fc6JscrVw1AOhDGDHW9i6G2/NniS5IcN6
-	 JL6I5eNEsHti8rmBztO4WPUUytKzMBCcdUXpP0HK57ddLQOoSZxETvW3EVXOi7G2MX
-	 Fcdgr1jM3QtCE8xLeJ82sgCpykyGoG1mo+1Fbnxg=
+	b=rEbmhZt5qrpq/akM67687fk135qODU/SpjUy0qK1La+oc0xOi6Rg6SctTSTNpOowU
+	 taFxamABSNBoM63xJ0qe8Q9hw66lWdAeEncDWuPMkhhaTSuACA3n144O36xfHlgJBh
+	 ByzS3J+J49o/VLdyNDC35bCn3OmEdac4dZmsxIiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 026/141] x86/boot: Increase section and file alignment to 4k/512
-Date: Tue, 23 Apr 2024 14:38:14 -0700
-Message-ID: <20240423213854.161371681@linuxfoundation.org>
+	Schuyler Patton <spatton@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 058/158] net: ethernet: ti: am65-cpsw-nuss: cleanup DMA Channels before using them
+Date: Tue, 23 Apr 2024 14:38:15 -0700
+Message-ID: <20240423213857.661224106@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,341 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Commit 3e3eabe26dc88692d34cf76ca0e0dd331481cc15 upstream ]
+[ Upstream commit c24cd679b075b0e953ea167b0aa2b2d59e4eba7f ]
 
-Align x86 with other EFI architectures, and increase the section
-alignment to the EFI page size (4k), so that firmware is able to honour
-the section permission attributes and map code read-only and data
-non-executable.
+The TX and RX DMA Channels used by the driver to exchange data with CPSW
+are not guaranteed to be in a clean state during driver initialization.
+The Bootloader could have used the same DMA Channels without cleaning them
+up in the event of failure. Thus, reset and disable the DMA Channels to
+ensure that they are in a clean state before using them.
 
-There are a number of requirements that have to be taken into account:
-- the sign tools get cranky when there are gaps between sections in the
-  file view of the image
-- the virtual offset of each section must be aligned to the image's
-  section alignment
-- the file offset *and size* of each section must be aligned to the
-  image's file alignment
-- the image size must be aligned to the section alignment
-- each section's virtual offset must be greater than or equal to the
-  size of the headers.
-
-In order to meet all these requirements, while avoiding the need for
-lots of padding to accommodate the .compat section, the latter is placed
-at an arbitrary offset towards the end of the image, but aligned to the
-minimum file alignment (512 bytes). The space before the .text section
-is therefore distributed between the PE header, the .setup section and
-the .compat section, leaving no gaps in the file coverage, making the
-signing tools happy.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230915171623.655440-18-ardb@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Reported-by: Schuyler Patton <spatton@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20240417095425.2253876-1-s-vadapalli@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/vmlinux.lds.S |    4 -
- arch/x86/boot/header.S                 |   75 +++++++++++++++------------
- arch/x86/boot/setup.ld                 |    7 +-
- arch/x86/boot/tools/build.c            |   90 ---------------------------------
- 4 files changed, 51 insertions(+), 125 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -42,13 +42,13 @@ SECTIONS
- 		*(.rodata.*)
- 		_erodata = . ;
- 	}
--	.data :	{
-+	.data :	ALIGN(0x1000) {
- 		_data = . ;
- 		*(.data)
- 		*(.data.*)
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index c62b0f99f2bc4..d556e705ec000 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2716,6 +2716,8 @@ static void am65_cpsw_unregister_devlink(struct am65_cpsw_common *common)
  
- 		/* Add 4 bytes of extra space for a CRC-32 checksum */
--		. = ALIGN(. + 4, 0x20);
-+		. = ALIGN(. + 4, 0x200);
- 		_edata = . ;
- 	}
- 	. = ALIGN(L1_CACHE_BYTES);
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -36,6 +36,9 @@ SYSSEG		= 0x1000		/* historical load add
- #define ROOT_RDONLY 1
- #endif
+ static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
+ {
++	struct am65_cpsw_rx_chn *rx_chan = &common->rx_chns;
++	struct am65_cpsw_tx_chn *tx_chan = common->tx_chns;
+ 	struct device *dev = common->dev;
+ 	struct am65_cpsw_port *port;
+ 	int ret = 0, i;
+@@ -2728,6 +2730,22 @@ static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
+ 	if (ret)
+ 		return ret;
  
-+	.set	salign, 0x1000
-+	.set	falign, 0x200
-+
- 	.code16
- 	.section ".bstext", "ax"
- #ifdef CONFIG_EFI_STUB
-@@ -81,7 +84,7 @@ optional_header:
- 
- 	.long	setup_size + ZO_efi_pe_entry	# AddressOfEntryPoint
- 
--	.long	0x0200				# BaseOfCode
-+	.long	setup_size			# BaseOfCode
- #ifdef CONFIG_X86_32
- 	.long	0				# data
- #endif
-@@ -92,8 +95,8 @@ extra_header_fields:
- #else
- 	.quad	0				# ImageBase
- #endif
--	.long	0x20				# SectionAlignment
--	.long	0x20				# FileAlignment
-+	.long	salign				# SectionAlignment
-+	.long	falign				# FileAlignment
- 	.word	0				# MajorOperatingSystemVersion
- 	.word	0				# MinorOperatingSystemVersion
- 	.word	LINUX_EFISTUB_MAJOR_VERSION	# MajorImageVersion
-@@ -102,9 +105,10 @@ extra_header_fields:
- 	.word	0				# MinorSubsystemVersion
- 	.long	0				# Win32VersionValue
- 
--	.long	setup_size + ZO__end 		# SizeOfImage
-+	.long	setup_size + ZO__end + pecompat_vsize
-+						# SizeOfImage
- 
--	.long	0x200				# SizeOfHeaders
-+	.long	salign				# SizeOfHeaders
- 	.long	0				# CheckSum
- 	.word	IMAGE_SUBSYSTEM_EFI_APPLICATION	# Subsystem (EFI application)
- #ifdef CONFIG_EFI_DXE_MEM_ATTRIBUTES
-@@ -135,44 +139,51 @@ extra_header_fields:
- 
- 	# Section table
- section_table:
--	#
--	# The offset & size fields are filled in by build.c.
--	#
- 	.ascii	".setup"
- 	.byte	0
- 	.byte	0
--	.long	0
--	.long	0x0				# startup_{32,64}
--	.long	0				# Size of initialized data
--						# on disk
--	.long	0x0				# startup_{32,64}
--	.long	0				# PointerToRelocations
--	.long	0				# PointerToLineNumbers
--	.word	0				# NumberOfRelocations
--	.word	0				# NumberOfLineNumbers
--	.long	IMAGE_SCN_CNT_CODE		| \
-+	.long	setup_size - salign 		# VirtualSize
-+	.long	salign				# VirtualAddress
-+	.long	pecompat_fstart - salign	# SizeOfRawData
-+	.long	salign				# PointerToRawData
-+
-+	.long	0, 0, 0
-+	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
- 		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_EXECUTE		# Characteristics
-+		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
- 
- #ifdef CONFIG_EFI_MIXED
--	#
--	# The offset & size fields are filled in by build.c.
--	#
- 	.asciz	".compat"
--	.long	0
--	.long	0x0
--	.long	0				# Size of initialized data
--						# on disk
--	.long	0x0
--	.long	0				# PointerToRelocations
--	.long	0				# PointerToLineNumbers
--	.word	0				# NumberOfRelocations
--	.word	0				# NumberOfLineNumbers
-+
-+	.long	8				# VirtualSize
-+	.long	setup_size + ZO__end		# VirtualAddress
-+	.long	pecompat_fsize			# SizeOfRawData
-+	.long	pecompat_fstart			# PointerToRawData
-+
-+	.long	0, 0, 0
- 	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
- 		IMAGE_SCN_MEM_READ		| \
- 		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
--#endif
- 
-+	/*
-+	 * Put the IA-32 machine type and the associated entry point address in
-+	 * the .compat section, so loaders can figure out which other execution
-+	 * modes this image supports.
++	/* The DMA Channels are not guaranteed to be in a clean state.
++	 * Reset and disable them to ensure that they are back to the
++	 * clean state and ready to be used.
 +	 */
-+	.pushsection ".pecompat", "a", @progbits
-+	.balign	falign
-+	.set	pecompat_vsize, salign
-+	.globl	pecompat_fstart
-+pecompat_fstart:
-+	.byte	0x1				# Version
-+	.byte	8				# Size
-+	.word	IMAGE_FILE_MACHINE_I386		# PE machine type
-+	.long	setup_size + ZO_efi32_pe_entry	# Entrypoint
-+	.popsection
-+#else
-+	.set	pecompat_vsize, 0
-+	.set	pecompat_fstart, setup_size
-+#endif
- 	.ascii	".text"
- 	.byte	0
- 	.byte	0
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -36,16 +36,17 @@ SECTIONS
- 	. = ALIGN(16);
- 	.data		: { *(.data*) }
- 
-+	.pecompat	: { *(.pecompat) }
-+	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
++	for (i = 0; i < common->tx_ch_num; i++) {
++		k3_udma_glue_reset_tx_chn(tx_chan[i].tx_chn, &tx_chan[i],
++					  am65_cpsw_nuss_tx_cleanup);
++		k3_udma_glue_disable_tx_chn(tx_chan[i].tx_chn);
++	}
 +
- 	.signature	: {
- 		setup_sig = .;
- 		LONG(0x5a5aaa55)
- 
--		/* Reserve some extra space for the compat section */
--		setup_size = ALIGN(ABSOLUTE(.) + 32, 512);
-+		setup_size = ALIGN(ABSOLUTE(.), 4096);
- 		setup_sects = ABSOLUTE(setup_size / 512);
- 	}
- 
--
- 	. = ALIGN(16);
- 	.bss		:
- 	{
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -47,9 +47,6 @@ typedef unsigned int   u32;
- /* This must be large enough to hold the entire setup */
- u8 buf[SETUP_SECT_MAX*512];
- 
--#define PECOFF_COMPAT_RESERVE 0x20
--
--static unsigned long efi32_pe_entry;
- static unsigned long _edata;
- 
- /*----------------------------------------------------------------------*/
-@@ -136,85 +133,6 @@ static void usage(void)
- 	die("Usage: build setup system zoffset.h image");
- }
- 
--#ifdef CONFIG_EFI_STUB
--
--static void update_pecoff_section_header_fields(char *section_name, u32 vma, u32 size, u32 datasz, u32 offset)
--{
--	unsigned int pe_header;
--	unsigned short num_sections;
--	u8 *section;
--
--	pe_header = get_unaligned_le32(&buf[0x3c]);
--	num_sections = get_unaligned_le16(&buf[pe_header + 6]);
--
--#ifdef CONFIG_X86_32
--	section = &buf[pe_header + 0xa8];
--#else
--	section = &buf[pe_header + 0xb8];
--#endif
--
--	while (num_sections > 0) {
--		if (strncmp((char*)section, section_name, 8) == 0) {
--			/* section header size field */
--			put_unaligned_le32(size, section + 0x8);
--
--			/* section header vma field */
--			put_unaligned_le32(vma, section + 0xc);
--
--			/* section header 'size of initialised data' field */
--			put_unaligned_le32(datasz, section + 0x10);
--
--			/* section header 'file offset' field */
--			put_unaligned_le32(offset, section + 0x14);
--
--			break;
--		}
--		section += 0x28;
--		num_sections--;
--	}
--}
--
--static void update_pecoff_section_header(char *section_name, u32 offset, u32 size)
--{
--	update_pecoff_section_header_fields(section_name, offset, size, size, offset);
--}
--
--static void update_pecoff_setup(unsigned int size)
--{
--	u32 setup_offset = 0x200;
--	u32 compat_offset = size - PECOFF_COMPAT_RESERVE;
--	u32 setup_size = compat_offset - setup_offset;
--
--	update_pecoff_section_header(".setup", setup_offset, setup_size);
--
--#ifdef CONFIG_EFI_MIXED
--	update_pecoff_section_header(".compat", compat_offset, PECOFF_COMPAT_RESERVE);
--
--	/*
--	 * Put the IA-32 machine type (0x14c) and the associated entry point
--	 * address in the .compat section, so loaders can figure out which other
--	 * execution modes this image supports.
--	 */
--	buf[compat_offset] = 0x1;
--	buf[compat_offset + 1] = 0x8;
--	put_unaligned_le16(0x14c, &buf[compat_offset + 2]);
--	put_unaligned_le32(efi32_pe_entry + size, &buf[compat_offset + 4]);
--#endif
--}
--
--#else
--
--static inline void update_pecoff_setup(unsigned int size) {}
--
--#endif /* CONFIG_EFI_STUB */
--
--static int reserve_pecoff_compat_section(int c)
--{
--	/* Reserve 0x20 bytes for .compat section */
--	memset(buf+c, 0, PECOFF_COMPAT_RESERVE);
--	return PECOFF_COMPAT_RESERVE;
--}
--
- /*
-  * Parse zoffset.h and find the entry points. We could just #include zoffset.h
-  * but that would mean tools/build would have to be rebuilt every time. It's
-@@ -243,7 +161,6 @@ static void parse_zoffset(char *fname)
- 	p = (char *)buf;
- 
- 	while (p && *p) {
--		PARSE_ZOFS(p, efi32_pe_entry);
- 		PARSE_ZOFS(p, _edata);
- 
- 		p = strchr(p, '\n');
-@@ -283,17 +200,14 @@ int main(int argc, char ** argv)
- 		die("Boot block hasn't got boot flag (0xAA55)");
- 	fclose(file);
- 
--	c += reserve_pecoff_compat_section(c);
--
- 	/* Pad unused space with zeros */
--	setup_sectors = (c + 511) / 512;
-+	setup_sectors = (c + 4095) / 4096;
-+	setup_sectors *= 8;
- 	if (setup_sectors < SETUP_SECT_MIN)
- 		setup_sectors = SETUP_SECT_MIN;
- 	i = setup_sectors*512;
- 	memset(buf+c, 0, i-c);
- 
--	update_pecoff_setup(i);
--
- 	/* Open and stat the kernel file */
- 	fd = open(argv[2], O_RDONLY);
- 	if (fd < 0)
++	for (i = 0; i < AM65_CPSW_MAX_RX_FLOWS; i++)
++		k3_udma_glue_reset_rx_chn(rx_chan->rx_chn, i, rx_chan,
++					  am65_cpsw_nuss_rx_cleanup, !!i);
++
++	k3_udma_glue_disable_rx_chn(rx_chan->rx_chn);
++
+ 	ret = am65_cpsw_nuss_register_devlink(common);
+ 	if (ret)
+ 		return ret;
+-- 
+2.43.0
+
 
 
 
