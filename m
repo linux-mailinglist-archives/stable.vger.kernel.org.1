@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-40938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F418AF9AC
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C9A8AF907
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13B551C226E3
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CE411C22307
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52AD1448E0;
-	Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C51F14388C;
+	Tue, 23 Apr 2024 21:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x146WF+w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQJYKnjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6494C85274;
-	Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE3214388A;
+	Tue, 23 Apr 2024 21:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908567; cv=none; b=cBuIhIurxO4fdzbxHGJSWPcs/tozWA6J0EUPLbO8dlz/Yj5OERcflPOMTsrXE3Rh0oovz8JBlITx4l7TSIQo0MYF4edaLZSLAhOASugTobqriNfD93g+B4r0wC0XJMZrGiSnRjVE3SHDJyjN4cJVWTqmtKD4LUgMlhsZzQ/D+cc=
+	t=1713908457; cv=none; b=T4w89a8CloVDyI2lenbyU09S6RG183Qycir/NNroT43Z2xEaDiUZ2iJ/PYD0Q6BgeHHQCgKSRYpInkOMHKBr4c3QvNBdM7wSg0cNZwqJOKXExH8Zu7iM/vZyNde3gQne0XxvhUU0j7/lwURrhu+FkOtsalAvRtPx2oLTRVrZfVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908567; c=relaxed/simple;
-	bh=igbRRTy7T0K4FecNtEs5ykgYDI5c7JqaU//XFl68mGE=;
+	s=arc-20240116; t=1713908457; c=relaxed/simple;
+	bh=6iTR3H5FNMEx9uGlgYJ42sMhf3a1GQIS+df17ecZN6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5QDlAjZBeiIWkgRwBNsMcRrEC99fGZqS+d1waKxw8WFeShuddAdV0VM9vpcOy19DpL2Ha3imHnlm1cZx97EARUAw8MDqh7xgehbuACcNi5uy5vf2f2Kj7KUej8kX5KkMCbLqRvvlEyFeuHRbrTQpZzO0KpoyjI9lf+rWOUamu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x146WF+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3275DC32781;
-	Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
+	 MIME-Version; b=FOksG9HQ1ULWYDgnZo5n/r8mxixMDqMpDGDgV78SOUIagcgMeN1Z7fHf91ZbfFMzTc3XTxE+tlo7agiCaytmVoUmYTWDg2IR9TVGPiOShEm3NWJF4X9v5ZzCuiCsD224Eb4FF1ChXdIkmJqliXX+Im/Pvmg3gE7NA8h+QRjJjMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQJYKnjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C9CC116B1;
+	Tue, 23 Apr 2024 21:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908567;
-	bh=igbRRTy7T0K4FecNtEs5ykgYDI5c7JqaU//XFl68mGE=;
+	s=korg; t=1713908457;
+	bh=6iTR3H5FNMEx9uGlgYJ42sMhf3a1GQIS+df17ecZN6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x146WF+wYPHybZizcuHGLhfvynQU4W10Aj88/KDgv5zrorT75pMLI+9qBTq0p5eOf
-	 XuctOlzvm/Fw5I3iyOMiOzmYxiKuf9pfv+M/+/ela23i5e5GN2dlSaAEFgfdgZBhUt
-	 hz7rsGOpDCaaj6QJdeLQWRibs/2e8ItMbPKoqcu4=
+	b=MQJYKnjoe2tN2stzJCqkAPsFHely8V9BDtTl0o3YZZoN8tBhcHSo23oA9dB+HGFdW
+	 3dYOwWmGNPoNFg1Lh5xFNIDc/9/dEviiSxasfexwONhCCK1t+tjUqATJbnL6BpqHgn
+	 rGGnAeQBPuRQil27cPU8DPH+06sm6PTUcEKxt4jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/158] smb: client: fix UAF in smb2_reconnect_server()
+Subject: [PATCH 6.8 017/158] netfilter: nft_set_pipapo: constify lookup fn args where possible
 Date: Tue, 23 Apr 2024 14:37:19 -0700
-Message-ID: <20240423213855.776896638@linuxfoundation.org>
+Message-ID: <20240423213856.424335489@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,218 +62,267 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 24a9799aa8efecd0eb55a75e35f9d8e6400063aa ]
+[ Upstream commit f04df573faf90bb828a2241b650598c02c074323 ]
 
-The UAF bug is due to smb2_reconnect_server() accessing a session that
-is already being teared down by another thread that is executing
-__cifs_put_smb_ses().  This can happen when (a) the client has
-connection to the server but no session or (b) another thread ends up
-setting @ses->ses_status again to something different than
-SES_EXITING.
+Those get called from packet path, content must not be modified.
+No functional changes intended.
 
-To fix this, we need to make sure to unconditionally set
-@ses->ses_status to SES_EXITING and prevent any other threads from
-setting a new status while we're still tearing it down.
-
-The following can be reproduced by adding some delay to right after
-the ipc is freed in __cifs_put_smb_ses() - which will give
-smb2_reconnect_server() worker a chance to run and then accessing
-@ses->ipc:
-
-kinit ...
-mount.cifs //srv/share /mnt/1 -o sec=krb5,nohandlecache,echo_interval=10
-[disconnect srv]
-ls /mnt/1 &>/dev/null
-sleep 30
-kdestroy
-[reconnect srv]
-sleep 10
-umount /mnt/1
-...
-CIFS: VFS: Verify user has a krb5 ticket and keyutils is installed
-CIFS: VFS: \\srv Send error in SessSetup = -126
-CIFS: VFS: Verify user has a krb5 ticket and keyutils is installed
-CIFS: VFS: \\srv Send error in SessSetup = -126
-general protection fault, probably for non-canonical address
-0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 3 PID: 50 Comm: kworker/3:1 Not tainted 6.9.0-rc2 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-1.fc39
-04/01/2014
-Workqueue: cifsiod smb2_reconnect_server [cifs]
-RIP: 0010:__list_del_entry_valid_or_report+0x33/0xf0
-Code: 4f 08 48 85 d2 74 42 48 85 c9 74 59 48 b8 00 01 00 00 00 00 ad
-de 48 39 c2 74 61 48 b8 22 01 00 00 00 00 74 69 <48> 8b 01 48 39 f8 75
-7b 48 8b 72 08 48 39 c6 0f 85 88 00 00 00 b8
-RSP: 0018:ffffc900001bfd70 EFLAGS: 00010a83
-RAX: dead000000000122 RBX: ffff88810da53838 RCX: 6b6b6b6b6b6b6b6b
-RDX: 6b6b6b6b6b6b6b6b RSI: ffffffffc02f6878 RDI: ffff88810da53800
-RBP: ffff88810da53800 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: ffff88810c064000
-R13: 0000000000000001 R14: ffff88810c064000 R15: ffff8881039cc000
-FS: 0000000000000000(0000) GS:ffff888157c00000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fe3728b1000 CR3: 000000010caa4000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? die_addr+0x36/0x90
- ? exc_general_protection+0x1c1/0x3f0
- ? asm_exc_general_protection+0x26/0x30
- ? __list_del_entry_valid_or_report+0x33/0xf0
- __cifs_put_smb_ses+0x1ae/0x500 [cifs]
- smb2_reconnect_server+0x4ed/0x710 [cifs]
- process_one_work+0x205/0x6b0
- worker_thread+0x191/0x360
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xe2/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x34/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: 29b359cf6d95 ("netfilter: nft_set_pipapo: walk over current view on netlink dump")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 83 +++++++++++++++++------------------------
- 1 file changed, 34 insertions(+), 49 deletions(-)
+ net/netfilter/nft_set_pipapo.c      | 18 +++++----
+ net/netfilter/nft_set_pipapo.h      |  6 +--
+ net/netfilter/nft_set_pipapo_avx2.c | 59 +++++++++++++++++------------
+ 3 files changed, 48 insertions(+), 35 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 556f3c31aedc7..ae35855966afd 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -237,7 +237,13 @@ cifs_mark_tcp_ses_conns_for_reconnect(struct TCP_Server_Info *server,
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index b3b282de802de..7756d70af868c 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -360,7 +360,7 @@
+  * Return: -1 on no match, bit position on 'match_only', 0 otherwise.
+  */
+ int pipapo_refill(unsigned long *map, int len, int rules, unsigned long *dst,
+-		  union nft_pipapo_map_bucket *mt, bool match_only)
++		  const union nft_pipapo_map_bucket *mt, bool match_only)
+ {
+ 	unsigned long bitset;
+ 	int k, ret = -1;
+@@ -412,9 +412,9 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+ 	struct nft_pipapo_scratch *scratch;
+ 	unsigned long *res_map, *fill_map;
+ 	u8 genmask = nft_genmask_cur(net);
++	const struct nft_pipapo_match *m;
++	const struct nft_pipapo_field *f;
+ 	const u8 *rp = (const u8 *)key;
+-	struct nft_pipapo_match *m;
+-	struct nft_pipapo_field *f;
+ 	bool map_index;
+ 	int i;
  
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_for_each_entry_safe(ses, nses, &pserver->smb_ses_list, smb_ses_list) {
--		/* check if iface is still active */
-+		spin_lock(&ses->ses_lock);
-+		if (ses->ses_status == SES_EXITING) {
-+			spin_unlock(&ses->ses_lock);
-+			continue;
-+		}
-+		spin_unlock(&ses->ses_lock);
+@@ -519,11 +519,13 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ {
+ 	struct nft_pipapo_elem *ret = ERR_PTR(-ENOENT);
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+-	struct nft_pipapo_match *m = priv->clone;
+ 	unsigned long *res_map, *fill_map = NULL;
+-	struct nft_pipapo_field *f;
++	const struct nft_pipapo_match *m;
++	const struct nft_pipapo_field *f;
+ 	int i;
+ 
++	m = priv->clone;
 +
- 		spin_lock(&ses->chan_lock);
- 		if (cifs_ses_get_chan_index(ses, server) ==
- 		    CIFS_INVAL_CHAN_INDEX) {
-@@ -1960,31 +1966,6 @@ cifs_setup_ipc(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 	return rc;
- }
+ 	res_map = kmalloc_array(m->bsize_max, sizeof(*res_map), GFP_ATOMIC);
+ 	if (!res_map) {
+ 		ret = ERR_PTR(-ENOMEM);
+@@ -1597,7 +1599,7 @@ static void pipapo_gc(struct nft_set *set, struct nft_pipapo_match *m)
  
--/**
-- * cifs_free_ipc - helper to release the session IPC tcon
-- * @ses: smb session to unmount the IPC from
-- *
-- * Needs to be called everytime a session is destroyed.
-- *
-- * On session close, the IPC is closed and the server must release all tcons of the session.
-- * No need to send a tree disconnect here.
-- *
-- * Besides, it will make the server to not close durable and resilient files on session close, as
-- * specified in MS-SMB2 3.3.5.6 Receiving an SMB2 LOGOFF Request.
-- */
--static int
--cifs_free_ipc(struct cifs_ses *ses)
--{
--	struct cifs_tcon *tcon = ses->tcon_ipc;
--
--	if (tcon == NULL)
--		return 0;
--
--	tconInfoFree(tcon);
--	ses->tcon_ipc = NULL;
--	return 0;
--}
--
- static struct cifs_ses *
- cifs_find_smb_ses(struct TCP_Server_Info *server, struct smb3_fs_context *ctx)
+ 	while ((rules_f0 = pipapo_rules_same_key(m->f, first_rule))) {
+ 		union nft_pipapo_map_bucket rulemap[NFT_PIPAPO_MAX_FIELDS];
+-		struct nft_pipapo_field *f;
++		const struct nft_pipapo_field *f;
+ 		int i, start, rules_fx;
+ 
+ 		start = first_rule;
+@@ -2039,8 +2041,8 @@ static void nft_pipapo_walk(const struct nft_ctx *ctx, struct nft_set *set,
  {
-@@ -2016,48 +1997,52 @@ cifs_find_smb_ses(struct TCP_Server_Info *server, struct smb3_fs_context *ctx)
- void __cifs_put_smb_ses(struct cifs_ses *ses)
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct net *net = read_pnet(&set->net);
+-	struct nft_pipapo_match *m;
+-	struct nft_pipapo_field *f;
++	const struct nft_pipapo_match *m;
++	const struct nft_pipapo_field *f;
+ 	int i, r;
+ 
+ 	rcu_read_lock();
+diff --git a/net/netfilter/nft_set_pipapo.h b/net/netfilter/nft_set_pipapo.h
+index 3842c7341a9f4..42464e7c24ac0 100644
+--- a/net/netfilter/nft_set_pipapo.h
++++ b/net/netfilter/nft_set_pipapo.h
+@@ -187,7 +187,7 @@ struct nft_pipapo_elem {
+ };
+ 
+ int pipapo_refill(unsigned long *map, int len, int rules, unsigned long *dst,
+-		  union nft_pipapo_map_bucket *mt, bool match_only);
++		  const union nft_pipapo_map_bucket *mt, bool match_only);
+ 
+ /**
+  * pipapo_and_field_buckets_4bit() - Intersect 4-bit buckets
+@@ -195,7 +195,7 @@ int pipapo_refill(unsigned long *map, int len, int rules, unsigned long *dst,
+  * @dst:	Area to store result
+  * @data:	Input data selecting table buckets
+  */
+-static inline void pipapo_and_field_buckets_4bit(struct nft_pipapo_field *f,
++static inline void pipapo_and_field_buckets_4bit(const struct nft_pipapo_field *f,
+ 						 unsigned long *dst,
+ 						 const u8 *data)
  {
- 	struct TCP_Server_Info *server = ses->server;
-+	struct cifs_tcon *tcon;
- 	unsigned int xid;
- 	size_t i;
-+	bool do_logoff;
- 	int rc;
- 
-+	spin_lock(&cifs_tcp_ses_lock);
- 	spin_lock(&ses->ses_lock);
--	if (ses->ses_status == SES_EXITING) {
-+	cifs_dbg(FYI, "%s: id=0x%llx ses_count=%d ses_status=%u ipc=%s\n",
-+		 __func__, ses->Suid, ses->ses_count, ses->ses_status,
-+		 ses->tcon_ipc ? ses->tcon_ipc->tree_name : "none");
-+	if (ses->ses_status == SES_EXITING || --ses->ses_count > 0) {
- 		spin_unlock(&ses->ses_lock);
-+		spin_unlock(&cifs_tcp_ses_lock);
- 		return;
- 	}
--	spin_unlock(&ses->ses_lock);
-+	/* ses_count can never go negative */
-+	WARN_ON(ses->ses_count < 0);
- 
--	cifs_dbg(FYI, "%s: ses_count=%d\n", __func__, ses->ses_count);
--	cifs_dbg(FYI,
--		 "%s: ses ipc: %s\n", __func__, ses->tcon_ipc ? ses->tcon_ipc->tree_name : "NONE");
-+	spin_lock(&ses->chan_lock);
-+	cifs_chan_clear_need_reconnect(ses, server);
-+	spin_unlock(&ses->chan_lock);
- 
--	spin_lock(&cifs_tcp_ses_lock);
--	if (--ses->ses_count > 0) {
--		spin_unlock(&cifs_tcp_ses_lock);
--		return;
--	}
--	spin_lock(&ses->ses_lock);
--	if (ses->ses_status == SES_GOOD)
--		ses->ses_status = SES_EXITING;
-+	do_logoff = ses->ses_status == SES_GOOD && server->ops->logoff;
-+	ses->ses_status = SES_EXITING;
-+	tcon = ses->tcon_ipc;
-+	ses->tcon_ipc = NULL;
- 	spin_unlock(&ses->ses_lock);
- 	spin_unlock(&cifs_tcp_ses_lock);
- 
--	/* ses_count can never go negative */
--	WARN_ON(ses->ses_count < 0);
--
--	spin_lock(&ses->ses_lock);
--	if (ses->ses_status == SES_EXITING && server->ops->logoff) {
--		spin_unlock(&ses->ses_lock);
--		cifs_free_ipc(ses);
-+	/*
-+	 * On session close, the IPC is closed and the server must release all
-+	 * tcons of the session.  No need to send a tree disconnect here.
-+	 *
-+	 * Besides, it will make the server to not close durable and resilient
-+	 * files on session close, as specified in MS-SMB2 3.3.5.6 Receiving an
-+	 * SMB2 LOGOFF Request.
-+	 */
-+	tconInfoFree(tcon);
-+	if (do_logoff) {
- 		xid = get_xid();
- 		rc = server->ops->logoff(xid, ses);
- 		if (rc)
- 			cifs_server_dbg(VFS, "%s: Session Logoff failure rc=%d\n",
- 				__func__, rc);
- 		_free_xid(xid);
--	} else {
--		spin_unlock(&ses->ses_lock);
--		cifs_free_ipc(ses);
- 	}
- 
- 	spin_lock(&cifs_tcp_ses_lock);
+@@ -223,7 +223,7 @@ static inline void pipapo_and_field_buckets_4bit(struct nft_pipapo_field *f,
+  * @dst:	Area to store result
+  * @data:	Input data selecting table buckets
+  */
+-static inline void pipapo_and_field_buckets_8bit(struct nft_pipapo_field *f,
++static inline void pipapo_and_field_buckets_8bit(const struct nft_pipapo_field *f,
+ 						 unsigned long *dst,
+ 						 const u8 *data)
+ {
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index a3a8ddca99189..d08407d589eac 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -212,8 +212,9 @@ static int nft_pipapo_avx2_refill(int offset, unsigned long *map,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_4b_2(unsigned long *map, unsigned long *fill,
+-				       struct nft_pipapo_field *f, int offset,
+-				       const u8 *pkt, bool first, bool last)
++				       const struct nft_pipapo_field *f,
++				       int offset, const u8 *pkt,
++				       bool first, bool last)
+ {
+ 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
+ 	u8 pg[2] = { pkt[0] >> 4, pkt[0] & 0xf };
+@@ -274,8 +275,9 @@ static int nft_pipapo_avx2_lookup_4b_2(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_4b_4(unsigned long *map, unsigned long *fill,
+-				       struct nft_pipapo_field *f, int offset,
+-				       const u8 *pkt, bool first, bool last)
++				       const struct nft_pipapo_field *f,
++				       int offset, const u8 *pkt,
++				       bool first, bool last)
+ {
+ 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
+ 	u8 pg[4] = { pkt[0] >> 4, pkt[0] & 0xf, pkt[1] >> 4, pkt[1] & 0xf };
+@@ -350,8 +352,9 @@ static int nft_pipapo_avx2_lookup_4b_4(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_4b_8(unsigned long *map, unsigned long *fill,
+-				       struct nft_pipapo_field *f, int offset,
+-				       const u8 *pkt, bool first, bool last)
++				       const struct nft_pipapo_field *f,
++				       int offset, const u8 *pkt,
++				       bool first, bool last)
+ {
+ 	u8 pg[8] = {  pkt[0] >> 4,  pkt[0] & 0xf,  pkt[1] >> 4,  pkt[1] & 0xf,
+ 		      pkt[2] >> 4,  pkt[2] & 0xf,  pkt[3] >> 4,  pkt[3] & 0xf,
+@@ -445,8 +448,9 @@ static int nft_pipapo_avx2_lookup_4b_8(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_4b_12(unsigned long *map, unsigned long *fill,
+-				        struct nft_pipapo_field *f, int offset,
+-				        const u8 *pkt, bool first, bool last)
++					const struct nft_pipapo_field *f,
++					int offset, const u8 *pkt,
++					bool first, bool last)
+ {
+ 	u8 pg[12] = {  pkt[0] >> 4,  pkt[0] & 0xf,  pkt[1] >> 4,  pkt[1] & 0xf,
+ 		       pkt[2] >> 4,  pkt[2] & 0xf,  pkt[3] >> 4,  pkt[3] & 0xf,
+@@ -534,8 +538,9 @@ static int nft_pipapo_avx2_lookup_4b_12(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_4b_32(unsigned long *map, unsigned long *fill,
+-					struct nft_pipapo_field *f, int offset,
+-					const u8 *pkt, bool first, bool last)
++					const struct nft_pipapo_field *f,
++					int offset, const u8 *pkt,
++					bool first, bool last)
+ {
+ 	u8 pg[32] = {  pkt[0] >> 4,  pkt[0] & 0xf,  pkt[1] >> 4,  pkt[1] & 0xf,
+ 		       pkt[2] >> 4,  pkt[2] & 0xf,  pkt[3] >> 4,  pkt[3] & 0xf,
+@@ -669,8 +674,9 @@ static int nft_pipapo_avx2_lookup_4b_32(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_8b_1(unsigned long *map, unsigned long *fill,
+-				       struct nft_pipapo_field *f, int offset,
+-				       const u8 *pkt, bool first, bool last)
++				       const struct nft_pipapo_field *f,
++				       int offset, const u8 *pkt,
++				       bool first, bool last)
+ {
+ 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
+ 	unsigned long *lt = f->lt, bsize = f->bsize;
+@@ -726,8 +732,9 @@ static int nft_pipapo_avx2_lookup_8b_1(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_8b_2(unsigned long *map, unsigned long *fill,
+-				       struct nft_pipapo_field *f, int offset,
+-				       const u8 *pkt, bool first, bool last)
++				       const struct nft_pipapo_field *f,
++				       int offset, const u8 *pkt,
++				       bool first, bool last)
+ {
+ 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
+ 	unsigned long *lt = f->lt, bsize = f->bsize;
+@@ -790,8 +797,9 @@ static int nft_pipapo_avx2_lookup_8b_2(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_8b_4(unsigned long *map, unsigned long *fill,
+-				       struct nft_pipapo_field *f, int offset,
+-				       const u8 *pkt, bool first, bool last)
++				       const struct nft_pipapo_field *f,
++				       int offset, const u8 *pkt,
++				       bool first, bool last)
+ {
+ 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
+ 	unsigned long *lt = f->lt, bsize = f->bsize;
+@@ -865,8 +873,9 @@ static int nft_pipapo_avx2_lookup_8b_4(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_8b_6(unsigned long *map, unsigned long *fill,
+-				       struct nft_pipapo_field *f, int offset,
+-				       const u8 *pkt, bool first, bool last)
++				       const struct nft_pipapo_field *f,
++				       int offset, const u8 *pkt,
++				       bool first, bool last)
+ {
+ 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
+ 	unsigned long *lt = f->lt, bsize = f->bsize;
+@@ -950,8 +959,9 @@ static int nft_pipapo_avx2_lookup_8b_6(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
+-					struct nft_pipapo_field *f, int offset,
+-					const u8 *pkt, bool first, bool last)
++					const struct nft_pipapo_field *f,
++					int offset, const u8 *pkt,
++					bool first, bool last)
+ {
+ 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
+ 	unsigned long *lt = f->lt, bsize = f->bsize;
+@@ -1042,8 +1052,9 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
+  * word index to be checked next (i.e. first filled word).
+  */
+ static int nft_pipapo_avx2_lookup_slow(unsigned long *map, unsigned long *fill,
+-					struct nft_pipapo_field *f, int offset,
+-					const u8 *pkt, bool first, bool last)
++					const struct nft_pipapo_field *f,
++					int offset, const u8 *pkt,
++					bool first, bool last)
+ {
+ 	unsigned long bsize = f->bsize;
+ 	int i, ret = -1, b;
+@@ -1119,9 +1130,9 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct nft_pipapo_scratch *scratch;
+ 	u8 genmask = nft_genmask_cur(net);
++	const struct nft_pipapo_match *m;
++	const struct nft_pipapo_field *f;
+ 	const u8 *rp = (const u8 *)key;
+-	struct nft_pipapo_match *m;
+-	struct nft_pipapo_field *f;
+ 	unsigned long *res, *fill;
+ 	bool map_index;
+ 	int i, ret = 0;
 -- 
 2.43.0
 
