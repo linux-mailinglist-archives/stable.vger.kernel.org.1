@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-40887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB598AF978
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D468AFA15
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750AC1F26995
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0124A1C22D9B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF521442FE;
-	Tue, 23 Apr 2024 21:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625AF144D35;
+	Tue, 23 Apr 2024 21:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNUxJ/vl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+eh/HGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9A020B3E;
-	Tue, 23 Apr 2024 21:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218E9143888;
+	Tue, 23 Apr 2024 21:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908532; cv=none; b=FCoX6ldzlAvPLrdUVeJEtEBCvgtdBQP9l6lT7OwhsJmAkVjuTP2s8+dQYA0FfBbIK+osvwWkkd6C9sdZSj7iQ03CsFAocIGmjvNafiM1vSiSYWnXm5Q5JeuxGpq+HvUBPLLOc4Id22RIJFKxupMnV30fhD1sTSF8jk08jb8kUas=
+	t=1713908631; cv=none; b=jpEtcViTlr7yO0HstvIEFjquklO5xX+uzJDWFTH/9gqjVFKpQaaNyPErxwlkgUlOsUyB7dKW8rC2h4PJ67AmPNIzc17t8e8rrVluYwAItOObMfkJN0vN7lnAuVT9oYeD9xItJFF95aapgTD3OOKiLr4IMeWT9lXznlIirsglifI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908532; c=relaxed/simple;
-	bh=KR8Z7cRdAq00yvj+OjgBDZmn8oZJgAerkO0tN0BVdA0=;
+	s=arc-20240116; t=1713908631; c=relaxed/simple;
+	bh=H7HBPICucTjSHwXmmjPIxOCI1ME83bkB+DrmxJOw6xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkGQhZ5k+YEkXKRA01obkgAJCcuTZ2OgTnN4oq7HX6dJBmbXt3lETpLk6T6OvrfM+JZ3Dp63kkD5SpWoZI1MxsR2lcsuuGqMZIZpO0z8iNNe9+9GSknRdAcbPEg+dKM94p87NJ6mfUZMvCY+uRMzaJfPIAe0s1CS5vGchy4+WIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNUxJ/vl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F7FC116B1;
-	Tue, 23 Apr 2024 21:42:11 +0000 (UTC)
+	 MIME-Version; b=qq8MSepjgYOv6FM4AC5ogTbGWUPoTRk3Uytry/F/cOoPsw0y/OECaygMvG6rbPfWaWEV0BI3PDy07C453WLP7aY7bl1wIw1yxXHNwNbIn6UgHuQ9tVO3HuHyQRA0raY8jYrHavBSKPdEHHAoIvNk2vfhba8lWo/63Z5zf9BMe3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+eh/HGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC080C116B1;
+	Tue, 23 Apr 2024 21:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908532;
-	bh=KR8Z7cRdAq00yvj+OjgBDZmn8oZJgAerkO0tN0BVdA0=;
+	s=korg; t=1713908631;
+	bh=H7HBPICucTjSHwXmmjPIxOCI1ME83bkB+DrmxJOw6xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BNUxJ/vl/EqvK85sFI5wIR4DDmQUG3m6WmQGfBIW77UuPGrA3Ap+OOu9nOT4PUqdj
-	 v8slVqMXQ8zh0SYQRZP0x0rr1cD6/KugpNsqvTLGfQr81SiTDWhYLLZgPiYV4usIdg
-	 fxf+vnUQWCb097r8l89Rhx1kVMj3fJuwPD/uaqWA=
+	b=O+eh/HGzsESXfDMyePuj1KEjumsNaY1BSquwnXDfvXWyzlu5GmWCpyS7v25Oz5/Nh
+	 tcenbHoJLSbDI34tT68o+7Q1DnboxD2zyIllkHMyUwymTti4/61WkJ73QWLSUqF104
+	 uxcSeuEl7DJlr2wAa+a3ClYBXbcvjV8uU0kOeOz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.8 124/158] fs: sysfs: Fix reference leak in sysfs_break_active_protection()
-Date: Tue, 23 Apr 2024 14:39:06 -0700
-Message-ID: <20240423213859.941147376@linuxfoundation.org>
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	stable@kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH 6.6 110/158] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
+Date: Tue, 23 Apr 2024 14:39:07 -0700
+Message-ID: <20240423213859.319989760@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +69,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit a90bca2228c0646fc29a72689d308e5fe03e6d78 upstream.
+commit 1be3226445362bfbf461c92a5bcdb1723f2e4907 upstream.
 
-The sysfs_break_active_protection() routine has an obvious reference
-leak in its error path.  If the call to kernfs_find_and_get() fails then
-kn will be NULL, so the companion sysfs_unbreak_active_protection()
-routine won't get called (and would only cause an access violation by
-trying to dereference kn->parent if it was called).  As a result, the
-reference to kobj acquired at the start of the function will never be
-released.
+The mitigation was intended to stop the irq completely. That may be
+better than a hard lock-up but it turns out that you get a crash anyway
+if you're using pmac_zilog as a serial console:
 
-Fix the leak by adding an explicit kobject_put() call when kn is NULL.
+ttyPZ0: pmz: rx irq flood !
+BUG: spinlock recursion on CPU#0, swapper/0
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: 2afc9166f79b ("scsi: sysfs: Introduce sysfs_{un,}break_active_protection()")
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/8a4d3f0f-c5e3-4b70-a188-0ca433f9e6f9@rowland.harvard.edu
+That's because the pr_err() call in pmz_receive_chars() results in
+pmz_console_write() attempting to lock a spinlock already locked in
+pmz_interrupt(). With CONFIG_DEBUG_SPINLOCK=y, this produces a fatal
+BUG splat. The spinlock in question is the one in struct uart_port.
+
+Even when it's not fatal, the serial port rx function ceases to work.
+Also, the iteration limit doesn't play nicely with QEMU, as can be
+seen in the bug report linked below.
+
+A web search for other reports of the error message "pmz: rx irq flood"
+didn't produce anything. So I don't think this code is needed any more.
+Remove it.
+
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: stable@kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Link: https://github.com/vivier/qemu-m68k/issues/44
+Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/e853cf2c762f23101cd2ddec0cc0c2be0e72685f.1712568223.git.fthain@linux-m68k.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/sysfs/file.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/pmac_zilog.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/fs/sysfs/file.c
-+++ b/fs/sysfs/file.c
-@@ -463,6 +463,8 @@ struct kernfs_node *sysfs_break_active_p
- 	kn = kernfs_find_and_get(kobj->sd, attr->name);
- 	if (kn)
- 		kernfs_break_active_protection(kn);
-+	else
-+		kobject_put(kobj);
- 	return kn;
+--- a/drivers/tty/serial/pmac_zilog.c
++++ b/drivers/tty/serial/pmac_zilog.c
+@@ -210,7 +210,6 @@ static bool pmz_receive_chars(struct uar
+ {
+ 	struct tty_port *port;
+ 	unsigned char ch, r1, drop, flag;
+-	int loops = 0;
+ 
+ 	/* Sanity check, make sure the old bug is no longer happening */
+ 	if (uap->port.state == NULL) {
+@@ -291,25 +290,12 @@ static bool pmz_receive_chars(struct uar
+ 		if (r1 & Rx_OVR)
+ 			tty_insert_flip_char(port, 0, TTY_OVERRUN);
+ 	next_char:
+-		/* We can get stuck in an infinite loop getting char 0 when the
+-		 * line is in a wrong HW state, we break that here.
+-		 * When that happens, I disable the receive side of the driver.
+-		 * Note that what I've been experiencing is a real irq loop where
+-		 * I'm getting flooded regardless of the actual port speed.
+-		 * Something strange is going on with the HW
+-		 */
+-		if ((++loops) > 1000)
+-			goto flood;
+ 		ch = read_zsreg(uap, R0);
+ 		if (!(ch & Rx_CH_AV))
+ 			break;
+ 	}
+ 
+ 	return true;
+- flood:
+-	pmz_interrupt_control(uap, 0);
+-	pmz_error("pmz: rx irq flood !\n");
+-	return true;
  }
- EXPORT_SYMBOL_GPL(sysfs_break_active_protection);
+ 
+ static void pmz_status_handle(struct uart_pmac_port *uap)
 
 
 
