@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911EC8AE6E1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:50:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C628AE6E2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59C51C23029
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:50:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B401F23BE8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2091A86252;
-	Tue, 23 Apr 2024 12:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A53486AC2;
+	Tue, 23 Apr 2024 12:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z79sEI2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5pP9WIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B5082C60
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFD885C48
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713876533; cv=none; b=T5UN5rSRTE6abbvQTPIs/UkU7lAIewpI+0TEslyct8w/kQbX8xqeME8iFQarDarw/5X8Lik1WD1xLekxsjNcqJ9B9EoSZpnXyLgYUtaLAP8tdCbJPeQzghWyChm6GxK/UxsozNfo3JEO8zQdzr2nBMem0eC9FLP5r96BtEyE0rY=
+	t=1713876537; cv=none; b=DVRH8bL2iLRsXa/Fx94apwLamse3HR1fqFdib+nhnl1jqF4mLBFisoLoOxuQNRFkVcKPGQANJ3dproR1kbkE4fTwAJxyPdzcEyhWNnFM/U1EzIeTFtWl8UboPQs+C0+a0JRBEPqKyK4YaxW9jxhOxSUCmYxdisrnHoQBHwrLxT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713876533; c=relaxed/simple;
-	bh=inwgavQ6yFG24DOt5JwUtZgbCO8bS2t/OvuM0yaYErE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=usDs0YEIx0BUbpXjega8lyIlV7chnwfI/SUni0k+63dKhTnvzcQ5kxVpXHuXZTMRcWBgqubgAqsSdnOf//USgOG5R2i+I1QoVv793oJ7B+zgCvB9fMbStnaYtDzuwZMf7S9sAw6SYVgPP+XgYCDiN/w2y4wZ51IXZkjfHXomwu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z79sEI2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CF0C116B1;
-	Tue, 23 Apr 2024 12:48:53 +0000 (UTC)
+	s=arc-20240116; t=1713876537; c=relaxed/simple;
+	bh=+oxCg8wYCsBoNf8qARhFiiXtFHEh6+T2Qsizkmxp9gk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CZGJaiWP/hFhdRcKiaTnMzpXW9R8mJlZ8Zl9GdmaW5AXcmjkzru5qe0Dkdu3aPlJNq1UhzfLWlBeDly9RAFTfyHEOst8Ya8pH1EmUPCvlTIJMNsy9SXtVppq4oFwi6lrtrKyTD+VDHSVbJlLwWqPrCbxKuG9tSPWR0PBNFfSD1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5pP9WIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0F0C116B1;
+	Tue, 23 Apr 2024 12:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713876533;
-	bh=inwgavQ6yFG24DOt5JwUtZgbCO8bS2t/OvuM0yaYErE=;
+	s=korg; t=1713876536;
+	bh=+oxCg8wYCsBoNf8qARhFiiXtFHEh6+T2Qsizkmxp9gk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=z79sEI2pEKA4FDVl7U0OD07ehcl/3PeIehko42yfxDUmNXEePWHrZG2t1lsut376A
-	 bdCcJoGfEmXbYDuZOY5tYrsLpvHGv0mJshQT/G3tPzrftqhz3hDHftUEHc4uo6rT6I
-	 a0+DagUPIWgjhwWQogVh9HCpR0B/9SoqARitAmHI=
-Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Set enable bits for GP counters in" failed to apply to 6.6-stable tree
+	b=m5pP9WIMiplNSrgwt1nzX8owBReKuwR378qb/jrSmc2y2VLPkhFktyXA4AvIDKWMK
+	 T1tmRl+Et1JvRmpzzSPnp8uBNBjuxe6eLXND/PcBRyplQcsxgLnxZgwJGC2z40bdbf
+	 NLw0TlHlNfc0kkW+eIeXOi3sn6fkvt3uwfqx2w9g=
+Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Set enable bits for GP counters in" failed to apply to 6.1-stable tree
 To: seanjc@google.com,babu.moger@amd.com,dapeng1.mi@linux.intel.com,like.xu.linux@gmail.com,mizhang@google.com,sandipan.das@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 05:48:43 -0700
-Message-ID: <2024042343-imitate-divinity-9e38@gregkh>
+Date: Tue, 23 Apr 2024 05:48:47 -0700
+Message-ID: <2024042347-polar-gains-eb8f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x de120e1d692d73c7eefa3278837b1eb68f90728a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042343-imitate-divinity-9e38@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042347-polar-gains-eb8f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,22 @@ de120e1d692d ("KVM: x86/pmu: Set enable bits for GP counters in PERF_GLOBAL_CTRL
 f933b88e2015 ("KVM: x86/pmu: Zero out PMU metadata on AMD if PMU is disabled")
 1647b52757d5 ("KVM: x86/pmu: Reset the PMU, i.e. stop counters, before refreshing")
 cbb359d81a26 ("KVM: x86/pmu: Move PMU reset logic to common x86 code")
+73554b29bd70 ("KVM: x86/pmu: Synthesize at most one PMI per VM-exit")
+b29a2acd36dd ("KVM: x86/pmu: Truncate counter value to allowed width on write")
+4a2771895ca6 ("KVM: x86/svm/pmu: Add AMD PerfMonV2 support")
+1c2bf8a6b045 ("KVM: x86/pmu: Constrain the num of guest counters with kvm_pmu_cap")
+13afa29ae489 ("KVM: x86/pmu: Provide Intel PMU's pmc_is_enabled() as generic x86 code")
+c85cdc1cc1ea ("KVM: x86/pmu: Move handling PERF_GLOBAL_CTRL and friends to common x86")
+30dab5c0b65e ("KVM: x86/pmu: Reject userspace attempts to set reserved GLOBAL_STATUS bits")
+8de18543dfe3 ("KVM: x86/pmu: Move reprogram_counters() to pmu.h")
+53550b89220b ("KVM: x86/pmu: Rename global_ovf_ctrl_mask to global_status_mask")
+649bccd7fac9 ("KVM: x86/pmu: Rewrite reprogram_counters() to improve performance")
+8bca8c5ce40b ("KVM: VMX: Refactor intel_pmu_{g,}set_msr() to align with other helpers")
+cdd2fbf6360e ("KVM: x86/pmu: Rename pmc_is_enabled() to pmc_is_globally_enabled()")
+957d0f70e97b ("KVM: x86/pmu: Zero out LBR capabilities during PMU refresh")
+3a6de51a437f ("KVM: x86/pmu: WARN and bug the VM if PMU is refreshed after vCPU has run")
+7e768ce8278b ("KVM: x86/pmu: Zero out pmu->all_valid_pmc_idx each time it's refreshed")
+e33b6d79acac ("KVM: x86/pmu: Don't tell userspace to save MSRs for non-existent fixed PMCs")
 
 thanks,
 
