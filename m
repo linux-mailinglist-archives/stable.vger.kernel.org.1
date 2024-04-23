@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1C38AFAFE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B5A8AFA34
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED5B41C23562
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B344C28ABA9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBC914BFB4;
-	Tue, 23 Apr 2024 21:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE3314901A;
+	Tue, 23 Apr 2024 21:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDT3VCgU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyZ6tCDu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19548143C6C;
-	Tue, 23 Apr 2024 21:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C2114389E;
+	Tue, 23 Apr 2024 21:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908799; cv=none; b=JAw9Ib5IYgAEgnh9RrL8kEW2HyGZTcDaI0mYhq1uqdiPblpaszbq2hndy6a51xC9rbcHRcZxxPMo0DzbHb/FW1Jbs2kAop9Kkp3MptAlW3f55BJClb9hkvAcBvk+/TyIFdtxYP+gR7OdnDCqVSP/eWyVpd2DGtlMbAZXXHme6Ns=
+	t=1713908653; cv=none; b=md1nbRPGS86bCvGSfVGw3JC/YU9mRyr3iUnxuTQhBWYngFtJ0AUXJj4uDrn6Zda/3D6v0is4ryOYVPhBwIB0Ol2tIB4YmtNbI3g1yLLq0ibuUGytKLO3kXlAFjYAax6/c/62vR8Su2rKBZwRMscXJrtDFZjhXBNVCZnkAxYXnq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908799; c=relaxed/simple;
-	bh=8hJtWrjgA1EvxzcgbwAnKfiWTOk+PZsANhxTtpx5I3Y=;
+	s=arc-20240116; t=1713908653; c=relaxed/simple;
+	bh=k6CJ3pSCou6GZwOlonHQhyFiJKpbsuU3fOh5NK0S5Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ReTSEKaHrI0+yavURJmZoNqAt2zEK/VKYctl2JxBJl2Q/CVMeGxlIdcv2QQvWTow5AMW8ABOw6NH+9L2jeul3r75E8XKHiPT0ruQGaZgEbHzo0L6LkoAAd5ZauCtCV95j30vHePrymifT/iwfkWkjMSGVSEThv9M9h/oS0MEo3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDT3VCgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D118BC3277B;
-	Tue, 23 Apr 2024 21:46:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ez/UG6+n6huFWgwd3KPMxv2FMzYkOgCRXm4mgEa1+iF6VWSObj9NE9qHVsFwjUCTUTzjCyTpFsUVEUtO82vyjlBXP6aWktjtaQvRUPdGzs4XXh43lPTZisw7ADdZjhIRs+eVMlDXWse8BjAwnQByTr9PwapudU8eOib7r5JOG6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyZ6tCDu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E541C3277B;
+	Tue, 23 Apr 2024 21:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908798;
-	bh=8hJtWrjgA1EvxzcgbwAnKfiWTOk+PZsANhxTtpx5I3Y=;
+	s=korg; t=1713908653;
+	bh=k6CJ3pSCou6GZwOlonHQhyFiJKpbsuU3fOh5NK0S5Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qDT3VCgU8KXRi9KFnWBXY0OgJCTh/Wg4KZXmvq/RKk/Q145aZWSq3BWFqyB23vSYn
-	 0EHSGOhvu8p6PxDk6dcC3gr6O0lAIa6FwiUnUiuvrWhH0hW44tbpKsjU7JzJZAYZug
-	 qjR97FNPdffoooAhC3ZJNCfMkTZP9et/8EYc9/wY=
+	b=YyZ6tCDuINKpdyxWyDJFdBI8uWfnJS3mrFWWO4suehiAq0vLbw8VSuPHXaNwXtbrF
+	 5z/pzzc7+J9vjZskT2QS+9Yv7+JbMpbt4tle/oMv6NcvBiLvKnF2d+2Vz2K+yT43qB
+	 qjdzZLDb27kVbmCuBjTCkgSFTbSDPUNCRdXB9Q6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
-	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/71] RDMA/rxe: Fix the problem "mutex_destroy missing"
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 143/158] drm/amdgpu: remove invalid resource->start check v2
 Date: Tue, 23 Apr 2024 14:39:40 -0700
-Message-ID: <20240423213845.084317185@linuxfoundation.org>
+Message-ID: <20240423213900.335757179@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanjun.Zhu <yanjun.zhu@linux.dev>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 481047d7e8391d3842ae59025806531cdad710d9 ]
+commit ca7c4507ba87e9fc22e0ecfa819c3664b3e8287b upstream.
 
-When a mutex lock is not used any more, the function mutex_destroy
-should be called to mark the mutex lock uninitialized.
+The majority of those where removed in the commit aed01a68047b
+("drm/amdgpu: Remove TTM resource->start visible VRAM condition v2")
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Yanjun.Zhu <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240314065140.27468-1-yanjun.zhu@linux.dev
-Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But this one was missed because it's working on the resource and not the
+BO. Since we also no longer use a fake start address for visible BOs
+this will now trigger invalid mapping errors.
+
+v2: also remove the unused variable
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: aed01a68047b ("drm/amdgpu: Remove TTM resource->start visible VRAM condition v2")
+CC: stable@vger.kernel.org
+Acked-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
-index 8e0f9c489cab2..f6ef782ce75c1 100644
---- a/drivers/infiniband/sw/rxe/rxe.c
-+++ b/drivers/infiniband/sw/rxe/rxe.c
-@@ -35,6 +35,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -562,7 +562,6 @@ static int amdgpu_ttm_io_mem_reserve(str
+ 				     struct ttm_resource *mem)
+ {
+ 	struct amdgpu_device *adev = amdgpu_ttm_adev(bdev);
+-	size_t bus_size = (size_t)mem->size;
  
- 	if (rxe->tfm)
- 		crypto_free_shash(rxe->tfm);
-+
-+	mutex_destroy(&rxe->usdev_lock);
- }
+ 	switch (mem->mem_type) {
+ 	case TTM_PL_SYSTEM:
+@@ -573,9 +572,6 @@ static int amdgpu_ttm_io_mem_reserve(str
+ 		break;
+ 	case TTM_PL_VRAM:
+ 		mem->bus.offset = mem->start << PAGE_SHIFT;
+-		/* check if it's visible */
+-		if ((mem->bus.offset + bus_size) > adev->gmc.visible_vram_size)
+-			return -EINVAL;
  
- /* initialize rxe device parameters */
--- 
-2.43.0
-
+ 		if (adev->mman.aper_base_kaddr &&
+ 		    mem->placement & TTM_PL_FLAG_CONTIGUOUS)
 
 
 
