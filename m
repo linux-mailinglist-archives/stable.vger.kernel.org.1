@@ -1,142 +1,135 @@
-Return-Path: <stable+bounces-40746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6478AF5DA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 19:52:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664B08AF62E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 20:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D97D028500B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 17:52:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93C07B275C1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2275F13E3F7;
-	Tue, 23 Apr 2024 17:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D3F13E3FE;
+	Tue, 23 Apr 2024 18:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X6m6iNl2"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="aqTTKTlf";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="B8v3EwNG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wflow3-smtp.messagingengine.com (wflow3-smtp.messagingengine.com [64.147.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F2813DDD0
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 17:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA1B13E3FF
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 18:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713894764; cv=none; b=CwQN8JHqkMgV4J5G4wbAxIHlFqaFDt6rtX1qRix1+Gits2sQLN/DE9AzvrTj91zj8+sGNTgUxP6ntYVZc4Kki6X0u5H7AX4NtDRj+feF8dRPM4Dq0sa3A+HmwAv6jsUGnm6fCx+58ifN2EeiVxG+MmkhIGL8AAbb8xyQWA2BKZ4=
+	t=1713895262; cv=none; b=H+4UPGGsiaPQTio29nFdW/GNn0VtNmrAagzVa0ECm1fVNzqup+qP+kuYwRCv9YubGh5sHKyGh3UjvZDeW4ETAfE47Nw98cNPbxCrj7zm0ne2ojwR/Ya56NohdVZNIUEYur8SIz3WXE6LvRa7L1QUeGWg49lVW7fU5J/Ga4Yw2Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713894764; c=relaxed/simple;
-	bh=n+i70T4/d3rinPz7Q+nnDtEGWZN7DqBJq1N0B30DRT8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GZo+3WxuuzVv605IzdfwXPhwVW5leC5B1+i4TnsEQYiytWck/h9zTCFrplmwZDEPRThoY8Gd80Mcq13XvV9GBtLivfy2D/7ylhN+w1+f1qwxhXoW36r1wOAlnkZjOMcfekH4D28svVlsXTv5FIdMcjalwQoJ11GIqMhUwZRYfPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--lokeshgidra.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X6m6iNl2; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lokeshgidra.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-618596c23b4so100055007b3.0
-        for <stable@vger.kernel.org>; Tue, 23 Apr 2024 10:52:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713894762; x=1714499562; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OfgZhNW8AfIN/1GPTg88pz2fGb52KUwbdMJXdtfspKw=;
-        b=X6m6iNl2zlISyCtZpnvBCu4aAavnYzmiXFjWSfkw7oKxLhKAP3FeUghdyfNtZVpiio
-         Pv6gFeEoqduDxcc/ofzRjxpktoM0GePe6ioVbzU19DeJgD1Rh+RToEi/mRuykET+OG+e
-         7p7itWMim/xyw4/JT3gUhzISkrcFnpfmRFT6xV8qfoKRqVgYyT9AbuZXSHPXWJtBtm6T
-         qiUpU+sqz5J5zMr8/kFczrGhaUPidxE0m8UBaiMVls6BHydWNjgzZLWNcIXqNESKK6SK
-         dY/6XvS2rQ7wkKuqdpzwwrZ/tj9DJjMkwJDLTvMoEZqeso/xyD98juHeDZwQhdyGjoK9
-         7k5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713894762; x=1714499562;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OfgZhNW8AfIN/1GPTg88pz2fGb52KUwbdMJXdtfspKw=;
-        b=pKQnaEzhONNcwUrKs5wdel165JzOtQeQF4ImmtyCBklclm2oZi0O8m1wfR2wLl1aIV
-         tFvHqhJwvSSXFV0bEkbnq4jN8nmag7Xfq1CDv3mNQgpslWOeBcoPcVLUQ/540taXlkTa
-         A78kCJue4aVB7aMIdql4iSDvyZpdnoI+D5KPILpj6ahgQWtDIBaRU2G3ipkuwhyAor3D
-         pYKj1CC+WmQxXCHVegzDBI2LQ05eipm8M7OmUgnePJ5v/Py4bJVYijS/Y3fmUT5Ux/Ir
-         yXceCShYTJv4HOsYZvvityTdU7krW/JjHzoswlUYWLqwarOTWhPXWEE5Y6e/4Yol8NQJ
-         qSmQ==
-X-Gm-Message-State: AOJu0YxC78IlD9lM1WwhucsieLwc5+qiRqZbI7xlRZdT3VKgr026LXMu
-	VG6WmWNyIJEEtfPUG3JFJH3aKqWgSRnF8aVg7aQrT+4FmP+3FdEFdSiUqsAZmmEO036EAvNRsrG
-	WzyusJzpTwHb21Vd8zxhL9CN58TYKd0IXvX+0ltUiQpFPnU6A5RNhBEmn1c0J8q6ax2oLmuCLnu
-	XgcN+gcN8MvEnSvST2dif1Ghj6gtGevjjzjSwkcr1ASHffQQDkBwp0Kq2sQqA=
-X-Google-Smtp-Source: AGHT+IFL9rRyPPyt8vMKP6ocEgDxEnn+8mGY8YcytOqY3fIr8LvFPeHiGUP+h9U9HrCz6rtdAq/ULbShGuC0W9HtIw==
-X-Received: from lg.mtv.corp.google.com ([2620:15c:211:202:aec9:515c:8866:7850])
- (user=lokeshgidra job=sendgmr) by 2002:a0d:d5ca:0:b0:618:4a14:54b8 with SMTP
- id x193-20020a0dd5ca000000b006184a1454b8mr39167ywd.1.1713894762276; Tue, 23
- Apr 2024 10:52:42 -0700 (PDT)
-Date: Tue, 23 Apr 2024 10:52:38 -0700
-In-Reply-To: <2024042334-agenda-nutlike-cb77@gregkh>
+	s=arc-20240116; t=1713895262; c=relaxed/simple;
+	bh=Kp5yJkJtlu/K5IssAYlDdc/uTxh0v0hIYarONYlVNgo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TNLefi1PzHn1F2DILrDcfl9Gn1kpLiGoO3/2dDNowY3MtNPA9S5hoFJ5KYAWgvCFnybkP0lRYWw1T8XJlCIVEyLc4ZBla526R3BTLu1mDZAFP4nCPAWySRwLs5wQgWg/FOKgha9g4q1MhZxtdb7vZ51G982iiTuEY7MAwJPhUpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=aqTTKTlf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=B8v3EwNG; arc=none smtp.client-ip=64.147.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailflow.west.internal (Postfix) with ESMTP id 9A3D82CC01DF;
+	Tue, 23 Apr 2024 14:00:57 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Tue, 23 Apr 2024 14:00:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1713895257; x=1713902457; bh=t4D22upmav
+	Q3+4AtkRtUngE0hPyofqmE6WNUCf03+40=; b=aqTTKTlfqKT16v9g1oW4YjAkXZ
+	POS3K4MqabeQ4THgFuetpcTz597OOCztysZKFnkSsvHOtPPnnUPZzvrJGNxiWLW5
+	BajEJCE/kfmdUxo/gSxcBUWZN5fMrLsOKVraLPSzYmwbUy1FgpnbvjINTaqwWtEu
+	J1Yz7g/iMrUWwPbu2/N2bi0K2aAXB6m4JyqzPJ0AeyP6UKLiZdN2IYirwR99I6sJ
+	A0ba0GKN1P6G4Ec4c7pWjaGoDoLoEpDkREJqDwNpJ5tyavHzak799n6bVtcfvSBQ
+	wjEp9Yhz6fWgc37sAvomJPEiEmoHaKQ9cQS+Cemlkfw0yqWe+ienUSj0C2Ng==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1713895257; x=1713902457; bh=t4D22upmavQ3+4AtkRtUngE0hPyo
+	fqmE6WNUCf03+40=; b=B8v3EwNGo0wQw8ed6MXVlMivanogbZsdLRat6cRH2Fh/
+	qhegxgknwkh7Ky1ptnY159god/CLSEoGQYNOGCU7Pq+e6feoGsOwlmv8asysm/bH
+	VB1ZOLkfhCseDNsYB4Rvb3OeZzwRCSxgR/rhmQK7vpIjj+FY3s5TYMk45Z9yFpXZ
+	5dNZ0ukRj3PK8jZMeEkfLpkYfD/3KjggNx3jxAdkToiHAVNPDcZDPqXH3d8bZbuz
+	MfyxKU098xm6T3vrL3S7NcVhhT6u8Dv/eo/VpZxMek2bEs1Rs8YhQ0rx6aIDmcfH
+	4Zjz0Qs4TrDS0OdXHbWrxMl1XKx6bBRktl8w3wdJqQ==
+X-ME-Sender: <xms:WPcnZvtpaD-owBCDjwxiCwE14MGvGfOfF-lGiXL4p9yN2tANUaAwIw>
+    <xme:WPcnZge-BnQL68D2FDmDLj0ZAGBDfSvEcRA7JF147FzLT3_mFMgypxsA1eY15LiNr
+    AZn-nfXJ_f5ag>
+X-ME-Received: <xmr:WPcnZiyLba1SzfIF7ezAXuHW8B-2EgWzpsiRVEf4nPE9VD8e3N2mJLasLFBQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeluddguddvudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeghe
+    euhefgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhm
+    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:WPcnZuM1IfyjcSme3SV3sdTX-M_hUjWK2E0Y_uoG60IdHjTwMEGp9g>
+    <xmx:WPcnZv-nFfTR_mpweF9T7UELEaFW9xr3OXB4gz7_UAAbmFsazlhdmw>
+    <xmx:WPcnZuU9IuS9EuO5ojWenEaejqL2Aw_gyVnyL6Da8hOAL6l9yngKCA>
+    <xmx:WPcnZgeq6f3zJYjmci1XrNvamrPwjX0PNoXJ72ZyZfZQtwYM8zrqTw>
+    <xmx:WfcnZugcx6uDxbA5T4CtMi-WSV7hF0lpc7HFAWQNN2cZQqr82FB223HQ>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 23 Apr 2024 14:00:56 -0400 (EDT)
+Date: Tue, 23 Apr 2024 11:00:46 -0700
+From: Greg KH <greg@kroah.com>
+To: Lokesh Gidra <lokeshgidra@google.com>
+Cc: stable@vger.kernel.org, surenb@google.com,
+	David Hildenbrand <david@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Nicolas Geoffray <ngeoffray@google.com>,
+	Peter Xu <peterx@redhat.com>, Qi Zheng <zhengqi.arch@bytedance.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.8.y] userfaultfd: change src_folio after ensuring it's
+ unpinned in UFFDIO_MOVE
+Message-ID: <2024042339-jumble-graceless-b141@gregkh>
+References: <2024042334-agenda-nutlike-cb77@gregkh>
+ <20240423175238.1258250-1-lokeshgidra@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2024042334-agenda-nutlike-cb77@gregkh>
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240423175238.1258250-1-lokeshgidra@google.com>
-Subject: [PATCH 6.8.y] userfaultfd: change src_folio after ensuring it's
- unpinned in UFFDIO_MOVE
-From: Lokesh Gidra <lokeshgidra@google.com>
-To: stable@vger.kernel.org
-Cc: surenb@google.com, Lokesh Gidra <lokeshgidra@google.com>, 
-	David Hildenbrand <david@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, Nicolas Geoffray <ngeoffray@google.com>, 
-	Peter Xu <peterx@redhat.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240423175238.1258250-1-lokeshgidra@google.com>
 
-Commit d7a08838ab74 ("mm: userfaultfd: fix unexpected change to src_folio
-when UFFDIO_MOVE fails") moved the src_folio->{mapping, index} changing to
-after clearing the page-table and ensuring that it's not pinned.  This
-avoids failure of swapout+migration and possibly memory corruption.
+On Tue, Apr 23, 2024 at 10:52:38AM -0700, Lokesh Gidra wrote:
+> Commit d7a08838ab74 ("mm: userfaultfd: fix unexpected change to src_folio
+> when UFFDIO_MOVE fails") moved the src_folio->{mapping, index} changing to
+> after clearing the page-table and ensuring that it's not pinned.  This
+> avoids failure of swapout+migration and possibly memory corruption.
+> 
+> However, the commit missed fixing it in the huge-page case.
+> 
+> Link: https://lkml.kernel.org/r/20240404171726.2302435-1-lokeshgidra@google.com
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Cc: Andrea Arcangeli <aarcange@redhat.com>
+> Cc: Kalesh Singh <kaleshsingh@google.com>
+> Cc: Lokesh Gidra <lokeshgidra@google.com>
+> Cc: Nicolas Geoffray <ngeoffray@google.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> (cherry picked from commit c0205eaf3af9f5db14d4b5ee4abacf4a583c3c50)
+> Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
 
-However, the commit missed fixing it in the huge-page case.
+Now queued up, thanks.
 
-Link: https://lkml.kernel.org/r/20240404171726.2302435-1-lokeshgidra@google.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Nicolas Geoffray <ngeoffray@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit c0205eaf3af9f5db14d4b5ee4abacf4a583c3c50)
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
----
- mm/huge_memory.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 94c958f7ebb5..6790f93fda45 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2244,9 +2244,6 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 		goto unlock_ptls;
- 	}
- 
--	folio_move_anon_rmap(src_folio, dst_vma);
--	WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
--
- 	src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
- 	/* Folio got pinned from under us. Put it back and fail the move. */
- 	if (folio_maybe_dma_pinned(src_folio)) {
-@@ -2255,6 +2252,9 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 		goto unlock_ptls;
- 	}
- 
-+	folio_move_anon_rmap(src_folio, dst_vma);
-+	WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
-+
- 	_dst_pmd = mk_huge_pmd(&src_folio->page, dst_vma->vm_page_prot);
- 	/* Follow mremap() behavior and treat the entry dirty after the move */
- 	_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
--- 
-2.44.0.769.g3c40516874-goog
-
+greg k-h
 
