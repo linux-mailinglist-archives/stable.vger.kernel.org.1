@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-41118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0588AFAAA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B53898AF955
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7853AB2C029
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E77B81C24617
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11632149C6D;
-	Tue, 23 Apr 2024 21:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE4A144D34;
+	Tue, 23 Apr 2024 21:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPFOVBwo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6+24Ll3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AAC144D01;
-	Tue, 23 Apr 2024 21:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B26085274;
+	Tue, 23 Apr 2024 21:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908689; cv=none; b=TmSA9H86z39W136SmXSOLh/yVbpjiFLx5sUhbIy7bLKZWDV/J9MAQ6+a28+3s8qjdyknaQ/cq6iCYITlrGCUe6gKsvuwk4Z24J60T8WVpP9tfaFY86frOvC55mHidEJhi3GG0VGC3FXNtZk7Nuub1jqtYDeBK+1QVpvg7oSwqNc=
+	t=1713908508; cv=none; b=YUp5UdjHuYU+BudhlW8pvR5f3wsFzpBCqv7drAun5c2dhdEdR3ZOsph7FLD4p1ZTUuKKQ6n3D1+4hGaxhfsxvVsW02ykkEDXoF72tVbYfJVrY8ycvM86pTRirtoc0fqcxQfYrqQ5z/WjRu6pIL4UOH1JrirtdETdZfZCkSK43cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908689; c=relaxed/simple;
-	bh=w6a9gix2OlAemlBMZia+813+vsJxzwCtYGGaa42NiPQ=;
+	s=arc-20240116; t=1713908508; c=relaxed/simple;
+	bh=bZ9PiPN5aV/VTmDPUoxPI5oG2EFbu5yglpKhO0HnYz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iO8Geq0KPGvb9+4AzA22ueTID/kYQYRpP2ZHvelfXegJ6/IKLvgdB70WdHhHYufnwz/8ZZf5bDwMZNbrPU2vMR9mp3GjOiG80FJmuxzHgChJuzBJTd1tOMxI42g2L66t1nGFO3mS0pdxQF21cy8cLYaMi8Lge29WEYc+2m01Q2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPFOVBwo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A4FC32786;
-	Tue, 23 Apr 2024 21:44:49 +0000 (UTC)
+	 MIME-Version; b=aNk7HayV6DzqTM/ucmOx4jofBRovBebdI3lQGT/mVkqt9iE/Xqo9jUdTnvCC3kzRuIlk2b7eFmmQ5B+8KDVCz9em3HBuoduTq7vv+Hakxl8I5kP0g/1MCQqij9dsEJjWiTpdQUvkAeSskSyaqkTzie0knz3Iqrb3yY+OLHGvt04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6+24Ll3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08230C32783;
+	Tue, 23 Apr 2024 21:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908689;
-	bh=w6a9gix2OlAemlBMZia+813+vsJxzwCtYGGaa42NiPQ=;
+	s=korg; t=1713908508;
+	bh=bZ9PiPN5aV/VTmDPUoxPI5oG2EFbu5yglpKhO0HnYz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPFOVBwo/tc94CvqIKcTs5QhAbrjsa9WfGyz6Lw7vTgUe+0zYff0WikrFBeKE0tjW
-	 tBKh+CqX1o6ZBdU3E2r67tAOtU+DeAyRK57DBrgiTsCQiaAcSPr8XyrYf5l1jx/bfP
-	 qBDViP+BV9KZAqM9bW9/UxLb7ljA6TMOSdXjwKjM=
+	b=S6+24Ll3ukWEoxMzbS8O45AGb6ldl37YLVtTN0MLKchkkkON+Iax4CXX6VtGhNfti
+	 z5XK56rsDif6ELTYNAdSLiQ8vom3tjQ94K70HZObGRvl619S66yQwgjWKqNexxqGlx
+	 U0ZeaD73eVPICeW8s0Z4zFoimD5sFnRvd3Od0lYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
+	Sam Shih <sam.shih@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/141] netfilter: nft_set_pipapo: do not free live element
+Subject: [PATCH 6.8 083/158] clk: mediatek: mt7988-infracfg: fix clocks for 2nd PCIe port
 Date: Tue, 23 Apr 2024 14:38:25 -0700
-Message-ID: <20240423213854.492869329@linuxfoundation.org>
+Message-ID: <20240423213858.644701202@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 3cfc9ec039af60dbd8965ae085b2c2ccdcfbe1cc ]
+[ Upstream commit d3e8a91a848a5941e3c31ecebd6b2612b37e01a6 ]
 
-Pablo reports a crash with large batches of elements with a
-back-to-back add/remove pattern.  Quoting Pablo:
+Due to what seems to be an undocumented oddity in MediaTek's MT7988
+SoC design the CLK_INFRA_PCIE_PERI_26M_CK_P2 clock requires
+CLK_INFRA_PCIE_PERI_26M_CK_P3 to be enabled.
 
-  add_elem("00000000") timeout 100 ms
-  ...
-  add_elem("0000000X") timeout 100 ms
-  del_elem("0000000X") <---------------- delete one that was just added
-  ...
-  add_elem("00005000") timeout 100 ms
+This currently leads to PCIe port 2 not working in Linux.
 
-  1) nft_pipapo_remove() removes element 0000000X
-  Then, KASAN shows a splat.
+Reflect the apparent relationship in the clk driver to make sure PCIe
+port 2 of the MT7988 SoC works.
 
-Looking at the remove function there is a chance that we will drop a
-rule that maps to a non-deactivated element.
-
-Removal happens in two steps, first we do a lookup for key k and return the
-to-be-removed element and mark it as inactive in the next generation.
-Then, in a second step, the element gets removed from the set/map.
-
-The _remove function does not work correctly if we have more than one
-element that share the same key.
-
-This can happen if we insert an element into a set when the set already
-holds an element with same key, but the element mapping to the existing
-key has timed out or is not active in the next generation.
-
-In such case its possible that removal will unmap the wrong element.
-If this happens, we will leak the non-deactivated element, it becomes
-unreachable.
-
-The element that got deactivated (and will be freed later) will
-remain reachable in the set data structure, this can result in
-a crash when such an element is retrieved during lookup (stale
-pointer).
-
-Add a check that the fully matching key does in fact map to the element
-that we have marked as inactive in the deactivation step.
-If not, we need to continue searching.
-
-Add a bug/warn trap at the end of the function as well, the remove
-function must not ever be called with an invisible/unreachable/non-existent
-element.
-
-v2: avoid uneeded temporary variable (Stefano)
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 4b4719437d85f ("clk: mediatek: add drivers for MT7988 SoC")
+Suggested-by: Sam Shih <sam.shih@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://lore.kernel.org/r/1da2506a51f970706bf4ec9509dd04e0471065e5.1710367453.git.daniel@makrotopia.org
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/clk/mediatek/clk-mt7988-infracfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 58eca26162735..2299ced939c47 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1994,6 +1994,8 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
- 		rules_fx = rules_f0;
- 
- 		nft_pipapo_for_each_field(f, i, m) {
-+			bool last = i == m->field_count - 1;
-+
- 			if (!pipapo_match_field(f, start, rules_fx,
- 						match_start, match_end))
- 				break;
-@@ -2006,16 +2008,18 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
- 
- 			match_start += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
- 			match_end += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
--		}
- 
--		if (i == m->field_count) {
--			priv->dirty = true;
--			pipapo_drop(m, rulemap);
--			return;
-+			if (last && f->mt[rulemap[i].to].e == e) {
-+				priv->dirty = true;
-+				pipapo_drop(m, rulemap);
-+				return;
-+			}
- 		}
- 
- 		first_rule += rules_f0;
- 	}
-+
-+	WARN_ON_ONCE(1); /* elem_priv not found */
- }
- 
- /**
+diff --git a/drivers/clk/mediatek/clk-mt7988-infracfg.c b/drivers/clk/mediatek/clk-mt7988-infracfg.c
+index 8011ef278bea3..df02997c6b7c9 100644
+--- a/drivers/clk/mediatek/clk-mt7988-infracfg.c
++++ b/drivers/clk/mediatek/clk-mt7988-infracfg.c
+@@ -152,7 +152,7 @@ static const struct mtk_gate infra_clks[] = {
+ 	GATE_INFRA0(CLK_INFRA_PCIE_PERI_26M_CK_P1, "infra_pcie_peri_ck_26m_ck_p1",
+ 		    "csw_infra_f26m_sel", 8),
+ 	GATE_INFRA0(CLK_INFRA_PCIE_PERI_26M_CK_P2, "infra_pcie_peri_ck_26m_ck_p2",
+-		    "csw_infra_f26m_sel", 9),
++		    "infra_pcie_peri_ck_26m_ck_p3", 9),
+ 	GATE_INFRA0(CLK_INFRA_PCIE_PERI_26M_CK_P3, "infra_pcie_peri_ck_26m_ck_p3",
+ 		    "csw_infra_f26m_sel", 10),
+ 	/* INFRA1 */
 -- 
 2.43.0
 
