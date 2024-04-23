@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-40904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C668AF989
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F23F88AFA0A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99572288DFC
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7908284CC7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3C5145354;
-	Tue, 23 Apr 2024 21:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C85D1487F4;
+	Tue, 23 Apr 2024 21:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihohofLd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2qJi7F+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D90420B3E;
-	Tue, 23 Apr 2024 21:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AED91487DD;
+	Tue, 23 Apr 2024 21:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908544; cv=none; b=OdHH0kKacYGt/LvqlgOjNvToISPiSgGor8Uwb8CMSY8Wfaf1zGc7SLKqpAEBvOMuBsBDrimoAiyd1QCIh4zgevnIsnw4MOM9mmSqhmzXe+7pM2d3smFT6XevkaDgKauaA2NzUoJiuR5FcYdblNkWTjSvpimI1Z+FcVWqt0OEsBU=
+	t=1713908624; cv=none; b=gzifcve+YL5u2cvoM/098cLOejXM/pyuB1qNv4uamx7D1e/uGj3MB/0wD5Y2nTgXQSsgbJbAlzX+cbTOhgc3C8LuXk3yzwXOXzkpOMOyZRcXxHL5+925ed9tCXf8vmg6NviBRZczSJdZIPFJRk6epnhMR7+kk22J8GfvPaVP9EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908544; c=relaxed/simple;
-	bh=NIIO+PizXhQs/ek/JT3Ye6gU0wsbxA3BlxCmmUO5OOo=;
+	s=arc-20240116; t=1713908624; c=relaxed/simple;
+	bh=C9/wWXH+SoWWY1JwQGLYtvvf7Ze9PqstVKKwnMxD0FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBYYetjXiRLIiwX4n5jUK2jlK9muBaZ/UZF/F2gBXDYE/5IKRK3BGcFy0CJfRkHOmqjx9virAyPPB7AlsPSLk6JIbzdIMiLgtmgniJ7X4G4lA1D/0+IRyLa+ZoQTNX6iskflJZXnfWzZE+HDGMryxkPMsNW8WodpjtC4+KFZgwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihohofLd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0117FC32786;
-	Tue, 23 Apr 2024 21:42:23 +0000 (UTC)
+	 MIME-Version; b=lm/Y8YV0rJKEtfR//U0heYBktx8UvVeWVO4LdHOxoVpPYnZYx6TQRl8LGIDY+pi4IgeFxnP26Uvcu5FUuQEh+t5B1+356NIKr5UgPsb5U9afau/WfvBQgDuKshlKvSrJlHgFY6GCvyV16I7wUaHhV825xl2ZNG9G043/3M+nQ34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2qJi7F+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D009C32781;
+	Tue, 23 Apr 2024 21:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908544;
-	bh=NIIO+PizXhQs/ek/JT3Ye6gU0wsbxA3BlxCmmUO5OOo=;
+	s=korg; t=1713908624;
+	bh=C9/wWXH+SoWWY1JwQGLYtvvf7Ze9PqstVKKwnMxD0FE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihohofLdS3OjZ2vnpSZp0BdgANaSndPezlsPZIqF8Q7piI+6BW4WIbLbvTwMzwsEf
-	 5+rPofgSRg1j7pCcxD2XvD7XGEtWxJcBXu87pPNf7tsa05ALYEQv5Xt3E89lZG+24w
-	 4q3XGGEdKA+6/jrMMpTT89zb/lWgPOFvTZskX06g=
+	b=L2qJi7F+wUKbv2NkaZTMZvnceMgD2chp21OYnsScVwbcYTWwUUE/m/jDd1PQUe9YJ
+	 GHjp777jeSmMkdboD+8GrEyccpjGmBd/6ELRZjJ9+ihuzZkoD/YBwnGrxvBmrVNSUH
+	 MN9eqYbwPApLgIS89VQNWw/1MZhcelC8ZbW7M3FM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanillan Wang <vanillanwang@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.8 113/158] USB: serial: option: add Rolling RW101-GL and RW135-GL support
-Date: Tue, 23 Apr 2024 14:38:55 -0700
-Message-ID: <20240423213859.612290968@linuxfoundation.org>
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 099/158] net/mlx5: E-switch, store eswitch pointer before registering devlink_param
+Date: Tue, 23 Apr 2024 14:38:56 -0700
+Message-ID: <20240423213858.963300158@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,180 +65,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vanillan Wang <vanillanwang@163.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit 311f97a4c7c22a01f8897bddf00428dfd0668e79 upstream.
+[ Upstream commit 0553e753ea9ee724acaf6b3dfc7354702af83567 ]
 
-Update the USB serial option driver support for the Rolling
-LTE modules.
+Next patch will move devlink register to be first. Therefore, whenever
+mlx5 will register a param, the user will be notified.
+In order to notify the user, devlink is using the get() callback of
+the param. Hence, resources that are being used by the get() callback
+must be set before the devlink param is registered.
 
-- VID:PID 33f8:01a2, RW101-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
-0x01a2: mbim, diag, at, pipe
-- VID:PID 33f8:01a3, RW101-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
-0x01a3: mbim, pipe
-- VID:PID 33f8:01a4, RW101-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
-0x01a4: mbim, diag, at, pipe
-- VID:PID 33f8:0104, RW101-GL for laptop debug M.2 cards(with RMNET
-interface for /Linux/Chrome OS)
-0x0104: RMNET, diag, at, pipe
-- VID:PID 33f8:0115, RW135-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
-0x0115: MBIM, diag, at, pipe
+Therefore, store eswitch pointer inside mdev before registering the
+param.
 
-Here are the outputs of usb-devices:
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a2 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=12345678
-C:  #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a3 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=12345678
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 17 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a4 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=12345678
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0104 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=ba2eb033
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0115 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=12345678
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Vanillan Wang <vanillanwang@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch.c        | 9 +++------
+ .../net/ethernet/mellanox/mlx5/core/eswitch_offloads.c   | 4 ++++
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2307,6 +2307,14 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
-+	{ USB_DEVICE(0x33f8, 0x0104),						/* Rolling RW101-GL (laptop RMNET) */
-+	  .driver_info = RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a2, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a3, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a4, 0xff),			/* Rolling RW101-GL (laptop MBIM) */
-+	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 3047d7015c525..1789800faaeb6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -1868,6 +1868,7 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
+ 	if (err)
+ 		goto abort;
+ 
++	dev->priv.eswitch = esw;
+ 	err = esw_offloads_init(esw);
+ 	if (err)
+ 		goto reps_err;
+@@ -1892,11 +1893,6 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
+ 		esw->offloads.encap = DEVLINK_ESWITCH_ENCAP_MODE_BASIC;
+ 	else
+ 		esw->offloads.encap = DEVLINK_ESWITCH_ENCAP_MODE_NONE;
+-	if (MLX5_ESWITCH_MANAGER(dev) &&
+-	    mlx5_esw_vport_match_metadata_supported(esw))
+-		esw->flags |= MLX5_ESWITCH_VPORT_MATCH_METADATA;
+-
+-	dev->priv.eswitch = esw;
+ 	BLOCKING_INIT_NOTIFIER_HEAD(&esw->n_head);
+ 
+ 	esw_info(dev,
+@@ -1908,6 +1904,7 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
+ 
+ reps_err:
+ 	mlx5_esw_vports_cleanup(esw);
++	dev->priv.eswitch = NULL;
+ abort:
+ 	if (esw->work_queue)
+ 		destroy_workqueue(esw->work_queue);
+@@ -1926,7 +1923,6 @@ void mlx5_eswitch_cleanup(struct mlx5_eswitch *esw)
+ 
+ 	esw_info(esw->dev, "cleanup\n");
+ 
+-	esw->dev->priv.eswitch = NULL;
+ 	destroy_workqueue(esw->work_queue);
+ 	WARN_ON(refcount_read(&esw->qos.refcnt));
+ 	mutex_destroy(&esw->state_lock);
+@@ -1937,6 +1933,7 @@ void mlx5_eswitch_cleanup(struct mlx5_eswitch *esw)
+ 	mutex_destroy(&esw->offloads.encap_tbl_lock);
+ 	mutex_destroy(&esw->offloads.decap_tbl_lock);
+ 	esw_offloads_cleanup(esw);
++	esw->dev->priv.eswitch = NULL;
+ 	mlx5_esw_vports_cleanup(esw);
+ 	debugfs_remove_recursive(esw->debugfs_root);
+ 	devl_params_unregister(priv_to_devlink(esw->dev), mlx5_eswitch_params,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index baaae628b0a0f..e3cce110e52fd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -2476,6 +2476,10 @@ int esw_offloads_init(struct mlx5_eswitch *esw)
+ 	if (err)
+ 		return err;
+ 
++	if (MLX5_ESWITCH_MANAGER(esw->dev) &&
++	    mlx5_esw_vport_match_metadata_supported(esw))
++		esw->flags |= MLX5_ESWITCH_VPORT_MATCH_METADATA;
++
+ 	err = devl_params_register(priv_to_devlink(esw->dev),
+ 				   esw_devlink_params,
+ 				   ARRAY_SIZE(esw_devlink_params));
+-- 
+2.43.0
+
 
 
 
