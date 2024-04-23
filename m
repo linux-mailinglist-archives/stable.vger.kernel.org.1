@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-41139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C348AFA77
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C838AF964
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EF9E289AD9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C0121C248C7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6B014430A;
-	Tue, 23 Apr 2024 21:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7921448E0;
+	Tue, 23 Apr 2024 21:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Slc1nyrI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NrA4+LB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD49143C41;
-	Tue, 23 Apr 2024 21:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A17A143898;
+	Tue, 23 Apr 2024 21:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908704; cv=none; b=XmW0kbj+WawZp077oKXBdtqW8Mte+k6/HxR986KklW4HbenWYZFKLus8glAbQJN4yNv96TfBR0AwP3uHquGeynjAuvnoXLT24+jRQqarZw/QtxpbEygAFhUo12HlPDxEs/iHn3AvQx7MV/aC9OWWu/J71/7m77HoGEJWLIC7HTs=
+	t=1713908517; cv=none; b=L+haQeihc5cfHXPQqhggNCC2BmVolLEJuIIpezce5iCqBh2X8mUIK6Pa99C2aKgyEdxDwb1OXGd10c+GejIDx0VwGBvJDJLq9pMGNWwIQxo7Y3jq7cxWvst5xm1C6S+5jS4T7pAbjVJUAsZK+hczaky+cCs/9SD+TD6nMpO9OJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908704; c=relaxed/simple;
-	bh=5+CVJ8flXCCw6Th7FklOt5yiLITg37hTxRPA/OYgj0U=;
+	s=arc-20240116; t=1713908517; c=relaxed/simple;
+	bh=K2tTR2ZzIRFEFg7q4VyrbR3zD3RxT/8ijj384SmsbvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFo0UTGIJ8zPljqxBGz9LR968HIIve6TiccO+j9a16n9KBZwBqj9nHAmjCJZjAp1mPxb3qWkiA2LB26i81L4Fg9ixZxGrWemILAiiscRzm5+xOXPAQ1h3CABRgQLD4zWmnrEkIfD04p4zqdmcYqXPS3FgEi6c2Qk9DTIi0Hykm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Slc1nyrI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CF9C3277B;
-	Tue, 23 Apr 2024 21:45:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=myS9/qwGJn9C1/UeKlZN/6OCcM3kuguxEKj6sl/8IIGfufp8S7nhqyP8yxWtp8hGT9fehFADwrNSgtMT6ikyhfjw9Lf88CzHoA7+du6iBp4gQD4oz/rOz4BbcuhvT1CnCaaM8cyxYfe3aIj6xPOHu45Jqt1BnuhRGTR/HFuVwws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NrA4+LB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB2EC3277B;
+	Tue, 23 Apr 2024 21:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908703;
-	bh=5+CVJ8flXCCw6Th7FklOt5yiLITg37hTxRPA/OYgj0U=;
+	s=korg; t=1713908517;
+	bh=K2tTR2ZzIRFEFg7q4VyrbR3zD3RxT/8ijj384SmsbvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Slc1nyrILL5Gkx9q5Azecx/nrfxfJjBzoxaYwwqcF3Bm7Nm+5PZ3xdSfzsEQFHtjL
-	 gD2R3WBOb9EO1WC4pG9C4+1xvD4RG7uN99bInvOAcyEyDmhYsXKnwIGlGUCJGyMl79
-	 T20lCMQOF+PrRGVBgy+vLFy+PGNoK09mE0CtCmT4=
+	b=2NrA4+LBrNeHXDk7DBtHF85ma03w52mVh4lPeqMXQ8B1DN2lnV51bTTfFHh3+ar/O
+	 SZ6zDkmTwAH/U0iCWlT2Kg8Lg9IR9W/g77c8NuACk//AbUHybexbUObTok0Xzsnsr4
+	 muxlaKeLFwwlG7kGY3GEKtW6eoR+kT4fTI5EEZpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Yang <mmyangfl@gmail.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/141] HID: kye: Sort kye devices
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 6.8 104/158] serial: stm32: Return IRQ_NONE in the ISR if no handling happend
 Date: Tue, 23 Apr 2024 14:38:46 -0700
-Message-ID: <20240423213855.137512391@linuxfoundation.org>
+Message-ID: <20240423213859.323299900@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,178 +58,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Yang <mmyangfl@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 8c7b79bc04abb67e7f5864e94286a800b42aa96c ]
+commit 13c785323b36b845300b256d0e5963c3727667d7 upstream.
 
-Sort kye devices by their Produce IDs.
+If there is a stuck irq that the handler doesn't address, returning
+IRQ_HANDLED unconditionally makes it impossible for the irq core to
+detect the problem and disable the irq. So only return IRQ_HANDLED if
+an event was handled.
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A stuck irq is still problematic, but with this change at least it only
+makes the UART nonfunctional instead of occupying the (usually only) CPU
+by 100% and so stall the whole machine.
+
+Fixes: 48a6092fb41f ("serial: stm32-usart: Add STM32 USART Driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/5f92603d0dfd8a5b8014b2b10a902d91e0bb881f.1713344161.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h    |  2 +-
- drivers/hid/hid-kye.c    | 62 ++++++++++++++++++++--------------------
- drivers/hid/hid-quirks.c |  6 ++--
- 3 files changed, 35 insertions(+), 35 deletions(-)
+ drivers/tty/serial/stm32-usart.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 1be454bafcb91..405d88b08908d 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -717,10 +717,10 @@
- #define USB_DEVICE_ID_KYE_GPEN_560	0x5003
- #define USB_DEVICE_ID_KYE_EASYPEN_I405X	0x5010
- #define USB_DEVICE_ID_KYE_MOUSEPEN_I608X	0x5011
--#define USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2	0x501a
- #define USB_DEVICE_ID_KYE_EASYPEN_M610X	0x5013
- #define USB_DEVICE_ID_KYE_PENSKETCH_M912	0x5015
- #define USB_DEVICE_ID_KYE_EASYPEN_M406XE	0x5019
-+#define USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2	0x501A
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -857,6 +857,7 @@ static irqreturn_t stm32_usart_interrupt
+ 	const struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
+ 	u32 sr;
+ 	unsigned int size;
++	irqreturn_t ret = IRQ_NONE;
  
- #define USB_VENDOR_ID_LABTEC		0x1020
- #define USB_DEVICE_ID_LABTEC_WIRELESS_KEYBOARD	0x0006
-diff --git a/drivers/hid/hid-kye.c b/drivers/hid/hid-kye.c
-index da903138eee49..dc57e9d4a3e20 100644
---- a/drivers/hid/hid-kye.c
-+++ b/drivers/hid/hid-kye.c
-@@ -602,6 +602,18 @@ static __u8 *kye_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 			rdesc[74] = 0x08;
- 		}
- 		break;
-+	case USB_DEVICE_ID_GENIUS_GILA_GAMING_MOUSE:
-+		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 104,
-+					"Genius Gila Gaming Mouse");
-+		break;
-+	case USB_DEVICE_ID_GENIUS_MANTICORE:
-+		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 104,
-+					"Genius Manticore Keyboard");
-+		break;
-+	case USB_DEVICE_ID_GENIUS_GX_IMPERATOR:
-+		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 83,
-+					"Genius Gx Imperator Keyboard");
-+		break;
- 	case USB_DEVICE_ID_KYE_EASYPEN_I405X:
- 		if (*rsize == EASYPEN_I405X_RDESC_ORIG_SIZE) {
- 			rdesc = easypen_i405x_rdesc_fixed;
-@@ -638,18 +650,6 @@ static __u8 *kye_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 			*rsize = sizeof(pensketch_m912_rdesc_fixed);
- 		}
- 		break;
--	case USB_DEVICE_ID_GENIUS_GILA_GAMING_MOUSE:
--		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 104,
--					"Genius Gila Gaming Mouse");
--		break;
--	case USB_DEVICE_ID_GENIUS_GX_IMPERATOR:
--		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 83,
--					"Genius Gx Imperator Keyboard");
--		break;
--	case USB_DEVICE_ID_GENIUS_MANTICORE:
--		rdesc = kye_consumer_control_fixup(hdev, rdesc, rsize, 104,
--					"Genius Manticore Keyboard");
--		break;
+ 	sr = readl_relaxed(port->membase + ofs->isr);
+ 
+@@ -865,11 +866,14 @@ static irqreturn_t stm32_usart_interrupt
+ 	    (sr & USART_SR_TC)) {
+ 		stm32_usart_tc_interrupt_disable(port);
+ 		stm32_usart_rs485_rts_disable(port);
++		ret = IRQ_HANDLED;
  	}
- 	return rdesc;
+ 
+-	if ((sr & USART_SR_RTOF) && ofs->icr != UNDEF_REG)
++	if ((sr & USART_SR_RTOF) && ofs->icr != UNDEF_REG) {
+ 		writel_relaxed(USART_ICR_RTOCF,
+ 			       port->membase + ofs->icr);
++		ret = IRQ_HANDLED;
++	}
+ 
+ 	if ((sr & USART_SR_WUF) && ofs->icr != UNDEF_REG) {
+ 		/* Clear wake up flag and disable wake up interrupt */
+@@ -878,6 +882,7 @@ static irqreturn_t stm32_usart_interrupt
+ 		stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_WUFIE);
+ 		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
+ 			pm_wakeup_event(tport->tty->dev, 0);
++		ret = IRQ_HANDLED;
+ 	}
+ 
+ 	/*
+@@ -892,6 +897,7 @@ static irqreturn_t stm32_usart_interrupt
+ 			uart_unlock_and_check_sysrq(port);
+ 			if (size)
+ 				tty_flip_buffer_push(tport);
++			ret = IRQ_HANDLED;
+ 		}
+ 	}
+ 
+@@ -899,6 +905,7 @@ static irqreturn_t stm32_usart_interrupt
+ 		uart_port_lock(port);
+ 		stm32_usart_transmit_chars(port);
+ 		uart_port_unlock(port);
++		ret = IRQ_HANDLED;
+ 	}
+ 
+ 	/* Receiver timeout irq for DMA RX */
+@@ -908,9 +915,10 @@ static irqreturn_t stm32_usart_interrupt
+ 		uart_unlock_and_check_sysrq(port);
+ 		if (size)
+ 			tty_flip_buffer_push(tport);
++		ret = IRQ_HANDLED;
+ 	}
+ 
+-	return IRQ_HANDLED;
++	return ret;
  }
-@@ -717,26 +717,26 @@ static int kye_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	}
  
- 	switch (id->product) {
-+	case USB_DEVICE_ID_GENIUS_MANTICORE:
-+		/*
-+		 * The manticore keyboard needs to have all the interfaces
-+		 * opened at least once to be fully functional.
-+		 */
-+		if (hid_hw_open(hdev))
-+			hid_hw_close(hdev);
-+		break;
- 	case USB_DEVICE_ID_KYE_EASYPEN_I405X:
- 	case USB_DEVICE_ID_KYE_MOUSEPEN_I608X:
--	case USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2:
- 	case USB_DEVICE_ID_KYE_EASYPEN_M610X:
--	case USB_DEVICE_ID_KYE_EASYPEN_M406XE:
- 	case USB_DEVICE_ID_KYE_PENSKETCH_M912:
-+	case USB_DEVICE_ID_KYE_EASYPEN_M406XE:
-+	case USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2:
- 		ret = kye_tablet_enable(hdev);
- 		if (ret) {
- 			hid_err(hdev, "tablet enabling failed\n");
- 			goto enabling_err;
- 		}
- 		break;
--	case USB_DEVICE_ID_GENIUS_MANTICORE:
--		/*
--		 * The manticore keyboard needs to have all the interfaces
--		 * opened at least once to be fully functional.
--		 */
--		if (hid_hw_open(hdev))
--			hid_hw_close(hdev);
--		break;
- 	}
- 
- 	return 0;
-@@ -749,23 +749,23 @@ static int kye_probe(struct hid_device *hdev, const struct hid_device_id *id)
- static const struct hid_device_id kye_devices[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_ERGO_525V) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
--				USB_DEVICE_ID_KYE_EASYPEN_I405X) },
-+				USB_DEVICE_ID_GENIUS_GILA_GAMING_MOUSE) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
--				USB_DEVICE_ID_KYE_MOUSEPEN_I608X) },
-+				USB_DEVICE_ID_GENIUS_MANTICORE) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
--				USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2) },
-+				USB_DEVICE_ID_GENIUS_GX_IMPERATOR) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
--				USB_DEVICE_ID_KYE_EASYPEN_M610X) },
-+				USB_DEVICE_ID_KYE_EASYPEN_I405X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
--				USB_DEVICE_ID_KYE_EASYPEN_M406XE) },
-+				USB_DEVICE_ID_KYE_MOUSEPEN_I608X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
--				USB_DEVICE_ID_GENIUS_GILA_GAMING_MOUSE) },
-+				USB_DEVICE_ID_KYE_EASYPEN_M610X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
--				USB_DEVICE_ID_GENIUS_GX_IMPERATOR) },
-+				USB_DEVICE_ID_KYE_PENSKETCH_M912) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
--				USB_DEVICE_ID_GENIUS_MANTICORE) },
-+				USB_DEVICE_ID_KYE_EASYPEN_M406XE) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE,
--				USB_DEVICE_ID_KYE_PENSKETCH_M912) },
-+				USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2) },
- 	{ }
- };
- MODULE_DEVICE_TABLE(hid, kye_devices);
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 60884066362a1..debc49272a5c0 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -107,12 +107,12 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE_1f4a), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_IDEACOM, USB_DEVICE_ID_IDEACOM_IDC6680), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_INNOMEDIA, USB_DEVICE_ID_INNEX_GENESIS_ATARI), HID_QUIRK_MULTI_INPUT },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_EASYPEN_M610X), HID_QUIRK_MULTI_INPUT },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_PIXART_USB_OPTICAL_MOUSE_ID2), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_MOUSEPEN_I608X), HID_QUIRK_MULTI_INPUT },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2), HID_QUIRK_MULTI_INPUT },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_EASYPEN_M610X), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_PENSKETCH_M912), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_EASYPEN_M406XE), HID_QUIRK_MULTI_INPUT },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_PIXART_USB_OPTICAL_MOUSE_ID2), HID_QUIRK_ALWAYS_POLL },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019), HID_QUIRK_ALWAYS_POLL },
--- 
-2.43.0
-
+ static void stm32_usart_set_mctrl(struct uart_port *port, unsigned int mctrl)
 
 
 
