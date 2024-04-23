@@ -1,86 +1,77 @@
-Return-Path: <stable+bounces-40726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166088AF3CD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:22:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04538AF3E5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 18:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7468286E52
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:22:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6EE81C22F2A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F4513CF90;
-	Tue, 23 Apr 2024 16:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3B113E036;
+	Tue, 23 Apr 2024 16:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDWjzsTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nThVN82K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B340C13C9DE
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 16:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C7113E03B;
+	Tue, 23 Apr 2024 16:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713889362; cv=none; b=K/4OuAnLRQuBRTfD4LuN1WkyxUi2qeIBo+vL4SExMOZyKj2qCnsBrePJUogmOomjf3DqPd95Cx0Zl/pe9XvQCNHyQZxqn5zViAN3OBx8EBLngasz4VvpKyATVtntd5mQaN5/asOH/fYBaI8AHhqaoBH/12J13e1E1Y46CbijF6c=
+	t=1713889436; cv=none; b=BqmXzBuyTuzJ7BxV6Bl49D0Xvg0s+Zvs7RUqrYP7pJp/g/jWH7TStlSlJZWe9MkXi86yVzujU94PPC/jx8z700OXsAFGp4T7tp3A1Cv4pWU+Shgc39tVnAzgN5TS1F5sG6rbkV8QTs4Rd5sWhP+BxzzP6cvFlFDYtP9mh6IDCUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713889362; c=relaxed/simple;
-	bh=neXOWGl1TGrR3sO+pOeYiW58AU0ZzIq+cZLHOb2WTlU=;
+	s=arc-20240116; t=1713889436; c=relaxed/simple;
+	bh=3rE8iCzACJ3xQrQo2n7+k+pI9IyJWXmBfSTaEbZ8Wjc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y8MuNGcokjH8WBXU1wvqa8A7IxwIXATsIvt0lRi/H5nlkemvwU4GrOb0cEsDx2a8SM8nlV0AHeL59WTF2+VZlRrvjZUEmp+4o2auKKfF0Z5d8/QzkwiVffJ6VuTp5I/0vwCLOuMfvyUQWBqaQwS68XXsVczbGLjeTYJx69g35S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDWjzsTv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFF7C116B1;
-	Tue, 23 Apr 2024 16:22:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=f5Q9jE2yRf4WcgE96Yp+pbnlQVj2erMo7imzg1QlcbZqAdt533LxNleT+2MfqeDsvKFXXL1UFfz9VCZKhyMf7HJhtg8xQ3OPRo0CUaLFjMEuRvssQrnqyCKwKvDyiYzaJ2uYeiFVEcp7isn9hzxOZNzQbMmCC+7Id10awOy+VqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nThVN82K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801D2C116B1;
+	Tue, 23 Apr 2024 16:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713889362;
-	bh=neXOWGl1TGrR3sO+pOeYiW58AU0ZzIq+cZLHOb2WTlU=;
+	s=korg; t=1713889435;
+	bh=3rE8iCzACJ3xQrQo2n7+k+pI9IyJWXmBfSTaEbZ8Wjc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qDWjzsTvXMjo84tUBlfsAsEh1kmaJ+Yoj5Ac9QhNfYVWLTOSqCa4iBoBBXJwQd8wS
-	 NXxlQvbqIexf6D8QnhDAEuZHs6DTlz/0JoJm5D+JngFWAfxRQ0eAUV9VIC+s37yOPr
-	 X8FsQtQh45OlDacy+Qa2FeHNRvs19yH2C3JaKZS8=
-Date: Tue, 23 Apr 2024 09:22:32 -0700
+	b=nThVN82Kxi0XgxvS273sJ4SetvM8MeSKZouTlFVsenVzlc1/VrdZZgIJrVhWcdZmX
+	 5WhQ51oV4EBJq/gZUbuesH0JENAYYo+IuK0cCGG8r+whTh4eAIrs7PlS9jlzZrUB8c
+	 nq3oGE4gtw/xO/KFmMH7+7ybYSTvHxN6zEKd8Bqo=
+Date: Tue, 23 Apr 2024 09:23:46 -0700
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org,
-	petr@tesarici.cz, Sasha Levin <sashal@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: stable-rc: 5.10: arm: u64_stats_sync.h:136:2: error: implicit
- declaration of function 'preempt_disable_nested'
-Message-ID: <2024042307-detract-flammable-d542@gregkh>
-References: <CA+G9fYsyacpJG1NwpbyJ_68B=cz5DvpRpGCD_jw598H3FXgUdQ@mail.gmail.com>
+To: =?iso-8859-1?B?Suly9G1l?= Carretero <cJ-ko@zougloub.eu>
+Cc: Sasha Neftin <sasha.neftin@intel.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [Intel-wired-lan] [BUG] e1000e, scheduling while atomic (stable)
+Message-ID: <2024042328-footprint-enrage-2db3@gregkh>
+References: <a7eb665c74b5efb5140e6979759ed243072cb24a.camel@zougloub.eu>
+ <dff8729b-3ab6-4b54-a3b0-60fabf031d62@intel.com>
+ <2259bbeb9a012548779e3bf09a393fdb7d62dd0c.camel@zougloub.eu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CA+G9fYsyacpJG1NwpbyJ_68B=cz5DvpRpGCD_jw598H3FXgUdQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2259bbeb9a012548779e3bf09a393fdb7d62dd0c.camel@zougloub.eu>
 
-On Tue, Apr 23, 2024 at 01:35:28PM +0530, Naresh Kamboju wrote:
-> The arm and i386 builds failed with clang-17 and gcc-12 on stable-rc
-> linux.5.10.y
-> branch with linked config [1].
+On Fri, Apr 19, 2024 at 12:20:05PM -0400, Jérôme Carretero wrote:
+> Hi Sasha,
 > 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 > 
-> In file included from init/do_mounts.c:7:
-> In file included from include/linux/suspend.h:5:
-> In file included from include/linux/swap.h:9:
-> In file included from include/linux/memcontrol.h:13:
-> In file included from include/linux/cgroup.h:28:
-> In file included from include/linux/cgroup-defs.h:20:
-> include/linux/u64_stats_sync.h:136:2: error: implicit declaration of
-> function 'preempt_disable_nested'
-> [-Werror,-Wimplicit-function-declaration]
->   136 |         preempt_disable_nested();
->       |         ^
+> Thank you, sorry for the delay but I coudln't reboot.
+> 
+> Adding Greg KH because I don't know if stable will receive my e-mail
+> (not subscribed) but the regression was integrated in stable:
+>  commit 0a4e3c2d976aa4dd38951afd6267f74ef3fade0e
+> so they should get the fix ASAP too.
 
-That function is not in the queue at all, are you sure you are up to
-date?
+The fix needs to show up in Linus's tree, is it on its way there?
 
 thanks,
 
