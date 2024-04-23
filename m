@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-40809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C3D8AF927
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 787D68AF9A9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 550891F21289
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB1631C225B5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C534314431B;
-	Tue, 23 Apr 2024 21:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A84B145B33;
+	Tue, 23 Apr 2024 21:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3qAxCIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/DObU1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C50143891;
-	Tue, 23 Apr 2024 21:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E1F143C6C;
+	Tue, 23 Apr 2024 21:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908477; cv=none; b=iInOUmJDGaLSuD8XrjX9uHDB5ju6O4BKEeN664bYcgiAMq1VF6YQR12hr/5pekS9e1LwumwCFLBXHotsRB1fCUjYqFuPBcHKXTu1dwXcNxUz4osbdqygwdbfo2thGrNwG0cJvuG2oynkuBrKoHM8OEd3Lua8oDfK0afWTCzSipA=
+	t=1713908565; cv=none; b=NJgjwaPVWnRtQXB+Sj1uwYP5YBuZhZ+kndKFNJvmPrTKLrcRXrzuI1B40uq2ruI5nlMlYi7rrahJwui6To0Soq6k2YA1yiE1TCO4HNmts40gZDnImVR+N3ck8nqjUSm6uqGiSdfhaEDkVh7UQ2TFK17DRooUlz9JRBaUIicGCTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908477; c=relaxed/simple;
-	bh=mPJ96iend0FUbUQCG+fwbibkNZt+JFY5afHwv0JyNyI=;
+	s=arc-20240116; t=1713908565; c=relaxed/simple;
+	bh=dqm5UxUBmkpbZpP7Ogs3l8R3Al/b6PZ1DQxORuyWMc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlxUy7MZDrU3zMma63JOAypfN8jXc1M9pkVFuo/zdjmVc+daYo40Fg2cdLhCYJmcLqpXpTSO0GJAAJh9dglIwOO5KYGavN4BhyLJTEFdP320KUBGllUjpmYgGk8SvLLGXvTdopcq1vYASrm3gqh5wNoAJD00Nl9p8b+XFoq5CJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3qAxCIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A35EC4AF0B;
-	Tue, 23 Apr 2024 21:41:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QEnZrdLXdlNep0Wx3BwfCVFFgn97qUB1tWqvSUkXiDWKo+gXLDm/XQQp4Xt+6ImsJz6ppUdb/gmmbZZofnVs6p8/5uKQOGAJf3RP57AfF9b1XfJRqo4/UcPKSebTjSDhO2wWhnNff9ogCcmGFV1r7xga2OBESlBRvNZiaRJ8qm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/DObU1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F9AC32781;
+	Tue, 23 Apr 2024 21:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908477;
-	bh=mPJ96iend0FUbUQCG+fwbibkNZt+JFY5afHwv0JyNyI=;
+	s=korg; t=1713908565;
+	bh=dqm5UxUBmkpbZpP7Ogs3l8R3Al/b6PZ1DQxORuyWMc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3qAxCIxaEgTTam8CoZk9sDiBsegEWVrfxzGUTK1ZJalRTL5hz7Crv4NTrOZRjyY8
-	 V51sE8VW6cBa6Ys5qAaFS1gIU52r2LngR8j/wUnITrLYA1SxJzRc5aRG7yo5ZQRg9G
-	 8JJ0mKCN6jTNEn2Hk8Eailk+x5t4ZU7k0eZs2AvY=
+	b=v/DObU1J7IiVY0HA4JNg9Q167Q7YXB9zyCEBnDgsXdAhcFk5kNgcbWw0yZCJ6zVXf
+	 NaqHMGIYSe7o5FZt3cw/0c+zzHUMvTkaRTNhXATd8iqIkm68HpO8xA26ldKzIc5bng
+	 71/wVp3vi+CaqvH3wigpt1FDH8fsSmLRa5xc+vzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuri Benditovich <yuri.benditovich@daynix.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Vidya Srinivas <vidya.srinivas@intel.com>,
+	Arun R Murthy <arun.r.murthy@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 028/158] net: change maximum number of UDP segments to 128
+Subject: [PATCH 6.6 013/158] drm/i915: Disable live M/N updates when using bigjoiner
 Date: Tue, 23 Apr 2024 14:37:30 -0700
-Message-ID: <20240423213856.781519707@linuxfoundation.org>
+Message-ID: <20240423213856.144037398@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 1382e3b6a3500c245e5278c66d210c02926f804f ]
+[ Upstream commit 4a36e46df7aa781c756f09727d37dc2783f1ee75 ]
 
-The commit fc8b2a619469
-("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
-adds check of potential number of UDP segments vs
-UDP_MAX_SEGMENTS in linux/virtio_net.h.
-After this change certification test of USO guest-to-guest
-transmit on Windows driver for virtio-net device fails,
-for example with packet size of ~64K and mss of 536 bytes.
-In general the USO should not be more restrictive than TSO.
-Indeed, in case of unreasonably small mss a lot of segments
-can cause queue overflow and packet loss on the destination.
-Limit of 128 segments is good for any practical purpose,
-with minimal meaningful mss of 536 the maximal UDP packet will
-be divided to ~120 segments.
-The number of segments for UDP packets is validated vs
-UDP_MAX_SEGMENTS also in udp.c (v4,v6), this does not affect
-quest-to-guest path but does affect packets sent to host, for
-example.
-It is important to mention that UDP_MAX_SEGMENTS is kernel-only
-define and not available to user mode socket applications.
-In order to request MSS smaller than MTU the applications
-just uses setsockopt with SOL_UDP and UDP_SEGMENT and there is
-no limitations on socket API level.
+All joined pipes share the same transcoder/timing generator.
+Currently we just do the commits per-pipe, which doesn't really
+work if we need to change the timings at the same time. For
+now just disable live M/N updates when bigjoiner is needed.
 
-Fixes: fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
-Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: stable@vger.kernel.org
+Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Reviewed-by: Arun R Murthy <arun.r.murthy@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404213441.17637-5-ville.syrjala@linux.intel.com
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+(cherry picked from commit ef79820db723a2a7c229a7251c12859e7e25a247)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h                  | 2 +-
- tools/testing/selftests/net/udpgso.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/udp.h b/include/linux/udp.h
-index 94e63b2695406..00790bb5cbde6 100644
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -105,7 +105,7 @@ struct udp_sock {
- #define udp_assign_bit(nr, sk, val)		\
- 	assign_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags, val)
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 7e135ed8e1d75..ccc47cf4d15d8 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -2148,7 +2148,11 @@ intel_dp_drrs_compute_config(struct intel_connector *connector,
+ 		intel_panel_downclock_mode(connector, &pipe_config->hw.adjusted_mode);
+ 	int pixel_clock;
  
--#define UDP_MAX_SEGMENTS	(1 << 6UL)
-+#define UDP_MAX_SEGMENTS	(1 << 7UL)
+-	if (has_seamless_m_n(connector))
++	/*
++	 * FIXME all joined pipes share the same transcoder.
++	 * Need to account for that when updating M/N live.
++	 */
++	if (has_seamless_m_n(connector) && !pipe_config->bigjoiner_pipes)
+ 		pipe_config->update_m_n = true;
  
- #define udp_sk(ptr) container_of_const(ptr, struct udp_sock, inet.sk)
- 
-diff --git a/tools/testing/selftests/net/udpgso.c b/tools/testing/selftests/net/udpgso.c
-index 7badaf215de28..b02080d09fbc0 100644
---- a/tools/testing/selftests/net/udpgso.c
-+++ b/tools/testing/selftests/net/udpgso.c
-@@ -34,7 +34,7 @@
- #endif
- 
- #ifndef UDP_MAX_SEGMENTS
--#define UDP_MAX_SEGMENTS	(1 << 6UL)
-+#define UDP_MAX_SEGMENTS	(1 << 7UL)
- #endif
- 
- #define CONST_MTU_TEST	1500
+ 	if (!can_enable_drrs(connector, pipe_config, downclock_mode)) {
 -- 
 2.43.0
 
