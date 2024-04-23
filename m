@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A343A8AFAAF
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7B08AF975
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF7C8B2B5B9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A15481C221A8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0093E1448E7;
-	Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F951448FB;
+	Tue, 23 Apr 2024 21:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfuc0V6T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHreVTcC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25FD14389F;
-	Tue, 23 Apr 2024 21:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E7520B3E;
+	Tue, 23 Apr 2024 21:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908646; cv=none; b=ikoZMNI6zxY9b6otrGmTXQbDTwKPwkQAWeUZpGlP2hgfuEqdv5nLqcXzot8K8edcPHyD3esg9+cPts0VGnA39n3edzWfsVwfSUXkqKzJPF5HFce7UR/RIiMaciO1XS+/tzQrBzazqBX5UZe9LP6/iZBWO7d5ieFZk/Xa86712k4=
+	t=1713908528; cv=none; b=tGiUSGYKJFAleUAQLuax3/O4Xs4dsx1nrog7EpWSFvWkqVSQo7o1SpBvT0Am++hUvR6xFN37ZZFTHYkUGXxVAynobYDJDe9g/VBmtQwIEiE5lgIhOFCPLojofY9AK9oN0xYFcr+d3EwnjEtuS1WXPhUZ5twnvJPhuUixnqs/qd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908646; c=relaxed/simple;
-	bh=/K2DL0OekGn9aYLps4o+hHt61AiYJxUC/dloe8S15q4=;
+	s=arc-20240116; t=1713908528; c=relaxed/simple;
+	bh=GCNOPttGHyjkNtSa4vuMW2YBAPGF/2jyBZkRJ52E57Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7G09sxwe6khCF4ZwIZF/c2zqtIUnCMcKvu2VuTo/BceYjdkH4dU93YGnOMg9bDaZpqr8eFmaXAlhVhwiVStpKwgs3LyapKOiw7rVfSTi9hriy87SOeBKIbtN9WKpsGx5BuxH/HfefKDFAVw482XAIapXidqr2OphQnkBwhVtUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfuc0V6T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8621CC3277B;
-	Tue, 23 Apr 2024 21:44:06 +0000 (UTC)
+	 MIME-Version; b=BpZr+7gmwFJvy5NAZoOj5h4cSC8ZDJsiegIRQVjVrr3QNIfN9Yb8c6LZFvwx6e6R3cerJoeTDumBNYeYl2GH7RbdXnZkuegk8goDXF184JWxvbDVRIzAhX9EbFECy+U9tvErGz1XF1JSmI6ojCcG+VTGqBgz6DZzpX9HcSB4iWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHreVTcC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E0EC3277B;
+	Tue, 23 Apr 2024 21:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908646;
-	bh=/K2DL0OekGn9aYLps4o+hHt61AiYJxUC/dloe8S15q4=;
+	s=korg; t=1713908528;
+	bh=GCNOPttGHyjkNtSa4vuMW2YBAPGF/2jyBZkRJ52E57Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfuc0V6TlrT78AZSQdCweOwi60g4SBBNXO6liY2pr0o0o78aweniv2xCFN1GI7E7P
-	 7NcenjTUBitms1ReVqTG7dSxSMP+ivDbMDPzy+G80FH5b2+MJUoTqiJHMLL8T7YqUF
-	 thS4sReTjBcRnl2agLpX8LjToJIaDpmGVIpvIcY8=
+	b=NHreVTcCQX0pTFk7GtDsJdP7eRy5Y80p0fthz612QFQ1hNL9k2ZAIOioCHknAxuWv
+	 VE+KIixVUaIti/xMJDCNu9FYmzHbcTjBH4zz33WTnhORUPjUO0QdCgK8ghnFV1m38n
+	 yoh2jngi896w2x7PhQEQnLcxFLE7zxCCTxeDFw5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Todd Kjos <tkjos@google.com>
-Subject: [PATCH 6.6 105/158] binder: check offset alignment in binder_get_object()
-Date: Tue, 23 Apr 2024 14:39:02 -0700
-Message-ID: <20240423213859.166163131@linuxfoundation.org>
+	Dominik Brodowski <linux@dominikbrodowski.net>,
+	Wentong Wu <wentong.wu@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 6.8 121/158] mei: vsc: Unregister interrupt handler for system suspend
+Date: Tue, 23 Apr 2024 14:39:03 -0700
+Message-ID: <20240423213859.848874352@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,219 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit aaef73821a3b0194a01bd23ca77774f704a04d40 upstream.
+commit f6085a96c97387154be7eaebd1a5420eb3cd55dc upstream.
 
-Commit 6d98eb95b450 ("binder: avoid potential data leakage when copying
-txn") introduced changes to how binder objects are copied. In doing so,
-it unintentionally removed an offset alignment check done through calls
-to binder_alloc_copy_from_buffer() -> check_buffer().
+Unregister the MEI VSC interrupt handler before system suspend and
+re-register it at system resume time. This mirrors implementation of other
+MEI devices.
 
-These calls were replaced in binder_get_object() with copy_from_user(),
-so now an explicit offset alignment check is needed here. This avoids
-later complications when unwinding the objects gets harder.
+This patch fixes the bug that causes continuous stream of MEI VSC errors
+after system resume.
 
-It is worth noting this check existed prior to commit 7a67a39320df
-("binder: add function to copy binder object from buffer"), likely
-removed due to redundancy at the time.
-
-Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Acked-by: Todd Kjos <tkjos@google.com>
-Link: https://lore.kernel.org/r/20240330190115.1877819-1-cmllamas@google.com
+Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
+Cc: stable@vger.kernel.org # for 6.8
+Reported-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Acked-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240403051341.3534650-2-wentong.wu@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/misc/mei/platform-vsc.c |   17 +++++++-
+ drivers/misc/mei/vsc-tp.c       |   84 ++++++++++++++++++++++++++++------------
+ drivers/misc/mei/vsc-tp.h       |    3 +
+ 3 files changed, 78 insertions(+), 26 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -1708,8 +1708,10 @@ static size_t binder_get_object(struct b
- 	size_t object_size = 0;
+--- a/drivers/misc/mei/platform-vsc.c
++++ b/drivers/misc/mei/platform-vsc.c
+@@ -402,25 +402,40 @@ static int mei_vsc_remove(struct platfor
+ static int mei_vsc_suspend(struct device *dev)
+ {
+ 	struct mei_device *mei_dev = dev_get_drvdata(dev);
++	struct mei_vsc_hw *hw = mei_dev_to_vsc_hw(mei_dev);
  
- 	read_size = min_t(size_t, sizeof(*object), buffer->data_size - offset);
--	if (offset > buffer->data_size || read_size < sizeof(*hdr))
-+	if (offset > buffer->data_size || read_size < sizeof(*hdr) ||
-+	    !IS_ALIGNED(offset, sizeof(u32)))
- 		return 0;
+ 	mei_stop(mei_dev);
+ 
++	mei_disable_interrupts(mei_dev);
 +
- 	if (u) {
- 		if (copy_from_user(object, u + offset, read_size))
- 			return 0;
++	vsc_tp_free_irq(hw->tp);
++
+ 	return 0;
+ }
+ 
+ static int mei_vsc_resume(struct device *dev)
+ {
+ 	struct mei_device *mei_dev = dev_get_drvdata(dev);
++	struct mei_vsc_hw *hw = mei_dev_to_vsc_hw(mei_dev);
+ 	int ret;
+ 
+-	ret = mei_restart(mei_dev);
++	ret = vsc_tp_request_irq(hw->tp);
+ 	if (ret)
+ 		return ret;
+ 
++	ret = mei_restart(mei_dev);
++	if (ret)
++		goto err_free;
++
+ 	/* start timer if stopped in suspend */
+ 	schedule_delayed_work(&mei_dev->timer_work, HZ);
+ 
+ 	return 0;
++
++err_free:
++	vsc_tp_free_irq(hw->tp);
++
++	return ret;
+ }
+ 
+ static DEFINE_SIMPLE_DEV_PM_OPS(mei_vsc_pm_ops, mei_vsc_suspend, mei_vsc_resume);
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -94,6 +94,27 @@ static const struct acpi_gpio_mapping vs
+ 	{}
+ };
+ 
++static irqreturn_t vsc_tp_isr(int irq, void *data)
++{
++	struct vsc_tp *tp = data;
++
++	atomic_inc(&tp->assert_cnt);
++
++	wake_up(&tp->xfer_wait);
++
++	return IRQ_WAKE_THREAD;
++}
++
++static irqreturn_t vsc_tp_thread_isr(int irq, void *data)
++{
++	struct vsc_tp *tp = data;
++
++	if (tp->event_notify)
++		tp->event_notify(tp->event_notify_context);
++
++	return IRQ_HANDLED;
++}
++
+ /* wakeup firmware and wait for response */
+ static int vsc_tp_wakeup_request(struct vsc_tp *tp)
+ {
+@@ -384,6 +405,37 @@ int vsc_tp_register_event_cb(struct vsc_
+ EXPORT_SYMBOL_NS_GPL(vsc_tp_register_event_cb, VSC_TP);
+ 
+ /**
++ * vsc_tp_request_irq - request irq for vsc_tp device
++ * @tp: vsc_tp device handle
++ */
++int vsc_tp_request_irq(struct vsc_tp *tp)
++{
++	struct spi_device *spi = tp->spi;
++	struct device *dev = &spi->dev;
++	int ret;
++
++	irq_set_status_flags(spi->irq, IRQ_DISABLE_UNLAZY);
++	ret = request_threaded_irq(spi->irq, vsc_tp_isr, vsc_tp_thread_isr,
++				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
++				   dev_name(dev), tp);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(vsc_tp_request_irq, VSC_TP);
++
++/**
++ * vsc_tp_free_irq - free irq for vsc_tp device
++ * @tp: vsc_tp device handle
++ */
++void vsc_tp_free_irq(struct vsc_tp *tp)
++{
++	free_irq(tp->spi->irq, tp);
++}
++EXPORT_SYMBOL_NS_GPL(vsc_tp_free_irq, VSC_TP);
++
++/**
+  * vsc_tp_intr_synchronize - synchronize vsc_tp interrupt
+  * @tp: vsc_tp device handle
+  */
+@@ -413,27 +465,6 @@ void vsc_tp_intr_disable(struct vsc_tp *
+ }
+ EXPORT_SYMBOL_NS_GPL(vsc_tp_intr_disable, VSC_TP);
+ 
+-static irqreturn_t vsc_tp_isr(int irq, void *data)
+-{
+-	struct vsc_tp *tp = data;
+-
+-	atomic_inc(&tp->assert_cnt);
+-
+-	wake_up(&tp->xfer_wait);
+-
+-	return IRQ_WAKE_THREAD;
+-}
+-
+-static irqreturn_t vsc_tp_thread_isr(int irq, void *data)
+-{
+-	struct vsc_tp *tp = data;
+-
+-	if (tp->event_notify)
+-		tp->event_notify(tp->event_notify_context);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ static int vsc_tp_match_any(struct acpi_device *adev, void *data)
+ {
+ 	struct acpi_device **__adev = data;
+@@ -485,10 +516,9 @@ static int vsc_tp_probe(struct spi_devic
+ 	tp->spi = spi;
+ 
+ 	irq_set_status_flags(spi->irq, IRQ_DISABLE_UNLAZY);
+-	ret = devm_request_threaded_irq(dev, spi->irq, vsc_tp_isr,
+-					vsc_tp_thread_isr,
+-					IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+-					dev_name(dev), tp);
++	ret = request_threaded_irq(spi->irq, vsc_tp_isr, vsc_tp_thread_isr,
++				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
++				   dev_name(dev), tp);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -522,6 +552,8 @@ static int vsc_tp_probe(struct spi_devic
+ err_destroy_lock:
+ 	mutex_destroy(&tp->mutex);
+ 
++	free_irq(spi->irq, tp);
++
+ 	return ret;
+ }
+ 
+@@ -532,6 +564,8 @@ static void vsc_tp_remove(struct spi_dev
+ 	platform_device_unregister(tp->pdev);
+ 
+ 	mutex_destroy(&tp->mutex);
++
++	free_irq(spi->irq, tp);
+ }
+ 
+ static const struct acpi_device_id vsc_tp_acpi_ids[] = {
+--- a/drivers/misc/mei/vsc-tp.h
++++ b/drivers/misc/mei/vsc-tp.h
+@@ -37,6 +37,9 @@ int vsc_tp_xfer(struct vsc_tp *tp, u8 cm
+ int vsc_tp_register_event_cb(struct vsc_tp *tp, vsc_tp_event_cb_t event_cb,
+ 			     void *context);
+ 
++int vsc_tp_request_irq(struct vsc_tp *tp);
++void vsc_tp_free_irq(struct vsc_tp *tp);
++
+ void vsc_tp_intr_enable(struct vsc_tp *tp);
+ void vsc_tp_intr_disable(struct vsc_tp *tp);
+ void vsc_tp_intr_synchronize(struct vsc_tp *tp);
 
 
 
