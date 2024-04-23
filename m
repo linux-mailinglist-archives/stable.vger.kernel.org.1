@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-40869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562CC8AF965
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE0F8AFA00
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11AC2287CB8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89817B2B0AB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E18614532A;
-	Tue, 23 Apr 2024 21:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4806E1487CE;
+	Tue, 23 Apr 2024 21:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORJij1mh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qX+tzImE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEE8143898;
-	Tue, 23 Apr 2024 21:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A93143899;
+	Tue, 23 Apr 2024 21:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908518; cv=none; b=ZaoH1x9l6M+EC/z0iPULLC6BEycxIabsgVpKNoleRTaW+HEo3MczjMcHRBLLQ+0K2dt7jm1fdD9tab0/P7x/To613kPh3lFPno6CLGxjvLFRA8RzFiU8+O0mhtwpCKs2e+g+nmQtFkdK9k0D2M4+6N4We2lK6Qeg0XyEvRlCEXw=
+	t=1713908618; cv=none; b=d6E186lHkq9jJGSYrFH3KSIvBijEZ1JuyJK3AsIN/tqPX56+KdyxxJJfnd3TLN60T8afJL4u99YRaPJEQSnuHp0MjSOXQxUASZbnyK2JrPvt7t2dx4RulmIFHQMm9KEHcgUeRCyNSe+FSxS5BtcjdgxkXk66MgGPoICcYUywevs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908518; c=relaxed/simple;
-	bh=qGnc8NeZ3rTCbDsDRNSA+k+zsB1/K5UHVcsKIJi3vIo=;
+	s=arc-20240116; t=1713908618; c=relaxed/simple;
+	bh=zY9TYw0hXWYtslDWIqFHMeu8hhLXqZwJ30PAMDnrMtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eKq/7f1EB0+AkQQmq/UeR9jLwuEy8AIri0R40FDFP46g0fiKHfAiyzocuTs18CKIRIGcxDS5HIPA4YK1O/B4JUI6yhSi+ZmiwkF0i9WQbCbglxuA1vrCqW2GwSByxoPFqRbCtvvs67+PwXvW+vseU4VzFBAZVOKuXZCfdILKloE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORJij1mh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2128FC32783;
-	Tue, 23 Apr 2024 21:41:58 +0000 (UTC)
+	 MIME-Version; b=Mup9xwcuqk2CTtbF8MyRUbioLg52xB7LgO93h491JCby076QRZKblIJD3WobrJlq3sHXSbmX0YyeJetY617ncW0SUV8PgB7HqXUDvQb+xNUzeMZHl+aF/AjE2eCZ7I9MGdFi74fyuMaLJl+GnLt5lYmWMciDK24Ai0MiNXobWvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qX+tzImE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C995FC32781;
+	Tue, 23 Apr 2024 21:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908518;
-	bh=qGnc8NeZ3rTCbDsDRNSA+k+zsB1/K5UHVcsKIJi3vIo=;
+	s=korg; t=1713908617;
+	bh=zY9TYw0hXWYtslDWIqFHMeu8hhLXqZwJ30PAMDnrMtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORJij1mhOepcGjGio4j6+mS2yuuwZMgNaI04IPJSbQOcPxh6RFIS9G5Av2xANH/fW
-	 4CKp53uhMZJw5atK6j/dWLCehaNYWuyXbGCqZINSiHz3q8fWxOloci/VNYwNtwIwrO
-	 WP61vRVAzNFHDKQBw5Hzn1Kh5KuLJIDgwJyE9VeQ=
+	b=qX+tzImEpEa8RqpY5rWupDU4tlEpYerqYjxhbFg7qxa0f4XcWIG61JP8HLYOV+kQK
+	 LqnkNpAdtaqJwAQW13A89XUD1x8g2Ya5zvWIlwtLR0a+thFVjsC3DkCJH5NVk0Xdzl
+	 +Ptcc6PesmU6YuKO4CoN24PAhXggIJWKynOTsd/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 6.8 105/158] serial: stm32: Reset .throttled state in .startup()
-Date: Tue, 23 Apr 2024 14:38:47 -0700
-Message-ID: <20240423213859.354428901@linuxfoundation.org>
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 091/158] clk: Remove prepare_lock hold assertion in __clk_release()
+Date: Tue, 23 Apr 2024 14:38:48 -0700
+Message-ID: <20240423213858.703563246@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,44 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Stephen Boyd <sboyd@kernel.org>
 
-commit ea2624b5b829b8f93c0dce25721d835969b34faf upstream.
+[ Upstream commit 8358a76cfb47c9a5af627a0c4e7168aa14fa25f6 ]
 
-When an UART is opened that still has .throttled set from a previous
-open, the RX interrupt is enabled but the irq handler doesn't consider
-it. This easily results in a stuck irq with the effect to occupy the CPU
-in a tight loop.
+Removing this assertion lets us move the kref_put() call outside the
+prepare_lock section. We don't need to hold the prepare_lock here to
+free memory and destroy the clk_core structure. We've already unlinked
+the clk from the clk tree and by the time the release function runs
+nothing holds a reference to the clk_core anymore so anything with the
+pointer can't access the memory that's being freed anyway. Way back in
+commit 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of
+prepare_lock") we didn't need to have this assertion either.
 
-So reset the throttle state in .startup() to ensure that RX irqs are
-handled.
-
-Fixes: d1ec8a2eabe9 ("serial: stm32: update throttle and unthrottle ops for dma mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/a784f80d3414f7db723b2ec66efc56e1ad666cbf.1713344161.git.u.kleine-koenig@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of prepare_lock")
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240325184204.745706-2-sboyd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/stm32-usart.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/clk.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -1088,6 +1088,7 @@ static int stm32_usart_startup(struct ua
- 		val |= USART_CR2_SWAP;
- 		writel_relaxed(val, port->membase + ofs->cr2);
- 	}
-+	stm32_port->throttled = false;
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 50228cb0c5590..ac5be561ccdc9 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -4313,8 +4313,6 @@ static void __clk_release(struct kref *ref)
+ {
+ 	struct clk_core *core = container_of(ref, struct clk_core, ref);
  
- 	/* RX FIFO Flush */
- 	if (ofs->rqr != UNDEF_REG)
+-	lockdep_assert_held(&prepare_lock);
+-
+ 	clk_core_free_parent_map(core);
+ 	kfree_const(core->name);
+ 	kfree(core);
+-- 
+2.43.0
+
 
 
 
