@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA66F8AFAE2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344748AF995
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76AF71F2326A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6F11F26E1D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95BD14AD33;
-	Tue, 23 Apr 2024 21:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9D3144D36;
+	Tue, 23 Apr 2024 21:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjRonUhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNpuHXHl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BC314389D;
-	Tue, 23 Apr 2024 21:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A84220B3E;
+	Tue, 23 Apr 2024 21:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908776; cv=none; b=IAFjlXhtRS6FYTWztxzA6QJFjW2GIzg9u4eiRj7u4IdTbVWGtm/XorYTH+RkxEnMzJGSdjf66emMusVdTl74GzKYYOiuE2mwwazgAmDWNFFT+Qm5YgTsKJQwGVr/6y5iLpnfmlIieCnkXBofHTbwam50YU8ROg7jbIDqi/Cea7E=
+	t=1713908552; cv=none; b=UJORPvo7Z8pqmohQhBDHKaW6wlID347dQReHGEkDlrkHquhoLVOfGTPyVSXC95mr0/Jz37x7Qj/fQ+G7PxlXE9IOLafOlqBAxMiQEWp0SwlLwUggsj9QIOD2f0wcVfC2wlZydC6nvMCPZQ7UJGFkgyCC7fFs1oSjNPJQm8/YFOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908776; c=relaxed/simple;
-	bh=Vgfv3+JVBXsQhn0LFWIiOfUTpgDatVoYKdixJ2GhyLs=;
+	s=arc-20240116; t=1713908552; c=relaxed/simple;
+	bh=MHWJTUZZDr0c7bwFuKVXnzjbR5GlMBQYeKR9vKJHLJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A0CmE7UkIaYAyDCwnVcmfmMYoiPJ71eRB0jXCNwDGNQcwuW6Z0iXAynBUITYVIxhAFAac24pOkoNylyYaRs7pOQrYJY8lteGIVxb71aNZs8LFUrC90wKoJ7pGguP8rcBFPpfkcb41+iWJR+9b/egHfLQ2+bwHlsLhal2ZPZ1oME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjRonUhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC75C3277B;
-	Tue, 23 Apr 2024 21:46:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mqpkpY/FZjvCNs5gUvU63ge531fD0UuKcCYLUxD0+RHdsdIecUlRXv887IuhIDOYyoQF2/dU8zPzKcohE2a/C5puorAkxJGqPTVB1WSqhBxzR85BAGhhzhm0VlwP6/JANR1T9BOnQzdZeGAeafCjbMD04Hh5BR7HDavKv3PFMRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNpuHXHl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AE3C3277B;
+	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908776;
-	bh=Vgfv3+JVBXsQhn0LFWIiOfUTpgDatVoYKdixJ2GhyLs=;
+	s=korg; t=1713908552;
+	bh=MHWJTUZZDr0c7bwFuKVXnzjbR5GlMBQYeKR9vKJHLJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wjRonUhFGVfC348sQ6lubZ7wnIvZHhfvjpX0bIUqnvgS70/U9UxIG9kdNEBgJyJEi
-	 FQ1KglFD4x7uCc5y6LESmvWr+vCVAA/gZWJvOnfY2S45DOPI4Phm3oX3suqJ9pvheU
-	 ChJykMvuWwkxvzre4FFiZlSes+QyJSHRCS4LQFnc=
+	b=NNpuHXHliZ+8iXs0ODVd3m9jAi+6U/DTz6Qe3vqEidLAXSLYLlDpMyKsaYE9Ig2/m
+	 MLXW5mzhYC6wXEFLC72rpmklZU7apErmcLvOZvRszm3NUUuQEqbwUz9Tm+ds04R5av
+	 GHdXC6zg/vGIp3nRoYIfVcrDv4AoMoXWFyyYjx64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 21/71] netfilter: flowtable: incorrect pppoe tuple
-Date: Tue, 23 Apr 2024 14:39:34 -0700
-Message-ID: <20240423213844.860692888@linuxfoundation.org>
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.8 153/158] net: dsa: mt7530: fix improper frames on all 25MHz and 40MHz XTAL MT7530
+Date: Tue, 23 Apr 2024 14:39:35 -0700
+Message-ID: <20240423213900.817584586@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-[ Upstream commit 6db5dc7b351b9569940cd1cf445e237c42cd6d27 ]
+commit 5f563c31ff0c40ce395d0bae7daa94c7950dac97 upstream.
 
-pppoe traffic reaching ingress path does not match the flowtable entry
-because the pppoe header is expected to be at the network header offset.
-This bug causes a mismatch in the flow table lookup, so pppoe packets
-enter the classical forwarding path.
+The MT7530 switch after reset initialises with a core clock frequency that
+works with a 25MHz XTAL connected to it. For 40MHz XTAL, the core clock
+frequency must be set to 500MHz.
 
-Fixes: 72efd585f714 ("netfilter: flowtable: add pppoe support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The mt7530_pll_setup() function is responsible of setting the core clock
+frequency. Currently, it runs on MT7530 with 25MHz and 40MHz XTAL. This
+causes MT7530 switch with 25MHz XTAL to egress and ingress frames
+improperly.
+
+Introduce a check to run it only on MT7530 with 40MHz XTAL.
+
+The core clock frequency is set by writing to a switch PHY's register.
+Access to the PHY's register is done via the MDIO bus the switch is also
+on. Therefore, it works only when the switch makes switch PHYs listen on
+the MDIO bus the switch is on. This is controlled either by the state of
+the ESW_P1_LED_1 pin after reset deassertion or modifying bit 5 of the
+modifiable trap register.
+
+When ESW_P1_LED_1 is pulled high, PHY indirect access is used. That means
+accessing PHY registers via the PHY indirect access control register of the
+switch.
+
+When ESW_P1_LED_1 is pulled low, PHY direct access is used. That means
+accessing PHY registers via the MDIO bus the switch is on.
+
+For MT7530 switch with 40MHz XTAL on a board with ESW_P1_LED_1 pulled high,
+the core clock frequency won't be set to 500MHz, causing the switch to
+egress and ingress frames improperly.
+
+Run mt7530_pll_setup() after PHY direct access is set on the modifiable
+trap register.
+
+With these two changes, all MT7530 switches with 25MHz and 40MHz, and
+P1_LED_1 pulled high or low, will egress and ingress frames properly.
+
+Link: https://github.com/BPI-SINOVOIP/BPI-R2-bsp/blob/4a5dd143f2172ec97a2872fa29c7c4cd520f45b5/linux-mt/drivers/net/ethernet/mediatek/gsw_mt7623.c#L1039
+Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Link: https://lore.kernel.org/r/20240320-for-net-mt7530-fix-25mhz-xtal-with-direct-phy-access-v1-1-d92f605f1160@arinc9.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_flow_table_ip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/mt7530.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index 448956fb52f69..f3227f9316969 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -156,7 +156,7 @@ static void nf_flow_tuple_encap(struct sk_buff *skb,
- 		tuple->encap[i].proto = skb->protocol;
- 		break;
- 	case htons(ETH_P_PPP_SES):
--		phdr = (struct pppoe_hdr *)skb_mac_header(skb);
-+		phdr = (struct pppoe_hdr *)skb_network_header(skb);
- 		tuple->encap[i].id = ntohs(phdr->sid);
- 		tuple->encap[i].proto = skb->protocol;
- 		break;
--- 
-2.43.0
-
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -2471,8 +2471,6 @@ mt7530_setup(struct dsa_switch *ds)
+ 		     SYS_CTRL_PHY_RST | SYS_CTRL_SW_RST |
+ 		     SYS_CTRL_REG_RST);
+ 
+-	mt7530_pll_setup(priv);
+-
+ 	/* Lower Tx driving for TRGMII path */
+ 	for (i = 0; i < NUM_TRGMII_CTRL; i++)
+ 		mt7530_write(priv, MT7530_TRGMII_TD_ODT(i),
+@@ -2490,6 +2488,9 @@ mt7530_setup(struct dsa_switch *ds)
+ 
+ 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
+ 
++	if ((val & HWTRAP_XTAL_MASK) == HWTRAP_XTAL_40MHZ)
++		mt7530_pll_setup(priv);
++
+ 	mt753x_trap_frames(priv);
+ 
+ 	/* Enable and reset MIB counters */
 
 
 
