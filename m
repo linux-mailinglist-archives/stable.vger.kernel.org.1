@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-40972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EFE8AF9D3
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A228AF921
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730291C21C0B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A61D51C21C54
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3C3146D7C;
-	Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91921442F3;
+	Tue, 23 Apr 2024 21:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkKzjcP/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccc29tpv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3DB143889;
-	Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77287143C47;
+	Tue, 23 Apr 2024 21:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908590; cv=none; b=mHHndNBzrcsUlVX07Jldg7IPj8XaWtXVHAXVFbYp97dBpzTmfnbaEb71KXx+IPDM1Uue1UEWeYOWDfkglUs3gGnimM/Mbkm+xvvgQVIyKFkLfMUSRtLZ/WK2GFbUPhfZikd8XNGFwYcCYNjPQ6c56wNaQe1AsoDNhc31lWa9JFU=
+	t=1713908473; cv=none; b=Vu5xAaf7de3nQac/I3N+b4zDdAgZn1PVjgMcpVq5bsSrJpyCM9Mg4uZvizvESEfJJbgXFh7cr3d2p0pkoNbXI3yQ2HCnvkGR0PzlIDk77bGrSn5cjQ8buFR/fnsC+05gMiFm6nFQ6/VKAIGJwBaf7uD9PXBnzD7pje6oRuGdxQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908590; c=relaxed/simple;
-	bh=0EBA2RYi756TiFfMHYMGVCsqMQcC64MMKfM4J8ktKas=;
+	s=arc-20240116; t=1713908473; c=relaxed/simple;
+	bh=rrn0EynlITCI61fgoy+rqfYIITsKr4Tfj6zcyo1Jtyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mufQ1ghICL+lTlNQGLjujkcT1COBmOwTQppr2z+C53S1phYczqxZyUVr2/S9giaVZgFKTaC4CHYtyjB9VZPUQDLgtkoQP3bHBtDUBPOZufqtRRBECzEdJ1W5KmlPxSkWyyeLfx/sOGMK/w+pA1XbIWdt/Gx+7sAKeW5WAUSSeHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkKzjcP/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A65C116B1;
-	Tue, 23 Apr 2024 21:43:10 +0000 (UTC)
+	 MIME-Version; b=AerN4kDZW1KmkXpAPbGurstFx0OeMzJ/4RadaE0RYIItobFS2qgeczgNvwxmjTnygn36Uz0//kLtmeoZ1Nm+BUOqAtWE4T6fP0NUduS8Kgs0tMWQKgVhIivHqSucyRpWD7e0HknxHLG2jOofPajcTkl7WeWLc5gwuCwTsbIsSPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccc29tpv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44536C32786;
+	Tue, 23 Apr 2024 21:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908590;
-	bh=0EBA2RYi756TiFfMHYMGVCsqMQcC64MMKfM4J8ktKas=;
+	s=korg; t=1713908473;
+	bh=rrn0EynlITCI61fgoy+rqfYIITsKr4Tfj6zcyo1Jtyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkKzjcP/5EhPjwXTlf9cYEYH9tsfm2dHaQiQt0sb4A17nbTYijWz0pYieomG/K4oP
-	 eT2Z/aQA2mrXcAJwzdmLrMmtySbGFLeyuFrIXLeprMrnSRqANc8UsS7i4E6tFwWOQ7
-	 N0Rpv9S3QpIOtxSPt/inC8ECWzYBFdQEfyGV3aL0=
+	b=ccc29tpvVfVKzucPBkFuQJU7DZGq5SqbuUhL57htvOn8XoE5AqSGh7eknXS7Pl6gK
+	 DNuRqbN2von+ohQaVTgRaXwPf9bbblVzag4wIi4lBjuvORAfK91FES9j+tkGfAc9TJ
+	 5DVj6w0NquJSdr3Bb26WY4qWSio+ulXLW7DCUG20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 025/158] SUNRPC: Fix rpcgss_context trace event acceptor field
+	Lei Chen <lei.chen@smartx.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 040/158] tun: limit printing rate when illegal packet received by tun dev
 Date: Tue, 23 Apr 2024 14:37:42 -0700
-Message-ID: <20240423213856.558697811@linuxfoundation.org>
+Message-ID: <20240423213857.213850685@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +66,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Lei Chen <lei.chen@smartx.com>
 
-commit a4833e3abae132d613ce7da0e0c9a9465d1681fa upstream.
+[ Upstream commit f8bbc07ac535593139c875ffa19af924b1084540 ]
 
-The rpcgss_context trace event acceptor field is a dynamically sized
-string that records the "data" parameter. But this parameter is also
-dependent on the "len" field to determine the size of the data.
+vhost_worker will call tun call backs to receive packets. If too many
+illegal packets arrives, tun_do_read will keep dumping packet contents.
+When console is enabled, it will costs much more cpu time to dump
+packet and soft lockup will be detected.
 
-It needs to use __string_len() helper macro where the length can be passed
-in. It also incorrectly uses strncpy() to save it instead of
-__assign_str(). As these macros can change, it is not wise to open code
-them in trace events.
+net_ratelimit mechanism can be used to limit the dumping rate.
 
-As of commit c759e609030c ("tracing: Remove __assign_str_len()"),
-__assign_str() can be used for both __string() and __string_len() fields.
-Before that commit, __assign_str_len() is required to be used. This needs
-to be noted for backporting. (In actuality, commit c1fa617caeb0 ("tracing:
-Rework __assign_str() and __string() to not duplicate getting the string")
-is the commit that makes __string_str_len() obsolete).
+PID: 33036    TASK: ffff949da6f20000  CPU: 23   COMMAND: "vhost-32980"
+ #0 [fffffe00003fce50] crash_nmi_callback at ffffffff89249253
+ #1 [fffffe00003fce58] nmi_handle at ffffffff89225fa3
+ #2 [fffffe00003fceb0] default_do_nmi at ffffffff8922642e
+ #3 [fffffe00003fced0] do_nmi at ffffffff8922660d
+ #4 [fffffe00003fcef0] end_repeat_nmi at ffffffff89c01663
+    [exception RIP: io_serial_in+20]
+    RIP: ffffffff89792594  RSP: ffffa655314979e8  RFLAGS: 00000002
+    RAX: ffffffff89792500  RBX: ffffffff8af428a0  RCX: 0000000000000000
+    RDX: 00000000000003fd  RSI: 0000000000000005  RDI: ffffffff8af428a0
+    RBP: 0000000000002710   R8: 0000000000000004   R9: 000000000000000f
+    R10: 0000000000000000  R11: ffffffff8acbf64f  R12: 0000000000000020
+    R13: ffffffff8acbf698  R14: 0000000000000058  R15: 0000000000000000
+    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+ #5 [ffffa655314979e8] io_serial_in at ffffffff89792594
+ #6 [ffffa655314979e8] wait_for_xmitr at ffffffff89793470
+ #7 [ffffa65531497a08] serial8250_console_putchar at ffffffff897934f6
+ #8 [ffffa65531497a20] uart_console_write at ffffffff8978b605
+ #9 [ffffa65531497a48] serial8250_console_write at ffffffff89796558
+ #10 [ffffa65531497ac8] console_unlock at ffffffff89316124
+ #11 [ffffa65531497b10] vprintk_emit at ffffffff89317c07
+ #12 [ffffa65531497b68] printk at ffffffff89318306
+ #13 [ffffa65531497bc8] print_hex_dump at ffffffff89650765
+ #14 [ffffa65531497ca8] tun_do_read at ffffffffc0b06c27 [tun]
+ #15 [ffffa65531497d38] tun_recvmsg at ffffffffc0b06e34 [tun]
+ #16 [ffffa65531497d68] handle_rx at ffffffffc0c5d682 [vhost_net]
+ #17 [ffffa65531497ed0] vhost_worker at ffffffffc0c644dc [vhost]
+ #18 [ffffa65531497f10] kthread at ffffffff892d2e72
+ #19 [ffffa65531497f50] ret_from_fork at ffffffff89c0022f
 
-Cc: stable@vger.kernel.org
-Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ef3db4a59542 ("tun: avoid BUG, dump packet on GSO errors")
+Signed-off-by: Lei Chen <lei.chen@smartx.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://lore.kernel.org/r/20240415020247.2207781-1-lei.chen@smartx.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/rpcgss.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/tun.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
---- a/include/trace/events/rpcgss.h
-+++ b/include/trace/events/rpcgss.h
-@@ -609,7 +609,7 @@ TRACE_EVENT(rpcgss_context,
- 		__field(unsigned int, timeout)
- 		__field(u32, window_size)
- 		__field(int, len)
--		__string(acceptor, data)
-+		__string_len(acceptor, data, len)
- 	),
- 
- 	TP_fast_assign(
-@@ -618,7 +618,7 @@ TRACE_EVENT(rpcgss_context,
- 		__entry->timeout = timeout;
- 		__entry->window_size = window_size;
- 		__entry->len = len;
--		strncpy(__get_str(acceptor), data, len);
-+		__assign_str(acceptor, data);
- 	),
- 
- 	TP_printk("win_size=%u expiry=%lu now=%lu timeout=%u acceptor=%.*s",
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 8f95a562b8d0c..86515f0c2b6c1 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -2132,14 +2132,16 @@ static ssize_t tun_put_user(struct tun_struct *tun,
+ 					    tun_is_little_endian(tun), true,
+ 					    vlan_hlen)) {
+ 			struct skb_shared_info *sinfo = skb_shinfo(skb);
+-			pr_err("unexpected GSO type: "
+-			       "0x%x, gso_size %d, hdr_len %d\n",
+-			       sinfo->gso_type, tun16_to_cpu(tun, gso.gso_size),
+-			       tun16_to_cpu(tun, gso.hdr_len));
+-			print_hex_dump(KERN_ERR, "tun: ",
+-				       DUMP_PREFIX_NONE,
+-				       16, 1, skb->head,
+-				       min((int)tun16_to_cpu(tun, gso.hdr_len), 64), true);
++
++			if (net_ratelimit()) {
++				netdev_err(tun->dev, "unexpected GSO type: 0x%x, gso_size %d, hdr_len %d\n",
++					   sinfo->gso_type, tun16_to_cpu(tun, gso.gso_size),
++					   tun16_to_cpu(tun, gso.hdr_len));
++				print_hex_dump(KERN_ERR, "tun: ",
++					       DUMP_PREFIX_NONE,
++					       16, 1, skb->head,
++					       min((int)tun16_to_cpu(tun, gso.hdr_len), 64), true);
++			}
+ 			WARN_ON_ONCE(1);
+ 			return -EINVAL;
+ 		}
+-- 
+2.43.0
+
 
 
 
