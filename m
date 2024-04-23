@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-40982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A9F8AF9DD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9638AF945
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02AEA28C933
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01C851F218D0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665B714430E;
-	Tue, 23 Apr 2024 21:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25330144304;
+	Tue, 23 Apr 2024 21:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESTZ0TDZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWXNVZaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25982143889;
-	Tue, 23 Apr 2024 21:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D839414388D;
+	Tue, 23 Apr 2024 21:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908597; cv=none; b=LmNuBsBcoEk8jXkQPDuMkWhj0bjo5nuocaTGwAUBZwgT0gLlzvQNj9GCMgZsTg5EABeqAL2WQQXCv0RPMVLG5rnROIe292FR3IW3UCTb+nLq+DyaIXt5cG84rLaL7tkoRnjAZr8rutNB0PU5k4ZjjdZupcvvKiPc3+i0SPsV8Rw=
+	t=1713908497; cv=none; b=a7Ae++VCw9pBib0hqSDjduLW8BY3W8gZAAZUN7HPToFsyfkRBLDEAj04ORhdV+XyRPSAEF4v2wnj6mfqNJ+X1L4y6Yjh4lEPazpoRDx+I7dSmpwSJ9oMza/eA24RM0aMBXDHAKFRu3Y03+NzZYBlbS2GbGm1RhDmEZh8dYw3pk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908597; c=relaxed/simple;
-	bh=aK1pxSY6eU+PY+j6QJnj+Wk6MviXlRqwtoiMo/+O/Cs=;
+	s=arc-20240116; t=1713908497; c=relaxed/simple;
+	bh=zgbrH9Yo/IgRaUCcyqlOAOlQ+TMCACupaOb6ApxkDQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRQVCimwLfEF1JL0NFYF6+uk8sBKLc6V2nU7pyka652+prK4Xbj7RIbJD4S7MCo9qyoU68AZYImGPVGRxaiMVrTzeD0glz4V1HDrw+Jm4S6+KFgcapk9UbDAMNkevEUYtPm9JWaAxmgaqYdZW4UbQXOSkEo9Iztir4GJ5qZ8Tzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESTZ0TDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDEBC3277B;
-	Tue, 23 Apr 2024 21:43:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q+2Rsh9sMp4UtKoeaVDvwRc+z0WQl+WviL+dFnkmvZP8VAarlGD52Ua6ZbR8EtqpJpfrDuoXeX7lcBPRzmLBFnJ4SIw5VifaZTtpT09BriN6bQ3TDjsunqXIsm/f4r8yNFRHmJN3JKIZTRUGVZk6yfiMKNF7ur4BGRcbeXiEzK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWXNVZaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96C7C32783;
+	Tue, 23 Apr 2024 21:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908597;
-	bh=aK1pxSY6eU+PY+j6QJnj+Wk6MviXlRqwtoiMo/+O/Cs=;
+	s=korg; t=1713908497;
+	bh=zgbrH9Yo/IgRaUCcyqlOAOlQ+TMCACupaOb6ApxkDQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ESTZ0TDZbkm/8kYGxGeVfHZi8esgh9it6ENEcyQ9JG9MUlzFQTetpCGytjQvTkCo3
-	 O+OQ4lhoxAqoqgnoPjXh81e52ObBltPVs6kLEqXnJiSl8ROJvSNWmApC0oPJ4V+Vl7
-	 bYNS8tictMsX/XnbIOzgGCVvkgaC8s4pxUXMrCq0=
+	b=jWXNVZaANBTQx+1UqrYF4IXmmjWvg/k4SWgCcdNiY0z6HtTHJs14SjgAGt0qxtKXG
+	 u/ut7Z6VBnQsRQWZvQDMdQoHAiG+7zdFy3OatVZ8EXIK8yuZzM+fMB421fB5NbFhIe
+	 NJT3tg5owzOSBssMCub9PT+RpTjwshTwaJvLf5Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
-	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/158] RDMA/rxe: Fix the problem "mutex_destroy missing"
+Subject: [PATCH 6.8 075/158] platform/x86/amd/pmc: Extend Framework 13 quirk to more BIOSes
 Date: Tue, 23 Apr 2024 14:38:17 -0700
-Message-ID: <20240423213857.727781334@linuxfoundation.org>
+Message-ID: <20240423213858.392416386@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanjun.Zhu <yanjun.zhu@linux.dev>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 481047d7e8391d3842ae59025806531cdad710d9 ]
+[ Upstream commit f609e7b1b49e4d15cf107d2069673ee63860c398 ]
 
-When a mutex lock is not used any more, the function mutex_destroy
-should be called to mark the mutex lock uninitialized.
+BIOS 03.05 still hasn't fixed the spurious IRQ1 issue.  As it's still
+being worked on there is still a possibility that it won't need to
+apply to future BIOS releases.
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Yanjun.Zhu <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240314065140.27468-1-yanjun.zhu@linux.dev
-Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Add a quirk for BIOS 03.05 as well.
+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240410141046.433-1-mario.limonciello@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
-index 54c723a6eddac..6f9ec8db014c7 100644
---- a/drivers/infiniband/sw/rxe/rxe.c
-+++ b/drivers/infiniband/sw/rxe/rxe.c
-@@ -33,6 +33,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index b456370166b6b..b4f49720c87f6 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -208,6 +208,15 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_BIOS_VERSION, "03.03"),
+ 		}
+ 	},
++	{
++		.ident = "Framework Laptop 13 (Phoenix)",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Laptop 13 (AMD Ryzen 7040Series)"),
++			DMI_MATCH(DMI_BIOS_VERSION, "03.05"),
++		}
++	},
+ 	{}
+ };
  
- 	if (rxe->tfm)
- 		crypto_free_shash(rxe->tfm);
-+
-+	mutex_destroy(&rxe->usdev_lock);
- }
- 
- /* initialize rxe device parameters */
 -- 
 2.43.0
 
