@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461EB8AFA98
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5948AFB1F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF974B2B947
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 950DEB2CDAD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9901494A9;
-	Tue, 23 Apr 2024 21:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0ED014B090;
+	Tue, 23 Apr 2024 21:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6OwBsVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwzxgRv4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1E8146017;
-	Tue, 23 Apr 2024 21:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6168B14B084;
+	Tue, 23 Apr 2024 21:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908662; cv=none; b=Yo7J0GVVEfcKKCTUe5rqmrTGAv9eMti/jMNH7ufDu+lcFAkLqzSXcoXY1y/kb44tPyIa+dWuHFU9/+TNOUnoypsO1p7axJlqh7HlYJnZt3eKbZ107uKK60Ex/X/bg1Phnt7jeaWL7EYrmOS8nhJ9VIJRvf8IBYp+sXC9mveKfxI=
+	t=1713908787; cv=none; b=BXRmhCizWh3Xs2TSsADteStKB2cqhBxi0iU8JwDsbmVzy+83YaTi5UcOjHd3RPdk7odmKrx4VaXAJ2qZ1beaHyx7eZWD9x6fp3uf3tTpDiB/t98PkAb1LUQhxaUBxhX+he8qbp+k/UvBl56en32pkJHbNzDSThbx2S44FiETuO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908662; c=relaxed/simple;
-	bh=XwiW8XqxeoyZy0GU5vosztLuZMTJjAAPTnISdS4vkpQ=;
+	s=arc-20240116; t=1713908787; c=relaxed/simple;
+	bh=CuI14ZbFfttVQ6aYEZUpXYP7W2pK68+WVWTXjJomf5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFnxP1702oY0KlPvkouawuSBsKtvE1HSDs5/Ujr56K2B5gaQVVULQEFQ+9XXv3C9WPL/gjI+elgAkZPP1q4jLOqB04AG3Si2/Qtd1gF/jOEZ6qN8JBXyB3FN4UdjoXTOKFKdchbxi4wj6G56wvrX5XVfy6niQqDfWkP8iXoPXg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6OwBsVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6873C116B1;
-	Tue, 23 Apr 2024 21:44:21 +0000 (UTC)
+	 MIME-Version; b=lAAUq36MGEdW01U5aaOkAbpGfNeFEjbPgFJNOCOye7Ie0Udm7IX0UFubXN3Ohih/sqn6K5eZdHoLaVGao7llg9hnBtMV3wRqCCzwPsi/92PvAwGAnAsSWws1Dr6N3Pjjw5f5ItAxzyw2cG4Lhd1985q0ibT5gYVtPmBkl0MQbUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwzxgRv4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E13FC32782;
+	Tue, 23 Apr 2024 21:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908661;
-	bh=XwiW8XqxeoyZy0GU5vosztLuZMTJjAAPTnISdS4vkpQ=;
+	s=korg; t=1713908787;
+	bh=CuI14ZbFfttVQ6aYEZUpXYP7W2pK68+WVWTXjJomf5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V6OwBsVk+pdKHgMSAjWDZTog8sb24qo76w6tqsKZFhZLf8RO2JSWtvEnwykhZtQlq
-	 LM90H58NnKexPH4x2nRZ1qIxyVEcNrp1pIRBF4BuDy3x0cxGwoGodt1/1vbQQ8ZNZQ
-	 bNHLZe3tSKDPb2CkpqDFEh7CendwZ8zr7diID0xs=
+	b=NwzxgRv4CVcKXtbyWOII9vWLJZhRwj5GUO8A5qBTeL4Ya1NfFlMHeIuJmO//Ttpj0
+	 wpplKidP4Ba0p025+m1eTB2TAolC+K/eS5S3X26h+BCnK2hbWQv+hNpeW+wQR4/ppL
+	 /CcGz/gNsls6yVoQz77HlQSQ436cIL98Z1kk/0mU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 154/158] ksmbd: fix slab-out-of-bounds in smb2_allocate_rsp_buf
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 38/71] clk: Initialize struct clk_core kref earlier
 Date: Tue, 23 Apr 2024 14:39:51 -0700
-Message-ID: <20240423213900.674335281@linuxfoundation.org>
+Message-ID: <20240423213845.458551397@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Stephen Boyd <sboyd@kernel.org>
 
-commit c119f4ede3fa90a9463f50831761c28f989bfb20 upstream.
+[ Upstream commit 9d05ae531c2cff20d5d527f04e28d28e04379929 ]
 
-If ->ProtocolId is SMB2_TRANSFORM_PROTO_NUM, smb2 request size
-validation could be skipped. if request size is smaller than
-sizeof(struct smb2_query_info_req), slab-out-of-bounds read can happen in
-smb2_allocate_rsp_buf(). This patch allocate response buffer after
-decrypting transform request. smb3_decrypt_req() will validate transform
-request size and avoid slab-out-of-bound in smb2_allocate_rsp_buf().
+Initialize this kref once we allocate memory for the struct clk_core so
+that we can reuse the release function to free any memory associated
+with the structure. This mostly consolidates code, but also clarifies
+that the kref lifetime exists once the container structure (struct
+clk_core) is allocated instead of leaving it in a half-baked state for
+most of __clk_core_init().
 
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240325184204.745706-4-sboyd@kernel.org
+Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/server.c |   13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/clk/clk.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -167,20 +167,17 @@ static void __handle_ksmbd_work(struct k
- 	int rc;
- 	bool is_chained = false;
- 
--	if (conn->ops->allocate_rsp_buf(work))
--		return;
--
- 	if (conn->ops->is_transform_hdr &&
- 	    conn->ops->is_transform_hdr(work->request_buf)) {
- 		rc = conn->ops->decrypt_req(work);
--		if (rc < 0) {
--			conn->ops->set_rsp_status(work, STATUS_DATA_ERROR);
--			goto send;
--		}
--
-+		if (rc < 0)
-+			return;
- 		work->encrypted = true;
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index de1235d7b659a..5cbc42882dce4 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -3654,8 +3654,6 @@ static int __clk_core_init(struct clk_core *core)
  	}
  
-+	if (conn->ops->allocate_rsp_buf(work))
-+		return;
+ 	clk_core_reparent_orphans_nolock();
+-
+-	kref_init(&core->ref);
+ out:
+ 	clk_pm_runtime_put(core);
+ unlock:
+@@ -3884,6 +3882,16 @@ static void clk_core_free_parent_map(struct clk_core *core)
+ 	kfree(core->parents);
+ }
+ 
++/* Free memory allocated for a struct clk_core */
++static void __clk_release(struct kref *ref)
++{
++	struct clk_core *core = container_of(ref, struct clk_core, ref);
 +
- 	rc = conn->ops->init_rsp_hdr(work);
- 	if (rc) {
- 		/* either uid or tid is not correct */
++	clk_core_free_parent_map(core);
++	kfree_const(core->name);
++	kfree(core);
++}
++
+ static struct clk *
+ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
+ {
+@@ -3904,6 +3912,8 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
+ 		goto fail_out;
+ 	}
+ 
++	kref_init(&core->ref);
++
+ 	core->name = kstrdup_const(init->name, GFP_KERNEL);
+ 	if (!core->name) {
+ 		ret = -ENOMEM;
+@@ -3958,12 +3968,10 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
+ 	hw->clk = NULL;
+ 
+ fail_create_clk:
+-	clk_core_free_parent_map(core);
+ fail_parents:
+ fail_ops:
+-	kfree_const(core->name);
+ fail_name:
+-	kfree(core);
++	kref_put(&core->ref, __clk_release);
+ fail_out:
+ 	return ERR_PTR(ret);
+ }
+@@ -4043,16 +4051,6 @@ int of_clk_hw_register(struct device_node *node, struct clk_hw *hw)
+ }
+ EXPORT_SYMBOL_GPL(of_clk_hw_register);
+ 
+-/* Free memory allocated for a clock. */
+-static void __clk_release(struct kref *ref)
+-{
+-	struct clk_core *core = container_of(ref, struct clk_core, ref);
+-
+-	clk_core_free_parent_map(core);
+-	kfree_const(core->name);
+-	kfree(core);
+-}
+-
+ /*
+  * Empty clk_ops for unregistered clocks. These are used temporarily
+  * after clk_unregister() was called on a clock and until last clock
+-- 
+2.43.0
+
 
 
 
