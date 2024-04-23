@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-40861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051318AF95B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2888AFA8B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9622A1F252BE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0617E1F296DC
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A818143C60;
-	Tue, 23 Apr 2024 21:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9E1149E0C;
+	Tue, 23 Apr 2024 21:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVOJoUOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usLd1/dz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED15214388F;
-	Tue, 23 Apr 2024 21:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB77143C49;
+	Tue, 23 Apr 2024 21:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908513; cv=none; b=lzE48oJOrk9ufWSfDQrgLdnFEZE3B15NXipY8qWKJEqgl6zpXwioBiirwCPbbRdt1ZMU7b5Zt38mbsqcsDowcmTCF1xJ2rHKDhL/2pwWOWmeilyfm2ug1shZGXUX7l1ji/HxvbA8oAese+kyT/9v3Fykoai2AilDDtlet5BAk4E=
+	t=1713908719; cv=none; b=Lmy0JsAKuLEhnbcI4LXUieeOKEVgOXqUz4spj0FOnl/uVyU+eOBkthGyxfMjywZj2IaudPV/2HWdN5Jt/t77nA9xpuxPWngZtoZS1ndQt8hAx2RS/oAmT4jKz4veEGQ8q0KN94s7vkscIE9MQov8Z2hbAbMYyojfTyySLRIG2VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908513; c=relaxed/simple;
-	bh=Ax5zhEh6PVBl34KIaMMrgHOLdegsdxENFIZndI/EBQ8=;
+	s=arc-20240116; t=1713908719; c=relaxed/simple;
+	bh=xg/1xsyN5ZDLG+RvuH39zvxDhs6y3o6nuYrswLd6B+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5bqG0Qphqoun9FXjapRDc761MaLa1USDuP6tYlz6lFNS8OAADWm5zBb1nLxb1gK1sff+Y0HaoiB0zJKpdfseaIbFaTl25japEBitrvRhsebKPMUdFJ52O56JDq0q6xe5FflttIq7L6sJpMl4FtBou3BWYqKJ0rvsAdRchpj26o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVOJoUOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D4BC3277B;
-	Tue, 23 Apr 2024 21:41:52 +0000 (UTC)
+	 MIME-Version; b=Ba88TW+IfqPbGu0TBSpvKFM1BmFvvDH4SrzqyjzcXlqm1En7uqO/gQaz5YUmxuZVT5D4cZfzM9QkhwY9p7tvuEJklm5YgDJYCmGUFByS8A54APce4+dswGwiZVMziCZQWjbQWmgMoc2EBH+6ye746Lkjz6m/E3l8nYckNOt7tP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usLd1/dz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF5DC116B1;
+	Tue, 23 Apr 2024 21:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908512;
-	bh=Ax5zhEh6PVBl34KIaMMrgHOLdegsdxENFIZndI/EBQ8=;
+	s=korg; t=1713908719;
+	bh=xg/1xsyN5ZDLG+RvuH39zvxDhs6y3o6nuYrswLd6B+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UVOJoUObgziPIg3spXt5voEIV9y9E0ziu0ueAgvcjDmSONqtQBMbI7ozeMD0Ga4Ky
-	 dZY9LwKbp65sxlOV5NN/O5o+JTsavIHam2gAhRyLxCwzoFphI4JrI6wDbBuUgeCxO4
-	 S0M6XcVjCP4sqo3TNoKcrWorGm1X3XN671LkdwMU=
+	b=usLd1/dzzVMJG9WLfDiDVP70ntOXt7p5ltlIPdu7WSpclEiCn+P87ni+qJcggrFM5
+	 +IdSYzelHxDFZCCyCxDcB5IzHR44daNNnxHs2MXL0CbG3x8VguyRWsTY9zlJ9/oL0w
+	 ExmLOd5t5nZX5E+hwFVzk6ejWb3qvpooVQHRgdT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gil Fine <gil.fine@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.8 098/158] thunderbolt: Fix wake configurations after device unplug
-Date: Tue, 23 Apr 2024 14:38:40 -0700
-Message-ID: <20240423213859.134210488@linuxfoundation.org>
+	Mikhail Kobuk <m.kobuk@ispras.ru>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 053/141] drm: nv04: Fix out of bounds access
+Date: Tue, 23 Apr 2024 14:38:41 -0700
+Message-ID: <20240423213854.976357458@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Fine <gil.fine@linux.intel.com>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-commit c38fa07dc69f0b9e6f43ecab96dc7861a70c827c upstream.
+[ Upstream commit cf92bb778eda7830e79452c6917efa8474a30c1e ]
 
-Currently we don't configure correctly the wake events after unplug of device
-router. What can happen is that the downstream ports of host router will be
-configured to wake on: USB4-wake and wake-on-disconnect, but not on
-wake-on-connect. This may cause the later plugged device not to wake the
-domain and fail in enumeration. Fix this by clearing downstream port's "USB4
-Port is Configured" bit, after unplug of a device router.
+When Output Resource (dcb->or) value is assigned in
+fabricate_dcb_output(), there may be out of bounds access to
+dac_users array in case dcb->or is zero because ffs(dcb->or) is
+used as index there.
+The 'or' argument of fabricate_dcb_output() must be interpreted as a
+number of bit to set, not value.
 
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Utilize macros from 'enum nouveau_or' in calls instead of hardcoding.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2e5702aff395 ("drm/nouveau: fabricate DCB encoder table for iMac G4")
+Fixes: 670820c0e6a9 ("drm/nouveau: Workaround incorrect DCB entry on a GeForce3 Ti 200.")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240411110854.16701-1-m.kobuk@ispras.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/switch.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_bios.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -3180,22 +3180,29 @@ void tb_switch_unconfigure_link(struct t
- {
- 	struct tb_port *up, *down;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_bios.c b/drivers/gpu/drm/nouveau/nouveau_bios.c
+index 189903b65edc9..48cf593383b34 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_bios.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
+@@ -23,6 +23,7 @@
+  */
  
--	if (sw->is_unplugged)
--		return;
- 	if (!tb_route(sw) || tb_switch_is_icm(sw))
+ #include "nouveau_drv.h"
++#include "nouveau_bios.h"
+ #include "nouveau_reg.h"
+ #include "dispnv04/hw.h"
+ #include "nouveau_encoder.h"
+@@ -1675,7 +1676,7 @@ apply_dcb_encoder_quirks(struct drm_device *dev, int idx, u32 *conn, u32 *conf)
+ 	 */
+ 	if (nv_match_device(dev, 0x0201, 0x1462, 0x8851)) {
+ 		if (*conn == 0xf2005014 && *conf == 0xffffffff) {
+-			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, 1);
++			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, DCB_OUTPUT_B);
+ 			return false;
+ 		}
+ 	}
+@@ -1761,26 +1762,26 @@ fabricate_dcb_encoder_table(struct drm_device *dev, struct nvbios *bios)
+ #ifdef __powerpc__
+ 	/* Apple iMac G4 NV17 */
+ 	if (of_machine_is_compatible("PowerMac4,5")) {
+-		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, 1);
+-		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, 2);
++		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, DCB_OUTPUT_B);
++		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, DCB_OUTPUT_C);
  		return;
+ 	}
+ #endif
  
-+	/*
-+	 * Unconfigure downstream port so that wake-on-connect can be
-+	 * configured after router unplug. No need to unconfigure upstream port
-+	 * since its router is unplugged.
-+	 */
- 	up = tb_upstream_port(sw);
--	if (tb_switch_is_usb4(up->sw))
--		usb4_port_unconfigure(up);
--	else
--		tb_lc_unconfigure_port(up);
--
- 	down = up->remote;
- 	if (tb_switch_is_usb4(down->sw))
- 		usb4_port_unconfigure(down);
- 	else
- 		tb_lc_unconfigure_port(down);
-+
-+	if (sw->is_unplugged)
-+		return;
-+
-+	up = tb_upstream_port(sw);
-+	if (tb_switch_is_usb4(up->sw))
-+		usb4_port_unconfigure(up);
-+	else
-+		tb_lc_unconfigure_port(up);
+ 	/* Make up some sane defaults */
+ 	fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG,
+-			     bios->legacy.i2c_indices.crt, 1, 1);
++			     bios->legacy.i2c_indices.crt, 1, DCB_OUTPUT_B);
+ 
+ 	if (nv04_tv_identify(dev, bios->legacy.i2c_indices.tv) >= 0)
+ 		fabricate_dcb_output(dcb, DCB_OUTPUT_TV,
+ 				     bios->legacy.i2c_indices.tv,
+-				     all_heads, 0);
++				     all_heads, DCB_OUTPUT_A);
+ 
+ 	else if (bios->tmds.output0_script_ptr ||
+ 		 bios->tmds.output1_script_ptr)
+ 		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS,
+ 				     bios->legacy.i2c_indices.panel,
+-				     all_heads, 1);
++				     all_heads, DCB_OUTPUT_B);
  }
  
- static void tb_switch_credits_init(struct tb_switch *sw)
+ static int
+-- 
+2.43.0
+
 
 
 
