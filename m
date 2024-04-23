@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF958AFAB5
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C748AFAA5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 692FCB2B60E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E7CE1F2976F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BDC14900B;
-	Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6981E1482FD;
+	Tue, 23 Apr 2024 21:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvgBYoYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDp18Wam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B6214389F;
-	Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25694145B05;
+	Tue, 23 Apr 2024 21:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908648; cv=none; b=NmSBdfpeg1R4Q4QG9rvyYxOvSJ8C790zmgHBXZgKNHXiH+Yi3+qXbb6mXkERdT2e8DxT8ayyNePmgwlk9wBUkQx4F/oliG4BaZ/qULx87xLHgmhCRk4LKWG2OW9NQssklLtdm+tqZ+RsIXDvUZgpNBDS7o43kaXzHMKIAEhWLUk=
+	t=1713908741; cv=none; b=jtBdZ2S8Fp1x80B5pK/RnVbgTuegXWcPCCeWJOerUts2ioWpxpml9qJZRQglZwb2uNcWfLl8BtfIIv69iZVJK7C4IzfiAOfaWvdwOuLTyed2ZQvnIg4gDAXSQLTt/vCTh7/D3oDeC6SJC7/Dz7FAION6Kniu/EgTedmSmW/513k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908648; c=relaxed/simple;
-	bh=Ir7FPIXFTq1wkjoyNyKVlxvy0Ojx2hZj3QUOM/KZgVI=;
+	s=arc-20240116; t=1713908741; c=relaxed/simple;
+	bh=/oC+TQbW4X8vEySm5K0FjAuzL4GA6ksU/acUoGYJI+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oNsF0ZR/3DzGUYjqie5qWEPTFZOoJjk3/anT/WlHy5ngjV6VLrVWJImuliPxwfSGx9z5CVTMqBpxwE4B16hcpzQvpi5eUJE0Azj8Cs19qvAsa/sblHk3Sz2Qh4XfZ1Fgh08WG6rjdHK7yHjId4MR6NNKbI0FUj1l5BGh3m7ugGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvgBYoYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012A2C3277B;
-	Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D31jfAle0CoTitj8p1s8NnFAZ+jI/mc8PB5euNdhQXlveeQtBwnNV5d9yb97EHorV707phkcPXj4W1WDw3HsDYgRIP0AQwO3ZeLc9QF+3uG/1UTaLhB+pq3OtzEYVxgangkpvXNJ4KvYsv3+UXpfPYWH9UFvoeYAyWfFbBZ9gHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDp18Wam; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65DEC3277B;
+	Tue, 23 Apr 2024 21:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908648;
-	bh=Ir7FPIXFTq1wkjoyNyKVlxvy0Ojx2hZj3QUOM/KZgVI=;
+	s=korg; t=1713908741;
+	bh=/oC+TQbW4X8vEySm5K0FjAuzL4GA6ksU/acUoGYJI+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvgBYoYTiWbflhFk+xN5WX4CDLqNdgqwqEwiRZXbybZYTHIcASxnCyLqZLjn7bSLL
-	 UQYkex5M5BMso4hbjS/7ivLjck2MkIDeR+8k5bkYdvCYPCJoNopnmyYvI4mh1wn188
-	 Vpk6U/e/ZWO1DDWbkEo91YCv3ZeKXg3yp3RxdkYc=
+	b=yDp18WamFEQk+w4UVts24Pdq71pmPnNCdH9luhPZWl821ifqxnZOKMrWXVssqoHuA
+	 3achrzVy/Z1J71kY+oawVKm6TPC9XeTkYzXrO7u4kaU3dhjuyWXPw0U7LRzxCb5lD0
+	 RtE1RcTVEUbcItZiwc6c4VVo+LBpHY1oq9wVOYqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gil Fine <gil.fine@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 107/158] thunderbolt: Fix wake configurations after device unplug
-Date: Tue, 23 Apr 2024 14:39:04 -0700
-Message-ID: <20240423213859.230891176@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 077/141] PCI/DPC: Use FIELD_GET()
+Date: Tue, 23 Apr 2024 14:39:05 -0700
+Message-ID: <20240423213855.701061587@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,70 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Fine <gil.fine@linux.intel.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-commit c38fa07dc69f0b9e6f43ecab96dc7861a70c827c upstream.
+[ Upstream commit 9a9eec4765737b9b2a8d6ae03de6480a5f12dd5c ]
 
-Currently we don't configure correctly the wake events after unplug of device
-router. What can happen is that the downstream ports of host router will be
-configured to wake on: USB4-wake and wake-on-disconnect, but not on
-wake-on-connect. This may cause the later plugged device not to wake the
-domain and fail in enumeration. Fix this by clearing downstream port's "USB4
-Port is Configured" bit, after unplug of a device router.
+Use FIELD_GET() to remove dependencies on the field position, i.e., the
+shift value. No functional change intended.
 
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20231018113254.17616-5-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/switch.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/pci/pcie/dpc.c        |    5 +++--
+ drivers/pci/quirks.c          |    2 +-
+ include/uapi/linux/pci_regs.h |    1 +
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -2949,22 +2949,29 @@ void tb_switch_unconfigure_link(struct t
- {
- 	struct tb_port *up, *down;
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -9,6 +9,7 @@
+ #define dev_fmt(fmt) "DPC: " fmt
  
--	if (sw->is_unplugged)
--		return;
- 	if (!tb_route(sw) || tb_switch_is_icm(sw))
+ #include <linux/aer.h>
++#include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <linux/interrupt.h>
+ #include <linux/init.h>
+@@ -203,7 +204,7 @@ static void dpc_process_rp_pio_error(str
+ 
+ 	/* Get First Error Pointer */
+ 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &dpc_status);
+-	first_error = (dpc_status & 0x1f00) >> 8;
++	first_error = FIELD_GET(PCI_EXP_DPC_RP_PIO_FEP, dpc_status);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(rp_pio_error_string); i++) {
+ 		if ((status & ~mask) & (1 << i))
+@@ -339,7 +340,7 @@ void pci_dpc_init(struct pci_dev *pdev)
+ 	/* Quirks may set dpc_rp_log_size if device or firmware is buggy */
+ 	if (!pdev->dpc_rp_log_size) {
+ 		pdev->dpc_rp_log_size =
+-			(cap & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8;
++				FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, cap);
+ 		if (pdev->dpc_rp_log_size < 4 || pdev->dpc_rp_log_size > 9) {
+ 			pci_err(pdev, "RP PIO log size %u is invalid\n",
+ 				pdev->dpc_rp_log_size);
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -6105,7 +6105,7 @@ static void dpc_log_size(struct pci_dev
+ 	if (!(val & PCI_EXP_DPC_CAP_RP_EXT))
  		return;
  
-+	/*
-+	 * Unconfigure downstream port so that wake-on-connect can be
-+	 * configured after router unplug. No need to unconfigure upstream port
-+	 * since its router is unplugged.
-+	 */
- 	up = tb_upstream_port(sw);
--	if (tb_switch_is_usb4(up->sw))
--		usb4_port_unconfigure(up);
--	else
--		tb_lc_unconfigure_port(up);
--
- 	down = up->remote;
- 	if (tb_switch_is_usb4(down->sw))
- 		usb4_port_unconfigure(down);
- 	else
- 		tb_lc_unconfigure_port(down);
-+
-+	if (sw->is_unplugged)
-+		return;
-+
-+	up = tb_upstream_port(sw);
-+	if (tb_switch_is_usb4(up->sw))
-+		usb4_port_unconfigure(up);
-+	else
-+		tb_lc_unconfigure_port(up);
- }
+-	if (!((val & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8)) {
++	if (FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, val) == 0) {
+ 		pci_info(dev, "Overriding RP PIO Log Size to 4\n");
+ 		dev->dpc_rp_log_size = 4;
+ 	}
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -1043,6 +1043,7 @@
+ #define  PCI_EXP_DPC_STATUS_INTERRUPT	    0x0008 /* Interrupt Status */
+ #define  PCI_EXP_DPC_RP_BUSY		    0x0010 /* Root Port Busy */
+ #define  PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT 0x0060 /* Trig Reason Extension */
++#define  PCI_EXP_DPC_RP_PIO_FEP		    0x1f00 /* RP PIO First Err Ptr */
  
- static void tb_switch_credits_init(struct tb_switch *sw)
+ #define PCI_EXP_DPC_SOURCE_ID		 0x0A	/* DPC Source Identifier */
+ 
 
 
 
