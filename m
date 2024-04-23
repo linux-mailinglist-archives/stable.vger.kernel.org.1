@@ -1,133 +1,131 @@
-Return-Path: <stable+bounces-40702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474418AE7A1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:10:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A328AE7A8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:13:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F2C284E46
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:10:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 606B9284DDD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC63D134CC8;
-	Tue, 23 Apr 2024 13:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F95E12C528;
+	Tue, 23 Apr 2024 13:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHy8Ou6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8MzvHEJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8E7131BBD
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB5A745E2
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713877843; cv=none; b=LtRqE/caXECTh9Lx0OdZKzTNfP3pC/a8rMwlbzwX3iEJ35SjrwqeG9Zf0h8TKl/QmB2W4QNhsPgGnvsPPmcT/9dMIs5E6iBCkYghSoBrAh/BbUbYIdPM2G30PpR0Lr5vitOH0pWc9Cerzh/31BtvKy0oxUaz40VnGYsRHCbdTQw=
+	t=1713877985; cv=none; b=DvjzEwk0B41Jmo6aNds6Fi2Pctbf3RGvktN/0ktMHGblV70pLQwVl/K6j3cEEis6yyrvh//ZxNVEl/uC3W522QAkjv1ZLmbE4CDtsiXo4uS7AymaL4wr7Q/EdMPIyWS9CWc/PWGpjMb2p8hLNRf0FoYpH4TCFXrldvj1fL0HZ7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713877843; c=relaxed/simple;
-	bh=o0eOYppfQD97D3jzKQctdp5EM8ijLZgBTaKkGNCH5IU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fqIMhw95Yi8x0IYYknMoMCPs9BqUnbJbppznhYsMrAU5yZYuiIVuYhCy74g+8TUMUXcf/Pj5EUsUmpmnh6fGnXxSOR82KXINLq9OGDfUZyTIlXus1Svby9ROpAI8DrdTK4TJAINR+X159A3GCGzwoMsXLUUNzadj8VAjQEJVM9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHy8Ou6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE19C2BD11;
-	Tue, 23 Apr 2024 13:10:43 +0000 (UTC)
+	s=arc-20240116; t=1713877985; c=relaxed/simple;
+	bh=A85nU+hAtILnpwGFuT2zXNsm9Rw75RbR9kw8ymew0+c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f6tvO74f9vRXcNpRO4TV88dUOvDLaMlMkhEGrzLPMnuPMZqgwXu3PlorPQha4Q8wpry2Eroep/DaDi7I1iwYVzb7xnm1/+bbVog6CaCel+eteIe+JqSkdg2srO+O1RUEPBcISvjymJIvYufpiJ8CPwCiVDzCa4TctZcgfMRhEuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8MzvHEJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8675FC116B1;
+	Tue, 23 Apr 2024 13:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713877843;
-	bh=o0eOYppfQD97D3jzKQctdp5EM8ijLZgBTaKkGNCH5IU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=YHy8Ou6lwsChXX0tr5DTv0FYDaIWvcXe7UFZRI3W6FGVJgKv7DqKNxpX2nbx5loB1
-	 i2jvFb3NJ001xPy62T0nHWWpuqOY4+r7bK2DWuKfh9ivL5DMk7awyHaI9L9r67AYTO
-	 RIlQ+FowN58k1AIv3FWFAcVwqw/rfS9Nwyem1Hs4=
-Subject: FAILED: patch "[PATCH] userfaultfd: change src_folio after ensuring it's unpinned in" failed to apply to 6.8-stable tree
-To: lokeshgidra@google.com,aarcange@redhat.com,akpm@linux-foundation.org,david@redhat.com,kaleshsingh@google.com,ngeoffray@google.com,peterx@redhat.com,stable@vger.kernel.org,willy@infradead.org,zhengqi.arch@bytedance.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 06:10:34 -0700
-Message-ID: <2024042334-agenda-nutlike-cb77@gregkh>
+	s=korg; t=1713877984;
+	bh=A85nU+hAtILnpwGFuT2zXNsm9Rw75RbR9kw8ymew0+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U8MzvHEJTt5aVpHs7aVJrleswqcrHJjgXU6LJYYeEZqwxUTCyY19m3jkqpU5GdXF/
+	 KG/OE3OxIWXuI/Vt1zFwPlWCbsW8okuRDC7N/cX1MIWmw+au4wa0wNAOxkHXSmixEc
+	 d2iwKv4uKmFpoQwMYxqrKQlnTHlXdqim0P9xOHiM=
+Date: Tue, 23 Apr 2024 06:12:55 -0700
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Cc: stable@vger.kernel.org, Chen Jiahao <chenjiahao16@huawei.com>,
+	Baoquan He <bhe@redhat.com>
+Subject: Re: [PATCH] Revert "riscv: kdump: fix crashkernel reserving problem
+ on RISC-V"
+Message-ID: <2024042318-muppet-snippet-617c@gregkh>
+References: <20240416085647.14376-1-xingmingzheng@iscas.ac.cn>
+ <2024041927-remedial-choking-c548@gregkh>
+ <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
+ <2024041939-isotope-client-3d75@gregkh>
+ <a5493f44-2aac-4005-992b-f2ac90cd1835@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a5493f44-2aac-4005-992b-f2ac90cd1835@iscas.ac.cn>
 
+On Fri, Apr 19, 2024 at 10:55:44PM +0800, Mingzheng Xing wrote:
+> On 4/19/24 21:58, Greg Kroah-Hartman wrote:
+> > On Fri, Apr 19, 2024 at 08:26:07PM +0800, Mingzheng Xing wrote:
+> >> On 4/19/24 18:44, Greg Kroah-Hartman wrote:
+> >>> On Tue, Apr 16, 2024 at 04:56:47PM +0800, Mingzheng Xing wrote:
+> >>>> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which has been
+> >>>> merged into the mainline commit 39365395046f ("riscv: kdump: use generic
+> >>>> interface to simplify crashkernel reservation"), but the latter's series of
+> >>>> patches are not included in the 6.6 branch.
+> >>>>
+> >>>> This will result in the loss of Crash kernel data in /proc/iomem, and kdump
+> >>>> loading the kernel will also cause an error:
+> >>>>
+> >>>> ```
+> >>>> Memory for crashkernel is not reserved
+> >>>> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
+> >>>> Then try to loading kdump kernel
+> >>>> ```
+> >>>>
+> >>>> After revert this patch, verify that it works properly on QEMU riscv.
+> >>>>
+> >>>> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv
+> >>>> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+> >>>> ---
+> >>>
+> >>> I do not understand, what branch is this for?  Why have you not cc:ed
+> >>> any of the original developers here?  Why does Linus's tree not have the
+> >>> same problem?  And the first sentence above does not make much sense as
+> >>> a 6.6 change is merged into 6.7?
+> >>
+> >> Sorry, I'll try to explain it more clearly.
+> >>
+> >> This commit 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem
+> >> on RISC-V") should not have existed because this patch has been merged into
+> >> another larger patch [1]. Here is that complete series:
+> > 
+> > What "larger patch"?  It is in Linus's tree, so it's not part of
+> > something different, right?  I'm confused.
+> > 
+> 
+> Hi, Greg
+> 
+> The email Cc:ed to author Chen Jiahao was bounced by the system, so maybe
+> we can wait for Baoquan He to confirm.
+> 
+> This is indeed a bit confusing. The Fixes: tag in 1d6cd2146c2b58 is a false
+> reference. If I understand correctly, this is similar to the following
+> scenario:
+> 
+> A Fixes B, B doesn't go into linus mainline. C contains A, C goes into linus
+> mainline 6.7, and C has more reconstruction code. but A goes into 6.6, so
+> it doesn't make sense for A to be in the mainline, and there's no C in 6.6
+> but there's an A, thus resulting in an incomplete code that creates an error.
+> 
+> The link I quoted [1] shows that Baoquan had expressed an opinion on this
+> at the time.
+> 
+> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
 
-The patch below does not apply to the 6.8-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I'm sorry, but I still do not understand what I need to do here for a
+stable branch.  Do I need to apply something?  Revert something?
+Something else?
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
-git checkout FETCH_HEAD
-git cherry-pick -x c0205eaf3af9f5db14d4b5ee4abacf4a583c3c50
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042334-agenda-nutlike-cb77@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
-
-Possible dependencies:
-
-c0205eaf3af9 ("userfaultfd: change src_folio after ensuring it's unpinned in UFFDIO_MOVE")
-eb1521dad8f3 ("userfaultfd: handle zeropage moves by UFFDIO_MOVE")
-
-thanks,
+confused,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c0205eaf3af9f5db14d4b5ee4abacf4a583c3c50 Mon Sep 17 00:00:00 2001
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Thu, 4 Apr 2024 10:17:26 -0700
-Subject: [PATCH] userfaultfd: change src_folio after ensuring it's unpinned in
- UFFDIO_MOVE
-
-Commit d7a08838ab74 ("mm: userfaultfd: fix unexpected change to src_folio
-when UFFDIO_MOVE fails") moved the src_folio->{mapping, index} changing to
-after clearing the page-table and ensuring that it's not pinned.  This
-avoids failure of swapout+migration and possibly memory corruption.
-
-However, the commit missed fixing it in the huge-page case.
-
-Link: https://lkml.kernel.org/r/20240404171726.2302435-1-lokeshgidra@google.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Nicolas Geoffray <ngeoffray@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9859aa4f7553..89f58c7603b2 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2259,9 +2259,6 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 			goto unlock_ptls;
- 		}
- 
--		folio_move_anon_rmap(src_folio, dst_vma);
--		WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
--
- 		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
- 		/* Folio got pinned from under us. Put it back and fail the move. */
- 		if (folio_maybe_dma_pinned(src_folio)) {
-@@ -2270,6 +2267,9 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 			goto unlock_ptls;
- 		}
- 
-+		folio_move_anon_rmap(src_folio, dst_vma);
-+		WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
-+
- 		_dst_pmd = mk_huge_pmd(&src_folio->page, dst_vma->vm_page_prot);
- 		/* Follow mremap() behavior and treat the entry dirty after the move */
- 		_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
 
 
