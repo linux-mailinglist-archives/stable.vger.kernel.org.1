@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-40899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716AC8AF984
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA768AFA1E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D7AD288C58
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09ED91C22DA9
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6991144D1F;
-	Tue, 23 Apr 2024 21:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB513145322;
+	Tue, 23 Apr 2024 21:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSpb4Knj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3OR2yyd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50F220B3E;
-	Tue, 23 Apr 2024 21:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A60A143888;
+	Tue, 23 Apr 2024 21:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908540; cv=none; b=trZTMg4cjMMwNA4kNqbWihBRiYO5l9xo8sVIOpT4x2MgRaXICHQUwYDkE+amj1J96mr4psFhbUdv5Uy7x8spGXNSy+EyHQfYrGveg2D6bfL89xAa4jSg00bIpw3+4MRreEpIk2CFsOwaqR4trR3V1R1Trtw3MYiKE5b3Yeq+BFY=
+	t=1713908638; cv=none; b=Urf5Vapq4pG+5hYdpz69BX+NiL52WCok3ZNRiD9Uiyfp2tDIHyzQ/tnb/iv54IR8Zpz6vQhnrBYH4cT8R5WvWCmtVE6b53QLgEy3VFDRsImA+H8AHipdQMdGkQcFqfXaJI1EOUGDzhRlR5YHWPJQe4iUDxhzxAYYgjeKEE6PAcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908540; c=relaxed/simple;
-	bh=Y8adk3WgtCqy9su74nP70t3kbl6l3wjCebrmkAF80AI=;
+	s=arc-20240116; t=1713908638; c=relaxed/simple;
+	bh=VJOcPR4rBIO64JskUVpAc4Jh39vboPTZj2w9HQ04vVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiG1YmPmpxTnf+4nKM9tZF66kOHW9JHhLrzSnWicODYI954coDFLi9CF7PF+TjGoeYaD5G+fa8B/38kjlw1zhjE1duJ2+NOErXynDWHw0cVAy/Qxj5I2M0Of0q/xzYhl1Rm4x/hmI8ju364cSIY+JhBzD9c3uWJnHgdp9ThJwB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSpb4Knj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C21C3277B;
-	Tue, 23 Apr 2024 21:42:20 +0000 (UTC)
+	 MIME-Version; b=ajClmIXxekzxUUgwJLugnuydS+s13TCjDolFi0fJjW2k7EGBS57alUmiTY8GyfZ/2GlL5BAEMYz9YJJgOOmNhOOlWnTUkltQ7AovVwB/Qd+oLCKqucYL+07hhgUYU893kBYqbPupFy7RhuqJvrpPTwiqxnICahx+U25jSCF14h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3OR2yyd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDDEC116B1;
+	Tue, 23 Apr 2024 21:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908540;
-	bh=Y8adk3WgtCqy9su74nP70t3kbl6l3wjCebrmkAF80AI=;
+	s=korg; t=1713908638;
+	bh=VJOcPR4rBIO64JskUVpAc4Jh39vboPTZj2w9HQ04vVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KSpb4KnjhXUCoO5KkvUjOUyQF8864oXRltzYwcY81U36/DuKPSzyze6z3USicC8iF
-	 J8ZcNtkaH1wMXgFf5pVmLomEBuzoI4218bRc776cC6ZbxbjzuvLE94jYOkvLjjvV1P
-	 oirTONMblDB13uOQ7aQiBdaeiW9FBimlcaMXPgx8=
+	b=T3OR2yydNczG5+gP73IwybeqReu4MNk0rQa772lEBukBb/W8utD1b2c+dHJDXyLAV
+	 wOEtRMNDqJ6rqm5T3rV8uPTEEBHLCYhNU6kaCiATY/oFttA6L+WeLd83+6gm3Wy7yx
+	 SHSD5LR4RWxDYPmrDs8PFq6FFD7BtfsqQOzoSUXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com,
-	David Hildenbrand <david@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 135/158] mm/userfaultfd: allow hugetlb change protection upon poison entry
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 120/158] USB: serial: option: add Telit FN920C04 rmnet compositions
 Date: Tue, 23 Apr 2024 14:39:17 -0700
-Message-ID: <20240423213900.272242357@linuxfoundation.org>
+Message-ID: <20240423213859.636846105@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-commit c5977c95dff182d6ee06f4d6f60bcb0284912969 upstream.
+commit 582ee2f9d268d302595db3e36b985e5cbb93284d upstream.
 
-After UFFDIO_POISON, there can be two kinds of hugetlb pte markers, either
-the POISON one or UFFD_WP one.
+Add the following Telit FN920C04 compositions:
 
-Allow change protection to run on a poisoned marker just like !hugetlb
-cases, ignoring the marker irrelevant of the permission.
+0x10a0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  5 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Here the two bits are mutual exclusive.  For example, when install a
-poisoned entry it must not be UFFD_WP already (by checking pte_none()
-before such install).  And it also means if UFFD_WP is set there must have
-no POISON bit set.  It makes sense because UFFD_WP is a bit to reflect
-permission, and permissions do not apply if the pte is poisoned and
-destined to sigbus.
+0x10a4: rmnet + tty (AT) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a4 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-So here we simply check uffd_wp bit set first, do nothing otherwise.
+0x10a9: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a9 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Attach the Fixes to UFFDIO_POISON work, as before that it should not be
-possible to have poison entry for hugetlb (e.g., hugetlb doesn't do swap,
-so no chance of swapin errors).
-
-Link: https://lkml.kernel.org/r/20240405231920.1772199-1-peterx@redhat.com
-Link: https://lore.kernel.org/r/000000000000920d5e0615602dd1@google.com
-Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6943,9 +6943,13 @@ long hugetlb_change_protection(struct vm
- 			if (!pte_same(pte, newpte))
- 				set_huge_pte_at(mm, address, ptep, newpte, psize);
- 		} else if (unlikely(is_pte_marker(pte))) {
--			/* No other markers apply for now. */
--			WARN_ON_ONCE(!pte_marker_uffd_wp(pte));
--			if (uffd_wp_resolve)
-+			/*
-+			 * Do nothing on a poison marker; page is
-+			 * corrupted, permissons do not apply.  Here
-+			 * pte_marker_uffd_wp()==true implies !poison
-+			 * because they're mutual exclusive.
-+			 */
-+			if (pte_marker_uffd_wp(pte) && uffd_wp_resolve)
- 				/* Safe to modify directly (non-present->none). */
- 				huge_pte_clear(mm, address, ptep, psize);
- 		} else if (!huge_pte_none(pte)) {
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1376,6 +1376,12 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990 (ECM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a9, 0xff),	/* Telit FN20C04 (rmnet) */
++	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
 
 
 
