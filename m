@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-41150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012D28AFA80
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0043C8AFA2F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 903F31F2970C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B026428A669
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46C51420BE;
-	Tue, 23 Apr 2024 21:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A48145FE3;
+	Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBvIduW7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFPEJUg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F7F143C5A;
-	Tue, 23 Apr 2024 21:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E903143C6B;
+	Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908711; cv=none; b=qvovdllfVQl+Lk4oE54B32ybDG6nVJfi50MjMvHLLiUilB2wtA5pSNAlPLiR4ARyWZV6k8Uux65OIzyUWLZiyJEa4NO5Z8iA+2GpwjJaCdiknDLepdm6rwKNnRBm2HaW69Xaz55Yb9gPjN6nEtsaAPB0omPzN4GxjBrEDCHJaNQ=
+	t=1713908650; cv=none; b=hG8EIS3IGJOmmBcLWAHgsflUhwxNw9HL34SWHw6puSoJ+djw4UbQmFccdcacGaEM5cK0eFiaCE/hFHJEEgigwMb8syEv69QhopNY8adDosK3BmhFxKNMEnS8OqTEnS930YAUh0/cN9uohmbmc7qv9xbr6UbmflzH2FZzwJeGELA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908711; c=relaxed/simple;
-	bh=Wwcw0uS+dlLVjGAbYvDouZf+Bs/NwC4AyGIvf3bngvM=;
+	s=arc-20240116; t=1713908650; c=relaxed/simple;
+	bh=+58TTd6JNBaS0pJu1VzPeFSTMGRPE/PQ36iqMeSbcss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQFb4zl764lyJ3yA3IooNpEXY/+Z0EuvJ7jDKdplYzr5/fZNCaIGQJ+umlMTqIyNroP7DQEH42CVbyd8I6IS7Jvv07Btphdn7NtZPx61Jzc0Xe8XhC7i/vrDQDDXqRD6TtmFce5krP4hnqMYHCg2SMa07MQwr2on2lK9mD1O2Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBvIduW7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77798C116B1;
-	Tue, 23 Apr 2024 21:45:11 +0000 (UTC)
+	 MIME-Version; b=VP8DnC0VP/I1SEWHKS2sEJx6kO2VNIqCjFGRckKSBHkMbNCAvBKV6V78AAskp1JG+kbdNH/LSnls94xopcca+8nwHzz6zQt7QKiYttITlV6eXyWXfAfqEoH7NuPO5A7e/7KbgsDFRX4PPK3Dmrkhgeix9Z20BcKhVHEYjUceKnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFPEJUg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B37C32781;
+	Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908711;
-	bh=Wwcw0uS+dlLVjGAbYvDouZf+Bs/NwC4AyGIvf3bngvM=;
+	s=korg; t=1713908650;
+	bh=+58TTd6JNBaS0pJu1VzPeFSTMGRPE/PQ36iqMeSbcss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yBvIduW7k4YatJ+0K2e4I/ztbGa8IgTAlhQmwCKP67auOl4OU3Fu23ufZW3k5BqiK
-	 EbCQ2SDYlv6l771GUxDtcyNB4lGtX9+QfrInly7ejS0W0qpXGz/dkWbcsBaXSiQOZP
-	 651V09a4BsDX5pB+ppmRhkDu1kY8aq9o+m8eYCpI=
+	b=TFPEJUg8WPA74dpWD/zt/wHH4WQGRYGamPDXQAn5j4K2WY8C1X53la/rWrtKYqMxs
+	 WmqNUleIxVcfYPUmVtYejypBQUaOgC0O8gyFLSwqxps19Ou7PwZHMIEgrG9ijW4PHJ
+	 5IIpQieOAGdZvjuYMHv/zgRw7BsrlbE0waQRv+mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/141] ARM: davinci: Drop unused includes
-Date: Tue, 23 Apr 2024 14:38:56 -0700
-Message-ID: <20240423213855.436093838@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 100/158] ALSA: seq: ump: Fix conversion from MIDI2 to MIDI1 UMP messages
+Date: Tue, 23 Apr 2024 14:38:57 -0700
+Message-ID: <20240423213858.999513325@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 6e73bd23a1cdcf1416ebd57ff673b5f601963ed2 ]
+commit f25f17dc5c6a5e3f2014d44635f0c0db45224efe upstream.
 
-of_platform.h include is not needed, so drop it. It implicitly includes
-of.h (for now) which is needed.
+The conversion from MIDI2 to MIDI1 UMP messages had a leftover
+artifact (superfluous bit shift), and this resulted in the bogus type
+check, leading to empty outputs.  Let's fix it.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20230823165637.2466480-1-robh@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
+Cc: <stable@vger.kernel.org>
+Link: https://github.com/alsa-project/alsa-utils/issues/262
+Message-ID: <20240419100442.14806-1-tiwai@suse.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-davinci/pdata-quirks.c | 2 +-
+ sound/core/seq/seq_ump_convert.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-davinci/pdata-quirks.c b/arch/arm/mach-davinci/pdata-quirks.c
-index b8b5f1a5e0929..b5b5c7bda61ef 100644
---- a/arch/arm/mach-davinci/pdata-quirks.c
-+++ b/arch/arm/mach-davinci/pdata-quirks.c
-@@ -5,7 +5,7 @@
-  * Copyright (C) 2016 BayLibre, Inc
-  */
- #include <linux/kernel.h>
--#include <linux/of_platform.h>
-+#include <linux/of.h>
- 
- #include <media/i2c/tvp514x.h>
- #include <media/i2c/adv7343.h>
+diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
+index b141024830ec..ee6ac649df83 100644
+--- a/sound/core/seq/seq_ump_convert.c
++++ b/sound/core/seq/seq_ump_convert.c
+@@ -428,7 +428,7 @@ static int cvt_ump_midi2_to_midi1(struct snd_seq_client *dest,
+ 	midi1->note.group = midi2->note.group;
+ 	midi1->note.status = midi2->note.status;
+ 	midi1->note.channel = midi2->note.channel;
+-	switch (midi2->note.status << 4) {
++	switch (midi2->note.status) {
+ 	case UMP_MSG_STATUS_NOTE_ON:
+ 	case UMP_MSG_STATUS_NOTE_OFF:
+ 		midi1->note.note = midi2->note.note;
 -- 
-2.43.0
+2.44.0
 
 
 
