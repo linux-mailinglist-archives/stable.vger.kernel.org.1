@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-40914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE338AF993
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D97D68AFB34
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD41A1F26E35
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0BF0B2BF08
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE1314388D;
-	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DF414A0A7;
+	Tue, 23 Apr 2024 21:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uy4EQ6Dw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQD5Kwq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD40C20B3E;
-	Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7999145B05;
+	Tue, 23 Apr 2024 21:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908550; cv=none; b=p8iezFv89hKBjWIn6Ew6bFuGVn+BF11SOO+hCzp3wJsXloTjwCtQb1Zd5SXDezx+bSw79xH5UEESUFD7dgAgb/B3RJZjJD35p3NGujdMVCzFJ2NvWREDDQPp2pXvqwBlS53Vq8xcaXXYuRU+yoRceIPMaJ8Jt4iUzN0omgfBeAY=
+	t=1713908741; cv=none; b=AJEWVv2yLk8+jWWGucWSJmbZ2JRxxw/78I72/etjJDBOMjD5RcmAifozOuiSphxf2rdxNfqkgpFp1Te7IwW7yU9AP27tsv2UsHezbl0XvJ3p5HpqXt8eodu6D5p+ieTmXnYqhhxIfXRhkNwJaX9WlqJVWt+a6EEZ/VdPN9NaqO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908550; c=relaxed/simple;
-	bh=0EsYeqxOXVeTuFYhsvYcZBqT33KcCLvf/1V70QX3uNc=;
+	s=arc-20240116; t=1713908741; c=relaxed/simple;
+	bh=m0uAMkohJosyV30IYHPRZXip8z1DqXThWX6blJ+chTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pClnSOGZsTatd4zDAj9tjb77Zn298v7pQ5Jsj9+TCRh60mlKzWB+cRMy6Ulm3fWZ59vZKpWf0v/eQO5tvTgKFMQRkypZCU3DWleI4bZTbJh/CzZUelyd3i+gKqy3+nhUMBtX/gzxh2Cj9BBt/gXI+v1lMtWXHplxyg1hgP+hLiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy4EQ6Dw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94079C32781;
-	Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
+	 MIME-Version; b=pClsvCUsGrUORe8HC7RCwENBVN3bW1AzTQsmeyIszsdzZGlZnkiRbfihuRHywTRVTjMPVQgfqmg8PZTTSylyEdjvB2ka1a/SXxxH2USkk6t9xwRuSe/xmD3qdQ6vYMNSh6wclKBBwu/6Yn6rX1hEi+XaWDCi+EWv6ylB+oJPUUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQD5Kwq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959B8C116B1;
+	Tue, 23 Apr 2024 21:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908550;
-	bh=0EsYeqxOXVeTuFYhsvYcZBqT33KcCLvf/1V70QX3uNc=;
+	s=korg; t=1713908741;
+	bh=m0uAMkohJosyV30IYHPRZXip8z1DqXThWX6blJ+chTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uy4EQ6Dwi6egHeQCPhlFFxjgVxldUzuu2p+x5jOkBjBvUYLfQSujMf7XqBTt1OUbf
-	 gqQ3lTFKxTaHaCX7YtbAUybq1fymW57Vl891PhPQM8yzpwk20bi0fQQHo83JfEhtU3
-	 8epGd+VvHPj9NuZBNw4T3NSEwhMxE7LT0XRLeuSY=
+	b=xQD5Kwq+hffgXfvkzczQxku1FxJatnpKXajl/mR1O1yEaSLhCyUhd2Q16lCEUm6V4
+	 yj50Dm6NdN4iRqy+IiFCmVs1dDExdYTSjeHLYtGkLNyD9pOyPQqFsoSGgMycLrD6lp
+	 GzSW3/zvPYE8BnB56idKF8E3xu2y2lvOfWFNSmu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 151/158] nilfs2: fix OOB in nilfs_set_de_type
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	stable@kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH 6.1 105/141] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
 Date: Tue, 23 Apr 2024 14:39:33 -0700
-Message-ID: <20240423213900.750798855@linuxfoundation.org>
+Message-ID: <20240423213856.599116722@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +69,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit c4a7dc9523b59b3e73fd522c73e95e072f876b16 upstream.
+commit 1be3226445362bfbf461c92a5bcdb1723f2e4907 upstream.
 
-The size of the nilfs_type_by_mode array in the fs/nilfs2/dir.c file is
-defined as "S_IFMT >> S_SHIFT", but the nilfs_set_de_type() function,
-which uses this array, specifies the index to read from the array in the
-same way as "(mode & S_IFMT) >> S_SHIFT".
+The mitigation was intended to stop the irq completely. That may be
+better than a hard lock-up but it turns out that you get a crash anyway
+if you're using pmac_zilog as a serial console:
 
-static void nilfs_set_de_type(struct nilfs_dir_entry *de, struct inode
- *inode)
-{
-	umode_t mode = inode->i_mode;
+ttyPZ0: pmz: rx irq flood !
+BUG: spinlock recursion on CPU#0, swapper/0
 
-	de->file_type = nilfs_type_by_mode[(mode & S_IFMT)>>S_SHIFT]; // oob
-}
+That's because the pr_err() call in pmz_receive_chars() results in
+pmz_console_write() attempting to lock a spinlock already locked in
+pmz_interrupt(). With CONFIG_DEBUG_SPINLOCK=y, this produces a fatal
+BUG splat. The spinlock in question is the one in struct uart_port.
 
-However, when the index is determined this way, an out-of-bounds (OOB)
-error occurs by referring to an index that is 1 larger than the array size
-when the condition "mode & S_IFMT == S_IFMT" is satisfied.  Therefore, a
-patch to resize the nilfs_type_by_mode array should be applied to prevent
-OOB errors.
+Even when it's not fatal, the serial port rx function ceases to work.
+Also, the iteration limit doesn't play nicely with QEMU, as can be
+seen in the bug report linked below.
 
-Link: https://lkml.kernel.org/r/20240415182048.7144-1-konishi.ryusuke@gmail.com
-Reported-by: syzbot+2e22057de05b9f3b30d8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2e22057de05b9f3b30d8
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+A web search for other reports of the error message "pmz: rx irq flood"
+didn't produce anything. So I don't think this code is needed any more.
+Remove it.
+
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: stable@kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Link: https://github.com/vivier/qemu-m68k/issues/44
+Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/e853cf2c762f23101cd2ddec0cc0c2be0e72685f.1712568223.git.fthain@linux-m68k.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/pmac_zilog.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -240,7 +240,7 @@ nilfs_filetype_table[NILFS_FT_MAX] = {
+--- a/drivers/tty/serial/pmac_zilog.c
++++ b/drivers/tty/serial/pmac_zilog.c
+@@ -210,7 +210,6 @@ static bool pmz_receive_chars(struct uar
+ {
+ 	struct tty_port *port;
+ 	unsigned char ch, r1, drop, flag;
+-	int loops = 0;
  
- #define S_SHIFT 12
- static unsigned char
--nilfs_type_by_mode[S_IFMT >> S_SHIFT] = {
-+nilfs_type_by_mode[(S_IFMT >> S_SHIFT) + 1] = {
- 	[S_IFREG >> S_SHIFT]	= NILFS_FT_REG_FILE,
- 	[S_IFDIR >> S_SHIFT]	= NILFS_FT_DIR,
- 	[S_IFCHR >> S_SHIFT]	= NILFS_FT_CHRDEV,
+ 	/* Sanity check, make sure the old bug is no longer happening */
+ 	if (uap->port.state == NULL) {
+@@ -291,25 +290,12 @@ static bool pmz_receive_chars(struct uar
+ 		if (r1 & Rx_OVR)
+ 			tty_insert_flip_char(port, 0, TTY_OVERRUN);
+ 	next_char:
+-		/* We can get stuck in an infinite loop getting char 0 when the
+-		 * line is in a wrong HW state, we break that here.
+-		 * When that happens, I disable the receive side of the driver.
+-		 * Note that what I've been experiencing is a real irq loop where
+-		 * I'm getting flooded regardless of the actual port speed.
+-		 * Something strange is going on with the HW
+-		 */
+-		if ((++loops) > 1000)
+-			goto flood;
+ 		ch = read_zsreg(uap, R0);
+ 		if (!(ch & Rx_CH_AV))
+ 			break;
+ 	}
+ 
+ 	return true;
+- flood:
+-	pmz_interrupt_control(uap, 0);
+-	pmz_error("pmz: rx irq flood !\n");
+-	return true;
+ }
+ 
+ static void pmz_status_handle(struct uart_pmac_port *uap)
 
 
 
