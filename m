@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-40865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B4EA8AF960
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F65B8AF9E7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECE8B2874D4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15ED91F282F1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6922143890;
-	Tue, 23 Apr 2024 21:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD57145354;
+	Tue, 23 Apr 2024 21:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nHNEVF1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGXZjA98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B5214388F;
-	Tue, 23 Apr 2024 21:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDCC14389A;
+	Tue, 23 Apr 2024 21:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908515; cv=none; b=WN1jCNdh9uLilNe2RsXXBUNNQKHUg0IEvvWMZwyQstFLV7JAqA3PN0YHzck+A6hI/pfy/XJ/E8GEpCn9F8xa0+3d80kT8dUnp25irbByChzaBQ6Ibnjx2FXj80X3h3FcoxwqAfN3t+aRlCYtULD8YpOYL3YGdLozwzwZSlkrtnM=
+	t=1713908604; cv=none; b=if1YKzNln+JLLCpSi+NiG2nzHB+ZjWfo6PY8/DzE5I3E9GHG08Y4FCwU4J6R19dAMYobMlhJewVYSMALlqd0wMEECpUDCwP3oV/HHtS32IQ3je1i/0Pfe4e95xfnN8ewrxCI+CrpYniHc3ishiC1UfnKcsVz3pRNTLPUR5CZFDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908515; c=relaxed/simple;
-	bh=hA/ZXB19vzkMkhbBcOlL0GrEIbQ1TPM81E0ZL+KTO8k=;
+	s=arc-20240116; t=1713908604; c=relaxed/simple;
+	bh=fsVNWUxl7PJmcpAONpsNznwDoUxiFzDiekdDvmu7PWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOalfTp8ucgsUL2abgCBZsqvLpOke4NxCU+ds9jQsKs4Ez9Giya3xRV5hvcRhnd1MYyxeCSnaUMjg4FXHlo4RGufE26C3SFY48cj/RgNIH3YsbKiO6oGUWLOFeatNcl0aW8A+ldKcM003ayfaNDwzKod4/GEWQSP1muRIHgyF44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nHNEVF1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D924C3277B;
-	Tue, 23 Apr 2024 21:41:55 +0000 (UTC)
+	 MIME-Version; b=Rb2KLWg/5ClRK9IYQxWMvnayNGrL7dklb3cPtjsX76lL95sHfLuxHeIsgv2iE+pmWZGqkev6TiLMcjBExFAxhXuaFxtOwp6U9XO4WaEJEinIqeM0l/tTJknMUpvJbUBQdbie/hcWKAPLeoh9MMkdwNBLmnS7N8G4ltpkdzILnig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGXZjA98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE842C116B1;
+	Tue, 23 Apr 2024 21:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908515;
-	bh=hA/ZXB19vzkMkhbBcOlL0GrEIbQ1TPM81E0ZL+KTO8k=;
+	s=korg; t=1713908603;
+	bh=fsVNWUxl7PJmcpAONpsNznwDoUxiFzDiekdDvmu7PWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2nHNEVF1fk7/aQkYpKxeSAGEbUG8s5pPnAuBmNnjF8aT+WV90en2lWgX+bZQ72ryQ
-	 B2QqK0ez8cYLIvGF89DmGq5Za7UqXvmVXgMHsa+ggm820PVMUJWGtZ8IOcjvgUiQI9
-	 DhX/JAcIleyN2gRkWCx35LshbTPT6F7Zk+7g0aDU=
+	b=cGXZjA98SlL0hHg3NrNBIGr28GWAuO30Wm0UuGMv3nvssA7kzONIQe9dGe5Ftc52W
+	 K78YjF4W1xBFmokgxHeh+g99Cfb87zExixpg+XFw9rGRW/eVcjOCU4ihfmAt/3AGNH
+	 FlDwHqQoYb4/vcKOjRH5EKnRFshv4KeQ1Kpe89cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Geetika Moolchandani <geetika@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Philippe Perrot <philippe@perrot-net.fr>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 084/158] selftests/powerpc/papr-vpd: Fix missing variable initialization
+Subject: [PATCH 6.6 069/158] ALSA: scarlett2: Move USB IDs out from device_info struct
 Date: Tue, 23 Apr 2024 14:38:26 -0700
-Message-ID: <20240423213858.677659896@linuxfoundation.org>
+Message-ID: <20240423213858.007835243@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 210cfef579260ed6c3b700e7baeae51a5e183f43 ]
+[ Upstream commit d98cc489029dba4d99714c2e8ec4f5ba249f6851 ]
 
-The "close handle without consuming VPD" testcase has inconsistent
-results because it fails to initialize the location code object it
-passes to ioctl() to create a VPD handle. Initialize the location code
-to the empty string as intended.
+By moving the USB IDs from the device_info struct into
+scarlett2_devices[], that will allow for devices with different
+USB IDs to share the same device_info.
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Fixes: 9118c5d32bdd ("powerpc/selftests: Add test for papr-vpd")
-Reported-by: Geetika Moolchandani <geetika@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240404-papr-vpd-test-uninit-lc-v2-1-37bff46c65a5@linux.ibm.com
+Tested-by: Philippe Perrot <philippe@perrot-net.fr>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://lore.kernel.org/r/8263368e8d49e6fcebc709817bd82ab79b404468.1694705811.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: b9a98cdd3ac7 ("ALSA: scarlett2: Add support for Clarett 8Pre USB")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_scarlett_gen2.c | 63 ++++++++++++---------------------
+ 1 file changed, 23 insertions(+), 40 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
-index 505294da1b9fb..d6f99eb9be659 100644
---- a/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
-+++ b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
-@@ -154,7 +154,7 @@ static int dev_papr_vpd_null_handle(void)
- static int papr_vpd_close_handle_without_reading(void)
- {
- 	const int devfd = open(DEVPATH, O_RDONLY);
--	struct papr_location_code lc;
-+	struct papr_location_code lc = { .str = "", };
- 	int fd;
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index c04cff7225411..cfb7345ee7a8c 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -317,8 +317,6 @@ struct scarlett2_mux_entry {
+ };
  
- 	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
+ struct scarlett2_device_info {
+-	u32 usb_id; /* USB device identifier */
+-
+ 	/* Gen 3 devices have an internal MSD mode switch that needs
+ 	 * to be disabled in order to access the full functionality of
+ 	 * the device.
+@@ -440,8 +438,6 @@ struct scarlett2_data {
+ /*** Model-specific data ***/
+ 
+ static const struct scarlett2_device_info s6i6_gen2_info = {
+-	.usb_id = USB_ID(0x1235, 0x8203),
+-
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_2,
+ 	.level_input_count = 2,
+ 	.pad_input_count = 2,
+@@ -486,8 +482,6 @@ static const struct scarlett2_device_info s6i6_gen2_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i8_gen2_info = {
+-	.usb_id = USB_ID(0x1235, 0x8204),
+-
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_2,
+ 	.level_input_count = 2,
+ 	.pad_input_count = 4,
+@@ -535,8 +529,6 @@ static const struct scarlett2_device_info s18i8_gen2_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i20_gen2_info = {
+-	.usb_id = USB_ID(0x1235, 0x8201),
+-
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_2,
+ 	.line_out_hw_vol = 1,
+ 
+@@ -589,8 +581,6 @@ static const struct scarlett2_device_info s18i20_gen2_info = {
+ };
+ 
+ static const struct scarlett2_device_info solo_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8211),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_NO_MIXER,
+ 	.level_input_count = 1,
+@@ -602,8 +592,6 @@ static const struct scarlett2_device_info solo_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s2i2_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8210),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_NO_MIXER,
+ 	.level_input_count = 2,
+@@ -614,8 +602,6 @@ static const struct scarlett2_device_info s2i2_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s4i4_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8212),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_3,
+ 	.level_input_count = 2,
+@@ -660,8 +646,6 @@ static const struct scarlett2_device_info s4i4_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s8i6_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8213),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_3,
+ 	.level_input_count = 2,
+@@ -713,8 +697,6 @@ static const struct scarlett2_device_info s8i6_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i8_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8214),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_3,
+ 	.line_out_hw_vol = 1,
+@@ -783,8 +765,6 @@ static const struct scarlett2_device_info s18i8_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i20_gen3_info = {
+-	.usb_id = USB_ID(0x1235, 0x8215),
+-
+ 	.has_msd_mode = 1,
+ 	.config_set = SCARLETT2_CONFIG_SET_GEN_3,
+ 	.line_out_hw_vol = 1,
+@@ -848,8 +828,6 @@ static const struct scarlett2_device_info s18i20_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info clarett_8pre_info = {
+-	.usb_id = USB_ID(0x1235, 0x820c),
+-
+ 	.config_set = SCARLETT2_CONFIG_SET_CLARETT,
+ 	.line_out_hw_vol = 1,
+ 	.level_input_count = 2,
+@@ -902,25 +880,30 @@ static const struct scarlett2_device_info clarett_8pre_info = {
+ 	} },
+ };
+ 
+-static const struct scarlett2_device_info *scarlett2_devices[] = {
++struct scarlett2_device_entry {
++	const u32 usb_id; /* USB device identifier */
++	const struct scarlett2_device_info *info;
++};
++
++static const struct scarlett2_device_entry scarlett2_devices[] = {
+ 	/* Supported Gen 2 devices */
+-	&s6i6_gen2_info,
+-	&s18i8_gen2_info,
+-	&s18i20_gen2_info,
++	{ USB_ID(0x1235, 0x8203), &s6i6_gen2_info },
++	{ USB_ID(0x1235, 0x8204), &s18i8_gen2_info },
++	{ USB_ID(0x1235, 0x8201), &s18i20_gen2_info },
+ 
+ 	/* Supported Gen 3 devices */
+-	&solo_gen3_info,
+-	&s2i2_gen3_info,
+-	&s4i4_gen3_info,
+-	&s8i6_gen3_info,
+-	&s18i8_gen3_info,
+-	&s18i20_gen3_info,
++	{ USB_ID(0x1235, 0x8211), &solo_gen3_info },
++	{ USB_ID(0x1235, 0x8210), &s2i2_gen3_info },
++	{ USB_ID(0x1235, 0x8212), &s4i4_gen3_info },
++	{ USB_ID(0x1235, 0x8213), &s8i6_gen3_info },
++	{ USB_ID(0x1235, 0x8214), &s18i8_gen3_info },
++	{ USB_ID(0x1235, 0x8215), &s18i20_gen3_info },
+ 
+ 	/* Supported Clarett+ devices */
+-	&clarett_8pre_info,
++	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info },
+ 
+ 	/* End of list */
+-	NULL
++	{ 0, NULL },
+ };
+ 
+ /* get the starting port index number for a given port type/direction */
+@@ -4149,17 +4132,17 @@ static int scarlett2_init_notify(struct usb_mixer_interface *mixer)
+ 
+ static int snd_scarlett_gen2_controls_create(struct usb_mixer_interface *mixer)
+ {
+-	const struct scarlett2_device_info **info = scarlett2_devices;
++	const struct scarlett2_device_entry *entry = scarlett2_devices;
+ 	int err;
+ 
+-	/* Find device in scarlett2_devices */
+-	while (*info && (*info)->usb_id != mixer->chip->usb_id)
+-		info++;
+-	if (!*info)
++	/* Find entry in scarlett2_devices */
++	while (entry->usb_id && entry->usb_id != mixer->chip->usb_id)
++		entry++;
++	if (!entry->usb_id)
+ 		return -EINVAL;
+ 
+ 	/* Initialise private data */
+-	err = scarlett2_init_private(mixer, *info);
++	err = scarlett2_init_private(mixer, entry->info);
+ 	if (err < 0)
+ 		return err;
+ 
 -- 
 2.43.0
 
