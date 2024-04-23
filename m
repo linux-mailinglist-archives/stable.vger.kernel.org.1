@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-41124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94A18AFA6A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A088AF9F3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6489288BD1
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5353B1C2081F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3E9149C75;
-	Tue, 23 Apr 2024 21:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47122147C9B;
+	Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o26vMj+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOULTNMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E169A1420BE;
-	Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06085143C57;
+	Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908694; cv=none; b=VL5r7lPT2nrxLBLKm80gCs7fYFuSKY6xiRoUwK4qq5P1T+uPv8mUfq69pPo+hyzhaA1hEZSZLCVJARBZ8ZkmntI6dLkXKHuKVltlcnJWXzWhFpuBhaoKWsdMeaJFLc+gE8yjYQn6BpFzh0GpUZFq66yNIGDbwBz89TPsNVjhYqc=
+	t=1713908612; cv=none; b=DnB07XlOP4pTsjybuVquJVpkUaYhXvQaa4di0gg/8lXFYE+zYi7iLdSOKZ9msSN+lWG7dUMpkA0qe0JJLDnqzRSVp3drcx4DZRprJC+GIlnDElOMemI2V/XbxLnfPLWQTfIcNnxV4zLH2rN19uJHzZ7LOkAKiJ0dJiDTx9Qtqrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908694; c=relaxed/simple;
-	bh=VFyNtQpN/nnVG3XdIZrp0bNMfQcN/qHUdyPHFTMw67g=;
+	s=arc-20240116; t=1713908612; c=relaxed/simple;
+	bh=Wn9C9/QHau82EtnNRtlWchOgb+BzEV75DPb5uYrxCwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojxtH+TAKvjCM/uJugO04F/I//0GSU8sCpGBab9g27+SbN/QwHYxEN02LnxpSJ87AvU+5iCh7UF7oqnijh9U4laCHEuVm+nVhCA8/whLNtxjDqwaXQAHkzr6/L13sbo+SPNa3Gp4fhn4aqSXc2dZd7DncfzXkdNsRlSl6g8XmX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o26vMj+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DCBC116B1;
-	Tue, 23 Apr 2024 21:44:53 +0000 (UTC)
+	 MIME-Version; b=siPGB6M3jn97w+eTIYMzmxKSSLrEL+qpDGnbLn5jUEGfGA74nKp4qtcyDGZclPiZTr8M7KTDuDDEozDnw8le9G/OPGPrG1Nlgp5BB+cuau/1L4GtTHcT/RllHPPvqk26hFrbs5+kYso5SbPqmNoWSfDJyosEYUKHGJwYyBXYxz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOULTNMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F8BC4AF07;
+	Tue, 23 Apr 2024 21:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908693;
-	bh=VFyNtQpN/nnVG3XdIZrp0bNMfQcN/qHUdyPHFTMw67g=;
+	s=korg; t=1713908611;
+	bh=Wn9C9/QHau82EtnNRtlWchOgb+BzEV75DPb5uYrxCwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o26vMj+9/quXFk1o2kdlMrCuyC5wVRJ07Mks/91vV0HH0hld0bEpPDqFmaI2Nn9Je
-	 0XYi4PO30cshprVfIGlOH6oje25Z0Yzk0sxvrZ+QOKhC1pNXOGOlLefuwa9zNEBw2K
-	 lbUDMRQqVDBg2fneGpqxz/5xDXPYMIbdnP7unlQ8=
+	b=iOULTNMRui5b4Xi4lsR4jXWR+nOIRuuUz9ORGfmJ8sVZ+aL2VPTO8/D42PTEwNqju
+	 Qtl4bshF5p/l3KoSr+FNQsoBifvMR+pP/kogg2f/cmkat+Lkx3dhnGFPzykEcAwAbU
+	 JY54JMhoGQAj72LaHf8QhRSB4ujrSF0qZbWxSvBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/141] net/mlx5: Lag, restore buckets number to default after hash LAG deactivation
-Date: Tue, 23 Apr 2024 14:38:30 -0700
-Message-ID: <20240423213854.636140783@linuxfoundation.org>
+Subject: [PATCH 6.6 074/158] usb: pci-quirks: handle HAS_IOPORT dependency for UHCI handoff
+Date: Tue, 23 Apr 2024 14:38:31 -0700
+Message-ID: <20240423213858.170080847@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 37cc10da3a50e6d0cb9808a90b7da9b4868794dd ]
+[ Upstream commit 358ad297e379ff548247e3e24c6619559942bfdd ]
 
-The cited patch introduces the concept of buckets in LAG in hash mode.
-However, the patch doesn't clear the number of buckets in the LAG
-deactivation. This results in using the wrong number of buckets in
-case user create a hash mode LAG and afterwards create a non-hash
-mode LAG.
+In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+not being declared. With the AMD quirk handled USB PCI quirks still use
+inw() in uhci_check_and_reset_hc() and thus indirectly in
+quirk_usb_handoff_uhci(). Handle this by conditionally compiling
+uhci_check_and_reset_hc() and stubbing out quirk_usb_handoff_uhci() when
+HAS_IOPORT is not available.
 
-Hence, restore buckets number to default after hash mode LAG
-deactivation.
-
-Fixes: 352899f384d4 ("net/mlx5: Lag, use buckets in hash mode")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240411115444.374475-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230911125653.1393895-4-schnelle@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/host/pci-quirks.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index ad32b80e85018..01c0e1ee918d8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -679,8 +679,10 @@ static int mlx5_deactivate_lag(struct mlx5_lag *ldev)
- 		return err;
- 	}
+diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
+index 10813096d00c6..1f9c1b1435d86 100644
+--- a/drivers/usb/host/pci-quirks.c
++++ b/drivers/usb/host/pci-quirks.c
+@@ -634,6 +634,16 @@ void usb_asmedia_modifyflowcontrol(struct pci_dev *pdev)
+ }
+ EXPORT_SYMBOL_GPL(usb_asmedia_modifyflowcontrol);
  
--	if (test_bit(MLX5_LAG_MODE_FLAG_HASH_BASED, &flags))
-+	if (test_bit(MLX5_LAG_MODE_FLAG_HASH_BASED, &flags)) {
- 		mlx5_lag_port_sel_destroy(ldev);
-+		ldev->buckets = 1;
-+	}
- 	if (mlx5_lag_has_drop_rule(ldev))
- 		mlx5_lag_drop_rule_cleanup(ldev);
++static inline int io_type_enabled(struct pci_dev *pdev, unsigned int mask)
++{
++	u16 cmd;
++
++	return !pci_read_config_word(pdev, PCI_COMMAND, &cmd) && (cmd & mask);
++}
++
++#define mmio_enabled(dev) io_type_enabled(dev, PCI_COMMAND_MEMORY)
++
++#if defined(CONFIG_HAS_IOPORT) && IS_ENABLED(CONFIG_USB_UHCI_HCD)
+ /*
+  * Make sure the controller is completely inactive, unable to
+  * generate interrupts or do DMA.
+@@ -715,14 +725,7 @@ int uhci_check_and_reset_hc(struct pci_dev *pdev, unsigned long base)
+ }
+ EXPORT_SYMBOL_GPL(uhci_check_and_reset_hc);
  
+-static inline int io_type_enabled(struct pci_dev *pdev, unsigned int mask)
+-{
+-	u16 cmd;
+-	return !pci_read_config_word(pdev, PCI_COMMAND, &cmd) && (cmd & mask);
+-}
+-
+ #define pio_enabled(dev) io_type_enabled(dev, PCI_COMMAND_IO)
+-#define mmio_enabled(dev) io_type_enabled(dev, PCI_COMMAND_MEMORY)
+ 
+ static void quirk_usb_handoff_uhci(struct pci_dev *pdev)
+ {
+@@ -742,6 +745,12 @@ static void quirk_usb_handoff_uhci(struct pci_dev *pdev)
+ 		uhci_check_and_reset_hc(pdev, base);
+ }
+ 
++#else /* defined(CONFIG_HAS_IOPORT && IS_ENABLED(CONFIG_USB_UHCI_HCD) */
++
++static void quirk_usb_handoff_uhci(struct pci_dev *pdev) {}
++
++#endif /* defined(CONFIG_HAS_IOPORT && IS_ENABLED(CONFIG_USB_UHCI_HCD) */
++
+ static int mmio_resource_enabled(struct pci_dev *pdev, int idx)
+ {
+ 	return pci_resource_start(pdev, idx) && mmio_enabled(pdev);
 -- 
 2.43.0
 
