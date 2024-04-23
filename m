@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-40894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1C78AF97F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959558AFA1A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D7B5287FCD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0910E1F28E47
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F1F144D07;
-	Tue, 23 Apr 2024 21:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847AA148843;
+	Tue, 23 Apr 2024 21:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xilliDsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDPIzz/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3690420B3E;
-	Tue, 23 Apr 2024 21:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432821448D2;
+	Tue, 23 Apr 2024 21:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908537; cv=none; b=ejiJ4sOl6HwiQgi8drN0wjB+EMBHMXeDlcnZAw3i6oS3m25HLA5PZNWvfcCWUvvKDHIXNaV4tV+N/etQiCnXeiuxLGaTbozsqKO39G4qyXYZ0+RuPJysdv1G6zVPHqbC9ocgrrFpwRO8jraAOQO9Dcf2SuQhLTVVpZnok6jgMMI=
+	t=1713908635; cv=none; b=FgZ5iteS/vd0aM/MncjDlxzQR95i4eSxVdrq0AMCeB09makPoLLZOlL9yT6BzIksRy0AA5Frd/JQvm92wZ47Vxle3vQX1yzobD+3idnQh/MyCaxU3hRxSlOgPS2gLQ6DJYAM5SqebL0VrNtiJP3qpqI3CxwWyd14wi7VZmp+suo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908537; c=relaxed/simple;
-	bh=P+rWb+3tDpBzmZEs+6/CZrPW+hNgL5We+C9z5LlX1mA=;
+	s=arc-20240116; t=1713908635; c=relaxed/simple;
+	bh=3dCoWIMaxb2ncAUwdSCYzNpxP8evocjtTrMkSh8RoFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtakBYJZAudvuxyemOwlNJND3nnOqktDFEgSKdVMxll5QTah4yx+O7k9ktXiLiwlR6yaPLHsmUCVkGQGbvoIaGBEtHC5O8eyZsXJye24ZrkTiFTZM2cd4cpd+TYSwwbc6vHdCefF6XfE0hnHLJZ30HjTSiDwH517inMN3vIFCIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xilliDsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032F5C116B1;
-	Tue, 23 Apr 2024 21:42:16 +0000 (UTC)
+	 MIME-Version; b=KAbM84/gVzVNGR/qgVqSuYNaiXVYhJeg3Kl8kcRWrOsVsX+0iuZn2qtx7Wiv1l1oyz966hVPqhRvfUdLQavmAJ5PAkN8QLm/+x9mYck9L6Tb+o3z1J3auM7umvPirtbwJdGpzCBmPb0x4NO25tN0RdTVjEw5RTBPTrSrgn5O0xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDPIzz/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B07BC4AF09;
+	Tue, 23 Apr 2024 21:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908537;
-	bh=P+rWb+3tDpBzmZEs+6/CZrPW+hNgL5We+C9z5LlX1mA=;
+	s=korg; t=1713908635;
+	bh=3dCoWIMaxb2ncAUwdSCYzNpxP8evocjtTrMkSh8RoFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xilliDsw+NHl7RBOKAlHNwXdE6awLulKjEC48C6f0LgRRnlx8qMYtmLO+37hnkpQ9
-	 RM/pGftkMMj8fTJYl3OEOElcbtOFzJKtST0LQEYFL2rHuRbTM10mudGHcRoMw4QpNS
-	 JKj5tuCb3gweBcsd0+pdmSpTybXzdjwj2ZATnvSo=
+	b=tDPIzz/KGxLXvFp9ZcniG17/1VlCrCdKm+WYWcizilNrnlj/k41OUNaQPEO+luMcJ
+	 heR5kypl8fm9xT9Jt5LzhBE1ccKDp9CofgIx0zpTCnlyGOzXC9K04OsD5zQfSMF6pj
+	 aZwAzMRM/7JM5sanyZBgzGy5f8oSWa1ng0paJ7fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+900d58a45dcaab9e4821@syzkaller.appspotmail.com,
-	Vipin Sharma <vipinsh@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Matlack <dmatlack@google.com>
-Subject: [PATCH 6.8 130/158] KVM: x86/mmu: Write-protect L2 SPTEs in TDP MMU when clearing dirty status
-Date: Tue, 23 Apr 2024 14:39:12 -0700
-Message-ID: <20240423213900.124987826@linuxfoundation.org>
+	Chuanhong Guo <gch981213@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 116/158] USB: serial: option: add support for Fibocom FM650/FG650
+Date: Tue, 23 Apr 2024 14:39:13 -0700
+Message-ID: <20240423213859.508762663@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +61,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Matlack <dmatlack@google.com>
+From: Chuanhong Guo <gch981213@gmail.com>
 
-commit 2673dfb591a359c75080dd5af3da484b89320d22 upstream.
+commit fb1f4584b1215e8c209f6b3a4028ed8351a0e961 upstream.
 
-Check kvm_mmu_page_ad_need_write_protect() when deciding whether to
-write-protect or clear D-bits on TDP MMU SPTEs, so that the TDP MMU
-accounts for any role-specific reasons for disabling D-bit dirty logging.
+Fibocom FM650/FG650 are 5G modems with ECM/NCM/RNDIS/MBIM modes.
+This patch adds support to all 4 modes.
 
-Specifically, TDP MMU SPTEs must be write-protected when the TDP MMU is
-being used to run an L2 (i.e. L1 has disabled EPT) and PML is enabled.
-KVM always disables PML when running L2, even when L1 and L2 GPAs are in
-the some domain, so failing to write-protect TDP MMU SPTEs will cause
-writes made by L2 to not be reflected in the dirty log.
+In all 4 modes, the first serial port is the AT console while the other
+3 appear to be diagnostic interfaces for dumping modem logs.
 
-Reported-by: syzbot+900d58a45dcaab9e4821@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=900d58a45dcaab9e4821
-Fixes: 5982a5392663 ("KVM: x86/mmu: Use kvm_ad_enabled() to determine if TDP MMU SPTEs need wrprot")
+usb-devices output for all modes:
+
+ECM:
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
+D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0a04 Rev=04.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=FG650 Module
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 5 Cfg#= 1 Atr=c0 MxPwr=504mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+NCM:
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=5000 MxCh= 0
+D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0a05 Rev=04.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=FG650 Module
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+RNDIS:
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
+D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0a06 Rev=04.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=FG650 Module
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+MBIM:
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=5000 MxCh= 0
+D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0a07 Rev=04.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=FG650 Module
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
 Cc: stable@vger.kernel.org
-Cc: Vipin Sharma <vipinsh@google.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Signed-off-by: David Matlack <dmatlack@google.com>
-Link: https://lore.kernel.org/r/20240315230541.1635322-2-dmatlack@google.com
-[sean: massage shortlog and changelog, tweak ternary op formatting]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/tdp_mmu.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1498,6 +1498,16 @@ void kvm_tdp_mmu_try_split_huge_pages(st
- 	}
- }
- 
-+static bool tdp_mmu_need_write_protect(struct kvm_mmu_page *sp)
-+{
-+	/*
-+	 * All TDP MMU shadow pages share the same role as their root, aside
-+	 * from level, so it is valid to key off any shadow page to determine if
-+	 * write protection is needed for an entire tree.
-+	 */
-+	return kvm_mmu_page_ad_need_write_protect(sp) || !kvm_ad_enabled();
-+}
-+
- /*
-  * Clear the dirty status of all the SPTEs mapping GFNs in the memslot. If
-  * AD bits are enabled, this will involve clearing the dirty bit on each SPTE.
-@@ -1508,7 +1518,8 @@ void kvm_tdp_mmu_try_split_huge_pages(st
- static bool clear_dirty_gfn_range(struct kvm *kvm, struct kvm_mmu_page *root,
- 			   gfn_t start, gfn_t end)
- {
--	u64 dbit = kvm_ad_enabled() ? shadow_dirty_mask : PT_WRITABLE_MASK;
-+	const u64 dbit = tdp_mmu_need_write_protect(root) ? PT_WRITABLE_MASK :
-+							    shadow_dirty_mask;
- 	struct tdp_iter iter;
- 	bool spte_set = false;
- 
-@@ -1523,7 +1534,7 @@ retry:
- 		if (tdp_mmu_iter_cond_resched(kvm, &iter, false, true))
- 			continue;
- 
--		KVM_MMU_WARN_ON(kvm_ad_enabled() &&
-+		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
- 				spte_ad_need_write_protect(iter.old_spte));
- 
- 		if (!(iter.old_spte & dbit))
-@@ -1570,8 +1581,8 @@ bool kvm_tdp_mmu_clear_dirty_slot(struct
- static void clear_dirty_pt_masked(struct kvm *kvm, struct kvm_mmu_page *root,
- 				  gfn_t gfn, unsigned long mask, bool wrprot)
- {
--	u64 dbit = (wrprot || !kvm_ad_enabled()) ? PT_WRITABLE_MASK :
--						   shadow_dirty_mask;
-+	const u64 dbit = (wrprot || tdp_mmu_need_write_protect(root)) ? PT_WRITABLE_MASK :
-+									shadow_dirty_mask;
- 	struct tdp_iter iter;
- 
- 	lockdep_assert_held_write(&kvm->mmu_lock);
-@@ -1583,7 +1594,7 @@ static void clear_dirty_pt_masked(struct
- 		if (!mask)
- 			break;
- 
--		KVM_MMU_WARN_ON(kvm_ad_enabled() &&
-+		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
- 				spte_ad_need_write_protect(iter.old_spte));
- 
- 		if (iter.level > PG_LEVEL_4K ||
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2279,6 +2279,10 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a04, 0xff) },			/* Fibocom FM650-CN (ECM mode) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
 
 
 
