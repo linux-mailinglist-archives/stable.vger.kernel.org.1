@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-41239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D058AFADB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD288AF9A3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 354051F28D98
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C25E5B2A6EB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BC614AD2D;
-	Tue, 23 Apr 2024 21:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6CC145B25;
+	Tue, 23 Apr 2024 21:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xh5R8gaN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QL9eAH1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7A0143C5F;
-	Tue, 23 Apr 2024 21:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C020885274;
+	Tue, 23 Apr 2024 21:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908772; cv=none; b=mgIK4M2rAGLsnZGuirYhFQkFwoRoJlYsXlwz3Nwa9Mj8u713NNZTagNJ5z3xQ/w4rRvyPomL1SPGyuVTQSewgygKm8kTl7H94aySzgB4aoOvzPThZCj9Ry0eIE7BFk1TCQrHZs7s1EucEEJ2R2Gg0u2ItVYB5POWzi6E5sUK8QA=
+	t=1713908560; cv=none; b=AQb/OKDsHyQLbjLrK2N2a/JAgAxoNdkv4aokq7zIfHqQNCllNF0s9klTAxzd9m91juRT3j4Q9AOlJpeAcnjQxZHIYxeXjvoBwCBKS+ejsXr6ZXmPo9wCBf1+zaWr8LsgI4LNWJdv9elVfMxCLV9lfB/5q5pDoQ7uxnRErHmtcbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908772; c=relaxed/simple;
-	bh=MEKoaoS4AUBlCekRU48cV3ataNuJdfCIXuSOOr5vvMM=;
+	s=arc-20240116; t=1713908560; c=relaxed/simple;
+	bh=HO3LLj9BrHRilh1v5egcQVu7Tan1DJpbQAlk2INj8w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRNpminf1WmKRohSyN3qKqffODWRFbclklx4lEk4wlL8LB9eRzzox8XOVWb2LhmHzTaNQP+EAGEI86BhUmVmAYULCbCBofstpCGbTQoYGvU2M1XiNP+i+okzuk/1ixkfhK+jjYnSXbOkXq7gTgaJkzqp8bZUgtKlJ0nZmY+IgHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xh5R8gaN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5C3C32781;
-	Tue, 23 Apr 2024 21:46:12 +0000 (UTC)
+	 MIME-Version; b=TX0yOjDuE7+/oOXkGQT9c+CGfupMrtzIxYO8RA36DAxI8ijEuPDy/EBifYnAoxuxggP7PtmerAgfUzfONRSJ/V096FXACMb7Qg/QwEFarEK4/wScoUIM7eI45MrfmbeVgzwiBGUiytp+LAVLG9EBVoZBeI5XBkMz534MvXzsvBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QL9eAH1U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4495BC4AF08;
+	Tue, 23 Apr 2024 21:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908772;
-	bh=MEKoaoS4AUBlCekRU48cV3ataNuJdfCIXuSOOr5vvMM=;
+	s=korg; t=1713908560;
+	bh=HO3LLj9BrHRilh1v5egcQVu7Tan1DJpbQAlk2INj8w0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xh5R8gaNtKDmTGXkxGD6t9bkk+0yTLTT0KZ+/b7hB9TpkfMixuwNwpSl8gM4EG8pM
-	 h1l1zBY57s4dL5SosfE7YD/DXfTf+FwmpgjPIVCnnTpOHmYeTJUBQY4GLbYLmLt1eR
-	 PqcOsTxibW1r3onrNu19w1pEM0u7ktWFa8/R6Np4=
+	b=QL9eAH1UAcgqNkbkk9gIlkjrkeFkRScSs7aB8th1UWTuGFHm+M2EpvnpE6fwe/i7L
+	 b8vjUgqAujLPoaS32rkLrHE2sZadqwcBAm2fs3ancwCGRrEBtqAfVVx4zW93TlctOJ
+	 D2bg45oPA3RkfCy3R+EAOCtWEBtrUGJjx4KytwXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Xuan <william.xuanziyang@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 16/71] netfilter: nf_tables: Fix potential data-race in __nft_obj_type_get()
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>
+Subject: [PATCH 6.8 147/158] drm/vmwgfx: Fix crtcs atomic check conditional
 Date: Tue, 23 Apr 2024 14:39:29 -0700
-Message-ID: <20240423213844.677895832@linuxfoundation.org>
+Message-ID: <20240423213900.633679341@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit d78d867dcea69c328db30df665be5be7d0148484 ]
+commit a60ccade88f926e871a57176e86a34bbf0db0098 upstream.
 
-nft_unregister_obj() can concurrent with __nft_obj_type_get(),
-and there is not any protection when iterate over nf_tables_objects
-list in __nft_obj_type_get(). Therefore, there is potential data-race
-of nf_tables_objects list entry.
+The conditional was supposed to prevent enabling of a crtc state
+without a set primary plane. Accidently it also prevented disabling
+crtc state with a set primary plane. Neither is correct.
 
-Use list_for_each_entry_rcu() to iterate over nf_tables_objects
-list in __nft_obj_type_get(), and use rcu_read_lock() in the caller
-nft_obj_type_get() to protect the entire type query process.
+Fix the conditional and just driver-warn when a crtc state has been
+enabled without a primary plane which will help debug broken userspace.
 
-Fixes: e50092404c1b ("netfilter: nf_tables: add stateful objects")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes IGT's kms_atomic_interruptible and kms_atomic_transition tests.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 06ec41909e31 ("drm/vmwgfx: Add and connect CRTC helper functions")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v4.12+
+Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240412025511.78553-5-zack.rusin@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index d0712553d2b06..3999b89793fce 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7045,7 +7045,7 @@ static const struct nft_object_type *__nft_obj_type_get(u32 objtype, u8 family)
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -932,6 +932,7 @@ int vmw_du_cursor_plane_atomic_check(str
+ int vmw_du_crtc_atomic_check(struct drm_crtc *crtc,
+ 			     struct drm_atomic_state *state)
  {
- 	const struct nft_object_type *type;
++	struct vmw_private *vmw = vmw_priv(crtc->dev);
+ 	struct drm_crtc_state *new_state = drm_atomic_get_new_crtc_state(state,
+ 									 crtc);
+ 	struct vmw_display_unit *du = vmw_crtc_to_du(new_state->crtc);
+@@ -939,9 +940,13 @@ int vmw_du_crtc_atomic_check(struct drm_
+ 	bool has_primary = new_state->plane_mask &
+ 			   drm_plane_mask(crtc->primary);
  
--	list_for_each_entry(type, &nf_tables_objects, list) {
-+	list_for_each_entry_rcu(type, &nf_tables_objects, list) {
- 		if (type->family != NFPROTO_UNSPEC &&
- 		    type->family != family)
- 			continue;
-@@ -7061,9 +7061,13 @@ nft_obj_type_get(struct net *net, u32 objtype, u8 family)
- {
- 	const struct nft_object_type *type;
+-	/* We always want to have an active plane with an active CRTC */
+-	if (has_primary != new_state->enable)
+-		return -EINVAL;
++	/*
++	 * This is fine in general, but broken userspace might expect
++	 * some actual rendering so give a clue as why it's blank.
++	 */
++	if (new_state->enable && !has_primary)
++		drm_dbg_driver(&vmw->drm,
++			       "CRTC without a primary plane will be blank.\n");
  
-+	rcu_read_lock();
- 	type = __nft_obj_type_get(objtype, family);
--	if (type != NULL && try_module_get(type->owner))
-+	if (type != NULL && try_module_get(type->owner)) {
-+		rcu_read_unlock();
- 		return type;
-+	}
-+	rcu_read_unlock();
  
- 	lockdep_nfnl_nft_mutex_not_held();
- #ifdef CONFIG_MODULES
--- 
-2.43.0
-
+ 	if (new_state->connector_mask != connector_mask &&
 
 
 
