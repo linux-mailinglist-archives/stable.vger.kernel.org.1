@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2138AE707
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:53:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBCB8AE70E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF8581C22D48
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:53:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7959B219BA
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9474912CD86;
-	Tue, 23 Apr 2024 12:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847B1127E1B;
+	Tue, 23 Apr 2024 12:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzxmrK7h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/qF7sHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B9184A20
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45811126F10
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713876680; cv=none; b=JxTggu5qSmYWRwfzg8UI4pCajiDZVoZvN6k/8AVYdvgNe7fGKMYX537VcIiS+Yc++n97Q1b18mzVG4a2Grkg7/HEh9ym3hA+E0ORgx0qSvpNyFEy6rm1LQz9lckI1Gii4JRM6kYIBBONWhTKWbN7b85efS8qzIMrPQbuZ1caH4w=
+	t=1713876903; cv=none; b=EHfcrCC116gcGVub/9MW5Vg/VCKIV4kuX4rAr7KD8VjxmMBIe1rbssMjKnTtjqPWu7rMv88a7ZW+qLVmsx30QAoRUI2O2ZoIkkjRC8uWH8WXDCgelTZVjf4zpC93xLXohhpZt51VHbufOCKqMiFa7HQoKbzGS6C/c7/KmdkOuLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713876680; c=relaxed/simple;
-	bh=0ZR2Upxy4Cil5pA8Y7nU/c392vQ6JhulLRqNd9Pc6uQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Jyq+SUZrBJFQV853cliYTeoWV2fxTf6XWLNWK6L0PcR/G1HFpGs9roeNf3BQz9I1gQ0DAr3ltoU9tOZJ/43lAb9OZMhW7hQokLFz3z806qE1NgQtzCr2/GvdW1O177Pw+lwDwZITQnuRBsGkS4ZHbqhrGHFLfLBo+Sv3H7Gppek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzxmrK7h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD03C116B1;
-	Tue, 23 Apr 2024 12:51:19 +0000 (UTC)
+	s=arc-20240116; t=1713876903; c=relaxed/simple;
+	bh=uOenZLeO1QhZ/+a27RT2LN/foIvXvs68jDdWVm9FTQU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cORNyNrDfR7VtFI/jNbQGUXHSCfg39TakhuH981irvsh0aK/3+jRo3SbRfy24bUeb6S5A4PlHWC2hZWQOHwFzi+iXLtifkRTQEfmi06QcRQuF9lLNBYkiBQeG9QDwMx9NsXuLNe3SMeahf0IEjZbnycBqrR9VmfyqR9Joa2iczw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/qF7sHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9673C116B1;
+	Tue, 23 Apr 2024 12:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713876679;
-	bh=0ZR2Upxy4Cil5pA8Y7nU/c392vQ6JhulLRqNd9Pc6uQ=;
+	s=korg; t=1713876902;
+	bh=uOenZLeO1QhZ/+a27RT2LN/foIvXvs68jDdWVm9FTQU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=WzxmrK7hPG3a2tcpC+/H+ADkSdd0sdGtPnFv+WT8Vk91gXG3LxIrz50bmp/HkOQot
-	 eJ8B6HUrhq4KfAm3y3O1sKZDPkBf7rtLRAyx8kBLivbyrO5XO7pDa8fAmxomszZZJP
-	 l8I3zU3RmcoD3KT+JEU2nuiZdxGCULdPYVn+cLGY=
-Subject: FAILED: patch "[PATCH] mm,swapops: update check in is_pfn_swap_entry for hwpoison" failed to apply to 6.1-stable tree
-To: osalvador@suse.de,akpm@linux-foundation.org,david@redhat.com,linmiaohe@huawei.com,peterx@redhat.com,stable@vger.kernel.org,tony.luck@intel.com
+	b=M/qF7sHt+Tk1VJiekrANZe8hY62NzJ3x6nip9SSlkUGBYnE4LLrLIyJfozke0OD6L
+	 A8Neuyu4T+BtEDzQKUWfEwx6pVH/gqC0zsh1GuKqe7ZCGbbQEgpD6H8fJCdwCl9lKf
+	 fOs2F0M7tH7vuvqx84mDhu4yMETZJk0bT6iR9bZg=
+Subject: FAILED: patch "[PATCH] serial: mxs-auart: add spinlock around changing cts state" failed to apply to 5.15-stable tree
+To: emil.kronborg@protonmail.com,Frank.Li@nxp.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 05:51:09 -0700
-Message-ID: <2024042309-rural-overlying-190b@gregkh>
+Date: Tue, 23 Apr 2024 05:54:53 -0700
+Message-ID: <2024042353-mayday-porcupine-efb6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 07a57a338adb6ec9e766d6a6790f76527f45ceb5
+git cherry-pick -x 54c4ec5f8c471b7c1137a1f769648549c423c026
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042309-rural-overlying-190b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042353-mayday-porcupine-efb6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-07a57a338adb ("mm,swapops: update check in is_pfn_swap_entry for hwpoison entries")
-d027122d8363 ("mm/hwpoison: move definitions of num_poisoned_pages_* to memory-failure.c")
-e591ef7d96d6 ("mm,hwpoison,hugetlb,memory_hotplug: hotremove memory section with hwpoisoned hugepage")
+54c4ec5f8c47 ("serial: mxs-auart: add spinlock around changing cts state")
 
 thanks,
 
@@ -79,137 +77,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 07a57a338adb6ec9e766d6a6790f76527f45ceb5 Mon Sep 17 00:00:00 2001
-From: Oscar Salvador <osalvador@suse.de>
-Date: Sun, 7 Apr 2024 15:05:37 +0200
-Subject: [PATCH] mm,swapops: update check in is_pfn_swap_entry for hwpoison
- entries
+From 54c4ec5f8c471b7c1137a1f769648549c423c026 Mon Sep 17 00:00:00 2001
+From: Emil Kronborg <emil.kronborg@protonmail.com>
+Date: Wed, 20 Mar 2024 12:15:36 +0000
+Subject: [PATCH] serial: mxs-auart: add spinlock around changing cts state
 
-Tony reported that the Machine check recovery was broken in v6.9-rc1, as
-he was hitting a VM_BUG_ON when injecting uncorrectable memory errors to
-DRAM.
+The uart_handle_cts_change() function in serial_core expects the caller
+to hold uport->lock. For example, I have seen the below kernel splat,
+when the Bluetooth driver is loaded on an i.MX28 board.
 
-After some more digging and debugging on his side, he realized that this
-went back to v6.1, with the introduction of 'commit 0d206b5d2e0d
-("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")'.  That
-commit, among other things, introduced swp_offset_pfn(), replacing
-hwpoison_entry_to_pfn() in its favour.
+    [   85.119255] ------------[ cut here ]------------
+    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_core.c:3453 uart_handle_cts_change+0xb4/0xec
+    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc wlcore_sdio configfs
+    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-00021-gd62a2f068f92 #1
+    [   85.151396] Hardware name: Freescale MXS (Device Tree)
+    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
+    (...)
+    [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/0x3f4
+    [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x88/0x210
+    (...)
 
-The patch also introduced a VM_BUG_ON() check for is_pfn_swap_entry(), but
-is_pfn_swap_entry() never got updated to cover hwpoison entries, which
-means that we would hit the VM_BUG_ON whenever we would call
-swp_offset_pfn() for such entries on environments with CONFIG_DEBUG_VM
-set.  Fix this by updating the check to cover hwpoison entries as well,
-and update the comment while we are it.
+Cc: stable@vger.kernel.org
+Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements for irq helpers")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
+Link: https://lore.kernel.org/r/20240320121530.11348-1-emil.kronborg@protonmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Link: https://lkml.kernel.org/r/20240407130537.16977-1-osalvador@suse.de
-Fixes: 0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
-Reported-by: Tony Luck <tony.luck@intel.com>
-Closes: https://lore.kernel.org/all/Zg8kLSl2yAlA3o5D@agluck-desk3/
-Tested-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.1.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 48b700ba1d18..a5c560a2f8c2 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -390,6 +390,35 @@ static inline bool is_migration_entry_dirty(swp_entry_t entry)
- }
- #endif	/* CONFIG_MIGRATION */
+diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
+index 4749331fe618..1e8853eae504 100644
+--- a/drivers/tty/serial/mxs-auart.c
++++ b/drivers/tty/serial/mxs-auart.c
+@@ -1086,11 +1086,13 @@ static void mxs_auart_set_ldisc(struct uart_port *port,
  
-+#ifdef CONFIG_MEMORY_FAILURE
-+
-+/*
-+ * Support for hardware poisoned pages
-+ */
-+static inline swp_entry_t make_hwpoison_entry(struct page *page)
-+{
-+	BUG_ON(!PageLocked(page));
-+	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
-+}
-+
-+static inline int is_hwpoison_entry(swp_entry_t entry)
-+{
-+	return swp_type(entry) == SWP_HWPOISON;
-+}
-+
-+#else
-+
-+static inline swp_entry_t make_hwpoison_entry(struct page *page)
-+{
-+	return swp_entry(0, 0);
-+}
-+
-+static inline int is_hwpoison_entry(swp_entry_t swp)
-+{
-+	return 0;
-+}
-+#endif
-+
- typedef unsigned long pte_marker;
- 
- #define  PTE_MARKER_UFFD_WP			BIT(0)
-@@ -483,8 +512,9 @@ static inline struct folio *pfn_swap_entry_folio(swp_entry_t entry)
- 
- /*
-  * A pfn swap entry is a special type of swap entry that always has a pfn stored
-- * in the swap offset. They are used to represent unaddressable device memory
-- * and to restrict access to a page undergoing migration.
-+ * in the swap offset. They can either be used to represent unaddressable device
-+ * memory, to restrict access to a page undergoing migration or to represent a
-+ * pfn which has been hwpoisoned and unmapped.
-  */
- static inline bool is_pfn_swap_entry(swp_entry_t entry)
+ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
  {
-@@ -492,7 +522,7 @@ static inline bool is_pfn_swap_entry(swp_entry_t entry)
- 	BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
+-	u32 istat;
++	u32 istat, stat;
+ 	struct mxs_auart_port *s = context;
+ 	u32 mctrl_temp = s->mctrl_prev;
+-	u32 stat = mxs_read(s, REG_STAT);
  
- 	return is_migration_entry(entry) || is_device_private_entry(entry) ||
--	       is_device_exclusive_entry(entry);
-+	       is_device_exclusive_entry(entry) || is_hwpoison_entry(entry);
++	uart_port_lock(&s->port);
++
++	stat = mxs_read(s, REG_STAT);
+ 	istat = mxs_read(s, REG_INTR);
+ 
+ 	/* ack irq */
+@@ -1126,6 +1128,8 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
+ 		istat &= ~AUART_INTR_TXIS;
+ 	}
+ 
++	uart_port_unlock(&s->port);
++
+ 	return IRQ_HANDLED;
  }
  
- struct page_vma_mapped_walk;
-@@ -561,35 +591,6 @@ static inline int is_pmd_migration_entry(pmd_t pmd)
- }
- #endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
- 
--#ifdef CONFIG_MEMORY_FAILURE
--
--/*
-- * Support for hardware poisoned pages
-- */
--static inline swp_entry_t make_hwpoison_entry(struct page *page)
--{
--	BUG_ON(!PageLocked(page));
--	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
--}
--
--static inline int is_hwpoison_entry(swp_entry_t entry)
--{
--	return swp_type(entry) == SWP_HWPOISON;
--}
--
--#else
--
--static inline swp_entry_t make_hwpoison_entry(struct page *page)
--{
--	return swp_entry(0, 0);
--}
--
--static inline int is_hwpoison_entry(swp_entry_t swp)
--{
--	return 0;
--}
--#endif
--
- static inline int non_swap_entry(swp_entry_t entry)
- {
- 	return swp_type(entry) >= MAX_SWAPFILES;
 
 
