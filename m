@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-40826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52108AF939
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B2D8AFA52
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26A5CB242DB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59DB61C2250D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EABD1448E6;
-	Tue, 23 Apr 2024 21:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B011494DD;
+	Tue, 23 Apr 2024 21:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/Guwoh/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5uzfaE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD3A20B3E;
-	Tue, 23 Apr 2024 21:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293351494D9;
+	Tue, 23 Apr 2024 21:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908489; cv=none; b=StAU7RFlc1zxtVu0AU54tlbs+ZK25xjDZcxSnKAnAKoAIdWmj+7FsQ9l7fQTQM14DAMc5cnvC6+e8G0y063Z0MVDveXx/OVeum5HNdUIKn/TML9VwPDjMUuo7LIRBGork6rSyCW/A8Oy81XDuaD3syGRz371FoGXxFBvcYuIX10=
+	t=1713908676; cv=none; b=GamoPL994PWAhEr01gXfnXshk98x8ZtmkR7FFh8UNTKJ6v07vfBCJZNX1IgMzBN0fMoee+JKHvLXpL6LaNAlsNXcZwmYefU0QDDRJwNClPFeoIqHqHvtQQZSeAGqJVJvT4Kmrf6YnHRvbTBh+nOzj2uWcVae+uweBKFtFcv7cLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908489; c=relaxed/simple;
-	bh=lVe6zENi5AgVqtgGuFg7MdyPYjcVU75gltkJT/UYReY=;
+	s=arc-20240116; t=1713908676; c=relaxed/simple;
+	bh=YfU7xWPWklg95w4P1DBz1aelgb8qons2zJxYTNdLXzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJL0UKyhS2aPk8T49r9qOUWbyK9JLcdMchPN9cLjCe4L0cWLX4o8qjwGzM+PaYDykKASEKeNzSTumcZSdZ4+OoFHfvefvk3N3TkVe3dJYPNbBBUjzaSrVqO8gJ+AP532+y2USF1tUPTMU/o3gT4T6XjkLTh8DAxI8Y6DO/rIBug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/Guwoh/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24D5C116B1;
-	Tue, 23 Apr 2024 21:41:28 +0000 (UTC)
+	 MIME-Version; b=dmw68BlRwWkBQxd+26tb/6dqDPXldaKdiJhsmb62VwuumSCXhzSRJspata9c3MF/mjEbBeuxJZYPUs4Ut/4bhaQm7nqdkh+uxCnGv0rdj7XXf/D9YZwPzbq6HqTzFfRKxKAVLaeNUfWmObkphpwp4SmKjbxiMukzCq9GwWsg07E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5uzfaE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F130BC3277B;
+	Tue, 23 Apr 2024 21:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908489;
-	bh=lVe6zENi5AgVqtgGuFg7MdyPYjcVU75gltkJT/UYReY=;
+	s=korg; t=1713908676;
+	bh=YfU7xWPWklg95w4P1DBz1aelgb8qons2zJxYTNdLXzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/Guwoh/cnc1Tp7vIx3InyXjNWrGhWkEGLOikyAgGQZQ8VkxPv9toNT+0RI2lMFlS
-	 F3gZRTjyAWjETXjnrxHjGOxDzbuqWYKlG/P7f16slUOuC49Zm8xpUNwOochoHnHOX4
-	 TRZjqP619aYNeKQzgyB0QhX33I7jWi4ofNf1NNRQ=
+	b=L5uzfaE7mf18Nt/7gzk4ZGiBqCVORDgeVAoeCyJT24SbOMbWIvW3hdVDuvq4D2ULW
+	 Xmrw6b5M6qFXKW8bc/FCIKWgezxDkESQJyP/pA+MVlos3yWgwrPTMbY1LYBJZ8C0LQ
+	 5QTZNolvEO2WR1ricW+Jn3wF8L66LiEDSPY4zlnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 063/158] iommufd: Add config needed for iommufd_fail_nth
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.1 017/141] x86/boot: Drop redundant code setting the root device
 Date: Tue, 23 Apr 2024 14:38:05 -0700
-Message-ID: <20240423213858.007773657@linuxfoundation.org>
+Message-ID: <20240423213853.893815246@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 2760c51b8040d7cffedc337939e7475a17cc4b19 ]
+[ Commit 7448e8e5d15a3c4df649bf6d6d460f78396f7e1e upstream ]
 
-Add FAULT_INJECTION_DEBUG_FS and FAILSLAB configurations to the kconfig
-fragment for the iommfd selftests. These kconfigs are needed by the
-iommufd_fail_nth test.
+The root device defaults to 0,0 and is no longer configurable at build
+time [0], so there is no need for the build tool to ever write to this
+field.
 
-Fixes: a9af47e382a4 ("iommufd/selftest: Test IOMMU_HWPT_GET_DIRTY_BITMAP")
-Link: https://lore.kernel.org/r/20240325090048.1423908-1-usama.anjum@collabora.com
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[0] 079f85e624189292 ("x86, build: Do not set the root_dev field in bzImage")
+
+This change has no impact on the resulting bzImage binary.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230912090051.4014114-23-ardb@google.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/iommu/config | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/boot/header.S      |    2 +-
+ arch/x86/boot/tools/build.c |    7 -------
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/iommu/config b/tools/testing/selftests/iommu/config
-index 110d73917615d..02a2a1b267c1e 100644
---- a/tools/testing/selftests/iommu/config
-+++ b/tools/testing/selftests/iommu/config
-@@ -1,3 +1,5 @@
- CONFIG_IOMMUFD=y
-+CONFIG_FAULT_INJECTION_DEBUG_FS=y
- CONFIG_FAULT_INJECTION=y
- CONFIG_IOMMUFD_TEST=y
-+CONFIG_FAILSLAB=y
--- 
-2.43.0
-
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -235,7 +235,7 @@ root_flags:	.word ROOT_RDONLY
+ syssize:	.long 0			/* Filled in by build.c */
+ ram_size:	.word 0			/* Obsolete */
+ vid_mode:	.word SVGA_MODE
+-root_dev:	.word 0			/* Filled in by build.c */
++root_dev:	.word 0			/* Default to major/minor 0/0 */
+ boot_flag:	.word 0xAA55
+ 
+ 	# offset 512, entry point
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -40,10 +40,6 @@ typedef unsigned char  u8;
+ typedef unsigned short u16;
+ typedef unsigned int   u32;
+ 
+-#define DEFAULT_MAJOR_ROOT 0
+-#define DEFAULT_MINOR_ROOT 0
+-#define DEFAULT_ROOT_DEV (DEFAULT_MAJOR_ROOT << 8 | DEFAULT_MINOR_ROOT)
+-
+ /* Minimal number of setup sectors */
+ #define SETUP_SECT_MIN 5
+ #define SETUP_SECT_MAX 64
+@@ -399,9 +395,6 @@ int main(int argc, char ** argv)
+ 
+ 	update_pecoff_setup_and_reloc(i);
+ 
+-	/* Set the default root device */
+-	put_unaligned_le16(DEFAULT_ROOT_DEV, &buf[508]);
+-
+ 	/* Open and stat the kernel file */
+ 	fd = open(argv[2], O_RDONLY);
+ 	if (fd < 0)
 
 
 
