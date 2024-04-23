@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFEDE8AFA2E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56DF8AFAAD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 955131F292A4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EB57B2C89C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1427145328;
-	Tue, 23 Apr 2024 21:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DCE147C70;
+	Tue, 23 Apr 2024 21:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sn3sKbxs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8pkSVgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917D9143C6B;
-	Tue, 23 Apr 2024 21:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224D7143C49;
+	Tue, 23 Apr 2024 21:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908649; cv=none; b=FQ4iJtArolGJm1uGho/BkZKIG5yIy7K9n1YmQBg5bjbWOwxPtFjV06ybIJhkzkMlXKgeXG83Q2WEwNexayrSOTbfvVc953DZ1A1iCgVQtrf+IwLRdXR8mXVmMK7nnoF2s/RQeZfuwpd5XfixWnyuLZYbFZFgSYXLLiUAO5a6wzE=
+	t=1713908723; cv=none; b=a6sQKwMDXu55KXEffda0BLsinkosrGMcz+wR+CdqZFgvdPkB78ICiplxRoequM9qG4rKR0y969dwmPccc2ux/wiBmsrupJe6APOuIhspS0aoaT1Y/VK9fL8UQRj8o7pUAYBhnvmr3EnqkBsn4Bou765Y99ESbp5W5IbYJ74oFjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908649; c=relaxed/simple;
-	bh=YRxHusXoakFZBxlZH1Vc98M4cl46zjEhJFKr0ibbCfM=;
+	s=arc-20240116; t=1713908723; c=relaxed/simple;
+	bh=CUpCWBkfJ0kL3HhBayatLNFps5OeA8mvuEH1O/HHN4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8PxKzvMWCmBwKtrlFQAYPrlXbBSHoHkoFX46Ql8gVPD1JrBmIZZKjLM3SdvkeeWrGq4fqSXiVsE/AAbTLlPfDEtSByoT5MTLbxHQwIFnYg6CCPLQ2iIohieo9ZbOmivT7npHw4o8pZnUdv6tkjXzAya66IKQ4eLah4n93zpmkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sn3sKbxs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66591C3277B;
-	Tue, 23 Apr 2024 21:44:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H4ArAip9AR7rS5h6M5PKtgAiRA1HxN9iF1fnAW03A7sUycVf9iHPcllRJSj7dzVa0u8Mpv+HiHguB3W0Kapt68u1i5CsnhgxNmYgZDX4Fgs860AOcuZr8/vZnFFolD6flJM//8itb1OhmF0mrCoy8aIH7zYH5KVuKNWMc7K8ouc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8pkSVgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8407C3277B;
+	Tue, 23 Apr 2024 21:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908649;
-	bh=YRxHusXoakFZBxlZH1Vc98M4cl46zjEhJFKr0ibbCfM=;
+	s=korg; t=1713908723;
+	bh=CUpCWBkfJ0kL3HhBayatLNFps5OeA8mvuEH1O/HHN4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sn3sKbxsUBaAORxxwp6ajwQNclUHHYtloUoEw8AmNu3BOy51dxNZtA/nYSxoOAeVk
-	 3GxnMPWKdioxgAMR0a0hBKRXAVHEIAmK7vMuEdodpsmnrxnLaXoMgZOYTT+OKj3PDG
-	 mttYzBqWQfv4TxKuwus2LF3WeiEx7VaEQGzYSCXo=
+	b=s8pkSVgs/dUOls2wb3uTVAMtKG0FhVvCd5ROfppuCXNrelOID2nqlhtg5V018QhbO
+	 NDSkVApz4zlAxriKVUE2oDrIk9lp8ArEepTGzNO1cAZ//syWVQ6mIiIF3nPFf//wgm
+	 kDnatBYMJEX78U5YPS9cEP7dsabE2qKY7/ItpKeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Emil Kronborg <emil.kronborg@protonmail.com>
-Subject: [PATCH 6.6 109/158] serial: mxs-auart: add spinlock around changing cts state
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 078/141] PCI: Simplify pcie_capability_clear_and_set_word() to ..._clear_word()
 Date: Tue, 23 Apr 2024 14:39:06 -0700
-Message-ID: <20240423213859.289628970@linuxfoundation.org>
+Message-ID: <20240423213855.732564009@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Kronborg <emil.kronborg@protonmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 54c4ec5f8c471b7c1137a1f769648549c423c026 upstream.
+[ Upstream commit 0fce6e5c87faec2c8bf28d2abc8cb595f4e244b6 ]
 
-The uart_handle_cts_change() function in serial_core expects the caller
-to hold uport->lock. For example, I have seen the below kernel splat,
-when the Bluetooth driver is loaded on an i.MX28 board.
+When using pcie_capability_clear_and_set_word() but not actually *setting*
+anything, use pcie_capability_clear_word() instead.
 
-    [   85.119255] ------------[ cut here ]------------
-    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_core.c:3453 uart_handle_cts_change+0xb4/0xec
-    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc wlcore_sdio configfs
-    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-00021-gd62a2f068f92 #1
-    [   85.151396] Hardware name: Freescale MXS (Device Tree)
-    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
-    (...)
-    [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/0x3f4
-    [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x88/0x210
-    (...)
-
-Cc: stable@vger.kernel.org
-Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements for irq helpers")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
-Link: https://lore.kernel.org/r/20240320121530.11348-1-emil.kronborg@protonmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20231026121924.2164-1-ilpo.jarvinen@linux.intel.com
+Link: https://lore.kernel.org/r/20231026121924.2164-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+[bhelgaas: squash]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/mxs-auart.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/pci/pcie/aspm.c | 8 ++++----
+ drivers/pci/quirks.c    | 6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -1080,11 +1080,13 @@ static void mxs_auart_set_ldisc(struct u
- 
- static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
- {
--	u32 istat;
-+	u32 istat, stat;
- 	struct mxs_auart_port *s = context;
- 	u32 mctrl_temp = s->mctrl_prev;
--	u32 stat = mxs_read(s, REG_STAT);
- 
-+	uart_port_lock(&s->port);
-+
-+	stat = mxs_read(s, REG_STAT);
- 	istat = mxs_read(s, REG_INTR);
- 
- 	/* ack irq */
-@@ -1120,6 +1122,8 @@ static irqreturn_t mxs_auart_irq_handle(
- 		istat &= ~AUART_INTR_TXIS;
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 25736d408e88e..2a3d973658dac 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -743,10 +743,10 @@ static void pcie_config_aspm_l1ss(struct pcie_link_state *link, u32 state)
+ 	 * in pcie_config_aspm_link().
+ 	 */
+ 	if (enable_req & (ASPM_STATE_L1_1 | ASPM_STATE_L1_2)) {
+-		pcie_capability_clear_and_set_word(child, PCI_EXP_LNKCTL,
+-						   PCI_EXP_LNKCTL_ASPM_L1, 0);
+-		pcie_capability_clear_and_set_word(parent, PCI_EXP_LNKCTL,
+-						   PCI_EXP_LNKCTL_ASPM_L1, 0);
++		pcie_capability_clear_word(child, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_ASPM_L1);
++		pcie_capability_clear_word(parent, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_ASPM_L1);
  	}
  
-+	uart_port_unlock(&s->port);
-+
- 	return IRQ_HANDLED;
+ 	val = 0;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index e4951b30b923b..ba353b37ba526 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4478,9 +4478,9 @@ static void quirk_disable_root_port_attributes(struct pci_dev *pdev)
+ 
+ 	pci_info(root_port, "Disabling No Snoop/Relaxed Ordering Attributes to avoid PCIe Completion erratum in %s\n",
+ 		 dev_name(&pdev->dev));
+-	pcie_capability_clear_and_set_word(root_port, PCI_EXP_DEVCTL,
+-					   PCI_EXP_DEVCTL_RELAX_EN |
+-					   PCI_EXP_DEVCTL_NOSNOOP_EN, 0);
++	pcie_capability_clear_word(root_port, PCI_EXP_DEVCTL,
++				   PCI_EXP_DEVCTL_RELAX_EN |
++				   PCI_EXP_DEVCTL_NOSNOOP_EN);
  }
  
+ /*
+-- 
+2.43.0
+
 
 
 
