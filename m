@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-41106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0478AFA59
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FAF8AF935
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 699F8287CA0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6EDA282BAF
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73F3149C45;
-	Tue, 23 Apr 2024 21:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D2C143C6F;
+	Tue, 23 Apr 2024 21:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8HD5JXA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6Wz5WBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962A5143C46;
-	Tue, 23 Apr 2024 21:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DB920B3E;
+	Tue, 23 Apr 2024 21:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908681; cv=none; b=CA7HtnK0Yi7uY1cqD9iSivnndOrvvbzzReAqKC3c2PIzzSPoSZRFDKpNTQEMyLifqwFmqK4SUH7lc0/TioW6+mRpaYTxfyQzVWDyDLdmuC46os1qJBT1Onmjbh0W4Nr+4BA+mXGDY9ieYIC9d0cTUsAbCTOY5gD2w2gc2nOV0yQ=
+	t=1713908487; cv=none; b=cNar6ArCYBjWswzyX/Q1WV5wBb079fDpdmQjeLlvUOuhOzxPnP3BlyahzoCskxqJxbUxH7lvA0qAaNXW4xFy10op7X+2TOsEi/60tewNHRh1bOljhXK+ODeU8ADa9Fn3SH85iS2/nTBmAcZKIJ9sF2oMzcIDNAUD5gUL4rZt1T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908681; c=relaxed/simple;
-	bh=/GCgFnWs3e4LZnhej04tqCkSBUoKo6lICXlY/qv4ITg=;
+	s=arc-20240116; t=1713908487; c=relaxed/simple;
+	bh=VYEBvN8nFOgyDJa3It+yXPpaK9SEG2+pxJjU3c/uD7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rm7z2naRznJKDlBeAQn2e/8O3WzUTazaRLdZLApKhLvmc8+H4zfw9zjrZe2h/hevLZxVF+Tx4kSyqaYxod55L/SSu5d3ldTp2aQ6r3wBzuGFZBEk3xJJpb5b/NV9953O7XGv/kl7SC1XPlCkdHEOZjyUAyHEi0HSF+EPhGXS4+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8HD5JXA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A31C3277B;
-	Tue, 23 Apr 2024 21:44:41 +0000 (UTC)
+	 MIME-Version; b=i3n4r3wFPBuj18zS+xenUw0y1dojYZatyMIbjUO5BOU8cuFPKnc0ShwD3rJY9SP4gXKUkdr1BckFCynz60JBEuBvlVKvyDTAqyw5y+1e5rxK+1JWPwFzXe19hsf5pQPy6dudNzrCeklbXB9RHNzbJ/pnoHj1j/GPHL3V2McTWxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6Wz5WBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF68C116B1;
+	Tue, 23 Apr 2024 21:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908681;
-	bh=/GCgFnWs3e4LZnhej04tqCkSBUoKo6lICXlY/qv4ITg=;
+	s=korg; t=1713908487;
+	bh=VYEBvN8nFOgyDJa3It+yXPpaK9SEG2+pxJjU3c/uD7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8HD5JXAbBiRV2DzbJ/rtfnf1aXG1B4aQV1hvGd45H2nZjNA+ime1i1Y+8AXS+9o2
-	 Tl3qv48/LavmQeijEov/UhDEhj9NGpI8XyBiD4vOu8sS6jAl5+u6m5MFWGYdSmJzS9
-	 QroApxRubc8kyOfyuiaYPz361/cft0vFHdwiMe0Y=
+	b=o6Wz5WBvvKmTgKDnWs8Rg0OXGka/mtKyV9gimBYu2EEDoOWYz695ezORKRYpAsKs5
+	 5lIiJg7iioOwCjtPfPRMOQOvhY6OIaiw4euOp8Udcbdfqm5+4apdPH+8m8os7roMfa
+	 XEnF1C1NX6MERmsZOD+3zg1jAXhFlNJG5d2+CKbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanhe Shu <xiangzao@linux.alibaba.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.1 007/141] selftests/ftrace: Limit length in subsystem-enable tests
+	Schuyler Patton <spatton@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 053/158] net: ethernet: ti: am65-cpsw-nuss: cleanup DMA Channels before using them
 Date: Tue, 23 Apr 2024 14:37:55 -0700
-Message-ID: <20240423213853.592948142@linuxfoundation.org>
+Message-ID: <20240423213857.657580029@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanhe Shu <xiangzao@linux.alibaba.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 1a4ea83a6e67f1415a1f17c1af5e9c814c882bb5 upstream.
+[ Upstream commit c24cd679b075b0e953ea167b0aa2b2d59e4eba7f ]
 
-While sched* events being traced and sched* events continuously happen,
-"[xx] event tracing - enable/disable with subsystem level files" would
-not stop as on some slower systems it seems to take forever.
-Select the first 100 lines of output would be enough to judge whether
-there are more than 3 types of sched events.
+The TX and RX DMA Channels used by the driver to exchange data with CPSW
+are not guaranteed to be in a clean state during driver initialization.
+The Bootloader could have used the same DMA Channels without cleaning them
+up in the event of failure. Thus, reset and disable the DMA Channels to
+ensure that they are in a clean state before using them.
 
-Fixes: 815b18ea66d6 ("ftracetest: Add basic event tracing test cases")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Reported-by: Schuyler Patton <spatton@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20240417095425.2253876-1-s-vadapalli@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-+++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-@@ -18,7 +18,7 @@ echo 'sched:*' > set_event
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 2939a21ca74f3..1d00e21808c1c 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2793,6 +2793,8 @@ static void am65_cpsw_unregister_devlink(struct am65_cpsw_common *common)
  
- yield
+ static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
+ {
++	struct am65_cpsw_rx_chn *rx_chan = &common->rx_chns;
++	struct am65_cpsw_tx_chn *tx_chan = common->tx_chns;
+ 	struct device *dev = common->dev;
+ 	struct am65_cpsw_port *port;
+ 	int ret = 0, i;
+@@ -2805,6 +2807,22 @@ static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
+ 	if (ret)
+ 		return ret;
  
--count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
-@@ -29,7 +29,7 @@ echo 1 > events/sched/enable
- 
- yield
- 
--count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
-@@ -40,7 +40,7 @@ echo 0 > events/sched/enable
- 
- yield
- 
--count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
- if [ $count -ne 0 ]; then
-     fail "any of scheduler events should not be recorded"
- fi
++	/* The DMA Channels are not guaranteed to be in a clean state.
++	 * Reset and disable them to ensure that they are back to the
++	 * clean state and ready to be used.
++	 */
++	for (i = 0; i < common->tx_ch_num; i++) {
++		k3_udma_glue_reset_tx_chn(tx_chan[i].tx_chn, &tx_chan[i],
++					  am65_cpsw_nuss_tx_cleanup);
++		k3_udma_glue_disable_tx_chn(tx_chan[i].tx_chn);
++	}
++
++	for (i = 0; i < AM65_CPSW_MAX_RX_FLOWS; i++)
++		k3_udma_glue_reset_rx_chn(rx_chan->rx_chn, i, rx_chan,
++					  am65_cpsw_nuss_rx_cleanup, !!i);
++
++	k3_udma_glue_disable_rx_chn(rx_chan->rx_chn);
++
+ 	ret = am65_cpsw_nuss_register_devlink(common);
+ 	if (ret)
+ 		return ret;
+-- 
+2.43.0
+
 
 
 
