@@ -1,67 +1,54 @@
-Return-Path: <stable+bounces-40915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371228AF994
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CE68AFAB2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E11431F26E1F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5143C1F297B6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC127145B07;
-	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA0514A4D0;
+	Tue, 23 Apr 2024 21:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryMBh/gG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzksRIdx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AB720B3E;
-	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E8214A0BE;
+	Tue, 23 Apr 2024 21:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908551; cv=none; b=oOrx7Ru7iz9Msr8CsO0SPynb7aUVRhJWlV7/nu+LFe5osntwJDXalf9HPWqvv+0no/kcPeN8nq1aYkkfvo5JukG1AfsN1hUfN/tAYEL72F5vyoM9t95vzvIBA6Y6QYH8475mXbju4PBq6n8krotoHGHo7+Jac1HJGvXR6lX2Ji0=
+	t=1713908749; cv=none; b=qslvh41pwtqKKxGU2qs1WMSf1Nlok6+VgGxF9iPF9VN7cPznpnVutC/AIBW/r/MQNFilOnZtuh1DepwolSuZgd5hag8GUVJ4VaxYRkJeSYWfJ5aAwth78ywPDsc20CIKZ9ta+yS6LbmZzlXVTG9a9AAYH9xKmWFxcACC6Ror+FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908551; c=relaxed/simple;
-	bh=TxZ12yq1/puCaLG4Q/uV82F/X6dPU3Cs2whN6dKGpgk=;
+	s=arc-20240116; t=1713908749; c=relaxed/simple;
+	bh=3IdpPLWVLNAaH1c1CJm4SASikdALaPgwsm4xIqEOntc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPgtjBWAxx0FWA2Xw6g6XcRHhYAKmsB0Ut0ifWAXfI3jk4NStJPMB9nbNKC2Uq+ROiHCDrNEIiHSEblGdBo4fCzmNUnvhAlzKajTarLJiVRUFshTp2VI/JKuJ7aNwmvChdzkIBfo8uHIsypqCxUke9fLen7YK0TaMvGeZe+GnU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryMBh/gG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468D4C32783;
-	Tue, 23 Apr 2024 21:42:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I2l2OuTPCV8HlaM48Hb/fDz7M2nDUzK5z8fwLzzkKG7Pv9Q9OvaJZyNGllu7LC89x45LvHOmlFe+FfXpzjBbgX+xObQRq4L8PlYA/8TMXLVs6PoX1igPS6qCB0wcYVpXDPIdeYNLw2D9PtkkVBKNqzEiPh9f48ijc9Q3Io4VgMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzksRIdx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BADBC116B1;
+	Tue, 23 Apr 2024 21:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908551;
-	bh=TxZ12yq1/puCaLG4Q/uV82F/X6dPU3Cs2whN6dKGpgk=;
+	s=korg; t=1713908749;
+	bh=3IdpPLWVLNAaH1c1CJm4SASikdALaPgwsm4xIqEOntc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryMBh/gGaMNXJwvnRPDWbLx/UBUq7/HiyS/BQgpqKDe4y9+xMIxZ6n6V66CXiTBhS
-	 y5bUFoWmVY1UYRt/ioPEIQZcGU+JdhQ3UnNZiXmQiyXbHWAaUjd3dzUnfkqv6PIPax
-	 hurep3/S//I5AunPnyajO9R89l+NFVJg5kQZ3AJ8=
+	b=QzksRIdxb5vrU3uDRjhKEaE4ZrXFXhraz4NX8L0YpbC7OIRNWqzkt1EAZqM1IU2oD
+	 niVGaC4hhpB+XNvou+OjUIe61UdrppbEs5i55Atd/l6PrOw/haTw/dn1zKXpwDHNNh
+	 njWdlKogmQnpKsBQbfSY0sjqHFnboTo+/1Eb75bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Thorvald Natvig <thorvald@google.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peng Zhang <zhangpeng.00@bytedance.com>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 152/158] fork: defer linking file vma until vma is fully initialized
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 6.1 106/141] serial: stm32: Return IRQ_NONE in the ISR if no handling happend
 Date: Tue, 23 Apr 2024 14:39:34 -0700
-Message-ID: <20240423213900.780826104@linuxfoundation.org>
+Message-ID: <20240423213856.632850637@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,114 +58,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19 upstream.
+commit 13c785323b36b845300b256d0e5963c3727667d7 upstream.
 
-Thorvald reported a WARNING [1]. And the root cause is below race:
+If there is a stuck irq that the handler doesn't address, returning
+IRQ_HANDLED unconditionally makes it impossible for the irq core to
+detect the problem and disable the irq. So only return IRQ_HANDLED if
+an event was handled.
 
- CPU 1					CPU 2
- fork					hugetlbfs_fallocate
-  dup_mmap				 hugetlbfs_punch_hole
-   i_mmap_lock_write(mapping);
-   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
-   i_mmap_unlock_write(mapping);
-   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
-					 i_mmap_lock_write(mapping);
-   					 hugetlb_vmdelete_list
-					  vma_interval_tree_foreach
-					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
-   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
-					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
-					 i_mmap_unlock_write(mapping);
+A stuck irq is still problematic, but with this change at least it only
+makes the UART nonfunctional instead of occupying the (usually only) CPU
+by 100% and so stall the whole machine.
 
-hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
-i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
-by deferring linking file vma until vma is fully initialized.  Those vmas
-should be initialized first before they can be used.
-
-Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
-Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Reported-by: Thorvald Natvig <thorvald@google.com>
-Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: Tycho Andersen <tandersen@netflix.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 48a6092fb41f ("serial: stm32-usart: Add STM32 USART Driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/5f92603d0dfd8a5b8014b2b10a902d91e0bb881f.1713344161.git.u.kleine-koenig@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/fork.c |   33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ drivers/tty/serial/stm32-usart.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -712,6 +712,23 @@ static __latent_entropy int dup_mmap(str
- 		} else if (anon_vma_fork(tmp, mpnt))
- 			goto fail_nomem_anon_vma_fork;
- 		vm_flags_clear(tmp, VM_LOCKED_MASK);
-+		/*
-+		 * Copy/update hugetlb private vma information.
-+		 */
-+		if (is_vm_hugetlb_page(tmp))
-+			hugetlb_dup_vma_private(tmp);
-+
-+		/*
-+		 * Link the vma into the MT. After using __mt_dup(), memory
-+		 * allocation is not necessary here, so it cannot fail.
-+		 */
-+		vma_iter_bulk_store(&vmi, tmp);
-+
-+		mm->map_count++;
-+
-+		if (tmp->vm_ops && tmp->vm_ops->open)
-+			tmp->vm_ops->open(tmp);
-+
- 		file = tmp->vm_file;
- 		if (file) {
- 			struct address_space *mapping = file->f_mapping;
-@@ -728,25 +745,9 @@ static __latent_entropy int dup_mmap(str
- 			i_mmap_unlock_write(mapping);
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -755,6 +755,7 @@ static irqreturn_t stm32_usart_interrupt
+ 	const struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
+ 	u32 sr;
+ 	unsigned int size;
++	irqreturn_t ret = IRQ_NONE;
+ 
+ 	sr = readl_relaxed(port->membase + ofs->isr);
+ 
+@@ -763,11 +764,14 @@ static irqreturn_t stm32_usart_interrupt
+ 	    (sr & USART_SR_TC)) {
+ 		stm32_usart_tc_interrupt_disable(port);
+ 		stm32_usart_rs485_rts_disable(port);
++		ret = IRQ_HANDLED;
+ 	}
+ 
+-	if ((sr & USART_SR_RTOF) && ofs->icr != UNDEF_REG)
++	if ((sr & USART_SR_RTOF) && ofs->icr != UNDEF_REG) {
+ 		writel_relaxed(USART_ICR_RTOCF,
+ 			       port->membase + ofs->icr);
++		ret = IRQ_HANDLED;
++	}
+ 
+ 	if ((sr & USART_SR_WUF) && ofs->icr != UNDEF_REG) {
+ 		/* Clear wake up flag and disable wake up interrupt */
+@@ -776,6 +780,7 @@ static irqreturn_t stm32_usart_interrupt
+ 		stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_WUFIE);
+ 		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
+ 			pm_wakeup_event(tport->tty->dev, 0);
++		ret = IRQ_HANDLED;
+ 	}
+ 
+ 	/*
+@@ -790,6 +795,7 @@ static irqreturn_t stm32_usart_interrupt
+ 			uart_unlock_and_check_sysrq(port);
+ 			if (size)
+ 				tty_flip_buffer_push(tport);
++			ret = IRQ_HANDLED;
  		}
+ 	}
  
--		/*
--		 * Copy/update hugetlb private vma information.
--		 */
--		if (is_vm_hugetlb_page(tmp))
--			hugetlb_dup_vma_private(tmp);
--
--		/*
--		 * Link the vma into the MT. After using __mt_dup(), memory
--		 * allocation is not necessary here, so it cannot fail.
--		 */
--		vma_iter_bulk_store(&vmi, tmp);
--
--		mm->map_count++;
- 		if (!(tmp->vm_flags & VM_WIPEONFORK))
- 			retval = copy_page_range(tmp, mpnt);
+@@ -797,6 +803,7 @@ static irqreturn_t stm32_usart_interrupt
+ 		spin_lock(&port->lock);
+ 		stm32_usart_transmit_chars(port);
+ 		spin_unlock(&port->lock);
++		ret = IRQ_HANDLED;
+ 	}
  
--		if (tmp->vm_ops && tmp->vm_ops->open)
--			tmp->vm_ops->open(tmp);
--
- 		if (retval) {
- 			mpnt = vma_next(&vmi);
- 			goto loop_out;
+ 	/* Receiver timeout irq for DMA RX */
+@@ -806,9 +813,10 @@ static irqreturn_t stm32_usart_interrupt
+ 		uart_unlock_and_check_sysrq(port);
+ 		if (size)
+ 			tty_flip_buffer_push(tport);
++		ret = IRQ_HANDLED;
+ 	}
+ 
+-	return IRQ_HANDLED;
++	return ret;
+ }
+ 
+ static void stm32_usart_set_mctrl(struct uart_port *port, unsigned int mctrl)
 
 
 
