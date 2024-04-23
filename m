@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-41005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A579D8AF9F4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BCC18AFA8A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5899F1F284EB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B49D61C2290A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62E0147C9F;
-	Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D447147C7C;
+	Tue, 23 Apr 2024 21:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzKPvg0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Nk3FU30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3262143C57;
-	Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C75D143C49;
+	Tue, 23 Apr 2024 21:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908612; cv=none; b=I68+vX8+6SrKEa7ETpzWzkXQQkmNIViqP4eO2mhiUXIn7edSuQy+oGvYbhSfQmLhNsQ38eDqICamsvcHHfeINJ/Clkqh+ayCpfeMjA7jwiW3rSVEdEmuP7I3W9yxlStFT1X13dEP/gMpPIflIGbiV0Vhi2GPnTHk6TViRBhS3U0=
+	t=1713908719; cv=none; b=ofYCIeYegIx6QM/46KX5GNVeDJpbtl6U+mRNesHVuD4HKhZZVLUeCkh8PiswIyezEiDegCZvjjHIx+O+q+7fCN5fyt4U8kz0PTC8BVJKMjRAS/PSYhAcc39EVcUxeA8Uq4Hei+ikelsMXgBuvU1CpnNaZrTBJxe4BybAbvCSz2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908612; c=relaxed/simple;
-	bh=TUWd2auQxia9Bn16rfkiCn2YBR2c9in61RRr6ynOVcY=;
+	s=arc-20240116; t=1713908719; c=relaxed/simple;
+	bh=Q8uPlxIGsifBbUL2rwlllQ+0tIy4vdJn2WkL3CBE72s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RK+ag/O+B8l+zhxNlzsS523uK7t/HUf8RCoqmFkw2jPBqMA/EYApvFLmGLJiCKmsVBSqogCVI/ZmnEkhTQG3pqBIR4E7uzuf5ndXC/Uob8lQ0BMW1k33Q7UnZyftDhSd/kxAGoQ8yt1mQfxigcb2dAmKqG0wY5mb4gBEXFaoaDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzKPvg0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77881C116B1;
-	Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
+	 MIME-Version; b=GIbC2rh8Ng7/ldO8Y1RnVeyJAAgrpU+oflTs95RsSJmvRPqA/XDLXTKOvd3FyJMBxtjsBCMw1SsmrqEQoV3TpCGmCAlY+olZqiJYthM6i8lX+UBORCXf1xpGw95JLjazOhwXWNFBmbdG+VkxESj7fZLRTiwbz9KexPL5V+iztCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Nk3FU30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBE7C32782;
+	Tue, 23 Apr 2024 21:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908612;
-	bh=TUWd2auQxia9Bn16rfkiCn2YBR2c9in61RRr6ynOVcY=;
+	s=korg; t=1713908719;
+	bh=Q8uPlxIGsifBbUL2rwlllQ+0tIy4vdJn2WkL3CBE72s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MzKPvg0PV72kM/626FZcjmwfGbT2IprGDIftnpI11GiaE730FaoPqowxQ0jSQQ5qe
-	 ECUmVnr/UghAEE/A9sJNz0tToLpmxzdZyFr8hVq3L/xv7xb/84D1K+/4IXrEfdiVDE
-	 OqSF9W5v6Ngkk51ZXrelkc72bBDn7QhxvUt4/Lhk=
+	b=0Nk3FU30QR4tSDIx74YoOIW0LhBLFBkmYenXK7D0BwPQeOpZX3BUw0j8WpVtGOFru
+	 UAqL5+idxyDRketRsgJEFZZLtJ6hIISm/MWBOgmQWS11mppIJHBmWW1WpVy3cEkPaK
+	 1LX34pCCRLs3AuY9yv6MXoqN7J4jECFDat59VgXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/158] PCI/DPC: Use FIELD_GET()
+Subject: [PATCH 6.1 052/141] s390/cio: fix race condition during online processing
 Date: Tue, 23 Apr 2024 14:38:40 -0700
-Message-ID: <20240423213858.460070742@linuxfoundation.org>
+Message-ID: <20240423213854.949523699@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +62,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 9a9eec4765737b9b2a8d6ae03de6480a5f12dd5c ]
+[ Upstream commit 2d8527f2f911fab84aec04df4788c0c23af3df48 ]
 
-Use FIELD_GET() to remove dependencies on the field position, i.e., the
-shift value. No functional change intended.
+A race condition exists in ccw_device_set_online() that can cause the
+online process to fail, leaving the affected device in an inconsistent
+state. As a result, subsequent attempts to set that device online fail
+with return code ENODEV.
 
-Link: https://lore.kernel.org/r/20231018113254.17616-5-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+The problem occurs when a path verification request arrives after
+a wait for final device state completed, but before the result state
+is evaluated.
+
+Fix this by ensuring that the CCW-device lock is held between
+determining final state and checking result state.
+
+Note that since:
+
+commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+
+path verification requests are much more likely to occur during boot,
+resulting in an increased chance of this race condition occurring.
+
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/dpc.c        |    5 +++--
- drivers/pci/quirks.c          |    2 +-
- include/uapi/linux/pci_regs.h |    1 +
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/s390/cio/device.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -9,6 +9,7 @@
- #define dev_fmt(fmt) "DPC: " fmt
+diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
+index 02813b63f90fd..5666b9cc5d296 100644
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -360,10 +360,8 @@ int ccw_device_set_online(struct ccw_device *cdev)
  
- #include <linux/aer.h>
-+#include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/init.h>
-@@ -202,7 +203,7 @@ static void dpc_process_rp_pio_error(str
- 
- 	/* Get First Error Pointer */
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &dpc_status);
--	first_error = (dpc_status & 0x1f00) >> 8;
-+	first_error = FIELD_GET(PCI_EXP_DPC_RP_PIO_FEP, dpc_status);
- 
- 	for (i = 0; i < ARRAY_SIZE(rp_pio_error_string); i++) {
- 		if ((status & ~mask) & (1 << i))
-@@ -338,7 +339,7 @@ void pci_dpc_init(struct pci_dev *pdev)
- 	/* Quirks may set dpc_rp_log_size if device or firmware is buggy */
- 	if (!pdev->dpc_rp_log_size) {
- 		pdev->dpc_rp_log_size =
--			(cap & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8;
-+				FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, cap);
- 		if (pdev->dpc_rp_log_size < 4 || pdev->dpc_rp_log_size > 9) {
- 			pci_err(pdev, "RP PIO log size %u is invalid\n",
- 				pdev->dpc_rp_log_size);
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6198,7 +6198,7 @@ static void dpc_log_size(struct pci_dev
- 	if (!(val & PCI_EXP_DPC_CAP_RP_EXT))
- 		return;
- 
--	if (!((val & PCI_EXP_DPC_RP_PIO_LOG_SIZE) >> 8)) {
-+	if (FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, val) == 0) {
- 		pci_info(dev, "Overriding RP PIO Log Size to 4\n");
- 		dev->dpc_rp_log_size = 4;
+ 	spin_lock_irq(cdev->ccwlock);
+ 	ret = ccw_device_online(cdev);
+-	spin_unlock_irq(cdev->ccwlock);
+-	if (ret == 0)
+-		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
+-	else {
++	if (ret) {
++		spin_unlock_irq(cdev->ccwlock);
+ 		CIO_MSG_EVENT(0, "ccw_device_online returned %d, "
+ 			      "device 0.%x.%04x\n",
+ 			      ret, cdev->private->dev_id.ssid,
+@@ -372,7 +370,12 @@ int ccw_device_set_online(struct ccw_device *cdev)
+ 		put_device(&cdev->dev);
+ 		return ret;
  	}
---- a/include/uapi/linux/pci_regs.h
-+++ b/include/uapi/linux/pci_regs.h
-@@ -1045,6 +1045,7 @@
- #define  PCI_EXP_DPC_STATUS_INTERRUPT	    0x0008 /* Interrupt Status */
- #define  PCI_EXP_DPC_RP_BUSY		    0x0010 /* Root Port Busy */
- #define  PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT 0x0060 /* Trig Reason Extension */
-+#define  PCI_EXP_DPC_RP_PIO_FEP		    0x1f00 /* RP PIO First Err Ptr */
- 
- #define PCI_EXP_DPC_SOURCE_ID		 0x0A	/* DPC Source Identifier */
- 
+-	spin_lock_irq(cdev->ccwlock);
++	/* Wait until a final state is reached */
++	while (!dev_fsm_final_state(cdev)) {
++		spin_unlock_irq(cdev->ccwlock);
++		wait_event(cdev->private->wait_q, dev_fsm_final_state(cdev));
++		spin_lock_irq(cdev->ccwlock);
++	}
+ 	/* Check if online processing was successful */
+ 	if ((cdev->private->state != DEV_STATE_ONLINE) &&
+ 	    (cdev->private->state != DEV_STATE_W4SENSE)) {
+-- 
+2.43.0
+
 
 
 
