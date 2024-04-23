@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-40928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD288AF9A3
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE398AFA3B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C25E5B2A6EB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C400282388
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6CC145B25;
-	Tue, 23 Apr 2024 21:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6A81442E8;
+	Tue, 23 Apr 2024 21:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QL9eAH1U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9yUs/nZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C020885274;
-	Tue, 23 Apr 2024 21:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF95145330;
+	Tue, 23 Apr 2024 21:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908560; cv=none; b=AQb/OKDsHyQLbjLrK2N2a/JAgAxoNdkv4aokq7zIfHqQNCllNF0s9klTAxzd9m91juRT3j4Q9AOlJpeAcnjQxZHIYxeXjvoBwCBKS+ejsXr6ZXmPo9wCBf1+zaWr8LsgI4LNWJdv9elVfMxCLV9lfB/5q5pDoQ7uxnRErHmtcbg=
+	t=1713908658; cv=none; b=Ga4kCMPPt7RtFwwuoVUUHtDt8FY+W/kYCKe3GYUY7DOpgvgVXniN9aMzOHCI06Z0/qMhtU5ZfH3lGJNifOEuIonjz9c+1++69hUjQqbLwqJPRto3rB8LYWb+YhL0Opdf4wyw380kN6B3m+ETAXAvX5yOvflwpwTRDaNmc9WphYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908560; c=relaxed/simple;
-	bh=HO3LLj9BrHRilh1v5egcQVu7Tan1DJpbQAlk2INj8w0=;
+	s=arc-20240116; t=1713908658; c=relaxed/simple;
+	bh=G+jDSPulQCWm6WWQ66LDKKjGIFjbnLNlpSced28vEUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TX0yOjDuE7+/oOXkGQT9c+CGfupMrtzIxYO8RA36DAxI8ijEuPDy/EBifYnAoxuxggP7PtmerAgfUzfONRSJ/V096FXACMb7Qg/QwEFarEK4/wScoUIM7eI45MrfmbeVgzwiBGUiytp+LAVLG9EBVoZBeI5XBkMz534MvXzsvBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QL9eAH1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4495BC4AF08;
-	Tue, 23 Apr 2024 21:42:40 +0000 (UTC)
+	 MIME-Version; b=jZixRs60DOCS8KWDjserjIlQcJRwbU747naE26Rhgvc44O/VH7cqUXfrRquaUCtQFDWjKY06VCBLfArppO6b82NTrRFtN4pDOP+1oSuIOD1yVUu/mNJOWHv6Jzg8jTSvt+DIzoBpj+PzhwZ2frifkI13+slSbeuFco2ON9Gh6qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9yUs/nZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B72C3277B;
+	Tue, 23 Apr 2024 21:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908560;
-	bh=HO3LLj9BrHRilh1v5egcQVu7Tan1DJpbQAlk2INj8w0=;
+	s=korg; t=1713908658;
+	bh=G+jDSPulQCWm6WWQ66LDKKjGIFjbnLNlpSced28vEUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QL9eAH1UAcgqNkbkk9gIlkjrkeFkRScSs7aB8th1UWTuGFHm+M2EpvnpE6fwe/i7L
-	 b8vjUgqAujLPoaS32rkLrHE2sZadqwcBAm2fs3ancwCGRrEBtqAfVVx4zW93TlctOJ
-	 D2bg45oPA3RkfCy3R+EAOCtWEBtrUGJjx4KytwXI=
+	b=E9yUs/nZA3cXYKopUFALFqarQdcgjyuW7/5FjM8k/LovixIp1+4AWu/ik9Z/I2AOH
+	 DIIU+3ri+ReQqVzbWDTyhRPQc1zaIACuKazs7I9X90XweAXyGcCHR9tafhM1LnmS3+
+	 YOqHMV25ofQLKBqrX8fd8lmCrY2uG0d5BTsRNiNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>
-Subject: [PATCH 6.8 147/158] drm/vmwgfx: Fix crtcs atomic check conditional
+	syzbot+900d58a45dcaab9e4821@syzkaller.appspotmail.com,
+	Vipin Sharma <vipinsh@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	David Matlack <dmatlack@google.com>
+Subject: [PATCH 6.6 132/158] KVM: x86/mmu: Write-protect L2 SPTEs in TDP MMU when clearing dirty status
 Date: Tue, 23 Apr 2024 14:39:29 -0700
-Message-ID: <20240423213900.633679341@linuxfoundation.org>
+Message-ID: <20240423213859.993739101@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: David Matlack <dmatlack@google.com>
 
-commit a60ccade88f926e871a57176e86a34bbf0db0098 upstream.
+commit 2673dfb591a359c75080dd5af3da484b89320d22 upstream.
 
-The conditional was supposed to prevent enabling of a crtc state
-without a set primary plane. Accidently it also prevented disabling
-crtc state with a set primary plane. Neither is correct.
+Check kvm_mmu_page_ad_need_write_protect() when deciding whether to
+write-protect or clear D-bits on TDP MMU SPTEs, so that the TDP MMU
+accounts for any role-specific reasons for disabling D-bit dirty logging.
 
-Fix the conditional and just driver-warn when a crtc state has been
-enabled without a primary plane which will help debug broken userspace.
+Specifically, TDP MMU SPTEs must be write-protected when the TDP MMU is
+being used to run an L2 (i.e. L1 has disabled EPT) and PML is enabled.
+KVM always disables PML when running L2, even when L1 and L2 GPAs are in
+the some domain, so failing to write-protect TDP MMU SPTEs will cause
+writes made by L2 to not be reflected in the dirty log.
 
-Fixes IGT's kms_atomic_interruptible and kms_atomic_transition tests.
-
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 06ec41909e31 ("drm/vmwgfx: Add and connect CRTC helper functions")
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.12+
-Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240412025511.78553-5-zack.rusin@broadcom.com
+Reported-by: syzbot+900d58a45dcaab9e4821@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=900d58a45dcaab9e4821
+Fixes: 5982a5392663 ("KVM: x86/mmu: Use kvm_ad_enabled() to determine if TDP MMU SPTEs need wrprot")
+Cc: stable@vger.kernel.org
+Cc: Vipin Sharma <vipinsh@google.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
+Link: https://lore.kernel.org/r/20240315230541.1635322-2-dmatlack@google.com
+[sean: massage shortlog and changelog, tweak ternary op formatting]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/x86/kvm/mmu/tdp_mmu.c |   21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -932,6 +932,7 @@ int vmw_du_cursor_plane_atomic_check(str
- int vmw_du_crtc_atomic_check(struct drm_crtc *crtc,
- 			     struct drm_atomic_state *state)
- {
-+	struct vmw_private *vmw = vmw_priv(crtc->dev);
- 	struct drm_crtc_state *new_state = drm_atomic_get_new_crtc_state(state,
- 									 crtc);
- 	struct vmw_display_unit *du = vmw_crtc_to_du(new_state->crtc);
-@@ -939,9 +940,13 @@ int vmw_du_crtc_atomic_check(struct drm_
- 	bool has_primary = new_state->plane_mask &
- 			   drm_plane_mask(crtc->primary);
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1506,6 +1506,16 @@ void kvm_tdp_mmu_try_split_huge_pages(st
+ 	}
+ }
  
--	/* We always want to have an active plane with an active CRTC */
--	if (has_primary != new_state->enable)
--		return -EINVAL;
++static bool tdp_mmu_need_write_protect(struct kvm_mmu_page *sp)
++{
 +	/*
-+	 * This is fine in general, but broken userspace might expect
-+	 * some actual rendering so give a clue as why it's blank.
++	 * All TDP MMU shadow pages share the same role as their root, aside
++	 * from level, so it is valid to key off any shadow page to determine if
++	 * write protection is needed for an entire tree.
 +	 */
-+	if (new_state->enable && !has_primary)
-+		drm_dbg_driver(&vmw->drm,
-+			       "CRTC without a primary plane will be blank.\n");
++	return kvm_mmu_page_ad_need_write_protect(sp) || !kvm_ad_enabled();
++}
++
+ /*
+  * Clear the dirty status of all the SPTEs mapping GFNs in the memslot. If
+  * AD bits are enabled, this will involve clearing the dirty bit on each SPTE.
+@@ -1516,7 +1526,8 @@ void kvm_tdp_mmu_try_split_huge_pages(st
+ static bool clear_dirty_gfn_range(struct kvm *kvm, struct kvm_mmu_page *root,
+ 			   gfn_t start, gfn_t end)
+ {
+-	u64 dbit = kvm_ad_enabled() ? shadow_dirty_mask : PT_WRITABLE_MASK;
++	const u64 dbit = tdp_mmu_need_write_protect(root) ? PT_WRITABLE_MASK :
++							    shadow_dirty_mask;
+ 	struct tdp_iter iter;
+ 	bool spte_set = false;
  
+@@ -1530,7 +1541,7 @@ retry:
+ 		if (!is_shadow_present_pte(iter.old_spte))
+ 			continue;
  
- 	if (new_state->connector_mask != connector_mask &&
+-		KVM_MMU_WARN_ON(kvm_ad_enabled() &&
++		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
+ 				spte_ad_need_write_protect(iter.old_spte));
+ 
+ 		if (!(iter.old_spte & dbit))
+@@ -1578,8 +1589,8 @@ bool kvm_tdp_mmu_clear_dirty_slot(struct
+ static void clear_dirty_pt_masked(struct kvm *kvm, struct kvm_mmu_page *root,
+ 				  gfn_t gfn, unsigned long mask, bool wrprot)
+ {
+-	u64 dbit = (wrprot || !kvm_ad_enabled()) ? PT_WRITABLE_MASK :
+-						   shadow_dirty_mask;
++	const u64 dbit = (wrprot || tdp_mmu_need_write_protect(root)) ? PT_WRITABLE_MASK :
++									shadow_dirty_mask;
+ 	struct tdp_iter iter;
+ 
+ 	lockdep_assert_held_write(&kvm->mmu_lock);
+@@ -1591,7 +1602,7 @@ static void clear_dirty_pt_masked(struct
+ 		if (!mask)
+ 			break;
+ 
+-		KVM_MMU_WARN_ON(kvm_ad_enabled() &&
++		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
+ 				spte_ad_need_write_protect(iter.old_spte));
+ 
+ 		if (iter.level > PG_LEVEL_4K ||
 
 
 
