@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-41216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF92E8AFAC6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06BA8AFB29
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 849931F29800
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99704B2CF6A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3557814A61E;
-	Tue, 23 Apr 2024 21:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55F414BFBF;
+	Tue, 23 Apr 2024 21:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGHSFDHH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQvliwgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AD914A611;
-	Tue, 23 Apr 2024 21:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74626143C6C;
+	Tue, 23 Apr 2024 21:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908757; cv=none; b=Fp/jfDBV4kfYK1XjatXRaqkNbocUGxH2Vk1Rt9wKG26Ljfulb0wBjpZfSZNJtK4fenMSecvJNG7R5xU0v1LbZlf/IE+RsIji9wCiJryEW0DAdaY0rwtcQorSHydTtZHLzlOJSln9O0bP3YK8+1NfOj6OORcPUzLngYr4CNqY/D0=
+	t=1713908802; cv=none; b=iz1ab4kWYa0gcVeHjTNYlzn1gTWazIq9b8JhlJ2rqdvuoKS+4K4MS5WIDvC5nsiWm5Z4CeL0Sb4btg/oteqEG1iONydGdYbT3FiMPf+MpmfkIHNTq5lX+Z3f6WGCGTQP8RJRfwF2W/re9wsx86uSh5GFQyOi4iqgpgBKUCxnLQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908757; c=relaxed/simple;
-	bh=hmvFB+QjwpaSQnc1MvcAQazA/GcynFSnE8UacCe/dNY=;
+	s=arc-20240116; t=1713908802; c=relaxed/simple;
+	bh=CR9aSOCH06gBunoeAcqvP5GIXNJ214oj8ZXaLssKYaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lO93B1QQ96hjUzPVorvCgVvDxY5KTTt2D+2gm+66odRygJ3SVVZ06i/nGUdOqjcMNt3WQMnlxPmK1XFTiarKuzhi1IeTkm7oJujNPmWgMHoSbjV631c8ZjQh/GM/ImRcz+wrmqrqCBcSq2RcG8/f/yavcVKBUkde2zAM5Nk/sF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGHSFDHH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA10C32782;
-	Tue, 23 Apr 2024 21:45:56 +0000 (UTC)
+	 MIME-Version; b=f3C73aQwMw/w3LW0Lz5Ji3KIARvXFVRzHwwgtHVfDb/O+WAuPN26hEwl3vPKgrl+Aw0l3byCxD37xxYVw4wvxopK0UJOIGFprnND0oXGVuHI7p4VCR8EtktHRFd4nW07mUkuzTGZJNPuDrBl6qrBvwlutwxxa5ToT5U3rFoPQRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQvliwgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B218C3277B;
+	Tue, 23 Apr 2024 21:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908756;
-	bh=hmvFB+QjwpaSQnc1MvcAQazA/GcynFSnE8UacCe/dNY=;
+	s=korg; t=1713908802;
+	bh=CR9aSOCH06gBunoeAcqvP5GIXNJ214oj8ZXaLssKYaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGHSFDHHQEsJ4UIRk4OO6lx0Gzi+qBgLtlxirbsF7ld7y/tTRDZ1qeGbeVlTljxEb
-	 AEgc2gp7QDGJML14SpycgWck8pWoWT3mEflddqMHxwg4SW4oX5q/fH2TGWIhiApd6p
-	 CMOjT1TGIBn6oRp1fjHxtB/8NX9s/mJS/c1f76jY=
+	b=HQvliwgfNKpRD83qUfv8E9cXawynWbqDd0HhfUrmHP2AFgI+tGonSWf/w62H/qvAQ
+	 kS8OA8qlzVZG3sHv4Rx6+71DQ2loJCTUfvjA0PAaV4awrLICemuWDFdcLyCoJaJ6B/
+	 DvCFsa5a6NCn98ysxkrPTTiv1H5DjwlSBJF29NOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 6.1 107/141] serial: stm32: Reset .throttled state in .startup()
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 22/71] af_unix: Call manage_oob() for every skb in unix_stream_read_generic().
 Date: Tue, 23 Apr 2024 14:39:35 -0700
-Message-ID: <20240423213856.660806575@linuxfoundation.org>
+Message-ID: <20240423213844.904442048@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,44 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit ea2624b5b829b8f93c0dce25721d835969b34faf upstream.
+[ Upstream commit 283454c8a123072e5c386a5a2b5fc576aa455b6f ]
 
-When an UART is opened that still has .throttled set from a previous
-open, the RX interrupt is enabled but the irq handler doesn't consider
-it. This easily results in a stuck irq with the effect to occupy the CPU
-in a tight loop.
+When we call recv() for AF_UNIX socket, we first peek one skb and
+calls manage_oob() to check if the skb is sent with MSG_OOB.
 
-So reset the throttle state in .startup() to ensure that RX irqs are
-handled.
+However, when we fetch the next (and the following) skb, manage_oob()
+is not called now, leading a wrong behaviour.
 
-Fixes: d1ec8a2eabe9 ("serial: stm32: update throttle and unthrottle ops for dma mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/a784f80d3414f7db723b2ec66efc56e1ad666cbf.1713344161.git.u.kleine-koenig@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's say a socket send()s "hello" with MSG_OOB and the peer tries
+to recv() 5 bytes with MSG_PEEK.  Here, we should get only "hell"
+without 'o', but actually not:
+
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  >>> c1.send(b'hello', MSG_OOB)
+  5
+  >>> c2.recv(5, MSG_PEEK)
+  b'hello'
+
+The first skb fills 4 bytes, and the next skb is peeked but not
+properly checked by manage_oob().
+
+Let's move up the again label to call manage_oob() for evry skb.
+
+With this patch:
+
+  >>> from socket import *
+  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+  >>> c1.send(b'hello', MSG_OOB)
+  5
+  >>> c2.recv(5, MSG_PEEK)
+  b'hell'
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240410171016.7621-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/stm32-usart.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -1021,6 +1021,7 @@ static int stm32_usart_startup(struct ua
- 		val |= USART_CR2_SWAP;
- 		writel_relaxed(val, port->membase + ofs->cr2);
- 	}
-+	stm32_port->throttled = false;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 628d97c195a7e..e2a2e22d210f6 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2644,6 +2644,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 		last = skb = skb_peek(&sk->sk_receive_queue);
+ 		last_len = last ? last->len : 0;
  
- 	/* RX FIFO Flush */
- 	if (ofs->rqr != UNDEF_REG)
++again:
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+ 		if (skb) {
+ 			skb = manage_oob(skb, sk, flags, copied);
+@@ -2655,7 +2656,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 			}
+ 		}
+ #endif
+-again:
+ 		if (skb == NULL) {
+ 			if (copied >= target)
+ 				goto unlock;
+-- 
+2.43.0
+
 
 
 
