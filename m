@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64B68AF9E4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590FB8AF94B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 147161C2264C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEF191F20F34
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E10147C66;
-	Tue, 23 Apr 2024 21:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EACB144D23;
+	Tue, 23 Apr 2024 21:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Law2VLZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="te33cjGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425BF143C48;
-	Tue, 23 Apr 2024 21:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6DB143C5A;
+	Tue, 23 Apr 2024 21:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908602; cv=none; b=TVpmmQT9lsDR7rfLmv6qsbX3E2011PiBQ3RDrjGjdD4kicelIMAspbrMsTrritsrZC1TXCWxr3glv9zt23v/J6aHJgdDjcH2c1S6c1JgklUPHaTGxZVpaL5qUIYBPGhziDTtwXgeix+UdIP/2+k6U/OdTYwubcTGeQAdftDz+6k=
+	t=1713908502; cv=none; b=Q2/f4R3wGQh+WqEGEr3tzNd9MkQBkaFbM3aCn12p4z2uHVvX+rfs2WsDXpkU15iBn1XXso9RZGY5BSkDovYYZw0eeQxDz7CLDY2YSxRCKWddVLOavdJRSrILftMhvedYyCTOdEbpvAVzDeYVGpeuv9i1yHrlU/YnlXMZh+DIn2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908602; c=relaxed/simple;
-	bh=kazA/idNaiYW4RQs2iwkn/h3vtSXCuw4jaxd2QBAca8=;
+	s=arc-20240116; t=1713908502; c=relaxed/simple;
+	bh=p/XUCJVADU0pYA8bD0aI9iJx1VA6Do9SrF4FzBSNV6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+2yT5F1ya/k0u3aZDOcK1FrVSyQWWNiIQ2tNRgsSDmoMo0YNz4lJQ8u+s1dzaLa6F5izYkyi+4tZjiGPaKNrudOcRIKDWhyNq3Mi7s3Mr1EB+KVK3CAQcn9wr/oHNrgE0IIWidRAMuH72EQlKfsjejZg8uU9dVGaFvNlfaPOYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Law2VLZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA085C32781;
-	Tue, 23 Apr 2024 21:43:21 +0000 (UTC)
+	 MIME-Version; b=RTDsQ+8JB6JV0B02zAAbY73hDaMb7wHLK7rAlkNWeeue1SKXdFMl7WpGvqj5NEqyMtQsd0cYafBq1vVUWcYZvwEAgGiEAjOmVfNr0adL4YN9iFTs78U3Y+UQM2tSgoITwNHvwCeOTKVGzn6lNkOMLJTUqNc++FGgZBC0z9ejxGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=te33cjGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17ADC4AF07;
+	Tue, 23 Apr 2024 21:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908601;
-	bh=kazA/idNaiYW4RQs2iwkn/h3vtSXCuw4jaxd2QBAca8=;
+	s=korg; t=1713908501;
+	bh=p/XUCJVADU0pYA8bD0aI9iJx1VA6Do9SrF4FzBSNV6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Law2VLZXuxdmKwo5cAQQp+FNgj0/y2Aj6MyV/uBtNMs2R+ly63VDdH+ehLD5kHHcW
-	 I2lEs5A5gukpS7GK6G7EjUJbKOMnrmLsGgohxZfYgJI7IfY3tuAtZH52jdccG3i/pn
-	 7F1luvEU1lEfjkg8uj/vCsAj59teOHgdAOWHj4NY=
+	b=te33cjGbc9b/gKW7oodE3DY7LMp3iUB//UhVshRWSw7uqNgxzNTx1tS36CBiGWEap
+	 p6Gn6rKRbnqcevdKoD2gpLzPYPCYaipIoBSRB+dfnWLzpLnh0+fzoWxGhpZeouCTH8
+	 YslNIyCatdZYc9q2YK0oyllgN9O2AwrjHMBlVwqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/158] drm: nv04: Fix out of bounds access
+Subject: [PATCH 6.8 081/158] clk: Get runtime PM before walking tree for clk_summary
 Date: Tue, 23 Apr 2024 14:38:23 -0700
-Message-ID: <20240423213857.911680069@linuxfoundation.org>
+Message-ID: <20240423213858.583240245@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kobuk <m.kobuk@ispras.ru>
+From: Stephen Boyd <sboyd@kernel.org>
 
-[ Upstream commit cf92bb778eda7830e79452c6917efa8474a30c1e ]
+[ Upstream commit 9d1e795f754db1ac3344528b7af0b17b8146f321 ]
 
-When Output Resource (dcb->or) value is assigned in
-fabricate_dcb_output(), there may be out of bounds access to
-dac_users array in case dcb->or is zero because ffs(dcb->or) is
-used as index there.
-The 'or' argument of fabricate_dcb_output() must be interpreted as a
-number of bit to set, not value.
+Similar to the previous commit, we should make sure that all devices are
+runtime resumed before printing the clk_summary through debugfs. Failure
+to do so would result in a deadlock if the thread is resuming a device
+to print clk state and that device is also runtime resuming in another
+thread, e.g the screen is turning on and the display driver is starting
+up. We remove the calls to clk_pm_runtime_{get,put}() in this path
+because they're superfluous now that we know the devices are runtime
+resumed. This also squashes a bug where the return value of
+clk_pm_runtime_get() wasn't checked, leading to an RPM count underflow
+on error paths.
 
-Utilize macros from 'enum nouveau_or' in calls instead of hardcoding.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2e5702aff395 ("drm/nouveau: fabricate DCB encoder table for iMac G4")
-Fixes: 670820c0e6a9 ("drm/nouveau: Workaround incorrect DCB entry on a GeForce3 Ti 200.")
-Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240411110854.16701-1-m.kobuk@ispras.ru
+Fixes: 1bb294a7981c ("clk: Enable/Disable runtime PM for clk_summary")
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Cc: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240325184204.745706-6-sboyd@kernel.org
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bios.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/clk/clk.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_bios.c b/drivers/gpu/drm/nouveau/nouveau_bios.c
-index 189903b65edc9..48cf593383b34 100644
---- a/drivers/gpu/drm/nouveau/nouveau_bios.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
-@@ -23,6 +23,7 @@
-  */
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 7162b45da91f8..cf1fc0edfdbca 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -3321,9 +3321,7 @@ static void clk_summary_show_subtree(struct seq_file *s, struct clk_core *c,
+ {
+ 	struct clk_core *child;
  
- #include "nouveau_drv.h"
-+#include "nouveau_bios.h"
- #include "nouveau_reg.h"
- #include "dispnv04/hw.h"
- #include "nouveau_encoder.h"
-@@ -1675,7 +1676,7 @@ apply_dcb_encoder_quirks(struct drm_device *dev, int idx, u32 *conn, u32 *conf)
- 	 */
- 	if (nv_match_device(dev, 0x0201, 0x1462, 0x8851)) {
- 		if (*conn == 0xf2005014 && *conf == 0xffffffff) {
--			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, 1);
-+			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, DCB_OUTPUT_B);
- 			return false;
- 		}
- 	}
-@@ -1761,26 +1762,26 @@ fabricate_dcb_encoder_table(struct drm_device *dev, struct nvbios *bios)
- #ifdef __powerpc__
- 	/* Apple iMac G4 NV17 */
- 	if (of_machine_is_compatible("PowerMac4,5")) {
--		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, 1);
--		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, 2);
-+		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, DCB_OUTPUT_B);
-+		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, DCB_OUTPUT_C);
- 		return;
- 	}
- #endif
+-	clk_pm_runtime_get(c);
+ 	clk_summary_show_one(s, c, level);
+-	clk_pm_runtime_put(c);
  
- 	/* Make up some sane defaults */
- 	fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG,
--			     bios->legacy.i2c_indices.crt, 1, 1);
-+			     bios->legacy.i2c_indices.crt, 1, DCB_OUTPUT_B);
+ 	hlist_for_each_entry(child, &c->children, child_node)
+ 		clk_summary_show_subtree(s, child, level + 1);
+@@ -3333,11 +3331,15 @@ static int clk_summary_show(struct seq_file *s, void *data)
+ {
+ 	struct clk_core *c;
+ 	struct hlist_head **lists = s->private;
++	int ret;
  
- 	if (nv04_tv_identify(dev, bios->legacy.i2c_indices.tv) >= 0)
- 		fabricate_dcb_output(dcb, DCB_OUTPUT_TV,
- 				     bios->legacy.i2c_indices.tv,
--				     all_heads, 0);
-+				     all_heads, DCB_OUTPUT_A);
+ 	seq_puts(s, "                                 enable  prepare  protect                                duty  hardware                            connection\n");
+ 	seq_puts(s, "   clock                          count    count    count        rate   accuracy phase  cycle    enable   consumer                         id\n");
+ 	seq_puts(s, "---------------------------------------------------------------------------------------------------------------------------------------------\n");
  
- 	else if (bios->tmds.output0_script_ptr ||
- 		 bios->tmds.output1_script_ptr)
- 		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS,
- 				     bios->legacy.i2c_indices.panel,
--				     all_heads, 1);
-+				     all_heads, DCB_OUTPUT_B);
++	ret = clk_pm_runtime_get_all();
++	if (ret)
++		return ret;
+ 
+ 	clk_prepare_lock();
+ 
+@@ -3346,6 +3348,7 @@ static int clk_summary_show(struct seq_file *s, void *data)
+ 			clk_summary_show_subtree(s, c, 0);
+ 
+ 	clk_prepare_unlock();
++	clk_pm_runtime_put_all();
+ 
+ 	return 0;
  }
+@@ -3393,8 +3396,14 @@ static int clk_dump_show(struct seq_file *s, void *data)
+ 	struct clk_core *c;
+ 	bool first_node = true;
+ 	struct hlist_head **lists = s->private;
++	int ret;
++
++	ret = clk_pm_runtime_get_all();
++	if (ret)
++		return ret;
  
- static int
+ 	seq_putc(s, '{');
++
+ 	clk_prepare_lock();
+ 
+ 	for (; *lists; lists++) {
+@@ -3407,6 +3416,7 @@ static int clk_dump_show(struct seq_file *s, void *data)
+ 	}
+ 
+ 	clk_prepare_unlock();
++	clk_pm_runtime_put_all();
+ 
+ 	seq_puts(s, "}\n");
+ 	return 0;
 -- 
 2.43.0
 
