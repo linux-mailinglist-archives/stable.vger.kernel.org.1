@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-40788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9F58AF911
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CD78AF9B4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 160FC1F2278A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF4ADB2A84C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68A8143C47;
-	Tue, 23 Apr 2024 21:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F8C1448EA;
+	Tue, 23 Apr 2024 21:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jg/4UHwB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huQ/cdb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8359214389A;
-	Tue, 23 Apr 2024 21:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253FF1420BE;
+	Tue, 23 Apr 2024 21:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908463; cv=none; b=mo/MuuVYAoRQ28Sb7XDLuWkKPpJ5i3Y49bdTKxTcw1NkrDsOvq87hIgO00V0eFad7t3QhIiWAacZwrOJCcFGss0OTStaMFvChwqWMZoLnkXlHDRYtLPcez7gon9r+Od74vGEhEtHHb5/28ySWNSCbjG+bd4OT0V7UGfD8XrIqVs=
+	t=1713908572; cv=none; b=UVJkpQgp0SiNcDw4ok1XBzJC9FxXyi4cd/kkkV2DpODMnKZR9h3+WzlpD9vX4JkYi/kRdMaPb7qk2ttV5EnkEpdwqc0/tguRAkWhlZ9g6bTW2XEk/MlaiZfz6FrPR4aD+U1q+cMu5JfsFx1+nrGU0xXwiAP1IJsIEJfqAvQrjmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908463; c=relaxed/simple;
-	bh=psCRXsKWLilvFIeD30pplC1gDaEgytWMGxkGawvO5xg=;
+	s=arc-20240116; t=1713908572; c=relaxed/simple;
+	bh=guK5pgwlpHL4VZ/gQc/gPg3xzyhgW5KyE7mlORcqj0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m4S00N+ZBbNfGScbQoBAfLlnkS0my5uhjtYy33P3qOv0fULMuTIZbgOQvQU1A2IJYGMXq7xjtyl4UznwPvNSe+RDQoRJO++LqyFwxqc+AvFl7RLRzfYVES4fyGqqTQV/7c/+MO0GQuwd+LJg9Omnraf0+wdAXVzw0kI4dZVEm+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jg/4UHwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A55C32781;
-	Tue, 23 Apr 2024 21:41:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q/THckFQ97sU790AMAOSuky8kIElf0UulZUbgA1jIiQYVxOlWeZeKHSuSbZgKJAqP3EEK/kvQd4i9+PDNmfMbATSOKkyLzfk/ds0m4Y/v2ikRY2E9EMw5tW+6apCne77T6srLlFbZHFBvCspQOjY6Ft9fzVwHmaqTYd3yKhb23c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huQ/cdb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0291C32781;
+	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908463;
-	bh=psCRXsKWLilvFIeD30pplC1gDaEgytWMGxkGawvO5xg=;
+	s=korg; t=1713908572;
+	bh=guK5pgwlpHL4VZ/gQc/gPg3xzyhgW5KyE7mlORcqj0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jg/4UHwBmjDiPH+9mqfs48pOnPtGBbNgPuCEhvmUBEmEiA4x8VMaJVaiXOBuQQZGU
-	 dySvxmxyZrCuSsXVlLyIMlEmgU+Xj2MM1jALy88eRP2b6ZflyVaaSd+wVIqC+w8kNb
-	 eyhFHd43Vdy3BoGEwdk4DiRQ/WuxdACOnccUQnw4=
+	b=huQ/cdb16QmA1JREC77kzWS/TcpUwZu8hz9u3Y4zBSwFLvx8ftxFegh9roAwfYS4o
+	 wC3GnX/E0OyiYadGBemLYr24tuNdTDgGFqohDNrr69i2BJjZik12FxES+5yvOC44GN
+	 Bhsapl3dMlaAVZVZ2zsbedCbDm8LEwIrBqaq2GHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Manasi Navare <navaremanasi@chromium.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 024/158] net: sparx5: flower: fix fragment flags handling
+Subject: [PATCH 6.6 009/158] drm/i915: Change intel_pipe_update_{start,end}() calling convention
 Date: Tue, 23 Apr 2024 14:37:26 -0700
-Message-ID: <20240423213856.660986435@linuxfoundation.org>
+Message-ID: <20240423213856.022555617@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,167 +64,121 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 68aba00483c7c4102429bcdfdece7289a8ab5c8e ]
+[ Upstream commit 09f390d4e2f38f8433431f4da31ca0a17a5c7853 ]
 
-I noticed that only 3 out of the 4 input bits were used,
-mt.key->flags & FLOW_DIS_IS_FRAGMENT was never checked.
+We'll need to also look at the old crtc state in
+intel_pipe_update_start() so change the calling convention to
+just plumb in the full atomic state instead.
 
-In order to avoid a complicated maze, I converted it to
-use a 16 byte mapping table.
-
-As shown in the table below the old heuristics doesn't
-always do the right thing, ie. when FLOW_DIS_IS_FRAGMENT=1/1
-then it used to only match follow-up fragment packets.
-
-Here are all the combinations, and their resulting new/old
-VCAP key/mask filter:
-
-  /- FLOW_DIS_IS_FRAGMENT (key/mask)
-  |    /- FLOW_DIS_FIRST_FRAG (key/mask)
-  |    |    /-- new VCAP fragment (key/mask)
-  v    v    v    v- old VCAP fragment (key/mask)
-
- 0/0  0/0  -/-  -/-     impossible (due to entry cond. on mask)
- 0/0  0/1  -/-  0/3 !!  invalid (can't match non-fragment + follow-up frag)
- 0/0  1/0  -/-  -/-     impossible (key > mask)
- 0/0  1/1  1/3  1/3     first fragment
-
- 0/1  0/0  0/3  3/3 !!  not fragmented
- 0/1  0/1  0/3  3/3 !!  not fragmented (+ not first fragment)
- 0/1  1/0  -/-  -/-     impossible (key > mask)
- 0/1  1/1  -/-  1/3 !!  invalid (non-fragment and first frag)
-
- 1/0  0/0  -/-  -/-     impossible (key > mask)
- 1/0  0/1  -/-  -/-     impossible (key > mask)
- 1/0  1/0  -/-  -/-     impossible (key > mask)
- 1/0  1/1  -/-  -/-     impossible (key > mask)
-
- 1/1  0/0  1/1  3/3 !!  some fragment
- 1/1  0/1  3/3  3/3     follow-up fragment
- 1/1  1/0  -/-  -/-     impossible (key > mask)
- 1/1  1/1  1/3  1/3     first fragment
-
-In the datasheet the VCAP fragment values are documented as:
- 0 = no fragment
- 1 = initial fragment
- 2 = suspicious fragment
- 3 = valid follow-up fragment
-
-Result: 3 combinations match the old behavior,
-        3 combinations have been corrected,
-        2 combinations are now invalid, and fail,
-        8 combinations are impossible.
-
-It should now be aligned with how FLOW_DIS_IS_FRAGMENT
-and FLOW_DIS_FIRST_FRAG is set in __skb_flow_dissect() in
-net/core/flow_dissector.c
-
-Since the VCAP fragment values are not a bitfield, we have
-to ignore the suspicious fragment value, eg. when matching
-on any kind of fragment with FLOW_DIS_IS_FRAGMENT=1/1.
-
-Only compile tested, and logic tested in userspace, as I
-unfortunately don't have access to this switch chip (yet).
-
-Fixes: d6c2964db3fe ("net: microchip: sparx5: Adding more tc flower keys for the IS2 VCAP")
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-Tested-by: Daniel Machon <daniel.machon@microchip.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240411111321.114095-1-ast@fiberby.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Manasi Navare <navaremanasi@chromium.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230901130440.2085-3-ville.syrjala@linux.intel.com
+Reviewed-by: Manasi Navare <navaremanasi@chromium.org>
+Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Stable-dep-of: 4a36e46df7aa ("drm/i915: Disable live M/N updates when using bigjoiner")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../microchip/sparx5/sparx5_tc_flower.c       | 61 ++++++++++++-------
- 1 file changed, 40 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/i915/display/intel_crtc.c    | 18 ++++++++++++------
+ drivers/gpu/drm/i915/display/intel_crtc.h    |  6 ++++--
+ drivers/gpu/drm/i915/display/intel_display.c |  4 ++--
+ 3 files changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
-index 523e0c470894f..55f255a3c9db6 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
-@@ -36,6 +36,27 @@ struct sparx5_tc_flower_template {
- 	u16 l3_proto; /* protocol specified in the template */
- };
+diff --git a/drivers/gpu/drm/i915/display/intel_crtc.c b/drivers/gpu/drm/i915/display/intel_crtc.c
+index 182c6dd64f47c..65d91c7ad22ff 100644
+--- a/drivers/gpu/drm/i915/display/intel_crtc.c
++++ b/drivers/gpu/drm/i915/display/intel_crtc.c
+@@ -470,7 +470,8 @@ static int intel_mode_vblank_start(const struct drm_display_mode *mode)
  
-+/* SparX-5 VCAP fragment types:
-+ * 0 = no fragment, 1 = initial fragment,
-+ * 2 = suspicious fragment, 3 = valid follow-up fragment
-+ */
-+enum {                   /* key / mask */
-+	FRAG_NOT   = 0x03, /* 0 / 3 */
-+	FRAG_SOME  = 0x11, /* 1 / 1 */
-+	FRAG_FIRST = 0x13, /* 1 / 3 */
-+	FRAG_LATER = 0x33, /* 3 / 3 */
-+	FRAG_INVAL = 0xff, /* invalid */
-+};
-+
-+/* Flower fragment flag to VCAP fragment type mapping */
-+static const u8 sparx5_vcap_frag_map[4][4] = {		  /* is_frag */
-+	{ FRAG_INVAL, FRAG_INVAL, FRAG_INVAL, FRAG_FIRST }, /* 0/0 */
-+	{ FRAG_NOT,   FRAG_NOT,   FRAG_INVAL, FRAG_INVAL }, /* 0/1 */
-+	{ FRAG_INVAL, FRAG_INVAL, FRAG_INVAL, FRAG_INVAL }, /* 1/0 */
-+	{ FRAG_SOME,  FRAG_LATER, FRAG_INVAL, FRAG_FIRST }  /* 1/1 */
-+	/* 0/0	      0/1	  1/0	      1/1 <-- first_frag */
-+};
-+
- static int
- sparx5_tc_flower_es0_tpid(struct vcap_tc_flower_parse_usage *st)
+ /**
+  * intel_pipe_update_start() - start update of a set of display registers
+- * @new_crtc_state: the new crtc state
++ * @state: the atomic state
++ * @crtc: the crtc
+  *
+  * Mark the start of an update to pipe registers that should be updated
+  * atomically regarding vblank. If the next vblank will happens within
+@@ -480,10 +481,12 @@ static int intel_mode_vblank_start(const struct drm_display_mode *mode)
+  * until a subsequent call to intel_pipe_update_end(). That is done to
+  * avoid random delays.
+  */
+-void intel_pipe_update_start(struct intel_crtc_state *new_crtc_state)
++void intel_pipe_update_start(struct intel_atomic_state *state,
++			     struct intel_crtc *crtc)
  {
-@@ -145,29 +166,27 @@ sparx5_tc_flower_handler_control_usage(struct vcap_tc_flower_parse_usage *st)
- 	flow_rule_match_control(st->frule, &mt);
+-	struct intel_crtc *crtc = to_intel_crtc(new_crtc_state->uapi.crtc);
+ 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
++	struct intel_crtc_state *new_crtc_state =
++		intel_atomic_get_new_crtc_state(state, crtc);
+ 	const struct drm_display_mode *adjusted_mode = &new_crtc_state->hw.adjusted_mode;
+ 	long timeout = msecs_to_jiffies_timeout(1);
+ 	int scanline, min, max, vblank_start;
+@@ -631,15 +634,18 @@ static void dbg_vblank_evade(struct intel_crtc *crtc, ktime_t end) {}
  
- 	if (mt.mask->flags) {
--		if (mt.mask->flags & FLOW_DIS_FIRST_FRAG) {
--			if (mt.key->flags & FLOW_DIS_FIRST_FRAG) {
--				value = 1; /* initial fragment */
--				mask = 0x3;
--			} else {
--				if (mt.mask->flags & FLOW_DIS_IS_FRAGMENT) {
--					value = 3; /* follow up fragment */
--					mask = 0x3;
--				} else {
--					value = 0; /* no fragment */
--					mask = 0x3;
--				}
--			}
--		} else {
--			if (mt.mask->flags & FLOW_DIS_IS_FRAGMENT) {
--				value = 3; /* follow up fragment */
--				mask = 0x3;
--			} else {
--				value = 0; /* no fragment */
--				mask = 0x3;
--			}
-+		u8 is_frag_key = !!(mt.key->flags & FLOW_DIS_IS_FRAGMENT);
-+		u8 is_frag_mask = !!(mt.mask->flags & FLOW_DIS_IS_FRAGMENT);
-+		u8 is_frag_idx = (is_frag_key << 1) | is_frag_mask;
-+
-+		u8 first_frag_key = !!(mt.key->flags & FLOW_DIS_FIRST_FRAG);
-+		u8 first_frag_mask = !!(mt.mask->flags & FLOW_DIS_FIRST_FRAG);
-+		u8 first_frag_idx = (first_frag_key << 1) | first_frag_mask;
-+
-+		/* Lookup verdict based on the 2 + 2 input bits */
-+		u8 vdt = sparx5_vcap_frag_map[is_frag_idx][first_frag_idx];
-+
-+		if (vdt == FRAG_INVAL) {
-+			NL_SET_ERR_MSG_MOD(st->fco->common.extack,
-+					   "Match on invalid fragment flag combination");
-+			return -EINVAL;
- 		}
+ /**
+  * intel_pipe_update_end() - end update of a set of display registers
+- * @new_crtc_state: the new crtc state
++ * @state: the atomic state
++ * @crtc: the crtc
+  *
+  * Mark the end of an update started with intel_pipe_update_start(). This
+  * re-enables interrupts and verifies the update was actually completed
+  * before a vblank.
+  */
+-void intel_pipe_update_end(struct intel_crtc_state *new_crtc_state)
++void intel_pipe_update_end(struct intel_atomic_state *state,
++			   struct intel_crtc *crtc)
+ {
+-	struct intel_crtc *crtc = to_intel_crtc(new_crtc_state->uapi.crtc);
++	struct intel_crtc_state *new_crtc_state =
++		intel_atomic_get_new_crtc_state(state, crtc);
+ 	enum pipe pipe = crtc->pipe;
+ 	int scanline_end = intel_get_crtc_scanline(crtc);
+ 	u32 end_vbl_count = intel_crtc_get_vblank_counter(crtc);
+diff --git a/drivers/gpu/drm/i915/display/intel_crtc.h b/drivers/gpu/drm/i915/display/intel_crtc.h
+index 51a4c8df9e657..22d7993d1f0ba 100644
+--- a/drivers/gpu/drm/i915/display/intel_crtc.h
++++ b/drivers/gpu/drm/i915/display/intel_crtc.h
+@@ -36,8 +36,10 @@ void intel_crtc_state_reset(struct intel_crtc_state *crtc_state,
+ u32 intel_crtc_get_vblank_counter(struct intel_crtc *crtc);
+ void intel_crtc_vblank_on(const struct intel_crtc_state *crtc_state);
+ void intel_crtc_vblank_off(const struct intel_crtc_state *crtc_state);
+-void intel_pipe_update_start(struct intel_crtc_state *new_crtc_state);
+-void intel_pipe_update_end(struct intel_crtc_state *new_crtc_state);
++void intel_pipe_update_start(struct intel_atomic_state *state,
++			     struct intel_crtc *crtc);
++void intel_pipe_update_end(struct intel_atomic_state *state,
++			   struct intel_crtc *crtc);
+ void intel_wait_for_vblank_workers(struct intel_atomic_state *state);
+ struct intel_crtc *intel_first_crtc(struct drm_i915_private *i915);
+ struct intel_crtc *intel_crtc_for_pipe(struct drm_i915_private *i915,
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index a072fbb9872aa..af93761e82cac 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -6616,7 +6616,7 @@ static void intel_update_crtc(struct intel_atomic_state *state,
+ 	intel_crtc_planes_update_noarm(state, crtc);
  
-+		/* Extract VCAP fragment key and mask from verdict */
-+		value = (vdt >> 4) & 0x3;
-+		mask = vdt & 0x3;
-+
- 		err = vcap_rule_add_key_u32(st->vrule,
- 					    VCAP_KF_L3_FRAGMENT_TYPE,
- 					    value, mask);
+ 	/* Perform vblank evasion around commit operation */
+-	intel_pipe_update_start(new_crtc_state);
++	intel_pipe_update_start(state, crtc);
+ 
+ 	commit_pipe_pre_planes(state, crtc);
+ 
+@@ -6624,7 +6624,7 @@ static void intel_update_crtc(struct intel_atomic_state *state,
+ 
+ 	commit_pipe_post_planes(state, crtc);
+ 
+-	intel_pipe_update_end(new_crtc_state);
++	intel_pipe_update_end(state, crtc);
+ 
+ 	/*
+ 	 * We usually enable FIFO underrun interrupts as part of the
 -- 
 2.43.0
 
