@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C9A8AF907
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526E38AF9AD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CE411C22307
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 088831F27299
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C51F14388C;
-	Tue, 23 Apr 2024 21:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426E11448E2;
+	Tue, 23 Apr 2024 21:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQJYKnjo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZi797Uq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE3214388A;
-	Tue, 23 Apr 2024 21:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A2085274;
+	Tue, 23 Apr 2024 21:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908457; cv=none; b=T4w89a8CloVDyI2lenbyU09S6RG183Qycir/NNroT43Z2xEaDiUZ2iJ/PYD0Q6BgeHHQCgKSRYpInkOMHKBr4c3QvNBdM7wSg0cNZwqJOKXExH8Zu7iM/vZyNde3gQne0XxvhUU0j7/lwURrhu+FkOtsalAvRtPx2oLTRVrZfVM=
+	t=1713908568; cv=none; b=n68Y8kIoWU/fJ5y+bm1wwIJfvTE1mSRhYNP8+K1LcMxEsuSJ206KwhDWSzaKgcCZE1+W4om2iW3aOM0ywXU4PvHSW1uCMR0nxmOZdChTwqmmDIXp2hexVk3nbnfJDTHGAsNh4xEfxxn4dc8dfqqnVZhTMieYNhKJuunR6zm4qN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908457; c=relaxed/simple;
-	bh=6iTR3H5FNMEx9uGlgYJ42sMhf3a1GQIS+df17ecZN6E=;
+	s=arc-20240116; t=1713908568; c=relaxed/simple;
+	bh=5qfcQsJ11VJDHWcL6albcm6k/9d62aZm5FogVVVdAxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOksG9HQ1ULWYDgnZo5n/r8mxixMDqMpDGDgV78SOUIagcgMeN1Z7fHf91ZbfFMzTc3XTxE+tlo7agiCaytmVoUmYTWDg2IR9TVGPiOShEm3NWJF4X9v5ZzCuiCsD224Eb4FF1ChXdIkmJqliXX+Im/Pvmg3gE7NA8h+QRjJjMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQJYKnjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C9CC116B1;
-	Tue, 23 Apr 2024 21:40:57 +0000 (UTC)
+	 MIME-Version; b=HFgqShNrFUE7srgDnIBwyTvGHRU+7XDk2WozO2SDFmttCAbKLc4ZFHl6odklhUei3zTmwAUHr81IxJNoleU8CaKKIw23yZwLmYcZRM709h4PE4KSZsdHOaNImyVP0nj/6fMXPlU+Q6oGaoRmdorCe4bnUtRb7M53VS6jIirtOew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZi797Uq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE168C32782;
+	Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908457;
-	bh=6iTR3H5FNMEx9uGlgYJ42sMhf3a1GQIS+df17ecZN6E=;
+	s=korg; t=1713908567;
+	bh=5qfcQsJ11VJDHWcL6albcm6k/9d62aZm5FogVVVdAxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQJYKnjoe2tN2stzJCqkAPsFHely8V9BDtTl0o3YZZoN8tBhcHSo23oA9dB+HGFdW
-	 3dYOwWmGNPoNFg1Lh5xFNIDc/9/dEviiSxasfexwONhCCK1t+tjUqATJbnL6BpqHgn
-	 rGGnAeQBPuRQil27cPU8DPH+06sm6PTUcEKxt4jI=
+	b=QZi797Uq+Q0LSf5r5BD+NhLt41lADiFPofMtXaMvVyCtAxT1QnPHMPtrp3iErElj9
+	 c6EoA7X2AnxWH0/ExIoxcsMPRiL7TD2w/zFcQ17NlfABmnqevRQD+Cb+EvcX4WRF0A
+	 JiI4N2ez13YR3GzYjZp37pubchGgO39w8JbBCsjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 017/158] netfilter: nft_set_pipapo: constify lookup fn args where possible
-Date: Tue, 23 Apr 2024 14:37:19 -0700
-Message-ID: <20240423213856.424335489@linuxfoundation.org>
+Subject: [PATCH 6.6 003/158] smb3: show beginning time for per share stats
+Date: Tue, 23 Apr 2024 14:37:20 -0700
+Message-ID: <20240423213855.802187668@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,267 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit f04df573faf90bb828a2241b650598c02c074323 ]
+[ Upstream commit d8392c203e84ec7daa2afecdb8f4db69bc32416a ]
 
-Those get called from packet path, content must not be modified.
-No functional changes intended.
+In analyzing problems, one missing piece of debug data is when the
+mount occurred.  A related problem is when collecting stats we don't
+know the  period of time the stats covered, ie when this set of stats
+for the tcon started to be collected.  To make debugging easier track
+the stats begin time. Set it when the mount occurred at mount time,
+and reset it to current time whenever stats are reset. For example,
 
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: 29b359cf6d95 ("netfilter: nft_set_pipapo: walk over current view on netlink dump")
+...
+1) \\localhost\test
+SMBs: 14 since 2024-01-17 22:17:30 UTC
+Bytes read: 0  Bytes written: 0
+Open files: 0 total (local), 0 open on server
+TreeConnects: 1 total 0 failed
+TreeDisconnects: 0 total 0 failed
+...
+2) \\localhost\scratch
+SMBs: 24 since 2024-01-17 22:16:04 UTC
+Bytes read: 0  Bytes written: 0
+Open files: 0 total (local), 0 open on server
+TreeConnects: 1 total 0 failed
+TreeDisconnects: 0 total 0 failed
+...
+
+Note the time "since ... UTC" is now displayed in /proc/fs/cifs/Stats
+for each share that is mounted.
+
+Suggested-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 062a7f0ff46e ("smb: client: guarantee refcounted children from parent session")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c      | 18 +++++----
- net/netfilter/nft_set_pipapo.h      |  6 +--
- net/netfilter/nft_set_pipapo_avx2.c | 59 +++++++++++++++++------------
- 3 files changed, 48 insertions(+), 35 deletions(-)
+ fs/smb/client/cifs_debug.c | 6 ++++--
+ fs/smb/client/cifsglob.h   | 1 +
+ fs/smb/client/misc.c       | 1 +
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index b3b282de802de..7756d70af868c 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -360,7 +360,7 @@
-  * Return: -1 on no match, bit position on 'match_only', 0 otherwise.
-  */
- int pipapo_refill(unsigned long *map, int len, int rules, unsigned long *dst,
--		  union nft_pipapo_map_bucket *mt, bool match_only)
-+		  const union nft_pipapo_map_bucket *mt, bool match_only)
- {
- 	unsigned long bitset;
- 	int k, ret = -1;
-@@ -412,9 +412,9 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
- 	struct nft_pipapo_scratch *scratch;
- 	unsigned long *res_map, *fill_map;
- 	u8 genmask = nft_genmask_cur(net);
-+	const struct nft_pipapo_match *m;
-+	const struct nft_pipapo_field *f;
- 	const u8 *rp = (const u8 *)key;
--	struct nft_pipapo_match *m;
--	struct nft_pipapo_field *f;
- 	bool map_index;
- 	int i;
- 
-@@ -519,11 +519,13 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
- {
- 	struct nft_pipapo_elem *ret = ERR_PTR(-ENOENT);
- 	struct nft_pipapo *priv = nft_set_priv(set);
--	struct nft_pipapo_match *m = priv->clone;
- 	unsigned long *res_map, *fill_map = NULL;
--	struct nft_pipapo_field *f;
-+	const struct nft_pipapo_match *m;
-+	const struct nft_pipapo_field *f;
- 	int i;
- 
-+	m = priv->clone;
-+
- 	res_map = kmalloc_array(m->bsize_max, sizeof(*res_map), GFP_ATOMIC);
- 	if (!res_map) {
- 		ret = ERR_PTR(-ENOMEM);
-@@ -1597,7 +1599,7 @@ static void pipapo_gc(struct nft_set *set, struct nft_pipapo_match *m)
- 
- 	while ((rules_f0 = pipapo_rules_same_key(m->f, first_rule))) {
- 		union nft_pipapo_map_bucket rulemap[NFT_PIPAPO_MAX_FIELDS];
--		struct nft_pipapo_field *f;
-+		const struct nft_pipapo_field *f;
- 		int i, start, rules_fx;
- 
- 		start = first_rule;
-@@ -2039,8 +2041,8 @@ static void nft_pipapo_walk(const struct nft_ctx *ctx, struct nft_set *set,
- {
- 	struct nft_pipapo *priv = nft_set_priv(set);
- 	struct net *net = read_pnet(&set->net);
--	struct nft_pipapo_match *m;
--	struct nft_pipapo_field *f;
-+	const struct nft_pipapo_match *m;
-+	const struct nft_pipapo_field *f;
- 	int i, r;
- 
- 	rcu_read_lock();
-diff --git a/net/netfilter/nft_set_pipapo.h b/net/netfilter/nft_set_pipapo.h
-index 3842c7341a9f4..42464e7c24ac0 100644
---- a/net/netfilter/nft_set_pipapo.h
-+++ b/net/netfilter/nft_set_pipapo.h
-@@ -187,7 +187,7 @@ struct nft_pipapo_elem {
- };
- 
- int pipapo_refill(unsigned long *map, int len, int rules, unsigned long *dst,
--		  union nft_pipapo_map_bucket *mt, bool match_only);
-+		  const union nft_pipapo_map_bucket *mt, bool match_only);
- 
- /**
-  * pipapo_and_field_buckets_4bit() - Intersect 4-bit buckets
-@@ -195,7 +195,7 @@ int pipapo_refill(unsigned long *map, int len, int rules, unsigned long *dst,
-  * @dst:	Area to store result
-  * @data:	Input data selecting table buckets
-  */
--static inline void pipapo_and_field_buckets_4bit(struct nft_pipapo_field *f,
-+static inline void pipapo_and_field_buckets_4bit(const struct nft_pipapo_field *f,
- 						 unsigned long *dst,
- 						 const u8 *data)
- {
-@@ -223,7 +223,7 @@ static inline void pipapo_and_field_buckets_4bit(struct nft_pipapo_field *f,
-  * @dst:	Area to store result
-  * @data:	Input data selecting table buckets
-  */
--static inline void pipapo_and_field_buckets_8bit(struct nft_pipapo_field *f,
-+static inline void pipapo_and_field_buckets_8bit(const struct nft_pipapo_field *f,
- 						 unsigned long *dst,
- 						 const u8 *data)
- {
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index a3a8ddca99189..d08407d589eac 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -212,8 +212,9 @@ static int nft_pipapo_avx2_refill(int offset, unsigned long *map,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_4b_2(unsigned long *map, unsigned long *fill,
--				       struct nft_pipapo_field *f, int offset,
--				       const u8 *pkt, bool first, bool last)
-+				       const struct nft_pipapo_field *f,
-+				       int offset, const u8 *pkt,
-+				       bool first, bool last)
- {
- 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
- 	u8 pg[2] = { pkt[0] >> 4, pkt[0] & 0xf };
-@@ -274,8 +275,9 @@ static int nft_pipapo_avx2_lookup_4b_2(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_4b_4(unsigned long *map, unsigned long *fill,
--				       struct nft_pipapo_field *f, int offset,
--				       const u8 *pkt, bool first, bool last)
-+				       const struct nft_pipapo_field *f,
-+				       int offset, const u8 *pkt,
-+				       bool first, bool last)
- {
- 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
- 	u8 pg[4] = { pkt[0] >> 4, pkt[0] & 0xf, pkt[1] >> 4, pkt[1] & 0xf };
-@@ -350,8 +352,9 @@ static int nft_pipapo_avx2_lookup_4b_4(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_4b_8(unsigned long *map, unsigned long *fill,
--				       struct nft_pipapo_field *f, int offset,
--				       const u8 *pkt, bool first, bool last)
-+				       const struct nft_pipapo_field *f,
-+				       int offset, const u8 *pkt,
-+				       bool first, bool last)
- {
- 	u8 pg[8] = {  pkt[0] >> 4,  pkt[0] & 0xf,  pkt[1] >> 4,  pkt[1] & 0xf,
- 		      pkt[2] >> 4,  pkt[2] & 0xf,  pkt[3] >> 4,  pkt[3] & 0xf,
-@@ -445,8 +448,9 @@ static int nft_pipapo_avx2_lookup_4b_8(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_4b_12(unsigned long *map, unsigned long *fill,
--				        struct nft_pipapo_field *f, int offset,
--				        const u8 *pkt, bool first, bool last)
-+					const struct nft_pipapo_field *f,
-+					int offset, const u8 *pkt,
-+					bool first, bool last)
- {
- 	u8 pg[12] = {  pkt[0] >> 4,  pkt[0] & 0xf,  pkt[1] >> 4,  pkt[1] & 0xf,
- 		       pkt[2] >> 4,  pkt[2] & 0xf,  pkt[3] >> 4,  pkt[3] & 0xf,
-@@ -534,8 +538,9 @@ static int nft_pipapo_avx2_lookup_4b_12(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_4b_32(unsigned long *map, unsigned long *fill,
--					struct nft_pipapo_field *f, int offset,
--					const u8 *pkt, bool first, bool last)
-+					const struct nft_pipapo_field *f,
-+					int offset, const u8 *pkt,
-+					bool first, bool last)
- {
- 	u8 pg[32] = {  pkt[0] >> 4,  pkt[0] & 0xf,  pkt[1] >> 4,  pkt[1] & 0xf,
- 		       pkt[2] >> 4,  pkt[2] & 0xf,  pkt[3] >> 4,  pkt[3] & 0xf,
-@@ -669,8 +674,9 @@ static int nft_pipapo_avx2_lookup_4b_32(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_8b_1(unsigned long *map, unsigned long *fill,
--				       struct nft_pipapo_field *f, int offset,
--				       const u8 *pkt, bool first, bool last)
-+				       const struct nft_pipapo_field *f,
-+				       int offset, const u8 *pkt,
-+				       bool first, bool last)
- {
- 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
- 	unsigned long *lt = f->lt, bsize = f->bsize;
-@@ -726,8 +732,9 @@ static int nft_pipapo_avx2_lookup_8b_1(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_8b_2(unsigned long *map, unsigned long *fill,
--				       struct nft_pipapo_field *f, int offset,
--				       const u8 *pkt, bool first, bool last)
-+				       const struct nft_pipapo_field *f,
-+				       int offset, const u8 *pkt,
-+				       bool first, bool last)
- {
- 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
- 	unsigned long *lt = f->lt, bsize = f->bsize;
-@@ -790,8 +797,9 @@ static int nft_pipapo_avx2_lookup_8b_2(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_8b_4(unsigned long *map, unsigned long *fill,
--				       struct nft_pipapo_field *f, int offset,
--				       const u8 *pkt, bool first, bool last)
-+				       const struct nft_pipapo_field *f,
-+				       int offset, const u8 *pkt,
-+				       bool first, bool last)
- {
- 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
- 	unsigned long *lt = f->lt, bsize = f->bsize;
-@@ -865,8 +873,9 @@ static int nft_pipapo_avx2_lookup_8b_4(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_8b_6(unsigned long *map, unsigned long *fill,
--				       struct nft_pipapo_field *f, int offset,
--				       const u8 *pkt, bool first, bool last)
-+				       const struct nft_pipapo_field *f,
-+				       int offset, const u8 *pkt,
-+				       bool first, bool last)
- {
- 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
- 	unsigned long *lt = f->lt, bsize = f->bsize;
-@@ -950,8 +959,9 @@ static int nft_pipapo_avx2_lookup_8b_6(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
--					struct nft_pipapo_field *f, int offset,
--					const u8 *pkt, bool first, bool last)
-+					const struct nft_pipapo_field *f,
-+					int offset, const u8 *pkt,
-+					bool first, bool last)
- {
- 	int i, ret = -1, m256_size = f->bsize / NFT_PIPAPO_LONGS_PER_M256, b;
- 	unsigned long *lt = f->lt, bsize = f->bsize;
-@@ -1042,8 +1052,9 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
-  * word index to be checked next (i.e. first filled word).
-  */
- static int nft_pipapo_avx2_lookup_slow(unsigned long *map, unsigned long *fill,
--					struct nft_pipapo_field *f, int offset,
--					const u8 *pkt, bool first, bool last)
-+					const struct nft_pipapo_field *f,
-+					int offset, const u8 *pkt,
-+					bool first, bool last)
- {
- 	unsigned long bsize = f->bsize;
- 	int i, ret = -1, b;
-@@ -1119,9 +1130,9 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	struct nft_pipapo *priv = nft_set_priv(set);
- 	struct nft_pipapo_scratch *scratch;
- 	u8 genmask = nft_genmask_cur(net);
-+	const struct nft_pipapo_match *m;
-+	const struct nft_pipapo_field *f;
- 	const u8 *rp = (const u8 *)key;
--	struct nft_pipapo_match *m;
--	struct nft_pipapo_field *f;
- 	unsigned long *res, *fill;
- 	bool map_index;
- 	int i, ret = 0;
+diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
+index 6c85edb8635d0..c53d516459fc4 100644
+--- a/fs/smb/client/cifs_debug.c
++++ b/fs/smb/client/cifs_debug.c
+@@ -663,6 +663,7 @@ static ssize_t cifs_stats_proc_write(struct file *file,
+ 					spin_lock(&tcon->stat_lock);
+ 					tcon->bytes_read = 0;
+ 					tcon->bytes_written = 0;
++					tcon->stats_from_time = ktime_get_real_seconds();
+ 					spin_unlock(&tcon->stat_lock);
+ 					if (server->ops->clear_stats)
+ 						server->ops->clear_stats(tcon);
+@@ -743,8 +744,9 @@ static int cifs_stats_proc_show(struct seq_file *m, void *v)
+ 				seq_printf(m, "\n%d) %s", i, tcon->tree_name);
+ 				if (tcon->need_reconnect)
+ 					seq_puts(m, "\tDISCONNECTED ");
+-				seq_printf(m, "\nSMBs: %d",
+-					   atomic_read(&tcon->num_smbs_sent));
++				seq_printf(m, "\nSMBs: %d since %ptTs UTC",
++					   atomic_read(&tcon->num_smbs_sent),
++					   &tcon->stats_from_time);
+ 				if (server->ops->print_stats)
+ 					server->ops->print_stats(m, tcon);
+ 			}
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index a878b1e5aa313..01d7031194671 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1208,6 +1208,7 @@ struct cifs_tcon {
+ 	__u64    bytes_read;
+ 	__u64    bytes_written;
+ 	spinlock_t stat_lock;  /* protects the two fields above */
++	time64_t stats_from_time;
+ 	FILE_SYSTEM_DEVICE_INFO fsDevInfo;
+ 	FILE_SYSTEM_ATTRIBUTE_INFO fsAttrInfo; /* ok if fs name truncated */
+ 	FILE_SYSTEM_UNIX_INFO fsUnixInfo;
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index ef573e3f8e52a..51413cb00e199 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -140,6 +140,7 @@ tcon_info_alloc(bool dir_leases_enabled)
+ 	spin_lock_init(&ret_buf->stat_lock);
+ 	atomic_set(&ret_buf->num_local_opens, 0);
+ 	atomic_set(&ret_buf->num_remote_opens, 0);
++	ret_buf->stats_from_time = ktime_get_real_seconds();
+ #ifdef CONFIG_CIFS_DFS_UPCALL
+ 	INIT_LIST_HEAD(&ret_buf->dfs_ses_list);
+ #endif
 -- 
 2.43.0
 
