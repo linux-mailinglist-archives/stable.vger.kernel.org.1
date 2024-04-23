@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-40962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2508AF9C9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D5C8AFA5A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 484171F27C25
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EF912878DB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00066146D52;
-	Tue, 23 Apr 2024 21:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7E514533F;
+	Tue, 23 Apr 2024 21:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ez4mhVMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P102Yhmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B444E1420BE;
-	Tue, 23 Apr 2024 21:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48527143C46;
+	Tue, 23 Apr 2024 21:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908583; cv=none; b=H18iJlqDsza0vg9VI4+q+ia0uMh1peu2iM40LGV/rp12m0bKHshjwfkdNwtibBOImFCNsxUV+j8A1SF1d8K3kneJA2hUOZmk/Cm07j3PEDvpxIXH9onP5UQ+GRIPCh7CFRra8rTRgwV+cMdcthixrQ1c/KRahravHJDkYcmPR24=
+	t=1713908682; cv=none; b=vFF85PmgumCtGnABo6FKuhHUDQi6KIoBm/5VJ0O6RX/K9n42zdjgf+Q30/w68DOna/fvuc4Hi3/gvIk21NiM+HBuSSVWbPB+b1LwCoCL0lC32QB+mIzMvWgYa+VM13oppSayt10Df99yb57vW8D+o5g4uOox17r2V5QUpXit9WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908583; c=relaxed/simple;
-	bh=HuAvBjnmsFL491rH6v6nu0QyKjvzLdMAyhB7sISQ3MI=;
+	s=arc-20240116; t=1713908682; c=relaxed/simple;
+	bh=UVieBGmCsm0OUFy+Z8D03LYDA7X5E7u+QTMCi18x/kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZq3U3Bj0f2EFX/kr5f3kpE07CegOqAG3P1jdf5f+lqQTpSJazuTWoHWPqizkbe5FQZR/WKY3Ra/IdAMouq7wuVEG8DJ94d35nFrDblHpeIdPvqyYSp4s897ozqOPlHddTadExaBsFCJM5sodLXxGAZfcc+wIHnUNK6d4sSgn28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ez4mhVMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC0AC3277B;
-	Tue, 23 Apr 2024 21:43:03 +0000 (UTC)
+	 MIME-Version; b=LzOJHLW1ylutxSNnoaTl2MRpPPXaV5lzxdtgzjlbxneb9ys4aTvGhPYWnsBJHYKjdcsA0jJBQ2C8RifN+17Yxh+mZ0CY2RW22bDFi/q5QqOSz1Fn2ZiH+uDGYrXf3/OusSTrl0loBiTB5o+bYhvINvJvVm6fwUugRHHMT3u4dhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P102Yhmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7CCC3277B;
+	Tue, 23 Apr 2024 21:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908583;
-	bh=HuAvBjnmsFL491rH6v6nu0QyKjvzLdMAyhB7sISQ3MI=;
+	s=korg; t=1713908682;
+	bh=UVieBGmCsm0OUFy+Z8D03LYDA7X5E7u+QTMCi18x/kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ez4mhVMNedhLlAtzezO4w977DduW90P0o0vMoylknvmYRsYQMEfR2WVWHGnfByLr/
-	 PMQu16ppgSvtIgrmsDUwdaqib0TFqk99qFjbS4p5kLlM57uS9pVeubTrbpZbuP2TcH
-	 V6bEM+qpS3FlqeDSHgRvpZYg7+9gWFY1qdmD0FIM=
+	b=P102YhmpxfEkak3c/Igf+XUrQrMaLYrf8xLwFg9yt0KFJnTMnip40Qs6YJqT7ZpZW
+	 Sxd0eTlAurbskbrB7DmtAY36VGU/nkX9ny5sdyH33oTSuB5ImouwQ14FvOu6nw0Jts
+	 qpsK1+ImgWh5AiE2y56CdA33HHjqkgnlUEsspBz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/158] af_unix: Call manage_oob() for every skb in unix_stream_read_generic().
+	Guoyong Wang <guoyong.wang@mediatek.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: [PATCH 6.1 008/141] random: handle creditable entropy from atomic process context
 Date: Tue, 23 Apr 2024 14:37:56 -0700
-Message-ID: <20240423213857.017365087@linuxfoundation.org>
+Message-ID: <20240423213853.624174256@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[ Upstream commit 283454c8a123072e5c386a5a2b5fc576aa455b6f ]
+commit e871abcda3b67d0820b4182ebe93435624e9c6a4 upstream.
 
-When we call recv() for AF_UNIX socket, we first peek one skb and
-calls manage_oob() to check if the skb is sent with MSG_OOB.
+The entropy accounting changes a static key when the RNG has
+initialized, since it only ever initializes once. Static key changes,
+however, cannot be made from atomic context, so depending on where the
+last creditable entropy comes from, the static key change might need to
+be deferred to a worker.
 
-However, when we fetch the next (and the following) skb, manage_oob()
-is not called now, leading a wrong behaviour.
+Previously the code used the execute_in_process_context() helper
+function, which accounts for whether or not the caller is
+in_interrupt(). However, that doesn't account for the case where the
+caller is actually in process context but is holding a spinlock.
 
-Let's say a socket send()s "hello" with MSG_OOB and the peer tries
-to recv() 5 bytes with MSG_PEEK.  Here, we should get only "hell"
-without 'o', but actually not:
+This turned out to be the case with input_handle_event() in
+drivers/input/input.c contributing entropy:
 
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'hello', MSG_OOB)
-  5
-  >>> c2.recv(5, MSG_PEEK)
-  b'hello'
+  [<ffffffd613025ba0>] die+0xa8/0x2fc
+  [<ffffffd613027428>] bug_handler+0x44/0xec
+  [<ffffffd613016964>] brk_handler+0x90/0x144
+  [<ffffffd613041e58>] do_debug_exception+0xa0/0x148
+  [<ffffffd61400c208>] el1_dbg+0x60/0x7c
+  [<ffffffd61400c000>] el1h_64_sync_handler+0x38/0x90
+  [<ffffffd613011294>] el1h_64_sync+0x64/0x6c
+  [<ffffffd613102d88>] __might_resched+0x1fc/0x2e8
+  [<ffffffd613102b54>] __might_sleep+0x44/0x7c
+  [<ffffffd6130b6eac>] cpus_read_lock+0x1c/0xec
+  [<ffffffd6132c2820>] static_key_enable+0x14/0x38
+  [<ffffffd61400ac08>] crng_set_ready+0x14/0x28
+  [<ffffffd6130df4dc>] execute_in_process_context+0xb8/0xf8
+  [<ffffffd61400ab30>] _credit_init_bits+0x118/0x1dc
+  [<ffffffd6138580c8>] add_timer_randomness+0x264/0x270
+  [<ffffffd613857e54>] add_input_randomness+0x38/0x48
+  [<ffffffd613a80f94>] input_handle_event+0x2b8/0x490
+  [<ffffffd613a81310>] input_event+0x6c/0x98
 
-The first skb fills 4 bytes, and the next skb is peeked but not
-properly checked by manage_oob().
+According to Guoyong, it's not really possible to refactor the various
+drivers to never hold a spinlock there. And in_atomic() isn't reliable.
 
-Let's move up the again label to call manage_oob() for evry skb.
+So, rather than trying to be too fancy, just punt the change in the
+static key to a workqueue always. There's basically no drawback of doing
+this, as the code already needed to account for the static key not
+changing immediately, and given that it's just an optimization, there's
+not exactly a hurry to change the static key right away, so deferal is
+fine.
 
-With this patch:
-
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'hello', MSG_OOB)
-  5
-  >>> c2.recv(5, MSG_PEEK)
-  b'hell'
-
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240410171016.7621-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Guoyong Wang <guoyong.wang@mediatek.com>
+Cc: stable@vger.kernel.org
+Fixes: f5bda35fba61 ("random: use static branch for crng_ready()")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/random.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 918724844231e..1340cb86f104c 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2665,6 +2665,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 		last = skb = skb_peek(&sk->sk_receive_queue);
- 		last_len = last ? last->len : 0;
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -683,7 +683,7 @@ static void extract_entropy(void *buf, s
  
-+again:
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
- 		if (skb) {
- 			skb = manage_oob(skb, sk, flags, copied);
-@@ -2676,7 +2677,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 			}
- 		}
- #endif
--again:
- 		if (skb == NULL) {
- 			if (copied >= target)
- 				goto unlock;
--- 
-2.43.0
-
+ static void __cold _credit_init_bits(size_t bits)
+ {
+-	static struct execute_work set_ready;
++	static DECLARE_WORK(set_ready, crng_set_ready);
+ 	unsigned int new, orig, add;
+ 	unsigned long flags;
+ 
+@@ -699,8 +699,8 @@ static void __cold _credit_init_bits(siz
+ 
+ 	if (orig < POOL_READY_BITS && new >= POOL_READY_BITS) {
+ 		crng_reseed(); /* Sets crng_init to CRNG_READY under base_crng.lock. */
+-		if (static_key_initialized)
+-			execute_in_process_context(crng_set_ready, &set_ready);
++		if (static_key_initialized && system_unbound_wq)
++			queue_work(system_unbound_wq, &set_ready);
+ 		wake_up_interruptible(&crng_init_wait);
+ 		kill_fasync(&fasync, SIGIO, POLL_IN);
+ 		pr_notice("crng init done\n");
+@@ -870,8 +870,8 @@ void __init random_init(void)
+ 
+ 	/*
+ 	 * If we were initialized by the cpu or bootloader before jump labels
+-	 * are initialized, then we should enable the static branch here, where
+-	 * it's guaranteed that jump labels have been initialized.
++	 * or workqueues are initialized, then we should enable the static
++	 * branch here, where it's guaranteed that these have been initialized.
+ 	 */
+ 	if (!static_branch_likely(&crng_is_ready) && crng_init >= CRNG_READY)
+ 		crng_set_ready(NULL);
 
 
 
