@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-40924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6E58AF99E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD9E8AFAD8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57F51289C5A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1EDC1C23671
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01022145B12;
-	Tue, 23 Apr 2024 21:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C937A14AD24;
+	Tue, 23 Apr 2024 21:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3rP5aDX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC9eZpPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D7F85274;
-	Tue, 23 Apr 2024 21:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8809D143C5F;
+	Tue, 23 Apr 2024 21:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908557; cv=none; b=ZC3xWs3uidSmOS51lNb2iTPcGEDWz7AFJvSpHUauluxscqnhFBAspdzt8kuFlMjhvFHKlxoHcH/ytZyU/9Qz1qPV7nDbvTRY84tRF31MNdzXYvH15G/OCyV7b1sn9UG0JrTTKkTquh/6JIIermonNcW7DY8VPgB6gbiWCLEwcJc=
+	t=1713908770; cv=none; b=fY/LUDjRDQNOK/zk1CLwaPniUL+tou7qtJbAXbsEEs4zxL0g/favNiFJ21VHBQ2fIW3oTsxngky6uWag+5VPg7jPBnnaegpX2QuafDHu51bRy/ImK6l8O9b5yrqdNUZFeb8uVhmoWUlLXaDJpH3fOg7zYOE3HMjjHjjsIT/0xU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908557; c=relaxed/simple;
-	bh=1HAtiFcCjFyGfI0IiI+flOZ1FxsFuO16oSRcEKjnoIo=;
+	s=arc-20240116; t=1713908770; c=relaxed/simple;
+	bh=RAk9Jg+iL1v76WW4ztnlQh5YqpsIXVVHGDPjHGgV5HQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TDgSqFlKyj/g1p19pabp9Gb51C/uPKTqQ97BdmMBezxCM3fWjt17g4LNQlrYoBnI/Olg/Zrkd4HxcdJeIJ8/JTaF4nqdnGs/e13OnGjQiWZyC3nJLm5FFDqvQ4nxVSvpsJHLxwvAPU5Psq+eHo32io6hGhhK/h2ru5NeevkTHM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3rP5aDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A96EC3277B;
-	Tue, 23 Apr 2024 21:42:37 +0000 (UTC)
+	 MIME-Version; b=Hs7DlSxK+IbFXf141ksYAdYUv20Vwtkddq+F4/OYIyy+osxGBH67KV7MUvGavhanZNGI0BoMu4QiW/R5l8dtUqv8nTDpBc8UKlWfZFMTuKS+fCyYn1X3fY9bdjuh/UvwTGSw+M1YCLHYklPMnkWNAYIslhD+98tVG1Lhjvm2d2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dC9eZpPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCA4C116B1;
+	Tue, 23 Apr 2024 21:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908557;
-	bh=1HAtiFcCjFyGfI0IiI+flOZ1FxsFuO16oSRcEKjnoIo=;
+	s=korg; t=1713908770;
+	bh=RAk9Jg+iL1v76WW4ztnlQh5YqpsIXVVHGDPjHGgV5HQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3rP5aDXMmDd9aXu9g2FFEQP/ytp/rC28Ba6AZne2RzfUQST1CK35Wu+C/AsOTQHU
-	 Zf7OzyudXN97Hraw7oW85SxcbQp4AH3B6RUkEwC0wD4FudzIhs6tnIImp5zBNY86Gw
-	 ZIkhyALpsHNNBMroyX0oG+e2DFZLz7jRKtIVs+ts=
+	b=dC9eZpPm5fBJXNKRwijyjudtYZ1BQiAI3HHjDd8BHIz+fRXCmG46rB8eilD3lak7J
+	 NufrhjC2U0e/P3drJdo0W40L9hvtr3gvMbDoodT3PJc7WU0bqXn30lRFiq5RrGwHPS
+	 JpMN06NBlj+Y7Y5+j/yCpGt+90SWDSuuSo9ghwjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>
-Subject: [PATCH 6.8 143/158] drm/ttm: stop pooling cached NUMA pages v2
-Date: Tue, 23 Apr 2024 14:39:25 -0700
-Message-ID: <20240423213900.511839153@linuxfoundation.org>
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>,
+	stable@kernel.org
+Subject: [PATCH 5.15 13/71] Revert "tracing/trigger: Fix to return error if failed to alloc snapshot"
+Date: Tue, 23 Apr 2024 14:39:26 -0700
+Message-ID: <20240423213844.574303826@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,112 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <ckoenig.leichtzumerken@gmail.com>
+From: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 
-commit b6976f323a8687cc0d55bc92c2086fd934324ed5 upstream.
+This reverts commit b5085b5ac1d96ea2a8a6240f869655176ce44197 which is
+commit 0958b33ef5a04ed91f61cef4760ac412080c4e08 upstream.
 
-We only pool write combined and uncached allocations because they
-require extra overhead on allocation and release.
+The change has an incorrect assumption about the return value because
+in the current stable trees for versions 5.15 and before, the following
+commit responsible for making 0 a success value is not present:
+b8cc44a4d3c1 ("tracing: Remove logic for registering multiple event triggers at a time")
 
-If we also pool cached NUMA it not only means some extra unnecessary
-overhead, but also that under memory pressure it can happen that
-pages from the wrong NUMA node enters the pool and are re-used
-over and over again.
+The return value should be 0 on failure in the current tree, because in
+the functions event_trigger_callback() and event_enable_trigger_func(),
+we have:
 
-This can lead to performance reduction after running into memory
-pressure.
+	ret = cmd_ops->reg(glob, trigger_ops, trigger_data, file);
+	/*
+	 * The above returns on success the # of functions enabled,
+	 * but if it didn't find any functions it returns zero.
+	 * Consider no functions a failure too.
+	 */
+	if (!ret) {
+		ret = -ENOENT;
 
-v2: restructure and cleanup the code a bit from the internal hack to
-    test this.
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: 4482d3c94d7f ("drm/ttm: add NUMA node id to the pool")
-CC: stable@vger.kernel.org
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415134821.1919-1-christian.koenig@amd.com
+Cc: stable@kernel.org # 5.15, 5.10, 5.4, 4.19
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_pool.c |   38 ++++++++++++++++++++++++++++----------
- 1 file changed, 28 insertions(+), 10 deletions(-)
+ kernel/trace/trace_events_trigger.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -288,17 +288,23 @@ static struct ttm_pool_type *ttm_pool_se
- 						  enum ttm_caching caching,
- 						  unsigned int order)
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -1161,10 +1161,8 @@ register_snapshot_trigger(char *glob, st
+ 			  struct event_trigger_data *data,
+ 			  struct trace_event_file *file)
  {
--	if (pool->use_dma_alloc || pool->nid != NUMA_NO_NODE)
-+	if (pool->use_dma_alloc)
- 		return &pool->caching[caching].orders[order];
+-	int ret = tracing_alloc_snapshot_instance(file->tr);
+-
+-	if (ret < 0)
+-		return ret;
++	if (tracing_alloc_snapshot_instance(file->tr) != 0)
++		return 0;
  
- #ifdef CONFIG_X86
- 	switch (caching) {
- 	case ttm_write_combined:
-+		if (pool->nid != NUMA_NO_NODE)
-+			return &pool->caching[caching].orders[order];
-+
- 		if (pool->use_dma32)
- 			return &global_dma32_write_combined[order];
- 
- 		return &global_write_combined[order];
- 	case ttm_uncached:
-+		if (pool->nid != NUMA_NO_NODE)
-+			return &pool->caching[caching].orders[order];
-+
- 		if (pool->use_dma32)
- 			return &global_dma32_uncached[order];
- 
-@@ -566,11 +572,17 @@ void ttm_pool_init(struct ttm_pool *pool
- 	pool->use_dma_alloc = use_dma_alloc;
- 	pool->use_dma32 = use_dma32;
- 
--	if (use_dma_alloc || nid != NUMA_NO_NODE) {
--		for (i = 0; i < TTM_NUM_CACHING_TYPES; ++i)
--			for (j = 0; j < NR_PAGE_ORDERS; ++j)
--				ttm_pool_type_init(&pool->caching[i].orders[j],
--						   pool, i, j);
-+	for (i = 0; i < TTM_NUM_CACHING_TYPES; ++i) {
-+		for (j = 0; j < NR_PAGE_ORDERS; ++j) {
-+			struct ttm_pool_type *pt;
-+
-+			/* Initialize only pool types which are actually used */
-+			pt = ttm_pool_select_type(pool, i, j);
-+			if (pt != &pool->caching[i].orders[j])
-+				continue;
-+
-+			ttm_pool_type_init(pt, pool, i, j);
-+		}
- 	}
+ 	return register_trigger(glob, ops, data, file);
  }
- EXPORT_SYMBOL(ttm_pool_init);
-@@ -599,10 +611,16 @@ void ttm_pool_fini(struct ttm_pool *pool
- {
- 	unsigned int i, j;
- 
--	if (pool->use_dma_alloc || pool->nid != NUMA_NO_NODE) {
--		for (i = 0; i < TTM_NUM_CACHING_TYPES; ++i)
--			for (j = 0; j < NR_PAGE_ORDERS; ++j)
--				ttm_pool_type_fini(&pool->caching[i].orders[j]);
-+	for (i = 0; i < TTM_NUM_CACHING_TYPES; ++i) {
-+		for (j = 0; j < NR_PAGE_ORDERS; ++j) {
-+			struct ttm_pool_type *pt;
-+
-+			pt = ttm_pool_select_type(pool, i, j);
-+			if (pt != &pool->caching[i].orders[j])
-+				continue;
-+
-+			ttm_pool_type_fini(pt);
-+		}
- 	}
- 
- 	/* We removed the pool types from the LRU, but we need to also make sure
 
 
 
