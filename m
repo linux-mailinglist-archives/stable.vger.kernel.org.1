@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-41058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAE38AFA2D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1038AF977
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 666AF28A72E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DB041F2687E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2001448E8;
-	Tue, 23 Apr 2024 21:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2171442FD;
+	Tue, 23 Apr 2024 21:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2H6+df7U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebXb2/54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F0D14389F;
-	Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9CC20B3E;
+	Tue, 23 Apr 2024 21:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908649; cv=none; b=c4f8wKunxEUDYzqeyzZEPlJFz54eQUQDJQnk2hZHaYDGtkWbJqEENwfK65qfRoD6qUSJJcQSxyj4Xc8pzNKM4wrCSUsM8KF8TFRCP1clx8lPpffJLvG25N3Lg/M4e0GziorbcM6PkkgmDzvrNC71tFmSxgyEq48l5f7WfwTvnJc=
+	t=1713908530; cv=none; b=FWG9RTSLnAvoPuaI8dmPG5UkfgLE5EJ+58vs4xW/2zhy6fF6pjCb6SBIEg0i60LGmhOXjhXTNAVIjCBNl1GHvbTBy5ENII4zygoE/1oJP0CNaPG79MWooCpQ0qTpPrzvpw7d8NdhvQEkr5Gvs52GJINMNBjWGDCOZm9prKLtM14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908649; c=relaxed/simple;
-	bh=LVVq99EWinDeS7H4FNPeTppxNvhdpEuPz0V4WXVUfF4=;
+	s=arc-20240116; t=1713908530; c=relaxed/simple;
+	bh=iQo9gSOU3xXSMPZH3ZPbQwjkDTraCH7/qZgjL9xarWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ey+WhP5BgH7Kplz5ewyM3fduNLKrL6aPr1lw8/gdWVmnlFBf1VchwcAbNdBlzpFPh7ASxKM/OQOOX9rYGEt15QqLdaPyAaJsWmKF5Fc/uLCxAML2ILZzWAHQkmErvZqsi2TPcFjC6PnB/B2onI9mHn6BXS8GZDfKW+ZBgZxre18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2H6+df7U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39E3C32781;
-	Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
+	 MIME-Version; b=mMyACtheWeiPfXADoOmAv5XSN+dktXb+v8oj1r9xIGgTo6wOBrdnqUEQwrKvd+Trwo24rD+NKGMUuiUIk88t9/5BKpb91YM34wQwUR11mzQ2vB7TAmBqCptFDC3KZxA/BwFuH/K3xg8INyBqWUEf60S1Rw9Kf4cCgesSdI4sZ0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebXb2/54; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CA3C116B1;
+	Tue, 23 Apr 2024 21:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908648;
-	bh=LVVq99EWinDeS7H4FNPeTppxNvhdpEuPz0V4WXVUfF4=;
+	s=korg; t=1713908530;
+	bh=iQo9gSOU3xXSMPZH3ZPbQwjkDTraCH7/qZgjL9xarWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2H6+df7UamryrFdqE08kknJjEUStCpaePOGu+RRzn2Nr3iR5iapy/V/cziwoSTc4l
-	 rSZ8ZxsBCOPMfg6juPdqlG9oBShLzYuWkPItQgvrT8Kc7zBVFpF/K3X1ZRGVJcwo0Z
-	 EaEIASZtHmq5vlVl7VaOMCOxlGZ+RQ7ufIvA8XXA=
+	b=ebXb2/54Yw/widQKpPXHJn81rdlt7COWaaw8/6Vzb5Sv6C8XS1W9CZqbCIg948SmJ
+	 np1GxZX+HOUv3IpjPQi+5VQ8Wi63pF9E44QTPd3fCHSNsXgkGhAp80n2Iba84iS/9o
+	 D3g6uiQUPd1G2v1FDOJJDGOR7BUz9eOfQO91uJeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 108/158] comedi: vmk80xx: fix incomplete endpoint checking
+	Samuel Thibault <samuel.thibault@ens-lyon.org>
+Subject: [PATCH 6.8 123/158] speakup: Avoid crash on very long word
 Date: Tue, 23 Apr 2024 14:39:05 -0700
-Message-ID: <20240423213859.260995725@linuxfoundation.org>
+Message-ID: <20240423213859.911614744@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Samuel Thibault <samuel.thibault@ens-lyon.org>
 
-commit d1718530e3f640b7d5f0050e725216eab57a85d8 upstream.
+commit c8d2f34ea96ea3bce6ba2535f867f0d4ee3b22e1 upstream.
 
-While vmk80xx does have endpoint checking implemented, some things
-can fall through the cracks. Depending on the hardware model,
-URBs can have either bulk or interrupt type, and current version
-of vmk80xx_find_usb_endpoints() function does not take that fully
-into account. While this warning does not seem to be too harmful,
-at the very least it will crash systems with 'panic_on_warn' set on
-them.
+In case a console is set up really large and contains a really long word
+(> 256 characters), we have to stop before the length of the word buffer.
 
-Fix the issue found by Syzkaller [1] by somewhat simplifying the
-endpoint checking process with usb_find_common_endpoints() and
-ensuring that only expected endpoint types are present.
-
-This patch has not been tested on real hardware.
-
-[1] Syzkaller report:
-usb 1-1: BOGUS urb xfer, pipe 1 != type 3
-WARNING: CPU: 0 PID: 781 at drivers/usb/core/urb.c:504 usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
-...
-Call Trace:
- <TASK>
- usb_start_wait_urb+0x113/0x520 drivers/usb/core/message.c:59
- vmk80xx_reset_device drivers/comedi/drivers/vmk80xx.c:227 [inline]
- vmk80xx_auto_attach+0xa1c/0x1a40 drivers/comedi/drivers/vmk80xx.c:818
- comedi_auto_config+0x238/0x380 drivers/comedi/drivers.c:1067
- usb_probe_interface+0x5cd/0xb00 drivers/usb/core/driver.c:399
-...
-
-Similar issue also found by Syzkaller:
-Link: https://syzkaller.appspot.com/bug?extid=5205eb2f17de3e01946e
-
-Reported-and-tested-by: syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Fixes: 49253d542cc0 ("staging: comedi: vmk80xx: factor out usb endpoint detection")
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20240408171633.31649-1-n.zhandarovich@fintech.ru
+Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Fixes: c6e3fd22cd538 ("Staging: add speakup to the staging directory")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240323164843.1426997-1-samuel.thibault@ens-lyon.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/vmk80xx.c |   35 ++++++++++++-----------------------
- 1 file changed, 12 insertions(+), 23 deletions(-)
+ drivers/accessibility/speakup/main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/comedi/drivers/vmk80xx.c
-+++ b/drivers/comedi/drivers/vmk80xx.c
-@@ -641,33 +641,22 @@ static int vmk80xx_find_usb_endpoints(st
- 	struct vmk80xx_private *devpriv = dev->private;
- 	struct usb_interface *intf = comedi_to_usb_interface(dev);
- 	struct usb_host_interface *iface_desc = intf->cur_altsetting;
--	struct usb_endpoint_descriptor *ep_desc;
--	int i;
-+	struct usb_endpoint_descriptor *ep_rx_desc, *ep_tx_desc;
-+	int ret;
- 
--	if (iface_desc->desc.bNumEndpoints != 2)
--		return -ENODEV;
--
--	for (i = 0; i < iface_desc->desc.bNumEndpoints; i++) {
--		ep_desc = &iface_desc->endpoint[i].desc;
--
--		if (usb_endpoint_is_int_in(ep_desc) ||
--		    usb_endpoint_is_bulk_in(ep_desc)) {
--			if (!devpriv->ep_rx)
--				devpriv->ep_rx = ep_desc;
--			continue;
--		}
-+	if (devpriv->model == VMK8061_MODEL)
-+		ret = usb_find_common_endpoints(iface_desc, &ep_rx_desc,
-+						&ep_tx_desc, NULL, NULL);
-+	else
-+		ret = usb_find_common_endpoints(iface_desc, NULL, NULL,
-+						&ep_rx_desc, &ep_tx_desc);
- 
--		if (usb_endpoint_is_int_out(ep_desc) ||
--		    usb_endpoint_is_bulk_out(ep_desc)) {
--			if (!devpriv->ep_tx)
--				devpriv->ep_tx = ep_desc;
--			continue;
--		}
--	}
--
--	if (!devpriv->ep_rx || !devpriv->ep_tx)
-+	if (ret)
- 		return -ENODEV;
- 
-+	devpriv->ep_rx = ep_rx_desc;
-+	devpriv->ep_tx = ep_tx_desc;
-+
- 	if (!usb_endpoint_maxp(devpriv->ep_rx) || !usb_endpoint_maxp(devpriv->ep_tx))
- 		return -EINVAL;
- 
+--- a/drivers/accessibility/speakup/main.c
++++ b/drivers/accessibility/speakup/main.c
+@@ -574,7 +574,7 @@ static u_long get_word(struct vc_data *v
+ 	}
+ 	attr_ch = get_char(vc, (u_short *)tmp_pos, &spk_attr);
+ 	buf[cnt++] = attr_ch;
+-	while (tmpx < vc->vc_cols - 1) {
++	while (tmpx < vc->vc_cols - 1 && cnt < sizeof(buf) - 1) {
+ 		tmp_pos += 2;
+ 		tmpx++;
+ 		ch = get_char(vc, (u_short *)tmp_pos, &temp);
 
 
 
