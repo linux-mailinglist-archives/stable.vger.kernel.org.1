@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-40913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2A68AF992
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEE58AFAB7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B92DE1F26DC5
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5240B2BA71
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C067145B09;
-	Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC651494B5;
+	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6TNK9i/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjpFnvSk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1E020B3E;
-	Tue, 23 Apr 2024 21:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502AC14600E;
+	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908550; cv=none; b=hFDgM4F3CT1WS1TlcG0XJSz+JVwlSriSWwoke4Sr3L51jJXF4eUK/IcJdHWuIlO2qLWnJ+568tOBF8K5zZMH17LJFrfBhG6vylHOyQD0answHWuf3QCZ970NJn/XJYFgdZPcfFGriu2nnre2BeE57MtV2O4qKFRT6oP7ct5R82E=
+	t=1713908665; cv=none; b=RGRBktZgKkE3k3miNP9qN1v6hMUobZSW5ndXelJTFjaoraZoRHzMtN7pIdJ3rwKFBprKwmmRDAhyY3Xg6hTOQXf9xaj4pKCb2FxaVria5SGhe8url3QxHQo+EcDe4YzVM1Fp65YqBs5fUGl4TJDuFMtFDnOaJkvr0ZVw8fL0FBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908550; c=relaxed/simple;
-	bh=SRU5OYpDbHY1aP2PGMiF0y7Zse+N9Smgu/kXgnocBkc=;
+	s=arc-20240116; t=1713908665; c=relaxed/simple;
+	bh=ECwpEBAbLLwM6geBmzOnetMeDWndm8wa/Se50Km4uXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TerKeqy9d5sOh1hf3EipGUhqASpZUjDbWLtDWBM54ky/fMahui1kVS3Id36wQSdNY7H0bmDQryDfnbK2NMX+T18q+KYis9GnBFZFMx7c3S/Dz/7WgKX3pYJRKvsgigGcfik19i3jVPC188F55649m4R4xPb0BE+QWz1SIANycq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6TNK9i/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A39C32782;
-	Tue, 23 Apr 2024 21:42:29 +0000 (UTC)
+	 MIME-Version; b=NSeVoh8O/Z19tw7cGMqfgrvlXDI46MG/IZwMJxO0ylEjIYErMMqYXS/QH0SbEp35DIVV1GoKedDzD6qTcCfPQ615moa9Fserscjh0mk0r1e5jpm1u2Yt16B2YpjyhPrNcWaEyc+uNFGKbe66kYRq2Td8bB2jPPXQr0YKUZWYJz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjpFnvSk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F53C116B1;
+	Tue, 23 Apr 2024 21:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908550;
-	bh=SRU5OYpDbHY1aP2PGMiF0y7Zse+N9Smgu/kXgnocBkc=;
+	s=korg; t=1713908665;
+	bh=ECwpEBAbLLwM6geBmzOnetMeDWndm8wa/Se50Km4uXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U6TNK9i//j0iYaqMzR7uw9pxaFDGlfq7yvbNQLl7R/KC4qsR17QuVq0t3Zxm3SDlR
-	 dyq5b/xQIjKRR/XZ2i4iuvlq4AJZrUoNUozcziGN16T5sNHH4tSbtAA6ieoUSKfycV
-	 8Srz1+EoMzCvZCFJmgehaT9iWJgXxGnctzg9pbew=
+	b=XjpFnvSkGJ0MeR8LpGX3OlpX9Nu2R1Afz9PQ/eUz36qajDKXD4QVj4u2F1h+R6OiO
+	 +e9XMl9vF9yp15d1Oa9TLtPbdvQh+HUjf4ytAwtVmxjz9VYvWowdu0wOK1gnxDWetA
+	 opIyhKqoQC8J98CY+C5xG7M/CzYD2gxdXB51Dqpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	"Ubisectech Sirius" <bugreport@ubisectech.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 150/158] Squashfs: check the inode number is not the invalid value of zero
+	Yuntao Wang <ytcoode@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.6 135/158] init/main.c: Fix potential static_command_line memory overflow
 Date: Tue, 23 Apr 2024 14:39:32 -0700
-Message-ID: <20240423213900.722105945@linuxfoundation.org>
+Message-ID: <20240423213900.089152680@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Yuntao Wang <ytcoode@gmail.com>
 
-commit 9253c54e01b6505d348afbc02abaa4d9f8a01395 upstream.
+commit 46dad3c1e57897ab9228332f03e1c14798d2d3b9 upstream.
 
-Syskiller has produced an out of bounds access in fill_meta_index().
+We allocate memory of size 'xlen + strlen(boot_command_line) + 1' for
+static_command_line, but the strings copied into static_command_line are
+extra_command_line and command_line, rather than extra_command_line and
+boot_command_line.
 
-That out of bounds access is ultimately caused because the inode
-has an inode number with the invalid value of zero, which was not checked.
+When strlen(command_line) > strlen(boot_command_line), static_command_line
+will overflow.
 
-The reason this causes the out of bounds access is due to following
-sequence of events:
+This patch just recovers strlen(command_line) which was miss-consolidated
+with strlen(boot_command_line) in the commit f5c7310ac73e ("init/main: add
+checks for the return value of memblock_alloc*()")
 
-1. Fill_meta_index() is called to allocate (via empty_meta_index())
-   and fill a metadata index.  It however suffers a data read error
-   and aborts, invalidating the newly returned empty metadata index.
-   It does this by setting the inode number of the index to zero,
-   which means unused (zero is not a valid inode number).
+Link: https://lore.kernel.org/all/20240412081733.35925-2-ytcoode@gmail.com/
 
-2. When fill_meta_index() is subsequently called again on another
-   read operation, locate_meta_index() returns the previous index
-   because it matches the inode number of 0.  Because this index
-   has been returned it is expected to have been filled, and because
-   it hasn't been, an out of bounds access is performed.
-
-This patch adds a sanity check which checks that the inode number
-is not zero when the inode is created and returns -EINVAL if it is.
-
-[phillip@squashfs.org.uk: whitespace fix]
-  Link: https://lkml.kernel.org/r/20240409204723.446925-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
-Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: f5c7310ac73e ("init/main: add checks for the return value of memblock_alloc*()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ init/main.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct sup
- 	gid_t i_gid;
- 	int err;
+--- a/init/main.c
++++ b/init/main.c
+@@ -630,6 +630,8 @@ static void __init setup_command_line(ch
+ 	if (!saved_command_line)
+ 		panic("%s: Failed to allocate %zu bytes\n", __func__, len + ilen);
  
-+	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
-+	if (inode->i_ino == 0)
-+		return -EINVAL;
++	len = xlen + strlen(command_line) + 1;
 +
- 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
- 	if (err)
- 		return err;
-@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct sup
- 
- 	i_uid_write(inode, i_uid);
- 	i_gid_write(inode, i_gid);
--	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
- 	inode_set_mtime(inode, le32_to_cpu(sqsh_ino->mtime), 0);
- 	inode_set_atime(inode, inode_get_mtime_sec(inode), 0);
- 	inode_set_ctime(inode, inode_get_mtime_sec(inode), 0);
+ 	static_command_line = memblock_alloc(len, SMP_CACHE_BYTES);
+ 	if (!static_command_line)
+ 		panic("%s: Failed to allocate %zu bytes\n", __func__, len);
 
 
 
