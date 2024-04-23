@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-40910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F52E8AF98E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC8F8AFA06
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3EF61F26D53
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69D761F28B2A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661E5145B03;
-	Tue, 23 Apr 2024 21:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FDE20B3E;
+	Tue, 23 Apr 2024 21:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfrbKnUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9eE2FzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2401E20B3E;
-	Tue, 23 Apr 2024 21:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E91145B0F;
+	Tue, 23 Apr 2024 21:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908548; cv=none; b=pQX2f7jEPnlafTRcYWpR5uUomQ47/Jp1/tz7YH0EIinoXjbOjKF9EYruu8eIVnERsvuwZ09S7JEq2tDtkMmvft04A7oj6TrDdbXNe5TasGjBAN92BQSI4siJnxjZzUlEJY66IZjIzXcpL/Z02DiMuu7zIVX0uctFNC4e4/ku3Os=
+	t=1713908620; cv=none; b=Gu74O6AmDYPsSe0Lnz5qRkN1HuHwzj+UcXyNtoV2QTEf3NomiPKongAW4gZRMESPjRjgD5CPuZQozQGpJEOFf6+AIa9m7XaDsiaNJLQqXRenLHPV7HxrTOTN2VZpsCNI5AELb7+ih8J15gk+Twa2t7ZS2WWGmwuWF6AAeGMV+dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908548; c=relaxed/simple;
-	bh=fyi+lhaaDggmZ9NTpPwEFccfVQQ3+cLGdKynUNDxUIQ=;
+	s=arc-20240116; t=1713908620; c=relaxed/simple;
+	bh=VXG57ggfJGcr37FRhfkNSYNuFuF2gwQjSX+xwhR3GUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+N6sgtst/BkMhLrOPsiqlB6iEvTnavKrGWDg+UHuWx8H0YFmQp/0foiCl0Hc2dNCIfO/t6chwPhb9pJuwXSJTAaOvNtENGRDnl1uwqC74BIC5bbjNI+3tEj+FzE/1+52yRX5TaCX8xLVfVLN7ZW115vveKDLJLa1RfeAkjhQ6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfrbKnUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED83DC3277B;
-	Tue, 23 Apr 2024 21:42:27 +0000 (UTC)
+	 MIME-Version; b=IaAjnj+5AvhjWcuNF90KoggY6vpMJScvIJsNRX4CIa6hcJMi+D8KoCt1T1nxGE2p0EwWMMf6iW+aI15jQV4vUrmlgPZOFJKvAlK5+7LD8b6YgP4rkQCa50IT7RbrYFRLC6lhFg8dHcHZvU4YPVS2a53CrhHGS+11cjbZ/aqY3Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9eE2FzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902F5C116B1;
+	Tue, 23 Apr 2024 21:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908548;
-	bh=fyi+lhaaDggmZ9NTpPwEFccfVQQ3+cLGdKynUNDxUIQ=;
+	s=korg; t=1713908620;
+	bh=VXG57ggfJGcr37FRhfkNSYNuFuF2gwQjSX+xwhR3GUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rfrbKnUbNshDvXWfybd9+CxMsSwIBaZwhAaZJKR17Y5NwzE4WnX2/W8N4T3q4XnMz
-	 HJoj508onbxVnUkKHbfrZoZpKeUjpjxTl4H9kMOoVE1b+BQyoRqtE7uWspva1OZcwf
-	 uKHirjzpgg68ex//PdYshuhQld33Zk7GnvqL+NDc=
+	b=L9eE2FzGKz28rYATz2mrKCAKfLtg38igzHNwMlyfJIyMcWXNMYH3CJHnQaLPe78w1
+	 7sMxZHEtR6dsKzKMm3fS91ct669uBFvdAAh/txkb6sqq4fX+f01zWcbz02qIzCSUan
+	 yW8M4oJ204/YtFLB9raMvtgKNTSU0fsKQHQVVl60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bolan wang <bolan.wang@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.8 109/158] USB: serial: option: add Fibocom FM135-GL variants
+	Chinmoy Ghosh <chinmoyghosh2001@gmail.com>,
+	Mintu Patel <mintupatel89@gmail.com>,
+	Vimal Kumar <vimal.kumar32@gmail.com>,
+	Vishal Badole <badolevishal1116@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 094/158] clk: Show active consumers of clocks in debugfs
 Date: Tue, 23 Apr 2024 14:38:51 -0700
-Message-ID: <20240423213859.476300043@linuxfoundation.org>
+Message-ID: <20240423213858.798053346@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +65,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: bolan wang <bolan.wang@fibocom.com>
+From: Vishal Badole <badolevishal1116@gmail.com>
 
-commit 356952b13af5b2c338df1e06889fd1b5e12cbbf4 upstream.
+[ Upstream commit dcce5cc7826e9c6b3a2443e5e6b7f8d02a103c35 ]
 
-Update the USB serial option driver support for the Fibocom
-FM135-GL LTE modules.
-- VID:PID 2cb7:0115, FM135-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
+This feature lists the clock consumer's name and respective connection
+id. Using this feature user can easily check that which user has
+acquired and enabled a particular clock.
 
-0x0115: mbim, diag, at, pipe
+Usage:
+>> cat /sys/kernel/debug/clk/clk_summary
+                      enable  prepare  protect
+                                                                          duty  hardware                            Connection
+   clock               count    count    count    rate   accuracy phase  cycle    enable   consumer                         Id
+------------------------------------------------------------------------------------------------------------------------------
+ clk_mcasp0_fixed         0        0        0    24576000          0      0  50000     Y   deviceless                     of_clk_get_from_provider
+                                                                                           deviceless                     no_connection_id
+    clk_mcasp0            0        0        0    24576000          0      0  50000     N      simple-audio-card,cpu           no_connection_id
+                                                                                              deviceless                      no_connection_id
 
-Here are the outputs of usb-devices:
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0115 Rev=05.15
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom Module
-S:  SerialNumber=12345678
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: bolan wang <bolan.wang@fibocom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Chinmoy Ghosh <chinmoyghosh2001@gmail.com>
+Signed-off-by: Chinmoy Ghosh <chinmoyghosh2001@gmail.com>
+Co-developed-by: Mintu Patel <mintupatel89@gmail.com>
+Signed-off-by: Mintu Patel <mintupatel89@gmail.com>
+Co-developed-by: Vimal Kumar <vimal.kumar32@gmail.com>
+Signed-off-by: Vimal Kumar <vimal.kumar32@gmail.com>
+Signed-off-by: Vishal Badole <badolevishal1116@gmail.com>
+Link: https://lore.kernel.org/r/1669569799-8526-1-git-send-email-badolevishal1116@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: 9d1e795f754d ("clk: Get runtime PM before walking tree for clk_summary")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/clk.c | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2272,6 +2272,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 7c87a8084df76..011e7632541fa 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -3279,28 +3279,41 @@ static void clk_summary_show_one(struct seq_file *s, struct clk_core *c,
+ 				 int level)
+ {
+ 	int phase;
++	struct clk *clk_user;
++	int multi_node = 0;
+ 
+-	seq_printf(s, "%*s%-*s %7d %8d %8d %11lu %10lu ",
++	seq_printf(s, "%*s%-*s %-7d %-8d %-8d %-11lu %-10lu ",
+ 		   level * 3 + 1, "",
+-		   30 - level * 3, c->name,
++		   35 - level * 3, c->name,
+ 		   c->enable_count, c->prepare_count, c->protect_count,
+ 		   clk_core_get_rate_recalc(c),
+ 		   clk_core_get_accuracy_recalc(c));
+ 
+ 	phase = clk_core_get_phase(c);
+ 	if (phase >= 0)
+-		seq_printf(s, "%5d", phase);
++		seq_printf(s, "%-5d", phase);
+ 	else
+ 		seq_puts(s, "-----");
+ 
+-	seq_printf(s, " %6d", clk_core_get_scaled_duty_cycle(c, 100000));
++	seq_printf(s, " %-6d", clk_core_get_scaled_duty_cycle(c, 100000));
+ 
+ 	if (c->ops->is_enabled)
+-		seq_printf(s, " %9c\n", clk_core_is_enabled(c) ? 'Y' : 'N');
++		seq_printf(s, " %5c ", clk_core_is_enabled(c) ? 'Y' : 'N');
+ 	else if (!c->ops->enable)
+-		seq_printf(s, " %9c\n", 'Y');
++		seq_printf(s, " %5c ", 'Y');
+ 	else
+-		seq_printf(s, " %9c\n", '?');
++		seq_printf(s, " %5c ", '?');
++
++	hlist_for_each_entry(clk_user, &c->clks, clks_node) {
++		seq_printf(s, "%*s%-*s  %-25s\n",
++			   level * 3 + 2 + 105 * multi_node, "",
++			   30,
++			   clk_user->dev_id ? clk_user->dev_id : "deviceless",
++			   clk_user->con_id ? clk_user->con_id : "no_connection_id");
++
++		multi_node = 1;
++	}
++
+ }
+ 
+ static void clk_summary_show_subtree(struct seq_file *s, struct clk_core *c,
+@@ -3321,9 +3334,10 @@ static int clk_summary_show(struct seq_file *s, void *data)
+ 	struct clk_core *c;
+ 	struct hlist_head **lists = s->private;
+ 
+-	seq_puts(s, "                                 enable  prepare  protect                                duty  hardware\n");
+-	seq_puts(s, "   clock                          count    count    count        rate   accuracy phase  cycle    enable\n");
+-	seq_puts(s, "-------------------------------------------------------------------------------------------------------\n");
++	seq_puts(s, "                                 enable  prepare  protect                                duty  hardware                            connection\n");
++	seq_puts(s, "   clock                          count    count    count        rate   accuracy phase  cycle    enable   consumer                         id\n");
++	seq_puts(s, "---------------------------------------------------------------------------------------------------------------------------------------------\n");
++
+ 
+ 	clk_prepare_lock();
+ 
+-- 
+2.43.0
+
 
 
 
