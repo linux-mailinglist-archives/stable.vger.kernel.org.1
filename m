@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-40945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5CD78AF9B4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F2C8AF912
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF4ADB2A84C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28F901F21FE4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F8C1448EA;
-	Tue, 23 Apr 2024 21:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA4314389A;
+	Tue, 23 Apr 2024 21:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huQ/cdb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUdgJAR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253FF1420BE;
-	Tue, 23 Apr 2024 21:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC47143C48;
+	Tue, 23 Apr 2024 21:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908572; cv=none; b=UVJkpQgp0SiNcDw4ok1XBzJC9FxXyi4cd/kkkV2DpODMnKZR9h3+WzlpD9vX4JkYi/kRdMaPb7qk2ttV5EnkEpdwqc0/tguRAkWhlZ9g6bTW2XEk/MlaiZfz6FrPR4aD+U1q+cMu5JfsFx1+nrGU0xXwiAP1IJsIEJfqAvQrjmo=
+	t=1713908463; cv=none; b=po6V8QUQsfwJYhxjrEvhDjXgS7hKTKI5rv50NIww6vJ7JJvOOJENitPrOJKkzQGuvk6o9+CyciZ1T6nli1UfM786CKZKMJ6lmoNGr/wJUKpk0SPB06VQt9XsXIWRq+8ayyOgf4BlbWvEEcaYXdEPNj21gRNVgvPSzl8fow1SzPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908572; c=relaxed/simple;
-	bh=guK5pgwlpHL4VZ/gQc/gPg3xzyhgW5KyE7mlORcqj0E=;
+	s=arc-20240116; t=1713908463; c=relaxed/simple;
+	bh=YrVdWoPcHiTWKXpAH/vvGfNPdVcawK8sWUb0p0sb/qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q/THckFQ97sU790AMAOSuky8kIElf0UulZUbgA1jIiQYVxOlWeZeKHSuSbZgKJAqP3EEK/kvQd4i9+PDNmfMbATSOKkyLzfk/ds0m4Y/v2ikRY2E9EMw5tW+6apCne77T6srLlFbZHFBvCspQOjY6Ft9fzVwHmaqTYd3yKhb23c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huQ/cdb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0291C32781;
-	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
+	 MIME-Version; b=Epk6szXgf9sHJCVsXfnuHyzeo8VB5Y90eppEOWQ+ZLC7LpiAH403+FUOKneUL3i+6cUlrO1APT7N6YQmAluSQ1gxOqb2NhlZsmwYKQtAgtJew6ly2PMH24M65MZ6ZV5mAFyU/Be6dSvUyLLdY/Qc0Yo2iH8NNefLCndDSt6nNcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUdgJAR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D15C3277B;
+	Tue, 23 Apr 2024 21:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908572;
-	bh=guK5pgwlpHL4VZ/gQc/gPg3xzyhgW5KyE7mlORcqj0E=;
+	s=korg; t=1713908463;
+	bh=YrVdWoPcHiTWKXpAH/vvGfNPdVcawK8sWUb0p0sb/qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=huQ/cdb16QmA1JREC77kzWS/TcpUwZu8hz9u3Y4zBSwFLvx8ftxFegh9roAwfYS4o
-	 wC3GnX/E0OyiYadGBemLYr24tuNdTDgGFqohDNrr69i2BJjZik12FxES+5yvOC44GN
-	 Bhsapl3dMlaAVZVZ2zsbedCbDm8LEwIrBqaq2GHU=
+	b=dUdgJAR6mVs7i0+Y210ZYyiMAvDcmTNEqk+hpZ8yH4Xb0zPBxnHA0dQ72Hrx9NZkt
+	 PPfhLmjlgzzqbFiRE0aH7HcCQ7KwHu/X0AdttB2CC8QcQYfz6cJcycwX9Bpb2ToCUe
+	 LqIjvnCBDvd4DpWXwkhUqHb0CI+oHhXwju8dDKMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manasi Navare <navaremanasi@chromium.org>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/158] drm/i915: Change intel_pipe_update_{start,end}() calling convention
-Date: Tue, 23 Apr 2024 14:37:26 -0700
-Message-ID: <20240423213856.022555617@linuxfoundation.org>
+Subject: [PATCH 6.8 025/158] net/mlx5: Lag, restore buckets number to default after hash LAG deactivation
+Date: Tue, 23 Apr 2024 14:37:27 -0700
+Message-ID: <20240423213856.690592776@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,124 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 09f390d4e2f38f8433431f4da31ca0a17a5c7853 ]
+[ Upstream commit 37cc10da3a50e6d0cb9808a90b7da9b4868794dd ]
 
-We'll need to also look at the old crtc state in
-intel_pipe_update_start() so change the calling convention to
-just plumb in the full atomic state instead.
+The cited patch introduces the concept of buckets in LAG in hash mode.
+However, the patch doesn't clear the number of buckets in the LAG
+deactivation. This results in using the wrong number of buckets in
+case user create a hash mode LAG and afterwards create a non-hash
+mode LAG.
 
-Cc: Manasi Navare <navaremanasi@chromium.org>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230901130440.2085-3-ville.syrjala@linux.intel.com
-Reviewed-by: Manasi Navare <navaremanasi@chromium.org>
-Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Stable-dep-of: 4a36e46df7aa ("drm/i915: Disable live M/N updates when using bigjoiner")
+Hence, restore buckets number to default after hash mode LAG
+deactivation.
+
+Fixes: 352899f384d4 ("net/mlx5: Lag, use buckets in hash mode")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240411115444.374475-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_crtc.c    | 18 ++++++++++++------
- drivers/gpu/drm/i915/display/intel_crtc.h    |  6 ++++--
- drivers/gpu/drm/i915/display/intel_display.c |  4 ++--
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_crtc.c b/drivers/gpu/drm/i915/display/intel_crtc.c
-index 182c6dd64f47c..65d91c7ad22ff 100644
---- a/drivers/gpu/drm/i915/display/intel_crtc.c
-+++ b/drivers/gpu/drm/i915/display/intel_crtc.c
-@@ -470,7 +470,8 @@ static int intel_mode_vblank_start(const struct drm_display_mode *mode)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index d14459e5c04fc..69d482f7c5a29 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -703,8 +703,10 @@ int mlx5_deactivate_lag(struct mlx5_lag *ldev)
+ 		return err;
+ 	}
  
- /**
-  * intel_pipe_update_start() - start update of a set of display registers
-- * @new_crtc_state: the new crtc state
-+ * @state: the atomic state
-+ * @crtc: the crtc
-  *
-  * Mark the start of an update to pipe registers that should be updated
-  * atomically regarding vblank. If the next vblank will happens within
-@@ -480,10 +481,12 @@ static int intel_mode_vblank_start(const struct drm_display_mode *mode)
-  * until a subsequent call to intel_pipe_update_end(). That is done to
-  * avoid random delays.
-  */
--void intel_pipe_update_start(struct intel_crtc_state *new_crtc_state)
-+void intel_pipe_update_start(struct intel_atomic_state *state,
-+			     struct intel_crtc *crtc)
- {
--	struct intel_crtc *crtc = to_intel_crtc(new_crtc_state->uapi.crtc);
- 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
-+	struct intel_crtc_state *new_crtc_state =
-+		intel_atomic_get_new_crtc_state(state, crtc);
- 	const struct drm_display_mode *adjusted_mode = &new_crtc_state->hw.adjusted_mode;
- 	long timeout = msecs_to_jiffies_timeout(1);
- 	int scanline, min, max, vblank_start;
-@@ -631,15 +634,18 @@ static void dbg_vblank_evade(struct intel_crtc *crtc, ktime_t end) {}
+-	if (test_bit(MLX5_LAG_MODE_FLAG_HASH_BASED, &flags))
++	if (test_bit(MLX5_LAG_MODE_FLAG_HASH_BASED, &flags)) {
+ 		mlx5_lag_port_sel_destroy(ldev);
++		ldev->buckets = 1;
++	}
+ 	if (mlx5_lag_has_drop_rule(ldev))
+ 		mlx5_lag_drop_rule_cleanup(ldev);
  
- /**
-  * intel_pipe_update_end() - end update of a set of display registers
-- * @new_crtc_state: the new crtc state
-+ * @state: the atomic state
-+ * @crtc: the crtc
-  *
-  * Mark the end of an update started with intel_pipe_update_start(). This
-  * re-enables interrupts and verifies the update was actually completed
-  * before a vblank.
-  */
--void intel_pipe_update_end(struct intel_crtc_state *new_crtc_state)
-+void intel_pipe_update_end(struct intel_atomic_state *state,
-+			   struct intel_crtc *crtc)
- {
--	struct intel_crtc *crtc = to_intel_crtc(new_crtc_state->uapi.crtc);
-+	struct intel_crtc_state *new_crtc_state =
-+		intel_atomic_get_new_crtc_state(state, crtc);
- 	enum pipe pipe = crtc->pipe;
- 	int scanline_end = intel_get_crtc_scanline(crtc);
- 	u32 end_vbl_count = intel_crtc_get_vblank_counter(crtc);
-diff --git a/drivers/gpu/drm/i915/display/intel_crtc.h b/drivers/gpu/drm/i915/display/intel_crtc.h
-index 51a4c8df9e657..22d7993d1f0ba 100644
---- a/drivers/gpu/drm/i915/display/intel_crtc.h
-+++ b/drivers/gpu/drm/i915/display/intel_crtc.h
-@@ -36,8 +36,10 @@ void intel_crtc_state_reset(struct intel_crtc_state *crtc_state,
- u32 intel_crtc_get_vblank_counter(struct intel_crtc *crtc);
- void intel_crtc_vblank_on(const struct intel_crtc_state *crtc_state);
- void intel_crtc_vblank_off(const struct intel_crtc_state *crtc_state);
--void intel_pipe_update_start(struct intel_crtc_state *new_crtc_state);
--void intel_pipe_update_end(struct intel_crtc_state *new_crtc_state);
-+void intel_pipe_update_start(struct intel_atomic_state *state,
-+			     struct intel_crtc *crtc);
-+void intel_pipe_update_end(struct intel_atomic_state *state,
-+			   struct intel_crtc *crtc);
- void intel_wait_for_vblank_workers(struct intel_atomic_state *state);
- struct intel_crtc *intel_first_crtc(struct drm_i915_private *i915);
- struct intel_crtc *intel_crtc_for_pipe(struct drm_i915_private *i915,
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index a072fbb9872aa..af93761e82cac 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -6616,7 +6616,7 @@ static void intel_update_crtc(struct intel_atomic_state *state,
- 	intel_crtc_planes_update_noarm(state, crtc);
- 
- 	/* Perform vblank evasion around commit operation */
--	intel_pipe_update_start(new_crtc_state);
-+	intel_pipe_update_start(state, crtc);
- 
- 	commit_pipe_pre_planes(state, crtc);
- 
-@@ -6624,7 +6624,7 @@ static void intel_update_crtc(struct intel_atomic_state *state,
- 
- 	commit_pipe_post_planes(state, crtc);
- 
--	intel_pipe_update_end(new_crtc_state);
-+	intel_pipe_update_end(state, crtc);
- 
- 	/*
- 	 * We usually enable FIFO underrun interrupts as part of the
 -- 
 2.43.0
 
