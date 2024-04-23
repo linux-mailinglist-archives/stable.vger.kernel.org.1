@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-40831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018C18AF93D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050798AF9D5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33E3C1C22D95
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 973F81F27E9C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAD01442F1;
-	Tue, 23 Apr 2024 21:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B169144D12;
+	Tue, 23 Apr 2024 21:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NrUygH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hS/xA8R4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A43F143889;
-	Tue, 23 Apr 2024 21:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE93B143889;
+	Tue, 23 Apr 2024 21:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908492; cv=none; b=OMSyKS/uwC5eNbOSTlG0ovBGD9oEB0Vb1xVhnqjARA6o+OKwg4OKFBj56o0ReJvPrc1m80rTVnkki2ndRbhfODqUyzwBqoOJGCgLF2MZecnLGlHuUz7Q7/A0lGfO2OuZDHEhvRExhzRV3KETnA9fh9j2FO+hGo8ybMsayEHIaVA=
+	t=1713908592; cv=none; b=OoZitjoRfSxZMgIu/vfbxS2IXOJUnr+T00bly0zeaoE3lS8u5X5P8sDXPNNP5j0WS7akji0VrmaO0OgUCxFdWAPaopTP+U3lLqdQkdJeEPjSAFNFBy22aUXxp3NVPtoSp7DgTZOhMYkZoF7VSscnWhqyLyIa78FzQ8A8BMP0rNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908492; c=relaxed/simple;
-	bh=CdJ5/+3ESPLwHo/Gi0pzy2eWy2xqtcFTPZD9W+Xj82M=;
+	s=arc-20240116; t=1713908592; c=relaxed/simple;
+	bh=S+dOXAYRduH64dD8hFlL8+1G4avCBSR8K+e1hKX1z4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spHfc/5LS6bbhnCpFfFB5mwV8aJBXn1xNY1bPjFl3YIBV8ThHWuh98xR9O5aThyiHcgSIckyGs4QuaE8du/cTNbmYK8Xex/h7QgFXRMGNOtHq4NUHWxPs2X9TGd9hcGqMXwMWp/u1mrdcZO+K9cIUGYsIaJeNYNTIPKiWVG+RUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NrUygH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9C8C116B1;
-	Tue, 23 Apr 2024 21:41:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A4s5+C8lt1wZGRsf1/Ryef2fPWa2etTlj3Iv49xW4HgCYXxRr45t/h+Serxpup/jhX8dTOjLe2WDfuC7XU4dJbcZkpShvtXrRlSu/jCsQzCAvZINU21UHkqtHVzsGOTnRo6Ej7LO88/rhcxtx7fPXsVYBXdgefg/iQtN03CePkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hS/xA8R4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF10C3277B;
+	Tue, 23 Apr 2024 21:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908492;
-	bh=CdJ5/+3ESPLwHo/Gi0pzy2eWy2xqtcFTPZD9W+Xj82M=;
+	s=korg; t=1713908592;
+	bh=S+dOXAYRduH64dD8hFlL8+1G4avCBSR8K+e1hKX1z4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NrUygH4BWwqdET1+eQLPUggxIdxJWaVaPOyDblzu9Y8/6r3f0DeZNDhR0ZSPEXJd
-	 Tzt/rjERrI0nX4PyBjuQem9UI8KCLDCvKV2jO4sq9XClGpzrnzOg7ESM55eYhTw+mw
-	 WH12rqvsWI/ukUWK0qTA/R0sdiJMZnzdhCucKrE8=
+	b=hS/xA8R4DuTtUqqwUc75RLVhWWM06KXORwJEHVqLlBQ2B9iYAlG25NhBU1YgfOBze
+	 xl8kLqfDlR8TA7dWdm1pBobNg+zNpJKXkndP0VyuijXye7DJP6H9kyZMDjL9MHApfx
+	 V2prNg7BWkWHuBGsHPGI48l6rWWmFEAxSJ4se4G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanath S <Sanath.S@amd.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.8 068/158] thunderbolt: Introduce tb_path_deactivate_hop()
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 053/158] net: dsa: mt7530: fix mirroring frames received on local port
 Date: Tue, 23 Apr 2024 14:38:10 -0700
-Message-ID: <20240423213858.168958912@linuxfoundation.org>
+Message-ID: <20240423213857.498754317@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanath S <Sanath.S@amd.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-commit b35c1d7b11da8c08b14147bbe87c2c92f7a83f8b upstream.
+[ Upstream commit d59cf049c8378677053703e724808836f180888e ]
 
-This function can be used to clear path config space of an adapter. Make
-it available for other files in this driver.
+This switch intellectual property provides a bit on the ARL global control
+register which controls allowing mirroring frames which are received on the
+local port (monitor port). This bit is unset after reset.
 
-Signed-off-by: Sanath S <Sanath.S@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This ability must be enabled to fully support the port mirroring feature on
+this switch intellectual property.
+
+Therefore, this patch fixes the traffic not being reflected on a port,
+which would be configured like below:
+
+  tc qdisc add dev swp0 clsact
+
+  tc filter add dev swp0 ingress matchall skip_sw \
+  action mirred egress mirror dev swp0
+
+As a side note, this configuration provides the hairpinning feature for a
+single port.
+
+Fixes: 37feab6076aa ("net: dsa: mt7530: add support for port mirroring")
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/path.c |   13 +++++++++++++
- drivers/thunderbolt/tb.h   |    1 +
- 2 files changed, 14 insertions(+)
+ drivers/net/dsa/mt7530.c | 6 ++++++
+ drivers/net/dsa/mt7530.h | 4 ++++
+ 2 files changed, 10 insertions(+)
 
---- a/drivers/thunderbolt/path.c
-+++ b/drivers/thunderbolt/path.c
-@@ -446,6 +446,19 @@ static int __tb_path_deactivate_hop(stru
- 	return -ETIMEDOUT;
- }
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 88f081672f6fb..a123bb832db91 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -2518,6 +2518,9 @@ mt7530_setup(struct dsa_switch *ds)
+ 			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
+ 	}
  
-+/**
-+ * tb_path_deactivate_hop() - Deactivate one path in path config space
-+ * @port: Lane or protocol adapter
-+ * @hop_index: HopID of the path to be cleared
-+ *
-+ * This deactivates or clears a single path config space entry at
-+ * @hop_index. Returns %0 in success and negative errno otherwise.
-+ */
-+int tb_path_deactivate_hop(struct tb_port *port, int hop_index)
-+{
-+	return __tb_path_deactivate_hop(port, hop_index, true);
-+}
++	/* Allow mirroring frames received on the local port (monitor port). */
++	mt7530_set(priv, MT753X_AGC, LOCAL_EN);
 +
- static void __tb_path_deactivate_hops(struct tb_path *path, int first_hop)
- {
- 	int i, res;
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -1154,6 +1154,7 @@ struct tb_path *tb_path_alloc(struct tb
- void tb_path_free(struct tb_path *path);
- int tb_path_activate(struct tb_path *path);
- void tb_path_deactivate(struct tb_path *path);
-+int tb_path_deactivate_hop(struct tb_port *port, int hop_index);
- bool tb_path_is_invalid(struct tb_path *path);
- bool tb_path_port_on_path(const struct tb_path *path,
- 			  const struct tb_port *port);
+ 	/* Setup VLAN ID 0 for VLAN-unaware bridges */
+ 	ret = mt7530_setup_vlan0(priv);
+ 	if (ret)
+@@ -2626,6 +2629,9 @@ mt7531_setup_common(struct dsa_switch *ds)
+ 			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
+ 	}
+ 
++	/* Allow mirroring frames received on the local port (monitor port). */
++	mt7530_set(priv, MT753X_AGC, LOCAL_EN);
++
+ 	/* Flush the FDB table */
+ 	ret = mt7530_fdb_cmd(priv, MT7530_FDB_FLUSH, NULL);
+ 	if (ret < 0)
+diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
+index ddefeb69afda1..9388c1205bea2 100644
+--- a/drivers/net/dsa/mt7530.h
++++ b/drivers/net/dsa/mt7530.h
+@@ -32,6 +32,10 @@ enum mt753x_id {
+ #define SYSC_REG_RSTCTRL		0x34
+ #define  RESET_MCM			BIT(2)
+ 
++/* Register for ARL global control */
++#define MT753X_AGC			0xc
++#define  LOCAL_EN			BIT(7)
++
+ /* Registers to mac forward control for unknown frames */
+ #define MT7530_MFC			0x10
+ #define  BC_FFP(x)			(((x) & 0xff) << 24)
+-- 
+2.43.0
+
 
 
 
