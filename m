@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-40858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7172A8AF959
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D57D78AFA88
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EF5C1F24EB9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A0E01F2966C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695CD85274;
-	Tue, 23 Apr 2024 21:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A86149E0A;
+	Tue, 23 Apr 2024 21:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjV/e5Yy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4KEA/R/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26602143888;
-	Tue, 23 Apr 2024 21:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1097147C77;
+	Tue, 23 Apr 2024 21:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908511; cv=none; b=JWyWFS3uhH0vhk8KD8gcBwhQ9587EwvmifynerHTrI2MMraOQEBMTN/OXJ1fipQu1WTpAViVvIoNQrw/bktEGQ/ftZNyiRy4BNpH4jjkbyBQ7GNpRvCevZrLCFQDKmJyADO2ebitLcAPfNwGR9BMIE4GHQTAaBmirDCjzwpi5BM=
+	t=1713908717; cv=none; b=jqXsgxAmnNY1pT27d0YC2SoVuJFwoH22X8KR00Pvonqd+9Fyj0v+ONI9DCMnhdfa2udFZgfT+xhEQyJYqy9CQ3uASDnBqGGpM4bapkpLqAwjYV6yFf1o5qxFWp+sVu15wyE3Ikse1IA6scDiJgX5VxDD/ZfM4OvnE0cTYDJ0/5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908511; c=relaxed/simple;
-	bh=YcE8/FU0jLrIhgoVTxcH+rQbW5BuFMQG80e0NKnIKJw=;
+	s=arc-20240116; t=1713908717; c=relaxed/simple;
+	bh=ZR7ZMCxVic7/I3Z+BjPCFOwKalfYvzuE8jWYJ7ONmAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtDYusNW7emF1OElFcXOm3faT+CzatTpI+Lon4CZRQ7laAADzVUd0/RuLXrhwBxSlGIj+fA3d5PkJxyTXEZZpy1MOjAymL9jQnKppwF5M77PYBYeZ4ovxjZ3hAiMy3Jz/OYqISGHfbhgGbHoMZfcvctag+M/Qf4lUeI2fIZFZlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjV/e5Yy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B3DC32782;
-	Tue, 23 Apr 2024 21:41:50 +0000 (UTC)
+	 MIME-Version; b=NATLsE+7vMWk2xLKdsiE20NAqJiGq3j0RQPy07YYpk5X9AmsZmHxMxn3N2iskqR8oRWIHXeLJL9e01GRMWMhjE2hpBA8OSvvWhmF1HLAoTXxFHOUJusgHeaCW9nuLk+PC3+Rx/5djp6ah2VDuxOGjkyOUGPsU+35ORI8MwVF/Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4KEA/R/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8679CC3277B;
+	Tue, 23 Apr 2024 21:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908510;
-	bh=YcE8/FU0jLrIhgoVTxcH+rQbW5BuFMQG80e0NKnIKJw=;
+	s=korg; t=1713908717;
+	bh=ZR7ZMCxVic7/I3Z+BjPCFOwKalfYvzuE8jWYJ7ONmAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjV/e5YyomViYt2DNaaB3cdo+TBWCT3UMdyybcJtzeDDf+NGE8rnh/bqL9ov/5zQw
-	 N2LZQjy/AxHfbvrUZ23CWDqD8ddc7r5t2oiPmi+hYqvpo8smTp/yMkeziZiLfbTr40
-	 rLgWCP1WmnWaCjurcg0EULbxzHqHLDpNbzjTq2+c=
+	b=w4KEA/R/nN9okw5zzlyuiGNK5WJ85fhFETkcLqh3/t3OLXuAmR48Pk2ChdfJi86se
+	 aTaXJL9mPabUOlvwO6Pj6QNhnJ0rYxSSDHZut+z92jybA8kU6XhYz20zOvH/DMo/eD
+	 Dao0fUJeJ2laMJ16FZ8F0UqJU0KAdsij2WldUhQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ricky Wu <ricky_wu@realtek.com>
-Subject: [PATCH 6.8 095/158] misc: rtsx: Fix rts5264 driver status incorrect when card removed
-Date: Tue, 23 Apr 2024 14:38:37 -0700
-Message-ID: <20240423213859.041866863@linuxfoundation.org>
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 050/141] RDMA/mlx5: Fix port number for counter query in multi-port configuration
+Date: Tue, 23 Apr 2024 14:38:38 -0700
+Message-ID: <20240423213854.884086239@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricky Wu <ricky_wu@realtek.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-commit 26ac2df47d4c58f17210b7a59037e40f7eca693e upstream.
+[ Upstream commit be121ffb384f53e966ee7299ffccc6eeb61bc73d ]
 
-rts5264 driver not clean express link error and set EXTRA_CAPS_SD_EXPRESS
-capability back when card removed
+Set the correct port when querying PPCNT in multi-port configuration.
+Distinguish between cases where switchdev mode was enabled to multi-port
+configuration and don't overwrite the queried port to 1 in multi-port
+case.
 
-Fixes: 6a511c9b3a0d ("misc: rtsx: add to support new card reader rts5264")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
-Link: https://lore.kernel.org/r/20240314065113.5962-1-ricky_wu@realtek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 74b30b3ad5ce ("RDMA/mlx5: Set local port to one when accessing counters")
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://lore.kernel.org/r/9bfcc8ade958b760a51408c3ad654a01b11f7d76.1712134988.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/cardreader/rtsx_pcr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/mad.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/cardreader/rtsx_pcr.c b/drivers/misc/cardreader/rtsx_pcr.c
-index 1a64364700eb..0ad2ff9065aa 100644
---- a/drivers/misc/cardreader/rtsx_pcr.c
-+++ b/drivers/misc/cardreader/rtsx_pcr.c
-@@ -1002,7 +1002,7 @@ static irqreturn_t rtsx_pci_isr(int irq, void *dev_id)
- 		} else {
- 			pcr->card_removed |= SD_EXIST;
- 			pcr->card_inserted &= ~SD_EXIST;
--			if (PCI_PID(pcr) == PID_5261) {
-+			if ((PCI_PID(pcr) == PID_5261) || (PCI_PID(pcr) == PID_5264)) {
- 				rtsx_pci_write_register(pcr, RTS5261_FW_STATUS,
- 					RTS5261_EXPRESS_LINK_FAIL_MASK, 0);
- 				pcr->extra_caps |= EXTRA_CAPS_SD_EXPRESS;
+diff --git a/drivers/infiniband/hw/mlx5/mad.c b/drivers/infiniband/hw/mlx5/mad.c
+index 9c8a7b206dcf4..e61efed320f11 100644
+--- a/drivers/infiniband/hw/mlx5/mad.c
++++ b/drivers/infiniband/hw/mlx5/mad.c
+@@ -188,7 +188,8 @@ static int process_pma_cmd(struct mlx5_ib_dev *dev, u32 port_num,
+ 		mdev = dev->mdev;
+ 		mdev_port_num = 1;
+ 	}
+-	if (MLX5_CAP_GEN(dev->mdev, num_ports) == 1) {
++	if (MLX5_CAP_GEN(dev->mdev, num_ports) == 1 &&
++	    !mlx5_core_mp_enabled(mdev)) {
+ 		/* set local port to one for Function-Per-Port HCA. */
+ 		mdev = dev->mdev;
+ 		mdev_port_num = 1;
 -- 
-2.44.0
+2.43.0
 
 
 
