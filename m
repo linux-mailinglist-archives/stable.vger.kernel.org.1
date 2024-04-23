@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA078AE6E3
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:50:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911EC8AE6E1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:50:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8090FB20F52
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59C51C23029
 	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F8885C4E;
-	Tue, 23 Apr 2024 12:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2091A86252;
+	Tue, 23 Apr 2024 12:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+bDJrwR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z79sEI2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4889782C60
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B5082C60
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713876530; cv=none; b=rSoVhbPU4IVoxAzqusEpsxhSZNfsGpGA4t2n5EDrrboTF1lM+FARzqeOQCEMIQ7ePdN+vVNm9rbaqI2xUZ8fnyj4OWZepKvI7rkZM60WU2n3Vof+s/MuUPcXQWyGgBslt8r5u7THaXzzpKrW3qPumnN4Q4xRl6VO00ce3Is9OfQ=
+	t=1713876533; cv=none; b=T5UN5rSRTE6abbvQTPIs/UkU7lAIewpI+0TEslyct8w/kQbX8xqeME8iFQarDarw/5X8Lik1WD1xLekxsjNcqJ9B9EoSZpnXyLgYUtaLAP8tdCbJPeQzghWyChm6GxK/UxsozNfo3JEO8zQdzr2nBMem0eC9FLP5r96BtEyE0rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713876530; c=relaxed/simple;
-	bh=UQNTUq/KJgQGI6GMNPVZ+HQGPrLnoPNGVcvrp2Su9N4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OwoB8fBjIbAAI/+a4uy0zMd3Qco894q8UdblXT6ELYkpWKFD1W6vwk/5Sgg9lT2TlqQmhYaqDqs5+ZPESEI1MVGutBoH30ZPS6oW7FdckOTt+CSQS5tziEOniCmjPmRHdgJ5l2y4BORR8zD3XwmDepDTwIeJRcC9rjr4ScGYcNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+bDJrwR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB448C116B1;
-	Tue, 23 Apr 2024 12:48:49 +0000 (UTC)
+	s=arc-20240116; t=1713876533; c=relaxed/simple;
+	bh=inwgavQ6yFG24DOt5JwUtZgbCO8bS2t/OvuM0yaYErE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=usDs0YEIx0BUbpXjega8lyIlV7chnwfI/SUni0k+63dKhTnvzcQ5kxVpXHuXZTMRcWBgqubgAqsSdnOf//USgOG5R2i+I1QoVv793oJ7B+zgCvB9fMbStnaYtDzuwZMf7S9sAw6SYVgPP+XgYCDiN/w2y4wZ51IXZkjfHXomwu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z79sEI2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CF0C116B1;
+	Tue, 23 Apr 2024 12:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713876529;
-	bh=UQNTUq/KJgQGI6GMNPVZ+HQGPrLnoPNGVcvrp2Su9N4=;
+	s=korg; t=1713876533;
+	bh=inwgavQ6yFG24DOt5JwUtZgbCO8bS2t/OvuM0yaYErE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=W+bDJrwRpClx5ihxvX5mnnCXT7SmtgSvFeAPBoCNTpyxUsBY/p44bOaPXZPnWjy17
-	 zHa0as5NaNHk0vQ0ikx5gC8RoT+p/FDO8uEXDMGo1VMwsrB7cu/K2hS6M3BIRfmzfa
-	 yqbTLZqx31gFebzKCSnCAOnLgipNBTq1neiCheCA=
-Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Set enable bits for GP counters in" failed to apply to 6.8-stable tree
+	b=z79sEI2pEKA4FDVl7U0OD07ehcl/3PeIehko42yfxDUmNXEePWHrZG2t1lsut376A
+	 bdCcJoGfEmXbYDuZOY5tYrsLpvHGv0mJshQT/G3tPzrftqhz3hDHftUEHc4uo6rT6I
+	 a0+DagUPIWgjhwWQogVh9HCpR0B/9SoqARitAmHI=
+Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Set enable bits for GP counters in" failed to apply to 6.6-stable tree
 To: seanjc@google.com,babu.moger@amd.com,dapeng1.mi@linux.intel.com,like.xu.linux@gmail.com,mizhang@google.com,sandipan.das@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 05:48:40 -0700
-Message-ID: <2024042340-retrieval-unhook-57b9@gregkh>
+Date: Tue, 23 Apr 2024 05:48:43 -0700
+Message-ID: <2024042343-imitate-divinity-9e38@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.8-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x de120e1d692d73c7eefa3278837b1eb68f90728a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042340-retrieval-unhook-57b9@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042343-imitate-divinity-9e38@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 de120e1d692d ("KVM: x86/pmu: Set enable bits for GP counters in PERF_GLOBAL_CTRL at "RESET"")
 f933b88e2015 ("KVM: x86/pmu: Zero out PMU metadata on AMD if PMU is disabled")
+1647b52757d5 ("KVM: x86/pmu: Reset the PMU, i.e. stop counters, before refreshing")
+cbb359d81a26 ("KVM: x86/pmu: Move PMU reset logic to common x86 code")
 
 thanks,
 
