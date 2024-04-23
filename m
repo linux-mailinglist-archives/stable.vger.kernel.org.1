@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-41064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD928AFA33
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD998AF99A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1E641C21EC4
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3862A289D6C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484DF145FE7;
-	Tue, 23 Apr 2024 21:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA5F145B16;
+	Tue, 23 Apr 2024 21:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiXa/GZu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nT5QZ8O4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061DF14389E;
-	Tue, 23 Apr 2024 21:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFADC143897;
+	Tue, 23 Apr 2024 21:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908653; cv=none; b=EdI0iENsvSqfbQj4qfw8rSXpMLRbNXBi2ETu7fPcjb9HWSRR+VR7iJP0cshUy5KXyJsJBQCePtH3dQ9lJqDg+Rn1tl08piX1I2HAAu2sNoRrEJLM0ppAle3m50x3WW4yj6HQ3PGXVEX0yjUjSF1HITSocfHbur5FuvXMhNb9nDE=
+	t=1713908554; cv=none; b=Wuqwt46nEhVtbnpFbjk9D+GSiBk3VEHOHe9vziRTumpAO4oIx1AQU+9hVLOIv9AXXI1j4/uknNfppTWDxDVxFAtzBYpEBTNY0Hv+K0jrL7Y9hXLL68y5x2qOI3+mT35q04NcEP+IZpfhFSsZ0UxHKwaiEM+XwU+ALxM86dmjbzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908653; c=relaxed/simple;
-	bh=sOQpHRaRU1hKvB4zkNMNWlRd6n2WS9/yG9hF2viIDvs=;
+	s=arc-20240116; t=1713908554; c=relaxed/simple;
+	bh=UvYABCm7qh5pHBzFDRYGz+iLma7lSaL0lJyRCdMSJBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/WuDmp9TFpPN5xiYxXAcay6shGFIdYU7vkQst1nFICSpdAiHuTiK4tvM2Y4YkLa1EFImH/irwC+Crv1ISXgjMmn7bAl6BHhFWRt0jQEAS9q/5jB4wXc52L+Rq2DifBgwg+nIKA7AMZEsYYKgZZB4iWr8GsjrDI5pjpIvVRdVrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiXa/GZu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F1CC116B1;
-	Tue, 23 Apr 2024 21:44:12 +0000 (UTC)
+	 MIME-Version; b=DZvqwntw8Gyw9Gy4iGKckm0ysn2hs7lCpvdwoYJ/+dPx4Jk49cCzu5y1wyRA7Mxemobmtw0ZJtQU4x27LKYa1EI8ZBZCVlN8QFKn8fc3AwFTmzxWlZ5nL+3Na7X0NwfCMeGW/LYonPbeEYfkaZF98GR0r8DnpFMsWUz3CuOefas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nT5QZ8O4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64C4C116B1;
+	Tue, 23 Apr 2024 21:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908652;
-	bh=sOQpHRaRU1hKvB4zkNMNWlRd6n2WS9/yG9hF2viIDvs=;
+	s=korg; t=1713908554;
+	bh=UvYABCm7qh5pHBzFDRYGz+iLma7lSaL0lJyRCdMSJBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KiXa/GZuk7k1NAaJSkyiPT15Zr/ya+K/Le3Czmm+N6zaXsOsjLWA3BXE6USTe9pNW
-	 cPiq6hh2UoXUvKGY44khT8xbSoqKw0TYv+Xj8WDL8v8uHzHe0ZO9OBj9sdelGon0bL
-	 emjl7R0qPnXQ4iBFHV8a1OJCyO5iRXHfYexbofjw=
+	b=nT5QZ8O4rMMCkcSMDgvWo8KMyiFAGpYXaeK2nnSlpklqo7eTKjfLMh6d/+vOCAtDU
+	 /krh/QPN9Y2Mw5r2I/Uy4npOdNgxnmC3D2QARTLPuqjYX77lLqEfJGjyH3VpuYfGjo
+	 56mbZDz03BcI88EbbcOVUVMTN/cWuFUaO04/DYvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaogang Chen <xiaogang.chen@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Harish Kasiviswanthan <Harish.Kasiviswanthan@amd.com>,
-	Mukul Joshi <mukul.joshi@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 142/158] drm/amdkfd: Fix memory leak in create_process failure
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.8 157/158] ksmbd: clear RENAME_NOREPLACE before calling vfs_rename
 Date: Tue, 23 Apr 2024 14:39:39 -0700
-Message-ID: <20240423213900.307239485@linuxfoundation.org>
+Message-ID: <20240423213900.946875132@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Kuehling <felix.kuehling@amd.com>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-commit 18921b205012568b45760753ad3146ddb9e2d4e2 upstream.
+commit 4973b04d3ea577db80c501c5f14e68ec69fe1794 upstream.
 
-Fix memory leak due to a leaked mmget reference on an error handling
-code path that is triggered when attempting to create KFD processes
-while a GPU reset is in progress.
+File overwrite case is explicitly handled, so it is not necessary to
+pass RENAME_NOREPLACE to vfs_rename.
 
-Fixes: 0ab2d7532b05 ("drm/amdkfd: prepare per-process debug enable and disable")
-CC: Xiaogang Chen <xiaogang.chen@amd.com>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Tested-by: Harish Kasiviswanthan <Harish.Kasiviswanthan@amd.com>
-Reviewed-by: Mukul Joshi <mukul.joshi@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Clearing the flag fixes rename operations when the share is a ntfs-3g
+mount. The latter uses an older version of fuse with no support for
+flags in the ->rename op.
+
 Cc: stable@vger.kernel.org
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/vfs.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -818,9 +818,9 @@ struct kfd_process *kfd_create_process(s
- 	mutex_lock(&kfd_processes_mutex);
- 
- 	if (kfd_is_locked()) {
--		mutex_unlock(&kfd_processes_mutex);
- 		pr_debug("KFD is locked! Cannot create process");
--		return ERR_PTR(-EINVAL);
-+		process = ERR_PTR(-EINVAL);
-+		goto out;
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -754,10 +754,15 @@ retry:
+ 		goto out4;
  	}
  
- 	/* A prior open of /dev/kfd could have already created the process. */
++	/*
++	 * explicitly handle file overwrite case, for compatibility with
++	 * filesystems that may not support rename flags (e.g: fuse)
++	 */
+ 	if ((flags & RENAME_NOREPLACE) && d_is_positive(new_dentry)) {
+ 		err = -EEXIST;
+ 		goto out4;
+ 	}
++	flags &= ~(RENAME_NOREPLACE);
+ 
+ 	if (old_child == trap) {
+ 		err = -EINVAL;
 
 
 
