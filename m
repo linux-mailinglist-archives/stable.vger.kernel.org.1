@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-41045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BEA8AFA21
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613828AF986
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D0A1C22BBE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 937641C23A2F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38255148851;
-	Tue, 23 Apr 2024 21:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515BE145355;
+	Tue, 23 Apr 2024 21:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnPpC4oo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izaRB0Gv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE84143888;
-	Tue, 23 Apr 2024 21:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E78B20B3E;
+	Tue, 23 Apr 2024 21:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908640; cv=none; b=o0/SRE1nuFGLZpXx0VJgv5AsYwi3KCzNXru5qQPTN1vMnpqp7a20za6o3nuOakBYY8ouGz4eQbsiUU0i/AyTo7qU1e2FXG6/yRmmdhanSR+kpD/AORMM6Cro9eqw8hIJNuQgxpR28mf9glkmeYsy7t8cOYIUc7ScK6AKT9/z7oc=
+	t=1713908542; cv=none; b=BQg4GEVi3O7vpR+lmABmcD/AEfKC4FgcLS4NjGvA16nPrFFUaiBcROVUbytHLTHYzY+jk71bfoIpXsKr3VM/RpCuLaK+LFelStsDYZw2pKjqS7cm9v4Isr8Fw3oADonhrP4dkhMPU4q8MXgquv7JLEcQrqHISBBGSCNw5dbfbz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908640; c=relaxed/simple;
-	bh=p8T9PU/zwPiF3AM0iMSBKKOuFJCXx5Mv3G6wggENP04=;
+	s=arc-20240116; t=1713908542; c=relaxed/simple;
+	bh=BzMs/r7pjPZuMTk9+NnUKAuwgD2QkoUOybfhWwLSCDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHgP3nGLv4Xabn44uzExEW7jXAucUJzK7UhMYVcskFWBxIIdMurIXzYd1g7hPiVHHwu4k/6LFp0i+0MRHbsDNy6fnN84umulqA7yk99rNMpVuhwhSDpx6Zd19vRwCVOfoV+K99tqqW58JIEStPIyAXAZJVheLLhkMmQq/A/8+rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnPpC4oo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD94BC116B1;
-	Tue, 23 Apr 2024 21:43:59 +0000 (UTC)
+	 MIME-Version; b=JV6VOWeIlVTfrVX0Dwy6kFJXWmpHksoKLRgVntkpvdv4bgcHjfqdlWRpOAMWmfkw1eJlnYKjG7M8U5O8g5LVWVAztxl9lYxAnvul4chuORX89Fqs2S+W3BogwUg2ee4Wgx59AZKek5W/VL9JOUPhbf9fC31Wj2jfisRX9SU9Ep8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izaRB0Gv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6462C3277B;
+	Tue, 23 Apr 2024 21:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908639;
-	bh=p8T9PU/zwPiF3AM0iMSBKKOuFJCXx5Mv3G6wggENP04=;
+	s=korg; t=1713908541;
+	bh=BzMs/r7pjPZuMTk9+NnUKAuwgD2QkoUOybfhWwLSCDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnPpC4oodzvq1zdon1llrj5anZaun0MfoKqb3Lhm7t+2FS0MXa3uuqvTOsObd/kGw
-	 yxSC12kj3moEL0IpCK7udAu4RD2Yk6Qucx+s1zcYJDoMSQghgrPEkQ92D1DNE5GHbV
-	 YcdtN2IWjbR3kijs5USvh4GeEKt9qBztCcXH53vA=
+	b=izaRB0GvwjJ0D7VVQDA3TGQ5KeyR4qd6sChpNFFTYUfXk1biz8CekNOW66m+kNnP0
+	 YWZAaDPkgkwVl+V0/iUceOV3QHwq88HQVrO4SQ2F9y8usHBNmne5KLuh8Gh90MQaRb
+	 rBSFccm6xnPL8vyCXuGESlRtB2IfKDswnndjuQ3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 6.6 122/158] usb: dwc2: host: Fix dereference issue in DDMA completion flow.
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jane Chu <jane.chu@oracle.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 137/158] mm/memory-failure: fix deadlock when hugetlb_optimize_vmemmap is enabled
 Date: Tue, 23 Apr 2024 14:39:19 -0700
-Message-ID: <20240423213859.698507889@linuxfoundation.org>
+Message-ID: <20240423213900.328935835@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-commit eed04fa96c48790c1cce73c8a248e9d460b088f8 upstream.
+commit 1983184c22dd84a4d95a71e5c6775c2638557dc7 upstream.
 
-Fixed variable dereference issue in DDMA completion flow.
+When I did hard offline test with hugetlb pages, below deadlock occurs:
 
-Fixes: b258e4268850 ("usb: dwc2: host: Fix ISOC flow in DDMA mode")
-CC: stable@vger.kernel.org
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-usb/2024040834-ethically-rumble-701f@gregkh/T/#m4c4b83bef0ebb4b67fe2e0a7d6466cbb6f416e39
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/cc826d3ef53c934d8e6d98870f17f3cdc3d2755d.1712665387.git.Minas.Harutyunyan@synopsys.com
+======================================================
+WARNING: possible circular locking dependency detected
+6.8.0-11409-gf6cef5f8c37f #1 Not tainted
+------------------------------------------------------
+bash/46904 is trying to acquire lock:
+ffffffffabe68910 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_slow_dec+0x16/0x60
+
+but task is already holding lock:
+ffffffffabf92ea8 (pcp_batch_high_lock){+.+.}-{3:3}, at: zone_pcp_disable+0x16/0x40
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (pcp_batch_high_lock){+.+.}-{3:3}:
+       __mutex_lock+0x6c/0x770
+       page_alloc_cpu_online+0x3c/0x70
+       cpuhp_invoke_callback+0x397/0x5f0
+       __cpuhp_invoke_callback_range+0x71/0xe0
+       _cpu_up+0xeb/0x210
+       cpu_up+0x91/0xe0
+       cpuhp_bringup_mask+0x49/0xb0
+       bringup_nonboot_cpus+0xb7/0xe0
+       smp_init+0x25/0xa0
+       kernel_init_freeable+0x15f/0x3e0
+       kernel_init+0x15/0x1b0
+       ret_from_fork+0x2f/0x50
+       ret_from_fork_asm+0x1a/0x30
+
+-> #0 (cpu_hotplug_lock){++++}-{0:0}:
+       __lock_acquire+0x1298/0x1cd0
+       lock_acquire+0xc0/0x2b0
+       cpus_read_lock+0x2a/0xc0
+       static_key_slow_dec+0x16/0x60
+       __hugetlb_vmemmap_restore_folio+0x1b9/0x200
+       dissolve_free_huge_page+0x211/0x260
+       __page_handle_poison+0x45/0xc0
+       memory_failure+0x65e/0xc70
+       hard_offline_page_store+0x55/0xa0
+       kernfs_fop_write_iter+0x12c/0x1d0
+       vfs_write+0x387/0x550
+       ksys_write+0x64/0xe0
+       do_syscall_64+0xca/0x1e0
+       entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(pcp_batch_high_lock);
+                               lock(cpu_hotplug_lock);
+                               lock(pcp_batch_high_lock);
+  rlock(cpu_hotplug_lock);
+
+ *** DEADLOCK ***
+
+5 locks held by bash/46904:
+ #0: ffff98f6c3bb23f0 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x64/0xe0
+ #1: ffff98f6c328e488 (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter+0xf8/0x1d0
+ #2: ffff98ef83b31890 (kn->active#113){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x100/0x1d0
+ #3: ffffffffabf9db48 (mf_mutex){+.+.}-{3:3}, at: memory_failure+0x44/0xc70
+ #4: ffffffffabf92ea8 (pcp_batch_high_lock){+.+.}-{3:3}, at: zone_pcp_disable+0x16/0x40
+
+stack backtrace:
+CPU: 10 PID: 46904 Comm: bash Kdump: loaded Not tainted 6.8.0-11409-gf6cef5f8c37f #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x68/0xa0
+ check_noncircular+0x129/0x140
+ __lock_acquire+0x1298/0x1cd0
+ lock_acquire+0xc0/0x2b0
+ cpus_read_lock+0x2a/0xc0
+ static_key_slow_dec+0x16/0x60
+ __hugetlb_vmemmap_restore_folio+0x1b9/0x200
+ dissolve_free_huge_page+0x211/0x260
+ __page_handle_poison+0x45/0xc0
+ memory_failure+0x65e/0xc70
+ hard_offline_page_store+0x55/0xa0
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x387/0x550
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xca/0x1e0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+RIP: 0033:0x7fc862314887
+Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
+RSP: 002b:00007fff19311268 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007fc862314887
+RDX: 000000000000000c RSI: 000056405645fe10 RDI: 0000000000000001
+RBP: 000056405645fe10 R08: 00007fc8623d1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+R13: 00007fc86241b780 R14: 00007fc862417600 R15: 00007fc862416a00
+
+In short, below scene breaks the lock dependency chain:
+
+ memory_failure
+  __page_handle_poison
+   zone_pcp_disable -- lock(pcp_batch_high_lock)
+   dissolve_free_huge_page
+    __hugetlb_vmemmap_restore_folio
+     static_key_slow_dec
+      cpus_read_lock -- rlock(cpu_hotplug_lock)
+
+Fix this by calling drain_all_pages() instead.
+
+This issue won't occur until commit a6b40850c442 ("mm: hugetlb: replace
+hugetlb_free_vmemmap_enabled with a static_key").  As it introduced
+rlock(cpu_hotplug_lock) in dissolve_free_huge_page() code path while
+lock(pcp_batch_high_lock) is already in the __page_handle_poison().
+
+[linmiaohe@huawei.com: extend comment per Oscar]
+[akpm@linux-foundation.org: reflow block comment]
+Link: https://lkml.kernel.org/r/20240407085456.2798193-1-linmiaohe@huawei.com
+Fixes: a6b40850c442 ("mm: hugetlb: replace hugetlb_free_vmemmap_enabled with a static_key")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd_ddma.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/memory-failure.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/dwc2/hcd_ddma.c
-+++ b/drivers/usb/dwc2/hcd_ddma.c
-@@ -867,13 +867,15 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- 	struct dwc2_dma_desc *dma_desc;
- 	struct dwc2_hcd_iso_packet_desc *frame_desc;
- 	u16 frame_desc_idx;
--	struct urb *usb_urb = qtd->urb->priv;
-+	struct urb *usb_urb;
- 	u16 remain = 0;
- 	int rc = 0;
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -154,11 +154,23 @@ static int __page_handle_poison(struct p
+ {
+ 	int ret;
  
- 	if (!qtd->urb)
- 		return -EINVAL;
+-	zone_pcp_disable(page_zone(page));
++	/*
++	 * zone_pcp_disable() can't be used here. It will
++	 * hold pcp_batch_high_lock and dissolve_free_huge_page() might hold
++	 * cpu_hotplug_lock via static_key_slow_dec() when hugetlb vmemmap
++	 * optimization is enabled. This will break current lock dependency
++	 * chain and leads to deadlock.
++	 * Disabling pcp before dissolving the page was a deterministic
++	 * approach because we made sure that those pages cannot end up in any
++	 * PCP list. Draining PCP lists expels those pages to the buddy system,
++	 * but nothing guarantees that those pages do not get back to a PCP
++	 * queue if we need to refill those.
++	 */
+ 	ret = dissolve_free_huge_page(page);
+-	if (!ret)
++	if (!ret) {
++		drain_all_pages(page_zone(page));
+ 		ret = take_page_off_buddy(page);
+-	zone_pcp_enable(page_zone(page));
++	}
  
-+	usb_urb = qtd->urb->priv;
-+
- 	dma_sync_single_for_cpu(hsotg->dev, qh->desc_list_dma + (idx *
- 				sizeof(struct dwc2_dma_desc)),
- 				sizeof(struct dwc2_dma_desc),
+ 	return ret;
+ }
 
 
 
