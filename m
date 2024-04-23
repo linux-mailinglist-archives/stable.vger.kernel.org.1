@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-40995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3958AF9EA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BED8AF96C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63F0B1F28471
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4B271C24C30
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45503144D22;
-	Tue, 23 Apr 2024 21:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0211448E6;
+	Tue, 23 Apr 2024 21:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFSdVRek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NR5dtowu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BDD143C57;
-	Tue, 23 Apr 2024 21:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B114143C74;
+	Tue, 23 Apr 2024 21:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908606; cv=none; b=iwlAx6f2uLR+XxY2G1Uw+/YMfixdvW5csSxFa3X2s3GkF8+GsggXeIdENQ6M2ho7VlSOY6I+Utk1j27Lel4ikMngAnADcVFY/MBVTBkvdrz0/NGoox+YuKlF9jtNV8N/yzCLy+/agSxWaQ8xUWUSEdfnvTbOJ4TjOSWD00EgKrU=
+	t=1713908522; cv=none; b=TLBfdKaFRNQfm2k0fys652uCWomNh4XoKeV1eHDS4Q3aZ35UU2pdd+TM066HTwyohnRJEo9lPPo9KAMesvYWXlGAKwzhY6FXVFOJf4uVGcNn1XBfYm74tuXc+pD/hM5KM9fpdK1Ny+2ZFwxs5suka9tLRHUGzeYHVPpSGc3ayNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908606; c=relaxed/simple;
-	bh=PSh7msqzjMZGHrLiXPMUhgp9hpyKkjUUykG/pNrM84Y=;
+	s=arc-20240116; t=1713908522; c=relaxed/simple;
+	bh=pYDMjtPiTnEuMhs4xwA/RoA041LOmMbgzadS/QBUFuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAoUQ+XTQ3auowkxHsBzv/E6b/f8PXwtqJOmBIvF6TyZNyyBFBN6Jeiib73QXKFlmjFHbs/CAFPqfWpDofuxsgvXxEH/W8MGHz8lTR9s9iI36pp7xw61Um0qZFAlHuWTsTp2xTQmYtcoYiiRrGtS7gOfJmZWb+pkxTjLTLJxBdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFSdVRek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC83C32781;
-	Tue, 23 Apr 2024 21:43:25 +0000 (UTC)
+	 MIME-Version; b=fra1M0pOV9XGhffqp3hmg4fqeJzibU4DO+ETWGVhKfkjJ4HUB+FMOYJUKBSFXk7fC6mKqjkMsv7OtvQNYCd9Vo7h8kg4DWVQ9SR3kuNK/YZWxnfWZQYnwuDy/FCloMmml0+FCme9h1gZojHKR4AymquM3S/17lJ5dOjhZ76HqlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NR5dtowu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F553C32781;
+	Tue, 23 Apr 2024 21:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908605;
-	bh=PSh7msqzjMZGHrLiXPMUhgp9hpyKkjUUykG/pNrM84Y=;
+	s=korg; t=1713908522;
+	bh=pYDMjtPiTnEuMhs4xwA/RoA041LOmMbgzadS/QBUFuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFSdVRekYY2B/sldPOH6DI8MJ1MMIMGOQhiXF93Cg/dZUpcomQ9qijxKUBQo00/7K
-	 2ocypUnhjnM2IQF69D81ciwTr3zFbdTj4I4Qy7Iwn6jkEFC+uCffMxq8ZfjLJamMp8
-	 gpId4ZxDEHl5S/O0LIJVDeAN61YX9aXHuIAZo41U=
+	b=NR5dtowu7+7Z1/Civuj9y6jPlRdGPhcRDR+FYvuhURvkOeWglxwHD6D7pp/dWxqHW
+	 BCQ5Ai0YQybmpEs9V8u8k/g0L8XYCMOkWz4SFQHfOkYxmZG5n2YjvP6joSGEZCsiCP
+	 g+XgKV98T02QkIxtYB62m6WEj3duqs8e8t3HHrHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@kernel.org>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Saranya Muruganandam <saranyamohan@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/158] usb: pci-quirks: group AMD specific quirk code together
+Subject: [PATCH 6.8 087/158] block: propagate partition scanning errors to the BLKRRPART ioctl
 Date: Tue, 23 Apr 2024 14:38:29 -0700
-Message-ID: <20240423213858.110943229@linuxfoundation.org>
+Message-ID: <20240423213858.765982038@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,227 +65,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 7ca9f9ba8aa7380dee5dd8346b57bbaf198b075a ]
+[ Upstream commit 752863bddacab6b5c5164b1df8c8b2e3a175ee28 ]
 
-A follow on patch will introduce CONFIG_USB_PCI_AMD governing the AMD
-quirk and adding its compile time dependency on HAS_IOPORT. In order to
-minimize the number of #ifdefs in C files and make that patch easier
-to read first group the code together. This is pure code movement
-no functional change is intended.
+Commit 4601b4b130de ("block: reopen the device in blkdev_reread_part")
+lost the propagation of I/O errors from the low-level read of the
+partition table to the user space caller of the BLKRRPART.
 
-Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230911125653.1393895-2-schnelle@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Apparently some user space relies on, so restore the propagation.  This
+isn't exactly pretty as other block device open calls explicitly do not
+are about these errors, so add a new BLK_OPEN_STRICT_SCAN to opt into
+the error propagation.
+
+Fixes: 4601b4b130de ("block: reopen the device in blkdev_reread_part")
+Reported-by: Saranya Muruganandam <saranyamohan@google.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20240417144743.2277601-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/pci-quirks.c | 119 +++++++++++++++++-----------------
- drivers/usb/host/pci-quirks.h |  14 ++--
- 2 files changed, 68 insertions(+), 65 deletions(-)
+ block/bdev.c           | 29 +++++++++++++++++++----------
+ block/ioctl.c          |  3 ++-
+ include/linux/blkdev.h |  2 ++
+ 3 files changed, 23 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
-index 2665832f9addf..5e06fad82a228 100644
---- a/drivers/usb/host/pci-quirks.c
-+++ b/drivers/usb/host/pci-quirks.c
-@@ -60,6 +60,22 @@
- #define EHCI_USBLEGCTLSTS	4		/* legacy control/status */
- #define EHCI_USBLEGCTLSTS_SOOE	(1 << 13)	/* SMI on ownership change */
- 
-+/* ASMEDIA quirk use */
-+#define ASMT_DATA_WRITE0_REG	0xF8
-+#define ASMT_DATA_WRITE1_REG	0xFC
-+#define ASMT_CONTROL_REG	0xE0
-+#define ASMT_CONTROL_WRITE_BIT	0x02
-+#define ASMT_WRITEREG_CMD	0x10423
-+#define ASMT_FLOWCTL_ADDR	0xFA30
-+#define ASMT_FLOWCTL_DATA	0xBA
-+#define ASMT_PSEUDO_DATA	0
-+
-+/* Intel quirk use */
-+#define USB_INTEL_XUSB2PR      0xD0
-+#define USB_INTEL_USB2PRM      0xD4
-+#define USB_INTEL_USB3_PSSEN   0xD8
-+#define USB_INTEL_USB3PRM      0xDC
-+
- /* AMD quirk use */
- #define	AB_REG_BAR_LOW		0xe0
- #define	AB_REG_BAR_HIGH		0xe1
-@@ -93,21 +109,6 @@
- #define	NB_PIF0_PWRDOWN_0	0x01100012
- #define	NB_PIF0_PWRDOWN_1	0x01100013
- 
--#define USB_INTEL_XUSB2PR      0xD0
--#define USB_INTEL_USB2PRM      0xD4
--#define USB_INTEL_USB3_PSSEN   0xD8
--#define USB_INTEL_USB3PRM      0xDC
--
--/* ASMEDIA quirk use */
--#define ASMT_DATA_WRITE0_REG	0xF8
--#define ASMT_DATA_WRITE1_REG	0xFC
--#define ASMT_CONTROL_REG	0xE0
--#define ASMT_CONTROL_WRITE_BIT	0x02
--#define ASMT_WRITEREG_CMD	0x10423
--#define ASMT_FLOWCTL_ADDR	0xFA30
--#define ASMT_FLOWCTL_DATA	0xBA
--#define ASMT_PSEUDO_DATA	0
--
- /*
-  * amd_chipset_gen values represent AMD different chipset generations
-  */
-@@ -458,50 +459,6 @@ void usb_amd_quirk_pll_disable(void)
+diff --git a/block/bdev.c b/block/bdev.c
+index 678807bcd0034..2b0f97651a0a7 100644
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -639,6 +639,14 @@ static void blkdev_flush_mapping(struct block_device *bdev)
+ 	bdev_write_inode(bdev);
  }
- EXPORT_SYMBOL_GPL(usb_amd_quirk_pll_disable);
  
--static int usb_asmedia_wait_write(struct pci_dev *pdev)
--{
--	unsigned long retry_count;
--	unsigned char value;
--
--	for (retry_count = 1000; retry_count > 0; --retry_count) {
--
--		pci_read_config_byte(pdev, ASMT_CONTROL_REG, &value);
--
--		if (value == 0xff) {
--			dev_err(&pdev->dev, "%s: check_ready ERROR", __func__);
--			return -EIO;
--		}
--
--		if ((value & ASMT_CONTROL_WRITE_BIT) == 0)
--			return 0;
--
--		udelay(50);
--	}
--
--	dev_warn(&pdev->dev, "%s: check_write_ready timeout", __func__);
--	return -ETIMEDOUT;
--}
--
--void usb_asmedia_modifyflowcontrol(struct pci_dev *pdev)
--{
--	if (usb_asmedia_wait_write(pdev) != 0)
--		return;
--
--	/* send command and address to device */
--	pci_write_config_dword(pdev, ASMT_DATA_WRITE0_REG, ASMT_WRITEREG_CMD);
--	pci_write_config_dword(pdev, ASMT_DATA_WRITE1_REG, ASMT_FLOWCTL_ADDR);
--	pci_write_config_byte(pdev, ASMT_CONTROL_REG, ASMT_CONTROL_WRITE_BIT);
--
--	if (usb_asmedia_wait_write(pdev) != 0)
--		return;
--
--	/* send data to device */
--	pci_write_config_dword(pdev, ASMT_DATA_WRITE0_REG, ASMT_FLOWCTL_DATA);
--	pci_write_config_dword(pdev, ASMT_DATA_WRITE1_REG, ASMT_PSEUDO_DATA);
--	pci_write_config_byte(pdev, ASMT_CONTROL_REG, ASMT_CONTROL_WRITE_BIT);
--}
--EXPORT_SYMBOL_GPL(usb_asmedia_modifyflowcontrol);
--
- void usb_amd_quirk_pll_enable(void)
- {
- 	usb_amd_quirk_pll(0);
-@@ -631,6 +588,50 @@ bool usb_amd_pt_check_port(struct device *device, int port)
- }
- EXPORT_SYMBOL_GPL(usb_amd_pt_check_port);
- 
-+static int usb_asmedia_wait_write(struct pci_dev *pdev)
++static void blkdev_put_whole(struct block_device *bdev)
 +{
-+	unsigned long retry_count;
-+	unsigned char value;
++	if (atomic_dec_and_test(&bdev->bd_openers))
++		blkdev_flush_mapping(bdev);
++	if (bdev->bd_disk->fops->release)
++		bdev->bd_disk->fops->release(bdev->bd_disk);
++}
 +
-+	for (retry_count = 1000; retry_count > 0; --retry_count) {
-+
-+		pci_read_config_byte(pdev, ASMT_CONTROL_REG, &value);
-+
-+		if (value == 0xff) {
-+			dev_err(&pdev->dev, "%s: check_ready ERROR", __func__);
-+			return -EIO;
+ static int blkdev_get_whole(struct block_device *bdev, blk_mode_t mode)
+ {
+ 	struct gendisk *disk = bdev->bd_disk;
+@@ -657,20 +665,21 @@ static int blkdev_get_whole(struct block_device *bdev, blk_mode_t mode)
+ 
+ 	if (!atomic_read(&bdev->bd_openers))
+ 		set_init_blocksize(bdev);
+-	if (test_bit(GD_NEED_PART_SCAN, &disk->state))
+-		bdev_disk_changed(disk, false);
+ 	atomic_inc(&bdev->bd_openers);
++	if (test_bit(GD_NEED_PART_SCAN, &disk->state)) {
++		/*
++		 * Only return scanning errors if we are called from contexts
++		 * that explicitly want them, e.g. the BLKRRPART ioctl.
++		 */
++		ret = bdev_disk_changed(disk, false);
++		if (ret && (mode & BLK_OPEN_STRICT_SCAN)) {
++			blkdev_put_whole(bdev);
++			return ret;
 +		}
-+
-+		if ((value & ASMT_CONTROL_WRITE_BIT) == 0)
-+			return 0;
-+
-+		udelay(50);
 +	}
-+
-+	dev_warn(&pdev->dev, "%s: check_write_ready timeout", __func__);
-+	return -ETIMEDOUT;
-+}
-+
-+void usb_asmedia_modifyflowcontrol(struct pci_dev *pdev)
-+{
-+	if (usb_asmedia_wait_write(pdev) != 0)
-+		return;
-+
-+	/* send command and address to device */
-+	pci_write_config_dword(pdev, ASMT_DATA_WRITE0_REG, ASMT_WRITEREG_CMD);
-+	pci_write_config_dword(pdev, ASMT_DATA_WRITE1_REG, ASMT_FLOWCTL_ADDR);
-+	pci_write_config_byte(pdev, ASMT_CONTROL_REG, ASMT_CONTROL_WRITE_BIT);
-+
-+	if (usb_asmedia_wait_write(pdev) != 0)
-+		return;
-+
-+	/* send data to device */
-+	pci_write_config_dword(pdev, ASMT_DATA_WRITE0_REG, ASMT_FLOWCTL_DATA);
-+	pci_write_config_dword(pdev, ASMT_DATA_WRITE1_REG, ASMT_PSEUDO_DATA);
-+	pci_write_config_byte(pdev, ASMT_CONTROL_REG, ASMT_CONTROL_WRITE_BIT);
-+}
-+EXPORT_SYMBOL_GPL(usb_asmedia_modifyflowcontrol);
-+
- /*
-  * Make sure the controller is completely inactive, unable to
-  * generate interrupts or do DMA.
-diff --git a/drivers/usb/host/pci-quirks.h b/drivers/usb/host/pci-quirks.h
-index e729de21fad7a..cde2263a9d2e4 100644
---- a/drivers/usb/host/pci-quirks.h
-+++ b/drivers/usb/host/pci-quirks.h
-@@ -3,8 +3,6 @@
- #define __LINUX_USB_PCI_QUIRKS_H
- 
- #ifdef CONFIG_USB_PCI
--void uhci_reset_hc(struct pci_dev *pdev, unsigned long base);
--int uhci_check_and_reset_hc(struct pci_dev *pdev, unsigned long base);
- int usb_hcd_amd_remote_wakeup_quirk(struct pci_dev *pdev);
- bool usb_amd_hang_symptom_quirk(void);
- bool usb_amd_prefetch_quirk(void);
-@@ -12,23 +10,27 @@ void usb_amd_dev_put(void);
- bool usb_amd_quirk_pll_check(void);
- void usb_amd_quirk_pll_disable(void);
- void usb_amd_quirk_pll_enable(void);
-+void sb800_prefetch(struct device *dev, int on);
-+bool usb_amd_pt_check_port(struct device *device, int port);
-+
-+void uhci_reset_hc(struct pci_dev *pdev, unsigned long base);
-+int uhci_check_and_reset_hc(struct pci_dev *pdev, unsigned long base);
- void usb_asmedia_modifyflowcontrol(struct pci_dev *pdev);
- void usb_enable_intel_xhci_ports(struct pci_dev *xhci_pdev);
- void usb_disable_xhci_ports(struct pci_dev *xhci_pdev);
--void sb800_prefetch(struct device *dev, int on);
--bool usb_amd_pt_check_port(struct device *device, int port);
- #else
- struct pci_dev;
- static inline void usb_amd_quirk_pll_disable(void) {}
- static inline void usb_amd_quirk_pll_enable(void) {}
--static inline void usb_asmedia_modifyflowcontrol(struct pci_dev *pdev) {}
- static inline void usb_amd_dev_put(void) {}
--static inline void usb_disable_xhci_ports(struct pci_dev *xhci_pdev) {}
- static inline void sb800_prefetch(struct device *dev, int on) {}
- static inline bool usb_amd_pt_check_port(struct device *device, int port)
- {
- 	return false;
+ 	return 0;
  }
-+
-+static inline void usb_asmedia_modifyflowcontrol(struct pci_dev *pdev) {}
-+static inline void usb_disable_xhci_ports(struct pci_dev *xhci_pdev) {}
- #endif  /* CONFIG_USB_PCI */
  
- #endif  /*  __LINUX_USB_PCI_QUIRKS_H  */
+-static void blkdev_put_whole(struct block_device *bdev)
+-{
+-	if (atomic_dec_and_test(&bdev->bd_openers))
+-		blkdev_flush_mapping(bdev);
+-	if (bdev->bd_disk->fops->release)
+-		bdev->bd_disk->fops->release(bdev->bd_disk);
+-}
+-
+ static int blkdev_get_part(struct block_device *part, blk_mode_t mode)
+ {
+ 	struct gendisk *disk = part->bd_disk;
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 438f79c564cfc..5f8c988239c68 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -556,7 +556,8 @@ static int blkdev_common_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 			return -EACCES;
+ 		if (bdev_is_partition(bdev))
+ 			return -EINVAL;
+-		return disk_scan_partitions(bdev->bd_disk, mode);
++		return disk_scan_partitions(bdev->bd_disk,
++				mode | BLK_OPEN_STRICT_SCAN);
+ 	case BLKTRACESTART:
+ 	case BLKTRACESTOP:
+ 	case BLKTRACETEARDOWN:
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 99e4f5e722132..b43ca3b9d2a26 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -126,6 +126,8 @@ typedef unsigned int __bitwise blk_mode_t;
+ #define BLK_OPEN_WRITE_IOCTL	((__force blk_mode_t)(1 << 4))
+ /* open is exclusive wrt all other BLK_OPEN_WRITE opens to the device */
+ #define BLK_OPEN_RESTRICT_WRITES	((__force blk_mode_t)(1 << 5))
++/* return partition scanning errors */
++#define BLK_OPEN_STRICT_SCAN	((__force blk_mode_t)(1 << 6))
+ 
+ struct gendisk {
+ 	/*
 -- 
 2.43.0
 
