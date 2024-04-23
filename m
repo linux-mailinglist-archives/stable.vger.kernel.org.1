@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE0F8AFA00
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 496958AF967
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89817B2B0AB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0572C287CDF
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4806E1487CE;
-	Tue, 23 Apr 2024 21:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E591448DF;
+	Tue, 23 Apr 2024 21:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qX+tzImE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+VaYmSn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A93143899;
-	Tue, 23 Apr 2024 21:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACEC143898;
+	Tue, 23 Apr 2024 21:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908618; cv=none; b=d6E186lHkq9jJGSYrFH3KSIvBijEZ1JuyJK3AsIN/tqPX56+KdyxxJJfnd3TLN60T8afJL4u99YRaPJEQSnuHp0MjSOXQxUASZbnyK2JrPvt7t2dx4RulmIFHQMm9KEHcgUeRCyNSe+FSxS5BtcjdgxkXk66MgGPoICcYUywevs=
+	t=1713908519; cv=none; b=UsbWHCHWU4rIa5SozvX1LN9Kxi2Syr0hgMCNXNg/2pbZsBpUrreQ/WBX3jc8BgAQZ/bfqr1iH9jj/nWypn/MF1s2VyA9yYYrb0I3uAn1jhZum8B7XzgdcY41jlHYB90TNklDaRUApbTDw2ikP+Vqs1GlxbT2XLbyMMZDamREOZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908618; c=relaxed/simple;
-	bh=zY9TYw0hXWYtslDWIqFHMeu8hhLXqZwJ30PAMDnrMtQ=;
+	s=arc-20240116; t=1713908519; c=relaxed/simple;
+	bh=0fHnDtelqmZiUEyOwL0OQlxSAVtViTTktrm150oh3zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mup9xwcuqk2CTtbF8MyRUbioLg52xB7LgO93h491JCby076QRZKblIJD3WobrJlq3sHXSbmX0YyeJetY617ncW0SUV8PgB7HqXUDvQb+xNUzeMZHl+aF/AjE2eCZ7I9MGdFi74fyuMaLJl+GnLt5lYmWMciDK24Ai0MiNXobWvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qX+tzImE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C995FC32781;
-	Tue, 23 Apr 2024 21:43:37 +0000 (UTC)
+	 MIME-Version; b=kFtXmL47zkVNYy8bQhce6QVyWmzly10n14lBuCeBWtiPmBhdYrtFx27zXVy0pdIkx5jpbsAzNndvCP2bbBos7/PcZtNeBaLpTVnN/ZG3VdFnu5FAECMokirSwSAfdySp12yT0ZUoSAP5PnFvtPdyFRuPvUT3wxPIMi7oQkHTrtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+VaYmSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B50C116B1;
+	Tue, 23 Apr 2024 21:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908617;
-	bh=zY9TYw0hXWYtslDWIqFHMeu8hhLXqZwJ30PAMDnrMtQ=;
+	s=korg; t=1713908518;
+	bh=0fHnDtelqmZiUEyOwL0OQlxSAVtViTTktrm150oh3zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qX+tzImEpEa8RqpY5rWupDU4tlEpYerqYjxhbFg7qxa0f4XcWIG61JP8HLYOV+kQK
-	 LqnkNpAdtaqJwAQW13A89XUD1x8g2Ya5zvWIlwtLR0a+thFVjsC3DkCJH5NVk0Xdzl
-	 +Ptcc6PesmU6YuKO4CoN24PAhXggIJWKynOTsd/M=
+	b=S+VaYmSn9ZykTczP1qUQwx2iwkRxrD137nsnILfNQxurdxC7ayor0H0VO9dzwjiSv
+	 bBzSn3IeFndshmOoY3HLvWfdaMiP9uy9JMW0tnfk4drGFrw3u5kAHvzykMWCXgDSH1
+	 XxmGlPzq1bPQTcQU/Vf/O2hLA6c6zTYcg2EeaSvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/158] clk: Remove prepare_lock hold assertion in __clk_release()
+	stable <stable@kernel.org>,
+	Nick Bowler <nbowler@draconx.ca>,
+	Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 6.8 106/158] serial: core: Fix regression when runtime PM is not enabled
 Date: Tue, 23 Apr 2024 14:38:48 -0700
-Message-ID: <20240423213858.703563246@linuxfoundation.org>
+Message-ID: <20240423213859.382762778@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 8358a76cfb47c9a5af627a0c4e7168aa14fa25f6 ]
+commit 5555980571cc744cd99b6455e3e388b54519db8f upstream.
 
-Removing this assertion lets us move the kref_put() call outside the
-prepare_lock section. We don't need to hold the prepare_lock here to
-free memory and destroy the clk_core structure. We've already unlinked
-the clk from the clk tree and by the time the release function runs
-nothing holds a reference to the clk_core anymore so anything with the
-pointer can't access the memory that's being freed anyway. Way back in
-commit 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of
-prepare_lock") we didn't need to have this assertion either.
+Commit 45a3a8ef8129 ("serial: core: Revert checks for tx runtime PM state")
+caused a regression for Sun Ultra 60 for the sunsab driver as reported by
+Nick Bowler <nbowler@draconx.ca>.
 
-Fixes: 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of prepare_lock")
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-2-sboyd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We need to add back the check runtime PM enabled state for serial port
+controller device, I wrongly assumed earlier we could just remove it.
+
+Fixes: 45a3a8ef8129 ("serial: core: Revert checks for tx runtime PM state")
+Cc: stable <stable@kernel.org>
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20240325071649.27040-1-tony@atomide.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/tty/serial/serial_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 50228cb0c5590..ac5be561ccdc9 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4313,8 +4313,6 @@ static void __clk_release(struct kref *ref)
- {
- 	struct clk_core *core = container_of(ref, struct clk_core, ref);
- 
--	lockdep_assert_held(&prepare_lock);
--
- 	clk_core_free_parent_map(core);
- 	kfree_const(core->name);
- 	kfree(core);
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index ff85ebd3a007..25a83820927a 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -156,7 +156,7 @@ static void __uart_start(struct uart_state *state)
+ 	 * enabled, serial_port_runtime_resume() calls start_tx() again
+ 	 * after enabling the device.
+ 	 */
+-	if (pm_runtime_active(&port_dev->dev))
++	if (!pm_runtime_enabled(port->dev) || pm_runtime_active(&port_dev->dev))
+ 		port->ops->start_tx(port);
+ 	pm_runtime_mark_last_busy(&port_dev->dev);
+ 	pm_runtime_put_autosuspend(&port_dev->dev);
 -- 
-2.43.0
+2.44.0
 
 
 
