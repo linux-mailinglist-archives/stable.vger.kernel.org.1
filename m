@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-40885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DF58AF976
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF958AFAB5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6332D2883D7
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 692FCB2B60E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91638145341;
-	Tue, 23 Apr 2024 21:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BDC14900B;
+	Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exyTYEKD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvgBYoYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5111820B3E;
-	Tue, 23 Apr 2024 21:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B6214389F;
+	Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908529; cv=none; b=EjRklJ2/q19XVapZStDb6YHCoMa9qJwzSJY729doq6xxUIVMgwjD0c8nsDiEgouiJbaA86tq9QzD+EUhmJvEL2N5fJJq/qArddyNa1QeQ1F+QnIN8g4y9hIc60lB2UBKl7A0g8MkEgN22FD648M/NhvLrQ0DCs3HqaR2/VxoC0k=
+	t=1713908648; cv=none; b=NmSBdfpeg1R4Q4QG9rvyYxOvSJ8C790zmgHBXZgKNHXiH+Yi3+qXbb6mXkERdT2e8DxT8ayyNePmgwlk9wBUkQx4F/oliG4BaZ/qULx87xLHgmhCRk4LKWG2OW9NQssklLtdm+tqZ+RsIXDvUZgpNBDS7o43kaXzHMKIAEhWLUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908529; c=relaxed/simple;
-	bh=7ib7w2ZJXey8FZpxrgiPEa2fEQ9Mnk5kznhUZi8IZdo=;
+	s=arc-20240116; t=1713908648; c=relaxed/simple;
+	bh=Ir7FPIXFTq1wkjoyNyKVlxvy0Ojx2hZj3QUOM/KZgVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CsXsToomceovx0USvlaFBsDFm8wSs/r8EbZYkxV/nJjzcfU0twEvaqSOK+paspscCpGbTRJTCN+HjY2eqg7Ylom+uqSoMqgaBwkVzw6bGMIwjPIbfwMuQrdZD/VrfoF4I8cw4fGDNBJqgO65bDjlj6bjM+pfQ/XwwWqQ7Wi3qMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exyTYEKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CEEC32781;
-	Tue, 23 Apr 2024 21:42:08 +0000 (UTC)
+	 MIME-Version; b=oNsF0ZR/3DzGUYjqie5qWEPTFZOoJjk3/anT/WlHy5ngjV6VLrVWJImuliPxwfSGx9z5CVTMqBpxwE4B16hcpzQvpi5eUJE0Azj8Cs19qvAsa/sblHk3Sz2Qh4XfZ1Fgh08WG6rjdHK7yHjId4MR6NNKbI0FUj1l5BGh3m7ugGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvgBYoYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012A2C3277B;
+	Tue, 23 Apr 2024 21:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908529;
-	bh=7ib7w2ZJXey8FZpxrgiPEa2fEQ9Mnk5kznhUZi8IZdo=;
+	s=korg; t=1713908648;
+	bh=Ir7FPIXFTq1wkjoyNyKVlxvy0Ojx2hZj3QUOM/KZgVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exyTYEKDalDMxlFtyxMmkJ82YgI5jD0e+GqODyMXkFp2N/y0OzaW7JaAAQv3669ff
-	 w8BD1avoVabV14Jwg6JXq9oGIb/frW34JLYnGxeypdRc8Iw17Ire97xf5CqHMLtmDx
-	 oblo0ejQsVmioPcxBjfAdBt78KwrHlmMyehRcpgk=
+	b=jvgBYoYTiWbflhFk+xN5WX4CDLqNdgqwqEwiRZXbybZYTHIcASxnCyLqZLjn7bSLL
+	 UQYkex5M5BMso4hbjS/7ivLjck2MkIDeR+8k5bkYdvCYPCJoNopnmyYvI4mh1wn188
+	 Vpk6U/e/ZWO1DDWbkEo91YCv3ZeKXg3yp3RxdkYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 6.8 122/158] mei: me: disable RPL-S on SPS and IGN firmwares
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.6 107/158] thunderbolt: Fix wake configurations after device unplug
 Date: Tue, 23 Apr 2024 14:39:04 -0700
-Message-ID: <20240423213859.876060654@linuxfoundation.org>
+Message-ID: <20240423213859.230891176@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Gil Fine <gil.fine@linux.intel.com>
 
-commit 0dc04112bee6fdd6eb847ccb32214703022c0269 upstream.
+commit c38fa07dc69f0b9e6f43ecab96dc7861a70c827c upstream.
 
-Extend the quirk to disable MEI interface on Intel PCH Ignition (IGN)
-and SPS firmwares for RPL-S devices. These firmwares do not support
-the MEI protocol.
+Currently we don't configure correctly the wake events after unplug of device
+router. What can happen is that the downstream ports of host router will be
+configured to wake on: USB4-wake and wake-on-disconnect, but not on
+wake-on-connect. This may cause the later plugged device not to wake the
+domain and fail in enumeration. Fix this by clearing downstream port's "USB4
+Port is Configured" bit, after unplug of a device router.
 
-Fixes: 3ed8c7d39cfe ("mei: me: add raptor lake point S DID")
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240312051958.118478-1-tomas.winkler@intel.com
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/pci-me.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thunderbolt/switch.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -116,7 +116,7 @@ static const struct pci_device_id mei_me
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_P, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_N, MEI_ME_PCH15_CFG)},
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -2949,22 +2949,29 @@ void tb_switch_unconfigure_link(struct t
+ {
+ 	struct tb_port *up, *down;
  
--	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_SPS_CFG)},
+-	if (sw->is_unplugged)
+-		return;
+ 	if (!tb_route(sw) || tb_switch_is_icm(sw))
+ 		return;
  
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
++	/*
++	 * Unconfigure downstream port so that wake-on-connect can be
++	 * configured after router unplug. No need to unconfigure upstream port
++	 * since its router is unplugged.
++	 */
+ 	up = tb_upstream_port(sw);
+-	if (tb_switch_is_usb4(up->sw))
+-		usb4_port_unconfigure(up);
+-	else
+-		tb_lc_unconfigure_port(up);
+-
+ 	down = up->remote;
+ 	if (tb_switch_is_usb4(down->sw))
+ 		usb4_port_unconfigure(down);
+ 	else
+ 		tb_lc_unconfigure_port(down);
++
++	if (sw->is_unplugged)
++		return;
++
++	up = tb_upstream_port(sw);
++	if (tb_switch_is_usb4(up->sw))
++		usb4_port_unconfigure(up);
++	else
++		tb_lc_unconfigure_port(up);
+ }
+ 
+ static void tb_switch_credits_init(struct tb_switch *sw)
 
 
 
