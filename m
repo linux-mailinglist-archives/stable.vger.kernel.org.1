@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-40950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D648AF9B8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3304B8AF924
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EDD028AADD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E26E1282E41
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEF5143C69;
-	Tue, 23 Apr 2024 21:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC9F144307;
+	Tue, 23 Apr 2024 21:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kffLNFuj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ln2ePWAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8917B143C7E;
-	Tue, 23 Apr 2024 21:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A69C14389A;
+	Tue, 23 Apr 2024 21:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908575; cv=none; b=SKzVfqmfN0t0bu8RInb/SDaIsp9/KMB5U7yh9PEzdktXdGirMPfRH+7KeE4rc7i//kk1IMLi9e7QI6i1gqRy/C7XPp6EG1tdFxVqfBFpy8F2rdg08fhXDsdht/dkp/L2+PbL3tJMpbK4IcN3YuS/zb6qkyl73oRQuiqrk2TePOs=
+	t=1713908475; cv=none; b=YlEKL2EQMX7neYJcqjxl7XtFdoE8KZ7QThrvIevFBUeIRgP3mbD6gqwx6CyltDJzOoPZl9z+MToYCaxOgjBQta0BUWMkn9SrP+VfzvF2esTj7V9Z6Z2UXLbS4y9P6gQ1WICvL8Y7tTT8O4m8Jblz9iBb6oN3iN9+jMNVONmz+S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908575; c=relaxed/simple;
-	bh=5hLOuSHJOKMyKg/KuimfLSsxVuKpq3g1vMgYTIFGK6U=;
+	s=arc-20240116; t=1713908475; c=relaxed/simple;
+	bh=ZGOGmF6Yy+Ywf6yzponZLoy0+a9ETAaD5N16MIW4dOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLanQNGuw50hvScitNSfW7MxCJkSjYUI/HxVBRG89ptf/DLv1hp+7L5YMWPJ92YM9g4YxWY+pry1RlIJsemEENhxteg9i4TkDJfCIcjp5FTLJYL3hfCbQnDnOFHr4l2EAdwO3zM1/qnDspY90cacO8hktIOPk0DGg0aPStl9FEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kffLNFuj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE85C3277B;
-	Tue, 23 Apr 2024 21:42:55 +0000 (UTC)
+	 MIME-Version; b=SupOWw+ph5ujXIwf3oLZeVMWq5kgyyjLTnNwKvnwj2U954LsRogMRzoTKLG45s+Y7BBm2Zw4FSHlXdqn38S+z4vtmtRwKU31+NbMU1/QRx/xPaNOogfC/inkOALVTGfANTr4iLDDZxBHzPKz+L/8Xo7YM8Q/dEpdXoH0eiZZMe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ln2ePWAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0FEC3277B;
+	Tue, 23 Apr 2024 21:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908575;
-	bh=5hLOuSHJOKMyKg/KuimfLSsxVuKpq3g1vMgYTIFGK6U=;
+	s=korg; t=1713908475;
+	bh=ZGOGmF6Yy+Ywf6yzponZLoy0+a9ETAaD5N16MIW4dOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kffLNFujEdj4gd0U73jrxNwLJZLWostqfmnQeQI0T49s6SflIeMQhk4MWh4mt2g6x
-	 mCbYb+p8BkqZt/PelGDS0ZUMkiBFmsarg4VX82RklcGBabLSQcCTtY6Qn+A13QUooq
-	 6qUkH/iydX9y+bKJFwxKuXUi/c2ElU9ctfJSF0FU=
+	b=Ln2ePWAry0f8NexInMFN4xauTlI1DfZfzs49ek7aNfS0AofMu+zdBjrSNMutIC6GI
+	 KW3y9V803S+QYs+gQ134LtfVcsqRcXJJTs4aChwnSk2ClqVyAeDZD+yIiDtCbCWD+T
+	 hndx/tOfSBv+ZhzYJOScfqT4hXv7WLck204jTNWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 028/158] scsi: core: Fix handling of SCMD_FAIL_IF_RECOVERING
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 043/158] s390/ism: Properly fix receive message buffer allocation
 Date: Tue, 23 Apr 2024 14:37:45 -0700
-Message-ID: <20240423213856.657014228@linuxfoundation.org>
+Message-ID: <20240423213857.314209814@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-commit ca91259b775f6fd98ae5d23bb4eec101d468ba8d upstream.
+[ Upstream commit 83781384a96b95e2b6403d3c8a002b2c89031770 ]
 
-There is code in the SCSI core that sets the SCMD_FAIL_IF_RECOVERING
-flag but there is no code that clears this flag. Instead of only clearing
-SCMD_INITIALIZED in scsi_end_request(), clear all flags. It is never
-necessary to preserve any command flags inside scsi_end_request().
+Since [1], dma_alloc_coherent() does not accept requests for GFP_COMP
+anymore, even on archs that may be able to fulfill this. Functionality that
+relied on the receive buffer being a compound page broke at that point:
+The SMC-D protocol, that utilizes the ism device driver, passes receive
+buffers to the splice processor in a struct splice_pipe_desc with a
+single entry list of struct pages. As the buffer is no longer a compound
+page, the splice processor now rejects requests to handle more than a
+page worth of data.
 
-Cc: stable@vger.kernel.org
-Fixes: 310bcaef6d7e ("scsi: core: Support failing requests while recovering")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240325224417.1477135-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace dma_alloc_coherent() and allocate a buffer with folio_alloc and
+create a DMA map for it with dma_map_page(). Since only receive buffers
+on ISM devices use DMA, qualify the mapping as FROM_DEVICE.
+Since ISM devices are available on arch s390, only, and on that arch all
+DMA is coherent, there is no need to introduce and export some kind of
+dma_sync_to_cpu() method to be called by the SMC-D protocol layer.
+
+Analogously, replace dma_free_coherent by a two step dma_unmap_page,
+then folio_put to free the receive buffer.
+
+[1] https://lore.kernel.org/all/20221113163535.884299-1-hch@lst.de/
+
+Fixes: c08004eede4b ("s390/ism: don't pass bogus GFP_ flags to dma_alloc_coherent")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/s390/net/ism_drv.c | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -543,10 +543,9 @@ static bool scsi_end_request(struct requ
- 	if (blk_queue_add_random(q))
- 		add_disk_randomness(req->q->disk);
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index 2c8e964425dc3..43778b088ffac 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -292,13 +292,16 @@ static int ism_read_local_gid(struct ism_dev *ism)
+ static void ism_free_dmb(struct ism_dev *ism, struct ism_dmb *dmb)
+ {
+ 	clear_bit(dmb->sba_idx, ism->sba_bitmap);
+-	dma_free_coherent(&ism->pdev->dev, dmb->dmb_len,
+-			  dmb->cpu_addr, dmb->dma_addr);
++	dma_unmap_page(&ism->pdev->dev, dmb->dma_addr, dmb->dmb_len,
++		       DMA_FROM_DEVICE);
++	folio_put(virt_to_folio(dmb->cpu_addr));
+ }
  
--	if (!blk_rq_is_passthrough(req)) {
--		WARN_ON_ONCE(!(cmd->flags & SCMD_INITIALIZED));
--		cmd->flags &= ~SCMD_INITIALIZED;
--	}
-+	WARN_ON_ONCE(!blk_rq_is_passthrough(req) &&
-+		     !(cmd->flags & SCMD_INITIALIZED));
-+	cmd->flags = 0;
+ static int ism_alloc_dmb(struct ism_dev *ism, struct ism_dmb *dmb)
+ {
++	struct folio *folio;
+ 	unsigned long bit;
++	int rc;
  
- 	/*
- 	 * Calling rcu_barrier() is not necessary here because the
+ 	if (PAGE_ALIGN(dmb->dmb_len) > dma_get_max_seg_size(&ism->pdev->dev))
+ 		return -EINVAL;
+@@ -315,14 +318,30 @@ static int ism_alloc_dmb(struct ism_dev *ism, struct ism_dmb *dmb)
+ 	    test_and_set_bit(dmb->sba_idx, ism->sba_bitmap))
+ 		return -EINVAL;
+ 
+-	dmb->cpu_addr = dma_alloc_coherent(&ism->pdev->dev, dmb->dmb_len,
+-					   &dmb->dma_addr,
+-					   GFP_KERNEL | __GFP_NOWARN |
+-					   __GFP_NOMEMALLOC | __GFP_NORETRY);
+-	if (!dmb->cpu_addr)
+-		clear_bit(dmb->sba_idx, ism->sba_bitmap);
++	folio = folio_alloc(GFP_KERNEL | __GFP_NOWARN | __GFP_NOMEMALLOC |
++			    __GFP_NORETRY, get_order(dmb->dmb_len));
+ 
+-	return dmb->cpu_addr ? 0 : -ENOMEM;
++	if (!folio) {
++		rc = -ENOMEM;
++		goto out_bit;
++	}
++
++	dmb->cpu_addr = folio_address(folio);
++	dmb->dma_addr = dma_map_page(&ism->pdev->dev,
++				     virt_to_page(dmb->cpu_addr), 0,
++				     dmb->dmb_len, DMA_FROM_DEVICE);
++	if (dma_mapping_error(&ism->pdev->dev, dmb->dma_addr)) {
++		rc = -ENOMEM;
++		goto out_free;
++	}
++
++	return 0;
++
++out_free:
++	kfree(dmb->cpu_addr);
++out_bit:
++	clear_bit(dmb->sba_idx, ism->sba_bitmap);
++	return rc;
+ }
+ 
+ int ism_register_dmb(struct ism_dev *ism, struct ism_dmb *dmb,
+-- 
+2.43.0
+
 
 
 
