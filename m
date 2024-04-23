@@ -1,99 +1,194 @@
-Return-Path: <stable+bounces-40710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A79A8AE866
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:40:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5C98AE87F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86168B22D7D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:40:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26A7E284DD1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C12136E2F;
-	Tue, 23 Apr 2024 13:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E775D137765;
+	Tue, 23 Apr 2024 13:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h5E6/EoA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KNanTu9i"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB900136E05
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F081350E3;
+	Tue, 23 Apr 2024 13:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713879635; cv=none; b=qGtSn95u20POgopo/GO03vpUfUv8HoPGtyVvuCUVnl8yXdcCwTMzcbA2153t7X1zXLQrlVRKdYHyPW150F8t4R6pToTfdixy5CZUDrb1KH6TlaeL/hTCJOdbIHeAz44/crx1/vE1CHe6ruV7GpHzjud64MWBD7dZN83fOwHxuBM=
+	t=1713880012; cv=none; b=gjqEfhzPfhcsIoswOTzdvrnQekAkgiSnkH+EbE+yNyUyw4JctdqNs/nZyn8d0xgmKvYgFLLiab2K04I9xyNLrsS+OZLmvMGdWXoxbY4HyUoVMbxjStBTxtyVLqFU4ytt8EHEtQ4E86h2bi+b0ILTBxA5ESBpbKBsNqeS3JC5TcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713879635; c=relaxed/simple;
-	bh=POjHCPvznE1oxaNvbe2aZrgfu9AtZIiNXguD5Qg4ohY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rAkKMsW53p1YgkDShXe5sH8VPiI72I4Pstmrnz0p3m3WDBWh+5MwjODzJ6n8JLsCuokJ+HhAOLzVqzgLE32IFMgHUW6P1hREaeNuLUrPzt9G8F+DQvGeXkhR72efOs0+ekaEpS8iKeGBQbO3ERpgipZPQy7iUrGW/wye39jmyKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h5E6/EoA; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713879634; x=1745415634;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=POjHCPvznE1oxaNvbe2aZrgfu9AtZIiNXguD5Qg4ohY=;
-  b=h5E6/EoAFWFud7uBIn6gE1pk3k9/spAv0TaVGrrDi0WH4bPuAhS7Z1s9
-   meeCdO/qpCIIpT1NC3L8hfaQhJ3KYvypDuz5ldq3/O28oCzaFIouEcte0
-   tL2EYQM0AbexGQUVdELcGm5+fXfx+z5L4sirH2ipkLTlHOUP4Ad0r1Wbf
-   9ogBQTzUnkWRN6QtiHUd3RbLnkTKmLNT1s65H6ZyunwT7RMsmiTXUMmaN
-   yvYHg/pgQXv5lN2Ob/di2DJQM+KNzU2PS13vtJqkJ2kEDgdFV59j6hr4u
-   1m6yNBSKwPoMhxP0HWMHUoaPZojwokmFqcGAhE5+K1DV/DjReW7loSafc
-   w==;
-X-CSE-ConnectionGUID: CeRlfMnZSFSsUx/hJ1rm3A==
-X-CSE-MsgGUID: sQOMnjrlTwSh63kT9XJ0eg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="9327530"
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="9327530"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 06:40:33 -0700
-X-CSE-ConnectionGUID: YxbcsK/7QYakfF8boYX5pA==
-X-CSE-MsgGUID: pEANNhsmT3iL9Dg4TzjMVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="24972010"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 23 Apr 2024 06:40:32 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rzGNp-0000DU-1r;
-	Tue, 23 Apr 2024 13:40:29 +0000
-Date: Tue, 23 Apr 2024 21:40:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Hagar Hemdan <hagarhem@amazon.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] efi: libstub: only free priv.runtime_map when allocated
-Message-ID: <Zie6PLl0bSO3ZdoY@c8dd4cee2bb9>
+	s=arc-20240116; t=1713880012; c=relaxed/simple;
+	bh=pcEsfnawp+PoMGDaKV0gMQ+xLb4cPIiASt03YhZ7TRE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Dw2mriE531PAEuRXF2ZuWwyz5nk/qmzX5K+d5hQxX92+iFjDJR73pboXAT9MZ467kx0fk1NOqk1lUT9pN2ObRNjeBMPiAPADyxHTMfweu+luiBoDNnmxpjt6vrwLdGgbvC438RQ1ApSGdpfftuQAphlUGsLIkjEt5VNJZgDPMMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KNanTu9i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F93C32783;
+	Tue, 23 Apr 2024 13:46:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713880012;
+	bh=pcEsfnawp+PoMGDaKV0gMQ+xLb4cPIiASt03YhZ7TRE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KNanTu9ihAD9kpVS7rVPwGmda32PPpxbYwPDCvrSYnGBYqlKnJ+/p8sbuFE2cgfT2
+	 JsWHebg1pmYi5GxnnXbyiV1EIzoTjvg7hDX/PTqWncjC/gUgfjkLS0RWBdpnt7E5v6
+	 IdXsb4XJ6Xg6vdAvayk786j9NUuX3VTJ/e5gvzp1yMIdALY16oTOZ3Fh/I5urQO1lw
+	 AVDWl/37y4dvraAJJrJGxrWcqbdx3ALage51cyO7IdzXDmj7gP3g52j8jb8/WKMNu6
+	 jI+bCy4s0p9yRNjFi7OWQq5+bQaCHmFnf78Q3p54LkKT8b63VHB39EQXwQc0nAOmRd
+	 zjn8tSfWx8v1A==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1rzGTy-000000008Km-1SYI;
+	Tue, 23 Apr 2024 15:46:50 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	linux-input@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 4/6] HID: i2c-hid: elan: fix reset suspend current leakage
+Date: Tue, 23 Apr 2024 15:46:09 +0200
+Message-ID: <20240423134611.31979-5-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240423134611.31979-1-johan+linaro@kernel.org>
+References: <20240423134611.31979-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240423133635.19679-1-hagarhem@amazon.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The Elan eKTH5015M touch controller found on the Lenovo ThinkPad X13s
+shares the VCC33 supply with other peripherals that may remain powered
+during suspend (e.g. when enabled as wakeup sources).
 
-Thanks for your patch.
+The reset line is also wired so that it can be left deasserted when the
+supply is off.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+This is important as it avoids holding the controller in reset for
+extended periods of time when it remains powered, which can lead to
+increased power consumption, and also avoids leaking current through the
+X13s reset circuitry during suspend (and after driver unbind).
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Use the new 'no-reset-on-power-off' devicetree property to determine
+when reset needs to be asserted on power down.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] efi: libstub: only free priv.runtime_map when allocated
-Link: https://lore.kernel.org/stable/20240423133635.19679-1-hagarhem%40amazon.com
+Notably this also avoids wasting power on machine variants without a
+touchscreen for which the driver would otherwise exit probe with reset
+asserted.
 
+Fixes: bd3cba00dcc6 ("HID: i2c-hid: elan: Add support for Elan eKTH6915 i2c-hid touchscreens")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/hid/i2c-hid/i2c-hid-of-elan.c | 37 ++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/hid/i2c-hid/i2c-hid-of-elan.c b/drivers/hid/i2c-hid/i2c-hid-of-elan.c
+index 5b91fb106cfc..8a905027d5e9 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-of-elan.c
++++ b/drivers/hid/i2c-hid/i2c-hid-of-elan.c
+@@ -31,6 +31,7 @@ struct i2c_hid_of_elan {
+ 	struct regulator *vcc33;
+ 	struct regulator *vccio;
+ 	struct gpio_desc *reset_gpio;
++	bool no_reset_on_power_off;
+ 	const struct elan_i2c_hid_chip_data *chip_data;
+ };
+ 
+@@ -40,17 +41,17 @@ static int elan_i2c_hid_power_up(struct i2chid_ops *ops)
+ 		container_of(ops, struct i2c_hid_of_elan, ops);
+ 	int ret;
+ 
++	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
++
+ 	if (ihid_elan->vcc33) {
+ 		ret = regulator_enable(ihid_elan->vcc33);
+ 		if (ret)
+-			return ret;
++			goto err_deassert_reset;
+ 	}
+ 
+ 	ret = regulator_enable(ihid_elan->vccio);
+-	if (ret) {
+-		regulator_disable(ihid_elan->vcc33);
+-		return ret;
+-	}
++	if (ret)
++		goto err_disable_vcc33;
+ 
+ 	if (ihid_elan->chip_data->post_power_delay_ms)
+ 		msleep(ihid_elan->chip_data->post_power_delay_ms);
+@@ -60,6 +61,15 @@ static int elan_i2c_hid_power_up(struct i2chid_ops *ops)
+ 		msleep(ihid_elan->chip_data->post_gpio_reset_on_delay_ms);
+ 
+ 	return 0;
++
++err_disable_vcc33:
++	if (ihid_elan->vcc33)
++		regulator_disable(ihid_elan->vcc33);
++err_deassert_reset:
++	if (ihid_elan->no_reset_on_power_off)
++		gpiod_set_value_cansleep(ihid_elan->reset_gpio, 0);
++
++	return ret;
+ }
+ 
+ static void elan_i2c_hid_power_down(struct i2chid_ops *ops)
+@@ -67,7 +77,14 @@ static void elan_i2c_hid_power_down(struct i2chid_ops *ops)
+ 	struct i2c_hid_of_elan *ihid_elan =
+ 		container_of(ops, struct i2c_hid_of_elan, ops);
+ 
+-	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
++	/*
++	 * Do not assert reset when the hardware allows for it to remain
++	 * deasserted regardless of the state of the (shared) power supply to
++	 * avoid wasting power when the supply is left on.
++	 */
++	if (!ihid_elan->no_reset_on_power_off)
++		gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
++
+ 	if (ihid_elan->chip_data->post_gpio_reset_off_delay_ms)
+ 		msleep(ihid_elan->chip_data->post_gpio_reset_off_delay_ms);
+ 
+@@ -87,12 +104,14 @@ static int i2c_hid_of_elan_probe(struct i2c_client *client)
+ 	ihid_elan->ops.power_up = elan_i2c_hid_power_up;
+ 	ihid_elan->ops.power_down = elan_i2c_hid_power_down;
+ 
+-	/* Start out with reset asserted */
+-	ihid_elan->reset_gpio =
+-		devm_gpiod_get_optional(&client->dev, "reset", GPIOD_OUT_HIGH);
++	ihid_elan->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
++							GPIOD_ASIS);
+ 	if (IS_ERR(ihid_elan->reset_gpio))
+ 		return PTR_ERR(ihid_elan->reset_gpio);
+ 
++	ihid_elan->no_reset_on_power_off = of_property_read_bool(client->dev.of_node,
++						"no-reset-on-power-off");
++
+ 	ihid_elan->vccio = devm_regulator_get(&client->dev, "vccio");
+ 	if (IS_ERR(ihid_elan->vccio))
+ 		return PTR_ERR(ihid_elan->vccio);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.43.2
 
 
