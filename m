@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E25E8AFA0F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7038AFA75
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FA721C22994
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D38B41F294D0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DA2148826;
-	Tue, 23 Apr 2024 21:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87431474CA;
+	Tue, 23 Apr 2024 21:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6yKIuEm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLmvlqcA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022C4143895;
-	Tue, 23 Apr 2024 21:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D5C1420BE;
+	Tue, 23 Apr 2024 21:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908627; cv=none; b=g1U/Bmsjgcgf4GthNvnv0tYj+uuNNFD0ExIojaSdu6yzaHlK/BD4UFpL5/vJFu8JGcOtA4Oc0gFFuy2/DwmtDUYoaj5Qxj3j3/N1O6eNa9IQFZR14LdqtiSWjHdHbhbjDvSvHEnrpjmvrpq72ebaLykOAeB1oqFivLMXbJLO88g=
+	t=1713908702; cv=none; b=IUKhkhgMKShzvjlNaQ3QjalBrteBiosh72m5DA4zvejSAgLAz+G2kV4Urd7XXLpacfgQI5llxn01Ev+exH49kg7PT6kTxvpFWfdXBxKx4ucFkVwWRnqaT4HrtVA6hrQxlTE/SI29gsAFcfZERM83sZU0YoLV48LQMHie0jPEixw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908627; c=relaxed/simple;
-	bh=fXppmqJD2nM/nT+MrwGcMo1slrukO3wA6eU+ieTm7Ds=;
+	s=arc-20240116; t=1713908702; c=relaxed/simple;
+	bh=dgAHx0Gs9baK7jfjqPk/LuJpoV3ETOGFsZpHBTZzcKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKsixWBc47lr250+uekmtVW5EYu7cZVsMCyUmvFYTTPcVCrs7bZ8RmGma6qsv+hr4O3pNekBjcsg1JHajU4W58sVbUerbRXTOMeponGKi7MgA79ypww0Wx2MI67ztzoRVd21Z/Oo3lXPmD4kWvVG09K+0tGKeiY3V0UTzR1y69I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6yKIuEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC665C116B1;
-	Tue, 23 Apr 2024 21:43:46 +0000 (UTC)
+	 MIME-Version; b=DGuMvU1DsobmUHROW5AMfQIvgKhNjEughuhTkQNf5ojrB00oHgpV/l7bcju3gl+BdALqF0k4G/Jv0lpf4BAwXe+RsYJbIykYmA22hDAxvm9NDXRVt/fMzzbBeRu8py3EHR0mF9ouI5t3+d6zbuY8dQWCG+otILt7g+Z1f4AVet4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLmvlqcA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A69AC116B1;
+	Tue, 23 Apr 2024 21:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908626;
-	bh=fXppmqJD2nM/nT+MrwGcMo1slrukO3wA6eU+ieTm7Ds=;
+	s=korg; t=1713908702;
+	bh=dgAHx0Gs9baK7jfjqPk/LuJpoV3ETOGFsZpHBTZzcKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6yKIuEmrH3kQonh235JoEzJASPqZz0HE4F5glD94AB8N23d04Je4d6VEL9tgvNIK
-	 H6iFH6v+2S01W6MFWsQjW7o/69KXbHKMoAt1/KTQix1ZndIGdnZhECoGxtxPD0Aq5P
-	 xpwSlfigWfkwGVX2F2qsvduX6pReFXqQJUyyq8R0=
+	b=wLmvlqcAj4QdJ/XzKQzNgVocemmwuCO3sW9IvdHIPA69mHn4zDmmkAQbDsjfUW/EY
+	 qChS98aoc5mXxhn5z835zy3Eg0YXibc8p3N+SorfXijOMCFvfnyO0RzMUCM/pIXcVS
+	 lSUdKH4DmcfmIsgWOuTJVg2i0Y6C/cJHamVchaEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
+	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/158] ALSA: scarlett2: Default mixer driver to enabled
+Subject: [PATCH 6.1 048/141] RDMA/rxe: Fix the problem "mutex_destroy missing"
 Date: Tue, 23 Apr 2024 14:38:36 -0700
-Message-ID: <20240423213858.337307060@linuxfoundation.org>
+Message-ID: <20240423213854.821043654@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Yanjun.Zhu <yanjun.zhu@linux.dev>
 
-[ Upstream commit bc83058f598757a908b30f8f536338cb1478ab5b ]
+[ Upstream commit 481047d7e8391d3842ae59025806531cdad710d9 ]
 
-Early versions of this mixer driver did not work on all hardware, so
-out of caution the driver was disabled by default and had to be
-explicitly enabled with device_setup=1.
+When a mutex lock is not used any more, the function mutex_destroy
+should be called to mark the mutex lock uninitialized.
 
-Since commit 764fa6e686e0 ("ALSA: usb-audio: scarlett2: Fix device
-hang with ehci-pci") no more problems of this nature have been
-reported. Therefore, enable the driver by default but provide a new
-device_setup option to disable the driver in case that is needed.
-
-- device_setup value of 0 now means "enable" rather than "disable".
-- device_setup value of 1 is now ignored.
-- device_setup value of 4 now means "disable".
-
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://lore.kernel.org/r/89600a35b40307f2766578ad1ca2f21801286b58.1694705811.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: b61a3acada00 ("ALSA: scarlett2: Add Focusrite Clarett+ 2Pre and 4Pre support")
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Yanjun.Zhu <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240314065140.27468-1-yanjun.zhu@linux.dev
+Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/infiniband/sw/rxe/rxe.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index bf3d916d5a13c..c53ce9b81a7bb 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -145,12 +145,12 @@
+diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
+index 51daac5c4feb7..be3ddfbf3cae3 100644
+--- a/drivers/infiniband/sw/rxe/rxe.c
++++ b/drivers/infiniband/sw/rxe/rxe.c
+@@ -33,6 +33,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
  
- #include "mixer_scarlett_gen2.h"
- 
--/* device_setup value to enable */
--#define SCARLETT2_ENABLE 0x01
--
- /* device_setup value to allow turning MSD mode back on */
- #define SCARLETT2_MSD_ENABLE 0x02
- 
-+/* device_setup value to disable this mixer driver */
-+#define SCARLETT2_DISABLE 0x04
+ 	if (rxe->tfm)
+ 		crypto_free_shash(rxe->tfm);
 +
- /* some gui mixers can't handle negative ctl values */
- #define SCARLETT2_VOLUME_BIAS 127
++	mutex_destroy(&rxe->usdev_lock);
+ }
  
-@@ -4237,19 +4237,20 @@ int snd_scarlett_gen2_init(struct usb_mixer_interface *mixer)
- 	if (!mixer->protocol)
- 		return 0;
- 
--	if (!(chip->setup & SCARLETT2_ENABLE)) {
-+	if (chip->setup & SCARLETT2_DISABLE) {
- 		usb_audio_info(chip,
--			"Focusrite Scarlett Gen 2/3 Mixer Driver disabled; "
--			"use options snd_usb_audio vid=0x%04x pid=0x%04x "
--			"device_setup=1 to enable and report any issues "
--			"to g@b4.vu",
-+			"Focusrite Scarlett Gen 2/3 Mixer Driver disabled "
-+			"by modprobe options (snd_usb_audio "
-+			"vid=0x%04x pid=0x%04x device_setup=%d)\n",
- 			USB_ID_VENDOR(chip->usb_id),
--			USB_ID_PRODUCT(chip->usb_id));
-+			USB_ID_PRODUCT(chip->usb_id),
-+			SCARLETT2_DISABLE);
- 		return 0;
- 	}
- 
- 	usb_audio_info(chip,
--		"Focusrite Scarlett Gen 2/3 Mixer Driver enabled pid=0x%04x",
-+		"Focusrite Scarlett Gen 2/3 Mixer Driver enabled (pid=0x%04x); "
-+		"report any issues to g@b4.vu",
- 		USB_ID_PRODUCT(chip->usb_id));
- 
- 	err = snd_scarlett_gen2_controls_create(mixer);
+ /* initialize rxe device parameters */
 -- 
 2.43.0
 
