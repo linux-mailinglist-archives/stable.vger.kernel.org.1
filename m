@@ -1,88 +1,74 @@
-Return-Path: <stable+bounces-40718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75C58AE9BF
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC678AE9DE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 16:56:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 687321F2403F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:44:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EEFC1F234B1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2C713BADD;
-	Tue, 23 Apr 2024 14:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136B913B293;
+	Tue, 23 Apr 2024 14:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=paragon-software.com header.i=@paragon-software.com header.b="HibwSwcl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GM7iSm54"
 X-Original-To: stable@vger.kernel.org
-Received: from relayaws-01.paragon-software.com (relayaws-01.paragon-software.com [35.157.23.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAC613B5BD;
-	Tue, 23 Apr 2024 14:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.157.23.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C9A7F499;
+	Tue, 23 Apr 2024 14:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713883429; cv=none; b=XcEv/XoOdU07Eom5mK4qhKlvWQsaKCpCkdc6C1cMOzCwL5nZ3J5PooxiumabvMfLFO+EvkK2sllf05BBiO8I0aM/6BVERUm6CqYgVk5LYUMcTn0vTavqKd5owvCx4qMPput51nl64rBPyzRX3gMeVuC2ITl/t99CmAmSjzv0KG4=
+	t=1713884161; cv=none; b=alRdE7Aq0j+CX42zQkwz68WatWsP6YhlL8zcaguekuJU0hKff+JXQeFXbzG2LxpKMOkry7iheNkHNLzkaIdIdE9KnbBc13fELMB6SSwgXmSEAMDU8e6xMcPUnqDkx4QewNJ2OBZWOm95CORCtLSfOzS26wO6YGDKTIHCkrH/ZGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713883429; c=relaxed/simple;
-	bh=XjKJ9cLPbWFBOZsNXXBPcqV1Ya2McS+Q6Xy1f/KErb4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=prYQEmsrQ1SO4kwurutUyFCaWofvIZZv0f4NNrjDdHHXwOk7PFh+ELosXZvGkGlTOg0Jg7rJSktW1cDwZaLpAmuXDJjPsW2+JV8YgigeQ7BJNZKfJiPhzeSrnaUkA8ZUgZhIztk0raFes5c+Qe/uf11UwyaZaUwd3JN42P8E0LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=paragon-software.com; spf=pass smtp.mailfrom=paragon-software.com; dkim=pass (1024-bit key) header.d=paragon-software.com header.i=@paragon-software.com header.b=HibwSwcl; arc=none smtp.client-ip=35.157.23.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=paragon-software.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paragon-software.com
-Received: from dlg2.mail.paragon-software.com (vdlg-exch-02.paragon-software.com [172.30.1.105])
-	by relayaws-01.paragon-software.com (Postfix) with ESMTPS id DED952157;
-	Tue, 23 Apr 2024 14:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=paragon-software.com; s=mail; t=1713882973;
-	bh=GXL3SuBTg6ZAty/153VtafEhziwahLcJ1d1KPZtrhV8=;
-	h=From:To:CC:Subject:Date;
-	b=HibwSwclvfzATE1ZEDcDLEJYjfTqDbxR/4/MfXUsakjGbpnr5bNoWPk//0Rd41j2E
-	 tyIVRPpfyY43+wjFUnXmIHm25ZV6CVncxqC62wcq5SkRJzPc250uEA5YJGrbqiDKmO
-	 4hJ1xZV2v6DbeaAUHWNZ3ZMNP6xNNBNDAwMahF2s=
-Received: from ntfs3vm.paragon-software.com (192.168.211.186) by
- vdlg-exch-02.paragon-software.com (172.30.1.105) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 23 Apr 2024 17:43:45 +0300
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-To: <ntfs3@lists.linux.dev>
-CC: <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] fs/ntfs3: Break dir enumeration if directory contents error
-Date: Tue, 23 Apr 2024 17:41:55 +0300
-Message-ID: <20240423144155.10219-2-almaz.alexandrovich@paragon-software.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1713884161; c=relaxed/simple;
+	bh=WFeTvzRXST40s/+gu/XHm2qFlrewTQycOh9VzOIVnJs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jFC9FhqZKT81iQXbXy2QaQ6GdsZPpqWfRH3MUmOHiXNvakDtsdRH3ScHuT9o0HUprcbES0H+IH33x62AgkmSqAbbRvOEvgJPxRJxPfHHxpbkosgyCFKvO4IliESKfdEDVZVpXbRuDyv1cg+41PpEZKVeGRzA2T6fU1qxi+zsZAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GM7iSm54; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35300C2BD10;
+	Tue, 23 Apr 2024 14:56:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1713884161;
+	bh=WFeTvzRXST40s/+gu/XHm2qFlrewTQycOh9VzOIVnJs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GM7iSm54s9Oh3xoGEQNExrgIuiJoesMNzNhx5IPuVhwN3PKOv+E6TCV21pB4YdcZg
+	 CkIjFDfhH1/6fkjKdnQTKA1cYt1pWGDlQYcNtKAoWMklNeLXLCSULFBNNLwYqRWj17
+	 iUGNdnRQvVCB8241vq/cijEy6URvTnw/gM+UskYo=
+Date: Tue, 23 Apr 2024 07:55:42 -0700
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: ntfs3@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] fs/ntfs3: Fix case when index is reused during tree
+ transformation
+Message-ID: <2024042318-radio-concept-9a0b@gregkh>
+References: <20240423144155.10219-1-almaz.alexandrovich@paragon-software.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: vdlg-exch-02.paragon-software.com (172.30.1.105) To
- vdlg-exch-02.paragon-software.com (172.30.1.105)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240423144155.10219-1-almaz.alexandrovich@paragon-software.com>
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Cc: stable@vger.kernel.org
----
- fs/ntfs3/dir.c | 1 +
- 1 file changed, 1 insertion(+)
+On Tue, Apr 23, 2024 at 05:41:54PM +0300, Konstantin Komarov wrote:
+> Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+> Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  fs/ntfs3/index.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index 5cf3d9decf64..45e556fd7c54 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -475,6 +475,7 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
- 		vbo = (u64)bit << index_bits;
- 		if (vbo >= i_size) {
- 			ntfs_inode_err(dir, "Looks like your dir is corrupt");
-+			ctx->pos = eod;
- 			err = -EINVAL;
- 			goto out;
- 		}
--- 
-2.34.1
+I know I can't take patches without any changelog text, and odds are you
+shouldn't either...
 
+thanks,
+
+greg k-h
 
