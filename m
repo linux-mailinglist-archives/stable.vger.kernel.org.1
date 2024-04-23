@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982A18AFA2A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E53988AFAE3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC02CB2B171
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EB241C23470
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79718148848;
-	Tue, 23 Apr 2024 21:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6FF14AD37;
+	Tue, 23 Apr 2024 21:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOIDjdtc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNBW1pe3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3889F143888;
-	Tue, 23 Apr 2024 21:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC70143895;
+	Tue, 23 Apr 2024 21:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908637; cv=none; b=rvXTAbRD7+rZ+Z6+niacMMy1kEgkDo7qW6LgV5qTyjSasybC5iHVjp+npulZBX7/+PQ7AvQ0AlxJuxSdHrxuIBAqgkX8D2iCV/KPbR1+iyWbFK1WlXAZ+YMWIX8GjQHwdX1NP30NuhR7Au1UftOoZ9rQDTvrI7toXL9/24aiTbA=
+	t=1713908777; cv=none; b=mTRztNbDZzUnbdAlTCbhv1pyONQXCTIXIr294GiNpb8MPvdukvCkZPjX2dZT2Saq9PO0umV4l79xE12Ptt+hsRq3fuz3pEe6sEt2LB5P8HpcF6GLT5Y8yvlR6Dyc4JZLiMMr9gGCYVY3OD4nS13Tlyz5xEZFY/eYKo8GohEQqOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908637; c=relaxed/simple;
-	bh=207hBJJok9FJg5iKzS3zoPW3L8GX7sADqq++yumtuuY=;
+	s=arc-20240116; t=1713908777; c=relaxed/simple;
+	bh=ulxGtpUX587knkUlNBV0aCgo3xPpBmxAilS/NSdNsnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BvM1mSBv+9z9iXARdLBd8O0ziMq0ZeZCFUfTi/zxI+6CeKbkfEfUFZssDYeeT1itmiaOE4+jDtWwoyHCQpOqms7LXzZbpgsGymX32y8yIyT6u+fNwzXgN4X/v+QVeEP9iF+ntpukodds34cR8gKm/NchmPt32+NUaSVnpFkpyNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOIDjdtc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1DAC3277B;
-	Tue, 23 Apr 2024 21:43:57 +0000 (UTC)
+	 MIME-Version; b=lVxFF3Hc0e7Cc1cf88iIWFHK5kCkKOK0I100T4rSKt+rChPBdsghabMFH1is0azo3Xal5YmqG7xjnCOP1pXD+sd9WG2rud6gjFZonC2W3NDS+qlbXbNR8LoRgXtjCYHdyc5EPwudHUBoUfXT+tEUVNYABNxIlGpcupQLPtKE/hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNBW1pe3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C22C32781;
+	Tue, 23 Apr 2024 21:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908637;
-	bh=207hBJJok9FJg5iKzS3zoPW3L8GX7sADqq++yumtuuY=;
+	s=korg; t=1713908777;
+	bh=ulxGtpUX587knkUlNBV0aCgo3xPpBmxAilS/NSdNsnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOIDjdtcehGBTzknEQ1RM0Pp6x0aFh71I5PzvhDDG7Zp/RnvElpyDeTG8T1iy+V24
-	 Fu8eX+T4cd2KP65xBzFUwJxaI8e94cDODMQ3khoXlVWrikfF3FPC/G6Ifr4bnlkyFR
-	 8me1wpL9RHUB9x0RZL7dRsdZ9/EzEk58SIoWoJg0=
+	b=MNBW1pe3RR/MFlj6A4ZDtaTcAbKVVWrDQyNaxvWmrkPgecQ/Wt7flHYi/QFaKyB+T
+	 5JjiRSKgJg46reKtK9RHX6zhZGJ6mkbVE9v3bYSf+4g1/0XD+GL6T7HQCzE3h8UjYu
+	 oJ1LFdPh1BeFsoVwrngxo2PJH+p5oJYVrk6sXbVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanillan Wang <vanillanwang@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 119/158] USB: serial: option: add Rolling RW101-GL and RW135-GL support
+	James Christopher Adduono <jc@adduono.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 03/71] ksmbd: do not set SMB2_GLOBAL_CAP_ENCRYPTION for SMB 3.1.1
 Date: Tue, 23 Apr 2024 14:39:16 -0700
-Message-ID: <20240423213859.607425926@linuxfoundation.org>
+Message-ID: <20240423213844.242602828@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,180 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vanillan Wang <vanillanwang@163.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 311f97a4c7c22a01f8897bddf00428dfd0668e79 upstream.
+[ Upstream commit 5ed11af19e56f0434ce0959376d136005745a936 ]
 
-Update the USB serial option driver support for the Rolling
-LTE modules.
+SMB2_GLOBAL_CAP_ENCRYPTION flag should be used only for 3.0 and
+3.0.2 dialects. This flags set cause compatibility problems with
+other SMB clients.
 
-- VID:PID 33f8:01a2, RW101-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
-0x01a2: mbim, diag, at, pipe
-- VID:PID 33f8:01a3, RW101-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
-0x01a3: mbim, pipe
-- VID:PID 33f8:01a4, RW101-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
-0x01a4: mbim, diag, at, pipe
-- VID:PID 33f8:0104, RW101-GL for laptop debug M.2 cards(with RMNET
-interface for /Linux/Chrome OS)
-0x0104: RMNET, diag, at, pipe
-- VID:PID 33f8:0115, RW135-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
-0x0115: MBIM, diag, at, pipe
-
-Here are the outputs of usb-devices:
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a2 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=12345678
-C:  #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a3 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=12345678
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 17 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a4 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=12345678
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0104 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=ba2eb033
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0115 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=12345678
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Reported-by: James Christopher Adduono <jc@adduono.com>
+Tested-by: James Christopher Adduono <jc@adduono.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ksmbd/smb2ops.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2307,6 +2307,14 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
-+	{ USB_DEVICE(0x33f8, 0x0104),						/* Rolling RW101-GL (laptop RMNET) */
-+	  .driver_info = RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a2, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a3, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a4, 0xff),			/* Rolling RW101-GL (laptop MBIM) */
-+	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+diff --git a/fs/ksmbd/smb2ops.c b/fs/ksmbd/smb2ops.c
+index c69943d96565a..d0db9f32c423d 100644
+--- a/fs/ksmbd/smb2ops.c
++++ b/fs/ksmbd/smb2ops.c
+@@ -229,6 +229,11 @@ void init_smb3_0_server(struct ksmbd_conn *conn)
+ 	    conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
+ 
++	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
++	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
++	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
++		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
++
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
+ }
+@@ -276,11 +281,6 @@ int init_smb3_11_server(struct ksmbd_conn *conn)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
+ 			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
+ 
+-	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
+-	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
+-	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
+-		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
+-
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
+ 
+-- 
+2.43.0
+
 
 
 
