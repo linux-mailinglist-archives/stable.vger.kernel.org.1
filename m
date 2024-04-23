@@ -1,137 +1,105 @@
-Return-Path: <stable+bounces-40651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213CB8AE554
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:03:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82918AE5F3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4ABA1F22D69
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:03:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 254451C2340A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC11413C9D9;
-	Tue, 23 Apr 2024 11:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aXPsKAUY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GE4xxKg1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C36126F33;
+	Tue, 23 Apr 2024 12:23:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F93586AC8;
-	Tue, 23 Apr 2024 11:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9598529E;
+	Tue, 23 Apr 2024 12:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713873069; cv=none; b=KGD/KoueUc7JuL9Db+O5t3VM4VeAkAw/0EzZaMoQzU5rmkxN2XSAte0cSs/GeNPOdP9XlXuoQzidPB9W6ClxUStnvJOOONS51dg/yk9kQnlxphgIAKKq1RJ/IVhjSnOuSExfacW8d1oaCb3eqFHqevart0fgntkYQSpgxWATQ0M=
+	t=1713875026; cv=none; b=kmh5VCAP7ZPe+ImlKVDt/hAPFiktUTGpi08XENI8s5nJ9GJ2QXlwz4CSKQB7K70Z64296NvujBXQw3QEudYKGnk71RBRWRKMSTbzDLosHRRVby29vG+0imgeV8pAzE4Ay5ZsrMyS+yEHYZr/57uoLfsOZZASp/Y/YEZcaJqRS+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713873069; c=relaxed/simple;
-	bh=cQlvbfsGcivyYSvJInJbINjshicdDs+x+gygQ5JtuVw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lebVsHrNnjZfIiNV8u7XIKht5+7kR28kVnbsVfqNHgb1U64dtmi4rWstXCRl/SHiwhddVN8VZDvI6u0L6CDsLFb72oQvvhc750Xv0GDfl4hhaa/A49x8KNPv/J2JI8ZfUTB3SG/L1IIgIddkExZOtbx9sXE+8CqI4VajpLrLHAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aXPsKAUY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GE4xxKg1; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713873066;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nId7yfti82jidSrNPjc6pFuqg7gFIn/sC7IuAdW8lsU=;
-	b=aXPsKAUYw1xfZIpf+JY5/kFVVaYhclqesT8eNqgRT8QWYp1fy4f9W5cQ96InRPMjc81Tpx
-	nym17Np9zhy/o3PSY9GC/WTSdhfRe+zxZSVwmbqMXeo3yn2tqse+UJuXmeNaGfVwo/IbP9
-	RR3rhvZjylHfmhNtzwK09DsCc8k/8g/0t1tjCJrhQ1J95nsyOWOMIqkiDN3E1o5jt20Hgn
-	s/YPG9lovejnpZaT0rezWC1uHCgOWJuH0gnvH7cqE+4nrcpoVWHam+o4J+mUFM62wAMK2T
-	OI+cmh+RvVNalgAyize0CWS0YTZ5x5QxY/pEWFLqPW+7if4zFIOUqwOqCTRuJg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713873066;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nId7yfti82jidSrNPjc6pFuqg7gFIn/sC7IuAdW8lsU=;
-	b=GE4xxKg1OleHEYvmyB77Oha0O4topex9HjYpEQVHoc0U0xyzeSVNI6gWt2wOvfF5KCOqyl
-	pYqRuHdMYzNWmjBA==
-To: Jaya Kumar <jayalk@intworks.biz>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: tiwai@suse.de,
-	namcao@linutronix.de,
-	bigeasy@linutronix.de,
-	patrik.r.jakobsson@gmail.com,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	George Kennedy <george.kennedy@oracle.com>,
-	Darren Kenny <darren.kenny@oracle.com>,
-	chuansheng.liu@intel.com,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fbdev: fix incorrect address computation in deferred IO
-Date: Tue, 23 Apr 2024 13:50:53 +0200
-Message-Id: <20240423115053.4490-1-namcao@linutronix.de>
+	s=arc-20240116; t=1713875026; c=relaxed/simple;
+	bh=5DmUvjxy5vtrmeA+aWwOw6GwVTh9Pm0+Jafzv1sTFSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cwzDmaozonsKxGpZBSxPNg4LD9pC6r548aljuJQy0wI12dO2oWP1aMLKRoSZ4pYVLQXIZBMo/Wd9Cusg9/WpkObEQWq50+ftsbCPMxsN6rKodeGIOX61XIXIVTOqP7Dk6fXzCFS15uhjP+WLvkyK03U5/cbqhc4ybFsdUnU78UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de; spf=pass smtp.mailfrom=0pointer.de; arc=none smtp.client-ip=85.214.157.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0pointer.de
+Received: from gardel-login.0pointer.net (gardel-mail [IPv6:2a01:238:43ed:c300:10c3:bcf3:3266:da74])
+	by gardel.0pointer.net (Postfix) with ESMTP id 3A406E80104;
+	Tue, 23 Apr 2024 14:23:36 +0200 (CEST)
+Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
+	id A91ED1602F7; Tue, 23 Apr 2024 14:23:35 +0200 (CEST)
+Date: Tue, 23 Apr 2024 14:23:35 +0200
+From: Lennart Poettering <mzxreary@0pointer.de>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Alexander Graf <graf@amazon.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Babis Chalios <bchalios@amazon.es>, Theodore Ts'o <tytso@mit.edu>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"rostedt@goodmis.org" <rostedt@goodmis.org>,
+	Christian Brauner <brauner@kernel.org>, linux@leemhuis.info,
+	regressions@lists.linux.dev
+Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when
+ VMGENID updates"
+Message-ID: <ZieoRxn-On0gD-H2@gardel-login>
+References: <20240418114814.24601-1-Jason@zx2c4.com>
+ <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
+ <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
 
-With deferred IO enabled, a page fault happens when data is written to the
-framebuffer device. Then driver determines which page is being updated by
-calculating the offset of the written virtual address within the virtual
-memory area, and uses this offset to get the updated page within the
-internal buffer. This page is later copied to hardware (thus the name
-"deferred IO").
+On Di, 23.04.24 03:21, Jason A. Donenfeld (Jason@zx2c4.com) wrote:
 
-This offset calculation is only correct if the virtual memory area is
-mapped to the beginning of the internal buffer. Otherwise this is wrong.
-For example, if users do:
-    mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
+Jason!
 
-Then the virtual memory area will mapped at offset 0xff000 within the
-internal buffer. This offset 0xff000 is not accounted for, and wrong page
-is updated.
+Can you please explain to me what the precise problem is with the
+uevent? It doesn't leak any information about the actual vmgenid, it
+just lets userspace know that the machine was cloned,
+basically. What's the problem with that? I'd really like to
+understand?
 
-Correct the calculation by using vmf->pgoff instead. With this change, the
-variable "offset" will no longer hold the exact offset value, but it is
-rounded down to multiples of PAGE_SIZE. But this is still correct, because
-this variable is only used to calculate the page offset.
+There are many usecases for this in the VM world, for example we'd
+like to hook things up so that various userspace managed concepts,
+such as DHCP leases, MAC addresses are automatically refreshed.
 
-Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Closes: https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4a=
-b341a@oracle.com
-Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
-v2:
-  - simplify the patch by using vfg->pgoff
-  - remove tested-by tag, as the patch is now different
+This has no relationship to RNGs or anything like this, it's just an
+event we can handle in userspace to trigger address refreshes like
+this.
 
- drivers/video/fbdev/core/fb_defio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hence, why is the revert necessary? This was already in a released
+kernel, and we have started work on making use of this in systemd, and
+afaics this does not compromise the kernel RNG in even the remotest of
+ways, hence why is a revert necessary? From my usersace perspective
+it's just very very sad, that this simple, trivial interface we wanted
+to use, that was in a stable kernel is now gone again.
 
-diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core=
-/fb_defio.c
-index 1ae1d35a5942..b9607d5a370d 100644
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -196,7 +196,7 @@ static vm_fault_t fb_deferred_io_track_page(struct fb_i=
-nfo *info, unsigned long
-  */
- static vm_fault_t fb_deferred_io_page_mkwrite(struct fb_info *info, struct=
- vm_fault *vmf)
- {
--	unsigned long offset =3D vmf->address - vmf->vma->vm_start;
-+	unsigned long offset =3D vmf->pgoff << PAGE_SHIFT;
- 	struct page *page =3D vmf->page;
-=20
- 	file_update_time(vmf->vma->vm_file);
---=20
-2.39.2
+Can you explain what the problem with this single-line trivial
+interface is? I really would like to understand!
 
+Lennart
+
+(BTW: even if the uevent would leak the vmgenid somehow to userspace —
+which it does not —, at least on qemu — i.e. one of the most relevant
+VM platforms — the vmgenid can be read directly from userspace by
+cat'ing /sys/firmware/qemu_fw_cfg/by_name/etc/vmgenid_guid/raw,
+i.e. it's not that well protected anyway).
+
+--
+Lennart Poettering, Berlin
 
