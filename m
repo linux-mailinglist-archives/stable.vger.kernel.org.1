@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-41046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC85B8AFA22
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C868AF987
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A844D2896CD
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4C1E1C234AA
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F60148856;
-	Tue, 23 Apr 2024 21:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082AA143C48;
+	Tue, 23 Apr 2024 21:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuqbmes9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlMYY2yA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CFA143888;
-	Tue, 23 Apr 2024 21:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC09720B3E;
+	Tue, 23 Apr 2024 21:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908640; cv=none; b=V9MIvuPTqv//Nz3XsqTdQj6cdZXLGSdzslEF+KNrB08I8QCfNE1tvK1IvUcKp0RSOTEH1w/rL66XYpXzKZ5cgK2Tl0YMEwuvcTU8f0ojobAW9AbZzYRjxaG9yL8TJTcd5smVx0P/LVZ0YpUOY/KWEhWT46SJ64Iwq72FRSC+VbY=
+	t=1713908542; cv=none; b=itppx+QSLjoi32CgstTcvs1GlDegn4r0c3zmU7fA1nnyLqorS7lYYjB9D3eg6av2AF/v5XoagXAH+GmWwG0Bu/OBtArXyNAqkTIY2MEuXoZURTCag/fywXrQm6An9tr6ek2g3YlbPuik+1eh3H83P/lbTElociNw9pD1mxkV+SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908640; c=relaxed/simple;
-	bh=eE6bzxjdD1KkkKR07cc9cvP9Q/jagU0rKAzDU+9zXqc=;
+	s=arc-20240116; t=1713908542; c=relaxed/simple;
+	bh=BYEu/r/H0/N+1ey6NsGYvPFQE3Yh0u/Y1awCYUowuHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9LRRy/7fknyyOG4MNzDXtVHJF6zDCGQxMErvJ4WP5XYdcLWWXMwy5/h5j0014zNw1ob9xTjJZGGeVFCa+emmOdMulYk4k7us0T8Dfq8cSQmS7rpdUwvHHY00/5xsE5HBVyXKOLQvavAlHGGOuEQuqkJGkF2vXhvQ4aeRNw8hmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuqbmes9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC76C3277B;
-	Tue, 23 Apr 2024 21:44:00 +0000 (UTC)
+	 MIME-Version; b=c1hYWcD2Ii0gOW6COfVTmqlWC0V6l12QCG8FaF0v6UV7MZrwBFNcrURQpJCMqJQPUvzR/+AhCgOiUZ8SEFNM4xtYHorE5iYZ+7Et+velB3vjdIumKKbtdMhgT/ahL3LGzblxZqqOlCwukSTDwh4/trHY/GhA1E3ZfQFCBAlaxkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlMYY2yA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90302C116B1;
+	Tue, 23 Apr 2024 21:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908640;
-	bh=eE6bzxjdD1KkkKR07cc9cvP9Q/jagU0rKAzDU+9zXqc=;
+	s=korg; t=1713908542;
+	bh=BYEu/r/H0/N+1ey6NsGYvPFQE3Yh0u/Y1awCYUowuHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iuqbmes9ojMnHBOU3XundAsUrZ02oRATFaH3b4Od8LOjms3WsjgntzVrp2T7r5z26
-	 DWGm3vYkAFQ7llcUciagRT5CX78xARZ5pnGIs9Tp7+XqkdyfmiW2arsoBKm1pKDdxx
-	 oaG/ZFztE25H8uCfjSXSFcIq/HHcwRApAW34wk6M=
+	b=FlMYY2yABPfcA/kbe7bhi5TzedvbxsT0Cw5tEp2DJsjednpQyY8AJsUgQtPqG7Hm4
+	 s66qi6NKgNGsur9dCbFIUwWOcusdGOMQ3HhMrbpY0ak0MHHfesRLidryjJBY89Srzy
+	 gjJz4paeaPkecJwyj/7kZa7kdnxN30hf/P4e1cG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 123/158] usb: Disable USB3 LPM at shutdown
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 138/158] mm/shmem: inline shmem_is_huge() for disabled transparent hugepages
 Date: Tue, 23 Apr 2024 14:39:20 -0700
-Message-ID: <20240423213859.731698505@linuxfoundation.org>
+Message-ID: <20240423213900.355862439@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +67,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-commit d920a2ed8620be04a3301e1a9c2b7cc1de65f19d upstream.
+commit 1f737846aa3c45f07a06fa0d018b39e1afb8084a upstream.
 
-SanDisks USB3 storage may disapper after system reboot:
+In order to  minimize code size (CONFIG_CC_OPTIMIZE_FOR_SIZE=y),
+compiler might choose to make a regular function call (out-of-line) for
+shmem_is_huge() instead of inlining it. When transparent hugepages are
+disabled (CONFIG_TRANSPARENT_HUGEPAGE=n), it can cause compilation
+error.
 
-usb usb2-port3: link state change
-xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
-usb usb2-port3: do warm reset, port only
-xhci_hcd 0000:00:14.0: xhci_hub_status_data: stopping usb2 port polling
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2b0, return 0x2b0
-usb usb2-port3: not warm reset yet, waiting 50ms
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2f0, return 0x2f0
-usb usb2-port3: not warm reset yet, waiting 200ms
-...
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x6802c0, return 0x7002c0
-usb usb2-port3: not warm reset yet, waiting 200ms
-xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x4802c0
-xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x4002c0
-xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2c0, return 0x2c0
-usb usb2-port3: not enabled, trying warm reset again...
+mm/shmem.c: In function `shmem_getattr':
+./include/linux/huge_mm.h:383:27: note: in expansion of macro `BUILD_BUG'
+  383 | #define HPAGE_PMD_SIZE ({ BUILD_BUG(); 0; })
+      |                           ^~~~~~~~~
+mm/shmem.c:1148:33: note: in expansion of macro `HPAGE_PMD_SIZE'
+ 1148 |                 stat->blksize = HPAGE_PMD_SIZE;
 
-This is due to the USB device still cause port change event after xHCI is
-shuted down:
+To prevent the possible error, always inline shmem_is_huge() when
+transparent hugepages are disabled.
 
-xhci_hcd 0000:38:00.0: // Setting command ring address to 0xffffe001
-xhci_hcd 0000:38:00.0: xhci_resume: starting usb3 port polling.
-xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb4 port polling
-xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb3 port polling
-xhci_hcd 0000:38:00.0: hcd_pci_runtime_resume: 0
-xhci_hcd 0000:38:00.0: xhci_shutdown: stopping usb3 port polling.
-xhci_hcd 0000:38:00.0: // Halt the HC
-xhci_hcd 0000:38:00.0: xhci_shutdown completed - status = 1
-xhci_hcd 0000:00:14.0: xhci_shutdown: stopping usb1 port polling.
-xhci_hcd 0000:00:14.0: // Halt the HC
-xhci_hcd 0000:00:14.0: xhci_shutdown completed - status = 1
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
-xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1311
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x201203, return 0x100203
-xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: clear port3 connect change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
-usb 2-3: device not accepting address 2, error -108
-xhci_hcd 0000:00:14.0: xHCI dying or halted, can't queue_command
-xhci_hcd 0000:00:14.0: Set port 2-3 link state, portsc: 0x1203, write 0x11261
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1263, return 0x263
-xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1271
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12b1, return 0x2b1
-usb usb2-port3: not reset yet, waiting 60ms
-ACPI: PM: Preparing to enter system sleep state S5
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12f1, return 0x2f1
-usb usb2-port3: not reset yet, waiting 200ms
-reboot: Restarting system
-
-The port change event is caused by LPM transition, so disabling LPM at shutdown
-to make sure the device is in U0 for warmboot.
-
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240305065140.66801-1-kai.heng.feng@canonical.com
+Link: https://lkml.kernel.org/r/20240409155407.2322714-1-sumanthk@linux.ibm.com
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/shmem_fs.h |    9 +++++++++
+ mm/shmem.c               |    6 ------
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -448,8 +448,10 @@ static void usb_port_shutdown(struct dev
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -114,8 +114,17 @@ extern struct page *shmem_read_mapping_p
+ extern void shmem_truncate_range(struct inode *inode, loff_t start, loff_t end);
+ int shmem_unuse(unsigned int type);
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ extern bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
+ 			  struct mm_struct *mm, unsigned long vm_flags);
++#else
++static __always_inline bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
++					  struct mm_struct *mm, unsigned long vm_flags)
++{
++	return false;
++}
++#endif
++
+ #ifdef CONFIG_SHMEM
+ extern unsigned long shmem_swap_usage(struct vm_area_struct *vma);
+ #else
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -742,12 +742,6 @@ static long shmem_unused_huge_count(stru
+ 
+ #define shmem_huge SHMEM_HUGE_DENY
+ 
+-bool shmem_is_huge(struct inode *inode, pgoff_t index, bool shmem_huge_force,
+-		   struct mm_struct *mm, unsigned long vm_flags)
+-{
+-	return false;
+-}
+-
+ static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
+ 		struct shrink_control *sc, unsigned long nr_to_split)
  {
- 	struct usb_port *port_dev = to_usb_port(dev);
- 
--	if (port_dev->child)
-+	if (port_dev->child) {
- 		usb_disable_usb2_hardware_lpm(port_dev->child);
-+		usb_unlocked_disable_lpm(port_dev->child);
-+	}
- }
- 
- static const struct dev_pm_ops usb_port_pm_ops = {
 
 
 
