@@ -1,94 +1,76 @@
-Return-Path: <stable+bounces-40656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 115D68AE65D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:39:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01B18AE681
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:43:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD0062857E6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:39:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8241F21255
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82656137760;
-	Tue, 23 Apr 2024 12:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398C812C474;
+	Tue, 23 Apr 2024 12:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXVeSnWY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFqHE8e6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F67413774F
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEB812BF36
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713875818; cv=none; b=NABXnQtALLm3ZErrtVELllfObJ/K/fKfDr5cDnA7s0aMdUo4Rjw/G5iFDQwMIgUAOhGIJo3IvlrZj9sZSKWqsWWG1oKheFBMM9EU4A2XS2JvCc2ToWVVzIGyQ/noFfGIvrkxyzsj03Pi7EPZHW65IkshSLPpCwPQ4UqxT1xZeOI=
+	t=1713876103; cv=none; b=F7AsEOf2cK/m5opU+IeJjKQ/jN9XB0BxJxUdMmRlUGNb7/DtgENnU5xcly4uKfzt5CMFYmYJrXY/gMOG5K7HRabcTc3oybGYpG6ymUVVnedN/Z2gNCavpJFnGK3feHwQWyse/hDXDbUr8NhWw0OkKLzM4u59B8pQCyKX6bp79R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713875818; c=relaxed/simple;
-	bh=bRT7rXa+QBqIBNHEewvpLZJyH7133Y4FfFzatSRLzbg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ikripd/SxZPPULh8S16+E+d0qE8RhypK22YG7eOh3CZiZnpF/51KECmjjJZXil6gYz8yZZ4UhrVnKEH9iWewxCts4CtR00GgWzRQbwfFJeKMs+XziwrUTKZqbW9YQgSHFdV1OzfD1qgpcs/2FYcfCtY2BixThNP6tC5v+zH5HRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXVeSnWY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0506FC116B1;
-	Tue, 23 Apr 2024 12:36:57 +0000 (UTC)
+	s=arc-20240116; t=1713876103; c=relaxed/simple;
+	bh=CeSNmGY9Ogh5bnim8CPa7pFpYQ3+WLgHXYdmWDIz15M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OCudjzz0hy39tUb88zsSfSww6QmDXsr6Poc0WW+o3J6HgM4yQTX5f07qDGEY3IJiAdFExgpxuN9qEYdS7xf3mpX4UKnsuX+Rl6i5pWTjpLKn6IpYiI3q1s3VIFsCukevYs2NZa74TXt/Q6Rj360CrQWBBHTVQJvReVMMz2Qx8Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFqHE8e6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EACC116B1;
+	Tue, 23 Apr 2024 12:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713875818;
-	bh=bRT7rXa+QBqIBNHEewvpLZJyH7133Y4FfFzatSRLzbg=;
+	s=korg; t=1713876102;
+	bh=CeSNmGY9Ogh5bnim8CPa7pFpYQ3+WLgHXYdmWDIz15M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rXVeSnWYUYCMOWSZukwwERDjb5DRZcfdJZjryPtOPzV8PBq8Tnq8E1F5J/2rARkUT
-	 Z4wdIfd+/IqrvnxUVGvS7s4/oOHeERsOxYXZSruzs+3yhA80QtG0Wg/Q9y4YpGbqUw
-	 YWT6TskqHA/KAfeOdoNCzWmmt4gEP7Cyei+OftLc=
-Subject: FAILED: patch "[PATCH] serial: stm32: Return IRQ_NONE in the ISR if no handling" failed to apply to 4.19-stable tree
-To: u.kleine-koenig@pengutronix.de,gregkh@linuxfoundation.org
+	b=rFqHE8e696XaSpH6U7lm1tWtEOCK4+wU2gmwJGUG+zLmUKviYtkML07Kg770hr/y8
+	 AmG3Hj6XtJ4YnTc7fOzLpq51NmnWvZyjH+4nFmy1SxfCS4U8Ba874dD/QF8s9dcMT3
+	 O+5Jli/3ARBCkyNYmPo1YmKmrNuwWFlFOnPKEYMc=
+Subject: FAILED: patch "[PATCH] Revert "drm/amd/display: fix USB-C flag update after enc10" failed to apply to 6.8-stable tree
+To: alexander.deucher@amd.com,ahmed.ahmed@amd.com,charlene.liu@amd.com,chiahsuan.chung@amd.com,hamza.mahfooz@amd.com,harry.wentland@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 05:36:48 -0700
-Message-ID: <2024042348-galleria-wielder-75a5@gregkh>
+Date: Tue, 23 Apr 2024 05:41:32 -0700
+Message-ID: <2024042332-depose-frenzy-e027@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.8-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
 git checkout FETCH_HEAD
-git cherry-pick -x 13c785323b36b845300b256d0e5963c3727667d7
+git cherry-pick -x 91f10a3d21f2313485178d49efef8a3ba02bd8c7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042348-galleria-wielder-75a5@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042332-depose-frenzy-e027@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
 
 Possible dependencies:
 
-13c785323b36 ("serial: stm32: Return IRQ_NONE in the ISR if no handling happend")
-c5d06662551c ("serial: stm32: Use port lock wrappers")
-a01ae50d7eae ("serial: stm32: replace access to DMAR bit by dmaengine_pause/resume")
-7f28bcea824e ("serial: stm32: group dma pause/resume error handling into single function")
-00d1f9c6af0d ("serial: stm32: modify parameter and rename stm32_usart_rx_dma_enabled")
-db89728abad5 ("serial: stm32: avoid clearing DMAT bit during transfer")
-3f6c02fa712b ("serial: stm32: Merge hard IRQ and threaded IRQ handling into single IRQ handler")
-d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS485 mode")
-3bcea529b295 ("serial: stm32: Factor out GPIO RTS toggling into separate function")
-037b91ec7729 ("serial: stm32: fix software flow control transfer")
-d3d079bde07e ("serial: stm32: prevent TDR register overwrite when sending x_char")
-195437d14fb4 ("serial: stm32: correct loop for dma error handling")
-2a3bcfe03725 ("serial: stm32: fix flow control transfer in DMA mode")
-9a135f16d228 ("serial: stm32: rework TX DMA state condition")
-56a23f9319e8 ("serial: stm32: move tx dma terminate DMA to shutdown")
-6333a4850621 ("serial: stm32: push DMA RX data before suspending")
-6eeb348c8482 ("serial: stm32: terminate / restart DMA transfer at suspend / resume")
-e0abc903deea ("serial: stm32: rework RX dma initialization and release")
-d1ec8a2eabe9 ("serial: stm32: update throttle and unthrottle ops for dma mode")
-33bb2f6ac308 ("serial: stm32: rework RX over DMA")
+91f10a3d21f2 ("Revert "drm/amd/display: fix USB-C flag update after enc10 feature init"")
+7d1e9d0369e4 ("drm/amd/display: Check DP Alt mode DPCS state via DMUB")
 
 thanks,
 
@@ -96,93 +78,69 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 13c785323b36b845300b256d0e5963c3727667d7 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 17 Apr 2024 11:03:27 +0200
-Subject: [PATCH] serial: stm32: Return IRQ_NONE in the ISR if no handling
- happend
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 91f10a3d21f2313485178d49efef8a3ba02bd8c7 Mon Sep 17 00:00:00 2001
+From: Alex Deucher <alexander.deucher@amd.com>
+Date: Fri, 29 Mar 2024 18:03:03 -0400
+Subject: [PATCH] Revert "drm/amd/display: fix USB-C flag update after enc10
+ feature init"
 
-If there is a stuck irq that the handler doesn't address, returning
-IRQ_HANDLED unconditionally makes it impossible for the irq core to
-detect the problem and disable the irq. So only return IRQ_HANDLED if
-an event was handled.
+This reverts commit b5abd7f983e14054593dc91d6df2aa5f8cc67652.
 
-A stuck irq is still problematic, but with this change at least it only
-makes the UART nonfunctional instead of occupying the (usually only) CPU
-by 100% and so stall the whole machine.
+This change breaks DSC on 4k monitors at 144Hz over USB-C.
 
-Fixes: 48a6092fb41f ("serial: stm32-usart: Add STM32 USART Driver")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3254
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Muhammad Ahmed <ahmed.ahmed@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Charlene Liu <charlene.liu@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/5f92603d0dfd8a5b8014b2b10a902d91e0bb881f.1713344161.git.u.kleine-koenig@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
-index 58d169e5c1db..d60cbac69194 100644
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -861,6 +861,7 @@ static irqreturn_t stm32_usart_interrupt(int irq, void *ptr)
- 	const struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
- 	u32 sr;
- 	unsigned int size;
-+	irqreturn_t ret = IRQ_NONE;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dio_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dio_link_encoder.c
+index e224a028d68a..8a0460e86309 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dio_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dio_link_encoder.c
+@@ -248,14 +248,12 @@ void dcn32_link_encoder_construct(
+ 	enc10->base.hpd_source = init_data->hpd_source;
+ 	enc10->base.connector = init_data->connector;
  
- 	sr = readl_relaxed(port->membase + ofs->isr);
++	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
++		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
++
+ 	enc10->base.preferred_engine = ENGINE_ID_UNKNOWN;
  
-@@ -869,11 +870,14 @@ static irqreturn_t stm32_usart_interrupt(int irq, void *ptr)
- 	    (sr & USART_SR_TC)) {
- 		stm32_usart_tc_interrupt_disable(port);
- 		stm32_usart_rs485_rts_disable(port);
-+		ret = IRQ_HANDLED;
+ 	enc10->base.features = *enc_features;
+-	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
+-		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
+-
+-	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
+-		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
+ 
+ 	enc10->base.transmitter = init_data->transmitter;
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c
+index 81e349d5835b..da94e5309fba 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c
+@@ -184,6 +184,8 @@ void dcn35_link_encoder_construct(
+ 	enc10->base.hpd_source = init_data->hpd_source;
+ 	enc10->base.connector = init_data->connector;
+ 
++	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
++		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
+ 
+ 	enc10->base.preferred_engine = ENGINE_ID_UNKNOWN;
+ 
+@@ -238,8 +240,6 @@ void dcn35_link_encoder_construct(
  	}
  
--	if ((sr & USART_SR_RTOF) && ofs->icr != UNDEF_REG)
-+	if ((sr & USART_SR_RTOF) && ofs->icr != UNDEF_REG) {
- 		writel_relaxed(USART_ICR_RTOCF,
- 			       port->membase + ofs->icr);
-+		ret = IRQ_HANDLED;
-+	}
+ 	enc10->base.features.flags.bits.HDMI_6GB_EN = 1;
+-	if (enc10->base.connector.id == CONNECTOR_ID_USBC)
+-		enc10->base.features.flags.bits.DP_IS_USB_C = 1;
  
- 	if ((sr & USART_SR_WUF) && ofs->icr != UNDEF_REG) {
- 		/* Clear wake up flag and disable wake up interrupt */
-@@ -882,6 +886,7 @@ static irqreturn_t stm32_usart_interrupt(int irq, void *ptr)
- 		stm32_usart_clr_bits(port, ofs->cr3, USART_CR3_WUFIE);
- 		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
- 			pm_wakeup_event(tport->tty->dev, 0);
-+		ret = IRQ_HANDLED;
- 	}
- 
- 	/*
-@@ -896,6 +901,7 @@ static irqreturn_t stm32_usart_interrupt(int irq, void *ptr)
- 			uart_unlock_and_check_sysrq(port);
- 			if (size)
- 				tty_flip_buffer_push(tport);
-+			ret = IRQ_HANDLED;
- 		}
- 	}
- 
-@@ -903,6 +909,7 @@ static irqreturn_t stm32_usart_interrupt(int irq, void *ptr)
- 		uart_port_lock(port);
- 		stm32_usart_transmit_chars(port);
- 		uart_port_unlock(port);
-+		ret = IRQ_HANDLED;
- 	}
- 
- 	/* Receiver timeout irq for DMA RX */
-@@ -912,9 +919,10 @@ static irqreturn_t stm32_usart_interrupt(int irq, void *ptr)
- 		uart_unlock_and_check_sysrq(port);
- 		if (size)
- 			tty_flip_buffer_push(tport);
-+		ret = IRQ_HANDLED;
- 	}
- 
--	return IRQ_HANDLED;
-+	return ret;
- }
- 
- static void stm32_usart_set_mctrl(struct uart_port *port, unsigned int mctrl)
+ 	if (bp_funcs->get_connector_speed_cap_info)
+ 		result = bp_funcs->get_connector_speed_cap_info(enc10->base.ctx->dc_bios,
 
 
