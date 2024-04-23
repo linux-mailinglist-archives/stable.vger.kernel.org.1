@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD9E8AFAD8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7BF8AFA2B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1EDC1C23671
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 299EC28A2CE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C937A14AD24;
-	Tue, 23 Apr 2024 21:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A77148FFE;
+	Tue, 23 Apr 2024 21:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC9eZpPm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="158plMWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8809D143C5F;
-	Tue, 23 Apr 2024 21:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16341448E2;
+	Tue, 23 Apr 2024 21:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908770; cv=none; b=fY/LUDjRDQNOK/zk1CLwaPniUL+tou7qtJbAXbsEEs4zxL0g/favNiFJ21VHBQ2fIW3oTsxngky6uWag+5VPg7jPBnnaegpX2QuafDHu51bRy/ImK6l8O9b5yrqdNUZFeb8uVhmoWUlLXaDJpH3fOg7zYOE3HMjjHjjsIT/0xU8=
+	t=1713908644; cv=none; b=HrWARvkLQClTEHGcVan8awNguHFYLmaHKrpjaJqNTlahnBe9PyFpfVU0Vpx4nm76IKZKWtV/UQg+nhuEm4DiWqhkrGCylDWUvm6QzIcJgqjVU+NaoIvY+e96d9LtO7lV+Ja1Kz6MEMxNZrT0myKBMmmxMXzdJIaB9LGgVf9t7w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908770; c=relaxed/simple;
-	bh=RAk9Jg+iL1v76WW4ztnlQh5YqpsIXVVHGDPjHGgV5HQ=;
+	s=arc-20240116; t=1713908644; c=relaxed/simple;
+	bh=Sp/ndlYSPAfIWvRU3h+hIcfenSjWgt+3clbbteIl/y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hs7DlSxK+IbFXf141ksYAdYUv20Vwtkddq+F4/OYIyy+osxGBH67KV7MUvGavhanZNGI0BoMu4QiW/R5l8dtUqv8nTDpBc8UKlWfZFMTuKS+fCyYn1X3fY9bdjuh/UvwTGSw+M1YCLHYklPMnkWNAYIslhD+98tVG1Lhjvm2d2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dC9eZpPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCA4C116B1;
-	Tue, 23 Apr 2024 21:46:10 +0000 (UTC)
+	 MIME-Version; b=mx4dciKN38lp2m9di/i4TYnm8hBrismskBbzesN6jIVuOOZoW/0cGu0P/uxppbbMyvcC94LXwpj1+Ecf984HsFXqR6VkWgbSm1VNZ9+0kOeLhwRICGtd6HQbOoI2z8hYT0ne04T55AhBLSuNTQDh6yHuHhFjKFTBRBrvk65aKLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=158plMWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84511C116B1;
+	Tue, 23 Apr 2024 21:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908770;
-	bh=RAk9Jg+iL1v76WW4ztnlQh5YqpsIXVVHGDPjHGgV5HQ=;
+	s=korg; t=1713908644;
+	bh=Sp/ndlYSPAfIWvRU3h+hIcfenSjWgt+3clbbteIl/y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dC9eZpPm5fBJXNKRwijyjudtYZ1BQiAI3HHjDd8BHIz+fRXCmG46rB8eilD3lak7J
-	 NufrhjC2U0e/P3drJdo0W40L9hvtr3gvMbDoodT3PJc7WU0bqXn30lRFiq5RrGwHPS
-	 JpMN06NBlj+Y7Y5+j/yCpGt+90SWDSuuSo9ghwjE=
+	b=158plMWXqIHWniLBZn5FQHOZbwlkuqPFCGc91xscr/WVkdXWdpIlfiwQGtNXrlaae
+	 U2sonhpnqPzOaMXlwhAIih/RNdlLbgwEQK/4PRF6EkN11VA+ru5gppQatlfTttz9de
+	 /mfvqHev5aADNpKbJUEo3eqi28vRFrWe/T8iVjkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>,
-	stable@kernel.org
-Subject: [PATCH 5.15 13/71] Revert "tracing/trigger: Fix to return error if failed to alloc snapshot"
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 129/158] KVM: x86: Snapshot if a vCPUs vendor model is AMD vs. Intel compatible
 Date: Tue, 23 Apr 2024 14:39:26 -0700
-Message-ID: <20240423213844.574303826@linuxfoundation.org>
+Message-ID: <20240423213859.906921835@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+From: Sean Christopherson <seanjc@google.com>
 
-This reverts commit b5085b5ac1d96ea2a8a6240f869655176ce44197 which is
-commit 0958b33ef5a04ed91f61cef4760ac412080c4e08 upstream.
+commit fd706c9b1674e2858766bfbf7430534c2b26fbef upstream.
 
-The change has an incorrect assumption about the return value because
-in the current stable trees for versions 5.15 and before, the following
-commit responsible for making 0 a success value is not present:
-b8cc44a4d3c1 ("tracing: Remove logic for registering multiple event triggers at a time")
+Add kvm_vcpu_arch.is_amd_compatible to cache if a vCPU's vendor model is
+compatible with AMD, i.e. if the vCPU vendor is AMD or Hygon, along with
+helpers to check if a vCPU is compatible AMD vs. Intel.  To handle Intel
+vs. AMD behavior related to masking the LVTPC entry, KVM will need to
+check for vendor compatibility on every PMI injection, i.e. querying for
+AMD will soon be a moderately hot path.
 
-The return value should be 0 on failure in the current tree, because in
-the functions event_trigger_callback() and event_enable_trigger_func(),
-we have:
+Note!  This subtly (or maybe not-so-subtly) makes "Intel compatible" KVM's
+default behavior, both if userspace omits (or never sets) CPUID 0x0 and if
+userspace sets a completely unknown vendor.  One could argue that KVM
+should treat such vCPUs as not being compatible with Intel *or* AMD, but
+that would add useless complexity to KVM.
 
-	ret = cmd_ops->reg(glob, trigger_ops, trigger_data, file);
-	/*
-	 * The above returns on success the # of functions enabled,
-	 * but if it didn't find any functions it returns zero.
-	 * Consider no functions a failure too.
-	 */
-	if (!ret) {
-		ret = -ENOENT;
+KVM needs to do *something* in the face of vendor specific behavior, and
+so unless KVM conjured up a magic third option, choosing to treat unknown
+vendors as neither Intel nor AMD means that checks on AMD compatibility
+would yield Intel behavior, and checks for Intel compatibility would yield
+AMD behavior.  And that's far worse as it would effectively yield random
+behavior depending on whether KVM checked for AMD vs. Intel vs. !AMD vs.
+!Intel.  And practically speaking, all x86 CPUs follow either Intel or AMD
+architecture, i.e. "supporting" an unknown third architecture adds no
+value.
 
-Cc: stable@kernel.org # 5.15, 5.10, 5.4, 4.19
-Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Deliberately don't convert any of the existing guest_cpuid_is_intel()
+checks, as the Intel side of things is messier due to some flows explicitly
+checking for exactly vendor==Intel, versus some flows assuming anything
+that isn't "AMD compatible" gets Intel behavior.  The Intel code will be
+cleaned up in the future.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240405235603.1173076-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_trigger.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/kvm_host.h |    1 +
+ arch/x86/kvm/cpuid.c            |    1 +
+ arch/x86/kvm/cpuid.h            |   10 ++++++++++
+ arch/x86/kvm/mmu/mmu.c          |    2 +-
+ arch/x86/kvm/x86.c              |    2 +-
+ 5 files changed, 14 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace_events_trigger.c
-+++ b/kernel/trace/trace_events_trigger.c
-@@ -1161,10 +1161,8 @@ register_snapshot_trigger(char *glob, st
- 			  struct event_trigger_data *data,
- 			  struct trace_event_file *file)
- {
--	int ret = tracing_alloc_snapshot_instance(file->tr);
--
--	if (ret < 0)
--		return ret;
-+	if (tracing_alloc_snapshot_instance(file->tr) != 0)
-+		return 0;
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -828,6 +828,7 @@ struct kvm_vcpu_arch {
+ 	int cpuid_nent;
+ 	struct kvm_cpuid_entry2 *cpuid_entries;
+ 	struct kvm_hypervisor_cpuid kvm_cpuid;
++	bool is_amd_compatible;
  
- 	return register_trigger(glob, ops, data, file);
+ 	/*
+ 	 * FIXME: Drop this macro and use KVM_NR_GOVERNED_FEATURES directly
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -362,6 +362,7 @@ static void kvm_vcpu_after_set_cpuid(str
+ 
+ 	kvm_update_pv_runtime(vcpu);
+ 
++	vcpu->arch.is_amd_compatible = guest_cpuid_is_amd_or_hygon(vcpu);
+ 	vcpu->arch.maxphyaddr = cpuid_query_maxphyaddr(vcpu);
+ 	vcpu->arch.reserved_gpa_bits = kvm_vcpu_reserved_gpa_bits_raw(vcpu);
+ 
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -125,6 +125,16 @@ static inline bool guest_cpuid_is_intel(
+ 	return best && is_guest_vendor_intel(best->ebx, best->ecx, best->edx);
  }
+ 
++static inline bool guest_cpuid_is_amd_compatible(struct kvm_vcpu *vcpu)
++{
++	return vcpu->arch.is_amd_compatible;
++}
++
++static inline bool guest_cpuid_is_intel_compatible(struct kvm_vcpu *vcpu)
++{
++	return !guest_cpuid_is_amd_compatible(vcpu);
++}
++
+ static inline int guest_cpuid_family(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_cpuid_entry2 *best;
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4788,7 +4788,7 @@ static void reset_guest_rsvds_bits_mask(
+ 				context->cpu_role.base.level, is_efer_nx(context),
+ 				guest_can_use(vcpu, X86_FEATURE_GBPAGES),
+ 				is_cr4_pse(context),
+-				guest_cpuid_is_amd_or_hygon(vcpu));
++				guest_cpuid_is_amd_compatible(vcpu));
+ }
+ 
+ static void __reset_rsvds_bits_mask_ept(struct rsvd_bits_validate *rsvd_check,
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3317,7 +3317,7 @@ static bool is_mci_status_msr(u32 msr)
+ static bool can_set_mci_status(struct kvm_vcpu *vcpu)
+ {
+ 	/* McStatusWrEn enabled? */
+-	if (guest_cpuid_is_amd_or_hygon(vcpu))
++	if (guest_cpuid_is_amd_compatible(vcpu))
+ 		return !!(vcpu->arch.msr_hwcr & BIT_ULL(18));
+ 
+ 	return false;
 
 
 
