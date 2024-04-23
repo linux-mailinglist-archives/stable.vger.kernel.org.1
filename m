@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-41176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E468AFA95
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC638AFAD6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68D6E1C21D1F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06F31C235F5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEB6147C95;
-	Tue, 23 Apr 2024 21:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB323145B21;
+	Tue, 23 Apr 2024 21:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="146BLQhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfX3nASb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0DA143C49;
-	Tue, 23 Apr 2024 21:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89843143C5F;
+	Tue, 23 Apr 2024 21:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908729; cv=none; b=IjRjDkz+Al3pslgEjhUUIYQ2qI320yOAl4d1sfWU94GzV1w8WaQtpcz8MHo4QvsqFv6cqpvXZzkVLRZrzbcGtuKwrD0H+NfGYALD8A6Gmul0788eANS6RQIW3Qad0vYzL/lqzA9t2HLIadd8PN99xhDhgWGBBrAxaBPTFLGP1k0=
+	t=1713908768; cv=none; b=NKHrtU9NPPuDenay/JkyItSCR2f+mDBuG7Ge5aWTFCvOaZRBYXm/lQG1EJ7sY+fd5Q+EmRzD4sYheMr+VyodNsLbEKmbE/4rcnJq3Zdfm2fsbI3y6ou6OI2P1LoGUBfvQCYiCWBQKhUPpdzeFf9XLOPmOIM1B0mqCqyiVdF71Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908729; c=relaxed/simple;
-	bh=+U1JW3/RDi4Cud2eOTn/z9fVrflOp+lLmisf6bp26KI=;
+	s=arc-20240116; t=1713908768; c=relaxed/simple;
+	bh=wz9YJ+YO7lnt/Y9FMsfvMp/oY7kbKkzl/IxNL8HBZkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PE7B/g43vwuB2GnKCAi7s/gfAHPRzqEM6TjoBHWOEUy3nfgn/eqkpT8vmHL2z4IyXO1P3NavtNY45vjStAAo0dVThQHuvybEicyBHaiVdplnITURrtUD+MQJf3wzjdQVKkDUVt7j8Etjvk6nNDjn4jdQAIl+I5E2Q33/bzITHeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=146BLQhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E8AC32782;
-	Tue, 23 Apr 2024 21:45:29 +0000 (UTC)
+	 MIME-Version; b=KgK2d7G1YUssf0mvmhqBS5pZSJksgF4Cg5GiY54TKerzV7R4OdBpLjwYom2ygODGA8CkedKD2Erp1fpXwKG4r1mbLf/Xg0GBfSJR0Hb1vGAGoIigpTFlBExjFJ47Xi18gn3pXOysb6WvKbz1/a6QyFiHDvA2Tei40YKPFtmDcrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfX3nASb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB73C3277B;
+	Tue, 23 Apr 2024 21:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908729;
-	bh=+U1JW3/RDi4Cud2eOTn/z9fVrflOp+lLmisf6bp26KI=;
+	s=korg; t=1713908768;
+	bh=wz9YJ+YO7lnt/Y9FMsfvMp/oY7kbKkzl/IxNL8HBZkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=146BLQhNP/bk6mCA9DNDYHl21V6Ib2Qqh/uH1/kosXllG0Ljn5ApN+Eck9lbXrvQX
-	 i7fr4RjOfKMRp3DKeChMcxUJJZYTN8kB6+op0nTMHESv0P4moB+UviwbiiqXY4/9/2
-	 FKDZiHWovAfJSfb9w/AxkkltkIvtn2eA8n4ctoMI=
+	b=qfX3nASbC4iZ76IR+z6fGkW1KmTFLRYiXOI3sZNmboBxEm+/r20RFKty2KGy4mLb0
+	 QONukolrze1IkF0p0N5k6k2og8IEjkjoqcLlEhvct1PRM6n5YiTUaRQAU+3T11w/92
+	 VDAprWyRZVenxF2S9KQk70ZHSBCQ8EbKNL7k+xjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Miles Chen <miles.chen@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Mingming Su <mingming.su@mediatek.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/141] clk: mediatek: clk-mtk: Extend mtk_clk_simple_probe()
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Edward Liaw <edliaw@google.com>,
+	tr3e.wang@gmail.com
+Subject: [PATCH 5.15 10/71] bpf: Fix out of bounds access for ringbuf helpers
 Date: Tue, 23 Apr 2024 14:39:23 -0700
-Message-ID: <20240423213856.261572909@linuxfoundation.org>
+Message-ID: <20240423213844.477417680@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,207 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 7b6183108c8ccf0dc295f39cdf78bd8078455636 ]
+commit 64620e0a1e712a778095bd35cbb277dc2259281f upstream.
 
-As a preparation to increase probe functions commonization across
-various MediaTek SoC clock controller drivers, extend function
-mtk_clk_simple_probe() to be able to register not only gates, but
-also fixed clocks, factors, muxes and composites.
+Both bpf_ringbuf_submit() and bpf_ringbuf_discard() have ARG_PTR_TO_ALLOC_MEM
+in their bpf_func_proto definition as their first argument. They both expect
+the result from a prior bpf_ringbuf_reserve() call which has a return type of
+RET_PTR_TO_ALLOC_MEM_OR_NULL.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Miles Chen <miles.chen@mediatek.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Tested-by: Miles Chen <miles.chen@mediatek.com>
-Link: https://lore.kernel.org/r/20230120092053.182923-13-angelogioacchino.delregno@collabora.com
-Tested-by: Mingming Su <mingming.su@mediatek.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers during probe")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Meaning, after a NULL check in the code, the verifier will promote the register
+type in the non-NULL branch to a PTR_TO_MEM and in the NULL branch to a known
+zero scalar. Generally, pointer arithmetic on PTR_TO_MEM is allowed, so the
+latter could have an offset.
+
+The ARG_PTR_TO_ALLOC_MEM expects a PTR_TO_MEM register type. However, the non-
+zero result from bpf_ringbuf_reserve() must be fed into either bpf_ringbuf_submit()
+or bpf_ringbuf_discard() but with the original offset given it will then read
+out the struct bpf_ringbuf_hdr mapping.
+
+The verifier missed to enforce a zero offset, so that out of bounds access
+can be triggered which could be used to escalate privileges if unprivileged
+BPF was enabled (disabled by default in kernel).
+
+Fixes: 457f44363a88 ("bpf: Implement BPF ring buffer and verifier support for it")
+Reported-by: <tr3e.wang@gmail.com> (SecCoder Security Lab)
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mtk.c | 101 ++++++++++++++++++++++++++++++---
- drivers/clk/mediatek/clk-mtk.h |  10 ++++
- 2 files changed, 103 insertions(+), 8 deletions(-)
+ kernel/bpf/verifier.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
-index 152f3d906ef8a..bfabd94a474a5 100644
---- a/drivers/clk/mediatek/clk-mtk.c
-+++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -11,12 +11,14 @@
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- 
- #include "clk-mtk.h"
- #include "clk-gate.h"
-+#include "clk-mux.h"
- 
- static void mtk_init_clk_data(struct clk_hw_onecell_data *clk_data,
- 			      unsigned int clk_num)
-@@ -450,20 +452,71 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
- 	const struct mtk_clk_desc *mcd;
- 	struct clk_hw_onecell_data *clk_data;
- 	struct device_node *node = pdev->dev.of_node;
--	int r;
-+	void __iomem *base;
-+	int num_clks, r;
- 
- 	mcd = of_device_get_match_data(&pdev->dev);
- 	if (!mcd)
- 		return -EINVAL;
- 
--	clk_data = mtk_alloc_clk_data(mcd->num_clks);
-+	/* Composite clocks needs us to pass iomem pointer */
-+	if (mcd->composite_clks) {
-+		if (!mcd->shared_io)
-+			base = devm_platform_ioremap_resource(pdev, 0);
-+		else
-+			base = of_iomap(node, 0);
-+
-+		if (IS_ERR_OR_NULL(base))
-+			return IS_ERR(base) ? PTR_ERR(base) : -ENOMEM;
-+	}
-+
-+	/* Calculate how many clk_hw_onecell_data entries to allocate */
-+	num_clks = mcd->num_clks + mcd->num_composite_clks;
-+	num_clks += mcd->num_fixed_clks + mcd->num_factor_clks;
-+	num_clks += mcd->num_mux_clks;
-+
-+	clk_data = mtk_alloc_clk_data(num_clks);
- 	if (!clk_data)
- 		return -ENOMEM;
- 
--	r = mtk_clk_register_gates(&pdev->dev, node, mcd->clks, mcd->num_clks,
--				   clk_data);
--	if (r)
--		goto free_data;
-+	if (mcd->fixed_clks) {
-+		r = mtk_clk_register_fixed_clks(mcd->fixed_clks,
-+						mcd->num_fixed_clks, clk_data);
-+		if (r)
-+			goto free_data;
-+	}
-+
-+	if (mcd->factor_clks) {
-+		r = mtk_clk_register_factors(mcd->factor_clks,
-+					     mcd->num_factor_clks, clk_data);
-+		if (r)
-+			goto unregister_fixed_clks;
-+	}
-+
-+	if (mcd->mux_clks) {
-+		r = mtk_clk_register_muxes(&pdev->dev, mcd->mux_clks,
-+					   mcd->num_mux_clks, node,
-+					   mcd->clk_lock, clk_data);
-+		if (r)
-+			goto unregister_factors;
-+	};
-+
-+	if (mcd->composite_clks) {
-+		/* We don't check composite_lock because it's optional */
-+		r = mtk_clk_register_composites(&pdev->dev,
-+						mcd->composite_clks,
-+						mcd->num_composite_clks,
-+						base, mcd->clk_lock, clk_data);
-+		if (r)
-+			goto unregister_muxes;
-+	}
-+
-+	if (mcd->clks) {
-+		r = mtk_clk_register_gates(&pdev->dev, node, mcd->clks,
-+					   mcd->num_clks, clk_data);
-+		if (r)
-+			goto unregister_composites;
-+	}
- 
- 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
- 	if (r)
-@@ -481,9 +534,28 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
- 	return r;
- 
- unregister_clks:
--	mtk_clk_unregister_gates(mcd->clks, mcd->num_clks, clk_data);
-+	if (mcd->clks)
-+		mtk_clk_unregister_gates(mcd->clks, mcd->num_clks, clk_data);
-+unregister_composites:
-+	if (mcd->composite_clks)
-+		mtk_clk_unregister_composites(mcd->composite_clks,
-+					      mcd->num_composite_clks, clk_data);
-+unregister_muxes:
-+	if (mcd->mux_clks)
-+		mtk_clk_unregister_muxes(mcd->mux_clks,
-+					 mcd->num_mux_clks, clk_data);
-+unregister_factors:
-+	if (mcd->factor_clks)
-+		mtk_clk_unregister_factors(mcd->factor_clks,
-+					   mcd->num_factor_clks, clk_data);
-+unregister_fixed_clks:
-+	if (mcd->fixed_clks)
-+		mtk_clk_unregister_fixed_clks(mcd->fixed_clks,
-+					      mcd->num_fixed_clks, clk_data);
- free_data:
- 	mtk_free_clk_data(clk_data);
-+	if (mcd->shared_io && base)
-+		iounmap(base);
- 	return r;
- }
- EXPORT_SYMBOL_GPL(mtk_clk_simple_probe);
-@@ -495,7 +567,20 @@ int mtk_clk_simple_remove(struct platform_device *pdev)
- 	struct device_node *node = pdev->dev.of_node;
- 
- 	of_clk_del_provider(node);
--	mtk_clk_unregister_gates(mcd->clks, mcd->num_clks, clk_data);
-+	if (mcd->clks)
-+		mtk_clk_unregister_gates(mcd->clks, mcd->num_clks, clk_data);
-+	if (mcd->composite_clks)
-+		mtk_clk_unregister_composites(mcd->composite_clks,
-+					      mcd->num_composite_clks, clk_data);
-+	if (mcd->mux_clks)
-+		mtk_clk_unregister_muxes(mcd->mux_clks,
-+					 mcd->num_mux_clks, clk_data);
-+	if (mcd->factor_clks)
-+		mtk_clk_unregister_factors(mcd->factor_clks,
-+					   mcd->num_factor_clks, clk_data);
-+	if (mcd->fixed_clks)
-+		mtk_clk_unregister_fixed_clks(mcd->fixed_clks,
-+					      mcd->num_fixed_clks, clk_data);
- 	mtk_free_clk_data(clk_data);
- 
- 	return 0;
-diff --git a/drivers/clk/mediatek/clk-mtk.h b/drivers/clk/mediatek/clk-mtk.h
-index 3993a60738c77..880b3d6d80119 100644
---- a/drivers/clk/mediatek/clk-mtk.h
-+++ b/drivers/clk/mediatek/clk-mtk.h
-@@ -196,7 +196,17 @@ void mtk_clk_unregister_ref2usb_tx(struct clk_hw *hw);
- struct mtk_clk_desc {
- 	const struct mtk_gate *clks;
- 	size_t num_clks;
-+	const struct mtk_composite *composite_clks;
-+	size_t num_composite_clks;
-+	const struct mtk_fixed_clk *fixed_clks;
-+	size_t num_fixed_clks;
-+	const struct mtk_fixed_factor *factor_clks;
-+	size_t num_factor_clks;
-+	const struct mtk_mux *mux_clks;
-+	size_t num_mux_clks;
- 	const struct mtk_clk_rst_desc *rst_desc;
-+	spinlock_t *clk_lock;
-+	bool shared_io;
- };
- 
- int mtk_clk_simple_probe(struct platform_device *pdev);
--- 
-2.43.0
-
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5340,9 +5340,15 @@ static int check_func_arg(struct bpf_ver
+ 	case PTR_TO_BUF:
+ 	case PTR_TO_BUF | MEM_RDONLY:
+ 	case PTR_TO_STACK:
++		/* Some of the argument types nevertheless require a
++		 * zero register offset.
++		 */
++		if (arg_type == ARG_PTR_TO_ALLOC_MEM)
++			goto force_off_check;
+ 		break;
+ 	/* All the rest must be rejected: */
+ 	default:
++force_off_check:
+ 		err = __check_ptr_off_reg(env, reg, regno,
+ 					  type == PTR_TO_BTF_ID);
+ 		if (err < 0)
 
 
 
