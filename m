@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-41091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436048AFA4B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C6B8AF9CB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6D5286C3F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 532FD28BA68
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902E41465A6;
-	Tue, 23 Apr 2024 21:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B871442F5;
+	Tue, 23 Apr 2024 21:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bw6F72Kh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJvzRS6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3D3143C45;
-	Tue, 23 Apr 2024 21:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1601313FD67;
+	Tue, 23 Apr 2024 21:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908671; cv=none; b=pn1CKnx9GiQalvAhB5/r/hJS3QaMBoIIBtlWMrg74cLRcheqRTyi1i06rt+LhOBynOUUWGUrlNMmMkUHPmkDaRITpPP6+pHqRq1vDXJ7KHrWFs1MGEwAdeyqvJO/V7WcjtiZmfzOjXLPaErAdpb0lZpxa6jo6iXZ3+MG+UG05YY=
+	t=1713908585; cv=none; b=WEGsbzG38wD3xJXHvm+IFcBHWavs3JgxgejizA1kZQnEv6dI1TpUaN8PRWki0Uw3tOKFttfikbIdM9BMeeRkYLnZ5qK1I3RJU1XF4XevFu2AVe9DnHW1n6F2KidL+urShUNazQU9qVlyoRDzqfiFGDDlJQ4YZTkbuGiEPXU720I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908671; c=relaxed/simple;
-	bh=kmJtHKYTCLjyZPTjNtqLj/FfsKqcn9m8EbOucf+MxQw=;
+	s=arc-20240116; t=1713908585; c=relaxed/simple;
+	bh=ysdSYs1aYiCyc3BmUaasc0d+f7kHGFJlO2alLZ0UjUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CbDgpAYmzg5sFsWUMolKJpEOFt6YU1ys7V7Fv1p9Ge0EfiZFxsI4yakVT8qixAh83n19wcHNdLe2/M7Z9kyB5HtkcUz4mWHJO+pzawBXCYkmcx2l+sCoAbgk94iHaYWuQL0WaEPlNlNSNmWob4NeTrT61XRqiGEOOLu/CRmuE5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bw6F72Kh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2371FC116B1;
-	Tue, 23 Apr 2024 21:44:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PNo/zsIvqjNT73k+Ykp6E6MCFWbZRImNHGGcqBAfF59PNk5Z5Aj0ppf0RPY+yRdsrAO7byzFA+YsiXmvOhiyh4QMDojPxbCNX5YAtYVk0/6N7bgUe+kI0kaWIo0eRc2pIuEKkETxzLMuAWY8tfF4ZkNoYnaPWsc/JlM6Yazmajo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJvzRS6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE78CC116B1;
+	Tue, 23 Apr 2024 21:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908671;
-	bh=kmJtHKYTCLjyZPTjNtqLj/FfsKqcn9m8EbOucf+MxQw=;
+	s=korg; t=1713908585;
+	bh=ysdSYs1aYiCyc3BmUaasc0d+f7kHGFJlO2alLZ0UjUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bw6F72Kh5EifGPPma3f3GFc+KsdEBs5vbD7w54RqaaMmZnfY1bCiISO8qlUfsjj4d
-	 503iCC/g0U4kQCGaG1uWZGYHfjhYBKlcXXrxnMXbHrGdoPtWnFqV26syxx/nNXBpa6
-	 GrMfttyOek19ywQ0EwnyIcSw6Zhed9C4aefOFZhs=
+	b=aJvzRS6sCDFSglYJeZxH0qFAiHe4aacmM+vcjFmnpedzRPF6TlHGS5jnZ9XFo0uMo
+	 yT1Ah/+DlB8WOwO4iKyuSmny0Dx4vH6MlRSq4gsb3i4eQ/9R2cBTKGbJBn+eaxDf6H
+	 riH4eilliZvzfD0rdBis55eiGXPtF+BsiaAk9TzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.1 010/141] drm/i915/vma: Fix UAF on destroy against retire race
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 041/158] net: sparx5: flower: fix fragment flags handling
 Date: Tue, 23 Apr 2024 14:37:58 -0700
-Message-ID: <20240423213853.686961293@linuxfoundation.org>
+Message-ID: <20240423213857.092221633@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,196 +66,170 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-commit 0e45882ca829b26b915162e8e86dbb1095768e9e upstream.
+[ Upstream commit 68aba00483c7c4102429bcdfdece7289a8ab5c8e ]
 
-Object debugging tools were sporadically reporting illegal attempts to
-free a still active i915 VMA object when parking a GT believed to be idle.
+I noticed that only 3 out of the 4 input bits were used,
+mt.key->flags & FLOW_DIS_IS_FRAGMENT was never checked.
 
-[161.359441] ODEBUG: free active (active state 0) object: ffff88811643b958 object type: i915_active hint: __i915_vma_active+0x0/0x50 [i915]
-[161.360082] WARNING: CPU: 5 PID: 276 at lib/debugobjects.c:514 debug_print_object+0x80/0xb0
-...
-[161.360304] CPU: 5 PID: 276 Comm: kworker/5:2 Not tainted 6.5.0-rc1-CI_DRM_13375-g003f860e5577+ #1
-[161.360314] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
-[161.360322] Workqueue: i915-unordered __intel_wakeref_put_work [i915]
-[161.360592] RIP: 0010:debug_print_object+0x80/0xb0
-...
-[161.361347] debug_object_free+0xeb/0x110
-[161.361362] i915_active_fini+0x14/0x130 [i915]
-[161.361866] release_references+0xfe/0x1f0 [i915]
-[161.362543] i915_vma_parked+0x1db/0x380 [i915]
-[161.363129] __gt_park+0x121/0x230 [i915]
-[161.363515] ____intel_wakeref_put_last+0x1f/0x70 [i915]
+In order to avoid a complicated maze, I converted it to
+use a 16 byte mapping table.
 
-That has been tracked down to be happening when another thread is
-deactivating the VMA inside __active_retire() helper, after the VMA's
-active counter has been already decremented to 0, but before deactivation
-of the VMA's object is reported to the object debugging tool.
+As shown in the table below the old heuristics doesn't
+always do the right thing, ie. when FLOW_DIS_IS_FRAGMENT=1/1
+then it used to only match follow-up fragment packets.
 
-We could prevent from that race by serializing i915_active_fini() with
-__active_retire() via ref->tree_lock, but that wouldn't stop the VMA from
-being used, e.g. from __i915_vma_retire() called at the end of
-__active_retire(), after that VMA has been already freed by a concurrent
-i915_vma_destroy() on return from the i915_active_fini().  Then, we should
-rather fix the issue at the VMA level, not in i915_active.
+Here are all the combinations, and their resulting new/old
+VCAP key/mask filter:
 
-Since __i915_vma_parked() is called from __gt_park() on last put of the
-GT's wakeref, the issue could be addressed by holding the GT wakeref long
-enough for __active_retire() to complete before that wakeref is released
-and the GT parked.
+  /- FLOW_DIS_IS_FRAGMENT (key/mask)
+  |    /- FLOW_DIS_FIRST_FRAG (key/mask)
+  |    |    /-- new VCAP fragment (key/mask)
+  v    v    v    v- old VCAP fragment (key/mask)
 
-I believe the issue was introduced by commit d93939730347 ("drm/i915:
-Remove the vma refcount") which moved a call to i915_active_fini() from
-a dropped i915_vma_release(), called on last put of the removed VMA kref,
-to i915_vma_parked() processing path called on last put of a GT wakeref.
-However, its visibility to the object debugging tool was suppressed by a
-bug in i915_active that was fixed two weeks later with commit e92eb246feb9
-("drm/i915/active: Fix missing debug object activation").
+ 0/0  0/0  -/-  -/-     impossible (due to entry cond. on mask)
+ 0/0  0/1  -/-  0/3 !!  invalid (can't match non-fragment + follow-up frag)
+ 0/0  1/0  -/-  -/-     impossible (key > mask)
+ 0/0  1/1  1/3  1/3     first fragment
 
-A VMA associated with a request doesn't acquire a GT wakeref by itself.
-Instead, it depends on a wakeref held directly by the request's active
-intel_context for a GT associated with its VM, and indirectly on that
-intel_context's engine wakeref if the engine belongs to the same GT as the
-VMA's VM.  Those wakerefs are released asynchronously to VMA deactivation.
+ 0/1  0/0  0/3  3/3 !!  not fragmented
+ 0/1  0/1  0/3  3/3 !!  not fragmented (+ not first fragment)
+ 0/1  1/0  -/-  -/-     impossible (key > mask)
+ 0/1  1/1  -/-  1/3 !!  invalid (non-fragment and first frag)
 
-Fix the issue by getting a wakeref for the VMA's GT when activating it,
-and putting that wakeref only after the VMA is deactivated.  However,
-exclude global GTT from that processing path, otherwise the GPU never goes
-idle.  Since __i915_vma_retire() may be called from atomic contexts, use
-async variant of wakeref put.  Also, to avoid circular locking dependency,
-take care of acquiring the wakeref before VM mutex when both are needed.
+ 1/0  0/0  -/-  -/-     impossible (key > mask)
+ 1/0  0/1  -/-  -/-     impossible (key > mask)
+ 1/0  1/0  -/-  -/-     impossible (key > mask)
+ 1/0  1/1  -/-  -/-     impossible (key > mask)
 
-v7: Add inline comments with justifications for:
-    - using untracked variants of intel_gt_pm_get/put() (Nirmoy),
-    - using async variant of _put(),
-    - not getting the wakeref in case of a global GTT,
-    - always getting the first wakeref outside vm->mutex.
-v6: Since __i915_vma_active/retire() callbacks are not serialized, storing
-    a wakeref tracking handle inside struct i915_vma is not safe, and
-    there is no other good place for that.  Use untracked variants of
-    intel_gt_pm_get/put_async().
-v5: Replace "tile" with "GT" across commit description (Rodrigo),
-  - avoid mentioning multi-GT case in commit description (Rodrigo),
-  - explain why we need to take a temporary wakeref unconditionally inside
-    i915_vma_pin_ww() (Rodrigo).
-v4: Refresh on top of commit 5e4e06e4087e ("drm/i915: Track gt pm
-    wakerefs") (Andi),
-  - for more easy backporting, split out removal of former insufficient
-    workarounds and move them to separate patches (Nirmoy).
-  - clean up commit message and description a bit.
-v3: Identify root cause more precisely, and a commit to blame,
-  - identify and drop former workarounds,
-  - update commit message and description.
-v2: Get the wakeref before VM mutex to avoid circular locking dependency,
-  - drop questionable Fixes: tag.
+ 1/1  0/0  1/1  3/3 !!  some fragment
+ 1/1  0/1  3/3  3/3     follow-up fragment
+ 1/1  1/0  -/-  -/-     impossible (key > mask)
+ 1/1  1/1  1/3  1/3     first fragment
 
-Fixes: d93939730347 ("drm/i915: Remove the vma refcount")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/8875
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: stable@vger.kernel.org # v5.19+
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240305143747.335367-6-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit f3c71b2ded5c4367144a810ef25f998fd1d6c381)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the datasheet the VCAP fragment values are documented as:
+ 0 = no fragment
+ 1 = initial fragment
+ 2 = suspicious fragment
+ 3 = valid follow-up fragment
+
+Result: 3 combinations match the old behavior,
+        3 combinations have been corrected,
+        2 combinations are now invalid, and fail,
+        8 combinations are impossible.
+
+It should now be aligned with how FLOW_DIS_IS_FRAGMENT
+and FLOW_DIS_FIRST_FRAG is set in __skb_flow_dissect() in
+net/core/flow_dissector.c
+
+Since the VCAP fragment values are not a bitfield, we have
+to ignore the suspicious fragment value, eg. when matching
+on any kind of fragment with FLOW_DIS_IS_FRAGMENT=1/1.
+
+Only compile tested, and logic tested in userspace, as I
+unfortunately don't have access to this switch chip (yet).
+
+Fixes: d6c2964db3fe ("net: microchip: sparx5: Adding more tc flower keys for the IS2 VCAP")
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
+Tested-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240411111321.114095-1-ast@fiberby.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_vma.c |   42 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 7 deletions(-)
+ .../microchip/sparx5/sparx5_tc_flower.c       | 61 ++++++++++++-------
+ 1 file changed, 40 insertions(+), 21 deletions(-)
 
---- a/drivers/gpu/drm/i915/i915_vma.c
-+++ b/drivers/gpu/drm/i915/i915_vma.c
-@@ -32,6 +32,7 @@
- #include "gt/intel_engine.h"
- #include "gt/intel_engine_heartbeat.h"
- #include "gt/intel_gt.h"
-+#include "gt/intel_gt_pm.h"
- #include "gt/intel_gt_requests.h"
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
+index 523e0c470894f..55f255a3c9db6 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
+@@ -36,6 +36,27 @@ struct sparx5_tc_flower_template {
+ 	u16 l3_proto; /* protocol specified in the template */
+ };
  
- #include "i915_drv.h"
-@@ -98,12 +99,34 @@ static inline struct i915_vma *active_to
- 
- static int __i915_vma_active(struct i915_active *ref)
++/* SparX-5 VCAP fragment types:
++ * 0 = no fragment, 1 = initial fragment,
++ * 2 = suspicious fragment, 3 = valid follow-up fragment
++ */
++enum {                   /* key / mask */
++	FRAG_NOT   = 0x03, /* 0 / 3 */
++	FRAG_SOME  = 0x11, /* 1 / 1 */
++	FRAG_FIRST = 0x13, /* 1 / 3 */
++	FRAG_LATER = 0x33, /* 3 / 3 */
++	FRAG_INVAL = 0xff, /* invalid */
++};
++
++/* Flower fragment flag to VCAP fragment type mapping */
++static const u8 sparx5_vcap_frag_map[4][4] = {		  /* is_frag */
++	{ FRAG_INVAL, FRAG_INVAL, FRAG_INVAL, FRAG_FIRST }, /* 0/0 */
++	{ FRAG_NOT,   FRAG_NOT,   FRAG_INVAL, FRAG_INVAL }, /* 0/1 */
++	{ FRAG_INVAL, FRAG_INVAL, FRAG_INVAL, FRAG_INVAL }, /* 1/0 */
++	{ FRAG_SOME,  FRAG_LATER, FRAG_INVAL, FRAG_FIRST }  /* 1/1 */
++	/* 0/0	      0/1	  1/0	      1/1 <-- first_frag */
++};
++
+ static int
+ sparx5_tc_flower_es0_tpid(struct vcap_tc_flower_parse_usage *st)
  {
--	return i915_vma_tryget(active_to_vma(ref)) ? 0 : -ENOENT;
-+	struct i915_vma *vma = active_to_vma(ref);
+@@ -145,29 +166,27 @@ sparx5_tc_flower_handler_control_usage(struct vcap_tc_flower_parse_usage *st)
+ 	flow_rule_match_control(st->frule, &mt);
+ 
+ 	if (mt.mask->flags) {
+-		if (mt.mask->flags & FLOW_DIS_FIRST_FRAG) {
+-			if (mt.key->flags & FLOW_DIS_FIRST_FRAG) {
+-				value = 1; /* initial fragment */
+-				mask = 0x3;
+-			} else {
+-				if (mt.mask->flags & FLOW_DIS_IS_FRAGMENT) {
+-					value = 3; /* follow up fragment */
+-					mask = 0x3;
+-				} else {
+-					value = 0; /* no fragment */
+-					mask = 0x3;
+-				}
+-			}
+-		} else {
+-			if (mt.mask->flags & FLOW_DIS_IS_FRAGMENT) {
+-				value = 3; /* follow up fragment */
+-				mask = 0x3;
+-			} else {
+-				value = 0; /* no fragment */
+-				mask = 0x3;
+-			}
++		u8 is_frag_key = !!(mt.key->flags & FLOW_DIS_IS_FRAGMENT);
++		u8 is_frag_mask = !!(mt.mask->flags & FLOW_DIS_IS_FRAGMENT);
++		u8 is_frag_idx = (is_frag_key << 1) | is_frag_mask;
 +
-+	if (!i915_vma_tryget(vma))
-+		return -ENOENT;
++		u8 first_frag_key = !!(mt.key->flags & FLOW_DIS_FIRST_FRAG);
++		u8 first_frag_mask = !!(mt.mask->flags & FLOW_DIS_FIRST_FRAG);
++		u8 first_frag_idx = (first_frag_key << 1) | first_frag_mask;
 +
-+	/*
-+	 * Exclude global GTT VMA from holding a GT wakeref
-+	 * while active, otherwise GPU never goes idle.
-+	 */
-+	if (!i915_vma_is_ggtt(vma))
-+		intel_gt_pm_get(vma->vm->gt);
++		/* Lookup verdict based on the 2 + 2 input bits */
++		u8 vdt = sparx5_vcap_frag_map[is_frag_idx][first_frag_idx];
 +
-+	return 0;
- }
++		if (vdt == FRAG_INVAL) {
++			NL_SET_ERR_MSG_MOD(st->fco->common.extack,
++					   "Match on invalid fragment flag combination");
++			return -EINVAL;
+ 		}
  
- static void __i915_vma_retire(struct i915_active *ref)
- {
--	i915_vma_put(active_to_vma(ref));
-+	struct i915_vma *vma = active_to_vma(ref);
++		/* Extract VCAP fragment key and mask from verdict */
++		value = (vdt >> 4) & 0x3;
++		mask = vdt & 0x3;
 +
-+	if (!i915_vma_is_ggtt(vma)) {
-+		/*
-+		 * Since we can be called from atomic contexts,
-+		 * use an async variant of intel_gt_pm_put().
-+		 */
-+		intel_gt_pm_put_async(vma->vm->gt);
-+	}
-+
-+	i915_vma_put(vma);
- }
- 
- static struct i915_vma *
-@@ -1365,7 +1388,7 @@ int i915_vma_pin_ww(struct i915_vma *vma
- 	struct i915_vma_work *work = NULL;
- 	struct dma_fence *moving = NULL;
- 	struct i915_vma_resource *vma_res = NULL;
--	intel_wakeref_t wakeref = 0;
-+	intel_wakeref_t wakeref;
- 	unsigned int bound;
- 	int err;
- 
-@@ -1385,8 +1408,14 @@ int i915_vma_pin_ww(struct i915_vma *vma
- 	if (err)
- 		return err;
- 
--	if (flags & PIN_GLOBAL)
--		wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
-+	/*
-+	 * In case of a global GTT, we must hold a runtime-pm wakeref
-+	 * while global PTEs are updated.  In other cases, we hold
-+	 * the rpm reference while the VMA is active.  Since runtime
-+	 * resume may require allocations, which are forbidden inside
-+	 * vm->mutex, get the first rpm wakeref outside of the mutex.
-+	 */
-+	wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
- 
- 	if (flags & vma->vm->bind_async_flags) {
- 		/* lock VM */
-@@ -1522,8 +1551,7 @@ err_fence:
- 	if (work)
- 		dma_fence_work_commit_imm(&work->base);
- err_rpm:
--	if (wakeref)
--		intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
-+	intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
- 
- 	if (moving)
- 		dma_fence_put(moving);
+ 		err = vcap_rule_add_key_u32(st->vrule,
+ 					    VCAP_KF_L3_FRAGMENT_TYPE,
+ 					    value, mask);
+-- 
+2.43.0
+
 
 
 
