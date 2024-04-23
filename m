@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0F48AFB38
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:56:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B738AFA3F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 309F7B2B5CE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 026351C2273F
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DBD14A4D6;
-	Tue, 23 Apr 2024 21:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28F11494B0;
+	Tue, 23 Apr 2024 21:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUVUCYzh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEHF+OhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E480114A4D9;
-	Tue, 23 Apr 2024 21:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AB9146017;
+	Tue, 23 Apr 2024 21:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908750; cv=none; b=Xnz+JjTKzY3iRDuQdqzIj3hCU6sTfFhJvrXssGg+PLInuCHCrUavnqIll5M3g4UsbB8mCbXTJgMNeJivx5gyuYtjtaFAgnSfpszssmn8xvykA8s/m3M0X9Y3jhzvqBFGO1nDvOYISGFTdBC3GU/3OteiyWgj+S8NMeErkd8ZYVE=
+	t=1713908662; cv=none; b=p1NvqYf+39gJpXxyH5SRi5kRcKJttKb9w5CPMyBShEVWncTuNUQdlNkkhoB03MDlwoKiEhSosFtjpV0yNwduSv2aJkebuBLeAwQm1QH8ZuQd+bA2DitWL9dkCK1zIXpfaoygse7PIMAJx3GP246Yt8T6si9QhHQUKaoPcsr0FP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908750; c=relaxed/simple;
-	bh=9sZZFnvceWHdQtCmR+j/Pd3ei24YquCqV/HqaZA00jU=;
+	s=arc-20240116; t=1713908662; c=relaxed/simple;
+	bh=nHdtdLFgnN9cQTF8Gv6aOpyVpA3SCuJ/sRNkK5fw8Oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpGjNZUsjID6rhA98xSnoM9vsVtuuMHp34docRBrK00ec2FXM8b4ftyV0NNY6AT3L4QO1i6TdjLwdwC62FzD7TK1z0MIa7xRLJG6N5KGuZVyMVdR49SxNsO4ireeuDk0tN0kOXJDH7bB6tz4UYotJUlL2Ge0B1umVpBEf79ccro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUVUCYzh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEC9C32781;
-	Tue, 23 Apr 2024 21:45:49 +0000 (UTC)
+	 MIME-Version; b=X7AiNKZEP1wHMMNlA1s/B7Wr7lfSl5d/1kH/e9Vid6ipbIvLeFTFeiTaz0qT5wsEv0YDQr6zVuQlcLOyB375mwwa0prMmH7inCl6i57GiPaP01AnSb7fEp+0EPMzLoWIY+0IuddOagnNvjX7y2jd1W4ijegSNO64EbhotWfwt4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEHF+OhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C09C3277B;
+	Tue, 23 Apr 2024 21:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908749;
-	bh=9sZZFnvceWHdQtCmR+j/Pd3ei24YquCqV/HqaZA00jU=;
+	s=korg; t=1713908662;
+	bh=nHdtdLFgnN9cQTF8Gv6aOpyVpA3SCuJ/sRNkK5fw8Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUVUCYzh9fg4DtIiy5ZMb7YAPN7JDwXSYOf4Cy+/roSPvH/oD54Y6883xQ9VjFvQ5
-	 TOl+PVzsJUesCAijSD4NLPXedpLQZow2TyxzJyBk4fbobbQpK+VLoHgbgmo8764FfZ
-	 hh8dkM+k9Gptnxf7Sjs6ZpxDg2rHdI54hXG7vmqg=
+	b=kEHF+OhThtF1nH9omdKMog3MlXUxU7Lw9QFKklHqNCxpcygRhlNDTMib0mk0Ns5kK
+	 zWiehU9cFjcT7qhfF/R0RfoYhAlnziZkUm6eMAgYUcic4yfaB4OL061yco/p2d1HTp
+	 Gyv4sB2MkUJmpJjlvMBJNbZLJLvPfY7kd65OHBuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Rapoport <rppt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	xiongxin <xiongxin@kylinos.cn>,
-	Yaxiong Tian <tianyaxiong@kylinos.cn>
-Subject: [PATCH 6.1 124/141] arm64: hibernate: Fix level3 translation fault in swsusp_save()
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 155/158] ksmbd: validate request buffer size in smb2_allocate_rsp_buf()
 Date: Tue, 23 Apr 2024 14:39:52 -0700
-Message-ID: <20240423213857.231413962@linuxfoundation.org>
+Message-ID: <20240423213900.702844684@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yaxiong Tian <tianyaxiong@kylinos.cn>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 50449ca66cc5a8cbc64749cf4b9f3d3fc5f4b457 upstream.
+commit 17cf0c2794bdb6f39671265aa18aea5c22ee8c4a upstream.
 
-On arm64 machines, swsusp_save() faults if it attempts to access
-MEMBLOCK_NOMAP memory ranges. This can be reproduced in QEMU using UEFI
-when booting with rodata=off debug_pagealloc=off and CONFIG_KFENCE=n:
+The response buffer should be allocated in smb2_allocate_rsp_buf
+before validating request. But the fields in payload as well as smb2 header
+is used in smb2_allocate_rsp_buf(). This patch add simple buffer size
+validation to avoid potencial out-of-bounds in request buffer.
 
-  Unable to handle kernel paging request at virtual address ffffff8000000000
-  Mem abort info:
-    ESR = 0x0000000096000007
-    EC = 0x25: DABT (current EL), IL = 32 bits
-    SET = 0, FnV = 0
-    EA = 0, S1PTW = 0
-    FSC = 0x07: level 3 translation fault
-  Data abort info:
-    ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
-    CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-    GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-  swapper pgtable: 4k pages, 39-bit VAs, pgdp=00000000eeb0b000
-  [ffffff8000000000] pgd=180000217fff9803, p4d=180000217fff9803, pud=180000217fff9803, pmd=180000217fff8803, pte=0000000000000000
-  Internal error: Oops: 0000000096000007 [#1] SMP
-  Internal error: Oops: 0000000096000007 [#1] SMP
-  Modules linked in: xt_multiport ipt_REJECT nf_reject_ipv4 xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c iptable_filter bpfilter rfkill at803x snd_hda_codec_hdmi snd_hda_intel snd_intel_dspcfg dwmac_generic stmmac_platform snd_hda_codec stmmac joydev pcs_xpcs snd_hda_core phylink ppdev lp parport ramoops reed_solomon ip_tables x_tables nls_iso8859_1 vfat multipath linear amdgpu amdxcp drm_exec gpu_sched drm_buddy hid_generic usbhid hid radeon video drm_suballoc_helper drm_ttm_helper ttm i2c_algo_bit drm_display_helper cec drm_kms_helper drm
-  CPU: 0 PID: 3663 Comm: systemd-sleep Not tainted 6.6.2+ #76
-  Source Version: 4e22ed63a0a48e7a7cff9b98b7806d8d4add7dc0
-  Hardware name: Greatwall GW-XXXXXX-XXX/GW-XXXXXX-XXX, BIOS KunLun BIOS V4.0 01/19/2021
-  pstate: 600003c5 (nZCv DAIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : swsusp_save+0x280/0x538
-  lr : swsusp_save+0x280/0x538
-  sp : ffffffa034a3fa40
-  x29: ffffffa034a3fa40 x28: ffffff8000001000 x27: 0000000000000000
-  x26: ffffff8001400000 x25: ffffffc08113e248 x24: 0000000000000000
-  x23: 0000000000080000 x22: ffffffc08113e280 x21: 00000000000c69f2
-  x20: ffffff8000000000 x19: ffffffc081ae2500 x18: 0000000000000000
-  x17: 6666662074736420 x16: 3030303030303030 x15: 3038666666666666
-  x14: 0000000000000b69 x13: ffffff9f89088530 x12: 00000000ffffffea
-  x11: 00000000ffff7fff x10: 00000000ffff7fff x9 : ffffffc08193f0d0
-  x8 : 00000000000bffe8 x7 : c0000000ffff7fff x6 : 0000000000000001
-  x5 : ffffffa0fff09dc8 x4 : 0000000000000000 x3 : 0000000000000027
-  x2 : 0000000000000000 x1 : 0000000000000000 x0 : 000000000000004e
-  Call trace:
-   swsusp_save+0x280/0x538
-   swsusp_arch_suspend+0x148/0x190
-   hibernation_snapshot+0x240/0x39c
-   hibernate+0xc4/0x378
-   state_store+0xf0/0x10c
-   kobj_attr_store+0x14/0x24
-
-The reason is swsusp_save() -> copy_data_pages() -> page_is_saveable()
--> kernel_page_present() assuming that a page is always present when
-can_set_direct_map() is false (all of rodata_full,
-debug_pagealloc_enabled() and arm64_kfence_can_set_direct_map() false),
-irrespective of the MEMBLOCK_NOMAP ranges. Such MEMBLOCK_NOMAP regions
-should not be saved during hibernation.
-
-This problem was introduced by changes to the pfn_valid() logic in
-commit a7d9f306ba70 ("arm64: drop pfn_valid_within() and simplify
-pfn_valid()").
-
-Similar to other architectures, drop the !can_set_direct_map() check in
-kernel_page_present() so that page_is_savable() skips such pages.
-
-Fixes: a7d9f306ba70 ("arm64: drop pfn_valid_within() and simplify pfn_valid()")
-Cc: <stable@vger.kernel.org> # 5.14.x
-Suggested-by: Mike Rapoport <rppt@kernel.org>
-Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-Co-developed-by: xiongxin <xiongxin@kylinos.cn>
-Signed-off-by: xiongxin <xiongxin@kylinos.cn>
-Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Link: https://lore.kernel.org/r/20240417025248.386622-1-tianyaxiong@kylinos.cn
-[catalin.marinas@arm.com: rework commit message]
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/pageattr.c |    3 ---
- 1 file changed, 3 deletions(-)
+ fs/smb/server/smb2pdu.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -220,9 +220,6 @@ bool kernel_page_present(struct page *pa
- 	pte_t *ptep;
- 	unsigned long addr = (unsigned long)page_address(page);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -535,6 +535,10 @@ int smb2_allocate_rsp_buf(struct ksmbd_w
+ 	if (cmd == SMB2_QUERY_INFO_HE) {
+ 		struct smb2_query_info_req *req;
  
--	if (!can_set_direct_map())
--		return true;
--
- 	pgdp = pgd_offset_k(addr);
- 	if (pgd_none(READ_ONCE(*pgdp)))
- 		return false;
++		if (get_rfc1002_len(work->request_buf) <
++		    offsetof(struct smb2_query_info_req, OutputBufferLength))
++			return -EINVAL;
++
+ 		req = smb2_get_msg(work->request_buf);
+ 		if ((req->InfoType == SMB2_O_INFO_FILE &&
+ 		     (req->FileInfoClass == FILE_FULL_EA_INFORMATION ||
 
 
 
