@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4278AFAE7
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339438AFA25
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E116F1C23C5D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 646281C21CB2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A20148838;
-	Tue, 23 Apr 2024 21:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF0C148FEA;
+	Tue, 23 Apr 2024 21:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0IjoD0j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOnhH2F9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B8B143895;
-	Tue, 23 Apr 2024 21:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037FC14885A;
+	Tue, 23 Apr 2024 21:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908781; cv=none; b=eLXYfzIdCP2HV7Ts6mFyYXEXjmFlaIDXDSWQJUSiErAQ3iTotrwg9/fEVH1gHmuJ1bIlufOwAfEwBx8V7OBpgjI+GWjh7xqPTnxs1qu3Wb/6DCgTw4T39/NPkIP5XclsS9LatBuSjgJmnzACNDfpX6wgrNnvSubjkoaXe4zAC4c=
+	t=1713908642; cv=none; b=PEknxv8IqbvDjiONV+narPpyOw8/UEOLj5NO20ZY1BICXZSPpb1U1oZjkqMN+C956rfcM/XaYt4jITIlY4cS8v2+wmKDma+JSZc0rBNzjoxdbSenO18JCMY1cnr5QExfUvc0dfilLM9TfJDYXJYYhjQCp//l/wXaWrz2rQkD0lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908781; c=relaxed/simple;
-	bh=kW1B9vneb8i8hQY16iKBxlXnjQuBYofLtX9EUhLGOlc=;
+	s=arc-20240116; t=1713908642; c=relaxed/simple;
+	bh=nH63focbY266BVPshuIcDLd9iCHbv58BclYd6Hsic+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HyntV9jGcUMByyGpbb5kJkOEirQQmZeO0I36dLVEvh4EkiIfCCHlEYYHn+PJLmsHAugzj1F9oqptDdJZGA5yynlBwwcl0ZNGFiHM3GJYFDmr71ywfen7xs5ksyswmHjYBub1Vp1m0f4C65Q641EWfDCjsM+SUj3ioCA/GTCzZkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0IjoD0j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F226C32782;
-	Tue, 23 Apr 2024 21:46:20 +0000 (UTC)
+	 MIME-Version; b=jFZYgI4x+dPwmPEqNk4Zk59FJr3U2zmX+pQcR2Xr4nib/vImL2X52rrgMB8j+6qewSgFdmIq7LpbS/nAubMiu1SlYBXh1LnghfiNhZw4dz4YU/2U7IU38Ni7FG2jZ8IILc4yFNF9eizpzZLq6NcdW9lW0d47hI+JK6ztyXL6D/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOnhH2F9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4ADC3277B;
+	Tue, 23 Apr 2024 21:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908780;
-	bh=kW1B9vneb8i8hQY16iKBxlXnjQuBYofLtX9EUhLGOlc=;
+	s=korg; t=1713908641;
+	bh=nH63focbY266BVPshuIcDLd9iCHbv58BclYd6Hsic+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0IjoD0ja31ijq7BYlM9/0EpdbUxRlvopcmfUG7wmHTo1wJ4/Ye1FrvxryX7YjHgS
-	 t9Ic9kRoTlCVg2rLUeze0jzk4ZlA7WDPmulZhvB8cbBUIwkgGVJg4t5iO9PWdkUTuH
-	 GglUsynXOg9pRzPqJmnLkuSgRhnDbpE1W2NcFe5E=
+	b=OOnhH2F9lKZp47ChZZ+tRf82TkzFNVLDP6Px0N0oLF8QPLMmNtxLBZ7votaUS0pHy
+	 /oJFgCNuFrp2HX7BdC7Ng5WzuR1TLNB6yypt36YNPxJ3p5LPLFFDzLoOW4WmvHi8Ep
+	 XdP0N4z70dccPJWvgiaHUQfEud7AFVs56AhptgxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Edward Liaw <edliaw@google.com>
-Subject: [PATCH 5.15 08/71] bpf: Generalize check_ctx_reg for reuse with other types
-Date: Tue, 23 Apr 2024 14:39:21 -0700
-Message-ID: <20240423213844.404702983@linuxfoundation.org>
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 6.6 125/158] mei: me: disable RPL-S on SPS and IGN firmwares
+Date: Tue, 23 Apr 2024 14:39:22 -0700
+Message-ID: <20240423213859.790033373@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit be80a1d3f9dbe5aee79a325964f7037fe2d92f30 upstream.
+commit 0dc04112bee6fdd6eb847ccb32214703022c0269 upstream.
 
-Generalize the check_ctx_reg() helper function into a more generic named one
-so that it can be reused for other register types as well to check whether
-their offset is non-zero. No functional change.
+Extend the quirk to disable MEI interface on Intel PCH Ignition (IGN)
+and SPS firmwares for RPL-S devices. These firmwares do not support
+the MEI protocol.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Edward Liaw <edliaw@google.com>
+Fixes: 3ed8c7d39cfe ("mei: me: add raptor lake point S DID")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240312051958.118478-1-tomas.winkler@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf_verifier.h |    4 ++--
- kernel/bpf/btf.c             |    2 +-
- kernel/bpf/verifier.c        |   21 +++++++++++----------
- 3 files changed, 14 insertions(+), 13 deletions(-)
+ drivers/misc/mei/pci-me.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -541,8 +541,8 @@ bpf_prog_offload_replace_insn(struct bpf
- void
- bpf_prog_offload_remove_insns(struct bpf_verifier_env *env, u32 off, u32 cnt);
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -116,7 +116,7 @@ static const struct pci_device_id mei_me
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_P, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_N, MEI_ME_PCH15_CFG)},
  
--int check_ctx_reg(struct bpf_verifier_env *env,
--		  const struct bpf_reg_state *reg, int regno);
-+int check_ptr_off_reg(struct bpf_verifier_env *env,
-+		      const struct bpf_reg_state *reg, int regno);
- int check_mem_reg(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
- 		   u32 regno, u32 mem_size);
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
++	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_SPS_CFG)},
  
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -5558,7 +5558,7 @@ static int btf_check_func_arg_match(stru
- 					i, btf_type_str(t));
- 				return -EINVAL;
- 			}
--			if (check_ctx_reg(env, reg, regno))
-+			if (check_ptr_off_reg(env, reg, regno))
- 				return -EINVAL;
- 		} else if (is_kfunc && (reg->type == PTR_TO_BTF_ID ||
- 			   (reg2btf_ids[base_type(reg->type)] && !type_flag(reg->type)))) {
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3980,16 +3980,16 @@ static int get_callee_stack_depth(struct
- }
- #endif
- 
--int check_ctx_reg(struct bpf_verifier_env *env,
--		  const struct bpf_reg_state *reg, int regno)
-+int check_ptr_off_reg(struct bpf_verifier_env *env,
-+		      const struct bpf_reg_state *reg, int regno)
- {
--	/* Access to ctx or passing it to a helper is only allowed in
--	 * its original, unmodified form.
-+	/* Access to this pointer-typed register or passing it to a helper
-+	 * is only allowed in its original, unmodified form.
- 	 */
- 
- 	if (reg->off) {
--		verbose(env, "dereference of modified ctx ptr R%d off=%d disallowed\n",
--			regno, reg->off);
-+		verbose(env, "dereference of modified %s ptr R%d off=%d disallowed\n",
-+			reg_type_str(env, reg->type), regno, reg->off);
- 		return -EACCES;
- 	}
- 
-@@ -3997,7 +3997,8 @@ int check_ctx_reg(struct bpf_verifier_en
- 		char tn_buf[48];
- 
- 		tnum_strn(tn_buf, sizeof(tn_buf), reg->var_off);
--		verbose(env, "variable ctx access var_off=%s disallowed\n", tn_buf);
-+		verbose(env, "variable %s access var_off=%s disallowed\n",
-+			reg_type_str(env, reg->type), tn_buf);
- 		return -EACCES;
- 	}
- 
-@@ -4447,7 +4448,7 @@ static int check_mem_access(struct bpf_v
- 			return -EACCES;
- 		}
- 
--		err = check_ctx_reg(env, reg, regno);
-+		err = check_ptr_off_reg(env, reg, regno);
- 		if (err < 0)
- 			return err;
- 
-@@ -5327,7 +5328,7 @@ static int check_func_arg(struct bpf_ver
- 		return err;
- 
- 	if (type == PTR_TO_CTX) {
--		err = check_ctx_reg(env, reg, regno);
-+		err = check_ptr_off_reg(env, reg, regno);
- 		if (err < 0)
- 			return err;
- 	}
-@@ -9561,7 +9562,7 @@ static int check_ld_abs(struct bpf_verif
- 			return err;
- 	}
- 
--	err = check_ctx_reg(env, &regs[ctx_reg], ctx_reg);
-+	err = check_ptr_off_reg(env, &regs[ctx_reg], ctx_reg);
- 	if (err < 0)
- 		return err;
- 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
 
 
 
