@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5144F8AFA3D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 452EA8AFAEE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CEC1283205
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F0E281EAC
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436D01494A8;
-	Tue, 23 Apr 2024 21:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9560714B086;
+	Tue, 23 Apr 2024 21:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="In+Eq0Du"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftmq6UnU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024281494A7;
-	Tue, 23 Apr 2024 21:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537BA14B083;
+	Tue, 23 Apr 2024 21:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908660; cv=none; b=nwO9PoMzkH8EmdnYLr6Ydeaey12ogwK097EQtuor1aUhvXftf0xfABHiJx486Hub36S7Crsm1dKC8I0xdt409D2eqM4Vvx/BbJPu0GOgKqqWnzG1hr/lR182ngA9ZmqQBAyCz8IXlgt9ZFrMzB1DgJ4cZJn0UfnTaf9j9HQuLbA=
+	t=1713908785; cv=none; b=SMRFsK6B1FG1t4BRCoNznfDKO763SNkmNvh+89ZtHxnhwpdVxRvO1oPVSymBnIgFb+V7uGGqys9fWqYxIU272khT5zJCt5eIX1f+BOV9qBejymHAU9puisTTb9oQYdm5EJQnfVOvRHvokRQjuaAEirwTYh+VV/OHC37OkaGGwWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908660; c=relaxed/simple;
-	bh=hvzX9hllUzDnYT9UhgXa3s0+WIaqemCVVAy9ciJ3Rf0=;
+	s=arc-20240116; t=1713908785; c=relaxed/simple;
+	bh=sbHfpiqQwza/vNVil8M9cM43c0NojR/w7e/mxW7yxNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=di+G/pEVjdIqj3EIBCsqg3nM0+oYtTHUVLeb6gOg4AXR9doDub6RwmFM4+14Os2L4P5fh3jpNV62AJpQ33eVMewnE6QvuoyUdLejrVXrDgTsqhdJnCDdipjIFiaOGonOkk50A36YGO+PdXQZQgwCiPCFITxPsD237DzaKJQVUzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=In+Eq0Du; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DD2C3277B;
-	Tue, 23 Apr 2024 21:44:19 +0000 (UTC)
+	 MIME-Version; b=upKlK51Jjc6/e+3p+JhAOXqQM1txDcmvqdht0rvR+fBDXKkbTHzCTYyMIBmjKwFVY38YLdYnsTRcr6IPM2KlMkLI+OqBJQ8Nl7mNw24V6qsBZcIdK/Kta/p9jMXz2cd/Uz9xZ6mbJI9BPCxSXPyr+t9RKjTsHy4RgrNH7YpYzKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftmq6UnU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26950C32786;
+	Tue, 23 Apr 2024 21:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908659;
-	bh=hvzX9hllUzDnYT9UhgXa3s0+WIaqemCVVAy9ciJ3Rf0=;
+	s=korg; t=1713908785;
+	bh=sbHfpiqQwza/vNVil8M9cM43c0NojR/w7e/mxW7yxNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=In+Eq0DuTGDc3mbSu9wOOA84N1q4ftTU7waxilgQqRrfzWVLuqnsMIfQ+VRyDb0/m
-	 GbQ8ilAjguZAR28AYaCF7Rz/VGcvAb22pc/KsA5HbsKPDrNDuLuNlE3VzPgK2Sv9y2
-	 nnFnexnnVOyJsqzsr1Uf4gPHbd8tU41EqUw+fWeY=
+	b=ftmq6UnUusyPGFp1uax1XSy98Hh6uEmCriwpyznwqwmmgNG1esIixW4/nQPIYmCpQ
+	 P4MsTBra+1V8NbX1SR5/gcnj6zbb5mFRqlOwDbs4LfrYKGdToXkPJ0gEXS1z50ljJ9
+	 BPFu+19JBBoafBB9lR/bQ4A113GTUcqQ5xDcFZng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 151/158] net: dsa: mt7530: fix enabling EEE on MT7531 switch on all boards
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 35/71] clk: Mark all_lists as const
 Date: Tue, 23 Apr 2024 14:39:48 -0700
-Message-ID: <20240423213900.571553070@linuxfoundation.org>
+Message-ID: <20240423213845.361058004@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Stephen Boyd <sboyd@kernel.org>
 
-commit 06dfcd4098cfdc4d4577d94793a4f9125386da8b upstream.
+[ Upstream commit 75061a6ff49ba3482c6319ded0c26e6a526b0967 ]
 
-The commit 40b5d2f15c09 ("net: dsa: mt7530: Add support for EEE features")
-brought EEE support but did not enable EEE on MT7531 switch MACs. EEE is
-enabled on MT7531 switch MACs by pulling the LAN2LED0 pin low on the board
-(bootstrapping), unsetting the EEE_DIS bit on the trap register, or setting
-the internal EEE switch bit on the CORE_PLL_GROUP4 register. Thanks to
-SkyLake Huang (黃啟澤) from MediaTek for providing information on the
-internal EEE switch bit.
+This list array doesn't change at runtime. Mark it const to move to RO
+memory.
 
-There are existing boards that were not designed to pull the pin low.
-Because of that, the EEE status currently depends on the board design.
-
-The EEE_DIS bit on the trap pertains to the LAN2LED0 pin which is usually
-used to control an LED. Once the bit is unset, the pin will be low. That
-will make the active low LED turn on. The pin is controlled by the switch
-PHY. It seems that the PHY controls the pin in the way that it inverts the
-pin state. That means depending on the wiring of the LED connected to
-LAN2LED0 on the board, the LED may be on without an active link.
-
-To not cause this unwanted behaviour whilst enabling EEE on all boards, set
-the internal EEE switch bit on the CORE_PLL_GROUP4 register.
-
-My testing on MT7531 shows a certain amount of traffic loss when EEE is
-enabled. That said, I haven't come across a board that enables EEE. So
-enable EEE on the switch MACs but disable EEE advertisement on the switch
-PHYs. This way, we don't change the behaviour of the majority of the boards
-that have this switch. The mediatek-ge PHY driver already disables EEE
-advertisement on the switch PHYs but my testing shows that it is somehow
-enabled afterwards. Disabling EEE advertisement before the PHY driver
-initialises keeps it off.
-
-With this change, EEE can now be enabled using ethtool.
-
-Fixes: 40b5d2f15c09 ("net: dsa: mt7530: Add support for EEE features")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/20240408-for-net-mt7530-fix-eee-for-mt7531-mt7988-v3-1-84fdef1f008b@arinc9.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20220217220554.2711696-2-sboyd@kernel.org
+Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c |   17 ++++++++++++-----
- drivers/net/dsa/mt7530.h |    1 +
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ drivers/clk/clk.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2713,18 +2713,25 @@ mt7531_setup(struct dsa_switch *ds)
- 	priv->p5_interface = PHY_INTERFACE_MODE_NA;
- 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index acbe917cbe775..0d93537d46c34 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -37,7 +37,7 @@ static HLIST_HEAD(clk_root_list);
+ static HLIST_HEAD(clk_orphan_list);
+ static LIST_HEAD(clk_notifier_list);
  
--	/* Enable PHY core PLL, since phy_device has not yet been created
--	 * provided for phy_[read,write]_mmd_indirect is called, we provide
--	 * our own mt7531_ind_mmd_phy_[read,write] to complete this
--	 * function.
-+	/* Enable Energy-Efficient Ethernet (EEE) and PHY core PLL, since
-+	 * phy_device has not yet been created provided for
-+	 * phy_[read,write]_mmd_indirect is called, we provide our own
-+	 * mt7531_ind_mmd_phy_[read,write] to complete this function.
- 	 */
- 	val = mt7531_ind_c45_phy_read(priv, MT753X_CTRL_PHY_ADDR,
- 				      MDIO_MMD_VEND2, CORE_PLL_GROUP4);
--	val |= MT7531_PHY_PLL_BYPASS_MODE;
-+	val |= MT7531_RG_SYSPLL_DMY2 | MT7531_PHY_PLL_BYPASS_MODE;
- 	val &= ~MT7531_PHY_PLL_OFF;
- 	mt7531_ind_c45_phy_write(priv, MT753X_CTRL_PHY_ADDR, MDIO_MMD_VEND2,
- 				 CORE_PLL_GROUP4, val);
+-static struct hlist_head *all_lists[] = {
++static const struct hlist_head *all_lists[] = {
+ 	&clk_root_list,
+ 	&clk_orphan_list,
+ 	NULL,
+@@ -4104,7 +4104,7 @@ static void clk_core_evict_parent_cache_subtree(struct clk_core *root,
+ /* Remove this clk from all parent caches */
+ static void clk_core_evict_parent_cache(struct clk_core *core)
+ {
+-	struct hlist_head **lists;
++	const struct hlist_head **lists;
+ 	struct clk_core *root;
  
-+	/* Disable EEE advertisement on the switch PHYs. */
-+	for (i = MT753X_CTRL_PHY_ADDR;
-+	     i < MT753X_CTRL_PHY_ADDR + MT7530_NUM_PHYS; i++) {
-+		mt7531_ind_c45_phy_write(priv, i, MDIO_MMD_AN, MDIO_AN_EEE_ADV,
-+					 0);
-+	}
-+
- 	mt7531_setup_common(ds);
- 
- 	/* Setup VLAN ID 0 for VLAN-unaware bridges */
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -634,6 +634,7 @@ enum mt7531_clk_skew {
- #define  RG_SYSPLL_DDSFBK_EN		BIT(12)
- #define  RG_SYSPLL_BIAS_EN		BIT(11)
- #define  RG_SYSPLL_BIAS_LPF_EN		BIT(10)
-+#define  MT7531_RG_SYSPLL_DMY2		BIT(6)
- #define  MT7531_PHY_PLL_OFF		BIT(5)
- #define  MT7531_PHY_PLL_BYPASS_MODE	BIT(4)
- 
+ 	lockdep_assert_held(&prepare_lock);
+-- 
+2.43.0
+
 
 
 
