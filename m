@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-41175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59918AFA94
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEF38AFB1D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9EA61C2334A
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 333D0B2CB5B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F319C144D2E;
-	Tue, 23 Apr 2024 21:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853BE145B2C;
+	Tue, 23 Apr 2024 21:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCp3lWn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Puvj/PB+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D1F143C49;
-	Tue, 23 Apr 2024 21:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4213314AD3D;
+	Tue, 23 Apr 2024 21:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908728; cv=none; b=QA99/ua4GH211XnqA4yyc2xMMq3Fzbw0q0IJrC60D6YdkFieNbPZuqh+Vl+CCXTZLChcXQ4cLrb3JZkJinBwPDUJ4Il8dGjudesKVeiAuQJRbZKiI2upTPiUYfZw456qWQtjpPwF0iVzkLWH3LsqzKVB6JLUfg+O7ijIwHX1IJs=
+	t=1713908781; cv=none; b=gf4XH4Ygu+zOqpt4x9hMhje89dSIXRMBeB5z1akWxNd6vZu5OJ/k1r+IGiFRx7daHbu7n1EtVhOPFFlBKc7yqJnisd3kmjhP/92asbxi81Oyy7RSVTnfSfH2pszO3snXm7mclVhnqIO74hUBWx5gszUjYFHp994NELEMOaYOn2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908728; c=relaxed/simple;
-	bh=nNUK7Qn+21C9dLg4ztCCUuk6WKuOQQssg0g1pwyL4xo=;
+	s=arc-20240116; t=1713908781; c=relaxed/simple;
+	bh=2xMS3LJ0MfukB+wNS6lksbBw76cEgRPsc2KYA94HZLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIcC/jUGA0C4/crhatvvUHmk++cjhubS7hWuju410YXYSwEYNsJfhGTK2Nw5S7egORafUYeD9twZT28RUl5ptoXg6VcvnIZU0P4UTaJkPoEK1ZQK9XcmZSYj51oeWfHTbrd2Lpv9twTRf4UTM+5XiqShkDd31qC0wvQc0DH1GaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCp3lWn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D89C116B1;
-	Tue, 23 Apr 2024 21:45:28 +0000 (UTC)
+	 MIME-Version; b=jctk/Jqc55nbXMiZDGdxacfN5BpfoCNwxM+h4ewc3+zIi2ssKGqIb1x1hgjOWU3nnB+fnv+rDyWSH1ZXAg0QSpXXWufL0yFW/brR71Bauu+x8TYjE64KHd+YaIpfW6QdKkoFT7HBTiruj7tqEUrlnn5cjHdjlxUuNwHLLgLsdKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Puvj/PB+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137AEC116B1;
+	Tue, 23 Apr 2024 21:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908728;
-	bh=nNUK7Qn+21C9dLg4ztCCUuk6WKuOQQssg0g1pwyL4xo=;
+	s=korg; t=1713908781;
+	bh=2xMS3LJ0MfukB+wNS6lksbBw76cEgRPsc2KYA94HZLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vCp3lWn4cM6DE7bw1EWLE5T3L0b4jkG8Q5W0Q2YM+7Ql3hsffJF3l3WfbxeSe2Gah
-	 OZ3beIRDE1sYptr+gO/ar76MdJrRHtFWXuyFlui4gIvMXK//OjA38LHKzEcgrahdMr
-	 lrlbUTpUFNxitzjNbahYnBQMaNA5KsGXwK734kM0=
+	b=Puvj/PB+gV5x/eBssXFPqY8HyELwTSy5CHstPYgzlD1mukgi2GvRYkHhceI1QfDOR
+	 RJul0xTmFyFyHmfkpl0YQ+g5+fces6kqAYO/1uqAa5qnprJX/7O3Y6DvNx2rzuomyY
+	 2ixejUdstsgGQgnEMca6D+Mg7M3NUZyk8/wfzCiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Miles Chen <miles.chen@mediatek.com>,
-	Mingming Su <mingming.su@mediatek.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/141] clk: mediatek: clk-mux: Propagate struct device for mtk-mux
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Edward Liaw <edliaw@google.com>
+Subject: [PATCH 5.15 09/71] bpf: Generally fix helper register offset check
 Date: Tue, 23 Apr 2024 14:39:22 -0700
-Message-ID: <20240423213856.231830620@linuxfoundation.org>
+Message-ID: <20240423213844.438481100@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,246 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit d3d6bd5e25cdc460df33ae1db4f051c4bdd3aa60 ]
+commit 6788ab23508bddb0a9d88e104284922cb2c22b77 upstream.
 
-Like done for other clocks, propagate struct device for mtk mux clocks
-registered through clk-mux helpers to enable runtime pm support.
+Right now the assertion on check_ptr_off_reg() is only enforced for register
+types PTR_TO_CTX (and open coded also for PTR_TO_BTF_ID), however, this is
+insufficient since many other PTR_TO_* register types such as PTR_TO_FUNC do
+not handle/expect register offsets when passed to helper functions.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: Miles Chen <miles.chen@mediatek.com>
-Link: https://lore.kernel.org/r/20230120092053.182923-7-angelogioacchino.delregno@collabora.com
-Tested-by: Mingming Su <mingming.su@mediatek.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers during probe")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Given this can slip-through easily when adding new types, make this an explicit
+allow-list and reject all other current and future types by default if this is
+encountered.
+
+Also, extend check_ptr_off_reg() to handle PTR_TO_BTF_ID as well instead of
+duplicating it. For PTR_TO_BTF_ID, reg->off is used for BTF to match expected
+BTF ids if struct offset is used. This part still needs to be allowed, but the
+dynamic off from the tnum must be rejected.
+
+Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
+Fixes: eaa6bcb71ef6 ("bpf: Introduce bpf_per_cpu_ptr()")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mt6765.c          |  3 ++-
- drivers/clk/mediatek/clk-mt6779.c          |  5 +++--
- drivers/clk/mediatek/clk-mt6795-topckgen.c |  3 ++-
- drivers/clk/mediatek/clk-mt7986-infracfg.c |  3 ++-
- drivers/clk/mediatek/clk-mt7986-topckgen.c |  3 ++-
- drivers/clk/mediatek/clk-mt8183.c          |  5 +++--
- drivers/clk/mediatek/clk-mt8186-topckgen.c |  3 ++-
- drivers/clk/mediatek/clk-mt8192.c          |  3 ++-
- drivers/clk/mediatek/clk-mt8195-topckgen.c |  3 ++-
- drivers/clk/mediatek/clk-mt8365.c          |  3 ++-
- drivers/clk/mediatek/clk-mux.c             | 14 ++++++++------
- drivers/clk/mediatek/clk-mux.h             |  3 ++-
- 12 files changed, 32 insertions(+), 19 deletions(-)
+ kernel/bpf/verifier.c |   39 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 28 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt6765.c b/drivers/clk/mediatek/clk-mt6765.c
-index 4a7bc6e04580d..c4941523f5520 100644
---- a/drivers/clk/mediatek/clk-mt6765.c
-+++ b/drivers/clk/mediatek/clk-mt6765.c
-@@ -782,7 +782,8 @@ static int clk_mt6765_top_probe(struct platform_device *pdev)
- 				    clk_data);
- 	mtk_clk_register_factors(top_divs, ARRAY_SIZE(top_divs),
- 				 clk_data);
--	mtk_clk_register_muxes(top_muxes, ARRAY_SIZE(top_muxes), node,
-+	mtk_clk_register_muxes(&pdev->dev, top_muxes,
-+			       ARRAY_SIZE(top_muxes), node,
- 			       &mt6765_clk_lock, clk_data);
- 	mtk_clk_register_gates(&pdev->dev, node, top_clks,
- 			       ARRAY_SIZE(top_clks), clk_data);
-diff --git a/drivers/clk/mediatek/clk-mt6779.c b/drivers/clk/mediatek/clk-mt6779.c
-index 2c20e40d7c809..7fe9d12b2dfdd 100644
---- a/drivers/clk/mediatek/clk-mt6779.c
-+++ b/drivers/clk/mediatek/clk-mt6779.c
-@@ -1248,8 +1248,9 @@ static int clk_mt6779_top_probe(struct platform_device *pdev)
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -3980,14 +3980,15 @@ static int get_callee_stack_depth(struct
+ }
+ #endif
  
- 	mtk_clk_register_factors(top_divs, ARRAY_SIZE(top_divs), clk_data);
- 
--	mtk_clk_register_muxes(top_muxes, ARRAY_SIZE(top_muxes),
--			       node, &mt6779_clk_lock, clk_data);
-+	mtk_clk_register_muxes(&pdev->dev, top_muxes,
-+			       ARRAY_SIZE(top_muxes), node,
-+			       &mt6779_clk_lock, clk_data);
- 
- 	mtk_clk_register_composites(&pdev->dev, top_aud_muxes,
- 				    ARRAY_SIZE(top_aud_muxes), base,
-diff --git a/drivers/clk/mediatek/clk-mt6795-topckgen.c b/drivers/clk/mediatek/clk-mt6795-topckgen.c
-index 845cc87049303..2ab8bf5d6d6d9 100644
---- a/drivers/clk/mediatek/clk-mt6795-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt6795-topckgen.c
-@@ -552,7 +552,8 @@ static int clk_mt6795_topckgen_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto unregister_fixed_clks;
- 
--	ret = mtk_clk_register_muxes(top_muxes, ARRAY_SIZE(top_muxes), node,
-+	ret = mtk_clk_register_muxes(&pdev->dev, top_muxes,
-+				     ARRAY_SIZE(top_muxes), node,
- 				     &mt6795_top_clk_lock, clk_data);
- 	if (ret)
- 		goto unregister_factors;
-diff --git a/drivers/clk/mediatek/clk-mt7986-infracfg.c b/drivers/clk/mediatek/clk-mt7986-infracfg.c
-index 578f150e0ee52..0a4bf87ee1607 100644
---- a/drivers/clk/mediatek/clk-mt7986-infracfg.c
-+++ b/drivers/clk/mediatek/clk-mt7986-infracfg.c
-@@ -178,7 +178,8 @@ static int clk_mt7986_infracfg_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	mtk_clk_register_factors(infra_divs, ARRAY_SIZE(infra_divs), clk_data);
--	mtk_clk_register_muxes(infra_muxes, ARRAY_SIZE(infra_muxes), node,
-+	mtk_clk_register_muxes(&pdev->dev, infra_muxes,
-+			       ARRAY_SIZE(infra_muxes), node,
- 			       &mt7986_clk_lock, clk_data);
- 	mtk_clk_register_gates(&pdev->dev, node, infra_clks,
- 			       ARRAY_SIZE(infra_clks), clk_data);
-diff --git a/drivers/clk/mediatek/clk-mt7986-topckgen.c b/drivers/clk/mediatek/clk-mt7986-topckgen.c
-index de5121cf28774..c9bf47e6098fd 100644
---- a/drivers/clk/mediatek/clk-mt7986-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt7986-topckgen.c
-@@ -303,7 +303,8 @@ static int clk_mt7986_topckgen_probe(struct platform_device *pdev)
- 	mtk_clk_register_fixed_clks(top_fixed_clks, ARRAY_SIZE(top_fixed_clks),
- 				    clk_data);
- 	mtk_clk_register_factors(top_divs, ARRAY_SIZE(top_divs), clk_data);
--	mtk_clk_register_muxes(top_muxes, ARRAY_SIZE(top_muxes), node,
-+	mtk_clk_register_muxes(&pdev->dev, top_muxes,
-+			       ARRAY_SIZE(top_muxes), node,
- 			       &mt7986_clk_lock, clk_data);
- 
- 	clk_prepare_enable(clk_data->hws[CLK_TOP_SYSAXI_SEL]->clk);
-diff --git a/drivers/clk/mediatek/clk-mt8183.c b/drivers/clk/mediatek/clk-mt8183.c
-index bf7b342332536..78620244144e8 100644
---- a/drivers/clk/mediatek/clk-mt8183.c
-+++ b/drivers/clk/mediatek/clk-mt8183.c
-@@ -1238,8 +1238,9 @@ static int clk_mt8183_top_probe(struct platform_device *pdev)
- 
- 	mtk_clk_register_factors(top_divs, ARRAY_SIZE(top_divs), top_clk_data);
- 
--	mtk_clk_register_muxes(top_muxes, ARRAY_SIZE(top_muxes),
--		node, &mt8183_clk_lock, top_clk_data);
-+	mtk_clk_register_muxes(&pdev->dev, top_muxes,
-+			       ARRAY_SIZE(top_muxes), node,
-+			       &mt8183_clk_lock, top_clk_data);
- 
- 	mtk_clk_register_composites(&pdev->dev, top_aud_muxes,
- 				    ARRAY_SIZE(top_aud_muxes), base,
-diff --git a/drivers/clk/mediatek/clk-mt8186-topckgen.c b/drivers/clk/mediatek/clk-mt8186-topckgen.c
-index 4ac157320a6b9..70b6e008a188b 100644
---- a/drivers/clk/mediatek/clk-mt8186-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt8186-topckgen.c
-@@ -715,7 +715,8 @@ static int clk_mt8186_topck_probe(struct platform_device *pdev)
- 	if (r)
- 		goto unregister_fixed_clks;
- 
--	r = mtk_clk_register_muxes(top_mtk_muxes, ARRAY_SIZE(top_mtk_muxes), node,
-+	r = mtk_clk_register_muxes(&pdev->dev, top_mtk_muxes,
-+				   ARRAY_SIZE(top_mtk_muxes), node,
- 				   &mt8186_clk_lock, clk_data);
- 	if (r)
- 		goto unregister_factors;
-diff --git a/drivers/clk/mediatek/clk-mt8192.c b/drivers/clk/mediatek/clk-mt8192.c
-index ab856d0276184..16feb86dcb1b8 100644
---- a/drivers/clk/mediatek/clk-mt8192.c
-+++ b/drivers/clk/mediatek/clk-mt8192.c
-@@ -1112,7 +1112,8 @@ static int clk_mt8192_top_probe(struct platform_device *pdev)
- 	if (r)
- 		goto unregister_early_factors;
- 
--	r = mtk_clk_register_muxes(top_mtk_muxes, ARRAY_SIZE(top_mtk_muxes), node,
-+	r = mtk_clk_register_muxes(&pdev->dev, top_mtk_muxes,
-+				   ARRAY_SIZE(top_mtk_muxes), node,
- 				   &mt8192_clk_lock, top_clk_data);
- 	if (r)
- 		goto unregister_factors;
-diff --git a/drivers/clk/mediatek/clk-mt8195-topckgen.c b/drivers/clk/mediatek/clk-mt8195-topckgen.c
-index aae31ef3903de..3485ebb17ab83 100644
---- a/drivers/clk/mediatek/clk-mt8195-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt8195-topckgen.c
-@@ -1262,7 +1262,8 @@ static int clk_mt8195_topck_probe(struct platform_device *pdev)
- 	if (r)
- 		goto unregister_fixed_clks;
- 
--	r = mtk_clk_register_muxes(top_mtk_muxes, ARRAY_SIZE(top_mtk_muxes), node,
-+	r = mtk_clk_register_muxes(&pdev->dev, top_mtk_muxes,
-+				   ARRAY_SIZE(top_mtk_muxes), node,
- 				   &mt8195_clk_lock, top_clk_data);
- 	if (r)
- 		goto unregister_factors;
-diff --git a/drivers/clk/mediatek/clk-mt8365.c b/drivers/clk/mediatek/clk-mt8365.c
-index 0482a8aa43cc9..c9faa07ec0a64 100644
---- a/drivers/clk/mediatek/clk-mt8365.c
-+++ b/drivers/clk/mediatek/clk-mt8365.c
-@@ -947,7 +947,8 @@ static int clk_mt8365_top_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto unregister_fixed_clks;
- 
--	ret = mtk_clk_register_muxes(top_muxes, ARRAY_SIZE(top_muxes), node,
-+	ret = mtk_clk_register_muxes(&pdev->dev, top_muxes,
-+				     ARRAY_SIZE(top_muxes), node,
- 				     &mt8365_clk_lock, clk_data);
- 	if (ret)
- 		goto unregister_factors;
-diff --git a/drivers/clk/mediatek/clk-mux.c b/drivers/clk/mediatek/clk-mux.c
-index ba1720b9e2310..c8593554239d6 100644
---- a/drivers/clk/mediatek/clk-mux.c
-+++ b/drivers/clk/mediatek/clk-mux.c
-@@ -154,9 +154,10 @@ const struct clk_ops mtk_mux_gate_clr_set_upd_ops  = {
- };
- EXPORT_SYMBOL_GPL(mtk_mux_gate_clr_set_upd_ops);
- 
--static struct clk_hw *mtk_clk_register_mux(const struct mtk_mux *mux,
--				 struct regmap *regmap,
--				 spinlock_t *lock)
-+static struct clk_hw *mtk_clk_register_mux(struct device *dev,
-+					   const struct mtk_mux *mux,
-+					   struct regmap *regmap,
-+					   spinlock_t *lock)
+-int check_ptr_off_reg(struct bpf_verifier_env *env,
+-		      const struct bpf_reg_state *reg, int regno)
++static int __check_ptr_off_reg(struct bpf_verifier_env *env,
++			       const struct bpf_reg_state *reg, int regno,
++			       bool fixed_off_ok)
  {
- 	struct mtk_clk_mux *clk_mux;
- 	struct clk_init_data init = {};
-@@ -177,7 +178,7 @@ static struct clk_hw *mtk_clk_register_mux(const struct mtk_mux *mux,
- 	clk_mux->lock = lock;
- 	clk_mux->hw.init = &init;
+ 	/* Access to this pointer-typed register or passing it to a helper
+ 	 * is only allowed in its original, unmodified form.
+ 	 */
  
--	ret = clk_hw_register(NULL, &clk_mux->hw);
-+	ret = clk_hw_register(dev, &clk_mux->hw);
- 	if (ret) {
- 		kfree(clk_mux);
- 		return ERR_PTR(ret);
-@@ -198,7 +199,8 @@ static void mtk_clk_unregister_mux(struct clk_hw *hw)
- 	kfree(mux);
+-	if (reg->off) {
++	if (!fixed_off_ok && reg->off) {
+ 		verbose(env, "dereference of modified %s ptr R%d off=%d disallowed\n",
+ 			reg_type_str(env, reg->type), regno, reg->off);
+ 		return -EACCES;
+@@ -4005,6 +4006,12 @@ int check_ptr_off_reg(struct bpf_verifie
+ 	return 0;
  }
  
--int mtk_clk_register_muxes(const struct mtk_mux *muxes,
-+int mtk_clk_register_muxes(struct device *dev,
-+			   const struct mtk_mux *muxes,
- 			   int num, struct device_node *node,
- 			   spinlock_t *lock,
- 			   struct clk_hw_onecell_data *clk_data)
-@@ -222,7 +224,7 @@ int mtk_clk_register_muxes(const struct mtk_mux *muxes,
- 			continue;
++int check_ptr_off_reg(struct bpf_verifier_env *env,
++		      const struct bpf_reg_state *reg, int regno)
++{
++	return __check_ptr_off_reg(env, reg, regno, false);
++}
++
+ static int __check_buffer_access(struct bpf_verifier_env *env,
+ 				 const char *buf_info,
+ 				 const struct bpf_reg_state *reg,
+@@ -5267,12 +5274,6 @@ found:
+ 				kernel_type_name(btf_vmlinux, *arg_btf_id));
+ 			return -EACCES;
  		}
+-
+-		if (!tnum_is_const(reg->var_off) || reg->var_off.value) {
+-			verbose(env, "R%d is a pointer to in-kernel struct with non-zero offset\n",
+-				regno);
+-			return -EACCES;
+-		}
+ 	}
  
--		hw = mtk_clk_register_mux(mux, regmap, lock);
-+		hw = mtk_clk_register_mux(dev, mux, regmap, lock);
+ 	return 0;
+@@ -5327,10 +5328,26 @@ static int check_func_arg(struct bpf_ver
+ 	if (err)
+ 		return err;
  
- 		if (IS_ERR(hw)) {
- 			pr_err("Failed to register clk %s: %pe\n", mux->name,
-diff --git a/drivers/clk/mediatek/clk-mux.h b/drivers/clk/mediatek/clk-mux.h
-index 83ff420f4ebe6..7ecb963b0ec68 100644
---- a/drivers/clk/mediatek/clk-mux.h
-+++ b/drivers/clk/mediatek/clk-mux.h
-@@ -83,7 +83,8 @@ extern const struct clk_ops mtk_mux_gate_clr_set_upd_ops;
- 			0, _upd_ofs, _upd, CLK_SET_RATE_PARENT,		\
- 			mtk_mux_clr_set_upd_ops)
+-	if (type == PTR_TO_CTX) {
+-		err = check_ptr_off_reg(env, reg, regno);
++	switch ((u32)type) {
++	case SCALAR_VALUE:
++	/* Pointer types where reg offset is explicitly allowed: */
++	case PTR_TO_PACKET:
++	case PTR_TO_PACKET_META:
++	case PTR_TO_MAP_KEY:
++	case PTR_TO_MAP_VALUE:
++	case PTR_TO_MEM:
++	case PTR_TO_MEM | MEM_RDONLY:
++	case PTR_TO_BUF:
++	case PTR_TO_BUF | MEM_RDONLY:
++	case PTR_TO_STACK:
++		break;
++	/* All the rest must be rejected: */
++	default:
++		err = __check_ptr_off_reg(env, reg, regno,
++					  type == PTR_TO_BTF_ID);
+ 		if (err < 0)
+ 			return err;
++		break;
+ 	}
  
--int mtk_clk_register_muxes(const struct mtk_mux *muxes,
-+int mtk_clk_register_muxes(struct device *dev,
-+			   const struct mtk_mux *muxes,
- 			   int num, struct device_node *node,
- 			   spinlock_t *lock,
- 			   struct clk_hw_onecell_data *clk_data);
--- 
-2.43.0
-
+ skip_type_check:
 
 
 
