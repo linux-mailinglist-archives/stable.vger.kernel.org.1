@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-41284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2F18AFB04
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A348AFAD0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB62928566D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:53:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3569C1F29748
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4EA148FE5;
-	Tue, 23 Apr 2024 21:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD5714A63C;
+	Tue, 23 Apr 2024 21:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWHgWbmb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzEPpMmj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A430143C6C;
-	Tue, 23 Apr 2024 21:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF1A143C5F;
+	Tue, 23 Apr 2024 21:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908803; cv=none; b=LjDbUlA/ZNkrk8U/uarsr5+IF3rO9Rr8YhN/midMgoUwsLJAuFNsa+ZgxepaTRA0ouRbhpC48s4hYjq+8q95TrTobRUUdkUfoE8SCMgSGYvEY97lJJnVxspKLJf96vzAtCqleWB0wYdnieWeukdAdD3Q15zT96DpoJ9x3C3RhyI=
+	t=1713908765; cv=none; b=t/ZDSnfkBzMCn7mUlNWrwUjmfLtw4pkbRiNn8P/NNHqEtukqBWsnJMDDrHCnTOoQ3iy7iU9y7HNcGji4QPapgM9QBiIi9em3dhxOLDYgrx+fYhQ0qV22SVgaBYEGg8LDl+2K+P86GK1mYXqTnFI/eDEvv17zLsYNJk6+hVo86qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908803; c=relaxed/simple;
-	bh=i4M377JLWPQWNwOdhIoY2L0K21T3LbQ/hHa0idxbu7M=;
+	s=arc-20240116; t=1713908765; c=relaxed/simple;
+	bh=wYyBywTJzTpLzlrYIHHu4i586AWslnQN6xsGRXChDNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqHybIwVsQsvxGI0aGTSuTULKSP0JSFmhsC8SClVpZveHRP1giLgnNK+Kkh5+2DyyVZ7ytEYJnf9Cbr3+PkBv8ZTXDKWvQxQFZ99LbbOg06AFzQXEdjRAXKkyopLJGCZfw/l2ZhWpq4JwWrDFAOo8BTo8Jyb5ThDegz8iZikcxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWHgWbmb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF282C116B1;
-	Tue, 23 Apr 2024 21:46:42 +0000 (UTC)
+	 MIME-Version; b=r5wGwnkQzTMbR2euyLJmOAhk6dt5Mx//sYfv4lPRXGF+9DG0Lgbz3WVb7iJL6pZ3a8k7unfOAm2bRUPv9aHRhXiF9iHPcWOUNAAShSVlMvP1OIJhhxxiisDMCd/KXzE5OVsP2vJCXKN8Yh8sR9IgA+T0+cpJ3Z4cAg928+dhQkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzEPpMmj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D24C4AF08;
+	Tue, 23 Apr 2024 21:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908803;
-	bh=i4M377JLWPQWNwOdhIoY2L0K21T3LbQ/hHa0idxbu7M=;
+	s=korg; t=1713908765;
+	bh=wYyBywTJzTpLzlrYIHHu4i586AWslnQN6xsGRXChDNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wWHgWbmbCZ2W377xbPWp3j4LBQdrZeKAtyPidBHJ4Dvhn398DTioT/IztuaGr5IY7
-	 s8MRPNWw/3xi8A7yFqyqXb2XohZD2E3Mr8egpjjdGvWtLwiz2GOV2oU0nKlFiWYPKf
-	 T/M+9OOvfLBZ/Mzjq59eUv2SAg4rdyEJSjJcMyRg=
+	b=wzEPpMmjufIRDjVEl7mtp6+5zDq4FktIIFNPcsQbxIugz7/PaqYMsk/Z/0UkVC+nc
+	 VDwtsFTBBnlYKYi4jCD17h5WY1oN/qjKjtIb3flsFb6u+ZsqTlgJs+I9U92+qWWlD3
+	 k8n90yIcnzhsPHBHQWvJ3S+pbHfKmUnv6o+/L53E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 5.15 53/71] usb: dwc2: host: Fix dereference issue in DDMA completion flow.
-Date: Tue, 23 Apr 2024 14:40:06 -0700
-Message-ID: <20240423213846.010098229@linuxfoundation.org>
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 139/141] ksmbd: clear RENAME_NOREPLACE before calling vfs_rename
+Date: Tue, 23 Apr 2024 14:40:07 -0700
+Message-ID: <20240423213857.731684068@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-commit eed04fa96c48790c1cce73c8a248e9d460b088f8 upstream.
+commit 4973b04d3ea577db80c501c5f14e68ec69fe1794 upstream.
 
-Fixed variable dereference issue in DDMA completion flow.
+File overwrite case is explicitly handled, so it is not necessary to
+pass RENAME_NOREPLACE to vfs_rename.
 
-Fixes: b258e4268850 ("usb: dwc2: host: Fix ISOC flow in DDMA mode")
-CC: stable@vger.kernel.org
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-usb/2024040834-ethically-rumble-701f@gregkh/T/#m4c4b83bef0ebb4b67fe2e0a7d6466cbb6f416e39
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/cc826d3ef53c934d8e6d98870f17f3cdc3d2755d.1712665387.git.Minas.Harutyunyan@synopsys.com
+Clearing the flag fixes rename operations when the share is a ntfs-3g
+mount. The latter uses an older version of fuse with no support for
+flags in the ->rename op.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd_ddma.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/smb/server/vfs.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/dwc2/hcd_ddma.c
-+++ b/drivers/usb/dwc2/hcd_ddma.c
-@@ -897,13 +897,15 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- 	struct dwc2_dma_desc *dma_desc;
- 	struct dwc2_hcd_iso_packet_desc *frame_desc;
- 	u16 frame_desc_idx;
--	struct urb *usb_urb = qtd->urb->priv;
-+	struct urb *usb_urb;
- 	u16 remain = 0;
- 	int rc = 0;
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -746,10 +746,15 @@ retry:
+ 		goto out4;
+ 	}
  
- 	if (!qtd->urb)
- 		return -EINVAL;
++	/*
++	 * explicitly handle file overwrite case, for compatibility with
++	 * filesystems that may not support rename flags (e.g: fuse)
++	 */
+ 	if ((flags & RENAME_NOREPLACE) && d_is_positive(new_dentry)) {
+ 		err = -EEXIST;
+ 		goto out4;
+ 	}
++	flags &= ~(RENAME_NOREPLACE);
  
-+	usb_urb = qtd->urb->priv;
-+
- 	dma_sync_single_for_cpu(hsotg->dev, qh->desc_list_dma + (idx *
- 				sizeof(struct dwc2_dma_desc)),
- 				sizeof(struct dwc2_dma_desc),
+ 	if (old_child == trap) {
+ 		err = -EINVAL;
 
 
 
