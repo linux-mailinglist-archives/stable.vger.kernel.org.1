@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-41051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F658AFA29
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305A98AFA97
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D92801F29208
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6237B1C23395
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5304D149002;
-	Tue, 23 Apr 2024 21:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2DD145B01;
+	Tue, 23 Apr 2024 21:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTXGozjv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3QLsfF0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD8A148FFE;
-	Tue, 23 Apr 2024 21:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7985D143882;
+	Tue, 23 Apr 2024 21:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908644; cv=none; b=PzGdigAf0blXmgglIwesPNy4MTs5GhPeyWl9M1TSHzvyd2H2N0ohkk2o3hU1fMSZ0jB3rz4VD4Ec+RnaIODJOmdqG0gv7dG15QpWA5Q42CAhZRaSCMhQ9vLbq80eBJz4NzFWT23ZCZaKo7NvchC2c2KDKzvchkkFsWAukLiVp9w=
+	t=1713908731; cv=none; b=RsmuL8YWFVy88uxtyYZ0XgWSWTY9mmpC2d2IJwPE3dKl9sWV5pfCfY8HhZWM8NGOuoHvuOoj8zyKJlzpXV8PPjnlihnqMABbwk4GkK3o0l07hc5hVa+5hxNx+PEt0zGBFL7/f5KcFNyF85K459xUHhTMC2XhuC5LR31mskPaqGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908644; c=relaxed/simple;
-	bh=Um5eHGoHogJmkCmxEJy5Zv+R8RiPE1jyrm6MFGiMc/8=;
+	s=arc-20240116; t=1713908731; c=relaxed/simple;
+	bh=Q2j2BRDL1F+dUYkNzS5URkHFpyLo9iiaW6t7bjnu0Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZnUm6ymBI3HzPuQj3Cic46TyiGK9+vJsMdzTj5XJ8N0gSFdcwtHo5xQLLTtUH99RrdXarNZ/ODwFT7KjO5jBVmx0F7HqnRULxUYV5idxi4hnq0fRuheh18rFyVDYMum/w0aHuicGejU+tWJcILErpK5CLSSzzK5O+L4bYklEC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTXGozjv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B89C32781;
-	Tue, 23 Apr 2024 21:44:03 +0000 (UTC)
+	 MIME-Version; b=sHvvA7F0t6PQDtz228tydgwTskw87+uvcREUQu7xxUquqzBPgHz0RTBXdRnMmQo5LGYz07EhDYk/B1Wi6p9XQB7W0RbsYXZVLBQ1Cymo3kJROdkWwh9UIlSTCB2hMwkWzyULtRdmzKfNSGYVKSdqxEU1oFd/TsiX1xBEHHF75Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3QLsfF0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CD8C32783;
+	Tue, 23 Apr 2024 21:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908643;
-	bh=Um5eHGoHogJmkCmxEJy5Zv+R8RiPE1jyrm6MFGiMc/8=;
+	s=korg; t=1713908731;
+	bh=Q2j2BRDL1F+dUYkNzS5URkHFpyLo9iiaW6t7bjnu0Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTXGozjvAtTBEwk4kkeNpS1OjPuDon3IMwhifyiic/7KmJBs41KOe41pdJWUdYrsS
-	 KaOjNBAVnQg/gMbKNbMPm5eTRyAze0HKwgy4UEvc44coYlnTjKk0sXMSyeFRyorx3V
-	 98El68dEDeRe3jKgOB+rLmnoKGOOkz9K2SBDSpGI=
+	b=q3QLsfF0YImJf0f1/mix9Bm8QsQKBV2Iv+OL3c8ElrWXyM9SzkKANoum3puvMX2wZ
+	 LOT6XTCLBPR2Nne4Pwri/hfDxW8uuhbEE+/fGrhRhmvowx+lTicjZfzhHOZrmsHhyJ
+	 /N/2qnnvQvaAXNjhMlQR0UC/rNua+RJ/nF8Pb7SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"levi.yun" <yeoreum.yun@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Ingo Molnar <mingo@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.6 128/158] sched: Add missing memory barrier in switch_mm_cid
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 097/141] x86/bugs: Fix BHI retpoline check
 Date: Tue, 23 Apr 2024 14:39:25 -0700
-Message-ID: <20240423213859.877247363@linuxfoundation.org>
+Message-ID: <20240423213856.321383804@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit fe90f3967bdb3e13f133e5f44025e15f943a99c5 upstream.
+[ Upstream commit 69129794d94c544810e68b2b4eaa7e44063f9bf2 ]
 
-Many architectures' switch_mm() (e.g. arm64) do not have an smp_mb()
-which the core scheduler code has depended upon since commit:
+Confusingly, X86_FEATURE_RETPOLINE doesn't mean retpolines are enabled,
+as it also includes the original "AMD retpoline" which isn't a retpoline
+at all.
 
-    commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
+Also replace cpu_feature_enabled() with boot_cpu_has() because this is
+before alternatives are patched and cpu_feature_enabled()'s fallback
+path is slower than plain old boot_cpu_has().
 
-If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear() can
-unset the actively used cid when it fails to observe active task after it
-sets lazy_put.
-
-There *is* a memory barrier between storing to rq->curr and _return to
-userspace_ (as required by membarrier), but the rseq mm_cid has stricter
-requirements: the barrier needs to be issued between store to rq->curr
-and switch_mm_cid(), which happens earlier than:
-
-  - spin_unlock(),
-  - switch_to().
-
-So it's fine when the architecture switch_mm() happens to have that
-barrier already, but less so when the architecture only provides the
-full barrier in switch_to() or spin_unlock().
-
-It is a bug in the rseq switch_mm_cid() implementation. All architectures
-that don't have memory barriers in switch_mm(), but rather have the full
-barrier either in finish_lock_switch() or switch_to() have them too late
-for the needs of switch_mm_cid().
-
-Introduce a new smp_mb__after_switch_mm(), defined as smp_mb() in the
-generic barrier.h header, and use it in switch_mm_cid() for scheduler
-transitions where switch_mm() is expected to provide a memory barrier.
-
-Architectures can override smp_mb__after_switch_mm() if their
-switch_mm() implementation provides an implicit memory barrier.
-Override it with a no-op on x86 which implicitly provide this memory
-barrier by writing to CR3.
-
-Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-Reported-by: levi.yun <yeoreum.yun@arm.com>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com> # for arm64
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # for x86
-Cc: <stable@vger.kernel.org> # 6.4.x
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240415152114.59122-2-mathieu.desnoyers@efficios.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/ad3807424a3953f0323c011a643405619f2a4927.1712944776.git.jpoimboe@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/barrier.h |    3 +++
- include/asm-generic/barrier.h  |    8 ++++++++
- kernel/sched/sched.h           |   20 ++++++++++++++------
- 3 files changed, 25 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/arch/x86/include/asm/barrier.h
-+++ b/arch/x86/include/asm/barrier.h
-@@ -79,6 +79,9 @@ do {									\
- #define __smp_mb__before_atomic()	do { } while (0)
- #define __smp_mb__after_atomic()	do { } while (0)
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 6d69123de3660..3f38592ec7713 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1629,7 +1629,8 @@ static void __init bhi_select_mitigation(void)
+ 		return;
  
-+/* Writing to CR3 provides a full memory barrier in switch_mm(). */
-+#define smp_mb__after_switch_mm()	do { } while (0)
-+
- #include <asm-generic/barrier.h>
- 
- #endif /* _ASM_X86_BARRIER_H */
---- a/include/asm-generic/barrier.h
-+++ b/include/asm-generic/barrier.h
-@@ -296,5 +296,13 @@ do {									\
- #define io_stop_wc() do { } while (0)
- #endif
- 
-+/*
-+ * Architectures that guarantee an implicit smp_mb() in switch_mm()
-+ * can override smp_mb__after_switch_mm.
-+ */
-+#ifndef smp_mb__after_switch_mm
-+# define smp_mb__after_switch_mm()	smp_mb()
-+#endif
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* __ASM_GENERIC_BARRIER_H */
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -88,6 +88,8 @@
- # include <asm/paravirt_api_clock.h>
- #endif
- 
-+#include <asm/barrier.h>
-+
- #include "cpupri.h"
- #include "cpudeadline.h"
- 
-@@ -3500,13 +3502,19 @@ static inline void switch_mm_cid(struct
- 		 * between rq->curr store and load of {prev,next}->mm->pcpu_cid[cpu].
- 		 * Provide it here.
- 		 */
--		if (!prev->mm)                          // from kernel
-+		if (!prev->mm) {                        // from kernel
- 			smp_mb();
--		/*
--		 * user -> user transition guarantees a memory barrier through
--		 * switch_mm() when current->mm changes. If current->mm is
--		 * unchanged, no barrier is needed.
--		 */
-+		} else {				// from user
-+			/*
-+			 * user->user transition relies on an implicit
-+			 * memory barrier in switch_mm() when
-+			 * current->mm changes. If the architecture
-+			 * switch_mm() does not have an implicit memory
-+			 * barrier, it is emitted here.  If current->mm
-+			 * is unchanged, no barrier is needed.
-+			 */
-+			smp_mb__after_switch_mm();
-+		}
- 	}
- 	if (prev->mm_cid_active) {
- 		mm_cid_snapshot_time(rq, prev->mm);
+ 	/* Retpoline mitigates against BHI unless the CPU has RRSBA behavior */
+-	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE)) {
++	if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
++	    !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE)) {
+ 		spec_ctrl_disable_kernel_rrsba();
+ 		if (rrsba_disabled)
+ 			return;
+@@ -2783,11 +2784,13 @@ static const char *spectre_bhi_state(void)
+ {
+ 	if (!boot_cpu_has_bug(X86_BUG_BHI))
+ 		return "; BHI: Not affected";
+-	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
++	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
+ 		return "; BHI: BHI_DIS_S";
+-	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
++	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
+ 		return "; BHI: SW loop, KVM: SW loop";
+-	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) && rrsba_disabled)
++	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
++		 !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE) &&
++		 rrsba_disabled)
+ 		return "; BHI: Retpoline";
+ 	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
+ 		return "; BHI: Vulnerable, KVM: SW loop";
+-- 
+2.43.0
+
 
 
 
