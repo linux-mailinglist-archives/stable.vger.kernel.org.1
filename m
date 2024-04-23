@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BDA8AFA40
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F308AFB20
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F0AC1F2929D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D131B2C1C1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC481494B9;
-	Tue, 23 Apr 2024 21:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3564A14A4EB;
+	Tue, 23 Apr 2024 21:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZ2Pe0F/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugvQ0E9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D22A1494B3;
-	Tue, 23 Apr 2024 21:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82D314A4E0;
+	Tue, 23 Apr 2024 21:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908663; cv=none; b=p444CVu0jcMhqb8KHO5OpyKeIcfM28ebXhgYhNkL6dkbxJW1PbQ052Y06YpsL9uC8dRfuwuJiWoDJhBSsPotS+Zigu+QuLVTdnr4wC8RQip+tquboQlYAlU/NXDNfM/w2cKE6jOdc3wznxvNCi3DConlyAMEvlnLgoVn0qBRT5g=
+	t=1713908751; cv=none; b=qcAc73x/rhAlURF2OFjBdtfi+6OBY+9LfK0EHnOrxby0iSeXcPjDUsqtJYc57Ir1kbT00w7XM1djJNw3CItaTbJe+HVWy82Tj2sK1OPFyRABf5gY5tsY9ZO3RouRr9GQKUCc+tauLDI2ITUXxUTo1gkXoGWNQdK35OPz8GfmuOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908663; c=relaxed/simple;
-	bh=W/yhIfUc+d6gGlt2kHry4rFirmpCqcZypVD8jzwCiwU=;
+	s=arc-20240116; t=1713908751; c=relaxed/simple;
+	bh=H6Peiw2WiHhxqz9oHdfyT6l7fpxwnyuXisW3x1HF6E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1i+W9GrUO0brr3Scxs4MBJdeQsLHllZtnYQIUfRjQHXS7w/EFZVBjkdyYME2McYkeWaKePA2BNyPftJDhG5EMzYDiSCny3eVkeYye1hTHvmPgWnKJnZ4b7CzLk4bp6LuLb3GuUf1LWIIRbFRGjLl+sJY/OSl1+pa1GWFItCxsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZ2Pe0F/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142A1C116B1;
-	Tue, 23 Apr 2024 21:44:23 +0000 (UTC)
+	 MIME-Version; b=Dx/L81tsp7slMcuN4F0FhFO8IZUXvAyiF7+a814Qo2nTBLjjevUFJiRZ0/i3WqGFCZ+isoHUiG+9SZEn7uPcaFvZ08fk4liLQ8A/uiren367KWhtMutcH+uIjdAFmts5mMHc9CqZmMJioLy+IjVnyWe5JzwpJmumCO1zeaneyck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugvQ0E9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7365FC32783;
+	Tue, 23 Apr 2024 21:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908663;
-	bh=W/yhIfUc+d6gGlt2kHry4rFirmpCqcZypVD8jzwCiwU=;
+	s=korg; t=1713908750;
+	bh=H6Peiw2WiHhxqz9oHdfyT6l7fpxwnyuXisW3x1HF6E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZ2Pe0F/ZQJX/+YdP3PRQxulGA2KSyNadXIc5OiR2EQRLorfxNgtFdya5ht4N+WrR
-	 1hVJtnFUAXI0J/LllHails09GJWrZ6kS12/0puyAtdgvznWWQbMoRVkntuYXrJ6osV
-	 XqpYUmVij/L2I+k8OjFWbdW43WudC2ByorNN7sj4=
+	b=ugvQ0E9sGIEJqONtSka/1J7Ar5n+OVy4cmJH62v1UfGWlvP4V2qnzgGXOZE9xdQOs
+	 TDA4cL7Fa3iWvcByS0MUyMv0PSxKDuxr0T0B4Fd0qnC0QITy6Z4ZCjL2Z8PtiN+Yc1
+	 OOmFAZlDUw8dKxUjd44Cvh9y7fWW5hPSPsERXlRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 156/158] ksmbd: clear RENAME_NOREPLACE before calling vfs_rename
+	Yuntao Wang <ytcoode@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.1 125/141] init/main.c: Fix potential static_command_line memory overflow
 Date: Tue, 23 Apr 2024 14:39:53 -0700
-Message-ID: <20240423213900.729293413@linuxfoundation.org>
+Message-ID: <20240423213857.262698649@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Yuntao Wang <ytcoode@gmail.com>
 
-commit 4973b04d3ea577db80c501c5f14e68ec69fe1794 upstream.
+commit 46dad3c1e57897ab9228332f03e1c14798d2d3b9 upstream.
 
-File overwrite case is explicitly handled, so it is not necessary to
-pass RENAME_NOREPLACE to vfs_rename.
+We allocate memory of size 'xlen + strlen(boot_command_line) + 1' for
+static_command_line, but the strings copied into static_command_line are
+extra_command_line and command_line, rather than extra_command_line and
+boot_command_line.
 
-Clearing the flag fixes rename operations when the share is a ntfs-3g
-mount. The latter uses an older version of fuse with no support for
-flags in the ->rename op.
+When strlen(command_line) > strlen(boot_command_line), static_command_line
+will overflow.
 
+This patch just recovers strlen(command_line) which was miss-consolidated
+with strlen(boot_command_line) in the commit f5c7310ac73e ("init/main: add
+checks for the return value of memblock_alloc*()")
+
+Link: https://lore.kernel.org/all/20240412081733.35925-2-ytcoode@gmail.com/
+
+Fixes: f5c7310ac73e ("init/main: add checks for the return value of memblock_alloc*()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ init/main.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -745,10 +745,15 @@ retry:
- 		goto out4;
- 	}
+--- a/init/main.c
++++ b/init/main.c
+@@ -633,6 +633,8 @@ static void __init setup_command_line(ch
+ 	if (!saved_command_line)
+ 		panic("%s: Failed to allocate %zu bytes\n", __func__, len + ilen);
  
-+	/*
-+	 * explicitly handle file overwrite case, for compatibility with
-+	 * filesystems that may not support rename flags (e.g: fuse)
-+	 */
- 	if ((flags & RENAME_NOREPLACE) && d_is_positive(new_dentry)) {
- 		err = -EEXIST;
- 		goto out4;
- 	}
-+	flags &= ~(RENAME_NOREPLACE);
- 
- 	if (old_child == trap) {
- 		err = -EINVAL;
++	len = xlen + strlen(command_line) + 1;
++
+ 	static_command_line = memblock_alloc(len, SMP_CACHE_BYTES);
+ 	if (!static_command_line)
+ 		panic("%s: Failed to allocate %zu bytes\n", __func__, len);
 
 
 
