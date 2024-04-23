@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-40815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C258AF92D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0D38AF9C7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51E3F1F23394
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99CF41F27BB4
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B551448CD;
-	Tue, 23 Apr 2024 21:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83675146D4C;
+	Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlJ+guMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLYWxcC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92B820B3E;
-	Tue, 23 Apr 2024 21:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426BC143C4D;
+	Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908481; cv=none; b=MNRptV4C2bLHH1i3jh1INX27cuVxfVVJnK2dsG/tRg/d6kpoY+GAhshuCZir1LQ3WA3tHx4j22A7fzxKF+2JCd0noPkdPFKFxlf07Vq2EHc7sMoVK5tNmPkyVHUI1yrJA2YPOWiBX1s2vXKCkBKurc6UvO+IcQjSeibKB7TO7Zs=
+	t=1713908582; cv=none; b=PuPF2bft16LggSmff9Tz+eGF8qOt5d5xbp+whvzBQyCmK0X9C4kZ6wyxqWAyBAHnDjOJqSaSNQ1cFsrGAVsRhU6WS9V5hBpJruZ9LbImK3GMiKvL1CqAspys08zRDtEQIXDsRuTcv3Hj/jPpwKw+d6TIzwbpACIBbO20kozycAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908481; c=relaxed/simple;
-	bh=rh0EPYZYL7MHCpy9Z2Z2MiqnZU5m1v4BJKtvespapMU=;
+	s=arc-20240116; t=1713908582; c=relaxed/simple;
+	bh=BIZvpLMvgjw3uQjx89AJtMYdCwd+hFLgMGi+EG1anCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WDzjeYU5g8Ct0H0iAHVUdILQpEGJRROpMAiPQeg5m6efWP6ln72DS+OyRtx1r32pVd9M2lnUy0bcR0mghPA0Toii/1qS6d8gioo4ofiUUWcAdlvl0tBdScL0nsAW5F1d5zymugXG2xkCMYYVVsMtUX9CXutPIPcbTm3P0UheHrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlJ+guMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F073C32781;
-	Tue, 23 Apr 2024 21:41:21 +0000 (UTC)
+	 MIME-Version; b=Hd5tG0D9eWX6YuVpGcXpkDu/k3VlUW6Yy6sD0zgLgus2Lw+smaUop1sHxiv/X+FCahyypBoHGRzASnv0ePNfArcSL/HUNkAsYHkiiKB/sCcwZoEsEO2Rd7LdX/rHvlOndeS3AjiKIojQ1se3RAaKhkJuXxAjABNtUFSyXp5GgUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLYWxcC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C36C3277B;
+	Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908481;
-	bh=rh0EPYZYL7MHCpy9Z2Z2MiqnZU5m1v4BJKtvespapMU=;
+	s=korg; t=1713908582;
+	bh=BIZvpLMvgjw3uQjx89AJtMYdCwd+hFLgMGi+EG1anCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlJ+guMz2PciBZzkF7XWDwqXIHt9/aOyabRNm9U1eibWpctvXiwp1fwjls/NOoYTZ
-	 SVSVYc5nDHCMhOM0w7mU3dXFx3FGv4ZTNwL1HiKQRDW+KMgdVVt3t+AH0TkzhnKyAy
-	 CseWAunZHEXZGq83kR/hycEjLzhbI0eB71EOtgSc=
+	b=TLYWxcC3Y7EdOeVHGNkEs9snbSfWA1b1mci5jwFV3PhqLwPki0eqlB03qegZ1fd7r
+	 0l/mg28KHtlFS4v/yCH88qh69aiqrptjwqdpLo8ALVLsgvgLA5QO/hQuatj+YGq6V2
+	 IPXk8geoDTMwUltv4mkk7z6njpdANaVYPsJu2UJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+b6f07e1c07ef40199081@syzkaller.appspotmail.com,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 051/158] net: ravb: Count packets instead of descriptors in R-Car RX path
-Date: Tue, 23 Apr 2024 14:37:53 -0700
-Message-ID: <20240423213857.577261381@linuxfoundation.org>
+Subject: [PATCH 6.6 037/158] netfilter: flowtable: validate pppoe header
+Date: Tue, 23 Apr 2024 14:37:54 -0700
+Message-ID: <20240423213856.955643934@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +60,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit def52db470df28d6f43cacbd21137f03b9502073 ]
+[ Upstream commit 87b3593bed1868b2d9fe096c01bcdf0ea86cbebf ]
 
-The units of "work done" in the RX path should be packets instead of
-descriptors.
+Ensure there is sufficient room to access the protocol field of the
+PPPoe header. Validate it once before the flowtable lookup, then use a
+helper function to access protocol field.
 
-Descriptors which are used by the hardware to record error conditions or
-are empty in the case of a DMA mapping error should not count towards
-our RX work budget.
-
-Also make the limit variable unsigned as it can never be negative.
-
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+b6f07e1c07ef40199081@syzkaller.appspotmail.com
+Fixes: 72efd585f714 ("netfilter: flowtable: add pppoe support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ include/net/netfilter/nf_flow_table.h | 12 +++++++++++-
+ net/netfilter/nf_flow_table_inet.c    |  3 ++-
+ net/netfilter/nf_flow_table_ip.c      |  8 +++++---
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index e97c98d5eb19c..60c1cfc501304 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -895,29 +895,24 @@ static bool ravb_rx_rcar(struct net_device *ndev, int *quota, int q)
- 	struct ravb_private *priv = netdev_priv(ndev);
- 	const struct ravb_hw_info *info = priv->info;
- 	int entry = priv->cur_rx[q] % priv->num_rx_ring[q];
--	int boguscnt = (priv->dirty_rx[q] + priv->num_rx_ring[q]) -
--			priv->cur_rx[q];
- 	struct net_device_stats *stats = &priv->stats[q];
- 	struct ravb_ex_rx_desc *desc;
-+	unsigned int limit, i;
- 	struct sk_buff *skb;
- 	dma_addr_t dma_addr;
- 	struct timespec64 ts;
-+	int rx_packets = 0;
- 	u8  desc_status;
- 	u16 pkt_len;
--	int limit;
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index 4a767b3d20b9d..df7775afb92b9 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -335,7 +335,7 @@ int nf_flow_rule_route_ipv6(struct net *net, struct flow_offload *flow,
+ int nf_flow_table_offload_init(void);
+ void nf_flow_table_offload_exit(void);
  
--	boguscnt = min(boguscnt, *quota);
--	limit = boguscnt;
-+	limit = priv->dirty_rx[q] + priv->num_rx_ring[q] - priv->cur_rx[q];
- 	desc = &priv->rx_ring[q].ex_desc[entry];
--	while (desc->die_dt != DT_FEMPTY) {
-+	for (i = 0; i < limit && rx_packets < *quota && desc->die_dt != DT_FEMPTY; i++) {
- 		/* Descriptor type must be checked before all other reads */
- 		dma_rmb();
- 		desc_status = desc->msc;
- 		pkt_len = le16_to_cpu(desc->ds_cc) & RX_DS;
+-static inline __be16 nf_flow_pppoe_proto(const struct sk_buff *skb)
++static inline __be16 __nf_flow_pppoe_proto(const struct sk_buff *skb)
+ {
+ 	__be16 proto;
  
--		if (--boguscnt < 0)
--			break;
--
- 		/* We use 0-byte descriptors to mark the DMA mapping errors */
- 		if (!pkt_len)
- 			continue;
-@@ -963,7 +958,7 @@ static bool ravb_rx_rcar(struct net_device *ndev, int *quota, int q)
- 			if (ndev->features & NETIF_F_RXCSUM)
- 				ravb_rx_csum(skb);
- 			napi_gro_receive(&priv->napi[q], skb);
--			stats->rx_packets++;
-+			rx_packets++;
- 			stats->rx_bytes += pkt_len;
- 		}
- 
-@@ -999,9 +994,9 @@ static bool ravb_rx_rcar(struct net_device *ndev, int *quota, int q)
- 		desc->die_dt = DT_FEMPTY;
- 	}
- 
--	*quota -= limit - (++boguscnt);
--
--	return boguscnt <= 0;
-+	stats->rx_packets += rx_packets;
-+	*quota -= rx_packets;
-+	return *quota == 0;
+@@ -351,6 +351,16 @@ static inline __be16 nf_flow_pppoe_proto(const struct sk_buff *skb)
+ 	return 0;
  }
  
- /* Packet receive function for Ethernet AVB */
++static inline bool nf_flow_pppoe_proto(struct sk_buff *skb, __be16 *inner_proto)
++{
++	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
++		return false;
++
++	*inner_proto = __nf_flow_pppoe_proto(skb);
++
++	return true;
++}
++
+ #define NF_FLOW_TABLE_STAT_INC(net, count) __this_cpu_inc((net)->ft.stat->count)
+ #define NF_FLOW_TABLE_STAT_DEC(net, count) __this_cpu_dec((net)->ft.stat->count)
+ #define NF_FLOW_TABLE_STAT_INC_ATOMIC(net, count)	\
+diff --git a/net/netfilter/nf_flow_table_inet.c b/net/netfilter/nf_flow_table_inet.c
+index 9505f9d188ff2..6eef15648b7b0 100644
+--- a/net/netfilter/nf_flow_table_inet.c
++++ b/net/netfilter/nf_flow_table_inet.c
+@@ -21,7 +21,8 @@ nf_flow_offload_inet_hook(void *priv, struct sk_buff *skb,
+ 		proto = veth->h_vlan_encapsulated_proto;
+ 		break;
+ 	case htons(ETH_P_PPP_SES):
+-		proto = nf_flow_pppoe_proto(skb);
++		if (!nf_flow_pppoe_proto(skb, &proto))
++			return NF_ACCEPT;
+ 		break;
+ 	default:
+ 		proto = skb->protocol;
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index e45fade764096..9e9e105052dae 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -273,10 +273,11 @@ static unsigned int nf_flow_xmit_xfrm(struct sk_buff *skb,
+ 	return NF_STOLEN;
+ }
+ 
+-static bool nf_flow_skb_encap_protocol(const struct sk_buff *skb, __be16 proto,
++static bool nf_flow_skb_encap_protocol(struct sk_buff *skb, __be16 proto,
+ 				       u32 *offset)
+ {
+ 	struct vlan_ethhdr *veth;
++	__be16 inner_proto;
+ 
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_8021Q):
+@@ -287,7 +288,8 @@ static bool nf_flow_skb_encap_protocol(const struct sk_buff *skb, __be16 proto,
+ 		}
+ 		break;
+ 	case htons(ETH_P_PPP_SES):
+-		if (nf_flow_pppoe_proto(skb) == proto) {
++		if (nf_flow_pppoe_proto(skb, &inner_proto) &&
++		    inner_proto == proto) {
+ 			*offset += PPPOE_SES_HLEN;
+ 			return true;
+ 		}
+@@ -316,7 +318,7 @@ static void nf_flow_encap_pop(struct sk_buff *skb,
+ 			skb_reset_network_header(skb);
+ 			break;
+ 		case htons(ETH_P_PPP_SES):
+-			skb->protocol = nf_flow_pppoe_proto(skb);
++			skb->protocol = __nf_flow_pppoe_proto(skb);
+ 			skb_pull(skb, PPPOE_SES_HLEN);
+ 			skb_reset_network_header(skb);
+ 			break;
 -- 
 2.43.0
 
