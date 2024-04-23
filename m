@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-40787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E768AF910
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8338AF9B2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20B3D1C20DF8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7700E28A776
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C029A143C45;
-	Tue, 23 Apr 2024 21:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD603145FE3;
+	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R340piPB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvcNf0pz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E09714389A;
-	Tue, 23 Apr 2024 21:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1251420BE;
+	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908462; cv=none; b=qQ+ksYoe5tY6yJTh+WijGKU9AxLpvWAPLKQZO+LGUb7eu9mhlpakYnvDtDwGMzpT1dk/EvPkBrkmaiKdQbf3Zser01qVL/509i47fgnUfGnT9rMk2wmCKYPk8ifMlLOEKOhYMj5mnGIjCvkz9Ga8qBBovsRd8vJjfzRnwYk2Z/Y=
+	t=1713908571; cv=none; b=jm6RTp+gbirYhpHZlX1fWJyFrctH9pOX+Vsyi6pKO1WgdSKqm0rOh1kcEzj6MDQ+sjwdhOtfziLoJsgKtGpICHgn/SYKA4YjtLZQUAwrflcKw+7q6ycBMWE8fhMwslONY6g5vZX6FG+wqE2etdqurgnRlL0/Z0SITm0ptfSwNvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908462; c=relaxed/simple;
-	bh=XLPcgZOn8sGpiG0PuoIZ4cyfzZ62gdRYO4zOc9RL34I=;
+	s=arc-20240116; t=1713908571; c=relaxed/simple;
+	bh=7xbKKTS3xQmpwzOOyW9+2Ua+CDOqX+kPFYvCxu5LfAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4FsJH4fs3hvHun02Jb0hfinZVb5Uru+QzC6fwJjkVBN5E/M5YQWhnnAZJ+rv1J9zjCnafm2gfMPenfWzzYfw18JkKyp8lFmVNyyVN2z/EDWJ8oMfrmS7/FipzPTr0WtZGP873C+i1wz122qQq0BR2H4tS90NZ1c+VadOsAcC/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R340piPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A22C3277B;
-	Tue, 23 Apr 2024 21:41:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F9ErD3xSqkIwAFatkx7NjEu4vjmI9zH8+R9bHT4fjxkEAQ7DlnOruxdqNF5jt3wFZ3TEyxFks28Ls49m5KYQk4FrCS9zmKIuBm9V4Mrk34CBp8FPenNczMISLbEzNHQOHtu0P1VcZbrS2tWcypDwF0T8r+3SYQpH1zSbAa+7zpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvcNf0pz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CF8C3277B;
+	Tue, 23 Apr 2024 21:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908462;
-	bh=XLPcgZOn8sGpiG0PuoIZ4cyfzZ62gdRYO4zOc9RL34I=;
+	s=korg; t=1713908571;
+	bh=7xbKKTS3xQmpwzOOyW9+2Ua+CDOqX+kPFYvCxu5LfAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R340piPBALBXD6wONqA21JT5rFhXvO1F7xWIc1+7gYN9u90tNfG/IbnS8oBNdFbTW
-	 KmwuX6hVku+I0lgIkpxHBk6/+gvtWaexMaICIDtP24nHufwI7u5tWp8R9Of+ivGhTD
-	 jTsl5XeSFCO/GH5NF4cl7BulyAhxofwGg7k6haCI=
+	b=DvcNf0pz10wupG4StoCS7k+aByvq5thQrvhTnvtSt+JfPIK8cytf8PSThWVX9BE18
+	 f1I93UhdOcBZbWR1thXZ7eLUgFhQPrb/PDebuzyLKXC6UUwPKLKdbloN76hOY3yOlQ
+	 QNvRJ+EV973lYu49bR4e1NCGh85d0Hixc120HspE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Uma Shankar <uma.shankar@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 023/158] af_unix: Dont peek OOB data without MSG_OOB.
+Subject: [PATCH 6.6 008/158] drm/i915/cdclk: Fix voltage_level programming edge case
 Date: Tue, 23 Apr 2024 14:37:25 -0700
-Message-ID: <20240423213856.626841769@linuxfoundation.org>
+Message-ID: <20240423213855.976722633@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +62,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 22dd70eb2c3d754862964377a75abafd3167346b ]
+[ Upstream commit 6154cc9177ccea00c89ce0bf93352e474b819ff2 ]
 
-Currently, we can read OOB data without MSG_OOB by using MSG_PEEK
-when OOB data is sitting on the front row, which is apparently
-wrong.
+Currently we only consider the relationship of the
+old and new CDCLK frequencies when determining whether
+to do the repgramming from intel_set_cdclk_pre_plane_update()
+or intel_set_cdclk_post_plane_update().
 
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'a', MSG_OOB)
-  1
-  >>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-  b'a'
+It is technically possible to have a situation where the
+CDCLK frequency is decreasing, but the voltage_level is
+increasing due a DDI port. In this case we should bump
+the voltage level already in intel_set_cdclk_pre_plane_update()
+(so that the voltage_level will have been increased by the
+time the port gets enabled), while leaving the CDCLK frequency
+unchanged (as active planes/etc. may still depend on it).
+We can then reduce the CDCLK frequency to its final value
+from intel_set_cdclk_post_plane_update().
 
-If manage_oob() is called when no data has been copied, we only
-check if the socket enables SO_OOBINLINE or MSG_PEEK is not used.
-Otherwise, the skb is returned as is.
+In order to handle that correctly we shall construct a
+suitable amalgam of the old and new cdclk states in
+intel_set_cdclk_pre_plane_update().
 
-However, here we should return NULL if MSG_PEEK is set and no data
-has been copied.
+And we can simply call intel_set_cdclk() unconditionally
+in both places as it will not do anything if nothing actually
+changes vs. the current hw state.
 
-Also, in such a case, we should not jump to the redo label because
-we will be caught in the loop and hog the CPU until normal data
-comes in.
+v2: Handle cdclk_state->disable_pipes
+v3: Only synchronize the cd2x update against the pipe's vblank
+    when the cdclk frequency is changing during the current
+    commit phase (Gustavo)
 
-Then, we need to handle skb == NULL case with the if-clause below
-the manage_oob() block.
-
-With this patch:
-
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'a', MSG_OOB)
-  1
-  >>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-  Traceback (most recent call last):
-    File "<stdin>", line 1, in <module>
-  BlockingIOError: [Errno 11] Resource temporarily unavailable
-
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240410171016.7621-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240402155016.13733-3-ville.syrjala@linux.intel.com
+(cherry picked from commit 34d127e2bdef73a923aa0dcd95cbc3257ad5af52)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/intel_cdclk.c | 37 ++++++++++++++++------
+ 1 file changed, 27 insertions(+), 10 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index fd931f3005cd8..9df15a7bc2569 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2602,7 +2602,9 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 					WRITE_ONCE(u->oob_skb, NULL);
- 					consume_skb(skb);
- 				}
--			} else if (!(flags & MSG_PEEK)) {
-+			} else if (flags & MSG_PEEK) {
-+				skb = NULL;
-+			} else {
- 				skb_unlink(skb, &sk->sk_receive_queue);
- 				WRITE_ONCE(u->oob_skb, NULL);
- 				if (!WARN_ON_ONCE(skb_unref(skb)))
-@@ -2684,11 +2686,9 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
- 		if (skb) {
- 			skb = manage_oob(skb, sk, flags, copied);
--			if (!skb) {
-+			if (!skb && copied) {
- 				unix_state_unlock(sk);
--				if (copied)
--					break;
--				goto redo;
-+				break;
- 			}
- 		}
- #endif
+diff --git a/drivers/gpu/drm/i915/display/intel_cdclk.c b/drivers/gpu/drm/i915/display/intel_cdclk.c
+index 5aa6b998a1cb1..fc3a6eb1de741 100644
+--- a/drivers/gpu/drm/i915/display/intel_cdclk.c
++++ b/drivers/gpu/drm/i915/display/intel_cdclk.c
+@@ -2453,7 +2453,8 @@ intel_set_cdclk_pre_plane_update(struct intel_atomic_state *state)
+ 		intel_atomic_get_old_cdclk_state(state);
+ 	const struct intel_cdclk_state *new_cdclk_state =
+ 		intel_atomic_get_new_cdclk_state(state);
+-	enum pipe pipe = new_cdclk_state->pipe;
++	struct intel_cdclk_config cdclk_config;
++	enum pipe pipe;
+ 
+ 	if (!intel_cdclk_changed(&old_cdclk_state->actual,
+ 				 &new_cdclk_state->actual))
+@@ -2462,12 +2463,25 @@ intel_set_cdclk_pre_plane_update(struct intel_atomic_state *state)
+ 	if (IS_DG2(i915))
+ 		intel_cdclk_pcode_pre_notify(state);
+ 
+-	if (new_cdclk_state->disable_pipes ||
+-	    old_cdclk_state->actual.cdclk <= new_cdclk_state->actual.cdclk) {
+-		drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
++	if (new_cdclk_state->disable_pipes) {
++		cdclk_config = new_cdclk_state->actual;
++		pipe = INVALID_PIPE;
++	} else {
++		if (new_cdclk_state->actual.cdclk >= old_cdclk_state->actual.cdclk) {
++			cdclk_config = new_cdclk_state->actual;
++			pipe = new_cdclk_state->pipe;
++		} else {
++			cdclk_config = old_cdclk_state->actual;
++			pipe = INVALID_PIPE;
++		}
+ 
+-		intel_set_cdclk(i915, &new_cdclk_state->actual, pipe);
++		cdclk_config.voltage_level = max(new_cdclk_state->actual.voltage_level,
++						 old_cdclk_state->actual.voltage_level);
+ 	}
++
++	drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
++
++	intel_set_cdclk(i915, &cdclk_config, pipe);
+ }
+ 
+ /**
+@@ -2485,7 +2499,7 @@ intel_set_cdclk_post_plane_update(struct intel_atomic_state *state)
+ 		intel_atomic_get_old_cdclk_state(state);
+ 	const struct intel_cdclk_state *new_cdclk_state =
+ 		intel_atomic_get_new_cdclk_state(state);
+-	enum pipe pipe = new_cdclk_state->pipe;
++	enum pipe pipe;
+ 
+ 	if (!intel_cdclk_changed(&old_cdclk_state->actual,
+ 				 &new_cdclk_state->actual))
+@@ -2495,11 +2509,14 @@ intel_set_cdclk_post_plane_update(struct intel_atomic_state *state)
+ 		intel_cdclk_pcode_post_notify(state);
+ 
+ 	if (!new_cdclk_state->disable_pipes &&
+-	    old_cdclk_state->actual.cdclk > new_cdclk_state->actual.cdclk) {
+-		drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
++	    new_cdclk_state->actual.cdclk < old_cdclk_state->actual.cdclk)
++		pipe = new_cdclk_state->pipe;
++	else
++		pipe = INVALID_PIPE;
+ 
+-		intel_set_cdclk(i915, &new_cdclk_state->actual, pipe);
+-	}
++	drm_WARN_ON(&i915->drm, !new_cdclk_state->base.changed);
++
++	intel_set_cdclk(i915, &new_cdclk_state->actual, pipe);
+ }
+ 
+ static int intel_pixel_rate_to_cdclk(const struct intel_crtc_state *crtc_state)
 -- 
 2.43.0
 
