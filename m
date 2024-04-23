@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-40827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5078AF93B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37098AF9EE
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35295B246E8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A831C21CB2
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C14C1448EE;
-	Tue, 23 Apr 2024 21:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA07144D26;
+	Tue, 23 Apr 2024 21:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRQxHR6Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlxfLCHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDD620B3E;
-	Tue, 23 Apr 2024 21:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A103143C57;
+	Tue, 23 Apr 2024 21:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908489; cv=none; b=tI5pvb94U7gTZxoVoJWnWuyZ8D7ndy9ZePQLcWNbWMI8DLblxuL8zlEfBBNP2PUpSFgd7IvDFUjw+AaOcaVloDqAeQsNjx8CgkrqnVG1YMWKxA/aTqz1BP7IA/wMIBEj5uzFFQy4RyhsoXdb/xJYhN0dQz85LL2G+yq+vlxy8Tg=
+	t=1713908608; cv=none; b=uHwd0xgRF4wjwX/rXndlPEDqkAYiCgRLVqjeLBWyS8CEcrFzg9BA6FhM4ghlcIXl4ayv6dnAgl/WwBAUSv0oJmeQ9EXWkTcnWb0XAL1utqBdnmr3fTmSxqaps5q0nLn1NzGwiu1col+SR8LmqDsH1Ho/5xZt8r6L7FbYzaxL7aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908489; c=relaxed/simple;
-	bh=U1fcHeSEl2QQfNgrfqAoT3dJff74zP1ksVFkgTHr8lE=;
+	s=arc-20240116; t=1713908608; c=relaxed/simple;
+	bh=sK4xfoE2RLiRmTyZO3Hglsh7sCyEmn5W0DAe72dYnKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+hEqnqirw1WxDuBAIUyUKM9MR/JbZMCXdEeHgvQMulDYONSBX2lIxx3YmJhJa8eu1lqFMEvNRJryUNqzk6ErA6cWP0nsuv4p+52hM0KX8QLWI25+zXx0hFjaTKMZZA6gcT9oLiZXPG8Hsl99kZiYSmOZyEZL2GVBLA9NYpdaIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRQxHR6Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6C3C3277B;
-	Tue, 23 Apr 2024 21:41:29 +0000 (UTC)
+	 MIME-Version; b=Ow8Sh6dxAHlZTfFYFLApZnpPKAy9sv/67fdBrbNL1aPdg6qXOM8zo7x/mQptI6OpC8eyX7nOskz++9Fgy3bqsHvihPueSUeAlc5GQaABp7lc/ehYpyGq4zv+uiiPb8AX0SepVB4N/5cDufg096pXqL/Dgxm5BtV9HyTKY+acLdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlxfLCHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF36C116B1;
+	Tue, 23 Apr 2024 21:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908489;
-	bh=U1fcHeSEl2QQfNgrfqAoT3dJff74zP1ksVFkgTHr8lE=;
+	s=korg; t=1713908608;
+	bh=sK4xfoE2RLiRmTyZO3Hglsh7sCyEmn5W0DAe72dYnKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRQxHR6Yemjql1aoJA3NLKDOzcPjH+auoUlErvoOKkobhJNaTkkx3ea0oPKZ5uj37
-	 XIBhazBvCCOkUCrteVRfOEmiYm9r5D3MMqtveWbCEtJCvARSTL0MljORbG2+jbPJ25
-	 oIxhH+7hotYDhoZz6ZqMtEM3SAjXgg6GMY3LeVuU=
+	b=OlxfLCHu4vWtbVdoN6ROmkreJakKZxk1X4kkxCATcAqaLZBeZ7zae8UKOgC05JJGy
+	 LGbW8LVM2PriDw2EevoRlY3XH/BTkwsLooClCBl+/n9NJSjtIZPFeSk824LHDAbmm+
+	 Ui7hkQLeeBH/Mw3bdnrnMjkH4fg79MagGQblzOaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 064/158] drm: nv04: Fix out of bounds access
+Subject: [PATCH 6.6 049/158] ice: tc: check src_vsi in case of traffic from VF
 Date: Tue, 23 Apr 2024 14:38:06 -0700
-Message-ID: <20240423213858.038392446@linuxfoundation.org>
+Message-ID: <20240423213857.369289547@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kobuk <m.kobuk@ispras.ru>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit cf92bb778eda7830e79452c6917efa8474a30c1e ]
+[ Upstream commit 428051600cb4e5a61d81aba3f8009b6c4f5e7582 ]
 
-When Output Resource (dcb->or) value is assigned in
-fabricate_dcb_output(), there may be out of bounds access to
-dac_users array in case dcb->or is zero because ffs(dcb->or) is
-used as index there.
-The 'or' argument of fabricate_dcb_output() must be interpreted as a
-number of bit to set, not value.
+In case of traffic going from the VF (so ingress for port representor)
+source VSI should be consider during packet classification. It is
+needed for hardware to not match packets from different ports with
+filters added on other port.
 
-Utilize macros from 'enum nouveau_or' in calls instead of hardcoding.
+It is only for "from VF" traffic, because other traffic direction
+doesn't have source VSI.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Set correct ::src_vsi in rule_info to pass it to the hardware filter.
 
-Fixes: 2e5702aff395 ("drm/nouveau: fabricate DCB encoder table for iMac G4")
-Fixes: 670820c0e6a9 ("drm/nouveau: Workaround incorrect DCB entry on a GeForce3 Ti 200.")
-Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240411110854.16701-1-m.kobuk@ispras.ru
+For example this rule should drop only ipv4 packets from eth10, not from
+the others VF PRs. It is needed to check source VSI in this case.
+$tc filter add dev eth10 ingress protocol ip flower skip_sw action drop
+
+Fixes: 0d08a441fb1a ("ice: ndo_setup_tc implementation for PF")
+Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bios.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_bios.c b/drivers/gpu/drm/nouveau/nouveau_bios.c
-index 479effcf607e2..79cfab53f80e2 100644
---- a/drivers/gpu/drm/nouveau/nouveau_bios.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
-@@ -23,6 +23,7 @@
-  */
- 
- #include "nouveau_drv.h"
-+#include "nouveau_bios.h"
- #include "nouveau_reg.h"
- #include "dispnv04/hw.h"
- #include "nouveau_encoder.h"
-@@ -1677,7 +1678,7 @@ apply_dcb_encoder_quirks(struct drm_device *dev, int idx, u32 *conn, u32 *conf)
+diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+index dd03cb69ad26b..f111fdd6a6ef7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+@@ -28,6 +28,8 @@ ice_tc_count_lkups(u32 flags, struct ice_tc_flower_lyr_2_4_hdrs *headers,
+ 	 * - ICE_TC_FLWR_FIELD_VLAN_TPID (present if specified)
+ 	 * - Tunnel flag (present if tunnel)
  	 */
- 	if (nv_match_device(dev, 0x0201, 0x1462, 0x8851)) {
- 		if (*conn == 0xf2005014 && *conf == 0xffffffff) {
--			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, 1);
-+			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, DCB_OUTPUT_B);
- 			return false;
- 		}
- 	}
-@@ -1763,26 +1764,26 @@ fabricate_dcb_encoder_table(struct drm_device *dev, struct nvbios *bios)
- #ifdef __powerpc__
- 	/* Apple iMac G4 NV17 */
- 	if (of_machine_is_compatible("PowerMac4,5")) {
--		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, 1);
--		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, 2);
-+		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, DCB_OUTPUT_B);
-+		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, DCB_OUTPUT_C);
- 		return;
- 	}
- #endif
++	if (fltr->direction == ICE_ESWITCH_FLTR_EGRESS)
++		lkups_cnt++;
  
- 	/* Make up some sane defaults */
- 	fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG,
--			     bios->legacy.i2c_indices.crt, 1, 1);
-+			     bios->legacy.i2c_indices.crt, 1, DCB_OUTPUT_B);
+ 	if (flags & ICE_TC_FLWR_FIELD_TENANT_ID)
+ 		lkups_cnt++;
+@@ -363,6 +365,11 @@ ice_tc_fill_rules(struct ice_hw *hw, u32 flags,
+ 	/* Always add direction metadata */
+ 	ice_rule_add_direction_metadata(&list[ICE_TC_METADATA_LKUP_IDX]);
  
- 	if (nv04_tv_identify(dev, bios->legacy.i2c_indices.tv) >= 0)
- 		fabricate_dcb_output(dcb, DCB_OUTPUT_TV,
- 				     bios->legacy.i2c_indices.tv,
--				     all_heads, 0);
-+				     all_heads, DCB_OUTPUT_A);
++	if (tc_fltr->direction == ICE_ESWITCH_FLTR_EGRESS) {
++		ice_rule_add_src_vsi_metadata(&list[i]);
++		i++;
++	}
++
+ 	rule_info->tun_type = ice_sw_type_from_tunnel(tc_fltr->tunnel_type);
+ 	if (tc_fltr->tunnel_type != TNL_LAST) {
+ 		i = ice_tc_fill_tunnel_outer(flags, tc_fltr, list, i);
+@@ -779,6 +786,7 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
  
- 	else if (bios->tmds.output0_script_ptr ||
- 		 bios->tmds.output1_script_ptr)
- 		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS,
- 				     bios->legacy.i2c_indices.panel,
--				     all_heads, 1);
-+				     all_heads, DCB_OUTPUT_B);
- }
+ 	/* specify the cookie as filter_rule_id */
+ 	rule_info.fltr_rule_id = fltr->cookie;
++	rule_info.src_vsi = vsi->idx;
  
- static int
+ 	ret = ice_add_adv_rule(hw, list, lkups_cnt, &rule_info, &rule_added);
+ 	if (ret == -EEXIST) {
 -- 
 2.43.0
 
