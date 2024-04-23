@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-41092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AD28AFA4C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6BB8AF9F5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 543251C209C0
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CB24B2AE76
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB23143C52;
-	Tue, 23 Apr 2024 21:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5B0143891;
+	Tue, 23 Apr 2024 21:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bZrzecY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CboQVGKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCBE1494D1;
-	Tue, 23 Apr 2024 21:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CEE143C57;
+	Tue, 23 Apr 2024 21:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908672; cv=none; b=QEjiCW3bb17iaaiWfO+kAZfUQEornmWmrxXfTFCQ11h+X0oCHFkvjEeAcfjHkhEdrqP4uYfLvx24L/vLTSUfZC5kJR6H2zlg/6GPoyUMnRKL19M14u3yl4U1VyQ5A1FkD8dJlm4u/7gnkFDrbqznHb0ewRDjUSvVsMDjidEDzzY=
+	t=1713908611; cv=none; b=DRdiY/wMfRjvUQenjGMl8iI9CqDhlJxuUxyy6seAzwi3fCEmzMRmkB80sE1wM0QJBm0AL4TqOzdir+P1xfqPZdX1I5ULKn5a/HF9HOiVZCu+vI88thnuF1zMfPasfM+vD3iHmibFg2NlWtpSCZ4Pf66I05UrCQ2GXID/FdMIXfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908672; c=relaxed/simple;
-	bh=cm0h1YoBN/cR7KJQrxTby9NGn/WUgErE5mljhnpBzZo=;
+	s=arc-20240116; t=1713908611; c=relaxed/simple;
+	bh=R4BP9TcGmJlHI5yhQKy3oHq7SSUIpy7Jc2KxL/APk3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZfPMFLQvMqrMwcun1YZa9ElgwY5tzYm0OQRKONyFipBilctoNfB/e755Jh/m5+XUvlL74SNR/oQ12e3PjngvEY1A+9UYq0Ucd2VUsyfCKvYBOQXlvk/h4PR4EycwvTFIdSYyDaF3iX8OtLH2Y9ZLj978iqTiTkwNKWjb9iV7Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bZrzecY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3B4C32782;
-	Tue, 23 Apr 2024 21:44:31 +0000 (UTC)
+	 MIME-Version; b=X593Yen5G4KaLez5EXOGt/qQSvOIsEEJACYGAG1hkOsYz71JwJ9DzhXqNUQztQ/5lhh9UuHxZinFcVUlIbHob9V1T3TFmezUGkSnXQ8i8MDQc0YsxDaumai1sbk4n8wRho7CTnO0n8aY695VWpi/Xsvz14B7GWOkSa4QxGRsLvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CboQVGKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCBCC116B1;
+	Tue, 23 Apr 2024 21:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908671;
-	bh=cm0h1YoBN/cR7KJQrxTby9NGn/WUgErE5mljhnpBzZo=;
+	s=korg; t=1713908611;
+	bh=R4BP9TcGmJlHI5yhQKy3oHq7SSUIpy7Jc2KxL/APk3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bZrzecYEH9oZvCmuht+diqVPoxIyIW0+bsCfn37M+z0992aWqTbZxudxP9cy9DBM
-	 kwR4HvLkBU3vIw1TCjuHufCiUtiZvbU+owMsAhAbjyA8VL8EwjYBIFlckrzsnTYnfE
-	 /Z1O012BT+eKRCLO1MW1pug1gfwPEzPZvwLXIgtc=
+	b=CboQVGKa3FtvzwU2GgaM+X4vw/HCmUJtr9TEWkceLWOdJbQ9Mt9vh7uVK+KqT45ul
+	 fls6Nwf9g+wL+M6IC+zSgEoQ0e2XbcfLYyACverTYrAvw8M6zND1wxjVlwfCpgYint
+	 mgiuC4fkORlzWPTEUy+76GR/SSrVMaGyu/dja0G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 011/141] x86/efi: Drop EFI stub .bss from .data section
-Date: Tue, 23 Apr 2024 14:37:59 -0700
-Message-ID: <20240423213853.722219408@linuxfoundation.org>
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 043/158] net/mlx5e: Prevent deadlock while disabling aRFS
+Date: Tue, 23 Apr 2024 14:38:00 -0700
+Message-ID: <20240423213857.163695326@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Commit 5f51c5d0e905608ba7be126737f7c84a793ae1aa upstream ]
+[ Upstream commit fef965764cf562f28afb997b626fc7c3cec99693 ]
 
-Now that the EFI stub always zero inits its BSS section upon entry,
-there is no longer a need to place the BSS symbols carried by the stub
-into the .data section.
+When disabling aRFS under the `priv->state_lock`, any scheduled
+aRFS works are canceled using the `cancel_work_sync` function,
+which waits for the work to end if it has already started.
+However, while waiting for the work handler, the handler will
+try to acquire the `state_lock` which is already acquired.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-18-ardb@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The worker acquires the lock to delete the rules if the state
+is down, which is not the worker's responsibility since
+disabling aRFS deletes the rules.
+
+Add an aRFS state variable, which indicates whether the aRFS is
+enabled and prevent adding rules when the aRFS is disabled.
+
+Kernel log:
+
+======================================================
+WARNING: possible circular locking dependency detected
+6.7.0-rc4_net_next_mlx5_5483eb2 #1 Tainted: G          I
+------------------------------------------------------
+ethtool/386089 is trying to acquire lock:
+ffff88810f21ce68 ((work_completion)(&rule->arfs_work)){+.+.}-{0:0}, at: __flush_work+0x74/0x4e0
+
+but task is already holding lock:
+ffff8884a1808cc0 (&priv->state_lock){+.+.}-{3:3}, at: mlx5e_ethtool_set_channels+0x53/0x200 [mlx5_core]
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (&priv->state_lock){+.+.}-{3:3}:
+       __mutex_lock+0x80/0xc90
+       arfs_handle_work+0x4b/0x3b0 [mlx5_core]
+       process_one_work+0x1dc/0x4a0
+       worker_thread+0x1bf/0x3c0
+       kthread+0xd7/0x100
+       ret_from_fork+0x2d/0x50
+       ret_from_fork_asm+0x11/0x20
+
+-> #0 ((work_completion)(&rule->arfs_work)){+.+.}-{0:0}:
+       __lock_acquire+0x17b4/0x2c80
+       lock_acquire+0xd0/0x2b0
+       __flush_work+0x7a/0x4e0
+       __cancel_work_timer+0x131/0x1c0
+       arfs_del_rules+0x143/0x1e0 [mlx5_core]
+       mlx5e_arfs_disable+0x1b/0x30 [mlx5_core]
+       mlx5e_ethtool_set_channels+0xcb/0x200 [mlx5_core]
+       ethnl_set_channels+0x28f/0x3b0
+       ethnl_default_set_doit+0xec/0x240
+       genl_family_rcv_msg_doit+0xd0/0x120
+       genl_rcv_msg+0x188/0x2c0
+       netlink_rcv_skb+0x54/0x100
+       genl_rcv+0x24/0x40
+       netlink_unicast+0x1a1/0x270
+       netlink_sendmsg+0x214/0x460
+       __sock_sendmsg+0x38/0x60
+       __sys_sendto+0x113/0x170
+       __x64_sys_sendto+0x20/0x30
+       do_syscall_64+0x40/0xe0
+       entry_SYSCALL_64_after_hwframe+0x46/0x4e
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&priv->state_lock);
+                               lock((work_completion)(&rule->arfs_work));
+                               lock(&priv->state_lock);
+  lock((work_completion)(&rule->arfs_work));
+
+ *** DEADLOCK ***
+
+3 locks held by ethtool/386089:
+ #0: ffffffff82ea7210 (cb_lock){++++}-{3:3}, at: genl_rcv+0x15/0x40
+ #1: ffffffff82e94c88 (rtnl_mutex){+.+.}-{3:3}, at: ethnl_default_set_doit+0xd3/0x240
+ #2: ffff8884a1808cc0 (&priv->state_lock){+.+.}-{3:3}, at: mlx5e_ethtool_set_channels+0x53/0x200 [mlx5_core]
+
+stack backtrace:
+CPU: 15 PID: 386089 Comm: ethtool Tainted: G          I        6.7.0-rc4_net_next_mlx5_5483eb2 #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x60/0xa0
+ check_noncircular+0x144/0x160
+ __lock_acquire+0x17b4/0x2c80
+ lock_acquire+0xd0/0x2b0
+ ? __flush_work+0x74/0x4e0
+ ? save_trace+0x3e/0x360
+ ? __flush_work+0x74/0x4e0
+ __flush_work+0x7a/0x4e0
+ ? __flush_work+0x74/0x4e0
+ ? __lock_acquire+0xa78/0x2c80
+ ? lock_acquire+0xd0/0x2b0
+ ? mark_held_locks+0x49/0x70
+ __cancel_work_timer+0x131/0x1c0
+ ? mark_held_locks+0x49/0x70
+ arfs_del_rules+0x143/0x1e0 [mlx5_core]
+ mlx5e_arfs_disable+0x1b/0x30 [mlx5_core]
+ mlx5e_ethtool_set_channels+0xcb/0x200 [mlx5_core]
+ ethnl_set_channels+0x28f/0x3b0
+ ethnl_default_set_doit+0xec/0x240
+ genl_family_rcv_msg_doit+0xd0/0x120
+ genl_rcv_msg+0x188/0x2c0
+ ? ethnl_ops_begin+0xb0/0xb0
+ ? genl_family_rcv_msg_dumpit+0xf0/0xf0
+ netlink_rcv_skb+0x54/0x100
+ genl_rcv+0x24/0x40
+ netlink_unicast+0x1a1/0x270
+ netlink_sendmsg+0x214/0x460
+ __sock_sendmsg+0x38/0x60
+ __sys_sendto+0x113/0x170
+ ? do_user_addr_fault+0x53f/0x8f0
+ __x64_sys_sendto+0x20/0x30
+ do_syscall_64+0x40/0xe0
+ entry_SYSCALL_64_after_hwframe+0x46/0x4e
+ </TASK>
+
+Fixes: 45bf454ae884 ("net/mlx5e: Enabling aRFS mechanism")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240411115444.374475-7-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/vmlinux.lds.S |    1 -
- drivers/firmware/efi/libstub/Makefile  |    7 -------
- 2 files changed, 8 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en_arfs.c | 27 +++++++++++--------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -46,7 +46,6 @@ SECTIONS
- 		_data = . ;
- 		*(.data)
- 		*(.data.*)
--		*(.bss.efistub)
- 		_edata = . ;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
+index e66f486faafe1..415fec7763bd2 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
+@@ -45,6 +45,10 @@ struct arfs_table {
+ 	struct hlist_head	 rules_hash[ARFS_HASH_SIZE];
+ };
+ 
++enum {
++	MLX5E_ARFS_STATE_ENABLED,
++};
++
+ enum arfs_type {
+ 	ARFS_IPV4_TCP,
+ 	ARFS_IPV6_TCP,
+@@ -59,6 +63,7 @@ struct mlx5e_arfs_tables {
+ 	spinlock_t                     arfs_lock;
+ 	int                            last_filter_id;
+ 	struct workqueue_struct        *wq;
++	unsigned long                  state;
+ };
+ 
+ struct arfs_tuple {
+@@ -169,6 +174,8 @@ int mlx5e_arfs_enable(struct mlx5e_flow_steering *fs)
+ 			return err;
+ 		}
  	}
- 	. = ALIGN(L1_CACHE_BYTES);
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -102,13 +102,6 @@ lib-y				:= $(patsubst %.o,%.stub.o,$(li
- # https://bugs.llvm.org/show_bug.cgi?id=46480
- STUBCOPY_FLAGS-y		+= --remove-section=.note.gnu.property
++	set_bit(MLX5E_ARFS_STATE_ENABLED, &arfs->state);
++
+ 	return 0;
+ }
  
--#
--# For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
--# .bss section, so the .bss section of the EFI stub needs to be included in the
--# .data section of the compressed kernel to ensure initialization. Rename the
--# .bss section here so it's easy to pick out in the linker script.
--#
--STUBCOPY_FLAGS-$(CONFIG_X86)	+= --rename-section .bss=.bss.efistub,load,alloc
- STUBCOPY_RELOC-$(CONFIG_X86_32)	:= R_386_32
- STUBCOPY_RELOC-$(CONFIG_X86_64)	:= R_X86_64_64
+@@ -454,6 +461,8 @@ static void arfs_del_rules(struct mlx5e_flow_steering *fs)
+ 	int i;
+ 	int j;
  
++	clear_bit(MLX5E_ARFS_STATE_ENABLED, &arfs->state);
++
+ 	spin_lock_bh(&arfs->arfs_lock);
+ 	mlx5e_for_each_arfs_rule(rule, htmp, arfs->arfs_tables, i, j) {
+ 		hlist_del_init(&rule->hlist);
+@@ -626,17 +635,8 @@ static void arfs_handle_work(struct work_struct *work)
+ 	struct mlx5_flow_handle *rule;
+ 
+ 	arfs = mlx5e_fs_get_arfs(priv->fs);
+-	mutex_lock(&priv->state_lock);
+-	if (!test_bit(MLX5E_STATE_OPENED, &priv->state)) {
+-		spin_lock_bh(&arfs->arfs_lock);
+-		hlist_del(&arfs_rule->hlist);
+-		spin_unlock_bh(&arfs->arfs_lock);
+-
+-		mutex_unlock(&priv->state_lock);
+-		kfree(arfs_rule);
+-		goto out;
+-	}
+-	mutex_unlock(&priv->state_lock);
++	if (!test_bit(MLX5E_ARFS_STATE_ENABLED, &arfs->state))
++		return;
+ 
+ 	if (!arfs_rule->rule) {
+ 		rule = arfs_add_rule(priv, arfs_rule);
+@@ -752,6 +752,11 @@ int mlx5e_rx_flow_steer(struct net_device *dev, const struct sk_buff *skb,
+ 		return -EPROTONOSUPPORT;
+ 
+ 	spin_lock_bh(&arfs->arfs_lock);
++	if (!test_bit(MLX5E_ARFS_STATE_ENABLED, &arfs->state)) {
++		spin_unlock_bh(&arfs->arfs_lock);
++		return -EPERM;
++	}
++
+ 	arfs_rule = arfs_find_rule(arfs_t, &fk);
+ 	if (arfs_rule) {
+ 		if (arfs_rule->rxq == rxq_index || work_busy(&arfs_rule->arfs_work)) {
+-- 
+2.43.0
+
 
 
 
