@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-40919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D52D8AF999
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3378AFAFD
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FEAF1C22C3D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB6F71C234AB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6592F1448C7;
-	Tue, 23 Apr 2024 21:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A542145325;
+	Tue, 23 Apr 2024 21:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhYkXST+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmSnWcRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CD7143897;
-	Tue, 23 Apr 2024 21:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1A6143888;
+	Tue, 23 Apr 2024 21:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908554; cv=none; b=HCobpHS/AgpHJdOUJl9FcU20ZT6tiB2bDVqgesk3k9Z9Hyan8ipMWYjnS3l6fZD5SrqlixuOqCrarCF4CiL355p6EggWDZEKonEHbAmBXRFNXmChh6fmWN1aSsNmlPKx+liFfx0Xnl7d1AaDNiHda/E4lsTGTb0kLVOzqEQ2Jp4=
+	t=1713908798; cv=none; b=AF3SLJCkOArBXhNKL2c/pdJn376JXCIS+UYx7Jh4a4sAyg9cAU3MXjUwuAPcpCfv1efqputtycXe/IC6lylG2mccsSNxxfdiKcOxivVgmdSNorWkiFM2cwPoIkvNsVDJ/dM1MjPh8Qwi2cPji7AfgTgHIRKzJKHW4DHvyDrQQbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908554; c=relaxed/simple;
-	bh=/YtTmdomJQWaL3IMJ1DvHIBPS7dd+HCSpc7F9gwNFG8=;
+	s=arc-20240116; t=1713908798; c=relaxed/simple;
+	bh=ig1CfzBL4HbiXTAZgZIeoesistMR3lY4PiDaZKTRIic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lr+qvbN00/yOCsLlIpLEBKKKKIa5ZHxYhbpjcWxZlEQ8R/qEHfJ1ji8h4BAf4mXgQ78FaaHaUtv2lOyk5nzSZ6EQxMmH+gXduK3o18BTCJksb32EMtTG5aOMBAwfcuFd+naGxV3Y7uMf0ckupPBMCnz9RPJxbDnZ1df/zR9ISPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhYkXST+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD2DC32783;
-	Tue, 23 Apr 2024 21:42:33 +0000 (UTC)
+	 MIME-Version; b=BSARtHH9TinVQQHz2xPTOBG+7ZKnOPSfkQKTO/pex7NbAfAH8OiWz0UpauPfWsaXxPu2eQn7nOhbf8boCPxSxdhYsJYB40wpPMvUgXVJLh1OmIuh8BVO2E43nIzFxAkvHPdm+W4j0RfVqYFBe6ZmZzwlbXFm3H+BTrUV4lrneHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmSnWcRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C77DC116B1;
+	Tue, 23 Apr 2024 21:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908554;
-	bh=/YtTmdomJQWaL3IMJ1DvHIBPS7dd+HCSpc7F9gwNFG8=;
+	s=korg; t=1713908798;
+	bh=ig1CfzBL4HbiXTAZgZIeoesistMR3lY4PiDaZKTRIic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fhYkXST+yZkSQec+w+ZdCLZ8JAsUAUZ4oW0lw7Cx3fABaZ161rZAnD0cB6yMXqldL
-	 fWIT/AK31+i1MNzyzqNVGB2c6j1nx9XTnyHI0YyGQaq/ZCjTXEwNeaIAGE5iwxfnEm
-	 zusIZaxhs5CFhAUuF0wj8vPonwdA+qmL+7FzjnzA=
+	b=PmSnWcRyf8bA1eHtWTh+ThXkRzS65vNXg7Dl7Cp+Kt4zkNudJ+OsAWeToQEtVcZNV
+	 CHfIFXec134zkAdQ53rZZBVWpaQyMdqIp+QuQN84J1YnaGt6VuYFpFTGat7TnVi1dq
+	 VvMz4+KCEjz/1wI77pb+NLY7fiHplM9w2tg9FUD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.8 156/158] ksmbd: validate request buffer size in smb2_allocate_rsp_buf()
-Date: Tue, 23 Apr 2024 14:39:38 -0700
-Message-ID: <20240423213900.917808392@linuxfoundation.org>
+	Schuyler Patton <spatton@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 26/71] net: ethernet: ti: am65-cpsw-nuss: cleanup DMA Channels before using them
+Date: Tue, 23 Apr 2024 14:39:39 -0700
+Message-ID: <20240423213845.043686024@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 17cf0c2794bdb6f39671265aa18aea5c22ee8c4a upstream.
+[ Upstream commit c24cd679b075b0e953ea167b0aa2b2d59e4eba7f ]
 
-The response buffer should be allocated in smb2_allocate_rsp_buf
-before validating request. But the fields in payload as well as smb2 header
-is used in smb2_allocate_rsp_buf(). This patch add simple buffer size
-validation to avoid potencial out-of-bounds in request buffer.
+The TX and RX DMA Channels used by the driver to exchange data with CPSW
+are not guaranteed to be in a clean state during driver initialization.
+The Bootloader could have used the same DMA Channels without cleaning them
+up in the event of failure. Thus, reset and disable the DMA Channels to
+ensure that they are in a clean state before using them.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Reported-by: Schuyler Patton <spatton@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20240417095425.2253876-1-s-vadapalli@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -535,6 +535,10 @@ int smb2_allocate_rsp_buf(struct ksmbd_w
- 	if (cmd == SMB2_QUERY_INFO_HE) {
- 		struct smb2_query_info_req *req;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index f94d6d322df42..4bd57b79a023b 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2535,6 +2535,8 @@ static void am65_cpsw_unregister_devlink(struct am65_cpsw_common *common)
  
-+		if (get_rfc1002_len(work->request_buf) <
-+		    offsetof(struct smb2_query_info_req, OutputBufferLength))
-+			return -EINVAL;
+ static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
+ {
++	struct am65_cpsw_rx_chn *rx_chan = &common->rx_chns;
++	struct am65_cpsw_tx_chn *tx_chan = common->tx_chns;
+ 	struct device *dev = common->dev;
+ 	struct devlink_port *dl_port;
+ 	struct am65_cpsw_port *port;
+@@ -2553,6 +2555,22 @@ static int am65_cpsw_nuss_register_ndevs(struct am65_cpsw_common *common)
+ 		return ret;
+ 	}
+ 
++	/* The DMA Channels are not guaranteed to be in a clean state.
++	 * Reset and disable them to ensure that they are back to the
++	 * clean state and ready to be used.
++	 */
++	for (i = 0; i < common->tx_ch_num; i++) {
++		k3_udma_glue_reset_tx_chn(tx_chan[i].tx_chn, &tx_chan[i],
++					  am65_cpsw_nuss_tx_cleanup);
++		k3_udma_glue_disable_tx_chn(tx_chan[i].tx_chn);
++	}
 +
- 		req = smb2_get_msg(work->request_buf);
- 		if ((req->InfoType == SMB2_O_INFO_FILE &&
- 		     (req->FileInfoClass == FILE_FULL_EA_INFORMATION ||
++	for (i = 0; i < AM65_CPSW_MAX_RX_FLOWS; i++)
++		k3_udma_glue_reset_rx_chn(rx_chan->rx_chn, i, rx_chan,
++					  am65_cpsw_nuss_rx_cleanup, !!i);
++
++	k3_udma_glue_disable_rx_chn(rx_chan->rx_chn);
++
+ 	ret = am65_cpsw_nuss_register_devlink(common);
+ 	if (ret)
+ 		return ret;
+-- 
+2.43.0
+
 
 
 
