@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-41169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECED8AFAA2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C182A8AF983
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 984FDB252EF
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BD3D1F26B3C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D19149E15;
-	Tue, 23 Apr 2024 21:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4234114534D;
+	Tue, 23 Apr 2024 21:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efxC/W27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAOs+krq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B8C143C49;
-	Tue, 23 Apr 2024 21:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BC220B3E;
+	Tue, 23 Apr 2024 21:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908724; cv=none; b=ouTsHP8FyOkX9yMwHbvqNIRqOsya4H7UpRiepuhgk08oJS4LYTpcd6Zein2yPHyJ9nMIUiVkmpqtcW8XX6YKhy7fonE4m2N/EBX4EuVigydNM2QCuEWVzgdk/P3KPeyy9jxmNZN4u2trHrAawMMGCo8a7Hqgobre6heqbDmqcRQ=
+	t=1713908540; cv=none; b=E5t082WC/fTOlhemboZ+BimozccNuQDiX2qItBIsDe42ypmW7q58I9du906yC7r2V0fNMyp6MCVi19MngVK8UmKvMC2b5fjPwGKsIOUlFRs1fxNovFhHBRO2AwBWcnz8jpVU8i5WeQMEIP/fmz5Fix75yaYg3/EE+QR+jz96sQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908724; c=relaxed/simple;
-	bh=FZXVtl4Low3OH+KamJDpr7UV8k84fo1eC9LHUBa9VV8=;
+	s=arc-20240116; t=1713908540; c=relaxed/simple;
+	bh=B1NDa9gK7d7i5n1qWCPYifrhGHh77f/UdZw1PnLqfus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpnhmLCU/DZPYawqUytgashD9+czFhLfvpgnzP6isyC6wWxeauf36plZzq8cfAIXVI3XwOkNqL9OUM5FOC5uOS9HQOVuuooVhH2N9CPZEKjFc9MRhr1+11IUHUk+QtInO5P6A884Mnsvfk0nIvrDLrHrmNxbTspTmJiiydFNtRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efxC/W27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F752C116B1;
-	Tue, 23 Apr 2024 21:45:24 +0000 (UTC)
+	 MIME-Version; b=mM8BccKlzweK4sdDkJmVh3d3qkhPsOrZ0UWj5fJmTcp9i831wsf0dTi9qCaIhrjO0nWU0RJd1Zpsx1J9zhdj2JH2PP2sC9u5bJzrUgrzbKawSN5NyVuDUG6RgwEUmmhCEDNjtlfAb5BKfyX4R+zF85EL0c6xejxJvVjZafBeVDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAOs+krq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D63C32783;
+	Tue, 23 Apr 2024 21:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908724;
-	bh=FZXVtl4Low3OH+KamJDpr7UV8k84fo1eC9LHUBa9VV8=;
+	s=korg; t=1713908539;
+	bh=B1NDa9gK7d7i5n1qWCPYifrhGHh77f/UdZw1PnLqfus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=efxC/W2777jnKtBpa3FgtRnXqbW55Qg15RqKynlq9DOjdFEFfaJg15t7E4Dt+oKUR
-	 coR4rp4mto2OBIttar7qxFwafXCO/SNXdQBqroMb8eYiAdp9XNYAZyXPHAma/XsxfX
-	 Lnn7Re5vxLgfHcrFwj0hm33D2WEWci4Z7hpLgox4=
+	b=IAOs+krqzBH4vY6ce5PAcXALrCvrI81Y3rQIYEA40QKSYSVMwXZ8bp1HYrAH7DYlS
+	 ciQ0ESg/5Cpc4jwN2ofpZbfeqt8MaI0wjGml+FBGBg4Lo3g95Kqn2ZUXOE/LkGKHj1
+	 dKCBuNif07wWX6Z+L3K9ubmhOuO/7nnprPQUIl/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chinmoy Ghosh <chinmoyghosh2001@gmail.com>,
-	Mintu Patel <mintupatel89@gmail.com>,
-	Vimal Kumar <vimal.kumar32@gmail.com>,
-	Vishal Badole <badolevishal1116@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/141] clk: Show active consumers of clocks in debugfs
+	David Hildenbrand <david@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 134/158] mm/madvise: make MADV_POPULATE_(READ|WRITE) handle VM_FAULT_RETRY properly
 Date: Tue, 23 Apr 2024 14:39:16 -0700
-Message-ID: <20240423213856.043970866@linuxfoundation.org>
+Message-ID: <20240423213900.241801542@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +65,239 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Badole <badolevishal1116@gmail.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit dcce5cc7826e9c6b3a2443e5e6b7f8d02a103c35 ]
+commit 631426ba1d45a8672b177ee85ad4cabe760dd131 upstream.
 
-This feature lists the clock consumer's name and respective connection
-id. Using this feature user can easily check that which user has
-acquired and enabled a particular clock.
+Darrick reports that in some cases where pread() would fail with -EIO and
+mmap()+access would generate a SIGBUS signal, MADV_POPULATE_READ /
+MADV_POPULATE_WRITE will keep retrying forever and not fail with -EFAULT.
 
-Usage:
->> cat /sys/kernel/debug/clk/clk_summary
-                      enable  prepare  protect
-                                                                          duty  hardware                            Connection
-   clock               count    count    count    rate   accuracy phase  cycle    enable   consumer                         Id
-------------------------------------------------------------------------------------------------------------------------------
- clk_mcasp0_fixed         0        0        0    24576000          0      0  50000     Y   deviceless                     of_clk_get_from_provider
-                                                                                           deviceless                     no_connection_id
-    clk_mcasp0            0        0        0    24576000          0      0  50000     N      simple-audio-card,cpu           no_connection_id
-                                                                                              deviceless                      no_connection_id
+While the madvise() call can be interrupted by a signal, this is not the
+desired behavior.  MADV_POPULATE_READ / MADV_POPULATE_WRITE should behave
+like page faults in that case: fail and not retry forever.
 
-Co-developed-by: Chinmoy Ghosh <chinmoyghosh2001@gmail.com>
-Signed-off-by: Chinmoy Ghosh <chinmoyghosh2001@gmail.com>
-Co-developed-by: Mintu Patel <mintupatel89@gmail.com>
-Signed-off-by: Mintu Patel <mintupatel89@gmail.com>
-Co-developed-by: Vimal Kumar <vimal.kumar32@gmail.com>
-Signed-off-by: Vimal Kumar <vimal.kumar32@gmail.com>
-Signed-off-by: Vishal Badole <badolevishal1116@gmail.com>
-Link: https://lore.kernel.org/r/1669569799-8526-1-git-send-email-badolevishal1116@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: 9d1e795f754d ("clk: Get runtime PM before walking tree for clk_summary")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A reproducer can be found at [1].
+
+The reason is that __get_user_pages(), as called by
+faultin_vma_page_range(), will not handle VM_FAULT_RETRY in a proper way:
+it will simply return 0 when VM_FAULT_RETRY happened, making
+madvise_populate()->faultin_vma_page_range() retry again and again, never
+setting FOLL_TRIED->FAULT_FLAG_TRIED for __get_user_pages().
+
+__get_user_pages_locked() does what we want, but duplicating that logic in
+faultin_vma_page_range() feels wrong.
+
+So let's use __get_user_pages_locked() instead, that will detect
+VM_FAULT_RETRY and set FOLL_TRIED when retrying, making the fault handler
+return VM_FAULT_SIGBUS (VM_FAULT_ERROR) at some point, propagating -EFAULT
+from faultin_page() to __get_user_pages(), all the way to
+madvise_populate().
+
+But, there is an issue: __get_user_pages_locked() will end up re-taking
+the MM lock and then __get_user_pages() will do another VMA lookup.  In
+the meantime, the VMA layout could have changed and we'd fail with
+different error codes than we'd want to.
+
+As __get_user_pages() will currently do a new VMA lookup either way, let
+it do the VMA handling in a different way, controlled by a new
+FOLL_MADV_POPULATE flag, effectively moving these checks from
+madvise_populate() + faultin_page_range() in there.
+
+With this change, Darricks reproducer properly fails with -EFAULT, as
+documented for MADV_POPULATE_READ / MADV_POPULATE_WRITE.
+
+[1] https://lore.kernel.org/all/20240313171936.GN1927156@frogsfrogsfrogs/
+
+Link: https://lkml.kernel.org/r/20240314161300.382526-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20240314161300.382526-2-david@redhat.com
+Fixes: 4ca9b3859dac ("mm/madvise: introduce MADV_POPULATE_(READ|WRITE) to prefault page tables")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Darrick J. Wong <djwong@kernel.org>
+Closes: https://lore.kernel.org/all/20240311223815.GW1927156@frogsfrogsfrogs/
+Cc: Darrick J. Wong <djwong@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ mm/gup.c      |   54 ++++++++++++++++++++++++++++++++----------------------
+ mm/internal.h |   10 ++++++----
+ mm/madvise.c  |   17 ++---------------
+ 3 files changed, 40 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index bf4ac2f52d335..ded4a51323d2e 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -3205,28 +3205,41 @@ static void clk_summary_show_one(struct seq_file *s, struct clk_core *c,
- 				 int level)
- {
- 	int phase;
-+	struct clk *clk_user;
-+	int multi_node = 0;
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1206,6 +1206,22 @@ static long __get_user_pages(struct mm_s
  
--	seq_printf(s, "%*s%-*s %7d %8d %8d %11lu %10lu ",
-+	seq_printf(s, "%*s%-*s %-7d %-8d %-8d %-11lu %-10lu ",
- 		   level * 3 + 1, "",
--		   30 - level * 3, c->name,
-+		   35 - level * 3, c->name,
- 		   c->enable_count, c->prepare_count, c->protect_count,
- 		   clk_core_get_rate_recalc(c),
- 		   clk_core_get_accuracy_recalc(c));
- 
- 	phase = clk_core_get_phase(c);
- 	if (phase >= 0)
--		seq_printf(s, "%5d", phase);
-+		seq_printf(s, "%-5d", phase);
- 	else
- 		seq_puts(s, "-----");
- 
--	seq_printf(s, " %6d", clk_core_get_scaled_duty_cycle(c, 100000));
-+	seq_printf(s, " %-6d", clk_core_get_scaled_duty_cycle(c, 100000));
- 
- 	if (c->ops->is_enabled)
--		seq_printf(s, " %9c\n", clk_core_is_enabled(c) ? 'Y' : 'N');
-+		seq_printf(s, " %5c ", clk_core_is_enabled(c) ? 'Y' : 'N');
- 	else if (!c->ops->enable)
--		seq_printf(s, " %9c\n", 'Y');
-+		seq_printf(s, " %5c ", 'Y');
- 	else
--		seq_printf(s, " %9c\n", '?');
-+		seq_printf(s, " %5c ", '?');
-+
-+	hlist_for_each_entry(clk_user, &c->clks, clks_node) {
-+		seq_printf(s, "%*s%-*s  %-25s\n",
-+			   level * 3 + 2 + 105 * multi_node, "",
-+			   30,
-+			   clk_user->dev_id ? clk_user->dev_id : "deviceless",
-+			   clk_user->con_id ? clk_user->con_id : "no_connection_id");
-+
-+		multi_node = 1;
-+	}
-+
+ 		/* first iteration or cross vma bound */
+ 		if (!vma || start >= vma->vm_end) {
++			/*
++			 * MADV_POPULATE_(READ|WRITE) wants to handle VMA
++			 * lookups+error reporting differently.
++			 */
++			if (gup_flags & FOLL_MADV_POPULATE) {
++				vma = vma_lookup(mm, start);
++				if (!vma) {
++					ret = -ENOMEM;
++					goto out;
++				}
++				if (check_vma_flags(vma, gup_flags)) {
++					ret = -EINVAL;
++					goto out;
++				}
++				goto retry;
++			}
+ 			vma = gup_vma_lookup(mm, start);
+ 			if (!vma && in_gate_area(mm, start)) {
+ 				ret = get_gate_page(mm, start & PAGE_MASK,
+@@ -1683,35 +1699,35 @@ long populate_vma_page_range(struct vm_a
  }
  
- static void clk_summary_show_subtree(struct seq_file *s, struct clk_core *c,
-@@ -3247,9 +3260,10 @@ static int clk_summary_show(struct seq_file *s, void *data)
- 	struct clk_core *c;
- 	struct hlist_head **lists = s->private;
+ /*
+- * faultin_vma_page_range() - populate (prefault) page tables inside the
+- *			      given VMA range readable/writable
++ * faultin_page_range() - populate (prefault) page tables inside the
++ *			  given range readable/writable
+  *
+  * This takes care of mlocking the pages, too, if VM_LOCKED is set.
+  *
+- * @vma: target vma
++ * @mm: the mm to populate page tables in
+  * @start: start address
+  * @end: end address
+  * @write: whether to prefault readable or writable
+  * @locked: whether the mmap_lock is still held
+  *
+- * Returns either number of processed pages in the vma, or a negative error
+- * code on error (see __get_user_pages()).
++ * Returns either number of processed pages in the MM, or a negative error
++ * code on error (see __get_user_pages()). Note that this function reports
++ * errors related to VMAs, such as incompatible mappings, as expected by
++ * MADV_POPULATE_(READ|WRITE).
+  *
+- * vma->vm_mm->mmap_lock must be held. The range must be page-aligned and
+- * covered by the VMA. If it's released, *@locked will be set to 0.
++ * The range must be page-aligned.
++ *
++ * mm->mmap_lock must be held. If it's released, *@locked will be set to 0.
+  */
+-long faultin_vma_page_range(struct vm_area_struct *vma, unsigned long start,
+-			    unsigned long end, bool write, int *locked)
++long faultin_page_range(struct mm_struct *mm, unsigned long start,
++			unsigned long end, bool write, int *locked)
+ {
+-	struct mm_struct *mm = vma->vm_mm;
+ 	unsigned long nr_pages = (end - start) / PAGE_SIZE;
+ 	int gup_flags;
+ 	long ret;
  
--	seq_puts(s, "                                 enable  prepare  protect                                duty  hardware\n");
--	seq_puts(s, "   clock                          count    count    count        rate   accuracy phase  cycle    enable\n");
--	seq_puts(s, "-------------------------------------------------------------------------------------------------------\n");
-+	seq_puts(s, "                                 enable  prepare  protect                                duty  hardware                            connection\n");
-+	seq_puts(s, "   clock                          count    count    count        rate   accuracy phase  cycle    enable   consumer                         id\n");
-+	seq_puts(s, "---------------------------------------------------------------------------------------------------------------------------------------------\n");
-+
+ 	VM_BUG_ON(!PAGE_ALIGNED(start));
+ 	VM_BUG_ON(!PAGE_ALIGNED(end));
+-	VM_BUG_ON_VMA(start < vma->vm_start, vma);
+-	VM_BUG_ON_VMA(end > vma->vm_end, vma);
+ 	mmap_assert_locked(mm);
  
- 	clk_prepare_lock();
+ 	/*
+@@ -1723,19 +1739,13 @@ long faultin_vma_page_range(struct vm_ar
+ 	 *		  a poisoned page.
+ 	 * !FOLL_FORCE: Require proper access permissions.
+ 	 */
+-	gup_flags = FOLL_TOUCH | FOLL_HWPOISON | FOLL_UNLOCKABLE;
++	gup_flags = FOLL_TOUCH | FOLL_HWPOISON | FOLL_UNLOCKABLE |
++		    FOLL_MADV_POPULATE;
+ 	if (write)
+ 		gup_flags |= FOLL_WRITE;
  
--- 
-2.43.0
-
+-	/*
+-	 * We want to report -EINVAL instead of -EFAULT for any permission
+-	 * problems or incompatible mappings.
+-	 */
+-	if (check_vma_flags(vma, gup_flags))
+-		return -EINVAL;
+-
+-	ret = __get_user_pages(mm, start, nr_pages, gup_flags,
+-			       NULL, locked);
++	ret = __get_user_pages_locked(mm, start, nr_pages, NULL, locked,
++				      gup_flags);
+ 	lru_add_drain();
+ 	return ret;
+ }
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -590,9 +590,8 @@ struct anon_vma *folio_anon_vma(struct f
+ void unmap_mapping_folio(struct folio *folio);
+ extern long populate_vma_page_range(struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end, int *locked);
+-extern long faultin_vma_page_range(struct vm_area_struct *vma,
+-				   unsigned long start, unsigned long end,
+-				   bool write, int *locked);
++extern long faultin_page_range(struct mm_struct *mm, unsigned long start,
++		unsigned long end, bool write, int *locked);
+ extern bool mlock_future_ok(struct mm_struct *mm, unsigned long flags,
+ 			       unsigned long bytes);
+ 
+@@ -1031,10 +1030,13 @@ enum {
+ 	FOLL_FAST_ONLY = 1 << 20,
+ 	/* allow unlocking the mmap lock */
+ 	FOLL_UNLOCKABLE = 1 << 21,
++	/* VMA lookup+checks compatible with MADV_POPULATE_(READ|WRITE) */
++	FOLL_MADV_POPULATE = 1 << 22,
+ };
+ 
+ #define INTERNAL_GUP_FLAGS (FOLL_TOUCH | FOLL_TRIED | FOLL_REMOTE | FOLL_PIN | \
+-			    FOLL_FAST_ONLY | FOLL_UNLOCKABLE)
++			    FOLL_FAST_ONLY | FOLL_UNLOCKABLE | \
++			    FOLL_MADV_POPULATE)
+ 
+ /*
+  * Indicates for which pages that are write-protected in the page table,
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -908,27 +908,14 @@ static long madvise_populate(struct vm_a
+ {
+ 	const bool write = behavior == MADV_POPULATE_WRITE;
+ 	struct mm_struct *mm = vma->vm_mm;
+-	unsigned long tmp_end;
+ 	int locked = 1;
+ 	long pages;
+ 
+ 	*prev = vma;
+ 
+ 	while (start < end) {
+-		/*
+-		 * We might have temporarily dropped the lock. For example,
+-		 * our VMA might have been split.
+-		 */
+-		if (!vma || start >= vma->vm_end) {
+-			vma = vma_lookup(mm, start);
+-			if (!vma)
+-				return -ENOMEM;
+-		}
+-
+-		tmp_end = min_t(unsigned long, end, vma->vm_end);
+ 		/* Populate (prefault) page tables readable/writable. */
+-		pages = faultin_vma_page_range(vma, start, tmp_end, write,
+-					       &locked);
++		pages = faultin_page_range(mm, start, end, write, &locked);
+ 		if (!locked) {
+ 			mmap_read_lock(mm);
+ 			locked = 1;
+@@ -949,7 +936,7 @@ static long madvise_populate(struct vm_a
+ 				pr_warn_once("%s: unhandled return value: %ld\n",
+ 					     __func__, pages);
+ 				fallthrough;
+-			case -ENOMEM:
++			case -ENOMEM: /* No VMA or out of memory. */
+ 				return -ENOMEM;
+ 			}
+ 		}
 
 
 
