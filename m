@@ -1,146 +1,131 @@
-Return-Path: <stable+bounces-40548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865708ADB3B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 02:44:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAFF8ADB79
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 03:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40032283F82
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 00:44:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5104E1C211D7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 01:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7244D3FF4;
-	Tue, 23 Apr 2024 00:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D7D125C0;
+	Tue, 23 Apr 2024 01:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TCsoTKTh"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Bo7a/SmO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595DF14AB2;
-	Tue, 23 Apr 2024 00:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9FCFC18;
+	Tue, 23 Apr 2024 01:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713833029; cv=none; b=YxhU0AkbTbDpRvFjNMUjBuD9wTXJnEelLxW5mEzZAE0oliTCXZzj+VbFMcyTUxD5EVRWg7bh0liPOG9HC1On1k4Yb+teBYxoT5zT183hkPjbSNGDrcF/MmKhYUuf9dIpzDEPLhpAOu5m4XfGAvR7LzcVxIPoqZcWk+BP++ZQsoc=
+	t=1713835331; cv=none; b=b9yVoy68noG6nXxiGnV3+9dW5UiyVh1QuCzpsKOY6ThcoO+acfs80iDfh0WBM5RZgP1cskK2TJcGcGKIiHdRq7iXwci+lmxIIWque1+60/p3xzW7a3gVgmFDJxVqTLdk7yngG+7mqnI4OJXvblWZTo6jtzm3C9Q7D5SC7oKqvEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713833029; c=relaxed/simple;
-	bh=VFbAJUhcP0KMuDkHhwe98YCuNuSDX2maSRVfItJn72U=;
+	s=arc-20240116; t=1713835331; c=relaxed/simple;
+	bh=Ih5x3U7p/xtVraTTykRD3OsOwljk9aCuZMTsbHhk8XQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Znx5u7QDQfyuw/R38rvi5Uc1+51SSkqOPP+b3Sxd24fQV6/YEiar3OduLR/5iAV++j6Mvpn32WLwitOkdH8qyeSn9yLhQtpyRGqIXrz+lCoRItGs7HuGgBt/fNkRoXNy36ueS5F0jFPp/tT/GAWR6KQE8XUuuX9V9m5pSgcS/+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TCsoTKTh; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2a7e19c440dso3519536a91.3;
-        Mon, 22 Apr 2024 17:43:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713833026; x=1714437826; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y0vJ15HzyjugMAhNTAU3HivHhRTp3jhrffXYIhcyc1o=;
-        b=TCsoTKThR0ePlUR7oq/HHjN8PMuIAsjrFjVBDRDYFthanXypThIuxtKESvB5U8sIVz
-         GTL3n92czp/AV6bKemPu17qc+birgd1n0x5ocu3FRxDuol6xPumpjBA+89U+VSv1WOM9
-         kt6mkSmvtazHayGrWzG8MiXRQMtyzX/TO/aU5HhgqzAZAXbsmFKpGezlJzI7IRqv7oJV
-         tw3AxqWrhhj6jDfflLcsvb5rWR6hUEMFuOYe3UXYAYb6oISNyDllB27YOaXT0xgs1i9j
-         oiM4G8AQ4nkLl7e6p/XZ/D6AfBP2c6EINIb1lriBbJcfnXAq5/iRVeQtOn3IanJzI6KZ
-         T8ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713833026; x=1714437826;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y0vJ15HzyjugMAhNTAU3HivHhRTp3jhrffXYIhcyc1o=;
-        b=cps5FrcZNr3n5an9xsoc7TndSRsDpbdYI8vCSWENSDtBdSGNxHpefRJWMM5qe/Spj3
-         DNutUNtaJGJp0RKKe3bngLb6AeoZuzYErpwxfvxJuFmz8jwyBWbpB+Dqs0r+o7bNEqUn
-         3sDyzR6Co3VH8wpZswkIlufIOMgBDlaiZJvUeSVrKYiR7T6Us77l5jnmTLSUmAudW4D/
-         aRUVq3YQzg0M/Fkb+Wuh3RegloR6DDqkd5VRW2/gPyzde0nGmQsPsx06oiR5u6Vc/f7J
-         unJaCQyPUELhP0n+ESqiaOYkbw82U4AChMyytb5bFuTj7qOTB/xCPvZApCJval2ysBHq
-         a2pA==
-X-Forwarded-Encrypted: i=1; AJvYcCWw7DeBt5gtFhw3JmSxvzZa2QdtTcgi69tmcVOrzysYlSAUG+3+cEWOSuWfNj8o0FYQWc4Mul89iPFWwGvBH2pIaQ+XlIo5QFEt8t6e//ynxsT6sliBghBrLj7v9Db7RqF+bxevc8tsy/UwuwahzxQmavR1BIjq2nPqutiwcSQnuYdWt7crOJbNgTRbfO6bUwYMaKbKfuiUCTcwOmhmkAR4l6I=
-X-Gm-Message-State: AOJu0YxYGYaoSF2sAS+qqL3NXJ7uj48iGJ33sKIAc7G+uO1uQYGBQ+w7
-	cWfXh+bA7g6GQ1em/uADhJb3Kqjg8/hdFCaz694F9kKX5lcq3BqPbMETFC8EhFKTDjNx2Mtq1ge
-	GegLC9HkvlMl+Ai5M26r3GOBe/aI=
-X-Google-Smtp-Source: AGHT+IGLfYyTbl9vYvOYBfXcIXSEXDht3gOfURdaONNde0mhKnSeiXHNUhWNVYDkuOveQ9YnBGixGIsOfEfiKHSuM3Q=
-X-Received: by 2002:a17:90a:55cb:b0:2ab:2b1d:7dae with SMTP id
- o11-20020a17090a55cb00b002ab2b1d7daemr8899537pjm.44.1713833026513; Mon, 22
- Apr 2024 17:43:46 -0700 (PDT)
+	 To:Cc:Content-Type; b=mxHbNtd3xOPe/tZrkAQP1hzQ2ynbmbtk4jw/d2fViXUd+kcWxHhf1UPjL/WLzUfHtOmZU1OYIQjvjkBssOBRmg6kAGCtccecMvpspZrHQewt0itr9tdCr4eCsIu62hI5fTd0nyp61iVcNeHy123lODtEMmj6UpHQkI1nzX1Be2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=Bo7a/SmO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A225CC113CC;
+	Tue, 23 Apr 2024 01:22:10 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Bo7a/SmO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1713835327;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ABtPQ8N241McwH5nBg097+oC8v9+e969bZpbfxdAxJg=;
+	b=Bo7a/SmOoG+JYtN0U12s/KdN/K9YPwQO2U7Df3gj0Zy0tHf6yaZ6wf0tUpHaTLTCcWR56o
+	2OzydvBrH6TDAOiEJWmz5+SMktEDm21j0O4sXlWNKK9nOENQPpkg7FhCGaulIQ4kTQz6RX
+	ckK8y7h3bZBaw+sVwH8zHvzLGsbsTKg=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 885dffb8 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 23 Apr 2024 01:22:06 +0000 (UTC)
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-dc6cbe1ac75so3836954276.1;
+        Mon, 22 Apr 2024 18:22:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVFE59M95gwpK0xW41tk1fcGijHiuASSGjXm664l5iDFOedUgrdC6OWHIiiAI4NBVThC+Fm0KqwPEe8WQ9SU5su/LlZC92c
+X-Gm-Message-State: AOJu0YxJlmU18DtPon06cPDT5NwpNd7Rtw0qsr5Sn1R/MR+hh0pzboG1
+	Uz2iJDsNkI/dwOQBZNHgh50GfKoaQz5vSWaFdO1T1ZmBRd8T9MgDSrS8+Z7rwBz6Cug90/O03gt
+	jmZeO0RudJo/FYtEzowonIkZgf4k=
+X-Google-Smtp-Source: AGHT+IHOl/OU0gcvKAzZv+BDUZWeDYaENpYzgHuuBDp9zvpkL5AsnDGHxy57Vi8y+7xvNvjifG8fxHcls0zCXYzjLQs=
+X-Received: by 2002:a25:ac90:0:b0:dc6:d258:c694 with SMTP id
+ x16-20020a25ac90000000b00dc6d258c694mr1437897ybi.19.1713835324219; Mon, 22
+ Apr 2024 18:22:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240422090644.525520-1-ojeda@kernel.org>
-In-Reply-To: <20240422090644.525520-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 23 Apr 2024 02:42:41 +0200
-Message-ID: <CANiq72=7BycaXS-mOpt1V5y8kw+v9yp0dLpdQTZ_KRRnEcwWVA@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: force `alloc` extern to allow "empty" Rust files
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, stable@vger.kernel.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>
+References: <20240418114814.24601-1-Jason@zx2c4.com> <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
+In-Reply-To: <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Tue, 23 Apr 2024 03:21:52 +0200
+X-Gmail-Original-Message-ID: <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
+Message-ID: <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
+Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when
+ VMGENID updates"
+To: Alexander Graf <graf@amazon.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Lennart Poettering <mzxreary@0pointer.de>, Babis Chalios <bchalios@amazon.es>, "Theodore Ts'o" <tytso@mit.edu>, 
+	"Cali, Marco" <xmarcalx@amazon.co.uk>, Arnd Bergmann <arnd@arndb.de>, 
+	"rostedt@goodmis.org" <rostedt@goodmis.org>, Christian Brauner <brauner@kernel.org>, linux@leemhuis.info, 
+	regressions@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 22, 2024 at 11:08=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->
-> If one attempts to build an essentially empty file somewhere in the
-> kernel tree, it leads to a build error because the compiler does not
-> recognize the `new_uninit` unstable feature:
->
->     error[E0635]: unknown feature `new_uninit`
->      --> <crate attribute>:1:9
->       |
->     1 | feature(new_uninit)
->       |         ^^^^^^^^^^
->
-> The reason is that we pass `-Zcrate-attr=3D'feature(new_uninit)'` (togeth=
-er
-> with `-Zallow-features=3Dnew_uninit`) to let non-`rust/` code use that
-> unstable feature.
->
-> However, the compiler only recognizes the feature if the `alloc` crate
-> is resolved (the feature is an `alloc` one). `--extern alloc`, which we
-> pass, is not enough to resolve the crate.
->
-> Introducing a reference like `use alloc;` or `extern crate alloc;`
-> solves the issue, thus this is not seen in normal files. For instance,
-> `use`ing the `kernel` prelude introduces such a reference, since `alloc`
-> is used inside.
->
-> While normal use of the build system is not impacted by this, it can stil=
-l
-> be fairly confusing for kernel developers [1], thus use the unstable
-> `force` option of `--extern` [2] (added in Rust 1.71 [3]) to force the
-> compiler to resolve `alloc`.
->
-> This new unstable feature is only needed meanwhile we use the other
-> unstable feature, since then we will not need `-Zcrate-attr`.
->
-> Cc: stable@vger.kernel.org # v6.6+
-> Reported-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reported-by: Julian Stecklina <julian.stecklina@cyberus-technology.de>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-Genera=
-l/topic/x/near/424096982 [1]
-> Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-> Link: https://github.com/rust-lang/rust/issues/111302 [2]
-> Link: https://github.com/rust-lang/rust/pull/109421 [3]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi Alexander,
 
-Applied to `rust-fixes` early to start getting some testing in -next.
-Please feel free to send tags for this one.
+The process here seems weirdly aggressive and sneaky.
 
-Cheers,
-Miguel
+On 2023-06-19, I wrote that I didn't want to take this route for
+userspace notifications.
+
+Then on 2023-06-28, you wrote to Greg asking him to take it instead of
+me. Nine minutes later, Greg said "yea sure." Then he caught up on the
+thread and some hours later wrote:
+
+> Wait, no, I'm not the maintainer of this, Jason is.  And he already
+> rejected it (and based on the changelog text, I would too), so why are
+> you asking me a month later to take this?
+>
+> Work with the maintainer please, don't try to route around them, you
+> both know better than this.
+
+Then on 2023-11-14 you wrote to me again asking me to take it, despite
+my earlier reservations not changing in the interim. I didn't have a
+chance to reply.
+
+Then on 2023-11-30, Greg weirdly took it anyway, with zero discussion
+or evidence on the mailing list as to what had happened.
+
+When I noticed what had happened (while working on his driver in the
+process of cleaning up/reworking patches that your Amazon employees
+sent me that needed work), suspicious that you tried to "route around"
+the proper way of getting this done and trick Greg again into taking a
+patch that's not his purview, I asked him wtf happened on IRC:
+
+<gregkh> ugh, sorry, I don't remember that.  I think Alexander talked
+to me at plumbers and said, "hey, please take this virt patch"
+<gregkh> but you are right, you NAKed it in that thread, I forgot
+that, sorry.  Yes, revert it if that's needed.
+
+Greg then ACK'd the revert commit which came with a stable@ marking
+and a Fixes: tag (for 6.8, which isn't very old).
+
+So it looks to me like you twice tried to trick Greg into taking this,
+succeeded the second time, got caught, and now are trying to make a
+regression argument as a means of keeping your sneaky commit in there.
+All of this really _really_ rubs me the wrong way, I have to say.
+
+I don't know what holds more weight here -- the predictable regression
+argument, or the fact that you snuck nack'd changes into a very very
+recent kernel that can still be removed while probably only affecting
+you. But I'm obviously not happy about this.
+
+Jason
 
