@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-40813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4641C8AF92B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C62C48AFA55
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 771131C22AB7
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82C28286DC8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26481448C7;
-	Tue, 23 Apr 2024 21:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A964146D49;
+	Tue, 23 Apr 2024 21:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12qWn/mC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oR0ltvu5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C0C14388A;
-	Tue, 23 Apr 2024 21:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBA4146A94;
+	Tue, 23 Apr 2024 21:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908480; cv=none; b=KpUu24CsAueC1RhtwBHyEvH7JEa2rMDvXwgRtTxRjaJ9tZrZtxAuwRo8WordGlVg5OkbH0zkp4wKeib+ZRa4hwLlQWPM0Ke0xRVfZVDbP1tEKiwRaU4PV1tj6fj/w5yuBbMJtQjdsAbt0JxGBui+Pp3pQao/wlHsIhcFgEZJqaw=
+	t=1713908679; cv=none; b=FT25O8Nn5W39fS4CLdQxVub+1Ijzsb+ifs7XZfyIloGBEHnwbRX2VtFX6e6sJw/MpD55lzsM/bFWPflrALJHA1VFWKdEZ/kcPHFi+OwvtNcCv3HkNJzsgATQ9wD7U+Orjo7EPZEavsMegOilf+WhoNazhb09yHUncv4T3gv6W5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908480; c=relaxed/simple;
-	bh=gjQmQ5Lev0BE9Pm7N3CyqNlg8HMUg8JNg72X+z+OzR8=;
+	s=arc-20240116; t=1713908679; c=relaxed/simple;
+	bh=9AOt29k2fEqqW+JkPMGA/FxX34wANXmME0zxpr1XXxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnbfWVAoflTTuuoQsYxFQqjSfZ6q+3kB5hvQ3sDqh8MwMLUR1Pr0Lx2sElyHpPutNIg9bhI4er6pETGnOwLoibzxbX8pOSdNFvx5gY9jzE/lU0QXP1qp1LJiBZ/yiM/T9vWiGZqKdk/18w8ehNAfOnRp2Zd2EioWckSzBBtLuoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12qWn/mC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32394C32782;
-	Tue, 23 Apr 2024 21:41:20 +0000 (UTC)
+	 MIME-Version; b=I07cNsJpmEMkjHjEEmu9PemPoxP6if4ojWAV/SbSMstkFcPF+tpiyZ03wHta23ztgqSKjLu+/HeSemY+bItKVtEwbtNV+2UkU9aZkO2tIeGwU2cmV6rFHE4+YBDunX/WwrCi5tijLYlIxqF/sx8YksHVpgQNgfOb7A+vFlaEe/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oR0ltvu5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B78C116B1;
+	Tue, 23 Apr 2024 21:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908480;
-	bh=gjQmQ5Lev0BE9Pm7N3CyqNlg8HMUg8JNg72X+z+OzR8=;
+	s=korg; t=1713908678;
+	bh=9AOt29k2fEqqW+JkPMGA/FxX34wANXmME0zxpr1XXxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12qWn/mC5F4mHLBc3q9MZBmSARBfgeIgAwXgNhTtN1f5gcxRlC1SJPFTBJPkNZPru
-	 nHYTAk6rMnsqNvoaDMruPT2lVbhwLj20wstKgQjQh4xwn9PqrmddswCMBfjk1fj3MK
-	 H2jdIqIw3Ad3+SvVT+Cg9xGxXau9mBFNlhlHPzYM=
+	b=oR0ltvu5man2K3CrR5GZTYFKf0A+bTnNsNoG7zGUxKQWGCUU1egdaMqzl6msybIdi
+	 aRi8lYtAbWoBof/PCi1sGjp1LBT7qtrgH4jZN05LBSdMINfC2BbVELERm1CNf2fIWh
+	 dBiif18kJQp4tHjaZY+7xVXqWJlBDWQFc+uAswpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 049/158] net: ethernet: mtk_eth_soc: fix WED + wifi reset
+Subject: [PATCH 6.1 003/141] drm/amdgpu: fix incorrect number of active RBs for gfx11
 Date: Tue, 23 Apr 2024 14:37:51 -0700
-Message-ID: <20240423213857.497942136@linuxfoundation.org>
+Message-ID: <20240423213853.469961946@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 94667949ec3bbb2218c46ad0a0e7274c8832e494 ]
+[ Upstream commit bbca7f414ae9a12ea231cdbafd79c607e3337ea8 ]
 
-The WLAN + WED reset sequence relies on being able to receive interrupts from
-the card, in order to synchronize individual steps with the firmware.
-When WED is stopped, leave interrupts running and rely on the driver turning
-off unwanted ones.
-WED DMA also needs to be disabled before resetting.
+The RB bitmap should be global active RB bitmap &
+active RB bitmap based on active SA.
 
-Fixes: f78cd9c783e0 ("net: ethernet: mtk_wed: update mtk_wed_stop")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://lore.kernel.org/r/20240416082330.82564-1-nbd@nbd.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_wed.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-index c895e265ae0eb..61334a71058c7 100644
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -1074,13 +1074,13 @@ mtk_wed_dma_disable(struct mtk_wed_device *dev)
- static void
- mtk_wed_stop(struct mtk_wed_device *dev)
- {
-+	mtk_wed_dma_disable(dev);
- 	mtk_wed_set_ext_int(dev, false);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index ec40f88da00c3..5a5787bfbce7f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -1592,7 +1592,7 @@ static void gfx_v11_0_setup_rb(struct amdgpu_device *adev)
+ 			active_rb_bitmap |= (0x3 << (i * rb_bitmap_width_per_sa));
+ 	}
  
- 	wed_w32(dev, MTK_WED_WPDMA_INT_TRIGGER, 0);
- 	wed_w32(dev, MTK_WED_WDMA_INT_TRIGGER, 0);
- 	wdma_w32(dev, MTK_WDMA_INT_MASK, 0);
- 	wdma_w32(dev, MTK_WDMA_INT_GRP2, 0);
--	wed_w32(dev, MTK_WED_WPDMA_INT_MASK, 0);
- 
- 	if (!mtk_wed_get_rx_capa(dev))
- 		return;
-@@ -1093,7 +1093,6 @@ static void
- mtk_wed_deinit(struct mtk_wed_device *dev)
- {
- 	mtk_wed_stop(dev);
--	mtk_wed_dma_disable(dev);
- 
- 	wed_clr(dev, MTK_WED_CTRL,
- 		MTK_WED_CTRL_WDMA_INT_AGENT_EN |
-@@ -2605,9 +2604,6 @@ mtk_wed_irq_get(struct mtk_wed_device *dev, u32 mask)
- static void
- mtk_wed_irq_set_mask(struct mtk_wed_device *dev, u32 mask)
- {
--	if (!dev->running)
--		return;
--
- 	mtk_wed_set_ext_int(dev, !!mask);
- 	wed_w32(dev, MTK_WED_INT_MASK, mask);
+-	active_rb_bitmap |= global_active_rb_bitmap;
++	active_rb_bitmap &= global_active_rb_bitmap;
+ 	adev->gfx.config.backend_enable_mask = active_rb_bitmap;
+ 	adev->gfx.config.num_rbs = hweight32(active_rb_bitmap);
  }
 -- 
 2.43.0
