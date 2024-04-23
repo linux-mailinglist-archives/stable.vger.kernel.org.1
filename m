@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C348AFABA
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBEC8AFAF6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2076283E52
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2AE51F26B37
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4316314A4FC;
-	Tue, 23 Apr 2024 21:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BDF148851;
+	Tue, 23 Apr 2024 21:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4EGjMmc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aLgwkkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026A11487C4;
-	Tue, 23 Apr 2024 21:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703AA14388A;
+	Tue, 23 Apr 2024 21:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908752; cv=none; b=grjzgutKf/38rnLkN6Jvudrxxh7yrNjcxMgBVYjFXFcDdLQaHTLEOy4WsxVR9Hro7AIUMQgrUvL/SyH8ns66myIjRZ8W4PVvoJGEQD233oweDLv5HsFy6aZBFyIx9kxqV1d6XJykHW9lLKmKsGNbKKZu2Lyc1sbVvmH5knl4854=
+	t=1713908791; cv=none; b=fUn78hoYff3c1xwJNKaetLZ2ctzoiyEPT2RMTwVHsdVmXwwGx8zvYBJKLW/eczZHbuCoEuB7nCTeUzQNkh+gWp890qQkvznA23BXJKIy6BWqTyRtR3lrcgUcyMi3LM+ts2i7lb6/tujhvTnxbnK9BDA+W0WTbJ8FmEMVQcKU5Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908752; c=relaxed/simple;
-	bh=RVOzppF3a+KRNHoxvOwnfOyztYlBJ/JMY6IfM10FKYU=;
+	s=arc-20240116; t=1713908791; c=relaxed/simple;
+	bh=JsnBNYvOIZBKqMZCAJfMKCDgJDVTpP0q2hZcyrNBN1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tfuSEnfPmYgTeIDLjobmPAaV5OIT3PRW+tgAQlMdTbT4OQraNCoLt9JabTBuqCmN9JnaBY/uCOtt+NveZNL2bdUg1LjyYRhN/ztrvbjM7pFoCgH5XI3IqmmVBkZjHdAE4HZHIlQcsTrLXOyAMiZgAz7VfHOWVdYI38FSipEa3vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4EGjMmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD020C32783;
-	Tue, 23 Apr 2024 21:45:51 +0000 (UTC)
+	 MIME-Version; b=pH7InQPhZjUFcdtsHWbIymJNsKtWacmkFxGXQS+OyBBL6oB26URoI6MTDeDPZ3r+5GzAAnT8d8Dk1bUQ+k6z/xpu3h4mEN7NUwyR1U0X6XP0f1h1ywMnIdcR57RB0H1LXMB5l1alpQ5lLu8WhYePI6DAcZ2rroGCHq6CySt8cVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aLgwkkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4493FC3277B;
+	Tue, 23 Apr 2024 21:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908751;
-	bh=RVOzppF3a+KRNHoxvOwnfOyztYlBJ/JMY6IfM10FKYU=;
+	s=korg; t=1713908791;
+	bh=JsnBNYvOIZBKqMZCAJfMKCDgJDVTpP0q2hZcyrNBN1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4EGjMmcbvxO2nUOAoBE288n5ki394zVIqVZWF05ttn+PZ/Zo7Sl8mjeetFwoBQzB
-	 0b2vwQ/xaBnAJJ7TcbGiy3tGaIST6T0GrvVR6aBhKYAeLfU/YjJL7ehTxZixaq7yoe
-	 hQ9TFaOSgbZYKHi5+T52vTWeTFiwOQezThOkPrnM=
+	b=1aLgwkkqZfbilXuCrMuUAhB21rO3bnCh2VLKQubc0BRkhELz8H5aqJRDdhK5mchax
+	 SP+jkh449X+SeCpXUEhcxc4EN6z50VBORysiY8yKACTkbM6YUc+wWctDE0RU8gjt3+
+	 aEv7mf+wJS/giH0isladUhxah36k6boq5LgxQg6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Stolyarov <hexed@google.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	xinhui pan <xinhui.pan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 127/141] drm/amdgpu: validate the parameters of bo mapping operations more clearly
-Date: Tue, 23 Apr 2024 14:39:55 -0700
-Message-ID: <20240423213857.330463061@linuxfoundation.org>
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.15 43/71] thunderbolt: Fix wake configurations after device unplug
+Date: Tue, 23 Apr 2024 14:39:56 -0700
+Message-ID: <20240423213845.630672364@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,146 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xinhui pan <xinhui.pan@amd.com>
+From: Gil Fine <gil.fine@linux.intel.com>
 
-commit 6fef2d4c00b5b8561ad68dd2b68173f5c6af1e75 upstream.
+commit c38fa07dc69f0b9e6f43ecab96dc7861a70c827c upstream.
 
-Verify the parameters of
-amdgpu_vm_bo_(map/replace_map/clearing_mappings) in one common place.
+Currently we don't configure correctly the wake events after unplug of device
+router. What can happen is that the downstream ports of host router will be
+configured to wake on: USB4-wake and wake-on-disconnect, but not on
+wake-on-connect. This may cause the later plugged device not to wake the
+domain and fail in enumeration. Fix this by clearing downstream port's "USB4
+Port is Configured" bit, after unplug of a device router.
 
-Fixes: dc54d3d1744d ("drm/amdgpu: implement AMDGPU_VA_OP_CLEAR v2")
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
 Cc: stable@vger.kernel.org
-Reported-by: Vlad Stolyarov <hexed@google.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: xinhui pan <xinhui.pan@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |   72 +++++++++++++++++++++------------
- 1 file changed, 46 insertions(+), 26 deletions(-)
+ drivers/thunderbolt/switch.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -1400,6 +1400,37 @@ static void amdgpu_vm_bo_insert_map(stru
- 	trace_amdgpu_vm_bo_map(bo_va, mapping);
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -2669,22 +2669,29 @@ void tb_switch_unconfigure_link(struct t
+ {
+ 	struct tb_port *up, *down;
+ 
+-	if (sw->is_unplugged)
+-		return;
+ 	if (!tb_route(sw) || tb_switch_is_icm(sw))
+ 		return;
+ 
++	/*
++	 * Unconfigure downstream port so that wake-on-connect can be
++	 * configured after router unplug. No need to unconfigure upstream port
++	 * since its router is unplugged.
++	 */
+ 	up = tb_upstream_port(sw);
+-	if (tb_switch_is_usb4(up->sw))
+-		usb4_port_unconfigure(up);
+-	else
+-		tb_lc_unconfigure_port(up);
+-
+ 	down = up->remote;
+ 	if (tb_switch_is_usb4(down->sw))
+ 		usb4_port_unconfigure(down);
+ 	else
+ 		tb_lc_unconfigure_port(down);
++
++	if (sw->is_unplugged)
++		return;
++
++	up = tb_upstream_port(sw);
++	if (tb_switch_is_usb4(up->sw))
++		usb4_port_unconfigure(up);
++	else
++		tb_lc_unconfigure_port(up);
  }
  
-+/* Validate operation parameters to prevent potential abuse */
-+static int amdgpu_vm_verify_parameters(struct amdgpu_device *adev,
-+					  struct amdgpu_bo *bo,
-+					  uint64_t saddr,
-+					  uint64_t offset,
-+					  uint64_t size)
-+{
-+	uint64_t tmp, lpfn;
-+
-+	if (saddr & AMDGPU_GPU_PAGE_MASK
-+	    || offset & AMDGPU_GPU_PAGE_MASK
-+	    || size & AMDGPU_GPU_PAGE_MASK)
-+		return -EINVAL;
-+
-+	if (check_add_overflow(saddr, size, &tmp)
-+	    || check_add_overflow(offset, size, &tmp)
-+	    || size == 0 /* which also leads to end < begin */)
-+		return -EINVAL;
-+
-+	/* make sure object fit at this offset */
-+	if (bo && offset + size > amdgpu_bo_size(bo))
-+		return -EINVAL;
-+
-+	/* Ensure last pfn not exceed max_pfn */
-+	lpfn = (saddr + size - 1) >> AMDGPU_GPU_PAGE_SHIFT;
-+	if (lpfn >= adev->vm_manager.max_pfn)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- /**
-  * amdgpu_vm_bo_map - map bo inside a vm
-  *
-@@ -1426,21 +1457,14 @@ int amdgpu_vm_bo_map(struct amdgpu_devic
- 	struct amdgpu_bo *bo = bo_va->base.bo;
- 	struct amdgpu_vm *vm = bo_va->base.vm;
- 	uint64_t eaddr;
-+	int r;
- 
--	/* validate the parameters */
--	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
--		return -EINVAL;
--	if (saddr + size <= saddr || offset + size <= offset)
--		return -EINVAL;
--
--	/* make sure object fit at this offset */
--	eaddr = saddr + size - 1;
--	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
--	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
--		return -EINVAL;
-+	r = amdgpu_vm_verify_parameters(adev, bo, saddr, offset, size);
-+	if (r)
-+		return r;
- 
- 	saddr /= AMDGPU_GPU_PAGE_SIZE;
--	eaddr /= AMDGPU_GPU_PAGE_SIZE;
-+	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
- 
- 	tmp = amdgpu_vm_it_iter_first(&vm->va, saddr, eaddr);
- 	if (tmp) {
-@@ -1493,17 +1517,9 @@ int amdgpu_vm_bo_replace_map(struct amdg
- 	uint64_t eaddr;
- 	int r;
- 
--	/* validate the parameters */
--	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
--		return -EINVAL;
--	if (saddr + size <= saddr || offset + size <= offset)
--		return -EINVAL;
--
--	/* make sure object fit at this offset */
--	eaddr = saddr + size - 1;
--	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
--	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
--		return -EINVAL;
-+	r = amdgpu_vm_verify_parameters(adev, bo, saddr, offset, size);
-+	if (r)
-+		return r;
- 
- 	/* Allocate all the needed memory */
- 	mapping = kmalloc(sizeof(*mapping), GFP_KERNEL);
-@@ -1517,7 +1533,7 @@ int amdgpu_vm_bo_replace_map(struct amdg
- 	}
- 
- 	saddr /= AMDGPU_GPU_PAGE_SIZE;
--	eaddr /= AMDGPU_GPU_PAGE_SIZE;
-+	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
- 
- 	mapping->start = saddr;
- 	mapping->last = eaddr;
-@@ -1604,10 +1620,14 @@ int amdgpu_vm_bo_clear_mappings(struct a
- 	struct amdgpu_bo_va_mapping *before, *after, *tmp, *next;
- 	LIST_HEAD(removed);
- 	uint64_t eaddr;
-+	int r;
-+
-+	r = amdgpu_vm_verify_parameters(adev, NULL, saddr, 0, size);
-+	if (r)
-+		return r;
- 
--	eaddr = saddr + size - 1;
- 	saddr /= AMDGPU_GPU_PAGE_SIZE;
--	eaddr /= AMDGPU_GPU_PAGE_SIZE;
-+	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
- 
- 	/* Allocate all the needed memory */
- 	before = kzalloc(sizeof(*before), GFP_KERNEL);
+ static void tb_switch_credits_init(struct tb_switch *sw)
 
 
 
