@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A0B8AFABF
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:50:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 274FD8AF982
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9F21B276FE
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:50:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7106EB2A417
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25E71482EB;
-	Tue, 23 Apr 2024 21:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E9A144D10;
+	Tue, 23 Apr 2024 21:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3Re5Xxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRCeOsmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AEC143882;
-	Tue, 23 Apr 2024 21:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD3220B3E;
+	Tue, 23 Apr 2024 21:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908739; cv=none; b=Qla4RLG0o5qBZExxdVMd1tMckPOyCCW6sT7clxwd2ymfP45eqdP4Y/4CD+O62OrPCWBWMPtKRVPq+TnXwKc0KCgPB++a5x6OMgBhq8BuwftX7coOn+VtwB6leAN7JWaCUoPsbjhTr1oaXm94aJy8bJ/kdJyavXFDfMjVyXl3TPI=
+	t=1713908537; cv=none; b=WoR62jUREzV7qvruxErAVhM9PXeJbSQfe0veIJNHBCE36VwoRa0YYQPBm1UQRZNQmDFOhCm63RMOWFZjbj5FKQDBqDw62HPLzkweQlWEGZjp91qfULBR/y14Z6Sm48QoqC5b38a7XDC1Sm+BvtqtdzqWfsNkU+58aHZrk3qqDxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908739; c=relaxed/simple;
-	bh=2X92Uejevxo1td8OtS6QPdxhcJguC4qzCKKSCOAEAyo=;
+	s=arc-20240116; t=1713908537; c=relaxed/simple;
+	bh=3hLOtLAvfPbEYmad7tv3wt+vnbXtRFc+buR4ikN0scM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9d336aclMoJHLBiPz9hCHeILSeCdZW9zr5h1K54LzhGg9X+VqWZcC5XZf142hQJ0ax1fyHemkj9UptLOI45bhQeuBAGBwy0TaGHsW3Q8Q/kREuzxjo6lyBz+f5lf+hyXKZmjxr6fmNLaVyY89bCiWXTjn3PgY9dwYQadW1MPg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3Re5Xxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78894C116B1;
-	Tue, 23 Apr 2024 21:45:39 +0000 (UTC)
+	 MIME-Version; b=EwKHLjLoEXD9l4FiO2KqOL3OfLi/oydDmMC+hUPRVHP0ozeeAsx8BKOvO6lfmBU7UTQwOaOQOrG/s0iiABgIlqntNOv+vjbpCLAkroObb4fUD3REFgcl8nSpJ3Rdk2cf3vMNp2eDrjf8AVYWFjs5MMr4B/AcfMIJ6/uWfNALP5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRCeOsmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A697EC32781;
+	Tue, 23 Apr 2024 21:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908739;
-	bh=2X92Uejevxo1td8OtS6QPdxhcJguC4qzCKKSCOAEAyo=;
+	s=korg; t=1713908537;
+	bh=3hLOtLAvfPbEYmad7tv3wt+vnbXtRFc+buR4ikN0scM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3Re5Xxr4x9IocHtA4iAeJFomc4Tl55hbzWlC8fZ73lG6l+qUg40VXHIiOAn1DN2Z
-	 PP1soMHDZvoEHXCDGsr9LAdT5ZbBP1waZYHobMbgpiPfbcDrb8QiqCbbrxsVxlmGrV
-	 u8ZE0UCibv7CS0YOM3i7B5LuXQiHSONnkS3ZmR/Y=
+	b=eRCeOsmRix7kJ/TWsmJBHw/wThEC0XfW10euge+k7dKrpn+ZfRa+QIOBprekCEl9M
+	 9yP+FKMO7k45KEt811GFbgWVGR9cxxF3P6hwZb1J901A35Uzq2RO0YOKu8zf7vbf05
+	 btjZg7L4JuJwYTSLjikHibc8Lu8YWZBSn+IRRxXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/141] clk: Initialize struct clk_core kref earlier
+	Ard Biesheuvel <ardb@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.8 131/158] arm64/head: Disable MMU at EL2 before clearing HCR_EL2.E2H
 Date: Tue, 23 Apr 2024 14:39:13 -0700
-Message-ID: <20240423213855.937872157@linuxfoundation.org>
+Message-ID: <20240423213900.152581471@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 9d05ae531c2cff20d5d527f04e28d28e04379929 ]
+commit 34e526cb7d46726b2ae5f83f2892d00ebb088509 upstream.
 
-Initialize this kref once we allocate memory for the struct clk_core so
-that we can reuse the release function to free any memory associated
-with the structure. This mostly consolidates code, but also clarifies
-that the kref lifetime exists once the container structure (struct
-clk_core) is allocated instead of leaving it in a half-baked state for
-most of __clk_core_init().
+Even though the boot protocol stipulates otherwise, an exception has
+been made for the EFI stub, and entering the core kernel with the MMU
+enabled is permitted. This allows a substantial amount of cache
+maintenance to be elided, wich is significant when fast boot times are
+critical (e.g., for booting micro-VMs)
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-4-sboyd@kernel.org
-Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Once the initial ID map has been populated, the MMU is disabled as part
+of the logic sequence that puts all system registers into a known state.
+Any code that needs to execute within the window where the MMU is off is
+cleaned to the PoC explicitly, which includes all of HYP text when
+entering at EL2.
+
+However, the current sequence of initializing the EL2 system registers
+is not safe: HCR_EL2 is set to its nVHE initial state before SCTLR_EL2
+is reprogrammed, and this means that a VHE-to-nVHE switch may occur
+while the MMU is enabled. This switch causes some system registers as
+well as page table descriptors to be interpreted in a different way,
+potentially resulting in spurious exceptions relating to MMU
+translation.
+
+So disable the MMU explicitly first when entering in EL2 with the MMU
+and caches enabled.
+
+Fixes: 617861703830 ("efi: arm64: enter with MMU and caches enabled")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.3.x
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240415075412.2347624-6-ardb+git@google.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ arch/arm64/kernel/head.S |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index d841a9d7281c6..4f9f55cff9231 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -3838,8 +3838,6 @@ static int __clk_core_init(struct clk_core *core)
- 	}
- 
- 	clk_core_reparent_orphans_nolock();
--
--	kref_init(&core->ref);
- out:
- 	clk_pm_runtime_put(core);
- unlock:
-@@ -4068,6 +4066,16 @@ static void clk_core_free_parent_map(struct clk_core *core)
- 	kfree(core->parents);
- }
- 
-+/* Free memory allocated for a struct clk_core */
-+static void __clk_release(struct kref *ref)
-+{
-+	struct clk_core *core = container_of(ref, struct clk_core, ref);
+--- a/arch/arm64/kernel/head.S
++++ b/arch/arm64/kernel/head.S
+@@ -569,6 +569,11 @@ SYM_INNER_LABEL(init_el2, SYM_L_LOCAL)
+ 	adr_l	x1, __hyp_text_end
+ 	adr_l	x2, dcache_clean_poc
+ 	blr	x2
 +
-+	clk_core_free_parent_map(core);
-+	kfree_const(core->name);
-+	kfree(core);
-+}
-+
- static struct clk *
- __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
- {
-@@ -4088,6 +4096,8 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
- 		goto fail_out;
- 	}
- 
-+	kref_init(&core->ref);
-+
- 	core->name = kstrdup_const(init->name, GFP_KERNEL);
- 	if (!core->name) {
- 		ret = -ENOMEM;
-@@ -4142,12 +4152,10 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
- 	hw->clk = NULL;
- 
- fail_create_clk:
--	clk_core_free_parent_map(core);
- fail_parents:
- fail_ops:
--	kfree_const(core->name);
- fail_name:
--	kfree(core);
-+	kref_put(&core->ref, __clk_release);
- fail_out:
- 	return ERR_PTR(ret);
- }
-@@ -4227,16 +4235,6 @@ int of_clk_hw_register(struct device_node *node, struct clk_hw *hw)
- }
- EXPORT_SYMBOL_GPL(of_clk_hw_register);
- 
--/* Free memory allocated for a clock. */
--static void __clk_release(struct kref *ref)
--{
--	struct clk_core *core = container_of(ref, struct clk_core, ref);
--
--	clk_core_free_parent_map(core);
--	kfree_const(core->name);
--	kfree(core);
--}
--
- /*
-  * Empty clk_ops for unregistered clocks. These are used temporarily
-  * after clk_unregister() was called on a clock and until last clock
--- 
-2.43.0
-
++	mov_q	x0, INIT_SCTLR_EL2_MMU_OFF
++	pre_disable_mmu_workaround
++	msr	sctlr_el2, x0
++	isb
+ 0:
+ 	mov_q	x0, HCR_HOST_NVHE_FLAGS
+ 	msr	hcr_el2, x0
 
 
 
