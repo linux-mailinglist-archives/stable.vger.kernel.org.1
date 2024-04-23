@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86AE8AE79F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:10:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBC08AE7A0
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51C4288BD9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:10:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFE7A1C23512
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB98C134CC0;
-	Tue, 23 Apr 2024 13:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD10126F10;
+	Tue, 23 Apr 2024 13:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4S3+iWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQuyq/01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D597126F10
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACD2134427
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713877820; cv=none; b=cYfkcOl2UG46l4dsf4E9C9sIvsPuqr/p++cF6JGSIhZzeEILDUxhs7N9fciQvzeBW1d8nrji5fCOWOVcFFPj7W6a8MjlUzLArJP0yOQaBmXBOIwRpm+UYSZfWIsz/r/6VxlZ580OKBhUZS6DvBUoWjyiGiTExR2Cos3/9ZKx/OQ=
+	t=1713877829; cv=none; b=hJX5ajghs0SNySWiGvZZ4jdY7XRoFXzzwe7kALZw21ONKtI5oaoSRnUeroYP7lBwldUdRUEnKCVJHukDH8tEo6oCjIDeah7ERH7IDtyFNut/VmLSO5TbFgDiNKYJLBzQQoYn989P9+SSK4NgCIhY0rmvcR8kJFLZFW0qxWdXFnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713877820; c=relaxed/simple;
-	bh=Y+Cul35qVkagaLOiVv5emM7B6Na7DF9SmxwcLYhcq5g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jpTSfEdWgtrkyv9aOYUNOFOaJrHZOOYhaIWPdWHMSrMICstrkvUxp5cuZB09JXVR6gCL6/1x7YuRESp9HwRkcxGIKN4rMTZIGljQY7bDCS62o3iL7NKAdUYI8hU3ICCdMYrnL4yWlH9b19pIA1yV3+kYN1qbzxXv3keIZy28lYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4S3+iWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07348C116B1;
-	Tue, 23 Apr 2024 13:10:20 +0000 (UTC)
+	s=arc-20240116; t=1713877829; c=relaxed/simple;
+	bh=fmrz6UDnel8j05vui1cQvEaAnu3YYxQM59P6HYl8DiQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sJXyI1gyxMckBU0iudK8mWiOT+asVWr/94mcEWsPFiAHqk9/N+6kx9gNpA8CHNWTWHF/b2ujFULimbsOkLmheInnPV4eAWIDDw8RJl/9FGDkqyCgw3sICQ4kUcCIKk4yec13jb3fEdfWpaU2WDnvX2oOzBIqoPnHMYFQ2bRCRNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQuyq/01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E2DC116B1;
+	Tue, 23 Apr 2024 13:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713877820;
-	bh=Y+Cul35qVkagaLOiVv5emM7B6Na7DF9SmxwcLYhcq5g=;
+	s=korg; t=1713877829;
+	bh=fmrz6UDnel8j05vui1cQvEaAnu3YYxQM59P6HYl8DiQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Q4S3+iWFsIoCR/UdUjn3r2fU9mzNlUrWtHMm+PViGmKPUkGFo2zalexknzS82fUMU
-	 F5TEdQ33RDaOf2DYzbvEhQRYCt4hNs7ZukK0QPHEepYGP+JRNO/jFMBOIQrh+i0EI/
-	 FOE2KCnv9CyVz1WkijP8gmhWUuE6D9kClpJ+0B1A=
-Subject: FAILED: patch "[PATCH] Squashfs: check the inode number is not the invalid value of" failed to apply to 4.19-stable tree
-To: phillip@squashfs.org.uk,akpm@linux-foundation.org,brauner@kernel.org,bugreport@ubisectech.com,stable@vger.kernel.org
+	b=RQuyq/01KK3hjejlGG8StW6vBzKjlMYVgj/CvrMAsyZ/KtnaaoqdAfxrUK8UAPbL1
+	 oYDOigNdbwEd1gvJ9axG+D3rkEwPJACaYcvJnOy52UVtOAr8vyAHlk2p+VnqYWKFik
+	 Chcy3t63IARPDfEXlSDTKOOyrxS5aBOH7cfv490o=
+Subject: FAILED: patch "[PATCH] fork: defer linking file vma until vma is fully initialized" failed to apply to 6.6-stable tree
+To: linmiaohe@huawei.com,Liam.Howlett@oracle.com,akpm@linux-foundation.org,brauner@kernel.org,hca@linux.ibm.com,jane.chu@oracle.com,kent.overstreet@linux.dev,mjguzik@gmail.com,muchun.song@linux.dev,oleg@redhat.com,stable@vger.kernel.org,tandersen@netflix.com,thorvald@google.com,willy@infradead.org,zhangpeng.00@bytedance.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 06:10:10 -0700
-Message-ID: <2024042310-nylon-condense-e215@gregkh>
+Date: Tue, 23 Apr 2024 06:10:19 -0700
+Message-ID: <2024042319-freeing-degree-ca0d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9253c54e01b6505d348afbc02abaa4d9f8a01395
+git cherry-pick -x 35e351780fa9d8240dd6f7e4f245f9ea37e96c19
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042310-nylon-condense-e215@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042319-freeing-degree-ca0d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-9253c54e01b6 ("Squashfs: check the inode number is not the invalid value of zero")
-a1f13ed8c748 ("squashfs: convert to new timestamp accessors")
-280345d0d03b ("squashfs: convert to ctime accessor functions")
+35e351780fa9 ("fork: defer linking file vma until vma is fully initialized")
+d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup_mmap()")
 
 thanks,
 
@@ -79,67 +78,106 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9253c54e01b6505d348afbc02abaa4d9f8a01395 Mon Sep 17 00:00:00 2001
-From: Phillip Lougher <phillip@squashfs.org.uk>
-Date: Mon, 8 Apr 2024 23:02:06 +0100
-Subject: [PATCH] Squashfs: check the inode number is not the invalid value of
- zero
+From 35e351780fa9d8240dd6f7e4f245f9ea37e96c19 Mon Sep 17 00:00:00 2001
+From: Miaohe Lin <linmiaohe@huawei.com>
+Date: Wed, 10 Apr 2024 17:14:41 +0800
+Subject: [PATCH] fork: defer linking file vma until vma is fully initialized
 
-Syskiller has produced an out of bounds access in fill_meta_index().
+Thorvald reported a WARNING [1]. And the root cause is below race:
 
-That out of bounds access is ultimately caused because the inode
-has an inode number with the invalid value of zero, which was not checked.
+ CPU 1					CPU 2
+ fork					hugetlbfs_fallocate
+  dup_mmap				 hugetlbfs_punch_hole
+   i_mmap_lock_write(mapping);
+   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
+   i_mmap_unlock_write(mapping);
+   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
+					 i_mmap_lock_write(mapping);
+   					 hugetlb_vmdelete_list
+					  vma_interval_tree_foreach
+					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
+   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
+					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
+					 i_mmap_unlock_write(mapping);
 
-The reason this causes the out of bounds access is due to following
-sequence of events:
+hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
+i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
+by deferring linking file vma until vma is fully initialized.  Those vmas
+should be initialized first before they can be used.
 
-1. Fill_meta_index() is called to allocate (via empty_meta_index())
-   and fill a metadata index.  It however suffers a data read error
-   and aborts, invalidating the newly returned empty metadata index.
-   It does this by setting the inode number of the index to zero,
-   which means unused (zero is not a valid inode number).
-
-2. When fill_meta_index() is subsequently called again on another
-   read operation, locate_meta_index() returns the previous index
-   because it matches the inode number of 0.  Because this index
-   has been returned it is expected to have been filled, and because
-   it hasn't been, an out of bounds access is performed.
-
-This patch adds a sanity check which checks that the inode number
-is not zero when the inode is created and returns -EINVAL if it is.
-
-[phillip@squashfs.org.uk: whitespace fix]
-  Link: https://lkml.kernel.org/r/20240409204723.446925-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
-Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
+Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
+Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reported-by: Thorvald Natvig <thorvald@google.com>
+Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
 Cc: Christian Brauner <brauner@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index aa3411354e66..16bd693d0b3a 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct super_block *sb, struct inode *inode,
- 	gid_t i_gid;
- 	int err;
- 
-+	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
-+	if (inode->i_ino == 0)
-+		return -EINVAL;
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 39a5046c2f0b..aebb3e6c96dc 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -714,6 +714,23 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		} else if (anon_vma_fork(tmp, mpnt))
+ 			goto fail_nomem_anon_vma_fork;
+ 		vm_flags_clear(tmp, VM_LOCKED_MASK);
++		/*
++		 * Copy/update hugetlb private vma information.
++		 */
++		if (is_vm_hugetlb_page(tmp))
++			hugetlb_dup_vma_private(tmp);
 +
- 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
- 	if (err)
- 		return err;
-@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct super_block *sb, struct inode *inode,
++		/*
++		 * Link the vma into the MT. After using __mt_dup(), memory
++		 * allocation is not necessary here, so it cannot fail.
++		 */
++		vma_iter_bulk_store(&vmi, tmp);
++
++		mm->map_count++;
++
++		if (tmp->vm_ops && tmp->vm_ops->open)
++			tmp->vm_ops->open(tmp);
++
+ 		file = tmp->vm_file;
+ 		if (file) {
+ 			struct address_space *mapping = file->f_mapping;
+@@ -730,25 +747,9 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 			i_mmap_unlock_write(mapping);
+ 		}
  
- 	i_uid_write(inode, i_uid);
- 	i_gid_write(inode, i_gid);
--	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
- 	inode_set_mtime(inode, le32_to_cpu(sqsh_ino->mtime), 0);
- 	inode_set_atime(inode, inode_get_mtime_sec(inode), 0);
- 	inode_set_ctime(inode, inode_get_mtime_sec(inode), 0);
+-		/*
+-		 * Copy/update hugetlb private vma information.
+-		 */
+-		if (is_vm_hugetlb_page(tmp))
+-			hugetlb_dup_vma_private(tmp);
+-
+-		/*
+-		 * Link the vma into the MT. After using __mt_dup(), memory
+-		 * allocation is not necessary here, so it cannot fail.
+-		 */
+-		vma_iter_bulk_store(&vmi, tmp);
+-
+-		mm->map_count++;
+ 		if (!(tmp->vm_flags & VM_WIPEONFORK))
+ 			retval = copy_page_range(tmp, mpnt);
+ 
+-		if (tmp->vm_ops && tmp->vm_ops->open)
+-			tmp->vm_ops->open(tmp);
+-
+ 		if (retval) {
+ 			mpnt = vma_next(&vmi);
+ 			goto loop_out;
 
 
