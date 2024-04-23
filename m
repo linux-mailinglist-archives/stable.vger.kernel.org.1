@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-40807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864DC8AF925
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:41:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 053BE8AF9BB
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8D2C1C22683
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:41:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B32B928AC78
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E42114430E;
-	Tue, 23 Apr 2024 21:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7414D143C7A;
+	Tue, 23 Apr 2024 21:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JZUcnyt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1qtMUdJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D560143891;
-	Tue, 23 Apr 2024 21:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34083143C74;
+	Tue, 23 Apr 2024 21:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908476; cv=none; b=PYz3i9ziIuviQZKUVnc9kynfpS8QtfR3lqpQIs9NwyYNyjKljOd4skOAUDlxYWggd1rWPYHzo3R3GVRG2OpXbO1ScWKEZd/6Vfn7I2hpab5c7afabTWJH1wDvP06MHkk0gEa60OPIPZ0+Vs9bgjCXCZj5698ZY4ugVrXIqedp+0=
+	t=1713908576; cv=none; b=WPjiLSZ4WfkzMc/YrZ8Ln60661MfIzZHRb0eMrpQ4ZBst9nIbnl0468jnxkAnfzbYsyk5QWy2UXex7/bzRYDEBd66t8Z8lq+0Sgc0Ps/043FT4J5I0uRuozOOY7ReFRmdir4Rdt7hfBgNSR1axdAhbHSJtyaRgZihABhLtPyHLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908476; c=relaxed/simple;
-	bh=OeZZ9t3c0urTmHBGY0/06s8Y9uCPiwRg0QaSU8Yf7YU=;
+	s=arc-20240116; t=1713908576; c=relaxed/simple;
+	bh=LhATFkS6z99XI7xOrW4LuQ50cMMLMoDPLN4J26OVFOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kI32MZ48zFvehdUTs+0dMh4xPL9w/vI1n2i2LVa3jiFxBGoe7IVhq99FhMfbMbvVxx6u7U2QYtphwd6za/2AMKZMsnq+P9Dqzh60FgquOs4YcIJjMK+dJTA1+DnZ+nWih+O1zLTCUjQFNwxam6SK0eetctrB36LJHcrLXi+LLqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JZUcnyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019CEC4AF08;
-	Tue, 23 Apr 2024 21:41:15 +0000 (UTC)
+	 MIME-Version; b=oP32wpUik7S6AtN53BAJ9EzjMhepElXOdIullTJY/JmqKrM7eFiG80YBZPeZd1odAor55DXMHzxqxScTQUsIPDXN4y/yVCPQSsmK7llCaxooddjEMI51mtpGY08bZGSLkRuk94k3xiyQowWB1hD0sGwz+tEnD5jU2a1rhX/kSjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1qtMUdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09721C116B1;
+	Tue, 23 Apr 2024 21:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908476;
-	bh=OeZZ9t3c0urTmHBGY0/06s8Y9uCPiwRg0QaSU8Yf7YU=;
+	s=korg; t=1713908576;
+	bh=LhATFkS6z99XI7xOrW4LuQ50cMMLMoDPLN4J26OVFOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0JZUcnytobGGD9ph6+XVg6stsMGKo5Xj7iOmbNVxknOZP1+cgEwSkV0IJNZ9DAXWP
-	 U0dM9BAR6Y9iaP4kOwUb00nrWnaB5C/vL3h5S6HeUf2d5t4kT2mTRdcqtGtArqv8lY
-	 dbkYkvtnxWTPwsagO8go4Hg3v/51MIB9+Jfid6TQ=
+	b=I1qtMUdJ1a5fkwmkGxw86iGmbjXgg3qXsaYiMVwGPmBTZbusg/XinEWctzZCKtwD4
+	 a+dKidKEEFSsZ8awAd3dZH9QJDvcGOTDuhP8+Xj+xOqonsgf+GnfWPXK4pYQAr28xy
+	 +JQv/7QbVKExctNbp0aODYSZ1C6Cd85CQwzQXSMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 044/158] netfilter: nf_tables: missing iterator type in lookup walk
+	Jarkko Palviainen <jarkko.palviainen@gmail.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 029/158] net: usb: ax88179_178a: avoid writing the mac address before first reading
 Date: Tue, 23 Apr 2024 14:37:46 -0700
-Message-ID: <20240423213857.348219262@linuxfoundation.org>
+Message-ID: <20240423213856.685888961@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-[ Upstream commit efefd4f00c967d00ad7abe092554ffbb70c1a793 ]
+commit 56f78615bcb1c3ba58a5d9911bad3d9185cf141b upstream.
 
-Add missing decorator type to lookup expression and tighten WARN_ON_ONCE
-check in pipapo to spot earlier that this is unset.
+After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
+consecutive device resets"), reset operation, in which the default mac
+address from the device is read, is not executed from bind operation and
+the random address, that is pregenerated just in case, is direclty written
+the first time in the device, so the default one from the device is not
+even read. This writing is not dangerous because is volatile and the
+default mac address is not missed.
 
-Fixes: 29b359cf6d95 ("netfilter: nft_set_pipapo: walk over current view on netlink dump")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In order to avoid this and keep the simplification to have only one
+reset and reduce the delays, restore the reset from bind operation and
+remove the reset that is commanded from open operation. The behavior is
+the same but everything is ready for usbnet_probe.
+
+Tested with ASIX AX88179 USB Gigabit Ethernet devices.
+Restore the old behavior for the rest of possible devices because I don't
+have the hardware to test.
+
+cc: stable@vger.kernel.org # 6.6+
+Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
+Reported-by: Jarkko Palviainen <jarkko.palviainen@gmail.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Link: https://lore.kernel.org/r/20240417085524.219532-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_lookup.c     | 1 +
- net/netfilter/nft_set_pipapo.c | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/usb/ax88179_178a.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
-index 870e5b113d13e..87c18eddb0689 100644
---- a/net/netfilter/nft_lookup.c
-+++ b/net/netfilter/nft_lookup.c
-@@ -216,6 +216,7 @@ static int nft_lookup_validate(const struct nft_ctx *ctx,
- 		return 0;
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1317,6 +1317,8 @@ static int ax88179_bind(struct usbnet *d
  
- 	iter.genmask	= nft_genmask_next(ctx->net);
-+	iter.type	= NFT_ITER_UPDATE;
- 	iter.skip	= 0;
- 	iter.count	= 0;
- 	iter.err	= 0;
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 979b5e80c400b..c91efad49c6d5 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -2048,7 +2048,8 @@ static void nft_pipapo_walk(const struct nft_ctx *ctx, struct nft_set *set,
- 	const struct nft_pipapo_field *f;
- 	int i, r;
+ 	netif_set_tso_max_size(dev->net, 16384);
  
--	WARN_ON_ONCE(iter->type == NFT_ITER_UNSPEC);
-+	WARN_ON_ONCE(iter->type != NFT_ITER_READ &&
-+		     iter->type != NFT_ITER_UPDATE);
++	ax88179_reset(dev);
++
+ 	return 0;
+ }
  
- 	rcu_read_lock();
- 	if (iter->type == NFT_ITER_READ)
--- 
-2.43.0
-
+@@ -1695,7 +1697,6 @@ static const struct driver_info ax88179_
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1708,7 +1709,6 @@ static const struct driver_info ax88178a
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
 
 
 
