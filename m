@@ -1,130 +1,73 @@
-Return-Path: <stable+bounces-40552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF18B8ADCF9
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 06:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DEB8ADD39
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 07:53:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A48C7283101
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 04:55:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51379282E5E
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 05:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB1820322;
-	Tue, 23 Apr 2024 04:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E665F20DE8;
+	Tue, 23 Apr 2024 05:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="le/Pv/qX"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="M7XtftBq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584EB1CAB3;
-	Tue, 23 Apr 2024 04:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.219])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7446D1F94C
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 05:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.50.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713848154; cv=none; b=YAI7VeOIskTlQoJr0dkE4SIkHRzT/gq/nosGvkjBBR0V8etm3he1i1R2LVs9QQOUbiDsZ+mgCNWqJD50NkP42lOvPKwTv9vFeyKKTT4Bu83qhpmtzysxEGqTI8xx9jMZ6vuZiYMI4yVJ1CeEb0VlUT1UnlFrRjKIaCCb6MZVINA=
+	t=1713851612; cv=none; b=TsUlgrUEtyphC4X6IKg/wmSwNI4cVAwd+BOO8pKjrcrGtP93wRMFiADIpaX5L8PnSbOpWxkgBb9IjVLZrZnvWPYhIyobs3+IzJX1l75f67hSj+fAVJyIFiibxtSMghb9HCcLey+PbZcF3HMDAWokUfGS3OzRVxR7yefVHtNZlrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713848154; c=relaxed/simple;
-	bh=puryQ1J6mzWbCrUfIOEYUOuYeQHliVuNmWN99eIePwQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b109HJHGIDbifzIPlkC5K8UgwXKspwDf2Rw0SNNNALaGHu8JVcP6dtsHuw9n03HOMYxAtBkFP1oMbxdMpVq2FoU0ukZaGsdmZSBCoz8dKhh2mcRM7/2DlOgnNgwgqdkU5KHnLKrpP54tUV6UqWE5tCMElC0tieIpzifTGQMK3dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=le/Pv/qX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F34BC116B1;
-	Tue, 23 Apr 2024 04:55:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713848153;
-	bh=puryQ1J6mzWbCrUfIOEYUOuYeQHliVuNmWN99eIePwQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=le/Pv/qXNH6cmU/bEapqQld8Xy6qptw1W4yy3w76kNBPQoyRaCQ0eDU8aW4OhYWvQ
-	 5Mw11o+v7XwagPHZlhU0O3PzlDxaSNWLya2r6tfJ2eLh6f061eRrKx2Aax9CCNIi40
-	 9btXUZVsTznHsEP/H1yEccKQOxUkoFa5bdqrxukAQowOZhhLU7AzfKPatKfViNJz8F
-	 YlPKOkmW98paCxbsin3DxJ2//NPjoEEvFPmVbXH0uiYwYiMJb0X4DKvMA+EqLHRt7z
-	 uXd8GQaU2PNSFL2wkl7+gq+reYJfXzAQ0Hi/4hMHQK4jllydhVPYg3fUcJ0p+39rmQ
-	 BWvJQ5CtWZjFA==
-From: Song Liu <song@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: kernel-team@meta.com,
-	Song Liu <song@kernel.org>,
-	stable@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH] arch/Kconfig: Move SPECULATION_MITIGATIONS to arch/Kconfig
-Date: Mon, 22 Apr 2024 21:55:48 -0700
-Message-ID: <20240423045548.1324969-1-song@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1713851612; c=relaxed/simple;
+	bh=rOz93lr2GW5Hc7hQ2lkvmue1lB2A46lzRjrkSFIJtjw=;
+	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=gpoESryMs607z20n3k3THZbGZlj2OQ+i2wqs2h5saQhI36t/a6u9BOI82d4Ucl8XEKwv9ECpdN/i2tJ9ZtFI8lTVHHR0R9llIorKNurHxHG7JqYHO5RN1IIS9FHH+B6Qz8T1ymqoDMB693r8NSc+0dr6/G+DRPab16/Gldtp7Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=M7XtftBq reason="signature verification failed"; arc=none smtp.client-ip=45.254.50.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=uFAiPgUlLvoeJ+JRyv2DUqF9d8lNGbClpwU8ulVo78Y=; b=M
+	7XtftBqjcmPqtCrUxXteAVtQAKvkqlNvb3SaHKxFTYvZL2Rsn7VcGH7Nn7fFI0X5
+	D63yFpT5W/zfC0uDqS4yzS3meQcERybqiR2tFMrw2B52z3xSL0sYJCQC1yao3C2T
+	4RHVv2O3x9NgdIp35JtroU1g840g5KHMQsWXC1bBU0=
+Received: from zhulei_szu$163.com ( [116.128.244.171] ) by
+ ajax-webmail-wmsvr-40-107 (Coremail) ; Tue, 23 Apr 2024 13:52:40 +0800
+ (CST)
+Date: Tue, 23 Apr 2024 13:52:40 +0800 (CST)
+From: zhulei <zhulei_szu@163.com>
+To: ap420073@gmail.com
+Cc: davem@davemloft.net, jbenc@redhat.com, sashal@kernel.org, 
+	stable@vger.kernel.org, gregkh@linuxfoundation.org
+Subject: 4.19 stable kernel crash caused by vxlan testing
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
+ Copyright (c) 2002-2024 www.mailtech.cn 163com
+X-NTES-SC: AL_Qu2aAfSevk0t5iadZekWkkYagew/X8u3uv4k1IVePZE0uST9whorekBJN0Lv39yyDAGdjyesVAhnyMdFYqJFY68Rro/wto5Xm1nx20AVWo3b
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <715eaf46.7523.18f098372d3.Coremail.zhulei_szu@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:_____wD3nwqpTCdmn4sTAA--.5541W
+X-CM-SenderInfo: x2kxzvxlbv63i6rwjhhfrp/1tbiRRjITWXAlyIRSAAFsU
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-SPECULATION_MITIGATIONS is currently defined only for x86. As a result,
-IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) is always false for other
-archs. f337a6a21e2f effectively set "mitigations=off" by default on
-non-x86 archs, which is not desired behavior. Jakub observed this
-change when running bpf selftests on s390 and arm64.
-
-Fix this by moving SPECULATION_MITIGATIONS to arch/Kconfig so that it is
-available in all archs and thus can be used safely in kernel/cpu.c
-
-Fixes: f337a6a21e2f ("x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n")
-Cc: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Song Liu <song@kernel.org>
----
- arch/Kconfig     | 10 ++++++++++
- arch/x86/Kconfig | 10 ----------
- 2 files changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 9f066785bb71..8f4af75005f8 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1609,4 +1609,14 @@ config CC_HAS_SANE_FUNCTION_ALIGNMENT
- 	# strict alignment always, even with -falign-functions.
- 	def_bool CC_HAS_MIN_FUNCTION_ALIGNMENT || CC_IS_CLANG
- 
-+menuconfig SPECULATION_MITIGATIONS
-+	bool "Mitigations for speculative execution vulnerabilities"
-+	default y
-+	help
-+	  Say Y here to enable options which enable mitigations for
-+	  speculative execution hardware vulnerabilities.
-+
-+	  If you say N, all mitigations will be disabled. You really
-+	  should know what you are doing to say so.
-+
- endmenu
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 39886bab943a..50c890fce5e0 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2486,16 +2486,6 @@ config PREFIX_SYMBOLS
- 	def_bool y
- 	depends on CALL_PADDING && !CFI_CLANG
- 
--menuconfig SPECULATION_MITIGATIONS
--	bool "Mitigations for speculative execution vulnerabilities"
--	default y
--	help
--	  Say Y here to enable options which enable mitigations for
--	  speculative execution hardware vulnerabilities.
--
--	  If you say N, all mitigations will be disabled. You really
--	  should know what you are doing to say so.
--
- if SPECULATION_MITIGATIONS
- 
- config MITIGATION_PAGE_TABLE_ISOLATION
--- 
-2.43.0
-
+SGV5IGFsbCwKCkkgcmVjZW50bHkgdXNlZCBhIHRlc3RpbmcgcHJvZ3JhbSB0byB0ZXN0IHRoZSA0
+LjE5IHN0YWJsZSBicmFuY2gga2VybmVsIGFuZCBmb3VuZCB0aGF0IGEgY3Jhc2ggb2NjdXJyZWQg
+aW1tZWRpYXRlbHkuIFRoZSB0ZXN0IHNvdXJjZSBjb2RlIGxpbmsgaXM6Cmh0dHBzOi8vZ2l0aHVi
+LmNvbS9CYWNrbXloZWFydC9zcmMwMzU4L2Jsb2IvbWFzdGVyL3Z4bGFuX2ZkYl9kZXN0cm95LmMK
+ClRoZSB0ZXN0IGNvbW1hbmQgaXMgYXMgZm9sbG93czoKZ2NjIHZ4bGFuX2ZkYl9kZXN0cm95LmMg
+LW8gdnhsYW5fZmRiX2Rlc3Ryb3kgLWxwdGhyZWFkCgpBY2NvcmRpbmcgdG8gaXRzIHN0YWNrLCB1
+cHN0cmVhbSBoYXMgcmVsZXZhbnQgcmVwYWlyIHBhdGNoLCB0aGUgY29tbWl0IGlkIGlzIDdjMzFl
+NTRhZWVlNTE3ZDEzMThkZmMwYmRlOWZhN2RlNzU4OTNkYzYuCgpNYXkgaSBhc2sgaWYgdGhlIDQu
+MTkga2VybmVsIHdpbGwgcG9ydCB0aGlzIHBhdGNoID8=
 
