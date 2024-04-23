@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-40883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3378AF974
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917628AFB2C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:54:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 616821F26820
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0301DB2C6D3
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1B9145339;
-	Tue, 23 Apr 2024 21:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060E4149E06;
+	Tue, 23 Apr 2024 21:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv7uA21w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOOZsnQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAEE20B3E;
-	Tue, 23 Apr 2024 21:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8336143C58;
+	Tue, 23 Apr 2024 21:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908527; cv=none; b=ZGOGS5K/yUBi7jbGveJlar57LO0kIKmccEWdTg8AdWgxpESDIoxmBDJg+4C7vo5Z3ug1qJT2p4+yYXXjOs59eOoy7l7qUo6SjhK2xTrGwA7Z2mMEudazFfsUW7Y6npkk9YTJEby/ONefaSiLZD8RNNeRkaIuZgreNC0En2BRBIM=
+	t=1713908715; cv=none; b=gwsK/pWpEVoZ2zxS/agsIwf883NmEZbn/y8Xy+zl1og+QJKiEVUQJbOgetvGKNNckdTBdKpoRLl+rEw75pzEX/ZrbJpD2rZZZJxfsmtTlQzwtKZpQlxlNg7sOzSCF1ecdRGHkeNOWJZV7bDQkQRUXEzN3dNHvllntvXVpONJgzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908527; c=relaxed/simple;
-	bh=QZ+qqX+IJqkvqScY+qTQMSgoygtADBJRzWQHuMw++MQ=;
+	s=arc-20240116; t=1713908715; c=relaxed/simple;
+	bh=MDQU6U5ddPJE8YDMckvxrDl1zUM8O9LZbI6qz3ouumY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpV4caDi6mCgF+Isuw89pI3d4q+ASmYx/tiJ9WtGArAbX8qquJpYNGd4ItjrTGESNVxzmdWb++n/PoNF3/sGxnrLM4y8XlTg5pZM7lm2x2k9rpTCck3uQT+oBBbFjiMdBjEiqpWdQY+OG7jRV2YLPTWqq1GSl/1TcQ/xZwPeQv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv7uA21w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9482DC116B1;
-	Tue, 23 Apr 2024 21:42:07 +0000 (UTC)
+	 MIME-Version; b=avhPAlEuBtgGAdErsG1gcLIICk3Pj/6e0Y52JfUeu3+e2cLw8SN5L/NKKWzOm26F4L38/temkRyn2q7iN9kIqg/NitU+lsBazPBd9cCpwcpuYHq8ttatIJX+LBxOlOlTFh52e7olnpCHw5+i1Suhm6fvWNS3HKic3lBylIQ71AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOOZsnQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E7DC32781;
+	Tue, 23 Apr 2024 21:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908527;
-	bh=QZ+qqX+IJqkvqScY+qTQMSgoygtADBJRzWQHuMw++MQ=;
+	s=korg; t=1713908715;
+	bh=MDQU6U5ddPJE8YDMckvxrDl1zUM8O9LZbI6qz3ouumY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jv7uA21wx0jNLgxogJ2N8LhNrNnW5MQRsVFXCXbKmYCFfEP4zUC4SR0q6lGz3dbTH
-	 MSgxaVNKWi4uAQdMlubhENPnfaJWp4rC/aA/HuTfryPaSJvaSxmnJJ7WFY7nTGq5v9
-	 YwZ5XzlHKtImHWrQevJpsY8OoAewQYCoaO3Xle0E=
+	b=hOOZsnQLYlVni9YcbUuj9cpJmVoDXxBHXHxUZE9Zy4Y+mgl5IAbngUGaCJZixiiae
+	 hZl7rtLfjBJSGIgBXPRxqykoaMQsNO8Imilpi34Mhg5hjRkQVZ7mqfiJzd5+0iGrZT
+	 wvybV/TBcSqOSieS2WtaWJQR6dOhpRLFiFYNyEvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Tso <kyletso@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.8 120/158] usb: typec: tcpm: Correct the PDO counting in pd_set
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 074/141] ALSA: scarlett2: Add correct product series name to messages
 Date: Tue, 23 Apr 2024 14:39:02 -0700
-Message-ID: <20240423213859.818971117@linuxfoundation.org>
+Message-ID: <20240423213855.608224687@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Tso <kyletso@google.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-commit c4128304c2169b4664ed6fb6200f228cead2ab70 upstream.
+[ Upstream commit 6e743781d62e28f5fa095e5f31f878819622c143 ]
 
-Off-by-one errors happen because nr_snk_pdo and nr_src_pdo are
-incorrectly added one. The index of the loop is equal to the number of
-PDOs to be updated when leaving the loop and it doesn't need to be added
-one.
+This driver was originally developed for the Focusrite Scarlett Gen 2
+series, but now also supports the Scarlett Gen 3 series, the
+Clarett 8Pre USB, and the Clarett+ 8Pre. The messages output by the
+driver on initialisation and error include the identifying text
+"Scarlett Gen 2/3", but this is no longer accurate, and writing
+"Scarlett Gen 2/3/Clarett USB/Clarett+" would be unwieldy.
 
-When doing the power negotiation, TCPM relies on the "nr_snk_pdo" as
-the size of the local sink PDO array to match the Source capabilities
-of the partner port. If the off-by-one overflow occurs, a wrong RDO
-might be sent and unexpected power transfer might happen such as over
-voltage or over current (than expected).
+Add series_name field to the scarlett2_device_entry struct so that
+concise and accurate messages can be output.
 
-"nr_src_pdo" is used to set the Rp level when the port is in Source
-role. It is also the array size of the local Source capabilities when
-filling up the buffer which will be sent as the Source PDOs (such as
-in Power Negotiation). If the off-by-one overflow occurs, a wrong Rp
-level might be set and wrong Source PDOs will be sent to the partner
-port. This could potentially cause over current or port resets.
-
-Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240404133517.2707955-1-kyletso@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://lore.kernel.org/r/3774b9d35bf1fbdd6fdad9f3f4f97e9b82ac76bf.1694705811.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: b61a3acada00 ("ALSA: scarlett2: Add Focusrite Clarett+ 2Pre and 4Pre support")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/mixer_scarlett_gen2.c | 81 ++++++++++++++++++++++-----------
+ 1 file changed, 54 insertions(+), 27 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -6111,14 +6111,14 @@ static int tcpm_pd_set(struct typec_port
- 	if (data->sink_desc.pdo[0]) {
- 		for (i = 0; i < PDO_MAX_OBJECTS && data->sink_desc.pdo[i]; i++)
- 			port->snk_pdo[i] = data->sink_desc.pdo[i];
--		port->nr_snk_pdo = i + 1;
-+		port->nr_snk_pdo = i;
- 		port->operating_snk_mw = data->operating_snk_mw;
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index 2bd46fe91394d..328a593aceaa9 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -391,6 +391,7 @@ struct scarlett2_data {
+ 	struct mutex data_mutex; /* lock access to this data */
+ 	struct delayed_work work;
+ 	const struct scarlett2_device_info *info;
++	const char *series_name;
+ 	__u8 bInterfaceNumber;
+ 	__u8 bEndpointAddress;
+ 	__u16 wMaxPacketSize;
+@@ -887,25 +888,26 @@ static const struct scarlett2_device_info clarett_8pre_info = {
+ struct scarlett2_device_entry {
+ 	const u32 usb_id; /* USB device identifier */
+ 	const struct scarlett2_device_info *info;
++	const char *series_name;
+ };
+ 
+ static const struct scarlett2_device_entry scarlett2_devices[] = {
+ 	/* Supported Gen 2 devices */
+-	{ USB_ID(0x1235, 0x8203), &s6i6_gen2_info },
+-	{ USB_ID(0x1235, 0x8204), &s18i8_gen2_info },
+-	{ USB_ID(0x1235, 0x8201), &s18i20_gen2_info },
++	{ USB_ID(0x1235, 0x8203), &s6i6_gen2_info, "Scarlett Gen 2" },
++	{ USB_ID(0x1235, 0x8204), &s18i8_gen2_info, "Scarlett Gen 2" },
++	{ USB_ID(0x1235, 0x8201), &s18i20_gen2_info, "Scarlett Gen 2" },
+ 
+ 	/* Supported Gen 3 devices */
+-	{ USB_ID(0x1235, 0x8211), &solo_gen3_info },
+-	{ USB_ID(0x1235, 0x8210), &s2i2_gen3_info },
+-	{ USB_ID(0x1235, 0x8212), &s4i4_gen3_info },
+-	{ USB_ID(0x1235, 0x8213), &s8i6_gen3_info },
+-	{ USB_ID(0x1235, 0x8214), &s18i8_gen3_info },
+-	{ USB_ID(0x1235, 0x8215), &s18i20_gen3_info },
++	{ USB_ID(0x1235, 0x8211), &solo_gen3_info, "Scarlett Gen 3" },
++	{ USB_ID(0x1235, 0x8210), &s2i2_gen3_info, "Scarlett Gen 3" },
++	{ USB_ID(0x1235, 0x8212), &s4i4_gen3_info, "Scarlett Gen 3" },
++	{ USB_ID(0x1235, 0x8213), &s8i6_gen3_info, "Scarlett Gen 3" },
++	{ USB_ID(0x1235, 0x8214), &s18i8_gen3_info, "Scarlett Gen 3" },
++	{ USB_ID(0x1235, 0x8215), &s18i20_gen3_info, "Scarlett Gen 3" },
+ 
+ 	/* Supported Clarett USB/Clarett+ devices */
+-	{ USB_ID(0x1235, 0x8208), &clarett_8pre_info },
+-	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info },
++	{ USB_ID(0x1235, 0x8208), &clarett_8pre_info, "Clarett USB" },
++	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info, "Clarett+" },
+ 
+ 	/* End of list */
+ 	{ 0, NULL },
+@@ -1205,8 +1207,8 @@ static int scarlett2_usb(
+ 	if (err != req_buf_size) {
+ 		usb_audio_err(
+ 			mixer->chip,
+-			"Scarlett Gen 2/3 USB request result cmd %x was %d\n",
+-			cmd, err);
++			"%s USB request result cmd %x was %d\n",
++			private->series_name, cmd, err);
+ 		err = -EINVAL;
+ 		goto unlock;
+ 	}
+@@ -1222,9 +1224,8 @@ static int scarlett2_usb(
+ 	if (err != resp_buf_size) {
+ 		usb_audio_err(
+ 			mixer->chip,
+-			"Scarlett Gen 2/3 USB response result cmd %x was %d "
+-			"expected %zu\n",
+-			cmd, err, resp_buf_size);
++			"%s USB response result cmd %x was %d expected %zu\n",
++			private->series_name, cmd, err, resp_buf_size);
+ 		err = -EINVAL;
+ 		goto unlock;
+ 	}
+@@ -1240,9 +1241,10 @@ static int scarlett2_usb(
+ 	    resp->pad) {
+ 		usb_audio_err(
+ 			mixer->chip,
+-			"Scarlett Gen 2/3 USB invalid response; "
++			"%s USB invalid response; "
+ 			   "cmd tx/rx %d/%d seq %d/%d size %d/%d "
+ 			   "error %d pad %d\n",
++			private->series_name,
+ 			le32_to_cpu(req->cmd), le32_to_cpu(resp->cmd),
+ 			le16_to_cpu(req->seq), le16_to_cpu(resp->seq),
+ 			resp_size, le16_to_cpu(resp->size),
+@@ -3798,7 +3800,7 @@ static int scarlett2_find_fc_interface(struct usb_device *dev,
+ 
+ /* Initialise private data */
+ static int scarlett2_init_private(struct usb_mixer_interface *mixer,
+-				  const struct scarlett2_device_info *info)
++				  const struct scarlett2_device_entry *entry)
+ {
+ 	struct scarlett2_data *private =
+ 		kzalloc(sizeof(struct scarlett2_data), GFP_KERNEL);
+@@ -3814,7 +3816,8 @@ static int scarlett2_init_private(struct usb_mixer_interface *mixer,
+ 	mixer->private_free = scarlett2_private_free;
+ 	mixer->private_suspend = scarlett2_private_suspend;
+ 
+-	private->info = info;
++	private->info = entry->info;
++	private->series_name = entry->series_name;
+ 	scarlett2_count_mux_io(private);
+ 	private->scarlett2_seq = 0;
+ 	private->mixer = mixer;
+@@ -4135,19 +4138,28 @@ static int scarlett2_init_notify(struct usb_mixer_interface *mixer)
+ 	return usb_submit_urb(mixer->urb, GFP_KERNEL);
+ }
+ 
+-static int snd_scarlett_gen2_controls_create(struct usb_mixer_interface *mixer)
++static const struct scarlett2_device_entry *get_scarlett2_device_entry(
++	struct usb_mixer_interface *mixer)
+ {
+ 	const struct scarlett2_device_entry *entry = scarlett2_devices;
+-	int err;
+ 
+ 	/* Find entry in scarlett2_devices */
+ 	while (entry->usb_id && entry->usb_id != mixer->chip->usb_id)
+ 		entry++;
+ 	if (!entry->usb_id)
+-		return -EINVAL;
++		return NULL;
++
++	return entry;
++}
++
++static int snd_scarlett_gen2_controls_create(
++	struct usb_mixer_interface *mixer,
++	const struct scarlett2_device_entry *entry)
++{
++	int err;
+ 
+ 	/* Initialise private data */
+-	err = scarlett2_init_private(mixer, entry->info);
++	err = scarlett2_init_private(mixer, entry);
+ 	if (err < 0)
+ 		return err;
+ 
+@@ -4231,17 +4243,30 @@ static int snd_scarlett_gen2_controls_create(struct usb_mixer_interface *mixer)
+ int snd_scarlett_gen2_init(struct usb_mixer_interface *mixer)
+ {
+ 	struct snd_usb_audio *chip = mixer->chip;
++	const struct scarlett2_device_entry *entry;
+ 	int err;
+ 
+ 	/* only use UAC_VERSION_2 */
+ 	if (!mixer->protocol)
+ 		return 0;
+ 
++	/* find entry in scarlett2_devices */
++	entry = get_scarlett2_device_entry(mixer);
++	if (!entry) {
++		usb_audio_err(mixer->chip,
++			      "%s: missing device entry for %04x:%04x\n",
++			      __func__,
++			      USB_ID_VENDOR(chip->usb_id),
++			      USB_ID_PRODUCT(chip->usb_id));
++		return 0;
++	}
++
+ 	if (chip->setup & SCARLETT2_DISABLE) {
+ 		usb_audio_info(chip,
+-			"Focusrite Scarlett Gen 2/3 Mixer Driver disabled "
++			"Focusrite %s Mixer Driver disabled "
+ 			"by modprobe options (snd_usb_audio "
+ 			"vid=0x%04x pid=0x%04x device_setup=%d)\n",
++			entry->series_name,
+ 			USB_ID_VENDOR(chip->usb_id),
+ 			USB_ID_PRODUCT(chip->usb_id),
+ 			SCARLETT2_DISABLE);
+@@ -4249,14 +4274,16 @@ int snd_scarlett_gen2_init(struct usb_mixer_interface *mixer)
  	}
  
- 	if (data->source_desc.pdo[0]) {
- 		for (i = 0; i < PDO_MAX_OBJECTS && data->source_desc.pdo[i]; i++)
- 			port->src_pdo[i] = data->source_desc.pdo[i];
--		port->nr_src_pdo = i + 1;
-+		port->nr_src_pdo = i;
- 	}
+ 	usb_audio_info(chip,
+-		"Focusrite Scarlett Gen 2/3 Mixer Driver enabled (pid=0x%04x); "
++		"Focusrite %s Mixer Driver enabled (pid=0x%04x); "
+ 		"report any issues to g@b4.vu",
++		entry->series_name,
+ 		USB_ID_PRODUCT(chip->usb_id));
  
- 	switch (port->state) {
+-	err = snd_scarlett_gen2_controls_create(mixer);
++	err = snd_scarlett_gen2_controls_create(mixer, entry);
+ 	if (err < 0)
+ 		usb_audio_err(mixer->chip,
+-			      "Error initialising Scarlett Mixer Driver: %d",
++			      "Error initialising %s Mixer Driver: %d",
++			      entry->series_name,
+ 			      err);
+ 
+ 	return err;
+-- 
+2.43.0
+
 
 
 
