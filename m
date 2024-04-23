@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-40864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC648AF95F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA528AF9F7
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 504EE1C246AC
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59BED285F19
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0C0143C6E;
-	Tue, 23 Apr 2024 21:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35EB1482E4;
+	Tue, 23 Apr 2024 21:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyAPXwCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJe17hfJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16C614388F;
-	Tue, 23 Apr 2024 21:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29D7143C57;
+	Tue, 23 Apr 2024 21:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908515; cv=none; b=TY818LBuKoviYfbUkmmlgca1l3AWJk1kgbvqTh9DZHhjzlMWr5f7BV+14kh5XHKzyW6vz5NitMEo7CHXTjM8vfOnjL3/XsSJe+kTG1Zd0ktrOeTbCXLHER5G+bjlD8xYuioTaMjsH7ajdZQo/eaD/UZRhlJqP4wtDq//YjZBIvw=
+	t=1713908614; cv=none; b=Eod2sZgjv79OabbVtt28Jc4L3O7147cTGJRqNdn7sn3d6fNI/vDoB1nOBBh3UaW1kzft/KTcsieZ22kc2UuY1A0Sqfj2n1LHYU2kDrXXp5MDtUQOwxTbwHaDZyADToVGu70H1Kdvvrj+2wXj9gdriTw5Is4AySmClYzcJZkRLVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908515; c=relaxed/simple;
-	bh=TedH9CkJFjrRcZCuvZFXkYGl9ey5C9yCWjlsP7mYi0A=;
+	s=arc-20240116; t=1713908614; c=relaxed/simple;
+	bh=U+8DRnmNLXlCzat/mTYgZqTh3Q7ElXnxDzKZfqd56RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pS3wHAPFt5DxEGkfT+qD1MnsH/E4ENgcq7FtTeVB8P/2WD57Wg2V5YE6dl4Uj/uS9TcD73wTc/uIU9p7euXDXIScv03+mPbpvjD8cVKN449qzgRLzubKbqNIGOib8sn9oY0BqPmRyM3/l9tc7izRxfPWJNPxeOJk5yf9R/Pluaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyAPXwCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5C1C32782;
-	Tue, 23 Apr 2024 21:41:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S0WYeFrkTN04Ab82EQxpT8bVwTmJ4B/YD4fcZkPkCPipTPtYvRKqmxFypSmkh+NwsqLR7IAr3d1mG2Jtq+c5VYUXJRwa+WyVDZb5gRZaiLfumIB+unjJeMzuGIb0IEu3dUf60fn56PBPpgfj9XpioxRnGLd0LLJG0Xzk59LTuLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJe17hfJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7906EC3277B;
+	Tue, 23 Apr 2024 21:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908514;
-	bh=TedH9CkJFjrRcZCuvZFXkYGl9ey5C9yCWjlsP7mYi0A=;
+	s=korg; t=1713908614;
+	bh=U+8DRnmNLXlCzat/mTYgZqTh3Q7ElXnxDzKZfqd56RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MyAPXwCMMfbBQHHn1z2e07TZClIOFVX7qMSnrDY1dnqxvlKoDqejY5W2i2MDyC8Ze
-	 X6iw5MwSbbxX1tBAA7Y37hF+brcKTa/rR0npJPWhtQp6kKnSO0DQKwb/f9krX+v/TB
-	 WwxsMvZMq6B45l4ZqYF/REeQSgmnlK/0BEvrLBro=
+	b=jJe17hfJ2PjOGMfbwXEL5dw3cE6PUjAJEccCwxJG+P1azVEO5OAXkW6kBsICC9/eB
+	 6dYEXR7Kq/cMybqJBRPasp/s8zPXcyk8/z5qC5ReQQg087gOlF0JljcEMwaPpRvz6+
+	 kT/xyp8En/AMN2Ozt3fuehGKfDdsgjsiBE956Uk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Emil Kronborg <emil.kronborg@protonmail.com>
-Subject: [PATCH 6.8 101/158] serial: mxs-auart: add spinlock around changing cts state
+	Brenton Simpson <appsforartists@google.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 086/158] drm: panel-orientation-quirks: Add quirk for Lenovo Legion Go
 Date: Tue, 23 Apr 2024 14:38:43 -0700
-Message-ID: <20240423213859.229882652@linuxfoundation.org>
+Message-ID: <20240423213858.553038442@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Kronborg <emil.kronborg@protonmail.com>
+From: Brenton Simpson <appsforartists@google.com>
 
-commit 54c4ec5f8c471b7c1137a1f769648549c423c026 upstream.
+[ Upstream commit 430143b0d3611f4a9c8434319e5e504244749e79 ]
 
-The uart_handle_cts_change() function in serial_core expects the caller
-to hold uport->lock. For example, I have seen the below kernel splat,
-when the Bluetooth driver is loaded on an i.MX28 board.
+The Legion Go has a 2560x1600 portrait screen, with the native "up" facing
+the right controller (90° CW from the rest of the device).
 
-    [   85.119255] ------------[ cut here ]------------
-    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_core.c:3453 uart_handle_cts_change+0xb4/0xec
-    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc wlcore_sdio configfs
-    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-00021-gd62a2f068f92 #1
-    [   85.151396] Hardware name: Freescale MXS (Device Tree)
-    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
-    (...)
-    [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/0x3f4
-    [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x88/0x210
-    (...)
-
-Cc: stable@vger.kernel.org
-Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements for irq helpers")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
-Link: https://lore.kernel.org/r/20240320121530.11348-1-emil.kronborg@protonmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Brenton Simpson <appsforartists@google.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231114233859.274189-1-appsforartists@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/mxs-auart.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -1086,11 +1086,13 @@ static void mxs_auart_set_ldisc(struct u
- 
- static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
- {
--	u32 istat;
-+	u32 istat, stat;
- 	struct mxs_auart_port *s = context;
- 	u32 mctrl_temp = s->mctrl_prev;
--	u32 stat = mxs_read(s, REG_STAT);
- 
-+	uart_port_lock(&s->port);
-+
-+	stat = mxs_read(s, REG_STAT);
- 	istat = mxs_read(s, REG_INTR);
- 
- 	/* ack irq */
-@@ -1126,6 +1128,8 @@ static irqreturn_t mxs_auart_irq_handle(
- 		istat &= ~AUART_INTR_TXIS;
- 	}
- 
-+	uart_port_unlock(&s->port);
-+
- 	return IRQ_HANDLED;
- }
- 
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 3fe5e6439c401..aa93129c3397e 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -348,6 +348,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "IdeaPad Duet 3 10IGL5"),
+ 		},
+ 		.driver_data = (void *)&lcd1200x1920_rightside_up,
++	}, {	/* Lenovo Legion Go 8APU1 */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "Legion Go 8APU1"),
++		},
++		.driver_data = (void *)&lcd1600x2560_leftside_up,
+ 	}, {	/* Lenovo Yoga Book X90F / X90L */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
+-- 
+2.43.0
+
 
 
 
