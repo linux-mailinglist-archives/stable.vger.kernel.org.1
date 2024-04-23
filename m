@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-41002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7845A8AF9F2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6316B8AFA5D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1254B1F28507
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166191F29699
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3530144D2E;
-	Tue, 23 Apr 2024 21:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9946D149C50;
+	Tue, 23 Apr 2024 21:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asLaMefz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGaMYxCg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E82143C57;
-	Tue, 23 Apr 2024 21:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595FD146A64;
+	Tue, 23 Apr 2024 21:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908610; cv=none; b=FUI9DO+VL4PUbQpBvF/8x6MUQabGRr4+aQhWSJp29ODEULjEYdDFEKUWQ60ouXmLX9eyparioJwcig4LULFm/G9Za1X3Vytii9Lo6gCR537vB2hDq14l/vdu/pKe1sijsUhJiHKL05SoYxm7613Srd7a5umtHjltDrhpS8gwj30=
+	t=1713908684; cv=none; b=Dskp7pY5hZePNN16UciBuyJrfxMBjTuN8/qiQf4NlqhohlyffgofcLYVBSpyMnHXQu7gc8XUz96BNzqZpfgE8497JxByw8aceOtYL6WdC2ssYxb4g9kJNW9TGN8ZRaPzgtv4JGlXaqgSYEpvaNBba2VQV9V7xdrERfshFqpXHQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908610; c=relaxed/simple;
-	bh=Ns12HHmeBbeVZ3z4ju35qyLRYv+ZeK/FDTLA3ieeb8M=;
+	s=arc-20240116; t=1713908684; c=relaxed/simple;
+	bh=HW3wc9c8453iBhyhmiyD72v5GVsdLPzgbLEA5Xs1n14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7/LHbM/hDkry74iWhpQlqNoxTQyMB/BOSFwxeAihplYQVNk5Kx9Qdx70Hk7/eAABuZT0i2dwOPyeorEN7ijzhkd8YAiGLxChqZTiJ9JyY6k2D/nMffzKqjEzCR02ykVhL5jxscU+UkKErWmBUPVNZFrKBhcvYAXmn4HgwslXN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asLaMefz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78461C32782;
-	Tue, 23 Apr 2024 21:43:30 +0000 (UTC)
+	 MIME-Version; b=h484vs1V1BMA3SXZUrtLP1TJP7t5RO5HhkE23zz+hN1sEHGowOcEJC43Fx1UFsk9Fzf4s40Kq1IhmvoTaMiFKsbBzG/d3HrsmonWr+boKcfUSLtfwYXcITXT8Z0/sfM2z4HuAiBgtnENB3yEinFAtFBavWXthf1AXnzMgmbz7JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGaMYxCg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C838C116B1;
+	Tue, 23 Apr 2024 21:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908610;
-	bh=Ns12HHmeBbeVZ3z4ju35qyLRYv+ZeK/FDTLA3ieeb8M=;
+	s=korg; t=1713908684;
+	bh=HW3wc9c8453iBhyhmiyD72v5GVsdLPzgbLEA5Xs1n14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asLaMefzgoQN46AqRTtjTOBoqsiNNFCVb+0lnQ8HH33MYPvzNA9MoPYg1pQIyVm4b
-	 TzdhdM2F/qWrJKY+YF9Tfp8zOc141aVQbcm9OySZPsb3HaNnzIAQMlupiuhcIDvG7u
-	 FbzyonL0ZFDxzATHggW9QIVPCX4oz7/qfgKrs5/Q=
+	b=YGaMYxCghLxL8l8yW2cPHT5ZppC06OzQc8b94Gn4asWiynhAEjAT3oz3NWQ5NUTdR
+	 NqFs4lOY5SH96onpVjUbGS9q5C1Tqd3p3u9kgOV+jp/2pnICrziN+6w6lnZK0pertL
+	 RSU4+0/LAVJwdo6hLarFzDGT2270NJknIQWBrggI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Chen <lei.chen@smartx.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/158] tun: limit printing rate when illegal packet received by tun dev
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.1 021/141] x86/boot: Define setup size in linker script
 Date: Tue, 23 Apr 2024 14:38:09 -0700
-Message-ID: <20240423213857.458539182@linuxfoundation.org>
+Message-ID: <20240423213854.009698290@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei Chen <lei.chen@smartx.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit f8bbc07ac535593139c875ffa19af924b1084540 ]
+[ Commit 093ab258e3fb1d1d3afdfd4a69403d44ce90e360 upstream ]
 
-vhost_worker will call tun call backs to receive packets. If too many
-illegal packets arrives, tun_do_read will keep dumping packet contents.
-When console is enabled, it will costs much more cpu time to dump
-packet and soft lockup will be detected.
+The setup block contains the real mode startup code that is used when
+booting from a legacy BIOS, along with the boot_params/setup_data that
+is used by legacy x86 bootloaders to pass the command line and initial
+ramdisk parameters, among other things.
 
-net_ratelimit mechanism can be used to limit the dumping rate.
+The setup block also contains the PE/COFF header of the entire combined
+image, which includes the compressed kernel image, the decompressor and
+the EFI stub.
 
-PID: 33036    TASK: ffff949da6f20000  CPU: 23   COMMAND: "vhost-32980"
- #0 [fffffe00003fce50] crash_nmi_callback at ffffffff89249253
- #1 [fffffe00003fce58] nmi_handle at ffffffff89225fa3
- #2 [fffffe00003fceb0] default_do_nmi at ffffffff8922642e
- #3 [fffffe00003fced0] do_nmi at ffffffff8922660d
- #4 [fffffe00003fcef0] end_repeat_nmi at ffffffff89c01663
-    [exception RIP: io_serial_in+20]
-    RIP: ffffffff89792594  RSP: ffffa655314979e8  RFLAGS: 00000002
-    RAX: ffffffff89792500  RBX: ffffffff8af428a0  RCX: 0000000000000000
-    RDX: 00000000000003fd  RSI: 0000000000000005  RDI: ffffffff8af428a0
-    RBP: 0000000000002710   R8: 0000000000000004   R9: 000000000000000f
-    R10: 0000000000000000  R11: ffffffff8acbf64f  R12: 0000000000000020
-    R13: ffffffff8acbf698  R14: 0000000000000058  R15: 0000000000000000
-    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
- #5 [ffffa655314979e8] io_serial_in at ffffffff89792594
- #6 [ffffa655314979e8] wait_for_xmitr at ffffffff89793470
- #7 [ffffa65531497a08] serial8250_console_putchar at ffffffff897934f6
- #8 [ffffa65531497a20] uart_console_write at ffffffff8978b605
- #9 [ffffa65531497a48] serial8250_console_write at ffffffff89796558
- #10 [ffffa65531497ac8] console_unlock at ffffffff89316124
- #11 [ffffa65531497b10] vprintk_emit at ffffffff89317c07
- #12 [ffffa65531497b68] printk at ffffffff89318306
- #13 [ffffa65531497bc8] print_hex_dump at ffffffff89650765
- #14 [ffffa65531497ca8] tun_do_read at ffffffffc0b06c27 [tun]
- #15 [ffffa65531497d38] tun_recvmsg at ffffffffc0b06e34 [tun]
- #16 [ffffa65531497d68] handle_rx at ffffffffc0c5d682 [vhost_net]
- #17 [ffffa65531497ed0] vhost_worker at ffffffffc0c644dc [vhost]
- #18 [ffffa65531497f10] kthread at ffffffff892d2e72
- #19 [ffffa65531497f50] ret_from_fork at ffffffff89c0022f
+This PE header describes the layout of the executable image in memory,
+and currently, the fact that the setup block precedes it makes it rather
+fiddly to get the right values into the right place in the final image.
 
-Fixes: ef3db4a59542 ("tun: avoid BUG, dump packet on GSO errors")
-Signed-off-by: Lei Chen <lei.chen@smartx.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://lore.kernel.org/r/20240415020247.2207781-1-lei.chen@smartx.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's make things a bit easier by defining the setup_size in the linker
+script so it can be referenced from the asm code directly, rather than
+having to rely on the build tool to calculate it. For the time being,
+add 64 bytes of fixed padding for the .reloc and .compat sections - this
+will be removed in a subsequent patch after the PE/COFF header has been
+reorganized.
+
+This change has no impact on the resulting bzImage binary when
+configured with CONFIG_EFI_MIXED=y.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230915171623.655440-13-ardb@google.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tun.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ arch/x86/boot/header.S      |    2 +-
+ arch/x86/boot/setup.ld      |    4 ++++
+ arch/x86/boot/tools/build.c |    6 ------
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 8f95a562b8d0c..86515f0c2b6c1 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -2132,14 +2132,16 @@ static ssize_t tun_put_user(struct tun_struct *tun,
- 					    tun_is_little_endian(tun), true,
- 					    vlan_hlen)) {
- 			struct skb_shared_info *sinfo = skb_shinfo(skb);
--			pr_err("unexpected GSO type: "
--			       "0x%x, gso_size %d, hdr_len %d\n",
--			       sinfo->gso_type, tun16_to_cpu(tun, gso.gso_size),
--			       tun16_to_cpu(tun, gso.hdr_len));
--			print_hex_dump(KERN_ERR, "tun: ",
--				       DUMP_PREFIX_NONE,
--				       16, 1, skb->head,
--				       min((int)tun16_to_cpu(tun, gso.hdr_len), 64), true);
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -230,7 +230,7 @@ sentinel:	.byte 0xff, 0xff        /* Use
+ 
+ 	.globl	hdr
+ hdr:
+-setup_sects:	.byte 0			/* Filled in by build.c */
++		.byte setup_sects - 1
+ root_flags:	.word ROOT_RDONLY
+ syssize:	.long 0			/* Filled in by build.c */
+ ram_size:	.word 0			/* Obsolete */
+--- a/arch/x86/boot/setup.ld
++++ b/arch/x86/boot/setup.ld
+@@ -39,6 +39,10 @@ SECTIONS
+ 	.signature	: {
+ 		setup_sig = .;
+ 		LONG(0x5a5aaa55)
 +
-+			if (net_ratelimit()) {
-+				netdev_err(tun->dev, "unexpected GSO type: 0x%x, gso_size %d, hdr_len %d\n",
-+					   sinfo->gso_type, tun16_to_cpu(tun, gso.gso_size),
-+					   tun16_to_cpu(tun, gso.hdr_len));
-+				print_hex_dump(KERN_ERR, "tun: ",
-+					       DUMP_PREFIX_NONE,
-+					       16, 1, skb->head,
-+					       min((int)tun16_to_cpu(tun, gso.hdr_len), 64), true);
-+			}
- 			WARN_ON_ONCE(1);
- 			return -EINVAL;
- 		}
--- 
-2.43.0
-
++		/* Reserve some extra space for the reloc and compat sections */
++		setup_size = ALIGN(ABSOLUTE(.) + 64, 512);
++		setup_sects = ABSOLUTE(setup_size / 512);
+ 	}
+ 
+ 
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -48,12 +48,7 @@ typedef unsigned int   u32;
+ u8 buf[SETUP_SECT_MAX*512];
+ 
+ #define PECOFF_RELOC_RESERVE 0x20
+-
+-#ifdef CONFIG_EFI_MIXED
+ #define PECOFF_COMPAT_RESERVE 0x20
+-#else
+-#define PECOFF_COMPAT_RESERVE 0x0
+-#endif
+ 
+ static unsigned long efi_pe_entry;
+ static unsigned long efi32_pe_entry;
+@@ -388,7 +383,6 @@ int main(int argc, char ** argv)
+ #endif
+ 
+ 	/* Patch the setup code with the appropriate size parameters */
+-	buf[0x1f1] = setup_sectors-1;
+ 	put_unaligned_le32(sys_size, &buf[0x1f4]);
+ 
+ 	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
 
 
 
