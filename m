@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3D18AE6E8
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:50:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3428AE700
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 14:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B3F61F23F5D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:50:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3640E28713A
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 12:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B8E12E1F3;
-	Tue, 23 Apr 2024 12:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D46082C60;
+	Tue, 23 Apr 2024 12:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nidGWjIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGumpgg1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1489E12E1DB
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD5F1E4B3
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 12:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713876552; cv=none; b=hSOJJEJjmCunjc9EXlJlgxwCWUN4665KFH+ZMlZAR8ZIzpjjjWJvRU1eCrnDfZSFTXXZjkDAAg9xYri+xm2eep6T7Ii4XrHIxLYinr2mptsZy1B8TDT321y2KOM/+lLHTnIR1eo2ZXFtPQWiZJH7WafTwDGYvcjiBIiedi2fJWE=
+	t=1713876645; cv=none; b=dfpNNHuwJvY67WlEF7n+mdOtwaHYCTxYj+8lJHt3DW7wnwUMd5hUxe7tlP4720o9lF5aXsO8etN2pQKEOLz5OsDkneeEE7ZKy5Oc9Mv/H9cAqmfILZlSwUY2e2oEMPda7aENideUOLusX7YnztLDmgCd/cNhT0MzJsQQ+WZrh+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713876552; c=relaxed/simple;
-	bh=yTazvRy4AiyvOuaBEY9OJoXqIot6dgAKLA6wEFsMEBc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=N7IaxyRPf1HyFQ8nukVmIwDNQB7YB9aSWbnZdn6XdjALxH6pTa/XG9FETYuHZ45gW72prOfhfof3iifkjsc9iGWp98/dz+CwCLTT6/UMOLkvnIzmROBoqH2F80erRxhhRdPhYuOE6RaPQpRu3b8FCdQFtQ7ye8slaFYUB5pYOhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nidGWjIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792AAC116B1;
-	Tue, 23 Apr 2024 12:49:11 +0000 (UTC)
+	s=arc-20240116; t=1713876645; c=relaxed/simple;
+	bh=CcAv6fE3DNwNA/+zIrIJpUBX1L/71+pVyFYhIMdzyNE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EJSzqbKIfcCAZYLyos8cEYSnIhyFgErvixKHmuesYhkFx3izkoZtnsuNgOojJPcDvcpv4lW1bys7Pw0XGk4B1ps9A5IvtOPaikgj6p7HCMorCHQ2FnMzBqMVJorl3LVb2kGm/RiGmtv666XaC1Pgc7YEtkgTDMCa1vGhLB8e2yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGumpgg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85944C116B1;
+	Tue, 23 Apr 2024 12:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713876551;
-	bh=yTazvRy4AiyvOuaBEY9OJoXqIot6dgAKLA6wEFsMEBc=;
+	s=korg; t=1713876644;
+	bh=CcAv6fE3DNwNA/+zIrIJpUBX1L/71+pVyFYhIMdzyNE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nidGWjIuPeImOmvlKHG+Y/JDsYXyZ9XxJpGYkAPsZ6p9yKpdm2jl6jHlf3zDmRLzJ
-	 9WVEF0tyZBqwInbVIiB8AUltKYxNax2amh1p/x6ysENmh1XByDpQSPekBTieQkj6jv
-	 me+IMJoadw9rT+sHhesRHimXssRfnIm1rUFAGrlI=
-Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Set enable bits for GP counters in" failed to apply to 4.19-stable tree
-To: seanjc@google.com,babu.moger@amd.com,dapeng1.mi@linux.intel.com,like.xu.linux@gmail.com,mizhang@google.com,sandipan.das@amd.com
+	b=wGumpgg1FUj1HwXRTxuABRjUcM6VCYKICQtsmb6SuzQVo5mk7jq6o6z71QqBVIq9t
+	 imTyMIrZ4jUTYzdTqiUPedTnuur9HFeK1g9oUJ01VtpN+9ZxHA1S8IU7N2Q/IT9ZQ6
+	 PkvMg//aqO/oiGpKBVAcDnpQPX+ibr9ZXOP+zbPA=
+Subject: FAILED: patch "[PATCH] mm/madvise: make MADV_POPULATE_(READ|WRITE) handle" failed to apply to 6.6-stable tree
+To: david@redhat.com,akpm@linux-foundation.org,djwong@kernel.org,hughd@google.com,jgg@nvidia.com,jhubbard@nvidia.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 05:49:01 -0700
-Message-ID: <2024042301-anthill-recant-a287@gregkh>
+Date: Tue, 23 Apr 2024 05:50:32 -0700
+Message-ID: <2024042332-mop-broiling-603b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x de120e1d692d73c7eefa3278837b1eb68f90728a
+git cherry-pick -x 631426ba1d45a8672b177ee85ad4cabe760dd131
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042301-anthill-recant-a287@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042332-mop-broiling-603b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-de120e1d692d ("KVM: x86/pmu: Set enable bits for GP counters in PERF_GLOBAL_CTRL at "RESET"")
-f933b88e2015 ("KVM: x86/pmu: Zero out PMU metadata on AMD if PMU is disabled")
-1647b52757d5 ("KVM: x86/pmu: Reset the PMU, i.e. stop counters, before refreshing")
-cbb359d81a26 ("KVM: x86/pmu: Move PMU reset logic to common x86 code")
-73554b29bd70 ("KVM: x86/pmu: Synthesize at most one PMI per VM-exit")
-b29a2acd36dd ("KVM: x86/pmu: Truncate counter value to allowed width on write")
-4a2771895ca6 ("KVM: x86/svm/pmu: Add AMD PerfMonV2 support")
-1c2bf8a6b045 ("KVM: x86/pmu: Constrain the num of guest counters with kvm_pmu_cap")
-13afa29ae489 ("KVM: x86/pmu: Provide Intel PMU's pmc_is_enabled() as generic x86 code")
-c85cdc1cc1ea ("KVM: x86/pmu: Move handling PERF_GLOBAL_CTRL and friends to common x86")
-30dab5c0b65e ("KVM: x86/pmu: Reject userspace attempts to set reserved GLOBAL_STATUS bits")
-8de18543dfe3 ("KVM: x86/pmu: Move reprogram_counters() to pmu.h")
-53550b89220b ("KVM: x86/pmu: Rename global_ovf_ctrl_mask to global_status_mask")
-649bccd7fac9 ("KVM: x86/pmu: Rewrite reprogram_counters() to improve performance")
-8bca8c5ce40b ("KVM: VMX: Refactor intel_pmu_{g,}set_msr() to align with other helpers")
-cdd2fbf6360e ("KVM: x86/pmu: Rename pmc_is_enabled() to pmc_is_globally_enabled()")
-957d0f70e97b ("KVM: x86/pmu: Zero out LBR capabilities during PMU refresh")
-3a6de51a437f ("KVM: x86/pmu: WARN and bug the VM if PMU is refreshed after vCPU has run")
-7e768ce8278b ("KVM: x86/pmu: Zero out pmu->all_valid_pmc_idx each time it's refreshed")
-e33b6d79acac ("KVM: x86/pmu: Don't tell userspace to save MSRs for non-existent fixed PMCs")
+631426ba1d45 ("mm/madvise: make MADV_POPULATE_(READ|WRITE) handle VM_FAULT_RETRY properly")
+0f20bba1688b ("mm/gup: explicitly define and check internal GUP flags, disallow FOLL_TOUCH")
 
 thanks,
 
@@ -96,129 +78,236 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From de120e1d692d73c7eefa3278837b1eb68f90728a Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 8 Mar 2024 17:36:40 -0800
-Subject: [PATCH] KVM: x86/pmu: Set enable bits for GP counters in
- PERF_GLOBAL_CTRL at "RESET"
+From 631426ba1d45a8672b177ee85ad4cabe760dd131 Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Thu, 14 Mar 2024 17:12:59 +0100
+Subject: [PATCH] mm/madvise: make MADV_POPULATE_(READ|WRITE) handle
+ VM_FAULT_RETRY properly
 
-Set the enable bits for general purpose counters in IA32_PERF_GLOBAL_CTRL
-when refreshing the PMU to emulate the MSR's architecturally defined
-post-RESET behavior.  Per Intel's SDM:
+Darrick reports that in some cases where pread() would fail with -EIO and
+mmap()+access would generate a SIGBUS signal, MADV_POPULATE_READ /
+MADV_POPULATE_WRITE will keep retrying forever and not fail with -EFAULT.
 
-  IA32_PERF_GLOBAL_CTRL:  Sets bits n-1:0 and clears the upper bits.
+While the madvise() call can be interrupted by a signal, this is not the
+desired behavior.  MADV_POPULATE_READ / MADV_POPULATE_WRITE should behave
+like page faults in that case: fail and not retry forever.
 
-and
+A reproducer can be found at [1].
 
-  Where "n" is the number of general-purpose counters available in the processor.
+The reason is that __get_user_pages(), as called by
+faultin_vma_page_range(), will not handle VM_FAULT_RETRY in a proper way:
+it will simply return 0 when VM_FAULT_RETRY happened, making
+madvise_populate()->faultin_vma_page_range() retry again and again, never
+setting FOLL_TRIED->FAULT_FLAG_TRIED for __get_user_pages().
 
-AMD also documents this behavior for PerfMonV2 CPUs in one of AMD's many
-PPRs.
+__get_user_pages_locked() does what we want, but duplicating that logic in
+faultin_vma_page_range() feels wrong.
 
-Do not set any PERF_GLOBAL_CTRL bits if there are no general purpose
-counters, although a literal reading of the SDM would require the CPU to
-set either bits 63:0 or 31:0.  The intent of the behavior is to globally
-enable all GP counters; honor the intent, if not the letter of the law.
+So let's use __get_user_pages_locked() instead, that will detect
+VM_FAULT_RETRY and set FOLL_TRIED when retrying, making the fault handler
+return VM_FAULT_SIGBUS (VM_FAULT_ERROR) at some point, propagating -EFAULT
+from faultin_page() to __get_user_pages(), all the way to
+madvise_populate().
 
-Leaving PERF_GLOBAL_CTRL '0' effectively breaks PMU usage in guests that
-haven't been updated to work with PMUs that support PERF_GLOBAL_CTRL.
-This bug was recently exposed when KVM added supported for AMD's
-PerfMonV2, i.e. when KVM started exposing a vPMU with PERF_GLOBAL_CTRL to
-guest software that only knew how to program v1 PMUs (that don't support
-PERF_GLOBAL_CTRL).
+But, there is an issue: __get_user_pages_locked() will end up re-taking
+the MM lock and then __get_user_pages() will do another VMA lookup.  In
+the meantime, the VMA layout could have changed and we'd fail with
+different error codes than we'd want to.
 
-Failure to emulate the post-RESET behavior results in such guests
-unknowingly leaving all general purpose counters globally disabled (the
-entire reason the post-RESET value sets the GP counter enable bits is to
-maintain backwards compatibility).
+As __get_user_pages() will currently do a new VMA lookup either way, let
+it do the VMA handling in a different way, controlled by a new
+FOLL_MADV_POPULATE flag, effectively moving these checks from
+madvise_populate() + faultin_page_range() in there.
 
-The bug has likely gone unnoticed because PERF_GLOBAL_CTRL has been
-supported on Intel CPUs for as long as KVM has existed, i.e. hardly anyone
-is running guest software that isn't aware of PERF_GLOBAL_CTRL on Intel
-PMUs.  And because up until v6.0, KVM _did_ emulate the behavior for Intel
-CPUs, although the old behavior was likely dumb luck.
+With this change, Darricks reproducer properly fails with -EFAULT, as
+documented for MADV_POPULATE_READ / MADV_POPULATE_WRITE.
 
-Because (a) that old code was also broken in its own way (the history of
-this code is a comedy of errors), and (b) PERF_GLOBAL_CTRL was documented
-as having a value of '0' post-RESET in all SDMs before March 2023.
+[1] https://lore.kernel.org/all/20240313171936.GN1927156@frogsfrogsfrogs/
 
-Initial vPMU support in commit f5132b01386b ("KVM: Expose a version 2
-architectural PMU to a guests") *almost* got it right (again likely by
-dumb luck), but for some reason only set the bits if the guest PMU was
-advertised as v1:
+Link: https://lkml.kernel.org/r/20240314161300.382526-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20240314161300.382526-2-david@redhat.com
+Fixes: 4ca9b3859dac ("mm/madvise: introduce MADV_POPULATE_(READ|WRITE) to prefault page tables")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Darrick J. Wong <djwong@kernel.org>
+Closes: https://lore.kernel.org/all/20240311223815.GW1927156@frogsfrogsfrogs/
+Cc: Darrick J. Wong <djwong@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-        if (pmu->version == 1) {
-                pmu->global_ctrl = (1 << pmu->nr_arch_gp_counters) - 1;
-                return;
-        }
-
-Commit f19a0c2c2e6a ("KVM: PMU emulation: GLOBAL_CTRL MSR should be
-enabled on reset") then tried to remedy that goof, presumably because
-guest PMUs were leaving PERF_GLOBAL_CTRL '0', i.e. weren't enabling
-counters.
-
-        pmu->global_ctrl = ((1 << pmu->nr_arch_gp_counters) - 1) |
-                (((1ull << pmu->nr_arch_fixed_counters) - 1) << X86_PMC_IDX_FIXED);
-        pmu->global_ctrl_mask = ~pmu->global_ctrl;
-
-That was KVM's behavior up until commit c49467a45fe0 ("KVM: x86/pmu:
-Don't overwrite the pmu->global_ctrl when refreshing") removed
-*everything*.  However, it did so based on the behavior defined by the
-SDM , which at the time stated that "Global Perf Counter Controls" is
-'0' at Power-Up and RESET.
-
-But then the March 2023 SDM (325462-079US), stealthily changed its
-"IA-32 and Intel 64 Processor States Following Power-up, Reset, or INIT"
-table to say:
-
-  IA32_PERF_GLOBAL_CTRL: Sets bits n-1:0 and clears the upper bits.
-
-Note, kvm_pmu_refresh() can be invoked multiple times, i.e. it's not a
-"pure" RESET flow.  But it can only be called prior to the first KVM_RUN,
-i.e. the guest will only ever observe the final value.
-
-Note #2, KVM has always cleared global_ctrl during refresh (see commit
-f5132b01386b ("KVM: Expose a version 2 architectural PMU to a guests")),
-i.e. there is no danger of breaking existing setups by clobbering a value
-set by userspace.
-
-Reported-by: Babu Moger <babu.moger@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Like Xu <like.xu.linux@gmail.com>
-Cc: Mingwei Zhang <mizhang@google.com>
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Tested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Link: https://lore.kernel.org/r/20240309013641.1413400-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index c397b28e3d1b..a593b03c9aed 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -775,8 +775,20 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
- 	pmu->pebs_data_cfg_mask = ~0ull;
- 	bitmap_zero(pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX);
+diff --git a/mm/gup.c b/mm/gup.c
+index af8edadc05d1..1611e73b1121 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1206,6 +1206,22 @@ static long __get_user_pages(struct mm_struct *mm,
  
--	if (vcpu->kvm->arch.enable_pmu)
--		static_call(kvm_x86_pmu_refresh)(vcpu);
-+	if (!vcpu->kvm->arch.enable_pmu)
-+		return;
-+
-+	static_call(kvm_x86_pmu_refresh)(vcpu);
-+
-+	/*
-+	 * At RESET, both Intel and AMD CPUs set all enable bits for general
-+	 * purpose counters in IA32_PERF_GLOBAL_CTRL (so that software that
-+	 * was written for v1 PMUs don't unknowingly leave GP counters disabled
-+	 * in the global controls).  Emulate that behavior when refreshing the
-+	 * PMU so that userspace doesn't need to manually set PERF_GLOBAL_CTRL.
-+	 */
-+	if (kvm_pmu_has_perf_global_ctrl(pmu) && pmu->nr_arch_gp_counters)
-+		pmu->global_ctrl = GENMASK_ULL(pmu->nr_arch_gp_counters - 1, 0);
+ 		/* first iteration or cross vma bound */
+ 		if (!vma || start >= vma->vm_end) {
++			/*
++			 * MADV_POPULATE_(READ|WRITE) wants to handle VMA
++			 * lookups+error reporting differently.
++			 */
++			if (gup_flags & FOLL_MADV_POPULATE) {
++				vma = vma_lookup(mm, start);
++				if (!vma) {
++					ret = -ENOMEM;
++					goto out;
++				}
++				if (check_vma_flags(vma, gup_flags)) {
++					ret = -EINVAL;
++					goto out;
++				}
++				goto retry;
++			}
+ 			vma = gup_vma_lookup(mm, start);
+ 			if (!vma && in_gate_area(mm, start)) {
+ 				ret = get_gate_page(mm, start & PAGE_MASK,
+@@ -1685,35 +1701,35 @@ long populate_vma_page_range(struct vm_area_struct *vma,
  }
  
- void kvm_pmu_init(struct kvm_vcpu *vcpu)
+ /*
+- * faultin_vma_page_range() - populate (prefault) page tables inside the
+- *			      given VMA range readable/writable
++ * faultin_page_range() - populate (prefault) page tables inside the
++ *			  given range readable/writable
+  *
+  * This takes care of mlocking the pages, too, if VM_LOCKED is set.
+  *
+- * @vma: target vma
++ * @mm: the mm to populate page tables in
+  * @start: start address
+  * @end: end address
+  * @write: whether to prefault readable or writable
+  * @locked: whether the mmap_lock is still held
+  *
+- * Returns either number of processed pages in the vma, or a negative error
+- * code on error (see __get_user_pages()).
++ * Returns either number of processed pages in the MM, or a negative error
++ * code on error (see __get_user_pages()). Note that this function reports
++ * errors related to VMAs, such as incompatible mappings, as expected by
++ * MADV_POPULATE_(READ|WRITE).
+  *
+- * vma->vm_mm->mmap_lock must be held. The range must be page-aligned and
+- * covered by the VMA. If it's released, *@locked will be set to 0.
++ * The range must be page-aligned.
++ *
++ * mm->mmap_lock must be held. If it's released, *@locked will be set to 0.
+  */
+-long faultin_vma_page_range(struct vm_area_struct *vma, unsigned long start,
+-			    unsigned long end, bool write, int *locked)
++long faultin_page_range(struct mm_struct *mm, unsigned long start,
++			unsigned long end, bool write, int *locked)
+ {
+-	struct mm_struct *mm = vma->vm_mm;
+ 	unsigned long nr_pages = (end - start) / PAGE_SIZE;
+ 	int gup_flags;
+ 	long ret;
+ 
+ 	VM_BUG_ON(!PAGE_ALIGNED(start));
+ 	VM_BUG_ON(!PAGE_ALIGNED(end));
+-	VM_BUG_ON_VMA(start < vma->vm_start, vma);
+-	VM_BUG_ON_VMA(end > vma->vm_end, vma);
+ 	mmap_assert_locked(mm);
+ 
+ 	/*
+@@ -1725,19 +1741,13 @@ long faultin_vma_page_range(struct vm_area_struct *vma, unsigned long start,
+ 	 *		  a poisoned page.
+ 	 * !FOLL_FORCE: Require proper access permissions.
+ 	 */
+-	gup_flags = FOLL_TOUCH | FOLL_HWPOISON | FOLL_UNLOCKABLE;
++	gup_flags = FOLL_TOUCH | FOLL_HWPOISON | FOLL_UNLOCKABLE |
++		    FOLL_MADV_POPULATE;
+ 	if (write)
+ 		gup_flags |= FOLL_WRITE;
+ 
+-	/*
+-	 * We want to report -EINVAL instead of -EFAULT for any permission
+-	 * problems or incompatible mappings.
+-	 */
+-	if (check_vma_flags(vma, gup_flags))
+-		return -EINVAL;
+-
+-	ret = __get_user_pages(mm, start, nr_pages, gup_flags,
+-			       NULL, locked);
++	ret = __get_user_pages_locked(mm, start, nr_pages, NULL, locked,
++				      gup_flags);
+ 	lru_add_drain();
+ 	return ret;
+ }
+diff --git a/mm/internal.h b/mm/internal.h
+index 7e486f2c502c..07ad2675a88b 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -686,9 +686,8 @@ struct anon_vma *folio_anon_vma(struct folio *folio);
+ void unmap_mapping_folio(struct folio *folio);
+ extern long populate_vma_page_range(struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end, int *locked);
+-extern long faultin_vma_page_range(struct vm_area_struct *vma,
+-				   unsigned long start, unsigned long end,
+-				   bool write, int *locked);
++extern long faultin_page_range(struct mm_struct *mm, unsigned long start,
++		unsigned long end, bool write, int *locked);
+ extern bool mlock_future_ok(struct mm_struct *mm, unsigned long flags,
+ 			       unsigned long bytes);
+ 
+@@ -1127,10 +1126,13 @@ enum {
+ 	FOLL_FAST_ONLY = 1 << 20,
+ 	/* allow unlocking the mmap lock */
+ 	FOLL_UNLOCKABLE = 1 << 21,
++	/* VMA lookup+checks compatible with MADV_POPULATE_(READ|WRITE) */
++	FOLL_MADV_POPULATE = 1 << 22,
+ };
+ 
+ #define INTERNAL_GUP_FLAGS (FOLL_TOUCH | FOLL_TRIED | FOLL_REMOTE | FOLL_PIN | \
+-			    FOLL_FAST_ONLY | FOLL_UNLOCKABLE)
++			    FOLL_FAST_ONLY | FOLL_UNLOCKABLE | \
++			    FOLL_MADV_POPULATE)
+ 
+ /*
+  * Indicates for which pages that are write-protected in the page table,
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 44a498c94158..1a073fcc4c0c 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -908,27 +908,14 @@ static long madvise_populate(struct vm_area_struct *vma,
+ {
+ 	const bool write = behavior == MADV_POPULATE_WRITE;
+ 	struct mm_struct *mm = vma->vm_mm;
+-	unsigned long tmp_end;
+ 	int locked = 1;
+ 	long pages;
+ 
+ 	*prev = vma;
+ 
+ 	while (start < end) {
+-		/*
+-		 * We might have temporarily dropped the lock. For example,
+-		 * our VMA might have been split.
+-		 */
+-		if (!vma || start >= vma->vm_end) {
+-			vma = vma_lookup(mm, start);
+-			if (!vma)
+-				return -ENOMEM;
+-		}
+-
+-		tmp_end = min_t(unsigned long, end, vma->vm_end);
+ 		/* Populate (prefault) page tables readable/writable. */
+-		pages = faultin_vma_page_range(vma, start, tmp_end, write,
+-					       &locked);
++		pages = faultin_page_range(mm, start, end, write, &locked);
+ 		if (!locked) {
+ 			mmap_read_lock(mm);
+ 			locked = 1;
+@@ -949,7 +936,7 @@ static long madvise_populate(struct vm_area_struct *vma,
+ 				pr_warn_once("%s: unhandled return value: %ld\n",
+ 					     __func__, pages);
+ 				fallthrough;
+-			case -ENOMEM:
++			case -ENOMEM: /* No VMA or out of memory. */
+ 				return -ENOMEM;
+ 			}
+ 		}
 
 
