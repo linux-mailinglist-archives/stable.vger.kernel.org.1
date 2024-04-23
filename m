@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-41012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691228AF9FF
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562CC8AF965
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6AD1C2257B
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11AC2287CB8
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9501487C5;
-	Tue, 23 Apr 2024 21:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E18614532A;
+	Tue, 23 Apr 2024 21:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1sKtoTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORJij1mh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE22B144D34;
-	Tue, 23 Apr 2024 21:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEE8143898;
+	Tue, 23 Apr 2024 21:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908617; cv=none; b=fu02S4ZNVs4rOLSdXnN7BS1Uu21JZj7EYF3l/zlu7qAagz3JhvqWvO84DKsSP8HazFiRR0WgCkKBpaWmhG7nHSZs2XUtSEJDNn7+sFri9R2lEjwHhYW93cmqUAOt/vF6k8dkDWTeD2ZsPfi5UcvpKz0mQ8q4OB5ku3wH3OUe+oY=
+	t=1713908518; cv=none; b=ZaoH1x9l6M+EC/z0iPULLC6BEycxIabsgVpKNoleRTaW+HEo3MczjMcHRBLLQ+0K2dt7jm1fdD9tab0/P7x/To613kPh3lFPno6CLGxjvLFRA8RzFiU8+O0mhtwpCKs2e+g+nmQtFkdK9k0D2M4+6N4We2lK6Qeg0XyEvRlCEXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908617; c=relaxed/simple;
-	bh=+vaw1aOFdaP5F9H/cin+7MIpPGDPkx8IdMONAuIPqek=;
+	s=arc-20240116; t=1713908518; c=relaxed/simple;
+	bh=qGnc8NeZ3rTCbDsDRNSA+k+zsB1/K5UHVcsKIJi3vIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwSImzzMyFz2IXAZ5vEK/RKreYBqChVaCtzrySoypQDhLofGF1qWXe2Kyt1EXMjDOmEzPzW6Kq5Z79IMRqHHVDmGGghck6XSNAQmWzBwE34X5L5/CbCL5WeelRqrKaNNB77LZrs4UNHRWjeLGkSQ+H7mMDXGTJckAc+/eDsOvjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1sKtoTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB20C116B1;
-	Tue, 23 Apr 2024 21:43:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eKq/7f1EB0+AkQQmq/UeR9jLwuEy8AIri0R40FDFP46g0fiKHfAiyzocuTs18CKIRIGcxDS5HIPA4YK1O/B4JUI6yhSi+ZmiwkF0i9WQbCbglxuA1vrCqW2GwSByxoPFqRbCtvvs67+PwXvW+vseU4VzFBAZVOKuXZCfdILKloE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORJij1mh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2128FC32783;
+	Tue, 23 Apr 2024 21:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908617;
-	bh=+vaw1aOFdaP5F9H/cin+7MIpPGDPkx8IdMONAuIPqek=;
+	s=korg; t=1713908518;
+	bh=qGnc8NeZ3rTCbDsDRNSA+k+zsB1/K5UHVcsKIJi3vIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1sKtoTdaVxXPMdpyeS7Htb524ITD7S0VWcPPsNbQFSYP08HDuY2h3iAwGrbGdSkk
-	 BMaAa4cMxc7VNsH8cugK+KLKy96bhx6adaQrSpqAshjaxPNf+nfW/leOAp2rkll9uI
-	 H/crYsHNHI4v+RTdbImpWsoAYaJ2zRISkGV94a7k=
+	b=ORJij1mhOepcGjGio4j6+mS2yuuwZMgNaI04IPJSbQOcPxh6RFIS9G5Av2xANH/fW
+	 4CKp53uhMZJw5atK6j/dWLCehaNYWuyXbGCqZINSiHz3q8fWxOloci/VNYwNtwIwrO
+	 WP61vRVAzNFHDKQBw5Hzn1Kh5KuLJIDgwJyE9VeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Tipton <quic_mdtipton@quicinc.com>,
-	Rob Clark <robdclark@chromium.org>,
-	Georgi Djakov <djakov@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/158] interconnect: Dont access req_list while its being manipulated
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 6.8 105/158] serial: stm32: Reset .throttled state in .startup()
 Date: Tue, 23 Apr 2024 14:38:47 -0700
-Message-ID: <20240423213858.675063680@linuxfoundation.org>
+Message-ID: <20240423213859.354428901@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Tipton <quic_mdtipton@quicinc.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit de1bf25b6d771abdb52d43546cf57ad775fb68a1 ]
+commit ea2624b5b829b8f93c0dce25721d835969b34faf upstream.
 
-The icc_lock mutex was split into separate icc_lock and icc_bw_lock
-mutexes in [1] to avoid lockdep splats. However, this didn't adequately
-protect access to icc_node::req_list.
+When an UART is opened that still has .throttled set from a previous
+open, the RX interrupt is enabled but the irq handler doesn't consider
+it. This easily results in a stuck irq with the effect to occupy the CPU
+in a tight loop.
 
-The icc_set_bw() function will eventually iterate over req_list while
-only holding icc_bw_lock, but req_list can be modified while only
-holding icc_lock. This causes races between icc_set_bw(), of_icc_get(),
-and icc_put().
+So reset the throttle state in .startup() to ensure that RX irqs are
+handled.
 
-Example A:
-
-  CPU0                               CPU1
-  ----                               ----
-  icc_set_bw(path_a)
-    mutex_lock(&icc_bw_lock);
-                                     icc_put(path_b)
-                                       mutex_lock(&icc_lock);
-    aggregate_requests()
-      hlist_for_each_entry(r, ...
-                                       hlist_del(...
-        <r = invalid pointer>
-
-Example B:
-
-  CPU0                               CPU1
-  ----                               ----
-  icc_set_bw(path_a)
-    mutex_lock(&icc_bw_lock);
-                                     path_b = of_icc_get()
-                                       of_icc_get_by_index()
-                                         mutex_lock(&icc_lock);
-                                         path_find()
-                                           path_init()
-    aggregate_requests()
-      hlist_for_each_entry(r, ...
-                                             hlist_add_head(...
-        <r = invalid pointer>
-
-Fix this by ensuring icc_bw_lock is always held before manipulating
-icc_node::req_list. The additional places icc_bw_lock is held don't
-perform any memory allocations, so we should still be safe from the
-original lockdep splats that motivated the separate locks.
-
-[1] commit af42269c3523 ("interconnect: Fix locking for runpm vs reclaim")
-
-Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
-Fixes: af42269c3523 ("interconnect: Fix locking for runpm vs reclaim")
-Reviewed-by: Rob Clark <robdclark@chromium.org>
-Link: https://lore.kernel.org/r/20240305225652.22872-1-quic_mdtipton@quicinc.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d1ec8a2eabe9 ("serial: stm32: update throttle and unthrottle ops for dma mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/a784f80d3414f7db723b2ec66efc56e1ad666cbf.1713344161.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/core.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/tty/serial/stm32-usart.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
-index 50bac2d79d9b5..68edb07d4443e 100644
---- a/drivers/interconnect/core.c
-+++ b/drivers/interconnect/core.c
-@@ -176,6 +176,8 @@ static struct icc_path *path_init(struct device *dev, struct icc_node *dst,
- 
- 	path->num_nodes = num_nodes;
- 
-+	mutex_lock(&icc_bw_lock);
-+
- 	for (i = num_nodes - 1; i >= 0; i--) {
- 		node->provider->users++;
- 		hlist_add_head(&path->reqs[i].req_node, &node->req_list);
-@@ -186,6 +188,8 @@ static struct icc_path *path_init(struct device *dev, struct icc_node *dst,
- 		node = node->reverse;
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -1088,6 +1088,7 @@ static int stm32_usart_startup(struct ua
+ 		val |= USART_CR2_SWAP;
+ 		writel_relaxed(val, port->membase + ofs->cr2);
  	}
++	stm32_port->throttled = false;
  
-+	mutex_unlock(&icc_bw_lock);
-+
- 	return path;
- }
- 
-@@ -792,12 +796,16 @@ void icc_put(struct icc_path *path)
- 		pr_err("%s: error (%d)\n", __func__, ret);
- 
- 	mutex_lock(&icc_lock);
-+	mutex_lock(&icc_bw_lock);
-+
- 	for (i = 0; i < path->num_nodes; i++) {
- 		node = path->reqs[i].node;
- 		hlist_del(&path->reqs[i].req_node);
- 		if (!WARN_ON(!node->provider->users))
- 			node->provider->users--;
- 	}
-+
-+	mutex_unlock(&icc_bw_lock);
- 	mutex_unlock(&icc_lock);
- 
- 	kfree_const(path->name);
--- 
-2.43.0
-
+ 	/* RX FIFO Flush */
+ 	if (ofs->rqr != UNDEF_REG)
 
 
 
