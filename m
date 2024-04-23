@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-40681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC618AE767
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:07:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B87748AE769
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 15:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42F831C23529
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:07:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC0261C23470
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 13:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968F8745E2;
-	Tue, 23 Apr 2024 13:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFC91332B0;
+	Tue, 23 Apr 2024 13:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bwT5OMkJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVSR281S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56566134CC2
-	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13DD745E2
+	for <stable@vger.kernel.org>; Tue, 23 Apr 2024 13:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713877620; cv=none; b=C99HeO7jXMUO/osCdXBVy8uYLHBBCIAQx+sk5rQ71SzO1i+UDm0RuGZDI6M4QlpuAClEbJ3630y8bE7ufkZRnPDW1Z9fi1TbnpGJ/lSgYi5LHspc3TiUfzt0x7atX/hmO0dEvbdrLyN/yPcSdPtbvI66fsNrW5BwvAOiR/HzDq4=
+	t=1713877657; cv=none; b=LVBjMYGjKzrrf9v2xcF2FEmEsWVaD8GVsLzD3TvUc6oxei1FRBi3SWR6ME9Pz2KyIxrGd1glR7zQlwd6HMVi9qzgoA9yrx0SJVFJnsHUml6T955FdM169vKVFPmztyXGA7Zk7dm3HzlCQDlFK1prH78xfQ/sEmUDqPvX/m19OK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713877620; c=relaxed/simple;
-	bh=qM6y2BXWXoDYnp0p8CGgKTLSid8A7WE1XQAENIRdUBQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=p6Lw+q7LMGd8GZba1zFfCs6xzQ1rcJayozV/RCrBbppWJztmONz5Wvt0v9m8wQ7n262r5D77L4G1+ZbPnKyeTVj4vU+tj+AvIjfHWw+Jr6RNatFH/wN5iZ1l87lyD7nIIHTmHHQsbMq+ATMyg28eB59CqnYgT7bBDYpi84vt6jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bwT5OMkJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2020BC2BD11;
-	Tue, 23 Apr 2024 13:07:00 +0000 (UTC)
+	s=arc-20240116; t=1713877657; c=relaxed/simple;
+	bh=GT9SKOJ2tUtyhBIT/3bf1OGtFza7a3unBVI54BVmm18=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fKD6JUaAeT+HmPFOFt9TqZPbjgigH2P8q51DIcvUm7cLXyFPyty6xcxLVPO3LFnfpwCXkeu0vfQEGpQqgTdgmaFPmHGaBF9hq3u2r1VZzVjnpqJ62I2S295WOETWjcXbeQMd/5T8kOAgrm8GUbmlUzz3eiACg5rOZRQo9o0FgF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVSR281S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5D4C116B1;
+	Tue, 23 Apr 2024 13:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713877620;
-	bh=qM6y2BXWXoDYnp0p8CGgKTLSid8A7WE1XQAENIRdUBQ=;
+	s=korg; t=1713877656;
+	bh=GT9SKOJ2tUtyhBIT/3bf1OGtFza7a3unBVI54BVmm18=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bwT5OMkJyPra6ZboujaeTdBDh8KkmlE36uJuNe818U0KlyKnPXdnwZ39R08hYAC5/
-	 C2hXlunvRaDajDJvzLNf2D9YNPftrPF3mKipCpuNGrkSl9bfv3uW6JMo4JLrDBQ5Dv
-	 MyK5SGnB2iShWDD11LE3Fj0Ieo3OqJuTnFG3ZN2A=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: validate the parameters of bo mapping operations" failed to apply to 4.19-stable tree
-To: xinhui.pan@amd.com,alexander.deucher@amd.com,christian.koenig@amd.com,hexed@google.com
+	b=IVSR281SZ2gbfQGLE8xmg5OncMr2aIDmLi/ZinRzootJ+laZHYFOr4faOdOCmXi/z
+	 4c1AYR8CDCl77lZogJhxM2jFbxdwzauE8urr7yBLMfLTleTFMIyrOTBfUCTlg5mZch
+	 l6GIisx7J0LMUmFkmTOzfl14MA2XMTkvA7dCoSmw=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: fix visible VRAM handling during faults" failed to apply to 6.8-stable tree
+To: christian.koenig@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 06:06:50 -0700
-Message-ID: <2024042350-oversized-skimpily-1a7e@gregkh>
+Date: Tue, 23 Apr 2024 06:07:27 -0700
+Message-ID: <2024042327-wagon-superman-e888@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,24 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.8-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6fef2d4c00b5b8561ad68dd2b68173f5c6af1e75
+git cherry-pick -x a6ff969fe9cbf369e3cd0ac54261fec1122682ec
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042350-oversized-skimpily-1a7e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042327-wagon-superman-e888@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
 
 Possible dependencies:
 
-6fef2d4c00b5 ("drm/amdgpu: validate the parameters of bo mapping operations more clearly")
-9f0bcf49e989 ("amdgpu: validate offset_in_bo of drm_amdgpu_gem_va")
-9a89a721b41b ("drm/amdgpu: check alignment on CPU page for bo map")
-8b80d74bdb22 ("drm/amdgpu: restrict bo mapping within gpu address limits")
+a6ff969fe9cb ("drm/amdgpu: fix visible VRAM handling during faults")
+ba1a58d5b907 ("drm/amdgpu: add shared fdinfo stats")
 
 thanks,
 
@@ -80,141 +78,279 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6fef2d4c00b5b8561ad68dd2b68173f5c6af1e75 Mon Sep 17 00:00:00 2001
-From: xinhui pan <xinhui.pan@amd.com>
-Date: Thu, 11 Apr 2024 11:11:38 +0800
-Subject: [PATCH] drm/amdgpu: validate the parameters of bo mapping operations
- more clearly
+From a6ff969fe9cbf369e3cd0ac54261fec1122682ec Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Date: Thu, 4 Apr 2024 16:25:40 +0200
+Subject: [PATCH] drm/amdgpu: fix visible VRAM handling during faults
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Verify the parameters of
-amdgpu_vm_bo_(map/replace_map/clearing_mappings) in one common place.
+When we removed the hacky start code check we actually didn't took into
+account that *all* VRAM pages needs to be CPU accessible.
 
-Fixes: dc54d3d1744d ("drm/amdgpu: implement AMDGPU_VA_OP_CLEAR v2")
-Cc: stable@vger.kernel.org
-Reported-by: Vlad Stolyarov <hexed@google.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: xinhui pan <xinhui.pan@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Clean up the code and unify the handling into a single helper which
+checks if the whole resource is CPU accessible.
+
+The only place where a partial check would make sense is during
+eviction, but that is neglitible.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: aed01a68047b ("drm/amdgpu: Remove TTM resource->start visible VRAM condition v2")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index 4299ce386322..94089069c9ad 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -1613,6 +1613,37 @@ static void amdgpu_vm_bo_insert_map(struct amdgpu_device *adev,
- 	trace_amdgpu_vm_bo_map(bo_va, mapping);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 0a4b09709cfb..ec888fc6ead8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -819,7 +819,7 @@ static int amdgpu_cs_bo_validate(void *param, struct amdgpu_bo *bo)
+ 
+ 	p->bytes_moved += ctx.bytes_moved;
+ 	if (!amdgpu_gmc_vram_full_visible(&adev->gmc) &&
+-	    amdgpu_bo_in_cpu_visible_vram(bo))
++	    amdgpu_res_cpu_visible(adev, bo->tbo.resource))
+ 		p->bytes_moved_vis += ctx.bytes_moved;
+ 
+ 	if (unlikely(r == -ENOMEM) && domain != bo->allowed_domains) {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+index 010b0cb7693c..2099159a693f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+@@ -617,8 +617,7 @@ int amdgpu_bo_create(struct amdgpu_device *adev,
+ 		return r;
+ 
+ 	if (!amdgpu_gmc_vram_full_visible(&adev->gmc) &&
+-	    bo->tbo.resource->mem_type == TTM_PL_VRAM &&
+-	    amdgpu_bo_in_cpu_visible_vram(bo))
++	    amdgpu_res_cpu_visible(adev, bo->tbo.resource))
+ 		amdgpu_cs_report_moved_bytes(adev, ctx.bytes_moved,
+ 					     ctx.bytes_moved);
+ 	else
+@@ -1272,23 +1271,25 @@ void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict)
+ void amdgpu_bo_get_memory(struct amdgpu_bo *bo,
+ 			  struct amdgpu_mem_stats *stats)
+ {
++	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
++	struct ttm_resource *res = bo->tbo.resource;
+ 	uint64_t size = amdgpu_bo_size(bo);
+ 	struct drm_gem_object *obj;
+ 	unsigned int domain;
+ 	bool shared;
+ 
+ 	/* Abort if the BO doesn't currently have a backing store */
+-	if (!bo->tbo.resource)
++	if (!res)
+ 		return;
+ 
+ 	obj = &bo->tbo.base;
+ 	shared = drm_gem_object_is_shared_for_memory_stats(obj);
+ 
+-	domain = amdgpu_mem_type_to_domain(bo->tbo.resource->mem_type);
++	domain = amdgpu_mem_type_to_domain(res->mem_type);
+ 	switch (domain) {
+ 	case AMDGPU_GEM_DOMAIN_VRAM:
+ 		stats->vram += size;
+-		if (amdgpu_bo_in_cpu_visible_vram(bo))
++		if (amdgpu_res_cpu_visible(adev, bo->tbo.resource))
+ 			stats->visible_vram += size;
+ 		if (shared)
+ 			stats->vram_shared += size;
+@@ -1389,10 +1390,7 @@ vm_fault_t amdgpu_bo_fault_reserve_notify(struct ttm_buffer_object *bo)
+ 	/* Remember that this BO was accessed by the CPU */
+ 	abo->flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
+ 
+-	if (bo->resource->mem_type != TTM_PL_VRAM)
+-		return 0;
+-
+-	if (amdgpu_bo_in_cpu_visible_vram(abo))
++	if (amdgpu_res_cpu_visible(adev, bo->resource))
+ 		return 0;
+ 
+ 	/* Can't move a pinned BO to visible VRAM */
+@@ -1415,7 +1413,7 @@ vm_fault_t amdgpu_bo_fault_reserve_notify(struct ttm_buffer_object *bo)
+ 
+ 	/* this should never happen */
+ 	if (bo->resource->mem_type == TTM_PL_VRAM &&
+-	    !amdgpu_bo_in_cpu_visible_vram(abo))
++	    !amdgpu_res_cpu_visible(adev, bo->resource))
+ 		return VM_FAULT_SIGBUS;
+ 
+ 	ttm_bo_move_to_lru_tail_unlocked(bo);
+@@ -1579,6 +1577,7 @@ uint32_t amdgpu_bo_get_preferred_domain(struct amdgpu_device *adev,
+  */
+ u64 amdgpu_bo_print_info(int id, struct amdgpu_bo *bo, struct seq_file *m)
+ {
++	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
+ 	struct dma_buf_attachment *attachment;
+ 	struct dma_buf *dma_buf;
+ 	const char *placement;
+@@ -1587,10 +1586,11 @@ u64 amdgpu_bo_print_info(int id, struct amdgpu_bo *bo, struct seq_file *m)
+ 
+ 	if (dma_resv_trylock(bo->tbo.base.resv)) {
+ 		unsigned int domain;
++
+ 		domain = amdgpu_mem_type_to_domain(bo->tbo.resource->mem_type);
+ 		switch (domain) {
+ 		case AMDGPU_GEM_DOMAIN_VRAM:
+-			if (amdgpu_bo_in_cpu_visible_vram(bo))
++			if (amdgpu_res_cpu_visible(adev, bo->tbo.resource))
+ 				placement = "VRAM VISIBLE";
+ 			else
+ 				placement = "VRAM";
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
+index be679c42b0b8..fa03d9e4874c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
+@@ -250,28 +250,6 @@ static inline u64 amdgpu_bo_mmap_offset(struct amdgpu_bo *bo)
+ 	return drm_vma_node_offset_addr(&bo->tbo.base.vma_node);
  }
  
-+/* Validate operation parameters to prevent potential abuse */
-+static int amdgpu_vm_verify_parameters(struct amdgpu_device *adev,
-+					  struct amdgpu_bo *bo,
-+					  uint64_t saddr,
-+					  uint64_t offset,
-+					  uint64_t size)
+-/**
+- * amdgpu_bo_in_cpu_visible_vram - check if BO is (partly) in visible VRAM
+- */
+-static inline bool amdgpu_bo_in_cpu_visible_vram(struct amdgpu_bo *bo)
+-{
+-	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
+-	struct amdgpu_res_cursor cursor;
+-
+-	if (!bo->tbo.resource || bo->tbo.resource->mem_type != TTM_PL_VRAM)
+-		return false;
+-
+-	amdgpu_res_first(bo->tbo.resource, 0, amdgpu_bo_size(bo), &cursor);
+-	while (cursor.remaining) {
+-		if (cursor.start < adev->gmc.visible_vram_size)
+-			return true;
+-
+-		amdgpu_res_next(&cursor, cursor.size);
+-	}
+-
+-	return false;
+-}
+-
+ /**
+  * amdgpu_bo_explicit_sync - return whether the bo is explicitly synced
+  */
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index 6417cb76ccd4..1d71729e3f6b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -133,7 +133,7 @@ static void amdgpu_evict_flags(struct ttm_buffer_object *bo,
+ 
+ 		} else if (!amdgpu_gmc_vram_full_visible(&adev->gmc) &&
+ 			   !(abo->flags & AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED) &&
+-			   amdgpu_bo_in_cpu_visible_vram(abo)) {
++			   amdgpu_res_cpu_visible(adev, bo->resource)) {
+ 
+ 			/* Try evicting to the CPU inaccessible part of VRAM
+ 			 * first, but only set GTT as busy placement, so this
+@@ -403,40 +403,55 @@ static int amdgpu_move_blit(struct ttm_buffer_object *bo,
+ 	return r;
+ }
+ 
++/**
++ * amdgpu_res_cpu_visible - Check that resource can be accessed by CPU
++ * @adev: amdgpu device
++ * @res: the resource to check
++ *
++ * Returns: true if the full resource is CPU visible, false otherwise.
++ */
++bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
++			    struct ttm_resource *res)
 +{
-+	uint64_t tmp, lpfn;
++	struct amdgpu_res_cursor cursor;
 +
-+	if (saddr & AMDGPU_GPU_PAGE_MASK
-+	    || offset & AMDGPU_GPU_PAGE_MASK
-+	    || size & AMDGPU_GPU_PAGE_MASK)
-+		return -EINVAL;
++	if (!res)
++		return false;
 +
-+	if (check_add_overflow(saddr, size, &tmp)
-+	    || check_add_overflow(offset, size, &tmp)
-+	    || size == 0 /* which also leads to end < begin */)
-+		return -EINVAL;
++	if (res->mem_type == TTM_PL_SYSTEM || res->mem_type == TTM_PL_TT ||
++	    res->mem_type == AMDGPU_PL_PREEMPT)
++		return true;
 +
-+	/* make sure object fit at this offset */
-+	if (bo && offset + size > amdgpu_bo_size(bo))
-+		return -EINVAL;
++	if (res->mem_type != TTM_PL_VRAM)
++		return false;
 +
-+	/* Ensure last pfn not exceed max_pfn */
-+	lpfn = (saddr + size - 1) >> AMDGPU_GPU_PAGE_SHIFT;
-+	if (lpfn >= adev->vm_manager.max_pfn)
-+		return -EINVAL;
++	amdgpu_res_first(res, 0, res->size, &cursor);
++	while (cursor.remaining) {
++		if ((cursor.start + cursor.size) >= adev->gmc.visible_vram_size)
++			return false;
++		amdgpu_res_next(&cursor, cursor.size);
++	}
 +
-+	return 0;
++	return true;
 +}
 +
- /**
-  * amdgpu_vm_bo_map - map bo inside a vm
+ /*
+- * amdgpu_mem_visible - Check that memory can be accessed by ttm_bo_move_memcpy
++ * amdgpu_res_copyable - Check that memory can be accessed by ttm_bo_move_memcpy
   *
-@@ -1639,21 +1670,14 @@ int amdgpu_vm_bo_map(struct amdgpu_device *adev,
- 	struct amdgpu_bo *bo = bo_va->base.bo;
- 	struct amdgpu_vm *vm = bo_va->base.vm;
- 	uint64_t eaddr;
-+	int r;
- 
--	/* validate the parameters */
--	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
--		return -EINVAL;
--	if (saddr + size <= saddr || offset + size <= offset)
--		return -EINVAL;
+  * Called by amdgpu_bo_move()
+  */
+-static bool amdgpu_mem_visible(struct amdgpu_device *adev,
+-			       struct ttm_resource *mem)
++static bool amdgpu_res_copyable(struct amdgpu_device *adev,
++				struct ttm_resource *mem)
+ {
+-	u64 mem_size = (u64)mem->size;
+-	struct amdgpu_res_cursor cursor;
+-	u64 end;
 -
--	/* make sure object fit at this offset */
--	eaddr = saddr + size - 1;
--	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
--	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
--		return -EINVAL;
-+	r = amdgpu_vm_verify_parameters(adev, bo, saddr, offset, size);
-+	if (r)
-+		return r;
+-	if (mem->mem_type == TTM_PL_SYSTEM ||
+-	    mem->mem_type == TTM_PL_TT)
+-		return true;
+-	if (mem->mem_type != TTM_PL_VRAM)
++	if (!amdgpu_res_cpu_visible(adev, mem))
+ 		return false;
  
- 	saddr /= AMDGPU_GPU_PAGE_SIZE;
--	eaddr /= AMDGPU_GPU_PAGE_SIZE;
-+	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
+-	amdgpu_res_first(mem, 0, mem_size, &cursor);
+-	end = cursor.start + cursor.size;
+-	while (cursor.remaining) {
+-		amdgpu_res_next(&cursor, cursor.size);
++	/* ttm_resource_ioremap only supports contiguous memory */
++	if (mem->mem_type == TTM_PL_VRAM &&
++	    !(mem->placement & TTM_PL_FLAG_CONTIGUOUS))
++		return false;
  
- 	tmp = amdgpu_vm_it_iter_first(&vm->va, saddr, eaddr);
- 	if (tmp) {
-@@ -1706,17 +1730,9 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
- 	uint64_t eaddr;
- 	int r;
- 
--	/* validate the parameters */
--	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
--		return -EINVAL;
--	if (saddr + size <= saddr || offset + size <= offset)
--		return -EINVAL;
+-		if (!cursor.remaining)
+-			break;
 -
--	/* make sure object fit at this offset */
--	eaddr = saddr + size - 1;
--	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
--	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
--		return -EINVAL;
-+	r = amdgpu_vm_verify_parameters(adev, bo, saddr, offset, size);
-+	if (r)
-+		return r;
+-		/* ttm_resource_ioremap only supports contiguous memory */
+-		if (end != cursor.start)
+-			return false;
+-
+-		end = cursor.start + cursor.size;
+-	}
+-
+-	return end <= adev->gmc.visible_vram_size;
++	return true;
+ }
  
- 	/* Allocate all the needed memory */
- 	mapping = kmalloc(sizeof(*mapping), GFP_KERNEL);
-@@ -1730,7 +1746,7 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
- 	}
+ /*
+@@ -529,8 +544,8 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
  
- 	saddr /= AMDGPU_GPU_PAGE_SIZE;
--	eaddr /= AMDGPU_GPU_PAGE_SIZE;
-+	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
+ 	if (r) {
+ 		/* Check that all memory is CPU accessible */
+-		if (!amdgpu_mem_visible(adev, old_mem) ||
+-		    !amdgpu_mem_visible(adev, new_mem)) {
++		if (!amdgpu_res_copyable(adev, old_mem) ||
++		    !amdgpu_res_copyable(adev, new_mem)) {
+ 			pr_err("Move buffer fallback to memcpy unavailable\n");
+ 			return r;
+ 		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+index 65ec82141a8e..32cf6b6f6efd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+@@ -139,6 +139,9 @@ int amdgpu_vram_mgr_reserve_range(struct amdgpu_vram_mgr *mgr,
+ int amdgpu_vram_mgr_query_page_status(struct amdgpu_vram_mgr *mgr,
+ 				      uint64_t start);
  
- 	mapping->start = saddr;
- 	mapping->last = eaddr;
-@@ -1817,10 +1833,14 @@ int amdgpu_vm_bo_clear_mappings(struct amdgpu_device *adev,
- 	struct amdgpu_bo_va_mapping *before, *after, *tmp, *next;
- 	LIST_HEAD(removed);
- 	uint64_t eaddr;
-+	int r;
++bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
++			    struct ttm_resource *res);
 +
-+	r = amdgpu_vm_verify_parameters(adev, NULL, saddr, 0, size);
-+	if (r)
-+		return r;
- 
--	eaddr = saddr + size - 1;
- 	saddr /= AMDGPU_GPU_PAGE_SIZE;
--	eaddr /= AMDGPU_GPU_PAGE_SIZE;
-+	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
- 
- 	/* Allocate all the needed memory */
- 	before = kzalloc(sizeof(*before), GFP_KERNEL);
+ int amdgpu_ttm_init(struct amdgpu_device *adev);
+ void amdgpu_ttm_fini(struct amdgpu_device *adev);
+ void amdgpu_ttm_set_buffer_funcs_status(struct amdgpu_device *adev,
 
 
