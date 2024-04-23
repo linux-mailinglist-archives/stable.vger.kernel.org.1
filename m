@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-41263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BB98AFAF2
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:52:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16BB8AFA48
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8264C1C2246F
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:52:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACAC92861BC
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B31A14B095;
-	Tue, 23 Apr 2024 21:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2411494C8;
+	Tue, 23 Apr 2024 21:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Su/Qvf17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCZtRNzi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD75914388A;
-	Tue, 23 Apr 2024 21:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A0E143C52;
+	Tue, 23 Apr 2024 21:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908788; cv=none; b=QK9eyhcFHaijMyCy+jP6WCb9wfDZZKxfRJMx4MYQdLd+GSVNd1+2kM1SIE1Pu+c8Vdo1e75kC0sWZxw/BwZfXot5AmGUU0xjUhpFXZ8GRXSJCtFwG/ZngoBomjI4FoS7pg2xW6eCYh0zL590BMV1X1A29k5HFC59waMCCzRzO4Y=
+	t=1713908670; cv=none; b=TEJunpPdX9QunL44EwLVKqEpNoco/yo5YtJ0l4JLZbrBfwqQ5dgDwVNiMw0OCWu64nssrnCpftIxNujrV/V42BsPmQhkS0JqD5PucjTMctU753cf0N2i9QD4qU+wfiJpPBrVWRV8BMz39fHS5fBCKBp8DaeeO8UVB8pqN/8Gg+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908788; c=relaxed/simple;
-	bh=QcpykKv65UZNvNh9GtOfD5KXh778OanwUIjUIaiUD9o=;
+	s=arc-20240116; t=1713908670; c=relaxed/simple;
+	bh=K6dVU5uq5b638KbyFZKryJwHcJow2bM5X5eCqFpqih8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+zwC5J3KBO6vfnaYphiEY897VQr5ybmqoeV5o7A1NtuVfW/HaomxnBpz7CPZAWvj1ldAREj+J3/u8LWMYAvPZQhYOuYBnCRErfvJJX+WhzKVEkO9FpHZ6fDnLNbYVysnR1IlWTK7g7iPRjKYn/1lU4ihuIc+aR22qcJscljBwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Su/Qvf17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B327C4AF08;
-	Tue, 23 Apr 2024 21:46:28 +0000 (UTC)
+	 MIME-Version; b=PSj7EkTVB1oFEvlYFnbGuY4eL9DxjsKnVkNh6q7BTOSa8gPMnRMtvF3FIn7J61qwchzGlkIDFG0gfsUcukLVDnWgVOJYSCZBtY6Ae2Cpu3CBGSX4pMiBl1pFnk9U8UkCmeH65pYCTfa5RnbIrameAaeY4rGP9QxD3WaYp9i76gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCZtRNzi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD86FC116B1;
+	Tue, 23 Apr 2024 21:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908788;
-	bh=QcpykKv65UZNvNh9GtOfD5KXh778OanwUIjUIaiUD9o=;
+	s=korg; t=1713908669;
+	bh=K6dVU5uq5b638KbyFZKryJwHcJow2bM5X5eCqFpqih8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Su/Qvf17D+7uhoM5WBX+UEJcPkZNUU8aYQeYsDH1LQ8FVCTtuuBl0wVkoAuVNhWFC
-	 56eu/KhDyGciw0ExK/AtB5GZVkLdz1v86FcpfilyHpVHj2dxLBBkcpa7Yep6Kv/bZ8
-	 /H3d5lrGv7ftlDsfcXNoDGJLb0ZBVvbQ92FdVNNo=
+	b=HCZtRNziEyJEteZF0xb/tN+ES6BvXoVbdFPOBC3sFp52ExT1yIAN3zox6yEvp4GWN
+	 vgpojgJuXLCx6fIgC8dgivgqut3qVbt1BKZt0i5raFi5DC0rBfb6OOi45/5RAGXHwP
+	 vX54mHQYkQjFdGmk73wcJKU6RDPwAvHC2x3W4d4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/71] x86/bugs: Fix BHI retpoline check
-Date: Tue, 23 Apr 2024 14:39:53 -0700
-Message-ID: <20240423213845.522545382@linuxfoundation.org>
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 157/158] ksmbd: common: use struct_group_attr instead of struct_group for network_open_info
+Date: Tue, 23 Apr 2024 14:39:54 -0700
+Message-ID: <20240423213900.757117776@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-References: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 69129794d94c544810e68b2b4eaa7e44063f9bf2 ]
+commit 0268a7cc7fdc47d90b6c18859de7718d5059f6f1 upstream.
 
-Confusingly, X86_FEATURE_RETPOLINE doesn't mean retpolines are enabled,
-as it also includes the original "AMD retpoline" which isn't a retpoline
-at all.
+4byte padding cause the connection issue with the applications of MacOS.
+smb2_close response size increases by 4 bytes by padding, And the smb
+client of MacOS check it and stop the connection. This patch use
+struct_group_attr instead of struct_group for network_open_info to use
+ __packed to avoid padding.
 
-Also replace cpu_feature_enabled() with boot_cpu_has() because this is
-before alternatives are patched and cpu_feature_enabled()'s fallback
-path is slower than plain old boot_cpu_has().
-
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/ad3807424a3953f0323c011a643405619f2a4927.1712944776.git.jpoimboe@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0015eb6e1238 ("smb: client, common: fix fortify warnings")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/smb/common/smb2pdu.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index b30b32b288dd4..247545b57dff6 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1629,7 +1629,8 @@ static void __init bhi_select_mitigation(void)
- 		return;
- 
- 	/* Retpoline mitigates against BHI unless the CPU has RRSBA behavior */
--	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE)) {
-+	if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
-+	    !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE)) {
- 		spec_ctrl_disable_kernel_rrsba();
- 		if (rrsba_disabled)
- 			return;
-@@ -2783,11 +2784,13 @@ static const char *spectre_bhi_state(void)
- {
- 	if (!boot_cpu_has_bug(X86_BUG_BHI))
- 		return "; BHI: Not affected";
--	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
-+	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
- 		return "; BHI: BHI_DIS_S";
--	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
-+	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
- 		return "; BHI: SW loop, KVM: SW loop";
--	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) && rrsba_disabled)
-+	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
-+		 !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE) &&
-+		 rrsba_disabled)
- 		return "; BHI: Retpoline";
- 	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
- 		return "; BHI: Vulnerable, KVM: SW loop";
--- 
-2.43.0
-
+--- a/fs/smb/common/smb2pdu.h
++++ b/fs/smb/common/smb2pdu.h
+@@ -700,7 +700,7 @@ struct smb2_close_rsp {
+ 	__le16 StructureSize; /* 60 */
+ 	__le16 Flags;
+ 	__le32 Reserved;
+-	struct_group(network_open_info,
++	struct_group_attr(network_open_info, __packed,
+ 		__le64 CreationTime;
+ 		__le64 LastAccessTime;
+ 		__le64 LastWriteTime;
 
 
 
