@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-40846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498948AF94C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED938AFA5B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05552283032
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14E11C227C5
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E90144316;
-	Tue, 23 Apr 2024 21:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352EE146D52;
+	Tue, 23 Apr 2024 21:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBsdw/mc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4Z69/8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B689F14389A;
-	Tue, 23 Apr 2024 21:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52C7145339;
+	Tue, 23 Apr 2024 21:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908502; cv=none; b=Ztd99W74qEsz3jtO/i/u2xAAh4AEEcgsqjPz5mK17xn2yK3byEBedbNuSXOuPD6mbnstcw3cBF9i0MaRKlDj6hd3VUbw4V7+wi51+Lqs4DDK5zhDBNjtwN3nSkRyF8Y38J3tZZr3WZHT8ckJPiszvAOHUEnc41/UIPpI4n5zKho=
+	t=1713908683; cv=none; b=CGhQnUYLWl4bVF7L7FUN4n4sErrm13Cy8/ZOYDyPx6hCb5gNMxBV2sKhl+Cnqq2KmUfcrl9sHimmtCfLJqoEaLaTUsa8XQYGRSfwctPsibSemAd1Ejnc+zei8bA+mm+/gFQC+bku2WoA3IAivfhbTf61/XKr6bAWjGmGDfwBd+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908502; c=relaxed/simple;
-	bh=tNSMIfPsOu72mx+ZFdCy4vtyG7lfD5C3w6yCrqFMQJE=;
+	s=arc-20240116; t=1713908683; c=relaxed/simple;
+	bh=db7SfcWYqBtZOMbOl20ki6vOdhVO7oHlYxrzzp7PHFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtUk7tGz91P5ILDMPd5Q1g3yltFu5meWNcY7QHKnUuuch/gAAHzLdgNTL1Q84J9lscla5hiyIrCxuQe4y7ccz4pBJzGbe/pRyaSxzRJIeei8vqCIiMTXQutVmhHnddwF3jq1gQDMcF0jyNessjK+sVqZJ1iiTLGG2fxM2apiVQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBsdw/mc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830A5C32782;
-	Tue, 23 Apr 2024 21:41:42 +0000 (UTC)
+	 MIME-Version; b=aZFTngKZjxD9SySCKOjx64OjXZt8yEEVVQn7c0ymrHtuWzouSEvYdySVXmYptM6/H7/fxsiN3pYnEQNRleeiAPGqxNKp/W701WMSzBVTXzM+wSUUbg7Vwq4zd8Zq40Sw83U0K5mYZEfI5/CBOiWAGXqAAAwIOBdodmk3nr9fv1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4Z69/8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BDDC116B1;
+	Tue, 23 Apr 2024 21:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908502;
-	bh=tNSMIfPsOu72mx+ZFdCy4vtyG7lfD5C3w6yCrqFMQJE=;
+	s=korg; t=1713908682;
+	bh=db7SfcWYqBtZOMbOl20ki6vOdhVO7oHlYxrzzp7PHFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bBsdw/mczPmjrWI0yqcOAEgfdVf9xEmIGv6umEfFRzBFP4YcVBaX3DQgkdLVoL7dW
-	 UZyL91tpu/M5Fb6qNL8470kaZIppje7zvfeFCnul5YWafZUjRnKqzLxolMGcJMmE6I
-	 MZ8XzGizb5P60YIwn+L8OaxzPLhHeF/dRH8FUEcY=
+	b=S4Z69/8x8vZK4zn7UEfZw7/Iya3WLqa9pkZSZapEIQjfYxbjEuEIkJfD0QIKj4xs8
+	 Dszcjr5vmNxS3FwD7LwfH4Tfbw2gANoXTWWvQOXBxFurMOA2X7mRCMz9ZvfU+HKUlY
+	 DCea4FfODT4hFA2vRdX1qMEoyv1g83K5uracs4sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
-	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 055/158] RDMA/rxe: Fix the problem "mutex_destroy missing"
+	Jarkko Palviainen <jarkko.palviainen@gmail.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 009/141] net: usb: ax88179_178a: avoid writing the mac address before first reading
 Date: Tue, 23 Apr 2024 14:37:57 -0700
-Message-ID: <20240423213857.718738067@linuxfoundation.org>
+Message-ID: <20240423213853.658196560@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
+References: <20240423213853.356988651@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanjun.Zhu <yanjun.zhu@linux.dev>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-[ Upstream commit 481047d7e8391d3842ae59025806531cdad710d9 ]
+commit 56f78615bcb1c3ba58a5d9911bad3d9185cf141b upstream.
 
-When a mutex lock is not used any more, the function mutex_destroy
-should be called to mark the mutex lock uninitialized.
+After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
+consecutive device resets"), reset operation, in which the default mac
+address from the device is read, is not executed from bind operation and
+the random address, that is pregenerated just in case, is direclty written
+the first time in the device, so the default one from the device is not
+even read. This writing is not dangerous because is volatile and the
+default mac address is not missed.
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Yanjun.Zhu <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240314065140.27468-1-yanjun.zhu@linux.dev
-Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In order to avoid this and keep the simplification to have only one
+reset and reduce the delays, restore the reset from bind operation and
+remove the reset that is commanded from open operation. The behavior is
+the same but everything is ready for usbnet_probe.
+
+Tested with ASIX AX88179 USB Gigabit Ethernet devices.
+Restore the old behavior for the rest of possible devices because I don't
+have the hardware to test.
+
+cc: stable@vger.kernel.org # 6.6+
+Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
+Reported-by: Jarkko Palviainen <jarkko.palviainen@gmail.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Link: https://lore.kernel.org/r/20240417085524.219532-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/ax88179_178a.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
-index 54c723a6eddac..6f9ec8db014c7 100644
---- a/drivers/infiniband/sw/rxe/rxe.c
-+++ b/drivers/infiniband/sw/rxe/rxe.c
-@@ -33,6 +33,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1317,6 +1317,8 @@ static int ax88179_bind(struct usbnet *d
  
- 	if (rxe->tfm)
- 		crypto_free_shash(rxe->tfm);
+ 	netif_set_tso_max_size(dev->net, 16384);
+ 
++	ax88179_reset(dev);
 +
-+	mutex_destroy(&rxe->usdev_lock);
+ 	return 0;
  }
  
- /* initialize rxe device parameters */
--- 
-2.43.0
-
+@@ -1695,7 +1697,6 @@ static const struct driver_info ax88179_
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1708,7 +1709,6 @@ static const struct driver_info ax88178a
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
 
 
 
