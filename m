@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7428AFA68
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:48:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408A28AF9EC
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEFB9288A9E
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:48:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5750DB2ADB1
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C0A149C7C;
-	Tue, 23 Apr 2024 21:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82AC147C82;
+	Tue, 23 Apr 2024 21:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ5pPzzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEvUTqdk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F14C149C78;
-	Tue, 23 Apr 2024 21:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6758C143C57;
+	Tue, 23 Apr 2024 21:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908692; cv=none; b=UC7eNlrAkggtw8vP+fBemradXl9vN6PVvIy+c1BLcOXrBT6KUYdoLSr31GN+gKEGz4hFKHVr+7JPbjvYuo0PcRLs91ih1zTkvitBiszkjwiJJWrHY9RWGz/JU0GmxaQBSxt0XSeTLgbC0VylRGKN6KPz0JvT0iNNgWaj6xJMI5c=
+	t=1713908605; cv=none; b=F5rmwwbmKeVsajj5uOdSd8DaICWB1MLu3ZSrxVkRAIBdPAQqlLWYAhYQd71yhlwwFenBbCZybROVkidACWyHbWdQi+UihAHnmQ16czd5ppwAJbXjV+bVtZ0hyR5yDpp06qm7q9L2BfsVnWor5KrzAxe/m89LEtw1ppSx0P3X2iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908692; c=relaxed/simple;
-	bh=LmSB6H98JjhVHfj3pQPaROIw85pL6Z97xvYle7JD5vI=;
+	s=arc-20240116; t=1713908605; c=relaxed/simple;
+	bh=xJorBsdxMlluQWgs/1/LbUrLz+a3vhivj36VjGnNWrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nJnTfWMJ9P3XxarlxKNVU2zzacfus8Js0DK1R/LHtQfVeZcxOJwfrY/vb/synSpTeWw/qEadqOA055/9MgwJ2yFryzGik8U6H29gNwHd/Zb2kFYnaNCUilftiM4EXsb6iTxdAdMJFJvKqhuaD2k8SlgfqAOxsAQQiO47WcfC61M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ5pPzzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AF8C32783;
-	Tue, 23 Apr 2024 21:44:52 +0000 (UTC)
+	 MIME-Version; b=gCBQIzlMbmeaF+mfEjNBbg9uopDs1qh366HT1VGHhwMtPXmjKR1STOcdYA5tT1kjlUrDtFhr8mAaEtGXHSh3uqfWWR3iKqnQwnWFAh0D10ReCJ2rfqhhJKmn58fj/2Gj0Trm9NhHrimLov2Dn2bdTRyRdW7CgC6aofBc84NJlRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEvUTqdk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3651AC116B1;
+	Tue, 23 Apr 2024 21:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908692;
-	bh=LmSB6H98JjhVHfj3pQPaROIw85pL6Z97xvYle7JD5vI=;
+	s=korg; t=1713908605;
+	bh=xJorBsdxMlluQWgs/1/LbUrLz+a3vhivj36VjGnNWrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJ5pPzzWQPDvo/xP9zvFXLtbd2PWVzPUFeoy+NkTm/1fJuN602sdO1/W1m6XrC8ls
-	 1qaMpFYOLp3QRvAro0Ml4n1KZY11l1iSea2YVEjf1B1LBBTWamhQiNSnS5tjY14wS8
-	 ka+ZIOppi23gF2VQfkth2+gUYRevS5PHGZREAdzo=
+	b=AEvUTqdkql33GO/o51KY3l+4hjI/aC6hL1miKMgv9vk5cPDC8E4JMnev80cGdzy+R
+	 28R/ayyvkpoAJK+F5p6btZrIc4m0Mj1ryTUnn5uVYu0nnXr0l/qioutZDrfvRvkpky
+	 u/VoiUvTaokr/g3DNkUBNReZHyoXNSNJICKVd9tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Jarkko Nikula <jarkko.nikula@bitmer.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/141] af_unix: Call manage_oob() for every skb in unix_stream_read_generic().
+Subject: [PATCH 6.6 071/158] ASoC: ti: Convert Pandora ASoC to GPIO descriptors
 Date: Tue, 23 Apr 2024 14:38:28 -0700
-Message-ID: <20240423213854.577452185@linuxfoundation.org>
+Message-ID: <20240423213858.071601050@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 283454c8a123072e5c386a5a2b5fc576aa455b6f ]
+[ Upstream commit 319e6ac143b9e9048e527ab9dd2aabb8fdf3d60f ]
 
-When we call recv() for AF_UNIX socket, we first peek one skb and
-calls manage_oob() to check if the skb is sent with MSG_OOB.
+The Pandora uses GPIO descriptors pretty much exclusively, but not
+for ASoC, so let's fix it. Register the pins in a descriptor table
+in the machine since the ASoC device is not using device tree.
 
-However, when we fetch the next (and the following) skb, manage_oob()
-is not called now, leading a wrong behaviour.
+Use static locals for the GPIO descriptors because I'm not able
+to experient with better state storage on any real hardware. Others
+using the Pandora can come afterwards and improve this.
 
-Let's say a socket send()s "hello" with MSG_OOB and the peer tries
-to recv() 5 bytes with MSG_PEEK.  Here, we should get only "hell"
-without 'o', but actually not:
-
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'hello', MSG_OOB)
-  5
-  >>> c2.recv(5, MSG_PEEK)
-  b'hello'
-
-The first skb fills 4 bytes, and the next skb is peeked but not
-properly checked by manage_oob().
-
-Let's move up the again label to call manage_oob() for evry skb.
-
-With this patch:
-
-  >>> from socket import *
-  >>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
-  >>> c1.send(b'hello', MSG_OOB)
-  5
-  >>> c2.recv(5, MSG_PEEK)
-  b'hell'
-
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240410171016.7621-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
+Link: https://lore.kernel.org/r/20230926-descriptors-asoc-ti-v1-4-60cf4f8adbc5@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-omap2/pdata-quirks.c | 10 +++++
+ sound/soc/ti/omap3pandora.c        | 63 +++++++++++-------------------
+ 2 files changed, 33 insertions(+), 40 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 0a75d76535f75..6af6f82e89464 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2753,6 +2753,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 		last = skb = skb_peek(&sk->sk_receive_queue);
- 		last_len = last ? last->len : 0;
+diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
+index c1c0121f478d6..b947bacf23a37 100644
+--- a/arch/arm/mach-omap2/pdata-quirks.c
++++ b/arch/arm/mach-omap2/pdata-quirks.c
+@@ -275,9 +275,19 @@ static struct platform_device pandora_backlight = {
+ 	.id	= -1,
+ };
  
-+again:
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
- 		if (skb) {
- 			skb = manage_oob(skb, sk, flags, copied);
-@@ -2764,7 +2765,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 			}
++static struct gpiod_lookup_table pandora_soc_audio_gpios = {
++	.dev_id = "soc-audio",
++	.table = {
++		GPIO_LOOKUP("gpio-112-127", 6, "dac", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("gpio-0-15", 14, "amp", GPIO_ACTIVE_HIGH),
++		{ }
++	},
++};
++
+ static void __init omap3_pandora_legacy_init(void)
+ {
+ 	platform_device_register(&pandora_backlight);
++	gpiod_add_lookup_table(&pandora_soc_audio_gpios);
+ }
+ #endif /* CONFIG_ARCH_OMAP3 */
+ 
+diff --git a/sound/soc/ti/omap3pandora.c b/sound/soc/ti/omap3pandora.c
+index a287e9747c2a1..fa92ed97dfe3b 100644
+--- a/sound/soc/ti/omap3pandora.c
++++ b/sound/soc/ti/omap3pandora.c
+@@ -7,7 +7,7 @@
+ 
+ #include <linux/clk.h>
+ #include <linux/platform_device.h>
+-#include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/delay.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/module.h>
+@@ -21,12 +21,11 @@
+ 
+ #include "omap-mcbsp.h"
+ 
+-#define OMAP3_PANDORA_DAC_POWER_GPIO	118
+-#define OMAP3_PANDORA_AMP_POWER_GPIO	14
+-
+ #define PREFIX "ASoC omap3pandora: "
+ 
+ static struct regulator *omap3pandora_dac_reg;
++static struct gpio_desc *dac_power_gpio;
++static struct gpio_desc *amp_power_gpio;
+ 
+ static int omap3pandora_hw_params(struct snd_pcm_substream *substream,
+ 	struct snd_pcm_hw_params *params)
+@@ -78,9 +77,9 @@ static int omap3pandora_dac_event(struct snd_soc_dapm_widget *w,
+ 			return ret;
  		}
- #endif
--again:
- 		if (skb == NULL) {
- 			if (copied >= target)
- 				goto unlock;
+ 		mdelay(1);
+-		gpio_set_value(OMAP3_PANDORA_DAC_POWER_GPIO, 1);
++		gpiod_set_value(dac_power_gpio, 1);
+ 	} else {
+-		gpio_set_value(OMAP3_PANDORA_DAC_POWER_GPIO, 0);
++		gpiod_set_value(dac_power_gpio, 0);
+ 		mdelay(1);
+ 		regulator_disable(omap3pandora_dac_reg);
+ 	}
+@@ -92,9 +91,9 @@ static int omap3pandora_hp_event(struct snd_soc_dapm_widget *w,
+ 	struct snd_kcontrol *k, int event)
+ {
+ 	if (SND_SOC_DAPM_EVENT_ON(event))
+-		gpio_set_value(OMAP3_PANDORA_AMP_POWER_GPIO, 1);
++		gpiod_set_value(amp_power_gpio, 1);
+ 	else
+-		gpio_set_value(OMAP3_PANDORA_AMP_POWER_GPIO, 0);
++		gpiod_set_value(amp_power_gpio, 0);
+ 
+ 	return 0;
+ }
+@@ -229,35 +228,10 @@ static int __init omap3pandora_soc_init(void)
+ 
+ 	pr_info("OMAP3 Pandora SoC init\n");
+ 
+-	ret = gpio_request(OMAP3_PANDORA_DAC_POWER_GPIO, "dac_power");
+-	if (ret) {
+-		pr_err(PREFIX "Failed to get DAC power GPIO\n");
+-		return ret;
+-	}
+-
+-	ret = gpio_direction_output(OMAP3_PANDORA_DAC_POWER_GPIO, 0);
+-	if (ret) {
+-		pr_err(PREFIX "Failed to set DAC power GPIO direction\n");
+-		goto fail0;
+-	}
+-
+-	ret = gpio_request(OMAP3_PANDORA_AMP_POWER_GPIO, "amp_power");
+-	if (ret) {
+-		pr_err(PREFIX "Failed to get amp power GPIO\n");
+-		goto fail0;
+-	}
+-
+-	ret = gpio_direction_output(OMAP3_PANDORA_AMP_POWER_GPIO, 0);
+-	if (ret) {
+-		pr_err(PREFIX "Failed to set amp power GPIO direction\n");
+-		goto fail1;
+-	}
+-
+ 	omap3pandora_snd_device = platform_device_alloc("soc-audio", -1);
+ 	if (omap3pandora_snd_device == NULL) {
+ 		pr_err(PREFIX "Platform device allocation failed\n");
+-		ret = -ENOMEM;
+-		goto fail1;
++		return -ENOMEM;
+ 	}
+ 
+ 	platform_set_drvdata(omap3pandora_snd_device, &snd_soc_card_omap3pandora);
+@@ -268,6 +242,20 @@ static int __init omap3pandora_soc_init(void)
+ 		goto fail2;
+ 	}
+ 
++	dac_power_gpio = devm_gpiod_get(&omap3pandora_snd_device->dev,
++					"dac", GPIOD_OUT_LOW);
++	if (IS_ERR(dac_power_gpio)) {
++		ret = PTR_ERR(dac_power_gpio);
++		goto fail3;
++	}
++
++	amp_power_gpio = devm_gpiod_get(&omap3pandora_snd_device->dev,
++					"amp", GPIOD_OUT_LOW);
++	if (IS_ERR(amp_power_gpio)) {
++		ret = PTR_ERR(amp_power_gpio);
++		goto fail3;
++	}
++
+ 	omap3pandora_dac_reg = regulator_get(&omap3pandora_snd_device->dev, "vcc");
+ 	if (IS_ERR(omap3pandora_dac_reg)) {
+ 		pr_err(PREFIX "Failed to get DAC regulator from %s: %ld\n",
+@@ -283,10 +271,7 @@ static int __init omap3pandora_soc_init(void)
+ 	platform_device_del(omap3pandora_snd_device);
+ fail2:
+ 	platform_device_put(omap3pandora_snd_device);
+-fail1:
+-	gpio_free(OMAP3_PANDORA_AMP_POWER_GPIO);
+-fail0:
+-	gpio_free(OMAP3_PANDORA_DAC_POWER_GPIO);
++
+ 	return ret;
+ }
+ module_init(omap3pandora_soc_init);
+@@ -295,8 +280,6 @@ static void __exit omap3pandora_soc_exit(void)
+ {
+ 	regulator_put(omap3pandora_dac_reg);
+ 	platform_device_unregister(omap3pandora_snd_device);
+-	gpio_free(OMAP3_PANDORA_AMP_POWER_GPIO);
+-	gpio_free(OMAP3_PANDORA_DAC_POWER_GPIO);
+ }
+ module_exit(omap3pandora_soc_exit);
+ 
 -- 
 2.43.0
 
