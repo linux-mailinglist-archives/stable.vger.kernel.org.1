@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEB98AF9F6
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:45:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0128AF95C
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475891F28751
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:45:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 947F428656B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92769145B08;
-	Tue, 23 Apr 2024 21:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D026C145324;
+	Tue, 23 Apr 2024 21:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="papzVyeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mj5EMbP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F347143C57;
-	Tue, 23 Apr 2024 21:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC3D14388F;
+	Tue, 23 Apr 2024 21:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908613; cv=none; b=sMrnluJnJOC8yeCGnYilPhnFAMpaY4JAiaLH8SjSKOE06Wrklk/DuGTWniop2Xi6vQoCiEBwT4IhYsmeG9Cn8PyNct/mPVQ9w2XZoHm/cFdEKFQXbMX+IlZPk1MTSTGHjLnhQzA3w0LeAMhjlvO0XlyhzPFiQjtrhPNDc/65luw=
+	t=1713908513; cv=none; b=uRVSII5uXpRbSS5noTHnB/tZamIYXqpM5PYk6jHsfUz3yFZ6nD6bE+iwOBZDi8UW2kP1P63crkMZMWsnUtOA5/V7/FuQkZeGnbXyqFnH6/eilHubTe1uX0YzcrZtEDHscMKXrY5QPzWhjy2T2bTwI4V2yKWdcUnBa+DItvdP6PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908613; c=relaxed/simple;
-	bh=Fk7pFPpydlAq1HgAsqycgYhas8zQG7vSYZqN+5A0qyo=;
+	s=arc-20240116; t=1713908513; c=relaxed/simple;
+	bh=7nC1IWxTKT+pq4h51pai/fTYeSPPlWjh9gjjr4co4Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WVoNoYjPrEvC2WoMwn+XzEYINvi1i+cZntOtV0V2zTlrxPhJEJ4Ds7/xzGpwDEyPc5YVImFSj9z3xBvyGLtHTQ2kqxTbpnycRPzT+bQzu78s78yIWZAMPV4m4f6kT8ugW8q7up6xpuO4tMNng+JxdKgUUA1U3b62uDsukSkMH08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=papzVyeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AF2C3277B;
-	Tue, 23 Apr 2024 21:43:33 +0000 (UTC)
+	 MIME-Version; b=D9pUX1bR83krUoBesqHffutvZDbCFqXeO4HeIFX0s8ssbzbkrG+pAs/xiyeUHup/zFbctt84pBeaIHk0aUj4ikCI3VtSICSvhlpAZb4Qutwd6sqUYmOy8NdV3vBlJ/IxmPzp1Qco6/npHlosgQA5TAultturJZpDZFLaqS/OPWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mj5EMbP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6394CC116B1;
+	Tue, 23 Apr 2024 21:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908613;
-	bh=Fk7pFPpydlAq1HgAsqycgYhas8zQG7vSYZqN+5A0qyo=;
+	s=korg; t=1713908513;
+	bh=7nC1IWxTKT+pq4h51pai/fTYeSPPlWjh9gjjr4co4Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=papzVyeEdOy5kQCE5BUiut8jkgOIqwbUdAKRdmuuyx3X1LdFi/Xi1AncMGW7ryxm4
-	 EUsQcr/XxdwNd/CBLVvCr0en7+T+mIYo5GrxZ0VibllEHZr28YGwPDrxJZYJvF1WLi
-	 9M/UnCY33Tc55ukEpjtYWpejR3KFMkVORONR7S3Y=
+	b=Mj5EMbP85LFEqED7QwYnxmRoiNkn+b3cdPopgGkoLCLePyzqb5IKwOz2WuyQSy10G
+	 Fbz2FueEzJNVytNFyJ96zosg+kONqEoNMVETE6ucQD6IwNJ5ijvLFB8bFnvnNajgwk
+	 iV9Z0pR8DwVckn0N1a1NL8pKl1KTO/cOsBAcSmsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/158] PCI: Simplify pcie_capability_clear_and_set_word() to ..._clear_word()
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.8 099/158] thunderbolt: Do not create DisplayPort tunnels on adapters of the same router
 Date: Tue, 23 Apr 2024 14:38:41 -0700
-Message-ID: <20240423213858.489629522@linuxfoundation.org>
+Message-ID: <20240423213859.167911640@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 0fce6e5c87faec2c8bf28d2abc8cb595f4e244b6 ]
+commit c032cdd48b29549e8283c2fea99e7d91ddefebf7 upstream.
 
-When using pcie_capability_clear_and_set_word() but not actually *setting*
-anything, use pcie_capability_clear_word() instead.
+Probably due to a firmware bug Dell TB16 dock announces that one of its
+DisplayPort adapters is actually DP IN. Now this is possible and used
+with some external GPUs but not likely in this case as we are dealing
+with a dock. Anyways the problem is that the driver tries to create a
+DisplayPort tunnel between adapters of the same router which then shows
+to user that there is no picture on the display (because there are no
+available DP OUT adapters on the dock anymore).
 
-Link: https://lore.kernel.org/r/20231026121924.2164-1-ilpo.jarvinen@linux.intel.com
-Link: https://lore.kernel.org/r/20231026121924.2164-2-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-[bhelgaas: squash]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by not creating DisplayPort tunnels between adapters that are
+on the same router.
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10265
+Fixes: 274baf695b08 ("thunderbolt: Add DP IN added last in the head of the list of DP resources")
+Cc: Gil Fine <gil.fine@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pcie/aspm.c | 8 ++++----
- drivers/pci/quirks.c    | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/thunderbolt/tb.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 7e3b342215e5b..19a673aa08eb2 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -689,10 +689,10 @@ static void pcie_config_aspm_l1ss(struct pcie_link_state *link, u32 state)
- 	 * in pcie_config_aspm_link().
- 	 */
- 	if (enable_req & (ASPM_STATE_L1_1 | ASPM_STATE_L1_2)) {
--		pcie_capability_clear_and_set_word(child, PCI_EXP_LNKCTL,
--						   PCI_EXP_LNKCTL_ASPM_L1, 0);
--		pcie_capability_clear_and_set_word(parent, PCI_EXP_LNKCTL,
--						   PCI_EXP_LNKCTL_ASPM_L1, 0);
-+		pcie_capability_clear_word(child, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPM_L1);
-+		pcie_capability_clear_word(parent, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPM_L1);
- 	}
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -1717,6 +1717,12 @@ static struct tb_port *tb_find_dp_out(st
+ 			continue;
+ 		}
  
- 	val = 0;
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index e1c652b1c53a4..fa770601c655a 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4571,9 +4571,9 @@ static void quirk_disable_root_port_attributes(struct pci_dev *pdev)
++		/* Needs to be on different routers */
++		if (in->sw == port->sw) {
++			tb_port_dbg(port, "skipping DP OUT on same router\n");
++			continue;
++		}
++
+ 		tb_port_dbg(port, "DP OUT available\n");
  
- 	pci_info(root_port, "Disabling No Snoop/Relaxed Ordering Attributes to avoid PCIe Completion erratum in %s\n",
- 		 dev_name(&pdev->dev));
--	pcie_capability_clear_and_set_word(root_port, PCI_EXP_DEVCTL,
--					   PCI_EXP_DEVCTL_RELAX_EN |
--					   PCI_EXP_DEVCTL_NOSNOOP_EN, 0);
-+	pcie_capability_clear_word(root_port, PCI_EXP_DEVCTL,
-+				   PCI_EXP_DEVCTL_RELAX_EN |
-+				   PCI_EXP_DEVCTL_NOSNOOP_EN);
- }
- 
- /*
--- 
-2.43.0
-
+ 		/*
 
 
 
