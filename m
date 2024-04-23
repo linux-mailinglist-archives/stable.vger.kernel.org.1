@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-41179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305A98AFA97
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:49:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0B48AFB23
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6237B1C23395
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:49:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5268CB2C8B6
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2DD145B01;
-	Tue, 23 Apr 2024 21:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2999214AD23;
+	Tue, 23 Apr 2024 21:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3QLsfF0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiOwgLhv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7985D143882;
-	Tue, 23 Apr 2024 21:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8B0143C5F;
+	Tue, 23 Apr 2024 21:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908731; cv=none; b=RsmuL8YWFVy88uxtyYZ0XgWSWTY9mmpC2d2IJwPE3dKl9sWV5pfCfY8HhZWM8NGOuoHvuOoj8zyKJlzpXV8PPjnlihnqMABbwk4GkK3o0l07hc5hVa+5hxNx+PEt0zGBFL7/f5KcFNyF85K459xUHhTMC2XhuC5LR31mskPaqGs=
+	t=1713908770; cv=none; b=VvxcowUYmyZO2LSqGDCoAoC+f6MHExuAYsBmW05xOMMgW5s4mCQtY8+gVtF143+dMNrQA9iusPGKf2rNPZX4CkVEWWi/RKgeg/gLjxcye/9njDfaHuhIhi5NKh856kzdA7waNwn9cDGPlW1d9aRYnk63xgZ+38nEydP+l/GsS2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908731; c=relaxed/simple;
-	bh=Q2j2BRDL1F+dUYkNzS5URkHFpyLo9iiaW6t7bjnu0Kc=;
+	s=arc-20240116; t=1713908770; c=relaxed/simple;
+	bh=4al6bcW7LOCfN7wNjCP1IUqQ8Zjp44NaNtKL//LmxHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sHvvA7F0t6PQDtz228tydgwTskw87+uvcREUQu7xxUquqzBPgHz0RTBXdRnMmQo5LGYz07EhDYk/B1Wi6p9XQB7W0RbsYXZVLBQ1Cymo3kJROdkWwh9UIlSTCB2hMwkWzyULtRdmzKfNSGYVKSdqxEU1oFd/TsiX1xBEHHF75Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3QLsfF0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CD8C32783;
-	Tue, 23 Apr 2024 21:45:31 +0000 (UTC)
+	 MIME-Version; b=cchmDU0F+u8KISl0soom3hLIfCtcdE+RZw4Q+5QPc2g+vuPJIaIte0d9SlkcUds6SgWqnat0geW5NuuzzWYit0ST/vM7JajBgj6GFup2ZqdkpUMAMBeoDwpthDO9LWuUrhtaYJK2NJowSzk7kgONFO3ageoD2dK+EjDKf3SeORQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiOwgLhv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE353C32781;
+	Tue, 23 Apr 2024 21:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908731;
-	bh=Q2j2BRDL1F+dUYkNzS5URkHFpyLo9iiaW6t7bjnu0Kc=;
+	s=korg; t=1713908769;
+	bh=4al6bcW7LOCfN7wNjCP1IUqQ8Zjp44NaNtKL//LmxHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3QLsfF0YImJf0f1/mix9Bm8QsQKBV2Iv+OL3c8ElrWXyM9SzkKANoum3puvMX2wZ
-	 LOT6XTCLBPR2Nne4Pwri/hfDxW8uuhbEE+/fGrhRhmvowx+lTicjZfzhHOZrmsHhyJ
-	 /N/2qnnvQvaAXNjhMlQR0UC/rNua+RJ/nF8Pb7SQ=
+	b=xiOwgLhviz2zz9xQ8d/qzuAw2P/SUxOHdnbrrfcZ0K8mL55sV6CQ0/kv8JCpn2SVt
+	 OOit/05f6RgnJjOhHukLYsQVo23m6KmS6zlSB81olwavHTaZQV8N6HtUfLsxpjN0sT
+	 nfuZKvuWhSiIvHfLt+bdA+SwfCg70mdJttrHRM7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/141] x86/bugs: Fix BHI retpoline check
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 5.15 12/71] kprobes: Fix possible use-after-free issue on kprobe registration
 Date: Tue, 23 Apr 2024 14:39:25 -0700
-Message-ID: <20240423213856.321383804@linuxfoundation.org>
+Message-ID: <20240423213844.541474428@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 69129794d94c544810e68b2b4eaa7e44063f9bf2 ]
+commit 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8 upstream.
 
-Confusingly, X86_FEATURE_RETPOLINE doesn't mean retpolines are enabled,
-as it also includes the original "AMD retpoline" which isn't a retpoline
-at all.
+When unloading a module, its state is changing MODULE_STATE_LIVE ->
+ MODULE_STATE_GOING -> MODULE_STATE_UNFORMED. Each change will take
+a time. `is_module_text_address()` and `__module_text_address()`
+works with MODULE_STATE_LIVE and MODULE_STATE_GOING.
+If we use `is_module_text_address()` and `__module_text_address()`
+separately, there is a chance that the first one is succeeded but the
+next one is failed because module->state becomes MODULE_STATE_UNFORMED
+between those operations.
 
-Also replace cpu_feature_enabled() with boot_cpu_has() because this is
-before alternatives are patched and cpu_feature_enabled()'s fallback
-path is slower than plain old boot_cpu_has().
+In `check_kprobe_address_safe()`, if the second `__module_text_address()`
+is failed, that is ignored because it expected a kernel_text address.
+But it may have failed simply because module->state has been changed
+to MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify
+non-exist module text address (use-after-free).
 
-Fixes: ec9404e40e8f ("x86/bhi: Add BHI mitigation knob")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/ad3807424a3953f0323c011a643405619f2a4927.1712944776.git.jpoimboe@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix this problem, we should not use separated `is_module_text_address()`
+and `__module_text_address()`, but use only `__module_text_address()`
+once and do `try_module_get(module)` which is only available with
+MODULE_STATE_LIVE.
+
+Link: https://lore.kernel.org/all/20240410015802.265220-1-zhengyejian1@huawei.com/
+
+Fixes: 28f6c37a2910 ("kprobes: Forbid probing on trampoline and BPF code areas")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+[Fix conflict due to lack dependency
+commit 223a76b268c9 ("kprobes: Fix coding style issues")]
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ kernel/kprobes.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 6d69123de3660..3f38592ec7713 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1629,7 +1629,8 @@ static void __init bhi_select_mitigation(void)
- 		return;
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1564,10 +1564,17 @@ static int check_kprobe_address_safe(str
+ 	jump_label_lock();
+ 	preempt_disable();
  
- 	/* Retpoline mitigates against BHI unless the CPU has RRSBA behavior */
--	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE)) {
-+	if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
-+	    !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE)) {
- 		spec_ctrl_disable_kernel_rrsba();
- 		if (rrsba_disabled)
- 			return;
-@@ -2783,11 +2784,13 @@ static const char *spectre_bhi_state(void)
- {
- 	if (!boot_cpu_has_bug(X86_BUG_BHI))
- 		return "; BHI: Not affected";
--	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
-+	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_HW))
- 		return "; BHI: BHI_DIS_S";
--	else if  (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
-+	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP))
- 		return "; BHI: SW loop, KVM: SW loop";
--	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) && rrsba_disabled)
-+	else if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
-+		 !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE) &&
-+		 rrsba_disabled)
- 		return "; BHI: Retpoline";
- 	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
- 		return "; BHI: Vulnerable, KVM: SW loop";
--- 
-2.43.0
-
+-	/* Ensure it is not in reserved area nor out of text */
+-	if (!(core_kernel_text((unsigned long) p->addr) ||
+-	    is_module_text_address((unsigned long) p->addr)) ||
+-	    in_gate_area_no_mm((unsigned long) p->addr) ||
++	/* Ensure the address is in a text area, and find a module if exists. */
++	*probed_mod = NULL;
++	if (!core_kernel_text((unsigned long) p->addr)) {
++		*probed_mod = __module_text_address((unsigned long) p->addr);
++		if (!(*probed_mod)) {
++			ret = -EINVAL;
++			goto out;
++		}
++	}
++	/* Ensure it is not in reserved area. */
++	if (in_gate_area_no_mm((unsigned long) p->addr) ||
+ 	    within_kprobe_blacklist((unsigned long) p->addr) ||
+ 	    jump_label_text_reserved(p->addr, p->addr) ||
+ 	    static_call_text_reserved(p->addr, p->addr) ||
+@@ -1577,8 +1584,7 @@ static int check_kprobe_address_safe(str
+ 		goto out;
+ 	}
+ 
+-	/* Check if are we probing a module */
+-	*probed_mod = __module_text_address((unsigned long) p->addr);
++	/* Get module refcount and reject __init functions for loaded modules. */
+ 	if (*probed_mod) {
+ 		/*
+ 		 * We must hold a refcount of the probed module while updating
 
 
 
