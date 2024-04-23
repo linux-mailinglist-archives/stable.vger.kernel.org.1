@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11328AFB17
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2F18AFB04
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFDE1B2533C
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:51:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB62928566D
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B7614AD19;
-	Tue, 23 Apr 2024 21:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4EA148FE5;
+	Tue, 23 Apr 2024 21:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OO5sNxMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWHgWbmb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60674143C5F;
-	Tue, 23 Apr 2024 21:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A430143C6C;
+	Tue, 23 Apr 2024 21:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908764; cv=none; b=Jvz+dKV9O3xhJSJ3rwEjLpS1HhFJo7m/sIJ9JwPJ+Pa2J1iG7/XEADZTsv3uHbyV2wcMXFXkrkklpJ5ewA/BS1q7p1h963Zb3aegKVEI0684CZV5Gy2mxxDWZrEVKJltZDlwaPhWztifLGGdssdc6+Mzv04s2Ifjby9j1Cu8vs0=
+	t=1713908803; cv=none; b=LjDbUlA/ZNkrk8U/uarsr5+IF3rO9Rr8YhN/midMgoUwsLJAuFNsa+ZgxepaTRA0ouRbhpC48s4hYjq+8q95TrTobRUUdkUfoE8SCMgSGYvEY97lJJnVxspKLJf96vzAtCqleWB0wYdnieWeukdAdD3Q15zT96DpoJ9x3C3RhyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908764; c=relaxed/simple;
-	bh=1ad4jDzjrACBsYrSBU110bfTqLygXNsw6AD6aFj8BGM=;
+	s=arc-20240116; t=1713908803; c=relaxed/simple;
+	bh=i4M377JLWPQWNwOdhIoY2L0K21T3LbQ/hHa0idxbu7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVAchh4LZSZJN74AKjqMbmpzGEk0JRDN04AQEbUAdkOrIKj2gBh9huDK0YxQrNVOpC0QijtsDXMJUjCspSH9TcjFAZIhkQ9HWhji9FFDG0KAezLTWNhI0rtzvE5xC+yASO6vP//Yry383k8QeJnAdShZdUIjpIye6VfDgcxIBpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OO5sNxMQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BE0C32781;
-	Tue, 23 Apr 2024 21:46:04 +0000 (UTC)
+	 MIME-Version; b=VqHybIwVsQsvxGI0aGTSuTULKSP0JSFmhsC8SClVpZveHRP1giLgnNK+Kkh5+2DyyVZ7ytEYJnf9Cbr3+PkBv8ZTXDKWvQxQFZ99LbbOg06AFzQXEdjRAXKkyopLJGCZfw/l2ZhWpq4JwWrDFAOo8BTo8Jyb5ThDegz8iZikcxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWHgWbmb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF282C116B1;
+	Tue, 23 Apr 2024 21:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908764;
-	bh=1ad4jDzjrACBsYrSBU110bfTqLygXNsw6AD6aFj8BGM=;
+	s=korg; t=1713908803;
+	bh=i4M377JLWPQWNwOdhIoY2L0K21T3LbQ/hHa0idxbu7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OO5sNxMQftKZneqDt3Ayd2HlxSdqwqxmUGlfJfJMXfvqT2QDJeqwPSvGbCVt0InhM
-	 7d9Gv9jYaYkFdzuHPQ2v08ldaiC6UCBmm7LLO7CiSR/2tpnY5vv4NHfH3uDpOsGLXt
-	 W4AttQta6+JOuAOihe0kXRJKZfweSmLUP08DQ+Cc=
+	b=wWHgWbmbCZ2W377xbPWp3j4LBQdrZeKAtyPidBHJ4Dvhn398DTioT/IztuaGr5IY7
+	 s8MRPNWw/3xi8A7yFqyqXb2XohZD2E3Mr8egpjjdGvWtLwiz2GOV2oU0nKlFiWYPKf
+	 T/M+9OOvfLBZ/Mzjq59eUv2SAg4rdyEJSjJcMyRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 138/141] ksmbd: validate request buffer size in smb2_allocate_rsp_buf()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 5.15 53/71] usb: dwc2: host: Fix dereference issue in DDMA completion flow.
 Date: Tue, 23 Apr 2024 14:40:06 -0700
-Message-ID: <20240423213857.703342723@linuxfoundation.org>
+Message-ID: <20240423213846.010098229@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-References: <20240423213853.356988651@linuxfoundation.org>
+In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+References: <20240423213844.122920086@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit 17cf0c2794bdb6f39671265aa18aea5c22ee8c4a upstream.
+commit eed04fa96c48790c1cce73c8a248e9d460b088f8 upstream.
 
-The response buffer should be allocated in smb2_allocate_rsp_buf
-before validating request. But the fields in payload as well as smb2 header
-is used in smb2_allocate_rsp_buf(). This patch add simple buffer size
-validation to avoid potencial out-of-bounds in request buffer.
+Fixed variable dereference issue in DDMA completion flow.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: b258e4268850 ("usb: dwc2: host: Fix ISOC flow in DDMA mode")
+CC: stable@vger.kernel.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-usb/2024040834-ethically-rumble-701f@gregkh/T/#m4c4b83bef0ebb4b67fe2e0a7d6466cbb6f416e39
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/cc826d3ef53c934d8e6d98870f17f3cdc3d2755d.1712665387.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/dwc2/hcd_ddma.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -534,6 +534,10 @@ int smb2_allocate_rsp_buf(struct ksmbd_w
- 	if (cmd == SMB2_QUERY_INFO_HE) {
- 		struct smb2_query_info_req *req;
+--- a/drivers/usb/dwc2/hcd_ddma.c
++++ b/drivers/usb/dwc2/hcd_ddma.c
+@@ -897,13 +897,15 @@ static int dwc2_cmpl_host_isoc_dma_desc(
+ 	struct dwc2_dma_desc *dma_desc;
+ 	struct dwc2_hcd_iso_packet_desc *frame_desc;
+ 	u16 frame_desc_idx;
+-	struct urb *usb_urb = qtd->urb->priv;
++	struct urb *usb_urb;
+ 	u16 remain = 0;
+ 	int rc = 0;
  
-+		if (get_rfc1002_len(work->request_buf) <
-+		    offsetof(struct smb2_query_info_req, OutputBufferLength))
-+			return -EINVAL;
+ 	if (!qtd->urb)
+ 		return -EINVAL;
+ 
++	usb_urb = qtd->urb->priv;
 +
- 		req = smb2_get_msg(work->request_buf);
- 		if ((req->InfoType == SMB2_O_INFO_FILE &&
- 		     (req->FileInfoClass == FILE_FULL_EA_INFORMATION ||
+ 	dma_sync_single_for_cpu(hsotg->dev, qh->desc_list_dma + (idx *
+ 				sizeof(struct dwc2_dma_desc)),
+ 				sizeof(struct dwc2_dma_desc),
 
 
 
