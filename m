@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-40908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B1F8AFA1D
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:46:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9378AF98B
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 23:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD881F28EEB
-	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:46:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEDE1284C86
+	for <lists+stable@lfdr.de>; Tue, 23 Apr 2024 21:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38632145B31;
-	Tue, 23 Apr 2024 21:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CBB14535F;
+	Tue, 23 Apr 2024 21:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqibRayN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNLBWVoy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC53B143888;
-	Tue, 23 Apr 2024 21:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C4520B3E;
+	Tue, 23 Apr 2024 21:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908638; cv=none; b=O6tVfhjWSlgK0+31nZpCIG+xdzqvwRlNokEYc1+uO4gOigHtpflz7vGOdufOwQUgmDaLQihVpwFzEEr7hb/h/IdHHR9xSDq9VS9xF6M0zf4PmBsr7D4Yajr4rEFX7LlvCbu0jw5sRm1kBTwKoH7p94LKtjU2Bm0RR6Tgb+B4rIs=
+	t=1713908546; cv=none; b=U0VcYGTsKbiBZDqNFYmdyG2JKDYRL9HhiRg4R44FhvRWpFdasQPoTd+oG89zE0+5ZXXL0OZTDt5d3pj7iPfZvngUpOGBBrVX5Xg9paEjtIpREBFleuMxAn71Tg4PhHjI1ucZWvik4GC89R0hG6IzE/nFLhk8zpR35xfGs27hSMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908638; c=relaxed/simple;
-	bh=T4uVqet01Sdq9W5TsXoIhPokB3VQJVnQSVk2ljGEf0M=;
+	s=arc-20240116; t=1713908546; c=relaxed/simple;
+	bh=dbBjf9tskrHH6eCX0WNkd7nAa1Xr3qs+b37ZHmJ2cFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nypPMnMbueO4VleiofiF7/1Vcd37XMAMvIz6r45/jGn9O5LOLaM71OVp8hIBHIkTv7mQ6hkp+0A4lCYhBW83UFVqRJXw44NbwdpDO5TGsBTmNu1GRtlzgSKnN2PjJqdxFKo1/tntYcmSmVE7sCr3e82zEtLWqs95orJyLDDzg48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqibRayN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BEEC32781;
-	Tue, 23 Apr 2024 21:43:57 +0000 (UTC)
+	 MIME-Version; b=CNB2IkaEhqC1zOzwQlZvF/yzW6iR6c4MMVDnt6L1N5CfDP/alMjdjdRjigbuJ2xz55vJOYQktWmr5/phcNKZFLZm1m0Rt0auywJhD94atFlkagfa82K2xJWUDpV0hs3+2+qqYQ6mUGQXvUqbwDWd7SJNB8SfnOLYXrJEV2m1iGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNLBWVoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0E1C3277B;
+	Tue, 23 Apr 2024 21:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1713908637;
-	bh=T4uVqet01Sdq9W5TsXoIhPokB3VQJVnQSVk2ljGEf0M=;
+	s=korg; t=1713908546;
+	bh=dbBjf9tskrHH6eCX0WNkd7nAa1Xr3qs+b37ZHmJ2cFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HqibRayN79s4Kzr/Ab0OMsBw/C+kv1MqOYdkQs1hsux4lpYoC5rGZBzcG22MWFJUt
-	 ycTKHRIELlEOOjc9LxpTAbGcc9MpbdLyPBxmTmNwvvJ2f2Ql6GH1ZPAQTHeldiRwxm
-	 xbzmWPT8G0k8JceMipy1BSM0a739SgcWnNLwRbfE=
+	b=QNLBWVoy6u0+JaJI/jJqbGO3DCZG8ZewmMJ5Mnr9udP2HPW2S3qBp0TE/n5IN+vH5
+	 n8C0kyEsYpmhOzsGoZGWOymJ2z0bVHh+J+xtFKzbV1Ke0LdkvSrAKjgdK68uttQBlr
+	 iv/SPwE+NAjbyfhzHcrOs8bQd6VY8NcAD87ZDEKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 102/158] ALSA: hda/tas2781: Add new vendor_id and subsystem_id to support ThinkPad ICE-1
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 6.8 117/158] usb: dwc2: host: Fix dereference issue in DDMA completion flow.
 Date: Tue, 23 Apr 2024 14:38:59 -0700
-Message-ID: <20240423213859.071268737@linuxfoundation.org>
+Message-ID: <20240423213859.727854430@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
-References: <20240423213855.696477232@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+References: <20240423213855.824778126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit f74ab0c5e5947bcb3a400ab73d837974e76fad23 upstream.
+commit eed04fa96c48790c1cce73c8a248e9d460b088f8 upstream.
 
-Add new vendor_id and subsystem_id to support new Lenovo laptop
-ThinkPad ICE-1
+Fixed variable dereference issue in DDMA completion flow.
 
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Cc: <stable@vger.kernel.org>
-Message-ID: <20240411091823.1644-1-shenghao-ding@ti.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: b258e4268850 ("usb: dwc2: host: Fix ISOC flow in DDMA mode")
+CC: stable@vger.kernel.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-usb/2024040834-ethically-rumble-701f@gregkh/T/#m4c4b83bef0ebb4b67fe2e0a7d6466cbb6f416e39
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/cc826d3ef53c934d8e6d98870f17f3cdc3d2755d.1712665387.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc2/hcd_ddma.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10203,6 +10203,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x222e, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x2231, "Thinkpad T560", ALC292_FIXUP_TPT460),
- 	SND_PCI_QUIRK(0x17aa, 0x2233, "Thinkpad", ALC292_FIXUP_TPT460),
-+	SND_PCI_QUIRK(0x17aa, 0x2234, "Thinkpad ICE-1", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x2245, "Thinkpad T470", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x2246, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x2247, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
+--- a/drivers/usb/dwc2/hcd_ddma.c
++++ b/drivers/usb/dwc2/hcd_ddma.c
+@@ -867,13 +867,15 @@ static int dwc2_cmpl_host_isoc_dma_desc(
+ 	struct dwc2_dma_desc *dma_desc;
+ 	struct dwc2_hcd_iso_packet_desc *frame_desc;
+ 	u16 frame_desc_idx;
+-	struct urb *usb_urb = qtd->urb->priv;
++	struct urb *usb_urb;
+ 	u16 remain = 0;
+ 	int rc = 0;
+ 
+ 	if (!qtd->urb)
+ 		return -EINVAL;
+ 
++	usb_urb = qtd->urb->priv;
++
+ 	dma_sync_single_for_cpu(hsotg->dev, qh->desc_list_dma + (idx *
+ 				sizeof(struct dwc2_dma_desc)),
+ 				sizeof(struct dwc2_dma_desc),
 
 
 
