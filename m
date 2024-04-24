@@ -1,129 +1,186 @@
-Return-Path: <stable+bounces-41339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571CD8B0453
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 10:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 119D98B04ED
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 10:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BE71B2135C
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 08:30:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F2ACB23E24
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 08:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516417E798;
-	Wed, 24 Apr 2024 08:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E67157489;
+	Wed, 24 Apr 2024 08:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="s4iEImEd"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5rl0ymz3"
 X-Original-To: stable@vger.kernel.org
-Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2044.outbound.protection.outlook.com [40.107.236.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4843714291D
-	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 08:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713947414; cv=none; b=fZ6K2Zm30s788ybXhLiKQmyCtX6Xov3vixY4Y6Lf1ZST66VeXf7ONxctYG2FByA2PBrWJ3EIYdUk8WX4my0FoAAXq6VCEXi9nQ7CFqhCgynGvg8xUbrAAdtaGmxLPU/b3G/ZuhizgCz91XzmvuSiOEcBl+8SywJmiqEvg9Ne0ps=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713947414; c=relaxed/simple;
-	bh=KYTWpKpv6oeY+/R5jsWkNe5xS0x8WQ750NNzb1M/t1s=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=IamMG4xANriLyNIN1BUnZSPEJ4vX5j2kWW0jNqRrSj1DpTnNZTgeJJiEpR4USp72Yg4yUcG/SmlN9J/a63E6KUwtXqpb34ZQyd4rOseaMniTwiUxLLPqzRCVuPfRrEqlQl3xcmN+iIGPUDdariwQ5xQfW5SOt6etpfY7sUXEux0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=s4iEImEd; arc=none smtp.client-ip=35.89.44.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5004a.ext.cloudfilter.net ([10.0.29.221])
-	by cmsmtp with ESMTPS
-	id zWLRrKg6vHXmAzXzXrVIGM; Wed, 24 Apr 2024 08:28:36 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id zXzXrYchAGDo0zXzXreTnS; Wed, 24 Apr 2024 08:28:35 +0000
-X-Authority-Analysis: v=2.4 cv=I+uuR8gg c=1 sm=1 tr=0 ts=6628c2b3
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=raytVjVEu-sA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=CMKPsDBNFkSOfaRWdswA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=XmzQCDWatu9ptYK38PXzDUgh/4x84Gi6I78nuRqijYU=; b=s4iEImEdmvB49yeN6d7uUi+WWd
-	/vZK1TIBC4UjmnyWPMXjHpccX3As9kP6cK/gce8abnUBoXEk2cycH1VoyN2mcG8M03tOl7zTmsmfs
-	ilQGGkWzU7ldd/k6I2Vs6yNgydkKgTS3onyWHFjPqXdjrVCVyWBLcXSwIw7+00d9BNrN1YDGwagrY
-	WDTKY7qAGjSaPkMrS60kJCUhRUrDkcv9VaFGVyfkO8Qs7w9fnbtICd00v8EgnUERems9cgc8IJiMK
-	qUlwqZHY+BlyQYQGYNtgm5/inySYJHmq1k/GPK6ObS1Fp0NOgheHx6hfDxLctVv3v+ym5wjgKJr+U
-	itBvOukw==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:59366 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rzXzU-003d7O-1R;
-	Wed, 24 Apr 2024 02:28:32 -0600
-Subject: Re: [PATCH 5.15 00/71] 5.15.157-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240423213844.122920086@linuxfoundation.org>
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <da2f9f9f-5a75-2ce2-22be-ec7fdd97f6bc@w6rz.net>
-Date: Wed, 24 Apr 2024 01:28:29 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E591581EB
+	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 08:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713948759; cv=fail; b=itx2uZIGrRFANEa4LI/8dLSbawwYynjdYlil5S559KL7Luvp3X5gerfxKTTFvVMX0N+cFJ7DD142jsbeCSv38kU0Kls5s6g6l4TyysFn1olyHod59aDUABq51+33pKoF4Cx1D1gh6vhTH6C+x2t073bBEvNxtrZRvARk02K4r0I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713948759; c=relaxed/simple;
+	bh=7LJXkym0R4UTK7IHzEl4LhdiQlpZBHQChtikJlsM5wk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sCRsMGPE0sYfOdKtJd2Xw5Ve8c/ln5z8lKlriJc74EYPD3kJrL7XBN5hQgHsET4h8FFY2QypyvM33FBrn66w6GGGJ/KlnaS/6/0Aw3ZymUQ0Axz+NGqT61UPTJ6FoKALGPwxj1cgLqA/RX466XDte0uX90nWlV6fANzD/atbctQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5rl0ymz3; arc=fail smtp.client-ip=40.107.236.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aeRgBp1aRFA5d1V8B5G4GcFFQ9b044SlgQKYLxgwyU0E5XF1qgZdSPygzWIpAfei8HIIdcvx97vd/d/2ByrKOl7LXYrhYu/XXgqJOVahsWaJhDH67E9O9A0GNVvugtIiT2sC00OeFovO51fFDZvwlGBHkZfX9XwfHEJrqjyhlE/99wLbFcqiUa5Yl6McVl3OaH8NDrMXBrzgz9Mg+eSQeLuSHESUUCCi7llPt26CwsMrFvmS8/iLgKtsBImhW8cKIoTk9a5uYCgskhWGe5QWbhL4Uw383ZUZ9pT/jw/4ufB7r4BorN2s+H4B9jy4sT92Z2jopm9XpiygpsLMYzopBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2t67RwO2pvFSrZ5S2xFdWWkqvNe7d4s8Sx7Ua5nIxS0=;
+ b=SvRCnnFX89JEYf6/XTjJKvKURaGJa2xmgmMtbO6HhYZWrFTsmHEXkXxew/5FAYiY831xgFbOMyQgC9VwsdgfPnHaNRrANrs7EX5tgATvy2PNqs871iiUe9m17xdLXI/vc6TMgtrVQ2s+8I1RVJueHs9DOjR7OW2vNfNFzIPbJ5f6aNPAUNYb4fbMiWuswhp2ZpVrG3W/vZyGtOEZ0SiPYO4vRDGknmpMGW8kyGGXWXtHwrKgPNYsJaQxywIZfZGKkbWgsstZw6W7SV8WlGq0/iMGTEHsRDGTkQ2FwF2IEt/2/0u606JIdSd6bVburGFeBsb5mNo786KeW53QJ8LdiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2t67RwO2pvFSrZ5S2xFdWWkqvNe7d4s8Sx7Ua5nIxS0=;
+ b=5rl0ymz32PExUjWoSnemoC9C07mm+qTvmQ+CZ/7E5fh5KuNTqzGBPnsHmbPbNsIJRWdk0yu5yfyHpr0go3QJ5fWiDuOjYPrfiM9cL+tneQye7VSyniJ8UcsUmjNRd61XYAJltsF0WKj3sAfdO5yR24WXCeZJu+rF9pHv8heP+0U=
+Received: from BN8PR15CA0054.namprd15.prod.outlook.com (2603:10b6:408:80::31)
+ by MW4PR12MB5667.namprd12.prod.outlook.com (2603:10b6:303:18a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Wed, 24 Apr
+ 2024 08:52:33 +0000
+Received: from BN1PEPF0000467F.namprd03.prod.outlook.com
+ (2603:10b6:408:80:cafe::36) by BN8PR15CA0054.outlook.office365.com
+ (2603:10b6:408:80::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.23 via Frontend
+ Transport; Wed, 24 Apr 2024 08:52:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN1PEPF0000467F.mail.protection.outlook.com (10.167.243.84) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7519.19 via Frontend Transport; Wed, 24 Apr 2024 08:52:32 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 24 Apr
+ 2024 03:52:32 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 24 Apr
+ 2024 03:52:31 -0500
+Received: from wayne-dev-lnx.amd.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Wed, 24 Apr 2024 03:52:27 -0500
+From: Wayne Lin <Wayne.Lin@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
+	<Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>, <roman.li@amd.com>,
+	<wayne.lin@amd.com>, <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
+	<hersenxs.wu@amd.com>, <jerry.zuo@amd.com>, Mario Limonciello
+	<mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH 23/46] drm/amd/display: Defer handling mst up request in resume
+Date: Wed, 24 Apr 2024 16:49:08 +0800
+Message-ID: <20240424084931.2656128-24-Wayne.Lin@amd.com>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20240424084931.2656128-1-Wayne.Lin@amd.com>
+References: <20240424084931.2656128-1-Wayne.Lin@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rzXzU-003d7O-1R
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:59366
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJgZejVdogJywCk6W8DOr4azBzbmZ4Yp0ehXvpNKcQSj0IDLzirnZU1s8j/6OPx2x6OobKbOpqTJESQ2dG2pigSzdGrcjmqc/mQO2UH7LM76gVnapHcu
- MbHhp2GClL6aPMxVGawuwr2QnxkSOKu3y3L7K785pOStwnk18QsbTXyeHyaMp9NCoWnvrhSkJ0qUaA==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000467F:EE_|MW4PR12MB5667:EE_
+X-MS-Office365-Filtering-Correlation-Id: 971c6351-d91f-47ac-e5f5-08dc643be13b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?meIpAF83ws+VyxyrzecY+fkQrZR4s401C0J4QhE+lf9kjNnSRC4HSSNFj6Ak?=
+ =?us-ascii?Q?OziQ0Giz0ZVidyJ1X3YNcODhtmoaDkcYyuVZ7DDhLCPhOedE3DdRty41AQT7?=
+ =?us-ascii?Q?kWjl6fxma5Dxfw5oDnZkbMJSH0RMHP5erUFHZiCXDBoQjJxPfsxcTV86UKDd?=
+ =?us-ascii?Q?s09feMfvJXQjYJTney3kDAWqk4suOPoQOvjquMx9LhQeZSYHAPpmxjT4E5IT?=
+ =?us-ascii?Q?MYLVPhX4/1pwdaXmvImscqF8Psjx7soOspfKFnFVJdXBZZnbY/wqrdeUEoFz?=
+ =?us-ascii?Q?HUhYmw7+D5twGQiQg/eLF38+VLiQ2kMD3a0zal6HUKtlil1b5RGEnzFeH0l+?=
+ =?us-ascii?Q?wHdl+5U6pw0MniADgMipDRu68IpeGjbmqDRaLeny0nwdNQHMv9jr6phP/Eqx?=
+ =?us-ascii?Q?yj8iAHOYqXSSdP5dXB+Bslc8SxvdqZkAtd2+jK2sAOO26nYgWW9vJrswwuPr?=
+ =?us-ascii?Q?fIvW9iA2H+GiE5Jx6tPKupeWV7MgmMmGmsLELyZXzUsbNaqH6atbRj3NFxho?=
+ =?us-ascii?Q?uGHFXUnvKnKVWXJpFEsvUGxOXwvQ9VJU4rFTZb5bypuie2fVCUo1ZwAAuTuE?=
+ =?us-ascii?Q?b4Vp11gAWZPTeNPxujxQhz/LYQj9aUddN0WdD9MFXrtxFGgd3dYFlrfbJe3y?=
+ =?us-ascii?Q?nb1n/mDOo+etdRBegaEQwBz8dms7veL3W0Inr80Wrr9jyHAjjrcCfgKc/Y6N?=
+ =?us-ascii?Q?yeDAzP5HQov1fAODB29rsnl8sCzDiTmqW+zEupPnYm25zX4w68abPNk9LAmo?=
+ =?us-ascii?Q?cDjLZFWXxYlPHYkIkf7jasLfqk/PlLnXWAFo7rHkwzkMTbLy+FZOCX4egQTv?=
+ =?us-ascii?Q?/P8MnVbQgwQz5ddtjzvFwDHMyD+uH58J76jqJdCT/gA38SMfm97dOaSWPPhy?=
+ =?us-ascii?Q?hvsO0McyQsCiLw3WltYCSl350YGAmyPI397wjD+/3JnyyTIRulw6w7KKRnv4?=
+ =?us-ascii?Q?HS+SQdL2QCPP22ogEuTY+E/2LCsRluGR5BS1fdjVO20E8KNPNcqVzWWnXxO+?=
+ =?us-ascii?Q?SOMmAYZ/fGWaOF8jUN2UIWNoxVrOCOjQlGW/YCwuw0G8nZ8TySNNUjpN251G?=
+ =?us-ascii?Q?KGwr/nnNltkYEf4YgRJENo1SJ92LO3B8t2/JBs2Y80rQl4cYiD1l/Cn3o69o?=
+ =?us-ascii?Q?Hri/LjkDl8wpWcQyOeBsJlkRQA1JzL+2BkaQBPX1GzgPcsVxbhwrTLb664g3?=
+ =?us-ascii?Q?oDVgXVTM+zEN4YnEqUAbeo1pKQAd10Pf+6IFm/22mXwFfNkXLFEJnjDv0pzS?=
+ =?us-ascii?Q?TUqjNMkv1kh+XT9O6bWf1utuYUP24D/3mryoal1y1mmO+15p+eIUHf2epcF/?=
+ =?us-ascii?Q?RU2QdurXma55jU2i7hcYMse+4mG6yIO/N7QqsTCPZspNNaGiceiroOkJoic7?=
+ =?us-ascii?Q?nUIQwlY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(82310400014)(1800799015)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2024 08:52:32.4102
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 971c6351-d91f-47ac-e5f5-08dc643be13b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF0000467F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5667
 
-On 4/23/24 2:39 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.157 release.
-> There are 71 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.157-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+From: Wayne Lin <wayne.lin@amd.com>
 
-Tested-by: Ron Economos <re@w6rz.net>
+[Why]
+Like commit ec5fa9fcdeca ("drm/amd/display: Adjust the MST resume flow"), we
+want to avoid handling mst topology changes before restoring the old state.
+If we enable DP_UP_REQ_EN before calling drm_atomic_helper_resume(), have
+changce to handle CSN event first and fire hotplug event before restoring the
+cached state.
+
+[How]
+Disable mst branch sending up request event before we restoring the cached state.
+DP_UP_REQ_EN will be set later when we call drm_dp_mst_topology_mgr_resume().
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+
+Reviewed-by: Hersen Wu <hersenxs.wu@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 9d36dba914e9..961b5984afa0 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2429,7 +2429,6 @@ static void resume_mst_branch_status(struct drm_dp_mst_topology_mgr *mgr)
+ 
+ 	ret = drm_dp_dpcd_writeb(mgr->aux, DP_MSTM_CTRL,
+ 				 DP_MST_EN |
+-				 DP_UP_REQ_EN |
+ 				 DP_UPSTREAM_IS_SRC);
+ 	if (ret < 0) {
+ 		drm_dbg_kms(mgr->dev, "mst write failed - undocked during suspend?\n");
+-- 
+2.37.3
+
 
