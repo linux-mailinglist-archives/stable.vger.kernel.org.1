@@ -1,190 +1,212 @@
-Return-Path: <stable+bounces-41366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE7E8B0C52
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 16:17:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D25268B0C62
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 16:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FE5F1C2326C
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 14:17:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6141A1F2833A
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 14:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B577915E7E2;
-	Wed, 24 Apr 2024 14:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C2D15B99E;
+	Wed, 24 Apr 2024 14:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N6AdF/aC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PhQFf29g"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE2615E5B1;
-	Wed, 24 Apr 2024 14:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785B515E5B2
+	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 14:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713968266; cv=none; b=mBSaEpEovflSWcSIJVp3sVzBt+Pl9aFuLgUJly1wkREYExKjjdFQtjQYUi99kJXg3F9hyH8LGo0EOFFeYqQ+d79JmT65quNQ2ygYXS/pLzW/yjMMAs8ar8+K3qvR+ZOgaSfz8sJH1limqFlHmBgcdVxAUBVHJk+T/x0kJDly+gA=
+	t=1713968524; cv=none; b=ojBWSyM8k4m3+xuNB4L79LTMywlNNC+DfZrqYWlEDfsOIAmXkoY5OZTLt3+lXqpcZkI7TgqJGMarHikCWH1eZNt7RmhJ7aRFNt6IDiRHKERzQCMqX4Qy1+bzbklieCSrLycU6zGp2O9Ow7TN/AXFJkDjSJeuSBpoFayhYKtEvTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713968266; c=relaxed/simple;
-	bh=hyNzl6UHSzZchf9V7Gzo3JKQ9WWb5GYJYSs/R7191MQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fY9zNL5FMIJs5ACFn4tw1TQcbYzkvBBCnX3UIsex5FZvNK2rlNSvdzteesyzaqSlbpgMzWExwxFpMhFukN4kk9Gr3DdPiv++gLObLCrii/TJb3A82H9dKhxbQgPLA2O3VCdo4tbQrFUlmIFPqZ8Mcu3EXdCtWrnjKlqX7okb7hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N6AdF/aC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D148EC2BBFC;
-	Wed, 24 Apr 2024 14:17:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713968265;
-	bh=hyNzl6UHSzZchf9V7Gzo3JKQ9WWb5GYJYSs/R7191MQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N6AdF/aCeqUK+VBjdffOWQqcyN3U73+GM1EOKOkw8bZ4ZBR1/o8ENmj7G6xrH0Sz3
-	 IWhfpKCHEMtgLjIBIm+2xT+8azlEMxDrjeU2mI+rMnKXq3PMl/8mEVeVggKGsAQxJ6
-	 tfloeZFgxZgCtHlcmhqECG03f9A9G/2ZSzPjgA5UM6+pl3s0stJOSVORRTeTme4LTo
-	 7myYTWHjBu56ei5lmkopt+zkCDi/cOt3nbTa3T5FXKqRry8DpztUK6GieY0JSx4aH+
-	 6UAvFgD6utL4pKvQqTSk4QMNoGM96pXw5dChDVORXZtzypKwXKaGmKbBug8WBOpTcW
-	 RV/GsAHSwTT1w==
-Date: Wed, 24 Apr 2024 16:17:41 +0200
-From: Benjamin Tissoires <bentiss@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: oe-kbuild@lists.linux.dev, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>, lkp@intel.com, oe-kbuild-all@lists.linux.dev, 
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 3/3] HID: bpf: lazy load the hid_tail_call entrypoint
-Message-ID: <x7ffovagmqjazr6jhr6urkctcj7ozn6poakvjluorhzuxmyyg2@dxw7ucw3qc6z>
-References: <20240419-hid_bpf_lazy_skel-v1-3-9210bcd4b61c@kernel.org>
- <74d0e9d1-7ac6-4f08-bab6-76c51e69cebf@moroto.mountain>
+	s=arc-20240116; t=1713968524; c=relaxed/simple;
+	bh=zQ4ggdIVSkhmIl2fRvA4hlHqqYytUieTW/CMICOA+M0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qci/cHn5q1gVrDmR6aM0ZEeujPexAAtGw4dqxf29F/Q0FXXbcKcytMKQpTdiAvluPB5Cp1lvkxoFZaP0kZzGhivCeriMOlpul4ySoTYt9CvoAVpPs0oZZj2w7bzJsR9arY7ZpXxQ5zVNKfzlNw6xnkASZxmeemWJimXw16shM/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PhQFf29g; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-41ac4cd7a1cso14161515e9.1
+        for <stable@vger.kernel.org>; Wed, 24 Apr 2024 07:22:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713968521; x=1714573321; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rbu3CtHQPDzqG7bcEJAxBge0HJMTre8Cbx1YM3r4SiU=;
+        b=PhQFf29ga/hT0xj/PCph+ZrNplHd6tQQd2dn6+TdsALaGumsnp/f7mNw3b29JafvXu
+         oYhouAbiojPQzZpKLxPUuyfOEIC32hqc5lSca7zFClv20+P+7QPDNGDtVk8flDL43TZP
+         ZGoga8Wxo9dBfZO8zI6iaap847E1kt7WM5d+G+DBcliy1lXQ6UZ9qpXhXfPAOj2HcEyD
+         K4pLuPVeQYpXr/W7WzhCr7oHxFJg/Lpx27phdOvuaVz6VGN5IxdMqA+oa88Mj4+Or1HM
+         8IoTq+EWUDWlOd2fY535+gPVk1iqGx5NhUyRcUVWNnbbur3NO1uB3xGx0wUwdJ84P/0h
+         tvtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713968521; x=1714573321;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rbu3CtHQPDzqG7bcEJAxBge0HJMTre8Cbx1YM3r4SiU=;
+        b=ftUZwu2dVUju1Tnq5/V3Jnijx2JResobrenNLni69qk7l7LFUfm4hQ00yhksFEmdAj
+         ibnXMqC36HNdRhRVwn2G1I0NWrcMluptZ84zdwhGxcVnGc0ffQf3aTESAXAC1PpzW4OF
+         tUneEf8fWJ1noyTJs4ZX9lYGZivcfgpqKyJXfY7nSdNXqQxhXYXM+s2HfXnNjNNKaSl4
+         KtcXLeVImaB4Fi7PZM0PbbpAi3CMaGXmaRm/Ed6hqtQvZfCODXAfpXIm0/l4qCm+mKro
+         8quyUuaFhDFXH9yTn9cWR8oQRPY+gKm8Jmz9sCi9KFMvjOmue65LMQazn7tx3PEwUeHS
+         iuvg==
+X-Forwarded-Encrypted: i=1; AJvYcCXN5OzKdDGg1G+sSE2RBzim/Xwuo7iZUACykMY+skP28Sj0wJ7zlwNeu6jPQT7AKJZzY1gJf8JdYHRg9SMD3ER+dmUEp+c6
+X-Gm-Message-State: AOJu0Yynl5osixUIJ7rdy34StcA1njwAg9X4dAJH6qwycUj02gEUucSh
+	nNlnLAqaO5Rr6CQeR72y9mg4NwwCiWQB9dxkI2cGsef6mewPgBpPQPEUFxaNHQs=
+X-Google-Smtp-Source: AGHT+IGqxAXxOtPD63SKaGX/vtzm4PnE/j4LFLNS+70NxHdpPcb3rgN8pMmwPYmCLEzyUXpYw1Y9NQ==
+X-Received: by 2002:a05:600c:154f:b0:418:e08c:817 with SMTP id f15-20020a05600c154f00b00418e08c0817mr1761473wmg.32.1713968520750;
+        Wed, 24 Apr 2024 07:22:00 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id je12-20020a05600c1f8c00b004183edc31adsm27649971wmb.44.2024.04.24.07.22.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Apr 2024 07:22:00 -0700 (PDT)
+From: Daniel Thompson <daniel.thompson@linaro.org>
+Date: Wed, 24 Apr 2024 15:21:41 +0100
+Subject: [PATCH v2] serial: kgdboc: Fix NMI-safety problems from keyboard
+ reset code
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <74d0e9d1-7ac6-4f08-bab6-76c51e69cebf@moroto.mountain>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240424-kgdboc_fix_schedule_work-v2-1-50f5a490aec5@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAHQVKWYC/42NUQ6CMBBEr0L22xqKRcAv72EIacsWNpDWbBU1h
+ LtbOYGfbzLzZoWITBjhkq3AuFCk4BMUhwzsqP2AgvrEUOSFypVsxDT0JtjO0buLdsT+OWP3Cjw
+ Jl1ujlKn1qVSQ5nfGVNrVtzbxSPER+LM/LfKX/iFdpJDCOdnUtTxXFZbXmbzmcAw8QLtt2xfsN
+ 8yIwQAAAA==
+To: Jason Wessel <jason.wessel@windriver.com>, 
+ Douglas Anderson <dianders@chromium.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>
+Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
+ linux-serial@vger.kernel.org, Liuye <liu.yeC@h3c.com>, 
+ stable@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4055;
+ i=daniel.thompson@linaro.org; h=from:subject:message-id;
+ bh=zQ4ggdIVSkhmIl2fRvA4hlHqqYytUieTW/CMICOA+M0=;
+ b=owEBbQKS/ZANAwAKAXzjJV0594ihAcsmYgBmKRV5Wm2kC9hXmk1syJZaOzjZr40TcSJ3+kCD8
+ Le6DrhAgK+JAjMEAAEKAB0WIQQvNUFTUPeVarpwrPB84yVdOfeIoQUCZikVeQAKCRB84yVdOfeI
+ oe8JEACq4DWqHSaha3tdg43NRvx3r3lp+1RIoZJTpXkJvDcRqZBur0QZaN5enNHuOZ7h23bi0z0
+ 3G/06X0RqQLXPnROu0bhZGwOHxEwZsdyZwkOI8K786wrJtxZ8OeKlKPKjh/jXd8/TuEFlJvKxBA
+ kqalG7vC2g8E4NaI9o/SJZ/G8u3HQUgmBBt2J9yqOPI65yQHst89j4MTQkWIl067p8GKYKvYI7x
+ hu4Dh4dYnKZYezWiV+4r/Scb4E344be3xvwhpL7Mlx3//qTSm6SEqsTfF/R3Rryp8Y3aWNDlyEx
+ mWVdmPZvMnXRMMU4X8mPafGACNPGMCUH5nUrWScO492cvqy3DiqP3XtiqbuKcp90d1U8Ycgbubf
+ m+5JWlSDixrC1nQn6AJhWR/pL9F5PieinPIrA/ZxMQlMRUZVmmo4eMs4TS4u7zY/570eMmjj8FH
+ tx1yQrX6yu8/OyVwWm/jBkulK0p4ErHxbNqad8++8QglVZ/Z7LjWzVlpEYF/cj0Sd+TwGFxsu22
+ N+DUnLN2BhwwVpnHG+4t0fxpM3RHTZjNQZ3S2U3C2m7f0Yucm5ojCRWU3NYvDq+ZO9DQtkUuds/
+ I4WaG+g6zGRwtcVfbf06Ih1m+++WZHVfrLOTe495+m4RhFVBOCqRqh72aLihN42svzQ9fFEWBE6
+ ZGCViho+/fVYTQg==
+X-Developer-Key: i=daniel.thompson@linaro.org; a=openpgp;
+ fpr=E38BE19861669213F6E2661AA8A4E3BC5B7B28BE
 
-On Apr 23 2024, Dan Carpenter wrote:
-> Hi Benjamin,
-> 
-> kernel test robot noticed the following build warnings:
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Benjamin-Tissoires/HID-bpf-fix-a-comment-in-a-define/20240419-225110
-> base:   b912cf042072e12e93faa874265b30cc0aa521b9
-> patch link:    https://lore.kernel.org/r/20240419-hid_bpf_lazy_skel-v1-3-9210bcd4b61c%40kernel.org
-> patch subject: [PATCH 3/3] HID: bpf: lazy load the hid_tail_call entrypoint
-> config: i386-randconfig-141-20240423 (https://download.01.org/0day-ci/archive/20240423/202404231109.h2IRrMMD-lkp@intel.com/config)
-> compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202404231109.h2IRrMMD-lkp@intel.com/
-> 
-> smatch warnings:
-> drivers/hid/bpf/hid_bpf_jmp_table.c:478 __hid_bpf_attach_prog() error: uninitialized symbol 'link'.
-> 
-> vim +/link +478 drivers/hid/bpf/hid_bpf_jmp_table.c
-> 
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  396  noinline int
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  397  __hid_bpf_attach_prog(struct hid_device *hdev, enum hid_bpf_prog_type prog_type,
-> 7cdd2108903a4e3 Benjamin Tissoires 2024-01-24  398  		      int prog_fd, struct bpf_prog *prog, __u32 flags)
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  399  {
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  400  	struct bpf_link_primer link_primer;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  401  	struct hid_bpf_link *link;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  402  	struct hid_bpf_prog_entry *prog_entry;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  403  	int cnt, err = -EINVAL, prog_table_idx = -1;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  404  
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  405  	mutex_lock(&hid_bpf_attach_lock);
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  406  
-> 60caa381da7dc38 Benjamin Tissoires 2024-04-19  407  	if (!jmp_table.map) {
-> 60caa381da7dc38 Benjamin Tissoires 2024-04-19  408  		err = hid_bpf_preload_skel();
-> 60caa381da7dc38 Benjamin Tissoires 2024-04-19  409  		WARN_ONCE(err, "error while preloading HID BPF dispatcher: %d", err);
-> 60caa381da7dc38 Benjamin Tissoires 2024-04-19  410  		if (err)
-> 60caa381da7dc38 Benjamin Tissoires 2024-04-19  411  			goto err_unlock;
->                                                                         ^^^^^^^^^^^^^^^^
-> link isn't initialized.
+Currently, when kdb is compiled with keyboard support, then we will use
+schedule_work() to provoke reset of the keyboard status.  Unfortunately
+schedule_work() gets called from the kgdboc post-debug-exception
+handler.  That risks deadlock since schedule_work() is not NMI-safe and,
+even on platforms where the NMI is not directly used for debugging, the
+debug trap can have NMI-like behaviour depending on where breakpoints
+are placed.
 
-Well spotted! Thanks
-I'll send a v2 soon.
+Fix this by using the irq work system, which is NMI-safe, to defer the
+call to schedule_work() to a point when it is safe to call.
 
-Cheers,
-Benjamin
+Reported-by: Liuye <liu.yeC@h3c.com>
+Closes: https://lore.kernel.org/all/20240228025602.3087748-1-liu.yeC@h3c.com/
+Cc: stable@vger.kernel.org
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+---
+@Greg: I'm assuming this could/should go via your tree but feel free
+       to share an ack if you want me to hoover it up instead.
 
-> 
-> 60caa381da7dc38 Benjamin Tissoires 2024-04-19  412  	}
-> 60caa381da7dc38 Benjamin Tissoires 2024-04-19  413  
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  414  	link = kzalloc(sizeof(*link), GFP_USER);
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  415  	if (!link) {
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  416  		err = -ENOMEM;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  417  		goto err_unlock;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  418  	}
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  419  
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  420  	bpf_link_init(&link->link, BPF_LINK_TYPE_UNSPEC,
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  421  		      &hid_bpf_link_lops, prog);
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  422  
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  423  	/* do not attach too many programs to a given HID device */
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  424  	cnt = hid_bpf_program_count(hdev, NULL, prog_type);
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  425  	if (cnt < 0) {
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  426  		err = cnt;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  427  		goto err_unlock;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  428  	}
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  429  
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  430  	if (cnt >= hid_bpf_max_programs(prog_type)) {
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  431  		err = -E2BIG;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  432  		goto err_unlock;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  433  	}
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  434  
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  435  	prog_table_idx = hid_bpf_insert_prog(prog_fd, prog);
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  436  	/* if the jmp table is full, abort */
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  437  	if (prog_table_idx < 0) {
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  438  		err = prog_table_idx;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  439  		goto err_unlock;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  440  	}
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  441  
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  442  	if (flags & HID_BPF_FLAG_INSERT_HEAD) {
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  443  		/* take the previous prog_entry slot */
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  444  		jmp_table.tail = PREV(jmp_table.tail);
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  445  		prog_entry = &jmp_table.entries[jmp_table.tail];
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  446  	} else {
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  447  		/* take the next prog_entry slot */
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  448  		prog_entry = &jmp_table.entries[jmp_table.head];
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  449  		jmp_table.head = NEXT(jmp_table.head);
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  450  	}
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  451  
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  452  	/* we steal the ref here */
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  453  	prog_entry->prog = prog;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  454  	prog_entry->idx = prog_table_idx;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  455  	prog_entry->hdev = hdev;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  456  	prog_entry->type = prog_type;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  457  
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  458  	/* finally store the index in the device list */
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  459  	err = hid_bpf_populate_hdev(hdev, prog_type);
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  460  	if (err) {
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  461  		hid_bpf_release_prog_at(prog_table_idx);
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  462  		goto err_unlock;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  463  	}
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  464  
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  465  	link->hid_table_index = prog_table_idx;
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  466  
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  467  	err = bpf_link_prime(&link->link, &link_primer);
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  468  	if (err)
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  469  		goto err_unlock;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  470  
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  471  	mutex_unlock(&hid_bpf_attach_lock);
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  472  
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  473  	return bpf_link_settle(&link_primer);
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  474  
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  475   err_unlock:
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  476  	mutex_unlock(&hid_bpf_attach_lock);
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13  477  
-> 4b9a3f49f02bf68 Benjamin Tissoires 2023-01-13 @478  	kfree(link);
->                                                               ^^^^
-> 
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  479  
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  480  	return err;
-> f5c27da4e3c8a2e Benjamin Tissoires 2022-11-03  481  }
-> 
-> -- 
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
-> 
+Changes in v2:
+- Fix typo in the big comment (thanks Doug)
+- Link to v1: https://lore.kernel.org/r/20240419-kgdboc_fix_schedule_work-v1-1-ff19881677e5@linaro.org
+---
+ drivers/tty/serial/kgdboc.c | 30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/kgdboc.c b/drivers/tty/serial/kgdboc.c
+index 7ce7bb1640054..58ea1e1391cee 100644
+--- a/drivers/tty/serial/kgdboc.c
++++ b/drivers/tty/serial/kgdboc.c
+@@ -19,6 +19,7 @@
+ #include <linux/console.h>
+ #include <linux/vt_kern.h>
+ #include <linux/input.h>
++#include <linux/irq_work.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/serial_core.h>
+@@ -48,6 +49,25 @@ static struct kgdb_io		kgdboc_earlycon_io_ops;
+ static int                      (*earlycon_orig_exit)(struct console *con);
+ #endif /* IS_BUILTIN(CONFIG_KGDB_SERIAL_CONSOLE) */
+ 
++/*
++ * When we leave the debug trap handler we need to reset the keyboard status
++ * (since the original keyboard state gets partially clobbered by kdb use of
++ * the keyboard).
++ *
++ * The path to deliver the reset is somewhat circuitous.
++ *
++ * To deliver the reset we register an input handler, reset the keyboard and
++ * then deregister the input handler. However, to get this done right, we do
++ * have to carefully manage the calling context because we can only register
++ * input handlers from task context.
++ *
++ * In particular we need to trigger the action from the debug trap handler with
++ * all its NMI and/or NMI-like oddities. To solve this the kgdboc trap exit code
++ * (the "post_exception" callback) uses irq_work_queue(), which is NMI-safe, to
++ * schedule a callback from a hardirq context. From there we have to defer the
++ * work again, this time using schedule_work(), to get a callback using the
++ * system workqueue, which runs in task context.
++ */
+ #ifdef CONFIG_KDB_KEYBOARD
+ static int kgdboc_reset_connect(struct input_handler *handler,
+ 				struct input_dev *dev,
+@@ -99,10 +119,17 @@ static void kgdboc_restore_input_helper(struct work_struct *dummy)
+ 
+ static DECLARE_WORK(kgdboc_restore_input_work, kgdboc_restore_input_helper);
+ 
++static void kgdboc_queue_restore_input_helper(struct irq_work *unused)
++{
++	schedule_work(&kgdboc_restore_input_work);
++}
++
++static DEFINE_IRQ_WORK(kgdboc_restore_input_irq_work, kgdboc_queue_restore_input_helper);
++
+ static void kgdboc_restore_input(void)
+ {
+ 	if (likely(system_state == SYSTEM_RUNNING))
+-		schedule_work(&kgdboc_restore_input_work);
++		irq_work_queue(&kgdboc_restore_input_irq_work);
+ }
+ 
+ static int kgdboc_register_kbd(char **cptr)
+@@ -133,6 +160,7 @@ static void kgdboc_unregister_kbd(void)
+ 			i--;
+ 		}
+ 	}
++	irq_work_sync(&kgdboc_restore_input_irq_work);
+ 	flush_work(&kgdboc_restore_input_work);
+ }
+ #else /* ! CONFIG_KDB_KEYBOARD */
+
+---
+base-commit: 0bbac3facb5d6cc0171c45c9873a2dc96bea9680
+change-id: 20240419-kgdboc_fix_schedule_work-f0cb44b8a354
+
+Best regards,
+-- 
+Daniel Thompson <daniel.thompson@linaro.org>
+
 
