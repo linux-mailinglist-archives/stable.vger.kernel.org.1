@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-41340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0CD8B04D8
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 10:51:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293DA8B04F3
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 10:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B48A1F23324
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 08:51:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D131F243A9
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 08:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001F7158A0C;
-	Wed, 24 Apr 2024 08:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F50A15886D;
+	Wed, 24 Apr 2024 08:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b6SaCtae"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qru/Sys7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCF1157489;
-	Wed, 24 Apr 2024 08:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC93F157468;
+	Wed, 24 Apr 2024 08:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713948710; cv=none; b=Z/u5kOqEPIpzb6ojr4kJMPsowbbsvE7l7S6xUsyI+XihyD4O5Z1/cZBex+ZcaS4ARmV3q3L5I4FkVqoRb62fVJkMDtSHAhIsGcdc4UcyM4O8zNq2XZeqFg2SyITPt8yOix+PqfDokNkyF4Ss2QxkpsmD0FNCSVn5NzuadUGWJzU=
+	t=1713948770; cv=none; b=DAhDQNfTpiRXetK1WtZqEBv4P7e5E8EXCJKRMBjdj0+OyLcyqdGR6FqQKj4fPdhMHPRRZvOJxxeJG9YDb5CYp9w1K/Oov/ZUcp7V7PcrPrEPyE/ytDI3/hlKcD4v8cIsVWwpMIebETtEBJOVE/TAxf1UIC9ASHCdeJxrd/KiYTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713948710; c=relaxed/simple;
-	bh=Rg4e9txP5oX9sV/aUZHZulZUF6DxQi+sn7vMiXtVOIY=;
+	s=arc-20240116; t=1713948770; c=relaxed/simple;
+	bh=xeFFermW9Sr98hlQ4VV5aZoZPPKK7kRslJqQSK7QTyQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DwI9zrNDYyoZQ6GP3R17PaYOxutc8VJq2D27X6x1LHtNuSMg3frCTa2058f96c5tGd18hieUh7+olRFIdXzcxX6XbSOcCx5E8PTpCPs42tYQPtwHFHxudfehJk/dGnKDI9kGRej+6bygF6kxelH1sHJNUKhjKbD6HyA3qgefeRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b6SaCtae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2EF8BC32781;
-	Wed, 24 Apr 2024 08:51:50 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=K1ShjykDW2s94P2GAW9ueVCDMd4o40bfpPjFYybYgbqso6K1F+Q/eZz8v40eOstgPRT2Di08P5o7bOE5+K48AQaeHIjniGZdqXq2FGrbrx39dVfcQ+bb2gfIkt7YUQkrQlJORpgCdB95wzVPDzxNzWlu+UmgnUEK+fpJpsGnPhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qru/Sys7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 60587C32781;
+	Wed, 24 Apr 2024 08:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713948710;
-	bh=Rg4e9txP5oX9sV/aUZHZulZUF6DxQi+sn7vMiXtVOIY=;
+	s=k20201202; t=1713948770;
+	bh=xeFFermW9Sr98hlQ4VV5aZoZPPKK7kRslJqQSK7QTyQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=b6SaCtaeUiH/y+HsEFw64JUzzAKOeS3mn22EIp2rvbeKz31/e3ZmhzLqHCVMicrFA
-	 Yw9qzh9fD+S3fdYWiWHdBmSsJ/5ACVXrYQ6IN8ctCdmn5CuP5aB0X9TJplKi6lFG1J
-	 CC3a2dozyo1x7GR7QZjhobhjfAkJDPCrJ3/v5aIuwwX6MGf+A3WEmPH7sBPckhjiZj
-	 EreN0PL5vFdgQXAKkDOurK1UAPGWAWbWWhrLQMLKt/N8ZbQ6C9NPTletzHt2ELH76O
-	 6654WmyRb0EPmnb70ejusDn1ai9k5dwMnaLiENPfLjHyIqZSc1XfsaKCnjtg7bmYZ5
-	 NUiq/5hw0QfcA==
+	b=qru/Sys7v3vRJo1V9qwxutUZDfHsrufFdxuwkssyxwTQY7H2z59klkdktt6T5Lzyv
+	 inkPDKXP7VpPaT8sM8W46gVO2naJydK2Twrwp14kKKJAjGpHCHH6+RWE4g8VO7ySzY
+	 V03gXL/u0HQ3/Et1Wvy1Gu2T+DmWDk6Czg89yBx+g3fx2UPl2MB/P0u/aUtorfSJqk
+	 Oyh2lHdAvaNN5PcnSwo1heU+WxyAM9U66ayXO90wQzf1DUwhSi3Ds3f4vIL74FJBfV
+	 H4S7E34pqMIPxBvLoskml/csJuhmhQV6k+duCAQR7rQSUal4FqWALY/knJP+ZsfRls
+	 WG3ePO3Bmjbhg==
 Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 18605C433E9;
-	Wed, 24 Apr 2024 08:51:50 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 58305C4339F;
+	Wed, 24 Apr 2024 08:52:50 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,8 +55,8 @@ Content-Transfer-Encoding: 8bit
 Subject: Re: [PATCH] platform/chrome: cros_ec_uart: properly fix race condition
 From: patchwork-bot+chrome-platform@kernel.org
 Message-Id: 
- <171394871009.3441.4963068263841932091.git-patchwork-notify@kernel.org>
-Date: Wed, 24 Apr 2024 08:51:50 +0000
+ <171394877035.3441.2924475068794719398.git-patchwork-notify@kernel.org>
+Date: Wed, 24 Apr 2024 08:52:50 +0000
 References: <20240410182618.169042-2-noah@noahloomans.com>
 In-Reply-To: <20240410182618.169042-2-noah@noahloomans.com>
 To: Noah Loomans <noah@noahloomans.com>
@@ -66,7 +66,7 @@ Cc: bhanumaiya@chromium.org, bleung@chromium.org, tzungbi@kernel.org,
 
 Hello:
 
-This patch was applied to chrome-platform/linux.git (for-kernelci)
+This patch was applied to chrome-platform/linux.git (for-next)
 by Tzung-Bi Shih <tzungbi@kernel.org>:
 
 On Wed, 10 Apr 2024 20:26:19 +0200 you wrote:
