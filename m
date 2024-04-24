@@ -1,144 +1,167 @@
-Return-Path: <stable+bounces-41314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8292E8AFD8E
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 03:06:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B95EF8AFDE6
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 03:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEF871C21AAD
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 01:06:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1332B2445C
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 01:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6421C46BF;
-	Wed, 24 Apr 2024 01:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5313B79E5;
+	Wed, 24 Apr 2024 01:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vm0b2Bm4"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="0TqBFOqR"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ECC4C61
-	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 01:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFA04A35
+	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 01:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713920780; cv=none; b=PztSxhwIxd03dHsY5O9DijqU2iKo1b+BlOa4+z4vr01Ohuvm+nrwnY8PdfgxvyCsjlMg+7WA6lPKKI4RFWs0KhEp9oGfWRYdJYROtd1iZ7g2Vk2R2pHdT4PikdYGWk6pUb55mXlnmI0ovuDz+uEJn7fxUISI+3c3rMquVqXRVFU=
+	t=1713922703; cv=none; b=Yqw2249wd7bXqadgquWw+DQoSWUk+t5KCP01kB/uOh9xSW/R7tTrbDBn172nMdoyJ2bfDJ6H0LIq2e+Dexu8ykLplyOx/vohDnWWylMlgaoIltx2FTYD7dkOtuFCc19GGtZNhdEPFxwSOimZ1DXW6k3aOXxs2GQhOEjsDxOEo0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713920780; c=relaxed/simple;
-	bh=kFv+HJSO2yGdVIZatcr61rx2DHaiUl3tQIdh4PAolZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JJttge1p3hKiC+7Aj4eA64lqAuaDz6E+krQdCxxMAn5wK2Wh56DpDM2TgRqbO1Wk5z7rN61jtu20V4WQarwkZCyif7strYTdNTibqPu4SPmLOyVzZSEP2tfb5G7grEvj4REDsgGyeVO5mrIu7MTnheA3iMHaUwDZn/5BmkUNs8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vm0b2Bm4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713920777;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CV9SCuJQp/Hz566gNwu9CruqvVl2UnfmICkykwGjH9I=;
-	b=Vm0b2Bm4ZU8M9NIMu+v1Q0iXu03uQ44jqolVSl2FJyKPW+oD5pAcf18AaWdJutp3jpEYvI
-	cTNllT0e6o0nIuQkIKKZBeNUh0t49E0H0eRIko0IvvfNsYhKc33O3yH+KiT4nw3y/Cw4Il
-	R4oIR1LKO/iqDLqBGae0NQYMjoQTEc8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-ec3klDsEOpOze9zmKrqY0g-1; Tue, 23 Apr 2024 21:06:13 -0400
-X-MC-Unique: ec3klDsEOpOze9zmKrqY0g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	s=arc-20240116; t=1713922703; c=relaxed/simple;
+	bh=iopcgr3rm1GlCkZxTneL83WpCXee/HP4dS8CuULl/go=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=UzVQJRL3UcPhLqQpyuurjCxz963DA4Q30mCK8s/Hheh0eE2gn3FDdRvZC6caHOA6CN7OjV4luX3xidOTFeSvqdYXWO/Mz9XRIyND3who4aHNx33oUtcPj/vcVgxH+H/AsUgSb+9AGG/xONqSVdxsQyQF8WsKeeginSfuYITYC40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=0TqBFOqR; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 667701011351;
-	Wed, 24 Apr 2024 01:06:13 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.74])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id B4ADD2166B31;
-	Wed, 24 Apr 2024 01:06:11 +0000 (UTC)
-Date: Wed, 24 Apr 2024 09:06:09 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	Chen Jiahao <chenjiahao16@huawei.com>
-Subject: Re: [PATCH] Revert "riscv: kdump: fix crashkernel reserving problem
- on RISC-V"
-Message-ID: <ZihbAYMOI4ylazpt@MiWiFi-R3L-srv>
-References: <20240416085647.14376-1-xingmingzheng@iscas.ac.cn>
- <2024041927-remedial-choking-c548@gregkh>
- <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
- <2024041939-isotope-client-3d75@gregkh>
- <a5493f44-2aac-4005-992b-f2ac90cd1835@iscas.ac.cn>
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id CEAF82C02AE;
+	Wed, 24 Apr 2024 13:38:17 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1713922697;
+	bh=iopcgr3rm1GlCkZxTneL83WpCXee/HP4dS8CuULl/go=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=0TqBFOqRHxDY6YM38FvQdFMDHVEItdwJHTXZeNpGT55AoDMM3TP5w4Iz3N+X+nwe/
+	 J6jv/XxwlIdtKDN2c19NU/pFwER0CUAkdCkVJbYpFJOddU08AwA0NG60fU3ldWTNn6
+	 IZW7xWHuEN18BTTRyk2Qp/hM27ttLLTRfGNzwDhpCS0NJ0Kj4HLvjCLRGnKwishbWE
+	 fuvOmEXQIl02GXb5wl3MF1RnHO+AifambdikNS6kYqwS1Ve1Sd6LjwKRrAPQY+7npM
+	 HBY/L49+5XSKv+mbnDqTG4ontQH8Qk2WTXUMyflf/YOdaFfLIB57s3eKwgf3va6QMM
+	 w6Rg1o26Y8duA==
+Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B662862890001>; Wed, 24 Apr 2024 13:38:17 +1200
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
+ svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8:f753:6de:11c0:a008) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.1544.9; Wed, 24 Apr 2024 13:38:17 +1200
+Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
+ svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.48; Wed, 24 Apr 2024 13:38:17 +1200
+Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
+ svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
+ 15.02.1544.009; Wed, 24 Apr 2024 13:38:17 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Jeff Layton <jlayton@kernel.org>, Chuck Lever <chuck.lever@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>, netdev
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: Re: kernel BUG at net/sunrpc/svc.c:570 after updating from v5.15.153
+ to v5.15.155
+Thread-Topic: kernel BUG at net/sunrpc/svc.c:570 after updating from v5.15.153
+ to v5.15.155
+Thread-Index: AQHaleHzc3oveYbGkkq3WWVD/cih7bF12zkA
+Date: Wed, 24 Apr 2024 01:38:17 +0000
+Message-ID: <0d2c2123-e782-4712-8876-c9b65d2c9a65@alliedtelesis.co.nz>
+References: <b363e394-7549-4b9e-b71b-d97cd13f9607@alliedtelesis.co.nz>
+In-Reply-To: <b363e394-7549-4b9e-b71b-d97cd13f9607@alliedtelesis.co.nz>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <36B91780D8124341AE1E686FAD1428B8@atlnz.lc>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a5493f44-2aac-4005-992b-f2ac90cd1835@iscas.ac.cn>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=dY4j3mXe c=1 sm=1 tr=0 ts=66286289 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=75chYTbOgJ0A:10 a=IkcTkHD0fZMA:10 a=raytVjVEu-sA:10 a=VaKPTF99bPf2uOp7nPkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 
-On 04/19/24 at 10:55pm, Mingzheng Xing wrote:
-> On 4/19/24 21:58, Greg Kroah-Hartman wrote:
-> > On Fri, Apr 19, 2024 at 08:26:07PM +0800, Mingzheng Xing wrote:
-> >> On 4/19/24 18:44, Greg Kroah-Hartman wrote:
-> >>> On Tue, Apr 16, 2024 at 04:56:47PM +0800, Mingzheng Xing wrote:
-> >>>> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which has been
-> >>>> merged into the mainline commit 39365395046f ("riscv: kdump: use generic
-> >>>> interface to simplify crashkernel reservation"), but the latter's series of
-> >>>> patches are not included in the 6.6 branch.
-> >>>>
-> >>>> This will result in the loss of Crash kernel data in /proc/iomem, and kdump
-> >>>> loading the kernel will also cause an error:
-> >>>>
-> >>>> ```
-> >>>> Memory for crashkernel is not reserved
-> >>>> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
-> >>>> Then try to loading kdump kernel
-> >>>> ```
-> >>>>
-> >>>> After revert this patch, verify that it works properly on QEMU riscv.
-> >>>>
-> >>>> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv
-> >>>> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-> >>>> ---
-> >>>
-> >>> I do not understand, what branch is this for?  Why have you not cc:ed
-> >>> any of the original developers here?  Why does Linus's tree not have the
-> >>> same problem?  And the first sentence above does not make much sense as
-> >>> a 6.6 change is merged into 6.7?
-> >>
-> >> Sorry, I'll try to explain it more clearly.
-> >>
-> >> This commit 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem
-> >> on RISC-V") should not have existed because this patch has been merged into
-> >> another larger patch [1]. Here is that complete series:
-> > 
-> > What "larger patch"?  It is in Linus's tree, so it's not part of
-> > something different, right?  I'm confused.
-> > 
-> 
-> Hi, Greg
-> 
-> The email Cc:ed to author Chen Jiahao was bounced by the system, so maybe
-> we can wait for Baoquan He to confirm.
-> 
-> This is indeed a bit confusing. The Fixes: tag in 1d6cd2146c2b58 is a false
-> reference. If I understand correctly, this is similar to the following
-> scenario:
-> 
-> A Fixes B, B doesn't go into linus mainline. C contains A, C goes into linus
-> mainline 6.7, and C has more reconstruction code. but A goes into 6.6, so
-> it doesn't make sense for A to be in the mainline, and there's no C in 6.6
-> but there's an A, thus resulting in an incomplete code that creates an error.
-
-Do you mean commit 1d6cd2146c2b58 ("iscv: kdump: fix crashkernel reserving
-problem on RISC-V") was mistakenly added into v6.6, but the commit which
-it fixed is not existing in v6.6?
-
-I checked code, it does look like what you said, and it's truly
-confusing. If so, we should revert commit 1d6cd2146c2b58 ("iscv: kdump: fix
-crashkernel reserving problem on RISC-V") in v6.6.y to make kdump work
-on risc-v.
-
+DQpPbiAyNC8wNC8yNCAxMjo1NCwgQ2hyaXMgUGFja2hhbSB3cm90ZToNCj4gSGkgSmVmZiwgQ2h1
+Y2ssIEdyZWcsDQo+DQo+IEFmdGVyIHVwZGF0aW5nIG9uZSBvZiBvdXIgYnVpbGRzIGFsb25nIHRo
+ZSA1LjE1LnkgTFRTIGJyYW5jaCBvdXIgDQo+IHRlc3RpbmcgY2F1Z2h0IGEgbmV3IGtlcm5lbCBi
+dWcuIE91dHB1dCBiZWxvdy4NCj4NCj4gSSBoYXZlbid0IGR1ZyBpbnRvIGl0IHlldCBidXQgd29u
+ZGVyZWQgaWYgaXQgcmFuZyBhbnkgYmVsbHMuDQoNCkEgYml0IG1vcmUgaW5mby4gVGhpcyBpcyBo
+YXBwZW5pbmcgYXQgInJlYm9vdCIgZm9yIHVzLiBPdXIgZW1iZWRkZWQgDQpkZXZpY2VzIHVzZSBh
+IGJpdCBvZiBhIGhhY2tlZCB1cCByZWJvb3QgcHJvY2VzcyBzbyB0aGF0IHRoZXkgY29tZSBiYWNr
+IA0KZmFzdGVyIGluIHRoZSBjYXNlIG9mIGEgZmFpbHVyZS4NCg0KSXQgZG9lc24ndCBoYXBwZW4g
+d2l0aCBhIHByb3BlciBgc3lzdGVtY3RsIHJlYm9vdGAgb3Igd2l0aCBhIFNZU1JRK0INCg0KSSBj
+YW4gdHJpZ2dlciBpdCB3aXRoIGBraWxsYWxsIC05IG5mc2RgIHdoaWNoIEknbSBub3Qgc3VyZSBp
+cyBhIA0KY29tcGxldGVseSBsZWdpdCB0aGluZyB0byBkbyB0byBrZXJuZWwgdGhyZWFkcyBidXQg
+aXQncyBwcm9iYWJseSBjbG9zZSANCnRvIHdoYXQgb3VyIGN1c3RvbWl6ZWQgcmVib290IGRvZXMu
+DQoNCj4NCj4gVGhhbmtzLA0KPiBDaHJpcw0KPg0KPiBbwqDCoCA5MS42MDUxMDldIC0tLS0tLS0t
+LS0tLVsgY3V0IGhlcmUgXS0tLS0tLS0tLS0tLQ0KPiBbwqDCoCA5MS42MDUxMjJdIGtlcm5lbCBC
+VUcgYXQgbmV0L3N1bnJwYy9zdmMuYzo1NzAhDQo+IFvCoMKgIDkxLjYwNTEyOV0gSW50ZXJuYWwg
+ZXJyb3I6IE9vcHMgLSBCVUc6IDAwMDAwMDAwZjIwMDA4MDAgWyMxXSANCj4gUFJFRU1QVCBTTVAN
+Cj4gW8KgwqAgOTEuNjEwNjQzXSBNb2R1bGVzIGxpbmtlZCBpbjogbXZjcHNzKE8pIHBsYXRmb3Jt
+X2RyaXZlcihPKSANCj4gaXBpZndkKE8pIHh0X2wydHAgeHRfaGFzaGxpbWl0IHh0X2Nvbm50cmFj
+ayB4dF9hZGRydHlwZSB4dF9MT0cgDQo+IHh0X0NIRUNLU1VNIHdwNTEyIHZ4bGFuIHZldGggdHdv
+ZmlzaF9nZW5lcmljIHR3b2Zpc2hfY29tbW9uIHNyOTgwMCANCj4gc21zYzk1eHggc21zYzc1eHgg
+c21zYyBzbTNfZ2VuZXJpYyBzaGE1MTJfYXJtNjQgc2hhM19nZW5lcmljIA0KPiBzZXJwZW50X2dl
+bmVyaWMgcnRsODE1MCBycGNzZWNfZ3NzX2tyYjUgcm1kMTYwIHBvbHkxMzA1X2dlbmVyaWMgcGx1
+c2IgDQo+IHBlZ2FzdXMgb3B0ZWVfcm5nIG5iZCBtaWNyb2NoaXAgbWQ0IG1kX21vZCBtY3M3ODMw
+IGxydyBsaWJwb2x5MTMwNSANCj4gbGFuNzh4eCBsMnRwX2lwNiBsMnRwX2lwIGwydHBfZXRoIGwy
+dHBfbmV0bGluayBsMnRwX2NvcmUgdWRwX3R1bm5lbCANCj4gaXB0X1JFSkVDVCBuZl9yZWplY3Rf
+aXB2NCBpcDZ0YWJsZV9uYXQgaXA2dGFibGVfbWFuZ2xlIGlwNnRhYmxlX2ZpbHRlciANCj4gaXA2
+dF9pcHY2aGVhZGVyIGlwNnRfUkVKRUNUIGlwNl91ZHBfdHVubmVsIGlwNl90YWJsZXMgZG05NjAx
+IGRtX3plcm8gDQo+IGRtX21pcnJvciBkbV9yZWdpb25faGFzaCBkbV9sb2cgZG1fbW9kIGRpYWcg
+dGlwYyBjdXNlIGN0cyANCj4gY3B1ZnJlcV9wb3dlcnNhdmUgY3B1ZnJlcV9jb25zZXJ2YXRpdmUg
+Y2hhY2hhX2dlbmVyaWMgY2hhY2hhMjBwb2x5MTMwNSANCj4gY2hhY2hhX25lb24gbGliY2hhY2hh
+IGNhc3Q2X2dlbmVyaWMgY2FzdDVfZ2VuZXJpYyBjYXN0X2NvbW1vbiANCj4gY2FtZWxsaWFfZ2Vu
+ZXJpYyBibG93ZmlzaF9nZW5lcmljIGJsb3dmaXNoX2NvbW1vbiBhdXRoX3JwY2dzcyANCj4gb2lk
+X3JlZ2lzdHJ5IGF0MjUgYXJtX3NtY2NjX3RybmcgYWVzX25lb25fYmxrIGlkcHJvbV9tdGQoTykg
+DQo+IGlkcHJvbV9pMmMoTykgZXBpM19ib2FyZGluZm9faTJjKE8pIHgyNTAoTykgcHN1c2xvdF9l
+cGkzX3JlZ2lzdGVyKE8pIA0KPiBwc3VzbG90X2dwaW9fZ3JvdXAoTykNCj4gW8KgwqAgOTEuNjEw
+ODA5XcKgIHBzdXNsb3QoTykNCj4gW8KgwqAgOTEuNjExODIyXSB3YXRjaGRvZzogd2F0Y2hkb2cx
+OiB3YXRjaGRvZyBkaWQgbm90IHN0b3AhDQo+IFvCoMKgIDkxLjY5NzA2NV3CoCBncGlvcGluc19i
+b2FyZGluZm8oTykgaWRwcm9tKE8pIGVwaTNfYm9hcmRpbmZvKE8pIA0KPiBib2FyZGluZm8oTykg
+aTJjX2dwaW8gaTJjX2FsZ29fYml0IGkyY19tdjY0eHh4IHBsdWdnYWJsZShPKSANCj4gbGVkX2Vu
+YWJsZShPKSBvbWFwX3JuZyBybmdfY29yZSBhdGxfcmVzZXQoTykgc2JzYV9nd2R0IHVpb19wZHJ2
+X2dlbmlycQ0KPiBbwqDCoCA5MS42OTcwOTZdIENQVTogMiBQSUQ6IDE3NzAgQ29tbTogbmZzZCBL
+ZHVtcDogbG9hZGVkIFRhaW50ZWQ6IA0KPiBHwqDCoMKgwqDCoMKgwqDCoMKgwqAgT8KgwqDCoMKg
+wqAgNS4xNS4xNTUgIzENCj4gW8KgwqAgOTEuNjk3MTAzXSBIYXJkd2FyZSBuYW1lOiBBbGxpZWQg
+VGVsZXNpcyB4MjUwLTI4WFRtIChEVCkNCj4gW8KgwqAgOTEuNjk3MTA3XSBwc3RhdGU6IDgwMDAw
+MDA1IChOemN2IGRhaWYgLVBBTiAtVUFPIC1UQ08gLURJVCAtU1NCUyANCj4gQlRZUEU9LS0pDQo+
+IFvCoMKgIDkxLjY5NzExMl0gcGMgOiBzdmNfZGVzdHJveSsweDg0LzB4YWMNCj4gW8KgwqAgOTEu
+NzAxMjAyXSB3YXRjaGRvZzogd2F0Y2hkb2cwOiB3YXRjaGRvZyBkaWQgbm90IHN0b3AhDQo+IFvC
+oMKgIDkxLjcwMjIxNV0gbHIgOiBzdmNfZGVzdHJveSsweDJjLzB4YWMNCj4gW8KgwqAgOTEuNzAy
+MjIwXSBzcCA6IGZmZmY4MDAwMGJiM2JkZTANCj4gW8KgwqAgOTEuNzAyMjIzXSB4Mjk6IGZmZmY4
+MDAwMGJiM2JkZTAgeDI4OiAwMDAwMDAwMDAwMDAwMDAwIHgyNzogDQo+IDAwMDAwMDAwMDAwMDAw
+MDANCj4gW8KgwqAgOTEuNzQ2MDk1XSB4MjY6IDAwMDAwMDAwMDAwMDAwMDAgeDI1OiBmZmZmMDAw
+MDBkYmZhYTQwIHgyNDogDQo+IGZmZmYwMDAwMTZjMTQwMDANCj4gW8KgwqAgOTEuNzQ2MTAxXSB4
+MjM6IGZmZmY4MDAwMDgzOTVjMDAgeDIyOiBmZmZmMDAwMDBlZTlmMjg0IHgyMTogDQo+IGZmZmYw
+MDAwMGVlYTllMTANCj4gW8KgwqAgOTEuNzQ2MTA4XSB4MjA6IGZmZmYwMDAwMGVlYTllMDAgeDE5
+OiBmZmZmMDAwMDBlZWE5ZTE0IHgxODogDQo+IGZmZmY4MDAwMDhlOTkwMDANCj4gW8KgwqAgOTEu
+NzY5NTI2XSB4MTc6IDAwMDAwMDAwMDAwMDAwMDYgeDE2OiAwMDAwMDAwMDAwMDAwMDAwIHgxNTog
+DQo+IDAwMDAwMDAwMDAwMDAwMDENCj4gW8KgwqAgOTEuNzc2NzgyXSB4MTQ6IDAwMDAwMDAwZmZm
+ZmZmZmQgeDEzOiBmZmZmZmMwMDAwMDAwMDAwIHgxMjogDQo+IGZmZmY4MDAwNzZiYzIwMDANCj4g
+W8KgwqAgOTEuNzg0MDMxXSB4MTE6IGZmZmYwMDAwN2ZiYTVjMTAgeDEwOiBmZmZmODAwMDc2YmMy
+MDAwIHg5IDogDQo+IGZmZmY4MDAwMDkyMjA3YzANCj4gW8KgwqAgOTEuNzg0MDM4XSB4OCA6IGZm
+ZmZmYzAwMDA1NWViMDggeDcgOiBmZmZmMDAwMDBlZjZjNGMwIHg2IDogDQo+IGZmZmZmYzAwMDFm
+ODcyYzgNCj4gW8KgwqAgOTEuNzk1ODIzXSB4NSA6IDAwMDAwMDAwMDAwMDAxMDAgeDQgOiBmZmZm
+MDAwMDdmYmFlZGE4IHgzIDogDQo+IDAwMDAwMDAwMDAwMDAwMDANCj4gW8KgwqAgOTEuODAxNjg0
+XSB4MiA6IDAwMDAwMDAwMDAwMDAwMDAgeDEgOiBmZmZmMDAwMDBkOGY4MDE4IHgwIDogDQo+IGZm
+ZmYwMDAwMGVlYTllMzANCj4gW8KgwqAgOTEuODA3NTQ1XSBDYWxsIHRyYWNlOg0KPiBbwqDCoCA5
+MS44MTAwODhdwqAgc3ZjX2Rlc3Ryb3krMHg4NC8weGFjDQo+IFvCoMKgIDkxLjgxMzU4Nl3CoCBz
+dmNfZXhpdF90aHJlYWQrMHgxMDgvMHgxNWMNCj4gW8KgwqAgOTEuODE2OTk4XcKgIG5mc2QrMHgx
+NzgvMHgxYTANCj4gW8KgwqAgOTEuODE4NjczXcKgIGt0aHJlYWQrMHgxNTAvMHgxNjANCj4gW8Kg
+wqAgOTEuODIwNjEwXcKgIHJldF9mcm9tX2ZvcmsrMHgxMC8weDIwDQo+IFvCoMKgIDkxLjgyMDYy
+MF0gQ29kZTogYTk0MTUzZjMgYThjMjdiZmQgZDUwMzIzYmYgZDY1ZjAzYzAgKGQ0MjEwMDAwKQ0K
+PiBbwqDCoCA5MS44MjA2MjldIFNNUDogc3RvcHBpbmcgc2Vjb25kYXJ5IENQVXMNCj4gW8KgwqAg
+OTEuODMwNDMzXSBTdGFydGluZyBjcmFzaGR1bXAga2VybmVsLi4uDQo+IFvCoMKgIDkxLjgzMzA2
+NF0gQnllIQ==
 
