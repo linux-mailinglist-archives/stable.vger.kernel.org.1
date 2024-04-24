@@ -1,216 +1,151 @@
-Return-Path: <stable+bounces-41350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307298B06FF
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 12:12:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52BEA8B0719
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 12:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 538AB1C23660
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 10:12:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 841091C21377
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 10:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E4D159216;
-	Wed, 24 Apr 2024 10:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1C3159209;
+	Wed, 24 Apr 2024 10:18:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [205.139.111.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26491591EE;
-	Wed, 24 Apr 2024 10:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180A11419AA
+	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 10:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.139.111.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713953518; cv=none; b=dzwOwkQFEIywhTttlYQProZTpqRsAZt+DCtaOrGSLWFZntrJnbuJJwnhBrA9IF/8p1TiCLBpvgwGWYSB8q0PwUkXNxW7gRgA/eEOfvRB/3/KQOPmmukNbyZbETx8SdFCNAqZgb33DcbaE00ie5MFq4SYuRW9BorrBIiI9GrKWU4=
+	t=1713953901; cv=none; b=uzXrPUedpMu+WQnrLnvCvR2hotLHl6ClFjdlH9LuvlFDoXDi2hhgbEwcpm0/jqFHDgokzEkTrbs5suU/VQMVdEYWLg1myAnXcPr6N/dX65ps0Sspts3dF7xK7px+WMbU1AAiJgenCBDcUOKuvZObkCpov4kQPFfP4RNTb3K3pc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713953518; c=relaxed/simple;
-	bh=KmdReuKakQ27QWiMxDkWfXiDZT5AqYHMhIIFrET7f2I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fs3Y/ivoPmkkU5y+0lC+T2fJUHblnm9PmWEVoVLk1pJEL2jwt5wk7M3ARf1ORqun79AGQ/5CpYuFOUBfvVv9cXLKSpNGKkQynqTgXL4f8HexOlyYiNtprlVjVJbCSSnSZxwLmWhm00hmmikhQOAB3uehI5F+T0BJ6f2loimt9CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from localhost.localdomain (84.18.126.32) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 24 Apr
- 2024 13:11:49 +0300
-From: Roman Smirnov <r.smirnov@omp.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-CC: Roman Smirnov <r.smirnov@omp.ru>, <ntfs3@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, Sergey Shtylyov <s.shtylyov@omp.ru>,
-	<lvc-project@linuxtesting.org>,
-	<syzbot+478c1bf0e6bf4a8f3a04@syzkaller.appspotmail.com>
-Subject: [PATCH 6.1 1/1] fs/ntfs3: Fix shift-out-of-bounds in ntfs_fill_super
-Date: Wed, 24 Apr 2024 13:11:14 +0300
-Message-ID: <20240424101114.192681-2-r.smirnov@omp.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240424101114.192681-1-r.smirnov@omp.ru>
-References: <20240424101114.192681-1-r.smirnov@omp.ru>
+	s=arc-20240116; t=1713953901; c=relaxed/simple;
+	bh=Ms/kL5uYZ8RGAy+Ewand3vQOkDQURuccLAcO7HmSPd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=j724NbaQu5b7VevzB/i+o9IWZg2hRjiRT0MwB0iwh2qC0jJVEwDbBlokW7aWrR5r2Ow2RlbBcoi2GcBIcDRKDToxwJmBiDvIfHCHpqmCdx4F/jFJoxwJ1tPjwMzHaLnQR6yPe/i9XsbeAhKVenvrUe/jeh/lVoVzYjdyi3Ga+8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=none smtp.mailfrom=queasysnail.net; arc=none smtp.client-ip=205.139.111.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=queasysnail.net
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-160-an_liTfIMIWa-05WnuWjYg-1; Wed,
+ 24 Apr 2024 06:18:14 -0400
+X-MC-Unique: an_liTfIMIWa-05WnuWjYg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 187CF38049FC;
+	Wed, 24 Apr 2024 10:18:14 +0000 (UTC)
+Received: from hog (unknown [10.39.193.137])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 63AFF1C060D0;
+	Wed, 24 Apr 2024 10:18:12 +0000 (UTC)
+Date: Wed, 24 Apr 2024 12:18:11 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Yossi Kuperman <yossiku@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>
+Subject: Re: [PATCH net-next 2/3] macsec: Detect if Rx skb is macsec-related
+ for offloading devices that update md_dst
+Message-ID: <ZijcY_DHlmP84U4S@hog>
+References: <20240419011740.333714-1-rrameshbabu@nvidia.com>
+ <20240419011740.333714-3-rrameshbabu@nvidia.com>
+ <ZiKIUC6bTCDhlnRw@hog>
+ <87mspp6xh7.fsf@nvidia.com>
+ <ZiYseYT62ZI0-_V9@hog>
+ <87plugpqrk.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.0, Database issued on: 04/24/2024 09:53:10
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 19
-X-KSE-AntiSpam-Info: Lua profiles 184894 [Apr 24 2024]
-X-KSE-AntiSpam-Info: Version: 6.1.0.4
-X-KSE-AntiSpam-Info: Envelope from: r.smirnov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 18 0.3.18
- b9d6ada76958f07c6a68617a7ac8df800bc4166c
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 84.18.126.32 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: ApMailHostAddress: 84.18.126.32
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 19
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/24/2024 09:58:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 4/24/2024 8:46:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+In-Reply-To: <87plugpqrk.fsf@nvidia.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: queasysnail.net
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+2024-04-22, 22:55:02 -0700, Rahul Rameshbabu wrote:
+> On Mon, 22 Apr, 2024 11:23:05 +0200 Sabrina Dubroca <sd@queasysnail.net> =
+wrote:
+> > 2024-04-19, 11:01:20 -0700, Rahul Rameshbabu wrote:
+> >> On Fri, 19 Apr, 2024 17:05:52 +0200 Sabrina Dubroca <sd@queasysnail.ne=
+t> wrote:
+> >> > 2024-04-18, 18:17:16 -0700, Rahul Rameshbabu wrote:
+> >> <snip>
+> >> >> +=09=09=09/* This datapath is insecure because it is unable to
+> >> >> +=09=09=09 * enforce isolation of broadcast/multicast traffic and
+> >> >> +=09=09=09 * unicast traffic with promiscuous mode on the macsec
+> >> >> +=09=09=09 * netdev. Since the core stack has no mechanism to
+> >> >> +=09=09=09 * check that the hardware did indeed receive MACsec
+> >> >> +=09=09=09 * traffic, it is possible that the response handling
+> >> >> +=09=09=09 * done by the MACsec port was to a plaintext packet.
+> >> >> +=09=09=09 * This violates the MACsec protocol standard.
+> >> >> +=09=09=09 */
+> >> >> +=09=09=09DEBUG_NET_WARN_ON_ONCE(true);
+> >> >
+> >> > If you insist on this warning (and I'm not convinced it's useful,
+> >> > since if the HW is already built and cannot inform the driver, there=
+'s
+> >> > nothing the driver implementer can do), I would move it somewhere in=
+to
+> >> > the config path. macsec_update_offload would be a better location fo=
+r
+> >> > this kind of warning (maybe with a pr_warn (not limited to debug
+> >> > configs) saying something like "MACsec offload on devices that don't
+> >> > support md_dst are insecure: they do not provide proper isolation of
+> >> > traffic"). The comment can stay here.
+> >> >
+> >>=20
+> >> I do not like the warning either. I left it mainly if it needed furthe=
+r
+> >> discussion on the mailing list. Will remove it in my next revision. Th=
+at
+> >> said, it may make sense to advertise rx_uses_md_dst over netlink to
+> >> annotate what macsec offload path a device uses? Just throwing out an
+> >> idea here.
+> >
+> > Maybe. I was also thinking about adding a way to restrict offloading
+> > only to devices with rx_uses_md_dst.
+>=20
+> That's an option. Basically, devices that do not support rx_uses_md_dst
+> really only just do SW MACsec but do not return an error if the offload
+> parameter is passed over netlink so user scripts do not break?
 
-commit 91a4b1ee78cb100b19b70f077c247f211110348f upstream. 
+Forcing a fallback to SW could be considered a breakage because of the
+performance regression, so I don't think we can turn this on by
+default. Then I would simply reject offload on those devices. We could
+have a compat mode that does the SW fallback you suggest. I don't know
+if it would be used.
 
-Reported-by: syzbot+478c1bf0e6bf4a8f3a04@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-[Roman: added string hint, replaced cluster_bits with sbi->cluster_bits, 
-removed redundant checks near "Check MFT record size" and "Check index record 
-size".]
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
----
- fs/ntfs3/ntfs_fs.h |  2 ++
- fs/ntfs3/super.c   | 50 +++++++++++++++++++++++++++++-----------------
- 2 files changed, 34 insertions(+), 18 deletions(-)
 
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index 0f9bec29f2b70..50ae3a6cb3559 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -42,9 +42,11 @@ enum utf16_endian;
- #define MINUS_ONE_T			((size_t)(-1))
- /* Biggest MFT / smallest cluster */
- #define MAXIMUM_BYTES_PER_MFT		4096
-+#define MAXIMUM_SHIFT_BYTES_PER_MFT	12
- #define NTFS_BLOCKS_PER_MFT_RECORD	(MAXIMUM_BYTES_PER_MFT / 512)
- 
- #define MAXIMUM_BYTES_PER_INDEX		4096
-+#define MAXIMUM_SHIFT_BYTES_PER_INDEX	12
- #define NTFS_BLOCKS_PER_INODE		(MAXIMUM_BYTES_PER_INDEX / 512)
- 
- /* NTFS specific error code when fixup failed. */
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index 6066eea3f61cb..863119b6a2a8d 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -690,6 +690,7 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 	struct buffer_head *bh;
- 	struct MFT_REC *rec;
- 	u16 fn, ao;
-+	const char *hint = "Primary boot";
- 
- 	sbi->volume.blocks = dev_size >> PAGE_SHIFT;
- 
-@@ -731,17 +732,24 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 	if (mlcn2 * sct_per_clst >= sectors)
- 		goto out;
- 
--	/* Check MFT record size. */
--	if ((boot->record_size < 0 &&
--	     SECTOR_SIZE > (2U << (-boot->record_size))) ||
--	    (boot->record_size >= 0 && !is_power_of_2(boot->record_size))) {
-+	if (boot->record_size >= 0) {
-+		record_size = (u32)boot->record_size << sbi->cluster_bits;
-+	} else if (-boot->record_size <= MAXIMUM_SHIFT_BYTES_PER_MFT) {
-+		record_size = 1u << (-boot->record_size);
-+	} else {
-+		ntfs_err(sb, "%s: invalid record size %d.", hint,
-+			 boot->record_size);
- 		goto out;
- 	}
- 
--	/* Check index record size. */
--	if ((boot->index_size < 0 &&
--	     SECTOR_SIZE > (2U << (-boot->index_size))) ||
--	    (boot->index_size >= 0 && !is_power_of_2(boot->index_size))) {
-+	sbi->record_size = record_size;
-+	sbi->record_bits = blksize_bits(record_size);
-+	sbi->attr_size_tr = (5 * record_size >> 4); // ~320 bytes
-+
-+	/* Check MFT record size. */
-+	if (record_size < SECTOR_SIZE || !is_power_of_2(record_size)) {
-+		ntfs_err(sb, "%s: invalid bytes per MFT record %u (%d).", hint,
-+			 record_size, boot->record_size);
- 		goto out;
- 	}
- 
-@@ -784,26 +792,32 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 
- 	sbi->cluster_mask = sbi->cluster_size - 1;
- 	sbi->cluster_mask_inv = ~(u64)sbi->cluster_mask;
--	sbi->record_size = record_size = boot->record_size < 0
--						 ? 1 << (-boot->record_size)
--						 : (u32)boot->record_size
--							   << sbi->cluster_bits;
- 
- 	if (record_size > MAXIMUM_BYTES_PER_MFT || record_size < SECTOR_SIZE)
- 		goto out;
- 
--	sbi->record_bits = blksize_bits(record_size);
--	sbi->attr_size_tr = (5 * record_size >> 4); // ~320 bytes
-+	if (boot->index_size >= 0) {
-+		sbi->index_size = (u32)boot->index_size << sbi->cluster_bits;
-+	} else if (-boot->index_size <= MAXIMUM_SHIFT_BYTES_PER_INDEX) {
-+		sbi->index_size = 1u << (-boot->index_size);
-+	} else {
-+		ntfs_err(sb, "%s: invalid index size %d.", hint,
-+			 boot->index_size);
-+		goto out;
-+	}
-+
-+	/* Check index record size. */
-+	if (sbi->index_size < SECTOR_SIZE || !is_power_of_2(sbi->index_size)) {
-+		ntfs_err(sb, "%s: invalid bytes per index %u(%d).", hint,
-+			 sbi->index_size, boot->index_size);
-+		goto out;
-+	}
- 
- 	sbi->max_bytes_per_attr =
- 		record_size - ALIGN(MFTRECORD_FIXUP_OFFSET_1, 8) -
- 		ALIGN(((record_size >> SECTOR_SHIFT) * sizeof(short)), 8) -
- 		ALIGN(sizeof(enum ATTR_TYPE), 8);
- 
--	sbi->index_size = boot->index_size < 0
--				  ? 1u << (-boot->index_size)
--				  : (u32)boot->index_size << sbi->cluster_bits;
--
- 	sbi->volume.ser_num = le64_to_cpu(boot->serial_num);
- 
- 	/* Warning if RAW volume. */
--- 
-2.34.1
+> > (Slightly related) I also find it annoying that users have to tell the
+> > kernel whether to use PHY or MAC offload, but have no way to know
+> > which one their HW supports. That should probably have been an
+> > implementation detail that didn't need to be part of uapi :/
+>=20
+> We could leave the phy / mac netlink keywords and introduce an "on"
+> option. We deduce whether the device is a phydev or not when on is
+> passed and set the macsec->offload flag based on that. The phy and mac
+> options for offload in ip-macsec can then be deprecated.
+
+I thought about doing exactly that, and then dropped the idea because
+it would only help with newer kernels.
+
+--=20
+Sabrina
 
 
