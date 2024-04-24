@@ -1,128 +1,115 @@
-Return-Path: <stable+bounces-41318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBB98B005C
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 06:07:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1AD8B007E
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 06:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 079581C20ADB
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 04:07:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 746E71F23DA0
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 04:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFCF142E9D;
-	Wed, 24 Apr 2024 04:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0710D86277;
+	Wed, 24 Apr 2024 04:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d9QNpGI5"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THBWn889"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0426013C8F3;
-	Wed, 24 Apr 2024 04:06:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3755171CC
+	for <Stable@vger.kernel.org>; Wed, 24 Apr 2024 04:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713931587; cv=none; b=s+pmJACCzQZY8DLHhbuxgOVHvtji9uze13Pphjks9sYOyEnjGz78YkCMAEX0hHeclUIvuXUb7X9KwbjV6lRjabQt24KxNuNkhHhKcvgQcC+nas7BPMvLy2uX18LLO2xNqYjocvj+iCzsC89J6YDQkbRm/ytn+3d8sleZhCS3Ztg=
+	t=1713932853; cv=none; b=McFM0uBxo1fiKc7y9Tv6x/bRJ656+5lBO+jVUXu9VGa844+9VpVpvIT+JTfP9s10e8b7NG5cOaVnhV8lUDF+IGFWbc8YeoPjzMWxCOT8N0YpW6L9fgOVDvj5ih+xFSsJTNopCRIE+qBQg4HQh9SiCjmvcaQUoTLM792venV/T8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713931587; c=relaxed/simple;
-	bh=f1Dv5zv6/MeC05k9gFS4Dtb4TNI1V2WafkMkhzGBORU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h39cNmJ2LUJb//m7i650391JTLP4BrOH3Aw5MZuCYWYInpckq9U+1cteLA5/Um7HE61lRmIbrB3aO8PeZatPFNsraBPsJq1NrwJB82Chn5uzoaZEZt6a09fjE9ADT7R2x0MOlWNWPgpKs89TjUrY6nGb7LSg8EsivjaJpd9PRlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d9QNpGI5; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1e3c3aa8938so44711005ad.1;
-        Tue, 23 Apr 2024 21:06:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713931585; x=1714536385; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=q/O6yWeew57XxnKc/kCg+J/zVlCaUNwIlMUpnlR1Sd4=;
-        b=d9QNpGI5OoFGtkk/q3lHtlXUgrzv9wMZKLbI3cxk2FSA8PQeMSEHhoxrUoh/EReNMm
-         7BQBw+CCSXYjFO4WUogx2NBHyKES56BUu/MguIMZi2fvNIEi8dC6+utepSGXFyzwbJuz
-         lN1RZCQrdrEt4XL+A53ZH6J3NylzE5XNei0+Awigf46eZa4FyZ2XqHIXsAaXbvfe3X2e
-         MtuYkjFIwpgTX3ubCOOg3wxrBca90bEt7S96eleMzxuK4w9NICYiVQ/A7IKdWQIoD/VI
-         Ff2pnzNK114/vA0ANKdKGUZzDmFpk8cQ7ppRp9v1hs0X3sNxb09vMp869rJsARdEzrZE
-         NJIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713931585; x=1714536385;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q/O6yWeew57XxnKc/kCg+J/zVlCaUNwIlMUpnlR1Sd4=;
-        b=ByB5KB27DAhJNPcFNeiHKcWRn5xJJq/FWJuFhQ0d53bjUmPgplS5tAQu3UA2rzvp5p
-         vBt9RehTO2EG19fqyygwxjHUeD301gVz9mK9d7S9LOBpvIHDVUP/3+6mcXA6NwBNR1dZ
-         p3YwiNjMgOCwHofVpknJIzwznPmjBlVRAJTS+HKfP5jFkEoqLflvBuwnyaTdIdRpaAuR
-         g021wuQ4iFqrD5KbbFryBpjqOzyuvacgBur2oEmEkZkZQYXBsBUmD7qwuA8valpcJHJe
-         ZwGVbEM2J2go3kfbfXh8NZJm7DVflgXgP6kOKb0wy6IN7/rL9jY/vsZZZsYwnUB2HVQI
-         hB+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVk+65pkLWTyaySeqTogJGhDZT1BVsswgN98tc7Ur7N+VILzWX0PbGT/CC5hKyjEcgz9lK0hTtpgX6TMGHj8YRzM5Ojlf4hRSA+RNNu5Gpg9eM/VXPUcEZt/xUby2i88wkX3oGN
-X-Gm-Message-State: AOJu0YztVU2HsXZU9HkPBcte//7DtgSRMDyYYwhcUr5Khg/apWfrA4ib
-	k0631i3zsuysMLoMp0q/fCnNhjPX0ZTyB1dltJYEyy84hBshFlp9
-X-Google-Smtp-Source: AGHT+IHtBD+jhtIDvgZAHS2pfecScdht7j9Q0KeyrXlemvT0eMOOuJ+KhlcDzUOxFyuoNdDvoRRjpw==
-X-Received: by 2002:a17:902:c40f:b0:1e5:5ccd:30e1 with SMTP id k15-20020a170902c40f00b001e55ccd30e1mr1274214plk.65.1713931585179;
-        Tue, 23 Apr 2024 21:06:25 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id ki14-20020a170903068e00b001e434923462sm10876342plb.50.2024.04.23.21.06.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Apr 2024 21:06:24 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id EF44F18462BD3; Wed, 24 Apr 2024 11:06:21 +0700 (WIB)
-Date: Wed, 24 Apr 2024 11:06:21 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.8 000/158] 6.8.8-rc1 review
-Message-ID: <ZiiFPdhkEOcw9j6L@archie.me>
-References: <20240423213855.824778126@linuxfoundation.org>
+	s=arc-20240116; t=1713932853; c=relaxed/simple;
+	bh=5M8n0Ds2J0V6CnlpU2vC9zuDQ/I1yuw2ApSKmBb54/k=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=aXkXE1muAEbg56aLMz3IsdTkiiiKiYYSkRLtlokKsvC1bLP6qRQ6P1a7Kzz9flEpL6Su8xHU0kSniMXQECVkTmJy8xX2tWyANIGnqiH/qf+/WOv5E5Oc+Xnj+nBuzSdXSC0x1bXqmJStPgDOAjcLN0bQbDQ4mfCnmIijfhF1tYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THBWn889; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CA3C113CE;
+	Wed, 24 Apr 2024 04:27:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1713932853;
+	bh=5M8n0Ds2J0V6CnlpU2vC9zuDQ/I1yuw2ApSKmBb54/k=;
+	h=Subject:To:From:Date:From;
+	b=THBWn889mF3q0ilNSILtg9WSE9HrqStd07rMk5v+OVoLgxnygfCmSQDgHm0Y5BK1i
+	 W8X83QWUu5f68wMiDUKzdQJPYsIRoYzwl2O/EQnIDPRsgjeRcciROu62dZGBnMYxcw
+	 voeLkfeKdkz9OPVqVQ5AM8Y0nbXY124rsQ+vKRas=
+Subject: patch "iio: pressure: Fixes BME280 SPI driver data" added to char-misc-linus
+To: vassilisamir@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 23 Apr 2024 21:27:24 -0700
+Message-ID: <2024042323-drainpipe-casing-c7f6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kMDSqLl10Vx85l4k"
-Content-Disposition: inline
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
---kMDSqLl10Vx85l4k
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is a note to let you know that I've just added the patch titled
 
-On Tue, Apr 23, 2024 at 02:37:02PM -0700, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.8.8 release.
-> There are 158 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+    iio: pressure: Fixes BME280 SPI driver data
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-linus branch.
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
---=20
-An old man doll... just what I always wanted! - Clara
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
 
---kMDSqLl10Vx85l4k
-Content-Type: application/pgp-signature; name="signature.asc"
+If you have any questions about this process, please let me know.
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZiiFOQAKCRD2uYlJVVFO
-o9hmAP9A+ekpvYbmpT+rVVsRulkomktuJw0Js1RqLr5qxc6MRQEAjPuOsaPLop0p
-JnLG2tN2FAMS0dBZpY72nwhdw6fwmA0=
-=n4ej
------END PGP SIGNATURE-----
+From 546a4f4b5f4d930ea57f5510e109acf08eca5e87 Mon Sep 17 00:00:00 2001
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+Date: Sat, 16 Mar 2024 12:07:42 +0100
+Subject: iio: pressure: Fixes BME280 SPI driver data
 
---kMDSqLl10Vx85l4k--
+Use bme280_chip_info structure instead of bmp280_chip_info
+in SPI support for the BME280 sensor.
+
+Fixes: 0b0b772637cd ("iio: pressure: bmp280: Use chip_info pointers for each chip as driver data")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240316110743.1998400-2-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/pressure/bmp280-spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+index a444d4b2978b..038d36aad3eb 100644
+--- a/drivers/iio/pressure/bmp280-spi.c
++++ b/drivers/iio/pressure/bmp280-spi.c
+@@ -127,7 +127,7 @@ static const struct of_device_id bmp280_of_spi_match[] = {
+ 	{ .compatible = "bosch,bmp180", .data = &bmp180_chip_info },
+ 	{ .compatible = "bosch,bmp181", .data = &bmp180_chip_info },
+ 	{ .compatible = "bosch,bmp280", .data = &bmp280_chip_info },
+-	{ .compatible = "bosch,bme280", .data = &bmp280_chip_info },
++	{ .compatible = "bosch,bme280", .data = &bme280_chip_info },
+ 	{ .compatible = "bosch,bmp380", .data = &bmp380_chip_info },
+ 	{ .compatible = "bosch,bmp580", .data = &bmp580_chip_info },
+ 	{ },
+@@ -139,7 +139,7 @@ static const struct spi_device_id bmp280_spi_id[] = {
+ 	{ "bmp180", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp181", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp280", (kernel_ulong_t)&bmp280_chip_info },
+-	{ "bme280", (kernel_ulong_t)&bmp280_chip_info },
++	{ "bme280", (kernel_ulong_t)&bme280_chip_info },
+ 	{ "bmp380", (kernel_ulong_t)&bmp380_chip_info },
+ 	{ "bmp580", (kernel_ulong_t)&bmp580_chip_info },
+ 	{ }
+-- 
+2.44.0
+
+
 
