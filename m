@@ -1,140 +1,100 @@
-Return-Path: <stable+bounces-41404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7318B1A14
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 06:58:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C30138B1B0C
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 08:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE5D1C21120
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 04:58:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8613A2840B1
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 06:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A6639FD6;
-	Thu, 25 Apr 2024 04:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jugf5Skt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1C459155;
+	Thu, 25 Apr 2024 06:29:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB5C2C697;
-	Thu, 25 Apr 2024 04:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1124502E
+	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 06:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714021097; cv=none; b=cAKMxfaZNRsqCD6Y3MFyVed40b3JtHG00jdLO/ppCQBXrdIQP6sRXUzk7cSSKnsJZ+tirkV+gKjfFVZRRP1hmNG+nhEtfvgfJyFuZVpAKmo9KgACmCCWTSCgu6n9l86tOj7EyIn9/6t7Fp1QKne9APj9HwS+7OJkDpFbDQNV/NE=
+	t=1714026545; cv=none; b=C6baV+Tij8YZChmKmSkFlzmHn3DMBWm2xtqDT7s1LigUCFT/G5c+1FND+HmUm3bjhJRwnHc6UbwPnrqs3wre2s0qi2nHffRMYIbATAkNbJbXnhtM1vk97njHIycWmqMximzAXXxI9UagmZ5XJXWJBqbgjUKTkax/0P6Ansjkp5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714021097; c=relaxed/simple;
-	bh=SXKhmE1mFSWFNXbTgKv60f+ty4UJ3XJhBfkQOjaM7fQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A5JnywAvlsnzi+039vpBruMiPRNK5QKST/XwYtnAR183PmB/pIFdtXhuPYQanYmTYQLXWLtTO09uGHDDLGuYiyCOy1+hmW3BBTz4irHCc1SqrelYrxwRwFoZmuuZTp754nkrIfQhRiH6nr9JoZEBMNSpI8wRpdHIOApDAXll4s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jugf5Skt; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43P2jf4C021788;
-	Thu, 25 Apr 2024 04:58:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=C/eFcRc
-	eePgjWKK1u/9J8UibNSm0qr+7zcLyo0PYzPg=; b=jugf5Skt3xw21Itn8lpJ7Q6
-	ZYnIqid5u9NKRLeCX/a38HITy/7V4nCTAIeKKXm/64FvKcrXZQv37HCHZg2tDgv/
-	wokohLHFcrFSBVwoweETzBDmfVTpOK12PuixjEsl0dscoRklmrt6rQc1ZHbFGf/F
-	jTF5i2MRArZGb//EBc5MdzNkWHJ0eDT2KloG0SWEIcS5CWcUHSopCCa6j+lX3SX2
-	6/yAHKSlW58JaQdqB9AhX7/ajoPoFelK1FVkJyWli4CJbrvSsjzGgN2qrQYsMRHF
-	GlYKHp/WbKEV1gd3XW4TSZ8qU5azePqu5Ez4Wj2EJGMOI8pDexzbD+34AHAoJDQ=
-	=
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xqengg8uh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 04:58:12 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43P4wBgM011738
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 04:58:11 GMT
-Received: from hu-prashk-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 24 Apr 2024 21:58:08 -0700
-From: Prashanth K <quic_prashk@quicinc.com>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: Wesley Cheng <quic_wcheng@quicinc.com>, <linux-kernel@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, Prashanth K <quic_prashk@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2] usb: dwc3: Wait unconditionally after issuing EndXfer command
-Date: Thu, 25 Apr 2024 10:27:49 +0530
-Message-ID: <20240425045749.1493541-1-quic_prashk@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1714026545; c=relaxed/simple;
+	bh=XmmPjMB8Mboxj1o0EVbKYz0bx1nldfdLxsHQiC69L/U=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=pftF+dAbqXux+jM4TsgiHyURIyJnKKGdEHErN0/GxniPaHAw/0Yoav9Uq4bVAjM5mHs2mKXrhXVp07Inlza9DKpLjzhSJUdFy+mM2NVqXapxfpXdlQBbGEg73jawQOV1nJIKjxMulM7ldVCVr1VlYGB7XE94UO43UvL/Kqp50JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from hverkuil by linuxtv.org with local (Exim 4.96)
+	(envelope-from <hverkuil@linuxtv.org>)
+	id 1rzsbO-0006x5-0G;
+	Thu, 25 Apr 2024 06:29:02 +0000
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date: Wed, 24 Apr 2024 11:49:55 +0000
+Subject: [git:media_stage/master] media: v4l2-core: hold videodev_lock until dev reg, finishes
+To: linuxtv-commits@linuxtv.org
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1rzsbO-0006x5-0G@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: YMF-tT2R4zSD9GAOEs30f2uw8t60rVhM
-X-Proofpoint-GUID: YMF-tT2R4zSD9GAOEs30f2uw8t60rVhM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-25_04,2024-04-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=871 priorityscore=1501 mlxscore=0 phishscore=0 adultscore=0
- bulkscore=0 lowpriorityscore=0 spamscore=0 clxscore=1011 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404250032
 
-Currently all controller IP/revisions except DWC3_usb3 >= 310a
-wait 1ms unconditionally for ENDXFER completion when IOC is not
-set. This is because DWC_usb3 controller revisions >= 3.10a
-supports GUCTL2[14: Rst_actbitlater] bit which allows polling
-CMDACT bit to know whether ENDXFER command is completed.
+This is an automatic generated email to let you know that the following patch were queued:
 
-Consider a case where an IN request was queued, and parallelly
-soft_disconnect was called (due to ffs_epfile_release). This
-eventually calls stop_active_transfer with IOC cleared, hence
-send_gadget_ep_cmd() skips waiting for CMDACT cleared during
-EndXfer. For DWC3 controllers with revisions >= 310a, we don't
-forcefully wait for 1ms either, and we proceed by unmapping the
-requests. If ENDXFER didn't complete by this time, it leads to
-SMMU faults since the controller would still be accessing those
-requests.
+Subject: media: v4l2-core: hold videodev_lock until dev reg, finishes
+Author:  Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date:    Fri Feb 23 09:45:36 2024 +0100
 
-Fix this by ensuring ENDXFER completion by adding 1ms delay in
-__dwc3_stop_active_transfer() unconditionally.
+After the new V4L2 device node was registered, some additional
+initialization was done before the device node was marked as
+'registered'. During the time between creating the device node
+and marking it as 'registered' it was possible to open the
+device node, which would return -ENODEV since the 'registered'
+flag was not yet set.
 
-Cc: <stable@vger.kernel.org>
-Fixes: b353eb6dc285 ("usb: dwc3: gadget: Skip waiting for CMDACT cleared during endxfer")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Hold the videodev_lock mutex from just before the device node
+is registered until the 'registered' flag is set. Since v4l2_open
+will take the same lock, it will wait until this registration
+process is finished. This resolves this race condition.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: <stable@vger.kernel.org>      # for vi4.18 and up
+
+ drivers/media/v4l2-core/v4l2-dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
 ---
-Changes in v2:
-Changed the patch logic from CMDACT polling to 1ms mdelay.
-Updated subject and commit accordingly.
-Link to v1: https://lore.kernel.org/all/20240422090539.3986723-1-quic_prashk@quicinc.com/
 
- drivers/usb/dwc3/gadget.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 4df2661f6675..666eae94524f 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1724,8 +1724,7 @@ static int __dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force, bool int
- 	dep->resource_index = 0;
+diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
+index e39e9742fdb5..be2ba7ca5de2 100644
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1039,8 +1039,10 @@ int __video_register_device(struct video_device *vdev,
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
++		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+ 		goto cleanup;
+ 	}
+@@ -1060,6 +1062,7 @@ int __video_register_device(struct video_device *vdev,
  
- 	if (!interrupt) {
--		if (!DWC3_IP_IS(DWC3) || DWC3_VER_IS_PRIOR(DWC3, 310A))
--			mdelay(1);
-+		mdelay(1);
- 		dep->flags &= ~DWC3_EP_TRANSFER_STARTED;
- 	} else if (!ret) {
- 		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
--- 
-2.25.1
-
+ 	/* Part 6: Activate this minor. The char device can now be used. */
+ 	set_bit(V4L2_FL_REGISTERED, &vdev->flags);
++	mutex_unlock(&videodev_lock);
+ 
+ 	return 0;
+ 
 
