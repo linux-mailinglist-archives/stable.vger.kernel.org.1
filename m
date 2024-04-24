@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-41389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8918B162F
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 00:31:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C207E8B1621
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 00:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A122282432
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 22:31:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F40301C2292C
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 22:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C769165FC3;
-	Wed, 24 Apr 2024 22:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0A116DEDE;
+	Wed, 24 Apr 2024 22:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="TE4ShXkL"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="gbkKnOCb"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128D316DED8;
-	Wed, 24 Apr 2024 22:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D938A16DED8;
+	Wed, 24 Apr 2024 22:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713997306; cv=none; b=S5Ictl9PrcEviY9kVuu85SSCAO2+114hWYA4ya+i/YRCKNHvXbWXagVqZSAy6n+xVo+CSmIgyiQ+swOfOKTueUrBMVyzEvH8FJQKwK3e12h34aj7/4clpagvtvtjD4qp9Wl9EFrGCMa1DnytPcKz/OjDaYrlD3rPPnVMgVMFg94=
+	t=1713997308; cv=none; b=m71KB3mn0kRNnpWKmmWiffTYx6ny30VDXSIThdO5DJOWR5tBOM257PtkKw7rTeXkal5iOu0DhfJINk3dDeRREnaOGB5k2hZpz4ahxJGgKAGAQ7z6ViZjZVMIhVrT4uxmeIaspkJvp7TsEj87vRXvGXV7Fr3qkvC9fVcEgryEUEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713997306; c=relaxed/simple;
-	bh=V+OCoUimsO6FhX0OenyoAjI2lX61gjXUu0UP5iBUpuY=;
+	s=arc-20240116; t=1713997308; c=relaxed/simple;
+	bh=8qPgc3v8RuswJLCSzEgGtV3nxpaoKNNEJkwFnsWfn9g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XqlTaKo8IBTw/xRoc3220XHzchZQjnoY/9YyZl2pYDyzskgwG71EcjQjdKd/KXsbHwq7ZAefSQNr8UxEJhD4cv5+rCB46xbMB9m1YgSl1pcjaiGtXZ6q4trfkL5fLqdCUZbNVBgCYAMRRIELh0kcX0QW78NUzd3NCiK0EWt+bW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=TE4ShXkL; arc=none smtp.client-ip=178.60.130.6
+	 MIME-Version; b=Az+4xzuTgubAxIrD20Ht5yqiHh+DexZ0Q3QVhIf6SqZR6WzD73LC6BC4mZ+urj2YrKlDUZgFfyB4T/bykPmfsI4Th3n1Xp5k2DqHY5wOSMiz23UpXSsvSs50xPeyePrHvYl6kVOk4QogvMURrHKKcNKBCCc0+OOmM8k0BanEGVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=gbkKnOCb; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,24 +37,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=Wff+J7BFicUpOEYeYVCTLCV02HSDUpwpdTkxYjCK5xY=; b=TE4ShXkL2969H3D6zMquUTKcvf
-	tSWh/E+oE4X8UpNumHhBD16SS/gSxixlIT7rW/vG+DdVKect8oc3E49c+/Md0K4W0+dicLxGA09TA
-	FaITLIYRCrxnWttHCRLvja9ESMYZXlSgVPdgKg3BccCSHbCyi8giFA+NqGPugcbWxZ2n+P3zG3cYf
-	ss0WQM+UhZfxFknRnUJpBwtFz5LD/6vzVboZF5pnZscOXL24l93C3EpmjzuMcgap3EsgNQAb4ToVJ
-	3dHmi6eOCT0BbRLFtmm6nkGVRPYAD78axoXLUV9gZNY8RZEhj9Yu1X+wqQIRjyTb93hWdmggr9iD/
-	Lj6pkzxQ==;
+	bh=FAOVOJ9lAegQil3oaF8i8r4xm+u7aNVtl2W0t2hekxI=; b=gbkKnOCbPlbenoEs2DrK7co7Li
+	hM7LYlq43oc0V/np2nvJleA4az3PM+hlsxi+wn8Jrr5nW5y+WIY7T1iWSj3U+ihh4eGrSqpZpy4GU
+	wsqmT4Ge2fMX/daSdnRaIK+r7wLXt7KVdzvVXwqgSnSftBspY9GcOzk0xN8C67GQw5FCum7UMXeoD
+	SNIwVNZ6j8SF5G8kyGXS3Wj/l48nCvztHQZToyyRyDtRslV1hxKywzhJL2WcILusn174/x00h3ae1
+	tPPkfVVPb7hIoq0eJH1ypOEDb5gkaQT4UX/pW+P4ziG5SvNPK+yCWWCgnzH8/4Sb0CIcC6TybJgTd
+	pbLNgkrQ==;
 Received: from 179-125-71-233-dinamico.pombonet.net.br ([179.125.71.233] helo=quatroqueijos.lan)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1rzkzl-008LGq-BL; Thu, 25 Apr 2024 00:21:41 +0200
+	id 1rzkzo-008LGq-KF; Thu, 25 Apr 2024 00:21:45 +0200
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: stable@vger.kernel.org
 Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH 5.15,5.10 2/2] tracing: Increase PERF_MAX_TRACE_SIZE to handle Sentinel1 and docker together
-Date: Wed, 24 Apr 2024 19:20:09 -0300
-Message-Id: <20240424222010.2547286-3-cascardo@igalia.com>
+Subject: [PATCH 5.4,4.19 2/2] tracing: Increase PERF_MAX_TRACE_SIZE to handle Sentinel1 and docker together
+Date: Wed, 24 Apr 2024 19:20:10 -0300
+Message-Id: <20240424222010.2547286-4-cascardo@igalia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240424222010.2547286-1-cascardo@igalia.com>
 References: <20240424222010.2547286-1-cascardo@igalia.com>
@@ -135,17 +135,17 @@ Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index d3cbe4bf4fab..17575aa2a53c 100644
+index b8b87e7ba93f..12ee8973ea6f 100644
 --- a/include/linux/trace_events.h
 +++ b/include/linux/trace_events.h
-@@ -676,7 +676,7 @@ struct trace_event_file {
+@@ -427,7 +427,7 @@ struct trace_event_file {
  	}								\
  	early_initcall(trace_init_perf_perm_##name);
  
 -#define PERF_MAX_TRACE_SIZE	2048
 +#define PERF_MAX_TRACE_SIZE	8192
  
- #define MAX_FILTER_STR_VAL	256U	/* Should handle KSYM_SYMBOL_LEN */
+ #define MAX_FILTER_STR_VAL	256	/* Should handle KSYM_SYMBOL_LEN */
  
 -- 
 2.34.1
