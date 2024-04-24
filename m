@@ -1,162 +1,239 @@
-Return-Path: <stable+bounces-41316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E8B8AFFDC
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 05:40:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A785B8B0001
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 05:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5CE01C21641
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 03:40:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C386BB215CB
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 03:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF4513340B;
-	Wed, 24 Apr 2024 03:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1C013A863;
+	Wed, 24 Apr 2024 03:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NMKH2tqq"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB27101F2
-	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 03:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713930044; cv=none; b=OvC/hjvsXuRvxUs4CYMQnP2ZumGowzUq55cG45p3HIOBMu0ym2Ltp/eNyOwYmja6wCWkikJnIeMYXH85KCVAcmp/DM/7dUTaduDX5Fo7jFUHQLOsYPwhCRZpSBnp/z1OZB2O6zBqImtihu/C+9hZ5q+X1qgPCV1HYZzDmNsh4z8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713930044; c=relaxed/simple;
-	bh=uV2L2/CAZAX7umDO9+gYSrzZvlumpFP8wNjelvuoPLA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cA8mNgTKuttX1zXo5l8+A8g5XfbtXNbZT+82wdcyK4K9Rr4ojwNXXUn3Uww9gYuzW9w1ADe69JzPQbu6TzU7oiMyvWPV1h+TV/X8L+vGYek+siFn5ZRwbndQ+zpJvO/3gF0cSILK1eG2IEpxH8/ixJxeMAHQGL17ev0MNWGX95E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [30.199.224.162] (unknown [42.120.103.66])
-	by APP-03 (Coremail) with SMTP id rQCowAAXOCUgfyhmrcikBQ--.8558S2;
-	Wed, 24 Apr 2024 11:40:17 +0800 (CST)
-Message-ID: <5d49f626-a66f-4969-a03f-fcf83e2d2bab@iscas.ac.cn>
-Date: Wed, 24 Apr 2024 11:40:16 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA00685C59
+	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 03:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713930371; cv=fail; b=XTeVoK8oZRg8UuvffrKpkreE3WUk3kCakt+hz3bXyVBYAMbxLupSabLci8vPXc734waejsAEZp22M39JDTTOrVsQ7Dca7/26myGZ++hQsmUOcwNADftc3LUyvMhLMdzG99Oob5aKhfV3DlMUJkLorbcODQvcBWMoVg6rni2MxZc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713930371; c=relaxed/simple;
+	bh=pTv+3SDrd9Zltb6cUdNlcycA8uokHTposkK3IrVa61E=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rmaHmCQWNrmTLeftmdZa2iZixiahvJrS9e48uwGD9pWH8sIapWuQk+t2GstSkAJRN0nJtlasMQuAqG3vK9sxyh7G+Xopnf0g4uu4xRYb4I5dx3XIO4XaO12buiJZ5Ba68f4qbdsaOOO4neBFG2nsbCsjvaCYA4BdGiXumYd4fIE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NMKH2tqq; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713930370; x=1745466370;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=pTv+3SDrd9Zltb6cUdNlcycA8uokHTposkK3IrVa61E=;
+  b=NMKH2tqqSnOhrtcshudYbn0w5uPI0m8jqITDT1hEskJXXXACaF4PqL75
+   D94YS9ZufcaXFcikqKj5sgrifwyoh3ndh3Qxhd4fHhp7eoNNoOz5PJi8B
+   Rjw//OBX4ECmM8QH41lcP+MUipJBW15lAzLWavJaFAnFtPuoD/gpEY56q
+   GepkGfRY0o+NJeMk8jD4psI2jdkM/daKeLCqeh9bTezfOySqWGU1766/r
+   nlNwqDObkRvwqvawzOCEnrE6ccopY177IlE5iuTLZIcIPZMlax328QLVj
+   2TUBp56STqL2F2uGhcZKX23WNQQEKEA/LmkPlHUaQfLTJZXFOisUlEYPz
+   w==;
+X-CSE-ConnectionGUID: pao8uj2XTP2AUR0R+ZVBAQ==
+X-CSE-MsgGUID: bmcbO4tSTBCtEk6DfxMuUg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="20237952"
+X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; 
+   d="scan'208";a="20237952"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 20:46:09 -0700
+X-CSE-ConnectionGUID: kUEuUujATA6KIVmdj8eZOA==
+X-CSE-MsgGUID: CcnmC+VYS7WfNOk5H5+s4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; 
+   d="scan'208";a="55775616"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Apr 2024 20:46:08 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 23 Apr 2024 20:46:08 -0700
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 23 Apr 2024 20:46:08 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 23 Apr 2024 20:46:08 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 23 Apr 2024 20:46:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RHtMpWIQIMFl6ErIvlmV0ueMjuloccR5SwGqpNGoOOT1tBC7E1O1uQdfaOziO7zI/RV5zpzFyqc63CvMIlyF9ydoafUuwSfkckuBRxTnrmvVw0m3jUfsOvaAeOUUq1i15j/NKNeAz9uqXaG1tWFxszd1Bn2slFg02oLXqE54lC/AD4qZHNnZea93kvKJfRcp/5BlT/ESRAicwQN8HH2uAKTZ8pz2KuBYTotFSWdH7eIo168kTKvLhVD+A1mHkg8ENZ+Z0NkpqkbQaxRqRM5zwlF5BDmVqRg3bJpCXNJ01xnzVj7XEBwcW3jfY5d2/Pfe/MTOC1v4aC2ho1e22wqtyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0wr4NpoSpfcwIuLBEpxNXQVyEaL+gQ8MIqCbzf1S1TQ=;
+ b=WG96c9gH2g3yEUhPv/oARfpcUeZkzEVgU9YaqLNIU03jnUYbyhJflJF7eo+zvD/vSb7czd4gklXU+W0Nd9h+CzZ0XQwW6rXG/ZNcZaq9BEW4tLqcFjyJTeQ5GIYgNuRx75vK61clsPWoVbjQ1pyF3HfSZIxTHSN66fJGxXwJ65MfOMt9bak2RAvdYoANZliNFKrCxnzlozWjFW40AhTqnilcGXGP8+uwgDMqCvQSY6HsoHIQHf4nWm0CXe9W5k9Ol7jg6GZWKHlGTlpLu+um/DDSJEc27OPsl3xpeiI0PcWb8GBP5U0POQoSsPjlQH7tGSno3ByOtkm6FVYwja+Mtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by SJ0PR11MB4959.namprd11.prod.outlook.com (2603:10b6:a03:2de::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.22; Wed, 24 Apr
+ 2024 03:46:05 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e7c:ccbc:a71c:6c15]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e7c:ccbc:a71c:6c15%5]) with mapi id 15.20.7519.020; Wed, 24 Apr 2024
+ 03:46:05 +0000
+Date: Wed, 24 Apr 2024 03:45:32 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+CC: <intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 2/2] drm/xe/vm: prevent UAF in rebind_work_func()
+Message-ID: <ZiiAXBFAjT+PbF2T@DUT025-TGLU.fm.intel.com>
+References: <20240423074721.119633-3-matthew.auld@intel.com>
+ <20240423074721.119633-4-matthew.auld@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240423074721.119633-4-matthew.auld@intel.com>
+X-ClientProxiedBy: SJ0PR03CA0115.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::30) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "riscv: kdump: fix crashkernel reserving problem
- on RISC-V"
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Chen Jiahao <chenjiahao16@huawei.com>,
- Baoquan He <bhe@redhat.com>, linux-riscv@lists.infradead.org
-References: <20240416085647.14376-1-xingmingzheng@iscas.ac.cn>
- <2024041927-remedial-choking-c548@gregkh>
- <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
- <2024041939-isotope-client-3d75@gregkh>
- <a5493f44-2aac-4005-992b-f2ac90cd1835@iscas.ac.cn>
- <2024042318-muppet-snippet-617c@gregkh>
-From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Content-Language: en-US
-In-Reply-To: <2024042318-muppet-snippet-617c@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:rQCowAAXOCUgfyhmrcikBQ--.8558S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJFykKr13CF4Dur1UKryxAFb_yoW5tr4rpF
-	Wxuan8tF4Dtr1fK392yw40gFy0qrW3Ary5XrykJwn7JF1qvFyrKrWag3W5ua4DGws8K3y2
-	vF4Ygw12vw1rAa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyFb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4
-	vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwIxGrwCFx2Iq
-	xVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r
-	106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AK
-	xVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7
-	xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_
-	GrUvcSsGvfC2KfnxnUUI43ZEXa7IU5PpnJUUUUU==
-X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiBwwRCmYoTFevOgAAsQ
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SJ0PR11MB4959:EE_
+X-MS-Office365-Filtering-Correlation-Id: d799817b-9ddd-4a09-34be-08dc641111dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?WpD6/a3siXn/sdGiwxEM34RJA1vciEziyJLvfcHIf64RlDunGJI5w2wi2wNB?=
+ =?us-ascii?Q?PWyzDvdJFt7m6+077lE5ObrgFuSyJ5PxWXSg/jZIIYoLPE4gC9K3+0RMtRAu?=
+ =?us-ascii?Q?0XQhoexbxU+GpthzL0c+irDaoLlh/kvk6JS2CCCqUY9oLDZteccbbdY2tjaP?=
+ =?us-ascii?Q?OO9Z1gUEjFNZLKZzu0j6kmT3vcDxelQWvHjH9NTdX0Gt+6hq/42z2cAlhL85?=
+ =?us-ascii?Q?CRq4e9Ywit3L7x+2APm2q45uzHq+rzLPwTZP+BWagZSL+1SPB8nYvyDwbgL+?=
+ =?us-ascii?Q?G/25PNLHMUJXHXvAlIi8IXwOcfPEipIUIT8KWMv+26GY5UjshJj08qIAN4x7?=
+ =?us-ascii?Q?1SpbIVdq9w+7ZnSyuQqRUVQZHlQvyNhWhKk8/uZgV+8YLO/2p9PoaySyIWP3?=
+ =?us-ascii?Q?FMa+456ymfXihWLLjNbe0iJq163rTtD1kzHQ2cQxISq1rbXVMmi3XIUifWaH?=
+ =?us-ascii?Q?Do4XOr/nyDFXIg7OSH/FSFI3t3/sfBLiBErLE7+UZJ8E7lS55xseMHA6jryx?=
+ =?us-ascii?Q?p/HZtiqYZm7k9RH+hik3U83xwjW+faZ5yCDIDunVq+t65fz9HgDwydym4mHQ?=
+ =?us-ascii?Q?27zAPXeveIuRyG3QbMxJZJJ6MX7FEG6spnvWuVXvJGM/gINUe2kNOD282pR6?=
+ =?us-ascii?Q?vREsJPI2z6844K9BzbyYArGMG6WOgZ9ka83SVTCZ8KjyWazL6mMhtNvotqgk?=
+ =?us-ascii?Q?xMMNDFYhVmGjaaVgyaoqxAiwJ9grHttlNRTV6i0l+hVYgdSKBK+nyrWY/S+j?=
+ =?us-ascii?Q?KF0XqhpZlBmLDSPYU4htOdlX5gFjOx+1viHrEP45dlfqAkdyONdEMYdfLWp4?=
+ =?us-ascii?Q?5z02Q88gKKaU9LrQF4/8qgoX3+PeTtgOYLyS3tZEMYS54sQd4OD+v/UOwHLM?=
+ =?us-ascii?Q?MPGyz0MS5qfr8/WZklWuKdAYtX/XDkHkrFZ1PYtTsjMspeiYaz97irjk/zGu?=
+ =?us-ascii?Q?vhCn4ifqTxZQjg0PBAJeKWZIt364O+W+7x9/V0feiuuoAWPQUbXacwcY591T?=
+ =?us-ascii?Q?ulbRFeJGLQTc8bhXETIz8hDJsBlyNOmQKHU4+TV0u+asS+o944NYEj4kA0Zs?=
+ =?us-ascii?Q?rCcT5EwWmRY0un7e3ko4OucfLZKeUpjSFoE+DH2aFz+301H8Q4xNvmiK+OIg?=
+ =?us-ascii?Q?tDweigj9lCau5zOqnoLQgZtRuSORsowlU8nGZv3kmYbbq+rM0VdzN8VwjJ83?=
+ =?us-ascii?Q?SvwiLHZUtUXh/mXrId2L0uYV5W0NKA/RKiBzBgGNV28HldXKo7D6k5RsKeE?=
+ =?us-ascii?Q?=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?IHc+thKRyWf9t7Djybi7wF8K0qYproW+9DSjKnZvuCISWdrumKGXOE/uHkO/?=
+ =?us-ascii?Q?QTZ9RZbkhkYyEoqk2/NxPlb7iG7P0+ucAczdePUFDLjykA7Y7vbLu4AKNImg?=
+ =?us-ascii?Q?xLdr8g9ERQdJ5AZWYMffcjpnnHwJUGuEaVNxe+6OopQQd5toUaf6z0r00LpJ?=
+ =?us-ascii?Q?CF/T4xJymVR8JxpoHuZ/xfbCencgeFY7Xac68SbcUTd8VciuqF7RBTAVqB/v?=
+ =?us-ascii?Q?Mx8HiXYfe0GD8e/bSJ9NO3yhxzIueZ34/3ETqT0pRAnedE/2qFAtv1j4Fag3?=
+ =?us-ascii?Q?IHoPHLZk1gHt88cTrQPluLmZ+QYtVr/S9EcT/tLCdWlvwEoBxZrzEimbnEgs?=
+ =?us-ascii?Q?H1bpAcxXzs0SzK+CAH2+kvKNsBKudXwezKkSm1brRQA1MNU7lkrCRQXu8wpj?=
+ =?us-ascii?Q?2gFJKSLDuQtp6GPgj/ytWJWeR4VUspdM0tMcY91pcYoBzWQ8ed7I/OjRBaMk?=
+ =?us-ascii?Q?9BrfHobZilzRjBcr6BGjglJJ8kXMF8HNsKr20AcOf9Ai8yOx5af8MCNtLoFJ?=
+ =?us-ascii?Q?G+XPX5SJiR8usz3vAJWIPwTkzRHJa8p+ig0zt6NW+Bs5399p7UFFazqSQBiA?=
+ =?us-ascii?Q?JCSYdNekZUyhb3lDQ4A0rbjsos6IUm0n3QDl9MKlGQrGGtyBCJdIQAQmCkmb?=
+ =?us-ascii?Q?c/zryrcD9G5sf2RKo62ImlJ43rM642fLZeDDVZvPXTIvMgWAVXx/zu+EZKr+?=
+ =?us-ascii?Q?n+8M6HZpgT7nq4WCD0zjbaHN4K9pCzIvInqPBffxgKTfjYLyPTl6XeflBf/3?=
+ =?us-ascii?Q?HjUD0x4l0G4YiNl2v3FPESIhVrAEmyB3uKiHmPAADClYf3ErdPCVaEdNjwzm?=
+ =?us-ascii?Q?iX4SoiqkkIfgE+EHm8XDJSoWPusQWoEGmpct1wE4RKsHSSZPAi/YEAbmGtnO?=
+ =?us-ascii?Q?SYBjNWU/2n0xuk5Mfrw4zvPrpsmevugw8MTYrVCWx9ShhNCxntelNkeb4juw?=
+ =?us-ascii?Q?TnGvknm6VqF06Thc2KqyuJewkIpcPvI816AIi6M3VVaTRTQoAXEQisDfum6N?=
+ =?us-ascii?Q?PeUYO5pY2TYEiL6cXRQpFPoJShu6o8WeQAysHFteq43LY46FFRwqfX3hbpCm?=
+ =?us-ascii?Q?e3ZGYGF0jUW3aU9vLbuZnfvQqkGdKBPU295wwl5bZE+k/b6/ArDMnBGnylBn?=
+ =?us-ascii?Q?v812FpnzM5nMJ95wv/BtJ+TindLp8/NnsUGgt9FrWh+ZaHTusQD9KjUUIMz2?=
+ =?us-ascii?Q?hENL/sHCXK6KLG+bkLWYhZvEXoVgc33fHuoUfr2qc2um0HUejp0dzD5XRWAX?=
+ =?us-ascii?Q?OzsZdvrtpySaIZqu8FXjj3yMiyR6PrlQTJiYubrst8HofxizlLOVfxZX8Uvz?=
+ =?us-ascii?Q?eKLRbbCtrjLxk/LlYvLHb37VHlDpnk/Y6pJNYWJSCNuORY3oRRRpnPnNJ0gO?=
+ =?us-ascii?Q?eTrgnN7dUoakK0vBWucTCwhLM/YRDijmb7w+KWZxIUTRsUFgriM4RUNg/Shj?=
+ =?us-ascii?Q?YJqXtzC1o2qN29hN49u3woptPT/Hs+x8/gALxLSUQvYkX7wdVIAYkyr2vRsY?=
+ =?us-ascii?Q?ojGILUxbJN0u/7JONas5aWEOZyP6fObZ587jkNPG6d7YXgKNy9nC41Y6T/98?=
+ =?us-ascii?Q?DZPbOlawSXpnY8nQtBTNHV9GniVAxvPlfWdoKmpAk2C+pWW705kLuB1tTqVF?=
+ =?us-ascii?Q?Vg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d799817b-9ddd-4a09-34be-08dc641111dd
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2024 03:46:05.7694
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oFmUp2eth4uc2bZkXYu2Po8zpf/JZVVXkevPExBGZ/PBEX+bvGyQGOP7jv9cnABcZxq6r9hGu/8wpNr4/DNSCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4959
+X-OriginatorOrg: intel.com
 
-On 4/23/24 21:12, Greg Kroah-Hartman wrote:
-> On Fri, Apr 19, 2024 at 10:55:44PM +0800, Mingzheng Xing wrote:
->> On 4/19/24 21:58, Greg Kroah-Hartman wrote:
->>> On Fri, Apr 19, 2024 at 08:26:07PM +0800, Mingzheng Xing wrote:
->>>> On 4/19/24 18:44, Greg Kroah-Hartman wrote:
->>>>> On Tue, Apr 16, 2024 at 04:56:47PM +0800, Mingzheng Xing wrote:
->>>>>> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which has been
->>>>>> merged into the mainline commit 39365395046f ("riscv: kdump: use generic
->>>>>> interface to simplify crashkernel reservation"), but the latter's series of
->>>>>> patches are not included in the 6.6 branch.
->>>>>>
->>>>>> This will result in the loss of Crash kernel data in /proc/iomem, and kdump
->>>>>> loading the kernel will also cause an error:
->>>>>>
->>>>>> ```
->>>>>> Memory for crashkernel is not reserved
->>>>>> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
->>>>>> Then try to loading kdump kernel
->>>>>> ```
->>>>>>
->>>>>> After revert this patch, verify that it works properly on QEMU riscv.
->>>>>>
->>>>>> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv
->>>>>> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
->>>>>> ---
->>>>>
->>>>> I do not understand, what branch is this for?  Why have you not cc:ed
->>>>> any of the original developers here?  Why does Linus's tree not have the
->>>>> same problem?  And the first sentence above does not make much sense as
->>>>> a 6.6 change is merged into 6.7?
->>>>
->>>> Sorry, I'll try to explain it more clearly.
->>>>
->>>> This commit 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem
->>>> on RISC-V") should not have existed because this patch has been merged into
->>>> another larger patch [1]. Here is that complete series:
->>>
->>> What "larger patch"?  It is in Linus's tree, so it's not part of
->>> something different, right?  I'm confused.
->>>
->>
->> Hi, Greg
->>
->> The email Cc:ed to author Chen Jiahao was bounced by the system, so maybe
->> we can wait for Baoquan He to confirm.
->>
->> This is indeed a bit confusing. The Fixes: tag in 1d6cd2146c2b58 is a false
->> reference. If I understand correctly, this is similar to the following
->> scenario:
->>
->> A Fixes B, B doesn't go into linus mainline. C contains A, C goes into linus
->> mainline 6.7, and C has more reconstruction code. but A goes into 6.6, so
->> it doesn't make sense for A to be in the mainline, and there's no C in 6.6
->> but there's an A, thus resulting in an incomplete code that creates an error.
->>
->> The link I quoted [1] shows that Baoquan had expressed an opinion on this
->> at the time.
->>
->> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
+On Tue, Apr 23, 2024 at 08:47:23AM +0100, Matthew Auld wrote:
+> We flush the rebind worker during the vm close phase, however in places
+> like preempt_fence_work_func() we seem to queue the rebind worker
+> without first checking if the vm has already been closed.  The concern
+> here is the vm being closed with the worker flushed, but then being
+> rearmed later, which looks like potential uaf, since there is no actual
+> refcounting to track the queued worker. We can't take the vm->lock here
+> in preempt_rebind_work_func() to first check if the vm is closed since
+> that will deadlock, so instead flush the worker again when the vm
+> refcount reaches zero.
 > 
-> I'm sorry, but I still do not understand what I need to do here for a
-> stable branch.  Do I need to apply something?  Revert something?
-> Something else?
-
-Hi, Greg
-
-I saw Baoquan's reply in thread[1], thanks Baoquan for confirming.
-
-So I think the right thing to do would be just to REVERT the commit
-1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem on RISC-V")
-in the 6.6.y branch, which is exactly the patch I submitted. If I need to
-make changes to my commit message, feel free to let me know and I'll post
-the second version.
-
-Link: https://lore.kernel.org/stable/ZihbAYMOI4ylazpt@MiWiFi-R3L-srv [1]
-
-Thanks,
-Mingzheng
-
+> v2:
+>  - Grabbing vm->lock in the preempt worker creates a deadlock, so
+>    checking the closed state is tricky. Instead flush the worker when
+>    the refcount reaches zero. It should be impossible to queue the
+>    preempt worker without already holding vm ref.
 > 
-> confused,
-> 
-> greg k-h
 
+Comment in the previous patch applies here as well, with that:
+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+
+> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1676
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1591
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1304
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1249
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.8+
+> ---
+>  drivers/gpu/drm/xe/xe_vm.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+> index 2ba7c920a8af..71de9848bdc2 100644
+> --- a/drivers/gpu/drm/xe/xe_vm.c
+> +++ b/drivers/gpu/drm/xe/xe_vm.c
+> @@ -1509,6 +1509,9 @@ static void vm_destroy_work_func(struct work_struct *w)
+>  	/* xe_vm_close_and_put was not called? */
+>  	xe_assert(xe, !vm->size);
+>  
+> +	if (xe_vm_in_preempt_fence_mode(vm))
+> +		flush_work(&vm->preempt.rebind_work);
+> +
+>  	mutex_destroy(&vm->snap_mutex);
+>  
+>  	if (!(vm->flags & XE_VM_FLAG_MIGRATION))
+> -- 
+> 2.44.0
+> 
 
