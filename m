@@ -1,102 +1,188 @@
-Return-Path: <stable+bounces-41345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC6A8B052F
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 11:00:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3560D8B0664
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 11:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9F23B21048
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 09:00:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBC5E283B7D
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 09:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90432158A37;
-	Wed, 24 Apr 2024 09:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9015158DC9;
+	Wed, 24 Apr 2024 09:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lVSVn+oT"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB1A158A06
-	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 08:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.211.30.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DFC1E4A9;
+	Wed, 24 Apr 2024 09:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713949201; cv=none; b=SEaM4N8qwL/kHhuWEMzp23VFhQh2fo0RhRwKq3UHXMzBKtpMpd21Y+8ZwukXGjmCC/F2G0c4yk7/ouz3FPY5YQp5ShewTIzd0mp2qH+dVxj1Y4LGNweKai9cMIVnsRjvGr7PhUjeGal3D18r4BMXB+jlLMjvdXxGtnqFVE+/8H4=
+	t=1713952136; cv=none; b=E9w95c77itvCowqDQ8yoV5Lgw7iJl1ao17UfaFXhw1IJC44qaNt4Iicno/GpftYkJaVqWeEB94bisals1OZINscGag3ttyU4DEiSJIXtW7VNtKBybDtDM3YMY/DqxFuqbWWJAsbetZMqg7WyGz7+0lW6lI1o2nzBTmWMprgnEcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713949201; c=relaxed/simple;
-	bh=t5i8g9w59FHasVrZ4M0dhNpqO7P9HI8ZpIHC/OCwIeg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=UYdT7SMXVIn55H+yeiZFtTTDZDTAoTquDXKSYHpIQ66YTgBpRCNVQPTzELkhAldpRLSn/SKTo8YAqrmwpGvaPHdjI8d3Kjbnxs/Tu5QW5T9FM4Qgrak8jiv9Pooh5BzyxKfzAvzdQoZ0hjZZ4JHkp7J5X4F3HlGYeECZu5AZIYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=none smtp.mailfrom=queasysnail.net; arc=none smtp.client-ip=207.211.30.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=queasysnail.net
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-n8V0b3sIM-m6LidnFQndyQ-1; Wed, 24 Apr 2024 04:59:51 -0400
-X-MC-Unique: n8V0b3sIM-m6LidnFQndyQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 07120834FF4;
-	Wed, 24 Apr 2024 08:59:48 +0000 (UTC)
-Received: from hog (unknown [10.39.193.137])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 232F9C7FCEF;
-	Wed, 24 Apr 2024 08:59:41 +0000 (UTC)
-Date: Wed, 24 Apr 2024 10:59:40 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Yossi Kuperman <yossiku@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>
-Subject: Re: [PATCH net v3 0/4] Fix isolation of broadcast traffic and
- unmatched unicast traffic with MACsec offload
-Message-ID: <ZijJ_GfrzfbCEWzT@hog>
-References: <20240423181319.115860-1-rrameshbabu@nvidia.com>
+	s=arc-20240116; t=1713952136; c=relaxed/simple;
+	bh=gjvTM5WoCXZfZuumlfuDjOkBqIB5Kok9g+SQrAlXbwE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hfJhj/maLigu2fPsbNfIIZH0OHn+U7wGF03k7HH0ooEiyLuFYYCvoBSZ6jCdk2lqvA//I60hX3Wn7f69CCaJZ4941/UV7+w26eI8iSSZ9WMomyrLu+TLo6xg7+ZRqztPlnE/78Mm2mTVMjQdIKTJGw3IyF/3UKKJO5nA1bgcH9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lVSVn+oT; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43O8wGvH000580;
+	Wed, 24 Apr 2024 09:48:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=S0JRj5pKLCFlpW9XNhYLC6VhpFJ6oksErg2cwtnNIwA=;
+ b=lVSVn+oT24geL8ikK+8OKBUOkD822sF0qrmdAm1Mhxuz2BwRqh5o5+oMCadT1z5MS/er
+ FjYR/9TnFlzqX7VsHa9yXa9JZ5DGaMlC1HyOGIHRRXWAXx0UoehRLvNlFPdo7by4/okj
+ 5go4aMacrv2g7XkLwI+hGBx4Ekicn8IynUbCz54fDvQfoKdHqT+qbiBkKp5LAce0us3o
+ 1FIcpVW+8/E9f18ZKoV62EQfmI/9QRPb9in8OzO7JIOdQrzhEOQenSxuCpJdJiT1u8+6
+ 0vkCEfx6Hr5IC0ySYzeNhW7DeeVCXceBaaWk1hi8TWb6fSM/+JAfDvl/fP94nmQebPYL ug== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xpy12g38t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Apr 2024 09:48:21 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43O9mKIZ013420;
+	Wed, 24 Apr 2024 09:48:20 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xpy12g38q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Apr 2024 09:48:20 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43O7mRPq023065;
+	Wed, 24 Apr 2024 09:21:21 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xms1p2tv5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Apr 2024 09:21:21 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43O9LJLx23200476
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Apr 2024 09:21:21 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 10D8258052;
+	Wed, 24 Apr 2024 09:21:19 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5EF2258050;
+	Wed, 24 Apr 2024 09:21:15 +0000 (GMT)
+Received: from [9.152.212.241] (unknown [9.152.212.241])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 24 Apr 2024 09:21:15 +0000 (GMT)
+Message-ID: <3b6b4973-0973-40e4-a107-4c81840c9ed3@linux.ibm.com>
+Date: Wed, 24 Apr 2024 11:21:05 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/71] 5.15.157-rc1 review
+To: Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        allen.lkml@gmail.com, broonie@kernel.org, linux-s390@vger.kernel.org,
+        Alexandra Winter <wintera@linux.ibm.com>
+References: <20240423213844.122920086@linuxfoundation.org>
+ <CA+G9fYsm9OYUh+H9X2kpJWXsPdde36=WbSWc+mU0vO0i-QaWOw@mail.gmail.com>
+Content-Language: en-US
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
+In-Reply-To: <CA+G9fYsm9OYUh+H9X2kpJWXsPdde36=WbSWc+mU0vO0i-QaWOw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tz9a1ZkTDNaYgCbEfl71qQD-ElGlqFD3
+X-Proofpoint-GUID: cWVFI8ZpF-PAsklbHzHAdnBTc4Y9cm5k
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240423181319.115860-1-rrameshbabu@nvidia.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: queasysnail.net
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-24_07,2024-04-23_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 clxscore=1011
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404240041
 
-2024-04-23, 11:13:01 -0700, Rahul Rameshbabu wrote:
-> Rahul Rameshbabu (4):
->   macsec: Enable devices to advertise whether they update sk_buff md_dst
->     during offloads
->   ethernet: Add helper for assigning packet type when dest address does
->     not match device address
->   macsec: Detect if Rx skb is macsec-related for offloading devices that
->     update md_dst
->   net/mlx5e: Advertise mlx5 ethernet driver updates sk_buff md_dst for
->     MACsec
->=20
->  .../mellanox/mlx5/core/en_accel/macsec.c      |  1 +
->  drivers/net/macsec.c                          | 46 +++++++++++++++----
->  include/linux/etherdevice.h                   | 25 ++++++++++
->  include/net/macsec.h                          |  2 +
->  net/ethernet/eth.c                            | 12 +----
->  5 files changed, 65 insertions(+), 21 deletions(-)
+On 24.04.2024 09:57, Naresh Kamboju wrote:
+> On Wed, 24 Apr 2024 at 03:16, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+>>
+>> This is the start of the stable review cycle for the 5.15.157 release.
+>> There are 71 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>>
+>> Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
+>> Anything received after that time might be too late.
+>>
+>> The whole patch series can be found in one patch at:
+>>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.157-rc1.gz
+>> or in the git tree and branch at:
+>>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+>> and the diffstat can be found below.
+>>
+>> thanks,
+>>
+>> greg k-h
+> 
+> 
+> The s390 defconfig build failed with gcc-12 and clang-17 on the Linux
+> stable-rc linux.5.15.y branch.
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> Build log:
+> ---
+> drivers/s390/cio/qdio_main.c: In function 'qdio_int_handler':
+> drivers/s390/cio/qdio_main.c:761:52: error: incompatible type for
+> argument 2 of 'ccw_device_start'
+>   761 |                 rc = ccw_device_start(cdev, irq_ptr->ccw,
+> intparm, 0, 0);
+>       |                                             ~~~~~~~^~~~~
+>       |                                                    |
+>       |                                                    struct ccw1
+> In file included from arch/s390/include/asm/qdio.h:13,
+>                  from drivers/s390/cio/qdio_main.c:18:
+> arch/s390/include/asm/ccwdev.h:172:50: note: expected 'struct ccw1 *'
+> but argument is of type 'struct ccw1'
+>   172 | extern int ccw_device_start(struct ccw_device *, struct ccw1 *,
+>       |                                                  ^~~~~~~~~~~~~
+> make[3]: *** [scripts/Makefile.build:289: drivers/s390/cio/qdio_main.o] Error 1
+> 
+> 
+> Suspected commit:
+> --------
+> s390/qdio: handle deferred cc1
+>   [ Upstream commit 607638faf2ff1cede37458111496e7cc6c977f6f ]
 
-Thanks Rahul.
+This is due to a type change of field 'ccw' in 'struct qdio_irq' that
+was introduced in v5.17 via commit 718ce9e10171 ("s390/qdio: avoid
+allocating the qdio_irq with GFP_DMA").
 
-Series:
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+The following change to commit 607638faf2ff ("s390/qdio: handle deferred
+cc1") fixes the compile error on v5.15:
 
---=20
-Sabrina
+--- a/drivers/s390/cio/qdio_main.c
++++ b/drivers/s390/cio/qdio_main.c
+@@ -758,7 +758,7 @@ void qdio_int_handler(struct ccw_device *cdev, unsigned long intparm,
+
+ 	if (rc == -EAGAIN) {
+ 		DBF_DEV_EVENT(DBF_INFO, irq_ptr, "qint retry");
+-		rc = ccw_device_start(cdev, irq_ptr->ccw, intparm, 0, 0);
++		rc = ccw_device_start(cdev, &irq_ptr->ccw, intparm, 0, 0);
+ 		if (!rc)
+ 			return;
+ 		DBF_ERROR("%4x RETRY ERR", irq_ptr->schid.sch_no);
 
 
