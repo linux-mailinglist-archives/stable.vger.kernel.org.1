@@ -1,154 +1,209 @@
-Return-Path: <stable+bounces-41352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4388B07CB
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 12:56:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA9E8B07CD
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 12:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86D1C287172
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 10:56:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28F991F22178
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 10:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755D3159900;
-	Wed, 24 Apr 2024 10:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22DA1598F9;
+	Wed, 24 Apr 2024 10:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PN2VIcZa"
+	dkim=pass (2048-bit key) header.d=ovs.to header.i=@ovs.to header.b="pTEio9xT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from qs51p00im-qukt01072301.me.com (qs51p00im-qukt01072301.me.com [17.57.155.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262591598EA;
-	Wed, 24 Apr 2024 10:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBED81598EC
+	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 10:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713956201; cv=none; b=qodBm91Tfr3qZWEehP+Lwooe5U+mNZT9cmKsB1ui/f2HOMeAuU9r0iZXRijUBY0aCenBuZBQ4q7CLCDM4I93xS/gWR+AJlc0MCpQtQDS2JnvhbO2VfQqKlwD15llqhLLZLeABOFLZ3wgaZgYnpnPso8VEuVE5Vwjl3O5bVR9BK4=
+	t=1713956231; cv=none; b=I8V75t6uoIH7664dnnu8FCOqA149hbvOoSqgbsonbFKm7QWjah9YkFR6bdZm5Ym2tox4DbemGnshg4iFApBzmIIz7BVNUv9VcMcYxQE0tqgTFkHi0Dzn7xqHXh7siAwGnaWFFByPtlG03vHxg9Isxb4EchTm1AeNtMigT2fG01A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713956201; c=relaxed/simple;
-	bh=VlCUYJjJMdo3gKgoD+v70kTIJeDoxTMF1EJ27Rbviz8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mXJYjmpCRCWuapQPbFCS8XBFQZLjZHVwt0PUJYou5TWSDa/ivow5pGpjHpe4PP/Sf+c82Qx9KI33d7nzsnsaseOBS+pajFxjvV1fH3Sf36URQnqSMxtlXcnWxw6FhrPQeP14un6IP4lTZOMP6eCYOOzBIrITjsN4AD1YzqkBnxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PN2VIcZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3999C113CE;
-	Wed, 24 Apr 2024 10:56:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713956201;
-	bh=VlCUYJjJMdo3gKgoD+v70kTIJeDoxTMF1EJ27Rbviz8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PN2VIcZaLKC7POnmPWKv/9Dg7rlkUALbhBAqV6Ud2rVxTNG4y7aqR2/9zw6l90Wzd
-	 B7y4YYxIjtEQD8LEHVSRwpQG6pCLsX2F2PVFa2RD4OkwUT/0zpeJqdfNk2LzjgQLSO
-	 C5/RXeNSdIvYyps+F/5mhZs2fnYKV6QidjRJKq/gkXP/9Sdu2qYBAc0jSJ7fgQt2O0
-	 xKMN4AEx7gLlg3wdzVNhLYhfSIDR7+eNBVZ3EhoXdKjg99jaiAMHxml14Be7P73I/m
-	 ZBt7bJtlDUaN29PFj+UhAI5vDel/ufQDjXvddyuPmynMrYpCo4mQOgjzITp9Vav2Sd
-	 rmt5enLCOR0WA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rzaIp-0000000035o-3MJZ;
-	Wed, 24 Apr 2024 12:56:39 +0200
-Date: Wed, 24 Apr 2024 12:56:39 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 4/6] HID: i2c-hid: elan: fix reset suspend current leakage
-Message-ID: <ZijlZw6zm4R9ULBU@hovoldconsulting.com>
-References: <20240423134611.31979-1-johan+linaro@kernel.org>
- <20240423134611.31979-5-johan+linaro@kernel.org>
- <CAD=FV=XP8aCjwE3LfgMy4oBL4xftFg5NkgUFso__54zNp_ZWiA@mail.gmail.com>
+	s=arc-20240116; t=1713956231; c=relaxed/simple;
+	bh=OaGZMm9pKWH+8fGEG1ssaTnVEf6IsxdarNXbBFZpZKM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=arbAo+Fm7zjhf2ehMyLexOKoRVFIIQXrr+UU5i4Gio59OQYx+a8MpSOYtuBeYoFON9a8dKq/ta1cGKts0BHQsKJL/OTrJpbOqpdrNFB7Lqk54t+xfTqjHXkizBzT7uWgwD6rPEQH+vHB/TUnX0w1gmD4izeyha+N53WZ1X21aqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovs.to; spf=pass smtp.mailfrom=ovs.to; dkim=pass (2048-bit key) header.d=ovs.to header.i=@ovs.to header.b=pTEio9xT; arc=none smtp.client-ip=17.57.155.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovs.to
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ovs.to
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovs.to; s=sig1;
+	t=1713956228; bh=UWC2JDeqhopdUAA3a6ItrwHEC6ucS1ZQ3oowEpM9ofw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=pTEio9xTqdxG+fKfoJ+bNcsdFdWTvUhtppF6GvS8AGo1EM1MgCa7K5INjgLTA+51H
+	 KyzYV99HGptkVeUji5/4gcwcbrpMFR3VSHIDXNKLpzYagv0qN59Va3pPJCJOlq62Uy
+	 9vHaTolna1zAiQS1zFHb0aUh4wDsFV3tAJkfIdRwrVcGoNN7trbUjDMMNsdJaI81ch
+	 AkQcMZXxKRsuSxaWNre/bnwYMuOVvKO9YYDYTkGy9G/RjM9As5kN2tqgegf1g0Qi0V
+	 7Ome8NX3paXfDxJWwfDj+Av/zUPvUhRaAWfcnMpEpjcENaxjrsj8GAQsxqjkOtPB3/
+	 fp6ZBpd9FGKVQ==
+Received: from localhost (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
+	by qs51p00im-qukt01072301.me.com (Postfix) with ESMTPSA id EF9F425400F3;
+	Wed, 24 Apr 2024 10:57:06 +0000 (UTC)
+From: Konstantin Ovsepian <ovs@ovs.to>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: davem@davemloft.net,
+	hengqi@linux.alibaba.com,
+	leitao@debian.org,
+	xuanzhuo@linux.alibaba.com,
+	ovs@meta.com,
+	qemu-devel@nongnu.org
+Subject: [PATCH 6.1.y] virtio_net: Do not send RSS key if it is not supported
+Date: Wed, 24 Apr 2024 03:57:04 -0700
+Message-ID: <20240424105704.182708-1-ovs@ovs.to>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024041414-humming-alarm-eb41@gregkh>
+References: <2024041414-humming-alarm-eb41@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=XP8aCjwE3LfgMy4oBL4xftFg5NkgUFso__54zNp_ZWiA@mail.gmail.com>
+X-Proofpoint-GUID: sdjGZWmWw7_ebjwMuRx20I3WAV38thMO
+X-Proofpoint-ORIG-GUID: sdjGZWmWw7_ebjwMuRx20I3WAV38thMO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-24_08,2024-04-23_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 mlxlogscore=957
+ bulkscore=0 malwarescore=0 clxscore=1030 adultscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2404240045
 
-On Tue, Apr 23, 2024 at 01:37:14PM -0700, Doug Anderson wrote:
-> On Tue, Apr 23, 2024 at 6:46 AM Johan Hovold <johan+linaro@kernel.org> wrote:
+From: Breno Leitao <leitao@debian.org>
 
-> > @@ -87,12 +104,14 @@ static int i2c_hid_of_elan_probe(struct i2c_client *client)
-> >         ihid_elan->ops.power_up = elan_i2c_hid_power_up;
-> >         ihid_elan->ops.power_down = elan_i2c_hid_power_down;
-> >
-> > -       /* Start out with reset asserted */
-> > -       ihid_elan->reset_gpio =
-> > -               devm_gpiod_get_optional(&client->dev, "reset", GPIOD_OUT_HIGH);
-> > +       ihid_elan->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
-> > +                                                       GPIOD_ASIS);
-> 
-> I'm not a huge fan of this part of the change. It feels like the GPIO
-> state should be initialized by the probe function. Right before we
-> call i2c_hid_core_probe() we should be in the state of "powered off"
-> and the reset line should be in a consistent state. If
-> "no_reset_on_power_off" then it should be de-asserted. Else it should
-> be asserted.
+commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream
 
-First, the reset gpio will be set before probe() returns, just not
-immediately when it is requested.
+There is a bug when setting the RSS options in virtio_net that can break
+the whole machine, getting the kernel into an infinite loop.
 
-[ Sure, your panel follower implementation may defer the actual probe of
-the touchscreen even further but I think that's a design flaw in the
-current implementation. ]
+Running the following command in any QEMU virtual machine with virtionet
+will reproduce this problem:
 
-Second, the device is not necessarily in the "powered off" state as the
-driver leaves the power supplies in whatever state that the boot
-firmware left them in.
+    # ethtool -X eth0  hfunc toeplitz
 
-Not immediately asserting reset and instead leaving it in the state that
-the boot firmware left it in is also no different from what happens when
-a probe function bails out before requesting the reset line.
+This is how the problem happens:
 
-> I think GPIOD_ASIS doesn't actually do anything useful for you, right?
-> i2c_hid_core_probe() will power on and the first thing that'll happen
-> there is that the reset line will be unconditionally asserted.
+1) ethtool_set_rxfh() calls virtnet_set_rxfh()
 
-It avoids asserting reset before we need to and thus also avoid the need
-to deassert it on early probe failures (e.g. if one of the regulator
-lookups fails).
+2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
 
-We also don't need to worry about timing requirements, which can all be
-handled in one place (i.e. in the power up and power down callbacks).
+3) virtnet_commit_rss_command() populates 4 entries for the rss
+scatter-gather
+
+4) Since the command above does not have a key, then the last
+scatter-gatter entry will be zeroed, since rss_key_size == 0.
+sg_buf_size = vi->rss_key_size;
+
+5) This buffer is passed to qemu, but qemu is not happy with a buffer
+with zero length, and do the following in virtqueue_map_desc() (QEMU
+function):
+
+  if (!sz) {
+      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
+
+6) virtio_error() (also QEMU function) set the device as broken
+
+    vdev->broken = true;
+
+7) Qemu bails out, and do not repond this crazy kernel.
+
+8) The kernel is waiting for the response to come back (function
+virtnet_send_command())
+
+9) The kernel is waiting doing the following :
+
+      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
+	     !virtqueue_is_broken(vi->cvq))
+	      cpu_relax();
+
+10) None of the following functions above is true, thus, the kernel
+loops here forever. Keeping in mind that virtqueue_is_broken() does
+not look at the qemu `vdev->broken`, so, it never realizes that the
+vitio is broken at QEMU side.
+
+Fix it by not sending RSS commands if the feature is not available in
+the device.
+
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Cc: stable@vger.kernel.org
+Cc: qemu-devel@nongnu.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47)
+Signed-off-by: Konstantin Ovsepian <ovs@ovs.to>
+---
+ drivers/net/virtio_net.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 45f1a871b7da..32cddb633793 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2948,19 +2948,35 @@ static int virtnet_get_rxfh(struct net_device *dev, u32 *indir, u8 *key, u8 *hfu
+ static int virtnet_set_rxfh(struct net_device *dev, const u32 *indir, const u8 *key, const u8 hfunc)
+ {
+ 	struct virtnet_info *vi = netdev_priv(dev);
++	bool update = false;
+ 	int i;
  
-> Having this as "GPIOD_ASIS" makes it feel like the kernel is somehow
-> able to maintain continuity of this GPIO line from the BIOS state to
-> the kernel, but I don't think it can. I've looked at the "GPIOD_ASIS"
-> property before because I've always wanted the ability to have GPIOs
-> that could more seamlessly transition their firmware state to their
-> kernel state. I don't think the API actually allows it. The fact that
-> GPIO regulators don't support this seamless transition (even though it
-> would be an obvious feature to add) supports my theory that the API
-> doesn't currently allow it. It may be possible to make something work
-> on some implementations but I think it's not guaranteed.
-> 
-> Specifically, the docs say:
-> 
-> * GPIOD_ASIS or 0 to not initialize the GPIO at all. The direction must be set
->   later with one of the dedicated functions.
-> 
-> So that means that you can't read the pin without making it an input
-> (which might change the state if it was previously driving a value)
-> and you can't write the pin without making it an output and choosing a
-> value to set it to. Basically grabbing a pin with "asis" doesn't allow
-> you to do anything with it--it just claims it and doesn't let anyone
-> else have it.
+ 	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (indir) {
++		if (!vi->has_rss)
++			return -EOPNOTSUPP;
++
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+ 			vi->ctrl->rss.indirection_table[i] = indir[i];
++		update = true;
+ 	}
+-	if (key)
++
++	if (key) {
++		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
++		 * device provides hash calculation capabilities, that is,
++		 * hash_key is configured.
++		 */
++		if (!vi->has_rss && !vi->has_rss_hash_report)
++			return -EOPNOTSUPP;
++
+ 		memcpy(vi->ctrl->rss.key, key, vi->rss_key_size);
++		update = true;
++	}
+ 
+-	virtnet_commit_rss_command(vi);
++	if (update)
++		virtnet_commit_rss_command(vi);
+ 
+ 	return 0;
+ }
+@@ -3852,13 +3868,15 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
+ 		vi->has_rss_hash_report = true;
+ 
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
++	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
+ 		vi->has_rss = true;
+ 
+-	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_indir_table_size =
+ 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
+ 				rss_max_indirection_table_length));
++	}
++
++	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+ 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+ 
+-- 
+2.43.0
 
-These properties may prevent it from being used by the regulator
-framework, but GPIOD_ASIS works well in the case of a reset gpio where
-we simply leave it in whatever state the firmware left it in if probe
-fails before we get to powering on the device.
-
-Johan
 
