@@ -1,115 +1,102 @@
-Return-Path: <stable+bounces-41342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293DA8B04F3
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 10:52:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC6A8B052F
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 11:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D131F243A9
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 08:52:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9F23B21048
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 09:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F50A15886D;
-	Wed, 24 Apr 2024 08:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qru/Sys7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90432158A37;
+	Wed, 24 Apr 2024 09:00:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC93F157468;
-	Wed, 24 Apr 2024 08:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB1A158A06
+	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 08:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.211.30.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713948770; cv=none; b=DAhDQNfTpiRXetK1WtZqEBv4P7e5E8EXCJKRMBjdj0+OyLcyqdGR6FqQKj4fPdhMHPRRZvOJxxeJG9YDb5CYp9w1K/Oov/ZUcp7V7PcrPrEPyE/ytDI3/hlKcD4v8cIsVWwpMIebETtEBJOVE/TAxf1UIC9ASHCdeJxrd/KiYTQ=
+	t=1713949201; cv=none; b=SEaM4N8qwL/kHhuWEMzp23VFhQh2fo0RhRwKq3UHXMzBKtpMpd21Y+8ZwukXGjmCC/F2G0c4yk7/ouz3FPY5YQp5ShewTIzd0mp2qH+dVxj1Y4LGNweKai9cMIVnsRjvGr7PhUjeGal3D18r4BMXB+jlLMjvdXxGtnqFVE+/8H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713948770; c=relaxed/simple;
-	bh=xeFFermW9Sr98hlQ4VV5aZoZPPKK7kRslJqQSK7QTyQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=K1ShjykDW2s94P2GAW9ueVCDMd4o40bfpPjFYybYgbqso6K1F+Q/eZz8v40eOstgPRT2Di08P5o7bOE5+K48AQaeHIjniGZdqXq2FGrbrx39dVfcQ+bb2gfIkt7YUQkrQlJORpgCdB95wzVPDzxNzWlu+UmgnUEK+fpJpsGnPhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qru/Sys7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 60587C32781;
-	Wed, 24 Apr 2024 08:52:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713948770;
-	bh=xeFFermW9Sr98hlQ4VV5aZoZPPKK7kRslJqQSK7QTyQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qru/Sys7v3vRJo1V9qwxutUZDfHsrufFdxuwkssyxwTQY7H2z59klkdktt6T5Lzyv
-	 inkPDKXP7VpPaT8sM8W46gVO2naJydK2Twrwp14kKKJAjGpHCHH6+RWE4g8VO7ySzY
-	 V03gXL/u0HQ3/Et1Wvy1Gu2T+DmWDk6Czg89yBx+g3fx2UPl2MB/P0u/aUtorfSJqk
-	 Oyh2lHdAvaNN5PcnSwo1heU+WxyAM9U66ayXO90wQzf1DUwhSi3Ds3f4vIL74FJBfV
-	 H4S7E34pqMIPxBvLoskml/csJuhmhQV6k+duCAQR7rQSUal4FqWALY/knJP+ZsfRls
-	 WG3ePO3Bmjbhg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 58305C4339F;
-	Wed, 24 Apr 2024 08:52:50 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1713949201; c=relaxed/simple;
+	bh=t5i8g9w59FHasVrZ4M0dhNpqO7P9HI8ZpIHC/OCwIeg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=UYdT7SMXVIn55H+yeiZFtTTDZDTAoTquDXKSYHpIQ66YTgBpRCNVQPTzELkhAldpRLSn/SKTo8YAqrmwpGvaPHdjI8d3Kjbnxs/Tu5QW5T9FM4Qgrak8jiv9Pooh5BzyxKfzAvzdQoZ0hjZZ4JHkp7J5X4F3HlGYeECZu5AZIYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=none smtp.mailfrom=queasysnail.net; arc=none smtp.client-ip=207.211.30.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=queasysnail.net
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-659-n8V0b3sIM-m6LidnFQndyQ-1; Wed, 24 Apr 2024 04:59:51 -0400
+X-MC-Unique: n8V0b3sIM-m6LidnFQndyQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 07120834FF4;
+	Wed, 24 Apr 2024 08:59:48 +0000 (UTC)
+Received: from hog (unknown [10.39.193.137])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 232F9C7FCEF;
+	Wed, 24 Apr 2024 08:59:41 +0000 (UTC)
+Date: Wed, 24 Apr 2024 10:59:40 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Yossi Kuperman <yossiku@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>
+Subject: Re: [PATCH net v3 0/4] Fix isolation of broadcast traffic and
+ unmatched unicast traffic with MACsec offload
+Message-ID: <ZijJ_GfrzfbCEWzT@hog>
+References: <20240423181319.115860-1-rrameshbabu@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] platform/chrome: cros_ec_uart: properly fix race condition
-From: patchwork-bot+chrome-platform@kernel.org
-Message-Id: 
- <171394877035.3441.2924475068794719398.git-patchwork-notify@kernel.org>
-Date: Wed, 24 Apr 2024 08:52:50 +0000
-References: <20240410182618.169042-2-noah@noahloomans.com>
-In-Reply-To: <20240410182618.169042-2-noah@noahloomans.com>
-To: Noah Loomans <noah@noahloomans.com>
-Cc: bhanumaiya@chromium.org, bleung@chromium.org, tzungbi@kernel.org,
- groeck@chromium.org, robertzieba@google.com, chrome-platform@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20240423181319.115860-1-rrameshbabu@nvidia.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: queasysnail.net
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+2024-04-23, 11:13:01 -0700, Rahul Rameshbabu wrote:
+> Rahul Rameshbabu (4):
+>   macsec: Enable devices to advertise whether they update sk_buff md_dst
+>     during offloads
+>   ethernet: Add helper for assigning packet type when dest address does
+>     not match device address
+>   macsec: Detect if Rx skb is macsec-related for offloading devices that
+>     update md_dst
+>   net/mlx5e: Advertise mlx5 ethernet driver updates sk_buff md_dst for
+>     MACsec
+>=20
+>  .../mellanox/mlx5/core/en_accel/macsec.c      |  1 +
+>  drivers/net/macsec.c                          | 46 +++++++++++++++----
+>  include/linux/etherdevice.h                   | 25 ++++++++++
+>  include/net/macsec.h                          |  2 +
+>  net/ethernet/eth.c                            | 12 +----
+>  5 files changed, 65 insertions(+), 21 deletions(-)
 
-This patch was applied to chrome-platform/linux.git (for-next)
-by Tzung-Bi Shih <tzungbi@kernel.org>:
+Thanks Rahul.
 
-On Wed, 10 Apr 2024 20:26:19 +0200 you wrote:
-> The cros_ec_uart_probe() function calls devm_serdev_device_open() before
-> it calls serdev_device_set_client_ops(). This can trigger a NULL pointer
-> dereference:
-> 
->     BUG: kernel NULL pointer dereference, address: 0000000000000000
->     ...
->     CPU: 5 PID: 103 Comm: kworker/u16:3 Not tainted 6.8.4-zen1-1-zen #1 4a88f2661038c2a3bb69aa70fb41a5735338823c
->     Hardware name: Google Morphius/Morphius, BIOS MrChromebox-4.22.2-1-g2a93624aebf 01/22/2024
->     Workqueue: events_unbound flush_to_ldisc
->     RIP: 0010:ttyport_receive_buf+0x3f/0xf0
->     ...
->     Call Trace:
->      <TASK>
->      ? __die+0x10f/0x120
->      ? page_fault_oops+0x171/0x4e0
->      ? srso_return_thunk+0x5/0x5f
->      ? exc_page_fault+0x7f/0x180
->      ? asm_exc_page_fault+0x26/0x30
->      ? ttyport_receive_buf+0x3f/0xf0
->      flush_to_ldisc+0x9b/0x1c0
->      process_one_work+0x17b/0x340
->      worker_thread+0x301/0x490
->      ? __pfx_worker_thread+0x10/0x10
->      kthread+0xe8/0x120
->      ? __pfx_kthread+0x10/0x10
->      ret_from_fork+0x34/0x50
->      ? __pfx_kthread+0x10/0x10
->      ret_from_fork_asm+0x1b/0x30
->      </TASK>
-> 
-> [...]
+Series:
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 
-Here is the summary with links:
-  - platform/chrome: cros_ec_uart: properly fix race condition
-    https://git.kernel.org/chrome-platform/c/5e700b384ec1
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+--=20
+Sabrina
 
 
