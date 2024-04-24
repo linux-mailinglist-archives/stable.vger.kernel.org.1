@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-41322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF948B0082
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 06:27:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33F28B0080
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 06:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B9A5B23063
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 04:27:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68ADE1F24828
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 04:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D333F13E8B2;
-	Wed, 24 Apr 2024 04:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7487213FD81;
+	Wed, 24 Apr 2024 04:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/7ie6yv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAz0rBCU"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F5B13D886
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325FF13D886
 	for <Stable@vger.kernel.org>; Wed, 24 Apr 2024 04:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713932856; cv=none; b=I9XPYCd45unm6HHwIl0sKF+q+LZAfhF12VEBMwjYckPsJUE2Y/vBC94RS3utvcRTh9yw4zMkr9K7WBA2n/1ri+pBAbBNzIMsncHIyix4kw3DSdCTCCujqurOTnTBm/vb30+xGx/XEOqm1TE7H9Uq94RYVYy11XLywJriZUdbpn4=
+	t=1713932857; cv=none; b=cOugLbbEmfeJzbqWpmtVuRlcnXQcZL+6h48OIrS2CJ/tDJen2qH6TaI12rDmJTS4cP4R82kVT6mYtOwGbzOAOB3n+dpcM1nRX9lU1jgLXV4B0SoEIoYKo5UDYdTTPLGqliUXdKvseFaIZLjri690x1lln0sK/ZFRm+OIJf6R+dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713932856; c=relaxed/simple;
-	bh=wh+AOjSzhsRkH2Jhs0PuwiAvexZsTWn+csa4/WzrGZQ=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=e1tKjYOKEzxJSZnNK0X+gOn92JERTDYNs3/2cjGEWVR4nNuvNnAv4J32zvtRX7As3fPajLcqApl8Lz4aEbSQwY6rHdNfVv5RH0gC6LSW1rgcXV5NWu+KsEpS+BWFsdTnoX+Tm00k7C5l6AkBVJOVXiyRc41Pew7vD7w5vtEq9Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/7ie6yv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE955C3277B;
-	Wed, 24 Apr 2024 04:27:35 +0000 (UTC)
+	s=arc-20240116; t=1713932857; c=relaxed/simple;
+	bh=tw2Qpqh+JIlEGSYltZY5IcyDRAxICrDAte6C8XlGU5Y=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=nOW3XeDek+i9BkoPnaaIu1YO+dZaaCd0wMLrfON83qZEH8J88hIhEv587Wbaqdcpsmd+YI3e/3qy/Pe9xpGrIIrteueaV93/sE5U+a6al7ZKVYtgv4mH0rwDj2KBp6LRsgN6yfnhhXIViDXOaJp8iN0P0sk27U8t2QvgGRQDk6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAz0rBCU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D38C113CE;
+	Wed, 24 Apr 2024 04:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1713932856;
-	bh=wh+AOjSzhsRkH2Jhs0PuwiAvexZsTWn+csa4/WzrGZQ=;
+	bh=tw2Qpqh+JIlEGSYltZY5IcyDRAxICrDAte6C8XlGU5Y=;
 	h=Subject:To:From:Date:From;
-	b=W/7ie6yvGXwWlTMy+dSeVf87LkPV0sJ4ouxI+7dCzdOz8grDb+Xk1tBKDS/P+40ZB
-	 TSlslWk3oHAq5DCkB5gxaS5q6G0naUy1nPmUrSn0USX6vUbK+78qAtUrC5tN3XI6TC
-	 rfumOLMnNdC9+hj0QHxzlT94720D4BWGhP4TtpRc=
-Subject: patch "iio: accel: mxc4005: Interrupt handling fixes" added to char-misc-linus
+	b=xAz0rBCUH83Xe8MsH37FrL5RjUiWbipm/X1WQBiBHAAbXVKMpnmCxmQ6kEgxM03mX
+	 EI87MsRK9qwZepw6134ek9SW+ODTFqVysVX7PHRxbZAGsfLJ0LrecQ/BnsRwtz9kPY
+	 TLeYENrgbPgg7dmNQVIv7zaWR8m5bHeJluOCVXiY=
+Subject: patch "iio: accel: mxc4005: Reset chip on probe() and resume()" added to char-misc-linus
 To: hdegoede@redhat.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 23 Apr 2024 21:27:26 -0700
-Message-ID: <2024042326-stuffing-yippee-5f58@gregkh>
+Date: Tue, 23 Apr 2024 21:27:27 -0700
+Message-ID: <2024042327-reroute-feisty-c1cf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: accel: mxc4005: Interrupt handling fixes
+    iio: accel: mxc4005: Reset chip on probe() and resume()
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,106 +69,155 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 57a1592784d622ecee0b71940c65429173996b33 Mon Sep 17 00:00:00 2001
+From 6b8cffdc4a31e4a72f75ecd1bc13fbf0dafee390 Mon Sep 17 00:00:00 2001
 From: Hans de Goede <hdegoede@redhat.com>
-Date: Tue, 26 Mar 2024 12:36:59 +0100
-Subject: iio: accel: mxc4005: Interrupt handling fixes
+Date: Tue, 26 Mar 2024 12:37:00 +0100
+Subject: iio: accel: mxc4005: Reset chip on probe() and resume()
 
-There are 2 issues with interrupt handling in the mxc4005 driver:
+On some designs the chip is not properly reset when powered up at boot or
+after a suspend/resume cycle.
 
-1. mxc4005_set_trigger_state() writes MXC4005_REG_INT_MASK1_BIT_DRDYE
-(0x01) to INT_MASK1 to enable the interrupt, but to disable the interrupt
-it writes ~MXC4005_REG_INT_MASK1_BIT_DRDYE which is 0xfe, so it enables
-all other interrupt sources in the INT_SRC1 register. On the MXC4005 this
-is not an issue because only bit 0 of the register is used. On the MXC6655
-OTOH this is a problem since bit7 is used as TC (Temperature Compensation)
-disable bit and writing 1 to this disables Temperature Compensation which
-should only be done when running self-tests on the chip.
+Use the sw-reset feature to ensure that the chip is in a clean state
+after probe() / resume() and in the case of resume() restore the settings
+(scale, trigger-enabled).
 
-Write 0 instead of ~MXC4005_REG_INT_MASK1_BIT_DRDYE to disable
-the interrupts to fix this.
-
-2. The datasheets for the MXC4005 / MXC6655 do not state what the reset
-value for the INT_MASK0 and INT_MASK1 registers is and since these are
-write only we also cannot learn this from the hw. Presumably the reset
-value for both is all 0, which means all interrupts disabled.
-
-Explicitly set both registers to 0 from mxc4005_chip_init() to ensure
-both masks are actually set to 0.
-
-Fixes: 79846e33aac1 ("iio: accel: mxc4005: add support for mxc6655")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218578
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240326113700.56725-2-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20240326113700.56725-3-hdegoede@redhat.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/accel/mxc4005.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ drivers/iio/accel/mxc4005.c | 68 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
 diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
-index 61839be501c2..111f4bcf24ad 100644
+index 111f4bcf24ad..63c3566a533b 100644
 --- a/drivers/iio/accel/mxc4005.c
 +++ b/drivers/iio/accel/mxc4005.c
-@@ -27,9 +27,13 @@
- #define MXC4005_REG_ZOUT_UPPER		0x07
- #define MXC4005_REG_ZOUT_LOWER		0x08
+@@ -5,6 +5,7 @@
+  * Copyright (c) 2014, Intel Corporation.
+  */
  
-+#define MXC4005_REG_INT_MASK0		0x0A
-+
- #define MXC4005_REG_INT_MASK1		0x0B
- #define MXC4005_REG_INT_MASK1_BIT_DRDYE	0x01
++#include <linux/delay.h>
+ #include <linux/module.h>
+ #include <linux/i2c.h>
+ #include <linux/iio/iio.h>
+@@ -36,6 +37,7 @@
  
-+#define MXC4005_REG_INT_CLR0		0x00
-+
  #define MXC4005_REG_INT_CLR1		0x01
  #define MXC4005_REG_INT_CLR1_BIT_DRDYC	0x01
++#define MXC4005_REG_INT_CLR1_SW_RST	0x10
  
-@@ -113,7 +117,9 @@ static bool mxc4005_is_readable_reg(struct device *dev, unsigned int reg)
- static bool mxc4005_is_writeable_reg(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
-+	case MXC4005_REG_INT_CLR0:
- 	case MXC4005_REG_INT_CLR1:
-+	case MXC4005_REG_INT_MASK0:
- 	case MXC4005_REG_INT_MASK1:
- 	case MXC4005_REG_CONTROL:
- 		return true;
-@@ -330,17 +336,13 @@ static int mxc4005_set_trigger_state(struct iio_trigger *trig,
- {
- 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
- 	struct mxc4005_data *data = iio_priv(indio_dev);
-+	unsigned int val;
- 	int ret;
+ #define MXC4005_REG_CONTROL		0x0D
+ #define MXC4005_REG_CONTROL_MASK_FSR	GENMASK(6, 5)
+@@ -43,6 +45,9 @@
  
- 	mutex_lock(&data->mutex);
--	if (state) {
--		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
--				   MXC4005_REG_INT_MASK1_BIT_DRDYE);
--	} else {
--		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
--				   ~MXC4005_REG_INT_MASK1_BIT_DRDYE);
--	}
+ #define MXC4005_REG_DEVICE_ID		0x0E
  
-+	val = state ? MXC4005_REG_INT_MASK1_BIT_DRDYE : 0;
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, val);
- 	if (ret < 0) {
- 		mutex_unlock(&data->mutex);
- 		dev_err(data->dev, "failed to update reg_int_mask1");
-@@ -382,6 +384,14 @@ static int mxc4005_chip_init(struct mxc4005_data *data)
++/* Datasheet does not specify a reset time, this is a conservative guess */
++#define MXC4005_RESET_TIME_US		2000
++
+ enum mxc4005_axis {
+ 	AXIS_X,
+ 	AXIS_Y,
+@@ -66,6 +71,8 @@ struct mxc4005_data {
+ 		s64 timestamp __aligned(8);
+ 	} scan;
+ 	bool trigger_enabled;
++	unsigned int control;
++	unsigned int int_mask1;
+ };
+ 
+ /*
+@@ -349,6 +356,7 @@ static int mxc4005_set_trigger_state(struct iio_trigger *trig,
+ 		return ret;
+ 	}
+ 
++	data->int_mask1 = val;
+ 	data->trigger_enabled = state;
+ 	mutex_unlock(&data->mutex);
+ 
+@@ -384,6 +392,13 @@ static int mxc4005_chip_init(struct mxc4005_data *data)
  
  	dev_dbg(data->dev, "MXC4005 chip id %02x\n", reg);
  
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
++			   MXC4005_REG_INT_CLR1_SW_RST);
 +	if (ret < 0)
-+		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
++		return dev_err_probe(data->dev, ret, "resetting chip\n");
 +
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, 0);
-+	if (ret < 0)
-+		return dev_err_probe(data->dev, ret, "writing INT_MASK1\n");
++	fsleep(MXC4005_RESET_TIME_US);
 +
- 	return 0;
+ 	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
+ 	if (ret < 0)
+ 		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
+@@ -479,6 +494,58 @@ static int mxc4005_probe(struct i2c_client *client)
+ 	return devm_iio_device_register(&client->dev, indio_dev);
  }
  
++static int mxc4005_suspend(struct device *dev)
++{
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct mxc4005_data *data = iio_priv(indio_dev);
++	int ret;
++
++	/* Save control to restore it on resume */
++	ret = regmap_read(data->regmap, MXC4005_REG_CONTROL, &data->control);
++	if (ret < 0)
++		dev_err(data->dev, "failed to read reg_control\n");
++
++	return ret;
++}
++
++static int mxc4005_resume(struct device *dev)
++{
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct mxc4005_data *data = iio_priv(indio_dev);
++	int ret;
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
++			   MXC4005_REG_INT_CLR1_SW_RST);
++	if (ret) {
++		dev_err(data->dev, "failed to reset chip: %d\n", ret);
++		return ret;
++	}
++
++	fsleep(MXC4005_RESET_TIME_US);
++
++	ret = regmap_write(data->regmap, MXC4005_REG_CONTROL, data->control);
++	if (ret) {
++		dev_err(data->dev, "failed to restore control register\n");
++		return ret;
++	}
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
++	if (ret) {
++		dev_err(data->dev, "failed to restore interrupt 0 mask\n");
++		return ret;
++	}
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, data->int_mask1);
++	if (ret) {
++		dev_err(data->dev, "failed to restore interrupt 1 mask\n");
++		return ret;
++	}
++
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(mxc4005_pm_ops, mxc4005_suspend, mxc4005_resume);
++
+ static const struct acpi_device_id mxc4005_acpi_match[] = {
+ 	{"MXC4005",	0},
+ 	{"MXC6655",	0},
+@@ -506,6 +573,7 @@ static struct i2c_driver mxc4005_driver = {
+ 		.name = MXC4005_DRV_NAME,
+ 		.acpi_match_table = mxc4005_acpi_match,
+ 		.of_match_table = mxc4005_of_match,
++		.pm = pm_sleep_ptr(&mxc4005_pm_ops),
+ 	},
+ 	.probe		= mxc4005_probe,
+ 	.id_table	= mxc4005_id,
 -- 
 2.44.0
 
