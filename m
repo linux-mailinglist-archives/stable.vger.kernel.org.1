@@ -1,153 +1,144 @@
-Return-Path: <stable+bounces-41390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C207E8B1621
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 00:22:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 147028B1610
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 00:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F40301C2292C
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 22:22:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FA3AB2257B
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 22:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0A116DEDE;
-	Wed, 24 Apr 2024 22:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40049165FC3;
+	Wed, 24 Apr 2024 22:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="gbkKnOCb"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TTqljTBu"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D938A16DED8;
-	Wed, 24 Apr 2024 22:21:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A385A15697B
+	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 22:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713997308; cv=none; b=m71KB3mn0kRNnpWKmmWiffTYx6ny30VDXSIThdO5DJOWR5tBOM257PtkKw7rTeXkal5iOu0DhfJINk3dDeRREnaOGB5k2hZpz4ahxJGgKAGAQ7z6ViZjZVMIhVrT4uxmeIaspkJvp7TsEj87vRXvGXV7Fr3qkvC9fVcEgryEUEE=
+	t=1713997246; cv=none; b=T94oH4uVu9eqa0SH4iXXbSciErs4L2H4e20ACkWJWZrdJwuMmoXir25sL3k5pZ9IQgvZEBrHENsxWRW5Mc0Y5SYTYTADP52vbgjkAK3lX+acnFffchVDl6LrP07CyyhejLkZKT6q0hCcr8uu3tDaFvhM16JU3OeK4yqrDyd5/vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713997308; c=relaxed/simple;
-	bh=8qPgc3v8RuswJLCSzEgGtV3nxpaoKNNEJkwFnsWfn9g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Az+4xzuTgubAxIrD20Ht5yqiHh+DexZ0Q3QVhIf6SqZR6WzD73LC6BC4mZ+urj2YrKlDUZgFfyB4T/bykPmfsI4Th3n1Xp5k2DqHY5wOSMiz23UpXSsvSs50xPeyePrHvYl6kVOk4QogvMURrHKKcNKBCCc0+OOmM8k0BanEGVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=gbkKnOCb; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=FAOVOJ9lAegQil3oaF8i8r4xm+u7aNVtl2W0t2hekxI=; b=gbkKnOCbPlbenoEs2DrK7co7Li
-	hM7LYlq43oc0V/np2nvJleA4az3PM+hlsxi+wn8Jrr5nW5y+WIY7T1iWSj3U+ihh4eGrSqpZpy4GU
-	wsqmT4Ge2fMX/daSdnRaIK+r7wLXt7KVdzvVXwqgSnSftBspY9GcOzk0xN8C67GQw5FCum7UMXeoD
-	SNIwVNZ6j8SF5G8kyGXS3Wj/l48nCvztHQZToyyRyDtRslV1hxKywzhJL2WcILusn174/x00h3ae1
-	tPPkfVVPb7hIoq0eJH1ypOEDb5gkaQT4UX/pW+P4ziG5SvNPK+yCWWCgnzH8/4Sb0CIcC6TybJgTd
-	pbLNgkrQ==;
-Received: from 179-125-71-233-dinamico.pombonet.net.br ([179.125.71.233] helo=quatroqueijos.lan)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1rzkzo-008LGq-KF; Thu, 25 Apr 2024 00:21:45 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: stable@vger.kernel.org
-Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH 5.4,4.19 2/2] tracing: Increase PERF_MAX_TRACE_SIZE to handle Sentinel1 and docker together
-Date: Wed, 24 Apr 2024 19:20:10 -0300
-Message-Id: <20240424222010.2547286-4-cascardo@igalia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240424222010.2547286-1-cascardo@igalia.com>
-References: <20240424222010.2547286-1-cascardo@igalia.com>
+	s=arc-20240116; t=1713997246; c=relaxed/simple;
+	bh=ebYqO7GXWSEDMoYvAZV1Mh/KGym33Q5KfBsiemCirWg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=APwSh2tpXTxQQUVuujKmD0rz+45Loe2kTL5F1ErC+9qkfnA5iYgcaLW/a98f5MCqWhXHpOIDt1W/zD3Kt8Y3iBpJVZDw/M32MCgASQumsO4RaG5GUiiWAIPQ1sgGBQiwr+p0bSR1tEXNBD04FVaVvJh+Jgtp4PvHhSymiUK1A2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TTqljTBu; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-615073c8dfbso5196687b3.1
+        for <stable@vger.kernel.org>; Wed, 24 Apr 2024 15:20:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1713997244; x=1714602044; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yxmru3ZVzAAhEnel9IbClqgMoLU12bmNSmOWrzHiz+Q=;
+        b=TTqljTBu+JQaF1ojMdJNZgejO1P9I3P9ZnVAU3n3NW9QY7U96oshfEDZ/9Nlql2KTb
+         yZ2HjXUnLujyjU1amzXo7qaqrG4a8SvhN/OEan4qrJme47Nsu1O7eD0uH1+ldONVNyVw
+         HMHrQ8VJBEKODLewtqQbjNwRcqkUeT2Ht3JwHLcjJw6nDJ+Ws6yl0eFN4GnIQZp3FuaJ
+         hwzZZ/pzXbtFZZ53dI/BzcSTRHnYqzKAhwR9fIytZxT7EuokSU8W3X8tlqr8Jp4rxCl6
+         lnEGc27tpa5b60Kquxw9edENGSXbcprZznRVVOVFyxXShtefeKXA4AgV74plYN2e2+Si
+         WWdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713997244; x=1714602044;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yxmru3ZVzAAhEnel9IbClqgMoLU12bmNSmOWrzHiz+Q=;
+        b=GcXs5Rjk5o0ig6vkE1GQLCGtFKu6KL/MGS8yN++OcZEQJumyw7R4nX3zdiwAxaLB1i
+         9+d0CICH46Ov3enPrS8Fi6dRWT6CG5TZk+vVDtK0zP7Vboh4loT1VEHgk9MG7ui6UPJq
+         kL/4KLVYc0bKojjksFrFMYDLCbDRNHDcwlweEByOQlHVQWItdA1QRd81UXHEG6zit9xW
+         I0VC7eqZQ0OGr/JOHKKA5OK4/gj2KX5sqd/g4oWZ7EYG9lu6ryYsdMyJ3YFPnEyI2AxJ
+         aArbOeeJgrE51EMpdn+wJ7du8SQSLxLx+SYbEZt88p80vx9iCIIVuhmBGIVyvULMslmM
+         6hgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUD29W3W1bRGCNtznVv7RGsD3MGbqul0ST6fFTdVpNdDbLydX4rLX1JDF0XOOBX0lX5IMpX3jNpAWZFLIkKTS8Cqg09IVym
+X-Gm-Message-State: AOJu0YzBij9hojfVqSEN10prRLjOVoShdXwAYq/13EpN3I55mEDTx4nT
+	/yK5JgjxB/3H4o71eccNhkNk+6Ff18yQfBIicC4HVJM1Qq6iPBxF1XJwJriE+1EHDwI+XF/vTGP
+	o8g==
+X-Google-Smtp-Source: AGHT+IHSugBrrG6XMw6EQmr4US6xbkxlgV0bs5M3BAIbsK4KlXdIL4FSWqUTZ4+tDfgz+kefXC1Nnaxoc/o=
+X-Received: from amitsd-gti.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:827])
+ (user=amitsd job=sendgmr) by 2002:a05:6902:701:b0:de4:64c4:d90c with SMTP id
+ k1-20020a056902070100b00de464c4d90cmr397847ybt.12.1713997243709; Wed, 24 Apr
+ 2024 15:20:43 -0700 (PDT)
+Date: Wed, 24 Apr 2024 15:20:36 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
+Message-ID: <20240424222040.1798922-1-amitsd@google.com>
+Subject: [PATCH v1] usb: typec: tcpm: unregister existing source caps before re-registration
+From: Amit Sunil Dhamne <amitsd@google.com>
+To: badhri@google.com
+Cc: rdbabiera@google.com, Amit Sunil Dhamne <amitsd@google.com>, linux-usb@vger.kernel.org, 
+	stable@vger.kernel.org, kernel@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: "Robin H. Johnson" <robbat2@gentoo.org>
+Check and unregister existing source caps in tcpm_register_source_caps
+function before registering new ones. This change fixes following
+warning when port partner resends source caps after negotiating PD contract
+for the purpose of re-negotiation.
 
-commit e531e90b5ab0f7ce5ff298e165214c1aec6ed187 upstream.
+[  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
+[  343.135071][  T151] Call trace:
+[  343.135076][  T151]  dump_backtrace+0xe8/0x108
+[  343.135099][  T151]  show_stack+0x18/0x24
+[  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
+[  343.135119][  T151]  dump_stack+0x18/0x24
+[  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
+[  343.135137][  T151]  kobject_add_internal+0x228/0x424
+[  343.135146][  T151]  kobject_add+0x94/0x10c
+[  343.135152][  T151]  device_add+0x1b0/0x4c0
+[  343.135187][  T151]  device_register+0x20/0x34
+[  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
+[  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
+[  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
+[  343.135227][  T151]  kthread+0x114/0x1bc
+[  343.135235][  T151]  ret_from_fork+0x10/0x20
+[  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
 
-Running endpoint security solutions like Sentinel1 that use perf-based
-tracing heavily lead to this repeated dump complaining about dockerd.
-The default value of 2048 is nowhere near not large enough.
-
-Using the prior patch "tracing: show size of requested buffer", we get
-"perf buffer not large enough, wanted 6644, have 6144", after repeated
-up-sizing (I did 2/4/6/8K). With 8K, the problem doesn't occur at all,
-so below is the trace for 6K.
-
-I'm wondering if this value should be selectable at boot time, but this
-is a good starting point.
-
-```
-------------[ cut here ]------------
-perf buffer not large enough, wanted 6644, have 6144
-WARNING: CPU: 1 PID: 4997 at kernel/trace/trace_event_perf.c:402 perf_trace_buf_alloc+0x8c/0xa0
-Modules linked in: [..]
-CPU: 1 PID: 4997 Comm: sh Tainted: G                T 5.13.13-x86_64-00039-gb3959163488e #63
-Hardware name: LENOVO 20KH002JUS/20KH002JUS, BIOS N23ET66W (1.41 ) 09/02/2019
-RIP: 0010:perf_trace_buf_alloc+0x8c/0xa0
-Code: 80 3d 43 97 d0 01 00 74 07 31 c0 5b 5d 41 5c c3 ba 00 18 00 00 89 ee 48 c7 c7 00 82 7d 91 c6 05 25 97 d0 01 01 e8 22 ee bc 00 <0f> 0b 31 c0 eb db 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 55 89
-RSP: 0018:ffffb922026b7d58 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff9da5ee012000 RCX: 0000000000000027
-RDX: ffff9da881657828 RSI: 0000000000000001 RDI: ffff9da881657820
-RBP: 00000000000019f4 R08: 0000000000000000 R09: ffffb922026b7b80
-R10: ffffb922026b7b78 R11: ffffffff91dda688 R12: 000000000000000f
-R13: ffff9da5ee012108 R14: ffff9da8816570a0 R15: ffffb922026b7e30
-FS:  00007f420db1a080(0000) GS:ffff9da881640000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000060 CR3: 00000002504a8006 CR4: 00000000003706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- kprobe_perf_func+0x11e/0x270
- ? do_execveat_common.isra.0+0x1/0x1c0
- ? do_execveat_common.isra.0+0x5/0x1c0
- kprobe_ftrace_handler+0x10e/0x1d0
- 0xffffffffc03aa0c8
- ? do_execveat_common.isra.0+0x1/0x1c0
- do_execveat_common.isra.0+0x5/0x1c0
- __x64_sys_execve+0x33/0x40
- do_syscall_64+0x6b/0xc0
- ? do_syscall_64+0x11/0xc0
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-RIP: 0033:0x7f420dc1db37
-Code: ff ff 76 e7 f7 d8 64 41 89 00 eb df 0f 1f 80 00 00 00 00 f7 d8 64 41 89 00 eb dc 0f 1f 84 00 00 00 00 00 b8 3b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 01 43 0f 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffd4e8b4e38 EFLAGS: 00000246 ORIG_RAX: 000000000000003b
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f420dc1db37
-RDX: 0000564338d1e740 RSI: 0000564338d32d50 RDI: 0000564338d28f00
-RBP: 0000564338d28f00 R08: 0000564338d32d50 R09: 0000000000000020
-R10: 00000000000001b6 R11: 0000000000000246 R12: 0000564338d28f00
-R13: 0000564338d32d50 R14: 0000564338d1e740 R15: 0000564338d28c60
----[ end trace 83ab3e8e16275e49 ]---
-```
-
-Link: https://lkml.kernel.org/r/20210831043723.13481-2-robbat2@gentoo.org
-
-Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
+Cc: linux-usb@vger.kernel.org
+Cc: stable@vger.kernel.org
+Cc: kernel@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
 ---
- include/linux/trace_events.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index b8b87e7ba93f..12ee8973ea6f 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -427,7 +427,7 @@ struct trace_event_file {
- 	}								\
- 	early_initcall(trace_init_perf_perm_##name);
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index ab6ed6111ed0..d8eb89f4f0c3 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2996,7 +2996,7 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
+ {
+ 	struct usb_power_delivery_desc desc = { port->negotiated_rev };
+ 	struct usb_power_delivery_capabilities_desc caps = { };
+-	struct usb_power_delivery_capabilities *cap;
++	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
  
--#define PERF_MAX_TRACE_SIZE	2048
-+#define PERF_MAX_TRACE_SIZE	8192
+ 	if (!port->partner_pd)
+ 		port->partner_pd = usb_power_delivery_register(NULL, &desc);
+@@ -3006,6 +3006,9 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
+ 	memcpy(caps.pdo, port->source_caps, sizeof(u32) * port->nr_source_caps);
+ 	caps.role = TYPEC_SOURCE;
  
- #define MAX_FILTER_STR_VAL	256	/* Should handle KSYM_SYMBOL_LEN */
- 
++	if (cap)
++		usb_power_delivery_unregister_capabilities(cap);
++
+ 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
+ 	if (IS_ERR(cap))
+ 		return PTR_ERR(cap);
+
+base-commit: 0d31ea587709216d88183fe4ca0c8aba5e0205b8
 -- 
-2.34.1
+2.44.0.769.g3c40516874-goog
 
 
