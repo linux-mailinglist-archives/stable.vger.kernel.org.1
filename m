@@ -1,76 +1,77 @@
-Return-Path: <stable+bounces-41362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1E88B0BEE
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 16:06:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AEA8B0BF1
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 16:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C341F2877D
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 14:06:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2B7F28A37A
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 14:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360E515E7E1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6236915E7FC;
 	Wed, 24 Apr 2024 14:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JN4K+gAM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IcMlWtTp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E2F15DBC3
-	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 14:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7D415D5D8
+	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 14:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713967557; cv=none; b=m7A1uzRN/6SFYXXKixaFvAyKECk15sWv1x/JeyBfDjPPMnXvA0kxOp6PGeVF+aiaRxkcGbiL3LDBjQXQD3+bKLrv8YgkIpNWRGCwsz+N+Rqh86i6tar3baw/VJvYVoVCuEfSVNN9+wVmAkeGEDbX74Lspyh4r3Cyp5JBpRkIx4o=
+	t=1713967557; cv=none; b=VHBeAXfPbBy/HukzmbogzfasP1KQKUcspzMXWJYQqyPKZkEOW43kRHVVdlctbSSqTcpufLeSFAn+iKGa9mRW2prHi5XfRigwh8TIEn1ZM5sIkfMTXDuOpUbLlT3gM4L29Y9bsSIh3dfNw7vfHvQbYyHUCNrsw2t18viu45oFmg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713967557; c=relaxed/simple;
-	bh=pUuir1uu0AsFezKSVWCJ+HLjIqUcc98HfYuUzHwdnik=;
+	bh=wti5kj6bWe28mBREcjkcFgjgGXuk8vkEPAf7amsQIJY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YsO00EggiKc/pBInyOJzpLRwfEH1YyvZUabqJoi0Ec4/2NNo03ajgtm802LrPVRxvYSy3sxV8lA0pYeGXLMaaUlgXfRFd8yZNQjX1AhHT1RmD6th66LjQpmpgClNE9FxvheXeEnYEDP20HB02lP4jcHLypBDfP6Rkda/vtfmD3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JN4K+gAM; arc=none smtp.client-ip=209.85.128.48
+	 In-Reply-To:To:Cc; b=YSFCkNEz7QsFbNFAKhpwKgVqcDn2FohQZ51Hg4O+INAStHqeGzjrGUQq4dw/bJeDi9jBY0v3cEhXDfEx3mV02sJJph9hDrzthEfW7RN+w6QxdmzPFdlsT8v6fPgozfAlHwaUq2Se+h8UtZkhPy3vcG7o8xjVYKI4JbMPDj3QB5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IcMlWtTp; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-41aa45251eeso20105025e9.3
-        for <stable@vger.kernel.org>; Wed, 24 Apr 2024 07:05:53 -0700 (PDT)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-343c2f5b50fso4952185f8f.2
+        for <stable@vger.kernel.org>; Wed, 24 Apr 2024 07:05:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713967552; x=1714572352; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1713967553; x=1714572353; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=DpHsNOkxngtvba9wSq++zmIn8As88KCaI91fFzXimkg=;
-        b=JN4K+gAMMB5YauThDrEgmuzfGxUTGN0YegMTcLohBstHKK/I+vMMkgiKAtKUYmQ0v/
-         BVR8xcCSjAIFr8xxqB/kXJjGsltaDHxDf958ezFHiibWjeTbFr86k327h5c9ZZa2dzl3
-         FEOjTA2aBKmnYC9FA07wAZGiI3PgYB9htUYlw3aBXwjvyOHxFbnn60nlSB9IRqNtAekf
-         MId+ZDKCOillGzcwZKwN54m3XeS7uLL3LKVWrp2K73hO9MRBcobgL3TBSpK/DKzUY1mu
-         AIZhzH4gVSSdqS6rgZmIZNQhlYsaU0WS+5EVzy4Odv6aLromF0rbPVr1iaMugjIca2Hr
-         Q3QA==
+        bh=CiQSgCwG9Fjd2pIkvI/eNn2TXAIZ8kV9PyuFCdDbFAA=;
+        b=IcMlWtTpKNdt7yNtjhY9H/vg/0adY31kwIUKmZvtvLiuCbxMkFr4eRGr5+zShWspq5
+         EGm22IODuDxXRWfeU/Bsh5vvjMgQsMl7KO7AYo0YYZI3LGCtp/L4Nhxks4RreQIXoWT3
+         6qp47XX5Q9zbim1KyL6jTZc9lBQo7QFWBRSxdzFTh5MVX7TPOeN0C2D/QkS3Lqew+63+
+         a1TUOhqUketsJh47MSqgi3hQtbp7mSIpsE2Lgn5cwvKSLhtkxD9DjqThLCl+CP6gZD96
+         Nuqwzt2JikgJP3TU6APs6ASpPiw5gr1BlFrCi/qnRaRc+Z16sg1TXyPRPkv+MbFfsAdb
+         aZRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713967552; x=1714572352;
+        d=1e100.net; s=20230601; t=1713967553; x=1714572353;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DpHsNOkxngtvba9wSq++zmIn8As88KCaI91fFzXimkg=;
-        b=wn4PE3l4/yvu3TPaU/aTrWElsNTs9JIsW2ArSHJMXMryk+Qt1TJI6p25j9eq27HNBM
-         Ifb+V4kUEyoR/e0j7JG5+mmRgstmi7hekjIMYiBVvYqESaGIIa/7jhglgB911DOfVQ2z
-         D7cXJO3Ig2pAQSw99LN+xony1fTrCQzxLN8JQvy7aeiaqSGyJOQ2Kv4p/FWjYkynqJDT
-         Qnr2XQwJA+IM3IMHP8UH5ytwihIpg1Q7LMchplHlLAd4owbBRWW3ZuK9UOp3JP6ZADlI
-         qWCmbGcngjF54maPpqPytecVYkEvmhQXQgggF88ug1/CpsxsbV7mQzcNYDIuCTXlwl4l
-         DSrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX6wXitg/X/StIatZwqjnLJqupwOkBX0b7zrxO4qrOpkWeJ3BKCz/9dqOMe1hTYXjbifpf/gd+OhER1BbFoIsz7SlGeofNK
-X-Gm-Message-State: AOJu0Yz/tqXI9nKD2Q4OmDYbbUNqfwHYUlikqmrZVP5EgegQuSiX2rUo
-	Y0xqFmtC890YY2roJGSrspbaVq8AAl+UfUb97Eu2OJ/xmUYWqYRBOCBChv0W2Ls=
-X-Google-Smtp-Source: AGHT+IHrPrgSzW/eVw7jFZHVPCK2stE2i1eZs6gOPOq9XnTtiiffxLzlqTup/NIJDSvunaQRTGqq7w==
-X-Received: by 2002:a5d:574a:0:b0:34a:e73a:56a3 with SMTP id q10-20020a5d574a000000b0034ae73a56a3mr1627330wrw.7.1713967551890;
-        Wed, 24 Apr 2024 07:05:51 -0700 (PDT)
+        bh=CiQSgCwG9Fjd2pIkvI/eNn2TXAIZ8kV9PyuFCdDbFAA=;
+        b=sULNBjLLZrYFu+iEe4Ot6ovqTARnoqwCDnc5A8nHNvUSIV0KQUqIRpHYDq7cvu0Nyt
+         DmqzcgE5lacmc8WadfL1zhMi+1bhUpmO1ah7GalxtE68Pv9qtTfOVLvIY9ttgjzlw4H7
+         jfVxDd+xLVnBxBgs14fEiVzoM01alK6mR6BPPrN7VuoZzZ9inOy8We9xuxfjd2870Ba0
+         1NILtxQxkaw6snczLajJHlPiviaqg3ItYrYy92EeiZGi4m5dIqWaWXZav+N5HffemHxP
+         VSNpwfVCyjAKXKeg5fCSvHDKqiiHW3U9B/3X/EIKc7O988VIfPNpumS1sfdPXcBTdDm6
+         tprw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCSzbmlRlHI3MgrxXZlIsEeSrvAjW6tu4RPUPFK57gSD6A9d4du/4pxiSQEnyhoiAo4Rs3C7222XXgIwgT0Z58Ru/S2xZl
+X-Gm-Message-State: AOJu0YxU4oqWh+fSumfs8shnvcDEftjOBYu418ZVzS79B+TJn3j9SRiQ
+	WVmRSk6Z4b+OrHJTsdAwxwSGkKvrnnrIU9vOth3KwuMsvRvSLiblndKUkba/gyE8tg/hlB5gE13
+	qhYc=
+X-Google-Smtp-Source: AGHT+IGqG2RVeoMAdeMDYTn9tNZggqfDQ+qae44PwKczUO0hg8teOGcUdrRa+KCXGTu719wfKa2arQ==
+X-Received: by 2002:a5d:5449:0:b0:34a:a836:b940 with SMTP id w9-20020a5d5449000000b0034aa836b940mr1496105wrv.18.1713967553671;
+        Wed, 24 Apr 2024 07:05:53 -0700 (PDT)
 Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id p8-20020a5d48c8000000b0034af40b2efdsm9105325wrs.108.2024.04.24.07.05.49
+        by smtp.gmail.com with ESMTPSA id p8-20020a5d48c8000000b0034af40b2efdsm9105325wrs.108.2024.04.24.07.05.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Apr 2024 07:05:50 -0700 (PDT)
+        Wed, 24 Apr 2024 07:05:52 -0700 (PDT)
 From: Daniel Thompson <daniel.thompson@linaro.org>
-Date: Wed, 24 Apr 2024 15:03:35 +0100
-Subject: [PATCH v3 2/7] kdb: Use format-strings rather than '\0' injection
- in kdb_read()
+Date: Wed, 24 Apr 2024 15:03:36 +0100
+Subject: [PATCH v3 3/7] kdb: Fix console handling when editing and
+ tab-completing commands
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,7 +80,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240424-kgdb_read_refactor-v3-2-f236dbe9828d@linaro.org>
+Message-Id: <20240424-kgdb_read_refactor-v3-3-f236dbe9828d@linaro.org>
 References: <20240424-kgdb_read_refactor-v3-0-f236dbe9828d@linaro.org>
 In-Reply-To: <20240424-kgdb_read_refactor-v3-0-f236dbe9828d@linaro.org>
 To: Jason Wessel <jason.wessel@windriver.com>, 
@@ -88,142 +89,78 @@ Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org,
  Daniel Thompson <daniel.thompson@linaro.org>, stable@vger.kernel.org, 
  Justin Stitt <justinstitt@google.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4021;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1858;
  i=daniel.thompson@linaro.org; h=from:subject:message-id;
- bh=pUuir1uu0AsFezKSVWCJ+HLjIqUcc98HfYuUzHwdnik=;
- b=owEBbQKS/ZANAwAKAXzjJV0594ihAcsmYgBmKRFrh6HPOcCklaq0yycGzE/JCVXYmszt3a2b3
- ez4yq9phveJAjMEAAEKAB0WIQQvNUFTUPeVarpwrPB84yVdOfeIoQUCZikRawAKCRB84yVdOfeI
- oSo0D/0ap+RFd7GQkBARE2EvV7WKwb/s+o03JffFP+H5p7ja6NtXnZxw2vCbIgxiEa+SiqrfVGg
- yzaB8XzeG7cYtdaPgecedLfh5K1TbOsl+XwTvaLmIGC5Xtm607+HG+lGv327PjwGX+0pFns5tOM
- wRUYTWBHJel5K4vQbkNlCGBEiofmusoJysKAVhfDZ7lV23MoO5IYJ2LK+1et6dyHVcadeAYRqkS
- jpgJN81La4V6lDejD5wttUylt2l7nxsrjvVcydVhXPGxY7ZWgZRHC05DzLJePM+hQKANEeUDaqh
- mOyeA0tZKEUMftyKX3C/iwVUoSEvjJrgdgNC930zDugN162bUIj+yz2rqXjNmCZHh+rjEuYNDKZ
- 5zlUw61uA1i3xJQifNTedO1YL0lS/+IurpfQ+XAiGBzUC2QadU5uA4OPk3ehLGWmo1AXEZ70ozV
- jMHZYX5KxbecN4V9KZh8p1D6cahJN2HLZ5oOeIp3jjv0GD3Bl+QQo2mIq1JRmfyliCm76mm3VRB
- j5hqskDS1vzo9kahcpwK4TPVe5R0Y1iaA+K86culQYQ2FSDbywkV9L3WGZvpUFCsMpVoqD5A59x
- Lv+9LXP2hbo4wVaObNRyx6vwMVhzAeXQjJKrF8pcn8kb6Q/Zp6wh65Gv0yoQ0kzy6R3Ej0Fib/h
- bqSnTUTmJdvcI6Q==
+ bh=wti5kj6bWe28mBREcjkcFgjgGXuk8vkEPAf7amsQIJY=;
+ b=owEBbQKS/ZANAwAKAXzjJV0594ihAcsmYgBmKRF5rcqN5Dgc+qstFjiPAW9G3hYBgyjtuKx/O
+ swzPOkiGi2JAjMEAAEKAB0WIQQvNUFTUPeVarpwrPB84yVdOfeIoQUCZikReQAKCRB84yVdOfeI
+ oZjqD/43oGbEO2TFmRq3wSCHWMsq9Im7d0XzuP6Xg6OkzQSMPMsg/HnNUiCk/wDXM00xOeKEbii
+ 4cU4AETV3oDjp6xBzEveKXrybeWohUWm5Xw4A7NBghLtRIxQZiqPo1K5ZFYwEx9wJ0H5bV9i8V+
+ 5+40DrU28YsTTricP5jKJzKqTQX+JRuurE8td8GTROh/0HElI0ivzakG7tSJJd5yzM+FFiTJTin
+ sVuW+imTw06DPAVR5SlUiBPtWOQ/maUdfNmCf1HDz9iqG35YH58o4ld3cn/4WiC4GAEfEQQZKn6
+ uLMK5tZGYB7/AjkgsKuxbpGhUCzv9U2toh+zg9Uk5RcJnDDm/GXuYPOFZiEpVErNH+2JFt8CBJm
+ n8l8XydEaaFvPUgXY6/wJZ1R5R4FqOsosP9RRdIZK7g8SGek6RUebPV7T+RE7FA3n7uEbdQwctI
+ 7K91q6CqDsJaGD1PeCm/vCiLKC9mNv66KCVzCK0FDtUfjLP8zLTGYuYbCoKbqY/BRYY376R17Vz
+ SYuypvrzNgSz0GVneF5COWavX9vMDvfIaDaYcjiALtgCIIHM4NKgDSzBZsX52dflKFeUzDBPWy1
+ 5sb1DLSBpau+aa0r7C0Mb+MBz/JAMUMyVK4PXUP9PAfDSgAD6nHQEfoQbizf/PhzwHm+nkgTsJ5
+ fAV1buYnpy4dfLw==
 X-Developer-Key: i=daniel.thompson@linaro.org; a=openpgp;
  fpr=E38BE19861669213F6E2661AA8A4E3BC5B7B28BE
 
-Currently when kdb_read() needs to reposition the cursor it uses copy and
-paste code that works by injecting an '\0' at the cursor position before
-delivering a carriage-return and reprinting the line (which stops at the
-'\0').
+Currently, if the cursor position is not at the end of the command buffer
+and the user uses the Tab-complete functions, then the console does not
+leave the cursor in the correct position.
 
-Tidy up the code by hoisting the copy and paste code into an appropriately
-named function. Additionally let's replace the '\0' injection with a
-proper field width parameter so that the string will be abridged during
-formatting instead.
+For example consider the following buffer with the cursor positioned
+at the ^:
 
-Cc: stable@vger.kernel.org # Not a bug fix but it is needed for later bug fixes
-Tested-by: Justin Stitt <justinstitt@google.com>
+md kdb_pro 10
+          ^
+
+Pressing tab should result in:
+
+md kdb_prompt_str 10
+                 ^
+
+However this does not happen. Instead the cursor is placed at the end
+(after then 10) and further cursor movement redraws incorrectly. The
+same problem exists when we double-Tab but in a different part of the
+code.
+
+Fix this by sending a carriage return and then redisplaying the text to
+the left of the cursor.
+
+Cc: stable@vger.kernel.org
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Justin Stitt <justinstitt@google.com>
 Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 ---
- kernel/debug/kdb/kdb_io.c | 55 +++++++++++++++++++++++++++++------------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
+ kernel/debug/kdb/kdb_io.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
-index 06dfbccb10336..50789c99b3ba8 100644
+index 50789c99b3ba8..5fccb46f399e5 100644
 --- a/kernel/debug/kdb/kdb_io.c
 +++ b/kernel/debug/kdb/kdb_io.c
-@@ -184,6 +184,33 @@ char kdb_getchar(void)
- 	unreachable();
- }
- 
-+/**
-+ * kdb_position_cursor() - Place cursor in the correct horizontal position
-+ * @prompt: Nil-terminated string containing the prompt string
-+ * @buffer: Nil-terminated string containing the entire command line
-+ * @cp: Cursor position, pointer the character in buffer where the cursor
-+ *      should be positioned.
-+ *
-+ * The cursor is positioned by sending a carriage-return and then printing
-+ * the content of the line until we reach the correct cursor position.
-+ *
-+ * There is some additional fine detail here.
-+ *
-+ * Firstly, even though kdb_printf() will correctly format zero-width fields
-+ * we want the second call to kdb_printf() to be conditional. That keeps things
-+ * a little cleaner when LOGGING=1.
-+ *
-+ * Secondly, we can't combine everything into one call to kdb_printf() since
-+ * that renders into a fixed length buffer and the combined print could result
-+ * in unwanted truncation.
-+ */
-+static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
-+{
-+	kdb_printf("\r%s", kdb_prompt_str);
-+	if (cp > buffer)
-+		kdb_printf("%.*s", (int)(cp - buffer), buffer);
-+}
-+
- /*
-  * kdb_read
-  *
-@@ -212,7 +239,6 @@ static char *kdb_read(char *buffer, size_t bufsize)
- 						 * and null byte */
- 	char *lastchar;
- 	char *p_tmp;
--	char tmp;
- 	static char tmpbuffer[CMD_BUFLEN];
- 	int len = strlen(buffer);
- 	int len_tmp;
-@@ -249,12 +275,8 @@ static char *kdb_read(char *buffer, size_t bufsize)
- 			}
- 			*(--lastchar) = '\0';
- 			--cp;
--			kdb_printf("\b%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("\b%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 10: /* linefeed */
-@@ -272,19 +294,14 @@ static char *kdb_read(char *buffer, size_t bufsize)
- 			memcpy(tmpbuffer, cp+1, lastchar - cp - 1);
- 			memcpy(cp, tmpbuffer, lastchar - cp - 1);
- 			*(--lastchar) = '\0';
--			kdb_printf("%s \r", cp);
--			tmp = *cp;
--			*cp = '\0';
--			kdb_printf(kdb_prompt_str);
--			kdb_printf("%s", buffer);
--			*cp = tmp;
-+			kdb_printf("%s ", cp);
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 1: /* Home */
- 		if (cp > buffer) {
--			kdb_printf("\r");
--			kdb_printf(kdb_prompt_str);
- 			cp = buffer;
-+			kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 		}
- 		break;
- 	case 5: /* End */
-@@ -390,13 +407,9 @@ static char *kdb_read(char *buffer, size_t bufsize)
- 				memcpy(cp+1, tmpbuffer, lastchar - cp);
- 				*++lastchar = '\0';
- 				*cp = key;
--				kdb_printf("%s\r", cp);
-+				kdb_printf("%s", cp);
- 				++cp;
--				tmp = *cp;
--				*cp = '\0';
--				kdb_printf(kdb_prompt_str);
--				kdb_printf("%s", buffer);
--				*cp = tmp;
+@@ -383,6 +383,8 @@ static char *kdb_read(char *buffer, size_t bufsize)
+ 			kdb_printf("\n");
+ 			kdb_printf(kdb_prompt_str);
+ 			kdb_printf("%s", buffer);
++			if (cp != lastchar)
 +				kdb_position_cursor(kdb_prompt_str, buffer, cp);
- 			} else {
- 				*++lastchar = '\0';
- 				*cp++ = key;
+ 		} else if (tab != 2 && count > 0) {
+ 			/* How many new characters do we want from tmpbuffer? */
+ 			len_tmp = strlen(p_tmp) - len;
+@@ -396,6 +398,9 @@ static char *kdb_read(char *buffer, size_t bufsize)
+ 				kdb_printf("%s", cp);
+ 				cp += len_tmp;
+ 				lastchar += len_tmp;
++				if (cp != lastchar)
++					kdb_position_cursor(kdb_prompt_str,
++							    buffer, cp);
+ 			}
+ 		}
+ 		kdb_nextline = 1; /* reset output line number */
 
 -- 
 2.43.0
