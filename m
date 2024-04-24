@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-41330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267468B0326
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 09:25:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A148B0334
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 09:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D62CC287E49
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 07:25:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA0201F21ECF
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 07:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CA1157A74;
-	Wed, 24 Apr 2024 07:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280F0157E6C;
+	Wed, 24 Apr 2024 07:28:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091E4157496;
-	Wed, 24 Apr 2024 07:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4CA157A6B;
+	Wed, 24 Apr 2024 07:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713943517; cv=none; b=lIG8ctej26clOdw+C4dIT3tl1Sual1ZzUGnrm68R/cszzaEVJi3vLZ8SU4piDldIxuVYn0uE5Bpj1xI49VPPhXy1OTArxjtf9cWEo5mpMzefUJmBYHnu7BV/aXpnCL7m5dGPP+VrZ2im9UpDVB34KG1tscHeQBB+J9Bn3U4l2AU=
+	t=1713943694; cv=none; b=bRM/ZqGw0X79tYhzHm0ITa3OJVEfacooHOV1heawbmHkc7GmZC1XXdU1BiP4ry6HrRS+V8dB0auO2SPXXz3v/x58UfV43qGyw1or5bJYrc15EeAH7VJ/8W5DyUj5PDF1NUi1lTActQX7H/6unhUuRdCE5NbKpOy3CZPoLTb1kBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713943517; c=relaxed/simple;
-	bh=6T2djJJaVDUcu78yMORSojnebucTfYHAICQFssYsAYY=;
+	s=arc-20240116; t=1713943694; c=relaxed/simple;
+	bh=VblaPkz2M+x/B2o17KTSp7PJSPr89iTr0i3x/hNomCg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t7gcdFVZlS/6C2Rh5cqMZEZeTnEUxP/33LsfkaheDXOqq4ts/kM6KcVOq1lNuHFRUsg50CjeakKXGVMC7EChBb9SOrRtqVFuf2IM2wh/cLyYSivzz72cO1W0frIF//Mxvyu5mE/AuSgTU2d+w0+vrTBDxBmCotZxud5zrPexjeA=
+	 Content-Type:Content-Disposition:In-Reply-To; b=GRV2s/lXbGqtMfj6ws6oUGLpIUt1QfWfN2ql9qi7kSunkCWFv9emDYTy7zQnzD/cvieeOkCwk+H/1qnuvur6QdH5Qt3lQdMRNs6DWcrOg9ezppgvYw8hUzHBrInd8aABa5eMMXvFwGELDsWMjhCN38W73DJklGrJJJzKAjC7Hzk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 2626D1C0080; Wed, 24 Apr 2024 09:25:14 +0200 (CEST)
-Date: Wed, 24 Apr 2024 09:25:13 +0200
+	id 9A0E51C0080; Wed, 24 Apr 2024 09:28:10 +0200 (CEST)
+Date: Wed, 24 Apr 2024 09:28:10 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -41,9 +41,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 5.15 00/71] 5.15.157-rc1 review
-Message-ID: <Ziiz2aQeT0ytEswe@duo.ucw.cz>
-References: <20240423213844.122920086@linuxfoundation.org>
+Subject: Re: [PATCH 6.8 000/158] 6.8.8-rc1 review
+Message-ID: <Zii0igG0SBKoNfBn@duo.ucw.cz>
+References: <20240423213855.824778126@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,27 +51,29 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="fOlj2svxQCoxFsrA"
+	protocol="application/pgp-signature"; boundary="Det3Y2CjCsXIUhin"
 Content-Disposition: inline
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
 
 
---fOlj2svxQCoxFsrA
+--Det3Y2CjCsXIUhin
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> This is the start of the stable review cycle for the 5.15.157 release.
-> There are 71 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.8.8 release.
+> There are 158 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 CIP testing did not find any problems here:
 
 https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.15.y
+6.8.y
+
+6.6.x compiles ok, too.
 
 Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
@@ -81,15 +83,15 @@ Best regards,
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---fOlj2svxQCoxFsrA
+--Det3Y2CjCsXIUhin
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZiiz2QAKCRAw5/Bqldv6
-8jFZAJ4grkSulQ1hnQweJlPE/8T+CRe75QCgk3whc0s3Nge3yWrutP52mpiVhUA=
-=tHFZ
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZii0igAKCRAw5/Bqldv6
+8rP3AJ9JxRp/y05xyEmTwqVrAySMEwhEZgCeOf1Mq4fbTg61/L7krZVRxVm1P4k=
+=/0+P
 -----END PGP SIGNATURE-----
 
---fOlj2svxQCoxFsrA--
+--Det3Y2CjCsXIUhin--
 
