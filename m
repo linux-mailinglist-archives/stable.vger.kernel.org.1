@@ -1,112 +1,120 @@
-Return-Path: <stable+bounces-41378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43088B114E
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 19:40:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FCE8B116E
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 19:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68E9D1F283E7
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 17:40:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109132896D5
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 17:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A422C16D4F4;
-	Wed, 24 Apr 2024 17:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E123216D4EF;
+	Wed, 24 Apr 2024 17:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SzLQvyn5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GInyvqwn"
 X-Original-To: stable@vger.kernel.org
-Received: from out-185.mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D537B16D4DF
-	for <stable@vger.kernel.org>; Wed, 24 Apr 2024 17:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAFF16D4E7;
+	Wed, 24 Apr 2024 17:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713980415; cv=none; b=oEijah+G7BrXpP4oYEfa0dIhNpf5ijnrnQVOye/kiRCiV84lV/653PipfdZ3oJa2dQyZWG5/FWtMgOW8FfIyituKHMtO6blOUnYK/ULMt8v2e51SNYxktNzz+l3VIo7slb31LrCrHVnrVKz5MIwEVRZVvMB6BkdeIxd2nsbj6MI=
+	t=1713980824; cv=none; b=sXTF50K1m/x+YvVLLEijZS8WXyllZSshxXe1DUJvOAWktVHNspcEzV6ihJv9gmlzEb6/nbEa96iG/x8+Xa6VOtlIyBh4KWPATgxCOYtmFbjxd+6Uc2MjLdc4az6XP+sI3fZ28FEcbBjBUMhvdh2GKMpSNfDORcHsOxMqHZAZhG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713980415; c=relaxed/simple;
-	bh=9FyrcmkOtAhhYqm/Oj7IunlVZtkl4DQgyQew8AYn1ys=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsQvdHynl2q5Tez9VucFPcFZMBiLouHbpdPdAS/h+Bdmr5o1xvGUYj6fcg68BYqe3mm3ayoCjQ4HwBYcYJQZhR4GTw2qv21fQbADIwYO7QN1JeefhSPchOsxB/6GZ2thxbt0T+UkGuk9oqVAoeV/pKpMb39z8eqxB05fF1iNDyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SzLQvyn5; arc=none smtp.client-ip=95.215.58.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1713980412;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QYclyGsafyW+VbguOcIiGpIKqaEvuvieOXH+NNK/rbo=;
-	b=SzLQvyn5912aSivKA5JvFM00Jlndye94iIGMiJfQ3whF9zJMMIhf0mtgNJJ18hAWohratQ
-	iXTN1RxrYrXP2sNnx8kJSHLcQLQSZkwKoSA0/VY9ZlZr7I2Lx2olHiQEa7o200xx6FJXy2
-	UaRAuPL1I0vl+PNDJXp9fN7i2bLxe8U=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev
-Cc: Marc Zyngier <maz@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	kvm@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()
-Date: Wed, 24 Apr 2024 17:39:58 +0000
-Message-ID: <20240424173959.3776798-2-oliver.upton@linux.dev>
-In-Reply-To: <20240424173959.3776798-1-oliver.upton@linux.dev>
-References: <20240424173959.3776798-1-oliver.upton@linux.dev>
+	s=arc-20240116; t=1713980824; c=relaxed/simple;
+	bh=3ulp/AFGfJ8TKWcjkvSHDpHVf9ob13UZsZaRg2nTma8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MyYGoxtIqU1jT6/d4cpjVnete+px8WvTFMbtuxM++SuQJlLnxmy8NxXvcq/Npn3BJve5Tbcx9Dq0cGpYpVEjI5jRkjp1UDndpLehiWq6uwdX0lRJTWWsgjHnJY2/Z63nyjMOQm2DDUTVqOWTRnSFmXkQDhA+Hy/92IRLkzjxXLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GInyvqwn; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1e3c9300c65so884385ad.0;
+        Wed, 24 Apr 2024 10:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713980823; x=1714585623; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AX3wkTmJw2SYmJLJtHNaFQxm/J59nt6zUunS82mxxbw=;
+        b=GInyvqwnL3NrHL9KTNxMbesoZNnl8qM8/QtV/crrJsUon6Vd5QYN9wq8hYtkQnHYWb
+         TugonxTFvrHtU4pbBX3Wwo2v+/Qe9Ju9q4FaxenWfrAHiVlrO7hDb3BpYQrBF+GCp5OM
+         KGPIzMoA3nmYVFyZ1C1KgMwN4mHIxmk0qeoqNLuhtAL8D/LQB0JVJCR/kNzChNdaXG6g
+         RSj64Ketf08mYiICuNaszasAbUf7+lak+p4BnjOdA5w2WwM3YedzuhZa3ggg7XDc7JI6
+         j3H1oOEyiERNKTV6LzMQcILhlqSMencqq3DIszf6jbMbSRgorwXn8w9skS5CWUUz5Rea
+         zO3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713980823; x=1714585623;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AX3wkTmJw2SYmJLJtHNaFQxm/J59nt6zUunS82mxxbw=;
+        b=JFX+UPRPP5cY6fk5nxyGlkcn18PhLQ4hFnJlX3dJM2+lkpAnMaTBF7IeIPIV95Px6l
+         9lIZFfI5x1v94993tLGyR4krfpl9uBNcYqtOy7Pf3qIKMWhvp7gpGqGO70Xj0fu+Gr18
+         xKn3ut7VSeMffAulygd5R/Lorj1rU6SWN3QElCs/HHxXYhOP/ZF/50EM5lcKFfNFPRnT
+         qyIoawOp4Dgiibj2K1+HCm+wyVMzAhsV84HVaQ93oCDJTaYKzK0NdOlYpx3Qh0fTK+4t
+         ndqMNGKyIvLFm91Kt/rUc9oywUNsDZ1q97tu9Aa02E8K+ZTGT69OlHjfFIKlqYp+bWfg
+         /tgw==
+X-Forwarded-Encrypted: i=1; AJvYcCX5DWqN/uGGFYk5OAlQaBYQXG9wGIhSa031ZBPboZqPP5tbGu3q32VP2kL4yncEWm04JJI8SbsrYzo9S76TpArWq3Ozgi2unPrj4wefPXt/WrhDg5FepnlTO1FGsCidmGehpx9I
+X-Gm-Message-State: AOJu0Yy6YL9OfR0Af2wzncEwEt/5E9VnnotyNp6eeb13BtsZKIyigkR1
+	VnIgccCskDcvHe76nr39iNPg4ZYscbkiwVfKjmkDZ+3YtnQmG5Ak
+X-Google-Smtp-Source: AGHT+IGGiyT97MQdP6BJF1NJUmX2poKgH1hddx9G83LT+ayCELDcks7CSQ3RQMz0/xD82c+XzI/4CQ==
+X-Received: by 2002:a17:902:ce06:b0:1e4:9c2f:d4f7 with SMTP id k6-20020a170902ce0600b001e49c2fd4f7mr4146620plg.28.1713980822718;
+        Wed, 24 Apr 2024 10:47:02 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id d10-20020a170903230a00b001e8b81de172sm10577801plh.262.2024.04.24.10.47.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Apr 2024 10:47:02 -0700 (PDT)
+Message-ID: <276ef4a1-6477-4e3f-ba8a-ea3127edb6db@gmail.com>
+Date: Wed, 24 Apr 2024 10:47:00 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.8 000/158] 6.8.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240423213855.824778126@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-vgic_v2_parse_attr() is responsible for finding the vCPU that matches
-the user-provided CPUID, which (of course) may not be valid. If the ID
-is invalid, kvm_get_vcpu_by_id() returns NULL, which isn't handled
-gracefully.
+On 4/23/24 14:37, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.8.8 release.
+> There are 158 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Similar to the GICv3 uaccess flow, check that kvm_get_vcpu_by_id()
-actually returns something and fail the ioctl if not.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Cc: stable@vger.kernel.org
-Fixes: 7d450e282171 ("KVM: arm/arm64: vgic-new: Add userland access to VGIC dist registers")
-Reported-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
----
- arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-index f48b8dab8b3d..1d26bb5b02f4 100644
---- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
-+++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-@@ -338,12 +338,12 @@ int kvm_register_vgic_device(unsigned long type)
- int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
- 		       struct vgic_reg_attr *reg_attr)
- {
--	int cpuid;
-+	int cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
- 
--	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
--
--	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
- 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
-+	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
-+	if (!reg_attr->vcpu)
-+		return -EINVAL;
- 
- 	return 0;
- }
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.44.0.769.g3c40516874-goog
+Florian
 
 
