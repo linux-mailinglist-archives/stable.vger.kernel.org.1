@@ -1,118 +1,89 @@
-Return-Path: <stable+bounces-41381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3078B1328
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 21:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC66F8B1527
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 23:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 194871C21D03
-	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 19:04:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6B821C232E2
+	for <lists+stable@lfdr.de>; Wed, 24 Apr 2024 21:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB1E1CD24;
-	Wed, 24 Apr 2024 19:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEE4156C66;
+	Wed, 24 Apr 2024 21:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="nt4A8HS0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oK0aO8jp"
 X-Original-To: stable@vger.kernel.org
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D711CF8F;
-	Wed, 24 Apr 2024 19:04:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D1D13C9DE;
+	Wed, 24 Apr 2024 21:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713985487; cv=none; b=aSLX0EJnfe9nQtJXk5pNmb+I6ZebfDHgMt26OolrfpbFPF7LpsFvWmLAfYVO4TnkQyOy/3SgNgEGBcZrf0ZLFh8F6JXRxAxwNxNgWCgJJRdUfeMnOCSLXY3JSESwp/XSaKlWgb4ERvQU3oqcU7TD0sn76d2Qzqdd9IeBMHNQl4Y=
+	t=1713993832; cv=none; b=IDUiGlC4o+DtNDEjx/N+tmJcXSOd+csbm7lVXPPrLICS4CnFfz50f9RKV8ZbWTYZjPAznfQv8/Ufc3LIMrjxI6cfDCTLSyBOUNePgbB0eQQKyFkuv1xehzDWhxisBzYVmbyqIEFdNzvTzfyu1c9HUvqONldkPSjf+cnTZXqIPIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713985487; c=relaxed/simple;
-	bh=x6shHUnIQesEwIbukRUgPxXYDXOp6+ft3svHp1S2jFs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Sq1H2g5I78pKE+NMnOil3hRe28HQT8MInb6peAIIvY3yyq7ACMkLAHR8WUhAAPVkjAZjv8lZSDsB5nVCbhkwaq6FoTbLkCNyP5yafQxKmKfWd85T5dGAp6DUF/LpTiQpo+yIuVchKBzxJdTvFO0gcSQrKO58EFj2ySus5/A0kiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=nt4A8HS0; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 73AC247C41
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1713985482; bh=dRKcaBKo5fuMcFfCN9azIg90Nn+9aKeHsYVea/r9kxc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=nt4A8HS0pYyr1iSnw7rMOJONecbH7FLlGeAbC3P5JPX9VAUtzMqIr4h9LBZQM/38V
-	 un2TEvFOOcsqkal+c1YM40JET5RD71kjCoUQw/lPcHK/B3Z8Fs1XLOY088AVBNj0Vl
-	 XAmoJHMnCwomAHfXGCsyO0Ox4zg+RIfEdYEJc9nggjrnst8lryJ20C58STkn3pRrRL
-	 /BwpjY0pUgNuRlpVKMo52Di8U8VTc1g2mx3XJABNVvojKNvZOCFk8MMYlthAWhCziw
-	 2HNQdqw6Fe3A2MHcNYVvLDetiAdH4kB7fDAahfHgjMthMxq/zky7vTSx/7wNLGaQXx
-	 FijRybMiXCKBQ==
-Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 73AC247C41;
-	Wed, 24 Apr 2024 19:04:42 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>, Thomas
- Gleixner
- <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra
- <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Pawan Gupta
- <pawan.kumar.gupta@linux.intel.com>, "Joel Fernandes (Google)"
- <joel@joelfernandes.org>, Chris Hyser <chris.hyser@oracle.com>, Josh Don
- <joshdon@google.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Thomas =?utf-8?Q?Wei=C3=9Fschuh?=
- <linux@weissschuh.net>
-Subject: Re: [PATCH] admin-guide/hw-vuln/core-scheduling: fix return type of
- PR_SCHED_CORE_GET
-In-Reply-To: <20240423-core-scheduling-cookie-v1-1-5753a35f8dfc@weissschuh.net>
-References: <20240423-core-scheduling-cookie-v1-1-5753a35f8dfc@weissschuh.net>
-Date: Wed, 24 Apr 2024 13:04:41 -0600
-Message-ID: <878r12twdy.fsf@meer.lwn.net>
+	s=arc-20240116; t=1713993832; c=relaxed/simple;
+	bh=vkoQ3xlxRkOTA/ExiXKlpU0HDe2Y8nnTPrKZAKD/jho=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uDBafKdTa1O8Z2T2JQAv3929hzqn7OlwF8coDZaFrb36jBr82R3vRlgBCKIqJRMhZj3rEzTmjpJfl7jvOIw1afgAQj1OQXRJTf/WOzE3yZ6/+WJ6jxuRa7Vu65/u+9nNWcuqxeeuVDWBmzj3vLXZ+jdZwMS7WAoPuLE+fBT9FRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oK0aO8jp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824F5C113CD;
+	Wed, 24 Apr 2024 21:23:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1713993831;
+	bh=vkoQ3xlxRkOTA/ExiXKlpU0HDe2Y8nnTPrKZAKD/jho=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oK0aO8jpxvVEH6ur4FPKIRrs9mR8FHc3mmj34ZHUanWUV7K7kEKNX/xbOCiH/jhSC
+	 RNlshUKkGcKQMcJyf2Y33oyVfM9fXeyu148SW9ERlRr2/HQXWWYLYp3GBWjcePsAcq
+	 1SryWxrrT+3ukSuQyhaeF9HpgsPwpj+1W7+5i7Y4=
+Date: Wed, 24 Apr 2024 14:23:42 -0700
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jason Wessel <jason.wessel@windriver.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org, Liuye <liu.yeC@h3c.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] serial: kgdboc: Fix NMI-safety problems from keyboard
+ reset code
+Message-ID: <2024042427-luster-unbend-5ed6@gregkh>
+References: <20240424-kgdboc_fix_schedule_work-v2-1-50f5a490aec5@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240424-kgdboc_fix_schedule_work-v2-1-50f5a490aec5@linaro.org>
 
-Thomas Wei=C3=9Fschuh <linux@weissschuh.net> writes:
-
-> sched_core_share_pid() copies the cookie to userspace with
-> put_user(id, (u64 __user *)uaddr), expecting 64 bits of space.
-> The "unsigned long" datatype that is documented in core-scheduling.rst
-> however is only 32 bits large on 32 bit architectures.
->
-> Document "unsigned long long" as the correct data type that is always
-> 64bits large.
->
-> This matches what the selftest cs_prctl_test.c has been doing all along.
->
-> Fixes: 0159bb020ca9 ("Documentation: Add usecases, design and interface f=
-or core scheduling")
+On Wed, Apr 24, 2024 at 03:21:41PM +0100, Daniel Thompson wrote:
+> Currently, when kdb is compiled with keyboard support, then we will use
+> schedule_work() to provoke reset of the keyboard status.  Unfortunately
+> schedule_work() gets called from the kgdboc post-debug-exception
+> handler.  That risks deadlock since schedule_work() is not NMI-safe and,
+> even on platforms where the NMI is not directly used for debugging, the
+> debug trap can have NMI-like behaviour depending on where breakpoints
+> are placed.
+> 
+> Fix this by using the irq work system, which is NMI-safe, to defer the
+> call to schedule_work() to a point when it is safe to call.
+> 
+> Reported-by: Liuye <liu.yeC@h3c.com>
+> Closes: https://lore.kernel.org/all/20240228025602.3087748-1-liu.yeC@h3c.com/
 > Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/util-linux/df7a25a0-7923-4f8b-a527-5e6f0064=
-074d@t-8ch.de/
-> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 > ---
->  Documentation/admin-guide/hw-vuln/core-scheduling.rst | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/Documentation/admin-guide/hw-vuln/core-scheduling.rst b/Docu=
-mentation/admin-guide/hw-vuln/core-scheduling.rst
-> index cf1eeefdfc32..a92e10ec402e 100644
-> --- a/Documentation/admin-guide/hw-vuln/core-scheduling.rst
-> +++ b/Documentation/admin-guide/hw-vuln/core-scheduling.rst
-> @@ -67,8 +67,8 @@ arg4:
->      will be performed for all tasks in the task group of ``pid``.
->=20=20
->  arg5:
-> -    userspace pointer to an unsigned long for storing the cookie returne=
-d by
-> -    ``PR_SCHED_CORE_GET`` command. Should be 0 for all other commands.
-> +    userspace pointer to an unsigned long long for storing the cookie re=
-turned
-> +    by ``PR_SCHED_CORE_GET`` command. Should be 0 for all other commands.
->=20=20
+> @Greg: I'm assuming this could/should go via your tree but feel free
+>        to share an ack if you want me to hoover it up instead.
 
-Applied, thanks.
+Hoover away!
 
-jon
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 
