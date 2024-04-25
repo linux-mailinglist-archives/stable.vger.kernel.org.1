@@ -1,137 +1,126 @@
-Return-Path: <stable+bounces-41425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4696D8B20C0
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 13:52:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E758B21C2
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 14:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA95C1F26361
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 11:52:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 611801C209CE
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 12:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFD012AADC;
-	Thu, 25 Apr 2024 11:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BCC1494BD;
+	Thu, 25 Apr 2024 12:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Kadmz8lA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZnFBdGsw"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SGqmQGrA"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E5F84DFC;
-	Thu, 25 Apr 2024 11:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC74F133408
+	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 12:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714045934; cv=none; b=ZNpTNIaL0dCX2CwyRk8vQJUtAJg1y5b8zKvoThdOumqa6a4+j4Fef3eEGNlqWVyItU+otQ1ZKA2pZbWJh2TTNdyKnti0BTETYWI8GpUPpWzLUEeUUibL8nekFdve+Sf3D838Is6Y90y00um4BS3XD/JDvgGNM8Rslf3jOPVItAA=
+	t=1714048768; cv=none; b=Lyfj8YTqggt7XhHqwSOOq2anQC+Bjvanr5ABHq1DjB0ZxXWIiWa3T8OptcsPJpnr15/o9zcjgpebqGuOMEYdnVX1P9tHSfyBG+eswYZUiYC2ruVgNrgCxed8fxbPemcItP+Ri8PTFY7D/cJhwkBVFZT+YBIRqdR8HzNwZ40HOB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714045934; c=relaxed/simple;
-	bh=ibYMa3jhzNP65WVjGG80S1ZgkEVT/nRrO3d7MImhra8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=kIBN0M1sOEM7pOjsMzVXV3aa+fp22NP/flUYmB76wCejUzhR0ck5q/iH1w2g/DEcNHy5eSnIgi7P+RByELBgc/KnScspAKppnN1WR+2bj2ESOlwiXmrUxlSF2153PFMdu7dpum70SR9IiV1kaU+MgFnSJung6dhN2KPjbEFCXk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Kadmz8lA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZnFBdGsw; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714045930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fibyo5fIycycuHzgFLgvHTjArYf2fAIDmOJSGGnfeGs=;
-	b=Kadmz8lAwQLU3paaGZBH65Tjdo3KhzmylFuE02Dqc7LTfpnpfS3GfwxvL1yyQGORNj17EC
-	V+McuIKS7D0dxVPn3HBxgZd+D8kdby9OBv0FlQDAiCv4EiVxCvaAGQkbNtsbk9nCp1SHhN
-	ditgLrxqv7LYyRUkOCd9fvSf0B+2eRN7bbf2pSKWK/I0ZoTuORnXruLjq3mmIaCzmi3bpP
-	g5EYyjly4N7X9EIIFFWKmmXJYGEHXGFz3R8at4BrejfxGE4eLd6zROXFgm6g2xKQKi2Lg1
-	+s9dmyG0/YgbtpqP4Pe2Mva5mxCyJZXL9dmsMThEI8py4tcqac7YdGExA6nSHA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714045930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fibyo5fIycycuHzgFLgvHTjArYf2fAIDmOJSGGnfeGs=;
-	b=ZnFBdGswK+ol1V8O6CB2quAGkSrJbxl+WNQir6NbIJkdiz+PDXH5C9go+QLzuDZ5g2kBW8
-	aLndt7NlV0MzdbBw==
-To: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Chen Jiahao <chenjiahao16@huawei.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	rppt@kernel.org
-Cc: Nam Cao <namcao@linutronix.de>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] riscv: fix overlap of allocated page and PTR_ERR
-Date: Thu, 25 Apr 2024 13:52:01 +0200
-Message-Id: <20240425115201.3044202-1-namcao@linutronix.de>
+	s=arc-20240116; t=1714048768; c=relaxed/simple;
+	bh=kkDuINCQYhQ6FbdcqoW3as2fTSOHoDDS1HYme8W0NPs=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=sZRn5me2GsAAJxsP0MT1BpIBzP9pOCxhqpbl1rQS2tq5LIBbt9HJUcPmgdXEM8Wp9iO0FvIH272QO7rWbqoW3mlOl6lidVpgkQMb2oRJ7ppkZsvnOSEI/gLKMFg6hL1ZQA8e7q6TB6SNH69fS7396STeY7q5X/9aiyvnLBGW29I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SGqmQGrA; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-7eb89aa9176so290392241.3
+        for <stable@vger.kernel.org>; Thu, 25 Apr 2024 05:39:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714048765; x=1714653565; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zYuNQHZgONJaBv+1xJH2KfHQ0fX0UBccuZb/VjBvZRI=;
+        b=SGqmQGrAQEFc424iPdbb7JcTzJ9gQJTgi6zH4OhE6Kw9hnoxvOVga8YwL5W4e1XFyG
+         StunPoJjo564Q27sMC5G2YYGpp+cbm+An4mHdLDsfY0auqmays/uwslzVoQe9Acefws6
+         iKoaQLerXkSHI6XLL/9r0fXxatli04jIwL+eWakNizRhyrZ88FoqzNeKzpszTImBvLYU
+         KOwtXLEqjXeEiZUBetLn3r9g7uAxDSsJ6XPkhDPQr8R5NxQ+2cUyv5AjJIDGxMQl9Kqf
+         AcspfqzAR6FzO++J0hn0vEFP2B6QRN3CP0ebCzhCQdmTXSt8l9eK3TABIB9w0XCXwchn
+         9AEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714048765; x=1714653565;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zYuNQHZgONJaBv+1xJH2KfHQ0fX0UBccuZb/VjBvZRI=;
+        b=ORTSBFw5T44HcKcUPrCPmeiQZKPjiRAuyNuElVeO6PRzQcN2P0rX5KE3W9dg8CHYmF
+         Gray0zvAI5ZwFsmkCs9PHfG+ScFJtBLK4ZdU/Jlfg+mzckrSHNJmULk2C3W+GNT6PdTx
+         X0ieczd+8cMIrLbuubBmablI7o0Vcqu6wcH89b7gD6P2ocQ/haY0wAZGXL9CtgoJRa3s
+         0/noLEfd/qmvlDMRU5vpATPICTQfduFM3CozQjIrOyJVIa3G5t3QeMNxkFFByapZ3LGw
+         gG/cdDMNU/dyXidkobEvYC126+3O0kmv4zKFQJzKxIf0TMDt34npzwOUT3fRh/QnBuQF
+         hxpg==
+X-Gm-Message-State: AOJu0Yz6YYSAsY5YxDcl88kKzYHIr+5B1R2eylX/zAbzQS4vcO1k3bPj
+	zJen0F8JZPJ7HUnwQ7yQSoCKkAa1cJaQ5/iQfWSEzM6KwIVxBzs7XrvLRuh+fkY+Syfq/ajpTwK
+	Bg3Zgxyx/bkv3XHz2fIaS6vTkab3Zay6Rrm2Ui7mh6ztZ+OZKvuY=
+X-Google-Smtp-Source: AGHT+IF2zJY8viJj0WPf0ZMzG+lSNpwCUuLfp31AS8h547e/ZspBmAWTT4v3GrZr6yL1RxHPIvLy+kuLdlul9fGmHPU=
+X-Received: by 2002:a05:6122:328e:b0:4c9:98f8:83db with SMTP id
+ cj14-20020a056122328e00b004c998f883dbmr6978370vkb.5.1714048765077; Thu, 25
+ Apr 2024 05:39:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 25 Apr 2024 18:09:13 +0530
+Message-ID: <CA+G9fYv5fV74VfJnt55E8YaNWzu8KJG2bhw0ddJhM-mPVUpUpw@mail.gmail.com>
+Subject: stable-rc: 5.10: arm64: ring_buffer.c:1479:21: error: implicit
+ declaration of function 'try_cmpxchg'
+To: linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 
-On riscv32, it is possible for the last page in virtual address space
-(0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
-shouldn't happen.
+The arm64 and arm builds are failing on stable-rc linux.5.10.y branch
+due to following build warnings / errors.
 
-There is already some code to ensure memblock won't allocate the last page.
-However, buddy allocator is left unchecked.
+Anders, build bisected and found first commit as,
 
-Fix this by reserving physical memory that would be mapped at virtual
-addresses greater than 0xfffff000.
+first bad commit: [9bf29b51d2bc21abdb8bd36382c1c324a1c54ca7]
+ring-buffer: Only update pages_touched when a new page is touched
 
-Reported-by: Björn Töpel <bjorn@kernel.org>
-Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
-Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: <stable@vger.kernel.org>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Build log:
+-----
+kernel/trace/ring_buffer.c: In function 'rb_tail_page_update':
+kernel/trace/ring_buffer.c:1479:21: error: implicit declaration of
+function 'try_cmpxchg'; did you mean 'xa_cmpxchg'?
+[-Werror=implicit-function-declaration]
+ 1479 |                 if (try_cmpxchg(&cpu_buffer->tail_page,
+&tail_page, next_page))
+      |                     ^~~~~~~~~~~
+      |                     xa_cmpxchg
+cc1: some warnings being treated as errors
+
+Links:
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fWFu97bCGW3ZYMbPsIpFyxEwBx/
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fWFuBOMDouq6VfImqR2Iq30FQe/config
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.215-73-g5feded50ee59/testrun/23639019/suite/build/test/gcc-12-lkftconfig-debug-kmemleak/details/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.215-73-g5feded50ee59/testrun/23639019/suite/build/test/gcc-12-lkftconfig-debug-kmemleak/history/
+
+Meta data:
+git_repo:
+https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+git_sha :
+5feded50ee597a37f4778545a879337c2f72490d
+git_short_log :
+5feded50ee59 ("Linux 5.10.216-rc1")
+arch: arm64
+toolchain: gcc-12
+
+Steps to reproduce:
 ---
- arch/riscv/mm/init.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
-
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 968761843203..7c985435b3fc 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -235,18 +235,19 @@ static void __init setup_bootmem(void)
- 		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
- 
- 	/*
--	 * memblock allocator is not aware of the fact that last 4K bytes of
--	 * the addressable memory can not be mapped because of IS_ERR_VALUE
--	 * macro. Make sure that last 4k bytes are not usable by memblock
--	 * if end of dram is equal to maximum addressable memory.  For 64-bit
--	 * kernel, this problem can't happen here as the end of the virtual
--	 * address space is occupied by the kernel mapping then this check must
--	 * be done as soon as the kernel mapping base address is determined.
-+	 * Reserve physical address space that would be mapped to virtual
-+	 * addresses greater than (void *)(-PAGE_SIZE) because:
-+	 *  - This memory would overlap with ERR_PTR
-+	 *  - This memory belongs to high memory, which is not supported
-+	 *
-+	 * This is not applicable to 64-bit kernel, because virtual addresses
-+	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
-+	 * occupied by kernel mapping. Also it is unrealistic for high memory
-+	 * to exist on 64-bit platforms.
- 	 */
- 	if (!IS_ENABLED(CONFIG_64BIT)) {
--		max_mapped_addr = __pa(~(ulong)0);
--		if (max_mapped_addr == (phys_ram_end - 1))
--			memblock_set_current_limit(max_mapped_addr - 4096);
-+		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
-+		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
- 	}
- 
- 	min_low_pfn = PFN_UP(phys_ram_base);
--- 
-2.39.2
-
+  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fWFuBOMDouq6VfImqR2Iq30FQe/tuxmake_reproducer.sh
+--
+Linaro LKFT
+https://lkft.linaro.org
 
