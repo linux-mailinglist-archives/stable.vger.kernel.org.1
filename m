@@ -1,96 +1,129 @@
-Return-Path: <stable+bounces-41462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D0F8B299D
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 22:19:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ABE8B29DF
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 22:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B0061F22EBF
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 20:19:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D8BC1C20AB4
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 20:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D32153583;
-	Thu, 25 Apr 2024 20:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40FB15351C;
+	Thu, 25 Apr 2024 20:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wUKz8+xD"
 X-Original-To: stable@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFFC37153;
-	Thu, 25 Apr 2024 20:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AD7152DE6;
+	Thu, 25 Apr 2024 20:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714076361; cv=none; b=SZKPHD89o1hJ8KArREK5vYtF89aLWlf3IsRuccYwPTj/j6t8nbRn6BzBLAjlTLp/DL8umydZ+CjFQtSKeCzvqTi/10RY8QvjJi6ua2L4px52i6Sa2IWHslbpjQ/TEEVVUw6xeEWBdFGwIo4KehsfWREPKSqF1mYAbzpevehMB6o=
+	t=1714077108; cv=none; b=pdILbiftXsXdbPtg0p23hYnV9tBm3lw+BP4fLDli20ViZKs1biTPMwQKciXsTZh9TJnn3vpZYJP+FneoJWFpvAAssSBbY8dNU+PZEDuLBLKiT8zUjCYDwc+DrrzApCSljDKNreniOJTh2KuXS27+Mj4OB6inOfnxjGhGAScka8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714076361; c=relaxed/simple;
-	bh=Th3djsGTVHRdDs+lvt8P7lxA+O49hf8OM2PZNr5JrtQ=;
-	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
-	 Message-ID:Subject; b=DhnCi4cqZ/l41nwAWwa9zk/MIZie+46wSXoU2CQivgfgZD4YU3V8VAYOiXAd9Bg4n0A/m84X5DJtaVGYgXgIdTTt9l6eiapI0sdNvyamo94m0pvouvhffj73L9knQpoSK+zEsA55SkorFiCY8KsorcaT0tAMfTA/debcqjEe3Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
-	by madrid.collaboradmins.com (Postfix) with ESMTP id 107EC378045F;
-	Thu, 25 Apr 2024 20:19:16 +0000 (UTC)
-From: "Shreeya Patel" <shreeya.patel@collabora.com>
-In-Reply-To: <20240423213844.122920086@linuxfoundation.org>
-Content-Type: text/plain; charset="utf-8"
-X-Forward: 127.0.0.1
-References: <20240423213844.122920086@linuxfoundation.org>
-Date: Thu, 25 Apr 2024 21:19:16 +0100
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org, "Gustavo Padovan" <gustavo.padovan@collabora.com>, "kernelci-regressions mailing list" <kernelci-regressions@lists.collabora.co.uk>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+	s=arc-20240116; t=1714077108; c=relaxed/simple;
+	bh=Wt8IgxHYFqfRDRLjtQroy9iMu2/HAuvcxeZhMKnrdC4=;
+	h=Date:To:From:Subject:Message-Id; b=LlmWjlDsCsT6pDoHLYFdQHGnR9zfx2/TYwUT9mK3efGKAnDfBB/Yz2ZW8gKdsc+KVrvQxBXpBhU+TZKpAXekp2OQ+pB1P5jHbJQcCFIP0UNtVaH6xcdaoTbBERv83EL/mC/bzoCe08FNM7PeVv7OUscVN4ehHkCU9OyZI2aWiQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wUKz8+xD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03D8C113CE;
+	Thu, 25 Apr 2024 20:31:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1714077108;
+	bh=Wt8IgxHYFqfRDRLjtQroy9iMu2/HAuvcxeZhMKnrdC4=;
+	h=Date:To:From:Subject:From;
+	b=wUKz8+xDIwy6oVqAr6WsqfBsNPcIxZxfKTnDh0bR0KfaNwJdicYY7wmJHOt4loFmz
+	 drrNBOS+UXd/TFrDy6W7Gc6xUntEF0emHapEZRj4/3kRrbMsmfoXAjW1GufXZSYQ0S
+	 Ub92+1qqdT+InT+ZuiNC5B81ji7l9xlhtuuDXm1c=
+Date: Thu, 25 Apr 2024 13:31:47 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ojeda@kernel.org,elver@google.com,dvyukov@google.com,glider@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kmsan-compiler_types-declare-__no_sanitize_or_inline.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240425203147.E03D8C113CE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <99f49-662abb00-5-1a63b1e0@13200930>
-Subject: =?utf-8?q?Re=3A?= [PATCH =?utf-8?q?5=2E15?= 00/71] 
- =?utf-8?q?5=2E15=2E157-rc1?= review
-User-Agent: SOGoMail 5.10.0
-Content-Transfer-Encoding: quoted-printable
 
-On Wednesday, April 24, 2024 03:09 IST, Greg Kroah-Hartman <gregkh@linu=
-xfoundation.org> wrote:
 
-> This is the start of the stable review cycle for the 5.15.157 release=
-.
-> There are 71 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, plea=
-se
-> let me know.
->=20
-> Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
-> Anything received after that time might be too late.
->=20
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.1=
-5.157-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc=
-.git linux-5.15.y
-> and the diffstat can be found below.
->=20
+The patch titled
+     Subject: kmsan: compiler_types: declare __no_sanitize_or_inline
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kmsan-compiler_types-declare-__no_sanitize_or_inline.patch
 
-KernelCI report for stable-rc/linux-5.15.y for this week.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kmsan-compiler_types-declare-__no_sanitize_or_inline.patch
 
-## stable-rc HEAD for linux-5.15.y:
-Date: 2024-04-23
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
-git/log/?h=3D70f39a25a6b86d04f5693eac9b6f203ed23d8260
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-## Build failures:
-No build failures seen for the stable-rc/linux-5.15.y commit head \o/
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-## Boot failures:
-No **new** boot failures seen for the stable-rc/linux-5.15.y commit hea=
-d \o/
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Tested-by: kernelci.org bot <bot@kernelci.org>
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Thanks,
-Shreeya Patel
+------------------------------------------------------
+From: Alexander Potapenko <glider@google.com>
+Subject: kmsan: compiler_types: declare __no_sanitize_or_inline
+Date: Thu, 25 Apr 2024 11:28:59 +0200
+
+It turned out that KMSAN instruments READ_ONCE_NOCHECK(), resulting in
+false positive reports, because __no_sanitize_or_inline enforced inlining.
+
+Properly declare __no_sanitize_or_inline under __SANITIZE_MEMORY__,
+so that it does not inline the annotated function.
+
+Link: https://lkml.kernel.org/r/20240425092859.3370297-1-glider@google.com
+Reported-by: syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com
+Link: https://lkml.kernel.org/r/000000000000826ac1061675b0e3@google.com
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/compiler_types.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+--- a/include/linux/compiler_types.h~kmsan-compiler_types-declare-__no_sanitize_or_inline
++++ a/include/linux/compiler_types.h
+@@ -278,6 +278,17 @@ struct ftrace_likely_data {
+ # define __no_kcsan
+ #endif
+ 
++#ifdef __SANITIZE_MEMORY__
++/*
++ * Similarly to KASAN and KCSAN, KMSAN loses function attributes of inlined
++ * functions, therefore disabling KMSAN checks also requires disabling inlining.
++ *
++ * __no_sanitize_or_inline effectively prevents KMSAN from reporting errors
++ * within the function and marks all its outputs as initialized.
++ */
++# define __no_sanitize_or_inline __no_kmsan_checks notrace __maybe_unused
++#endif
++
+ #ifndef __no_sanitize_or_inline
+ #define __no_sanitize_or_inline __always_inline
+ #endif
+_
+
+Patches currently in -mm which might be from glider@google.com are
+
+kmsan-compiler_types-declare-__no_sanitize_or_inline.patch
+mm-kmsan-implement-kmsan_memmove.patch
+instrumentedh-add-instrument_memcpy_before-instrument_memcpy_after.patch
+x86-call-instrumentation-hooks-from-copy_mcc.patch
 
 
