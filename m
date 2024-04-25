@@ -1,93 +1,110 @@
-Return-Path: <stable+bounces-41448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255128B2679
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 18:30:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9ABA8B26F0
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 18:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B77151F24101
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 16:30:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7690D28534D
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 16:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58A34594C;
-	Thu, 25 Apr 2024 16:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD0814E2D8;
+	Thu, 25 Apr 2024 16:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uDkHDscP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SL9MpaGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6FC1EB5B;
-	Thu, 25 Apr 2024 16:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BAF131746;
+	Thu, 25 Apr 2024 16:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714062633; cv=none; b=mIab+4AK7G9bXLibEw32xjFOAsxDgmTw5w/pu7o2WJy+At+9MuppC2Cy1lz09TO5kVMYC5fMCoUSZEKrzn1ve8dIsZGo47pmFJPAUM4yT4I2Gt9fMaxrsvlz8v2WQ5/5jKV87cjSzSHXwqD7zkAIjwJ3W5g05qzQGPJ4yuyIIWo=
+	t=1714064183; cv=none; b=GzO74ixVL0S2W3TV+4jgYePW0tHouhjzkpeCmldzTvpvG3qsuCIIjdoRaC/fOn0e8SXuw9OrX7SMLla154dfL/zHLmf2lopT1EoJekgnV/93PsKYTCA3j5n2HTMUyzRfSkd4uJaTXPqMPUx5DH9PxQ2eZ3cQlBPiyQvdzRLDtHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714062633; c=relaxed/simple;
-	bh=jsV+g6dcp/pIHqii76sajx5QrBvzDbI+qZjPqKdiJd0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=q9u6byww6sERN9y84Prv+ob1mkGn0RM9p5z0vdOERgwtS6qbkyto8xIs+LziMxf070y6MANrJMiSDE1igLQrOcAljVpodVmvAHQKFZy7l1atoS/3ZQDDmC69VKX09fqKOARWgc7+iksO8ukxNvSA6RSJscsmYY7GR8e1sufl8t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uDkHDscP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 16B92C2BD10;
-	Thu, 25 Apr 2024 16:30:33 +0000 (UTC)
+	s=arc-20240116; t=1714064183; c=relaxed/simple;
+	bh=pqXBKkfg16S/wSwcWzhP5AcwQgNcYGD8sQW2Qy6S2gE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nEYsWs3NPgqwgUTXIPIsjDWrcNJCQpIWcADeGb5PI5dHsxAaysX2kBNtEc773y5G/VtPhPhS/fUOV/mrEO1bynu9m7ZT4DNGMJP4Y4izkZPh1owo50YWow4nvBaTv5V8Bvs3+ILVoQnc9vkF5fA3EqEde4HfcnHYRXUXZPZJars=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SL9MpaGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B274FC113CC;
+	Thu, 25 Apr 2024 16:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714062633;
-	bh=jsV+g6dcp/pIHqii76sajx5QrBvzDbI+qZjPqKdiJd0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=uDkHDscPm4NVqXcNvLEVDtE0NMKO4lqqPrv2MlzVRfTZEE/mhaePesGRuT4JpQCSy
-	 /zk1xVQ8s8NrcPpkR3UQXZH9/GSuAl6SetXcBI4Qd/V3erkQYhn/lbSpx1ng5EOF/7
-	 wherGFQ2HpYMICMQBy9g3XYBmiS2MwDDfW+PHsJdunXOE4M93cFP/UEpXAnyzix0W2
-	 o5TwpGQDaeXZXoHQAi7bF9R4kyh88Xcm9sxFz9N5+6ytoTKIb+xEXWCjs7xLet/yok
-	 zKqwAL4fvEwZ/cbG4GLK9UtghvPIO0qeRvFlSKL4uCTlG9HAPAvDsOMkdchbrp1RMG
-	 6iINxv+Hg4ZMg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id F0F7DC43140;
-	Thu, 25 Apr 2024 16:30:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1714064182;
+	bh=pqXBKkfg16S/wSwcWzhP5AcwQgNcYGD8sQW2Qy6S2gE=;
+	h=From:Subject:Date:To:Cc:From;
+	b=SL9MpaGfbXcWzu9Uv1a79Wr92gN6jiJcV684kZW+4XurbeG/EN2FP72lQUjdCdNRR
+	 sJ80EkmgXtGdWWm6RRusMZ1L3p6ucWGWxUpCIzFDO2/V3AU+DjYVxlrPT0NFlkLe2H
+	 RjdfljbIKaAyAOdawrwGS5i537euKB+WcAZMPwFrdt+Vv+SML2T+YIucXUqohqhnO5
+	 Z91H4akeaY3xAs7cpwOV4/Kdl+GoC0LwfIVN/7dsl6Bm/ZqVdfEPJzNAs0WD0Fe/Ov
+	 cI+PVSp9rm+za59x5V//1nybtJTsNHD7s6+4cy5m1jHJc13gMA6RtdATW/GCV5dj/a
+	 cwgn/EO04N8jg==
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 0/2] clk: bcm: Move a couple of __counted_by
+ initializations
+Date: Thu, 25 Apr 2024 09:55:50 -0700
+Message-Id: <20240425-cbl-bcm-assign-counted-by-val-before-access-v1-0-e2db3b82d5ef@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] Bluetooth: qca: fix wcn3991 device address check
-From: patchwork-bot+bluetooth@kernel.org
-Message-Id: 
- <171406263298.12899.12245456534188638302.git-patchwork-notify@kernel.org>
-Date: Thu, 25 Apr 2024 16:30:32 +0000
-References: <20240425075503.24357-1-johan+linaro@kernel.org>
-In-Reply-To: <20240425075503.24357-1-johan+linaro@kernel.org>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: marcel@holtmann.org, luiz.dentz@gmail.com,
- linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, dianders@chromium.org, quic_janathot@quicinc.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABaLKmYC/x2NQQqDMBAAvyJ77kKMoWC/UnpINhtdaJOSraKIf
+ zf0OAzMHKBchRUe3QGVV1EpuUF/64BmnydGiY3BGuuMsw4pvDHQB72qTBmpLPnHEcOOq2+GU6m
+ MnohVkVI/xvtgkg0OWvFbOcn2vz1f53kBHlj2WH0AAAA=
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Kees Cook <keescook@chromium.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ bcm-kernel-feedback-list@broadcom.com, linux-clk@vger.kernel.org, 
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-hardening@vger.kernel.org, patches@lists.linux.dev, 
+ llvm@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1140; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=pqXBKkfg16S/wSwcWzhP5AcwQgNcYGD8sQW2Qy6S2gE=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDGla3abLrAoyVDOP535XeDTxamfGtwvcnaemf4tpfvwwY
+ ELsZ46nHaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAinzIZ/udP3uh/yvPh92e8
+ c/zCBb6f0b7G9iD6ouLqSyWvNj85d1Wa4a9ccah26p59wQyHkv667c78Hdv+8do+3Uemtcu/HbX
+ YbcAHAA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Hello:
+Hi all,
 
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+This series addresses two UBSAN warnings I see on my Raspberry Pi 4 with
+recent releases of clang that support __counted_by by moving the
+initializations of the element count member before any accesses of the
+flexible array member.
 
-On Thu, 25 Apr 2024 09:55:03 +0200 you wrote:
-> Qualcomm Bluetooth controllers may not have been provisioned with a
-> valid device address and instead end up using the default address
-> 00:00:00:00:5a:ad.
-> 
-> This address is now used to determine if a controller has a valid
-> address or if one needs to be provided through devicetree or by user
-> space before the controller can be used.
-> 
-> [...]
+I marked these for stable because more distributions are enabling the
+bounds sanitizer [1][2], so the warnings will show up when the kernel is
+built with a compiler that supports __counted_by, so it seems worth
+fixing this for future users.
 
-Here is the summary with links:
-  - Bluetooth: qca: fix wcn3991 device address check
-    https://git.kernel.org/bluetooth/bluetooth-next/c/0a0f9014b784
+[1]: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1914685
+[2]: https://src.fedoraproject.org/rpms/kernel/c/79a2207963b8fea452acfc5dea13ed54bd36c7e1
 
-You are awesome, thank you!
+---
+Nathan Chancellor (2):
+      clk: bcm: dvp: Assign ->num before accessing ->hws
+      clk: bcm: rpi: Assign ->num before accessing ->hws
+
+ drivers/clk/bcm/clk-bcm2711-dvp.c | 3 ++-
+ drivers/clk/bcm/clk-raspberrypi.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+---
+base-commit: ed30a4a51bb196781c8058073ea720133a65596f
+change-id: 20240424-cbl-bcm-assign-counted-by-val-before-access-cf19d630f2b4
+
+Best regards,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Nathan Chancellor <nathan@kernel.org>
 
 
