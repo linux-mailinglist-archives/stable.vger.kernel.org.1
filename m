@@ -1,225 +1,140 @@
-Return-Path: <stable+bounces-41408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40238B1B2D
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 08:40:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2D48B1C4B
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 09:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49C411F21FF3
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 06:40:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9484E1C20A39
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 07:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7095A0FE;
-	Thu, 25 Apr 2024 06:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB54C6E60F;
+	Thu, 25 Apr 2024 07:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ri0sHikJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pctJuYQ8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAF31E492
-	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 06:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731E067A1A;
+	Thu, 25 Apr 2024 07:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714027249; cv=none; b=kHliDryol7QIRKNGUIrhDNmSqv27/47QHrfhYgd7VKBDGPU8jLLWeZBqJP8leKhHcZMNfO8vWywwcIHUBzSB0+WVHfUEua7HZ9Y8kGtitzMMY0A+XlXs+NuOHV56AvD+HEe8urFdidx2lscFNTnz3NlV2hWTe/EGFySe+NpuiAg=
+	t=1714031763; cv=none; b=PGckPVOi1WSQy2bwE/StrM+XHWjh2g2xwNOR9BRhFrRWFp/dUtNRbMXyFHi/7bXImH8NRg6Gzqzm/HKW8IfDrQluJJR8Yj5167CVXbK/BtTNZW7VLQVkO3Nke5qAB5Su2Q5OZVK8X6zICxjwSsbYvjTwdkwfqOHzb1ZBFa6qb1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714027249; c=relaxed/simple;
-	bh=7OKYbj4Uuksbo2Qf5HPNw17rjN6Qs+vtlgxGEBAQNdc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q4JWZnfYRedhgGx6Lp4775ihQ1ERz7tdRrs3ttLgHaiXi2Abi2Kx1dhRnD3KeqGemJ3gw2IdDAtBzQKz7CuJisGirWxdOab1M/lvn9dcyZukFX+0I9tu3VACDnoPAaVDIu4y+Tj4ORQhEXFJtopUqNL2D5uZuPu05ts0QOSwfMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ri0sHikJ; arc=none smtp.client-ip=209.85.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-4daa5d0afb5so234702e0c.0
-        for <stable@vger.kernel.org>; Wed, 24 Apr 2024 23:40:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714027246; x=1714632046; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gHsnE6PXlZIvSfAKFrgueOgWtUt0jTx+nljG77Q1N3I=;
-        b=Ri0sHikJwc8crIntCl0kBjujGm4XAHjqV0j0f/l8xrPUPo+I9orCazk3fUMjPLiClg
-         qkDSNLg9mliIGbOweyM1Fj5v+whZaxAOM2WRVKhYrXpN7un8chfC0thMhXICZCW1Gs2k
-         mdlb7cJgPZnkSJaqCrLConknwBOcaeKD0Lddj9iDHTeUyWyCfbBUTgJQCj+aUsGrFdVV
-         QoXQNqzqCtZMiiIMYT+iJvHMJNaEQ+TH/5HQSiW5ubvIpGDL+ybDp9D1fLtGTbcs1+F1
-         LN5qDbNMZ6w4jiokal7mJJe28b++50R4X2I7Uy1jukTRqsk/lni7UCYjxIvkYOUafNJE
-         MLhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714027246; x=1714632046;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gHsnE6PXlZIvSfAKFrgueOgWtUt0jTx+nljG77Q1N3I=;
-        b=uolQfxs7hEb378pnYBQaiWI3W2njwJdy7tzCb1q52TbGmvgV73p6iqGGYCRIg9m86b
-         psORmwkYRiE/rSbAH0Dskwt/mG8xTm0YKKmXtx94Ut9+q5+N8jhfFOgR1D2afPsWRear
-         iDf/nWg4rxL3alyeR88YEIDDlthcBTMt9WOWJyzT4SwdgNp9afp8F+J3BB4Yv1JolsXK
-         UlDwkMeZeFQfe/suHwnO6KmmfKKZfHVFHcP8LH4vV9v1KIEDugEqK7byCPMf5VCIGr0a
-         iU5ZgnKjbEHcUJ+xxgEbMyLnb9nwqpnEYCObyvoCgYveTEhHfYuCOhTaMFnigUt+aeI7
-         omQw==
-X-Gm-Message-State: AOJu0YzKj70EXFe3tymilcpeoxLFdOZLiKPx+iGyemVsUTBkZfkFggsg
-	yDCZ/U7ZXRfzn/Y8L6hn/haRM4pdZ1x28IK4iB0ckwJxw61XS8i4Mv2l+vCyJ4ADXv6EqhBuz8F
-	4Sy96Jg/abiYBz7+nuRE7pfsHj+09nrJbv75X4g==
-X-Google-Smtp-Source: AGHT+IHy4yn17l8WHIexhBFucEWjWLbwAWQAgKSltStNJ3dC7QNXsxAi/oLT0hbpvn0uD0kdCJfydjnj6Vo6WxvlaAs=
-X-Received: by 2002:a05:6122:4686:b0:4da:aabe:6f6c with SMTP id
- di6-20020a056122468600b004daaabe6f6cmr5538526vkb.7.1714027246474; Wed, 24 Apr
- 2024 23:40:46 -0700 (PDT)
+	s=arc-20240116; t=1714031763; c=relaxed/simple;
+	bh=FbilVvwlenLgeiFq6bKzJ8zy6ljmHZoUoBSejCx9WMg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P/uaanyTB/YKlv28BmSyZg1sFN8dNeJFKVCwVwLA+Khe7pBR1nPDKvhXB/oNeQGE2KJ1jBBviJpNOohQWuTFW9JodhOT2qB91h7FLngYsf7mO/eE8L0kEfxZMTrwqMj8XRRTkHQAUxI639h8UerNvX2mhFPFbc0my2a/bgSAAbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pctJuYQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520FCC113CC;
+	Thu, 25 Apr 2024 07:56:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714031762;
+	bh=FbilVvwlenLgeiFq6bKzJ8zy6ljmHZoUoBSejCx9WMg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pctJuYQ8pjN/iOl9OiJoGq/5tMceS3K58mDHUL2521Sko39SPcBrT4oTNNROs3NGa
+	 28KY82pxVQGtSoZgMpUuddTdjpjEhSGktT3uegc//Nuaq84yTOw5OtBiYEmgUk++D6
+	 O3zI09xrPaSrmk6sw2+nRxQ0xzej4ZXkd47/xCLrGHsKuwrCiRRY+E2euNPWr9N1ck
+	 ESUoA6t8nBQFGy756uMBALGFDBuWlkmbYd0Bbxq7RCV79kSBo177kaphMdWFGFCPhb
+	 RXaDDivf5E8e3EyDNOkbc4LsW/haQitICqSgP4i6/Ey9c2xMJgVhtJ8lrSPqdwJR6C
+	 Qv4WPlPzVzgcw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1rztxZ-000000006Lk-32dS;
+	Thu, 25 Apr 2024 09:56:01 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org,
+	Doug Anderson <dianders@chromium.org>,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Subject: [PATCH] Bluetooth: qca: fix wcn3991 device address check
+Date: Thu, 25 Apr 2024 09:55:03 +0200
+Message-ID: <20240425075503.24357-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240423213855.824778126@linuxfoundation.org>
-In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 25 Apr 2024 12:10:34 +0530
-Message-ID: <CA+G9fYvB61RTie=PKQau1m2WWQNUQ++ZY+W_of4kXVh5P26B0w@mail.gmail.com>
-Subject: Re: [PATCH 6.8 000/158] 6.8.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, Arnd Bergmann <arnd@arndb.de>, 
-	Linus Walleij <linus.walleij@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, 24 Apr 2024 at 03:11, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.8.8 release.
-> There are 158 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.8.8-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.8.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Qualcomm Bluetooth controllers may not have been provisioned with a
+valid device address and instead end up using the default address
+00:00:00:00:5a:ad.
 
+This address is now used to determine if a controller has a valid
+address or if one needs to be provided through devicetree or by user
+space before the controller can be used.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, x86_64, and i386.
+It turns out that the WCN3991 controllers used in Chromium Trogdor
+machines use a different default address, 39:98:00:00:5a:ad, which also
+needs to be marked as invalid so that the correct address is fetched
+from the devicetree.
 
-One regression on arm,
-the TI BeagleBoard-X15 device kunit test boot failed and
-it is always reproducible.
+Qualcomm has unfortunately not yet provided any answers as to whether
+the 39:98 encodes a hardware id and if there are other variants of the
+default address that needs to be handled by the driver.
 
-Not a problem on qemu-armv7.
+For now, add the Trogdor WCN3991 default address to the device address
+check to avoid having these controllers start with the default address
+instead of their assigned addresses.
 
-However, I am bisecting this problem and let you know shortly.
-
-Links:
+Fixes: 00567f70051a ("Bluetooth: qca: fix invalid device address check")
+Cc: stable@vger.kernel.org      # 6.5
+Cc: Doug Anderson <dianders@chromium.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2fWFwcz=
-HZDFUGnjqyT1mZ6wIeS9
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.=
-8.7-159-g9919cd9ab988/testrun/23660959/suite/boot/test/gcc-13-lkftconfig-ku=
-nit/details/
+ drivers/bluetooth/btqca.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-log:
---=20
-[   45.931457] BUG: KASAN: slab-out-of-bounds in
-krealloc_more_oob_helper+0x464/0x4c0
-[   45.950073] Write of size 1 at addr cacc68eb by task kunit_try_catch/176
-[   45.956817]
-[   45.958312] CPU: 0 PID: 176 Comm: kunit_try_catch Tainted: G    B
-W        N 6.8.8-rc1 #1
-[   45.966735] Hardware name: Generic DRA74X (Flattened Device Tree)
-[   45.972869]  unwind_backtrace from show_stack+0x18/0x1c
-[   45.978149]  show_stack from dump_stack_lvl+0x6c/0x8c
-[   45.983245]  dump_stack_lvl from print_report+0x158/0x510
-[   45.988677]  print_report from kasan_report+0xc8/0x104
-[   45.993865]  kasan_report from krealloc_more_oob_helper+0x464/0x4c0
-[   46.000183]  krealloc_more_oob_helper from kunit_try_run_case+0x224/0x59=
-8
-[   46.007019]  kunit_try_run_case from
-kunit_generic_run_threadfn_adapter+0x84/0xe4
-[   46.014556]  kunit_generic_run_threadfn_adapter from kthread+0x378/0x410
-[   46.021331]  kthread from ret_from_fork+0x14/0x28
-[   46.026062] Exception stack(0xf219bfb0 to 0xf219bff8)
-[   46.031158] bfa0:                                     00000000
-00000000 00000000 00000000
-[   46.039367] bfc0: 00000000 00000000 00000000 00000000 00000000
-00000000 00000000 00000000
-[   46.047607] bfe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[   46.054260]
-[   46.055755] Allocated by task 176:
-[   46.059173]  kasan_save_track+0x30/0x5c
-[   46.063049]  __kasan_krealloc+0xf0/0x13c
-[   46.067016]  krealloc+0xb8/0xfc
-[   46.070190]  krealloc_more_oob_helper+0xd4/0x4c0
-[   46.074829]  kunit_try_run_case+0x224/0x598
-[   46.079040]  kunit_generic_run_threadfn_adapter+0x84/0xe4
-[   46.084472]  kthread+0x378/0x410
-[   46.087738]  ret_from_fork+0x14/0x28
-[   46.091339]
-[   46.092834] The buggy address belongs to the object at cacc6800
-[   46.092834]  which belongs to the cache kmalloc-256 of size 256
-[   46.104736] The buggy address is located 0 bytes to the right of
-[   46.104736]  allocated 235-byte region [cacc6800, cacc68eb)
-[   46.116363]
-[   46.117858] The buggy address belongs to the physical page:
-[   46.123474] page:af853d8a refcount:1 mapcount:0 mapping:00000000
-index:0x0 pfn:0x8acc6
-[   46.131439] head:af853d8a order:1 entire_mapcount:0
-nr_pages_mapped:0 pincount:0
-[   46.138885] flags: 0x840(slab|head|zone=3D0)
-[   46.143005] page_type: 0xffffffff()
-[   46.146514] raw: 00000840 c6801500 00000122 00000000 00000000
-80100010 ffffffff 00000001
-[   46.154663] raw: 00000000
-[   46.157287] page dumped because: kasan: bad access detected
-[   46.162902]
-[   46.164398] Memory state around the buggy address:
-[   46.169219]  cacc6780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   46.175781]  cacc6800: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   46.182373] >cacc6880: 00 00 00 00 00 00 00 00 00 00 00 00 00 03 fc fc
-[   46.188934]                                                   ^
-[   46.194885]  cacc6900: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   46.201446]  cacc6980: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   46.208038] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[   46.215454] hub 1-1:1.0: 4 ports detected
-[   46.215637] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[   46.226745] BUG: KASAN: slab-out-of-bounds in
-krealloc_more_oob_helper+0x458/0x4c0
-[   46.234374] Write of size 1 at addr cacc68f0 by task kunit_try_catch/176
-<common> [   46.570037]  krealloc_less_oob_helper from
-kunit_try_run_case+0x224/0x598
-<common> [   46.576873]  kunit_try_run_case from
-kunit_generic_run_threadfn_adapter+0x84/0xe4
-<common> [   46.584411]  kunit_generic_run_threadfn_adapter from
-kthread+0x378/0x410
 
-## Build
-* kernel: 6.8.8-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.8.y
-* git commit: ea4e35f1afd7d7d003c345bf14862183910ecc6b
-* git describe: v6.8.7-159-gea4e35f1afd7
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.7=
--159-gea4e35f1afd7
+Luiz and Doug,
 
---
-Linaro LKFT
-https://lkft.linaro.org
+As the offending commit is now on its way into 6.9, let's just add the
+default address that the Trogdor machines uses to the address check.
+
+We can always amend this when/if Qualcomm provides some more details,
+or, in the worst case, when users report that they need to re-pair their
+Bluetooth gadgets if there are further variations of the default
+address.
+
+Johan
+
+
+
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 216826c31ee3..cfa71708397b 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -16,6 +16,7 @@
+ #define VERSION "0.1"
+ 
+ #define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00, 0x00 }})
++#define QCA_BDADDR_WCN3991 (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x98, 0x39 }})
+ 
+ int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
+ 			 enum qca_btsoc_type soc_type)
+@@ -638,8 +639,10 @@ static int qca_check_bdaddr(struct hci_dev *hdev)
+ 	}
+ 
+ 	bda = (struct hci_rp_read_bd_addr *)skb->data;
+-	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT))
++	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT) ||
++	    !bacmp(&bda->bdaddr, QCA_BDADDR_WCN3991)) {
+ 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
++	}
+ 
+ 	kfree_skb(skb);
+ 
+-- 
+2.43.2
+
 
