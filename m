@@ -1,100 +1,134 @@
-Return-Path: <stable+bounces-41438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F6B8B24EF
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 17:21:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0DE8B24FE
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 17:23:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B7C0B20F05
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 15:21:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E88021F23325
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 15:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFD514AD15;
-	Thu, 25 Apr 2024 15:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E490714AD19;
+	Thu, 25 Apr 2024 15:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F9RIv4Z+"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="mUue0AZn"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED961494DB
-	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 15:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E65F14A633
+	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 15:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714058466; cv=none; b=G6n4tzyItzFh5VxNZwuaOi9DWiO0nfrpjr9MG+/p3NUxGt4M/oBcDEnPcbY8z7sazm5R7MSjD6nmCVWpv/TRKeSq5lJ/YQHTtKFuaWEnMvbKLGrDFuCTbOeCMrkm5o4rEIzhkdqp9feeyDiTVjKK1E2I67x+qaAYUmgJULgoy4k=
+	t=1714058593; cv=none; b=auIf/0OO+ADPirxIt2fLH31T7eug4As6afgW/cxGk+cQnjXWcmkRwV0oCr6K3GRH9HxCdnqri+e/uH4vuTyNKzUziubAFVzj/apvBHDHFG9GuQBlGkpY2BV/CjCqfkT+i0+i5N5bMRdEFJX0I2s+EnhiwYyYFnJVDJ3sGHs//90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714058466; c=relaxed/simple;
-	bh=JloY/B/gDmMJyEDYcyExOhbAHwiS5rnHujtDvj33j9o=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=a4uwJDTQlY5hPfDzRDFuG5TJ2phLp7V+hc29NhkvBQFv5F6jjKAtA4nHOhnUlmWwJpDKq92XEQ//bZarHRw8HX3xpgTFkc6xJL7MqXf+zUJ8Ptk1xIBlKqCBg7WdczZn1CuhohuUCFkYehKW5Ow5K1aWLR5xFFur4PWT+gPHn90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F9RIv4Z+; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714058464; x=1745594464;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=JloY/B/gDmMJyEDYcyExOhbAHwiS5rnHujtDvj33j9o=;
-  b=F9RIv4Z+PAjAGkMrGBxVcUiGLC65lWylIdXudxnP/cmKiLDfVlq0deSG
-   GSrbSpIRDZa5UHgSYfrDOlfVUrqYNaz+2bc1EuPi34euwxCc5PQ0gR206
-   1o7n3d5Bqq4bQeshZNZOGtRs74xXL9OIGPVfRE3MjER5xg/SxLr8qoB/B
-   kxQ157ZoU9OIxm0pfA72wzxO/GccDn3bTe//qoJVwn37YEDtfRCpaBLNe
-   7ZUhiDUgWnJUcJwmHlyowAhBGp5v/8l8fsAOA/NNgIzEtUG6VYAAZX13d
-   asneX5Oi1/977j77XGBqIK8Yejp8DmugeED5WZkeXgeb/phI42amWY9Rv
-   A==;
-X-CSE-ConnectionGUID: 6Kc5ngeyQhOELkPIYhhwCQ==
-X-CSE-MsgGUID: VQqtYMQMRXmhUgnMFql5Uw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9873246"
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; 
-   d="scan'208";a="9873246"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2024 08:21:04 -0700
-X-CSE-ConnectionGUID: X6UyI1WISRyz6cqVj9zc4g==
-X-CSE-MsgGUID: hTtEuiVNSLK+qhSgQik2WQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; 
-   d="scan'208";a="29567185"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 25 Apr 2024 08:21:03 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s00uC-0002Uu-0r;
-	Thu, 25 Apr 2024 15:21:00 +0000
-Date: Thu, 25 Apr 2024 23:20:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chris Wulff <Chris.Wulff@biamp.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] usb: gadget: u_audio: Fix race condition use of
- controls after free during gadget unbind.
-Message-ID: <Zip016sIIls1j7aK@c8dd4cee2bb9>
+	s=arc-20240116; t=1714058593; c=relaxed/simple;
+	bh=XwZ+JO6jMDuVSzFezGDh19khl4PM1718Rezhq94PIV0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gI0gZZHFozp7kUAPfsbdXTFUhzqyLT3ZsHngriP3+m4sRFIXfHzknWE/+H6nGXwxF6uFh5afoc2sWMmGj3AR1GMuTqoD9/IZL54U2befUjoTl1ktOdw6HA/RY/7PAoOVc6Ibw3dQVe6d/cnVzpLwtPCoz9cbXAln3gc37AfaPEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=mUue0AZn; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6a06b12027cso20184076d6.0
+        for <stable@vger.kernel.org>; Thu, 25 Apr 2024 08:23:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1714058589; x=1714663389; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XwZ+JO6jMDuVSzFezGDh19khl4PM1718Rezhq94PIV0=;
+        b=mUue0AZnE5ty6DERUkqssfyVsxShep+2qc0Pd6+0HUBtR1cBgRvCNiD9HBCOxrEVnq
+         9e5vaC8oLgprfoc+0HgVrJ8Ul7OvVLC288jUPlV5MAzrQjdFqZSfZz0birXYRC62Pe3k
+         +aJXOSNuZ8J7HEryfBSyVcLmEvBEAVRNDcLXM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714058589; x=1714663389;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XwZ+JO6jMDuVSzFezGDh19khl4PM1718Rezhq94PIV0=;
+        b=Fa3OKedxmyJj8munQ4I06IsmQbDlw95u+W/cCeEvE355bChtQKXzs0mVxzJsuHTEzN
+         NwMU6wRamMamjYaNVxdTLQxrpgNre2t2gSq0S73TTxsNE3rjnJcUvnKRUs4YkJW3Si63
+         SCR7ialApdAQFO3DxGrzlLUtVCyepXkV6y29TJAnZisEJ3LWE/PdhsRPY3r7A9qvnDRY
+         LVA2ihcTr/SoGxMMRyEe6zJ4noyhox7K/AzUdPKwNzLU+YifmvSepZL+21MnChV3qtLq
+         G6189QNDb6P3qGvrIqcfpo/VIDT+A0R8x2+vllihgJb6YDhKj0SGbkyAPb07lVKxz6lU
+         bJqA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZTvFk41k3gLnjQj4yl2xLtC2NRV11IKzseMnqQk6OVACXu1JAa8pmQDRXuU0jq5ZylJriwBrlkoIATKe5h1Vx8Ix5ql99
+X-Gm-Message-State: AOJu0Yyv0oXM6+jBVqIUuSPzZuGAN5G5tQXZtB23iiGYFAj0R96+QrOk
+	IugHMjAcghUR86z+pkbLokIezuWwjBXwaR65ZSmoQxzjg9t5YYpkwvtlaJLYb2a7Lz1AcxS1/RA
+	=
+X-Google-Smtp-Source: AGHT+IHwi82hDjcpoMo5UjpKKxftWFPztuSTjrk+o5iLyJmAh7gxPk9aW11QKO4NqWZchQp3qSdHCQ==
+X-Received: by 2002:a05:6214:5298:b0:696:b01d:da51 with SMTP id kj24-20020a056214529800b00696b01dda51mr5166511qvb.10.1714058589046;
+        Thu, 25 Apr 2024 08:23:09 -0700 (PDT)
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com. [209.85.160.171])
+        by smtp.gmail.com with ESMTPSA id k11-20020a0cf58b000000b0069b497fccaesm7110340qvm.124.2024.04.25.08.23.07
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Apr 2024 08:23:07 -0700 (PDT)
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-436ed871225so320721cf.1
+        for <stable@vger.kernel.org>; Thu, 25 Apr 2024 08:23:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWY2Yco9A77Ofh6ouAYquRxYNBs6tfuOt8Jdmk6PxhEcdEzNmDheJry2ecPDMvE1s9PfTb1JflOmkifa5JAQo3gXhiKdMIu
+X-Received: by 2002:a05:622a:5097:b0:43a:381f:6b11 with SMTP id
+ fp23-20020a05622a509700b0043a381f6b11mr264680qtb.19.1714058587159; Thu, 25
+ Apr 2024 08:23:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CO1PR17MB5419C2BF44D400E4E620C1ADE1172@CO1PR17MB5419.namprd17.prod.outlook.com>
+References: <20240416091509.19995-1-johan+linaro@kernel.org>
+ <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
+ <Zid6lfQMlDp3HQ67@hovoldconsulting.com> <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
+ <ZioW9IDT7B4sas4l@hovoldconsulting.com>
+In-Reply-To: <ZioW9IDT7B4sas4l@hovoldconsulting.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Thu, 25 Apr 2024 23:22:50 +0800
+X-Gmail-Original-Message-ID: <CAD=FV=X5DGd9E40rve7bV7Z1bZx+oO0OzjsygEGQz-tJ=XbKBg@mail.gmail.com>
+Message-ID: <CAD=FV=X5DGd9E40rve7bV7Z1bZx+oO0OzjsygEGQz-tJ=XbKBg@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
+To: Johan Hovold <johan@kernel.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>, Johan Hovold <johan+linaro@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Matthias Kaehlcke <mka@chromium.org>, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Stephen Boyd <swboyd@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-Thanks for your patch.
+On Thu, Apr 25, 2024 at 4:40=E2=80=AFPM Johan Hovold <johan@kernel.org> wro=
+te:
+>
+> > > I assume all Trogdor boards use the same controller, WCN3991 IIUC, bu=
+t
+> > > if you're worried about there being devices out there using a differe=
+nt
+> > > address we could possibly also use the new
+> > > "qcom,local-bd-address-broken" DT property as an indicator to set the
+> > > bdaddr quirk.
+> >
+> > They all should use the same controller, but I'm just worried because
+> > I don't personally know anything about how this address gets
+> > programmed nor if there is any guarantee from Qualcomm that it'll be
+> > consistent. There are a whole pile of boards in the field, so unless
+> > we have some certainty that they all have the same address it feels
+> > risky.
+>
+> Hopefully Janaki and Qualcomm will provide some answers soon.
+>
+> And otherwise we have another fall back in that we can use the
+> "qcom,local-bd-address-broken" property for Trogdor.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Quick question. I haven't spent lots of time digging into the
+Bluetooth subsystem, but it seems like if the device tree property is
+there it should take precedence anyway, shouldn't it? In other words:
+if we think there is built-in storage for the MAC address but we also
+see a device tree property then we need to decide which of the two we
+are going to use. Are there any instances where there's a bogus DT
+property and we want the built-in storage to override it?
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2] usb: gadget: u_audio: Fix race condition use of controls after free during gadget unbind.
-Link: https://lore.kernel.org/stable/CO1PR17MB5419C2BF44D400E4E620C1ADE1172%40CO1PR17MB5419.namprd17.prod.outlook.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+-Doug
 
