@@ -1,279 +1,247 @@
-Return-Path: <stable+bounces-41417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 802C88B1D6E
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 11:07:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D577E8B1E61
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 11:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36AF52828B0
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 09:07:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 053491C23B4C
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 09:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEF882D9D;
-	Thu, 25 Apr 2024 09:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A62184E13;
+	Thu, 25 Apr 2024 09:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rOKSwrhe"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Xlh4hZ+k"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD9281AC6
-	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 09:07:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974F284DFB
+	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 09:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714036026; cv=none; b=iV3TtzDVw1dFrwVebEIOClBwdMjNxqaBCjMYOWH/70quHDMwV2jP8KOoYQslcXOTDL8MG+PVqjLvv63qC9OV92Ms5zV9Wib1P74bLNqTCWDp+Q7hqnh9NztmFw4Utcu1o07Fsvc1CFiNcBLSm7VUp4XngdVrvjxRDoBApBFv2qE=
+	t=1714038552; cv=none; b=sJKLXOL8c3GqnqMmBS+cXAl59DHrKeaj1csdk+3zgXU+VHglI8EQVv2+njZRa9y4hZDvO0PAt7AFQ6tLpxZ3rO5NPDinXRtj+2YnMXx4mMcmsOKLl/Jm733XoVv/unRWnGvk0+6D9LA4h4BqXOpN33hpirkJyxyiPlMIyWU78N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714036026; c=relaxed/simple;
-	bh=zH5gixlXx7k18tZ3ntglm1Ydk46XJiFzU956q0oQf7Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BNJTIXUuMGj9ECITv88EOFv6nkYWdCQ2lHViYfEe3yqL1j++H5W+iNh6lw7n5EazsqlHppp0VBIORmhDm/P2h0dJwbgs1KAD36eDpOftcOQAENjXJGOIWAwmcZCh5cokecvDcrQJupRzztS9V7RkRzjz4MQJZpE3d3yOe9rjhg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rOKSwrhe; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-479cbfc62e9so312704137.0
-        for <stable@vger.kernel.org>; Thu, 25 Apr 2024 02:07:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714036023; x=1714640823; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=seJQmzkxBRJ1xARhjWl+1rguRqRv9yi0CbMnLf1JAns=;
-        b=rOKSwrhe1BFyhhutnlsGtrErPYcNlkvfHKAKo5sIjUFudvw3oz9HRqv8HM1MmS3JC8
-         UjvBh+RVn3MqCuhUHEOo9xJor8PMyREMrmmm+aLi/RwKncRnnHAYtWRTVwzAHW5CRfWq
-         IachjRvs3ZW7ukDE3yJDphlfF/4LSHZNbQZLmsJQQN6JnjvMRIebvcVpbAvVFh4MxFaa
-         +W4zEFT5SUwz4KrY0cRW9IRohTOC6i5CuZAb+7c5jdSVVMnH2LMEeZDFpLFADxmqmzAR
-         bvcC6S/hk00ZN+O/0JYV145ePj/HNtjGFmxzSP0rJ/BEBY/jwfmByyZFPVeoxIa3kXnD
-         aong==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714036023; x=1714640823;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=seJQmzkxBRJ1xARhjWl+1rguRqRv9yi0CbMnLf1JAns=;
-        b=v7TjB5yGAXBs+45xSe3BLIwgJAz48x0EMFOEkfMIfHItUzqL/5932QAX5jVpIlxkWA
-         WhrYl1e5bcBcmwMYEITRADyT5ab3EW6kNj7eRIoTbs88CymiLuwObkVKkDKtUpudjFsl
-         +Auzs52hPcGs5ka6pliZ6UXyIlHNeWGvExKcVjlrmJ5NDIQVvtyegqmolpYjbtc+ylaO
-         N89uxiDzzBkFr3sflGn5Qzdq71rZ9MPea5sYrdKj/ykKhMjU26Npjm/a+uEsSO8JF8Rw
-         mL0FhNlCcdrbqxBZQ1qUDEY3fyKDpk1Vpvi1kJFlMdlhyclRe06pPLyizvK07IKBP1Ms
-         6WVA==
-X-Gm-Message-State: AOJu0YxEEbaJw9LXuD5Unx69YMnf9i8WGGpt7vq7tqfgo85ofoblteUt
-	8wK2sdDzMZNv6HRyijnduzLrTp5ngbEPlIChoC7rA32A7vbBLgXVj8tMlLP+xGE2NyMPbH1V5ij
-	NIn0+Mhl3nt0ecgfcsVzEa7GkxyFeWev7LOPbJA==
-X-Google-Smtp-Source: AGHT+IEDf9TqQn6hQ8HPg3898JAvQBiPLOb7KrZ2mcy6634xnDFeMYqJiRsdiAhRN0bTU0Q8+B+hEIjpoxxx/WqiYvk=
-X-Received: by 2002:a67:f644:0:b0:47c:f12:d410 with SMTP id
- u4-20020a67f644000000b0047c0f12d410mr4428944vso.1.1714036023512; Thu, 25 Apr
- 2024 02:07:03 -0700 (PDT)
+	s=arc-20240116; t=1714038552; c=relaxed/simple;
+	bh=xYc22eAWYOucbU7YwSol/5E4dn7oGmQ8JSEnc8DBvo8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=cQGCF5KZq+NbVSqhLG4kopreGZlswrcVAf9cIZnf9KcEoHKoG7hPuY2yBvYP1zFHy92oeVsGh16iDjlt/cySDDT5JoIAz4+7MOnDMmEmc1rab1IKP5XQioxlR2RV+N0HsaRv+G8HCQ3mGImmjJJkcALCg/IFDr7vsMzMbWorGUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=Xlh4hZ+k; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20240425094907euoutp0121dca381d5855dcaf422ded5c3199906~JfPpVLr001633616336euoutp012
+	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 09:49:07 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20240425094907euoutp0121dca381d5855dcaf422ded5c3199906~JfPpVLr001633616336euoutp012
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1714038547;
+	bh=BIh9e4A3BxOdZUZQJEOnjNv53sOGxKsIKHDvcODQsnE=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=Xlh4hZ+kUDlYZsUheMsGVTgd1NDWyB92zpJZ+hI5zoxGY5/A5xHuuwRYrCcFVNbem
+	 hpgJsGUAQVduCim1QXN3o9Y5BubQc+qD+ChSH3Fk59qD89cwfMjtRdOPyxG9GHsmLn
+	 sSgho07VG5qlgoJ2+mIhehsrSPpq5AyqxCMPPpRo=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20240425094907eucas1p2abc745f137dcc6ee9ea6856d54445402~JfPo4b-Lf2350923509eucas1p2D;
+	Thu, 25 Apr 2024 09:49:07 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+	eusmges1new.samsung.com (EUCPMTA) with SMTP id 1E.C1.09624.3172A266; Thu, 25
+	Apr 2024 10:49:07 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20240425094907eucas1p10a82102ccb08868dda93d6860b9177ec~JfPomQWea1165911659eucas1p10;
+	Thu, 25 Apr 2024 09:49:07 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20240425094907eusmtrp2a66c5c54ef206cf9612d1a6baccdd628~JfPolkqFc1755417554eusmtrp2M;
+	Thu, 25 Apr 2024 09:49:07 +0000 (GMT)
+X-AuditID: cbfec7f2-c11ff70000002598-ed-662a27139c80
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id 05.82.08810.2172A266; Thu, 25
+	Apr 2024 10:49:06 +0100 (BST)
+Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20240425094906eusmtip20d1978d605325c8eabbb3b7a0131d51c~JfPoGNFFg0072600726eusmtip2i;
+	Thu, 25 Apr 2024 09:49:06 +0000 (GMT)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Inki Dae
+	<inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, Krzysztof
+	Kozlowski <krzk@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] drm/exynos: hdmi: report safe 640x480 mode as a fallback
+ when no EDID found
+Date: Thu, 25 Apr 2024 11:48:51 +0200
+Message-Id: <20240425094851.994055-1-m.szyprowski@samsung.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240423213855.824778126@linuxfoundation.org> <CA+G9fYvB61RTie=PKQau1m2WWQNUQ++ZY+W_of4kXVh5P26B0w@mail.gmail.com>
-In-Reply-To: <CA+G9fYvB61RTie=PKQau1m2WWQNUQ++ZY+W_of4kXVh5P26B0w@mail.gmail.com>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 25 Apr 2024 14:36:52 +0530
-Message-ID: <CA+G9fYvFamPhLn-EVQjiaXibC7hmDYoOeMzTEUWer1xmYLw38g@mail.gmail.com>
-Subject: Re: [PATCH 6.8 000/158] 6.8.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, Arnd Bergmann <arnd@arndb.de>, 
-	Linus Walleij <linus.walleij@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGKsWRmVeSWpSXmKPExsWy7djPc7rC6lppBtOv81lc+fqezWLS/Qks
+	FufPb2C32PT4GqvFjPP7mCzWHrnLbrFg4yNGixmTX7I5cHhsWtXJ5nG/+ziTx+Yl9R59W1Yx
+	enzeJBfAGsVlk5Kak1mWWqRvl8CVcX1CM3PBb/2KH1tTGxiXanUxcnJICJhIXJjSztTFyMUh
+	JLCCUWJ61xo2COcLo8Sxgz+YQaqEBD4zSrw7awrTcezHVWaIouWMEi9mPEPoONT9DKyDTcBQ
+	outtFxuILSKQJ3F1WjsrSBGzwG5GiW3z5rOAJIQF4iRmHv8LVsQioCpx7PFtdhCbV8BO4sOM
+	p4wQ6+Ql9h88ywwRF5Q4OfMJWC8zULx562ywMyQElnJIfP8BUSQh4CKxZMJFJghbWOLV8S3s
+	ELaMxP+d85kgGtoZJRb8vg/lTGCUaHh+C2qdtcSdc7+ATuIAWqEpsX6XPkTYUaLn4BZGkLCE
+	AJ/EjbeCEEfwSUzaNp0ZIswr0dEmBFGtJjHr+Dq4tQcvXII6zUPi2NtZ0CCNlbjbO5dtAqPC
+	LCSvzULy2iyEGxYwMq9iFE8tLc5NTy02zEst1ytOzC0uzUvXS87P3cQITDqn/x3/tINx7quP
+	eocYmTgYDzFKcDArifDe/KiRJsSbklhZlVqUH19UmpNafIhRmoNFSZxXNUU+VUggPbEkNTs1
+	tSC1CCbLxMEp1cA04/Y/r7YVbM/Zyx81b356/KlkQ9uSFda7GBnXKSx48LZQJcK2QaLd4cwi
+	k9hn/hWGwhfZNjd2OBeounge8nyvZ3G76m1j3QYXnT0Lavti2eNdFyv/3rjGaFfQ3NdLHdZV
+	iKiobrDaeffZfeZ1+cv3Te4zDJlrxC33SCbitsKFJT8X3XgptrVn/6xVYh+ET/ZaqjKwSwqG
+	Lq1bffuV2qXw/TOaKz9ePzS/Ks4sJHSlnZOw+f3jj3SU+WN1N3+U3qdbGH1xz/EdbhezAk8l
+	29578DBiZtLihxcfVTN+lru+8nNQ5ta6rvNJMhqTn/T/0pHbunD28heaje2zDb6qPjr86qPs
+	naMRk01UeVyb5rc7KbEUZyQaajEXFScCACc8KUCpAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrDLMWRmVeSWpSXmKPExsVy+t/xe7pC6lppBpseWVhc+fqezWLS/Qks
+	FufPb2C32PT4GqvFjPP7mCzWHrnLbrFg4yNGixmTX7I5cHhsWtXJ5nG/+ziTx+Yl9R59W1Yx
+	enzeJBfAGqVnU5RfWpKqkJFfXGKrFG1oYaRnaGmhZ2RiqWdobB5rZWSqpG9nk5Kak1mWWqRv
+	l6CXcX1CM3PBb/2KH1tTGxiXanUxcnJICJhIHPtxlbmLkYtDSGApo8TKHaeYIRIyEienNbBC
+	2MISf651sUEUfWKU+PVqB1gRm4ChRNdbkAQnh4hAgcTfpUeYQIqYBfYzSvy+dhOsW1ggRmJP
+	1wZ2EJtFQFXi2OPbYDavgJ3EhxlPGSE2yEvsP3iWGSIuKHFy5hMWEJsZKN68dTbzBEa+WUhS
+	s5CkFjAyrWIUSS0tzk3PLTbUK07MLS7NS9dLzs/dxAgM9m3Hfm7ewTjv1Ue9Q4xMHIyHGCU4
+	mJVEeG9+1EgT4k1JrKxKLcqPLyrNSS0+xGgKdN9EZinR5HxgvOWVxBuaGZgamphZGphamhkr
+	ifN6FnQkCgmkJ5akZqemFqQWwfQxcXBKNTB1c69j0T/1KSPJRvPipTnLmv02Gwrt6z1Vzui+
+	wLYh3V4lRXdhc/ESLUW7gsenD6UGt99btsxQovQx16stgvNEwx7M6JNazXS4W/GHQEeG6eVp
+	y1g4C7r0HwvzNy57u6/y899jcZxnzuu/f6a+j3nWQv6fGZ+6E6Sml9VK3t12uPl9mJqgw7sv
+	B1RWP000OnLh0Jfeikc3dp/Rf7sj6d9OGzWhq0tWJq1z3P/k1NJ7nq2sRy93vjv8WOcSzwOf
+	IF9FWfmjV/a68fC6nBJe/v/w5Qfs9R9d1k1YIdyrEF6w/53ogeUfRdY+K2UyOMMdztd1LCVN
+	Jjl0z7KNnDVxVmwhv3fqvvvoufGFqnr/e8V0JZbijERDLeai4kQAQAtdXv8CAAA=
+X-CMS-MailID: 20240425094907eucas1p10a82102ccb08868dda93d6860b9177ec
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20240425094907eucas1p10a82102ccb08868dda93d6860b9177ec
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240425094907eucas1p10a82102ccb08868dda93d6860b9177ec
+References: <CGME20240425094907eucas1p10a82102ccb08868dda93d6860b9177ec@eucas1p1.samsung.com>
 
-On Thu, 25 Apr 2024 at 12:10, Naresh Kamboju <naresh.kamboju@linaro.org> wr=
-ote:
->
-> On Wed, 24 Apr 2024 at 03:11, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.8.8 release.
-> > There are 158 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patc=
-h-6.8.8-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git linux-6.8.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
->
->
-> Results from Linaro=E2=80=99s test farm.
-> No regressions on arm64, x86_64, and i386.
->
-> One regression on arm,
-> the TI BeagleBoard-X15 device kunit test boot failed and
-> it is always reproducible.
->
-> Not a problem on qemu-armv7.
->
-> However, I am bisecting this problem and let you know shortly.
+When reading EDID fails and driver reports no modes available, the DRM
+core adds an artificial 1024x786 mode to the connector. Unfortunately
+some variants of the Exynos HDMI (like the one in Exynos4 SoCs) are not
+able to drive such mode, so report a safe 640x480 mode instead of nothing
+in case of the EDID reading failure.
 
-After investigation it is found that it is an intermittent issue where
-log-in prompt was not successful intermittently and results showed
-a boot failed but it is not.
+This fixes the following issue observed on Trats2 board since commit
+13d5b040363c ("drm/exynos: do not return negative values from .get_modes()"):
 
-However, This is not regression.
+[drm] Exynos DRM: using 11c00000.fimd device for DMA mapping operations
+exynos-drm exynos-drm: bound 11c00000.fimd (ops fimd_component_ops)
+exynos-drm exynos-drm: bound 12c10000.mixer (ops mixer_component_ops)
+exynos-dsi 11c80000.dsi: [drm:samsung_dsim_host_attach] Attached s6e8aa0 device (lanes:4 bpp:24 mode-flags:0x10b)
+exynos-drm exynos-drm: bound 11c80000.dsi (ops exynos_dsi_component_ops)
+exynos-drm exynos-drm: bound 12d00000.hdmi (ops hdmi_component_ops)
+[drm] Initialized exynos 1.1.0 20180330 for exynos-drm on minor 1
+exynos-hdmi 12d00000.hdmi: [drm:hdmiphy_enable.part.0] *ERROR* PLL could not reach steady state
+panel-samsung-s6e8aa0 11c80000.dsi.0: ID: 0xa2, 0x20, 0x8c
+exynos-mixer 12c10000.mixer: timeout waiting for VSYNC
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 11 at drivers/gpu/drm/drm_atomic_helper.c:1682 drm_atomic_helper_wait_for_vblanks.part.0+0x2b0/0x2b8
+[CRTC:70:crtc-1] vblank wait timed out
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u16:0 Not tainted 6.9.0-rc5-next-20240424 #14913
+Hardware name: Samsung Exynos (Flattened Device Tree)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x68/0x88
+ dump_stack_lvl from __warn+0x7c/0x1c4
+ __warn from warn_slowpath_fmt+0x11c/0x1a8
+ warn_slowpath_fmt from drm_atomic_helper_wait_for_vblanks.part.0+0x2b0/0x2b8
+ drm_atomic_helper_wait_for_vblanks.part.0 from drm_atomic_helper_commit_tail_rpm+0x7c/0x8c
+ drm_atomic_helper_commit_tail_rpm from commit_tail+0x9c/0x184
+ commit_tail from drm_atomic_helper_commit+0x168/0x190
+ drm_atomic_helper_commit from drm_atomic_commit+0xb4/0xe0
+ drm_atomic_commit from drm_client_modeset_commit_atomic+0x23c/0x27c
+ drm_client_modeset_commit_atomic from drm_client_modeset_commit_locked+0x60/0x1cc
+ drm_client_modeset_commit_locked from drm_client_modeset_commit+0x24/0x40
+ drm_client_modeset_commit from __drm_fb_helper_restore_fbdev_mode_unlocked+0x9c/0xc4
+ __drm_fb_helper_restore_fbdev_mode_unlocked from drm_fb_helper_set_par+0x2c/0x3c
+ drm_fb_helper_set_par from fbcon_init+0x3d8/0x550
+ fbcon_init from visual_init+0xc0/0x108
+ visual_init from do_bind_con_driver+0x1b8/0x3a4
+ do_bind_con_driver from do_take_over_console+0x140/0x1ec
+ do_take_over_console from do_fbcon_takeover+0x70/0xd0
+ do_fbcon_takeover from fbcon_fb_registered+0x19c/0x1ac
+ fbcon_fb_registered from register_framebuffer+0x190/0x21c
+ register_framebuffer from __drm_fb_helper_initial_config_and_unlock+0x350/0x574
+ __drm_fb_helper_initial_config_and_unlock from exynos_drm_fbdev_client_hotplug+0x6c/0xb0
+ exynos_drm_fbdev_client_hotplug from drm_client_register+0x58/0x94
+ drm_client_register from exynos_drm_bind+0x160/0x190
+ exynos_drm_bind from try_to_bring_up_aggregate_device+0x200/0x2d8
+ try_to_bring_up_aggregate_device from __component_add+0xb0/0x170
+ __component_add from mixer_probe+0x74/0xcc
+ mixer_probe from platform_probe+0x5c/0xb8
+ platform_probe from really_probe+0xe0/0x3d8
+ really_probe from __driver_probe_device+0x9c/0x1e4
+ __driver_probe_device from driver_probe_device+0x30/0xc0
+ driver_probe_device from __device_attach_driver+0xa8/0x120
+ __device_attach_driver from bus_for_each_drv+0x80/0xcc
+ bus_for_each_drv from __device_attach+0xac/0x1fc
+ __device_attach from bus_probe_device+0x8c/0x90
+ bus_probe_device from deferred_probe_work_func+0x98/0xe0
+ deferred_probe_work_func from process_one_work+0x240/0x6d0
+ process_one_work from worker_thread+0x1a0/0x3f4
+ worker_thread from kthread+0x104/0x138
+ kthread from ret_from_fork+0x14/0x28
+Exception stack(0xf0895fb0 to 0xf0895ff8)
+...
+irq event stamp: 82357
+hardirqs last  enabled at (82363): [<c01a96e8>] vprintk_emit+0x308/0x33c
+hardirqs last disabled at (82368): [<c01a969c>] vprintk_emit+0x2bc/0x33c
+softirqs last  enabled at (81614): [<c0101644>] __do_softirq+0x320/0x500
+softirqs last disabled at (81609): [<c012dfe0>] __irq_exit_rcu+0x130/0x184
+---[ end trace 0000000000000000 ]---
+exynos-drm exynos-drm: [drm] *ERROR* flip_done timed out
+exynos-drm exynos-drm: [drm] *ERROR* [CRTC:70:crtc-1] commit wait timed out
+exynos-drm exynos-drm: [drm] *ERROR* flip_done timed out
+exynos-drm exynos-drm: [drm] *ERROR* [CONNECTOR:74:HDMI-A-1] commit wait timed out
+exynos-drm exynos-drm: [drm] *ERROR* flip_done timed out
+exynos-drm exynos-drm: [drm] *ERROR* [PLANE:56:plane-5] commit wait timed out
+exynos-mixer 12c10000.mixer: timeout waiting for VSYNC
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Cc: stable@vger.kernel.org
+Fixes: 13d5b040363c ("drm/exynos: do not return negative values from .get_modes()")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+ drivers/gpu/drm/exynos/exynos_hdmi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+index 5fdeec8a3875..9d246db6ef2b 100644
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -887,11 +887,11 @@ static int hdmi_get_modes(struct drm_connector *connector)
+ 	int ret;
+ 
+ 	if (!hdata->ddc_adpt)
+-		return 0;
++		goto no_edid;
+ 
+ 	edid = drm_get_edid(connector, hdata->ddc_adpt);
+ 	if (!edid)
+-		return 0;
++		goto no_edid;
+ 
+ 	hdata->dvi_mode = !connector->display_info.is_hdmi;
+ 	DRM_DEV_DEBUG_KMS(hdata->dev, "%s : width[%d] x height[%d]\n",
+@@ -906,6 +906,9 @@ static int hdmi_get_modes(struct drm_connector *connector)
+ 	kfree(edid);
+ 
+ 	return ret;
++
++no_edid:
++	return drm_add_modes_noedid(connector, 640, 480);
+ }
+ 
+ static int hdmi_find_phy_conf(struct hdmi_context *hdata, u32 pixel_clock)
+-- 
+2.34.1
 
-## Build
-* kernel: 6.8.8-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.8.y
-* git commit: 9919cd9ab98868581abf895dc0913cb6760c176f
-* git describe: v6.8.7-159-g9919cd9ab988
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.7=
--159-g9919cd9ab988
-
-## Test Regressions (compared to v6.8.7)
-
-## Metric Regressions (compared to v6.8.7)
-
-## Test Fixes (compared to v6.8.7)
-
-## Metric Fixes (compared to v6.8.7)
-
-## Test result summary
-total: 183677, pass: 159323, fail: 2769, skip: 21350, xfail: 235
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 128 total, 128 passed, 0 failed
-* arm64: 38 total, 38 passed, 0 failed
-* i386: 29 total, 29 passed, 0 failed
-* mips: 23 total, 23 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 17 total, 17 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 33 total, 33 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
