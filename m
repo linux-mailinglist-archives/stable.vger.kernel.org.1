@@ -1,150 +1,137 @@
-Return-Path: <stable+bounces-41424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4178B1ED6
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 12:12:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4696D8B20C0
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 13:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10A43B268DA
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 10:12:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA95C1F26361
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 11:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854C38613E;
-	Thu, 25 Apr 2024 10:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFD012AADC;
+	Thu, 25 Apr 2024 11:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aSmXmBmo"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Kadmz8lA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZnFBdGsw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AE28594A;
-	Thu, 25 Apr 2024 10:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E5F84DFC;
+	Thu, 25 Apr 2024 11:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714039934; cv=none; b=teAmiDfDzHRq4YXLuyoqUxFIKgIOKT/ron1vB6ekzkqLr7xgdJnAYiw6Cj7khTdyLFzDSnBGX3ScZcRJ49tkaXRo6FSNssuUWS96Ti+7Y7dvEt3y9EoLDEcfzL2KFaG5KXv78GTvWH1NK9oxTa63TMLbF9jFGoHjyFdFudWCGss=
+	t=1714045934; cv=none; b=ZNpTNIaL0dCX2CwyRk8vQJUtAJg1y5b8zKvoThdOumqa6a4+j4Fef3eEGNlqWVyItU+otQ1ZKA2pZbWJh2TTNdyKnti0BTETYWI8GpUPpWzLUEeUUibL8nekFdve+Sf3D838Is6Y90y00um4BS3XD/JDvgGNM8Rslf3jOPVItAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714039934; c=relaxed/simple;
-	bh=i+Mgc+IvSKQFeZHQCkY0AhEGIHTzpP4YUoIUEeKS914=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B7MEXTeJyyPoeu7cmEiEb2vKa9nr+sT2toTszCQCkba/7gMiKUGYKHUdlOlBravyBLOcxEfAgk2bbV4qR+Vdq+spxgeDBoFZQenlumWSzVP9gRj/hGu1oNyDOiAvqZFmL+2R40Xz0/t8J625VcEZm1EjHZ7xJKXhVnbLf1I18y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aSmXmBmo; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714039933; x=1745575933;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=i+Mgc+IvSKQFeZHQCkY0AhEGIHTzpP4YUoIUEeKS914=;
-  b=aSmXmBmoZm8k6tRyRzkH5HeQkXf+CIlkJmg+HGnAJnlwzUjwCN4tk8jE
-   cNSX5ubue/02P3toCTsvMsnmvgb7wNmiZFP41fWsPbLTZyH5jBnWTWGlc
-   21PEtnqa53CasW4LnNZQfsNSExjjWt9dJSUqzRzqTUp/VdkMLQpNTwboH
-   oj5XL8slaDr/ZFzs+Jmx+eb5/N6/rhLpxI32EbqjW0+Lul1mma4tat2O+
-   eMl5MFMcm/ZA6a6fDNOma6G2kaZcXLvW/FZCMHFV5qON9CxYdTHeMBLB8
-   v81Q17TOUUuVJyTMORDb9CRP9ZWjWWNFPYtB4zeyDFtf2gwsAHwqzn5qA
-   g==;
-X-CSE-ConnectionGUID: ET++B3E7TjiBpGy2nPL5Rg==
-X-CSE-MsgGUID: ntF5uHqIRgqf63lXo3n91g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="20405251"
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; 
-   d="scan'208";a="20405251"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2024 03:12:12 -0700
-X-CSE-ConnectionGUID: U9hB78A2SzOiwFhmqGJYUw==
-X-CSE-MsgGUID: 1XrYexgaQ0OHHn/BznmIug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; 
-   d="scan'208";a="29648450"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmviesa004.fm.intel.com with SMTP; 25 Apr 2024 03:12:09 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 25 Apr 2024 13:12:08 +0300
-Date: Thu, 25 Apr 2024 13:12:08 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Amit Sunil Dhamne <amitsd@google.com>
-Cc: linux@roeck-us.net, gregkh@linuxfoundation.org, badhri@google.com,
-	rdbabiera@google.com, linux-usb@vger.kernel.org,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v1] usb: typec: tcpm: unregister existing source caps
- before re-registration
-Message-ID: <ZiosePYrX5Q6qD70@kuha.fi.intel.com>
-References: <20240424223227.1807844-1-amitsd@google.com>
+	s=arc-20240116; t=1714045934; c=relaxed/simple;
+	bh=ibYMa3jhzNP65WVjGG80S1ZgkEVT/nRrO3d7MImhra8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=kIBN0M1sOEM7pOjsMzVXV3aa+fp22NP/flUYmB76wCejUzhR0ck5q/iH1w2g/DEcNHy5eSnIgi7P+RByELBgc/KnScspAKppnN1WR+2bj2ESOlwiXmrUxlSF2153PFMdu7dpum70SR9IiV1kaU+MgFnSJung6dhN2KPjbEFCXk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Kadmz8lA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZnFBdGsw; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1714045930;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fibyo5fIycycuHzgFLgvHTjArYf2fAIDmOJSGGnfeGs=;
+	b=Kadmz8lAwQLU3paaGZBH65Tjdo3KhzmylFuE02Dqc7LTfpnpfS3GfwxvL1yyQGORNj17EC
+	V+McuIKS7D0dxVPn3HBxgZd+D8kdby9OBv0FlQDAiCv4EiVxCvaAGQkbNtsbk9nCp1SHhN
+	ditgLrxqv7LYyRUkOCd9fvSf0B+2eRN7bbf2pSKWK/I0ZoTuORnXruLjq3mmIaCzmi3bpP
+	g5EYyjly4N7X9EIIFFWKmmXJYGEHXGFz3R8at4BrejfxGE4eLd6zROXFgm6g2xKQKi2Lg1
+	+s9dmyG0/YgbtpqP4Pe2Mva5mxCyJZXL9dmsMThEI8py4tcqac7YdGExA6nSHA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1714045930;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fibyo5fIycycuHzgFLgvHTjArYf2fAIDmOJSGGnfeGs=;
+	b=ZnFBdGswK+ol1V8O6CB2quAGkSrJbxl+WNQir6NbIJkdiz+PDXH5C9go+QLzuDZ5g2kBW8
+	aLndt7NlV0MzdbBw==
+To: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Chen Jiahao <chenjiahao16@huawei.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	rppt@kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] riscv: fix overlap of allocated page and PTR_ERR
+Date: Thu, 25 Apr 2024 13:52:01 +0200
+Message-Id: <20240425115201.3044202-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240424223227.1807844-1-amitsd@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 24, 2024 at 03:32:16PM -0700, Amit Sunil Dhamne wrote:
-> Check and unregister existing source caps in tcpm_register_source_caps
-> function before registering new ones. This change fixes following
-> warning when port partner resends source caps after negotiating PD contract
-> for the purpose of re-negotiation.
-> 
-> [  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
-> [  343.135071][  T151] Call trace:
-> [  343.135076][  T151]  dump_backtrace+0xe8/0x108
-> [  343.135099][  T151]  show_stack+0x18/0x24
-> [  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
-> [  343.135119][  T151]  dump_stack+0x18/0x24
-> [  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
-> [  343.135137][  T151]  kobject_add_internal+0x228/0x424
-> [  343.135146][  T151]  kobject_add+0x94/0x10c
-> [  343.135152][  T151]  device_add+0x1b0/0x4c0
-> [  343.135187][  T151]  device_register+0x20/0x34
-> [  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
-> [  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
-> [  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
-> [  343.135227][  T151]  kthread+0x114/0x1bc
-> [  343.135235][  T151]  ret_from_fork+0x10/0x20
-> [  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
-> 
-> Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
-> Cc: linux-usb@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+On riscv32, it is possible for the last page in virtual address space
+(0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
+shouldn't happen.
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+There is already some code to ensure memblock won't allocate the last page.
+However, buddy allocator is left unchecked.
 
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index ab6ed6111ed0..d8eb89f4f0c3 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -2996,7 +2996,7 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
->  {
->  	struct usb_power_delivery_desc desc = { port->negotiated_rev };
->  	struct usb_power_delivery_capabilities_desc caps = { };
-> -	struct usb_power_delivery_capabilities *cap;
-> +	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
->  
->  	if (!port->partner_pd)
->  		port->partner_pd = usb_power_delivery_register(NULL, &desc);
-> @@ -3006,6 +3006,9 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
->  	memcpy(caps.pdo, port->source_caps, sizeof(u32) * port->nr_source_caps);
->  	caps.role = TYPEC_SOURCE;
->  
-> +	if (cap)
-> +		usb_power_delivery_unregister_capabilities(cap);
-> +
->  	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
->  	if (IS_ERR(cap))
->  		return PTR_ERR(cap);
-> 
-> base-commit: 0d31ea587709216d88183fe4ca0c8aba5e0205b8
-> -- 
-> 2.44.0.769.g3c40516874-goog
+Fix this by reserving physical memory that would be mapped at virtual
+addresses greater than 0xfffff000.
 
+Reported-by: Björn Töpel <bjorn@kernel.org>
+Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
+Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org>
+---
+ arch/riscv/mm/init.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 968761843203..7c985435b3fc 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -235,18 +235,19 @@ static void __init setup_bootmem(void)
+ 		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
+ 
+ 	/*
+-	 * memblock allocator is not aware of the fact that last 4K bytes of
+-	 * the addressable memory can not be mapped because of IS_ERR_VALUE
+-	 * macro. Make sure that last 4k bytes are not usable by memblock
+-	 * if end of dram is equal to maximum addressable memory.  For 64-bit
+-	 * kernel, this problem can't happen here as the end of the virtual
+-	 * address space is occupied by the kernel mapping then this check must
+-	 * be done as soon as the kernel mapping base address is determined.
++	 * Reserve physical address space that would be mapped to virtual
++	 * addresses greater than (void *)(-PAGE_SIZE) because:
++	 *  - This memory would overlap with ERR_PTR
++	 *  - This memory belongs to high memory, which is not supported
++	 *
++	 * This is not applicable to 64-bit kernel, because virtual addresses
++	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
++	 * occupied by kernel mapping. Also it is unrealistic for high memory
++	 * to exist on 64-bit platforms.
+ 	 */
+ 	if (!IS_ENABLED(CONFIG_64BIT)) {
+-		max_mapped_addr = __pa(~(ulong)0);
+-		if (max_mapped_addr == (phys_ram_end - 1))
+-			memblock_set_current_limit(max_mapped_addr - 4096);
++		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
++		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
+ 	}
+ 
+ 	min_low_pfn = PFN_UP(phys_ram_base);
 -- 
-heikki
+2.39.2
+
 
