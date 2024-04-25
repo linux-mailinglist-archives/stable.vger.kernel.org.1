@@ -1,138 +1,108 @@
-Return-Path: <stable+bounces-41429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AB78B2216
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 14:58:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B39138B224D
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 15:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 543D31C21E4F
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 12:58:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38AAA1F26A27
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 13:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BF0149C59;
-	Thu, 25 Apr 2024 12:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0DC149C4B;
+	Thu, 25 Apr 2024 13:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PkcNfV3L"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="0GZa0gQU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206E0149C54;
-	Thu, 25 Apr 2024 12:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5A5139D16;
+	Thu, 25 Apr 2024 13:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714049897; cv=none; b=Em9dE7PRjnt/utif5oOdVx1gTkVQ623oDVsbbjKWdv9gdDKJyVewovpw6ebn4H3t777/rclrIgt4fhQndkJ2K1sBkabAaVoEjF7aBdtYPuLrQ6Az0yC/YyDOgHnevK4iP+ySjEHUsHqZPaQX9bJ1MMn6jk6fSguediDloZLmNwQ=
+	t=1714050765; cv=none; b=nmqesciStK3SQKJ4Sq28OqGkqMgRMry4I8bGEliFNk/v3665k/o3veeDn5+P/+nFgMbYHGzWidL+l6X+dZuaSg3daw9w5PIJRIBYjVswWySFNPuis3xPpk5O9zUSXqx+AWPIOtI9hEhaBqkDlI1g6woEmWzREcAGwsfuMS7FzJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714049897; c=relaxed/simple;
-	bh=JyQm9VGmJkZTxCcFWAIKfFZx/qAJNcE1EJUqGNLUBZc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CDcVursr0N6MuFXRB0fMbbSXbgOVPEBweG3sYnqTwnu/k+mOs/BA7hUzBonZZtMS4tCZwocoX/Xi6mIlsXr7BjDMFdRatYG2ZgFxQTynzck6az+TDpFiLj9TTT5DQdP0QQuoNyZLfcccBXqeMFFqrEdbu9GjxPwAJhy2hCozFgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PkcNfV3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B1DC113CC;
-	Thu, 25 Apr 2024 12:58:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714049896;
-	bh=JyQm9VGmJkZTxCcFWAIKfFZx/qAJNcE1EJUqGNLUBZc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PkcNfV3LVD62NBTVN5zwqCBk8/ewv7iodL7F3a/SAIaUh2T5MMh0bSJooF51j5UEz
-	 MP4G6fU64nvIX49BeQBIFPQnXuTs0bghJGDbrwZBxWyyEX7G2zx58jfsCsjNKJQbbO
-	 EGUnKZrlA7r1Fn8SKH5AsnFGlKbOb1XfaBx/ogxkjSH3I6iBa96oRkIFBCbYaTv0zf
-	 JUkyQK94PZIc2XeMiNRmEi+tEL1U5IbrZ8YORU1Uk5xxOGwKYE3CKY58tAp+/fNpQh
-	 wKQqkNnLZges1L9IoV/SBAfR9BKWuZpy+IOIxVAjXw8TKEJgGD0Nhmz+tyDSfTCoLC
-	 dhfx0rfL12Kgw==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Nam Cao <namcao@linutronix.de>, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
- <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, Andrew
- Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Sami
- Tolvanen <samitolvanen@google.com>, Chen Jiahao <chenjiahao16@huawei.com>,
- =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
- linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, rppt@kernel.org
-Cc: Nam Cao <namcao@linutronix.de>, stable@vger.kernel.org
-Subject: Re: [PATCH] riscv: fix overlap of allocated page and PTR_ERR
-In-Reply-To: <20240425115201.3044202-1-namcao@linutronix.de>
-References: <20240425115201.3044202-1-namcao@linutronix.de>
-Date: Thu, 25 Apr 2024 14:58:12 +0200
-Message-ID: <87bk5xbnvf.fsf@all.your.base.are.belong.to.us>
+	s=arc-20240116; t=1714050765; c=relaxed/simple;
+	bh=SWbsN8gb0T+55zIEnnjHmugKc2Hefu/p5fPeAaJnVvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=pOtXfDMnazh8+9QyrCn8gLWVSxfQQ7Y2tyhD3whZP1KvwKJdNN/XRrr2sm7kHBhi8ZqEcTmqgADFGME0dYQH9hrYbvvZJJ+VvpbrPLsgf3fKF0Eq04ng3TEJWAmlZpx2JvMfjz1LLgmhiW0/LXvl/uJFbOXvaFy6l8LzMDm2WKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=0GZa0gQU; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id 569331F9E9;
+	Thu, 25 Apr 2024 15:12:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1714050754;
+	bh=mjjqNnQB3Y3PmO3eF7RCQ6exiD5LgwcG2Ut4A6E+9WE=; h=From:To:Subject;
+	b=0GZa0gQUG+IjBubLquW3DLf34IruRGf2YYuTX+SKmE8vh0fYBcnrocw6OSc5Sgj1+
+	 cTtKdsqUymXImgTdD4XxFy/ZmzGypggh0t9/bOYSqAdamNlntUSwPqvBnI2ZR/+SEc
+	 PYJsRN6kuiCiPRfkD3Sr4uTkV3/IkzkWuuqT6Yy+IGiqrqmeKsy68rjY05WvBze+a1
+	 jX5Az0VNqfOXfHjj6AxQ+CKgxxtiU9fFRfBMjynmyI9X7WgeDT5TS+X5GaKS0PKf1q
+	 HXImYdeUeA3SKvuigNSUP6Y8ju+1ABoPe040XE75ZqFlNWYJM9MrDXSub6Uij1mJpi
+	 h9txzP/TXhung==
+Date: Thu, 25 Apr 2024 15:12:28 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: mkl@pengutronix.de
+Cc: Vitor Soares <ivitro@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Wolfgang Grandegger <wg@grandegger.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vitor Soares <vitor.soares@toradex.com>, linux-can@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] can: mcp251xfd: fix infinite loop when xmit fails
+Message-ID: <20240425131228.GA15857@francesco-nb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240311121143.306403-1-ivitro@gmail.com>
 
-Nam Cao <namcao@linutronix.de> writes:
+Hello Mark,
 
-> On riscv32, it is possible for the last page in virtual address space
-> (0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
-> shouldn't happen.
->
-> There is already some code to ensure memblock won't allocate the last pag=
-e.
-> However, buddy allocator is left unchecked.
->
-> Fix this by reserving physical memory that would be mapped at virtual
-> addresses greater than 0xfffff000.
->
-> Reported-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
-> Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.=
-are.belong.to.us
-> Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Cc: <stable@vger.kernel.org>
+On Mon, Mar 11, 2024 at 12:11:43PM +0000, Vitor Soares wrote:
+> From: Vitor Soares <vitor.soares@toradex.com>
+> 
+> When the mcp251xfd_start_xmit() function fails, the driver stops
+> processing messages, and the interrupt routine does not return,
+> running indefinitely even after killing the running application.
+> 
+> Error messages:
+> [  441.298819] mcp251xfd spi2.0 can0: ERROR in mcp251xfd_start_xmit: -16
+> [  441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer not empty. (seq=0x000017c7, tef_tail=0x000017cf, tef_head=0x000017d0, tx_head=0x000017d3).
+> ... and repeat forever.
+> 
+> The issue can be triggered when multiple devices share the same
+> SPI interface. And there is concurrent access to the bus.
+> 
+> The problem occurs because tx_ring->head increments even if
+> mcp251xfd_start_xmit() fails. Consequently, the driver skips one
+> TX package while still expecting a response in
+> mcp251xfd_handle_tefif_one().
+> 
+> This patch resolves the issue by decreasing tx_ring->head if
+> mcp251xfd_start_xmit() fails. With the fix, if we trigger the issue and
+> the err = -EBUSY, the driver returns NETDEV_TX_BUSY. The network stack
+> retries to transmit the message.
+> Otherwise, it prints an error and discards the message.
+> 
+> Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
 
+Any other feedback on this? Just reaching out to be that this does not
+fall through the cracks.
 
-Thanks for picking it up again, Nam.
+Francesco
 
-This passes my test:
-Tested-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
-
-> ---
->  arch/riscv/mm/init.c | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
->
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index 968761843203..7c985435b3fc 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -235,18 +235,19 @@ static void __init setup_bootmem(void)
->  		kernel_map.va_pa_offset =3D PAGE_OFFSET - phys_ram_base;
->=20=20
->  	/*
-> -	 * memblock allocator is not aware of the fact that last 4K bytes of
-> -	 * the addressable memory can not be mapped because of IS_ERR_VALUE
-> -	 * macro. Make sure that last 4k bytes are not usable by memblock
-> -	 * if end of dram is equal to maximum addressable memory.  For 64-bit
-> -	 * kernel, this problem can't happen here as the end of the virtual
-> -	 * address space is occupied by the kernel mapping then this check must
-> -	 * be done as soon as the kernel mapping base address is determined.
-> +	 * Reserve physical address space that would be mapped to virtual
-> +	 * addresses greater than (void *)(-PAGE_SIZE) because:
-> +	 *  - This memory would overlap with ERR_PTR
-> +	 *  - This memory belongs to high memory, which is not supported
-> +	 *
-> +	 * This is not applicable to 64-bit kernel, because virtual addresses
-> +	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
-> +	 * occupied by kernel mapping. Also it is unrealistic for high memory
-> +	 * to exist on 64-bit platforms.
->  	 */
->  	if (!IS_ENABLED(CONFIG_64BIT)) {
-> -		max_mapped_addr =3D __pa(~(ulong)0);
-> -		if (max_mapped_addr =3D=3D (phys_ram_end - 1))
-> -			memblock_set_current_limit(max_mapped_addr - 4096);
-> +		max_mapped_addr =3D __va_to_pa_nodebug(-PAGE_SIZE);
-> +		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
-
-Nit (and only if you respin for some reason): Move max_mapped_addr into
-the if-clause, or simply get rid of it (all on one line).
-
-Regardless:
-Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
-
-
-Bj=C3=B6rn
 
