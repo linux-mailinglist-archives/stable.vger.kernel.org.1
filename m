@@ -1,248 +1,296 @@
-Return-Path: <stable+bounces-41435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCD98B247D
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 17:02:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4FA8B24E3
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 17:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECDA71F2206E
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 15:02:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96A8D1F23695
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 15:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9B714A4FB;
-	Thu, 25 Apr 2024 15:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51ACD14A63D;
+	Thu, 25 Apr 2024 15:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="J8cN/wQh"
+	dkim=pass (2048-bit key) header.d=biamp.com header.i=@biamp.com header.b="nfOwufMK";
+	dkim=pass (2048-bit key) header.d=biamp.com header.i=@biamp.com header.b="wj7y72JJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0b-0068d901.pphosted.com (mx0b-0068d901.pphosted.com [205.220.180.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BE81EB36;
-	Thu, 25 Apr 2024 15:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714057334; cv=none; b=iy+xUqv1EaBGCeW8PHvZ5X6nz9bYpGFw7KR47+G7yj+fDkHXSkRSUP8JynYMWfMJOwjJDsDPBtUdNIlCtnJjTdCSobPVGS88gef+R5U24jSLFWVUPdSurqLKEKFFqSusBRA6pvojOEAGRm/eO/e3G5dKypJLTkaKh+OwKOl5dUY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714057334; c=relaxed/simple;
-	bh=AASGaDiERlzdBRQjlQBZfZPyLggHZdYU0oJK4Xvk1Rw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=k2S25iNIbhWOLIxzlsP0QCYaZwTMF5Pq5Tb8AStsmrXZmhBa/YkYpthCOM9cD7r3eTtzbpv5zcrqLctDCvLzcGEDOx0BOuhiZu2wvUp08bkq1VG1tbPJDeTpCCoe1H+MnvHLklHpCjdnl2HSJAqjLpjGuU/NZ+4yOHx3PSKhbfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=J8cN/wQh; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43PEP3eO013761;
-	Thu, 25 Apr 2024 15:02:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=jHgCDS8UoeblG1zgaxuVBegLFJyPEwjhkoDLquD3YcQ=; b=J8
-	cN/wQhuCLomG+0WbF6ys8uph3W+G1ewKyu2qIb9OMIfFJQdDBjuGrLMwt7gNE2QU
-	7FOD8MkPwdZLEAOebHFtwHOX9fKPh/k4Pmb3iQr+kgPoYH77keQgmhg/r/Fd52pM
-	yLWME6vFZ75CBnPG56GqrlqO+emJEnxv5jk1zikUuWgFxCVvuQxuCj7Ee+0KorDp
-	dzqQQkVt7hD7HvOfUjCO6HrbQhyVYYFcdIqIogs3Plef3nvxwnSVS1eWqfHIxCbB
-	hw9M6KHrbiyTjicLFauAI4U5KBvAvZxVDIgs9kSWqG3JgwnJncCHhNkXjeSAhQOg
-	jZ9NOLc5agi9oteASjdA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xqrwwr3k5-1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8C11494BC;
+	Thu, 25 Apr 2024 15:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.180.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714058314; cv=fail; b=ZNGOdn5bt3uNf8GKx8OLv/qxijcfXHhMWBT9fxqJiAZ8aLSK+7N1/vU6+KTmgq3WJN3y7iT+jJbDjzvHAaadMNaHCBVkf/WMe+7uzYcJie5t5iaAHS5fsm1k7L/35OgdNDSLXjylXcSgPAUnN3IxX59Q+xKRY4Q6BzFX1IuZ88g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714058314; c=relaxed/simple;
+	bh=r7ytaIQzqpbgGYfqam05OFk6ssVoq/8UgT0JLvjWk8g=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=I8R76fr+SwkgOaK2BUaTHx1WAoYjOPIgF56LZFZsEtWglrcvKlmIbwxnw/oDCelEEIehIIWbZSy00bcxQ7PGMP++MFBnrLiCVXudzj9wEVGZ0VmbDULMhDHM0i/ypzoNQM9nqAkNESijyJPbAqvr+rEBmTR677XRCEVD5cAWtAs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=biamp.com; spf=pass smtp.mailfrom=biamp.com; dkim=pass (2048-bit key) header.d=biamp.com header.i=@biamp.com header.b=nfOwufMK; dkim=pass (2048-bit key) header.d=biamp.com header.i=@biamp.com header.b=wj7y72JJ; arc=fail smtp.client-ip=205.220.180.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=biamp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=biamp.com
+Received: from pps.filterd (m0278265.ppops.net [127.0.0.1])
+	by mx0b-0068d901.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43P7vgOk026946;
+	Thu, 25 Apr 2024 08:18:13 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=biamp.com; h=
+	from:to:cc:subject:date:message-id:content-type
+	:content-transfer-encoding:mime-version; s=proofpoint; bh=Bavw/7
+	hNi3MAHqzBYiPJ86ZK3S9kluLhmqRUr75jAFs=; b=nfOwufMKOeqRwSE+Z+0x5K
+	sjMuKjtXtTEsL8R5syHWm+tZcIsOfmKJfptES9B9U6/bURDUpBmmBLNrCtP7X0SX
+	x6OetLXjFg/BW8/jFwOjrnDiP7TfKBPvZ3arvdKN353zwkT+3Libwoodxw2LpADa
+	6BIoyj+L6fHbnh2/Bqy78IEyv90j8R8asCmKWT5mLUxVRXYvPenDSe3RXKLmh0Th
+	Vo0CSJxZMm9MIQ4ZVAAOqwaykbSJ0MitFsEdJbHcfQTCdQvcOGaihulbdv+s8ZoV
+	ELI3hW0t7pk5VXFD0ab9Qli4wx85/j/UYjqtySI1OUTugIWO6e8ULxkwpLaZBnCA
+	==
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2169.outbound.protection.outlook.com [104.47.59.169])
+	by mx0b-0068d901.pphosted.com (PPS) with ESMTPS id 3xmadvkx7p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 15:02:03 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43PF21Id009585
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 15:02:01 GMT
-Received: from [10.216.21.111] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 25 Apr
- 2024 08:01:56 -0700
-Message-ID: <c9ea5867-2db2-4f64-a1e3-f6c2836dd45d@quicinc.com>
-Date: Thu, 25 Apr 2024 20:31:50 +0530
+	Thu, 25 Apr 2024 08:18:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LWT1a4PpSRi8OULIcPJKql4rq0OxkTlDYRPbtNHihFUAnzNjWQHfAa7ZHyYUTW7YwFgasQz5TNkzl+guJOT+/kurKK72lE+XWJZXqWYEv3smgLBoPeGFpe0Gou4mjCRFqvBsu3elXFWyz5IDtEvH+2d8rd6DwON8qpbWOjh2Ky8lHx/JaADa2DGL74j/57o1LWiNUNgm49BZp/7HMf1eLgRBv5QS4wgP3GMVU/Vx1PQLIzmDoBDxx7ve8AZwWrJtNrxYEABTtsO6z+zB0dH7uJGPUd9AaeooIlY1GFymXDvjq2aw3sTI74c2ZOHqUR7Vz5/3KrEkClfTlTc7GkOySw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Bavw/7hNi3MAHqzBYiPJ86ZK3S9kluLhmqRUr75jAFs=;
+ b=U8y2vCz/kdC5XXMHyneiYmY+J4xpr0NjdC7z4JiUmKCp8G4euuvn2Qy3VSZS1xe93FIHKrnXp7H81OAdulYbqXxlngKFYfq2oQ1R4NT55L47g4vSl44FLF24ar80S7uzSbrFtmHL4RcmCbZ4pGs6vOu23gHFmYbgHuXMg7uq0bKMU1e/TeFd1v233TqrllSW0LmwoFgb3PWtzjfy5Ik8raq4L65IxhHszOG8Sh6SVEr7kSKIsQA86zdjd7xh5Zwl+xuBzTC2ug0FE6lSJo1ZPjb1l68SWZCUnUwMmD4g0jw1XEaLP9k7VuNfvB5WRbxepnDldj+48otYclNXr0IWSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=biamp.com; dmarc=pass action=none header.from=biamp.com;
+ dkim=pass header.d=biamp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=biamp.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Bavw/7hNi3MAHqzBYiPJ86ZK3S9kluLhmqRUr75jAFs=;
+ b=wj7y72JJAycPUC5joyfyPF7UO+9GlSVvxCqDCy8hkwiHMMdX36+GSI23hJCkIkRtg98Q5zaoqxoyagPiUDwH+WBoHbk8zFPDtccW1KISozkLnuHULR9XyFwX0TNeN48RWOPMI4EtNKeG1YDi2ET70vdebkY6Ia/+EytVUi/Eb/xysb+3wU2Mb2vX8QOtYkWsdVxMASukG7q0qi3J8Z7B7+mvjcKGHweVb8FrGygfdprNFT44b0UQyOE+d8TGUuiAM6XsZp+tJyGvoH0OxGpqh3qoO1h8nsB/dEl0oTgy58rn/1DrNdeZfODXJquKX5a+cPMt7fYiMSPtHu7cra2YNw==
+Received: from CO1PR17MB5419.namprd17.prod.outlook.com (2603:10b6:303:ec::17)
+ by CH2PR17MB3720.namprd17.prod.outlook.com (2603:10b6:610:8c::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Thu, 25 Apr
+ 2024 15:18:02 +0000
+Received: from CO1PR17MB5419.namprd17.prod.outlook.com
+ ([fe80::f48:ee61:a81b:d555]) by CO1PR17MB5419.namprd17.prod.outlook.com
+ ([fe80::f48:ee61:a81b:d555%4]) with mapi id 15.20.7519.021; Thu, 25 Apr 2024
+ 15:18:01 +0000
+From: Chris Wulff <Chris.Wulff@biamp.com>
+To: "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Pavel Hofman
+	<pavel.hofman@ivitera.com>,
+        Julian Scheel <julian@jusst.de>,
+        Ruslan Bilovol
+	<ruslan.bilovol@gmail.com>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>,
+        Chris Wulff <chris.wulff@biamp.com>
+Subject: [PATCH v2] usb: gadget: u_audio: Fix race condition use of controls
+ after free during gadget unbind.
+Thread-Topic: [PATCH v2] usb: gadget: u_audio: Fix race condition use of
+ controls after free during gadget unbind.
+Thread-Index: AQHalyGSommM4qRlS0ev1Ndy19pvUg==
+Date: Thu, 25 Apr 2024 15:18:01 +0000
+Message-ID: 
+ <CO1PR17MB5419C2BF44D400E4E620C1ADE1172@CO1PR17MB5419.namprd17.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO1PR17MB5419:EE_|CH2PR17MB3720:EE_
+x-ms-office365-filtering-correlation-id: bf15ea99-bcd6-4f70-a7a1-08dc653ae5c4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ =?iso-8859-1?Q?xfXmOuznEYACwl5Fp7kH9dLLN0Do6YtaoPQPCQ1obJJX4TAnncouvS5xT8?=
+ =?iso-8859-1?Q?H8o7+aJRuy0S7Rx8zee0k+drE/JRgba72PpLqNZ+cizKtGVMTxLmIjD3si?=
+ =?iso-8859-1?Q?4lXrd1tsgSOyYKdI9YAHZPudFCI9DvIPaGkfDEiCUpXEgskp+cdVB97l9M?=
+ =?iso-8859-1?Q?B3HTy8MUseQQBkJMjDeHaiOEpAzgoob4FuOVpNutJpPHQyVKe8gUpW5fOB?=
+ =?iso-8859-1?Q?MXW2lf9UQvPSthZ5TvxCXt9MCOjdPJou1EhUB36EO1lYZSuakReD8QSm68?=
+ =?iso-8859-1?Q?kV5befuwcZKxnMXHmRPvXvQRPT1MAKX1d+1nBHhwKzho+1xL3cYVc5Bb4D?=
+ =?iso-8859-1?Q?LSVRM/DuHPmPiSxW12O2ygEIu05vGdZEBwzbShjKyT1xc/6vvvw1g9L4TC?=
+ =?iso-8859-1?Q?E0Qd6x2XWv90J0V8UNl2urfA1+ZHFvj8Cql9kBCFz3X9KkL5Nrv0gODarY?=
+ =?iso-8859-1?Q?xj4mp79AXjiEGG7OBFzaFeKTlNPLc4HsdSaS58CNmGaZPsHwOmxSY+sKHH?=
+ =?iso-8859-1?Q?pRkbnQtiZqsoEks95z/J3wk6LdGSMyBSWQgfCggW+38rhmu4OW26kmWvdc?=
+ =?iso-8859-1?Q?edEZ0MmdSkW7imhf98rKXE3qK3GSyT9EhrbIJVjzmr6AbOns+49HYDRrih?=
+ =?iso-8859-1?Q?+N3l1u5VUvJCULqdHMoa0Smx3exju1F+l/JZk3NM+e9h8JOyEF2F8k8uV9?=
+ =?iso-8859-1?Q?7DXkrpaelCziz0jYA6z1BSRXl95g1WSekAZpo2LpFPOxrnanOVpK5YcUA3?=
+ =?iso-8859-1?Q?SQL1q6lg6D4V4xO0kybkZWbnVNq/17gEoT7rMfoSvlA5lJdOAiMyNfj4PO?=
+ =?iso-8859-1?Q?E4MBX2/EDY6fRlz4PtJT4cmbKAELcg+D9NIVgXXcnyCj3feHz9UOjcWimM?=
+ =?iso-8859-1?Q?yKDOFxhGK3Vr6GvpvgPj3zSNekad6uSlxpThfFiH8E3UsjgPd+8eOEFIGm?=
+ =?iso-8859-1?Q?OKWCQTdJ57rjsAto1GsMJIVNQLHX9Rd7ktXdAXsLOtRC1yPZzEjnjkBkts?=
+ =?iso-8859-1?Q?awjF5fsJNtk2Z0bY6lI5M9UaUPJj1KoISJLal4VtqxbYQxw4GCEoWPoS0W?=
+ =?iso-8859-1?Q?tq5mcV8ZXaRLgjfS3r1g71A9Z+GElPBI2SQzo50x7SPLGa83njKwSQt4qX?=
+ =?iso-8859-1?Q?Ik2CgLivyHDh7QTj2gkLPxxB6mMloyzuJD9ol6bqtGVQ/zHOGxa/YjeuYx?=
+ =?iso-8859-1?Q?8kl+jX+miwFDUM5PjKmiogox9q6fG2Qn6rBbCayIclfAu7OXz1xmVHUllS?=
+ =?iso-8859-1?Q?UQHbkjcOid1cchd3bVz0jl+1AHkhLotABLWKy5/h+lV6gITpEd2/mp/SAs?=
+ =?iso-8859-1?Q?F6IyGWK2USNHnDeBW0GrdqLZ85VEHX3p8OGwVxCaBjs7+9ySHKVTbMPyEX?=
+ =?iso-8859-1?Q?KZCEggx15rTY5Uk88q+HFqfR+kiFHyzQ=3D=3D?=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR17MB5419.namprd17.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?iso-8859-1?Q?R2x+JMVnvAdP5+NjNhqU4eUahAxp8k2uAWfoQlahb3GOjxgggbkJXMX5X7?=
+ =?iso-8859-1?Q?0JmquKXqVyxFfQBu+BAFpiF2aqkgvpFKk2jNwhROLc//Wr+kpCesKpPzz7?=
+ =?iso-8859-1?Q?GJV5pvIfAhxKyvw2cw1S6G1farHlprNaQcVuGZS/01JuZOdae5ZSFyGuMl?=
+ =?iso-8859-1?Q?OVLkeYuoYL/fkgRjGubT/rd7ffXKu1qqpjpOJjHDYfHy/ZbF/VUBvNaI2l?=
+ =?iso-8859-1?Q?YC3lgr5eZsUrdfVW4YvrREZm25OqaTcJ12vkUwGtrigoHSucQs4nCzOVRc?=
+ =?iso-8859-1?Q?N9jsLrlstDVVhnxTk0oN29hDfYW90adteioHbKiuXy40NgdNo+pb8aBNM5?=
+ =?iso-8859-1?Q?8/k89g7ettLFf8vne4S47IZgoAqPFsQF3kfOh7pivC8xtrNG8mVDL2wdbN?=
+ =?iso-8859-1?Q?boC2JnAqz8xe73STVfNReKJg+VjUuxmBGLMWG1MdCzehSerlKlFnNRjpDQ?=
+ =?iso-8859-1?Q?cdA/YWEZLqRo8NFAEtuGtLvxZ76xCD1OQNixv//fsx4M0Wu2aJuqklZpKH?=
+ =?iso-8859-1?Q?6v4MtgCcbjt9IvTSchLBfWItHZXOiZOaaqpC+vxGoKtCgI20a+ZzxipE8k?=
+ =?iso-8859-1?Q?UhfBcZUy7RrcMWeqmctp5ye3PJ0El0CXXVKzD5qTMMnp0HNaX23Csj59e1?=
+ =?iso-8859-1?Q?FxmluYQZ31DVuBCqpgmHj7q4Ef0MIwHvbz4fdml4uBgTUdwbFjVHyYpFUs?=
+ =?iso-8859-1?Q?ZzgsYtwU2y/8yXSdl+qmSu3kU7QGqSAlpGHNgj/riC4bdTPUBvdtW1F7y4?=
+ =?iso-8859-1?Q?waIBT2IbR6djje0YDSXgx7nkDmA5oci2KErG1rFy5rGJdZa+f1DDbDP1r6?=
+ =?iso-8859-1?Q?+H7lEFIhuxq0HF3Hp7k9tnxfXBS8mmF9SBzp0W5AIN+kwbvo62oLC0Rk4n?=
+ =?iso-8859-1?Q?oECbnC7+5Osw10jTOs4wz5c6yMLb4qoXhywEwlDm730ez+eoreeJKjuvLU?=
+ =?iso-8859-1?Q?sLuboPpeX46im85tdXiVR2/ZEQgNcHL/kl5w0RLjFECTPCZTyUXNJ5TaMT?=
+ =?iso-8859-1?Q?MWnFsj0bOtldTDHG9mM4LZN+fJi9ts6wlylWGWTC9KdJ686HaU1iEX2mPF?=
+ =?iso-8859-1?Q?gD3whzboQ7zeSsK99B1XC/Cwt3/DK/4VP0pr+rD2H8DppoCLb4hozpbVU5?=
+ =?iso-8859-1?Q?t/VcDv2ZGLOoEysdV/aeia+HTmF3o+ukt3U+h+BoMfMgAZtB+Jpf/srtU6?=
+ =?iso-8859-1?Q?o1KKABYAKy3VkYiIiXbHhtNBmiC8biNzL37c4V+sKn7l1LkFPpNS77d6YK?=
+ =?iso-8859-1?Q?NwHyj/umCc9x3DUBoeKUSnJ3ajHCp4G4hawc7roGMdcrMEDxgGcwt37QW3?=
+ =?iso-8859-1?Q?vuILhSyxYJQvwEVZxKX4MpzTGc8yfgWSAwqCmXrGrtnZoTzte+G5Am0eQG?=
+ =?iso-8859-1?Q?eTe6/qmVQhiXU9/etPaSBIgsdz8pmRjiw1XQd3YSLqUxLMTZSMR54PQz8O?=
+ =?iso-8859-1?Q?XrAuvn1ffGqpgLAQGH1yiJBlCoOw3t+NzBVWPjbKKE3Z42bKIleo+WQl+F?=
+ =?iso-8859-1?Q?wjp3sdLAB6G6/UueWUD7TQOl8vD1k9xcZfcfbNXCXUEj4yRrIJ5Y8KKX4v?=
+ =?iso-8859-1?Q?WHYRX/OTs+YyXOEP7QyF8jZ31soddaC+iPLMiaKuAODkKqC+S7nQyYy+eS?=
+ =?iso-8859-1?Q?zAwCHW7aCvj31R8u86bQyKDkPZuFxjyp51?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
-To: Johan Hovold <johan@kernel.org>, Doug Anderson <dianders@chromium.org>
-CC: Johan Hovold <johan+linaro@kernel.org>,
-        Marcel Holtmann
-	<marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        <linux-bluetooth@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, Stephen Boyd
-	<swboyd@chromium.org>
-References: <20240416091509.19995-1-johan+linaro@kernel.org>
- <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
- <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
- <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
- <ZioW9IDT7B4sas4l@hovoldconsulting.com>
-Content-Language: en-US
-From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-In-Reply-To: <ZioW9IDT7B4sas4l@hovoldconsulting.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: qe4rXsusNhdEU2MLNsZEdGMPrpx8ME89
-X-Proofpoint-ORIG-GUID: qe4rXsusNhdEU2MLNsZEdGMPrpx8ME89
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-25_15,2024-04-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
- mlxscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 adultscore=0 priorityscore=1501 phishscore=0
- mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2404010003 definitions=main-2404250107
+X-OriginatorOrg: biamp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR17MB5419.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf15ea99-bcd6-4f70-a7a1-08dc653ae5c4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Apr 2024 15:18:01.7047
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 341ac572-066c-46f6-bf06-b2d0c7ddf1be
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0fty15icEb8Z3zQKL5VaVILPE1OPRWYAr3zx2sHaEAyxMniSRyYkPOcMXhqJpikIAw6cpkHJsPxMWzcVC2z6Ew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR17MB3720
+X-Proofpoint-GUID: bN78hoFvMHgcxp48r1EmzItugNX8a6LK
+X-Proofpoint-ORIG-GUID: bN78hoFvMHgcxp48r1EmzItugNX8a6LK
 
-Hi Johan,
-
-Apologies for the delay. As of now, we have observed the following
-values in the upstream firmware files for default BD addresses.
-We will confirm ASAP if there are any changes.
-
----------------------------------------------------------
-|   BDA	             |      Chipset		        |
----------------------------------------------------------	
-| 20 00 00 10 80 39  |	WCN3988 with ROM Version 0x0200	|
----------------------------------------------------------	
-| 00 08 74 12 80 39  |  WCN3988 with ROM Version 0x0201	|
----------------------------------------------------------	
-| 00 07 64 21 90 39  |  WCN3990			        |
----------------------------------------------------------
-
-On 4/25/2024 2:10 PM, Johan Hovold wrote:
-> On Tue, Apr 23, 2024 at 08:09:55AM -0700, Doug Anderson wrote:
->> On Tue, Apr 23, 2024 at 2:08 AM Johan Hovold <johan@kernel.org> wrote:
->>> On Mon, Apr 22, 2024 at 10:50:33AM -0700, Doug Anderson wrote:
->>>> On Tue, Apr 16, 2024 at 2:17 AM Johan Hovold <johan+linaro@kernel.org> wrote:
->>>
->>>>> As Chromium is the only known user of the 'local-bd-address' property,
->>>>> could you please confirm that your controllers use the 00:00:00:00:5a:ad
->>>>> address by default so that the quirk continues to be set as intended?
->>>>
->>>> I was at EOSS last week so didn't get a chance to test this, but I
->>>> just tested it now and I can confirm that it breaks trogdor. It
->>>> appears that trogdor devices seem to have a variant of your "default"
->>>> address. Instead of:
->>>>
->>>> 00:00:00:00:5a:ad
->>>>
->>>> We seem to have a default of this:
->>>>
->>>> 39:98:00:00:5a:ad
->>>>
->>>> ...so almost the same, but not enough the same to make it work with
->>>> your code. I checked 3 different trogdor boards and they were all the
->>>> same, though I can't 100% commit to saying that every trogdor device
->>>> out there has that same default address...
->>>>
->>>> Given that this breaks devices and also that it's already landed and
->>>> tagged for stable, what's the plan here? Do we revert? Do we add the
->>>> second address in and hope that there aren't trogdor devices out in
->>>> the wild that somehow have a different default?
->>>
->>> This patch is currently queued for 6.10 so there should be time to get
->>> this sorted.
->>>
->>> My fallback plan was to add further (device-specific) default addresses
->>> in case this turned out to be needed (e.g. this is what the Broadcom
->>> driver does).
-> 
-> The offending commit was just sent on to the networking tree for 6.9 so
-> I went ahead and added the Trogdor default address to the address check
-> for now:
-> 
-> 	https://lore.kernel.org/r/20240425075503.24357-1-johan+linaro@kernel.org/
-> 
-> We can always amend this later if it turns out to be needed.
-> 
->>> I assume all Trogdor boards use the same controller, WCN3991 IIUC, but
->>> if you're worried about there being devices out there using a different
->>> address we could possibly also use the new
->>> "qcom,local-bd-address-broken" DT property as an indicator to set the
->>> bdaddr quirk.
->>
->> They all should use the same controller, but I'm just worried because
->> I don't personally know anything about how this address gets
->> programmed nor if there is any guarantee from Qualcomm that it'll be
->> consistent. There are a whole pile of boards in the field, so unless
->> we have some certainty that they all have the same address it feels
->> risky.
-> 
-> Hopefully Janaki and Qualcomm will provide some answers soon.
-> 
-> And otherwise we have another fall back in that we can use the
-> "qcom,local-bd-address-broken" property for Trogdor.
-> 
->>> We have Qualcomm on CC here so perhaps Janaki, who should have access to
->>> the documentation, can tell us what the default address on these older
->>> controllers looks like?
->>>
->>> Janaki, are there further default addresses out there that we need to
->>> consider?
->>>
->>> Perhaps "39:98" can even be inferred from the hardware id somehow (cf.
->>> bcm4377_is_valid_bdaddr())?
->>>
->>> Doug, could you please also post the QCA version info for Trogdor that's
->>> printed on boot?
->>
->> You want this:
->>
->> [    9.610575] ath10k_snoc 18800000.wifi: qmi chip_id 0x320
->> chip_family 0x4001 board_id 0x67 soc_id 0x400c0000
->> [    9.620634] ath10k_snoc 18800000.wifi: qmi fw_version 0x322102f2
->> fw_build_timestamp 2021-08-02 05:27 fw_build_id
->> QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
->> [   14.607163] ath10k_snoc 18800000.wifi: wcn3990 hw1.0 target
->> 0x00000008 chip_id 0x00000000 sub 0000:0000
->   
->> ...or this...
->>
->> [   12.899095] Bluetooth: hci0: setting up wcn399x
->> [   13.526154] Bluetooth: hci0: QCA Product ID   :0x0000000a
->> [   13.531805] Bluetooth: hci0: QCA SOC Version  :0x40010320
->> [   13.537384] Bluetooth: hci0: QCA ROM Version  :0x00000302
->> [   13.543002] Bluetooth: hci0: QCA Patch Version:0x00000de9
->> [   13.565775] Bluetooth: hci0: QCA controller version 0x03200302
-> 
-> Thanks, the Bluetooth driver output was what I was looking for but the
-> wifi output may also provide some insight.
-> 
->> Just as a random guess from looking at "8" in the logs, maybe the
->> extra 8 in 3998 is the "target" above?
-> 
-> Yeah, possibly, but it seems we won't be able to use the version info
-> without further details from Qualcomm.
-> 
->> ...though that also makes me think that perhaps this chip doesn't
->> actually have space for a MAC address at all. Maybe they decided to
->> re-use the space to store the hardware ID and other information on all
->> of these devices?
-> 
-> All of these controllers apparently have storage for the hardware ids so
-> I'd be surprised if they didn't have room also for the address.
-> 
-> Looking at the backstory for this, it seems like Qualcomm intentionally
-> broke the bdaddr quirk so that controllers which had been provisioned
-> with a valid address would continue to work back when WCN3990 was the
-> only device that set the quirk. So presumably WCN3990 and later
-> controllers all have OTP storage for the address (even if I guess in
-> theory it could have been done just for, say, WCN3998 which was added
-> just after):
-> 
->    5971752de44c ("Bluetooth: hci_qca: Set HCI_QUIRK_USE_BDADDR_PROPERTY for wcn3990") (2019-02-19, matthias)
->    e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD address missing in dts") (2019-04-18, qcom)
->    523760b7ff88 ("Bluetooth: hci_qca: Added support for WCN3998") (2019-04-26, qcom)
-> 
-> Johan
-
-Thanks,
-Janaki Ram
+=0A=
+Hang on to the control IDs instead of pointers since those are correctly=0A=
+handled with locks.=0A=
+=0A=
+Fixes: 8fe9a03f4331 ("usb: gadget: u_audio: Rate ctl notifies about current=
+ srate (0=3Dstopped)")=0A=
+Fixes: c565ad07ef35 ("usb: gadget: u_audio: Support multiple sampling rates=
+")=0A=
+Fixes: 02de698ca812 ("usb: gadget: u_audio: add bi-directional volume and m=
+ute support")=0A=
+Signed-off-by: Chris Wulff <chris.wulff@biamp.com>=0A=
+---=0A=
+v2: Removed items not directly related to controls. Added Fixes:=0A=
+v1: https://lore.kernel.org/linux-usb/CO1PR17MB54190B898057616EEB3F9E51E10E=
+2@CO1PR17MB5419.namprd17.prod.outlook.com/=0A=
+=0A=
+ drivers/usb/gadget/function/u_audio.c | 19 +++++++++----------=0A=
+ 1 file changed, 9 insertions(+), 10 deletions(-)=0A=
+=0A=
+diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/fun=
+ction/u_audio.c=0A=
+index 4a42574b4a7f..c8e8154c59f5 100644=0A=
+--- a/drivers/usb/gadget/function/u_audio.c=0A=
++++ b/drivers/usb/gadget/function/u_audio.c=0A=
+@@ -57,13 +57,13 @@ struct uac_rtd_params {=0A=
+ =0A=
+   /* Volume/Mute controls and their state */=0A=
+   int fu_id; /* Feature Unit ID */=0A=
+-  struct snd_kcontrol *snd_kctl_volume;=0A=
+-  struct snd_kcontrol *snd_kctl_mute;=0A=
++  struct snd_ctl_elem_id snd_kctl_volume_id;=0A=
++  struct snd_ctl_elem_id snd_kctl_mute_id;=0A=
+   s16 volume_min, volume_max, volume_res;=0A=
+   s16 volume;=0A=
+   int mute;=0A=
+ =0A=
+-	struct snd_kcontrol *snd_kctl_rate; /* read-only current rate */=0A=
++	struct snd_ctl_elem_id snd_kctl_rate_id; /* read-only current rate */=0A=
+ 	int srate; /* selected samplerate */=0A=
+ 	int active; /* playback/capture running */=0A=
+ =0A=
+@@ -494,14 +494,13 @@ static inline void free_ep_fback(struct uac_rtd_param=
+s *prm, struct usb_ep *ep)=0A=
+ static void set_active(struct uac_rtd_params *prm, bool active)=0A=
+ {=0A=
+ 	// notifying through the Rate ctrl=0A=
+-	struct snd_kcontrol *kctl =3D prm->snd_kctl_rate;=0A=
+ 	unsigned long flags;=0A=
+ =0A=
+ 	spin_lock_irqsave(&prm->lock, flags);=0A=
+ 	if (prm->active !=3D active) {=0A=
+ 		prm->active =3D active;=0A=
+ 		snd_ctl_notify(prm->uac->card, SNDRV_CTL_EVENT_MASK_VALUE,=0A=
+-				&kctl->id);=0A=
++				&prm->snd_kctl_rate_id);=0A=
+ 	}=0A=
+ 	spin_unlock_irqrestore(&prm->lock, flags);=0A=
+ }=0A=
+@@ -807,7 +806,7 @@ int u_audio_set_volume(struct g_audio *audio_dev, int p=
+layback, s16 val)=0A=
+ =0A=
+ 	if (change)=0A=
+ 		snd_ctl_notify(uac->card, SNDRV_CTL_EVENT_MASK_VALUE,=0A=
+-				&prm->snd_kctl_volume->id);=0A=
++				&prm->snd_kctl_volume_id);=0A=
+ =0A=
+ 	return 0;=0A=
+ }=0A=
+@@ -856,7 +855,7 @@ int u_audio_set_mute(struct g_audio *audio_dev, int pla=
+yback, int val)=0A=
+ =0A=
+ 	if (change)=0A=
+ 		snd_ctl_notify(uac->card, SNDRV_CTL_EVENT_MASK_VALUE,=0A=
+-			       &prm->snd_kctl_mute->id);=0A=
++			       &prm->snd_kctl_mute_id);=0A=
+ =0A=
+ 	return 0;=0A=
+ }=0A=
+@@ -1331,7 +1330,7 @@ int g_audio_setup(struct g_audio *g_audio, const char=
+ *pcm_name,=0A=
+ 			err =3D snd_ctl_add(card, kctl);=0A=
+ 			if (err < 0)=0A=
+ 				goto snd_fail;=0A=
+-			prm->snd_kctl_mute =3D kctl;=0A=
++			prm->snd_kctl_mute_id =3D kctl->id;=0A=
+ 			prm->mute =3D 0;=0A=
+ 		}=0A=
+ =0A=
+@@ -1359,7 +1358,7 @@ int g_audio_setup(struct g_audio *g_audio, const char=
+ *pcm_name,=0A=
+ 			err =3D snd_ctl_add(card, kctl);=0A=
+ 			if (err < 0)=0A=
+ 				goto snd_fail;=0A=
+-			prm->snd_kctl_volume =3D kctl;=0A=
++			prm->snd_kctl_volume_id =3D kctl->id;=0A=
+ 			prm->volume =3D fu->volume_max;=0A=
+ 			prm->volume_max =3D fu->volume_max;=0A=
+ 			prm->volume_min =3D fu->volume_min;=0A=
+@@ -1383,7 +1382,7 @@ int g_audio_setup(struct g_audio *g_audio, const char=
+ *pcm_name,=0A=
+ 		err =3D snd_ctl_add(card, kctl);=0A=
+ 		if (err < 0)=0A=
+ 			goto snd_fail;=0A=
+-		prm->snd_kctl_rate =3D kctl;=0A=
++		prm->snd_kctl_rate_id =3D kctl->id;=0A=
+ 	}=0A=
+ =0A=
+ 	strscpy(card->driver, card_name, sizeof(card->driver));=0A=
+-- =0A=
+2.34.1=0A=
 
