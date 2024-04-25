@@ -1,99 +1,104 @@
-Return-Path: <stable+bounces-41440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DEA8B2503
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 17:24:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A229F8B251D
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 17:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C02B1C218D9
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 15:24:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419B51F2178E
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 15:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9861E14AD26;
-	Thu, 25 Apr 2024 15:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF00714B07D;
+	Thu, 25 Apr 2024 15:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C2cBIM5X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2IsKDSw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1814A14A4D7
-	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 15:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B12214AD23;
+	Thu, 25 Apr 2024 15:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714058645; cv=none; b=ORUpeFmfKYmIhWUhavh+Dd9TgIZfrWXko6BKoEkF5RPmrP141qlpRVQPkKcQUi3EzvoE+DCxuluEaOTp+WINab8EiD35YsS/UpQ71vR+DblWCWR0cHJmYYzSpO5+TS5tvlGlbTVXscJigsV7MZg/t2ATfqKKJKVIzNF3PustiLU=
+	t=1714059034; cv=none; b=t1B5l+bZzXHQa8NxRuJgQkudiguUrxMMU63SvOfALfHWxjzock599TQCm9dEySUn242f/86nT9b1Zlq9euPTlklqwXGKAXXavNlj9drw+uD97et9Zl1hwoXeqrBn4tElkpDTiPEQbDVHMBe7Y7+mxnKNaX9GShk6ohMdBJwg01A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714058645; c=relaxed/simple;
-	bh=3USVTQKNGhwi2BB2DbJzaK+Rht5aQfWXYTGNGIZG2C4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=OqyVf7ut/BXpyHmN3EoUeNld810duPtGFynBz3FUNGOhI1/JKiJ5GqLDtRzHgQpLeBaOxJnRg6rRyM6cSanWkiMwIOcg/63Xh/Xtwx7qQ5VWdxLBzATrTu63UHKI8aPk1rgSZqBZoZ5afdgsXjUUP6LP/QujfwvOq6VLW4q1/Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C2cBIM5X; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714058644; x=1745594644;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=3USVTQKNGhwi2BB2DbJzaK+Rht5aQfWXYTGNGIZG2C4=;
-  b=C2cBIM5XfesPcumBWYyb2WOXY3Jq+4PULGRX3JDG1aPijWAyosmfGbK+
-   Q6ZwsYJgXjJvUgMzHOc9ilU7KTKWhe7m0PkOxUc26vZcVtMe1vcv8TfWM
-   UCHs/RoJzqK08xNpuuWb2YZGNvsfD+J6BLEcvCs6tEGvUpp6VkVqIdz/v
-   l3knqID0MpTp9KJ8jL6/4xeJlQpH3n6ldepMtn44yaAKdb2i6T1zgqeDZ
-   kVrefOje+cotNl2iUaEElQfQwvWEFlcpc+iacjUuJvFxwM2+SnRO4g6gD
-   k9A/ynS+lN5i7iA0HLb57/f9lZJo58eR4KZbZZAzVHqFAkZROPUYeRQT9
-   w==;
-X-CSE-ConnectionGUID: 5IdNlYZ9SeCDSeS1S1Fhgw==
-X-CSE-MsgGUID: 3rUB+rkxTy6aW0jXXqYuJw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="21173506"
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; 
-   d="scan'208";a="21173506"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2024 08:24:04 -0700
-X-CSE-ConnectionGUID: L3Stjn4uRT2GEimMGcB2xQ==
-X-CSE-MsgGUID: 9nfFT6OYTDCz/O/hbQsRXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; 
-   d="scan'208";a="25135174"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 25 Apr 2024 08:24:02 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s00x6-0002V6-17;
-	Thu, 25 Apr 2024 15:24:00 +0000
-Date: Thu, 25 Apr 2024 23:23:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chris Wulff <Chris.Wulff@biamp.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] usb: gadget: u_audio: Clear uac pointer when freed.
-Message-ID: <Zip1VWPF7v_DkRLX@c8dd4cee2bb9>
+	s=arc-20240116; t=1714059034; c=relaxed/simple;
+	bh=VbGjhgWWdlPSkjyt2SJM8eeCw83uswTP11eIKLdpQUM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ZndsTpqKL9lqqlVZYfAZejou3s6cnjdfnvsgZenjjUcU69ByKwikKb70tAVT2NrAYUDIEwKsNqSZQnaYdIQbAC4UboDEBxLyhI7onfDnUu0GAFPmvDWKuPVIgu4UTAoCSzT6iZ1dSD77waGZl6e98YOAfAqNeVr4tAF02q3rtYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2IsKDSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3259DC2BD11;
+	Thu, 25 Apr 2024 15:30:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714059034;
+	bh=VbGjhgWWdlPSkjyt2SJM8eeCw83uswTP11eIKLdpQUM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=B2IsKDSwn4W7fm1+FcErufXYoUi8FaTVTAorecr6g/Y/2B/XjCgLepp4Bv6F4QCXE
+	 9m6jqP1fu2Cm9LHCYWYDpAQk+r/Obp02Mu5DnYExoZElasGPPQV7VfBpfj96KOV+Y1
+	 wjUS0o+XET9V252Y/tYrrjCb1URI5Az5oxGP6nsYMIVjeWFjXI0+MVE8VRbBxbGdrA
+	 nEW97W28yEKT9lFhQhKp+jmXDHeat3H+HTZ8S7HQ6jPtKm0zADZAlyTx7iz9YIN2i1
+	 bX+RS2sufGJq8efZmMXRtWKAUf+xQ6Xkb+1hEVMPU8dWJar+yyAljVzlSatt9bgd2x
+	 y3uPvum4zzBOQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 212F8CF21C2;
+	Thu, 25 Apr 2024 15:30:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CO1PR17MB54194226DA08BFC9EBD8C163E1172@CO1PR17MB5419.namprd17.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 0/4] Fix isolation of broadcast traffic and unmatched
+ unicast traffic with MACsec offload
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171405903413.5824.688163186689727867.git-patchwork-notify@kernel.org>
+Date: Thu, 25 Apr 2024 15:30:34 +0000
+References: <20240423181319.115860-1-rrameshbabu@nvidia.com>
+In-Reply-To: <20240423181319.115860-1-rrameshbabu@nvidia.com>
+To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org,
+ edumazet@google.com, davem@davemloft.net, pabeni@redhat.com, gal@nvidia.com,
+ tariqt@nvidia.com, sd@queasysnail.net, yossiku@nvidia.com,
+ bpoirier@nvidia.com, cratiu@nvidia.com
 
-Hi,
+Hello:
 
-Thanks for your patch.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+On Tue, 23 Apr 2024 11:13:01 -0700 you wrote:
+> Some device drivers support devices that enable them to annotate whether a
+> Rx skb refers to a packet that was processed by the MACsec offloading
+> functionality of the device. Logic in the Rx handling for MACsec offload
+> does not utilize this information to preemptively avoid forwarding to the
+> macsec netdev currently. Because of this, things like multicast messages or
+> unicast messages with an unmatched destination address such as ARP requests
+> are forwarded to the macsec netdev whether the message received was MACsec
+> encrypted or not. The goal of this patch series is to improve the Rx
+> handling for MACsec offload for devices capable of annotating skbs received
+> that were decrypted by the NIC offload for MACsec.
+> 
+> [...]
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Here is the summary with links:
+  - [net,v3,1/4] macsec: Enable devices to advertise whether they update sk_buff md_dst during offloads
+    https://git.kernel.org/netdev/net/c/475747a19316
+  - [net,v3,2/4] ethernet: Add helper for assigning packet type when dest address does not match device address
+    https://git.kernel.org/netdev/net/c/6e159fd653d7
+  - [net,v3,3/4] macsec: Detect if Rx skb is macsec-related for offloading devices that update md_dst
+    https://git.kernel.org/netdev/net/c/642c984dd0e3
+  - [net,v3,4/4] net/mlx5e: Advertise mlx5 ethernet driver updates sk_buff md_dst for MACsec
+    https://git.kernel.org/netdev/net/c/39d26a8f2efc
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] usb: gadget: u_audio: Clear uac pointer when freed.
-Link: https://lore.kernel.org/stable/CO1PR17MB54194226DA08BFC9EBD8C163E1172%40CO1PR17MB5419.namprd17.prod.outlook.com
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
 
