@@ -1,200 +1,197 @@
-Return-Path: <stable+bounces-41410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF7F8B1CF2
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 10:40:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D367E8B1D38
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 11:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF89BB21A93
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 08:40:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 945A9281AA4
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 09:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA717FBC6;
-	Thu, 25 Apr 2024 08:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B9584A41;
+	Thu, 25 Apr 2024 09:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o6V3kCL/"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oqNUMA85"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2053.outbound.protection.outlook.com [40.107.223.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F097E59F;
-	Thu, 25 Apr 2024 08:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714034423; cv=none; b=b8XkpnkLxTx2LoXaamPH63TabhCcexcV34jlvaAYsVqoY1p4IrALmLgRrrq8NNm6bZK+3q0eRhxOsVUjMIqeU6b6Aa9KYbTsTXV6zSBZOM5L2jsJ4ngRnQ9zfstAj99S/rEerr4xvbB0sccDc0dJXFYnyTlNmcoZtBifjwt8tXs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714034423; c=relaxed/simple;
-	bh=RMDuqvFO7/7Q9NiAuMf/yHRmFRq++Fy+RMe2Sg9URLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LhogI60msJC0LexrlJwtVzIy0XPfl8m+4T7U2nPjcPEjy6Q+29DGNEY1qYugrebR7FqAFj4Ar8eHzQMhR7cAmKItMQY7lOXK8bQv8NHm+qAyh1/uegFRew/090eamoBmR69FYmgUZNjisAqvyoB7O/KPPlWh13oZL3NQj5TQRZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o6V3kCL/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513E8C113CC;
-	Thu, 25 Apr 2024 08:40:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714034422;
-	bh=RMDuqvFO7/7Q9NiAuMf/yHRmFRq++Fy+RMe2Sg9URLU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o6V3kCL/PuQPWmBEYYidX6qJmFsaPflYw4eDVCtdeywnIqBBtF/m9aqMrJ2r5acS9
-	 gh19cAiQSkmPQ9PbmFpmnad+DwkRwYupx1WCfKY47xi8Pe8xg19zJqW2PLxYtnveAD
-	 6NwLkW4DWta3PWXUWLMJzmQU1/t3thxv2Vr0Ty3MX+NQ8Nt6DEVTRRLMGoEmnu+R+N
-	 mCsXk/TrmFHmanUUNkS1Kinm7XcTqfPVsqo+LSAuu76ws/b1geeR2GrT18XEXWj2mj
-	 YZAMSEbFflMqN65atM1fLOQmWu1sD1L0hmj4E2bx1uAIjRHBmofpbPPM+2qf4V02A+
-	 G9oWGYSsyqmRQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rzueS-0000000070M-2S2B;
-	Thu, 25 Apr 2024 10:40:21 +0200
-Date: Thu, 25 Apr 2024 10:40:20 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Matthias Kaehlcke <mka@chromium.org>,
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Stephen Boyd <swboyd@chromium.org>
-Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
-Message-ID: <ZioW9IDT7B4sas4l@hovoldconsulting.com>
-References: <20240416091509.19995-1-johan+linaro@kernel.org>
- <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
- <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
- <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CAB7F486;
+	Thu, 25 Apr 2024 09:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714035602; cv=fail; b=k9QvpYuw0rGkyS+9S5y/pvLMj4+eQoN13bhkPPnitMMDjiTFyJJiiMOWFn/CQ2/eLaVfGveSWzRhUk+4ABnncXqpBW1DMBDWJlCnCdd3/qRRDyQytvLOxQIWpG1S27xd2CyL+8Vx04M2MDCsdPe7yGYoV3bo6PGE3hXWNVsXy48=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714035602; c=relaxed/simple;
+	bh=L3VstbW5ISF1YmbCUPBqvsPz9rzyNZItzLv/X195XFw=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=KNKMhfLb5V1+1rGKAfMVojFvRRE5k6HRHp7phoKLnggLEUziV2Y5PT0Id8DXEroC5zoEKaGElc3cCZVFi1GylMyeznUjckqiJpOOZqLxRzxelmo65t5bEHQNwLNPpkCBLt/rsbMlWb8A/9gYX1o4uJuM7jgR4Ow3XK/9qp9zxAI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oqNUMA85; arc=fail smtp.client-ip=40.107.223.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZZEdF25HOckafGBJV4Ilr9BXZvwNxC0eOXUVbgI0vUI1F5H52UrAHVRbxMzUvA/Jpzn14UKntAW0NJ4t1X5uNo5L4g7T+BLdtn2vAmYshDBZtTA5h4wAsibXRYbEKi/GeVMJnv6y066ENjp+bd8SO0sTIYPi4oMX5PyrNt0apkldhhc5o30Fh+1yq9BoeMWr8c+6gfRdyvfnl94RO3sCDXTRW6BafTquwbOWkc5QGN2Z4ZuLvuaKOBWLbMaVwdHc6WqCMKnzWHwd3zLfibjUUhJuKGK++h6tIZn7sLSSj+nTKPvoBe/aAPmpUARDTyo+B1Glw1UTOp+xWVxj5+ERlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cpHSxF9JAzTW+PapEARsPv0RC26WyGRpoYoLirnFyAE=;
+ b=IsPB11GVUUz1d1dGBwoPlI+VankyAcHT3D+cMEmqBtNAvkMYOSMMl+TyF0Xq55a5ne6dacW/Srv7e/DsDNHd64kYMNCVTz11t3yNUsDpLqr1pnsllopBQ11IsqCghKT//1lw3oYpKGuGfnCo34a9lDX7k9C3uGSJzgAPk7MkxTds3DIKsFrVskD38OoZfXXBKhgtyzDBlUBVfgVdd9Vp7hO5kSHuZJssJ/q2jhzwOLmOfE4LFuqoUo9LekTKhONV5BpCsDLI5YWLNEzvp9KbJ+zQA9rz3IZhmubKBXEWNfnXYv2+xE427hm+g3yt3d7xhekvDR/CmjpZ+aAfEfS/KQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cpHSxF9JAzTW+PapEARsPv0RC26WyGRpoYoLirnFyAE=;
+ b=oqNUMA85J4IIfxWwGOZX9V0FJRZTeDhbtTmqRICEaTfCwmjICZEiFJgwD8FN+vVtmUv8mix0Tn8WmBAJ5VpN4mfHAwWDclCEaw1lmoiCg9FEsW7nLX/aThpQoCnf05DmRFomInU/HZ0fUWb0Tf6+/iauMbc9qdTiGdRt+gp7drbcKRzgUR5YB4xYyzxUoeCPPtMed6F2rA865Waqrp3CxNenDsevUX6AvXYso//gArJBvnReUL8lm0bdi+BvEAjsU2msdp2wOuSShznx1hVb46F61ZUKVQqDdmEY/TzwTyscYA2mosZG02Q8wSUbb13qWLqBYr5G/skVvDsXin7qeA==
+Received: from CH0PR13CA0027.namprd13.prod.outlook.com (2603:10b6:610:b1::32)
+ by DM4PR12MB6111.namprd12.prod.outlook.com (2603:10b6:8:ac::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.24; Thu, 25 Apr
+ 2024 08:59:56 +0000
+Received: from CH2PEPF00000148.namprd02.prod.outlook.com
+ (2603:10b6:610:b1:cafe::90) by CH0PR13CA0027.outlook.office365.com
+ (2603:10b6:610:b1::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.13 via Frontend
+ Transport; Thu, 25 Apr 2024 08:59:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH2PEPF00000148.mail.protection.outlook.com (10.167.244.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7519.19 via Frontend Transport; Thu, 25 Apr 2024 08:59:56 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 25 Apr
+ 2024 01:59:44 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 25 Apr
+ 2024 01:59:44 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Thu, 25 Apr 2024 01:59:44 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.6 000/158] 6.6.29-rc1 review
+In-Reply-To: <20240423213855.696477232@linuxfoundation.org>
+References: <20240423213855.696477232@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
+Message-ID: <b1a7f38a-c16c-46b5-8ef4-0b47de99a26d@rnnvmail201.nvidia.com>
+Date: Thu, 25 Apr 2024 01:59:44 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000148:EE_|DM4PR12MB6111:EE_
+X-MS-Office365-Filtering-Correlation-Id: 489ce819-9a3f-4d08-eca8-08dc6506144c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|376005|7416005|82310400014|1800799015|36860700004;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aUdxQTJCRDgwNlR2N1BsZVpKbjFxcXFRYy9pZUdqWnNobFdBVXdGSVArYlA2?=
+ =?utf-8?B?T2JHY2RoUkVDVlZKWThmakZZMlc5d0swemZMR0NEeDlpeDh1Q3kzSEVWdld2?=
+ =?utf-8?B?bUtOdkF2NXltbFo4ZGtKV01iNG5ubmpyYnFVYWRBOWVMYUJFSU1PcGlmbDAz?=
+ =?utf-8?B?TzFtbVhqYllGdzRsQkU2c1lycmcvcjdERGRkT0pmZFZRd3c0b0hmN0V6TXYy?=
+ =?utf-8?B?TFV0VHlGRkNKTmpDWWRKVEFLRGRtNkJpdERydFdDSksvZ0piNVY2bmtiMG80?=
+ =?utf-8?B?dHNEM3JNUVdTQ1cyeWVnL0VaV2FLK1UzM255YXJQbnlnVEFEemdjYWthR05M?=
+ =?utf-8?B?cGN3OWlCUWkxcVNyR3dEc1REWkJYdm9lMWhXR0VIU2RlTVR5UU1YdGVEZWZS?=
+ =?utf-8?B?Qi81T1YyRUxWbUZ3TEZKV09mQ2tQd0M5UjhaZDR4WEhhRGZSZGUyL3VOVWw2?=
+ =?utf-8?B?Nys4K0xic3UzN3BCb0lwS1RtT1FBWm9sejJPcVY2UnVHVVBLeFNVaTdUZ0F0?=
+ =?utf-8?B?UGQwWDdKRTBrdkU4UmJzc2hKKysybHp2QjhvaEs1RGRMV2NibTNwaENxc3dz?=
+ =?utf-8?B?L3hqc1FZbDJ6S1VwS0tCaWFhK0RQZ2R0c3RqT291aThkRFluY2I2bnBZNXRh?=
+ =?utf-8?B?M3AwZWRNd0I5OGhrckhpbDNBUGVveGtZOVVWL3c3d2VyUnBLY3h3NnNvaVEz?=
+ =?utf-8?B?ZTN0aG5lOVYxNVRGYWJlS2Fhd203cTlmMU5LQVREYlJlcitLVlQySXVTL1lG?=
+ =?utf-8?B?ZThJWWFob2FodHN4UDAxNEExQVFxVjBVb2dBVFlhTWpSd3d2NG9uSm9lNXYv?=
+ =?utf-8?B?Sy9ZZG9TQ1J3dEhxMVJ2S2RjU2xEUzhOVURPNDBXc1ovNmlHYlNuUHMvaHk1?=
+ =?utf-8?B?eVlkcVEvSlNzQjFNZDZTOWNmUWxrWE1DV3BBUEx1TDQ2ZmtIV3d6bWxHNytT?=
+ =?utf-8?B?ZGZuYWxHMkovUWZHNXFoNmYvUDBndlFWakorRWhFQnBGMW5QVEVkeVdOZ3ln?=
+ =?utf-8?B?cUQvVjVlaGVqbzVWUWhPTCttdVgvSDJXak9sWXBzR3F6SlAxbUp2QmZWb1NM?=
+ =?utf-8?B?aTZFNXhJNDFqRzVQaXdaYk5McXFYRW5NcHMzS0lZZ004L1NZdVE0UVJ0TlYw?=
+ =?utf-8?B?RWJ6RndsaURNdGxNOWhRaDYzRHVtdU9IVzBsQlFPRUJZdTkzbS9qSTc3T2Fq?=
+ =?utf-8?B?T3I2TDROdGZlY1FHZlZnZ3ZPd0VrbTBXbHV1MTdBeUR4aCtDMmdYeUltQ01i?=
+ =?utf-8?B?Zll2YjZFd05IOXFzRjZid2ZMMGRrTUZrVU1ZcVBrNXIwZjJ5WFBiUTAvemtj?=
+ =?utf-8?B?K0hiSWxlZVBBUWNSZFJtRHdDQkRDMG0yMEVGN2ZaUHcwZWlSWlhkcEJoR2tt?=
+ =?utf-8?B?TlNzUTFYTnJIY0J5Q0V0K1VEaU9JRGdZYjhTTGhpbVhlOTIyTjJvTGowYmVT?=
+ =?utf-8?B?aW1EUVQzSlRRTWY0R09qblJId211S2h6R3hNcWJtQmJUUGRwWHloMW12V3Fy?=
+ =?utf-8?B?RXZjZ01yV0p5VW14NWhnVGc4cGx2TWdsVmhhRlgyQ2FkVm5TWHVDQmI1Zk1y?=
+ =?utf-8?B?ZWU5T0dCUDF1ejdBWm9QZnNkeFFQWDRnNm9iUC9GQ3dseWk3VitxYU90TGhv?=
+ =?utf-8?B?WFpXemYxSjQ2TFQvREJFdGZTT3pIUFNGeFZkVWVBWHB5eU11YmNQN2ZJcDVk?=
+ =?utf-8?B?KzJ1ZlFuUFpHUmJWbjk3MnRsNSt2Z2dOUzVDWWZ2VWlzTDljaDlIc1grKzcw?=
+ =?utf-8?B?a3hFSThzeUsyNHkxWCtiS25NYXRrS2Zjd0RrNkcyMlEvYy9HSnJmeDhGNXFy?=
+ =?utf-8?B?RmtsZlhVS05sa3dlazgwWGVJUHYzcVZKRXRUZGpwWnN5R0sxUEN1dFYzWHl5?=
+ =?utf-8?Q?TvE1QUygtp+9+?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(376005)(7416005)(82310400014)(1800799015)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2024 08:59:56.2843
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 489ce819-9a3f-4d08-eca8-08dc6506144c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000148.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6111
 
-On Tue, Apr 23, 2024 at 08:09:55AM -0700, Doug Anderson wrote:
-> On Tue, Apr 23, 2024 at 2:08 AM Johan Hovold <johan@kernel.org> wrote:
-> > On Mon, Apr 22, 2024 at 10:50:33AM -0700, Doug Anderson wrote:
-> > > On Tue, Apr 16, 2024 at 2:17 AM Johan Hovold <johan+linaro@kernel.org> wrote:
-> >
-> > > > As Chromium is the only known user of the 'local-bd-address' property,
-> > > > could you please confirm that your controllers use the 00:00:00:00:5a:ad
-> > > > address by default so that the quirk continues to be set as intended?
-> > >
-> > > I was at EOSS last week so didn't get a chance to test this, but I
-> > > just tested it now and I can confirm that it breaks trogdor. It
-> > > appears that trogdor devices seem to have a variant of your "default"
-> > > address. Instead of:
-> > >
-> > > 00:00:00:00:5a:ad
-> > >
-> > > We seem to have a default of this:
-> > >
-> > > 39:98:00:00:5a:ad
-> > >
-> > > ...so almost the same, but not enough the same to make it work with
-> > > your code. I checked 3 different trogdor boards and they were all the
-> > > same, though I can't 100% commit to saying that every trogdor device
-> > > out there has that same default address...
-> > >
-> > > Given that this breaks devices and also that it's already landed and
-> > > tagged for stable, what's the plan here? Do we revert? Do we add the
-> > > second address in and hope that there aren't trogdor devices out in
-> > > the wild that somehow have a different default?
-> >
-> > This patch is currently queued for 6.10 so there should be time to get
-> > this sorted.
-> >
-> > My fallback plan was to add further (device-specific) default addresses
-> > in case this turned out to be needed (e.g. this is what the Broadcom
-> > driver does).
-
-The offending commit was just sent on to the networking tree for 6.9 so
-I went ahead and added the Trogdor default address to the address check
-for now:
-
-	https://lore.kernel.org/r/20240425075503.24357-1-johan+linaro@kernel.org/
-
-We can always amend this later if it turns out to be needed.
-
-> > I assume all Trogdor boards use the same controller, WCN3991 IIUC, but
-> > if you're worried about there being devices out there using a different
-> > address we could possibly also use the new
-> > "qcom,local-bd-address-broken" DT property as an indicator to set the
-> > bdaddr quirk.
+On Tue, 23 Apr 2024 14:37:17 -0700, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.29 release.
+> There are 158 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> They all should use the same controller, but I'm just worried because
-> I don't personally know anything about how this address gets
-> programmed nor if there is any guarantee from Qualcomm that it'll be
-> consistent. There are a whole pile of boards in the field, so unless
-> we have some certainty that they all have the same address it feels
-> risky.
-
-Hopefully Janaki and Qualcomm will provide some answers soon.
-
-And otherwise we have another fall back in that we can use the
-"qcom,local-bd-address-broken" property for Trogdor.
-
-> > We have Qualcomm on CC here so perhaps Janaki, who should have access to
-> > the documentation, can tell us what the default address on these older
-> > controllers looks like?
-> >
-> > Janaki, are there further default addresses out there that we need to
-> > consider?
-> >
-> > Perhaps "39:98" can even be inferred from the hardware id somehow (cf.
-> > bcm4377_is_valid_bdaddr())?
-> >
-> > Doug, could you please also post the QCA version info for Trogdor that's
-> > printed on boot?
+> Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
+> Anything received after that time might be too late.
 > 
-> You want this:
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.29-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
 > 
-> [    9.610575] ath10k_snoc 18800000.wifi: qmi chip_id 0x320
-> chip_family 0x4001 board_id 0x67 soc_id 0x400c0000
-> [    9.620634] ath10k_snoc 18800000.wifi: qmi fw_version 0x322102f2
-> fw_build_timestamp 2021-08-02 05:27 fw_build_id
-> QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-> [   14.607163] ath10k_snoc 18800000.wifi: wcn3990 hw1.0 target
-> 0x00000008 chip_id 0x00000000 sub 0000:0000
- 
-> ...or this...
+> thanks,
 > 
-> [   12.899095] Bluetooth: hci0: setting up wcn399x
-> [   13.526154] Bluetooth: hci0: QCA Product ID   :0x0000000a
-> [   13.531805] Bluetooth: hci0: QCA SOC Version  :0x40010320
-> [   13.537384] Bluetooth: hci0: QCA ROM Version  :0x00000302
-> [   13.543002] Bluetooth: hci0: QCA Patch Version:0x00000de9
-> [   13.565775] Bluetooth: hci0: QCA controller version 0x03200302
+> greg k-h
 
-Thanks, the Bluetooth driver output was what I was looking for but the
-wifi output may also provide some insight.
+All tests passing for Tegra ...
 
-> Just as a random guess from looking at "8" in the logs, maybe the
-> extra 8 in 3998 is the "target" above?
+Test results for stable-v6.6:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    116 tests:	116 pass, 0 fail
 
-Yeah, possibly, but it seems we won't be able to use the version info
-without further details from Qualcomm.
+Linux version:	6.6.29-rc1-g73d4a5d15a31
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-> ...though that also makes me think that perhaps this chip doesn't
-> actually have space for a MAC address at all. Maybe they decided to
-> re-use the space to store the hardware ID and other information on all
-> of these devices?
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-All of these controllers apparently have storage for the hardware ids so
-I'd be surprised if they didn't have room also for the address.
-
-Looking at the backstory for this, it seems like Qualcomm intentionally
-broke the bdaddr quirk so that controllers which had been provisioned
-with a valid address would continue to work back when WCN3990 was the
-only device that set the quirk. So presumably WCN3990 and later
-controllers all have OTP storage for the address (even if I guess in
-theory it could have been done just for, say, WCN3998 which was added
-just after):
-
-  5971752de44c ("Bluetooth: hci_qca: Set HCI_QUIRK_USE_BDADDR_PROPERTY for wcn3990") (2019-02-19, matthias)
-  e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD address missing in dts") (2019-04-18, qcom)
-  523760b7ff88 ("Bluetooth: hci_qca: Added support for WCN3998") (2019-04-26, qcom)
-
-Johan
+Jon
 
