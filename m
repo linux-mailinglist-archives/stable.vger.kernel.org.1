@@ -1,202 +1,305 @@
-Return-Path: <stable+bounces-41432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562638B23BA
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 16:18:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C43308B2470
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 16:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35105B24B6F
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 14:18:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F25F1F21D58
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 14:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7018D14A099;
-	Thu, 25 Apr 2024 14:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q4MqD9wR";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VgucjH9H"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3F714A4F1;
+	Thu, 25 Apr 2024 14:56:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3980149C79;
-	Thu, 25 Apr 2024 14:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93FD14A0A0
+	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 14:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714054690; cv=none; b=PXFhIRR6Psrc74gQojskBju9BM0mg+b0UZroKQ2wETaKnEUEl8TsQCFSh1ng/+/xgAi9nFSjMBwhH94a2PiR+buiX2ToVvQeuGpOtbGXjH9w3on0T3cfO1LDmamh8ZqJjOH5rQN11GgyUXVPsi+QdZ6FJ9XdLPLUCvdbqJm3LxI=
+	t=1714057014; cv=none; b=ILQ4SPMSQH60w5zye6eiO1FrjkOKH/8Pa13bZr2hGWkB0SnaBP+GGNdXTCq+eZPQuz9dRwt26+jrLNDJ82Iuh6TIlRZNmMFmQ9M1UBR+IBPk9Wh4sDRCx3cmP5U9QHd0PqyUc/WtcMtiJ7BFSd59OKCmEgQOBMUKPQCPgomkryo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714054690; c=relaxed/simple;
-	bh=QTumG+fyB+e46BMNdp8ZDq/uo8u6Cl2dzh2DX+47E00=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ti/nxziGglNdzOX3Cz0WhhrQrUV9+6gOvbrnIEolm7qO29vauJ41KmS26bA/OoW2Pv2EdlIP/GgzTP5tcTJF8J42Shk2XS7tJCHdteh+tNOec0JRwRIeNVygzh+2xuSQOtk7uI1NiTFrRQFcfbkNGIO3VYCRAdWKN0atX+UUSm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q4MqD9wR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VgucjH9H; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Apr 2024 14:18:05 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714054686;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f0Lf75TZT9W7/+Dl8xMC8kTVtJogeNXRyR54t0M0Frg=;
-	b=Q4MqD9wRx9UKwiJrXw5OP9kbtx1iyhq0DqBEuDNTlmhmK5rBjjYDift83uZxYlIltBrjOd
-	xdVxcvl35Xhybt2n3tN4zlEGr/qekzebH33vIRUPiaelN/trBDF7JlWJQHC8qSZlD3YwgC
-	okaEslQANFsKzKdU/a1P7BZzUnF2GZQjRTs9RBQYd/kJdU1wRAdIQATOxYehdPFfOAR1Qv
-	M8t7EJzYabvc6zR7A0QKVicqpZcf+XKjRytkIybsiorHaOXLzIYklR689ASdggeEHSCnGf
-	5RQALUsVoIv+62vClWpviUJcPO+w3gAfKXHvdUPUNSBHP5kF/iLB8ClUD5igcQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714054686;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f0Lf75TZT9W7/+Dl8xMC8kTVtJogeNXRyR54t0M0Frg=;
-	b=VgucjH9HLqVMY8kC1IZNR/7bNrfoDF2lZNO/cU9xUhsYABxF2lC0S8nfPy3p4LexXIR4CL
-	YAAfWnZZu2HiDICg==
-From: "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] cpu: Re-enable CPU mitigations by default for !X86
- architectures
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Sean Christopherson <seanjc@google.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Josh Poimboeuf <jpoimboe@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240420000556.2645001-2-seanjc@google.com>
-References: <20240420000556.2645001-2-seanjc@google.com>
+	s=arc-20240116; t=1714057014; c=relaxed/simple;
+	bh=Wzopu9IR7Vh8/HhwaEX3LqJhJ7TLFJqawBMis4uDXFM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mYyZ+gMdlmNcqdNLYhFRnYDAklNxsvxXsgbQdTcnrQ2ay3KY0c7DmC1eOhhEjfzW5FyadtXb4W1K0WwYKLh8q9FRBEZiVBUcIUkKZXp7XITqcfcqdRLZdqJRjZW2dVh8v6r8Zf4m4KA5k42G6xJ33dUw5d1MlrpXbBHwqDBMk6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [141.14.31.7] (theinternet.molgen.mpg.de [141.14.31.7])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: buczek)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 6CB2261E5FE05;
+	Thu, 25 Apr 2024 16:55:36 +0200 (CEST)
+Message-ID: <d3adab65-b962-4530-886a-631f0faf1107@molgen.mpg.de>
+Date: Thu, 25 Apr 2024 16:55:35 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171405468579.10875.6342946389832974542.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 108/476] mm/sparsemem: fix race in accessing
+ memory_section->usage
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Charan Teja Kalla <quic_charante@quicinc.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Dan Williams <dan.j.williams@intel.com>, David Hildenbrand
+ <david@redhat.com>, Mel Gorman <mgorman@techsingularity.net>,
+ Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Sasha Levin <sashal@kernel.org>,
+ it+linux@molgen.mpg.de
+References: <20240221130007.738356493@linuxfoundation.org>
+ <20240221130011.965182720@linuxfoundation.org>
+Content-Language: en-US
+From: Donald Buczek <buczek@molgen.mpg.de>
+In-Reply-To: <20240221130011.965182720@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+On 2/21/24 14:02, Greg Kroah-Hartman wrote:
+> 5.15-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Charan Teja Kalla <quic_charante@quicinc.com>
+> 
+> [ Upstream commit 5ec8e8ea8b7783fab150cf86404fc38cb4db8800 ]
+> 
+> The below race is observed on a PFN which falls into the device memory
+> region with the system memory configuration where PFN's are such that
+> [ZONE_NORMAL ZONE_DEVICE ZONE_NORMAL].  Since normal zone start and end
+> pfn contains the device memory PFN's as well, the compaction triggered
+> will try on the device memory PFN's too though they end up in NOP(because
+> pfn_to_online_page() returns NULL for ZONE_DEVICE memory sections).  When
+> from other core, the section mappings are being removed for the
+> ZONE_DEVICE region, that the PFN in question belongs to, on which
+> compaction is currently being operated is resulting into the kernel crash
+> with CONFIG_SPASEMEM_VMEMAP enabled.  The crash logs can be seen at [1].
+> 
+> compact_zone()			memunmap_pages
+> -------------			---------------
+> __pageblock_pfn_to_page
+>    ......
+>  (a)pfn_valid():
+>      valid_section()//return true
+> 			      (b)__remove_pages()->
+> 				  sparse_remove_section()->
+> 				    section_deactivate():
+> 				    [Free the array ms->usage and set
+> 				     ms->usage = NULL]
+>      pfn_section_valid()
+>      [Access ms->usage which
+>      is NULL]
+> 
+> NOTE: From the above it can be said that the race is reduced to between
+> the pfn_valid()/pfn_section_valid() and the section deactivate with
+> SPASEMEM_VMEMAP enabled.
+> 
+> The commit b943f045a9af("mm/sparse: fix kernel crash with
+> pfn_section_valid check") tried to address the same problem by clearing
+> the SECTION_HAS_MEM_MAP with the expectation of valid_section() returns
+> false thus ms->usage is not accessed.
+> 
+> Fix this issue by the below steps:
+> 
+> a) Clear SECTION_HAS_MEM_MAP before freeing the ->usage.
+> 
+> b) RCU protected read side critical section will either return NULL
+>    when SECTION_HAS_MEM_MAP is cleared or can successfully access ->usage.
+> 
+> c) Free the ->usage with kfree_rcu() and set ms->usage = NULL.  No
+>    attempt will be made to access ->usage after this as the
+>    SECTION_HAS_MEM_MAP is cleared thus valid_section() return false.
+> 
+> Thanks to David/Pavan for their inputs on this patch.
+> 
+> [1] https://lore.kernel.org/linux-mm/994410bb-89aa-d987-1f50-f514903c55aa@quicinc.com/
+> 
+> On Snapdragon SoC, with the mentioned memory configuration of PFN's as
+> [ZONE_NORMAL ZONE_DEVICE ZONE_NORMAL], we are able to see bunch of
+> issues daily while testing on a device farm.
+> 
+> For this particular issue below is the log.  Though the below log is
+> not directly pointing to the pfn_section_valid(){ ms->usage;}, when we
+> loaded this dump on T32 lauterbach tool, it is pointing.
+> 
+> [  540.578056] Unable to handle kernel NULL pointer dereference at
+> virtual address 0000000000000000
+> [  540.578068] Mem abort info:
+> [  540.578070]   ESR = 0x0000000096000005
+> [  540.578073]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [  540.578077]   SET = 0, FnV = 0
+> [  540.578080]   EA = 0, S1PTW = 0
+> [  540.578082]   FSC = 0x05: level 1 translation fault
+> [  540.578085] Data abort info:
+> [  540.578086]   ISV = 0, ISS = 0x00000005
+> [  540.578088]   CM = 0, WnR = 0
+> [  540.579431] pstate: 82400005 (Nzcv daif +PAN -UAO +TCO -DIT -SSBSBTYPE=--)
+> [  540.579436] pc : __pageblock_pfn_to_page+0x6c/0x14c
+> [  540.579454] lr : compact_zone+0x994/0x1058
+> [  540.579460] sp : ffffffc03579b510
+> [  540.579463] x29: ffffffc03579b510 x28: 0000000000235800 x27:000000000000000c
+> [  540.579470] x26: 0000000000235c00 x25: 0000000000000068 x24:ffffffc03579b640
+> [  540.579477] x23: 0000000000000001 x22: ffffffc03579b660 x21:0000000000000000
+> [  540.579483] x20: 0000000000235bff x19: ffffffdebf7e3940 x18:ffffffdebf66d140
+> [  540.579489] x17: 00000000739ba063 x16: 00000000739ba063 x15:00000000009f4bff
+> [  540.579495] x14: 0000008000000000 x13: 0000000000000000 x12:0000000000000001
+> [  540.579501] x11: 0000000000000000 x10: 0000000000000000 x9 :ffffff897d2cd440
+> [  540.579507] x8 : 0000000000000000 x7 : 0000000000000000 x6 :ffffffc03579b5b4
+> [  540.579512] x5 : 0000000000027f25 x4 : ffffffc03579b5b8 x3 :0000000000000001
+> [  540.579518] x2 : ffffffdebf7e3940 x1 : 0000000000235c00 x0 :0000000000235800
+> [  540.579524] Call trace:
+> [  540.579527]  __pageblock_pfn_to_page+0x6c/0x14c
+> [  540.579533]  compact_zone+0x994/0x1058
+> [  540.579536]  try_to_compact_pages+0x128/0x378
+> [  540.579540]  __alloc_pages_direct_compact+0x80/0x2b0
+> [  540.579544]  __alloc_pages_slowpath+0x5c0/0xe10
+> [  540.579547]  __alloc_pages+0x250/0x2d0
+> [  540.579550]  __iommu_dma_alloc_noncontiguous+0x13c/0x3fc
+> [  540.579561]  iommu_dma_alloc+0xa0/0x320
+> [  540.579565]  dma_alloc_attrs+0xd4/0x108
+> 
+> [quic_charante@quicinc.com: use kfree_rcu() in place of synchronize_rcu(), per David]
+>   Link: https://lkml.kernel.org/r/1698403778-20938-1-git-send-email-quic_charante@quicinc.com
+> Link: https://lkml.kernel.org/r/1697202267-23600-1-git-send-email-quic_charante@quicinc.com
+> Fixes: f46edbd1b151 ("mm/sparsemem: add helpers track active portions of a section at boot")
+> Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Mel Gorman <mgorman@techsingularity.net>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  include/linux/mmzone.h | 14 +++++++++++---
+>  mm/sparse.c            | 17 +++++++++--------
+>  2 files changed, 20 insertions(+), 11 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 9e1485083398..8b8349ffa1cd 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -1287,6 +1287,7 @@ static inline unsigned long section_nr_to_pfn(unsigned long sec)
+>  #define SUBSECTION_ALIGN_DOWN(pfn) ((pfn) & PAGE_SUBSECTION_MASK)
+>  
+>  struct mem_section_usage {
+> +	struct rcu_head rcu;
+>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>  	DECLARE_BITMAP(subsection_map, SUBSECTIONS_PER_SECTION);
+>  #endif
+> @@ -1457,7 +1458,7 @@ static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+>  {
+>  	int idx = subsection_map_index(pfn);
+>  
+> -	return test_bit(idx, ms->usage->subsection_map);
+> +	return test_bit(idx, READ_ONCE(ms->usage)->subsection_map);
+>  }
+>  #else
+>  static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+> @@ -1481,6 +1482,7 @@ static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+>  static inline int pfn_valid(unsigned long pfn)
+>  {
+>  	struct mem_section *ms;
+> +	int ret;
+>  
+>  	/*
+>  	 * Ensure the upper PAGE_SHIFT bits are clear in the
+> @@ -1494,13 +1496,19 @@ static inline int pfn_valid(unsigned long pfn)
+>  	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
+>  		return 0;
+>  	ms = __pfn_to_section(pfn);
+> -	if (!valid_section(ms))
+> +	rcu_read_lock();
+> +	if (!valid_section(ms)) {
+> +		rcu_read_unlock();
+>  		return 0;
+> +	}
+>  	/*
+>  	 * Traditionally early sections always returned pfn_valid() for
+>  	 * the entire section-sized span.
+>  	 */
+> -	return early_section(ms) || pfn_section_valid(ms, pfn);
+> +	ret = early_section(ms) || pfn_section_valid(ms, pfn);
+> +	rcu_read_unlock();
+> +
+> +	return ret;
+>  }
+>  #endif
+>  
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index 120bc8ea5293..27092badd15b 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -789,6 +789,13 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+>  	if (empty) {
+>  		unsigned long section_nr = pfn_to_section_nr(pfn);
+>  
+> +		/*
+> +		 * Mark the section invalid so that valid_section()
+> +		 * return false. This prevents code from dereferencing
+> +		 * ms->usage array.
+> +		 */
+> +		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
+> +
+>  		/*
+>  		 * When removing an early section, the usage map is kept (as the
+>  		 * usage maps of other sections fall into the same page). It
+> @@ -797,16 +804,10 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+>  		 * was allocated during boot.
+>  		 */
+>  		if (!PageReserved(virt_to_page(ms->usage))) {
+> -			kfree(ms->usage);
+> -			ms->usage = NULL;
+> +			kfree_rcu(ms->usage, rcu);
+> +			WRITE_ONCE(ms->usage, NULL);
+>  		}
+>  		memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
+> -		/*
+> -		 * Mark the section invalid so that valid_section()
+> -		 * return false. This prevents code from dereferencing
+> -		 * ms->usage array.
+> -		 */
+> -		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
+>  	}
+>  
+>  	/*
 
-Commit-ID:     fe42754b94a42d08cf9501790afc25c4f6a5f631
-Gitweb:        https://git.kernel.org/tip/fe42754b94a42d08cf9501790afc25c4f6a5f631
-Author:        Sean Christopherson <seanjc@google.com>
-AuthorDate:    Fri, 19 Apr 2024 17:05:54 -07:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 25 Apr 2024 15:47:35 +02:00
+Maybe this is already known, but just FYI I wanted to drop the note that for some
+reasons I don't understand, this patch prevents me from compiling the proprietary
+Nvidia Unix driver with versions 510.108.03 and 535.104.05 in the 5.15 series.
+No problems with the 6.5 series, although the patch is included there as well.
 
-cpu: Re-enable CPU mitigations by default for !X86 architectures
+linux-5.15.155 , nvidia 535.104.05 :
 
-Rename x86's to CPU_MITIGATIONS, define it in generic code, and force it
-on for all architectures exception x86.  A recent commit to turn
-mitigations off by default if SPECULATION_MITIGATIONS=n kinda sorta
-missed that "cpu_mitigations" is completely generic, whereas
-SPECULATION_MITIGATIONS is x86-specific.
+    make -j $(nproc) CC=gcc SYSSRC=/scratch/local/linux clean && make -j $(nproc) CC=gcc SYSSRC=/scratch/local/linux V=2 modules
+    [...]
+    MODPOST /scratch/local/bee-buczek/nvidia/test_535-104-05/kernel/Module.symvers - due to target missing
+    ERROR: modpost: GPL-incompatible module nvidia.ko uses GPL-only symbol 'rcu_read_unlock_strict'
+    make[2]: *** [scripts/Makefile.modpost:133: /scratch/local/bee-buczek/nvidia/test_535-104-05/kernel/Module.symvers] Error 1
+    make[2]: *** Deleting file '/scratch/local/bee-buczek/nvidia/test_535-104-05/kernel/Module.symvers'
+    make[1]: *** [Makefile:1826: modules] Error 2
+    make[1]: Leaving directory '/scratch/local/linux'
+    make: *** [Makefile:82: modules] Error 2
 
-Rename x86's SPECULATIVE_MITIGATIONS instead of keeping both and have it
-select CPU_MITIGATIONS, as having two configs for the same thing is
-unnecessary and confusing.  This will also allow x86 to use the knob to
-manage mitigations that aren't strictly related to speculative
-execution.
 
-Use another Kconfig to communicate to common code that CPU_MITIGATIONS
-is already defined instead of having x86's menu depend on the common
-CPU_MITIGATIONS.  This allows keeping a single point of contact for all
-of x86's mitigations, and it's not clear that other architectures *want*
-to allow disabling mitigations at compile-time.
+With fd117d03cefd15 ("mm/sparsemem: fix race in accessing memory_section->usage") reverted,
+the build completes.
 
-Fixes: f337a6a21e2f ("x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n")
-Closes: https://lkml.kernel.org/r/20240413115324.53303a68%40canb.auug.org.au
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240420000556.2645001-2-seanjc@google.com
----
- arch/Kconfig     |  8 ++++++++
- arch/x86/Kconfig | 11 ++++++-----
- kernel/cpu.c     |  4 ++--
- 3 files changed, 16 insertions(+), 7 deletions(-)
+Best
+  Donald
+-- 
+Donald Buczek
+buczek@molgen.mpg.de
+Tel: +49 30 8413 1433
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 65afb1d..30f7930 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -9,6 +9,14 @@
- #
- source "arch/$(SRCARCH)/Kconfig"
- 
-+config ARCH_CONFIGURES_CPU_MITIGATIONS
-+	bool
-+
-+if !ARCH_CONFIGURES_CPU_MITIGATIONS
-+config CPU_MITIGATIONS
-+	def_bool y
-+endif
-+
- menu "General architecture-dependent options"
- 
- config ARCH_HAS_SUBPAGE_FAULTS
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 4474bf3..619a04d 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -62,6 +62,7 @@ config X86
- 	select ACPI_HOTPLUG_CPU			if ACPI_PROCESSOR && HOTPLUG_CPU
- 	select ARCH_32BIT_OFF_T			if X86_32
- 	select ARCH_CLOCKSOURCE_INIT
-+	select ARCH_CONFIGURES_CPU_MITIGATIONS
- 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
-@@ -2488,17 +2489,17 @@ config PREFIX_SYMBOLS
- 	def_bool y
- 	depends on CALL_PADDING && !CFI_CLANG
- 
--menuconfig SPECULATION_MITIGATIONS
--	bool "Mitigations for speculative execution vulnerabilities"
-+menuconfig CPU_MITIGATIONS
-+	bool "Mitigations for CPU vulnerabilities"
- 	default y
- 	help
--	  Say Y here to enable options which enable mitigations for
--	  speculative execution hardware vulnerabilities.
-+	  Say Y here to enable options which enable mitigations for hardware
-+	  vulnerabilities (usually related to speculative execution).
- 
- 	  If you say N, all mitigations will be disabled. You really
- 	  should know what you are doing to say so.
- 
--if SPECULATION_MITIGATIONS
-+if CPU_MITIGATIONS
- 
- config MITIGATION_PAGE_TABLE_ISOLATION
- 	bool "Remove the kernel mapping in user mode"
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 07ad53b..bb0ff27 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -3207,8 +3207,8 @@ enum cpu_mitigations {
- };
- 
- static enum cpu_mitigations cpu_mitigations __ro_after_init =
--	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
--						     CPU_MITIGATIONS_OFF;
-+	IS_ENABLED(CONFIG_CPU_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
-+					     CPU_MITIGATIONS_OFF;
- 
- static int __init mitigations_parse_cmdline(char *arg)
- {
 
