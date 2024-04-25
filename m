@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-41402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3728B18FA
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 04:36:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA108B18FB
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 04:36:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D3411C23035
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 02:36:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7907E1F24F42
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 02:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3144A20DFF;
-	Thu, 25 Apr 2024 02:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB8B21342;
+	Thu, 25 Apr 2024 02:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GQhXoGOA"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RTjf1DXT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA271400A;
-	Thu, 25 Apr 2024 02:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7766F12E55;
+	Thu, 25 Apr 2024 02:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714012526; cv=none; b=ar4fKfgH5ch5g8lihO0AeM/Sn01XJMr4cFKUdFplpd/xWbT//DBKmsWTF9M6nadCjo3kknbi8DQtJOyAwC8jB3+wYFF0nYU2hF3PgreKhfzFbT1vXKGlyb/lD/Aw6k022ViXuxLh16KewNF0CWzAdwoB3YrsjztDnryJJY8MrDs=
+	t=1714012528; cv=none; b=GsmolOeAxQEDeJwjb1ZScy0eTBiWbALDXJz/3+5GCJHXQHp6ndpSQWN6Bkq/u9ZRKl/iD2PwKwgoFI/9eJt3VTWxClx23fr9Fmv28JBbSgS6JSb8iakREEMvhttBlQcEPeUvawZToL/YWvmeJ9+UnthJJgXg4xVnQsN7LNdkds0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714012526; c=relaxed/simple;
-	bh=7lWADWcRgdHS+lyZ5MMspI5vBoDi81coBp1/2ibNtgM=;
-	h=Date:To:From:Subject:Message-Id; b=Zc3xWPhm4fCgeF/f+/M5ki+A1j8PszpY7lWq0dmr0LHaEfybSNKtlweSje1kpwrJOSqGS0W6VNyxgaMTQ+6emBPCcnmgvM15sGlaTdvrsIQN0CC6R06L9kp3BkIIZw7JIwjawc8mvNFCfJZlft99vRJGcOZRLsdq/rwygOj83Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GQhXoGOA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB13C113CD;
-	Thu, 25 Apr 2024 02:35:25 +0000 (UTC)
+	s=arc-20240116; t=1714012528; c=relaxed/simple;
+	bh=Lwx59N8UXUHAbhmF59U4Qt5eUMaSDbGxbaXW0I7tIxo=;
+	h=Date:To:From:Subject:Message-Id; b=d6a2Cl9Hksk4Ux3sjdNx0WlpL2BUkvxShQdxZWuUsEvgSXp48dOV4bxb4LZ3zFd7wPwt9oaEG/hvhiKnnNoPY085nOAXyqFrcKKTFatMP3/kCxCrDZZx1oW0uuB7qYEodarWnmIa8uTvbfyjGO3MIFMkjVr3R1RTnarT9M6mm3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RTjf1DXT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41689C113CD;
+	Thu, 25 Apr 2024 02:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1714012525;
-	bh=7lWADWcRgdHS+lyZ5MMspI5vBoDi81coBp1/2ibNtgM=;
+	s=korg; t=1714012528;
+	bh=Lwx59N8UXUHAbhmF59U4Qt5eUMaSDbGxbaXW0I7tIxo=;
 	h=Date:To:From:Subject:From;
-	b=GQhXoGOAoi+cUlAWz1AX/OJJnnca7DLbHBldKThCFwTAhnd/beWsME8J2o76GR/Na
-	 2/UYun2RVdgUBXtpK6IPCozIhNCfa9FQvgJCcOxbYSeT/igYRP1QCkiijlhyFLyD3o
-	 f6DK9KoV9/kGAqg16w2As2gkgra+gd4yn/MzBVds=
-Date: Wed, 24 Apr 2024 19:35:25 -0700
-To: mm-commits@vger.kernel.org,tj@kernel.org,tglx@linutronix.de,stable@vger.kernel.org,sfr@canb.auug.org.au,rppt@kernel.org,ndesaulniers@google.com,mingo@kernel.org,mcgrof@kernel.org,kjlx@templeofstupid.com,geert+renesas@glider.be,christophe.leroy@csgroup.eu,changbin.du@huawei.com,bjorn@kernel.org,arnd@arndb.de,adilger@dilger.ca,namcao@linutronix.de,akpm@linux-foundation.org
+	b=RTjf1DXTRmcPvyRbF0N3DxqUCFyu6yy7eOAWIPNFfrocLSInEjVyylRDr8d9jBwEV
+	 ls2vEbT8jnnB+QqMMUf1LwZu7OZ3nCPHF6DE8iDmv9muYqsWUhzcxhnUVd375smTD2
+	 UaMeOZilNU6NqV5sC9u1dTZhRKkdIP1uGYOF4lps=
+Date: Wed, 24 Apr 2024 19:35:27 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,linmiaohe@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] init-fix-allocated-page-overlapping-with-ptr_err.patch removed from -mm tree
-Message-Id: <20240425023525.ABB13C113CD@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-hugetlb-fix-debug_locks_warn_on1-when-dissolve_free_hugetlb_folio.patch removed from -mm tree
+Message-Id: <20240425023528.41689C113CD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,82 +50,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: init: fix allocated page overlapping with PTR_ERR
+     Subject: mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when dissolve_free_hugetlb_folio()
 has been removed from the -mm tree.  Its filename was
-     init-fix-allocated-page-overlapping-with-ptr_err.patch
+     mm-hugetlb-fix-debug_locks_warn_on1-when-dissolve_free_hugetlb_folio.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Nam Cao <namcao@linutronix.de>
-Subject: init: fix allocated page overlapping with PTR_ERR
-Date: Thu, 18 Apr 2024 12:29:43 +0200
+From: Miaohe Lin <linmiaohe@huawei.com>
+Subject: mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when dissolve_free_hugetlb_folio()
+Date: Fri, 19 Apr 2024 16:58:19 +0800
 
-There is nothing preventing kernel memory allocators from allocating a
-page that overlaps with PTR_ERR(), except for architecture-specific code
-that setup memblock.
+When I did memory failure tests recently, below warning occurs:
 
-It was discovered that RISCV architecture doesn't setup memblock corectly,
-leading to a page overlapping with PTR_ERR() being allocated, and
-subsequently crashing the kernel (link in Close: )
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 8 PID: 1011 at kernel/locking/lockdep.c:232 __lock_acquire+0xccb/0x1ca0
+Modules linked in: mce_inject hwpoison_inject
+CPU: 8 PID: 1011 Comm: bash Kdump: loaded Not tainted 6.9.0-rc3-next-20240410-00012-gdb69f219f4be #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+RIP: 0010:__lock_acquire+0xccb/0x1ca0
+RSP: 0018:ffffa7a1c7fe3bd0 EFLAGS: 00000082
+RAX: 0000000000000000 RBX: eb851eb853975fcf RCX: ffffa1ce5fc1c9c8
+RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffffa1ce5fc1c9c0
+RBP: ffffa1c6865d3280 R08: ffffffffb0f570a8 R09: 0000000000009ffb
+R10: 0000000000000286 R11: ffffffffb0f2ad50 R12: ffffa1c6865d3d10
+R13: ffffa1c6865d3c70 R14: 0000000000000000 R15: 0000000000000004
+FS:  00007ff9f32aa740(0000) GS:ffffa1ce5fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff9f3134ba0 CR3: 00000008484e4000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ lock_acquire+0xbe/0x2d0
+ _raw_spin_lock_irqsave+0x3a/0x60
+ hugepage_subpool_put_pages.part.0+0xe/0xc0
+ free_huge_folio+0x253/0x3f0
+ dissolve_free_huge_page+0x147/0x210
+ __page_handle_poison+0x9/0x70
+ memory_failure+0x4e6/0x8c0
+ hard_offline_page_store+0x55/0xa0
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x380/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xbc/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff9f3114887
+RSP: 002b:00007ffecbacb458 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007ff9f3114887
+RDX: 000000000000000c RSI: 0000564494164e10 RDI: 0000000000000001
+RBP: 0000564494164e10 R08: 00007ff9f31d1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+R13: 00007ff9f321b780 R14: 00007ff9f3217600 R15: 00007ff9f3216a00
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+CPU: 8 PID: 1011 Comm: bash Kdump: loaded Not tainted 6.9.0-rc3-next-20240410-00012-gdb69f219f4be #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ panic+0x326/0x350
+ check_panic_on_warn+0x4f/0x50
+ __warn+0x98/0x190
+ report_bug+0x18e/0x1a0
+ handle_bug+0x3d/0x70
+ exc_invalid_op+0x18/0x70
+ asm_exc_invalid_op+0x1a/0x20
+RIP: 0010:__lock_acquire+0xccb/0x1ca0
+RSP: 0018:ffffa7a1c7fe3bd0 EFLAGS: 00000082
+RAX: 0000000000000000 RBX: eb851eb853975fcf RCX: ffffa1ce5fc1c9c8
+RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffffa1ce5fc1c9c0
+RBP: ffffa1c6865d3280 R08: ffffffffb0f570a8 R09: 0000000000009ffb
+R10: 0000000000000286 R11: ffffffffb0f2ad50 R12: ffffa1c6865d3d10
+R13: ffffa1c6865d3c70 R14: 0000000000000000 R15: 0000000000000004
+ lock_acquire+0xbe/0x2d0
+ _raw_spin_lock_irqsave+0x3a/0x60
+ hugepage_subpool_put_pages.part.0+0xe/0xc0
+ free_huge_folio+0x253/0x3f0
+ dissolve_free_huge_page+0x147/0x210
+ __page_handle_poison+0x9/0x70
+ memory_failure+0x4e6/0x8c0
+ hard_offline_page_store+0x55/0xa0
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x380/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xbc/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff9f3114887
+RSP: 002b:00007ffecbacb458 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007ff9f3114887
+RDX: 000000000000000c RSI: 0000564494164e10 RDI: 0000000000000001
+RBP: 0000564494164e10 R08: 00007ff9f31d1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+R13: 00007ff9f321b780 R14: 00007ff9f3217600 R15: 00007ff9f3216a00
+ </TASK>
 
-The reported crash has nothing to do with PTR_ERR(): the last page (at
-address 0xfffff000) being allocated leads to an unexpected arithmetic
-overflow in ext4; but still, this page shouldn't be allocated in the first
-place.
+After git bisecting and digging into the code, I believe the root cause is
+that _deferred_list field of folio is unioned with _hugetlb_subpool field.
+In __update_and_free_hugetlb_folio(), folio->_deferred_list is
+initialized leading to corrupted folio->_hugetlb_subpool when folio is
+hugetlb.  Later free_huge_folio() will use _hugetlb_subpool and above
+warning happens.
 
-Because PTR_ERR() is an architecture-independent thing, we shouldn't ask
-every single architecture to set this up.  There may be other
-architectures beside RISCV that have the same problem.
+But it is assumed hugetlb flag must have been cleared when calling
+folio_put() in update_and_free_hugetlb_folio().  This assumption is broken
+due to below race:
 
-Fix this once and for all by reserving the physical memory page that may
-be mapped to the last virtual memory page as part of low memory.
+CPU1					CPU2
+dissolve_free_huge_page			update_and_free_pages_bulk
+ update_and_free_hugetlb_folio		 hugetlb_vmemmap_restore_folios
+					  folio_clear_hugetlb_vmemmap_optimized
+  clear_flag = folio_test_hugetlb_vmemmap_optimized
+  if (clear_flag) <-- False, it's already cleared.
+   __folio_clear_hugetlb(folio) <-- Hugetlb is not cleared.
+  folio_put
+   free_huge_folio <-- free_the_page is expected.
+					 list_for_each_entry()
+					  __folio_clear_hugetlb <-- Too late.
 
-Unfortunately, this means if there is actual memory at this reserved
-location, that memory will become inaccessible.  However, if this page is
-not reserved, it can only be accessed as high memory, so this doesn't
-matter if high memory is not supported.  Even if high memory is supported,
-it is still only one page.
+Fix this issue by checking whether folio is hugetlb directly instead of
+checking clear_flag to close the race window.
 
-Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
-Link: https://lkml.kernel.org/r/20240418102943.180510-1-namcao@linutronix.de
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Reported-by: Björn Töpel <bjorn@kernel.org>
-Tested-by: Björn Töpel <bjorn@kernel.org>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Andreas Dilger <adilger@dilger.ca>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Changbin Du <changbin.du@huawei.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Krister Johansen <kjlx@templeofstupid.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20240419085819.1901645-1-linmiaohe@huawei.com
+Fixes: 32c877191e02 ("hugetlb: do not clear hugetlb dtor until allocating vmemmap")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- init/main.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/hugetlb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/init/main.c~init-fix-allocated-page-overlapping-with-ptr_err
-+++ a/init/main.c
-@@ -900,6 +900,7 @@ void start_kernel(void)
- 	page_address_init();
- 	pr_notice("%s", linux_banner);
- 	early_security_init();
-+	memblock_reserve(__pa(-PAGE_SIZE), PAGE_SIZE); /* reserve last page for ERR_PTR */
- 	setup_arch(&command_line);
- 	setup_boot_config();
- 	setup_command_line(command_line);
+--- a/mm/hugetlb.c~mm-hugetlb-fix-debug_locks_warn_on1-when-dissolve_free_hugetlb_folio
++++ a/mm/hugetlb.c
+@@ -1781,7 +1781,7 @@ static void __update_and_free_hugetlb_fo
+ 	 * If vmemmap pages were allocated above, then we need to clear the
+ 	 * hugetlb destructor under the hugetlb lock.
+ 	 */
+-	if (clear_dtor) {
++	if (folio_test_hugetlb(folio)) {
+ 		spin_lock_irq(&hugetlb_lock);
+ 		__clear_hugetlb_destructor(h, folio);
+ 		spin_unlock_irq(&hugetlb_lock);
 _
 
-Patches currently in -mm which might be from namcao@linutronix.de are
+Patches currently in -mm which might be from linmiaohe@huawei.com are
 
 
 
