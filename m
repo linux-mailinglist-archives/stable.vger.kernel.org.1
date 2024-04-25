@@ -1,126 +1,139 @@
-Return-Path: <stable+bounces-41426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E758B21C2
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 14:39:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E54A58B21DA
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 14:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 611801C209CE
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 12:39:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D45DB210B0
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 12:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BCC1494BD;
-	Thu, 25 Apr 2024 12:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D8B1494CA;
+	Thu, 25 Apr 2024 12:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SGqmQGrA"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="teygzRyc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zEe+3NXf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC74F133408
-	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 12:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5A71494BC;
+	Thu, 25 Apr 2024 12:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714048768; cv=none; b=Lyfj8YTqggt7XhHqwSOOq2anQC+Bjvanr5ABHq1DjB0ZxXWIiWa3T8OptcsPJpnr15/o9zcjgpebqGuOMEYdnVX1P9tHSfyBG+eswYZUiYC2ruVgNrgCxed8fxbPemcItP+Ri8PTFY7D/cJhwkBVFZT+YBIRqdR8HzNwZ40HOB0=
+	t=1714049212; cv=none; b=MI3QcGp8etPHj/Ot+SzrE+HtF3ufoExrXH2tCHmPCuB3lC9yUQrvfC0Rkz1n5KIpkygg69g9A9gxKiP2sJEdSlLeDtxPfbANJ70O3aWzB1o/WqaUFHGOPjnYJCeqVM+OrzwxzPKtC4/o2iu8s5d6Ns/4F9a+cCF5/CFR7bN1d/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714048768; c=relaxed/simple;
-	bh=kkDuINCQYhQ6FbdcqoW3as2fTSOHoDDS1HYme8W0NPs=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=sZRn5me2GsAAJxsP0MT1BpIBzP9pOCxhqpbl1rQS2tq5LIBbt9HJUcPmgdXEM8Wp9iO0FvIH272QO7rWbqoW3mlOl6lidVpgkQMb2oRJ7ppkZsvnOSEI/gLKMFg6hL1ZQA8e7q6TB6SNH69fS7396STeY7q5X/9aiyvnLBGW29I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SGqmQGrA; arc=none smtp.client-ip=209.85.222.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-7eb89aa9176so290392241.3
-        for <stable@vger.kernel.org>; Thu, 25 Apr 2024 05:39:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714048765; x=1714653565; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zYuNQHZgONJaBv+1xJH2KfHQ0fX0UBccuZb/VjBvZRI=;
-        b=SGqmQGrAQEFc424iPdbb7JcTzJ9gQJTgi6zH4OhE6Kw9hnoxvOVga8YwL5W4e1XFyG
-         StunPoJjo564Q27sMC5G2YYGpp+cbm+An4mHdLDsfY0auqmays/uwslzVoQe9Acefws6
-         iKoaQLerXkSHI6XLL/9r0fXxatli04jIwL+eWakNizRhyrZ88FoqzNeKzpszTImBvLYU
-         KOwtXLEqjXeEiZUBetLn3r9g7uAxDSsJ6XPkhDPQr8R5NxQ+2cUyv5AjJIDGxMQl9Kqf
-         AcspfqzAR6FzO++J0hn0vEFP2B6QRN3CP0ebCzhCQdmTXSt8l9eK3TABIB9w0XCXwchn
-         9AEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714048765; x=1714653565;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zYuNQHZgONJaBv+1xJH2KfHQ0fX0UBccuZb/VjBvZRI=;
-        b=ORTSBFw5T44HcKcUPrCPmeiQZKPjiRAuyNuElVeO6PRzQcN2P0rX5KE3W9dg8CHYmF
-         Gray0zvAI5ZwFsmkCs9PHfG+ScFJtBLK4ZdU/Jlfg+mzckrSHNJmULk2C3W+GNT6PdTx
-         X0ieczd+8cMIrLbuubBmablI7o0Vcqu6wcH89b7gD6P2ocQ/haY0wAZGXL9CtgoJRa3s
-         0/noLEfd/qmvlDMRU5vpATPICTQfduFM3CozQjIrOyJVIa3G5t3QeMNxkFFByapZ3LGw
-         gG/cdDMNU/dyXidkobEvYC126+3O0kmv4zKFQJzKxIf0TMDt34npzwOUT3fRh/QnBuQF
-         hxpg==
-X-Gm-Message-State: AOJu0Yz6YYSAsY5YxDcl88kKzYHIr+5B1R2eylX/zAbzQS4vcO1k3bPj
-	zJen0F8JZPJ7HUnwQ7yQSoCKkAa1cJaQ5/iQfWSEzM6KwIVxBzs7XrvLRuh+fkY+Syfq/ajpTwK
-	Bg3Zgxyx/bkv3XHz2fIaS6vTkab3Zay6Rrm2Ui7mh6ztZ+OZKvuY=
-X-Google-Smtp-Source: AGHT+IF2zJY8viJj0WPf0ZMzG+lSNpwCUuLfp31AS8h547e/ZspBmAWTT4v3GrZr6yL1RxHPIvLy+kuLdlul9fGmHPU=
-X-Received: by 2002:a05:6122:328e:b0:4c9:98f8:83db with SMTP id
- cj14-20020a056122328e00b004c998f883dbmr6978370vkb.5.1714048765077; Thu, 25
- Apr 2024 05:39:25 -0700 (PDT)
+	s=arc-20240116; t=1714049212; c=relaxed/simple;
+	bh=J/Z3SHdqPZtbUOyL9ZHiIg5YILYMIAg4ajSMNaH57E0=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=V5Vjp85AtEL0chTFFJg4E6gscyTGFY76fZRhIkVs5Nw0wwYGj9uFAWo5qKVdxnZOPHd2iYWdTN2bRxzjMqgNrYr6Y+rh/qBnS1QVHv5AYBrLlBJxFh756JpgDwYiZMY7CDNitx183xYxUcQn8pBr3dkovBC5fb5mUHIOsWClw6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=teygzRyc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zEe+3NXf; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 25 Apr 2024 12:46:49 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1714049209;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ga2NkwqsOM7kwwxlGdzjoHJHg6hep5Mj7xEr6EIAJqQ=;
+	b=teygzRycPyoAAZu0zK09LCzrnd6AC0Kc1QhN2PLZVhcH2po/I/Vj0wvbGal9YOAys5yc68
+	vGDRa2yPVvbJ826oIjV5HxUrTT6zJuWtf8lUPPEGPKyiP5+Hkvghqbac2pxHYj1HJWO5un
+	H0l9TLXkc4sEFgmAZCHUIXwLe3thIY56gGbspHPWydLc0IzO3FNfyhEGYLCZv0O+OnnsWa
+	+aEyxEtbKj9wGliZhAS6cDLnbUlYYgLUINE5WPX4EwMR7eYSD+tzZXmmI+B8xKfSwNgXRu
+	3U7pgcRcPw70CEplQ9RGYKH/Eh29VP9FE4GTMveLOYLdROfyaB3jL2LR0EObaQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1714049209;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ga2NkwqsOM7kwwxlGdzjoHJHg6hep5Mj7xEr6EIAJqQ=;
+	b=zEe+3NXfAdqmfQd6tEEe2lvP1PYkXu9yMntk0wPCgOvmrmfQVqUbg7SMRuh4+dS51X3KGV
+	xdWWibmoI3QnTpBw==
+From: "tip-bot2 for Guanrui Huang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/gic-v3-its: Prevent double free on error
+Cc: Guanrui Huang <guanrui.huang@linux.alibaba.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>,
+ Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240418061053.96803-2-guanrui.huang@linux.alibaba.com>
+References: <20240418061053.96803-2-guanrui.huang@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 25 Apr 2024 18:09:13 +0530
-Message-ID: <CA+G9fYv5fV74VfJnt55E8YaNWzu8KJG2bhw0ddJhM-mPVUpUpw@mail.gmail.com>
-Subject: stable-rc: 5.10: arm64: ring_buffer.c:1479:21: error: implicit
- declaration of function 'try_cmpxchg'
-To: linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <171404920906.10875.16509237626955836035.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-The arm64 and arm builds are failing on stable-rc linux.5.10.y branch
-due to following build warnings / errors.
+The following commit has been merged into the irq/urgent branch of tip:
 
-Anders, build bisected and found first commit as,
+Commit-ID:     c26591afd33adce296c022e3480dea4282b7ef91
+Gitweb:        https://git.kernel.org/tip/c26591afd33adce296c022e3480dea4282b7ef91
+Author:        Guanrui Huang <guanrui.huang@linux.alibaba.com>
+AuthorDate:    Thu, 18 Apr 2024 14:10:52 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 25 Apr 2024 14:30:46 +02:00
 
-first bad commit: [9bf29b51d2bc21abdb8bd36382c1c324a1c54ca7]
-ring-buffer: Only update pages_touched when a new page is touched
+irqchip/gic-v3-its: Prevent double free on error
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+The error handling path in its_vpe_irq_domain_alloc() causes a double free
+when its_vpe_init() fails after successfully allocating at least one
+interrupt. This happens because its_vpe_irq_domain_free() frees the
+interrupts along with the area bitmap and the vprop_page and
+its_vpe_irq_domain_alloc() subsequently frees the area bitmap and the
+vprop_page again.
 
-Build log:
------
-kernel/trace/ring_buffer.c: In function 'rb_tail_page_update':
-kernel/trace/ring_buffer.c:1479:21: error: implicit declaration of
-function 'try_cmpxchg'; did you mean 'xa_cmpxchg'?
-[-Werror=implicit-function-declaration]
- 1479 |                 if (try_cmpxchg(&cpu_buffer->tail_page,
-&tail_page, next_page))
-      |                     ^~~~~~~~~~~
-      |                     xa_cmpxchg
-cc1: some warnings being treated as errors
+Fix this by unconditionally invoking its_vpe_irq_domain_free() which
+handles all cases correctly and by removing the bitmap/vprop_page freeing
+from its_vpe_irq_domain_alloc().
 
-Links:
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fWFu97bCGW3ZYMbPsIpFyxEwBx/
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fWFuBOMDouq6VfImqR2Iq30FQe/config
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.215-73-g5feded50ee59/testrun/23639019/suite/build/test/gcc-12-lkftconfig-debug-kmemleak/details/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.215-73-g5feded50ee59/testrun/23639019/suite/build/test/gcc-12-lkftconfig-debug-kmemleak/history/
+[ tglx: Massaged change log ]
 
-Meta data:
-git_repo:
-https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-git_sha :
-5feded50ee597a37f4778545a879337c2f72490d
-git_short_log :
-5feded50ee59 ("Linux 5.10.216-rc1")
-arch: arm64
-toolchain: gcc-12
-
-Steps to reproduce:
+Fixes: 7d75bbb4bc1a ("irqchip/gic-v3-its: Add VPE irq domain allocation/teardown")
+Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240418061053.96803-2-guanrui.huang@linux.alibaba.com
 ---
-  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fWFuBOMDouq6VfImqR2Iq30FQe/tuxmake_reproducer.sh
---
-Linaro LKFT
-https://lkft.linaro.org
+ drivers/irqchip/irq-gic-v3-its.c |  9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 2a537cb..5f7d3db 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -4567,13 +4567,8 @@ static int its_vpe_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+ 		irqd_set_resend_when_in_progress(irq_get_irq_data(virq + i));
+ 	}
+ 
+-	if (err) {
+-		if (i > 0)
+-			its_vpe_irq_domain_free(domain, virq, i);
+-
+-		its_lpi_free(bitmap, base, nr_ids);
+-		its_free_prop_table(vprop_page);
+-	}
++	if (err)
++		its_vpe_irq_domain_free(domain, virq, i);
+ 
+ 	return err;
+ }
 
