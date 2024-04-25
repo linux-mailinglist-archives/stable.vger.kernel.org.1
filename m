@@ -1,167 +1,225 @@
-Return-Path: <stable+bounces-41406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789868B1AA8
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 08:07:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D40238B1B2D
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 08:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA69D1C23414
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 06:07:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49C411F21FF3
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 06:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941103CF4F;
-	Thu, 25 Apr 2024 06:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7095A0FE;
+	Thu, 25 Apr 2024 06:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wu5YkYSX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UYgEemkC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ri0sHikJ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DA35A0E6;
-	Thu, 25 Apr 2024 06:06:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAF31E492
+	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 06:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714025219; cv=none; b=Dt+eJCaqotXmkiWoLYIbtNPL6jvJvlPZVA9mPz0JuMqK9WD7Kt7Rbp9kuEIIqAAJdxgtzjsLqu4h+3DbcfoBBoJ6HPzHAtIfUjzZ7yG5F1dwO7yUjFMlmVIFTfcO+rPCcSFGtYpylnU9VS5arVSxiOdVFLF3aBEq7NPHceO2qew=
+	t=1714027249; cv=none; b=kHliDryol7QIRKNGUIrhDNmSqv27/47QHrfhYgd7VKBDGPU8jLLWeZBqJP8leKhHcZMNfO8vWywwcIHUBzSB0+WVHfUEua7HZ9Y8kGtitzMMY0A+XlXs+NuOHV56AvD+HEe8urFdidx2lscFNTnz3NlV2hWTe/EGFySe+NpuiAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714025219; c=relaxed/simple;
-	bh=SErOLhaY0W8NByUwppeuYmIL6sDxug32rav7h3Qy8zQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CPkBUXOZ4fjA7sDAn4oFTTnM1+O0Y9fzhSufD5DI7Qz/fQ2pZnJ3l3SmsZotaoWSdopSlBWK2m4G8oMqMUEm9wG3jCW6Zs5/Vtr9E2jioqTMEh5pp+D+sUtLTvSFb9FvKLYrN/F9sFfG0pBLODX80QrnGxOfa65HmBelwh/U1yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wu5YkYSX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UYgEemkC; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Apr 2024 08:06:48 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714025213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+LJgfqVJYncczb4YQubtSarG/Qnn18XEXFbxt6caka8=;
-	b=Wu5YkYSXocDRNacpWj4hfEx0g6I0j4YUOZeMBNZn4q3jh5ub1ms17Em5yyU5Z/NCVvntrH
-	EHgt9OeJsBE5ZF4zI6mwlkDkoM4/Z1v4I96skzvdXEH/e3g8shnnLljVOaBI7zh2eS/vIw
-	4atK3LUfuXowp1RSPw4YxbdMoNQ3Y5R8oyNXET3RBnBv9quolm0JYDyrGsxpbz8khVXZb6
-	oFRf+2mtaXnvyGtEgSCEb8YQetGHZRNM35rvE3T5s+ovXws1GqTrVokn9s6jtIRIooNBQk
-	Xmd4HpCr1qxOnzhQiSsdH+9CvYmr1Yyhybk5js8y9f4e5UfVQgCnpURbkqdeXQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714025213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+LJgfqVJYncczb4YQubtSarG/Qnn18XEXFbxt6caka8=;
-	b=UYgEemkC1u7cAkn8R+MwGtUccr9PG1jREndomSr0dPtktqg15Wh5yao8Oj+K4CoO4OOn2c
-	uD9HMpdlr1CN8bAg==
-From: Nam Cao <namcao@linutronix.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: mm-commits@vger.kernel.org, tj@kernel.org, tglx@linutronix.de,
-	stable@vger.kernel.org, sfr@canb.auug.org.au, rppt@kernel.org,
-	ndesaulniers@google.com, mingo@kernel.org, mcgrof@kernel.org,
-	kjlx@templeofstupid.com, geert+renesas@glider.be,
-	christophe.leroy@csgroup.eu, changbin.du@huawei.com,
-	bjorn@kernel.org, arnd@arndb.de, adilger@dilger.ca
-Subject: Re: [merged mm-hotfixes-stable]
- init-fix-allocated-page-overlapping-with-ptr_err.patch removed from -mm tree
-Message-ID: <20240425060648.6KBBZrZg@linutronix.de>
-References: <20240425023525.ABB13C113CD@smtp.kernel.org>
+	s=arc-20240116; t=1714027249; c=relaxed/simple;
+	bh=7OKYbj4Uuksbo2Qf5HPNw17rjN6Qs+vtlgxGEBAQNdc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q4JWZnfYRedhgGx6Lp4775ihQ1ERz7tdRrs3ttLgHaiXi2Abi2Kx1dhRnD3KeqGemJ3gw2IdDAtBzQKz7CuJisGirWxdOab1M/lvn9dcyZukFX+0I9tu3VACDnoPAaVDIu4y+Tj4ORQhEXFJtopUqNL2D5uZuPu05ts0QOSwfMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ri0sHikJ; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-4daa5d0afb5so234702e0c.0
+        for <stable@vger.kernel.org>; Wed, 24 Apr 2024 23:40:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714027246; x=1714632046; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gHsnE6PXlZIvSfAKFrgueOgWtUt0jTx+nljG77Q1N3I=;
+        b=Ri0sHikJwc8crIntCl0kBjujGm4XAHjqV0j0f/l8xrPUPo+I9orCazk3fUMjPLiClg
+         qkDSNLg9mliIGbOweyM1Fj5v+whZaxAOM2WRVKhYrXpN7un8chfC0thMhXICZCW1Gs2k
+         mdlb7cJgPZnkSJaqCrLConknwBOcaeKD0Lddj9iDHTeUyWyCfbBUTgJQCj+aUsGrFdVV
+         QoXQNqzqCtZMiiIMYT+iJvHMJNaEQ+TH/5HQSiW5ubvIpGDL+ybDp9D1fLtGTbcs1+F1
+         LN5qDbNMZ6w4jiokal7mJJe28b++50R4X2I7Uy1jukTRqsk/lni7UCYjxIvkYOUafNJE
+         MLhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714027246; x=1714632046;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gHsnE6PXlZIvSfAKFrgueOgWtUt0jTx+nljG77Q1N3I=;
+        b=uolQfxs7hEb378pnYBQaiWI3W2njwJdy7tzCb1q52TbGmvgV73p6iqGGYCRIg9m86b
+         psORmwkYRiE/rSbAH0Dskwt/mG8xTm0YKKmXtx94Ut9+q5+N8jhfFOgR1D2afPsWRear
+         iDf/nWg4rxL3alyeR88YEIDDlthcBTMt9WOWJyzT4SwdgNp9afp8F+J3BB4Yv1JolsXK
+         UlDwkMeZeFQfe/suHwnO6KmmfKKZfHVFHcP8LH4vV9v1KIEDugEqK7byCPMf5VCIGr0a
+         iU5ZgnKjbEHcUJ+xxgEbMyLnb9nwqpnEYCObyvoCgYveTEhHfYuCOhTaMFnigUt+aeI7
+         omQw==
+X-Gm-Message-State: AOJu0YzKj70EXFe3tymilcpeoxLFdOZLiKPx+iGyemVsUTBkZfkFggsg
+	yDCZ/U7ZXRfzn/Y8L6hn/haRM4pdZ1x28IK4iB0ckwJxw61XS8i4Mv2l+vCyJ4ADXv6EqhBuz8F
+	4Sy96Jg/abiYBz7+nuRE7pfsHj+09nrJbv75X4g==
+X-Google-Smtp-Source: AGHT+IHy4yn17l8WHIexhBFucEWjWLbwAWQAgKSltStNJ3dC7QNXsxAi/oLT0hbpvn0uD0kdCJfydjnj6Vo6WxvlaAs=
+X-Received: by 2002:a05:6122:4686:b0:4da:aabe:6f6c with SMTP id
+ di6-20020a056122468600b004daaabe6f6cmr5538526vkb.7.1714027246474; Wed, 24 Apr
+ 2024 23:40:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240425023525.ABB13C113CD@smtp.kernel.org>
+References: <20240423213855.824778126@linuxfoundation.org>
+In-Reply-To: <20240423213855.824778126@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 25 Apr 2024 12:10:34 +0530
+Message-ID: <CA+G9fYvB61RTie=PKQau1m2WWQNUQ++ZY+W_of4kXVh5P26B0w@mail.gmail.com>
+Subject: Re: [PATCH 6.8 000/158] 6.8.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	Linus Walleij <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 24, 2024 at 07:35:25PM -0700, Andrew Morton wrote:
-> The quilt patch titled
->      Subject: init: fix allocated page overlapping with PTR_ERR
-> has been removed from the -mm tree.  Its filename was
->      init-fix-allocated-page-overlapping-with-ptr_err.patch
-> 
-> This patch was dropped because it was merged into the mm-hotfixes-stable branch
-> of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On Wed, 24 Apr 2024 at 03:11, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.8.8 release.
+> There are 158 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.8.8-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.8.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Please drop this patch. It causes a regression:
-https://lore.kernel.org/r/202404221524.4954a009-oliver.sang@intel.com/
 
-Best regards,
-Nam
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, x86_64, and i386.
 
-> 
-> ------------------------------------------------------
-> From: Nam Cao <namcao@linutronix.de>
-> Subject: init: fix allocated page overlapping with PTR_ERR
-> Date: Thu, 18 Apr 2024 12:29:43 +0200
-> 
-> There is nothing preventing kernel memory allocators from allocating a
-> page that overlaps with PTR_ERR(), except for architecture-specific code
-> that setup memblock.
-> 
-> It was discovered that RISCV architecture doesn't setup memblock corectly,
-> leading to a page overlapping with PTR_ERR() being allocated, and
-> subsequently crashing the kernel (link in Close: )
-> 
-> The reported crash has nothing to do with PTR_ERR(): the last page (at
-> address 0xfffff000) being allocated leads to an unexpected arithmetic
-> overflow in ext4; but still, this page shouldn't be allocated in the first
-> place.
-> 
-> Because PTR_ERR() is an architecture-independent thing, we shouldn't ask
-> every single architecture to set this up.  There may be other
-> architectures beside RISCV that have the same problem.
-> 
-> Fix this once and for all by reserving the physical memory page that may
-> be mapped to the last virtual memory page as part of low memory.
-> 
-> Unfortunately, this means if there is actual memory at this reserved
-> location, that memory will become inaccessible.  However, if this page is
-> not reserved, it can only be accessed as high memory, so this doesn't
-> matter if high memory is not supported.  Even if high memory is supported,
-> it is still only one page.
-> 
-> Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
-> Link: https://lkml.kernel.org/r/20240418102943.180510-1-namcao@linutronix.de
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Reported-by: Björn Töpel <bjorn@kernel.org>
-> Tested-by: Björn Töpel <bjorn@kernel.org>
-> Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> Cc: Andreas Dilger <adilger@dilger.ca>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Changbin Du <changbin.du@huawei.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Krister Johansen <kjlx@templeofstupid.com>
-> Cc: Luis Chamberlain <mcgrof@kernel.org>
-> Cc: Nick Desaulniers <ndesaulniers@google.com>
-> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-> Cc: Tejun Heo <tj@kernel.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> 
->  init/main.c |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> --- a/init/main.c~init-fix-allocated-page-overlapping-with-ptr_err
-> +++ a/init/main.c
-> @@ -900,6 +900,7 @@ void start_kernel(void)
->  	page_address_init();
->  	pr_notice("%s", linux_banner);
->  	early_security_init();
-> +	memblock_reserve(__pa(-PAGE_SIZE), PAGE_SIZE); /* reserve last page for ERR_PTR */
->  	setup_arch(&command_line);
->  	setup_boot_config();
->  	setup_command_line(command_line);
-> _
-> 
-> Patches currently in -mm which might be from namcao@linutronix.de are
-> 
-> 
+One regression on arm,
+the TI BeagleBoard-X15 device kunit test boot failed and
+it is always reproducible.
+
+Not a problem on qemu-armv7.
+
+However, I am bisecting this problem and let you know shortly.
+
+Links:
+---
+ - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2fWFwcz=
+HZDFUGnjqyT1mZ6wIeS9
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.=
+8.7-159-g9919cd9ab988/testrun/23660959/suite/boot/test/gcc-13-lkftconfig-ku=
+nit/details/
+
+log:
+--=20
+[   45.931457] BUG: KASAN: slab-out-of-bounds in
+krealloc_more_oob_helper+0x464/0x4c0
+[   45.950073] Write of size 1 at addr cacc68eb by task kunit_try_catch/176
+[   45.956817]
+[   45.958312] CPU: 0 PID: 176 Comm: kunit_try_catch Tainted: G    B
+W        N 6.8.8-rc1 #1
+[   45.966735] Hardware name: Generic DRA74X (Flattened Device Tree)
+[   45.972869]  unwind_backtrace from show_stack+0x18/0x1c
+[   45.978149]  show_stack from dump_stack_lvl+0x6c/0x8c
+[   45.983245]  dump_stack_lvl from print_report+0x158/0x510
+[   45.988677]  print_report from kasan_report+0xc8/0x104
+[   45.993865]  kasan_report from krealloc_more_oob_helper+0x464/0x4c0
+[   46.000183]  krealloc_more_oob_helper from kunit_try_run_case+0x224/0x59=
+8
+[   46.007019]  kunit_try_run_case from
+kunit_generic_run_threadfn_adapter+0x84/0xe4
+[   46.014556]  kunit_generic_run_threadfn_adapter from kthread+0x378/0x410
+[   46.021331]  kthread from ret_from_fork+0x14/0x28
+[   46.026062] Exception stack(0xf219bfb0 to 0xf219bff8)
+[   46.031158] bfa0:                                     00000000
+00000000 00000000 00000000
+[   46.039367] bfc0: 00000000 00000000 00000000 00000000 00000000
+00000000 00000000 00000000
+[   46.047607] bfe0: 00000000 00000000 00000000 00000000 00000013 00000000
+[   46.054260]
+[   46.055755] Allocated by task 176:
+[   46.059173]  kasan_save_track+0x30/0x5c
+[   46.063049]  __kasan_krealloc+0xf0/0x13c
+[   46.067016]  krealloc+0xb8/0xfc
+[   46.070190]  krealloc_more_oob_helper+0xd4/0x4c0
+[   46.074829]  kunit_try_run_case+0x224/0x598
+[   46.079040]  kunit_generic_run_threadfn_adapter+0x84/0xe4
+[   46.084472]  kthread+0x378/0x410
+[   46.087738]  ret_from_fork+0x14/0x28
+[   46.091339]
+[   46.092834] The buggy address belongs to the object at cacc6800
+[   46.092834]  which belongs to the cache kmalloc-256 of size 256
+[   46.104736] The buggy address is located 0 bytes to the right of
+[   46.104736]  allocated 235-byte region [cacc6800, cacc68eb)
+[   46.116363]
+[   46.117858] The buggy address belongs to the physical page:
+[   46.123474] page:af853d8a refcount:1 mapcount:0 mapping:00000000
+index:0x0 pfn:0x8acc6
+[   46.131439] head:af853d8a order:1 entire_mapcount:0
+nr_pages_mapped:0 pincount:0
+[   46.138885] flags: 0x840(slab|head|zone=3D0)
+[   46.143005] page_type: 0xffffffff()
+[   46.146514] raw: 00000840 c6801500 00000122 00000000 00000000
+80100010 ffffffff 00000001
+[   46.154663] raw: 00000000
+[   46.157287] page dumped because: kasan: bad access detected
+[   46.162902]
+[   46.164398] Memory state around the buggy address:
+[   46.169219]  cacc6780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   46.175781]  cacc6800: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   46.182373] >cacc6880: 00 00 00 00 00 00 00 00 00 00 00 00 00 03 fc fc
+[   46.188934]                                                   ^
+[   46.194885]  cacc6900: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   46.201446]  cacc6980: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   46.208038] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+[   46.215454] hub 1-1:1.0: 4 ports detected
+[   46.215637] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+[   46.226745] BUG: KASAN: slab-out-of-bounds in
+krealloc_more_oob_helper+0x458/0x4c0
+[   46.234374] Write of size 1 at addr cacc68f0 by task kunit_try_catch/176
+<common> [   46.570037]  krealloc_less_oob_helper from
+kunit_try_run_case+0x224/0x598
+<common> [   46.576873]  kunit_try_run_case from
+kunit_generic_run_threadfn_adapter+0x84/0xe4
+<common> [   46.584411]  kunit_generic_run_threadfn_adapter from
+kthread+0x378/0x410
+
+## Build
+* kernel: 6.8.8-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.8.y
+* git commit: ea4e35f1afd7d7d003c345bf14862183910ecc6b
+* git describe: v6.8.7-159-gea4e35f1afd7
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.7=
+-159-gea4e35f1afd7
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
