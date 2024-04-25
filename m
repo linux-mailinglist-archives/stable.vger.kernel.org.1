@@ -1,171 +1,134 @@
-Return-Path: <stable+bounces-41468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFBC8B2A6B
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 23:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E848B2A9F
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 23:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87EB32848FB
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 21:08:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBA3D2844DB
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 21:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E39155748;
-	Thu, 25 Apr 2024 21:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BA51553BF;
+	Thu, 25 Apr 2024 21:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="dBARPjUJ"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YVZ0RW8b"
 X-Original-To: stable@vger.kernel.org
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F015B1553BC
-	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 21:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0D3153812
+	for <stable@vger.kernel.org>; Thu, 25 Apr 2024 21:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714079275; cv=none; b=PouH+lctxPh3zYLcgFAtDaIL75H4RkBlzy8um5vx+9qU8PhYN2hr6QqPcI28CuJKKcZ3jcEsnhe0S7mttMn7OjW4xZHrm7a+5pYUpuCfHrwNBDfqd0vHmdEnErKZGhXRLIxpVvZQs8/ItBtgDFW78HThRiUA7Tc6DF1+f4As1Is=
+	t=1714080269; cv=none; b=d2HLrovKgD8po2HOs/v63IyriT2CyNvh34TVFmre+YG1qA1T+MJtXNP9oLkcpf819vWvhEMoUW5NEpQpLu8idWAu2naSa2i5juHnjtyvIm8E7byqEMFBfan9QhvLrJ5G10LQy8xoeD98IbwhK9x01AhbMLcERTX+IaO5TtbMsmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714079275; c=relaxed/simple;
-	bh=JOPgLUe8I9YipPlrMgvXOgvept9vfI3FxbS5jEZ5FxU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=oued7xM2hNICcSp6Ce+oxzlsPy9APiDDq7wjLrSx47V2/TwzReu++GCnEwFcqR7hbqcPB3G3BAn0Zaczr7gK7VtrNcO1mrypAPVF5RF8fjo247xt0SWb5KQIOwdOCIlNxOFsu6cytIkB4CBMpEwii7ZKEQrKeJscXr1q6T8vmSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=dBARPjUJ; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id CF8142C03E9;
-	Fri, 26 Apr 2024 09:07:49 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1714079269;
-	bh=JOPgLUe8I9YipPlrMgvXOgvept9vfI3FxbS5jEZ5FxU=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=dBARPjUJ7LXDkYLsqPLfN1vMVnEfK7FKOZAnV0tLJ8HYKeUxaqH8hK4Zu4G0DGvMk
-	 FfWZMmLl7XdttC571G7lmfC0Udifq0tztQpBCZqOHh3Uk/dPaomF6W6/YJy6TarxZc
-	 BNQ2zfCUH1ryTgrNjR7j/xUyA4Bff3sGgc9PfYZrTQzOa0lWgtpXo7lpO1OLiIP3rF
-	 gP+nPuk9aX1+yuVrnaualLP1xHw7LJSGi0DrpQAFI0FduEA4BhGVM4AZoqqIN11FV4
-	 kG7eXi3XMlYpJ4enFysDlHvHTaNWm+OO2PKNd4yS7i3LiSek0HcjLeE4jjVHzrdR4O
-	 Jjf55VHeXvd7Q==
-Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B662ac6250001>; Fri, 26 Apr 2024 09:07:49 +1200
-Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
- svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 26 Apr 2024 09:07:49 +1200
-Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
- svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
- 15.02.1544.009; Fri, 26 Apr 2024 09:07:49 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: Chuck Lever III <chuck.lever@oracle.com>
-CC: Neil Brown <neilb@suse.de>, Jeff Layton <jlayton@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Linux NFS Mailing List
-	<linux-nfs@vger.kernel.org>, netdev <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: kernel BUG at net/sunrpc/svc.c:570 after updating from v5.15.153
- to v5.15.155
-Thread-Topic: kernel BUG at net/sunrpc/svc.c:570 after updating from v5.15.153
- to v5.15.155
-Thread-Index: AQHaleHzc3oveYbGkkq3WWVD/cih7bF12zkAgABlswCAAStOgIAACEqA///XTYCAAWPYAIAAA+uAgAAAv4A=
-Date: Thu, 25 Apr 2024 21:07:49 +0000
-Message-ID: <dc96f7d9-ffd9-487a-be44-9c30c6662d52@alliedtelesis.co.nz>
-References: <5D19EAF8-0F65-4CD6-9378-67234D407B96@oracle.com>
- <171400185158.7600.16163546434537681088@noble.neil.brown.name>
- <141fbaa0-f8fa-4bfe-8c2d-7749fcf78ab3@alliedtelesis.co.nz>
- <6F1A5E20-1A0E-479C-AD5B-886D10739702@oracle.com>
-In-Reply-To: <6F1A5E20-1A0E-479C-AD5B-886D10739702@oracle.com>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AC58CAD9C8A21E469637C4B8E843D402@atlnz.lc>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1714080269; c=relaxed/simple;
+	bh=7hgElzkGGU4LOW+W09DF7A1KIdz9b4uk5d/lmNS5l4g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l3v5vDYCf+nz4nf6vIzlBdJMuB1xBQH0osqF9hjTIQkkKA46Pdun1xYCJUpas5x+8W+FvnVqc/UoV9xNGPwR1e0U6Ylmgp+30G07vS1ALq8ooXFlHA/lGMQ/Li3P8FrJSeYEfsjk78jAkYhY0QOTStHs+hI0HbrIkBe8trRKWoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YVZ0RW8b; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6f0b9f943cbso1391886b3a.0
+        for <stable@vger.kernel.org>; Thu, 25 Apr 2024 14:24:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1714080267; x=1714685067; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ra+gBoWOeuJuI+Ezc3sgY9mFyzgfI39aGWs6cfLFtkw=;
+        b=YVZ0RW8b2YU0w5ikFhI1oKRO3CtsVJwztxuMBahCWDlEkk6G/7C11aeFzT41+UfbGO
+         2uwbJ+4PQUCXyHzAkJSuciA8R6d7Yp/QaolOsZgKPZwNicVY/YaRMOnvR91q8P+Slw4H
+         WQsZluYKYrl9m2Uj2PVX24FnSGaIUn9pp+2L8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714080267; x=1714685067;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ra+gBoWOeuJuI+Ezc3sgY9mFyzgfI39aGWs6cfLFtkw=;
+        b=Btc0YXd9eQTfgo8rBaCirEeIqF2rraFagwK73pv8SEDGvGzXuUQvwsHT4IZbdMtuL5
+         0TL2OIqyzbzLFqKm+2W/PD42klNamt/LDq9lfTIClo5fwFwTau0CewCLef9j2bxbJa6+
+         wdEA5u08v+1sNBHD8cK26t8JpfSQGJDWGO/EdSOQ7b2THwTrM9gJ2F6JI7GXdcEfUHih
+         vhEAf0lGxMR2nMYXZ2mkivhkelEp67tblaf39tsb3LvjN3Aq04TFwGJ3jxxMxgsC5UG2
+         mXr1xkuwe3R/MMwj8c6knH0swQWyDl65EXEtjg/iCnU5K+EVap0JnVyLYTPD+0J6Bi5Q
+         ulhg==
+X-Forwarded-Encrypted: i=1; AJvYcCVVtGaVsFGqLMgQgV98jNkw4eVpXeo0voU0vceFTBNsz8sM/lVgebbsTJCIRA+b3lHASQ/N2CPebLyJqOomaSwDg1+m7RIY
+X-Gm-Message-State: AOJu0Yyi52wwdQGv0xqjbIslOGDS/pQ9WeOVDAz4GvX7zUBit04xcI8W
+	dRUMnD9lOz9R4INQBMTFAqWyu7/aXqxOeLsXfCBlsMopbl4xPLj6rvccqSDnNw==
+X-Google-Smtp-Source: AGHT+IFjRI1KL92CI5//kxL5g2K5AdC261aXqb0p/mvglOwYKbX0B59aSLlt6Vxzy9YL74iEhxcDrw==
+X-Received: by 2002:a05:6a20:d41f:b0:1aa:9c29:b98d with SMTP id il31-20020a056a20d41f00b001aa9c29b98dmr968628pzb.24.1714080267556;
+        Thu, 25 Apr 2024 14:24:27 -0700 (PDT)
+Received: from [10.211.41.59] ([66.170.99.2])
+        by smtp.gmail.com with ESMTPSA id b1-20020a170902d50100b001e2b8c91f04sm14230143plg.22.2024.04.25.14.24.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Apr 2024 14:24:27 -0700 (PDT)
+Message-ID: <e2569ac9-85ba-46b2-a285-161ddf3b3cd3@broadcom.com>
+Date: Thu, 25 Apr 2024 14:24:25 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=dY4j3mXe c=1 sm=1 tr=0 ts=662ac625 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=75chYTbOgJ0A:10 a=IkcTkHD0fZMA:10 a=raytVjVEu-sA:10 a=yPCof4ZbAAAA:8 a=VwQbUJbxAAAA:8 a=g6u_1-914C6Wr_cfHq0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22 a=eNOiNizBAFBy3Wy_Y4PN:22
-X-SEG-SpamProfiler-Score: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/vmwgfx: Fix invalid reads in fence signaled events
+To: Zack Rusin <zack.rusin@broadcom.com>, dri-devel@lists.freedesktop.org
+Cc: Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com,
+ martin.krastev@broadcom.com, zdi-disclosures@trendmicro.com,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240425192748.1761522-1-zack.rusin@broadcom.com>
+From: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Content-Language: en-US
+In-Reply-To: <20240425192748.1761522-1-zack.rusin@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-DQpPbiAyNi8wNC8yNCAwOTowNSwgQ2h1Y2sgTGV2ZXIgSUlJIHdyb3RlOg0KPg0KPj4gT24gQXBy
-IDI1LCAyMDI0LCBhdCA0OjUx4oCvUE0sIENocmlzIFBhY2toYW0gPENocmlzLlBhY2toYW1AYWxs
-aWVkdGVsZXNpcy5jby5uej4gd3JvdGU6DQo+Pg0KPj4NCj4+IE9uIDI1LzA0LzI0IDExOjM3LCBO
-ZWlsQnJvd24gd3JvdGU6DQo+Pj4gT24gVGh1LCAyNSBBcHIgMjAyNCwgQ2h1Y2sgTGV2ZXIgSUlJ
-IHdyb3RlOg0KPj4+Pj4gT24gQXByIDI0LCAyMDI0LCBhdCA5OjMz4oCvQU0sIENodWNrIExldmVy
-IElJSSA8Y2h1Y2subGV2ZXJAb3JhY2xlLmNvbT4gd3JvdGU6DQo+Pj4+Pg0KPj4+Pj4+IE9uIEFw
-ciAyNCwgMjAyNCwgYXQgMzo0MuKAr0FNLCBDaHJpcyBQYWNraGFtIDxDaHJpcy5QYWNraGFtQGFs
-bGllZHRlbGVzaXMuY28ubno+IHdyb3RlOg0KPj4+Pj4+DQo+Pj4+Pj4gT24gMjQvMDQvMjQgMTM6
-MzgsIENocmlzIFBhY2toYW0gd3JvdGU6DQo+Pj4+Pj4+IE9uIDI0LzA0LzI0IDEyOjU0LCBDaHJp
-cyBQYWNraGFtIHdyb3RlOg0KPj4+Pj4+Pj4gSGkgSmVmZiwgQ2h1Y2ssIEdyZWcsDQo+Pj4+Pj4+
-Pg0KPj4+Pj4+Pj4gQWZ0ZXIgdXBkYXRpbmcgb25lIG9mIG91ciBidWlsZHMgYWxvbmcgdGhlIDUu
-MTUueSBMVFMgYnJhbmNoIG91cg0KPj4+Pj4+Pj4gdGVzdGluZyBjYXVnaHQgYSBuZXcga2VybmVs
-IGJ1Zy4gT3V0cHV0IGJlbG93Lg0KPj4+Pj4+Pj4NCj4+Pj4+Pj4+IEkgaGF2ZW4ndCBkdWcgaW50
-byBpdCB5ZXQgYnV0IHdvbmRlcmVkIGlmIGl0IHJhbmcgYW55IGJlbGxzLg0KPj4+Pj4+PiBBIGJp
-dCBtb3JlIGluZm8uIFRoaXMgaXMgaGFwcGVuaW5nIGF0ICJyZWJvb3QiIGZvciB1cy4gT3VyIGVt
-YmVkZGVkDQo+Pj4+Pj4+IGRldmljZXMgdXNlIGEgYml0IG9mIGEgaGFja2VkIHVwIHJlYm9vdCBw
-cm9jZXNzIHNvIHRoYXQgdGhleSBjb21lIGJhY2sNCj4+Pj4+Pj4gZmFzdGVyIGluIHRoZSBjYXNl
-IG9mIGEgZmFpbHVyZS4NCj4+Pj4+Pj4NCj4+Pj4+Pj4gSXQgZG9lc24ndCBoYXBwZW4gd2l0aCBh
-IHByb3BlciBgc3lzdGVtY3RsIHJlYm9vdGAgb3Igd2l0aCBhIFNZU1JRK0INCj4+Pj4+Pj4NCj4+
-Pj4+Pj4gSSBjYW4gdHJpZ2dlciBpdCB3aXRoIGBraWxsYWxsIC05IG5mc2RgIHdoaWNoIEknbSBu
-b3Qgc3VyZSBpcyBhDQo+Pj4+Pj4+IGNvbXBsZXRlbHkgbGVnaXQgdGhpbmcgdG8gZG8gdG8ga2Vy
-bmVsIHRocmVhZHMgYnV0IGl0J3MgcHJvYmFibHkgY2xvc2UNCj4+Pj4+Pj4gdG8gd2hhdCBvdXIg
-Y3VzdG9taXplZCByZWJvb3QgZG9lcy4NCj4+Pj4+PiBJJ3ZlIGJpc2VjdGVkIGJldHdlZW4gdjUu
-MTUuMTUzIGFuZCB2NS4xNS4xNTUgYW5kIGlkZW50aWZpZWQgY29tbWl0DQo+Pj4+Pj4gZGVjNmI4
-YmNhYzczICgibmZzZDogU2ltcGxpZnkgY29kZSBhcm91bmQgc3ZjX2V4aXRfdGhyZWFkKCkgY2Fs
-bCBpbg0KPj4+Pj4+IG5mc2QoKSIpIGFzIHRoZSBmaXJzdCBiYWQgY29tbWl0LiBCYXNlZCBvbiB0
-aGUgY29udGV4dCB0aGF0IHNlZW1zIHRvDQo+Pj4+Pj4gbGluZSB1cCB3aXRoIG15IHJlcHJvZHVj
-dGlvbi4gSSdtIHdvbmRlcmluZyBpZiBwZXJoYXBzIHNvbWV0aGluZyBnb3QNCj4+Pj4+PiBtaXNz
-ZWQgb3V0IG9mIHRoZSBzdGFibGUgdHJhY2s/IFVuZm9ydHVuYXRlbHkgSSdtIG5vdCBhYmxlIHRv
-IHJ1biBhIG1vcmUNCj4+Pj4+PiByZWNlbnQga2VybmVsIHdpdGggYWxsIG9mIHRoZSBuZnMgcmVs
-YXRlZCBzZXR1cCB0aGF0IGlzIGJlaW5nIHVzZWQgb24NCj4+Pj4+PiB0aGUgc3lzdGVtIGluIHF1
-ZXN0aW9uLg0KPj4+Pj4gVGhhbmtzIGZvciBiaXNlY3RpbmcsIHRoYXQgd291bGQgaGF2ZSBiZWVu
-IG15IGZpcnN0IHN1Z2dlc3Rpb24uDQo+Pj4+Pg0KPj4+Pj4gVGhlIGJhY2twb3J0IGluY2x1ZGVk
-IGFsbCBvZiB0aGUgTkZTRCBwYXRjaGVzIHVwIHRvIHY2LjIsIGJ1dA0KPj4+Pj4gdGhlcmUgbWln
-aHQgYmUgYSBtaXNzaW5nIHNlcnZlci1zaWRlIFN1blJQQyBwYXRjaC4NCj4+Pj4gU28gZGVjNmI4
-YmNhYzczICgibmZzZDogU2ltcGxpZnkgY29kZSBhcm91bmQgc3ZjX2V4aXRfdGhyZWFkKCkNCj4+
-Pj4gY2FsbCBpbiAgbmZzZCgpIikgaXMgZnJvbSB2Ni42LCBzbyBpdCB3YXMgYXBwbGllZCB0byB2
-NS4xNS55DQo+Pj4+IG9ubHkgdG8gZ2V0IGEgc3Vic2VxdWVudCBORlNEIGZpeCB0byBhcHBseS4N
-Cj4+Pj4NCj4+Pj4gVGhlIGltbWVkaWF0ZWx5IHByZXZpb3VzIHVwc3RyZWFtIGNvbW1pdCBpcyBt
-aXNzaW5nOg0KPj4+Pg0KPj4+PiAgICAzOTAzOTAyNDAxNDUgKCJuZnNkOiBkb24ndCBhbGxvdyBu
-ZnNkIHRocmVhZHMgdG8gYmUgc2lnbmFsbGVkLiIpDQo+Pj4+DQo+Pj4+IEZvciB0ZXN0aW5nLCBJ
-J3ZlIGFwcGxpZWQgdGhpcyB0byBteSBuZnNkLTUuMTUueSBicmFuY2ggaGVyZToNCj4+Pj4NCj4+
-Pj4gICAgaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvY2Vs
-L2xpbnV4LmdpdA0KPj4+Pg0KPj4+PiBIb3dldmVyIGV2ZW4gaWYgdGhhdCBmaXhlcyB0aGUgcmVw
-b3J0ZWQgY3Jhc2gsIHRoaXMgc3VnZ2VzdHMNCj4+Pj4gdGhhdCBhZnRlciB2Ni42LCBuZnNkIHRo
-cmVhZHMgYXJlIG5vdCBnb2luZyB0byByZXNwb25kIHRvDQo+Pj4+ICJraWxsYWxsIC05IG5mc2Qi
-Lg0KPj4+IEkgdGhpbmsgdGhpcyBsaWtlbHkgaXMgdGhlIHByb2JsZW0uICBUaGUgbmZzZCB0aHJl
-YWRzIG11c3QgYmUgYmVpbmcNCj4+PiBraWxsZWQgYnkgYSBzaWduYWwuDQo+Pj4gT25lIG9ubHkg
-b3RoZXIgY2F1c2UgZm9yIGFuIG5mc2QgdGhyZWFkIHRvIGV4aXQgaXMgaWYNCj4+PiBzdmNfc2V0
-X251bV90aHJlYWRzKCkgaXMgY2FsbGVkLCBhbmQgYWxsIHBsYWNlcyB0aGF0IGNhbGwgdGhhdCBo
-b2xkIGENCj4+PiByZWYgb24gdGhlIHNlcnYgc3RydWN0dXJlIHNvIHRoZSBmaW5hbCBwdXQgd29u
-J3QgaGFwcGVuIHdoZW4gdGhlIHRocmVhZA0KPj4+IGV4aXRzLg0KPj4+DQo+Pj4gQmVmb3JlIHRo
-ZSBwYXRjaCB0aGF0IGJpc2VjdCBmb3VuZCwgdGhlIG5mc2QgdGhyZWFkIHdvdWxkIGV4aXQgd2l0
-aA0KPj4+DQo+Pj4gICBzdmNfZ2V0KCk7DQo+Pj4gICBzdmNfZXhpdF90aHJlYWQoKTsNCj4+PiAg
-IG5mc2RfcHV0KCk7DQo+Pj4NCj4+PiBUaGlzIGFsc28gaG9sZHMgYSByZWYgYWNyb3NzIHRoZSBz
-dmNfZXhpdF90aHJlYWQoKSwgYW5kIGVuc3VyZXMgdGhlDQo+Pj4gZmluYWwgJ3B1dCcgaGFwcGVu
-cyBmcm9tIG5mc0RfcHV0KCksIG5vdCBzdmNfcHV0KCkgKGluDQo+Pj4gc3ZjX2V4aXRfdGhyZWFk
-KCkpLg0KPj4+DQo+Pj4gQ2hyaXM6IHdoYXQgd2FzIHRoZSBjb250ZXh0IHdoZW4gdGhlIGNyYXNo
-IGhhcHBlbmVkPyAgQ291bGQgdGhlIG5mc2QNCj4+PiB0aHJlYWRzIGhhdmUgYmVlbiBzaWduYWxs
-ZWQ/ICBUaGF0IGhhc24ndCBiZWVuIHRoZSBzdGFuZGFyZCB3YXkgdG8gc3RvcA0KPj4+IG5mc2Qg
-dGhyZWFkcyBmb3IgYSBsb25nIHRpbWUsIHNvIEknbSBhIGxpdHRsZSBzdXJwcmlzZWQgdGhhdCBp
-dCBpcw0KPj4+IGhhcHBlbmluZy4NCj4+IFdlIHVzZSBhIGhhY2tlZCB1cCB2ZXJzaW9uIG9mIHNo
-dXRkb3duIGZyb20gdXRpbC1saW51eCBhbmQgd2hpY2ggZG9lcyBhDQo+PiBga2lsbCAoLTEsIFNJ
-R1RFUk0pO2AgdGhlbiBga2lsbCAoLTEsIFNJR0tJTEwpO2AgKEkgZG9uJ3QgdGhpbmsgdGhhdA0K
-Pj4gcGFydGljdWxhciBiZWhhdmlvdXIgaXMgdGhlIGhhY2tlcnkpLiBJJ20gbm90IHN1cmUgaWYg
-LTEgd2lsbCBwaWNrIHVwDQo+PiBrZXJuZWwgdGhyZWFkcyBidXQgYmFzZWQgb24gdGhlIHN5bXB0
-b21zIGl0IGFwcGVhcnMgdG8gYmUgZG9pbmcgc28gKG9yDQo+PiBtYXliZSBzb21ldGhpbmcgZWxz
-ZSBpcyBpbiBpdCdzIFNJR1RFUk0gaGFuZGxlcikuIEkgZG9uJ3QgdGhpbmsgd2Ugd2VyZQ0KPj4g
-ZXZlciByZWFsbHkgaW50ZW5kaW5nIHRvIHNlbmQgdGhlIHNpZ25hbHMgdG8gbmZzZCBzbyB3aGV0
-aGVyIGl0IGFjdHVhbGx5DQo+PiB0ZXJtaW5hdGVzIG9yIG5vdCBJIGRvbid0IHRoaW5rIGlzIGFu
-IGlzc3VlIGZvciB1cy4gSSBjYW4gY29uZmlybSB0aGF0DQo+PiBhcHBseWluZyAzOTAzOTAyNDAx
-NDUgcmVzb2x2ZXMgdGhlIHN5bXB0b20gd2Ugd2VyZSBzZWVpbmcuDQo+IEknbSAyLzMgb2YgdGhl
-IHdheSB0aHJvdWdoIHRlc3RpbmcgNS4xNS4xNTYgd2l0aCAzOTAzOTAyNDAxNDUNCj4gYXBwbGll
-ZCwgc28gaXQgd291bGQgYmUganVzdCBhbm90aGVyIGRheSBiZWZvcmUgSSBjYW4gc2VuZCBhDQo+
-IHBhdGNoIHRvIHN0YWJsZUAuDQo+DQo+IE1heSBJIGFkZCBUZXN0ZWQtYnk6IENocmlzIFBhY2to
-YW0gPENocmlzLlBhY2toYW1AYWxsaWVkdGVsZXNpcy5jby5uej4gPw0KDQpTdXJlIGdvIGFoZWFk
-Lg0K
+On 4/25/24 12:27, Zack Rusin wrote:
+> Correctly set the length of the drm_event to the size of the structure
+> that's actually used.
+> 
+> The length of the drm_event was set to the parent structure instead of
+> to the drm_vmw_event_fence which is supposed to be read. drm_read
+> uses the length parameter to copy the event to the user space thus
+> resuling in oob reads.
+> 
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+> Fixes: 8b7de6aa8468 ("vmwgfx: Rework fence event action")
+> Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-23566
+> Cc: David Airlie <airlied@gmail.com>
+> CC: Daniel Vetter <daniel@ffwll.ch>
+> Cc: Zack Rusin <zack.rusin@broadcom.com>
+> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: <stable@vger.kernel.org> # v3.4+
+> ---
+>  drivers/gpu/drm/vmwgfx/vmwgfx_fence.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+> index 2a0cda324703..5efc6a766f64 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+> @@ -991,7 +991,7 @@ static int vmw_event_fence_action_create(struct drm_file *file_priv,
+>  	}
+>  
+>  	event->event.base.type = DRM_VMW_EVENT_FENCE_SIGNALED;
+> -	event->event.base.length = sizeof(*event);
+> +	event->event.base.length = sizeof(event->event);
+>  	event->event.user_data = user_data;
+>  
+>  	ret = drm_event_reserve_init(dev, file_priv, &event->base, &event->event.base);
+
+LGTM!
+
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+
+Thanks,
+
+Maaz Mombasawala <maaz.mombasawala@broadcom.com>
 
