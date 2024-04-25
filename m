@@ -1,278 +1,192 @@
-Return-Path: <stable+bounces-41480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7220D8B2D1B
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 00:28:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761758B2D41
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 00:46:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2982DB25CF4
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 22:28:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29D25281F7A
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 22:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FC6156F42;
-	Thu, 25 Apr 2024 22:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D506CDB4;
+	Thu, 25 Apr 2024 22:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MSLoNH/j"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bCQoLXcj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A811D157492;
-	Thu, 25 Apr 2024 22:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C716714D71D;
+	Thu, 25 Apr 2024 22:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714084068; cv=none; b=ETFvRU21WNzLYO2wFaB4/ZFLhhFuK3Ibt43orI0S6NauyF98/o1r1MIeE6U3x9X68F2AXVHC6GKm+BbWco0uxhkKTR6Eq5kZ+sxeA2gCQkW104Wra/jqkMw1xvcpzu6dPnbLRnpT4T9DlO2eeGAThBnzT3Qnh8EwXeIAulZsrSA=
+	t=1714085184; cv=none; b=i34OddVfIkSGl2yMlOXFxP87IHWXjowX+9bMpo1BVzcpRk2TiamBoJV7ZF5iMzdKxQTdOdi60qh2vfO4kyovb/jMLtjvp1qCloFTVaIVkVsHJqoHLtBGbTaAjQoTQ71FiDoIBnG9vuoW2QI+1Bwh0pIAM3Yl1gfx/M63BhsDTLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714084068; c=relaxed/simple;
-	bh=TIHi716ql6W7JkAg87hK+/NlxNNTNr3j5+ozLhVFT40=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Atc245ZJhjiM6HOuePBS5LMtH59BXhIUbprh12R/99TQrg66PuyCNATzYDrYX5j9t5JAcLJcjIHQWv8/A0wgtdS43Fkzj02NwrqGFR+BAs3ZTYC3qsL+aOPqev3M/WcYRNeFzJ1FwYkz6bvbaLD77HjkpyhSlK243ucv2VJrIXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MSLoNH/j; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1714085184; c=relaxed/simple;
+	bh=Z6nU7lbWOTTN+NCxDdujT3oh3WSOzUSrm6mKzzrFw+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E0N2MEtFBmyWrsvivIter71DoIUeg4c5IKeZvFF6nQLKJxcywJ/tRyE4Il8HzFqlxvkAliiiNL6PKUfpTNpUkMTQcvUC2Yl84q6Kz3jaibEnpu5JRrBeG/gRBJi4umxSCy/+gMqUyuK97nOe7NTIjqb48NlM6c5sT38lCLEZBWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bCQoLXcj; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-437274f3bd4so14856211cf.1;
-        Thu, 25 Apr 2024 15:27:46 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6ed0e9ccca1so1509125b3a.0;
+        Thu, 25 Apr 2024 15:46:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714084065; x=1714688865; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0OvkLf2eq0KdJa5mTu/U97lc17pEWUvnY93iweSl7Ps=;
-        b=MSLoNH/j9jJqS9KhNtXVpZCWEkim81Ofeb48/cPQeHrnJ/DAtxryu9scsQuc1mn3wD
-         5VEhn11ck0Akeuf5epch3ZI1OL1+vO9JRznKRUAZRaqaFqqB6ycyDGI4IEboPBJUe+Xr
-         ZFFbbarSD7d8aFE30dxC570El4qrGsfH42WMtovI8HkrYeLHlZ9S4eGazVYwHcj4NyvF
-         R02b5xTtin9aDeZKH896eyFoL0/rXwfV6asr4pkHRe5zp3CfPCHBv0O27gIG8OKVkJ5p
-         StTXhWW8zOciKnrZBgAh22pmPXadySt5sr5GQ1NmDAYXKfoeaHIHA5ZyhwNOi4V8OMPG
-         zqfw==
+        d=gmail.com; s=20230601; t=1714085182; x=1714689982; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=PgFJG1Itox1fQPNxhvEkQd/nM/OoaOolYDxHiZpfmkY=;
+        b=bCQoLXcjkW6FuCUeaP4S+sDJEciXaK2KTB06LHQVSuCqsu/nk5b4Nfl9sm2E2K1kbJ
+         qNNONEON8QlZCbn+aqbj9IahEe6XmuYwPgDxAG/odKfn3XAG9NNGitn00lan4xNH43kg
+         gMyjo0O1MkAt1ucZjAMH8iNhf/cRFS/h+zsvMfA4syvN2W6QdiIQv7Scbd72BsHjYRoC
+         REtGhqOYK+P/ZMliiPgM+8D6R0ArtoH8S6BJnqbVqUUdcV5yN4WFCJjZHCJn+SUSwc1o
+         ndU4VIQVsbkVnNV/Xxu53ID3BrTH/P4amsDdcUBZmO8G50O7u9PKoz6amlL4Gj5vDExi
+         fcPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714084065; x=1714688865;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0OvkLf2eq0KdJa5mTu/U97lc17pEWUvnY93iweSl7Ps=;
-        b=VkIY9yzWsWmTBnJnuqCmhI97RgqHLjVVBPLFXjBy9NUICF09fJHomoJ78NGscPNjit
-         wOVNkcc/yPuvP9Mjr4HW6McQ4vphnY4TTOp6vtg9liMK2B0ASugqOPTxgBGnPukcTCWx
-         jZTnyhS16l2z1ssedJH2fxKe93mv/u4cIavYMHgsz6d+4ZOsXl65YyMtUdpS2R66BfPC
-         ECJIex1D5anbJL2eLEofferhLT9hC0IpiWBUf5JJIEmgjw3W3wAdnWXah+HBawJesT9p
-         gGEySP+9+m2ESytV8pgYaCGJ7AtWfTnKfcrA15pUbD1aL65mB6verDFxa31LhXKkS/ob
-         xOlg==
-X-Forwarded-Encrypted: i=1; AJvYcCVssdsckpAkWfYGJ0cX4vEiISbFIo894fN5rdG8Tm0kzvtvvtlJSHB2jtRkW2FYmV65Ks/J/D1ZWCrY7kKXL8wZsVdjQhrmxEs4ZGgzTgHTj54pkvtH4Pwpbw9g7umjerfRHIHhy6pD28DryqRbnqdW9rAUv9/RYGGUBJoV
-X-Gm-Message-State: AOJu0YygdEYMYEFET/gvAZC4Weh2bKHCbiqumr4+wB7CrWHZ2PveEic0
-	YFgDfd/eBFoQAdzDZBCgnPpBGujP8o1xzUa4l1if9TW/IA3ASLwS
-X-Google-Smtp-Source: AGHT+IEvYIrJDD4VlmLOC/re5SMBDT1fVdq1LMdJYKJtl+4L1DmRdQolO07gBLUWkLZ10McV2jdRMg==
-X-Received: by 2002:ac8:7d89:0:b0:439:ec1e:327d with SMTP id c9-20020ac87d89000000b00439ec1e327dmr2054796qtd.10.1714084065494;
-        Thu, 25 Apr 2024 15:27:45 -0700 (PDT)
-Received: from stbirv-lnx-1.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id t4-20020a05622a180400b004371724f711sm7341928qtc.80.2024.04.25.15.27.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Apr 2024 15:27:45 -0700 (PDT)
-From: Doug Berger <opendmb@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	bcm-kernel-feedback-list@broadcom.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Doug Berger <opendmb@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 3/3] net: bcmgenet: synchronize UMAC_CMD access
-Date: Thu, 25 Apr 2024 15:27:21 -0700
-Message-Id: <20240425222721.2148899-4-opendmb@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240425222721.2148899-1-opendmb@gmail.com>
-References: <20240425222721.2148899-1-opendmb@gmail.com>
+        d=1e100.net; s=20230601; t=1714085182; x=1714689982;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PgFJG1Itox1fQPNxhvEkQd/nM/OoaOolYDxHiZpfmkY=;
+        b=go6yMijGPpl8fCrrElbNXUnKA93A/Cqa3qL6A8D2+7IeUvo+7FmUh0PtMe6U4qRA/J
+         AyGXHRO3CXfKWEX9U1gm0w3kZeO+GrsPSH/cRIlO/VLUVha+NXVd//qEg5zcqzuQzgAS
+         J+L1VgPQsMJ9TAo8h/Upe9gExWf82oTPiHwHGY7Y1BP00tBwwKpi90wL9UImA6b+asPl
+         OLqKMQ/E0MOSpjB4BepWf3PfEWvi5CDGCf+I1I0B2tQXXv1WQzxiLJVaDUIppXQgAOuf
+         IRpApssTfRZnpzpyx2RoN3BPFzzlWuJPIK/avTttvEKIBfH61YNQG9U36so4IN4QT9AI
+         SBHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXc1WcV3HY7xsDUOLhmlH/wPs6spVbakcrL/feNjwVfgIvNbKMzLq1c+qMoNJwVJMnAm7sfCtvm8uykEGy2jmmreFGAEFlET8yMV62I8IkIzBHE33Iuqfer83gZDok0yHMFOoyH
+X-Gm-Message-State: AOJu0Yz+yaLdMuwtR1u2d8I60UBpydslbG7qpsv9ewUEAEJdop4xAD8Y
+	dwVfhDre3RZYhDJrQk0o9+4psYp9D3WobmGQSTy/QibbWP/uc3Yl
+X-Google-Smtp-Source: AGHT+IFIfNH/jI/8f8S2VlfYkOiJqN4G3ytrJqJwIdUzj+9PDvyLGom2q7RrxrIQgQhrSUMx0Cxo7g==
+X-Received: by 2002:a05:6a00:39a0:b0:6ea:8e89:7faf with SMTP id fi32-20020a056a0039a000b006ea8e897fafmr1333246pfb.28.1714085181881;
+        Thu, 25 Apr 2024 15:46:21 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id p10-20020a056a000b4a00b006e5597994c8sm13703797pfo.5.2024.04.25.15.46.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Apr 2024 15:46:21 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <aceda6e2-cefb-4146-aef8-ff4bafa56e56@roeck-us.net>
+Date: Thu, 25 Apr 2024 15:46:18 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/476] 5.15.149-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ allen.lkml@gmail.com, dianders@google.com, briannorris@google.com,
+ momohatt@google.com, Herbert Xu <herbert@gondor.apana.org.au>
+References: <20240221130007.738356493@linuxfoundation.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The UMAC_CMD register is written from different execution
-contexts and has insufficient synchronization protections to
-prevent possible corruption. Of particular concern are the
-acceses from the phy_device delayed work context used by the
-adjust_link call and the BH context that may be used by the
-ndo_set_rx_mode call.
+Hi,
 
-A spinlock is added to the driver to protect contended register
-accesses (i.e. reg_lock) and it is used to synchronize accesses
-to UMAC_CMD.
+On 2/21/24 05:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.149 release.
+> There are 476 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 23 Feb 2024 12:59:02 +0000.
+> Anything received after that time might be too late.
+> 
+[ ... ]
 
-Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doug Berger <opendmb@gmail.com>
----
- drivers/net/ethernet/broadcom/genet/bcmgenet.c     | 12 +++++++++++-
- drivers/net/ethernet/broadcom/genet/bcmgenet.h     |  4 +++-
- drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c |  8 +++++++-
- drivers/net/ethernet/broadcom/genet/bcmmii.c       |  2 ++
- 4 files changed, 23 insertions(+), 3 deletions(-)
+> Herbert Xu <herbert@gondor.apana.org.au>
+>      crypto: api - Disallow identical driver names
+> 
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 5452b7dc6e6a..c7e7dac057a3 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2467,14 +2467,18 @@ static void umac_enable_set(struct bcmgenet_priv *priv, u32 mask, bool enable)
- {
- 	u32 reg;
- 
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
--	if (reg & CMD_SW_RESET)
-+	if (reg & CMD_SW_RESET) {
-+		spin_unlock_bh(&priv->reg_lock);
- 		return;
-+	}
- 	if (enable)
- 		reg |= mask;
- 	else
- 		reg &= ~mask;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- 
- 	/* UniMAC stops on a packet boundary, wait for a full-size packet
- 	 * to be processed
-@@ -2490,8 +2494,10 @@ static void reset_umac(struct bcmgenet_priv *priv)
- 	udelay(10);
- 
- 	/* issue soft reset and disable MAC while updating its registers */
-+	spin_lock_bh(&priv->reg_lock);
- 	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
- 	udelay(2);
-+	spin_unlock_bh(&priv->reg_lock);
- }
- 
- static void bcmgenet_intr_disable(struct bcmgenet_priv *priv)
-@@ -3597,16 +3603,19 @@ static void bcmgenet_set_rx_mode(struct net_device *dev)
- 	 * 3. The number of filters needed exceeds the number filters
- 	 *    supported by the hardware.
- 	*/
-+	spin_lock(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	if ((dev->flags & (IFF_PROMISC | IFF_ALLMULTI)) ||
- 	    (nfilter > MAX_MDF_FILTER)) {
- 		reg |= CMD_PROMISC;
- 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+		spin_unlock(&priv->reg_lock);
- 		bcmgenet_umac_writel(priv, 0, UMAC_MDF_CTRL);
- 		return;
- 	} else {
- 		reg &= ~CMD_PROMISC;
- 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+		spin_unlock(&priv->reg_lock);
- 	}
- 
- 	/* update MDF filter */
-@@ -4005,6 +4014,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 		goto err;
- 	}
- 
-+	spin_lock_init(&priv->reg_lock);
- 	spin_lock_init(&priv->lock);
- 
- 	/* Set default pause parameters */
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 7523b60b3c1c..43b923c48b14 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * Copyright (c) 2014-2020 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
- 
- #ifndef __BCMGENET_H__
-@@ -573,6 +573,8 @@ struct bcmgenet_rxnfc_rule {
- /* device context */
- struct bcmgenet_priv {
- 	void __iomem *base;
-+	/* reg_lock: lock to serialize access to shared registers */
-+	spinlock_t reg_lock;
- 	enum bcmgenet_version version;
- 	struct net_device *dev;
- 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-index 7a41cad5788f..1248792d7fd4 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-@@ -2,7 +2,7 @@
- /*
-  * Broadcom GENET (Gigabit Ethernet) Wake-on-LAN support
-  *
-- * Copyright (c) 2014-2020 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
- 
- #define pr_fmt(fmt)				"bcmgenet_wol: " fmt
-@@ -151,6 +151,7 @@ int bcmgenet_wol_power_down_cfg(struct bcmgenet_priv *priv,
- 	}
- 
- 	/* Can't suspend with WoL if MAC is still in reset */
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	if (reg & CMD_SW_RESET)
- 		reg &= ~CMD_SW_RESET;
-@@ -158,6 +159,7 @@ int bcmgenet_wol_power_down_cfg(struct bcmgenet_priv *priv,
- 	/* disable RX */
- 	reg &= ~CMD_RX_EN;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- 	mdelay(10);
- 
- 	if (priv->wolopts & (WAKE_MAGIC | WAKE_MAGICSECURE)) {
-@@ -203,6 +205,7 @@ int bcmgenet_wol_power_down_cfg(struct bcmgenet_priv *priv,
- 	}
- 
- 	/* Enable CRC forward */
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	priv->crc_fwd_en = 1;
- 	reg |= CMD_CRC_FWD;
-@@ -210,6 +213,7 @@ int bcmgenet_wol_power_down_cfg(struct bcmgenet_priv *priv,
- 	/* Receiver must be enabled for WOL MP detection */
- 	reg |= CMD_RX_EN;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- 
- 	reg = UMAC_IRQ_MPD_R;
- 	if (hfb_enable)
-@@ -256,7 +260,9 @@ void bcmgenet_wol_power_up_cfg(struct bcmgenet_priv *priv,
- 	}
- 
- 	/* Disable CRC Forward */
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	reg &= ~CMD_CRC_FWD;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- }
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-index 86a4aa72b3d4..c4a3698cef66 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -76,6 +76,7 @@ static void bcmgenet_mac_config(struct net_device *dev)
- 	reg |= RGMII_LINK;
- 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
- 
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
- 		       CMD_HD_EN |
-@@ -88,6 +89,7 @@ static void bcmgenet_mac_config(struct net_device *dev)
- 		reg |= CMD_TX_EN | CMD_RX_EN;
- 	}
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- 
- 	active = phy_init_eee(phydev, 0) >= 0;
- 	bcmgenet_eee_enable_set(dev,
--- 
-2.34.1
+This patch results in a severe performance regression on arm64 systems;
+there is more than 50% throughput loss on some sequential read tests.
+The problem affects v5.15.y and older kernel branches.
+
+Analysis shows that v5.15.y and older kernel _do_ try to register the same
+crypto algorithm twice, once through
+
+  __crypto_register_alg
+  crypto_register_alg
+  crypto_register_skciphers
+  aes_init
+
+and then again through
+
+  __crypto_register_alg
+  crypto_register_alg
+  crypto_register_skcipher
+  simd_skcipher_create_compat
+  aes_init
+
+After above patch was applied, the second registration fails, resulting
+in the regression.
+
+The problem is not seen in later kernels due to commit 676e508122d9
+("crypto: arm64/aes-ce - stop using SIMD helper for skciphers"). Applying this
+commit or reverting above commit fixes the regression in v5.15.y and older.
+
+Thanks is due to Momoko Hattori for reporting the problem and finding the
+offending patch, Doug Anderson for finding the duplicate registration attempt,
+and Brian Norris for finding the fix. I copied them on this e-mail in case
+there are further questions.
+
+Thanks,
+Guenter
 
 
