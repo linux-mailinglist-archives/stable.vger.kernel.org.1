@@ -1,140 +1,200 @@
-Return-Path: <stable+bounces-41409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2D48B1C4B
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 09:56:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF7F8B1CF2
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 10:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9484E1C20A39
-	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 07:56:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF89BB21A93
+	for <lists+stable@lfdr.de>; Thu, 25 Apr 2024 08:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB54C6E60F;
-	Thu, 25 Apr 2024 07:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA717FBC6;
+	Thu, 25 Apr 2024 08:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pctJuYQ8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o6V3kCL/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731E067A1A;
-	Thu, 25 Apr 2024 07:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F097E59F;
+	Thu, 25 Apr 2024 08:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714031763; cv=none; b=PGckPVOi1WSQy2bwE/StrM+XHWjh2g2xwNOR9BRhFrRWFp/dUtNRbMXyFHi/7bXImH8NRg6Gzqzm/HKW8IfDrQluJJR8Yj5167CVXbK/BtTNZW7VLQVkO3Nke5qAB5Su2Q5OZVK8X6zICxjwSsbYvjTwdkwfqOHzb1ZBFa6qb1U=
+	t=1714034423; cv=none; b=b8XkpnkLxTx2LoXaamPH63TabhCcexcV34jlvaAYsVqoY1p4IrALmLgRrrq8NNm6bZK+3q0eRhxOsVUjMIqeU6b6Aa9KYbTsTXV6zSBZOM5L2jsJ4ngRnQ9zfstAj99S/rEerr4xvbB0sccDc0dJXFYnyTlNmcoZtBifjwt8tXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714031763; c=relaxed/simple;
-	bh=FbilVvwlenLgeiFq6bKzJ8zy6ljmHZoUoBSejCx9WMg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P/uaanyTB/YKlv28BmSyZg1sFN8dNeJFKVCwVwLA+Khe7pBR1nPDKvhXB/oNeQGE2KJ1jBBviJpNOohQWuTFW9JodhOT2qB91h7FLngYsf7mO/eE8L0kEfxZMTrwqMj8XRRTkHQAUxI639h8UerNvX2mhFPFbc0my2a/bgSAAbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pctJuYQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520FCC113CC;
-	Thu, 25 Apr 2024 07:56:02 +0000 (UTC)
+	s=arc-20240116; t=1714034423; c=relaxed/simple;
+	bh=RMDuqvFO7/7Q9NiAuMf/yHRmFRq++Fy+RMe2Sg9URLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LhogI60msJC0LexrlJwtVzIy0XPfl8m+4T7U2nPjcPEjy6Q+29DGNEY1qYugrebR7FqAFj4Ar8eHzQMhR7cAmKItMQY7lOXK8bQv8NHm+qAyh1/uegFRew/090eamoBmR69FYmgUZNjisAqvyoB7O/KPPlWh13oZL3NQj5TQRZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o6V3kCL/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513E8C113CC;
+	Thu, 25 Apr 2024 08:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714031762;
-	bh=FbilVvwlenLgeiFq6bKzJ8zy6ljmHZoUoBSejCx9WMg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pctJuYQ8pjN/iOl9OiJoGq/5tMceS3K58mDHUL2521Sko39SPcBrT4oTNNROs3NGa
-	 28KY82pxVQGtSoZgMpUuddTdjpjEhSGktT3uegc//Nuaq84yTOw5OtBiYEmgUk++D6
-	 O3zI09xrPaSrmk6sw2+nRxQ0xzej4ZXkd47/xCLrGHsKuwrCiRRY+E2euNPWr9N1ck
-	 ESUoA6t8nBQFGy756uMBALGFDBuWlkmbYd0Bbxq7RCV79kSBo177kaphMdWFGFCPhb
-	 RXaDDivf5E8e3EyDNOkbc4LsW/haQitICqSgP4i6/Ey9c2xMJgVhtJ8lrSPqdwJR6C
-	 Qv4WPlPzVzgcw==
+	s=k20201202; t=1714034422;
+	bh=RMDuqvFO7/7Q9NiAuMf/yHRmFRq++Fy+RMe2Sg9URLU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o6V3kCL/PuQPWmBEYYidX6qJmFsaPflYw4eDVCtdeywnIqBBtF/m9aqMrJ2r5acS9
+	 gh19cAiQSkmPQ9PbmFpmnad+DwkRwYupx1WCfKY47xi8Pe8xg19zJqW2PLxYtnveAD
+	 6NwLkW4DWta3PWXUWLMJzmQU1/t3thxv2Vr0Ty3MX+NQ8Nt6DEVTRRLMGoEmnu+R+N
+	 mCsXk/TrmFHmanUUNkS1Kinm7XcTqfPVsqo+LSAuu76ws/b1geeR2GrT18XEXWj2mj
+	 YZAMSEbFflMqN65atM1fLOQmWu1sD1L0hmj4E2bx1uAIjRHBmofpbPPM+2qf4V02A+
+	 G9oWGYSsyqmRQ==
 Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rztxZ-000000006Lk-32dS;
-	Thu, 25 Apr 2024 09:56:01 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	(envelope-from <johan@kernel.org>)
+	id 1rzueS-0000000070M-2S2B;
+	Thu, 25 Apr 2024 10:40:21 +0200
+Date: Thu, 25 Apr 2024 10:40:20 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
 	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Doug Anderson <dianders@chromium.org>,
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Subject: [PATCH] Bluetooth: qca: fix wcn3991 device address check
-Date: Thu, 25 Apr 2024 09:55:03 +0200
-Message-ID: <20240425075503.24357-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.2
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Matthias Kaehlcke <mka@chromium.org>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Stephen Boyd <swboyd@chromium.org>
+Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
+Message-ID: <ZioW9IDT7B4sas4l@hovoldconsulting.com>
+References: <20240416091509.19995-1-johan+linaro@kernel.org>
+ <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
+ <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
+ <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
 
-Qualcomm Bluetooth controllers may not have been provisioned with a
-valid device address and instead end up using the default address
-00:00:00:00:5a:ad.
+On Tue, Apr 23, 2024 at 08:09:55AM -0700, Doug Anderson wrote:
+> On Tue, Apr 23, 2024 at 2:08 AM Johan Hovold <johan@kernel.org> wrote:
+> > On Mon, Apr 22, 2024 at 10:50:33AM -0700, Doug Anderson wrote:
+> > > On Tue, Apr 16, 2024 at 2:17 AM Johan Hovold <johan+linaro@kernel.org> wrote:
+> >
+> > > > As Chromium is the only known user of the 'local-bd-address' property,
+> > > > could you please confirm that your controllers use the 00:00:00:00:5a:ad
+> > > > address by default so that the quirk continues to be set as intended?
+> > >
+> > > I was at EOSS last week so didn't get a chance to test this, but I
+> > > just tested it now and I can confirm that it breaks trogdor. It
+> > > appears that trogdor devices seem to have a variant of your "default"
+> > > address. Instead of:
+> > >
+> > > 00:00:00:00:5a:ad
+> > >
+> > > We seem to have a default of this:
+> > >
+> > > 39:98:00:00:5a:ad
+> > >
+> > > ...so almost the same, but not enough the same to make it work with
+> > > your code. I checked 3 different trogdor boards and they were all the
+> > > same, though I can't 100% commit to saying that every trogdor device
+> > > out there has that same default address...
+> > >
+> > > Given that this breaks devices and also that it's already landed and
+> > > tagged for stable, what's the plan here? Do we revert? Do we add the
+> > > second address in and hope that there aren't trogdor devices out in
+> > > the wild that somehow have a different default?
+> >
+> > This patch is currently queued for 6.10 so there should be time to get
+> > this sorted.
+> >
+> > My fallback plan was to add further (device-specific) default addresses
+> > in case this turned out to be needed (e.g. this is what the Broadcom
+> > driver does).
 
-This address is now used to determine if a controller has a valid
-address or if one needs to be provided through devicetree or by user
-space before the controller can be used.
+The offending commit was just sent on to the networking tree for 6.9 so
+I went ahead and added the Trogdor default address to the address check
+for now:
 
-It turns out that the WCN3991 controllers used in Chromium Trogdor
-machines use a different default address, 39:98:00:00:5a:ad, which also
-needs to be marked as invalid so that the correct address is fetched
-from the devicetree.
+	https://lore.kernel.org/r/20240425075503.24357-1-johan+linaro@kernel.org/
 
-Qualcomm has unfortunately not yet provided any answers as to whether
-the 39:98 encodes a hardware id and if there are other variants of the
-default address that needs to be handled by the driver.
+We can always amend this later if it turns out to be needed.
 
-For now, add the Trogdor WCN3991 default address to the device address
-check to avoid having these controllers start with the default address
-instead of their assigned addresses.
+> > I assume all Trogdor boards use the same controller, WCN3991 IIUC, but
+> > if you're worried about there being devices out there using a different
+> > address we could possibly also use the new
+> > "qcom,local-bd-address-broken" DT property as an indicator to set the
+> > bdaddr quirk.
+> 
+> They all should use the same controller, but I'm just worried because
+> I don't personally know anything about how this address gets
+> programmed nor if there is any guarantee from Qualcomm that it'll be
+> consistent. There are a whole pile of boards in the field, so unless
+> we have some certainty that they all have the same address it feels
+> risky.
 
-Fixes: 00567f70051a ("Bluetooth: qca: fix invalid device address check")
-Cc: stable@vger.kernel.org      # 6.5
-Cc: Doug Anderson <dianders@chromium.org>
-Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/bluetooth/btqca.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Hopefully Janaki and Qualcomm will provide some answers soon.
 
+And otherwise we have another fall back in that we can use the
+"qcom,local-bd-address-broken" property for Trogdor.
 
-Luiz and Doug,
+> > We have Qualcomm on CC here so perhaps Janaki, who should have access to
+> > the documentation, can tell us what the default address on these older
+> > controllers looks like?
+> >
+> > Janaki, are there further default addresses out there that we need to
+> > consider?
+> >
+> > Perhaps "39:98" can even be inferred from the hardware id somehow (cf.
+> > bcm4377_is_valid_bdaddr())?
+> >
+> > Doug, could you please also post the QCA version info for Trogdor that's
+> > printed on boot?
+> 
+> You want this:
+> 
+> [    9.610575] ath10k_snoc 18800000.wifi: qmi chip_id 0x320
+> chip_family 0x4001 board_id 0x67 soc_id 0x400c0000
+> [    9.620634] ath10k_snoc 18800000.wifi: qmi fw_version 0x322102f2
+> fw_build_timestamp 2021-08-02 05:27 fw_build_id
+> QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+> [   14.607163] ath10k_snoc 18800000.wifi: wcn3990 hw1.0 target
+> 0x00000008 chip_id 0x00000000 sub 0000:0000
+ 
+> ...or this...
+> 
+> [   12.899095] Bluetooth: hci0: setting up wcn399x
+> [   13.526154] Bluetooth: hci0: QCA Product ID   :0x0000000a
+> [   13.531805] Bluetooth: hci0: QCA SOC Version  :0x40010320
+> [   13.537384] Bluetooth: hci0: QCA ROM Version  :0x00000302
+> [   13.543002] Bluetooth: hci0: QCA Patch Version:0x00000de9
+> [   13.565775] Bluetooth: hci0: QCA controller version 0x03200302
 
-As the offending commit is now on its way into 6.9, let's just add the
-default address that the Trogdor machines uses to the address check.
+Thanks, the Bluetooth driver output was what I was looking for but the
+wifi output may also provide some insight.
 
-We can always amend this when/if Qualcomm provides some more details,
-or, in the worst case, when users report that they need to re-pair their
-Bluetooth gadgets if there are further variations of the default
-address.
+> Just as a random guess from looking at "8" in the logs, maybe the
+> extra 8 in 3998 is the "target" above?
+
+Yeah, possibly, but it seems we won't be able to use the version info
+without further details from Qualcomm.
+
+> ...though that also makes me think that perhaps this chip doesn't
+> actually have space for a MAC address at all. Maybe they decided to
+> re-use the space to store the hardware ID and other information on all
+> of these devices?
+
+All of these controllers apparently have storage for the hardware ids so
+I'd be surprised if they didn't have room also for the address.
+
+Looking at the backstory for this, it seems like Qualcomm intentionally
+broke the bdaddr quirk so that controllers which had been provisioned
+with a valid address would continue to work back when WCN3990 was the
+only device that set the quirk. So presumably WCN3990 and later
+controllers all have OTP storage for the address (even if I guess in
+theory it could have been done just for, say, WCN3998 which was added
+just after):
+
+  5971752de44c ("Bluetooth: hci_qca: Set HCI_QUIRK_USE_BDADDR_PROPERTY for wcn3990") (2019-02-19, matthias)
+  e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD address missing in dts") (2019-04-18, qcom)
+  523760b7ff88 ("Bluetooth: hci_qca: Added support for WCN3998") (2019-04-26, qcom)
 
 Johan
-
-
-
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 216826c31ee3..cfa71708397b 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -16,6 +16,7 @@
- #define VERSION "0.1"
- 
- #define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00, 0x00 }})
-+#define QCA_BDADDR_WCN3991 (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x98, 0x39 }})
- 
- int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
- 			 enum qca_btsoc_type soc_type)
-@@ -638,8 +639,10 @@ static int qca_check_bdaddr(struct hci_dev *hdev)
- 	}
- 
- 	bda = (struct hci_rp_read_bd_addr *)skb->data;
--	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT))
-+	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT) ||
-+	    !bacmp(&bda->bdaddr, QCA_BDADDR_WCN3991)) {
- 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-+	}
- 
- 	kfree_skb(skb);
- 
--- 
-2.43.2
-
 
