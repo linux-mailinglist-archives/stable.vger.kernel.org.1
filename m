@@ -1,150 +1,107 @@
-Return-Path: <stable+bounces-41488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FADB8B2EA2
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 04:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7638D8B2F48
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 06:03:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F9551C225DC
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 02:21:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A76EF1C21F8C
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 04:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B0F1860;
-	Fri, 26 Apr 2024 02:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F0481ACA;
+	Fri, 26 Apr 2024 04:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOy0j8cl"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qMpmaSVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978E85680;
-	Fri, 26 Apr 2024 02:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AD380C0A;
+	Fri, 26 Apr 2024 04:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714098106; cv=none; b=l8QcQa677wIXbLElqzgmXwPNcxJHcEK8O7NVjKCZP+VxmsDVyW7CKndpBnHy/OWrxwGJFArgQc/lpETMQ2oKxwcJGZ4jKxbdBv/UDeFEyvEha8Nry+iqufPuVfLy0PqL5PtNHMJs0AUy3pNod0HAAiZqNcoa4XJCCLyWs8w++Is=
+	t=1714104169; cv=none; b=Z77wrV1MxboNGDWGCQdwbQUp/0dtpiUGXvnCRCA9n01x6YC9OYb0cF9octAOz/VDU5r9cCcb84MPJiZbOILam05VaOH+zsj6vZdW6lwr01NkCHswY5Y9DAGCQfxqcbtH3LcBKvUE76IWCiDN21wDiL8PsqGKrMp1QMzVOt27240=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714098106; c=relaxed/simple;
-	bh=1iPYmbu3zcOXLikFX/Z4jFxjQgUlNIn5vII97yn0Mbo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RPQHlAQwWNA7OMExHamDhNZQxFtUnuF0lol+6hH+haulSRGh6hsEhatisHrV1hC0mWxI1Lk5y9W5V4Qd/h+rn2yrGuorsE+S8lH4R7RQ80kIrlVv5Jb8K2Ail55FFG1Eg3IURvjz7FwThn+yR+Cnb7F2UogHksG7QcXGB9imr7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOy0j8cl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D285FC2BBFC;
-	Fri, 26 Apr 2024 02:21:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714098106;
-	bh=1iPYmbu3zcOXLikFX/Z4jFxjQgUlNIn5vII97yn0Mbo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sOy0j8cldEcVfqXTdtPJ/hKcFG8IVEzggFYOEXbFInmlOKQG5jag3qAqMmp5BkYAk
-	 cH7l24b6BXAGnp7pKYc0wZHSFzlptFthKrQjppHfk1fWCitoSCtC+gmwgEZVWB1nQ+
-	 p3HfLvOBTiRaYeIkJPpESd7L8zC4QULXZ1OgMPTbgmHgpsY3LqvV/Nq5OHnhBEYE+7
-	 fr1m4vCLdF8X1GUU0IwO3cJmQr4nFHyKpYsNRP8TtHYXDfCMLhZ0XirYK7fyCBKQbQ
-	 YkOd5//n9vaCIFQd+K3YlSvul9kcs+IYALQc+BAFQTb7M44FJ8Led51xVVv49vlrWS
-	 tZw+EXmprCL3g==
-Date: Fri, 26 Apr 2024 11:21:42 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/141] 6.1.88-rc1 review
-Message-ID: <ZisPtlj5Y60uu_cr@finisterre.sirena.org.uk>
-References: <20240423213853.356988651@linuxfoundation.org>
+	s=arc-20240116; t=1714104169; c=relaxed/simple;
+	bh=w1fKV/Cp5CBgq+7gj7ncUGT4zodpDnY8YahfYwezyxs=;
+	h=Date:To:From:Subject:Message-Id; b=QJYJRBgXZUTEjE37bl1J7jztYu0JOCZkd+AD42TnQiaxBD09LwKXqjxxhJBA6MRri2UY+rEuBXJ4eVK8TKsrs5CypUfFYbs+2tV1gLfyByXi7koCs4OELUiXKIN3AHFIT2jikYAk7DSoZEw1sTmMPZ2etFTHxLUORJoFY04/KAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qMpmaSVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680F7C2BD11;
+	Fri, 26 Apr 2024 04:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1714104169;
+	bh=w1fKV/Cp5CBgq+7gj7ncUGT4zodpDnY8YahfYwezyxs=;
+	h=Date:To:From:Subject:From;
+	b=qMpmaSVtXUj1OtDa12/hYdRWWKy+yt9//OSE3LH0CJ6/dkur0vqFD0I/mExUBpNU3
+	 X7Z9N1XE6nryBcI0OmDUmHWrRQkKQSC/zLBbSmXYq56WBfgakTL1aNVIGgWjaTWlx+
+	 yUPlclRYYiYEea1wVN8rsvm5+Q5oORETJ2IQPIB8=
+Date: Thu, 25 Apr 2024 21:02:48 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,roman.gushchin@linux.dev,muchun.song@linux.dev,m.szyprowski@samsung.com,david@redhat.com,fvdl@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-cma-drop-incorrect-alignment-check-in-cma_init_reserved_mem.patch removed from -mm tree
+Message-Id: <20240426040249.680F7C2BD11@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ddMruh5/GYQN0n61"
-Content-Disposition: inline
-In-Reply-To: <20240423213853.356988651@linuxfoundation.org>
-X-Cookie: TANSTAAFL
 
 
---ddMruh5/GYQN0n61
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The quilt patch titled
+     Subject: mm/cma: drop incorrect alignment check in cma_init_reserved_mem
+has been removed from the -mm tree.  Its filename was
+     mm-cma-drop-incorrect-alignment-check-in-cma_init_reserved_mem.patch
 
-On Tue, Apr 23, 2024 at 02:37:48PM -0700, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.88 release.
-> There are 141 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-I'm seeing boot issues with NFS boots on i.MX8MP-EVK - the boot grinds
-to a halt with=20
+------------------------------------------------------
+From: Frank van der Linden <fvdl@google.com>
+Subject: mm/cma: drop incorrect alignment check in cma_init_reserved_mem
+Date: Thu, 4 Apr 2024 16:25:14 +0000
 
-[   20.360083] platform 38330000.blk-ctrl: deferred probe pending
-[   20.365958] platform 32f10000.blk-ctrl: deferred probe pending
-[   20.371821] platform 32f10108.usb: deferred probe pending
-[   20.377240] platform 382f0040.usb-phy: deferred probe pending
-[   20.383017] platform 33800000.pcie: deferred probe pending
-[   20.388531] platform 32ec0000.blk-ctrl: deferred probe pending
+cma_init_reserved_mem uses IS_ALIGNED to check if the size represented by
+one bit in the cma allocation bitmask is aligned with
+CMA_MIN_ALIGNMENT_BYTES (pageblock size).
 
-=2E..
+However, this is too strict, as this will fail if order_per_bit >
+pageblock_order, which is a valid configuration.
 
-38330000.blk-ctrl	imx8m-blk-ctrl: failed to get noc entries
-32f10000.blk-ctrl	imx8mp-blk-ctrl: failed to get noc entries
-32f10108.usb	platform: supplier 32f10000.blk-ctrl not ready
-382f0040.usb-phy	platform: supplier 32f10000.blk-ctrl not ready
-33800000.pcie	platform: supplier 32f10000.blk-ctrl not ready
-32ec0000.blk-ctrl	imx8m-blk-ctrl: failed to get noc entries
+We could check IS_ALIGNED both ways, but since both numbers are powers of
+two, no check is needed at all.
 
-in userspace.  A bisect seems to get a bit confused, it lands on
-994b8a6164e700277d0360add4 ("ARM: davinci: Drop unused includes") though
-I do note there are a bunch of PCI commits in stable:
+Link: https://lkml.kernel.org/r/20240404162515.527802-1-fvdl@google.com
+Fixes: de9e14eebf33 ("drivers: dma-contiguous: add initialization from device tree")
+Signed-off-by: Frank van der Linden <fvdl@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-# bad: [cde450ef0f2f55f2c1d63110616bc88f9af5cf38] Linux 6.1.88-rc1
-# good: [6741e066ec7633450d3186946035c1f80c4226b8] Linux 6.1.87
-git bisect start 'cde450ef0f2f55f2c1d63110616bc88f9af5cf38' '6741e066ec7633=
-450d3186946035c1f80c4226b8'
-# bad: [cde450ef0f2f55f2c1d63110616bc88f9af5cf38] Linux 6.1.88-rc1
-git bisect bad cde450ef0f2f55f2c1d63110616bc88f9af5cf38
-# bad: [a355bccd5a9eb683690638e9919179df7346cc54] ASoC: ti: Convert Pandora=
- ASoC to GPIO descriptors
-git bisect bad a355bccd5a9eb683690638e9919179df7346cc54
-# good: [a88f4bc403029938ecf02b9a7c7e399aff38999f] netfilter: nf_tables: Fi=
-x potential data-race in __nft_obj_type_get()
-git bisect good a88f4bc403029938ecf02b9a7c7e399aff38999f
-# good: [68ba80017542c03d7cfc945d11c6dcff2960a035] drm: nv04: Fix out of bo=
-unds access
-git bisect good 68ba80017542c03d7cfc945d11c6dcff2960a035
-# good: [df22a0b3b1614738c37d258546b7cc65838fa845] thunderbolt: Log functio=
-n name of the called quirk
-git bisect good df22a0b3b1614738c37d258546b7cc65838fa845
-# good: [3a11c47c99785089964286bf924ed19f3b158b26] PCI: switchtec: Use norm=
-al comment style
-git bisect good 3a11c47c99785089964286bf924ed19f3b158b26
-# bad: [994b8a6164e700277d0360add4b57d15266164e3] ARM: davinci: Drop unused=
- includes
-git bisect bad 994b8a6164e700277d0360add4b57d15266164e3
-# good: [fadeaa2b2eb578d5c326332758c7935740be954e] PCI: switchtec: Add supp=
-ort for PCIe Gen5 devices
-git bisect good fadeaa2b2eb578d5c326332758c7935740be954e
-# first bad commit: [994b8a6164e700277d0360add4b57d15266164e3] ARM: davinci=
-: Drop unused includes
+ mm/cma.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---ddMruh5/GYQN0n61
-Content-Type: application/pgp-signature; name="signature.asc"
+--- a/mm/cma.c~mm-cma-drop-incorrect-alignment-check-in-cma_init_reserved_mem
++++ a/mm/cma.c
+@@ -182,10 +182,6 @@ int __init cma_init_reserved_mem(phys_ad
+ 	if (!size || !memblock_is_region_reserved(base, size))
+ 		return -EINVAL;
+ 
+-	/* alignment should be aligned with order_per_bit */
+-	if (!IS_ALIGNED(CMA_MIN_ALIGNMENT_PAGES, 1 << order_per_bit))
+-		return -EINVAL;
+-
+ 	/* ensure minimal alignment required by mm core */
+ 	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
+ 		return -EINVAL;
+_
 
------BEGIN PGP SIGNATURE-----
+Patches currently in -mm which might be from fvdl@google.com are
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYrD7UACgkQJNaLcl1U
-h9AQQgf+Ox7cxfzLz/8+2qc223lPHVIRBuOtrv7hbGQ37q3rZNMRU0tned9z79oz
-2KG0g/OOIr3ujEiP0v3K4YVDVEk0F3cRyCkT9TP0wOcMgdh/H4GMCyx0w+iuqIoB
-rKQAWBKBNUQJkzi1R3VGuY0nFHDX1CYAOQD/lo/gtf9YVeSKlxIh+ZfvNGtuiriO
-hW017zh+NoOcyRIKQoGsFV9to3t2SuThyJznI0ewSATlO83n5CNqyqSWDqqmpCpr
-AT1oKs8Pc1aHfAB8ZsHOMGCHKftFFW8mB7mKe/CVqQhM5DmyMw5At5M/dVETJL5B
-HwI979sqKQoDAweJUzSfVU0J7WRMZA==
-=8jCI
------END PGP SIGNATURE-----
 
---ddMruh5/GYQN0n61--
 
