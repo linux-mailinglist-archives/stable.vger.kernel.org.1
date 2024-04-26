@@ -1,110 +1,186 @@
-Return-Path: <stable+bounces-41519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5958B3993
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 16:15:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 527948B39B0
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 16:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84BC71F21561
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 14:15:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BB91C2255C
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 14:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3E91487F3;
-	Fri, 26 Apr 2024 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714501487DF;
+	Fri, 26 Apr 2024 14:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHUkCn0q"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="zaDX0v68"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14D9147C71;
-	Fri, 26 Apr 2024 14:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7A242A99;
+	Fri, 26 Apr 2024 14:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714140946; cv=none; b=fqG458mK9G+3IPTxUwO24yPkZQCUwamE4wkLx+RIJH1uQ5aCOwnB2eZ/bWU48eEk04oJoD2Gtzs0tgQn6kIdmeHRtAzEQZMCnCvL+2r1I6O1+wREmJjSGahRoYNOAhq2Mhv+sm53cZ6MXMA/SnMxdtBJOtCpsBIJaDlZ8rPU4sw=
+	t=1714141254; cv=none; b=YfsbBoTNYtOVUfMaIzNtR1a8yXrWwLs8WI8bcxCUjE5BMOvByg1vJfo9VCya84xWZMQ5ASzZNdAaU4b/gOkajq5jHMSgnznlv9Dn679AGfaofeR1WjyriZGTO0QY4AMmIAzHURyxpbXwE/V5eHABYA/5A8G4n9C4wTpQJyIsCVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714140946; c=relaxed/simple;
-	bh=vHwphVY9R9gHlIczykudcfQXMFvgMLjNLlypjlDkYr8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o2505pwVWq5lbnpvYy8ohZcEfwzL7mpAaOwSsXO+O+COSFERN9ofM4vLOiV0q5/YXhthHbshKahaPS+JXp146GdPH4tTb5ZcSjinxCOH5dlCdok6wkcggeRSRYXeoqzyphZkxeVlyT1hWqVjsslKctpfNpsHFLNZZXrchnISh2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHUkCn0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205F0C113CD;
-	Fri, 26 Apr 2024 14:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714140946;
-	bh=vHwphVY9R9gHlIczykudcfQXMFvgMLjNLlypjlDkYr8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UHUkCn0qyWJvHy+b7VEzxtGK24ZAHQXSQVCdjJjHLa49do+gq25/eEm8lIEU1RftA
-	 nAOFlO31R0WT84k40Y+h6vFRtpAgLPLOv63f5jFWsGVghsSez5S3AI4SmnQo5cO4e/
-	 SRBbrohz8KKfxMzHGrShkMS0hd5oaltGy65qbRjVi6DwDJdQ8hEFWk5vXLUQIafPzq
-	 Zo3hIplTpEbLhrRC1LcIJ6eSwuDkWrFW+ZTXFRImHtwkIsfurYEOx0XfA+YjwrF254
-	 lNBco8R2/eIzneVbtMr1W0yEoJkf3RfWWsktcESGZo7Uk8dnyNbcMB3+b3Dk8B+LP9
-	 lN3XzObktbUuw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1s0MMd-000000000Rx-2Fzy;
-	Fri, 26 Apr 2024 16:15:47 +0200
-Date: Fri, 26 Apr 2024 16:15:47 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Cc: Doug Anderson <dianders@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Matthias Kaehlcke <mka@chromium.org>,
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Stephen Boyd <swboyd@chromium.org>,
-	quic_mohamull@quicinc.com, quic_hbandi@quicinc.com
-Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
-Message-ID: <Ziu3E5hD7L8CAn-1@hovoldconsulting.com>
-References: <20240416091509.19995-1-johan+linaro@kernel.org>
- <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
- <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
- <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
- <ZioW9IDT7B4sas4l@hovoldconsulting.com>
- <c9ea5867-2db2-4f64-a1e3-f6c2836dd45d@quicinc.com>
- <Zip9vMHa2x-uW-pf@hovoldconsulting.com>
- <bb0e1baf-7e64-463a-8638-d403c7a29317@quicinc.com>
- <c10c94c4-5239-46d3-9b41-95e3c943e969@quicinc.com>
- <Ziuh5qO94076gT2G@hovoldconsulting.com>
+	s=arc-20240116; t=1714141254; c=relaxed/simple;
+	bh=8jkgyD/xNuucw7rvhnzLJRKIcu6wFztv0aRmrlnfUZw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qJR1qmUXRwLH3xkvOXba1JNJjP8YvnCU1RH3doT0HaTNIgcv8pLAFQ9pQrnR1FXc1tzwLseHw2ghx0HfQ5hI8LyPAmk4n0YDJFnYv0RcaF6IT64Z3nAgrAh2UFL8lncmHQuqmJo2ANhBGLoIfK02X/VgqPLhRJn32FAlNIaOuWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=zaDX0v68; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=9rYvBQe6TsxDQQVkhjWduuSGKAR6ii1CCvqbJyEHClQ=;
+	t=1714141252; x=1714573252; b=zaDX0v684QVpHQf9YAydL3ucIOmg3RGAirYZQYYZ9qAmwy2
+	AmNKIO+BF97Kpwc3suVX4vfw1Frk4utWAf931N8o3FTL6xaQXXJXuj/1etLXMY8mKcUVqC+QSK2Ju
+	uY0RHVIv6lDxnP6zLfLQoKDdeb20m8oD9xyAuGnnrY7RWxkS3B8EJ0+0fDwKtiI+rdmMF/97R/Pxq
+	4ZRxCvwajFkGrHsUwxUT8vXM6iE3rxHCvXDXi4p1n4FLbOAxGtJUd6n0/B24cuT2TqgJvDKT1ScwX
+	HJRJuUtTq5Ypgseba+M5ckRtMASaVERpjaPmapu51Bp5yqGeJ7rtZojvieNb+8DA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1s0MRT-0006Bh-4R; Fri, 26 Apr 2024 16:20:47 +0200
+Message-ID: <94db60bf-c3f4-4217-a900-9c3eba29e180@leemhuis.info>
+Date: Fri, 26 Apr 2024 16:20:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when
+ VMGENID updates"
+To: Alexander Graf <graf@amazon.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Lennart Poettering <mzxreary@0pointer.de>, Babis Chalios
+ <bchalios@amazon.es>, Theodore Ts'o <tytso@mit.edu>,
+ "Cali, Marco" <xmarcalx@amazon.co.uk>, Arnd Bergmann <arnd@arndb.de>,
+ "rostedt@goodmis.org" <rostedt@goodmis.org>,
+ Christian Brauner <brauner@kernel.org>, regressions@lists.linux.dev,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, linux-kernel@vger.kernel.org
+References: <20240418114814.24601-1-Jason@zx2c4.com>
+ <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Content-Language: en-US, de-DE
+In-Reply-To: <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Ziuh5qO94076gT2G@hovoldconsulting.com>
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1714141252;18255fd5;
+X-HE-SMSGID: 1s0MRT-0006Bh-4R
 
-On Fri, Apr 26, 2024 at 02:45:26PM +0200, Johan Hovold wrote:
-> On Fri, Apr 26, 2024 at 04:12:07PM +0530, Janaki Ramaiah Thota wrote:
-> > On 4/26/2024 11:53 AM, Janaki Ramaiah Thota wrote:
-> > > On 4/25/2024 9:28 PM, Johan Hovold wrote:
-> > >>> ---------------------------------------------------------
-> > >>> |   BDA            |      Chipset                       |
-> > >>> ---------------------------------------------------------
-> > >>> | 20 00 00 10 80 39  | WCN3988 with ROM Version 0x0200    |
-> > >>> ---------------------------------------------------------
-> > >>> | 00 08 74 12 80 39  |  WCN3988 with ROM Version 0x0201    |
-> > >>> ---------------------------------------------------------
-> > >>> | 00 07 64 21 90 39  |  WCN3990                    |
-> > >>> ---------------------------------------------------------
-> > >>
-> > >> Thanks a lot for these. I see now that the default Trogdor address Doug
-> > >> reported (39:98:00:00:5a:ad) appears to comes from the fw too:
-> > >>
-> > >>     $ od -x crnv32.bin | grep 5aad
-> > >>
-> > >>     0000020 0000 0000 5aad 0000 3998 0008 0008 0000
+On 22.04.24 09:51, Alexander Graf wrote:
+> [Adding CC list of original patch plus regression tracker]
+> 
+> On 18.04.24 13:48, Jason A. Donenfeld wrote:
+>> This reverts commit ad6bcdad2b6724e113f191a12f859a9e8456b26d. I had
+>> nak'd it, and Greg said on the thread that it links that he wasn't going
+>> to take it either, especially since it's not his code or his tree, but
+>> then, seemingly accidentally, it got pushed up some months later, in
+>> what looks like a mistake, with no further discussion in the linked
+>> thread. So revert it, since it's clearly not intended.
+> 
+> Reverting this patch creates a user space visible regression compared to
+> v6.8.
 
-I took a closer look at the configuration file format and it seems we
-can just fetch the default address from the file. The driver is already
-parsing it so this should be straight forward.
+A theoretical one? Sure! But did any machines actually used in
+production break? From my understanding of Linus approach to the "no
+regression" rule this is what matters most here.
 
-I'll cook up a patch.
+And even if that was the case: It afaics also matters that the commit
+was just in proper releases for a short time frame. Linus thus might
+consider the whole situation along the lines of "we really did screw up
+here and to fix it we are bending the 'no regressions' rule slightly;
+sorry". Things like that iirc have happened in the past, but I might
+misremember here.
 
-Johan
+Linus, if I got you wrong there, please speak up. But right now I'm
+inclined to not handle this as a regression and drop it from the tracking.
+
+Ciao, Thorsten
+
+> Please treat it as such.
+>
+> I'm slightly confused to see you passionate about this patch after you
+> ghosted the conversation you referenced:
+> 
+> 
+> https://lore.kernel.org/lkml/00d6172f-e291-4e96-9d3e-63ee8e60d556@amazon.com/
+> 
+> The purpose of this uevent is to notify systemd[1][2] (or similar) that
+> a VM clone event happened, so it can for example regenerate MAC
+> addresses if it generated them on boot, regenerate its unique machine id
+> or simply force rerequest a new DHCP lease.
+> 
+> I don't understand how there's any correlation or dependency to
+> vgetrandom() or anything RNG in this and why getting vgetrandom() merged
+> upstream is even something to talk about in the same line as this patch
+> [3].
+> 
+> We had a lengthy, constructive conversation with Ted at LPC last year
+> about the "PRNG and clone" use case and concluded that it's best for
+> everyone to simply assume the system could be cloned at any point, hence
+> always force intermix of RDRAND or comparable to any PRNG output. We
+> since no longer need an event for that case.
+> 
+> 
+> Alex
+> 
+> [1] https://github.com/systemd/systemd/issues/26380
+> [2] https://lore.kernel.org/lkml/ZJGNREN4tLzQXOJr@gardel-login/
+> [3]
+> https://lore.kernel.org/lkml/CAHmME9pxc-nO_xa=4+1CnvbnuefbRTJHxM7n817c_TPeoxzu_g@mail.gmail.com/
+> 
+> #regzbot introduced: 3aadf100f93d8081
+> 
+>>
+>> Fixes: ad6bcdad2b67 ("vmgenid: emit uevent when VMGENID updates")
+>> Cc: stable@vger.kernel.org
+>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Link: https://lore.kernel.org/r/20230531095119.11202-2-bchalios@amazon.es
+>> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+>> ---
+>>   drivers/virt/vmgenid.c | 2 --
+>>   1 file changed, 2 deletions(-)
+>>
+>> diff --git a/drivers/virt/vmgenid.c b/drivers/virt/vmgenid.c
+>> index b67a28da4702..a1c467a0e9f7 100644
+>> --- a/drivers/virt/vmgenid.c
+>> +++ b/drivers/virt/vmgenid.c
+>> @@ -68,7 +68,6 @@ static int vmgenid_add(struct acpi_device *device)
+>>   static void vmgenid_notify(struct acpi_device *device, u32 event)
+>>   {
+>>       struct vmgenid_state *state = acpi_driver_data(device);
+>> -    char *envp[] = { "NEW_VMGENID=1", NULL };
+>>       u8 old_id[VMGENID_SIZE];
+>>         memcpy(old_id, state->this_id, sizeof(old_id));
+>> @@ -76,7 +75,6 @@ static void vmgenid_notify(struct acpi_device
+>> *device, u32 event)
+>>       if (!memcmp(old_id, state->this_id, sizeof(old_id)))
+>>           return;
+>>       add_vmfork_randomness(state->this_id, sizeof(state->this_id));
+>> -    kobject_uevent_env(&device->dev.kobj, KOBJ_CHANGE, envp);
+>>   }
+>>     static const struct acpi_device_id vmgenid_ids[] = {
+> 
+> 
+> 
+> 
+> Amazon Development Center Germany GmbH
+> Krausenstr. 38
+> 10117 Berlin
+> Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+> Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+> Sitz: Berlin
+> Ust-ID: DE 289 237 879
+> 
+> 
 
