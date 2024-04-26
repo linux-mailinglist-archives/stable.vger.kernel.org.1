@@ -1,127 +1,136 @@
-Return-Path: <stable+bounces-41534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DA98B3FB5
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 20:52:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0958B4038
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 21:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1E2CB23A5D
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 18:52:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C184B21719
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 19:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A009D7470;
-	Fri, 26 Apr 2024 18:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972B619BDC;
+	Fri, 26 Apr 2024 19:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Tu8DbgiX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTHJ5x2O"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B39AB657;
-	Fri, 26 Apr 2024 18:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077C1171A5;
+	Fri, 26 Apr 2024 19:43:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714157537; cv=none; b=fou35finx42G7zXt1j8zlg5yDDRV2Re+O10AmQzL7acy/h/X+qevIO1eLeXMjDjAMeH6SwPdU5E9uj3xoxKJn3gDrrUwHMHBkyyxzM3myIEGWcOc6ju2LzYs/4D9YGsI6yiXGWWzVxWpayasXh2zfq9xHV5/DCcqTEf4vR0pzyM=
+	t=1714160601; cv=none; b=Bcn1TToavMtw7SpzPwtz+NbrtCnzI+eNWS5Ty/MqyitrZyfL/5R0c7Cnzq0RbaNBBfIx/iAkCWtrnFfvEqVGQBQfWqau8d4dFQGlxOWtzHxFTvXvfaDmffHoWpTSlJA++HLEoHI/xbabvYWkICiDBiqNP7P67ATXaR+acWqCoKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714157537; c=relaxed/simple;
-	bh=vDw4KaQtTb6UzLo/WW5goxFjbqkEyLTriCieESp7lUk=;
-	h=Date:To:From:Subject:Message-Id; b=B9S6D7PWewKCexKbDcff4DaVOcsG4pZ0BwD15ge1yEX7r/5Z7LGAIfLZRRDlXCa8FFaLEbB+VWMzJrEd6GV15y5BDMCWmZuZ7ZJ3EpAdopX/42duGHgTXLs7lkfb39itOpZlvzeqo/KzfMDDSrM+yD3EZ1nJHtTh8sI9ii7SN64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Tu8DbgiX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE84C113CD;
-	Fri, 26 Apr 2024 18:52:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1714157537;
-	bh=vDw4KaQtTb6UzLo/WW5goxFjbqkEyLTriCieESp7lUk=;
-	h=Date:To:From:Subject:From;
-	b=Tu8DbgiX72vKvfCGSh02uq2L5UWgDsym7wLOcXm7/58PY3GwRZ0IIswaGOEzmgERI
-	 g7zC7NqdDtZALiTOoKwMo0QSDzLsL2yiJnPShlL7KX+RDCc/6Ps5AhOpvSg0626A4y
-	 5UDal8jgEnurvzBHWJdgSjcMxLf2BOLbOyrWcgV8=
-Date: Fri, 26 Apr 2024 11:52:16 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ojeda@kernel.org,elver@google.com,dvyukov@google.com,glider@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kmsan-compiler_types-declare-__no_sanitize_or_inline.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240426185217.2BE84C113CD@smtp.kernel.org>
+	s=arc-20240116; t=1714160601; c=relaxed/simple;
+	bh=v3VjEtNySaGx4z/ww+NWdgMzt23br0WBt9LqihrhESs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ch40jcedErXtQuxEAR+iJHoBRL2nJRTEeTRpicMTtha3eLbpnBX2psDNmkVzk5HwZeM55hYaAoiDzVfoCx6B82kcau/j/JTHXMZzAw9SeBot8P0bD93a6ZOMXWFT4EXKxVSWjfgCFG15EXGSz3sDUmp0IPrkSjHSQVIRtU22kEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTHJ5x2O; arc=none smtp.client-ip=209.85.167.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3c7513a991cso1670904b6e.1;
+        Fri, 26 Apr 2024 12:43:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714160599; x=1714765399; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ez5dwbz8JSjneNoXon0fw7sPpOdQl15Vv9BQ7RclgZY=;
+        b=BTHJ5x2O1EsLSmD5D3vODATU7hgzOqZzkrpsu9Kk3f+g90Lp6wwAS53jDRE1hrohwf
+         UVKWsO6YV3E3CEY9YJ1nFHYcMg/+bzJXzpVg040Tr1aJjXmdJ0tVbr/3VfW3vjZgpV+Y
+         QSLKsgpWF41lTRmpPzKjvHNdwKbgXZCNfDDpSFAtTvT+5xCgfPuDiDm84gBN4Szsyh3N
+         R+diXQnxdmfKcGHoLhKZ5JKhMcsmTnBAOVY279Su8t4dk4RobtrZ71LC8gcpPrSa+z1j
+         EyJwbSuz4sftO+ZHeZB1RMtq87p/TpZh+FpKDecPHSa5F/nPfCmmkVy+mXrWL1eUjZUE
+         antQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714160599; x=1714765399;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ez5dwbz8JSjneNoXon0fw7sPpOdQl15Vv9BQ7RclgZY=;
+        b=DfS0zSLY0ybQuL5q4APzafwrZoih1iGusYG40qJ97D87BqvrEOezdA/oBmYeZYaDIQ
+         oMYEkf1fgxCq2kG7PojhSXHEbLpjznqe8Q8C0Uqn4mWCE4xMX0NVp2ZpTxbubi9TrqC9
+         MRApw4KzMoVKELpJ4GP9meB8gp2Kb0xlBJD3wrMRq7z2PdPd1o6DqESMvkKBt7iJCN6k
+         9i2JYeJC7o69jcZAi+e6Cts2/7P158UUyRjaNqJgGx/08VSspmOagffyHESRwxHY5ORa
+         DvtuWL/wM2IA49PyHL8h9scFj/zs9BySBKfPe8ekwxCkZqGzMIqM3ibXsluwHRTDBmh9
+         iaeA==
+X-Forwarded-Encrypted: i=1; AJvYcCW17rMPQF3fcKFtz/bN8tkTYZBvp2vtmuPkh56/aR7pT6UPk8ExYHKzt+9GXhHgEAUsmAEam3HhXb6wZsGHJnWL6jlefzLTGvAcMIq3x89l8yHHSkjfP8lEKwWatzP8w74mgXXrMa/pr6p9HaBiopu3FW8hNrbks+iSTXUt
+X-Gm-Message-State: AOJu0YxH0jC1gC8/e1skdceVCbz/OVb2Y/KB1/wEPn+3x6QFJ7MJVl/a
+	Am3KBgtbxuD9qpjrWi/xwAxJTkCtcsBFsGls5C7+17n5RJNJNcC1
+X-Google-Smtp-Source: AGHT+IEzsciE8ILeKhs0ArVzG7BfrvCSt2KeqxyIdeRcj7dPRlFHo4kYggL2paZOpJqzQkT1bDe1tw==
+X-Received: by 2002:a05:6808:43:b0:3c5:e66b:1f79 with SMTP id v3-20020a056808004300b003c5e66b1f79mr4200106oic.16.1714160598936;
+        Fri, 26 Apr 2024 12:43:18 -0700 (PDT)
+Received: from [10.69.55.76] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id c12-20020a05620a134c00b0078f0ee3fcfbsm8090095qkl.46.2024.04.26.12.43.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Apr 2024 12:43:18 -0700 (PDT)
+Message-ID: <50522abe-57d0-47df-9917-e0cd6848650f@gmail.com>
+Date: Fri, 26 Apr 2024 12:43:15 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 3/3] net: bcmgenet: synchronize UMAC_CMD access
+To: Florian Fainelli <florian.fainelli@broadcom.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240425222721.2148899-1-opendmb@gmail.com>
+ <20240425222721.2148899-4-opendmb@gmail.com>
+ <07b4cb83-08db-449d-9d73-88e84fa570bd@broadcom.com>
+Content-Language: en-US
+From: Doug Berger <opendmb@gmail.com>
+In-Reply-To: <07b4cb83-08db-449d-9d73-88e84fa570bd@broadcom.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+On 4/26/2024 11:19 AM, Florian Fainelli wrote:
+> On 4/25/24 15:27, Doug Berger wrote:
+>> The UMAC_CMD register is written from different execution
+>> contexts and has insufficient synchronization protections to
+>> prevent possible corruption. Of particular concern are the
+>> acceses from the phy_device delayed work context used by the
+>> adjust_link call and the BH context that may be used by the
+>> ndo_set_rx_mode call.
+>>
+>> A spinlock is added to the driver to protect contended register
+>> accesses (i.e. reg_lock) and it is used to synchronize accesses
+>> to UMAC_CMD.
+>>
+>> Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Doug Berger <opendmb@gmail.com>
+> 
+> Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> 
+> As a bug fix this is totally fine. I believe there could be an 
+> improvement made in 'net-next' whereby we introduce an 
+> unimac_rmw_locked() or something that essentially does:
+> 
+> void unimac_rmw_locked(struct bcmgenet_priv *priv, u32 offset, u32 
+> mask_clear, u32 mask_set)
+> {
+>      u32 reg;
+>      spin_lock_bh(&priv->reg_lock);
+>      reg = bcmgenet_umac_readl(priv, offset);
+>      reg &= ~mask_clear;
+>      reg |= mask_set;
+>      bcmgenet_umac_writel(priv, reg, offset);
+>      spin_unlock_bh(&priv->reg_lock);
+> }
+> 
+> At least a couple of callers could benefit from it. Thanks!
+The only issue I see is enforcing the 2us delay in reset_umac(). A 
+scenario where a different context might attempt to modify UMAC_CMD 
+during that window is admittedly contrived, but the approach of this 
+commit provides better protection.
 
-The patch titled
-     Subject: kmsan: compiler_types: declare __no_sanitize_or_inline
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kmsan-compiler_types-declare-__no_sanitize_or_inline.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kmsan-compiler_types-declare-__no_sanitize_or_inline.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Alexander Potapenko <glider@google.com>
-Subject: kmsan: compiler_types: declare __no_sanitize_or_inline
-Date: Fri, 26 Apr 2024 11:16:22 +0200
-
-It turned out that KMSAN instruments READ_ONCE_NOCHECK(), resulting in
-false positive reports, because __no_sanitize_or_inline enforced inlining.
-
-Properly declare __no_sanitize_or_inline under __SANITIZE_MEMORY__, so
-that it does not __always_inline the annotated function.
-
-Link: https://lkml.kernel.org/r/20240426091622.3846771-1-glider@google.com
-Fixes: 5de0ce85f5a4 ("kmsan: mark noinstr as __no_sanitize_memory")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Reported-by: syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com
-Link: https://lkml.kernel.org/r/000000000000826ac1061675b0e3@google.com
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/compiler_types.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
-
---- a/include/linux/compiler_types.h~kmsan-compiler_types-declare-__no_sanitize_or_inline
-+++ a/include/linux/compiler_types.h
-@@ -278,6 +278,17 @@ struct ftrace_likely_data {
- # define __no_kcsan
- #endif
- 
-+#ifdef __SANITIZE_MEMORY__
-+/*
-+ * Similarly to KASAN and KCSAN, KMSAN loses function attributes of inlined
-+ * functions, therefore disabling KMSAN checks also requires disabling inlining.
-+ *
-+ * __no_sanitize_or_inline effectively prevents KMSAN from reporting errors
-+ * within the function and marks all its outputs as initialized.
-+ */
-+# define __no_sanitize_or_inline __no_kmsan_checks notrace __maybe_unused
-+#endif
-+
- #ifndef __no_sanitize_or_inline
- #define __no_sanitize_or_inline __always_inline
- #endif
-_
-
-Patches currently in -mm which might be from glider@google.com are
-
-kmsan-compiler_types-declare-__no_sanitize_or_inline.patch
-
+-Doug
 
