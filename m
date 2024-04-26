@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-41535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0958B4038
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 21:43:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7598F8B404D
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 21:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C184B21719
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 19:43:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D695AB22D3C
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 19:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972B619BDC;
-	Fri, 26 Apr 2024 19:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357161CFBC;
+	Fri, 26 Apr 2024 19:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTHJ5x2O"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QMdP17QW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077C1171A5;
-	Fri, 26 Apr 2024 19:43:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F201CAA4;
+	Fri, 26 Apr 2024 19:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714160601; cv=none; b=Bcn1TToavMtw7SpzPwtz+NbrtCnzI+eNWS5Ty/MqyitrZyfL/5R0c7Cnzq0RbaNBBfIx/iAkCWtrnFfvEqVGQBQfWqau8d4dFQGlxOWtzHxFTvXvfaDmffHoWpTSlJA++HLEoHI/xbabvYWkICiDBiqNP7P67ATXaR+acWqCoKs=
+	t=1714160818; cv=none; b=pbMRx7vJVTl/OqO/SvzuYQQw4gwBbSIwj8hFQntoWcCYCis75RIpoqRV+eWtKqv3PgKVTkBv5KzrB2aPcYnP9Q5sGaqVimMT2iA1pj7N7fLecGaVWd0S9TreLMaejwpN42mMKtz5r0A6E4qbMoimcuQSqjQZxq6tIrlR/L6Goqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714160601; c=relaxed/simple;
-	bh=v3VjEtNySaGx4z/ww+NWdgMzt23br0WBt9LqihrhESs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ch40jcedErXtQuxEAR+iJHoBRL2nJRTEeTRpicMTtha3eLbpnBX2psDNmkVzk5HwZeM55hYaAoiDzVfoCx6B82kcau/j/JTHXMZzAw9SeBot8P0bD93a6ZOMXWFT4EXKxVSWjfgCFG15EXGSz3sDUmp0IPrkSjHSQVIRtU22kEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTHJ5x2O; arc=none smtp.client-ip=209.85.167.175
+	s=arc-20240116; t=1714160818; c=relaxed/simple;
+	bh=nCSonnRajlX4+T7mFxC0msM5n38BW5/60VTp4xsIYfE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=nvjA2c2tn0p/APeKgy9HSzNVmgOP4YgWeHiqF8d58TUG+jz38/eyYELp8hF52mwOcenz2Wo3gUBAeRj298PEtZkgC0WRaNLT+OQEsggwBuATOtjnseepDrkBuScd2JpGLteToStazAianWMtKWsqkpNRzrNHE0UOjqvWHRqRA9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QMdP17QW; arc=none smtp.client-ip=209.85.161.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3c7513a991cso1670904b6e.1;
-        Fri, 26 Apr 2024 12:43:19 -0700 (PDT)
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5aa362cc2ccso1619963eaf.3;
+        Fri, 26 Apr 2024 12:46:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714160599; x=1714765399; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ez5dwbz8JSjneNoXon0fw7sPpOdQl15Vv9BQ7RclgZY=;
-        b=BTHJ5x2O1EsLSmD5D3vODATU7hgzOqZzkrpsu9Kk3f+g90Lp6wwAS53jDRE1hrohwf
-         UVKWsO6YV3E3CEY9YJ1nFHYcMg/+bzJXzpVg040Tr1aJjXmdJ0tVbr/3VfW3vjZgpV+Y
-         QSLKsgpWF41lTRmpPzKjvHNdwKbgXZCNfDDpSFAtTvT+5xCgfPuDiDm84gBN4Szsyh3N
-         R+diXQnxdmfKcGHoLhKZ5JKhMcsmTnBAOVY279Su8t4dk4RobtrZ71LC8gcpPrSa+z1j
-         EyJwbSuz4sftO+ZHeZB1RMtq87p/TpZh+FpKDecPHSa5F/nPfCmmkVy+mXrWL1eUjZUE
-         antQ==
+        d=gmail.com; s=20230601; t=1714160816; x=1714765616; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NU1KOUvcmFNcmmSQaGXwe7JtZDkq7ucg19frndE6tYA=;
+        b=QMdP17QWodBD7wZAuFIXgrImUlmuCYOwDjDFh6Z1ujqf2gN/NlchkQ35U62W2vF+85
+         aMG2NJzLQmWZrdYbELjVsI/nr49BhaU6gQKa1ICwi3r/RfnAF8L980+yMH0LgfHZ5Nln
+         Irf3TJOgHLpIhYGRue3ocMS0usQ94nhM4sSYOnp/m7Mxgh2sfnGXo5Sytp/kQIJV7BUQ
+         e3j/H3oRZ8I3vZBJIP7VElcD5Ej3O0+HPHZn1rLManwZkdklW1NcuC9QO9ZF+iG5sDze
+         cukodYxy0sv3jx/olz9z9O7XxMkwcRXXzrRznYf/QNS2kuoUj52u2RFgZXR6c4jKsASB
+         iXtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714160599; x=1714765399;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1714160816; x=1714765616;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ez5dwbz8JSjneNoXon0fw7sPpOdQl15Vv9BQ7RclgZY=;
-        b=DfS0zSLY0ybQuL5q4APzafwrZoih1iGusYG40qJ97D87BqvrEOezdA/oBmYeZYaDIQ
-         oMYEkf1fgxCq2kG7PojhSXHEbLpjznqe8Q8C0Uqn4mWCE4xMX0NVp2ZpTxbubi9TrqC9
-         MRApw4KzMoVKELpJ4GP9meB8gp2Kb0xlBJD3wrMRq7z2PdPd1o6DqESMvkKBt7iJCN6k
-         9i2JYeJC7o69jcZAi+e6Cts2/7P158UUyRjaNqJgGx/08VSspmOagffyHESRwxHY5ORa
-         DvtuWL/wM2IA49PyHL8h9scFj/zs9BySBKfPe8ekwxCkZqGzMIqM3ibXsluwHRTDBmh9
-         iaeA==
-X-Forwarded-Encrypted: i=1; AJvYcCW17rMPQF3fcKFtz/bN8tkTYZBvp2vtmuPkh56/aR7pT6UPk8ExYHKzt+9GXhHgEAUsmAEam3HhXb6wZsGHJnWL6jlefzLTGvAcMIq3x89l8yHHSkjfP8lEKwWatzP8w74mgXXrMa/pr6p9HaBiopu3FW8hNrbks+iSTXUt
-X-Gm-Message-State: AOJu0YxH0jC1gC8/e1skdceVCbz/OVb2Y/KB1/wEPn+3x6QFJ7MJVl/a
-	Am3KBgtbxuD9qpjrWi/xwAxJTkCtcsBFsGls5C7+17n5RJNJNcC1
-X-Google-Smtp-Source: AGHT+IEzsciE8ILeKhs0ArVzG7BfrvCSt2KeqxyIdeRcj7dPRlFHo4kYggL2paZOpJqzQkT1bDe1tw==
-X-Received: by 2002:a05:6808:43:b0:3c5:e66b:1f79 with SMTP id v3-20020a056808004300b003c5e66b1f79mr4200106oic.16.1714160598936;
-        Fri, 26 Apr 2024 12:43:18 -0700 (PDT)
+        bh=NU1KOUvcmFNcmmSQaGXwe7JtZDkq7ucg19frndE6tYA=;
+        b=NtqfQ2iJgW3T5Qucx8FMfFyngnzvsRG1lsOZx7CvJrSasDUVWWlwvJp27dQyrrQpT6
+         6SwKcB6kRYmI+Cg3GzMel8RFlbKMdZc8iMH9VYD+BoO26tesNYtMfFriCophA1ByNI9X
+         kUFqXljRmUnvNxRqg+YcuMXWbE+OOuM9rpqkOxMWM+DN56QMd8h5wV87hZpDv/pJLgeW
+         NMOWZPN6/mVtRoJkn6EugS4z45z23S7yxSIJ12NzEPVsfVrtx7Aif3oCznXIP8eT6Nmz
+         T99kaKcPAKendb0s6dTJcHYyBG92qqRSfUsUpva0i+dzs+lSJSMjPici9zI3GE7M5AkT
+         18uA==
+X-Forwarded-Encrypted: i=1; AJvYcCXMpSlDgiD+Kg76UvQw5JfZSjah2fI6P5FEhPWimIidf8gKn/n0qpnZWb5wdkZv8LXCIKf3CuR9iFR+0mXWYf6hdZvep1ZuCo21ey7qg3+mSxD4Q6m6MKjB5k4AVNmQkG+fObn7uJ7D2ZYEBDS54krJRdk89Oyw0hBOmR90
+X-Gm-Message-State: AOJu0YwWRxTRJel6Ippp32QQrh3PcdgU8khJEjC+feUmB5xr79tBN4Af
+	nfdZlFUVsVVrLzX/CUkfC4aMPiDg18JiLjxVrWbICNo/FAEPEOqO
+X-Google-Smtp-Source: AGHT+IGBf6wXDhuL1/HqYaClGhv1cB9JoV+I1C85uD3Y0tPYrq4wIdUPMZwACHhD92F7vIm4979Xyg==
+X-Received: by 2002:a05:6358:d08b:b0:17f:89f2:5c18 with SMTP id jc11-20020a056358d08b00b0017f89f25c18mr3747152rwb.6.1714160815675;
+        Fri, 26 Apr 2024 12:46:55 -0700 (PDT)
 Received: from [10.69.55.76] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id c12-20020a05620a134c00b0078f0ee3fcfbsm8090095qkl.46.2024.04.26.12.43.17
+        by smtp.gmail.com with ESMTPSA id df25-20020a05622a0ed900b0043a5c00b59asm1437250qtb.36.2024.04.26.12.46.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Apr 2024 12:43:18 -0700 (PDT)
-Message-ID: <50522abe-57d0-47df-9917-e0cd6848650f@gmail.com>
-Date: Fri, 26 Apr 2024 12:43:15 -0700
+        Fri, 26 Apr 2024 12:46:55 -0700 (PDT)
+Message-ID: <87cc6b80-3e8e-4c24-8007-4357f7180c28@gmail.com>
+Date: Fri, 26 Apr 2024 12:46:52 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,6 +77,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH net v2 3/3] net: bcmgenet: synchronize UMAC_CMD access
+From: Doug Berger <opendmb@gmail.com>
 To: Florian Fainelli <florian.fainelli@broadcom.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
@@ -85,52 +86,15 @@ Cc: bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
 References: <20240425222721.2148899-1-opendmb@gmail.com>
  <20240425222721.2148899-4-opendmb@gmail.com>
  <07b4cb83-08db-449d-9d73-88e84fa570bd@broadcom.com>
+ <50522abe-57d0-47df-9917-e0cd6848650f@gmail.com>
 Content-Language: en-US
-From: Doug Berger <opendmb@gmail.com>
-In-Reply-To: <07b4cb83-08db-449d-9d73-88e84fa570bd@broadcom.com>
+In-Reply-To: <50522abe-57d0-47df-9917-e0cd6848650f@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 4/26/2024 11:19 AM, Florian Fainelli wrote:
-> On 4/25/24 15:27, Doug Berger wrote:
->> The UMAC_CMD register is written from different execution
->> contexts and has insufficient synchronization protections to
->> prevent possible corruption. Of particular concern are the
->> acceses from the phy_device delayed work context used by the
->> adjust_link call and the BH context that may be used by the
->> ndo_set_rx_mode call.
->>
->> A spinlock is added to the driver to protect contended register
->> accesses (i.e. reg_lock) and it is used to synchronize accesses
->> to UMAC_CMD.
->>
->> Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Doug Berger <opendmb@gmail.com>
-> 
-> Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> 
-> As a bug fix this is totally fine. I believe there could be an 
-> improvement made in 'net-next' whereby we introduce an 
-> unimac_rmw_locked() or something that essentially does:
-> 
-> void unimac_rmw_locked(struct bcmgenet_priv *priv, u32 offset, u32 
-> mask_clear, u32 mask_set)
-> {
->      u32 reg;
->      spin_lock_bh(&priv->reg_lock);
->      reg = bcmgenet_umac_readl(priv, offset);
->      reg &= ~mask_clear;
->      reg |= mask_set;
->      bcmgenet_umac_writel(priv, reg, offset);
->      spin_unlock_bh(&priv->reg_lock);
-> }
-> 
+On 4/26/2024 12:43 PM, Doug Berger wrote:
 > At least a couple of callers could benefit from it. Thanks!
-The only issue I see is enforcing the 2us delay in reset_umac(). A 
-scenario where a different context might attempt to modify UMAC_CMD 
-during that window is admittedly contrived, but the approach of this 
-commit provides better protection.
-
+Yes, adding unimac_rmw_locked() as a helper for some cases probably does 
+make sense for net-next.
 -Doug
 
