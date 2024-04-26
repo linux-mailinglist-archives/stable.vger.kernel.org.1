@@ -1,117 +1,277 @@
-Return-Path: <stable+bounces-41522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 715108B3BA9
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 17:34:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B351A8B3BDC
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 17:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26E51C23B6E
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 15:34:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6786C281F0B
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 15:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C744A14A60A;
-	Fri, 26 Apr 2024 15:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F301DFFC;
+	Fri, 26 Apr 2024 15:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jf13icI6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SxCUrWIO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1331314901A;
-	Fri, 26 Apr 2024 15:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D8C1494A6
+	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 15:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714145617; cv=none; b=Qk3WEdA2qtdRiePqCOnHEUXHGLruymSXexhJC4ErvU5QdWHKNd1unc4+l1JrVLJeTEekVOr0Gn/HuuWxcuNKuUW3wh0639BCtxxjGnk/5V4pf/+O6ZyRl6trYvvY5k2J2wfYWR0ubeRaPoS3kFALEQoUZArUCsAyb8CRNF+5f70=
+	t=1714146132; cv=none; b=hanPheHzkVJx9sZi9Cgs5DtAWqSILX5cWU2QD+qC0a2sPuB0nM63/c6/s8ofJN72xAvDoxLA4BIU0B/6aHHnbjMdFZNLhmm5pkX31zmtRCUluTLbMCipvbfzCVeHY4lScIMYXvF/a3jjwU8SK7mz6GE8yWklQ02iyLfdVqIAFpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714145617; c=relaxed/simple;
-	bh=QFRwxMg7frEbNFDwjKYIBUVZgUsQLuyynI1skXq82W8=;
+	s=arc-20240116; t=1714146132; c=relaxed/simple;
+	bh=AVa0n+Q+W/36rHA/7OFZwLOB2e6TPwhBV7cZLD770n8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SnPeNJqY+nSDbauyNyPeGdwUIvBghsp+j1iDMvHrr8ImwOQCRHiWnq6w0AHsPOGUblzom/cl5arTUHspepHlplcD1d2Lzc5UbNJMUXnz3JehmwNRKgvzN2X0YEtmNhz/WPqXIiiw3lLq4+vjl+mhsD8h2yWfEkZd2sIDixcmxl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jf13icI6; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2def8e58471so31421591fa.0;
-        Fri, 26 Apr 2024 08:33:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714145614; x=1714750414; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BmSvZsYuxSbHXQQ8UGWfhMWdiN9uCl4v3V31oMHoCWA=;
-        b=jf13icI6SxHnOhX+aFYln5AGzn/W3XNiLsvbkEI1+A2ukE2ux11OXE5ACpiCNtGAgY
-         zPENQk8YiXjcqCFJ7xG1/Jy1ZSkdOm2KfDK9zLBDSVJPDzzHsaHsUG/SLpNpfNFBGdxy
-         qpyH50zIQusZ+YFzibR9rkipUfvpqJ4CJHVIyrOMXMozFOFiUasm4KYnZIZQB2YPbjiK
-         4jOX7u4gaWnZQ3Ks7H8YSvRPSIeCu7SqIRTqwv+TB7MHp34I1FxkQc+wU6cDnJablV/r
-         3DSS5xUogEL3LTyuQfXgi5GtXlu1nKnAh92gDJwgs25HbGVGNS/WgjuTICprjMST+ybb
-         n+qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714145614; x=1714750414;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BmSvZsYuxSbHXQQ8UGWfhMWdiN9uCl4v3V31oMHoCWA=;
-        b=YQCp140kY5XMH9eOw6p4zmQhWdwY5VKYHQDW1HAwwHPOGFdrwc95aEq+d/+2mA27W8
-         Pdr+F3lOHiQXR7unKgQVOYHY6nlAkmnUciOl2kyrDQKellU2eyan5bvZvoVEwJiE5kJA
-         wrjeKb96nxTfheC+qpa16xQfv2oKc78ByQtJum4Atf+Mg/ATNwTCnxRuHaXtypKOZ9g1
-         zw6/sriQ/AlfTBRKdt6+DVyZszDJnVYvitSsFKTTgSDDRbrWTcvgxjWxZP8DBIKCKdUh
-         aLzcpm1NySHCA116W8Yz+izsZQiAMhw6w2EFDgjvuwWuzQ8ab7wsZ0y0AdmfkPQ+z2T6
-         KDyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGEV9wxMs9dUTtMI5S30iXSU+T1Ly6ciOfLG5GhI12t1k6zKxxUSkht64kwRongMc1m387Q1m+MsDbN23gVpDAP2cEL1EkqT51waeuWOjZkQ6gbUdHzHZGk9GTYs6BFk5Ti8dkuOYIVr6YRkZQ9epg8OAwgiBZD0hE0ZCj4tweTrGtZfxT
-X-Gm-Message-State: AOJu0YzuLxgDOWoC+oHp7565J83hAx+dIxskrl0xKYJyBmvCkZsLZXkC
-	Au390F0+bdS7NWfI/AyPZBtS8IUqoA/nWC0QvuFHYHNln12WXvKa
-X-Google-Smtp-Source: AGHT+IGYO3LNHjAx3ZhjcpProOx5Njxc6bvdlaBa/MDs4MpbVRPuvd/qE2go3bO7nU7WPG3Ywv530A==
-X-Received: by 2002:a05:651c:211b:b0:2d8:d972:67e3 with SMTP id a27-20020a05651c211b00b002d8d97267e3mr2911193ljq.5.1714145613836;
-        Fri, 26 Apr 2024 08:33:33 -0700 (PDT)
-Received: from localhost (p200300e41f162000f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f16:2000:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id gc24-20020a170906c8d800b00a55ac217235sm7000671ejb.90.2024.04.26.08.33.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Apr 2024 08:33:33 -0700 (PDT)
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	devicetree@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: tegra: correct Tegra132 I2C alias
-Date: Fri, 26 Apr 2024 17:33:32 +0200
-Message-ID: <171414557704.2298486.5241450837257963145.b4-ty@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401140854.97107-1-krzk@kernel.org>
-References: <20240401140854.97107-1-krzk@kernel.org>
+	 MIME-Version; b=nSqarAAaGCBxuw+EFUBTzUf9eSavfF1F+LXNnEgPJg1HUSQ7RcJiUc3FF1e5Dgp/EavTqZef1gekpxvcmbVp2rdDO36O9VBRcNEAt7F2iIwT3v3paHnXzf/K7Kd7EA3dxy9M3Ipj5HXGwc9BHivmJ8ZzZCUkvog+1MRurCccAfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SxCUrWIO; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714146130;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J6Za5dqP1vNIWZF7RvMAdeAfhQe3W63OGnIUvf5n09o=;
+	b=SxCUrWIOlOeR2P/HLxJI1xb5GOrn+UpaqSU7kt7NqbpuWlscioE3HGkwwripwjQ/3vLAfp
+	5QCbC6Jt10IkeLrRaW5vE5pKX7F73BNACB0ZMj/SFFUT9koVbfIi5d4uJmsrlrDSE673Xy
+	Gpc9IeLELDVmb/RnH5+jtrwg4sVwuT4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-qxmgJdkaO7OcV05bAC6RyA-1; Fri, 26 Apr 2024 11:42:07 -0400
+X-MC-Unique: qxmgJdkaO7OcV05bAC6RyA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7240780021A;
+	Fri, 26 Apr 2024 15:42:06 +0000 (UTC)
+Received: from chopper.lyude.net (unknown [10.22.8.17])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 7B165EC683;
+	Fri, 26 Apr 2024 15:42:05 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: nouveau@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	Karol Herbst <kherbst@redhat.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Dave Airlie <airlied@redhat.com>,
+	Ben Skeggs <bskeggs@redhat.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 2/2] drm/nouveau/gsp: Use the sg allocator for level 2 of radix3
+Date: Fri, 26 Apr 2024 11:41:29 -0400
+Message-ID: <20240426154138.64643-2-lyude@redhat.com>
+In-Reply-To: <20240426154138.64643-1-lyude@redhat.com>
+References: <20240426154138.64643-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-From: Thierry Reding <treding@nvidia.com>
+Currently we allocate all 3 levels of radix3 page tables using
+nvkm_gsp_mem_ctor(), which uses dma_alloc_coherent() for allocating all of
+the relevant memory. This can end up failing in scenarios where the system
+has very high memory fragmentation, and we can't find enough contiguous
+memory to allocate level 2 of the page table.
 
+Currently, this can result in runtime PM issues on systems where memory
+fragmentation is high - as we'll fail to allocate the page table for our
+suspend/resume buffer:
 
-On Mon, 01 Apr 2024 16:08:54 +0200, Krzysztof Kozlowski wrote:
-> There is no such device as "as3722@40", because its name is "pmic".  Use
-> phandles for aliases to fix relying on full node path.  This corrects
-> aliases for RTC devices and also fixes dtc W=1 warning:
-> 
->   tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
-> 
-> 
-> [...]
+  kworker/10:2: page allocation failure: order:7, mode:0xcc0(GFP_KERNEL),
+  nodemask=(null),cpuset=/,mems_allowed=0
+  CPU: 10 PID: 479809 Comm: kworker/10:2 Not tainted
+  6.8.6-201.ChopperV6.fc39.x86_64 #1
+  Hardware name: SLIMBOOK Executive/Executive, BIOS N.1.10GRU06 02/02/2024
+  Workqueue: pm pm_runtime_work
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x64/0x80
+   warn_alloc+0x165/0x1e0
+   ? __alloc_pages_direct_compact+0xb3/0x2b0
+   __alloc_pages_slowpath.constprop.0+0xd7d/0xde0
+   __alloc_pages+0x32d/0x350
+   __dma_direct_alloc_pages.isra.0+0x16a/0x2b0
+   dma_direct_alloc+0x70/0x270
+   nvkm_gsp_radix3_sg+0x5e/0x130 [nouveau]
+   r535_gsp_fini+0x1d4/0x350 [nouveau]
+   nvkm_subdev_fini+0x67/0x150 [nouveau]
+   nvkm_device_fini+0x95/0x1e0 [nouveau]
+   nvkm_udevice_fini+0x53/0x70 [nouveau]
+   nvkm_object_fini+0xb9/0x240 [nouveau]
+   nvkm_object_fini+0x75/0x240 [nouveau]
+   nouveau_do_suspend+0xf5/0x280 [nouveau]
+   nouveau_pmops_runtime_suspend+0x3e/0xb0 [nouveau]
+   pci_pm_runtime_suspend+0x67/0x1e0
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   __rpm_callback+0x41/0x170
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   rpm_callback+0x5d/0x70
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   rpm_suspend+0x120/0x6a0
+   pm_runtime_work+0x98/0xb0
+   process_one_work+0x171/0x340
+   worker_thread+0x27b/0x3a0
+   ? __pfx_worker_thread+0x10/0x10
+   kthread+0xe5/0x120
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x31/0x50
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1b/0x30
 
-Applied, thanks!
+Luckily, we don't actually need to allocate coherent memory for the page
+table thanks to being able to pass the GPU a radix3 page table for
+suspend/resume data. So, let's rewrite nvkm_gsp_radix3_sg() to use the sg
+allocator for level 2. We continue using coherent allocations for lvl0 and
+1, since they only take a single page.
 
-[1/1] arm64: tegra: correct Tegra132 I2C alias
-      (no commit info)
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Cc: stable@vger.kernel.org
+---
+ .../gpu/drm/nouveau/include/nvkm/subdev/gsp.h |  4 +-
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/r535.c    | 71 ++++++++++++-------
+ 2 files changed, 47 insertions(+), 28 deletions(-)
 
-Best regards,
+diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
+index 6f5d376d8fcc1..a11d16a16c3b2 100644
+--- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
+@@ -15,7 +15,9 @@ struct nvkm_gsp_mem {
+ };
+ 
+ struct nvkm_gsp_radix3 {
+-	struct nvkm_gsp_mem mem[3];
++	struct nvkm_gsp_mem lvl0;
++	struct nvkm_gsp_mem lvl1;
++	struct sg_table lvl2;
+ };
+ 
+ int nvkm_gsp_sg(struct nvkm_device *, u64 size, struct sg_table *);
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+index 9858c1438aa7f..2bf9077d37118 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -1624,7 +1624,7 @@ r535_gsp_wpr_meta_init(struct nvkm_gsp *gsp)
+ 	meta->magic = GSP_FW_WPR_META_MAGIC;
+ 	meta->revision = GSP_FW_WPR_META_REVISION;
+ 
+-	meta->sysmemAddrOfRadix3Elf = gsp->radix3.mem[0].addr;
++	meta->sysmemAddrOfRadix3Elf = gsp->radix3.lvl0.addr;
+ 	meta->sizeOfRadix3Elf = gsp->fb.wpr2.elf.size;
+ 
+ 	meta->sysmemAddrOfBootloader = gsp->boot.fw.addr;
+@@ -1919,8 +1919,9 @@ nvkm_gsp_sg(struct nvkm_device *device, u64 size, struct sg_table *sgt)
+ static void
+ nvkm_gsp_radix3_dtor(struct nvkm_gsp *gsp, struct nvkm_gsp_radix3 *rx3)
+ {
+-	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--)
+-		nvkm_gsp_mem_dtor(gsp, &rx3->mem[i]);
++	nvkm_gsp_sg_free(gsp->subdev.device, &rx3->lvl2);
++	nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
++	nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
+ }
+ 
+ /**
+@@ -1960,36 +1961,52 @@ static int
+ nvkm_gsp_radix3_sg(struct nvkm_gsp *gsp, struct sg_table *sgt, u64 size,
+ 		   struct nvkm_gsp_radix3 *rx3)
+ {
+-	u64 addr;
++	struct sg_dma_page_iter sg_dma_iter;
++	struct scatterlist *sg;
++	size_t bufsize;
++	u64 *pte;
++	int ret, i, page_idx = 0;
+ 
+-	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--) {
+-		u64 *ptes;
+-		size_t bufsize;
+-		int ret, idx;
+-
+-		bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
+-		ret = nvkm_gsp_mem_ctor(gsp, bufsize, &rx3->mem[i]);
+-		if (ret)
+-			return ret;
++	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl0);
++	if (ret)
++		return ret;
+ 
+-		ptes = rx3->mem[i].data;
+-		if (i == 2) {
+-			struct scatterlist *sgl;
++	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl1);
++	if (ret)
++		goto lvl1_fail;
+ 
+-			for_each_sgtable_dma_sg(sgt, sgl, idx) {
+-				for (int j = 0; j < sg_dma_len(sgl) / GSP_PAGE_SIZE; j++)
+-					*ptes++ = sg_dma_address(sgl) + (GSP_PAGE_SIZE * j);
+-			}
+-		} else {
+-			for (int j = 0; j < size / GSP_PAGE_SIZE; j++)
+-				*ptes++ = addr + GSP_PAGE_SIZE * j;
++	// Allocate level 2
++	bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
++	ret = nvkm_gsp_sg(gsp->subdev.device, bufsize, &rx3->lvl2);
++	if (ret)
++		goto lvl2_fail;
++
++	// Write the bus address of level 1 to level 0
++	pte = rx3->lvl0.data;
++	*pte = rx3->lvl1.addr;
++
++	// Write the bus address of each page in level 2 to level 1
++	pte = rx3->lvl1.data;
++	for_each_sgtable_dma_page(&rx3->lvl2, &sg_dma_iter, 0)
++		*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
++
++	// Finally, write the bus address of each page in sgt to level 2
++	for_each_sgtable_sg(&rx3->lvl2, sg, i) {
++		pte = sg_virt(sg);
++		for_each_sgtable_dma_page(sgt, &sg_dma_iter, page_idx) {
++			*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
++			page_idx++;
+ 		}
++	}
+ 
+-		size = rx3->mem[i].size;
+-		addr = rx3->mem[i].addr;
++	if (ret) {
++lvl2_fail:
++		nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
++lvl1_fail:
++		nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ int
+@@ -2021,7 +2038,7 @@ r535_gsp_fini(struct nvkm_gsp *gsp, bool suspend)
+ 		sr = gsp->sr.meta.data;
+ 		sr->magic = GSP_FW_SR_META_MAGIC;
+ 		sr->revision = GSP_FW_SR_META_REVISION;
+-		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.mem[0].addr;
++		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.lvl0.addr;
+ 		sr->sizeOfSuspendResumeData = len;
+ 
+ 		mbox0 = lower_32_bits(gsp->sr.meta.addr);
 -- 
-Thierry Reding <treding@nvidia.com>
+2.44.0
+
 
