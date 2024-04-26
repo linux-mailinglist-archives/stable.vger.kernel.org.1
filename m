@@ -1,124 +1,120 @@
-Return-Path: <stable+bounces-41511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA458B368B
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 13:33:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0408B3765
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 14:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 653BAB2284C
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 11:33:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13BB11F21E02
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 12:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC909144D24;
-	Fri, 26 Apr 2024 11:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337A5146A87;
+	Fri, 26 Apr 2024 12:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="HlTQDeFQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CudDC94N"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D0F13F01A;
-	Fri, 26 Apr 2024 11:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69C33715E;
+	Fri, 26 Apr 2024 12:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714131208; cv=none; b=FW3DiN0pwDSSIU59a3zgKweUmohCytMuxVI4LlRBnwRYTm+lnnAcnK9pQuZw2yit+iOMtvA7aO5qAVsaBpqDknuvbMPHmeR2A5jHU9RwB3TFAaVCtjRXlmPFrXiPVkW2babcVw0rSbvjIgJUfJFEUASz6HIfhDivb1nVEAiBEBw=
+	t=1714135525; cv=none; b=pxGtmTy2P1pUczBbjjp9tX7qEQ+8GIF/LnzJj1SkqcjaCtvgzdUVE699OukAVQV2gqDEiUxu7sTKtjpMi0PUyItZb1yfjnqEVBDn4XvxdzhSgAl5wNhjtIuEtHYOsnqm/6vAcrHlIrSiPrZFaxrD2mqE9ffwSlzK6foT9ilh+aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714131208; c=relaxed/simple;
-	bh=sKbcDZpO43ATbiiPXnkKdb90G7Igiurm3Zwcm7P1scY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OeZmMe5+xNWhz0ep1KvVqKMYw5BIwjcKZp2dJbeDa0YZu6KjzQT/QDC6rbuoHoR1W9u5Sf+tXHFVneJRmUPqwbMUKI5Gav/G1ttiSBA2Ml4cODE+MqlB0Zd6x5h9t2OWdOQBnHPxt3vLbx/NxXwPbOHNsnczoKhf9mwY7LwyZBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=HlTQDeFQ; arc=none smtp.client-ip=99.78.197.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1714131207; x=1745667207;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sKbcDZpO43ATbiiPXnkKdb90G7Igiurm3Zwcm7P1scY=;
-  b=HlTQDeFQ2Onym0s7Ld6OJnixFJt8KvyIUX7bZN46U3vwBY4kSiWtUxdq
-   aFYoVUs+LEm987iNTiM8XMZkUcd/8ApyjyWX5lVpHDATfGllF0XEfsIiv
-   7wCs7d4wfaYqqN0mJtjila2MDvjgeXOxWv4CzxyQi5saCSOUHMWao9Kt3
-   g=;
-X-IronPort-AV: E=Sophos;i="6.07,232,1708387200"; 
-   d="scan'208";a="290945146"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 11:33:26 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:51432]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.16.217:2525] with esmtp (Farcaster)
- id e7b84c28-150d-4661-b2a4-d7d05a6498ed; Fri, 26 Apr 2024 11:33:25 +0000 (UTC)
-X-Farcaster-Flow-ID: e7b84c28-150d-4661-b2a4-d7d05a6498ed
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Fri, 26 Apr 2024 11:33:25 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Fri, 26 Apr
- 2024 11:33:21 +0000
-Message-ID: <b819717c-74ea-4556-8577-ccd90e9199e9@amazon.com>
-Date: Fri, 26 Apr 2024 13:33:19 +0200
+	s=arc-20240116; t=1714135525; c=relaxed/simple;
+	bh=iS9C+v8odOTK6E1SnSMEn0Se9B5pqsQ8ixkLHQCB1Us=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pl3Jw1ojQDNu422l6RD2bg8EYpX6M80YrS9xidR8WNBa4CGlsx+hfssy+/+2BKu116EHuD6HpV6Y4sJsmNwc3LXTkfiSDnSCiD1dRuC5gyDOHf+5R1OxzJJKmwW86oCwwZHzD+oAzwJtx9x3QT1u2GkA2V/cs1qxTnatpE9gdRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CudDC94N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DBDC116B1;
+	Fri, 26 Apr 2024 12:45:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714135525;
+	bh=iS9C+v8odOTK6E1SnSMEn0Se9B5pqsQ8ixkLHQCB1Us=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CudDC94N4c2KaoET/lq+RGNVMilmMEq5P4LGB6ER77suK4XenFv/TTEiDhxj6A6JJ
+	 REdW4Mon161EvCE+B1s89JzFrI3i9VyOiZ8HDK1FrRqlEatJDJitnrDKUQTFk5DvvQ
+	 JdTI+GjWSNIIzKlcvMlINe9alDHMEt15g4MhGJUV1mYl1uzy92CdSpPsZFDRXAOJj2
+	 eQhl7c4QuMYdT+j9fPdfkw3VuIt1V5DhrHQB0A4wyanA+O6yV9jAz0LGjMCJuX1K5a
+	 CdgdE807ARIZIqqlu2XmTFg5ZIjP2T/AGv+FibdkZghW6soY4IUsla/XXGWh8i3m2N
+	 9PB83DntvrQFQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1s0KxC-000000005fQ-2hYf;
+	Fri, 26 Apr 2024 14:45:26 +0200
+Date: Fri, 26 Apr 2024 14:45:26 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Cc: Doug Anderson <dianders@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Matthias Kaehlcke <mka@chromium.org>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Stephen Boyd <swboyd@chromium.org>,
+	quic_mohamull@quicinc.com, quic_hbandi@quicinc.com
+Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
+Message-ID: <Ziuh5qO94076gT2G@hovoldconsulting.com>
+References: <20240416091509.19995-1-johan+linaro@kernel.org>
+ <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
+ <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
+ <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
+ <ZioW9IDT7B4sas4l@hovoldconsulting.com>
+ <c9ea5867-2db2-4f64-a1e3-f6c2836dd45d@quicinc.com>
+ <Zip9vMHa2x-uW-pf@hovoldconsulting.com>
+ <bb0e1baf-7e64-463a-8638-d403c7a29317@quicinc.com>
+ <c10c94c4-5239-46d3-9b41-95e3c943e969@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when
- VMGENID updates"
-To: Lennart Poettering <mzxreary@0pointer.de>, "Jason A. Donenfeld"
-	<Jason@zx2c4.com>
-CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Linus Torvalds
-	<torvalds@linux-foundation.org>, Babis Chalios <bchalios@amazon.es>,
-	"Theodore Ts'o" <tytso@mit.edu>, "Cali, Marco" <xmarcalx@amazon.co.uk>, Arnd
- Bergmann <arnd@arndb.de>, "rostedt@goodmis.org" <rostedt@goodmis.org>,
-	"Christian Brauner" <brauner@kernel.org>, <linux@leemhuis.info>,
-	<regressions@lists.linux.dev>
-References: <20240418114814.24601-1-Jason@zx2c4.com>
- <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
- <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
- <ZieoRxn-On0gD-H2@gardel-login>
-Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <ZieoRxn-On0gD-H2@gardel-login>
-X-ClientProxiedBy: EX19D031UWC003.ant.amazon.com (10.13.139.252) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c10c94c4-5239-46d3-9b41-95e3c943e969@quicinc.com>
 
-Ck9uIDIzLjA0LjI0IDE0OjIzLCBMZW5uYXJ0IFBvZXR0ZXJpbmcgd3JvdGU6Cj4gT24gRGksIDIz
-LjA0LjI0IDAzOjIxLCBKYXNvbiBBLiBEb25lbmZlbGQgKEphc29uQHp4MmM0LmNvbSkgd3JvdGU6
-Cj4KPiBKYXNvbiEKPgo+IENhbiB5b3UgcGxlYXNlIGV4cGxhaW4gdG8gbWUgd2hhdCB0aGUgcHJl
-Y2lzZSBwcm9ibGVtIGlzIHdpdGggdGhlCj4gdWV2ZW50PyBJdCBkb2Vzbid0IGxlYWsgYW55IGlu
-Zm9ybWF0aW9uIGFib3V0IHRoZSBhY3R1YWwgdm1nZW5pZCwgaXQKPiBqdXN0IGxldHMgdXNlcnNw
-YWNlIGtub3cgdGhhdCB0aGUgbWFjaGluZSB3YXMgY2xvbmVkLAo+IGJhc2ljYWxseS4gV2hhdCdz
-IHRoZSBwcm9ibGVtIHdpdGggdGhhdD8gSSdkIHJlYWxseSBsaWtlIHRvCj4gdW5kZXJzdGFuZD8K
-Pgo+IFRoZXJlIGFyZSBtYW55IHVzZWNhc2VzIGZvciB0aGlzIGluIHRoZSBWTSB3b3JsZCwgZm9y
-IGV4YW1wbGUgd2UnZAo+IGxpa2UgdG8gaG9vayB0aGluZ3MgdXAgc28gdGhhdCB2YXJpb3VzIHVz
-ZXJzcGFjZSBtYW5hZ2VkIGNvbmNlcHRzLAo+IHN1Y2ggYXMgREhDUCBsZWFzZXMsIE1BQyBhZGRy
-ZXNzZXMgYXJlIGF1dG9tYXRpY2FsbHkgcmVmcmVzaGVkLgo+Cj4gVGhpcyBoYXMgbm8gcmVsYXRp
-b25zaGlwIHRvIFJOR3Mgb3IgYW55dGhpbmcgbGlrZSB0aGlzLCBpdCdzIGp1c3QgYW4KPiBldmVu
-dCB3ZSBjYW4gaGFuZGxlIGluIHVzZXJzcGFjZSB0byB0cmlnZ2VyIGFkZHJlc3MgcmVmcmVzaGVz
-IGxpa2UKPiB0aGlzLgo+Cj4gSGVuY2UsIHdoeSBpcyB0aGUgcmV2ZXJ0IG5lY2Vzc2FyeT8gVGhp
-cyB3YXMgYWxyZWFkeSBpbiBhIHJlbGVhc2VkCj4ga2VybmVsLCBhbmQgd2UgaGF2ZSBzdGFydGVk
-IHdvcmsgb24gbWFraW5nIHVzZSBvZiB0aGlzIGluIHN5c3RlbWQsIGFuZAo+IGFmYWljcyB0aGlz
-IGRvZXMgbm90IGNvbXByb21pc2UgdGhlIGtlcm5lbCBSTkcgaW4gZXZlbiB0aGUgcmVtb3Rlc3Qg
-b2YKPiB3YXlzLCBoZW5jZSB3aHkgaXMgYSByZXZlcnQgbmVjZXNzYXJ5PyBGcm9tIG15IHVzZXJz
-YWNlIHBlcnNwZWN0aXZlCj4gaXQncyBqdXN0IHZlcnkgdmVyeSBzYWQsIHRoYXQgdGhpcyBzaW1w
-bGUsIHRyaXZpYWwgaW50ZXJmYWNlIHdlIHdhbnRlZAo+IHRvIHVzZSwgdGhhdCB3YXMgaW4gYSBz
-dGFibGUga2VybmVsIGlzIG5vdyBnb25lIGFnYWluLgo+Cj4gQ2FuIHlvdSBleHBsYWluIHdoYXQg
-dGhlIHByb2JsZW0gd2l0aCB0aGlzIHNpbmdsZS1saW5lIHRyaXZpYWwKPiBpbnRlcmZhY2UgaXM/
-IEkgcmVhbGx5IHdvdWxkIGxpa2UgdG8gdW5kZXJzdGFuZCEKCgpKYXNvbiwgcGluZz8KCklmIEkg
-ZG9uJ3Qgc2VlIHRlY2huaWNhbCByZWFzb25pbmcgZnJvbSB5b3UgaGVyZSwgSSB3aWxsIGFzc3Vt
-ZSB0aGF0IHlvdSAKYWdyZWUgd2l0aCBMZW5uYXJ0IGFuZCBteSBwb2ludHMgb2Ygdmlld3MgYW5k
-IHNlbmQgYSByZXZlcnQgb2YgeW91ciAKcmV2ZXJ0IHNob3J0bHkgdG8gZW5zdXJlIHN5c3RlbWQg
-aGFzIGl0cyB1ZXZlbnQgc3RpbGwgaW4gNi45LgoKCkFsZXgKCgoKCkFtYXpvbiBEZXZlbG9wbWVu
-dCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpHZXNjaGFl
-ZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdldHJh
-Z2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVudGVyIEhSQiAxNDkxNzMgQgpTaXR6
-OiBCZXJsaW4KVXN0LUlEOiBERSAyODkgMjM3IDg3OQoKCg==
+On Fri, Apr 26, 2024 at 04:12:07PM +0530, Janaki Ramaiah Thota wrote:
 
+> Please note BDA values listed below are in the firmware (FW) data
+> order, but the actual BDA value should be in the reverse of that order.
+
+Thanks for clarifying. I realised this when I looked at the hexdump for
+the Trogdor firmware.
+
+> On 4/26/2024 11:53 AM, Janaki Ramaiah Thota wrote:
+> > On 4/25/2024 9:28 PM, Johan Hovold wrote:
+> >>> ---------------------------------------------------------
+> >>> |   BDA            |      Chipset                       |
+> >>> ---------------------------------------------------------
+> >>> | 20 00 00 10 80 39  | WCN3988 with ROM Version 0x0200    |
+> >>> ---------------------------------------------------------
+> >>> | 00 08 74 12 80 39  |  WCN3988 with ROM Version 0x0201    |
+> >>> ---------------------------------------------------------
+> >>> | 00 07 64 21 90 39  |  WCN3990                    |
+> >>> ---------------------------------------------------------
+> >>
+> >> Thanks a lot for these. I see now that the default Trogdor address Doug
+> >> reported (39:98:00:00:5a:ad) appears to comes from the fw too:
+> >>
+> >>     $ od -x crnv32.bin | grep 5aad
+> >>
+> >>     0000020 0000 0000 5aad 0000 3998 0008 0008 0000
+
+It seems the most significant bytes here indeed do reflect the hardware
+even if it's not entirely consistent:
+
+	WCN3988		39:80
+
+	WCN3990		39:90
+	WCN3991		39:98
+
+but I guess that doesn't help much unless also the remaining bytes on
+WCN3988 and WCN3990 can be inferred somehow.
+
+Johan
 
