@@ -1,78 +1,62 @@
-Return-Path: <stable+bounces-41523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B351A8B3BDC
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 17:42:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414858B3C26
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 18:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6786C281F0B
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 15:42:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 644881C22879
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 16:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F301DFFC;
-	Fri, 26 Apr 2024 15:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C96414A617;
+	Fri, 26 Apr 2024 16:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SxCUrWIO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f6eLPFEi"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D8C1494A6
-	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 15:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A19149C5E;
+	Fri, 26 Apr 2024 16:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714146132; cv=none; b=hanPheHzkVJx9sZi9Cgs5DtAWqSILX5cWU2QD+qC0a2sPuB0nM63/c6/s8ofJN72xAvDoxLA4BIU0B/6aHHnbjMdFZNLhmm5pkX31zmtRCUluTLbMCipvbfzCVeHY4lScIMYXvF/a3jjwU8SK7mz6GE8yWklQ02iyLfdVqIAFpg=
+	t=1714147230; cv=none; b=hdgvbJWuza/qF3bT9r62Jxyhf9MApCDShcmqDdS+UHm9VPDxUjliyBBmdyyyH+RS24w8wNB5XEZ/JW0Jbk/NDjLk881j6XLqM9KquBLHTciMzN3iZ6QDtMIIGs5fUgPPQcxt8RMZSM/iFe306nQBzwhobaePF8NWHpy1Kf7ZyQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714146132; c=relaxed/simple;
-	bh=AVa0n+Q+W/36rHA/7OFZwLOB2e6TPwhBV7cZLD770n8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSqarAAaGCBxuw+EFUBTzUf9eSavfF1F+LXNnEgPJg1HUSQ7RcJiUc3FF1e5Dgp/EavTqZef1gekpxvcmbVp2rdDO36O9VBRcNEAt7F2iIwT3v3paHnXzf/K7Kd7EA3dxy9M3Ipj5HXGwc9BHivmJ8ZzZCUkvog+1MRurCccAfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SxCUrWIO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714146130;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J6Za5dqP1vNIWZF7RvMAdeAfhQe3W63OGnIUvf5n09o=;
-	b=SxCUrWIOlOeR2P/HLxJI1xb5GOrn+UpaqSU7kt7NqbpuWlscioE3HGkwwripwjQ/3vLAfp
-	5QCbC6Jt10IkeLrRaW5vE5pKX7F73BNACB0ZMj/SFFUT9koVbfIi5d4uJmsrlrDSE673Xy
-	Gpc9IeLELDVmb/RnH5+jtrwg4sVwuT4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-qxmgJdkaO7OcV05bAC6RyA-1; Fri, 26 Apr 2024 11:42:07 -0400
-X-MC-Unique: qxmgJdkaO7OcV05bAC6RyA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7240780021A;
-	Fri, 26 Apr 2024 15:42:06 +0000 (UTC)
-Received: from chopper.lyude.net (unknown [10.22.8.17])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 7B165EC683;
-	Fri, 26 Apr 2024 15:42:05 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: nouveau@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1714147230; c=relaxed/simple;
+	bh=uK9h4I1j7rfKSkPKuWAlFuwzANHYKX0M1bFIxX+3AkE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cDM4TOKis2YWIYJSiVYNP0SaupY5g0fDS6HuvJG02I9RYawCdvQx/lbaIsaZgrbaBvqEF/onzxthTLx2NMGa+Q/IPzPilX0jCZ6qsdBDI3WHIuFg1ipMF9sTnfQUmAz6vVFjqMQjDfoUDUXEu2oDrl1kQIH7yMSkbSnp/aR6cx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f6eLPFEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E78C113CD;
+	Fri, 26 Apr 2024 16:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714147229;
+	bh=uK9h4I1j7rfKSkPKuWAlFuwzANHYKX0M1bFIxX+3AkE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=f6eLPFEiZ6xNNJR3mQ6Qo5xBHM1aC6YKRza2POnm6EEgTvufM6RD2WTbKE5ZfwT4D
+	 sVfWuJBpAr8DBIyiwvZPB18cr67rmn5iMsDHpGKtuOm9+kAIE59IuQnndZwCi32kif
+	 s6Dps+UkIJP4Rvv9VSnh5zsQ1PsR4jQxbmuOG75ywi6D7vjNOizvvcjN6NwU5tUm3D
+	 SS1+FixvkAz5d/a+N20Mynix+Ma0x8+RoXBDBch3hn8cDblQgoYKzAEjes9aeLOkCt
+	 5jGDeOjmdNnbK7grD0vvInoTi9+RcNo68eD7DgSFszh5weqEQFGmLSKFf9xYyqOqh/
+	 14rjkm0Ef9Sjw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1s0Nzz-000000006c4-1Xt8;
+	Fri, 26 Apr 2024 18:00:31 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
 	stable@vger.kernel.org,
-	Karol Herbst <kherbst@redhat.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Dave Airlie <airlied@redhat.com>,
-	Ben Skeggs <bskeggs@redhat.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 2/2] drm/nouveau/gsp: Use the sg allocator for level 2 of radix3
-Date: Fri, 26 Apr 2024 11:41:29 -0400
-Message-ID: <20240426154138.64643-2-lyude@redhat.com>
-In-Reply-To: <20240426154138.64643-1-lyude@redhat.com>
-References: <20240426154138.64643-1-lyude@redhat.com>
+	Doug Anderson <dianders@chromium.org>,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Subject: [PATCH] Bluetooth: qca: generalise device address check
+Date: Fri, 26 Apr 2024 17:58:01 +0200
+Message-ID: <20240426155801.25277-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,198 +64,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-Currently we allocate all 3 levels of radix3 page tables using
-nvkm_gsp_mem_ctor(), which uses dma_alloc_coherent() for allocating all of
-the relevant memory. This can end up failing in scenarios where the system
-has very high memory fragmentation, and we can't find enough contiguous
-memory to allocate level 2 of the page table.
+The default device address apparently comes from the NVM configuration
+file and can differ quite a bit.
 
-Currently, this can result in runtime PM issues on systems where memory
-fragmentation is high - as we'll fail to allocate the page table for our
-suspend/resume buffer:
+Store the default address when parsing the configuration file and use it
+to determine whether the controller has been provisioned with an
+address.
 
-  kworker/10:2: page allocation failure: order:7, mode:0xcc0(GFP_KERNEL),
-  nodemask=(null),cpuset=/,mems_allowed=0
-  CPU: 10 PID: 479809 Comm: kworker/10:2 Not tainted
-  6.8.6-201.ChopperV6.fc39.x86_64 #1
-  Hardware name: SLIMBOOK Executive/Executive, BIOS N.1.10GRU06 02/02/2024
-  Workqueue: pm pm_runtime_work
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x64/0x80
-   warn_alloc+0x165/0x1e0
-   ? __alloc_pages_direct_compact+0xb3/0x2b0
-   __alloc_pages_slowpath.constprop.0+0xd7d/0xde0
-   __alloc_pages+0x32d/0x350
-   __dma_direct_alloc_pages.isra.0+0x16a/0x2b0
-   dma_direct_alloc+0x70/0x270
-   nvkm_gsp_radix3_sg+0x5e/0x130 [nouveau]
-   r535_gsp_fini+0x1d4/0x350 [nouveau]
-   nvkm_subdev_fini+0x67/0x150 [nouveau]
-   nvkm_device_fini+0x95/0x1e0 [nouveau]
-   nvkm_udevice_fini+0x53/0x70 [nouveau]
-   nvkm_object_fini+0xb9/0x240 [nouveau]
-   nvkm_object_fini+0x75/0x240 [nouveau]
-   nouveau_do_suspend+0xf5/0x280 [nouveau]
-   nouveau_pmops_runtime_suspend+0x3e/0xb0 [nouveau]
-   pci_pm_runtime_suspend+0x67/0x1e0
-   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
-   __rpm_callback+0x41/0x170
-   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
-   rpm_callback+0x5d/0x70
-   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
-   rpm_suspend+0x120/0x6a0
-   pm_runtime_work+0x98/0xb0
-   process_one_work+0x171/0x340
-   worker_thread+0x27b/0x3a0
-   ? __pfx_worker_thread+0x10/0x10
-   kthread+0xe5/0x120
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x31/0x50
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1b/0x30
+This makes sure that devices without a unique address start as
+unconfigured unless a valid address has been provided in the devicetree.
 
-Luckily, we don't actually need to allocate coherent memory for the page
-table thanks to being able to pass the GPU a radix3 page table for
-suspend/resume data. So, let's rewrite nvkm_gsp_radix3_sg() to use the sg
-allocator for level 2. We continue using coherent allocations for lvl0 and
-1, since they only take a single page.
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Cc: stable@vger.kernel.org
+Fixes: 00567f70051a ("Bluetooth: qca: fix invalid device address check")
+Cc: stable@vger.kernel.org      # 6.5
+Cc: Doug Anderson <dianders@chromium.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- .../gpu/drm/nouveau/include/nvkm/subdev/gsp.h |  4 +-
- .../gpu/drm/nouveau/nvkm/subdev/gsp/r535.c    | 71 ++++++++++++-------
- 2 files changed, 47 insertions(+), 28 deletions(-)
+ drivers/bluetooth/btqca.c | 21 ++++++++++++---------
+ drivers/bluetooth/btqca.h |  2 ++
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-index 6f5d376d8fcc1..a11d16a16c3b2 100644
---- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-+++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-@@ -15,7 +15,9 @@ struct nvkm_gsp_mem {
- };
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index cfa71708397b..d7a6738e4691 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -15,9 +15,6 @@
  
- struct nvkm_gsp_radix3 {
--	struct nvkm_gsp_mem mem[3];
-+	struct nvkm_gsp_mem lvl0;
-+	struct nvkm_gsp_mem lvl1;
-+	struct sg_table lvl2;
- };
+ #define VERSION "0.1"
  
- int nvkm_gsp_sg(struct nvkm_device *, u64 size, struct sg_table *);
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-index 9858c1438aa7f..2bf9077d37118 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-@@ -1624,7 +1624,7 @@ r535_gsp_wpr_meta_init(struct nvkm_gsp *gsp)
- 	meta->magic = GSP_FW_WPR_META_MAGIC;
- 	meta->revision = GSP_FW_WPR_META_REVISION;
- 
--	meta->sysmemAddrOfRadix3Elf = gsp->radix3.mem[0].addr;
-+	meta->sysmemAddrOfRadix3Elf = gsp->radix3.lvl0.addr;
- 	meta->sizeOfRadix3Elf = gsp->fb.wpr2.elf.size;
- 
- 	meta->sysmemAddrOfBootloader = gsp->boot.fw.addr;
-@@ -1919,8 +1919,9 @@ nvkm_gsp_sg(struct nvkm_device *device, u64 size, struct sg_table *sgt)
- static void
- nvkm_gsp_radix3_dtor(struct nvkm_gsp *gsp, struct nvkm_gsp_radix3 *rx3)
- {
--	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--)
--		nvkm_gsp_mem_dtor(gsp, &rx3->mem[i]);
-+	nvkm_gsp_sg_free(gsp->subdev.device, &rx3->lvl2);
-+	nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
-+	nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
- }
- 
- /**
-@@ -1960,36 +1961,52 @@ static int
- nvkm_gsp_radix3_sg(struct nvkm_gsp *gsp, struct sg_table *sgt, u64 size,
- 		   struct nvkm_gsp_radix3 *rx3)
- {
--	u64 addr;
-+	struct sg_dma_page_iter sg_dma_iter;
-+	struct scatterlist *sg;
-+	size_t bufsize;
-+	u64 *pte;
-+	int ret, i, page_idx = 0;
- 
--	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--) {
--		u64 *ptes;
--		size_t bufsize;
--		int ret, idx;
+-#define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00, 0x00 }})
+-#define QCA_BDADDR_WCN3991 (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x98, 0x39 }})
 -
--		bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
--		ret = nvkm_gsp_mem_ctor(gsp, bufsize, &rx3->mem[i]);
--		if (ret)
--			return ret;
-+	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl0);
-+	if (ret)
-+		return ret;
+ int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
+ 			 enum qca_btsoc_type soc_type)
+ {
+@@ -351,6 +348,11 @@ static void qca_tlv_check_data(struct hci_dev *hdev,
  
--		ptes = rx3->mem[i].data;
--		if (i == 2) {
--			struct scatterlist *sgl;
-+	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl1);
-+	if (ret)
-+		goto lvl1_fail;
+ 			/* Update NVM tags as needed */
+ 			switch (tag_id) {
++			case EDL_TAG_ID_BD_ADDR:
++				if (tag_len != sizeof(bdaddr_t))
++					break;
++				memcpy(&config->bdaddr, tlv_nvm->data, sizeof(bdaddr_t));
++				break;
+ 			case EDL_TAG_ID_HCI:
+ 				/* HCI transport layer parameters
+ 				 * enabling software inband sleep
+@@ -615,7 +617,7 @@ int qca_set_bdaddr_rome(struct hci_dev *hdev, const bdaddr_t *bdaddr)
+ }
+ EXPORT_SYMBOL_GPL(qca_set_bdaddr_rome);
  
--			for_each_sgtable_dma_sg(sgt, sgl, idx) {
--				for (int j = 0; j < sg_dma_len(sgl) / GSP_PAGE_SIZE; j++)
--					*ptes++ = sg_dma_address(sgl) + (GSP_PAGE_SIZE * j);
--			}
--		} else {
--			for (int j = 0; j < size / GSP_PAGE_SIZE; j++)
--				*ptes++ = addr + GSP_PAGE_SIZE * j;
-+	// Allocate level 2
-+	bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
-+	ret = nvkm_gsp_sg(gsp->subdev.device, bufsize, &rx3->lvl2);
-+	if (ret)
-+		goto lvl2_fail;
-+
-+	// Write the bus address of level 1 to level 0
-+	pte = rx3->lvl0.data;
-+	*pte = rx3->lvl1.addr;
-+
-+	// Write the bus address of each page in level 2 to level 1
-+	pte = rx3->lvl1.data;
-+	for_each_sgtable_dma_page(&rx3->lvl2, &sg_dma_iter, 0)
-+		*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
-+
-+	// Finally, write the bus address of each page in sgt to level 2
-+	for_each_sgtable_sg(&rx3->lvl2, sg, i) {
-+		pte = sg_virt(sg);
-+		for_each_sgtable_dma_page(sgt, &sg_dma_iter, page_idx) {
-+			*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
-+			page_idx++;
- 		}
-+	}
+-static int qca_check_bdaddr(struct hci_dev *hdev)
++static int qca_check_bdaddr(struct hci_dev *hdev, const struct qca_fw_config *config)
+ {
+ 	struct hci_rp_read_bd_addr *bda;
+ 	struct sk_buff *skb;
+@@ -624,6 +626,9 @@ static int qca_check_bdaddr(struct hci_dev *hdev)
+ 	if (bacmp(&hdev->public_addr, BDADDR_ANY))
+ 		return 0;
  
--		size = rx3->mem[i].size;
--		addr = rx3->mem[i].addr;
-+	if (ret) {
-+lvl2_fail:
-+		nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
-+lvl1_fail:
-+		nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
++	if (!bacmp(&config->bdaddr, BDADDR_ANY))
++		return 0;
++
+ 	skb = __hci_cmd_sync(hdev, HCI_OP_READ_BD_ADDR, 0, NULL,
+ 			     HCI_INIT_TIMEOUT);
+ 	if (IS_ERR(skb)) {
+@@ -639,10 +644,8 @@ static int qca_check_bdaddr(struct hci_dev *hdev)
  	}
  
--	return 0;
-+	return ret;
- }
+ 	bda = (struct hci_rp_read_bd_addr *)skb->data;
+-	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT) ||
+-	    !bacmp(&bda->bdaddr, QCA_BDADDR_WCN3991)) {
++	if (!bacmp(&bda->bdaddr, &config->bdaddr))
+ 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
+-	}
  
- int
-@@ -2021,7 +2038,7 @@ r535_gsp_fini(struct nvkm_gsp *gsp, bool suspend)
- 		sr = gsp->sr.meta.data;
- 		sr->magic = GSP_FW_SR_META_MAGIC;
- 		sr->revision = GSP_FW_SR_META_REVISION;
--		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.mem[0].addr;
-+		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.lvl0.addr;
- 		sr->sizeOfSuspendResumeData = len;
+ 	kfree_skb(skb);
  
- 		mbox0 = lower_32_bits(gsp->sr.meta.addr);
+@@ -670,7 +673,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 		   enum qca_btsoc_type soc_type, struct qca_btsoc_version ver,
+ 		   const char *firmware_name)
+ {
+-	struct qca_fw_config config;
++	struct qca_fw_config config = {};
+ 	int err;
+ 	u8 rom_ver = 0;
+ 	u32 soc_ver;
+@@ -855,7 +858,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 		break;
+ 	}
+ 
+-	err = qca_check_bdaddr(hdev);
++	err = qca_check_bdaddr(hdev, &config);
+ 	if (err)
+ 		return err;
+ 
+diff --git a/drivers/bluetooth/btqca.h b/drivers/bluetooth/btqca.h
+index dc31984f71dc..49ad668d0d0b 100644
+--- a/drivers/bluetooth/btqca.h
++++ b/drivers/bluetooth/btqca.h
+@@ -29,6 +29,7 @@
+ #define EDL_PATCH_CONFIG_RES_EVT	(0x00)
+ #define QCA_DISABLE_LOGGING_SUB_OP	(0x14)
+ 
++#define EDL_TAG_ID_BD_ADDR		2
+ #define EDL_TAG_ID_HCI			(17)
+ #define EDL_TAG_ID_DEEP_SLEEP		(27)
+ 
+@@ -94,6 +95,7 @@ struct qca_fw_config {
+ 	uint8_t user_baud_rate;
+ 	enum qca_tlv_dnld_mode dnld_mode;
+ 	enum qca_tlv_dnld_mode dnld_type;
++	bdaddr_t bdaddr;
+ };
+ 
+ struct edl_event_hdr {
 -- 
-2.44.0
+2.43.2
 
 
