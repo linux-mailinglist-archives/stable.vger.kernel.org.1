@@ -1,122 +1,162 @@
-Return-Path: <stable+bounces-41501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DC38B332D
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 10:44:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A17B38B3362
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 10:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E21EB2892D3
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 08:44:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5635A1F22E9F
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 08:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727F713AA5C;
-	Fri, 26 Apr 2024 08:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+4H8Rpd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FB213C838;
+	Fri, 26 Apr 2024 08:54:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B3043AC5;
-	Fri, 26 Apr 2024 08:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0792AF02
+	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 08:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714121068; cv=none; b=rYTnXwOA7Qb+3IEFZYADz4InWZux0zUbhhVKZOEqoeEAh9MSeiXh0nqdaeIckMN35UmmUYuf2qQoBkamqNrd4vSw77rTtr6bls7XfQ6zQLkz9X31M23oSvy63clQciU8+uaMxrRMNUH9fRb5UY/kwmvPsR3hGRrq4L0EvSGxVOk=
+	t=1714121655; cv=none; b=crSUAlXz88oOfZ3w4UE8mmwcRdc36JRPhE2qqr/6SAI4qpe36IyhYJFZt7/Bmu9atBilNX8CQ3JFqJ6zvQON+7qD8McqtGxkyCYEpLdZ/5b3HxDlKfVrJvcxBGJEC55iYrPNkt/GloKFFt4ZGjTIqQL1qTyeCrTakapwmTI8rbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714121068; c=relaxed/simple;
-	bh=4wvOYv8+NIdUpdRb7Grmdgfv9If4faaLPcCOfZoDlE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UvDZm2xUa6+kh9Z86+bXJXyS5HjLFM9tx3qy2ufgxqc7BFakL43zoziwcdI2KqKjA6Lc3NSbMijONoNuh8gM754xEipVbxNDni7R0qyGpIewcQoZC0b8mLSuTvTvY9CztUpwqQO6GPLZ0nLix4Nbt8xaZdLjPMrjaMcaL5Yqn7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+4H8Rpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00E9C113CD;
-	Fri, 26 Apr 2024 08:44:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714121067;
-	bh=4wvOYv8+NIdUpdRb7Grmdgfv9If4faaLPcCOfZoDlE4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E+4H8Rpd6Cp58EWOWAjvv0PVZSWobDuIWzJvMc3meXBqGv5BkMauw98WEWTFTnwtx
-	 ka/qKcLZu0uyQeQtYiXju71UOIVvQMjUxHu8cYy0qHTwwHyIi7wAma9KwI/G4uPknf
-	 Z9v9rZJqFCnWpNLrv3iLR3WKKMMrQYi6YR5WGLTo=
-Date: Fri, 26 Apr 2024 10:44:18 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, dianders@google.com, briannorris@google.com,
-	momohatt@google.com, Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH 5.15 000/476] 5.15.149-rc1 review
-Message-ID: <2024042603-sleek-janitor-34f8@gregkh>
-References: <20240221130007.738356493@linuxfoundation.org>
- <aceda6e2-cefb-4146-aef8-ff4bafa56e56@roeck-us.net>
+	s=arc-20240116; t=1714121655; c=relaxed/simple;
+	bh=9YzMFGuurc+/UFqvD2FcUWBrBomag/8AWaLnMj8uiV4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rshIJIoabQuuwYRJCNe3bizAAyL82m28rx61GFZpTrgRcFo3heADPrMjgSpjdqtxCAmGu5RaO4gIYMURLPdPfzQ6CUFF2LVC+OUQUI2affIDCaVAYvYL/BDbHyKpxRxiZqiu44/oHNI2nooG6ww1bUzdfdK5iGU3w6rwD+IHzGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VQmdn4l6pzXkrN;
+	Fri, 26 Apr 2024 16:50:37 +0800 (CST)
+Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0FEE6140427;
+	Fri, 26 Apr 2024 16:54:10 +0800 (CST)
+Received: from huawei.com (10.173.135.154) by canpemm500002.china.huawei.com
+ (7.192.104.244) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Apr
+ 2024 16:54:09 +0800
+From: Miaohe Lin <linmiaohe@huawei.com>
+To: <stable@vger.kernel.org>
+CC: Miaohe Lin <linmiaohe@huawei.com>, Thorvald Natvig <thorvald@google.com>,
+	Jane Chu <jane.chu@oracle.com>, Christian Brauner <brauner@kernel.org>, Heiko
+ Carstens <hca@linux.ibm.com>, Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Mateusz Guzik
+	<mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>, Muchun Song
+	<muchun.song@linux.dev>, Oleg Nesterov <oleg@redhat.com>, Peng Zhang
+	<zhangpeng.00@bytedance.com>, Tycho Andersen <tandersen@netflix.com>, Andrew
+ Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1.y] fork: defer linking file vma until vma is fully initialized
+Date: Fri, 26 Apr 2024 16:51:33 +0800
+Message-ID: <20240426085133.2677038-1-linmiaohe@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <2024042320-angled-goldmine-2cd7@gregkh>
+References: <2024042320-angled-goldmine-2cd7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aceda6e2-cefb-4146-aef8-ff4bafa56e56@roeck-us.net>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ canpemm500002.china.huawei.com (7.192.104.244)
 
-On Thu, Apr 25, 2024 at 03:46:18PM -0700, Guenter Roeck wrote:
-> Hi,
-> 
-> On 2/21/24 05:00, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.15.149 release.
-> > There are 476 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Fri, 23 Feb 2024 12:59:02 +0000.
-> > Anything received after that time might be too late.
-> > 
-> [ ... ]
-> 
-> > Herbert Xu <herbert@gondor.apana.org.au>
-> >      crypto: api - Disallow identical driver names
-> > 
-> 
-> This patch results in a severe performance regression on arm64 systems;
-> there is more than 50% throughput loss on some sequential read tests.
-> The problem affects v5.15.y and older kernel branches.
-> 
-> Analysis shows that v5.15.y and older kernel _do_ try to register the same
-> crypto algorithm twice, once through
-> 
->  __crypto_register_alg
->  crypto_register_alg
->  crypto_register_skciphers
->  aes_init
-> 
-> and then again through
-> 
->  __crypto_register_alg
->  crypto_register_alg
->  crypto_register_skcipher
->  simd_skcipher_create_compat
->  aes_init
-> 
-> After above patch was applied, the second registration fails, resulting
-> in the regression.
-> 
-> The problem is not seen in later kernels due to commit 676e508122d9
-> ("crypto: arm64/aes-ce - stop using SIMD helper for skciphers"). Applying this
-> commit or reverting above commit fixes the regression in v5.15.y and older.
-> 
-> Thanks is due to Momoko Hattori for reporting the problem and finding the
-> offending patch, Doug Anderson for finding the duplicate registration attempt,
-> and Brian Norris for finding the fix. I copied them on this e-mail in case
-> there are further questions.
+Thorvald reported a WARNING [1]. And the root cause is below race:
 
-Thanks for the report.  I got a report that this breaks some android
-systems as well due to some FIPS crypto code that happens to duplicate
-the names as well.  I think reverting it makes sense and I'll queue that
-up for the next round of releases.
+ CPU 1					CPU 2
+ fork					hugetlbfs_fallocate
+  dup_mmap				 hugetlbfs_punch_hole
+   i_mmap_lock_write(mapping);
+   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
+   i_mmap_unlock_write(mapping);
+   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
+					 i_mmap_lock_write(mapping);
+   					 hugetlb_vmdelete_list
+					  vma_interval_tree_foreach
+					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
+   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
+					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
+					 i_mmap_unlock_write(mapping);
 
-greg k-h
+hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
+i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
+by deferring linking file vma until vma is fully initialized.  Those vmas
+should be initialized first before they can be used.
+
+Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
+Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reported-by: Thorvald Natvig <thorvald@google.com>
+Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19)
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+---
+ kernel/fork.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 85617928041c..7e9a5919299b 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -662,6 +662,15 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		} else if (anon_vma_fork(tmp, mpnt))
+ 			goto fail_nomem_anon_vma_fork;
+ 		tmp->vm_flags &= ~(VM_LOCKED | VM_LOCKONFAULT);
++		/*
++		 * Copy/update hugetlb private vma information.
++		 */
++		if (is_vm_hugetlb_page(tmp))
++			hugetlb_dup_vma_private(tmp);
++
++		if (tmp->vm_ops && tmp->vm_ops->open)
++			tmp->vm_ops->open(tmp);
++
+ 		file = tmp->vm_file;
+ 		if (file) {
+ 			struct address_space *mapping = file->f_mapping;
+@@ -678,12 +687,6 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 			i_mmap_unlock_write(mapping);
+ 		}
+ 
+-		/*
+-		 * Copy/update hugetlb private vma information.
+-		 */
+-		if (is_vm_hugetlb_page(tmp))
+-			hugetlb_dup_vma_private(tmp);
+-
+ 		/* Link the vma into the MT */
+ 		mas.index = tmp->vm_start;
+ 		mas.last = tmp->vm_end - 1;
+@@ -695,9 +698,6 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		if (!(tmp->vm_flags & VM_WIPEONFORK))
+ 			retval = copy_page_range(tmp, mpnt);
+ 
+-		if (tmp->vm_ops && tmp->vm_ops->open)
+-			tmp->vm_ops->open(tmp);
+-
+ 		if (retval)
+ 			goto loop_out;
+ 	}
+-- 
+2.33.0
+
 
