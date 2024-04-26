@@ -1,200 +1,200 @@
-Return-Path: <stable+bounces-41528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314C28B3E2C
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 19:31:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E89A78B3E1E
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 19:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DCFF287CB4
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 17:31:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4989E284AAF
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 17:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3482E17166C;
-	Fri, 26 Apr 2024 17:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FD7177991;
+	Fri, 26 Apr 2024 17:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fBqviliE"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221D2171661;
-	Fri, 26 Apr 2024 17:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.217.213.242
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30249181BAA
+	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 17:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714152317; cv=none; b=Hgx8Lz7Wqn6GaT6sbRVOATrlg2Sm7NE484Ea7uTHplPD0A4DKJvb4+isuoaRao/cjKbxGwd+l2wepNdzBagLULLt+lAY86QHfFASn6iWNesLnhHPEOyigVLZ/Zt8ZufpwjxuB5J1gta6LeVloC2uWkp9vUFiZ8GdLmGyg3VyjCY=
+	t=1714152216; cv=none; b=oiIXiP8jnuTfE4Ohe60JS9anByuxGUCtRRwXc1ehhAJqctF7ep8rv5CF2t23rL/MRign5bDu/KW5cYWlvw9rdy9+1llzs7b7kq9RzLBf68BBEkkPRXqkVMwE5HPfFmZKPVRLVtTfboHjnKTNBrQCMQIXQ4iW3/WfRn6WISeVrN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714152317; c=relaxed/simple;
-	bh=avX99l12aaTneezI5L11wOWJLcGRfk67mgBNxxwnBsw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SGOIHlsAl6zhsn8dWengQBNG9aHASUnB8bdghgqp3itXuaEG2QWqGBqGeu0P8zXcn2Qt/DmMFBOIlIf/pZMGPYx7Ef4Gpn/bUq8uUi5LEZA+PQZrnBZ7g/QJFzBsFtIQPavv/v8mOwvZlYs6cM28mWkXBNuaS4k+0PoEkgnuaUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=95.217.213.242
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from 213.219.156.63.adsl.dyn.edpnet.net ([213.219.156.63] helo=deadeye)
-	by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1s0OsP-0001oK-Kt; Fri, 26 Apr 2024 18:56:45 +0200
-Received: from ben by deadeye with local (Exim 4.97)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1s0OsP-00000000RcT-08rD;
-	Fri, 26 Apr 2024 18:56:45 +0200
-Message-ID: <c8ac24aef38a0f9fab3f029b464fd396ee51bfcd.camel@decadent.org.uk>
-Subject: Re: [PATCH 4.19 091/175] loop: Remove sector_t truncation checks
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Martijn Coenen <maco@android.com>, Christoph
- Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, Genjian Zhang
- <zhanggenjian@kylinos.cn>
-Date: Fri, 26 Apr 2024 18:56:40 +0200
-In-Reply-To: <20240411095422.304818113@linuxfoundation.org>
-References: <20240411095419.532012976@linuxfoundation.org>
-	 <20240411095422.304818113@linuxfoundation.org>
-Autocrypt: addr=ben@decadent.org.uk; prefer-encrypt=mutual;
- keydata=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
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-YqBx7HU+ec+RXTA8wGbW"
-User-Agent: Evolution 3.50.3-1+b1 
+	s=arc-20240116; t=1714152216; c=relaxed/simple;
+	bh=DoeVH595qsmuQPIQOHZlMJzQnEWVUckuQY6sXPiNVxo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EyWsQjTrJJTFgaHqquoSSkj2y0PK7llXSqV+LHTS9Hh/0If18eWK/XLPuB9K1sFttpbqIuzN5aZhNOZf3300F9TVBNSeea9t3NjzPiFCbUofe7Mx/oDB2v01qZnCw9L3eBq5l1fAGv/A/PELAwGWWNTUHTgHF3fGuzqMNvRIkXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=fBqviliE; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-43a14bce92dso14782321cf.0
+        for <stable@vger.kernel.org>; Fri, 26 Apr 2024 10:23:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1714152213; x=1714757013; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BgXARGPALUa9HNkXZ7dJ4KGZjVGqNQ8BWrBEfj+sA+g=;
+        b=fBqviliE2ur33q/zidQcPI+y1dcba0ss4jaVUAICPGmx0exFlJPLayfwsBtXJQstGP
+         NgYLusF4EYISkZ1FmUpuVA/wVeTqhN0y9WSw2BUT/xsRaQEKrN7Lz1D02oEVM5eP6gae
+         G09MM7bmqQjoFgVWSrcLsI8rTWTx0WZaAbvLQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714152213; x=1714757013;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BgXARGPALUa9HNkXZ7dJ4KGZjVGqNQ8BWrBEfj+sA+g=;
+        b=iO8FisEk2JGeXo1P4zycUQdFXljTVVDiIp+d/6/Rw0jctQ5g4GMZ00DixAvy/FvhgJ
+         AoOUQICXTnTu7VTuMPbpn+FH3gTScKGvTm3KcKBIF+4Ea9fgvJZID1Ajfn4PW1NS0315
+         lhiAF+k+Ayf06CBgX1qEmUFdI6CRh2xTe4sgGtm7M/C8KnqeNfkSaVLDbIeOIiDZAvZy
+         6GvfsmQ/IJGHBFWA0ZHJVz1D3rEXccK2OZURvX8S4DY25al1diosGhnVpyeke+W74C8A
+         ZipCy4amaJmb+jzTa5Yl8ih2WOtt1up8a7/XaKsRPa+e1VZHXa+tCVHLusSCnZuPpeXW
+         RwZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ557zaGFZ+YqE/XQuxlNeQM3Ck7TFahrvuA0jj1VLjO9Y7Koc+lcCTCqOYWlaqjprKrZIRQ/QRWRToh5uxyq+Nj3j8++b
+X-Gm-Message-State: AOJu0YzfMu8UdOwsxMf7E6MwW4OCAazlYSd8g20PcbLloLIKFu5paA7B
+	v+wWz2bOHAKCoabnSaERz1/bPu0PzRXXZd2BYWfgtgDIk70u9vSVU6H3iJtjrehkSrXKbjGof/w
+	=
+X-Google-Smtp-Source: AGHT+IF5D4aYSRRcnDac6CeZ4I06y2s0G0fkb64SQNyb9u/bM1hwPWkb3KrJupkTk9BAvVG2EO1h3Q==
+X-Received: by 2002:a05:622a:1788:b0:437:9f6e:81d3 with SMTP id s8-20020a05622a178800b004379f6e81d3mr4805730qtk.9.1714152212906;
+        Fri, 26 Apr 2024 10:23:32 -0700 (PDT)
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com. [209.85.160.182])
+        by smtp.gmail.com with ESMTPSA id w20-20020ac87194000000b00439622fb8f4sm6402602qto.39.2024.04.26.10.23.31
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Apr 2024 10:23:31 -0700 (PDT)
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-439b1c72676so24681cf.1
+        for <stable@vger.kernel.org>; Fri, 26 Apr 2024 10:23:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUSUfZm7YEKzlDLKQBW6ZZfxyyTsr9nMod+0vlnMCz2jaMj4kRVM5JOKtBobO1krhCtWNcSWX8aajJzqYkKg1eE9a1xDNmx
+X-Received: by 2002:ac8:7493:0:b0:439:891f:bbd2 with SMTP id
+ v19-20020ac87493000000b00439891fbbd2mr373509qtq.28.1714152211256; Fri, 26 Apr
+ 2024 10:23:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 213.219.156.63
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-
-
---=-YqBx7HU+ec+RXTA8wGbW
+References: <20240426155801.25277-1-johan+linaro@kernel.org>
+In-Reply-To: <20240426155801.25277-1-johan+linaro@kernel.org>
+From: Doug Anderson <dianders@chromium.org>
+Date: Fri, 26 Apr 2024 10:23:15 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
+Message-ID: <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Janaki Ramaiah Thota <quic_janathot@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2024-04-11 at 11:55 +0200, Greg Kroah-Hartman wrote:
-> 4.19-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Martijn Coenen <maco@android.com>
->=20
-> [ Upstream commit 083a6a50783ef54256eec3499e6575237e0e3d53 ]
->=20
-> sector_t is now always u64, so we don't need to check for truncation.
+Hi,
 
-This needs to be reverted for 4.19, because sector_t wasn't always u64
-until 5.2.
-
-Ben.
-
-> Signed-off-by: Martijn Coenen <maco@android.com>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Fri, Apr 26, 2024 at 9:00=E2=80=AFAM Johan Hovold <johan+linaro@kernel.o=
+rg> wrote:
+>
+> The default device address apparently comes from the NVM configuration
+> file and can differ quite a bit.
+>
+> Store the default address when parsing the configuration file and use it
+> to determine whether the controller has been provisioned with an
+> address.
+>
+> This makes sure that devices without a unique address start as
+> unconfigured unless a valid address has been provided in the devicetree.
+>
+> Fixes: 00567f70051a ("Bluetooth: qca: fix invalid device address check")
+> Cc: stable@vger.kernel.org      # 6.5
+> Cc: Doug Anderson <dianders@chromium.org>
+> Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > ---
->  drivers/block/loop.c |   21 +++++++--------------
->  1 file changed, 7 insertions(+), 14 deletions(-)
->=20
-> --- a/drivers/block/loop.c
-> +++ b/drivers/block/loop.c
-> @@ -225,24 +225,20 @@ static void __loop_update_dio(struct loo
->  	blk_mq_unfreeze_queue(lo->lo_queue);
->  }
-> =20
-> -static int
-> +static void
->  figure_loop_size(struct loop_device *lo, loff_t offset, loff_t sizelimit=
-)
+>  drivers/bluetooth/btqca.c | 21 ++++++++++++---------
+>  drivers/bluetooth/btqca.h |  2 ++
+>  2 files changed, 14 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+> index cfa71708397b..d7a6738e4691 100644
+> --- a/drivers/bluetooth/btqca.c
+> +++ b/drivers/bluetooth/btqca.c
+> @@ -15,9 +15,6 @@
+>
+>  #define VERSION "0.1"
+>
+> -#define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00,=
+ 0x00 }})
+> -#define QCA_BDADDR_WCN3991 (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x98,=
+ 0x39 }})
+> -
+>  int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version =
+*ver,
+>                          enum qca_btsoc_type soc_type)
 >  {
->  	loff_t size =3D get_size(offset, sizelimit, lo->lo_backing_file);
-> -	sector_t x =3D (sector_t)size;
->  	struct block_device *bdev =3D lo->lo_device;
-> =20
-> -	if (unlikely((loff_t)x !=3D size))
-> -		return -EFBIG;
->  	if (lo->lo_offset !=3D offset)
->  		lo->lo_offset =3D offset;
->  	if (lo->lo_sizelimit !=3D sizelimit)
->  		lo->lo_sizelimit =3D sizelimit;
-> -	set_capacity(lo->lo_disk, x);
-> +	set_capacity(lo->lo_disk, size);
->  	bd_set_size(bdev, (loff_t)get_capacity(bdev->bd_disk) << 9);
->  	/* let user-space know about the new size */
->  	kobject_uevent(&disk_to_dev(bdev->bd_disk)->kobj, KOBJ_CHANGE);
-> -	return 0;
->  }
-> =20
->  static inline int
-> @@ -972,10 +968,8 @@ static int loop_set_fd(struct loop_devic
->  	    !file->f_op->write_iter)
->  		lo_flags |=3D LO_FLAGS_READ_ONLY;
-> =20
-> -	error =3D -EFBIG;
->  	size =3D get_loop_size(lo, file);
-> -	if ((loff_t)(sector_t)size !=3D size)
-> -		goto out_unlock;
-> +
->  	error =3D loop_prepare_queue(lo);
->  	if (error)
->  		goto out_unlock;
-> @@ -1280,10 +1274,7 @@ loop_set_status(struct loop_device *lo,
->  				lo->lo_device->bd_inode->i_mapping->nrpages);
->  			goto out_unfreeze;
->  		}
-> -		if (figure_loop_size(lo, info->lo_offset, info->lo_sizelimit)) {
-> -			err =3D -EFBIG;
-> -			goto out_unfreeze;
-> -		}
-> +		figure_loop_size(lo, info->lo_offset, info->lo_sizelimit);
->  	}
-> =20
->  	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
-> @@ -1486,7 +1477,9 @@ static int loop_set_capacity(struct loop
->  	if (unlikely(lo->lo_state !=3D Lo_bound))
->  		return -ENXIO;
-> =20
-> -	return figure_loop_size(lo, lo->lo_offset, lo->lo_sizelimit);
-> +	figure_loop_size(lo, lo->lo_offset, lo->lo_sizelimit);
-> +
-> +	return 0;
->  }
-> =20
->  static int loop_set_dio(struct loop_device *lo, unsigned long arg)
->=20
->=20
->=20
+> @@ -351,6 +348,11 @@ static void qca_tlv_check_data(struct hci_dev *hdev,
+>
+>                         /* Update NVM tags as needed */
+>                         switch (tag_id) {
+> +                       case EDL_TAG_ID_BD_ADDR:
+> +                               if (tag_len !=3D sizeof(bdaddr_t))
+> +                                       break;
+> +                               memcpy(&config->bdaddr, tlv_nvm->data, si=
+zeof(bdaddr_t));
+> +                               break;
+>                         case EDL_TAG_ID_HCI:
 
---=20
-Ben Hutchings
-Everything should be made as simple as possible, but not simpler.
-                                                      - Albert Einstein
+nit: blank line after "break" ?
+
+Also note that on my firmware I never see this tag and thus your patch
+breaks trogdor. Specifically I put a printout here and it never gets
+hit.
+
+I printed all the tags/lengths:
+
+[   17.961087] DOUG: id 0xde02, len 0x0010
+[   17.965081] DOUG: id 0x0000, len 0x0000
+[   17.969050] DOUG: id 0x0000, len 0x0011
+[   17.973025] DOUG: id 0x0000, len 0x0a00
+[   17.976991] DOUG: id 0x0303, len 0x0303
+[   17.981066] DOUG: id 0x0033, len 0x1001
+
+Probably EDL_TAG_ID_BD_ADDR should have been 0xde02, not just 2.
+...but then the size is wrong? When I print out the bytes in ID 0xde02
+I see the address you're looking for 4 bytes in...
+
+[   17.663602] DOUG: 0x00
+[   17.666132] DOUG: 0x00
+[   17.668638] DOUG: 0x00
+[   17.671237] DOUG: 0x00
+[   17.673689] DOUG: 0xad
+[   17.676120] DOUG: 0x5a
+[   17.678551] DOUG: 0x00
+[   17.680980] DOUG: 0x00
+[   17.683409] DOUG: 0x98
+[   17.685846] DOUG: 0x39
+[   17.688278] DOUG: 0x08
+[   17.690704] DOUG: 0x00
+[   17.693137] DOUG: 0x08
+[   17.693139] DOUG: 0x00
+[   17.693139] DOUG: 0x00
+[   17.693140] DOUG: 0x00
 
 
---=-YqBx7HU+ec+RXTA8wGbW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+> @@ -624,6 +626,9 @@ static int qca_check_bdaddr(struct hci_dev *hdev)
+>         if (bacmp(&hdev->public_addr, BDADDR_ANY))
+>                 return 0;
+>
+> +       if (!bacmp(&config->bdaddr, BDADDR_ANY))
+> +               return 0;
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmYr3MgACgkQ57/I7JWG
-EQlwkQ//Q1+CQkD8tpI7V8khvE3CdtiDAbb+SX+1ctYwo1ykrrWKA5dopTt/Irn0
-DAtdfMjzxirtbYZdGWMWg9PrmMyc3CYzNRykydFMp3gdHdwZOSK2qlyoqnIi8ayA
-OSZhb5wqcLT+ay4mEoG8wUn971BzAKjnRaATsM6kZddMF2nqt5ExaPwrR0AVGSsv
-Lqxqvz+OJd5z4LhAc2KTbX9OFWXIeWNoTWIH51+aRlc7OCETvrMSGvHAbMNx50mm
-0dfO+ixJA3TLSR7Dz+MTlaKjWq4AoIkR/2P5XvyZgIkZKYwb/AMU69bR39CrX082
-cBqUWQI5jYilp/pQh9Xkky1R/UWVUS/3AFt67xlCzZaQRX5ZyZPkzOwvKJHYMpEs
-TzWC7HIHfqMyHBMGT7ISICwAotSYnyJgFllFQmWEsc9MHvefQS8deK8hbpQm6j+R
-NVaG0G235o56Nvb8VaMlIoELAdN2oq/MjVMMemj8pK4pDcv3Mj/jb69C8UC1PvTO
-InJTSaXV9v0QOgJKKcTQIonCzMTDLCk8z675ni4/j9sNabLPwMgTHS63NVxwIre/
-B+jz6kV/gorbx2T2H2m305mbwtCwtgz0S+JL3aC5pasd5WE+FyipUm3rny0qmujz
-0zZYE2/00eptoIfYNvUUhTWFST911rUYKVdFMNQiLnrAM33v1uk=
-=mCsA
------END PGP SIGNATURE-----
-
---=-YqBx7HU+ec+RXTA8wGbW--
+The above test feels non-obvious enough to deserve a comment. Could
+you add one? That would also help alleviate my confusion since I
+_think_ your if test is unneeded and maybe wrong? Let's say that the
+firmware didn't have a default address stored in it. It still seems
+like we could try to read the address and then if the firmware gave
+back BDADDR_ANY (0) we should set the `HCI_QUIRK_USE_BDADDR_PROPERTY`
+property, right?
 
