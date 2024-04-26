@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-41490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565F78B2F49
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 06:03:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB09B8B2F4D
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 06:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99739B243A5
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 04:03:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1E23B21C96
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 04:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2CC823DC;
-	Fri, 26 Apr 2024 04:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2996282484;
+	Fri, 26 Apr 2024 04:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="o1LzAWsM"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kIg12gLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD9780C0A;
-	Fri, 26 Apr 2024 04:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A9181752;
+	Fri, 26 Apr 2024 04:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714104170; cv=none; b=mjJeJzYh3OWmyVPkoCPEUFK70l28h8Uf8A/1XDc9ujtvKQdaP1GZCbWV/dOKy9E/F9qo2is5UI5n//IVs7+21sqqWhZ7XnWkl4cWT7BG3XoXeib1GgJ1HJnw6oGxJ0QkqQQSq17tzWP0yjn7NOt04cZ55fxYNcpcvfLH0AAkSgo=
+	t=1714104479; cv=none; b=AMs2mdhmlQ4NrDIBooomSt0arzTxgPaFxssaHnjqcX/XqzDtvSakeI3VJjPscS5Fhf6kycHrEDEjzHLkgOXHmmPOl0iCAu3BefvdMg2iaqXgw/563oiK7TZqBUlu6b2UZUt+bI7Vs+a0/Rdfs8Zi+uf3uL9bCPjnTLIzCOSwE1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714104170; c=relaxed/simple;
-	bh=PT5lyVwrl8Rfe2DBdndshX+ZVMjQBKcoKdcV7qqEjmM=;
-	h=Date:To:From:Subject:Message-Id; b=QANsXdZeG6RsuLHgUSqTmaej4/pkJlAfpqkI6zUwoja2EcrjDmbWwr1AYVtd3ZrkdTGVfG5gbof+MxkV2n0yx90KT7OdXsaB60l/Nld+i+T6dYe3IlPHNkLjGUswNvD4vqC/IBgQU3wakG07EWpk455Q3XzCbcxi7NymgTNwKHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=o1LzAWsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E52C113CD;
-	Fri, 26 Apr 2024 04:02:50 +0000 (UTC)
+	s=arc-20240116; t=1714104479; c=relaxed/simple;
+	bh=FcPGeTfDSDoHSVsRs8uk3aucdQlnp0Utnf2jlZ8Nc6E=;
+	h=Date:To:From:Subject:Message-Id; b=G59BmbSH6LgqOd0RtXzS0dGLAHvbNGA1m2+dDzGxx1tp1r899D9OynWkoenoOqwkqmO5XZRM+MLV9ychn4/nZPKq/fbMwC3Sg/Y8Ed/v8aCMdSLPOWxZI59Rk7XPAuFis9k+o/OgigJxZYGBg2rcQKFP3tIZh/X6120YsJb5VjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kIg12gLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7E5C113CD;
+	Fri, 26 Apr 2024 04:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1714104170;
-	bh=PT5lyVwrl8Rfe2DBdndshX+ZVMjQBKcoKdcV7qqEjmM=;
+	s=korg; t=1714104479;
+	bh=FcPGeTfDSDoHSVsRs8uk3aucdQlnp0Utnf2jlZ8Nc6E=;
 	h=Date:To:From:Subject:From;
-	b=o1LzAWsM2sHwHb5DSamEwVe4xkJl/mcLLXHJ9K9uqXf+ezVLwCIw3oS0/6uUButbQ
-	 XjjNMmp46d2BtdE9XlavrVi/VRuI2nSA7Ai03ainxBD0FwcDvDMGUuWI42Ly/AIxbX
-	 NwHIzr8V0IYSl1o/VMp1z1Qc3DbtPXxNerwJDq4U=
-Date: Thu, 25 Apr 2024 21:02:50 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,roman.gushchin@linux.dev,muchun.song@linux.dev,m.szyprowski@samsung.com,david@redhat.com,fvdl@google.com,akpm@linux-foundation.org
+	b=kIg12gLNjB/br3yUQDBmABYbP0zbPIMI2jPFMm5AAwQeKJZpvyjNSjKonDv7xHhIQ
+	 3w3avZpqFqUMEIC02FjR9qbaFIlZtFxsxsmkMHrguhr9XZwtEgoYH7d66kAh5jsddi
+	 Sj1mWf2AYAA/a9WJ2icdYNsIU+PfVk1al/YYiK3U=
+Date: Thu, 25 Apr 2024 21:07:59 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,ghe@suse.com,gechangwei@live.cn,glass.su@suse.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-hugetlb-pass-correct-order_per_bit-to-cma_declare_contiguous_nid.patch removed from -mm tree
-Message-Id: <20240426040250.81E52C113CD@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] ocfs2-fix-races-between-hole-punching-and-aiodio.patch removed from -mm tree
+Message-Id: <20240426040759.AE7E5C113CD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,70 +50,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/hugetlb: pass correct order_per_bit to cma_declare_contiguous_nid
+     Subject: ocfs2: fix races between hole punching and AIO+DIO
 has been removed from the -mm tree.  Its filename was
-     mm-hugetlb-pass-correct-order_per_bit-to-cma_declare_contiguous_nid.patch
+     ocfs2-fix-races-between-hole-punching-and-aiodio.patch
 
-This patch was dropped because it was merged into the mm-stable branch
+This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Frank van der Linden <fvdl@google.com>
-Subject: mm/hugetlb: pass correct order_per_bit to cma_declare_contiguous_nid
-Date: Thu, 4 Apr 2024 16:25:15 +0000
+From: Su Yue <glass.su@suse.com>
+Subject: ocfs2: fix races between hole punching and AIO+DIO
+Date: Mon, 8 Apr 2024 16:20:39 +0800
 
-The hugetlb_cma code passes 0 in the order_per_bit argument to
-cma_declare_contiguous_nid (the alignment, computed using the page order,
-is correctly passed in).
+After commit "ocfs2: return real error code in ocfs2_dio_wr_get_block",
+fstests/generic/300 become from always failed to sometimes failed:
 
-This causes a bit in the cma allocation bitmap to always represent a 4k
-page, making the bitmaps potentially very large, and slower.
+========================================================================
+[  473.293420 ] run fstests generic/300
 
-It would create bitmaps that would be pretty big.  E.g.  for a 4k page
-size on x86, hugetlb_cma=64G would mean a bitmap size of (64G / 4k) / 8
-== 2M.  With HUGETLB_PAGE_ORDER as order_per_bit, as intended, this
-would be (64G / 2M) / 8 == 4k.  So, that's quite a difference.
+[  475.296983 ] JBD2: Ignoring recovery information on journal
+[  475.302473 ] ocfs2: Mounting device (253,1) on (node local, slot 0) with ordered data mode.
+[  494.290998 ] OCFS2: ERROR (device dm-1): ocfs2_change_extent_flag: Owner 5668 has an extent at cpos 78723 which can no longer be found
+[  494.291609 ] On-disk corruption discovered. Please run fsck.ocfs2 once the filesystem is unmounted.
+[  494.292018 ] OCFS2: File system is now read-only.
+[  494.292224 ] (kworker/19:11,2628,19):ocfs2_mark_extent_written:5272 ERROR: status = -30
+[  494.292602 ] (kworker/19:11,2628,19):ocfs2_dio_end_io_write:2374 ERROR: status = -3
+fio: io_u error on file /mnt/scratch/racer: Read-only file system: write offset=460849152, buflen=131072
+=========================================================================
 
-Also, this restricted the hugetlb_cma area to ((PAGE_SIZE <<
-MAX_PAGE_ORDER) * 8) * PAGE_SIZE (e.g.  128G on x86) , since
-bitmap_alloc uses normal page allocation, and is thus restricted by
-MAX_PAGE_ORDER.  Specifying anything about that would fail the CMA
-initialization.
+In __blockdev_direct_IO, ocfs2_dio_wr_get_block is called to add unwritten
+extents to a list.  extents are also inserted into extent tree in
+ocfs2_write_begin_nolock.  Then another thread call fallocate to puch a
+hole at one of the unwritten extent.  The extent at cpos was removed by
+ocfs2_remove_extent().  At end io worker thread, ocfs2_search_extent_list
+found there is no such extent at the cpos.
 
-So, correctly pass in the order instead.
+    T1                        T2                T3
+                              inode lock
+                                ...
+                                insert extents
+                                ...
+                              inode unlock
+ocfs2_fallocate
+ __ocfs2_change_file_space
+  inode lock
+  lock ip_alloc_sem
+  ocfs2_remove_inode_range inode
+   ocfs2_remove_btree_range
+    ocfs2_remove_extent
+    ^---remove the extent at cpos 78723
+  ...
+  unlock ip_alloc_sem
+  inode unlock
+                                       ocfs2_dio_end_io
+                                        ocfs2_dio_end_io_write
+                                         lock ip_alloc_sem
+                                         ocfs2_mark_extent_written
+                                          ocfs2_change_extent_flag
+                                           ocfs2_search_extent_list
+                                           ^---failed to find extent
+                                          ...
+                                          unlock ip_alloc_sem
 
-Link: https://lkml.kernel.org/r/20240404162515.527802-2-fvdl@google.com
-Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma")
-Signed-off-by: Frank van der Linden <fvdl@google.com>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Muchun Song <muchun.song@linux.dev>
+In most filesystems, fallocate is not compatible with racing with AIO+DIO,
+so fix it by adding to wait for all dio before fallocate/punch_hole like
+ext4.
+
+Link: https://lkml.kernel.org/r/20240408082041.20925-3-glass.su@suse.com
+Fixes: b25801038da5 ("ocfs2: Support xfs style space reservation ioctls")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/hugetlb.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ocfs2/file.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/hugetlb.c~mm-hugetlb-pass-correct-order_per_bit-to-cma_declare_contiguous_nid
-+++ a/mm/hugetlb.c
-@@ -7794,9 +7794,9 @@ void __init hugetlb_cma_reserve(int orde
- 		 * huge page demotion.
- 		 */
- 		res = cma_declare_contiguous_nid(0, size, 0,
--						PAGE_SIZE << HUGETLB_PAGE_ORDER,
--						 0, false, name,
--						 &hugetlb_cma[nid], nid);
-+					PAGE_SIZE << HUGETLB_PAGE_ORDER,
-+					HUGETLB_PAGE_ORDER, false, name,
-+					&hugetlb_cma[nid], nid);
- 		if (res) {
- 			pr_warn("hugetlb_cma: reservation failed: err %d, node %d",
- 				res, nid);
+--- a/fs/ocfs2/file.c~ocfs2-fix-races-between-hole-punching-and-aiodio
++++ a/fs/ocfs2/file.c
+@@ -1936,6 +1936,8 @@ static int __ocfs2_change_file_space(str
+ 
+ 	inode_lock(inode);
+ 
++	/* Wait all existing dio workers, newcomers will block on i_rwsem */
++	inode_dio_wait(inode);
+ 	/*
+ 	 * This prevents concurrent writes on other nodes
+ 	 */
 _
 
-Patches currently in -mm which might be from fvdl@google.com are
+Patches currently in -mm which might be from glass.su@suse.com are
 
 
 
