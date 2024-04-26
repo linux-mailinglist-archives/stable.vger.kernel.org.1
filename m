@@ -1,124 +1,138 @@
-Return-Path: <stable+bounces-41498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887128B3229
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 10:19:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339B68B3230
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 10:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 492AA281880
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 08:19:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0F7F281F11
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 08:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389A113C8F0;
-	Fri, 26 Apr 2024 08:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E33F13C9B0;
+	Fri, 26 Apr 2024 08:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="HeNgMy2e"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UAx6Ppw6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F9113C8F4
-	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 08:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CF813C9A0
+	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 08:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714119571; cv=none; b=EdoaQKD+WbsbXoIOEwCyBQNYCF361nMIkhDxlqUj4owicsyoFGYJEJY25I7N1UtCzlQxnWS0gzs3c4uRhH9kxZJFcuJSr8AWNL/mhdNqmdABZ11Zz/IxNzNHiXqPF3nDULNFdLhWt9sgE06x6DbqWQD3Z37pnbeW7voJk9KdA0Q=
+	t=1714119660; cv=none; b=MjVDNUlMsxcdxsr+IUU1aiF60LOQu6S+XtqSG4+mCpYskfPBJ3xnfiOlcqhcVNgzZ47dsDSH3UoH5nAP7YANvh52/ZDeYFk2STaPbh+uhjgN/oGgW/65g3tL3KlFC3M7c123W0UdEN5G7mLRiKD4vB3lkcqn/adFOqhleLVrcCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714119571; c=relaxed/simple;
-	bh=g2ptlNEGOqFTjLQCVUzdfm91hafdN8NQDpmWgp96AiM=;
+	s=arc-20240116; t=1714119660; c=relaxed/simple;
+	bh=2QwY/idrWWstb2VS57g5qy6TKTu8YrTelcs1NllY2gE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AHdx/CWJk0mrca+aRkMzsRCh6RdFFZOZ8hNuaC65y9FjSDXDdvkhI+8WlZUdfytz2E84rYAtDXqZwerEgY1xoVcgjw1L2cV02K0T6Jb4Eb6yAV5Z3C8UTk1WGUVFCpxoUdo0v+iS/u8jGjuYAXz0ZoaCZ9t7JhohXHDSubm5Jtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=HeNgMy2e; arc=none smtp.client-ip=209.85.166.176
+	 To:Cc:Content-Type; b=N//KBj/5egqjgxB8EtatLHycyPB3C57u2XoS37AAZAsryvVn8Etz/xvc7OkesGCPUBwwsqdQbe/5HvlM/v9pkmpFlSfrSxWsUVsZoGhE0vB5HXRZVxhb9h8HnWRe5GscFMS3C8Yz8C08lXERtpPPbEdQKEKFBMPtUtgpFACnUhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UAx6Ppw6; arc=none smtp.client-ip=209.85.166.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-36b1774e453so6338925ab.1
-        for <stable@vger.kernel.org>; Fri, 26 Apr 2024 01:19:29 -0700 (PDT)
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7da68b46b0dso76666239f.1
+        for <stable@vger.kernel.org>; Fri, 26 Apr 2024 01:20:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1714119568; x=1714724368; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1714119658; x=1714724458; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zVTNWL0BuMu8uA8a1pgzyKd4N6HpuLQOL7QqW6GZ6D0=;
-        b=HeNgMy2einfYEALcQ4Tz0c5tvx7JhZDFFDF5VIO5EBGxQmUvNBdXj9F/f84P2Y8W0e
-         CySZXG2yXMQ2LKbZmL+8JXdemv1JPfS45c5bx/QBDoJUnKAmTFsT+QEFNeE6U11XK3yx
-         8V9LO3sdEYRvYLjP1nhncGrfjgpSzDtd1gOOI=
+        bh=DOO+Oxe5RqdUN11iHoDt4ydzdK+8AI7NsGcbenw3d/A=;
+        b=UAx6Ppw6A4wbEg9mFet1cI+rY5Tkj7+1UuOPcHdJWHNQR/sdpDoU0fy0F8Y24/QO6T
+         siItHpR3P6Zt7A49GVrqLiJ1UorbTJNshGX86IGrwEKO5olBKed3/+vr6sm1KBLIgxZ+
+         DFs4/V7An5HuM0NI75thEJSwWYnltF0liD+yU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714119568; x=1714724368;
+        d=1e100.net; s=20230601; t=1714119658; x=1714724458;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zVTNWL0BuMu8uA8a1pgzyKd4N6HpuLQOL7QqW6GZ6D0=;
-        b=rC/VpPCrcQNux+nTGXYkXG6DtDt6BYslk4BDwwsOy89fReh655Z+5mu+YLITL+OWpz
-         M8wgaV3b+v8chb/arPnqkzhPEgCbwzSdNcSEEsE3xbDIHtpdpFqBkrDoQhP6Jl3/wQD5
-         MZhsu0ydjAFNK2evZStoH4lrK15XILZocnFFxpNdgKCJSXNzerLfVlEwjUzqicP2gFUi
-         PQycU5hrMt52fKS2X1YJ+48iSlOuRbeVCiaV3XOAPSRNH3MvUy5eonp4+zKC418kV0ax
-         YjKTIMREysKgKHmL0NpBldUxX14aJlnqGh8h4Xtdf/BrcwLsZg/AOL85oz4MY0KdIIYv
-         KQaw==
-X-Forwarded-Encrypted: i=1; AJvYcCXkbFvZIorNUnWeDogIfc4JLzncR6LHaRR4jPbqdK9HriyqbH+ZUt6sBxYioUhnRXQes0UNYz0ZG3JTXzw4L56cfntHYV/H
-X-Gm-Message-State: AOJu0YwqY16bl3FD+SCT5CGSKDNEe3Y/ZHGQt4BcrcAqm5BPk7pk4kok
-	lGX0VwmzAJwcCIoxJ17mCtdHfQzisSltJiL0XuXHE8wZ2LInSUuuLkNjHm5k/mB+7wVPk9Af65+
-	2ctHxBoSfSyTv0YmFPr3klS/hHxihu9OPKNBg
-X-Google-Smtp-Source: AGHT+IH66STbBXSU8C3ldVui5J0UyWaCbJ6riDX7win3IEC0TBhjCR4f79MirfLPReAHHSS0djaP5B3ccQpC2bLbfX4=
-X-Received: by 2002:a92:cda6:0:b0:36b:85e:7cdb with SMTP id
- g6-20020a92cda6000000b0036b085e7cdbmr2283627ild.28.1714119568457; Fri, 26 Apr
- 2024 01:19:28 -0700 (PDT)
+        bh=DOO+Oxe5RqdUN11iHoDt4ydzdK+8AI7NsGcbenw3d/A=;
+        b=GUY9k98s+jcnDR5EDXBQuqhdT6W2HqH8ZmvbdvhAuwz9uiLXca8Hdc35UthlLYgexc
+         yXCH6P22x6hso6NfJ2CLMybOtkLd2XHFrIYx2RxOw7cY1hlWXAMoRpDaG3j+c65PGHas
+         /6aglYVxtdEn1AkzL5elHE2ZsBRmOm0AKYstngyiAnkwZhB6WF13Za2Ewtgra5h8m3tw
+         CUHRt2RFj5hC8h8ugRgKjD5ifrirVaGDeO4HWT3kTxeIK0VTFcpAiWX9TcFEOW6RpF6H
+         h6N9FXPJOmixmB99gKVarAqiRe2ekHP8GpyTtsj+6tZVSZehOX9ltKe2VLLWRCXKdazr
+         5d6A==
+X-Forwarded-Encrypted: i=1; AJvYcCV2AJ+p/3+AQ2a2pGzBYCKC8Bn7aMaiU6egz0uYkknZVkaYT5Zj6minb3QpxccVFgvYC3Nu9W8Vs+HxtQsvesYg4NeSrw6Z
+X-Gm-Message-State: AOJu0Yw4bB3n9ll8r7P6MWD2B68XryTy3jvAv6xw3VRtdOQTwrTkPdwG
+	Wg37zpEp8+NTm+twZPsfKTJeBUZNKyvqFivobq38VZQep52GIYspcmNd3Av6cvDK10Awp/Dg+2L
+	Tl3eEl+ZsDdz1r3TX9LtrPCZA5ndazV0D7DMb
+X-Google-Smtp-Source: AGHT+IGpFrMmIiUOGeU8GqDVHvij5e/EHFi3eql6VH19ZiFzL8S3bxOTPVDJXE8//vqh4sKVAKaAYPJDw3yidMK+gL8=
+X-Received: by 2002:a05:6602:f11:b0:7de:9c6b:79de with SMTP id
+ hl17-20020a0566020f1100b007de9c6b79demr2387497iob.14.1714119658470; Fri, 26
+ Apr 2024 01:20:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240425200700.24403-1-ian.forbes@broadcom.com>
-In-Reply-To: <20240425200700.24403-1-ian.forbes@broadcom.com>
+References: <20240425192748.1761522-1-zack.rusin@broadcom.com>
+In-Reply-To: <20240425192748.1761522-1-zack.rusin@broadcom.com>
 From: Martin Krastev <martin.krastev@broadcom.com>
-Date: Fri, 26 Apr 2024 11:19:17 +0300
-Message-ID: <CAKLwHdXmzEcHUDqCoK_6eMP8WFJm4ZQA8k3F4EW-_Ci11gfeuQ@mail.gmail.com>
-Subject: Re: [PATCH] drm/vmwgfx: Fix Legacy Display Unit
-To: Ian Forbes <ian.forbes@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org, bcm-kernel-feedback-list@broadcom.com, 
-	zack.rusin@broadcom.com, maaz.mombasawala@broadcom.com, 
+Date: Fri, 26 Apr 2024 11:20:47 +0300
+Message-ID: <CAKLwHdVZSRtnCe_=pTw0kUaTEvCRKqypcq-u2f50o=xRQCrASA@mail.gmail.com>
+Subject: Re: [PATCH] drm/vmwgfx: Fix invalid reads in fence signaled events
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com, 
+	maaz.mombasawala@broadcom.com, zdi-disclosures@trendmicro.com, 
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Good catch!
+LGTM!
 
 Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
 
 Regards,
 Martin
 
-On Thu, Apr 25, 2024 at 11:07=E2=80=AFPM Ian Forbes <ian.forbes@broadcom.co=
+On Thu, Apr 25, 2024 at 10:27=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.co=
 m> wrote:
 >
-> Legacy DU was broken by the referenced fixes commit because the placement
-> and the busy_placement no longer pointed to the same object. This was lat=
-er
-> fixed indirectly by commit a78a8da51b36c7a0c0c16233f91d60aac03a5a49
-> ("drm/ttm: replace busy placement with flags v6") in v6.9.
+> Correctly set the length of the drm_event to the size of the structure
+> that's actually used.
 >
-> Fixes: 39985eea5a6d ("drm/vmwgfx: Abstract placement selection")
-> Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-> Cc: <stable@vger.kernel.org> # v6.4+
+> The length of the drm_event was set to the parent structure instead of
+> to the drm_vmw_event_fence which is supposed to be read. drm_read
+> uses the length parameter to copy the event to the user space thus
+> resuling in oob reads.
+>
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+> Fixes: 8b7de6aa8468 ("vmwgfx: Rework fence event action")
+> Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-23566
+> Cc: David Airlie <airlied@gmail.com>
+> CC: Daniel Vetter <daniel@ffwll.ch>
+> Cc: Zack Rusin <zack.rusin@broadcom.com>
+> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
+om.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: <stable@vger.kernel.org> # v3.4+
 > ---
->  drivers/gpu/drm/vmwgfx/vmwgfx_bo.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/gpu/drm/vmwgfx/vmwgfx_fence.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/=
-vmwgfx_bo.c
-> index 2bfac3aad7b7..98e73eb0ccf1 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-> @@ -204,6 +204,7 @@ int vmw_bo_pin_in_start_of_vram(struct vmw_private *d=
-ev_priv,
->                              VMW_BO_DOMAIN_VRAM,
->                              VMW_BO_DOMAIN_VRAM);
->         buf->places[0].lpfn =3D PFN_UP(bo->resource->size);
-> +       buf->busy_places[0].lpfn =3D PFN_UP(bo->resource->size);
->         ret =3D ttm_bo_validate(bo, &buf->placement, &ctx);
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c b/drivers/gpu/drm/vmwg=
+fx/vmwgfx_fence.c
+> index 2a0cda324703..5efc6a766f64 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+> @@ -991,7 +991,7 @@ static int vmw_event_fence_action_create(struct drm_f=
+ile *file_priv,
+>         }
 >
->         /* For some reason we didn't end up at the start of vram */
+>         event->event.base.type =3D DRM_VMW_EVENT_FENCE_SIGNALED;
+> -       event->event.base.length =3D sizeof(*event);
+> +       event->event.base.length =3D sizeof(event->event);
+>         event->event.user_data =3D user_data;
+>
+>         ret =3D drm_event_reserve_init(dev, file_priv, &event->base, &eve=
+nt->event.base);
 > --
-> 2.34.1
+> 2.40.1
 >
 
