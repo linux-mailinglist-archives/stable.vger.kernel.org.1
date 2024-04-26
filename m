@@ -1,207 +1,162 @@
-Return-Path: <stable+bounces-41497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3A68B31B7
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 09:54:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F348B323C
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 10:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2305BB2180D
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 07:54:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 112EAB23E15
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 08:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B467313C66E;
-	Fri, 26 Apr 2024 07:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uk0+DRHt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D11713AD04;
+	Fri, 26 Apr 2024 08:22:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B3813A271
-	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 07:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3884E32182
+	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 08:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714118090; cv=none; b=jBpmm6PqEpWaBTwGoVzLrCPzk0mveDNfs8r7ekzS7AGQNcA0v2HV12nXLu3FPRCJukSAcPojq8r1Yk6gRdcqnaCT5yhksM7G1r3BzKThvaplaNMJarko6dGCpLEfQub9wEX1VrYSwXjz3HFbIdRr5jefVR8APc43bt/lhXnrX/Y=
+	t=1714119731; cv=none; b=UhA5kYuzTNb+C/n7/pynX187VR4YEzmXhRbnVsA3sugvfHZ0avXnrPhUy2CfIvag70u4c0fXnXETZnMDNPuENE9SdhWu1ezu8XqCSfbDwOOzYPwQ64Ky/vw6l8X2E6MxPki//rskzw505UKfhOeM0NpT+qOWTUkZ4IpcmOiMq6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714118090; c=relaxed/simple;
-	bh=DvaD7yH2p98w1uzgFXVKLv/Z2xerWWbHCkSviowNIvE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m5ZJm/2vps6vFk57XQqFREWfCYRZbo0+G+RNI1TPpNAE01+aphBL0UVcJI4a54Mu0vmOb1rg/zJ3vu/7rC838XtlpQl51l2U8/nkqArevvv0zFo/0Hoag9VTh3XmoHoVtbwBZEckhXvEDnbOiSJ417EgaFiX2RsDY8q4T3W9HfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uk0+DRHt; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714118088; x=1745654088;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=DvaD7yH2p98w1uzgFXVKLv/Z2xerWWbHCkSviowNIvE=;
-  b=Uk0+DRHtuONzWyhWRBhRf8DHvtQzDlhtXqw+RcQ5eVg+tlqS0WaI9KVB
-   iMCugOcETqhpYnT5iou5MxAanccgYQSLW58RRAi95KNJA/ydptKSMUk1H
-   GApLsfrg1kq+u0tflRtj6m99Ku+jp4+Z2/7ZCrnee4T0aBWFjPJbeZS4f
-   jppz3FzHdrsbRrmN9mM8NYODDX/3RhxQEQxiKmiuagH5/bzIxsv88YJHG
-   MHbKpU1157BjRTUhgM7mAdypEg+ATZqd0CBi53D5eUcz9sh2VEoOsQMRD
-   RpsHudoMrF8l+Xnw6gsGYXsXPNd6ZfR6zRHIYXaQHijvCou083oJ2Ud7e
-   g==;
-X-CSE-ConnectionGUID: RhXgfabvT/+jvcGfq6ZJdg==
-X-CSE-MsgGUID: KeQh4X+HTdu1/NIdaQn4qw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="10060530"
-X-IronPort-AV: E=Sophos;i="6.07,231,1708416000"; 
-   d="scan'208";a="10060530"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 00:54:47 -0700
-X-CSE-ConnectionGUID: lMOciEhxQVyS+1qATcUIXg==
-X-CSE-MsgGUID: 7t+/lZjfSwGVxUAuWGW5HA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,231,1708416000"; 
-   d="scan'208";a="56517745"
-Received: from unknown (HELO [10.245.244.184]) ([10.245.244.184])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 00:54:46 -0700
-Message-ID: <d963ebff-6e27-458b-ae40-b226ca1f0dfc@intel.com>
-Date: Fri, 26 Apr 2024 08:54:44 +0100
+	s=arc-20240116; t=1714119731; c=relaxed/simple;
+	bh=ezA1pcFRSLj9tQL2+cnMG7fjnB09VXTRHT4cRLlJH7Y=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SBDs2SqHTNHPt5Feo0nC1bFa610M/yiuGimWHgt5vqyaMJCqPVh+vjM5on+xCWs+RrJYnAOklGbWErxAVRpjbtqWDlt3ny51gHZS4mvnw0S2Q1FT1SIqQ9Rk711ZlyhqNUnO6aTMBmYX/DkTazY8pknlCB/93xvhSOPh4tfmJqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4VQlzW6jrnz1HBjN;
+	Fri, 26 Apr 2024 16:20:55 +0800 (CST)
+Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
+	by mail.maildlp.com (Postfix) with ESMTPS id 662F61400DD;
+	Fri, 26 Apr 2024 16:21:59 +0800 (CST)
+Received: from huawei.com (10.173.135.154) by canpemm500002.china.huawei.com
+ (7.192.104.244) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Apr
+ 2024 16:21:58 +0800
+From: Miaohe Lin <linmiaohe@huawei.com>
+To: <stable@vger.kernel.org>
+CC: Miaohe Lin <linmiaohe@huawei.com>, Thorvald Natvig <thorvald@google.com>,
+	Jane Chu <jane.chu@oracle.com>, Christian Brauner <brauner@kernel.org>, Heiko
+ Carstens <hca@linux.ibm.com>, Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Mateusz Guzik
+	<mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>, Muchun Song
+	<muchun.song@linux.dev>, Oleg Nesterov <oleg@redhat.com>, Peng Zhang
+	<zhangpeng.00@bytedance.com>, Tycho Andersen <tandersen@netflix.com>, Andrew
+ Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6.y] fork: defer linking file vma until vma is fully initialized
+Date: Fri, 26 Apr 2024 16:18:30 +0800
+Message-ID: <20240426081830.2416341-1-linmiaohe@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <2024042319-freeing-degree-ca0d@gregkh>
+References: <2024042319-freeing-degree-ca0d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] drm/xe/vm: prevent UAF with asid based
- lookup" failed to apply to 6.8-stable tree
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: matthew.brost@intel.com, stable@vger.kernel.org,
- gregkh@linuxfoundation.org
-References: <2024042358-esteemed-fastball-c2d8@gregkh>
- <77xckfvuyzqksdfpbkxxegire3wipk77fylewqffs2bhkyyah2@nrcdumadjsfw>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <77xckfvuyzqksdfpbkxxegire3wipk77fylewqffs2bhkyyah2@nrcdumadjsfw>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ canpemm500002.china.huawei.com (7.192.104.244)
 
-On 24/04/2024 20:03, Lucas De Marchi wrote:
-> On Tue, Apr 23, 2024 at 06:07:58AM GMT, gregkh@linuxfoundation.org wrote:
->>
->> The patch below does not apply to the 6.8-stable tree.
->> If someone wants it applied there, or to any other stable or longterm
->> tree, then please email the backport, including the original git commit
->> id to <stable@vger.kernel.org>.
->>
->> To reproduce the conflict and resubmit, you may use the following 
->> commands:
->>
->> git fetch 
->> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ 
->> linux-6.8.y
->> git checkout FETCH_HEAD
->> git cherry-pick -x ca7c52ac7ad384bcf299d89482c45fec7cd00da9
->> # <resolve conflicts, build, test, etc.>
->> git commit -s
->> git send-email --to '<stable@vger.kernel.org>' --in-reply-to 
->> '2024042358-esteemed-fastball-c2d8@gregkh' --subject-prefix 'PATCH 
->> 6.8.y' HEAD^..
->>
->> Possible dependencies:
->>
->> ca7c52ac7ad3 ("drm/xe/vm: prevent UAF with asid based lookup")
->> 0eb2a18a8fad ("drm/xe: Implement VM snapshot support for BO's and 
->> userptr")
->> be7d51c5b468 ("drm/xe: Add batch buffer addresses to devcoredump")
->> 4376cee62092 ("drm/xe: Print more device information in devcoredump")
->> 98fefec8c381 ("drm/xe: Change devcoredump functions parameters to 
->> xe_sched_job")
-> 
-> Matt Auld, were we too aggressive saying this should be ported back to
-> 6.8?  There's no platform in 6.8 with usm, so maybe we don't really need
-> it there.  I don't think we want to bring any of the commits mentioned
-> above back to 6.8 really.  If we need this change here, can you prepare
-> a modified version with the conflicts resolved for 6.8?
+Thorvald reported a WARNING [1]. And the root cause is below race:
 
-I think it's fine to drop if there is indeed nothing in 6.8 that 
-supports usm.
+ CPU 1					CPU 2
+ fork					hugetlbfs_fallocate
+  dup_mmap				 hugetlbfs_punch_hole
+   i_mmap_lock_write(mapping);
+   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
+   i_mmap_unlock_write(mapping);
+   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
+					 i_mmap_lock_write(mapping);
+   					 hugetlb_vmdelete_list
+					  vma_interval_tree_foreach
+					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
+   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
+					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
+					 i_mmap_unlock_write(mapping);
 
-> 
-> thanks
-> Lucas De Marchi
-> 
->>
->> thanks,
->>
->> greg k-h
->>
->> ------------------ original commit in Linus's tree ------------------
->>
->> From ca7c52ac7ad384bcf299d89482c45fec7cd00da9 Mon Sep 17 00:00:00 2001
->> From: Matthew Auld <matthew.auld@intel.com>
->> Date: Fri, 12 Apr 2024 12:31:45 +0100
->> Subject: [PATCH] drm/xe/vm: prevent UAF with asid based lookup
->>
->> The asid is only erased from the xarray when the vm refcount reaches
->> zero, however this leads to potential UAF since the xe_vm_get() only
->> works on a vm with refcount != 0. Since the asid is allocated in the vm
->> create ioctl, rather erase it when closing the vm, prior to dropping the
->> potential last ref. This should also work when user closes driver fd
->> without explicit vm destroy.
->>
->> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
->> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1594
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Matthew Brost <matthew.brost@intel.com>
->> Cc: <stable@vger.kernel.org> # v6.8+
->> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
->> Link: 
->> https://patchwork.freedesktop.org/patch/msgid/20240412113144.259426-4-matthew.auld@intel.com
->> (cherry picked from commit 83967c57320d0d01ae512f10e79213f81e4bf594)
->> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->>
->> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
->> index 62d1ef8867a8..3d4c8f342e21 100644
->> --- a/drivers/gpu/drm/xe/xe_vm.c
->> +++ b/drivers/gpu/drm/xe/xe_vm.c
->> @@ -1577,6 +1577,16 @@ void xe_vm_close_and_put(struct xe_vm *vm)
->>         xe->usm.num_vm_in_fault_mode--;
->>     else if (!(vm->flags & XE_VM_FLAG_MIGRATION))
->>         xe->usm.num_vm_in_non_fault_mode--;
->> +
->> +    if (vm->usm.asid) {
->> +        void *lookup;
->> +
->> +        xe_assert(xe, xe->info.has_asid);
->> +        xe_assert(xe, !(vm->flags & XE_VM_FLAG_MIGRATION));
->> +
->> +        lookup = xa_erase(&xe->usm.asid_to_vm, vm->usm.asid);
->> +        xe_assert(xe, lookup == vm);
->> +    }
->>     mutex_unlock(&xe->usm.lock);
->>
->>     for_each_tile(tile, xe, id)
->> @@ -1592,24 +1602,15 @@ static void vm_destroy_work_func(struct 
->> work_struct *w)
->>     struct xe_device *xe = vm->xe;
->>     struct xe_tile *tile;
->>     u8 id;
->> -    void *lookup;
->>
->>     /* xe_vm_close_and_put was not called? */
->>     xe_assert(xe, !vm->size);
->>
->>     mutex_destroy(&vm->snap_mutex);
->>
->> -    if (!(vm->flags & XE_VM_FLAG_MIGRATION)) {
->> +    if (!(vm->flags & XE_VM_FLAG_MIGRATION))
->>         xe_device_mem_access_put(xe);
->>
->> -        if (xe->info.has_asid && vm->usm.asid) {
->> -            mutex_lock(&xe->usm.lock);
->> -            lookup = xa_erase(&xe->usm.asid_to_vm, vm->usm.asid);
->> -            xe_assert(xe, lookup == vm);
->> -            mutex_unlock(&xe->usm.lock);
->> -        }
->> -    }
->> -
->>     for_each_tile(tile, xe, id)
->>         XE_WARN_ON(vm->pt_root[id]);
->>
->>
+hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
+i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
+by deferring linking file vma until vma is fully initialized.  Those vmas
+should be initialized first before they can be used.
+
+Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
+Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reported-by: Thorvald Natvig <thorvald@google.com>
+Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19)
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+---
+ kernel/fork.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 177ce7438db6..2eab916b504b 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -727,6 +727,15 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		} else if (anon_vma_fork(tmp, mpnt))
+ 			goto fail_nomem_anon_vma_fork;
+ 		vm_flags_clear(tmp, VM_LOCKED_MASK);
++		/*
++		 * Copy/update hugetlb private vma information.
++		 */
++		if (is_vm_hugetlb_page(tmp))
++			hugetlb_dup_vma_private(tmp);
++
++		if (tmp->vm_ops && tmp->vm_ops->open)
++			tmp->vm_ops->open(tmp);
++
+ 		file = tmp->vm_file;
+ 		if (file) {
+ 			struct address_space *mapping = file->f_mapping;
+@@ -743,12 +752,6 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 			i_mmap_unlock_write(mapping);
+ 		}
+ 
+-		/*
+-		 * Copy/update hugetlb private vma information.
+-		 */
+-		if (is_vm_hugetlb_page(tmp))
+-			hugetlb_dup_vma_private(tmp);
+-
+ 		/* Link the vma into the MT */
+ 		if (vma_iter_bulk_store(&vmi, tmp))
+ 			goto fail_nomem_vmi_store;
+@@ -757,9 +760,6 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		if (!(tmp->vm_flags & VM_WIPEONFORK))
+ 			retval = copy_page_range(tmp, mpnt);
+ 
+-		if (tmp->vm_ops && tmp->vm_ops->open)
+-			tmp->vm_ops->open(tmp);
+-
+ 		if (retval)
+ 			goto loop_out;
+ 	}
+-- 
+2.33.0
+
 
