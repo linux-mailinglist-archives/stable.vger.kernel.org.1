@@ -1,138 +1,122 @@
-Return-Path: <stable+bounces-41499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339B68B3230
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 10:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DC38B332D
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 10:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0F7F281F11
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 08:21:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E21EB2892D3
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 08:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E33F13C9B0;
-	Fri, 26 Apr 2024 08:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727F713AA5C;
+	Fri, 26 Apr 2024 08:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UAx6Ppw6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+4H8Rpd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CF813C9A0
-	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 08:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B3043AC5;
+	Fri, 26 Apr 2024 08:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714119660; cv=none; b=MjVDNUlMsxcdxsr+IUU1aiF60LOQu6S+XtqSG4+mCpYskfPBJ3xnfiOlcqhcVNgzZ47dsDSH3UoH5nAP7YANvh52/ZDeYFk2STaPbh+uhjgN/oGgW/65g3tL3KlFC3M7c123W0UdEN5G7mLRiKD4vB3lkcqn/adFOqhleLVrcCE=
+	t=1714121068; cv=none; b=rYTnXwOA7Qb+3IEFZYADz4InWZux0zUbhhVKZOEqoeEAh9MSeiXh0nqdaeIckMN35UmmUYuf2qQoBkamqNrd4vSw77rTtr6bls7XfQ6zQLkz9X31M23oSvy63clQciU8+uaMxrRMNUH9fRb5UY/kwmvPsR3hGRrq4L0EvSGxVOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714119660; c=relaxed/simple;
-	bh=2QwY/idrWWstb2VS57g5qy6TKTu8YrTelcs1NllY2gE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N//KBj/5egqjgxB8EtatLHycyPB3C57u2XoS37AAZAsryvVn8Etz/xvc7OkesGCPUBwwsqdQbe/5HvlM/v9pkmpFlSfrSxWsUVsZoGhE0vB5HXRZVxhb9h8HnWRe5GscFMS3C8Yz8C08lXERtpPPbEdQKEKFBMPtUtgpFACnUhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UAx6Ppw6; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7da68b46b0dso76666239f.1
-        for <stable@vger.kernel.org>; Fri, 26 Apr 2024 01:20:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1714119658; x=1714724458; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DOO+Oxe5RqdUN11iHoDt4ydzdK+8AI7NsGcbenw3d/A=;
-        b=UAx6Ppw6A4wbEg9mFet1cI+rY5Tkj7+1UuOPcHdJWHNQR/sdpDoU0fy0F8Y24/QO6T
-         siItHpR3P6Zt7A49GVrqLiJ1UorbTJNshGX86IGrwEKO5olBKed3/+vr6sm1KBLIgxZ+
-         DFs4/V7An5HuM0NI75thEJSwWYnltF0liD+yU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714119658; x=1714724458;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DOO+Oxe5RqdUN11iHoDt4ydzdK+8AI7NsGcbenw3d/A=;
-        b=GUY9k98s+jcnDR5EDXBQuqhdT6W2HqH8ZmvbdvhAuwz9uiLXca8Hdc35UthlLYgexc
-         yXCH6P22x6hso6NfJ2CLMybOtkLd2XHFrIYx2RxOw7cY1hlWXAMoRpDaG3j+c65PGHas
-         /6aglYVxtdEn1AkzL5elHE2ZsBRmOm0AKYstngyiAnkwZhB6WF13Za2Ewtgra5h8m3tw
-         CUHRt2RFj5hC8h8ugRgKjD5ifrirVaGDeO4HWT3kTxeIK0VTFcpAiWX9TcFEOW6RpF6H
-         h6N9FXPJOmixmB99gKVarAqiRe2ekHP8GpyTtsj+6tZVSZehOX9ltKe2VLLWRCXKdazr
-         5d6A==
-X-Forwarded-Encrypted: i=1; AJvYcCV2AJ+p/3+AQ2a2pGzBYCKC8Bn7aMaiU6egz0uYkknZVkaYT5Zj6minb3QpxccVFgvYC3Nu9W8Vs+HxtQsvesYg4NeSrw6Z
-X-Gm-Message-State: AOJu0Yw4bB3n9ll8r7P6MWD2B68XryTy3jvAv6xw3VRtdOQTwrTkPdwG
-	Wg37zpEp8+NTm+twZPsfKTJeBUZNKyvqFivobq38VZQep52GIYspcmNd3Av6cvDK10Awp/Dg+2L
-	Tl3eEl+ZsDdz1r3TX9LtrPCZA5ndazV0D7DMb
-X-Google-Smtp-Source: AGHT+IGpFrMmIiUOGeU8GqDVHvij5e/EHFi3eql6VH19ZiFzL8S3bxOTPVDJXE8//vqh4sKVAKaAYPJDw3yidMK+gL8=
-X-Received: by 2002:a05:6602:f11:b0:7de:9c6b:79de with SMTP id
- hl17-20020a0566020f1100b007de9c6b79demr2387497iob.14.1714119658470; Fri, 26
- Apr 2024 01:20:58 -0700 (PDT)
+	s=arc-20240116; t=1714121068; c=relaxed/simple;
+	bh=4wvOYv8+NIdUpdRb7Grmdgfv9If4faaLPcCOfZoDlE4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UvDZm2xUa6+kh9Z86+bXJXyS5HjLFM9tx3qy2ufgxqc7BFakL43zoziwcdI2KqKjA6Lc3NSbMijONoNuh8gM754xEipVbxNDni7R0qyGpIewcQoZC0b8mLSuTvTvY9CztUpwqQO6GPLZ0nLix4Nbt8xaZdLjPMrjaMcaL5Yqn7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+4H8Rpd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00E9C113CD;
+	Fri, 26 Apr 2024 08:44:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714121067;
+	bh=4wvOYv8+NIdUpdRb7Grmdgfv9If4faaLPcCOfZoDlE4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E+4H8Rpd6Cp58EWOWAjvv0PVZSWobDuIWzJvMc3meXBqGv5BkMauw98WEWTFTnwtx
+	 ka/qKcLZu0uyQeQtYiXju71UOIVvQMjUxHu8cYy0qHTwwHyIi7wAma9KwI/G4uPknf
+	 Z9v9rZJqFCnWpNLrv3iLR3WKKMMrQYi6YR5WGLTo=
+Date: Fri, 26 Apr 2024 10:44:18 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, dianders@google.com, briannorris@google.com,
+	momohatt@google.com, Herbert Xu <herbert@gondor.apana.org.au>
+Subject: Re: [PATCH 5.15 000/476] 5.15.149-rc1 review
+Message-ID: <2024042603-sleek-janitor-34f8@gregkh>
+References: <20240221130007.738356493@linuxfoundation.org>
+ <aceda6e2-cefb-4146-aef8-ff4bafa56e56@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240425192748.1761522-1-zack.rusin@broadcom.com>
-In-Reply-To: <20240425192748.1761522-1-zack.rusin@broadcom.com>
-From: Martin Krastev <martin.krastev@broadcom.com>
-Date: Fri, 26 Apr 2024 11:20:47 +0300
-Message-ID: <CAKLwHdVZSRtnCe_=pTw0kUaTEvCRKqypcq-u2f50o=xRQCrASA@mail.gmail.com>
-Subject: Re: [PATCH] drm/vmwgfx: Fix invalid reads in fence signaled events
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com, 
-	maaz.mombasawala@broadcom.com, zdi-disclosures@trendmicro.com, 
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aceda6e2-cefb-4146-aef8-ff4bafa56e56@roeck-us.net>
 
-LGTM!
+On Thu, Apr 25, 2024 at 03:46:18PM -0700, Guenter Roeck wrote:
+> Hi,
+> 
+> On 2/21/24 05:00, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.15.149 release.
+> > There are 476 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Fri, 23 Feb 2024 12:59:02 +0000.
+> > Anything received after that time might be too late.
+> > 
+> [ ... ]
+> 
+> > Herbert Xu <herbert@gondor.apana.org.au>
+> >      crypto: api - Disallow identical driver names
+> > 
+> 
+> This patch results in a severe performance regression on arm64 systems;
+> there is more than 50% throughput loss on some sequential read tests.
+> The problem affects v5.15.y and older kernel branches.
+> 
+> Analysis shows that v5.15.y and older kernel _do_ try to register the same
+> crypto algorithm twice, once through
+> 
+>  __crypto_register_alg
+>  crypto_register_alg
+>  crypto_register_skciphers
+>  aes_init
+> 
+> and then again through
+> 
+>  __crypto_register_alg
+>  crypto_register_alg
+>  crypto_register_skcipher
+>  simd_skcipher_create_compat
+>  aes_init
+> 
+> After above patch was applied, the second registration fails, resulting
+> in the regression.
+> 
+> The problem is not seen in later kernels due to commit 676e508122d9
+> ("crypto: arm64/aes-ce - stop using SIMD helper for skciphers"). Applying this
+> commit or reverting above commit fixes the regression in v5.15.y and older.
+> 
+> Thanks is due to Momoko Hattori for reporting the problem and finding the
+> offending patch, Doug Anderson for finding the duplicate registration attempt,
+> and Brian Norris for finding the fix. I copied them on this e-mail in case
+> there are further questions.
 
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Thanks for the report.  I got a report that this breaks some android
+systems as well due to some FIPS crypto code that happens to duplicate
+the names as well.  I think reverting it makes sense and I'll queue that
+up for the next round of releases.
 
-Regards,
-Martin
-
-On Thu, Apr 25, 2024 at 10:27=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.co=
-m> wrote:
->
-> Correctly set the length of the drm_event to the size of the structure
-> that's actually used.
->
-> The length of the drm_event was set to the parent structure instead of
-> to the drm_vmw_event_fence which is supposed to be read. drm_read
-> uses the length parameter to copy the event to the user space thus
-> resuling in oob reads.
->
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> Fixes: 8b7de6aa8468 ("vmwgfx: Rework fence event action")
-> Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-23566
-> Cc: David Airlie <airlied@gmail.com>
-> CC: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Zack Rusin <zack.rusin@broadcom.com>
-> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
-om.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: <stable@vger.kernel.org> # v3.4+
-> ---
->  drivers/gpu/drm/vmwgfx/vmwgfx_fence.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c b/drivers/gpu/drm/vmwg=
-fx/vmwgfx_fence.c
-> index 2a0cda324703..5efc6a766f64 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-> @@ -991,7 +991,7 @@ static int vmw_event_fence_action_create(struct drm_f=
-ile *file_priv,
->         }
->
->         event->event.base.type =3D DRM_VMW_EVENT_FENCE_SIGNALED;
-> -       event->event.base.length =3D sizeof(*event);
-> +       event->event.base.length =3D sizeof(event->event);
->         event->event.user_data =3D user_data;
->
->         ret =3D drm_event_reserve_init(dev, file_priv, &event->base, &eve=
-nt->event.base);
-> --
-> 2.40.1
->
+greg k-h
 
