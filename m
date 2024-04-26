@@ -1,137 +1,156 @@
-Return-Path: <stable+bounces-41495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB438B2FC1
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 07:35:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FDA8B304D
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 08:24:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67C931C214B1
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 05:35:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA8B61F23BD2
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 06:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AA213A279;
-	Fri, 26 Apr 2024 05:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809E413A865;
+	Fri, 26 Apr 2024 06:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9U1FN/2"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eCBiTbHA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBF91849;
-	Fri, 26 Apr 2024 05:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01C42F2F;
+	Fri, 26 Apr 2024 06:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714109709; cv=none; b=i0TyRNldMASKg9XKHzL/rmXAArvegyTrJImjf7Ijze5cQxoD7qNMuJqxc1jLsb9z67i+G+DHvvWlyAYd8d8o8+ETpJ9THkGVRY5wlfImjdQKML+Ssft8lpkePiaBdxQ5Q/rs+8JDlhA+Il8/yQYNfp19v5hC/1DfsLDrULTPQdI=
+	t=1714112646; cv=none; b=c3hbU3S/TR5yllBuTHF6j5209qTPUGr5XTucP937/R9E1yn6xzxm30SbSbTOp5infrR5+UZngxHnkWLj9Gyc+fnVT2/ZqwRbZKcTCW/bf77jr+S73280tqTmgyYVSjK6zinsws5Dk6T+k+Uz1lwtTR5IhpAKPuQ4TOwnXSj1tJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714109709; c=relaxed/simple;
-	bh=1WCFz9g7vTUTNKQ3TiTEs820xuQE/CC/C1Y28k+/o60=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WWiHq+sUaKDg/klaEmVG2ck8Dcr+YtCOnck7KEi+lj1NvleJPSh1yAOt40MWxicZVbXNBBTYNrjSMnomlHXBFhgwW2tJdaWCKkBfGhqJ+lY0j+IFDPrPMVy9Rc848dgmOAfbQXHI7oljub8Z7ComCDvEXTLelMsftu15commrM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9U1FN/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F1DC113CD;
-	Fri, 26 Apr 2024 05:35:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714109709;
-	bh=1WCFz9g7vTUTNKQ3TiTEs820xuQE/CC/C1Y28k+/o60=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D9U1FN/20RXfKopPasfFAShCCrhI3NZlsOg+C2eP02+0f+PVfhCFII+xKjnSQlGiA
-	 WDtJWv9d9PJoPXD6bMntp9AlPegnDBvKFHnValE1Slnn1GwGwkCbfyChnxSq4pf8IS
-	 IlIGbt3gh+bI7cmVaw6gZ10KEhToTg0YZ2qcGa/9+EU2l5v52L6oalNAdhS0TSe6u/
-	 0Kk7MZA1SmDJrP5HU7QISnArPbpTRD6P3/7KuAUDPEm/TRiSA0Ufnoe5QEptNkmw1X
-	 3g5D8qANo93l/o0OFPibSM8NgVzIy9w9G2/ZcjTfejylb25AXON8HJnIb593qoAXRt
-	 jM7RBaqkgkRqw==
-Date: Fri, 26 Apr 2024 08:33:47 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Nam Cao <namcao@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Chen Jiahao <chenjiahao16@huawei.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] riscv: fix overlap of allocated page and PTR_ERR
-Message-ID: <Zis8u5qiewKqNzfs@kernel.org>
-References: <20240425115201.3044202-1-namcao@linutronix.de>
+	s=arc-20240116; t=1714112646; c=relaxed/simple;
+	bh=b2MZma9l4fy+G4zHh3Z8yNnEeOicyqWTEnp4r3RVNss=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=mm4i/J9MCNMfCNSPECdBS6b+8+JMHSEG8Z1+CVAGe58F8lR0BbbKhLBEI+405FJ+dPnNBNrmG+uYBIuakEZ0FijeXzNYkWbiN0cPi4uPwtCmOSxiS/FdHDN6pC0FDKezjppjaybWqUaLO3u7NT0V7gXtZC4ofVDABLfTmFR9vJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eCBiTbHA; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43Q5KETJ015548;
+	Fri, 26 Apr 2024 06:23:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=IYL4Dmml/wM3KshkBFg2RgswGdKMTxaxDmvPZEY115k=; b=eC
+	BiTbHAXbNFa6xXaBTIclmwcGuUZOqdH8sasA0h9I4UBgYTRXIZSE5kB+GJ8F9nL5
+	X3pDZX1tFPeIpD8I0AmYF4q5r7jjJuaDRDOzkghqMRywq0TYSWEGBqARBT+646b1
+	EZT8lTcnl81MvVlsNmdc3AkKye6X+CkOm36MlDw1UO2Z5eYvYdaqVORZsUH6VYIO
+	iutJ8BBDD0QJAyFedlmfFnzbSQSM1e5RvaTmNdiR4QC5x6CXxcg6BENP/uV+/p8p
+	DKCKAdGdFdh6U2By90acoGy9uMpvRfjEbOZ/LHdItcXSJdq3QLAhGqN1AnSampHS
+	ubGdtCSP+LMlYfNs4j0A==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xr611gc0q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Apr 2024 06:23:58 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43Q6NvbX002196
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Apr 2024 06:23:57 GMT
+Received: from [10.216.47.179] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 25 Apr
+ 2024 23:23:51 -0700
+Message-ID: <bb0e1baf-7e64-463a-8638-d403c7a29317@quicinc.com>
+Date: Fri, 26 Apr 2024 11:53:45 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240425115201.3044202-1-namcao@linutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Bluetooth: qca: fix invalid device address check
+Content-Language: en-US
+To: Johan Hovold <johan@kernel.org>
+CC: Doug Anderson <dianders@chromium.org>,
+        Johan Hovold
+	<johan+linaro@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        "Luiz
+ Augusto von Dentz" <luiz.dentz@gmail.com>,
+        Matthias Kaehlcke
+	<mka@chromium.org>,
+        <linux-bluetooth@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, Stephen Boyd
+	<swboyd@chromium.org>,
+        <quic_mohamull@quicinc.com>, <quic_hbandi@quicinc.com>
+References: <20240416091509.19995-1-johan+linaro@kernel.org>
+ <CAD=FV=UBHvz2S5bd8eso030-E=rhbAypz_BnO-vmB1vNo+4Uvw@mail.gmail.com>
+ <Zid6lfQMlDp3HQ67@hovoldconsulting.com>
+ <CAD=FV=XoBwYmYGTdFNYMtJRnm6VAGf+-wq-ODVkxQqN3XeVHBw@mail.gmail.com>
+ <ZioW9IDT7B4sas4l@hovoldconsulting.com>
+ <c9ea5867-2db2-4f64-a1e3-f6c2836dd45d@quicinc.com>
+ <Zip9vMHa2x-uW-pf@hovoldconsulting.com>
+From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+In-Reply-To: <Zip9vMHa2x-uW-pf@hovoldconsulting.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: WVySy3-XRiWsIXPMrvasnqop4nNmuV3I
+X-Proofpoint-GUID: WVySy3-XRiWsIXPMrvasnqop4nNmuV3I
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-26_06,2024-04-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 suspectscore=0 bulkscore=0 mlxscore=0
+ phishscore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999
+ spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404260037
 
-On Thu, Apr 25, 2024 at 01:52:01PM +0200, Nam Cao wrote:
-> On riscv32, it is possible for the last page in virtual address space
-> (0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
-> shouldn't happen.
-> 
-> There is already some code to ensure memblock won't allocate the last page.
-> However, buddy allocator is left unchecked.
-> 
-> Fix this by reserving physical memory that would be mapped at virtual
-> addresses greater than 0xfffff000.
-> 
-> Reported-by: Björn Töpel <bjorn@kernel.org>
-> Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
-> Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Cc: <stable@vger.kernel.org>
 
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
-> ---
->  arch/riscv/mm/init.c | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
+On 4/25/2024 9:28 PM, Johan Hovold wrote:
+> Hi Janaki,
 > 
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index 968761843203..7c985435b3fc 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -235,18 +235,19 @@ static void __init setup_bootmem(void)
->  		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
->  
->  	/*
-> -	 * memblock allocator is not aware of the fact that last 4K bytes of
-> -	 * the addressable memory can not be mapped because of IS_ERR_VALUE
-> -	 * macro. Make sure that last 4k bytes are not usable by memblock
-> -	 * if end of dram is equal to maximum addressable memory.  For 64-bit
-> -	 * kernel, this problem can't happen here as the end of the virtual
-> -	 * address space is occupied by the kernel mapping then this check must
-> -	 * be done as soon as the kernel mapping base address is determined.
-> +	 * Reserve physical address space that would be mapped to virtual
-> +	 * addresses greater than (void *)(-PAGE_SIZE) because:
-> +	 *  - This memory would overlap with ERR_PTR
-> +	 *  - This memory belongs to high memory, which is not supported
-> +	 *
-> +	 * This is not applicable to 64-bit kernel, because virtual addresses
-> +	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
-> +	 * occupied by kernel mapping. Also it is unrealistic for high memory
-> +	 * to exist on 64-bit platforms.
->  	 */
->  	if (!IS_ENABLED(CONFIG_64BIT)) {
-> -		max_mapped_addr = __pa(~(ulong)0);
-> -		if (max_mapped_addr == (phys_ram_end - 1))
-> -			memblock_set_current_limit(max_mapped_addr - 4096);
-> +		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
-> +		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
->  	}
->  
->  	min_low_pfn = PFN_UP(phys_ram_base);
-> -- 
-> 2.39.2
+> On Thu, Apr 25, 2024 at 08:31:50PM +0530, Janaki Ramaiah Thota wrote:
+> 
+>> Apologies for the delay. As of now, we have observed the following
+>> values in the upstream firmware files for default BD addresses.
+>> We will confirm ASAP if there are any changes.
+>>
+>> ---------------------------------------------------------
+>> |   BDA	        |      Chipset		               |
+>> ---------------------------------------------------------	
+>> | 20 00 00 10 80 39  | WCN3988 with ROM Version 0x0200	|
+>> ---------------------------------------------------------	
+>> | 00 08 74 12 80 39  |  WCN3988 with ROM Version 0x0201	|
+>> ---------------------------------------------------------	
+>> | 00 07 64 21 90 39  |  WCN3990			        |
+>> ---------------------------------------------------------
+> 
+> Thanks a lot for these. I see now that the default Trogdor address Doug
+> reported (39:98:00:00:5a:ad) appears to comes from the fw too:
+> 
+> 	$ od -x crnv32.bin | grep 5aad
+> 
+> 	0000020 0000 0000 5aad 0000 3998 0008 0008 0000
+> 
+> which means that patch I sent this morning should be all that is needed
+> for those machines at least.
 > 
 
--- 
-Sincerely yours,
-Mike.
+Yes correct, it will work for Trogdor
+
+> Can you please confirm that all the WCN39xx have OTP storage for an
+> address that an OEM can choose to use?
+> 
+
+We are checking with internal FW team, will confirm on it.
+
+> If that's not the case then we could simplify things by always marking
+> their addresses as invalid, but I assume that they all have address
+> storage.
+> 
+> Johan
+
+-Janakiram
 
