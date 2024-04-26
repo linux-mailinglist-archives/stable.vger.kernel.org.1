@@ -1,114 +1,123 @@
-Return-Path: <stable+bounces-41514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F688B37B9
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 15:01:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64C48B38C2
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 15:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE3EFB238CC
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 13:01:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D95631C22CC7
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 13:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D30146D49;
-	Fri, 26 Apr 2024 13:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93703147C91;
+	Fri, 26 Apr 2024 13:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fQ6iEWDu"
+	dkim=pass (1024-bit key) header.d=amazon.es header.i=@amazon.es header.b="RJo3fPxA"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524A8145FE7
-	for <stable@vger.kernel.org>; Fri, 26 Apr 2024 13:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8A31F956;
+	Fri, 26 Apr 2024 13:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714136442; cv=none; b=eADnpELdNM57aDQjs04NCWE458kgU6sGpefj/AztYu3C+uP7ssgDujdt/klAQAHWKWRC/3Bq9SqtJdeEhlBKkkyRxxi5EpkpviJ4wfPnU+H1Ya7WPfhR4+vG7YtBI6V3ZxhF9yRmetDCuUh0MBCj5xUo98OCUCtgIZiAtu+akoo=
+	t=1714139048; cv=none; b=YePP86PWhHa/fRiFyH2R0KKFIULr3tc3al3A3luiHWhg4kKHi2GEfvwCKgrtawmXKkNl9wTSFGck3h4lYyyx1C/RPtKVf1Mmi0i4+kNBZJUcr2mSdqVfUkHjVj4IFXuLJZhXqs5ZfZB9DTM2bWEj8BCkohCz7AXMXwH/x4qo8zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714136442; c=relaxed/simple;
-	bh=TPvoHDOw8CFxIt1QPp+dGjLmg/3zeloSgEPwTuPDsi4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h/40X3UtKdhfKZiEWRw1hezzSMAPSCsMonIMGSqv4n3veUmV55zRcW5q/oY1ZVVHl/qGFlNZHXcb9OEDciK3cdgKrUOWUT2k/2qfRR7eJpny/ub4qKzSZ27kzh1OPW+Ifu1mIC2OqtJP8FgSXByEjJvHf0hhrxjKG3g2PluVfHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fQ6iEWDu; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714136441; x=1745672441;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TPvoHDOw8CFxIt1QPp+dGjLmg/3zeloSgEPwTuPDsi4=;
-  b=fQ6iEWDuRJNfMTeAZzTMZ/v5qaCkjfkRp7mh8RTwhLeZqC5e2Q822U82
-   kJbSDBLkLHA1F60D5ZLo8Z/yEu7VFWlVs0FCEXbpxhV9ce/e7k7PzcrH3
-   eetM5ahefH485dFMeqbvVRDQlXZGi2SDlhyRsLUPlRdKAynBn0wKB3sB9
-   uEOTa/fMpnX3s1spEeC5EzEfKSRAhwLW/qrztf1NRSjUII96sao1XKa2e
-   mVyuRO0KF0q7u5i3K9yO4sNg4L6tTZUMII3vdoGeuXkaimPuRyzS6K2l/
-   YaRp0ukh0euNhGfqX9RsO9lLD69OxCG22fjVzZgRlO9HwEr11kmFBkeMy
-   Q==;
-X-CSE-ConnectionGUID: 64qy5yqoR++DyFHoGy6g6Q==
-X-CSE-MsgGUID: Qa73RkTtRXOC55HdtQzIqA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="32367538"
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
-   d="scan'208";a="32367538"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 06:00:40 -0700
-X-CSE-ConnectionGUID: A0QywIJQQb2Rhwx6FrVzBA==
-X-CSE-MsgGUID: HASdl/FnQ9uBd7jcKjAcLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
-   d="scan'208";a="25491521"
-Received: from unknown (HELO intel.com) ([10.247.119.98])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 06:00:31 -0700
-Date: Fri, 26 Apr 2024 15:00:21 +0200
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Gnattu OC <gnattuoc@me.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/gt: Automate CCS Mode setting during engine
- resets
-Message-ID: <ZiulZZ_X1SEF8vVE@ashyti-mobl2.lan>
-References: <20240426000723.229296-1-andi.shyti@linux.intel.com>
+	s=arc-20240116; t=1714139048; c=relaxed/simple;
+	bh=UZi8TXx9a8fjUIlUFGYdMkWm4qzSrLxmXgditYXOGGQ=;
+	h=Subject:Message-ID:Date:MIME-Version:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=A9v4OOYb4tLQySPIBATOk3FdQ13NrcolksjmS2QhFNVmLZ9vrEsG0SPt/GPe0ZHZwt8fyZvUkdkh53o1sQbFANexck8DwXSG/PTJofMJTs79u8e263p4eFFowDTiwA4aM1Np1siqetoGfgeAT+uamAZLF2CgWbQJxUVEK8bZKmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.es; spf=pass smtp.mailfrom=amazon.es; dkim=pass (1024-bit key) header.d=amazon.es header.i=@amazon.es header.b=RJo3fPxA; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.es
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.es; i=@amazon.es; q=dns/txt; s=amazon201209;
+  t=1714139047; x=1745675047;
+  h=message-id:date:mime-version:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:subject;
+  bh=fIo6JiWpcfuJdP9GV9sCAn384Sgayh04jC6d/BFYW58=;
+  b=RJo3fPxAuoSpOUotwAlANuQ9Jil20slZr1KwbtRTMlP/Go4bFPL48k0u
+   66qVAtC4B293edjuD88CsPsz3hwJko983QAWWu14FiQypyliyFf6dK5Gj
+   o6W2CLyk0OWHYrLoOY1OWAo/5OX2VzqYBZnWXGlLI3/S9tx7TEmnmaAHD
+   0=;
+X-IronPort-AV: E=Sophos;i="6.07,232,1708387200"; 
+   d="scan'208";a="290971147"
+Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when VMGENID
+ updates"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 13:44:04 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.17.79:48160]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.21.244:2525] with esmtp (Farcaster)
+ id 3e3dc579-38c9-447a-8e7d-ab1368f1c799; Fri, 26 Apr 2024 13:44:02 +0000 (UTC)
+X-Farcaster-Flow-ID: 3e3dc579-38c9-447a-8e7d-ab1368f1c799
+Received: from EX19D037EUB003.ant.amazon.com (10.252.61.119) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Fri, 26 Apr 2024 13:44:01 +0000
+Received: from [192.168.28.148] (10.1.213.14) by EX19D037EUB003.ant.amazon.com
+ (10.252.61.119) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Fri, 26 Apr
+ 2024 13:43:56 +0000
+Message-ID: <1f09319c-56e6-44d7-9175-c6307089447b@amazon.es>
+Date: Fri, 26 Apr 2024 15:43:51 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240426000723.229296-1-andi.shyti@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, Alexander Graf <graf@amazon.com>
+CC: Lennart Poettering <mzxreary@0pointer.de>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>, Theodore Ts'o
+	<tytso@mit.edu>, "Cali, Marco" <xmarcalx@amazon.co.uk>, Arnd Bergmann
+	<arnd@arndb.de>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "Christian
+ Brauner" <brauner@kernel.org>, <linux@leemhuis.info>,
+	<regressions@lists.linux.dev>
+References: <20240418114814.24601-1-Jason@zx2c4.com>
+ <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
+ <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
+ <ZieoRxn-On0gD-H2@gardel-login>
+ <b819717c-74ea-4556-8577-ccd90e9199e9@amazon.com>
+ <Ziujox51oPzZmwzA@zx2c4.com>
+Content-Language: en-US
+From: Babis Chalios <bchalios@amazon.es>
+In-Reply-To: <Ziujox51oPzZmwzA@zx2c4.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D036UWC003.ant.amazon.com (10.13.139.214) To
+ EX19D037EUB003.ant.amazon.com (10.252.61.119)
 
-Hi,
+Hi Jason,
 
-On Fri, Apr 26, 2024 at 02:07:23AM +0200, Andi Shyti wrote:
-> We missed setting the CCS mode during resume and engine resets.
-> Create a workaround to be added in the engine's workaround list.
-> This workaround sets the XEHP_CCS_MODE value at every reset.
-> 
-> The issue can be reproduced by running:
-> 
->   $ clpeak --kernel-latency
-> 
-> Without resetting the CCS mode, we encounter a fence timeout:
-> 
->   Fence expiration time out i915-0000:03:00.0:clpeak[2387]:2!
-> 
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10895
-> Fixes: 6db31251bb26 ("drm/i915/gt: Enable only one CCS for compute workload")
-> Reported-by: Gnattu OC <gnattuoc@me.com>
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.2+
+On 4/26/24 14:52, Jason A. Donenfeld wrote:
+> I don't think adding UAPI to an individual device driver like this is a
+> good approach especially considering that the virtio changes we
+> discussed some time ago will likely augment this and create another
+> means of a similar notification. And given that this intersects with
+> other userspace-oriented work I hope to get back to pretty soon, I think
+> introducing some adhoc mechanism like this adds clutter and isn't the
+> ideal way forward.
+>
 
-based on the discussion on the issue and as agreed with Gnattu:
+Correct me if I'm wrong, but the virtio changes were meant to mean "please
+reseed your PRNGs". That's why we wanted to route them via random.c. We
+designed them specifically so that virtio-rng would be only one of the 
+potential
+systems that would emit such notifications, whereas other systems might have
+nothing to do with VM events.
 
-Tested-by: Gnattu OC <gnattuoc@me.com>
+With that in mind, could you describe how these events would be useful 
+to the
+use case of Lennart? systemd does not need a notification every time the 
+system
+believes PRNGs need to be reseeded. It explicitly needs a notification 
+when a VM
+was cloned. This has nothing to do with PRNGs and I don't believe random.c,
+virtio-rng, or vgetrand() should be responsible for delivering this.
 
-Thank you again, gnattu,
-Andi
+Cheers,
+Babis
 
