@@ -1,186 +1,142 @@
-Return-Path: <stable+bounces-41520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527948B39B0
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 16:21:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 265848B3A9E
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 17:07:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BB91C2255C
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 14:20:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE1C11F22113
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 15:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714501487DF;
-	Fri, 26 Apr 2024 14:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37965148FE2;
+	Fri, 26 Apr 2024 15:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="zaDX0v68"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L2MlZHaF"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7A242A99;
-	Fri, 26 Apr 2024 14:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABAC148846;
+	Fri, 26 Apr 2024 15:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714141254; cv=none; b=YfsbBoTNYtOVUfMaIzNtR1a8yXrWwLs8WI8bcxCUjE5BMOvByg1vJfo9VCya84xWZMQ5ASzZNdAaU4b/gOkajq5jHMSgnznlv9Dn679AGfaofeR1WjyriZGTO0QY4AMmIAzHURyxpbXwE/V5eHABYA/5A8G4n9C4wTpQJyIsCVE=
+	t=1714144019; cv=none; b=ZixxIQn+VCcBOJnKq4IyUGKnNJ0J87mUZwbvAQPTmabG7GExAtsQo0hu2mKujrQwkrkNLQR+0jtqxE5LEpM2L/BvHJo99NwE4n1Gfehfnwtbe0+S+7J355AhZVfwmNKAzsHYs0PWhDQzVk9E1ZBVGSRmTpvpuh2lu7DgdcUc57I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714141254; c=relaxed/simple;
-	bh=8jkgyD/xNuucw7rvhnzLJRKIcu6wFztv0aRmrlnfUZw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qJR1qmUXRwLH3xkvOXba1JNJjP8YvnCU1RH3doT0HaTNIgcv8pLAFQ9pQrnR1FXc1tzwLseHw2ghx0HfQ5hI8LyPAmk4n0YDJFnYv0RcaF6IT64Z3nAgrAh2UFL8lncmHQuqmJo2ANhBGLoIfK02X/VgqPLhRJn32FAlNIaOuWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=zaDX0v68; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=9rYvBQe6TsxDQQVkhjWduuSGKAR6ii1CCvqbJyEHClQ=;
-	t=1714141252; x=1714573252; b=zaDX0v684QVpHQf9YAydL3ucIOmg3RGAirYZQYYZ9qAmwy2
-	AmNKIO+BF97Kpwc3suVX4vfw1Frk4utWAf931N8o3FTL6xaQXXJXuj/1etLXMY8mKcUVqC+QSK2Ju
-	uY0RHVIv6lDxnP6zLfLQoKDdeb20m8oD9xyAuGnnrY7RWxkS3B8EJ0+0fDwKtiI+rdmMF/97R/Pxq
-	4ZRxCvwajFkGrHsUwxUT8vXM6iE3rxHCvXDXi4p1n4FLbOAxGtJUd6n0/B24cuT2TqgJvDKT1ScwX
-	HJRJuUtTq5Ypgseba+M5ckRtMASaVERpjaPmapu51Bp5yqGeJ7rtZojvieNb+8DA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s0MRT-0006Bh-4R; Fri, 26 Apr 2024 16:20:47 +0200
-Message-ID: <94db60bf-c3f4-4217-a900-9c3eba29e180@leemhuis.info>
-Date: Fri, 26 Apr 2024 16:20:41 +0200
+	s=arc-20240116; t=1714144019; c=relaxed/simple;
+	bh=ncTVHNygt84sLGMiwmdLqfXu6MVvic3n8Py3fm7DG00=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=pWDQjKCLj2T96aD/YyJqqFQ+fk1PsmtlMduVmWgEg2URor5PdmUWZTMRALrwxoNisluHfiWD0uaMcHFem1F0uVABWj5KDAzp33QU7br15NeOhsyBtIM3XcyDBB6YUSnP9IjHXMTjsKjSpHQeVOuVpSQQAhB+ZmXbajpMbliiCN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L2MlZHaF; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714144017; x=1745680017;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ncTVHNygt84sLGMiwmdLqfXu6MVvic3n8Py3fm7DG00=;
+  b=L2MlZHaFPqibHt7ZfC+CX3ZR02me0rcNzhFwyvkQL6yiqU4FZ+PPkGRh
+   iuSbpM074Gi526No+wxMfvHO4Z1D/zxAX15p829nlQdN5kg+K10VLPsuY
+   92H7B6uTSSjnnIIAF5tlVJ31fLfh2wHGiJvvLFd1KWQHOLNESj+TUVrL2
+   BZeRQP1oM+scNpO+bdU9CeyOsjH+KbQzgX5eWypgrgX1PXgSCpq38frE/
+   Dx+0AfgHyt8GD1ivhjl9BKO/aFKkVUVdgKWYY7OAu+rMdKxi+hkuBVkC0
+   OjgP3jVyDTqy7ppf83vBvdgU07WlE3KJYxnCrgmX6/I/O//+qmiAeRPQm
+   g==;
+X-CSE-ConnectionGUID: CxheVWS1Q4ektaLNCiTIWw==
+X-CSE-MsgGUID: wKiO8BF9ToynOZN2DRxGbA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="35269262"
+X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
+   d="scan'208";a="35269262"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 08:06:56 -0700
+X-CSE-ConnectionGUID: 1RUVn8Y9T/mQyMy1zY+F5g==
+X-CSE-MsgGUID: /O+8e8J3TPmWp53xRzjg/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
+   d="scan'208";a="25519467"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by fmviesa010.fm.intel.com with ESMTP; 26 Apr 2024 08:06:56 -0700
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: eranian@google.com,
+	ak@linux.intel.com,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ahmad Yasin <ahmad.yasin@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] perf/x86/intel: Add a distinct name for Granite Rapids
+Date: Fri, 26 Apr 2024 08:05:57 -0700
+Message-Id: <20240426150557.2857936-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when
- VMGENID updates"
-To: Alexander Graf <graf@amazon.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Lennart Poettering <mzxreary@0pointer.de>, Babis Chalios
- <bchalios@amazon.es>, Theodore Ts'o <tytso@mit.edu>,
- "Cali, Marco" <xmarcalx@amazon.co.uk>, Arnd Bergmann <arnd@arndb.de>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- Christian Brauner <brauner@kernel.org>, regressions@lists.linux.dev,
- "Jason A. Donenfeld" <Jason@zx2c4.com>, linux-kernel@vger.kernel.org
-References: <20240418114814.24601-1-Jason@zx2c4.com>
- <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Content-Language: en-US, de-DE
-In-Reply-To: <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1714141252;18255fd5;
-X-HE-SMSGID: 1s0MRT-0006Bh-4R
 
-On 22.04.24 09:51, Alexander Graf wrote:
-> [Adding CC list of original patch plus regression tracker]
-> 
-> On 18.04.24 13:48, Jason A. Donenfeld wrote:
->> This reverts commit ad6bcdad2b6724e113f191a12f859a9e8456b26d. I had
->> nak'd it, and Greg said on the thread that it links that he wasn't going
->> to take it either, especially since it's not his code or his tree, but
->> then, seemingly accidentally, it got pushed up some months later, in
->> what looks like a mistake, with no further discussion in the linked
->> thread. So revert it, since it's clearly not intended.
-> 
-> Reverting this patch creates a user space visible regression compared to
-> v6.8.
+From: Kan Liang <kan.liang@linux.intel.com>
 
-A theoretical one? Sure! But did any machines actually used in
-production break? From my understanding of Linus approach to the "no
-regression" rule this is what matters most here.
+Currently, the Sapphire Rapids and Granite Rapids share the same PMU
+name, sapphire_rapids. Because from the kernel’s perspective, GNR is
+similar to SPR. The only key difference is that they support different
+extra MSRs. The code path and the PMU name are shared.
 
-And even if that was the case: It afaics also matters that the commit
-was just in proper releases for a short time frame. Linus thus might
-consider the whole situation along the lines of "we really did screw up
-here and to fix it we are bending the 'no regressions' rule slightly;
-sorry". Things like that iirc have happened in the past, but I might
-misremember here.
+However, from end users' perspective, they are quite different. Besides
+the extra MSRs, GNR has a newer PEBS format, supports Retire Latency,
+supports new CPUID enumeration architecture, doesn't required the
+load-latency AUX event, has additional TMA Level 1 Architectural Events,
+etc. The differences can be enumerated by CPUID or the PERF_CAPABILITIES
+MSR. They weren't reflected in the model-specific kernel setup.
+But it is worth to have a distinct PMU name for GNR.
 
-Linus, if I got you wrong there, please speak up. But right now I'm
-inclined to not handle this as a regression and drop it from the tracking.
+Fixes: a6742cb90b56 ("perf/x86/intel: Fix the FRONTEND encoding on GNR and MTL")
+Suggested-by: Ahmad Yasin <ahmad.yasin@intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/events/intel/core.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Ciao, Thorsten
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index f3315f13f920..da38a16b2cbc 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -6768,12 +6768,17 @@ __init int intel_pmu_init(void)
+ 	case INTEL_FAM6_EMERALDRAPIDS_X:
+ 		x86_pmu.flags |= PMU_FL_MEM_LOADS_AUX;
+ 		x86_pmu.extra_regs = intel_glc_extra_regs;
++		pr_cont("Sapphire Rapids events, ");
++		name = "sapphire_rapids";
+ 		fallthrough;
+ 	case INTEL_FAM6_GRANITERAPIDS_X:
+ 	case INTEL_FAM6_GRANITERAPIDS_D:
+ 		intel_pmu_init_glc(NULL);
+-		if (!x86_pmu.extra_regs)
++		if (!x86_pmu.extra_regs) {
+ 			x86_pmu.extra_regs = intel_rwc_extra_regs;
++			pr_cont("Granite Rapids events, ");
++			name = "granite_rapids";
++		}
+ 		x86_pmu.pebs_ept = 1;
+ 		x86_pmu.hw_config = hsw_hw_config;
+ 		x86_pmu.get_event_constraints = glc_get_event_constraints;
+@@ -6784,8 +6789,6 @@ __init int intel_pmu_init(void)
+ 		td_attr = glc_td_events_attrs;
+ 		tsx_attr = glc_tsx_events_attrs;
+ 		intel_pmu_pebs_data_source_skl(true);
+-		pr_cont("Sapphire Rapids events, ");
+-		name = "sapphire_rapids";
+ 		break;
+ 
+ 	case INTEL_FAM6_ALDERLAKE:
+-- 
+2.35.1
 
-> Please treat it as such.
->
-> I'm slightly confused to see you passionate about this patch after you
-> ghosted the conversation you referenced:
-> 
-> 
-> https://lore.kernel.org/lkml/00d6172f-e291-4e96-9d3e-63ee8e60d556@amazon.com/
-> 
-> The purpose of this uevent is to notify systemd[1][2] (or similar) that
-> a VM clone event happened, so it can for example regenerate MAC
-> addresses if it generated them on boot, regenerate its unique machine id
-> or simply force rerequest a new DHCP lease.
-> 
-> I don't understand how there's any correlation or dependency to
-> vgetrandom() or anything RNG in this and why getting vgetrandom() merged
-> upstream is even something to talk about in the same line as this patch
-> [3].
-> 
-> We had a lengthy, constructive conversation with Ted at LPC last year
-> about the "PRNG and clone" use case and concluded that it's best for
-> everyone to simply assume the system could be cloned at any point, hence
-> always force intermix of RDRAND or comparable to any PRNG output. We
-> since no longer need an event for that case.
-> 
-> 
-> Alex
-> 
-> [1] https://github.com/systemd/systemd/issues/26380
-> [2] https://lore.kernel.org/lkml/ZJGNREN4tLzQXOJr@gardel-login/
-> [3]
-> https://lore.kernel.org/lkml/CAHmME9pxc-nO_xa=4+1CnvbnuefbRTJHxM7n817c_TPeoxzu_g@mail.gmail.com/
-> 
-> #regzbot introduced: 3aadf100f93d8081
-> 
->>
->> Fixes: ad6bcdad2b67 ("vmgenid: emit uevent when VMGENID updates")
->> Cc: stable@vger.kernel.org
->> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Link: https://lore.kernel.org/r/20230531095119.11202-2-bchalios@amazon.es
->> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
->> ---
->>   drivers/virt/vmgenid.c | 2 --
->>   1 file changed, 2 deletions(-)
->>
->> diff --git a/drivers/virt/vmgenid.c b/drivers/virt/vmgenid.c
->> index b67a28da4702..a1c467a0e9f7 100644
->> --- a/drivers/virt/vmgenid.c
->> +++ b/drivers/virt/vmgenid.c
->> @@ -68,7 +68,6 @@ static int vmgenid_add(struct acpi_device *device)
->>   static void vmgenid_notify(struct acpi_device *device, u32 event)
->>   {
->>       struct vmgenid_state *state = acpi_driver_data(device);
->> -    char *envp[] = { "NEW_VMGENID=1", NULL };
->>       u8 old_id[VMGENID_SIZE];
->>         memcpy(old_id, state->this_id, sizeof(old_id));
->> @@ -76,7 +75,6 @@ static void vmgenid_notify(struct acpi_device
->> *device, u32 event)
->>       if (!memcmp(old_id, state->this_id, sizeof(old_id)))
->>           return;
->>       add_vmfork_randomness(state->this_id, sizeof(state->this_id));
->> -    kobject_uevent_env(&device->dev.kobj, KOBJ_CHANGE, envp);
->>   }
->>     static const struct acpi_device_id vmgenid_ids[] = {
-> 
-> 
-> 
-> 
-> Amazon Development Center Germany GmbH
-> Krausenstr. 38
-> 10117 Berlin
-> Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-> Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-> Sitz: Berlin
-> Ust-ID: DE 289 237 879
-> 
-> 
 
