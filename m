@@ -1,142 +1,117 @@
-Return-Path: <stable+bounces-41521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265848B3A9E
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 17:07:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 715108B3BA9
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 17:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE1C11F22113
-	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 15:07:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26E51C23B6E
+	for <lists+stable@lfdr.de>; Fri, 26 Apr 2024 15:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37965148FE2;
-	Fri, 26 Apr 2024 15:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C744A14A60A;
+	Fri, 26 Apr 2024 15:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L2MlZHaF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jf13icI6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABAC148846;
-	Fri, 26 Apr 2024 15:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1331314901A;
+	Fri, 26 Apr 2024 15:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714144019; cv=none; b=ZixxIQn+VCcBOJnKq4IyUGKnNJ0J87mUZwbvAQPTmabG7GExAtsQo0hu2mKujrQwkrkNLQR+0jtqxE5LEpM2L/BvHJo99NwE4n1Gfehfnwtbe0+S+7J355AhZVfwmNKAzsHYs0PWhDQzVk9E1ZBVGSRmTpvpuh2lu7DgdcUc57I=
+	t=1714145617; cv=none; b=Qk3WEdA2qtdRiePqCOnHEUXHGLruymSXexhJC4ErvU5QdWHKNd1unc4+l1JrVLJeTEekVOr0Gn/HuuWxcuNKuUW3wh0639BCtxxjGnk/5V4pf/+O6ZyRl6trYvvY5k2J2wfYWR0ubeRaPoS3kFALEQoUZArUCsAyb8CRNF+5f70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714144019; c=relaxed/simple;
-	bh=ncTVHNygt84sLGMiwmdLqfXu6MVvic3n8Py3fm7DG00=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=pWDQjKCLj2T96aD/YyJqqFQ+fk1PsmtlMduVmWgEg2URor5PdmUWZTMRALrwxoNisluHfiWD0uaMcHFem1F0uVABWj5KDAzp33QU7br15NeOhsyBtIM3XcyDBB6YUSnP9IjHXMTjsKjSpHQeVOuVpSQQAhB+ZmXbajpMbliiCN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L2MlZHaF; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714144017; x=1745680017;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ncTVHNygt84sLGMiwmdLqfXu6MVvic3n8Py3fm7DG00=;
-  b=L2MlZHaFPqibHt7ZfC+CX3ZR02me0rcNzhFwyvkQL6yiqU4FZ+PPkGRh
-   iuSbpM074Gi526No+wxMfvHO4Z1D/zxAX15p829nlQdN5kg+K10VLPsuY
-   92H7B6uTSSjnnIIAF5tlVJ31fLfh2wHGiJvvLFd1KWQHOLNESj+TUVrL2
-   BZeRQP1oM+scNpO+bdU9CeyOsjH+KbQzgX5eWypgrgX1PXgSCpq38frE/
-   Dx+0AfgHyt8GD1ivhjl9BKO/aFKkVUVdgKWYY7OAu+rMdKxi+hkuBVkC0
-   OjgP3jVyDTqy7ppf83vBvdgU07WlE3KJYxnCrgmX6/I/O//+qmiAeRPQm
-   g==;
-X-CSE-ConnectionGUID: CxheVWS1Q4ektaLNCiTIWw==
-X-CSE-MsgGUID: wKiO8BF9ToynOZN2DRxGbA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="35269262"
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
-   d="scan'208";a="35269262"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 08:06:56 -0700
-X-CSE-ConnectionGUID: 1RUVn8Y9T/mQyMy1zY+F5g==
-X-CSE-MsgGUID: /O+8e8J3TPmWp53xRzjg/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
-   d="scan'208";a="25519467"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by fmviesa010.fm.intel.com with ESMTP; 26 Apr 2024 08:06:56 -0700
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: eranian@google.com,
-	ak@linux.intel.com,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ahmad Yasin <ahmad.yasin@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] perf/x86/intel: Add a distinct name for Granite Rapids
-Date: Fri, 26 Apr 2024 08:05:57 -0700
-Message-Id: <20240426150557.2857936-1-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+	s=arc-20240116; t=1714145617; c=relaxed/simple;
+	bh=QFRwxMg7frEbNFDwjKYIBUVZgUsQLuyynI1skXq82W8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SnPeNJqY+nSDbauyNyPeGdwUIvBghsp+j1iDMvHrr8ImwOQCRHiWnq6w0AHsPOGUblzom/cl5arTUHspepHlplcD1d2Lzc5UbNJMUXnz3JehmwNRKgvzN2X0YEtmNhz/WPqXIiiw3lLq4+vjl+mhsD8h2yWfEkZd2sIDixcmxl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jf13icI6; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2def8e58471so31421591fa.0;
+        Fri, 26 Apr 2024 08:33:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714145614; x=1714750414; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BmSvZsYuxSbHXQQ8UGWfhMWdiN9uCl4v3V31oMHoCWA=;
+        b=jf13icI6SxHnOhX+aFYln5AGzn/W3XNiLsvbkEI1+A2ukE2ux11OXE5ACpiCNtGAgY
+         zPENQk8YiXjcqCFJ7xG1/Jy1ZSkdOm2KfDK9zLBDSVJPDzzHsaHsUG/SLpNpfNFBGdxy
+         qpyH50zIQusZ+YFzibR9rkipUfvpqJ4CJHVIyrOMXMozFOFiUasm4KYnZIZQB2YPbjiK
+         4jOX7u4gaWnZQ3Ks7H8YSvRPSIeCu7SqIRTqwv+TB7MHp34I1FxkQc+wU6cDnJablV/r
+         3DSS5xUogEL3LTyuQfXgi5GtXlu1nKnAh92gDJwgs25HbGVGNS/WgjuTICprjMST+ybb
+         n+qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714145614; x=1714750414;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BmSvZsYuxSbHXQQ8UGWfhMWdiN9uCl4v3V31oMHoCWA=;
+        b=YQCp140kY5XMH9eOw6p4zmQhWdwY5VKYHQDW1HAwwHPOGFdrwc95aEq+d/+2mA27W8
+         Pdr+F3lOHiQXR7unKgQVOYHY6nlAkmnUciOl2kyrDQKellU2eyan5bvZvoVEwJiE5kJA
+         wrjeKb96nxTfheC+qpa16xQfv2oKc78ByQtJum4Atf+Mg/ATNwTCnxRuHaXtypKOZ9g1
+         zw6/sriQ/AlfTBRKdt6+DVyZszDJnVYvitSsFKTTgSDDRbrWTcvgxjWxZP8DBIKCKdUh
+         aLzcpm1NySHCA116W8Yz+izsZQiAMhw6w2EFDgjvuwWuzQ8ab7wsZ0y0AdmfkPQ+z2T6
+         KDyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGEV9wxMs9dUTtMI5S30iXSU+T1Ly6ciOfLG5GhI12t1k6zKxxUSkht64kwRongMc1m387Q1m+MsDbN23gVpDAP2cEL1EkqT51waeuWOjZkQ6gbUdHzHZGk9GTYs6BFk5Ti8dkuOYIVr6YRkZQ9epg8OAwgiBZD0hE0ZCj4tweTrGtZfxT
+X-Gm-Message-State: AOJu0YzuLxgDOWoC+oHp7565J83hAx+dIxskrl0xKYJyBmvCkZsLZXkC
+	Au390F0+bdS7NWfI/AyPZBtS8IUqoA/nWC0QvuFHYHNln12WXvKa
+X-Google-Smtp-Source: AGHT+IGYO3LNHjAx3ZhjcpProOx5Njxc6bvdlaBa/MDs4MpbVRPuvd/qE2go3bO7nU7WPG3Ywv530A==
+X-Received: by 2002:a05:651c:211b:b0:2d8:d972:67e3 with SMTP id a27-20020a05651c211b00b002d8d97267e3mr2911193ljq.5.1714145613836;
+        Fri, 26 Apr 2024 08:33:33 -0700 (PDT)
+Received: from localhost (p200300e41f162000f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f16:2000:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id gc24-20020a170906c8d800b00a55ac217235sm7000671ejb.90.2024.04.26.08.33.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Apr 2024 08:33:33 -0700 (PDT)
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	devicetree@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: tegra: correct Tegra132 I2C alias
+Date: Fri, 26 Apr 2024 17:33:32 +0200
+Message-ID: <171414557704.2298486.5241450837257963145.b4-ty@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240401140854.97107-1-krzk@kernel.org>
+References: <20240401140854.97107-1-krzk@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Thierry Reding <treding@nvidia.com>
 
-Currently, the Sapphire Rapids and Granite Rapids share the same PMU
-name, sapphire_rapids. Because from the kernel’s perspective, GNR is
-similar to SPR. The only key difference is that they support different
-extra MSRs. The code path and the PMU name are shared.
 
-However, from end users' perspective, they are quite different. Besides
-the extra MSRs, GNR has a newer PEBS format, supports Retire Latency,
-supports new CPUID enumeration architecture, doesn't required the
-load-latency AUX event, has additional TMA Level 1 Architectural Events,
-etc. The differences can be enumerated by CPUID or the PERF_CAPABILITIES
-MSR. They weren't reflected in the model-specific kernel setup.
-But it is worth to have a distinct PMU name for GNR.
+On Mon, 01 Apr 2024 16:08:54 +0200, Krzysztof Kozlowski wrote:
+> There is no such device as "as3722@40", because its name is "pmic".  Use
+> phandles for aliases to fix relying on full node path.  This corrects
+> aliases for RTC devices and also fixes dtc W=1 warning:
+> 
+>   tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
+> 
+> 
+> [...]
 
-Fixes: a6742cb90b56 ("perf/x86/intel: Fix the FRONTEND encoding on GNR and MTL")
-Suggested-by: Ahmad Yasin <ahmad.yasin@intel.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/events/intel/core.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+Applied, thanks!
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index f3315f13f920..da38a16b2cbc 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -6768,12 +6768,17 @@ __init int intel_pmu_init(void)
- 	case INTEL_FAM6_EMERALDRAPIDS_X:
- 		x86_pmu.flags |= PMU_FL_MEM_LOADS_AUX;
- 		x86_pmu.extra_regs = intel_glc_extra_regs;
-+		pr_cont("Sapphire Rapids events, ");
-+		name = "sapphire_rapids";
- 		fallthrough;
- 	case INTEL_FAM6_GRANITERAPIDS_X:
- 	case INTEL_FAM6_GRANITERAPIDS_D:
- 		intel_pmu_init_glc(NULL);
--		if (!x86_pmu.extra_regs)
-+		if (!x86_pmu.extra_regs) {
- 			x86_pmu.extra_regs = intel_rwc_extra_regs;
-+			pr_cont("Granite Rapids events, ");
-+			name = "granite_rapids";
-+		}
- 		x86_pmu.pebs_ept = 1;
- 		x86_pmu.hw_config = hsw_hw_config;
- 		x86_pmu.get_event_constraints = glc_get_event_constraints;
-@@ -6784,8 +6789,6 @@ __init int intel_pmu_init(void)
- 		td_attr = glc_td_events_attrs;
- 		tsx_attr = glc_tsx_events_attrs;
- 		intel_pmu_pebs_data_source_skl(true);
--		pr_cont("Sapphire Rapids events, ");
--		name = "sapphire_rapids";
- 		break;
- 
- 	case INTEL_FAM6_ALDERLAKE:
+[1/1] arm64: tegra: correct Tegra132 I2C alias
+      (no commit info)
+
+Best regards,
 -- 
-2.35.1
-
+Thierry Reding <treding@nvidia.com>
 
