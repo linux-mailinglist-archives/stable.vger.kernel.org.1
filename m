@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-41547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3694A8B45CA
-	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 13:14:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF438B468E
+	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 16:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A3D9B213C1
-	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 11:14:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEA252830F0
+	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 14:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A4E4879B;
-	Sat, 27 Apr 2024 11:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE0C4F888;
+	Sat, 27 Apr 2024 14:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBUZgizr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHS0Ma/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5F84AECE;
-	Sat, 27 Apr 2024 11:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873312032A;
+	Sat, 27 Apr 2024 14:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714216469; cv=none; b=rDibQIbAWKvrhE7ehvVPAEkNqVXFbsnXeCHC+2lQvc4x86lhOrRqEx7AH8HODvXqghcDqOGYT/s+h0soysErRTE3/pwQ9y8uSKq4ngcQk2yGJlOj8Knf5MOkbgOwq7WT+lfxTndjUTCPn35kJRqsp66l8YRkJn4zO8SGB6YiE6o=
+	t=1714226722; cv=none; b=C6rNfROKoeOcBNkSs44g7mVbFvqWxVy6SXhjXQlPEGKlPiNfwmAp390KwnkC/Vftnwbbf8L7va48rAvWTDFPiA+n+elkocA7eYpVVXrsyBAslC8jSVRlwrhhISms16DQNMWJBXc88Sn3Rd6lWKKDsLWk1snTPGnzbH6FNsXnPoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714216469; c=relaxed/simple;
-	bh=xeinqVWxnJpqr39fv+hN4qsXVFFJei/zTwxenlJPoyU=;
+	s=arc-20240116; t=1714226722; c=relaxed/simple;
+	bh=ARwERYBqY9ZeD4dVU/tasyGymV1kSEYAZAxk5mB94I8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jD0tbESpLwV3pA/C0i1GhNNXX6SC7SfO6MCay9gM4GtvaxSsmFRSSCNvxvdqGL3BcWAMa6Av53jNjXJDrhAanBTTHEkGnXGLfsq8L1PK4/NREiRMtI15w/2d6O6I18kui8kL5jkD75BD36REloEsW8EMghtZlQCqXUz6Ovymikg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBUZgizr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B383C113CE;
-	Sat, 27 Apr 2024 11:14:28 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=u6XIsckDALYil79UPjKYhoWhnG69ZSIVNSmlJk1zOrZE8s+KNR1fpuQUdOKqgb9nTG7LR7RgqPJb+UZi+1Q1u9FdBMFB5S2v7csem1oQ8Yo/pSExoUBVgE+iDCw3spbgVORgDXIAH2pA/Jb9fIL3Weiq8bg0OhSOg3IedEeKcA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHS0Ma/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70016C113CE;
+	Sat, 27 Apr 2024 14:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714216468;
-	bh=xeinqVWxnJpqr39fv+hN4qsXVFFJei/zTwxenlJPoyU=;
+	s=korg; t=1714226722;
+	bh=ARwERYBqY9ZeD4dVU/tasyGymV1kSEYAZAxk5mB94I8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kBUZgizrlegY/eGOA2Z+Kthv6Ru+FjKS53peUwzXhhZras1cRwHYxUt6gwl+Jb4FC
-	 2z2RoAOQnQ3ZmEbuljPmULKuQz2/LdA0ZOBmDQaUZMvJEoAL+TYZX1I7rgwUPlp7nM
-	 RF6ISo/d28NvZkeqbNwRRAdB0+4o3GuaoK5PXkFo=
-Date: Sat, 27 Apr 2024 13:14:24 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Artem S. Tashkinov" <aros@gmx.com>
-Cc: intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [Intel-wired-lan] [BUG] e1000e, scheduling while atomic (stable)
-Message-ID: <2024042756-lushness-cupped-f19b@gregkh>
-References: <2024042328-footprint-enrage-2db3@gregkh>
- <2330c23c-e99b-454a-b195-32c5b4332071@gmx.com>
+	b=MHS0Ma/ZjxiLbTMvxX0vLWYLdZLgqTpo1xf86zPtclb4lnFGNRima4sBNViyUozgb
+	 cQNtBD/L1xim7bLHklixIoowK2+N/LAPB9hlJyQrIH83yTb0hW+fnd5QyM+s/XoAzV
+	 sEsr9+YzaBEB4lBK7XhzVbJfE1NyDUtHl3Wj+SOo=
+Date: Sat, 27 Apr 2024 16:05:18 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 073/158] usb: pci-quirks: handle HAS_IOPORT
+ dependency for AMD quirk
+Message-ID: <2024042701--c90a@gregkh>
+References: <20240423213855.696477232@linuxfoundation.org>
+ <20240423213858.137949890@linuxfoundation.org>
+ <b1808bf4-a115-45d5-af18-35a0d71061a1@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,22 +58,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2330c23c-e99b-454a-b195-32c5b4332071@gmx.com>
+In-Reply-To: <b1808bf4-a115-45d5-af18-35a0d71061a1@app.fastmail.com>
 
-On Sat, Apr 27, 2024 at 10:54:23AM +0000, Artem S. Tashkinov wrote:
-> Hello,
+On Wed, Apr 24, 2024 at 08:27:39AM +0200, Arnd Bergmann wrote:
+> On Tue, Apr 23, 2024, at 23:38, Greg Kroah-Hartman wrote:
+> > 6.6-stable review patch.  If anyone has any objections, please let me know.
+> >
+> > ------------------
+> >
+> > From: Niklas Schnelle <schnelle@linux.ibm.com>
+> >
+> > [ Upstream commit 52e24f8c0a102ac76649c6b71224fadcc82bd5da ]
+> >
+> > In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+> > not being declared. In the pci-quirks case the I/O port acceses are
+> > used in the quirks for several AMD south bridges, Add a config option
+> > for the AMD quirks to depend on HAS_IOPORT and #ifdef the quirk code.
+> >
+> > Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> > Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+> > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> > Link: https://lore.kernel.org/r/20230911125653.1393895-3-schnelle@linux.ibm.com
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  drivers/usb/Kconfig           | 10 ++++++++++
+> >  drivers/usb/core/hcd-pci.c    |  3 +--
+> >  drivers/usb/host/pci-quirks.c |  2 ++
+> >  drivers/usb/host/pci-quirks.h | 30 ++++++++++++++++++++++--------
+> >  include/linux/usb/hcd.h       | 17 +++++++++++++++++
+> >  5 files changed, 52 insertions(+), 10 deletions(-)
 > 
-> This fix is still not queued in 6.8 stable:
-
-What fix?
-
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.8
+> There is no harm in backporting this one to 6.6, but there
+> is no need either since it is only a preparation for the coming
+> changes to asm/io.h.
 > 
-> Why?
+> Like the PCI quirks patch, I wouldn't backport it at all.
+> If you do want to keep it, be careful about backporting it
+> to older kernels, as it depends on fcbfe8121a45 ("Kconfig:
+> introduce HAS_IOPORT option and select it as necessary") from
+> linux-6.4.
 
-What is the git id of the change in Linus's tree?
-
-thanks,
+Agreed, I've dropped all of these now, thanks.
 
 greg k-h
 
