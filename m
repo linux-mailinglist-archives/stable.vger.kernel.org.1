@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-41575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5BD58B47CE
-	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 22:18:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C258B47D7
+	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 22:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11EF81C20B07
-	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 20:18:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 131F82824B6
+	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 20:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1933614036F;
-	Sat, 27 Apr 2024 20:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A3F144D22;
+	Sat, 27 Apr 2024 20:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vVvMa4jD"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pBN2VjMK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCDD3B289
-	for <stable@vger.kernel.org>; Sat, 27 Apr 2024 20:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54841442F4
+	for <stable@vger.kernel.org>; Sat, 27 Apr 2024 20:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714249113; cv=none; b=bUjgGPZ/WyYrWRkmg2VgAFj50zPMLp1XB/fchUa+A29N4ZEBTKB9GFb+5p2hdl9HOAHdxWEENl9BQnnMTdrKEb7Kry4O7yCrM3A4D+uKFjoCm02OfzJSbV/pE7rdKpKLAfEe5D3lFQDgjDs2ToxA8hdIe2VWInaF2AXxXRPoBss=
+	t=1714249699; cv=none; b=P3LEePU7pB73dhsCW/m0rbXx0T4p0gEmETp5mqhLYqV4upBfF40E8Jy33KL/noxv8xRdDaBlhE+G7HjAiExDMZLEEAL8Z4Mz2UFAPIDn3Wn8eiYmIULaL73Wf9j3rFzHZTNZcUUmhvVTptKYtzu4GlX6Bjw4MGSplGncrsPE7+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714249113; c=relaxed/simple;
-	bh=vGS2/u89PF7/otpUQK90Oz1lFEXoU6UBuU6k8KnR/Dk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hejGDvUzzKgJNRduVE1KSllsyGeh4zlgD0KevQp2a8BpTNxQ4OKx7lZv5XN/sSB25rWXw2D9Uf8xp6vW6nERwT3Ra0njcHMjHMtspYW9i28RL8TnLUG/gl4OzgOIzNQh7wDq/3YeULQjLOmFRvMwT5JEYVEHpJYYo8krtv+73VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--badhri.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vVvMa4jD; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1714249699; c=relaxed/simple;
+	bh=V73WW+nskmomT0tPd+6B81O72ANIKsXdEIUpthWEsFA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=N0m/s1/Ita1lvyimkjBxssWkPuTmM0brrEe8A+J0i6eBk07FqtxLBjvB3Yu2epAlZ1SFMZvPpa69t7KT/XzpZS5HEjPX4cs2t+42v/NE04bWmlicvjYS226wUPeWYShK4NtiUGs8UMXi2rQ16Kr2Nndt8+p1jl63qSyjVhcGXWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--badhri.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pBN2VjMK; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--badhri.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ae9176abf6so3706739a91.1
-        for <stable@vger.kernel.org>; Sat, 27 Apr 2024 13:18:32 -0700 (PDT)
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-61b9280bba3so71197857b3.3
+        for <stable@vger.kernel.org>; Sat, 27 Apr 2024 13:28:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1714249112; x=1714853912; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1714249697; x=1714854497; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Sfa5YDgyksbNRIIlp+y0lds34H3yK+b5QDjrM8ldPCA=;
-        b=vVvMa4jDm68HTet+WeoKgylr1uOIqCQaFsDFvaoPstpfBRooqPFwBHreFsnUcgI2E0
-         55G+lnxsKIQUNwAiahF6+N7RNfYId9e1Dtz6CVQSa7qB/jpdqLZ5fcamAloggEs/0Nmo
-         ev5MGEVG4S8m7WykMLkhE+tOVzUaohDq4xCmq3R70yATfBj+oDuFH+MRy//zF0YtTMyH
-         oBqRCPnMdqV65K1mX0pnK7G2UUL+2ZIwakaqtYjmJBWZ+WW6WcBVYC65YY9w4T1oTgIa
-         PGm7j77hyTuavpIabpppjbQwzawCDxbiFN+Qh94XI+FxDHgN3pnZ3e2uMif5vga3Af+8
-         L7cA==
+        bh=ylRat3ryBNNKSjCjBNxN3X4rZSrP8oWTwLpqPsqaRjI=;
+        b=pBN2VjMKTd+4R7g0kQvsBDpBqhJlRgiRR6PGSeqamb+uZjvyhdF4kjlpKvV9sbzoWx
+         YriejgA4nb7jijkoQryFDTBOVjt6m85aPYT9GgqjGG8uPk1HdcdvhIdbrUEErHuccvL8
+         HGn675nXPfIFIxfetPseQynCPUKLvEfXakPEWFaSHumATfTpS5Qx8FlNibh4NspU/DNj
+         VR7tT+cqLi9anErqX2dR1uh0ZVGU5b4XGj3Yo8Og6KUt5KZ4A70Mn6e7rXOqzeEujDkW
+         TWoA12N0BDb3nf8KFEWlx3wIscO+1oOxYyNl20UF2aHSGuKIrCQVZtA5rBMf5t9eBrdl
+         oIZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714249112; x=1714853912;
+        d=1e100.net; s=20230601; t=1714249697; x=1714854497;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Sfa5YDgyksbNRIIlp+y0lds34H3yK+b5QDjrM8ldPCA=;
-        b=R6kGxn/iRwsgLmvrJEyO/uHa7WE9OgwBQdrgbvUyj+s9k3sndGNCs8QUh/aYbXBqDS
-         hzf6Y4G3UOJirquMs2XWukk2FZF3zHCi0Wh+lepYYalTVeG0WJwxNVbsZtMxnj6KlIpk
-         LlY6uX767wvHmI3un5muJwnjNkYYMWv4gG2GXF/4Eugk/q+opOlRLl2OasGyr9gRxT2w
-         hBhGc3LJs/0FNbFjKqkf6D/I1gaTKO3jKERZxqQVqEl+7wrq/vdUvYER+uSZO7fPQPz0
-         immuncdjJbuI1bCMAvxmxub1Fk/TrxT0OpS7nFN1CNGRnMyyjbbxW/+HVkbV9xJlVaBl
-         Jvkw==
-X-Forwarded-Encrypted: i=1; AJvYcCWt8aihSmnmmbbIQ1Ao0F6lEW6dUYJZIw2TsvQVuxHgnhHGZZgQrwu70iinmFcuKoxp+kdWJmEixL65RSHS8U3ZVIkJ3ZNC
-X-Gm-Message-State: AOJu0YwJb5D3GMPuSZ9uWi+Tq1E2Ybq6COuHWHI7iecobIvCVzv0IHXA
-	en+fa7Jvll79jr4JBHIyAn7YEvQwg6YnGjNghtZoSw3yLIIowBeQ6B+0hUUCAOVdmk97yBQ/Fdj
-	ssA==
-X-Google-Smtp-Source: AGHT+IHHerC52i4r2e7c6erHYCeB0Yloh7vqJTnA/5Zl+bo8JD/bDpT2hdm45YNwxTACMr8F4lILDrdYMno=
+        bh=ylRat3ryBNNKSjCjBNxN3X4rZSrP8oWTwLpqPsqaRjI=;
+        b=ZY+tJJ5o5QwGHfifN4U+tSfwe6MbFOLU9C6pN/sGafvHtSiKB0T/uBPBAcgyrQluZV
+         FxU2sH7+fWR3VDh/vhkMGdfdSdduO4oUFiOA97ul1A0x23K08zY2UXqkv0m3NcERZLIU
+         zFCI2DzXP0ztGygzeuTRaZMBd28yV1WtM1d+VtGNrGuBHsR7G0TBPGaL9GHPNpDCgiVS
+         EI6edQMAx+j2k4ZXET5Zx/4+mu3PHkjrja5+PikZuP/sM1NGUSc3fGSwGobbymnCsIMI
+         1JIpmYlMrUkZJ3cItAtLJfcFw5+JwboUUsiN8UszewWQw2rUlOjVqJlkjgysSJN9OGMc
+         jz3A==
+X-Forwarded-Encrypted: i=1; AJvYcCUXIkp2skgXLc2hy8R58b9JlB5GCyBK2tc9S5a6MfwKPvYK9GOzoeQut6nuLPmh1oH1w7lbl7zyabryHp91g+aHuAYgIiiB
+X-Gm-Message-State: AOJu0YwG9HzoBqdakGRvdxuCY7heN7DfZCgsuFH7+R0C0w5X9vbzJVgg
+	sDpXOKaBUJK8K1R/6hRhB/6h+kgX0rBd2LCcPzEhVfVD3NWx6awgYT3H8seUNLb+AayVuSk/qCB
+	90w==
+X-Google-Smtp-Source: AGHT+IGkMq5vFM0k2Xat2pYrsrj2ZDMri+8sn0ndwQCamks5vPEx35gvjfLOXFnev4t0SDDU7WASi4/aZRQ=
 X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
- (user=badhri job=sendgmr) by 2002:a17:90b:3652:b0:2a7:82a8:2ac0 with SMTP id
- nh18-20020a17090b365200b002a782a82ac0mr20041pjb.1.1714249111787; Sat, 27 Apr
- 2024 13:18:31 -0700 (PDT)
-Date: Sat, 27 Apr 2024 20:18:28 +0000
+ (user=badhri job=sendgmr) by 2002:a81:a1c8:0:b0:615:33de:61d5 with SMTP id
+ y191-20020a81a1c8000000b0061533de61d5mr1547806ywg.1.1714249696905; Sat, 27
+ Apr 2024 13:28:16 -0700 (PDT)
+Date: Sat, 27 Apr 2024 20:28:12 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,8 +71,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240427201828.3432713-1-badhri@google.com>
-Subject: [PATCH v2] usb: typec: tcpm: Check for port partner validity before
+Message-ID: <20240427202812.3435268-1-badhri@google.com>
+Subject: [PATCH v3] usb: typec: tcpm: Check for port partner validity before
  consuming it
 From: Badhri Jagan Sridharan <badhri@google.com>
 To: gregkh@linuxfoundation.org, linux@roeck-us.net, 
@@ -88,7 +88,7 @@ to always succeed. In the event of failure, port->partner is set
 to the error value or NULL. Given that port->partner validity is
 not checked, this results in the following crash:
 
-Unable to handle kernel NULL pointer dereference at virtual address 00000000000003c0
+Unable to handle kernel NULL pointer dereference at virtual address xx
  pc : run_state_machine+0x1bc8/0x1c08
  lr : run_state_machine+0x1b90/0x1c08
 ..
@@ -106,22 +106,14 @@ Cc: stable@vger.kernel.org
 Fixes: c97cd0b4b54e ("usb: typec: tcpm: set initial svdm version based on pd revision")
 Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index ab6ed6111ed0..454165776797 100644
+index ab6ed6111ed0..e1c6dffe5f8b 100644
 --- a/drivers/usb/typec/tcpm/tcpm.c
 +++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4,7 +4,6 @@
-  *
-  * USB Power Delivery protocol stack.
-  */
--
- #include <linux/completion.h>
- #include <linux/debugfs.h>
- #include <linux/device.h>
-@@ -1580,7 +1579,8 @@ static void svdm_consume_identity(struct tcpm_port *port, const u32 *p, int cnt)
+@@ -1580,7 +1580,8 @@ static void svdm_consume_identity(struct tcpm_port *port, const u32 *p, int cnt)
  	port->partner_ident.cert_stat = p[VDO_INDEX_CSTAT];
  	port->partner_ident.product = product;
  
@@ -131,7 +123,7 @@ index ab6ed6111ed0..454165776797 100644
  
  	tcpm_log(port, "Identity: %04x:%04x.%04x",
  		 PD_IDH_VID(vdo),
-@@ -1742,6 +1742,9 @@ static void tcpm_register_partner_altmodes(struct tcpm_port *port)
+@@ -1742,6 +1743,9 @@ static void tcpm_register_partner_altmodes(struct tcpm_port *port)
  	struct typec_altmode *altmode;
  	int i;
  
@@ -141,7 +133,7 @@ index ab6ed6111ed0..454165776797 100644
  	for (i = 0; i < modep->altmodes; i++) {
  		altmode = typec_partner_register_altmode(port->partner,
  						&modep->altmode_desc[i]);
-@@ -4231,7 +4234,10 @@ static int tcpm_init_vconn(struct tcpm_port *port)
+@@ -4231,7 +4235,10 @@ static int tcpm_init_vconn(struct tcpm_port *port)
  
  static void tcpm_typec_connect(struct tcpm_port *port)
  {
@@ -152,7 +144,7 @@ index ab6ed6111ed0..454165776797 100644
  		/* Make sure we don't report stale identity information */
  		memset(&port->partner_ident, 0, sizeof(port->partner_ident));
  		port->partner_desc.usb_pd = port->pd_capable;
-@@ -4241,9 +4247,13 @@ static void tcpm_typec_connect(struct tcpm_port *port)
+@@ -4241,9 +4248,13 @@ static void tcpm_typec_connect(struct tcpm_port *port)
  			port->partner_desc.accessory = TYPEC_ACCESSORY_AUDIO;
  		else
  			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
@@ -169,7 +161,7 @@ index ab6ed6111ed0..454165776797 100644
  		typec_partner_set_usb_power_delivery(port->partner, port->partner_pd);
  	}
  }
-@@ -4323,9 +4333,11 @@ static void tcpm_typec_disconnect(struct tcpm_port *port)
+@@ -4323,9 +4334,11 @@ static void tcpm_typec_disconnect(struct tcpm_port *port)
  	port->plug_prime = NULL;
  	port->cable = NULL;
  	if (port->connected) {
@@ -184,7 +176,7 @@ index ab6ed6111ed0..454165776797 100644
  		port->connected = false;
  	}
  }
-@@ -4549,6 +4561,9 @@ static enum typec_cc_status tcpm_pwr_opmode_to_rp(enum typec_pwr_opmode opmode)
+@@ -4549,6 +4562,9 @@ static enum typec_cc_status tcpm_pwr_opmode_to_rp(enum typec_pwr_opmode opmode)
  
  static void tcpm_set_initial_svdm_version(struct tcpm_port *port)
  {
