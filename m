@@ -1,134 +1,99 @@
-Return-Path: <stable+bounces-41545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828248B4589
-	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 12:25:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B668B459E
+	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 12:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B46A21C2114E
-	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 10:25:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A47971C20C19
+	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 10:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B9D481D0;
-	Sat, 27 Apr 2024 10:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C4844C68;
+	Sat, 27 Apr 2024 10:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hXbP4+6x"
+	dkim=pass (2048-bit key) header.d=gmx.com header.i=aros@gmx.com header.b="BMOgbUMh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31F1481BD;
-	Sat, 27 Apr 2024 10:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CF43FE47;
+	Sat, 27 Apr 2024 10:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714213512; cv=none; b=kbhvtx9DZ7P4HclRdnQoYqgULZmoxKjrJ4SLUP6P7DFlqYwyxwTAMVc3YpYbd7t7she+L78nyA5PArIWJXCmOGKMBNPpgYtpPD8GCF9MJXNZDJo3+76ttJGezWxz4wPzOE1oThpq1IKq+amcP02WPiQdfny25qJGWCvp6KmoRdk=
+	t=1714215272; cv=none; b=TUVE5ziUXkXqzWgqsWfCUv8XC5PBCrSzOZ4xGyx6ZOkRy3dh2ZQKB09skVsV2YyvHMQSeSRCRpOsAnblMbkB/WO/X50T9NW/dnLihlfjnUuRXZkc9hQZod3LukAXwLYNvnkPeVG6F7WzRzCz+B+dC3Ha5qIgg6tubJUTC2j8sno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714213512; c=relaxed/simple;
-	bh=E6nxNxAubOE05wakCf4v1ZumsoMoA2UmJWIHNfoSllc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dVnmD/9fKffqV4T5dL036HhPUjvzkTMAqDK5TVWs0v4ywmg9441Jvj7s1Dm9ghnTZrx+yjdr8tOKyrSfTH0vKIM7ic5ZBtOfJc+YaeiNFC6aUSBKm7fH7H/q1j5y1/t66WErWYGaD+khoj58o/AApyYnqxWeOCyIN2COmadctTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hXbP4+6x; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1eab16c8d83so23561025ad.3;
-        Sat, 27 Apr 2024 03:25:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714213509; x=1714818309; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LUJKteoqdO5SeaZqJ7h1IGkjXYQG9ye3U8EDumHvbUU=;
-        b=hXbP4+6xnRUpqphG1c4wciqzLp2whGmbXebHA7oF/pKHKTW/OVaEtQUVWJBuh4OxVv
-         fB+t1JaG+5mMMfl955N4a8PAvEpdLwE0TaJloSbS99W6GhpxQK0n71sIAeprKdbJEpSp
-         VtvtXqCdJAuGr3K94EswSyBiPCKizQS3i8XmV+vTQmrFbV+dpnZT7/LFiqwBgG3dhNk3
-         w3XtZ77MxxmZbSvAs1syN1RP/qNAZmq5Dhy/mm7Wyt3VaSt5J01F13MadYBxHGuA1Fs0
-         KgDUjOc/au5RjB7xgn0HFqyVh8dI1oW0rv50hRCbPnXkDt4mHV7Xq2XfmPYt1peQXfW3
-         qkyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714213509; x=1714818309;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LUJKteoqdO5SeaZqJ7h1IGkjXYQG9ye3U8EDumHvbUU=;
-        b=T49IUIda43HeiHYIov8VFOM6qc14hrhEvu/INlgq+KtA/z9XkdZd5fnz4jgXEMyqUB
-         sPT5Wt9WLueTTYFIxWtJpclEmqs4f9C2UwvzNK7DVP1K+9jkeSNVYoS4sqlIXZsNQvTq
-         DFECY6M4E1MMlwLQQz3pABHVQJ1RMfAR4MG8WIYklh24z2sipROxhuzoJwOpE6gEKORu
-         Wm8xLmX9/cDBbRqagf9QuFhwkDC2q3vt+n5e616hTQE31zRPY7t+cOr6tsNhAhyqKNcU
-         1k+PWy6ewNchVa5C/fo1UHUtLD1RgCwNNUYYDgh1UCr/t1l/o42X35R7IK1U139ucX3m
-         oh3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVp4UxRnSjQgfsTUjZheoHsDVTgN/qAwkgwdNfVyB08jRFv2Gv98ciT2FltS7I5iLLMhFw4DZViUQKvaj+iDvTSB7fViT4YmqquqTgCAK1Z1VNku7NqgZJY4K499LBMRsIqJuVpCaNNu53sx+pD0Rl8cFi6hqSz39kguevvqM9W5yXy
-X-Gm-Message-State: AOJu0Yy18UATGIyjS2Xyt2bisA5RbNnmMu8EPUAKgnJTb5ZvnYDajWo2
-	iBZZCGtpaqSrzGz+2sBsnk3/RAn898ZOwDSkVvLxcYla3klnxISJkK5b/w==
-X-Google-Smtp-Source: AGHT+IHNhgASlzQriqkArHfommJX1rdgRS/zpt5HED9VzsPQ9Sx3R/YbIq8Peic1KbwOOc8vorCNcQ==
-X-Received: by 2002:a17:902:aa84:b0:1e0:b87f:beb4 with SMTP id d4-20020a170902aa8400b001e0b87fbeb4mr4765079plr.30.1714213509107;
-        Sat, 27 Apr 2024 03:25:09 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id kg8-20020a170903060800b001ea699b79cbsm6316530plb.213.2024.04.27.03.25.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Apr 2024 03:25:08 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 026CC18498712; Sat, 27 Apr 2024 17:25:05 +0700 (WIB)
-Date: Sat, 27 Apr 2024 17:25:05 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: "Bird, Tim" <Tim.Bird@sony.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: Linux Stable <stable@vger.kernel.org>,
-	Linux Kernel Workflows <workflows@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Mao Zhu <zhumao001@208suo.com>, Ran Sun <sunran001@208suo.com>,
-	Xiang wangx <wangxiang@cdjrlc.com>,
-	Shaomin Deng <dengshaomin@cdjrlc.com>,
-	Charles Han <hanchunchao@inspur.com>,
-	Attreyee M <tintinm2017@gmail.com>
-Subject: Re: [PATCH] docs: stable-kernel-rules: fix typo sent->send
-Message-ID: <ZizSgfNRtAjZv4-q@archie.me>
-References: <SA3PR13MB63726A746C847D7C0919C25BFD162@SA3PR13MB6372.namprd13.prod.outlook.com>
+	s=arc-20240116; t=1714215272; c=relaxed/simple;
+	bh=nIM0kF53eMsKebnB69nMRQDFX/NcTU//w1F0rF/SQRg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=owUR1nRrIsXvJ4r3ceTWChMcYQ4qW554+XWFRvD1BVw7HMqhG+yznbJcxGnJ00oUbBDvfw7ZPIeszPz5PhAzQpKnSbnSCzCHJZlefitXPqJf612UwnnCkVvtGbxipLMH2zDS+h6bkDD6niCMAf53monVRG1b5anNVdamZN8iAmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=aros@gmx.com header.b=BMOgbUMh; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
+	s=s31663417; t=1714215266; x=1714820066; i=aros@gmx.com;
+	bh=nIM0kF53eMsKebnB69nMRQDFX/NcTU//w1F0rF/SQRg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=BMOgbUMhKKTlbilwnxSvpk31OIneoKREofnUEoFUEIQwsb4FxMUemulpbKq4diZf
+	 dXAYIbagtP5xbocuFtOCUPixkxSm6HqEAGqeK/uW7g00/a8Ey2a+Dhc+qlEmeM6ny
+	 bM2hfv/UPTTAOjFZwTyrnQLEoQKyuti/cu3RgT7y8Y0WsjhsT9Y4vSEqW665Xhipx
+	 D86dnH1x8sTPvx+KxjvXv16IU063O5+xr73iRmziyVl5SARUACuhkck6HaQxVN6hW
+	 NK14FuanYbuNsPR7HCrK9ppYMAFY+5ftNU7Lczj25ATfYGO+lqfECg2RRWfTThMMz
+	 HY5vnxkGFASDiK/aaA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.25.110.37] ([98.159.234.26]) by mail.gmx.net (mrgmx104
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1Mq2jC-1sVtyd2ozq-00niar; Sat, 27
+ Apr 2024 12:54:25 +0200
+Message-ID: <2330c23c-e99b-454a-b195-32c5b4332071@gmx.com>
+Date: Sat, 27 Apr 2024 10:54:23 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="N2Pm/WPT0MeZxS0x"
-Content-Disposition: inline
-In-Reply-To: <SA3PR13MB63726A746C847D7C0919C25BFD162@SA3PR13MB6372.namprd13.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+To: gregkh@linuxfoundation.org
+Cc: intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <2024042328-footprint-enrage-2db3@gregkh>
+Subject: Re: [Intel-wired-lan] [BUG] e1000e, scheduling while atomic (stable)
+Content-Language: en-US
+From: "Artem S. Tashkinov" <aros@gmx.com>
+In-Reply-To: <2024042328-footprint-enrage-2db3@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:rYE8ntWQoWfPXtJcQSmSMLornpL74RVw50TEcun9H6wYBruDar9
+ 20//qEowj3Bmqe1jd6rweWraI7/DlwppyjZc/uF9m/L2CpEYJFvLO47a3Rgl3skbVU+/C/X
+ BXzONwUACKQ9jb/q+A8T0Lo5UpqS6a9fszZaIHn19jZcubsuAAszrxTdHwwBg4hbOcZf0Xm
+ ig1x1KWwjX/vwc+24dWkQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:c3PofOWbFJA=;MkBOarjUdOXWIKcMz+jr/AJv3Lf
+ zu/7HpVayyQ3UI6tsYjmtrSgyKno0fdV14P+Z39+8cEuvAxTIrncnYLbonRmpqYSZC0A2Pmte
+ mu73kfnYUOAArwi1mz+1zhaUJBoOhB8bIDdPuRHaTRQMlwCyAREjl/cUPTzYCNPRlWKXFkK6I
+ 1elhvfI7TebjoTQ1+l+7bdGlANnYIpkNMmennAIADhIQt9rRmLQlRIqWgaGm+6xhuIolFHJYY
+ xFJlyGi1lzXGYapcip/YCHmBwxeekRqszFjXfYLsryjedlMmaVsZvmNPihH3VJzbl1mFBP4ZP
+ hKDYF9kJddiYxIk2HA7l7WR0yYYG0JOLqOJWKf4WdB7TKdCIFKfn2Q1zHnNEp+/V7inbciGR5
+ mDbhPL6rB9IfZwPjm1D9wzl4J1ApKnsuYAgKdlrX99KR0ChoMIPBNB0mbYjcZLDZ0y/8Amu70
+ z9NnnBElNV55GRchX6sIix6g60RudkibhrtwXDK9Q49RkrPZ8jBu4AoOipTz/9QOW7JQWl3x2
+ 94Bva5kvpHMJ8ysF0Wlrm00sKU+lUrIBuhGr9NEQ33fsO8fYcVFXF6NjDmrwLyfOqnPCHQwCk
+ JshCHOrcL539LvJtTQe5TpEL08OGbqBg8vmayNnWriYPJ48C1tJs6ksQFLWTeqAsah6uTzz/6
+ +CjwrqViNEFpBeLPOSB90nxjS5CfrK6yiUEKY/KOdN4pbCZ8hqA65cjtwvpvmESWG3cC2AsBs
+ XDUvzgV0Qeer1JD0mEvqN2YX1PupAxqx5KMByM79XMZLO+Q0Bf/aNUutAHnx0rpxK9SdV5LNx
+ Owj/CdCpS/MG8cnAt0wg35fkXgMA7ONxUfLMKZhkp7CpY=
 
+Hello,
 
---N2Pm/WPT0MeZxS0x
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This fix is still not queued in 6.8 stable:
 
-On Fri, Apr 26, 2024 at 11:18:14PM +0000, Bird, Tim wrote:
-> -To sent additional instructions to the stable team, use a shell-style in=
-line
-> +To send additional instructions to the stable team, use a shell-style in=
-line
->  comment:
-> =20
->   * To specify any additional patch prerequisites for cherry picking use =
-the
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.8
 
-LGTM, thanks!
+Why?
 
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---N2Pm/WPT0MeZxS0x
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZizSeQAKCRD2uYlJVVFO
-o16hAQC4vFq5JUPRgrcka4ItB6aOJ9kAqfRetDbc1wuJDCLkmAEAp2GOG95bUjr1
-lvh8/S7PZiWSH/I5r9yUoey0fCdwWwc=
-=w/az
------END PGP SIGNATURE-----
-
---N2Pm/WPT0MeZxS0x--
+Regards,
+Artem
 
