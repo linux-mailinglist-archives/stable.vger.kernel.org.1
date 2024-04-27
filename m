@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087898B4340
-	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 02:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8089D8B44E6
+	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 09:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395C21C22DF5
-	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 00:29:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3E81C21198
+	for <lists+stable@lfdr.de>; Sat, 27 Apr 2024 07:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEC563D5;
-	Sat, 27 Apr 2024 00:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5998842062;
+	Sat, 27 Apr 2024 07:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="JutZg4ZP"
+	dkim=pass (1024-bit key) header.d=80x24.org header.i=@80x24.org header.b="fKlouLy1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dcvr.yhbt.net (dcvr.yhbt.net [173.255.242.215])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C0A5228;
-	Sat, 27 Apr 2024 00:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FFE4086A
+	for <stable@vger.kernel.org>; Sat, 27 Apr 2024 07:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.255.242.215
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714177742; cv=none; b=PVVbwTQxeGtEL9Tt/WT9gWH6JFBfTHvd5LDgLXr2w9cnqzD+HD8erbP2Bxx6TF45xRx1MlvAVbK9m1PRFFTT2aSa3QUFr9LP2/NRrDqVJqVdmp+QV6+t8aEIyqM+dc0FzcJc9fae8UBINTGzLp6iQgBeKKPvP0u4kLXRmCFQl8U=
+	t=1714203148; cv=none; b=gg/j3OkyJXWGZmfMiJ6eARoDuEewyAPgCK47JLGGws6B357ncZ0Pwgfp11lQtZ4pfS42aB9ekVCesCwPTgLjnYRLy4mT3IAAVTOoA6b4SWdDWyGx8QcAmlF9zQVTx9N0p1EBJXW3gi6d8Bil9kW/NlDLLShVl6Bud6OkNp6Yxus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714177742; c=relaxed/simple;
-	bh=z1iMTSz1FTF5BHvEhJcPUplkaY3m40Swft0M6ZuTjHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=WJl9nL96xEayc1axC2MZFRrwM2yJ8eA9ypHWrUV5AszNkhQFj/89xmRdYt9GQWwMu229VBH6AjpWSLjXwT7YSBcOUrrBgE3+tzRR4wxstG02FkeYMhCvFm6ZDaffykoE6YXdgSW7nbQh2PQFV+IH4wFF71raDx+hsOgseiRkdg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=JutZg4ZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010F6C113CD;
-	Sat, 27 Apr 2024 00:29:00 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="JutZg4ZP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1714177738;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=4fd0jz0BChpMTIBqWSjkXJP2P2W/5oQ39jqPV6RAj1M=;
-	b=JutZg4ZPNYap5BiToHwX3apwyIjL638iO+h5ggoieLWJB0BbIpgZKrhfS8cBpDQuxXUCQ2
-	0IvPuUxrKpI5zQO5LrQZNCv1AJxIO8aRp/vcMVok1llKkZH1lgcUhyidE2WjM4Pbi0ibyb
-	np5WSOqgv1IDm51c8KSOwoyP82IVdvM=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id b137cfa1 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Sat, 27 Apr 2024 00:28:58 +0000 (UTC)
-Date: Sat, 27 Apr 2024 02:28:55 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: tools@linux.kernel.org, stable@vger.kernel.org, meta@public-inbox.org
-Cc: sashal@kernel.org, gregkh@linuxfoundation.org, mricon@kernel.org,
+	s=arc-20240116; t=1714203148; c=relaxed/simple;
+	bh=5vU1T0UVEyOf/68S0xDggngugoHOxNHI/tP/+jNzglE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bwS/9TTobLaDZebVSaVAd9z58UZ6D2+BtaBYy7WVnVVb1c96lxfCqF4iOXI2C3dQbobMhKl3glK4lEaZ0dIvZnoefyvwIu7BTDg3a6Qt/qJNP+bWg+43tAgQF/RcOlGpZ5LsXcIEOZ5HKwK04rQ8BJmndbCwEmiUR2atBu1uLuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=80x24.org; spf=pass smtp.mailfrom=80x24.org; dkim=pass (1024-bit key) header.d=80x24.org header.i=@80x24.org header.b=fKlouLy1; arc=none smtp.client-ip=173.255.242.215
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=80x24.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=80x24.org
+Received: from localhost (dcvr.yhbt.net [127.0.0.1])
+	by dcvr.yhbt.net (Postfix) with ESMTP id 3EE621F44D;
+	Sat, 27 Apr 2024 07:26:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=80x24.org;
+	s=selector1; t=1714202809;
+	bh=5vU1T0UVEyOf/68S0xDggngugoHOxNHI/tP/+jNzglE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fKlouLy1Yl4l8K3dMvQtecBNIzKiAWU7s9Pmqy3EsUS4s9DSXZZ22+vvo0SZIFmbe
+	 1WB8LxjiVPiZat6i4aCCOQ4V3hI+UWs6ZiB8Fw+c0jdeWhXpOXEFFdjlDtXJr5CNS4
+	 W29KaEgQF1B9RK6LardBup0IX7XxCwr4ShDQLNwQ=
+Date: Sat, 27 Apr 2024 07:19:21 +0000
+From: Eric Wong <e@80x24.org>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: tools@linux.kernel.org, stable@vger.kernel.org, meta@public-inbox.org,
+	sashal@kernel.org, gregkh@linuxfoundation.org, mricon@kernel.org,
 	krzk@kernel.org
-Subject: filtering stable patches in lore queries
-Message-ID: <ZixGx_sTyDmdUlaV@zx2c4.com>
+Subject: Re: filtering stable patches in lore queries
+Message-ID: <20240427071921.M438650@dcvr>
+References: <ZixGx_sTyDmdUlaV@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,61 +58,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <ZixGx_sTyDmdUlaV@zx2c4.com>
 
-Hi,
+"Jason A. Donenfeld" <Jason@zx2c4.com> wrote:
+> Hi,
+> 
+> Greg and Sasha add the "X-stable: review" to their patch bombs, with the
+> intention that people will be able to filter these out should they
+> desire to do so. For example, I usually want all threads that match code
+> I care about, but I don't regularly want to see thousand-patch stable
+> series. So this header is helpful.
+> 
+> However, I'm not able to formulate a query for lore (to pass to `lei q`)
+> that will match on negating it. The idea would be to exclude the thread
+> if the parent has this header. It looks like public inbox might only
+> index on some headers, but can't generically search all? I'm not sure
+> how it works, but queries only seem to half way work when searching for
+> that header.
 
-Greg and Sasha add the "X-stable: review" to their patch bombs, with the
-intention that people will be able to filter these out should they
-desire to do so. For example, I usually want all threads that match code
-I care about, but I don't regularly want to see thousand-patch stable
-series. So this header is helpful.
+Correct, public-inbox currently won't index every header due to
+cost, false positives, and otherwise lack of usefulness (general
+gibberish from DKIM sigs, various UUIDs, etc).
 
-However, I'm not able to formulate a query for lore (to pass to `lei q`)
-that will match on negating it. The idea would be to exclude the thread
-if the parent has this header. It looks like public inbox might only
-index on some headers, but can't generically search all? I'm not sure
-how it works, but queries only seem to half way work when searching for
-that header.
+So it doesn't currently know about "X-stable:"
 
-In the meantime, I've been using this ugly bash script, which gets the
-job done, but means I have to download everything locally first:
+I started working on making headers indexing configurable last
+year, but didn't hear a response from the person that
+potentially was interested:
 
-    #!/bin/bash
-    PWD="${BASH_SOURCE[0]}"
-    PWD="${PWD%/*}"
-    set -e
-    cd "$PWD"
-    echo "[+] Syncing new mail" >&2
-    lei up "$PWD"
-    echo "[+] Cleaning up stable patch bombs" >&2
-    mapfile -d $'\0' -t parents < <(grep -F -x -Z -r -l 'X-stable: review' cur tmp new)
-    {
-      [[ -f stable-message-ids ]] && cat stable-message-ids
-      [[ ${#parents[@]} -gt 0 ]] && sed -n 's/^Message-ID: <\(.*\)>$/\1/p' "${parents[@]}"
-    } | sort -u > stable-message-ids.new
-    mv stable-message-ids.new stable-message-ids
-    [[ -s stable-message-ids ]] || exit 0
-    mapfile -d $'\0' -t children < <(grep -F -Z -r -l -f - cur tmp new < stable-message-ids)
-    total=$(( ${#parents[@]} + ${#children[@]} ))
-    [[ $total -gt 0 ]] || exit 0
-    echo "# rm <...$total messages...>" >&2
-    rm -f "${parents[@]}" "${children[@]}"
+https://public-inbox.org/meta/20231120032132.M610564@dcvr/
 
-This results in something like:
+Right now, indexing new headers + validations can be maintained
+as a Perl module in the public-inbox codebase.
 
-    zx2c4@thinkpad ~/Projects/lkml $ ./update.bash
-    [+] Syncing new mail
-    # https://lore.kernel.org/all/ limiting ...
-    # /usr/bin/curl -gSf -s -d '' https://lore.kernel.org/all/?x=m&t=1&q=(...
-    [+] Cleaning up stable patch bombs
-    # rm <...24593 messages...>
+For lore, it'd make sense to be able to configure a bunch (or
+all) inboxes at once instead of the per-inbox configuration in
+my proposed RFC.
 
-It works, but it'd be nice to not even download these messages in the
-first place. Since I'm deleting message I don't want, I have to keep
-track of the message IDs of those deleted messages with the stable
-header in case replies come in later. That's some book keeping, sheesh!
+At minimum, one would have to know:
 
-Any thoughts on this workflow?
+1) the mail header name (e.g. `X-stable')
+2) the search prefix to use (e.g. `xstable:') # can't use dash `-' AFAIK
+3) the type of header value (phrase, string, sortable numeric, etc...)
 
-Jason
+I'm trying to avoid supporting sortable numeric values for this,
+since supporting them will problems if columns get repurposed
+with admins changing their minds.   A full reindex would fix it,
+but those are crazy expensive.
+
+So probably just supporting strings and/or phrases to start...
+
+Validation to prevent poisoning by malicious/broken senders can
+be useful in some cases (and the reason the RFC was a per use
+case Perl module).  That said, I'm not sure if much validation
+is necessary for X-stable: headers or if just any text is fine.
 
