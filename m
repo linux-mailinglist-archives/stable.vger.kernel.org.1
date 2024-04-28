@@ -1,132 +1,190 @@
-Return-Path: <stable+bounces-41585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF45B8B4B96
-	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 13:56:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CDA8B4BC2
+	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 14:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9126A1F21576
-	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 11:56:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACDFEB2135A
+	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 12:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BF8627F8;
-	Sun, 28 Apr 2024 11:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nf6rGfOE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E9944C85;
+	Sun, 28 Apr 2024 12:42:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978246168C;
-	Sun, 28 Apr 2024 11:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27B144C6F;
+	Sun, 28 Apr 2024 12:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714305383; cv=none; b=Nv2H90L86qwa0m3M7VsizpPQA7Oqq3rZfF9UAzf4rGx5O9RBjb6Is4G0ttG7paj5gnvyIy542CXUssR7NlAjdhYCqBcx2F1S80LZ5H3glBsb8qNUl0ixGwsWMW/qJaix8WyA5wQjTxdbA9aJZWA5h7ex86TEmBwgyAcdAjOqVT0=
+	t=1714308127; cv=none; b=YRkw7AN1GKrWF4oAfHcv4D6AdMOJM+K/uwSoG0DbwKKgDcFyNOtS4DSLuT3tUtY3Dp1fQ0LegwuCl0pU73GCpwwzggoP2eBXCrBiEVnYQQ4kgVcGybmcBDwiuc/ZSQy53WoYibrGtbJh3my2L54xO1vuw6Z7zcPpSm/QC2DAHKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714305383; c=relaxed/simple;
-	bh=+v7pBmoX5R/7m9qAzplnMws/v/AudtOpCtQCHNPa+AI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XrfDDX0U7mu9j7btWSldjgCqmCI0gI7giV+rGFxE/aZ6B/VVOVAQogk+rEMaKArc+Zbu9tJtJuwvNN68p5gB5SzMcTele+aZWvovZU//bxvPgX43ZPBOBV9yR4sE8TQRA9vlbVfjK7Dcj0rNztPkz7FIzM2lU5HVAo/gbA4tBiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nf6rGfOE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2D6C2BBFC;
-	Sun, 28 Apr 2024 11:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714305383;
-	bh=+v7pBmoX5R/7m9qAzplnMws/v/AudtOpCtQCHNPa+AI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Nf6rGfOEgaPYgXnsVqmF6nSzezI4r8FdgGY241XXCJ40gSnyHrX8XKc3OHtfX+pKf
-	 532twr76R4rCg3lRQBrVFGKbaXTNyQLJvuA1CgBh/KQOY3xIBE9rbCYSVoAEjmMCre
-	 JM95r97G83teefOBKiI5TQWO/huGMfJx1XXwWuNeS1SeElA4ntEKRM8hT12ILmu7S3
-	 4icQFtZ+1z3tsC/enMR10fWLG5CW4hGzLhrCBZRxb6TF2iZngAL60AjOZzGnDNaTh2
-	 GkbG0svUmCIqhxH25WJLlf9gHccjKR8Q+G69ruwFJWwpxvjZOMTIcprWNXaDeGyy62
-	 2ArrecGQnrIRw==
-Date: Sun, 28 Apr 2024 12:56:14 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: inv.git-commit@tdk.com
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH] iio: invensense: fix interrupt timestamp alignment
-Message-ID: <20240428125614.3f8d2b59@jic23-huawei>
-In-Reply-To: <20240426135814.141837-1-inv.git-commit@tdk.com>
-References: <20240426135814.141837-1-inv.git-commit@tdk.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1714308127; c=relaxed/simple;
+	bh=4rJ79cL03WI0ASPd54J4EunuDnXh6e35XgFDhwgi+No=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TfgAaAVC8tGQjvssWK0LYITSoxnvGsZtRawrRfT7usbU8uFamAPNYy8CXOB4qMyns5rOf4JcLVcLHyBxxyLLb2atXut+E8+qnndojJisC5xpIVLOjgkxbN/ShKzllZQodi/kmQxevfe+CJD8l25Tb81tTC5e6MA0Nhmouiqu1CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id D8F7C72C8FB;
+	Sun, 28 Apr 2024 15:32:55 +0300 (MSK)
+Received: from pony.office.basealt.ru (unknown [193.43.10.9])
+	by imap.altlinux.org (Postfix) with ESMTPSA id C414836D016B;
+	Sun, 28 Apr 2024 15:32:55 +0300 (MSK)
+Received: by pony.office.basealt.ru (Postfix, from userid 500)
+	id 9978D360B980; Sun, 28 Apr 2024 15:32:55 +0300 (MSK)
+Date: Sun, 28 Apr 2024 15:32:55 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Anders Roxell <anders.roxell@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
+Subject: Re: Re: [PATCH 6.1 000/141] 6.1.88-rc1 review
+Message-ID: <3yj4eo4ww6wfz4ggaurutemobxi7pwdg7gctnhmwytalimpdcz@hve522lspsdv>
+References: <20240423213853.356988651@linuxfoundation.org>
+ <CA+G9fYuv0nH3K9BJTmJyxLXxvKQjh91KdUi4yjJ0ewncW5cSjw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYuv0nH3K9BJTmJyxLXxvKQjh91KdUi4yjJ0ewncW5cSjw@mail.gmail.com>
 
-On Fri, 26 Apr 2024 13:58:14 +0000
-inv.git-commit@tdk.com wrote:
+Greg,
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On Wed, Apr 24, 2024 at 01:53:35PM +0530, Naresh Kamboju wrote:
+> On Wed, 24 Apr 2024 at 03:14, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.1.88 release.
+> > There are 141 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.88-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
 > 
-> Restrict interrupt timestamp alignment for not overflowing max/min
-> period thresholds.
+> As Pavel reported,
 > 
-> Fixes: 0ecc363ccea7 ("iio: make invensense timestamp module generic")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Hi Jean-Baptiste,
+> LKFT also found these regressions on 6.1.
+> 
+> The arm build failed with gcc-13 and clang-17 on the Linux stable-rc
+> linux.6.1.y branch.
+> 
+> arm:
+>  * omap2plus_defconfig - failed
+>  * defconfig  - failed
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-I'll pick this up, but for future similar cases, please make a clear
-statement in the patch description on whether this is a theoretical
-problem, one found by some tooling, or (the most important bit) something
-that actually happens in real usage!
-
-That info helps people decided on how aggressively to backport that change.
-
-Applied to the fixes-togreg branch of iio.git.  Given that has a link
-tag to this thread, replying here with the above will make that info
-somewhat available.  We are late in cycle, so I may just move this to the
-final pull request for the merge window if I don't have many other fixes
-queued up.
+I'm curious why v6.1.88 is still released nevertheless the reports of the
+build regression on ARM32.
 
 Thanks,
 
-Jonathan
-
-
+> 
+> Suspecting commit :
+> -------
+>   ASoC: ti: Convert Pandora ASoC to GPIO descriptors
+>     [ Upstream commit 319e6ac143b9e9048e527ab9dd2aabb8fdf3d60f ]
+> 
+> Build log:
 > ---
->  drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+> arch/arm/mach-omap2/pdata-quirks.c:259:15: error: variable
+> 'pandora_soc_audio_gpios' has initializer but incomplete type
+>   259 | static struct gpiod_lookup_table pandora_soc_audio_gpios = {
+>       |               ^~~~~~~~~~~~~~~~~~
+> arch/arm/mach-omap2/pdata-quirks.c:260:10: error: 'struct
+> gpiod_lookup_table' has no member named 'dev_id'
+>   260 |         .dev_id = "soc-audio",
+>       |          ^~~~~~
+> arch/arm/mach-omap2/pdata-quirks.c:260:19: warning: excess elements in
+> struct initializer
+>   260 |         .dev_id = "soc-audio",
+>       |                   ^~~~~~~~~~~
+> arch/arm/mach-omap2/pdata-quirks.c:260:19: note: (near initialization
+> for 'pandora_soc_audio_gpios')
+> arch/arm/mach-omap2/pdata-quirks.c:261:10: error: 'struct
+> gpiod_lookup_table' has no member named 'table'
+>   261 |         .table = {
+>       |          ^~~~~
+> arch/arm/mach-omap2/pdata-quirks.c:261:18: error: extra brace group at
+> end of initializer
+>   261 |         .table = {
+>       |                  ^
+> arch/arm/mach-omap2/pdata-quirks.c:261:18: note: (near initialization
+> for 'pandora_soc_audio_gpios')
+> arch/arm/mach-omap2/pdata-quirks.c:262:17: error: implicit declaration
+> of function 'GPIO_LOOKUP'; did you mean 'IOP_LOOKUP'?
+> [-Werror=implicit-function-declaration]
+>   262 |                 GPIO_LOOKUP("gpio-112-127", 6, "dac", GPIO_ACTIVE_HIGH),
+>       |                 ^~~~~~~~~~~
+>       |                 IOP_LOOKUP
+> arch/arm/mach-omap2/pdata-quirks.c:262:55: error: 'GPIO_ACTIVE_HIGH'
+> undeclared here (not in a function); did you mean 'ACPI_ACTIVE_HIGH'?
+>   262 |                 GPIO_LOOKUP("gpio-112-127", 6, "dac", GPIO_ACTIVE_HIGH),
+>       |                                                       ^~~~~~~~~~~~~~~~
+>       |                                                       ACPI_ACTIVE_HIGH
+> arch/arm/mach-omap2/pdata-quirks.c:264:17: error: extra brace group at
+> end of initializer
+>   264 |                 { }
+>       |                 ^
+> arch/arm/mach-omap2/pdata-quirks.c:264:17: note: (near initialization
+> for 'pandora_soc_audio_gpios')
+> arch/arm/mach-omap2/pdata-quirks.c:261:18: warning: excess elements in
+> struct initializer
+>   261 |         .table = {
+>       |                  ^
+> arch/arm/mach-omap2/pdata-quirks.c:261:18: note: (near initialization
+> for 'pandora_soc_audio_gpios')
+> arch/arm/mach-omap2/pdata-quirks.c: In function 'omap3_pandora_legacy_init':
+> arch/arm/mach-omap2/pdata-quirks.c:271:9: error: implicit declaration
+> of function 'gpiod_add_lookup_table'
+> [-Werror=implicit-function-declaration]
+>   271 |         gpiod_add_lookup_table(&pandora_soc_audio_gpios);
+>       |         ^~~~~~~~~~~~~~~~~~~~~~
+> arch/arm/mach-omap2/pdata-quirks.c: At top level:
+> arch/arm/mach-omap2/pdata-quirks.c:259:34: error: storage size of
+> 'pandora_soc_audio_gpios' isn't known
+>   259 | static struct gpiod_lookup_table pandora_soc_audio_gpios = {
+>       |                                  ^~~~~~~~~~~~~~~~~~~~~~~
+> cc1: some warnings being treated as errors
+> make[3]: *** [scripts/Makefile.build:250:
+> arch/arm/mach-omap2/pdata-quirks.o] Error 1
 > 
-> diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> index 3b0f9598a7c7..4b8ec16240b5 100644
-> --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> @@ -101,6 +101,9 @@ static bool inv_update_chip_period(struct inv_sensors_timestamp *ts,
 > 
->  static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
->  {
-> +	const int64_t period_min = ts->min_period * ts->mult;
-> +	const int64_t period_max = ts->max_period * ts->mult;
-> +	int64_t add_max, sub_max;
->  	int64_t delta, jitter;
->  	int64_t adjust;
+> steps to reproduce:
+> ---
+> # tuxmake --runtime podman --target-arch arm --toolchain gcc-13
+> --kconfig omap2plus_defconfig
 > 
-> @@ -108,11 +111,13 @@ static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
->  	delta = ts->it.lo - ts->timestamp;
 > 
->  	/* adjust timestamp while respecting jitter */
-> +	add_max = period_max - (int64_t)ts->period;
-> +	sub_max = period_min - (int64_t)ts->period;
->  	jitter = INV_SENSORS_TIMESTAMP_JITTER((int64_t)ts->period, ts->chip.jitter);
->  	if (delta > jitter)
-> -		adjust = jitter;
-> +		adjust = add_max;
->  	else if (delta < -jitter)
-> -		adjust = -jitter;
-> +		adjust = sub_max;
->  	else
->  		adjust = 0;
+> Links
+> ---
+>  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fWG4dRZzA7WgJqyLQ8Rm05WTUo/
+>  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.87-142-gcde450ef0f2f/testrun/23640116/suite/build/test/gcc-13-omap2plus_defconfig/details/
 > 
 > --
-> 2.34.1
-> 
-
+> Linaro LKFT
+> https://lkft.linaro.org
 
