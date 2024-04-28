@@ -1,126 +1,91 @@
-Return-Path: <stable+bounces-41588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F398B4C39
-	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 16:46:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198048B4C52
+	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 17:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D38281975
-	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 14:46:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7116281953
+	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 15:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8F76E5EF;
-	Sun, 28 Apr 2024 14:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D79C6BFAA;
+	Sun, 28 Apr 2024 15:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b="ER6fEmJl"
+	dkim=pass (2048-bit key) header.d=rosalinux.ru header.i=@rosalinux.ru header.b="fWybyjhf"
 X-Original-To: stable@vger.kernel.org
-Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+Received: from mail.rosalinux.ru (mail.rosalinux.ru [195.19.76.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C2334CDE;
-	Sun, 28 Apr 2024 14:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234C26A8A0
+	for <stable@vger.kernel.org>; Sun, 28 Apr 2024 15:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.19.76.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714315577; cv=none; b=t7/a0XdYh2oQ2sy2bo4hHKPd5yBNN7cfWR14PNuur2VGNhasXvsCTrhrs+c/Ll/XC7trlvmiCU7MmR7+6Z1KzNYa8jo/Pnf/edFHH6JiOxSrWakFRPP4cUS4fLTHTiO42wB0f/QpNFo7G4UTFhsEhG3oEHxLVTwn4UgBJbTVp04=
+	t=1714316775; cv=none; b=Ur+AkHo9lYTT5eI9KM0V6iQQq1BT+X0YtZNwoXgGjUCmc/pSBMy89vEaldxhXKvoIvEOIwWhvaf9AK52D93QrtkvQoLi2CgRt2yXWLcifLIt7ZFd1sbF40UsdtU3GW4mRBSuz1O3cjMZsPGXGV4cTN6ImjQzf04fG+OwcWGY1d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714315577; c=relaxed/simple;
-	bh=O9lYynF7TbwV25WJ4FbULB8m/hH0HLsZXryml5NonVg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzy139plk0W8vg5Rz6OezrX4cRTzsiILkUNsGp53i0qEGm/Cfa0YVrwgVr+IP6i1iTiTqbAw3QGqy4e96ot7G63recBJIeTQ6PwWg+6kJQZomxot8wKLc6X5ppeza936CeKUdrIrnp/pURjAWrkmgvvyZD4Z30qEhbPLiqni4xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru; spf=pass smtp.mailfrom=ya.ru; dkim=pass (1024-bit key) header.d=ya.ru header.i=@ya.ru header.b=ER6fEmJl; arc=none smtp.client-ip=178.154.239.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ya.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ya.ru
-Received: from mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0d:41f:0:640:22c7:0])
-	by forward500a.mail.yandex.net (Yandex) with ESMTPS id 687D260D74;
-	Sun, 28 Apr 2024 17:46:04 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id tjQeFr9Sga60-st7Y47if;
-	Sun, 28 Apr 2024 17:46:03 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ya.ru; s=mail;
-	t=1714315563; bh=67waao3F0EHQeKvBPxYU8iF726Np7zyvUcDDCjQruTU=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=ER6fEmJl9riDd/aCADkQC/2hHjyJZrwSoFGW6fLBb6P58c2G7ksYlQCrelZegDA5+
-	 8nOTUH3eh88RHmxA5Lud8egBcNwvoWplczaRRJAJ2qGFxAldA8cVVxp/0SPYgMEOhI
-	 UVFL2Ew0oVhxyTomS3flRk9Exn/DA9OgB8x09rYI=
-Authentication-Results: mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net; dkim=pass header.i=@ya.ru
-From: Konstantin Pugin <rilian.la.te@ya.ru>
-To: 
-Cc: krzk@kernel.org,
-	conor@kernel.org,
-	lkp@intel.com,
-	vz@mleia.com,
-	robh@kernel.org,
-	jcmvbkbc@gmail.com,
-	nicolas.ferre@microchip.com,
-	manikanta.guntupalli@amd.com,
-	corbet@lwn.net,
-	ychuang3@nuvoton.com,
-	u.kleine-koenig@pengutronix.de,
-	Maarten.Brock@sttls.nl,
-	linux-stable@vger.kernel.org,
-	Konstantin Pugin <ria.freelander@gmail.com>,
-	stable@vger.kernel.org,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Lech Perczak <lech.perczak@camlingroup.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Subject: [PATCH 1/1] serial: sc16is7xx: announce support of SER_RS485_RTS_ON_SEND
-Date: Sun, 28 Apr 2024 17:45:33 +0300
-Message-ID: <20240428144541.80812-2-rilian.la.te@ya.ru>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240428144541.80812-1-rilian.la.te@ya.ru>
-References: <20240428144541.80812-1-rilian.la.te@ya.ru>
+	s=arc-20240116; t=1714316775; c=relaxed/simple;
+	bh=hP6bWKfmIWZcvLvnBCgb2WgOYQ6rMbADOOuc5IufO5I=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=cfAOzCdEpNolKvKl2t3EUyPZzS79Xcpmzc6zH7e3iXdYHOT5gnjHhkn5RX+iGdI0z2OEFP0vhw33FMCnvJYrtONQfg6OTvukyAKxUuHbWAYxPZ0QLMkzy7SV6b/buHxSPmJDMRzQAB1ZdgDJ3kM33ET4ciN045B80gL7aw9WlsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosalinux.ru; spf=pass smtp.mailfrom=rosalinux.ru; dkim=pass (2048-bit key) header.d=rosalinux.ru header.i=@rosalinux.ru header.b=fWybyjhf; arc=none smtp.client-ip=195.19.76.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosalinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosalinux.ru
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rosalinux.ru (Postfix) with ESMTP id A6BC2D96C5E9F;
+	Sun, 28 Apr 2024 17:58:09 +0300 (MSK)
+Received: from mail.rosalinux.ru ([127.0.0.1])
+	by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id 9cGlU_kSC2O9; Sun, 28 Apr 2024 17:58:09 +0300 (MSK)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rosalinux.ru (Postfix) with ESMTP id 7221BD99A2FA3;
+	Sun, 28 Apr 2024 17:58:09 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rosalinux.ru 7221BD99A2FA3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosalinux.ru;
+	s=1D4BB666-A0F1-11EB-A1A2-F53579C7F503; t=1714316289;
+	bh=hP6bWKfmIWZcvLvnBCgb2WgOYQ6rMbADOOuc5IufO5I=;
+	h=Message-ID:Date:MIME-Version:To:From;
+	b=fWybyjhfR7gJZEaXaLVJgeEEyb51THB9dBd680Dfe9O9pFDQMJWT2z9PAeHnUjarO
+	 YpHofv08O12/iUBcUGDQGEqvA8Uecz/MlDKZ3cl/et2/iqoqjWd3nQMxc6B5C20jo1
+	 XHX59AM1XYwy2tLxqDAzvCdWECtZQOg5eCwZ6phgsDNTQqaoGk0s3P56T3Wzg+lO5R
+	 mw6mLJx7uAy/sfyS7EWa4NuqT3lbimSin8FvH6XSdld9fVm1xRk9pHgfHuO9jczf50
+	 XyO79KTZt7z4p3uP1BlIF3XphTEjHkvatJmTHut4ODunpAYN0/ZP37HjjIHROrG/tF
+	 m28BZ5xlIEkLg==
+X-Virus-Scanned: amavisd-new at rosalinux.ru
+Received: from mail.rosalinux.ru ([127.0.0.1])
+	by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ZPPkGjyJ0eCd; Sun, 28 Apr 2024 17:58:09 +0300 (MSK)
+Received: from [192.168.1.100] (unknown [89.250.9.26])
+	by mail.rosalinux.ru (Postfix) with ESMTPSA id 0E4CFD96C5E9F;
+	Sun, 28 Apr 2024 17:58:08 +0300 (MSK)
+Message-ID: <1c978cf1-2934-4e66-e4b3-e81b04cb3571@rosalinux.ru>
+Date: Sun, 28 Apr 2024 17:58:08 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Content-Language: en-US
+To: willy@infradead.org, riel@surriel.com, mgorman@techsingularity.net,
+ mgorman@techsingularity.net, peterz@infradead.org, mingo@kernel.org,
+ akpm@linux-foundation.org, stable@vger.kernel.org, sashal@kernel.org
+Cc: =?UTF-8?B?0JHQtdGC0YXQtdGAINCQ0LvQtdC60YHQsNC90LTRgA==?=
+ <a.betkher@rosalinux.ru>, i.gaptrakhmanov@rosalinux.ru
+From: Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
+Subject: Serious regression on 6.1.x-stable caused by "bounds: support
+ non-power-of-two CONFIG_NR_CPUS"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Konstantin Pugin <ria.freelander@gmail.com>
+Hello, colleagues.
 
-When specifying flag SER_RS485_RTS_ON_SEND in RS485 configuration,
-we get the following warning after commit 4afeced55baa ("serial: core:
-fix sanitizing check for RTS settings"):
+Commit f2d5dcb48f7ba9e3ff249d58fc1fa963d374e66a "bounds: support non-power-of-two CONFIG_NR_CPUS" (https://github.com/torvalds/linux/commit/f2d5dcb48f7ba9e3ff249d58fc1fa963d374e66a) was backported to 6.1.x-stable (https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=428ca0000f0abd5c99354c52a36becf2b815ca21), but causes a serious regression on quite a lot of hardware with AMD GPUs, kernel panics.
 
-    invalid RTS setting, using RTS_AFTER_SEND instead
+It was backported to 6.1.84, 6.1.84 has problems, 6/1/83 does not, the newest 6.1.88 still has this problem.
 
-This results in SER_RS485_RTS_AFTER_SEND being set and the
-driver always write to the register field SC16IS7XX_EFCR_RTS_INVERT_BIT,
-which breaks some hardware using these chips.
+The problem is described here: https://gitlab.freedesktop.org/drm/amd/-/issues/3347
 
-The hardware supports both RTS_ON_SEND and RTS_AFTER_SEND modes, so fix
-this by announcing support for RTS_ON_SEND.
-
-Cc: stable@vger.kernel.org
-Fixes: 267913ecf737 ("serial: sc16is7xx: Fill in rs485_supported")
-Tested-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Konstantin Pugin <ria.freelander@gmail.com>
----
- drivers/tty/serial/sc16is7xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 03cf30e20b75..dfcc804f558f 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1449,7 +1449,7 @@ static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s,
- }
- 
- static const struct serial_rs485 sc16is7xx_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RTS_AFTER_SEND,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND,
- 	.delay_rts_before_send = 1,
- 	.delay_rts_after_send = 1,	/* Not supported but keep returning -EINVAL */
- };
--- 
-2.44.0
 
 
