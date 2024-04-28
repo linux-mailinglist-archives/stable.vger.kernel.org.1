@@ -1,190 +1,258 @@
-Return-Path: <stable+bounces-41586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CDA8B4BC2
-	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 14:42:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3678B4BEC
+	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 15:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACDFEB2135A
-	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 12:42:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0089281BEF
+	for <lists+stable@lfdr.de>; Sun, 28 Apr 2024 13:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E9944C85;
-	Sun, 28 Apr 2024 12:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545336CDAD;
+	Sun, 28 Apr 2024 13:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFX7goyH"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27B144C6F;
-	Sun, 28 Apr 2024 12:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109273A1DA;
+	Sun, 28 Apr 2024 13:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714308127; cv=none; b=YRkw7AN1GKrWF4oAfHcv4D6AdMOJM+K/uwSoG0DbwKKgDcFyNOtS4DSLuT3tUtY3Dp1fQ0LegwuCl0pU73GCpwwzggoP2eBXCrBiEVnYQQ4kgVcGybmcBDwiuc/ZSQy53WoYibrGtbJh3my2L54xO1vuw6Z7zcPpSm/QC2DAHKM=
+	t=1714310042; cv=none; b=u5pYh7/UfGuCvQsD5+Oc9kcxYLdjDDQ03IzY6yOmmdbyZvM4z0s4s6vAPN4nSbptFC2A0ZqRZGBgkhgijihvso79BhAGVvW4s2FL8klCYGDMEGdnCISU2fH28YjZ5ObWDRjYalbp4z40ox0IVvwt8B1HaxCZ604zlf+8lJ/FCx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714308127; c=relaxed/simple;
-	bh=4rJ79cL03WI0ASPd54J4EunuDnXh6e35XgFDhwgi+No=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TfgAaAVC8tGQjvssWK0LYITSoxnvGsZtRawrRfT7usbU8uFamAPNYy8CXOB4qMyns5rOf4JcLVcLHyBxxyLLb2atXut+E8+qnndojJisC5xpIVLOjgkxbN/ShKzllZQodi/kmQxevfe+CJD8l25Tb81tTC5e6MA0Nhmouiqu1CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id D8F7C72C8FB;
-	Sun, 28 Apr 2024 15:32:55 +0300 (MSK)
-Received: from pony.office.basealt.ru (unknown [193.43.10.9])
-	by imap.altlinux.org (Postfix) with ESMTPSA id C414836D016B;
-	Sun, 28 Apr 2024 15:32:55 +0300 (MSK)
-Received: by pony.office.basealt.ru (Postfix, from userid 500)
-	id 9978D360B980; Sun, 28 Apr 2024 15:32:55 +0300 (MSK)
-Date: Sun, 28 Apr 2024 15:32:55 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, Anders Roxell <anders.roxell@linaro.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: Re: Re: [PATCH 6.1 000/141] 6.1.88-rc1 review
-Message-ID: <3yj4eo4ww6wfz4ggaurutemobxi7pwdg7gctnhmwytalimpdcz@hve522lspsdv>
-References: <20240423213853.356988651@linuxfoundation.org>
- <CA+G9fYuv0nH3K9BJTmJyxLXxvKQjh91KdUi4yjJ0ewncW5cSjw@mail.gmail.com>
+	s=arc-20240116; t=1714310042; c=relaxed/simple;
+	bh=npdY6cKzQvoP4QKnpk6wGr71YeC1qQqsUawN0D7vhVo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tqOkC6tjkeAUD0jwPW1BtcP7s+M1MdNosRMm8uyvQGrSsO2YwC/3/Es2I+G8/cN9YWrXC/Eh4BiIaWPF+p/6c6FNfC28ot+ba7I7U+m0xk4FMlDOf2WFrH5Wkb8MAQ+Xs+nnYuG9LAB104oeWEDVE0kKu1cNfvC2UTsQNwiq+pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFX7goyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22815C113CC;
+	Sun, 28 Apr 2024 13:13:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714310041;
+	bh=npdY6cKzQvoP4QKnpk6wGr71YeC1qQqsUawN0D7vhVo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SFX7goyHuvae4UXx0pxt3rd69b2hsm6yA44Ljc4xuSec1g8DbUD4BmS9miltKo47y
+	 4YtuquS+bO53Yd6qw2HkAXhvMoAwLjYx3JwnaUS9ku9eT/kfTi9o+KbPsgYpT45Gei
+	 pbJAzQwzDpnbigQgyyJkgCYJOfoEngSsYdDlNOA86IfQi/4G4tdCYRF//2pXBdQHUA
+	 BPZ91Ni/p3pzH2gqfEO7p+Z3LPafDgP07q0g+ME3cy7uDC3Nfk8kaCqEXuNZMADiG+
+	 lny/RCYIzqF9JotY+ES6cbsYPfjEHk48+aRV/jHonCwjD8lQ0hDI6sAvxUy1UlbUg0
+	 lOHLhwJReYbiw==
+Date: Sun, 28 Apr 2024 14:13:49 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: inv.git-commit@tdk.com
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH] iio: invensense: fix timestamp glitches when switching
+ frequency
+Message-ID: <20240428141349.116ad03c@jic23-huawei>
+In-Reply-To: <20240426094835.138389-1-inv.git-commit@tdk.com>
+References: <20240426094835.138389-1-inv.git-commit@tdk.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYuv0nH3K9BJTmJyxLXxvKQjh91KdUi4yjJ0ewncW5cSjw@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Greg,
+On Fri, 26 Apr 2024 09:48:35 +0000
+inv.git-commit@tdk.com wrote:
 
-On Wed, Apr 24, 2024 at 01:53:35PM +0530, Naresh Kamboju wrote:
-> On Wed, 24 Apr 2024 at 03:14, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.1.88 release.
-> > There are 141 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 25 Apr 2024 21:38:28 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.88-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 > 
-> As Pavel reported,
+> When a sensor is running and there is a FIFO frequency change due to
+> another sensor turned on/off, there are glitches on timestamp. Fix that
+> by using only interrupt timestamp when there is the corresponding sensor
+> data in the FIFO.
 > 
-> LKFT also found these regressions on 6.1.
+> Delete FIFO period handling and simplify internal functions.
 > 
-> The arm build failed with gcc-13 and clang-17 on the Linux stable-rc
-> linux.6.1.y branch.
+> Update integration inside inv_mpu6050 and inv_icm42600 drivers.
 > 
-> arm:
->  * omap2plus_defconfig - failed
->  * defconfig  - failed
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Fixes: 0ecc363ccea7 ("iio: make invensense timestamp module generic)
+> CC: stable@vger.kernel.org
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-I'm curious why v6.1.88 is still released nevertheless the reports of the
-build regression on ARM32.
+Whilst I don't fully follow the logic here, the new code is simpler
+and seems reasonable.  Getting my head around this will probably take
+longer than it's worth :(
 
-Thanks,
+Hence applied to the fixes-togreg branch of iio.git.
 
-> 
-> Suspecting commit :
-> -------
->   ASoC: ti: Convert Pandora ASoC to GPIO descriptors
->     [ Upstream commit 319e6ac143b9e9048e527ab9dd2aabb8fdf3d60f ]
-> 
-> Build log:
+Jonathan
+
 > ---
-> arch/arm/mach-omap2/pdata-quirks.c:259:15: error: variable
-> 'pandora_soc_audio_gpios' has initializer but incomplete type
->   259 | static struct gpiod_lookup_table pandora_soc_audio_gpios = {
->       |               ^~~~~~~~~~~~~~~~~~
-> arch/arm/mach-omap2/pdata-quirks.c:260:10: error: 'struct
-> gpiod_lookup_table' has no member named 'dev_id'
->   260 |         .dev_id = "soc-audio",
->       |          ^~~~~~
-> arch/arm/mach-omap2/pdata-quirks.c:260:19: warning: excess elements in
-> struct initializer
->   260 |         .dev_id = "soc-audio",
->       |                   ^~~~~~~~~~~
-> arch/arm/mach-omap2/pdata-quirks.c:260:19: note: (near initialization
-> for 'pandora_soc_audio_gpios')
-> arch/arm/mach-omap2/pdata-quirks.c:261:10: error: 'struct
-> gpiod_lookup_table' has no member named 'table'
->   261 |         .table = {
->       |          ^~~~~
-> arch/arm/mach-omap2/pdata-quirks.c:261:18: error: extra brace group at
-> end of initializer
->   261 |         .table = {
->       |                  ^
-> arch/arm/mach-omap2/pdata-quirks.c:261:18: note: (near initialization
-> for 'pandora_soc_audio_gpios')
-> arch/arm/mach-omap2/pdata-quirks.c:262:17: error: implicit declaration
-> of function 'GPIO_LOOKUP'; did you mean 'IOP_LOOKUP'?
-> [-Werror=implicit-function-declaration]
->   262 |                 GPIO_LOOKUP("gpio-112-127", 6, "dac", GPIO_ACTIVE_HIGH),
->       |                 ^~~~~~~~~~~
->       |                 IOP_LOOKUP
-> arch/arm/mach-omap2/pdata-quirks.c:262:55: error: 'GPIO_ACTIVE_HIGH'
-> undeclared here (not in a function); did you mean 'ACPI_ACTIVE_HIGH'?
->   262 |                 GPIO_LOOKUP("gpio-112-127", 6, "dac", GPIO_ACTIVE_HIGH),
->       |                                                       ^~~~~~~~~~~~~~~~
->       |                                                       ACPI_ACTIVE_HIGH
-> arch/arm/mach-omap2/pdata-quirks.c:264:17: error: extra brace group at
-> end of initializer
->   264 |                 { }
->       |                 ^
-> arch/arm/mach-omap2/pdata-quirks.c:264:17: note: (near initialization
-> for 'pandora_soc_audio_gpios')
-> arch/arm/mach-omap2/pdata-quirks.c:261:18: warning: excess elements in
-> struct initializer
->   261 |         .table = {
->       |                  ^
-> arch/arm/mach-omap2/pdata-quirks.c:261:18: note: (near initialization
-> for 'pandora_soc_audio_gpios')
-> arch/arm/mach-omap2/pdata-quirks.c: In function 'omap3_pandora_legacy_init':
-> arch/arm/mach-omap2/pdata-quirks.c:271:9: error: implicit declaration
-> of function 'gpiod_add_lookup_table'
-> [-Werror=implicit-function-declaration]
->   271 |         gpiod_add_lookup_table(&pandora_soc_audio_gpios);
->       |         ^~~~~~~~~~~~~~~~~~~~~~
-> arch/arm/mach-omap2/pdata-quirks.c: At top level:
-> arch/arm/mach-omap2/pdata-quirks.c:259:34: error: storage size of
-> 'pandora_soc_audio_gpios' isn't known
->   259 | static struct gpiod_lookup_table pandora_soc_audio_gpios = {
->       |                                  ^~~~~~~~~~~~~~~~~~~~~~~
-> cc1: some warnings being treated as errors
-> make[3]: *** [scripts/Makefile.build:250:
-> arch/arm/mach-omap2/pdata-quirks.o] Error 1
+>  .../inv_sensors/inv_sensors_timestamp.c       | 24 +++++++++----------
+>  .../imu/inv_icm42600/inv_icm42600_buffer.c    | 20 +++++++---------
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  2 +-
+>  .../linux/iio/common/inv_sensors_timestamp.h  |  3 +--
+>  4 files changed, 21 insertions(+), 28 deletions(-)
 > 
+> diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> index 3b0f9598a7c7..5f3ba77da740 100644
+> --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> @@ -70,13 +70,13 @@ int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
+>  }
+>  EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
 > 
-> steps to reproduce:
-> ---
-> # tuxmake --runtime podman --target-arch arm --toolchain gcc-13
-> --kconfig omap2plus_defconfig
+> -static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t period, uint32_t mult)
+> +static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t period)
+>  {
+>  	uint32_t period_min, period_max;
 > 
+>  	/* check that period is acceptable */
+> -	period_min = ts->min_period * mult;
+> -	period_max = ts->max_period * mult;
+> +	period_min = ts->min_period * ts->mult;
+> +	period_max = ts->max_period * ts->mult;
+>  	if (period > period_min && period < period_max)
+>  		return true;
+>  	else
+> @@ -84,15 +84,15 @@ static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t perio
+>  }
 > 
-> Links
-> ---
->  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fWG4dRZzA7WgJqyLQ8Rm05WTUo/
->  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.87-142-gcde450ef0f2f/testrun/23640116/suite/build/test/gcc-13-omap2plus_defconfig/details/
+>  static bool inv_update_chip_period(struct inv_sensors_timestamp *ts,
+> -				    uint32_t mult, uint32_t period)
+> +				   uint32_t period)
+>  {
+>  	uint32_t new_chip_period;
 > 
+> -	if (!inv_validate_period(ts, period, mult))
+> +	if (!inv_validate_period(ts, period))
+>  		return false;
+> 
+>  	/* update chip internal period estimation */
+> -	new_chip_period = period / mult;
+> +	new_chip_period = period / ts->mult;
+>  	inv_update_acc(&ts->chip_period, new_chip_period);
+>  	ts->period = ts->mult * ts->chip_period.val;
+> 
+> @@ -120,16 +120,14 @@ static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
+>  }
+> 
+>  void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+> -				      uint32_t fifo_period, size_t fifo_nb,
+> -				      size_t sensor_nb, int64_t timestamp)
+> +				     size_t sample_nb, int64_t timestamp)
+>  {
+>  	struct inv_sensors_timestamp_interval *it;
+>  	int64_t delta, interval;
+> -	const uint32_t fifo_mult = fifo_period / ts->chip.clock_period;
+>  	uint32_t period;
+>  	bool valid = false;
+> 
+> -	if (fifo_nb == 0)
+> +	if (sample_nb == 0)
+>  		return;
+> 
+>  	/* update interrupt timestamp and compute chip and sensor periods */
+> @@ -139,14 +137,14 @@ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+>  	delta = it->up - it->lo;
+>  	if (it->lo != 0) {
+>  		/* compute period: delta time divided by number of samples */
+> -		period = div_s64(delta, fifo_nb);
+> -		valid = inv_update_chip_period(ts, fifo_mult, period);
+> +		period = div_s64(delta, sample_nb);
+> +		valid = inv_update_chip_period(ts, period);
+>  	}
+> 
+>  	/* no previous data, compute theoritical value from interrupt */
+>  	if (ts->timestamp == 0) {
+>  		/* elapsed time: sensor period * sensor samples number */
+> -		interval = (int64_t)ts->period * (int64_t)sensor_nb;
+> +		interval = (int64_t)ts->period * (int64_t)sample_nb;
+>  		ts->timestamp = it->up - interval;
+>  		return;
+>  	}
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+> index b52f328fd26c..9cde9a9337ad 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+> @@ -509,20 +509,20 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
+>  		return 0;
+> 
+>  	/* handle gyroscope timestamp and FIFO data parsing */
+> -	ts = iio_priv(st->indio_gyro);
+> -	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
+> -					st->fifo.nb.gyro, st->timestamp.gyro);
+>  	if (st->fifo.nb.gyro > 0) {
+> +		ts = iio_priv(st->indio_gyro);
+> +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro,
+> +						st->timestamp.gyro);
+>  		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
+>  		if (ret)
+>  			return ret;
+>  	}
+> 
+>  	/* handle accelerometer timestamp and FIFO data parsing */
+> -	ts = iio_priv(st->indio_accel);
+> -	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
+> -					st->fifo.nb.accel, st->timestamp.accel);
+>  	if (st->fifo.nb.accel > 0) {
+> +		ts = iio_priv(st->indio_accel);
+> +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel,
+> +						st->timestamp.accel);
+>  		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
+>  		if (ret)
+>  			return ret;
+> @@ -550,9 +550,7 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42600_state *st,
+> 
+>  	if (st->fifo.nb.gyro > 0) {
+>  		ts = iio_priv(st->indio_gyro);
+> -		inv_sensors_timestamp_interrupt(ts, st->fifo.period,
+> -						st->fifo.nb.total, st->fifo.nb.gyro,
+> -						gyro_ts);
+> +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro, gyro_ts);
+>  		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
+>  		if (ret)
+>  			return ret;
+> @@ -560,9 +558,7 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42600_state *st,
+> 
+>  	if (st->fifo.nb.accel > 0) {
+>  		ts = iio_priv(st->indio_accel);
+> -		inv_sensors_timestamp_interrupt(ts, st->fifo.period,
+> -						st->fifo.nb.total, st->fifo.nb.accel,
+> -						accel_ts);
+> +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel, accel_ts);
+>  		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
+>  		if (ret)
+>  			return ret;
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> index 86465226f7e1..0dc0f22a5582 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> @@ -100,7 +100,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+>  		goto end_session;
+>  	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
+>  	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
+> -	inv_sensors_timestamp_interrupt(&st->timestamp, fifo_period, nb, nb, pf->timestamp);
+> +	inv_sensors_timestamp_interrupt(&st->timestamp, nb, pf->timestamp);
+>  	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, nb, 0);
+> 
+>  	/* clear internal data buffer for avoiding kernel data leak */
+> diff --git a/include/linux/iio/common/inv_sensors_timestamp.h b/include/linux/iio/common/inv_sensors_timestamp.h
+> index a47d304d1ba7..8d506f1e9df2 100644
+> --- a/include/linux/iio/common/inv_sensors_timestamp.h
+> +++ b/include/linux/iio/common/inv_sensors_timestamp.h
+> @@ -71,8 +71,7 @@ int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
+>  				     uint32_t period, bool fifo);
+> 
+>  void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+> -				     uint32_t fifo_period, size_t fifo_nb,
+> -				     size_t sensor_nb, int64_t timestamp);
+> +				     size_t sample_nb, int64_t timestamp);
+> 
+>  static inline int64_t inv_sensors_timestamp_pop(struct inv_sensors_timestamp *ts)
+>  {
 > --
-> Linaro LKFT
-> https://lkft.linaro.org
+> 2.34.1
+> 
+
 
