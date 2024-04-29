@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35A88B566E
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:24:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 406CB8B5671
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:24:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62BB7284295
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:24:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AB03B2341C
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1F53FBA3;
-	Mon, 29 Apr 2024 11:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA56C3FB9B;
+	Mon, 29 Apr 2024 11:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oevZSeS5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwVRAXl/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8663FBAF
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8113DB8E
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714389853; cv=none; b=iWiiDzFeUS5hsgCOHbpsOjCTV4qVITcOiqLObfe9h/FOBAb0mzCWKUiy280N7uw+LrdAOVY4hF8kFT8+qAAVMRffeWf05cM8BjyGM8ZsnSZNfnk5red2bZF7B+kRjpu4wJO54YnQtBMAlJKttwAlwDNBWTYeO543awq0c0jyNXw=
+	t=1714389862; cv=none; b=NWoMEYSH085ur9zrfuvR06pHhYEHe1Utrd852ZaMlZR7XrWfSV/YKoAB69HCQimT91TwDwVoQSVHgNTwkb4i7Ca2/adpm9fEeiqTbDGtzD6+5+FRRZxIckwDj9S9Oc1vBSOkJ+aKaiuPdFcBUxTC2b1C+6+S2zm5gIzhpRPcWCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714389853; c=relaxed/simple;
-	bh=by/p0VSkZVx1idGO2KT/ng4lkvOCDuJ/gcViIiaG5F0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=auwolBDgVjDJuiwx4yGgaeuMDxUuj7wAayLATrXC//KlwlpGL6RjuW0MEypQr6jvaBX8OezoR05VOckP7C8snn4Ha3oJ+81HrrP8Yxv0J7oUxvJljhqggnUngTtKU4IPUQayMF4+Env0C0xiE/YHba5PpJgfSIaf0V9uRny6Lps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oevZSeS5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD9FC113CD;
-	Mon, 29 Apr 2024 11:24:12 +0000 (UTC)
+	s=arc-20240116; t=1714389862; c=relaxed/simple;
+	bh=8qQmGZzccPlXDRW/CRcPw0ObSwEyjkuwNgfKWTa8Y/I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CnPAJ+YmX9Y4dLTFlhuxFHZd+RTdpVM6rZFvNHC8K5c3siQrie/vEDSWfPZZ878mWwxO77xl1xqo9o8NhPMcIq9JdmoxJIuqqEZ+eVMcsPHcHd/mYS3ay6/qc/7OV1OcTZyUfTmOFND1qyPgl4E0btKp1DELLqcXM+irRxx44bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwVRAXl/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01266C113CD;
+	Mon, 29 Apr 2024 11:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714389853;
-	bh=by/p0VSkZVx1idGO2KT/ng4lkvOCDuJ/gcViIiaG5F0=;
+	s=korg; t=1714389862;
+	bh=8qQmGZzccPlXDRW/CRcPw0ObSwEyjkuwNgfKWTa8Y/I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=oevZSeS5dUL61F2oyxbtWoU8R/jGJVThH6a7Sf2EkNhGrR15t3er9jZUogmuLxIpx
-	 ZjJzgr3nXdra6FlVmndXAIE5p60c4B9AIbVqj15y06u60DiQ9OdSXgm4nce5f+8MqD
-	 V+Og498/jol/tLRvziYU73IfBHnUhIsDcyM00cK0=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-msm: pervent access to suspended controller" failed to apply to 5.10-stable tree
+	b=NwVRAXl/iLbFJlTCr9ZrFQy4Rc8gwbQjGOVi4ya0xZk5aR2dLexfCmsxFZHBWAB1k
+	 I0NzKFnN0wfxMIGRdxU12CtxLB2Bmg76UZkOKxqH9AwldZpKNeiosFsLG6dDa2RC4k
+	 fK1xfaK8pHimOKkczSNCDKX1sfxNB5wKbrfA67T4=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-msm: pervent access to suspended controller" failed to apply to 5.4-stable tree
 To: mantas@8devices.com,adrian.hunter@intel.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:24:10 +0200
-Message-ID: <2024042910-obnoxious-sleep-f776@gregkh>
+Date: Mon, 29 Apr 2024 13:24:11 +0200
+Message-ID: <2024042911-librarian-armory-e9db@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x f8def10f73a516b771051a2f70f2f0446902cb4f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042910-obnoxious-sleep-f776@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042911-librarian-armory-e9db@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 f8def10f73a5 ("mmc: sdhci-msm: pervent access to suspended controller")
 c93767cf64eb ("mmc: sdhci-msm: add Inline Crypto Engine support")
+0472f8d3c054 ("mmc: sdhci-msm: Use OPP API to set clk/perf state")
+9051db381fab ("mmc: sdhci-msm: Mark sdhci_msm_cqe_disable static")
+87a8df0dce6a ("mmc: sdhci-msm: Add CQHCI support for sdhci-msm")
 
 thanks,
 
