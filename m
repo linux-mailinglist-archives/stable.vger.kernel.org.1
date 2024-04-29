@@ -1,115 +1,158 @@
-Return-Path: <stable+bounces-41749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5CBF8B5E04
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:48:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D1E8B5E6F
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 18:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D75681C20F8D
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:48:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2228283D1F
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 16:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35BD82C6B;
-	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3773382D7C;
+	Mon, 29 Apr 2024 16:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMc9yYED"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="dN4lJy6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C0282881;
-	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50CA74400;
+	Mon, 29 Apr 2024 16:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714405698; cv=none; b=gCshtltMs7aQygQ8UBthwvgXvEm+o/Gt5k4AHszLa+uRMB0ydwixdoNbVvfKAwvNu0oegvNMHujqH/r8RIRpwwpaR6j90KePtxlq3xoDLSRIf5/RuyrWmRWxe4Rf95p2MY+FSeb+K10bVt0a1JTdn95n1ff7njCF9J8MBv7TuBQ=
+	t=1714406469; cv=none; b=XQU4t06UHMjo+Uw+EeJvROEofBAoejKG5yDg9LMxW0Uo7UI4T/8MMGtttxeiPWhg3AUQjQudd4+YSau/lVYPQpdeFzdpdFcagCKIE6IynObb3gFke9965J1EXOrxVLYDBQbrmICvMoW36INgxh+Fvp8iTxEw5RdY2ZrTsnRlr9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714405698; c=relaxed/simple;
-	bh=q0TrEuqJ399P2tU46vjogSsElHWc/nM7/9Z+Al4Ihls=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OBI0cy5evpflUZidOkyAmvjxuksL4qTgu+1nC5mycEJrnwxhaqnP50Yk4pBD8KIHGbn2qeHYFsdcbfP+kSV05gS4nrvPko2fwskoXXOb6WtLG/hGngcnAfT5dwEexLjp/7HhANd3hI3F/ZVZx7v0AuT4hZmx2Ar+pFXNg7qSfbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMc9yYED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13401C113CD;
-	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714405698;
-	bh=q0TrEuqJ399P2tU46vjogSsElHWc/nM7/9Z+Al4Ihls=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lMc9yYEDyzeRZOJ1DRUT7SFpqY0LFuNwm2GRW2x2+4sUM7hTHv2OuNtKaNnQRJKHJ
-	 ZQxj5mkTm8xhpjAE+gbLHw4eaTyF58ajvnGBOcHEY+04zix7O+IFSlWCa7RG2grPXU
-	 bASVDmSzzNxqEKnUWhe66Lv/D8jUNNmhOiHs810CbbJYDiLAXDh0NQuPKM3gIUiJjE
-	 NWqBY/ffZIk/VT1uhSMNEOSDWi3Ke7G+hILanka25TL5nSmc5g4JI4GJNeoNpnRn5c
-	 qfDacGm6CMtmvyOq8M0a3yxpeZVKBongaytfhWthBPy24zkIx15HjVN+Ir57f7dppL
-	 Kbpvz+lYzGXRA==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51ca95db667so4074055e87.0;
-        Mon, 29 Apr 2024 08:48:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUP5nZVHWN9lHtDCg/dvclg1HKyxFE0UaWtTRUgDd2NBhycQsO5z62Ihmv5CI2f2TtheRsWcmuuuBVGddMY56gaPZ0c+OSyItqo6bk5OXKy+9kEHV/JwCjWnzNJ1jyJoSRLRVkE5IqHOKJiqZs6/qwq+TeSWPHGFgadePtRIwfq
-X-Gm-Message-State: AOJu0YyOvLxrGORjvkqf2N7jeQpWYMOmbqEA5ygfnVW+jZAFptY2hV/p
-	Sfb3pLX+jRn8H2GD7O04kp0DS8/p4KNwiWUl5XGVPX0jKBDi42iyYhUklN4KEJ3R/Vtjw9160UT
-	aRrMYFY7/B07g2vZBoxx42xAGv0k=
-X-Google-Smtp-Source: AGHT+IH8dW+HR1/IwDDX3dJknVDKeoWFxn3QWuqcOlBwnDTa15PNjBagiz2MJ/zAfJQ1b/bGC3FTypm4Ztu41t9o6iE=
-X-Received: by 2002:a05:6512:781:b0:51a:f31f:fc6e with SMTP id
- x1-20020a056512078100b0051af31ffc6emr7462063lfr.14.1714405696431; Mon, 29 Apr
- 2024 08:48:16 -0700 (PDT)
+	s=arc-20240116; t=1714406469; c=relaxed/simple;
+	bh=lxDQhsRt5QjuY4+saXq3yCpJ6Jud3UILT4+yC+cLByM=;
+	h=Date:To:From:Subject:Message-Id; b=dsUg0HvVk3iXY/xM8eTlApGGYsxFcbFeLMCVFNESOfUirwI599FkwdRaLw6B86+8fK0qn+s7fz6Q8TmjJjhQnLDmPHlNrVcbzHihGzIEOnWsCyhMckbre3CYsJ4ofyjoz69oPS5pIk1HrOE6gNIzsSR+UhAroJklPpBSZAee8Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=dN4lJy6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B55C113CD;
+	Mon, 29 Apr 2024 16:01:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1714406468;
+	bh=lxDQhsRt5QjuY4+saXq3yCpJ6Jud3UILT4+yC+cLByM=;
+	h=Date:To:From:Subject:From;
+	b=dN4lJy6bdbqDoXeH5+9KKTJIcoqXFnJMDEQ4K3Zf2s64huxGHIsuFSgUZPzosiDTX
+	 +88FtElUbo1jC51YjkDpOvGdzfN5N1tOAZQJLu7yLNaMTgO+Yidj73JDVKlLjzkHk+
+	 4OF9epO7gqMl/a3fL6Nf2y6RVuS+yHtkEI4MGpek=
+Date: Mon, 29 Apr 2024 09:01:06 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,riel@surriel.com,peterz@infradead.org,m.novosyolov@rosalinux.ru,mingo@kernel.org,mgorman@techsingularity.net,i.gaptrakhmanov@rosalinux.ru,willy@infradead.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + bounds-use-the-right-number-of-bits-for-power-of-two-config_nr_cpus.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240429160108.56B55C113CD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240423135928.1200-1-hagarhem@amazon.com>
-In-Reply-To: <20240423135928.1200-1-hagarhem@amazon.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 29 Apr 2024 17:48:05 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHiPcgC7-kXToivcbfyHe9g3Cg6__TFWhHYRUcOJ8hy1g@mail.gmail.com>
-Message-ID: <CAMj1kXHiPcgC7-kXToivcbfyHe9g3Cg6__TFWhHYRUcOJ8hy1g@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: libstub: only free priv.runtime_map when allocated
-To: Hagar Hemdan <hagarhem@amazon.com>
-Cc: Maximilian Heyne <mheyne@amazon.de>, Pratyush Yadav <ptyadav@amazon.de>, 
-	Norbert Manthey <nmanthey@amazon.de>, stable@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 23 Apr 2024 at 16:00, Hagar Hemdan <hagarhem@amazon.com> wrote:
->
-> priv.runtime_map is only allocated when efi_novamap is not set.
-> Otherwise, it is an uninitialized value.
-> In the error path, it is freed unconditionally.
-> Avoid passing an uninitialized value to free_pool.
-> Free priv.runtime_map only when it was allocated.
->
-> This bug was discovered and resolved using Coverity Static Analysis
-> Security Testing (SAST) by Synopsys, Inc.
->
-> Fixes: f80d26043af9 ("efi: libstub: avoid efi_get_memory_map() for allocating the virt map")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-> ---
-> v2: added Cc stable tag to the commit message as requested by kernel
-> test robot.
-> ---
->  drivers/firmware/efi/libstub/fdt.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
 
-Queued up in efi/next, thanks.
+The patch titled
+     Subject: bounds: use the right number of bits for power-of-two CONFIG_NR_CPUS
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     bounds-use-the-right-number-of-bits-for-power-of-two-config_nr_cpus.patch
 
-> diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-> index 70e9789ff9de..6a337f1f8787 100644
-> --- a/drivers/firmware/efi/libstub/fdt.c
-> +++ b/drivers/firmware/efi/libstub/fdt.c
-> @@ -335,8 +335,8 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
->
->  fail:
->         efi_free(fdt_size, fdt_addr);
-> -
-> -       efi_bs_call(free_pool, priv.runtime_map);
-> +       if (!efi_novamap)
-> +               efi_bs_call(free_pool, priv.runtime_map);
->
->         return EFI_LOAD_ERROR;
->  }
-> --
-> 2.40.1
->
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/bounds-use-the-right-number-of-bits-for-power-of-two-config_nr_cpus.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: bounds: use the right number of bits for power-of-two CONFIG_NR_CPUS
+Date: Mon, 29 Apr 2024 15:47:51 +0100
+
+bits_per() rounds up to the next power of two when passed a power of two. 
+This causes crashes on some machines and configurations.
+
+Link: https://lkml.kernel.org/r/20240429144807.3012361-1-willy@infradead.org
+Fixes: f2d5dcb48f7b (bounds: support non-power-of-two CONFIG_NR_CPUS)
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reported-by: Михаил Новоселов <m.novosyolov@rosalinux.ru>
+Tested-by: Ильфат Гаптрахманов <i.gaptrakhmanov@rosalinux.ru>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3347
+Link: https://lore.kernel.org/all/1c978cf1-2934-4e66-e4b3-e81b04cb3571@rosalinux.ru/
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/bounds.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/kernel/bounds.c~bounds-use-the-right-number-of-bits-for-power-of-two-config_nr_cpus
++++ a/kernel/bounds.c
+@@ -19,7 +19,7 @@ int main(void)
+ 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
+ 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
+ #ifdef CONFIG_SMP
+-	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
++	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS - 1));
+ #endif
+ 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
+ #ifdef CONFIG_LRU_GEN
+_
+
+Patches currently in -mm which might be from willy@infradead.org are
+
+bounds-use-the-right-number-of-bits-for-power-of-two-config_nr_cpus.patch
+doc-improve-the-description-of-__folio_mark_dirty.patch
+buffer-add-kernel-doc-for-block_dirty_folio.patch
+buffer-add-kernel-doc-for-try_to_free_buffers.patch
+buffer-fix-__bread-and-__bread_gfp-kernel-doc.patch
+buffer-add-kernel-doc-for-brelse-and-__brelse.patch
+buffer-add-kernel-doc-for-bforget-and-__bforget.patch
+buffer-improve-bdev_getblk-documentation.patch
+doc-split-bufferrst-out-of-api-summaryrst.patch
+doc-split-bufferrst-out-of-api-summaryrst-fix.patch
+mm-memory-failure-remove-fsdax_pgoff-argument-from-__add_to_kill.patch
+mm-memory-failure-pass-addr-to-__add_to_kill.patch
+mm-return-the-address-from-page_mapped_in_vma.patch
+mm-make-page_mapped_in_vma-conditional-on-config_memory_failure.patch
+mm-memory-failure-convert-shake_page-to-shake_folio.patch
+mm-convert-hugetlb_page_mapping_lock_write-to-folio.patch
+mm-memory-failure-convert-memory_failure-to-use-a-folio.patch
+mm-memory-failure-convert-hwpoison_user_mappings-to-take-a-folio.patch
+mm-memory-failure-add-some-folio-conversions-to-unpoison_memory.patch
+mm-memory-failure-use-folio-functions-throughout-collect_procs.patch
+mm-memory-failure-pass-the-folio-to-collect_procs_ksm.patch
+fscrypt-convert-bh_get_inode_and_lblk_num-to-use-a-folio.patch
+f2fs-convert-f2fs_clear_page_cache_dirty_tag-to-use-a-folio.patch
+memory-failure-remove-calls-to-page_mapping.patch
+migrate-expand-the-use-of-folio-in-__migrate_device_pages.patch
+userfault-expand-folio-use-in-mfill_atomic_install_pte.patch
+mm-remove-page_mapping.patch
+mm-remove-page_cache_alloc.patch
+mm-remove-put_devmap_managed_page.patch
+mm-convert-put_devmap_managed_page_refs-to-put_devmap_managed_folio_refs.patch
+mm-remove-page_ref_sub_return.patch
+gup-use-folios-for-gup_devmap.patch
+mm-add-kernel-doc-for-folio_mark_accessed.patch
+mm-remove-pagereferenced.patch
+mm-simplify-thp_vma_allowable_order.patch
+mm-assert-the-mmap_lock-is-held-in-__anon_vma_prepare.patch
+mm-delay-the-check-for-a-null-anon_vma.patch
+mm-fix-some-minor-per-vma-lock-issues-in-userfaultfd.patch
+mm-optimise-vmf_anon_prepare-for-vmas-without-an-anon_vma.patch
+squashfs-convert-squashfs_symlink_read_folio-to-use-folio-apis.patch
+squashfs-remove-calls-to-set-the-folio-error-flag.patch
+
 
