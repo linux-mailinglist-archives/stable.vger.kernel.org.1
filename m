@@ -1,189 +1,156 @@
-Return-Path: <stable+bounces-41718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918208B5966
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:07:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6618B598D
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4983128B7B5
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:07:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDC3D1C24630
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916AA53E08;
-	Mon, 29 Apr 2024 13:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13454481C7;
+	Mon, 29 Apr 2024 13:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zlN1EMV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZkJT+KE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDCD5338A
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 13:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF30F74E09;
+	Mon, 29 Apr 2024 13:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714396052; cv=none; b=CqxFtU3IU9by2d5D2T1HaSzTmpH1FbuO31h0XbMZsSoOHp9WO8ItVEBOoO4KKbQO4xyucIrn/BJDprl35Dz40gw2HufU0NgnH3ULuSyCNp6/H0kTydoeAllBT4BQl6mf3oyPyUAVCTOwYyphetzI55BPLuW/eEwsbnzC77AVovU=
+	t=1714396267; cv=none; b=eRP7uhs/pdS9mPxXGzSwHXPR2XB5IfJh/GsRR17yj6ADuB79AEYcbbe38g4dZoMK9E9m+5nAwZIoaxg/5xNZdjLcY8a/u56sIVd32KQIwNLyfxL03BnRPCjR6GMK5wrWIyDaXTwJ0MXTmHUH4d/FwJyUTNg+FaNn7rbRq8UtvKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714396052; c=relaxed/simple;
-	bh=SS3iiq+etJeCyaKPgwlFeaSCg/hVDcfoaez9l+VGg0k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eQQQhoNItgB2g64LQXVcv5XDZI2i1rF6p+E2mxDlMtU/jS31Ok1bphbEhxeeg/+KqARu5S3jZnqou0irUoSMwiD0u6mYl1Ki57Y8SeWIjpjIwwsb4ctvSXuLuV8L6weblifg6um/tUeS6lSbP1W9iRGLW5hnBAjn+zwT7oeQsSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zlN1EMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAE6C4AF17;
-	Mon, 29 Apr 2024 13:07:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714396051;
-	bh=SS3iiq+etJeCyaKPgwlFeaSCg/hVDcfoaez9l+VGg0k=;
-	h=Subject:To:Cc:From:Date:From;
-	b=0zlN1EMV8dFxUOVT2vx8Lx+q9ZhGPtJ9zswa6UN9TH/S/bhAgp1fcD4+4/78og24f
-	 E7lOegZKKfOEUqbn4zuM+qxd5qFw+L3RiA68ji1UtNNrN8zpLgTLX9B5Nr5f+3J8rp
-	 39tsGsi1uheRhCnWTMSorqf/nu6GeVViWK+Fypg8=
-Subject: FAILED: patch "[PATCH] macsec: Detect if Rx skb is macsec-related for offloading" failed to apply to 6.6-stable tree
-To: rrameshbabu@nvidia.com,bpoirier@nvidia.com,cratiu@nvidia.com,kuba@kernel.org,sd@queasysnail.net
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 15:07:28 +0200
-Message-ID: <2024042928-mastiff-unmasked-6a54@gregkh>
+	s=arc-20240116; t=1714396267; c=relaxed/simple;
+	bh=R1UTtJT+uCWZh4nuC8+cBSQQbi4Zt4uHEdWDrtkOgC8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=b/G2qQLkmvpMAj7MiTnaEdlvVpQNaybPOcPqYlo6CYbsB2WvR8433RFXbS5DzaEwLWUkPNjbys4fU1EE8puLAKzcp77sfmvDh26Ea3p+J3v4ryzJJ3KdVBE2luPf71k3BJW8sX5Q303p95wv21VkgW50TxQTV374VT+GZAhLdVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZkJT+KE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922A3C116B1;
+	Mon, 29 Apr 2024 13:11:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714396267;
+	bh=R1UTtJT+uCWZh4nuC8+cBSQQbi4Zt4uHEdWDrtkOgC8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lZkJT+KESuOXKJCmj7z1WgncbrlZZaqmsCr+7vvy9mdeH/MDoBe5I6KWlV2x5geaP
+	 /PDBYUrCpOP3sADI8xemeDggKrEV6/dB0unAL1bUKUZEd/5tNB8jW+JzSO3She/SjI
+	 bFJV1mpIcltDAsNxm/CLT5kCEEdm+Hu6hGGnOyJ7cS8P4ctjbfUGUCXIvTKK80mlI6
+	 4Bx51IbOId5D1rv7EXtxMd7/yFpPOOOolKMckG8qvvVq34fegsYFLM7TXeEG55roS/
+	 vSOye6v5UAoVLD/nQsbdsL+AyO3NBg6Utl0SoeZiu/0wm9FYGtkEKg7D4XyJlw1u3z
+	 EhyRCIcAAj4Ug==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 29 Apr 2024 16:11:03 +0300
+Message-Id: <D0WMR6UESTUC.IMBRWMJ80RHQ@kernel.org>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Dmitrii Kuvaiskii" <dmitrii.kuvaiskii@intel.com>,
+ <dave.hansen@linux.intel.com>, <kai.huang@intel.com>,
+ <haitao.huang@linux.intel.com>, <reinette.chatre@intel.com>,
+ <linux-sgx@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Cc: <mona.vij@intel.com>, <kailun.qin@intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/sgx: Resolve EREMOVE page vs EAUG page data
+ race
+X-Mailer: aerc 0.17.0
+References: <20240429104330.3636113-1-dmitrii.kuvaiskii@intel.com>
+ <20240429104330.3636113-3-dmitrii.kuvaiskii@intel.com>
+In-Reply-To: <20240429104330.3636113-3-dmitrii.kuvaiskii@intel.com>
 
+On Mon Apr 29, 2024 at 1:43 PM EEST, Dmitrii Kuvaiskii wrote:
+> Two enclave threads may try to add and remove the same enclave page
+> simultaneously (e.g., if the SGX runtime supports both lazy allocation
+> and `MADV_DONTNEED` semantics). Consider this race:
+>
+> 1. T1 performs page removal in sgx_encl_remove_pages() and stops right
+>    after removing the page table entry and right before re-acquiring the
+>    enclave lock to EREMOVE and xa_erase(&encl->page_array) the page.
+> 2. T2 tries to access the page, and #PF[not_present] is raised. The
+>    condition to EAUG in sgx_vma_fault() is not satisfied because the
+>    page is still present in encl->page_array, thus the SGX driver
+>    assumes that the fault happened because the page was swapped out. The
+>    driver continues on a code path that installs a page table entry
+>    *without* performing EAUG.
+> 3. The enclave page metadata is in inconsistent state: the PTE is
+>    installed but there was no EAUG. Thus, T2 in userspace infinitely
+>    receives SIGSEGV on this page (and EACCEPT always fails).
+>
+> Fix this by making sure that T1 (the page-removing thread) always wins
+> this data race. In particular, the page-being-removed is marked as such,
+> and T2 retries until the page is fully removed.
+>
+> Fixes: 9849bb27152c ("x86/sgx: Support complete page removal")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
+> ---
+>  arch/x86/kernel/cpu/sgx/encl.c  | 3 ++-
+>  arch/x86/kernel/cpu/sgx/encl.h  | 3 +++
+>  arch/x86/kernel/cpu/sgx/ioctl.c | 1 +
+>  3 files changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/enc=
+l.c
+> index 41f14b1a3025..7ccd8b2fce5f 100644
+> --- a/arch/x86/kernel/cpu/sgx/encl.c
+> +++ b/arch/x86/kernel/cpu/sgx/encl.c
+> @@ -257,7 +257,8 @@ static struct sgx_encl_page *__sgx_encl_load_page(str=
+uct sgx_encl *encl,
+> =20
+>  	/* Entry successfully located. */
+>  	if (entry->epc_page) {
+> -		if (entry->desc & SGX_ENCL_PAGE_BEING_RECLAIMED)
+> +		if (entry->desc & (SGX_ENCL_PAGE_BEING_RECLAIMED |
+> +				   SGX_ENCL_PAGE_BEING_REMOVED))
+>  			return ERR_PTR(-EBUSY);
+> =20
+>  		return entry;
+> diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/enc=
+l.h
+> index f94ff14c9486..fff5f2293ae7 100644
+> --- a/arch/x86/kernel/cpu/sgx/encl.h
+> +++ b/arch/x86/kernel/cpu/sgx/encl.h
+> @@ -25,6 +25,9 @@
+>  /* 'desc' bit marking that the page is being reclaimed. */
+>  #define SGX_ENCL_PAGE_BEING_RECLAIMED	BIT(3)
+> =20
+> +/* 'desc' bit marking that the page is being removed. */
+> +#define SGX_ENCL_PAGE_BEING_REMOVED	BIT(2)
+> +
+>  struct sgx_encl_page {
+>  	unsigned long desc;
+>  	unsigned long vm_max_prot_bits:8;
+> diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/io=
+ctl.c
+> index b65ab214bdf5..c542d4dd3e64 100644
+> --- a/arch/x86/kernel/cpu/sgx/ioctl.c
+> +++ b/arch/x86/kernel/cpu/sgx/ioctl.c
+> @@ -1142,6 +1142,7 @@ static long sgx_encl_remove_pages(struct sgx_encl *=
+encl,
+>  		 * Do not keep encl->lock because of dependency on
+>  		 * mmap_lock acquired in sgx_zap_enclave_ptes().
+>  		 */
+> +		entry->desc |=3D SGX_ENCL_PAGE_BEING_REMOVED;
+>  		mutex_unlock(&encl->lock);
+> =20
+>  		sgx_zap_enclave_ptes(encl, addr);
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+It is somewhat trivial to NAK this as the commit message does
+not do any effort describing the new flag. By default at least
+I have strong opposition against any new flags related to
+reclaiming even if it needs a bit of extra synchronization
+work in the user space.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+One way to describe concurrency scenarios would be to take
+example from https://www.kernel.org/doc/Documentation/memory-barriers.txt
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 642c984dd0e37dbaec9f87bd1211e5fac1f142bf
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042928-mastiff-unmasked-6a54@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+I.e. see the examples with CPU 1 and CPU 2.
 
-Possible dependencies:
-
-642c984dd0e3 ("macsec: Detect if Rx skb is macsec-related for offloading devices that update md_dst")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 642c984dd0e37dbaec9f87bd1211e5fac1f142bf Mon Sep 17 00:00:00 2001
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Date: Tue, 23 Apr 2024 11:13:04 -0700
-Subject: [PATCH] macsec: Detect if Rx skb is macsec-related for offloading
- devices that update md_dst
-
-Can now correctly identify where the packets should be delivered by using
-md_dst or its absence on devices that provide it.
-
-This detection is not possible without device drivers that update md_dst. A
-fallback pattern should be used for supporting such device drivers. This
-fallback mode causes multicast messages to be cloned to both the non-macsec
-and macsec ports, independent of whether the multicast message received was
-encrypted over MACsec or not. Other non-macsec traffic may also fail to be
-handled correctly for devices in promiscuous mode.
-
-Link: https://lore.kernel.org/netdev/ZULRxX9eIbFiVi7v@hog/
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Cc: stable@vger.kernel.org
-Fixes: 860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path support")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240423181319.115860-4-rrameshbabu@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 0206b84284ab..ff016c11b4a0 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -999,10 +999,12 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 	struct metadata_dst *md_dst;
- 	struct macsec_rxh_data *rxd;
- 	struct macsec_dev *macsec;
-+	bool is_macsec_md_dst;
- 
- 	rcu_read_lock();
- 	rxd = macsec_data_rcu(skb->dev);
- 	md_dst = skb_metadata_dst(skb);
-+	is_macsec_md_dst = md_dst && md_dst->type == METADATA_MACSEC;
- 
- 	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
- 		struct sk_buff *nskb;
-@@ -1013,14 +1015,42 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 		 * the SecTAG, so we have to deduce which port to deliver to.
- 		 */
- 		if (macsec_is_offloaded(macsec) && netif_running(ndev)) {
--			struct macsec_rx_sc *rx_sc = NULL;
-+			const struct macsec_ops *ops;
- 
--			if (md_dst && md_dst->type == METADATA_MACSEC)
--				rx_sc = find_rx_sc(&macsec->secy, md_dst->u.macsec_info.sci);
-+			ops = macsec_get_ops(macsec, NULL);
- 
--			if (md_dst && md_dst->type == METADATA_MACSEC && !rx_sc)
-+			if (ops->rx_uses_md_dst && !is_macsec_md_dst)
- 				continue;
- 
-+			if (is_macsec_md_dst) {
-+				struct macsec_rx_sc *rx_sc;
-+
-+				/* All drivers that implement MACsec offload
-+				 * support using skb metadata destinations must
-+				 * indicate that they do so.
-+				 */
-+				DEBUG_NET_WARN_ON_ONCE(!ops->rx_uses_md_dst);
-+				rx_sc = find_rx_sc(&macsec->secy,
-+						   md_dst->u.macsec_info.sci);
-+				if (!rx_sc)
-+					continue;
-+				/* device indicated macsec offload occurred */
-+				skb->dev = ndev;
-+				skb->pkt_type = PACKET_HOST;
-+				eth_skb_pkt_type(skb, ndev);
-+				ret = RX_HANDLER_ANOTHER;
-+				goto out;
-+			}
-+
-+			/* This datapath is insecure because it is unable to
-+			 * enforce isolation of broadcast/multicast traffic and
-+			 * unicast traffic with promiscuous mode on the macsec
-+			 * netdev. Since the core stack has no mechanism to
-+			 * check that the hardware did indeed receive MACsec
-+			 * traffic, it is possible that the response handling
-+			 * done by the MACsec port was to a plaintext packet.
-+			 * This violates the MACsec protocol standard.
-+			 */
- 			if (ether_addr_equal_64bits(hdr->h_dest,
- 						    ndev->dev_addr)) {
- 				/* exact match, divert skb to this port */
-@@ -1036,14 +1066,10 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 					break;
- 
- 				nskb->dev = ndev;
--				if (ether_addr_equal_64bits(hdr->h_dest,
--							    ndev->broadcast))
--					nskb->pkt_type = PACKET_BROADCAST;
--				else
--					nskb->pkt_type = PACKET_MULTICAST;
-+				eth_skb_pkt_type(nskb, ndev);
- 
- 				__netif_rx(nskb);
--			} else if (rx_sc || ndev->flags & IFF_PROMISC) {
-+			} else if (ndev->flags & IFF_PROMISC) {
- 				skb->dev = ndev;
- 				skb->pkt_type = PACKET_HOST;
- 				ret = RX_HANDLER_ANOTHER;
-
+BR, Jarkko
 
