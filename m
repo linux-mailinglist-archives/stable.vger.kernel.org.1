@@ -1,105 +1,128 @@
-Return-Path: <stable+bounces-41738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F618B5B14
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 16:18:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 454CA8B5B38
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 16:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3E8A1F2187B
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:18:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA5EB281A5F
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE2776413;
-	Mon, 29 Apr 2024 14:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67387CF0F;
+	Mon, 29 Apr 2024 14:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vl4oWP69"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fwlUZcgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CC29468
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 14:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7447C0BF;
+	Mon, 29 Apr 2024 14:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714400286; cv=none; b=qdPoY8FKEPkrM/ExOFDZlOZxuI27nV8SPFhWlUD0LPU1wufk2PIY3N4ZMJ0RTMzCrre5lYX8sQ4LY+IKrvLeMHw4IkNzNSNpUK4m017QVDpQGRvCuireDsfbTIuUYFqzkZIVEFiW/VTDj8CAFmB4LHGiwYb6mrlJtgJrtIC6jzU=
+	t=1714400847; cv=none; b=YyVBFU/Lm9+fj5C1IPQJR+VjKsFZ4LOnfPN6Y9HoP5pSa3RBoM+Wv7Rt2aA+cY38NOal9ZdGwFg77KbnJ2Utg682bUbChT/c5bxtVvPdGU1KDoMInL5NnIwg5dvN64DRcJ86UJINiDSmdl2CAc/Jz+MBqy4tJN8V1Edrdp1oWHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714400286; c=relaxed/simple;
-	bh=/WFgc1n1CCANuQ8/uY/4YcdmDP5mkDWZ02T0w4iKNAw=;
+	s=arc-20240116; t=1714400847; c=relaxed/simple;
+	bh=t+icPM1sViMXtjUYUUlsZstD0bTk4xGQr1Fsw27gD20=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V5WJS+RU88E8gbt1TfWSw75KJIAkKZw9RjkGYbShYsS8LT6528xl5wDN2j72tVMxfBnwZJj5NOur+ty2NFjfgw+b4Y2bvZcegkl1kXZ6R9aXkYkVqAi9WDQHNki+DlmXm2EiafbB0i7HyS+BTWSmE6q6Um2ciHjl08IAixKdL1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vl4oWP69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FF2C113CD;
-	Mon, 29 Apr 2024 14:18:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714400286;
-	bh=/WFgc1n1CCANuQ8/uY/4YcdmDP5mkDWZ02T0w4iKNAw=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=Toka8bWWMunv8Y7cYL/lTiYFqI9vV9q5ibFYvX3ZiHJNPr2u36BN86NnM4hfXrIT8Pf8G03ADuPgBm2UgRzcX0hsj5BbQW1w6GokHq54x2ODUn/wxyEBja+FsS1fw38ME6dba11kzUCz8KGFz1gjeRAJQjMtgxZozaNTc5KtdVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fwlUZcgO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE55C116B1;
+	Mon, 29 Apr 2024 14:27:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714400847;
+	bh=t+icPM1sViMXtjUYUUlsZstD0bTk4xGQr1Fsw27gD20=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vl4oWP69xwyi/c5M6EQVtZI3SYc51DEwetlcbHiiHKDrt5/V7VacOdXLMC34C39Kn
-	 o1ZlRDAKHmZh99F47c6a3D+e7nTjoakfP7edVcQZt4yMUwZ3fsjH+rD5j2rps0FmyG
-	 3KrqrMbukKhz75nNC/VbI9Zdbizs7451nzPA6VoU=
-Date: Mon, 29 Apr 2024 16:18:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev,
-	christian@heusel.eu, ddstreet@ieee.org, nphamcs@gmail.com,
-	rjones@redhat.com, sjenning@redhat.com, stable@vger.kernel.org,
-	vitaly.wool@konsulko.com, yosryahmed@google.com
-Subject: Re: [PATCH 6.8.y] mm: zswap: fix shrinker NULL crash with
- cgroup_disable=memory
-Message-ID: <2024042954-hardship-arise-b7cd@gregkh>
-References: <2024042923-monday-hamlet-26ca@gregkh>
- <20240429130216.GB1155473@cmpxchg.org>
+	b=fwlUZcgOJafqKoDUStWy6NyQjkn1Tn3Zv4wDee+56gQKt+bCaElW9zY9mnc1FnCmT
+	 remALkUXOHf9cLA3+4AlLJh2UFq5BXCPjsr4aZr9gLTRbqzrIFlwyTwm87/b26JZbp
+	 AJCSvJsd8gztJupSP1huosGmCMCojWQzTCDOYr24T3ZvhkmFdADWOUJbzDnYvWZoPc
+	 WdhFk7DiDqVeAPCnBJRjPrMdI4268s8SrkksYJaGSJKjmjzr6h9TxyPDmwjEXVSxDj
+	 1bPWodjsTr0uiP12F+Su1l49VygXoXl9jE0CiEfZ6qxbNvyyKt2pDFKxAAaZIHQ1Wc
+	 +MAlosxJVo/iw==
+Date: Mon, 29 Apr 2024 10:27:25 -0400
+From: Konstantin Ryabitsev <mricon@kernel.org>
+To: Eric Wong <e@80x24.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, tools@linux.kernel.org, 
+	stable@vger.kernel.org, meta@public-inbox.org, sashal@kernel.org, 
+	gregkh@linuxfoundation.org, krzk@kernel.org
+Subject: Re: filtering stable patches in lore queries
+Message-ID: <20240429-antique-hyena-of-glee-d9e4ac@lemur>
+References: <ZixGx_sTyDmdUlaV@zx2c4.com>
+ <20240427071921.M438650@dcvr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240429130216.GB1155473@cmpxchg.org>
+In-Reply-To: <20240427071921.M438650@dcvr>
 
-On Mon, Apr 29, 2024 at 09:02:16AM -0400, Johannes Weiner wrote:
-> Christian reports a NULL deref in zswap that he bisected down to the zswap
-> shrinker.  The issue also cropped up in the bug trackers of libguestfs [1]
-> and the Red Hat bugzilla [2].
+On Sat, Apr 27, 2024 at 07:19:21AM GMT, Eric Wong wrote:
+> Correct, public-inbox currently won't index every header due to
+> cost, false positives, and otherwise lack of usefulness (general
+> gibberish from DKIM sigs, various UUIDs, etc).
 > 
-> The problem is that when memcg is disabled with the boot time flag, the
-> zswap shrinker might get called with sc->memcg == NULL.  This is okay in
-> many places, like the lruvec operations.  But it crashes in
-> memcg_page_state() - which is only used due to the non-node accounting of
-> cgroup's the zswap memory to begin with.
+> So it doesn't currently know about "X-stable:"
 > 
-> Nhat spotted that the memcg can be NULL in the memcg-disabled case, and I
-> was then able to reproduce the crash locally as well.
+> I started working on making headers indexing configurable last
+> year, but didn't hear a response from the person that
+> potentially was interested:
 > 
-> [1] https://github.com/libguestfs/libguestfs/issues/139
-> [2] https://bugzilla.redhat.com/show_bug.cgi?id=2275252
+> https://public-inbox.org/meta/20231120032132.M610564@dcvr/
 > 
-> Link: https://lkml.kernel.org/r/20240418124043.GC1055428@cmpxchg.org
-> Link: https://lkml.kernel.org/r/20240417143324.GA1055428@cmpxchg.org
-> Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> Reported-by: Christian Heusel <christian@heusel.eu>
-> Debugged-by: Nhat Pham <nphamcs@gmail.com>
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Tested-by: Christian Heusel <christian@heusel.eu>
-> Acked-by: Yosry Ahmed <yosryahmed@google.com>
-> Cc: Chengming Zhou <chengming.zhou@linux.dev>
-> Cc: Dan Streetman <ddstreet@ieee.org>
-> Cc: Richard W.M. Jones <rjones@redhat.com>
-> Cc: Seth Jennings <sjenning@redhat.com>
-> Cc: Vitaly Wool <vitaly.wool@konsulko.com>
-> Cc: <stable@vger.kernel.org>	[v6.8]
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit 682886ec69d22363819a83ddddd5d66cb5c791e1)
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> ---
->  mm/zswap.c | 25 ++++++++++++++++---------
->  1 file changed, 16 insertions(+), 9 deletions(-)
+> Right now, indexing new headers + validations can be maintained
+> as a Perl module in the public-inbox codebase.
+> 
+> For lore, it'd make sense to be able to configure a bunch (or
+> all) inboxes at once instead of the per-inbox configuration in
+> my proposed RFC.
+> 
+> At minimum, one would have to know:
+> 
+> 1) the mail header name (e.g. `X-stable')
+> 2) the search prefix to use (e.g. `xstable:') # can't use dash `-' AFAIK
+> 3) the type of header value (phrase, string, sortable numeric, etc...)
 
-Now queued up, thanks.
+I'm whole-heartedly for this! This ties nicely to my b4 work where I'd 
+like to be able to identify code-review trailers sent for a specific 
+patch, even if that patch itself is not on lore. For example, this could 
+be a patch that is part of a pull-request on a git forge, but we'd still 
+like to be able to collect and find code-review trailers for it when a 
+maintainer applies it.
 
-greg k-h
+Currently, I am using the following approach:
+
+| Reviewed-by: Some Developer <some.dev@example.org>
+| ---
+| for-patch-id: abcd...1234
+
+Then I can query 'nq:"for-patch-id: abcd...1234"', but this is probably 
+much more heavy than if I could provide this in a custom header:
+
+| X-For-Patch-ID: abcd...1234
+
+and query for "xforpatchid:abcd...1234"
+
+> I'm trying to avoid supporting sortable numeric values for this,
+> since supporting them will problems if columns get repurposed
+> with admins changing their minds.   A full reindex would fix it,
+> but those are crazy expensive.
+
+I'm perfectly fine with it only being a string, honestly.
+
+> 
+> So probably just supporting strings and/or phrases to start...
+> 
+> Validation to prevent poisoning by malicious/broken senders can
+> be useful in some cases (and the reason the RFC was a per use
+> case Perl module).  That said, I'm not sure if much validation
+> is necessary for X-stable: headers or if just any text is fine.
+
+I'd let the consumer clients worry about it.
+
+-K
 
