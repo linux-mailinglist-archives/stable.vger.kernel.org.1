@@ -1,136 +1,189 @@
-Return-Path: <stable+bounces-41717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535E28B5964
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:07:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 918208B5966
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D71871F22312
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:07:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4983128B7B5
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BF3762DE;
-	Mon, 29 Apr 2024 13:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916AA53E08;
+	Mon, 29 Apr 2024 13:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U2wvUDmO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zlN1EMV"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324946EB6F
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 13:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDCD5338A
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 13:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714395951; cv=none; b=gfvpzrTuCymP4+WaJ00UkbSVoORUfmOYfQy+E8/5CIsw4iEwV3SdObxlL0XLWjU/8Ev36ON7BQukDI0/pfuKA+0bUOHuLA7pOwXzcIq0856qkoojUygMHF7LMHDQkjAp7lx06pdog1NbkyfC7X+4zxi17zPuUM1Fn0SBHFPaoY8=
+	t=1714396052; cv=none; b=CqxFtU3IU9by2d5D2T1HaSzTmpH1FbuO31h0XbMZsSoOHp9WO8ItVEBOoO4KKbQO4xyucIrn/BJDprl35Dz40gw2HufU0NgnH3ULuSyCNp6/H0kTydoeAllBT4BQl6mf3oyPyUAVCTOwYyphetzI55BPLuW/eEwsbnzC77AVovU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714395951; c=relaxed/simple;
-	bh=BP2NL6JGHrKt0V8kRwSfeo4xBJMHJfIrsmzsIFBfdhY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BsTffh8b/pv4CwF1WkWfTwnvnGdnQeBt+Zqj7FpSPKE2asPQN/eby+6wY+NWVoX9n4gcTGFjOmuLEvqCk4901stinJIBRUp4I9MA5WRlHxiBpFC9m88cPOiWFI/GXO7tRir2Vovvrfm7Ht+F+//oVz5G54U1ZN71At9XmeuWSUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U2wvUDmO; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714395950; x=1745931950;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=BP2NL6JGHrKt0V8kRwSfeo4xBJMHJfIrsmzsIFBfdhY=;
-  b=U2wvUDmOlq29W4q1cRIHLHAuenK8kmX+HDuJS+5iukZo4G7TMNT5SQH2
-   xjKTozziRRqY7uVaeMOutwrNbKg4mag20aosYdImNQfQxnZp2nCtk7teW
-   N2OJ9QuUnc8dw1RBwZECMSG2jUV4p3jSbuQGPUgOik+TRT0ZEZCyKzTq9
-   NG6l05qYzy7zdX+ZPXTK6axDVjn/wxFpB4lchYt1G5V5pw1/eS8xLpZU/
-   y04P2tmFkyt0GRLeLjt4iSMITRMISXUkBf8oHEIATcretWVl78IEIy0WI
-   FRgOkjm4QBTkOR7OdJ6b2ZWeA1aQjqLfRIP6IMTerxqimtlrmv4BxevC9
-   Q==;
-X-CSE-ConnectionGUID: p14NevHdQsCqATqEpKmtXQ==
-X-CSE-MsgGUID: KO6a0lLgReu+9voraDSEDw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="21460899"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="21460899"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 06:05:49 -0700
-X-CSE-ConnectionGUID: X+vMbHFeRb6Lb0Vobp1Wgw==
-X-CSE-MsgGUID: dUI5wlLISmu0FVaeC6MIHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="26090043"
-Received: from sbint17x-mobl.gar.corp.intel.com (HELO [10.249.254.23]) ([10.249.254.23])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 06:05:48 -0700
-Message-ID: <fd5fd09fcfe3604d92be3352753cc0510718f281.camel@linux.intel.com>
-Subject: Re: [PATCH] drm/xe: Unmap userptr in MMU invalidation notifier
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Date: Mon, 29 Apr 2024 15:05:45 +0200
-In-Reply-To: <Zi7z0MU9gV9+o8c8@DUT025-TGLU.fm.intel.com>
-References: <20240426233236.2077378-1-matthew.brost@intel.com>
-	 <Zi7z0MU9gV9+o8c8@DUT025-TGLU.fm.intel.com>
-Autocrypt: addr=thomas.hellstrom@linux.intel.com; prefer-encrypt=mutual;
- keydata=mDMEZaWU6xYJKwYBBAHaRw8BAQdAj/We1UBCIrAm9H5t5Z7+elYJowdlhiYE8zUXgxcFz360SFRob21hcyBIZWxsc3Ryw7ZtIChJbnRlbCBMaW51eCBlbWFpbCkgPHRob21hcy5oZWxsc3Ryb21AbGludXguaW50ZWwuY29tPoiTBBMWCgA7FiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQuBaTVQrGBr/yQAD/Z1B+Kzy2JTuIy9LsKfC9FJmt1K/4qgaVeZMIKCAxf2UBAJhmZ5jmkDIf6YghfINZlYq6ixyWnOkWMuSLmELwOsgPuDgEZaWU6xIKKwYBBAGXVQEFAQEHQF9v/LNGegctctMWGHvmV/6oKOWWf/vd4MeqoSYTxVBTAwEIB4h4BBgWCgAgFiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwwACgkQuBaTVQrGBr/P2QD9Gts6Ee91w3SzOelNjsus/DcCTBb3fRugJoqcfxjKU0gBAKIFVMvVUGbhlEi6EFTZmBZ0QIZEIzOOVfkaIgWelFEH
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1714396052; c=relaxed/simple;
+	bh=SS3iiq+etJeCyaKPgwlFeaSCg/hVDcfoaez9l+VGg0k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eQQQhoNItgB2g64LQXVcv5XDZI2i1rF6p+E2mxDlMtU/jS31Ok1bphbEhxeeg/+KqARu5S3jZnqou0irUoSMwiD0u6mYl1Ki57Y8SeWIjpjIwwsb4ctvSXuLuV8L6weblifg6um/tUeS6lSbP1W9iRGLW5hnBAjn+zwT7oeQsSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zlN1EMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAE6C4AF17;
+	Mon, 29 Apr 2024 13:07:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714396051;
+	bh=SS3iiq+etJeCyaKPgwlFeaSCg/hVDcfoaez9l+VGg0k=;
+	h=Subject:To:Cc:From:Date:From;
+	b=0zlN1EMV8dFxUOVT2vx8Lx+q9ZhGPtJ9zswa6UN9TH/S/bhAgp1fcD4+4/78og24f
+	 E7lOegZKKfOEUqbn4zuM+qxd5qFw+L3RiA68ji1UtNNrN8zpLgTLX9B5Nr5f+3J8rp
+	 39tsGsi1uheRhCnWTMSorqf/nu6GeVViWK+Fypg8=
+Subject: FAILED: patch "[PATCH] macsec: Detect if Rx skb is macsec-related for offloading" failed to apply to 6.6-stable tree
+To: rrameshbabu@nvidia.com,bpoirier@nvidia.com,cratiu@nvidia.com,kuba@kernel.org,sd@queasysnail.net
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Apr 2024 15:07:28 +0200
+Message-ID: <2024042928-mastiff-unmasked-6a54@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-On Mon, 2024-04-29 at 01:11 +0000, Matthew Brost wrote:
-> On Fri, Apr 26, 2024 at 04:32:36PM -0700, Matthew Brost wrote:
-> > To be secure, when a userptr is invalidated the pages should be dma
-> > unmapped ensuring the device can no longer touch the invalidated
-> > pages.
-> >=20
-> > Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel
-> > GPUs")
-> > Fixes: 12f4b58a37f4 ("drm/xe: Use hmm_range_fault to populate user
-> > pages")
-> > Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> > Cc: stable@vger.kernel.org=C2=A0# 6.8
-> > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> > ---
-> > =C2=A0drivers/gpu/drm/xe/xe_vm.c | 3 +++
-> > =C2=A01 file changed, 3 insertions(+)
-> >=20
-> > diff --git a/drivers/gpu/drm/xe/xe_vm.c
-> > b/drivers/gpu/drm/xe/xe_vm.c
-> > index dfd31b346021..964a5b4d47d8 100644
-> > --- a/drivers/gpu/drm/xe/xe_vm.c
-> > +++ b/drivers/gpu/drm/xe/xe_vm.c
-> > @@ -637,6 +637,9 @@ static bool vma_userptr_invalidate(struct
-> > mmu_interval_notifier *mni,
-> > =C2=A0		XE_WARN_ON(err);
-> > =C2=A0	}
-> > =C2=A0
-> > +	if (userptr->sg)
-> > +		xe_hmm_userptr_free_sg(uvma);
-> > +
->=20
-> I thought about this a bit, I think here we only dma unmap the SG,
-> not
-> free it. Freeing it could cause a current bind walk to access corrupt
-> memory. Freeing can be deferred to the next attempt to bind the
-> userptr
-> or userptr destroy.
-
-Yes, makes sense.
-/Thomas
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
->=20
-> Matt
->=20
-> > =C2=A0	trace_xe_vma_userptr_invalidate_complete(vma);
-> > =C2=A0
-> > =C2=A0	return true;
-> > --=20
-> > 2.34.1
-> >=20
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 642c984dd0e37dbaec9f87bd1211e5fac1f142bf
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042928-mastiff-unmasked-6a54@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+642c984dd0e3 ("macsec: Detect if Rx skb is macsec-related for offloading devices that update md_dst")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 642c984dd0e37dbaec9f87bd1211e5fac1f142bf Mon Sep 17 00:00:00 2001
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Date: Tue, 23 Apr 2024 11:13:04 -0700
+Subject: [PATCH] macsec: Detect if Rx skb is macsec-related for offloading
+ devices that update md_dst
+
+Can now correctly identify where the packets should be delivered by using
+md_dst or its absence on devices that provide it.
+
+This detection is not possible without device drivers that update md_dst. A
+fallback pattern should be used for supporting such device drivers. This
+fallback mode causes multicast messages to be cloned to both the non-macsec
+and macsec ports, independent of whether the multicast message received was
+encrypted over MACsec or not. Other non-macsec traffic may also fail to be
+handled correctly for devices in promiscuous mode.
+
+Link: https://lore.kernel.org/netdev/ZULRxX9eIbFiVi7v@hog/
+Cc: Sabrina Dubroca <sd@queasysnail.net>
+Cc: stable@vger.kernel.org
+Fixes: 860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path support")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240423181319.115860-4-rrameshbabu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 0206b84284ab..ff016c11b4a0 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -999,10 +999,12 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
+ 	struct metadata_dst *md_dst;
+ 	struct macsec_rxh_data *rxd;
+ 	struct macsec_dev *macsec;
++	bool is_macsec_md_dst;
+ 
+ 	rcu_read_lock();
+ 	rxd = macsec_data_rcu(skb->dev);
+ 	md_dst = skb_metadata_dst(skb);
++	is_macsec_md_dst = md_dst && md_dst->type == METADATA_MACSEC;
+ 
+ 	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
+ 		struct sk_buff *nskb;
+@@ -1013,14 +1015,42 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
+ 		 * the SecTAG, so we have to deduce which port to deliver to.
+ 		 */
+ 		if (macsec_is_offloaded(macsec) && netif_running(ndev)) {
+-			struct macsec_rx_sc *rx_sc = NULL;
++			const struct macsec_ops *ops;
+ 
+-			if (md_dst && md_dst->type == METADATA_MACSEC)
+-				rx_sc = find_rx_sc(&macsec->secy, md_dst->u.macsec_info.sci);
++			ops = macsec_get_ops(macsec, NULL);
+ 
+-			if (md_dst && md_dst->type == METADATA_MACSEC && !rx_sc)
++			if (ops->rx_uses_md_dst && !is_macsec_md_dst)
+ 				continue;
+ 
++			if (is_macsec_md_dst) {
++				struct macsec_rx_sc *rx_sc;
++
++				/* All drivers that implement MACsec offload
++				 * support using skb metadata destinations must
++				 * indicate that they do so.
++				 */
++				DEBUG_NET_WARN_ON_ONCE(!ops->rx_uses_md_dst);
++				rx_sc = find_rx_sc(&macsec->secy,
++						   md_dst->u.macsec_info.sci);
++				if (!rx_sc)
++					continue;
++				/* device indicated macsec offload occurred */
++				skb->dev = ndev;
++				skb->pkt_type = PACKET_HOST;
++				eth_skb_pkt_type(skb, ndev);
++				ret = RX_HANDLER_ANOTHER;
++				goto out;
++			}
++
++			/* This datapath is insecure because it is unable to
++			 * enforce isolation of broadcast/multicast traffic and
++			 * unicast traffic with promiscuous mode on the macsec
++			 * netdev. Since the core stack has no mechanism to
++			 * check that the hardware did indeed receive MACsec
++			 * traffic, it is possible that the response handling
++			 * done by the MACsec port was to a plaintext packet.
++			 * This violates the MACsec protocol standard.
++			 */
+ 			if (ether_addr_equal_64bits(hdr->h_dest,
+ 						    ndev->dev_addr)) {
+ 				/* exact match, divert skb to this port */
+@@ -1036,14 +1066,10 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
+ 					break;
+ 
+ 				nskb->dev = ndev;
+-				if (ether_addr_equal_64bits(hdr->h_dest,
+-							    ndev->broadcast))
+-					nskb->pkt_type = PACKET_BROADCAST;
+-				else
+-					nskb->pkt_type = PACKET_MULTICAST;
++				eth_skb_pkt_type(nskb, ndev);
+ 
+ 				__netif_rx(nskb);
+-			} else if (rx_sc || ndev->flags & IFF_PROMISC) {
++			} else if (ndev->flags & IFF_PROMISC) {
+ 				skb->dev = ndev;
+ 				skb->pkt_type = PACKET_HOST;
+ 				ret = RX_HANDLER_ANOTHER;
 
 
