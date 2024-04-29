@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42B98B5746
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:00:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E608B5747
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F0F6B207C2
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:00:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12566284024
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FA453381;
-	Mon, 29 Apr 2024 11:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BF053383;
+	Mon, 29 Apr 2024 12:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+B/XZEz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0HXp8/S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B43524D9
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71AB4D5A2
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714391995; cv=none; b=IJUH+UqOIyVnaupktuF8kYCaZc9Rcp0Amx64sJZo6Y4HaK6MnZMvMTegFlGwpzB5P1PwCs7sLIRWBwF8OgWSBp3kxGK97RJgSbhXEEiL3/lzbm/A2o4IuPHXPiuJrAqdmCXAv1CCfn+iRAeetiIRplcSEuSG/jDCVDeaBArueqU=
+	t=1714392022; cv=none; b=YGkCGRqj/gayaEdkx11sIN/yRxEg9ElETrlFZPX2Go/NXWJtvDnz+sp/P5BJVzX9gdK2LLKOTKkIyhTjm37zKsnsCLSSpTwAFjknWc2tuXgBVVnrZu5SL0FvTtSN04kuWv8U6D3nUzAJgqZgXAZbAWR6+CfNF9ojbIP74OnUTXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714391995; c=relaxed/simple;
-	bh=lmZ80jeR1IsX8SVEtaBo8VUHwHRwc+CgREn2KHjwHYs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=o7+jWOGtFYfZyS/lCOR1xgYAKgWAFRGrdNmNWdauScYAYVuvuXOSJ+i7n7Yvb54Ypr7tvGoZHzHH1+hJbgCrLVzRdSp2m6kPBnrMTxqHH9PxhsLV1SGmpjJOHa9KO/9e/KWFLAHpdgYLFxNFah27PC5s/1ZyXFE1+EctZsokqss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+B/XZEz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A46C113CD;
-	Mon, 29 Apr 2024 11:59:54 +0000 (UTC)
+	s=arc-20240116; t=1714392022; c=relaxed/simple;
+	bh=BogNmqbqDmyYAqTpUvtTwJ3cHF2NLsMqeQN6qGV85YI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=D4HOdmYtn7FAhlW9oe6VjBpmF5vHSOnqqhb3ZcZoMBTA6JXlsO6PXVugBOgGuOxAgjoDusDcJsgWkdRay3OyoeBUoRwy09bClJlFLicE8bcfZ8QKpC9zFUBAltVxNGDDWAYq64GKMJR+qLfkNYHk3r3NeVUddsyBkQWf+rzPIGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0HXp8/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022CAC113CD;
+	Mon, 29 Apr 2024 12:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714391995;
-	bh=lmZ80jeR1IsX8SVEtaBo8VUHwHRwc+CgREn2KHjwHYs=;
+	s=korg; t=1714392022;
+	bh=BogNmqbqDmyYAqTpUvtTwJ3cHF2NLsMqeQN6qGV85YI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=o+B/XZEz6VPHr9xzsVH5RLYGpel3O/7Bs60RFQC7iDd3T3pzmQ7niNSvx7g0SqyjT
-	 WKtbbyZITA0UPR3DfJGyaVqg/IZoXJLglu74nEruJwj3I9c9ng7UyLhXn6V6vWxXN2
-	 ghU2VENLfRfGBcrNUwyQBrk9KVMooaImQNmMu+0A=
-Subject: FAILED: patch "[PATCH] fbdev: fix incorrect address computation in deferred IO" failed to apply to 5.15-stable tree
-To: namcao@linutronix.de,harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org,tzimmermann@suse.de
+	b=q0HXp8/SFuKPWu1eiTfpNgXT4a8kpvtKCEhMLWHztewdehgzlOfwr+3LJh4jYpxCC
+	 GO+Q1lINMy11/azAtIUnUkFzbdMClj4O4Azwxoo9ri7RrbwMtWor3Rdf6Gs+lxr93v
+	 yEtNUht3lPDDA82S4+VIKvG3qdj6ZQ++usVHpGCc=
+Subject: FAILED: patch "[PATCH] udp: preserve the connected status if only UDP cmsg" failed to apply to 5.15-stable tree
+To: yick.xie@gmail.com,kuba@kernel.org,willemb@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:59:51 +0200
-Message-ID: <2024042951-barbell-aeration-a1ce@gregkh>
+Date: Mon, 29 Apr 2024 14:00:19 +0200
+Message-ID: <2024042919-strobe-squatted-ad63@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,22 +62,16 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 78d9161d2bcd442d93d917339297ffa057dbee8c
+git cherry-pick -x 680d11f6e5427b6af1321932286722d24a8b16c1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042951-barbell-aeration-a1ce@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042919-strobe-squatted-ad63@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-78d9161d2bcd ("fbdev: fix incorrect address computation in deferred IO")
-3ed3811283dd ("fbdev: Refactor implementation of page_mkwrite")
-56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
-856082f021a2 ("fbdev: defio: fix the pagelist corruption")
-8c30e2d81bfd ("fbdev: Don't sort deferred-I/O pages by default")
-105a940416fc ("fbdev/defio: Early-out if page is already enlisted")
-67b723f5b742 ("drm/fb-helper: Calculate damaged area in separate helper")
-aa15c677cc34 ("drm/fb-helper: Fix vertical damage clipping")
-a3c286dcef7f ("drm/fb-helper: Fix clip rectangle height")
+680d11f6e542 ("udp: preserve the connected status if only UDP cmsg")
+5298953e742d ("udp6: don't make extra copies of iflow")
+42dcfd850e51 ("udp6: allow SO_MARK ctrl msg to affect routing")
 
 thanks,
 
@@ -85,54 +79,70 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 78d9161d2bcd442d93d917339297ffa057dbee8c Mon Sep 17 00:00:00 2001
-From: Nam Cao <namcao@linutronix.de>
-Date: Tue, 23 Apr 2024 13:50:53 +0200
-Subject: [PATCH] fbdev: fix incorrect address computation in deferred IO
+From 680d11f6e5427b6af1321932286722d24a8b16c1 Mon Sep 17 00:00:00 2001
+From: Yick Xie <yick.xie@gmail.com>
+Date: Fri, 19 Apr 2024 01:06:10 +0800
+Subject: [PATCH] udp: preserve the connected status if only UDP cmsg
 
-With deferred IO enabled, a page fault happens when data is written to the
-framebuffer device. Then driver determines which page is being updated by
-calculating the offset of the written virtual address within the virtual
-memory area, and uses this offset to get the updated page within the
-internal buffer. This page is later copied to hardware (thus the name
-"deferred IO").
+If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+"connected" should not be set to 0. Otherwise it stops
+the connected socket from using the cached route.
 
-This offset calculation is only correct if the virtual memory area is
-mapped to the beginning of the internal buffer. Otherwise this is wrong.
-For example, if users do:
-    mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
+Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Then the virtual memory area will mapped at offset 0xff000 within the
-internal buffer. This offset 0xff000 is not accounted for, and wrong page
-is updated.
-
-Correct the calculation by using vmf->pgoff instead. With this change, the
-variable "offset" will no longer hold the exact offset value, but it is
-rounded down to multiples of PAGE_SIZE. But this is still correct, because
-this variable is only used to calculate the page offset.
-
-Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Closes: https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4ab341a@oracle.com
-Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240423115053.4490-1-namcao@linutronix.de
-
-diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
-index dae96c9f61cf..806ecd32219b 100644
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -196,7 +196,7 @@ static vm_fault_t fb_deferred_io_track_page(struct fb_info *info, unsigned long
-  */
- static vm_fault_t fb_deferred_io_page_mkwrite(struct fb_info *info, struct vm_fault *vmf)
- {
--	unsigned long offset = vmf->address - vmf->vma->vm_start;
-+	unsigned long offset = vmf->pgoff << PAGE_SHIFT;
- 	struct page *page = vmf->page;
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index c02bf011d4a6..420905be5f30 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1123,16 +1123,17 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
  
- 	file_update_time(vmf->vma->vm_file);
+ 	if (msg->msg_controllen) {
+ 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip_cmsg_send(sk, msg, &ipc,
+ 					   sk->sk_family == AF_INET6);
++			connected = 0;
++		}
+ 		if (unlikely(err < 0)) {
+ 			kfree(ipc.opt);
+ 			return err;
+ 		}
+ 		if (ipc.opt)
+ 			free = 1;
+-		connected = 0;
+ 	}
+ 	if (!ipc.opt) {
+ 		struct ip_options_rcu *inet_opt;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 8b1dd7f51249..1a4cccdd40c9 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1474,9 +1474,11 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		ipc6.opt = opt;
+ 
+ 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, fl6,
+ 						    &ipc6);
++			connected = false;
++		}
+ 		if (err < 0) {
+ 			fl6_sock_release(flowlabel);
+ 			return err;
+@@ -1488,7 +1490,6 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		}
+ 		if (!(opt->opt_nflen|opt->opt_flen))
+ 			opt = NULL;
+-		connected = false;
+ 	}
+ 	if (!opt) {
+ 		opt = txopt_get(np);
 
 
