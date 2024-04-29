@@ -1,99 +1,83 @@
-Return-Path: <stable+bounces-41764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EDD38B620E
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 21:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFF58B62CA
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 21:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A63221C210AD
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 19:32:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72F531C212A8
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 19:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669C013B2A2;
-	Mon, 29 Apr 2024 19:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D9313B5B6;
+	Mon, 29 Apr 2024 19:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OSsEnDau"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="M7EWROTE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AC813AA5A;
-	Mon, 29 Apr 2024 19:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B51913B2A4
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 19:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714419134; cv=none; b=V+dmFT+Ett0c2peW4tQ5xMjuWy+XcHOK9v5kGIBpeQ59kG5dr0gRz4kQyMLrHP+JtL3sEFB26TPL46K3hMVJWH3wOkTc3MFTUq3pE+PcT+41mqkmHt2EsuNx5XgQJHlo+naJOk73dQCyliPdY9qerg8IRj44WFFXE0cqrf3CtUk=
+	t=1714419977; cv=none; b=NaxswWAbuNHCTC/OBSZiJ05t/XMUYBQLnSy36EDAp77je6ItlQdhdwjXsklTjgXyW6MwCCTsJgnDBomryoM4HSxWSvQgGqXTNGB8suYsciiJepz86TmAlmmPTf4POiCddzA6jYvijgimmtBwKtXfR7KrqgGMbVvXI5yM/C9XWmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714419134; c=relaxed/simple;
-	bh=MxxpWFWIkQTnaHMmRSSNu1GlLY2Bctt1yjxnIAL7ar4=;
+	s=arc-20240116; t=1714419977; c=relaxed/simple;
+	bh=Fflv2happyBtuC7pAoLoJyMtZKZg3vbQFe9oCckEd2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwcDHnd9u5YoYbmQmTejD/EOdFznTAIzO1eCfTDPTaf1Ax9pWqdRpO/gUJPRdoT6iiepcwe26qX8FfNIZk6fx3/sTkVsswKenvIqyl+730CV99tJovzGIOqpg4H0hYYXto9mDhmPpipqv1KTl21jH8vEte9N+JsnlhxMU1T2XM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OSsEnDau; arc=none smtp.client-ip=209.85.166.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-7d6ad896c6dso215357539f.1;
-        Mon, 29 Apr 2024 12:32:12 -0700 (PDT)
+	 MIME-Version; b=BbIHS82d/Ac05bXRU7tcI0N+oy/9wtSOYQrVE0m9D7odJL2U2yu1X1B3x7+OL/aeCtbeO9jVlFIuDvMePC6sX7u5beQWczMzXYefIRCWGJea/jOqHYqfUI/1hRhi40PnkRAr7/Y2A4AZsJ3EpoQ9Sfd7wfngwS9QpqYoo2Rn0Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=M7EWROTE; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1e36b7e7dd2so40056095ad.1
+        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:46:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714419132; x=1715023932; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1714419975; x=1715024775; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ap0abnHnzuA+pCntBOpzm99vZ6Zv5ODzcROoP3CQSrg=;
-        b=OSsEnDau1VjQGx8YkSLalVJRWqWN1bRmA9+G9st5w1h74n+bqM1uapiXx+5T1p4YFw
-         NozIf/qtgApZPtglsaXmjCEO/MdHUeOocnGB2TFl2RhBV68SeH9UlMuagdOHPzvFFgcS
-         5KvYmxccYhdcQpAaN45Z9fEMT4M0OFbcWqnD20wEUuuLP5EdHXyBWrsTc+6jz0du0eFp
-         Omx0a64u0fnhPc+yjQKD2HKtkmnJOQc9GbtF2UO0AFORpA9XsSzG8y+IKI5oAZfL9InL
-         DQ2Ys09Kzr1XDT7pZ5XL/UmW4q3iTisNRAO8chwv6AJbgb8f3asCY4arlnxgzPN+ZL6z
-         FhMQ==
+        bh=4QjCg8SYenXS+XuIi5qqPpTiXsYXZeRvUkEwlZZQZlc=;
+        b=M7EWROTEIEMVgjPqceUVtdRpjHqOZrJVFvgyTMEe4QpVpUbyj76J5RGydPOPZG21Ib
+         bgqS667BfYX/rXh4SW/oR1j+8EIHw4umY1hoW8ThQeruDYc/2OpxRJdS9+49GkXdJ9Zy
+         qU0cBsIp7zJWK+PBAQzL5t7z1Kly1cko4P3MA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714419132; x=1715023932;
+        d=1e100.net; s=20230601; t=1714419975; x=1715024775;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ap0abnHnzuA+pCntBOpzm99vZ6Zv5ODzcROoP3CQSrg=;
-        b=JLP4bXxzRhewUjKR3MwK2tA8wY7P3s7rZo5hrpHqgs1IQOv9d002qWG0XNcdCvVLfx
-         8SToQ7dhOPI0rfLFVNDNyDilZ4gZ7j4mOb0bmAeO0Zf1TbZL660vTnFrtjeFLV90c9FF
-         TsWFR6YCF8DumcVC/bgJWWH+W4YbkLVB3JBZ/zyjbKFu9YzO7HJvEX6mgyODmhVB1t3K
-         kdSnrFKEUaSIL0Ovexio+1WuUsp7udAQyfhtm6qYmIwfIXI3S0Z+U4K6lc/20sMKpOV9
-         F9nSNi5geoRqCTFEiXmoYEUGsalq42/oantPA8Ax6CBy24jH8VLeAqWdRor7wHitcviM
-         EamA==
-X-Forwarded-Encrypted: i=1; AJvYcCWqmst+evQn8gWvRirg/ZaWp8QLTws+EOYx+JMk1L/qiNj53+J2CgR1rJjRY8/MUYsxynFb3t6dJRZ17adJSV4O2DMbGsHNr5kYBw9GXIOB85el9TIbLFhWS5vA6dRukzFR7XxkAfqB2Sj+5Lxo86BZMA6NT7Sjfu4PjkmExS7O
-X-Gm-Message-State: AOJu0YyXV4Yk2h7ZYCv32TWqCnzBszodCcC89QNlpKNnVVvewuNcjRYS
-	DPCIjHxBOw2Ct6kYJL6GmAwH0+pbUegvcYRhlVne6+2jg61jKq8a
-X-Google-Smtp-Source: AGHT+IGRdeeN+u2zMfjhDij9Il5S46oy16VyUUR7QmAHR8HDMNzTIxpnF8fD58yH4IXlMsHdP3l6HQ==
-X-Received: by 2002:a6b:6417:0:b0:7d0:8cff:cff3 with SMTP id t23-20020a6b6417000000b007d08cffcff3mr13514911iog.8.1714419132083;
-        Mon, 29 Apr 2024 12:32:12 -0700 (PDT)
-Received: from frodo.. (c-73-78-62-130.hsd1.co.comcast.net. [73.78.62.130])
-        by smtp.googlemail.com with ESMTPSA id dq18-20020a0566021b9200b007d5ec9b77aesm5988402iob.51.2024.04.29.12.32.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 12:32:11 -0700 (PDT)
-From: Jim Cromie <jim.cromie@gmail.com>
-To: jbaron@akamai.com,
-	gregkh@linuxfoundation.org,
+        bh=4QjCg8SYenXS+XuIi5qqPpTiXsYXZeRvUkEwlZZQZlc=;
+        b=vDUvavncn0G0r7pRrr+VRB2VErEcsc+fbpBCAXZql+AchvSmL4wZUTJTtWK/tiLi5s
+         tGWn7S9ecQBYNF4t0iXNEncEmTtR1jmqT1Nxxn5egJyDOZ5AhQ9Bc9r1npEy3oxCxhUr
+         Se8TRhkBuJ0E0cMJYtg804GUtFkxvcK03UmJi5q71r/sHe/hwJGVPFSmq6cAFL7dV+bm
+         GO8bkKzAdurpEwm76C7i69xqTyEEUUEyhC2MuRJ56RpCBsUxSAuUhFKRYfG4efAjWsa0
+         uO5cw+ieUHHaufDLqk3068FzC81xVGXYsH5sbw4CFrPXAWRebdJi/6Qngj5kiZ/xq974
+         XlGw==
+X-Gm-Message-State: AOJu0YzqxWO686VcctLwsPxGSFt7jQFcfUowOL1reaXVfNu9dkPy5t1Y
+	HX5D3rNffbv/4YgZDqRR9jo/xBNML68RWyyh1lXFbcySh42xWo47RXQc6Ya4OFanxdvkrLjE0lI
+	=
+X-Google-Smtp-Source: AGHT+IFvxwrm+Nf34l1bmpd2F1KsT83NJku+4ZXZlMzkvoySXOfcschxgtys9x2RHfgzmnb0ut+qdA==
+X-Received: by 2002:a17:903:40cc:b0:1e4:a667:550e with SMTP id t12-20020a17090340cc00b001e4a667550emr10072628pld.20.1714419974796;
+        Mon, 29 Apr 2024 12:46:14 -0700 (PDT)
+Received: from localhost (4.198.125.34.bc.googleusercontent.com. [34.125.198.4])
+        by smtp.gmail.com with UTF8SMTPSA id o16-20020a170902d4d000b001eb3f4e96c2sm5236162plg.157.2024.04.29.12.46.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Apr 2024 12:46:14 -0700 (PDT)
+From: Stephen Boyd <swboyd@chromium.org>
+To: stable@vger.kernel.org
+Cc: Johan Hovold <johan+linaro@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	amd-gfx@lists.freedesktop.org,
-	intel-gvt-dev@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org
-Cc: ukaszb@chromium.org,
-	linux-doc@vger.kernel.org,
-	daniel.vetter@ffwll.ch,
-	tvrtko.ursulin@linux.intel.com,
-	jani.nikula@intel.com,
-	ville.syrjala@linux.intel.com,
-	seanpaul@chromium.org,
-	robdclark@gmail.com,
-	groeck@google.com,
-	yanivt@google.com,
-	bleung@google.com,
-	Jim Cromie <jim.cromie@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v8 01/35] dyndbg: fix old BUG_ON in >control parser
-Date: Mon, 29 Apr 2024 13:31:11 -0600
-Message-ID: <20240429193145.66543-2-jim.cromie@gmail.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240429193145.66543-1-jim.cromie@gmail.com>
-References: <20240429193145.66543-1-jim.cromie@gmail.com>
+	patches@lists.linux.dev,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.8.y] phy: qcom: qmp-combo: fix VCO div offset on v5_5nm and v6
+Date: Mon, 29 Apr 2024 12:46:12 -0700
+Message-ID: <20240429194612.3412821-1-swboyd@chromium.org>
+X-Mailer: git-send-email 2.45.0.rc0.197.gbae5840b3b-goog
+In-Reply-To: <2024042918-jet-harmonica-e767@gregkh>
+References: <2024042918-jet-harmonica-e767@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,34 +86,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix a BUG_ON from 2009.  Even if it looks "unreachable" (I didn't
-really look), lets make sure by removing it, doing pr_err and return
--EINVAL instead.
+From: Johan Hovold <johan+linaro@kernel.org>
 
-cc: stable@vger.kernel.org
-Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
+Commit 5abed58a8bde ("phy: qcom: qmp-combo: Fix VCO div offset on v3")
+fixed a regression introduced in 6.5 by making sure that the correct
+offset is used for the DP_PHY_VCO_DIV register on v3 hardware.
+
+Unfortunately, that fix instead broke DisplayPort on v5_5nm and v6
+hardware as it failed to add the corresponding offsets also to those
+register tables.
+
+Fixes: 815891eee668 ("phy: qcom-qmp-combo: Introduce orientation variable")
+Fixes: 5abed58a8bde ("phy: qcom: qmp-combo: Fix VCO div offset on v3")
+Cc: stable@vger.kernel.org	# 6.5: 5abed58a8bde
+Cc: Stephen Boyd <swboyd@chromium.org>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Link: https://lore.kernel.org/r/20240408093023.506-1-johan+linaro@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+(cherry picked from commit 025a6f7448f7bb5f4fceb62498ee33d89ae266bb)
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 ---
- lib/dynamic_debug.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 2 ++
+ drivers/phy/qualcomm/phy-qcom-qmp.h       | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/lib/dynamic_debug.c b/lib/dynamic_debug.c
-index c78f335fa981..f2c5e7910bb1 100644
---- a/lib/dynamic_debug.c
-+++ b/lib/dynamic_debug.c
-@@ -302,7 +302,11 @@ static int ddebug_tokenize(char *buf, char *words[], int maxwords)
- 		} else {
- 			for (end = buf; *end && !isspace(*end); end++)
- 				;
--			BUG_ON(end == buf);
-+			if (end == buf) {
-+				pr_err("parse err after word:%d=%s\n", nwords,
-+				       nwords ? words[nwords - 1] : "<none>");
-+				return -EINVAL;
-+			}
- 		}
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+index d83859e955a8..dee666f8e29e 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+@@ -188,6 +188,7 @@ static const unsigned int qmp_v5_5nm_usb3phy_regs_layout[QPHY_LAYOUT_SIZE] = {
+ 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V5_COM_BIAS_EN_CLKBUFLR_EN,
  
- 		/* `buf' is start of word, `end' is one past its end */
+ 	[QPHY_DP_PHY_STATUS]		= QSERDES_V5_DP_PHY_STATUS,
++	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V5_DP_PHY_VCO_DIV,
+ 
+ 	[QPHY_TX_TX_POL_INV]		= QSERDES_V5_5NM_TX_TX_POL_INV,
+ 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V5_5NM_TX_TX_DRV_LVL,
+@@ -212,6 +213,7 @@ static const unsigned int qmp_v6_usb3phy_regs_layout[QPHY_LAYOUT_SIZE] = {
+ 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V6_COM_PLL_BIAS_EN_CLK_BUFLR_EN,
+ 
+ 	[QPHY_DP_PHY_STATUS]		= QSERDES_V6_DP_PHY_STATUS,
++	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V6_DP_PHY_VCO_DIV,
+ 
+ 	[QPHY_TX_TX_POL_INV]		= QSERDES_V6_TX_TX_POL_INV,
+ 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V6_TX_TX_DRV_LVL,
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp.h b/drivers/phy/qualcomm/phy-qcom-qmp.h
+index 6923496cbfee..49ceded9b3cb 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp.h
++++ b/drivers/phy/qualcomm/phy-qcom-qmp.h
+@@ -132,9 +132,11 @@
+ #define QSERDES_V4_DP_PHY_AUX_INTERRUPT_STATUS		0x0d8
+ #define QSERDES_V4_DP_PHY_STATUS			0x0dc
+ 
++#define QSERDES_V5_DP_PHY_VCO_DIV			0x070
+ #define QSERDES_V5_DP_PHY_STATUS			0x0dc
+ 
+ /* Only for QMP V6 PHY - DP PHY registers */
++#define QSERDES_V6_DP_PHY_VCO_DIV			0x070
+ #define QSERDES_V6_DP_PHY_AUX_INTERRUPT_STATUS		0x0e0
+ #define QSERDES_V6_DP_PHY_STATUS			0x0e4
+ 
 -- 
-2.44.0
+https://chromeos.dev
 
 
