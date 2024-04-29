@@ -1,123 +1,152 @@
-Return-Path: <stable+bounces-41658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D60FC8B5680
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:27:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59CE68B5681
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9169628401D
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:26:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15DFF283E13
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB3E40853;
-	Mon, 29 Apr 2024 11:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DC640BFE;
+	Mon, 29 Apr 2024 11:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UiTg6Pfl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWWVNg5S"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E1F2375B
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DF340872
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390015; cv=none; b=Behe62gV7mmFjds9I55KSgWZvEHUUeq26DCbbJSQ34g2sgkFAndiblHqjlHW04A0XIveg8+fnUzVfSpWIza0TWM78/JwCTa0kNyUX/6epV0e28qSvTFaCjsU9rDfKGcGymyIyb0DrZIQdNPstPQVocM/ZHyAgoKHkZQU4GU2VuM=
+	t=1714390015; cv=none; b=NTm1NfMWyiGngJ8aaSw1WLHYVo/BI2/NsEUUyPhLMW+LRA875yBt8HosSw9SiDs0jxfah+WkrEcg9n1q45zoynWPveXE5t1GkVmAZWCrOTog8ykrtVFludSB4VzRtU0lVSzffUp61b3wvkdLji48ZPCd76QIA17sngRH1JeRnd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1714390015; c=relaxed/simple;
-	bh=3vn/fi/i6sQ9Va1NbbM7YvYj+Lt8pEeMyM3DF6Y9eNo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EVR9I3LNiDdaw5O7j7Q0RL47o8/+wAT8VGm1WfWkvM4G2aN1anCkrmc0qIZn13rWXFSZCMim0Jk+Si5/unjbQpy69Qt3sr6kdjLnmt6TYu1xSTdFwbX5+k8vkKt6rw+yc2GknL8K2rhj08n7juq8zE3ACJHQqpUM7txcu0cMmew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UiTg6Pfl; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-51dc5c0ffdbso803289e87.2
-        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 04:26:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714390012; x=1714994812; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=39YugN0AhrsG0ayBC0/e4hmLkEBwLSeUr7AqXUnVb0I=;
-        b=UiTg6PflnDnmh4E7QGt/TyieAN/Rp2W3P6QU2tsHmcqyVXGgwoEa/hA9GgFIbbTtv5
-         IOIwfj2L8VkWI3cudpQcoFpA7Pg4k8MBjDYD4m8GNJFQykQuHT6KtnliwMK8y+yWpEXP
-         m64sQoNYKegqxuh8vECvoqUCRpaTEMC+j5N366bbVmEZfK6voleQOH8HO6Drx977MnWI
-         s1Tnp09j2AJUmkOIgnSgAROrdqyAiUN4HMXltX15MZgkS+YkHPHLpbinvRJ5v+BahhA/
-         +vkCZV/B5l4IaLPl+3HSqNMbgoupH2jfexj2E0O+19OqUxrxFtRrCrQSHMTdVUv0nw4V
-         NDVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714390012; x=1714994812;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=39YugN0AhrsG0ayBC0/e4hmLkEBwLSeUr7AqXUnVb0I=;
-        b=QR3D26DiGTN/V704coyYrXNTcetNuE0i7m1ebrDBou9REimA0Br/xkTjBjPBsS0y+Z
-         63tyytWq9+/7bKtu9z5XJiMbeMv5WWnKNtPJTxY7IOTR65rYAg6DvrczMabetb27X2r5
-         fRwg8qQ8/Mh/x3QZtRmWLLcjgcgupyVJYbCSWvF6cJR4/XYWsbQVq3zUrYI0rC2n53vL
-         u98HCD6bRikh0YXsFRjAbXzlFnVKIpNgRGsMvvqXg57xGHl6a65UnAl1piucGv2MvBMh
-         x8G2YFywye7FuRs62e8cqKwjBBc4mA6NQA4Drf4diolAIRFCzPdDvXNzcufJuVdjY4CT
-         0mGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfkPX4O5SAIy8DvqZZNPYYx6CmRlVGTaMC2+mJEBbh28ZQ1fGxWrbICK3J2QfenxJDxeOCHmQkc4iiYPDYjFRa7xpZp9ul
-X-Gm-Message-State: AOJu0Ywe95bL5jyAaCPpa5MdHBkZFjo0wMWhLleRqKDEpcyq7E7tD3Nr
-	1R2DntBPbnv1T4PWQ4a22vIJPOBOiXfFLZyjryxFzwYfKACcIzg4OaLNi6lSMh4=
-X-Google-Smtp-Source: AGHT+IFI3AluHhwTJpLYWZ4GiTLUyfPyto/m6pblcfEQZH7t+wQn7drSS1yqlWjP1qRAQv31+di14Q==
-X-Received: by 2002:a05:6512:2393:b0:518:ddc3:b3a8 with SMTP id c19-20020a056512239300b00518ddc3b3a8mr7874643lfv.61.1714390011890;
-        Mon, 29 Apr 2024 04:26:51 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
-        by smtp.gmail.com with ESMTPSA id i10-20020a056512318a00b005159707b939sm4064914lfe.44.2024.04.29.04.26.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 04:26:51 -0700 (PDT)
-Date: Mon, 29 Apr 2024 14:26:50 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Badhri Jagan Sridharan <badhri@google.com>
-Cc: gregkh@linuxfoundation.org, linux@roeck-us.net, 
-	heikki.krogerus@linux.intel.com, kyletso@google.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rdbabiera@google.com, amitsd@google.com, stable@vger.kernel.org, 
-	frank.wang@rock-chips.com, broonie@kernel.org
-Subject: Re: [PATCH v3] usb: typec: tcpm: Check for port partner validity
- before consuming it
-Message-ID: <sfy7bt7ygmjt2qvs2auxpz63rrvampj3vjyakt7rs77asnhqka@jsymy45qvbxb>
-References: <20240427202812.3435268-1-badhri@google.com>
+	bh=XubqkzvbIrNyj7Lu6ft9FG3CrmpFaavtfL9nBagNUTI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KuT7Dh5E4K1hwhsHgOxaAY68kd+vk1PK7v/y0fdNZd0EmHZGfYHgr9ej8n5xSLXfKugKPfFln9BJquQFvMPAvQwXftQZOs71iVK5vuDMpjQhORPFhJbzXEMH/2kBsPlznS64T2tkMS/8Gcj5OhAv/akazmiszMNkt8LrvZmeDK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWWVNg5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316D9C4AF17;
+	Mon, 29 Apr 2024 11:26:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714390015;
+	bh=XubqkzvbIrNyj7Lu6ft9FG3CrmpFaavtfL9nBagNUTI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=DWWVNg5ST16MCi8zpXOZRTlosm7aJxGOmLb/GohkWyZrJ2+ulerv6JxVUYvjJHZ1c
+	 MG6dY2oGNLAT85ezxediy98Fxzag+0msOV1oRk7j7naSctEpp9M5mV/RFKR4IaX1EQ
+	 Q/lfeWIBhxc7RFMUM53HW4zuBIWtS3wjkZzH5GWA=
+Subject: FAILED: patch "[PATCH] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent" failed to apply to 5.15-stable tree
+To: namcao@linutronix.de,jkosina@suse.com,nyandarknessgirl@gmail.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Apr 2024 13:26:52 +0200
+Message-ID: <2024042952-germless-unguarded-1be2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240427202812.3435268-1-badhri@google.com>
-
-On Sat, Apr 27, 2024 at 08:28:12PM +0000, Badhri Jagan Sridharan wrote:
-> typec_register_partner() does not guarantee partner registration
-> to always succeed. In the event of failure, port->partner is set
-> to the error value or NULL. Given that port->partner validity is
-> not checked, this results in the following crash:
-> 
-> Unable to handle kernel NULL pointer dereference at virtual address xx
->  pc : run_state_machine+0x1bc8/0x1c08
->  lr : run_state_machine+0x1b90/0x1c08
-> ..
->  Call trace:
->    run_state_machine+0x1bc8/0x1c08
->    tcpm_state_machine_work+0x94/0xe4
->    kthread_worker_fn+0x118/0x328
->    kthread+0x1d0/0x23c
->    ret_from_fork+0x10/0x20
-> 
-> To prevent the crash, check for port->partner validity before
-> derefencing it in all the call sites.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: c97cd0b4b54e ("usb: typec: tcpm: set initial svdm version based on pd revision")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 30 +++++++++++++++++++++++-------
->  1 file changed, 23 insertions(+), 7 deletions(-)
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
--- 
-With best wishes
-Dmitry
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042952-germless-unguarded-1be2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+9c0f59e47a90 ("HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up")
+dbe0dd5fd2e0 ("HID: i2c-hid: explicitly code setting and sending reports")
+b26fc3161b78 ("HID: i2c-hid: refactor reset command")
+d34c6105499b ("HID: i2c-hid: use "struct i2c_hid" as argument in most calls")
+a5e5e03e9476 ("HID: i2c-hid: fix GET/SET_REPORT for unnumbered reports")
+cf5b2fb012c0 ("HID: i2c-hid: fix handling numbered reports with IDs of 15 and above")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e Mon Sep 17 00:00:00 2001
+From: Nam Cao <namcao@linutronix.de>
+Date: Mon, 18 Mar 2024 11:59:02 +0100
+Subject: [PATCH] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent
+ lock-up
+
+The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
+However, this is not necessary, because I2C core already has its own
+locking for that.
+
+More importantly, this flag can cause a lock-up: if the flag is set in
+i2c_hid_xfer() and an interrupt happens, the interrupt handler
+(i2c_hid_irq) will check this flag and return immediately without doing
+anything, then the interrupt handler will be invoked again in an
+infinite loop.
+
+Since interrupt handler is an RT task, it takes over the CPU and the
+flag-clearing task never gets scheduled, thus we have a lock-up.
+
+Delete this unnecessary flag.
+
+Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
+Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
+Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+
+diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
+index 2df1ab3c31cc..1c86c97688e9 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -64,7 +64,6 @@
+ /* flags */
+ #define I2C_HID_STARTED		0
+ #define I2C_HID_RESET_PENDING	1
+-#define I2C_HID_READ_PENDING	2
+ 
+ #define I2C_HID_PWR_ON		0x00
+ #define I2C_HID_PWR_SLEEP	0x01
+@@ -190,15 +189,10 @@ static int i2c_hid_xfer(struct i2c_hid *ihid,
+ 		msgs[n].len = recv_len;
+ 		msgs[n].buf = recv_buf;
+ 		n++;
+-
+-		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
+ 	}
+ 
+ 	ret = i2c_transfer(client->adapter, msgs, n);
+ 
+-	if (recv_len)
+-		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
+-
+ 	if (ret != n)
+ 		return ret < 0 ? ret : -EIO;
+ 
+@@ -556,9 +550,6 @@ static irqreturn_t i2c_hid_irq(int irq, void *dev_id)
+ {
+ 	struct i2c_hid *ihid = dev_id;
+ 
+-	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
+-		return IRQ_HANDLED;
+-
+ 	i2c_hid_get_input(ihid);
+ 
+ 	return IRQ_HANDLED;
+
 
