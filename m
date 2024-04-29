@@ -1,198 +1,168 @@
-Return-Path: <stable+bounces-41607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B6F8B531F
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992F58B532C
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 637D2B20E96
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 08:28:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0A8EB2176A
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 08:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B49717589;
-	Mon, 29 Apr 2024 08:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B9D175A1;
+	Mon, 29 Apr 2024 08:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bwuLoxnx"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="a07XhbTH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CDF15E8B;
-	Mon, 29 Apr 2024 08:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEAC15AF9;
+	Mon, 29 Apr 2024 08:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714379315; cv=none; b=jHv5mJHkqiMprVCreZcsN/0vDO5ssadi0GBZYTjPjLFxleEKG2aliffYa0AiM+J1PvrW/kdaX2/dj/C9vCTg2RgOUf1aFscYTTbLKtXCwuKeu8yQEkIbVVR9Fg0Mfby+v8jMY+TqnqIsK3RgskSRulH/Gw6P0YTzKuO+qNHZ0oc=
+	t=1714379461; cv=none; b=qXPvaGHJyJ6zmSFY4SJ8TvukEjm5A6KXivGktQ2mDza3m9fla3kICFDE+I0J+CBU9PXP7c/KESTJ7xOoGhWeOqdQhcr5MQ0QjQmfkINkEMxdVKuNb+LW8M5WOYIRJBFKM+CSVQ+UJE3kCvUxypfUX5dWBIzsoEtMr4aOeo5C84M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714379315; c=relaxed/simple;
-	bh=z2vGEtEwQgWYrDDKbib2/oFVDFE3vbryndLEEjqI+h4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X9jFs3B6AN1o9epEvMgfQyzsQlSGhTeEs1IgJFJw29tDTlF0bTlnQ1kCpGmH0QgbHVxIcBQCvtwvZNTl1Q+MaTg1tMPYOIc0R2z8PPxtfqgNA8Zlj5OrPTT6nsExmiUtwYEsRtZcAGqR9r1cI85W434QZsU0bkvR5/CLGU5pVc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bwuLoxnx; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714379313; x=1745915313;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=z2vGEtEwQgWYrDDKbib2/oFVDFE3vbryndLEEjqI+h4=;
-  b=bwuLoxnxAnAlxIlL1JfwrgBlhOdTSTKkbgT9jPMO9/xH67EvAzROrMtv
-   zMoDtVsdOL5Jvc+9gmD0Hw/irhxeaCKWCoS2Gc4m4Ol+eUmSzZPTI3oTc
-   +NmhHiuFH755gkGz6EnZynuUYQ0RvK25hB9xJu0dPUbPYPy6pP8u2mVPx
-   cd+Wj4EgJLxRk/+vYdr7nzlv/wW4XKRRVxFwBXXFPgg6YcWYga0xGs/4k
-   NVxwulwRaFOpB2NMCwsFEEnTOhapBroYscAoicuaBkrMupOjbu6eJQg1u
-   BufHorP7+VC0X0qO/VVW/M9N+EzF9vk/AxXhmubZj4lMugejnfPXsHfMP
-   w==;
-X-CSE-ConnectionGUID: Te/HxkeLS3GFaXWM/stO3g==
-X-CSE-MsgGUID: f2fIcHTOQ0qXoc2PFQnNrQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="9891912"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="9891912"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 01:28:33 -0700
-X-CSE-ConnectionGUID: 9ZPXB2RdRpGWbqzfc7mywA==
-X-CSE-MsgGUID: eLtAfOSETzuGh3LyL8mFPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="30862918"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by orviesa004.jf.intel.com with SMTP; 29 Apr 2024 01:28:30 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 29 Apr 2024 11:28:28 +0300
-Date: Mon, 29 Apr 2024 11:28:28 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Badhri Jagan Sridharan <badhri@google.com>
-Cc: gregkh@linuxfoundation.org, linux@roeck-us.net, kyletso@google.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rdbabiera@google.com, amitsd@google.com, stable@vger.kernel.org,
-	frank.wang@rock-chips.com, broonie@kernel.org,
-	dmitry.baryshkov@linaro.org
-Subject: Re: [PATCH v3] usb: typec: tcpm: Check for port partner validity
- before consuming it
-Message-ID: <Zi9aLJS2vlHxwaFP@kuha.fi.intel.com>
-References: <20240427202812.3435268-1-badhri@google.com>
+	s=arc-20240116; t=1714379461; c=relaxed/simple;
+	bh=x1tj28AD+LkVdGSHBYxpjFs2oh60Ozg9qHmZ3u/ifP4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R/tHtBaNdY3jJuZuNfGxjbr7KTyyahvT6PtanSgo5Ud9fvhtqMGDiVrmEMVC7VhS2Vm9nMvPVddxKICUk7AdhthhdSui65wcFW1LqcHoySH4gaEqF6YsS/2oStHOgQ/nNO/tKgjO8wGWkpmFV6uY3YzTAr+oHa8P8jaauHrh0ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=a07XhbTH; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=3HB14XYC2BSkckHz1rRiH+RKOesiVtTV6cwbX4rJWxM=; t=1714379459;
+	x=1714811459; b=a07XhbTHRNLXft/y/clydiLIorBeXhcTjmd6cueANxkxYJooRlQ6EhxhqlwgV
+	V0lw8sklt86hWtIbjIp21Cvs1JWPItWxTQUYSNh/gLXTMIt/SlXeuZuDlYdJ0lFKyzMQYWWFQXY9q
+	DE8PHWDn8iKDy5dAglZJyJAe0qDBecrF+CS83dR7/f+cEZo2KkZJUky2DV7ZpLH5bkcgfFxgzHPgl
+	jmq4WaNUTcQAlWxUq842CY9oBBjcwusyOOqLhBV9fc8Sk4nC2sujmm9NB1YEAJWzxeItb5i/dtjTN
+	u7SIu2TL6CDWGCodLIoUIu4FEB4wYhAjXEE+AMVrxqJUZwO2bg==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1s1MPS-0005pC-D1; Mon, 29 Apr 2024 10:30:50 +0200
+Message-ID: <2dde6e68-bdac-437a-bd89-73dddf446211@leemhuis.info>
+Date: Mon, 29 Apr 2024 10:30:49 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240427202812.3435268-1-badhri@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/5] docs: stable-kernel-rules: explain use of
+ stable@kernel.org (w/o @vger.)
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ stable@vger.kernel.org, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1714367921.git.linux@leemhuis.info>
+ <6783b71da48aac5290756343f58591dc42da87bc.1714367921.git.linux@leemhuis.info>
+ <2024042957-revision-sublevel-57c2@gregkh>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: en-US, de-DE
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <2024042957-revision-sublevel-57c2@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1714379459;dd56d60b;
+X-HE-SMSGID: 1s1MPS-0005pC-D1
 
-On Sat, Apr 27, 2024 at 08:28:12PM +0000, Badhri Jagan Sridharan wrote:
-> typec_register_partner() does not guarantee partner registration
-> to always succeed. In the event of failure, port->partner is set
-> to the error value or NULL. Given that port->partner validity is
-> not checked, this results in the following crash:
+On 29.04.24 09:51, Greg Kroah-Hartman wrote:
+> On Mon, Apr 29, 2024 at 09:18:29AM +0200, Thorsten Leemhuis wrote:
+>> Document when to use of stable@kernel.org instead of
+>> stable@vger.kernel.org, as the two are easily mixed up and their
+>> difference not explained anywhere[1].
+>>
+>> Link: https://lore.kernel.org/all/20240422231550.3cf5f723@sal.lan/ [1]
+>> Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
+>> ---
+>>  Documentation/process/stable-kernel-rules.rst | 4 ++++
+>>  1 file changed, 4 insertions(+)
+>>
+>> diff --git a/Documentation/process/stable-kernel-rules.rst b/Documentation/process/stable-kernel-rules.rst
+>> index b4af627154f1d8..ebf4152659f2d0 100644
+>> --- a/Documentation/process/stable-kernel-rules.rst
+>> +++ b/Documentation/process/stable-kernel-rules.rst
+>> @@ -72,6 +72,10 @@ for stable trees, add this tag in the sign-off area::
+>>  
+>>    Cc: stable@vger.kernel.org
+>>  
+>> +Use ``Cc: stable@kernel.org`` instead when fixing unpublished vulnerabilities:
+>> +it reduces the chance of accidentally exposing the fix to the public by way of
+>> +'git send-email', as mails sent to that address are not delivered anywhere.
 > 
-> Unable to handle kernel NULL pointer dereference at virtual address xx
->  pc : run_state_machine+0x1bc8/0x1c08
->  lr : run_state_machine+0x1b90/0x1c08
-> ..
->  Call trace:
->    run_state_machine+0x1bc8/0x1c08
->    tcpm_state_machine_work+0x94/0xe4
->    kthread_worker_fn+0x118/0x328
->    kthread+0x1d0/0x23c
->    ret_from_fork+0x10/0x20
-> 
-> To prevent the crash, check for port->partner validity before
-> derefencing it in all the call sites.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: c97cd0b4b54e ("usb: typec: tcpm: set initial svdm version based on pd revision")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> The "fun" part of just saying this is that then it is a huge "signal" to
+> others that "hey, this might be a security fix!" when it lands in
+> Linus's tree.  But hey, we do what we can, I know my scripts always use
+> this address just to put a bit more noise into that signal :)
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Yeah, that's likely true. :-D
 
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 30 +++++++++++++++++++++++-------
->  1 file changed, 23 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index ab6ed6111ed0..e1c6dffe5f8b 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -1580,7 +1580,8 @@ static void svdm_consume_identity(struct tcpm_port *port, const u32 *p, int cnt)
->  	port->partner_ident.cert_stat = p[VDO_INDEX_CSTAT];
->  	port->partner_ident.product = product;
->  
-> -	typec_partner_set_identity(port->partner);
-> +	if (port->partner)
-> +		typec_partner_set_identity(port->partner);
->  
->  	tcpm_log(port, "Identity: %04x:%04x.%04x",
->  		 PD_IDH_VID(vdo),
-> @@ -1742,6 +1743,9 @@ static void tcpm_register_partner_altmodes(struct tcpm_port *port)
->  	struct typec_altmode *altmode;
->  	int i;
->  
-> +	if (!port->partner)
-> +		return;
-> +
->  	for (i = 0; i < modep->altmodes; i++) {
->  		altmode = typec_partner_register_altmode(port->partner,
->  						&modep->altmode_desc[i]);
-> @@ -4231,7 +4235,10 @@ static int tcpm_init_vconn(struct tcpm_port *port)
->  
->  static void tcpm_typec_connect(struct tcpm_port *port)
->  {
-> +	struct typec_partner *partner;
-> +
->  	if (!port->connected) {
-> +		port->connected = true;
->  		/* Make sure we don't report stale identity information */
->  		memset(&port->partner_ident, 0, sizeof(port->partner_ident));
->  		port->partner_desc.usb_pd = port->pd_capable;
-> @@ -4241,9 +4248,13 @@ static void tcpm_typec_connect(struct tcpm_port *port)
->  			port->partner_desc.accessory = TYPEC_ACCESSORY_AUDIO;
->  		else
->  			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
-> -		port->partner = typec_register_partner(port->typec_port,
-> -						       &port->partner_desc);
-> -		port->connected = true;
-> +		partner = typec_register_partner(port->typec_port, &port->partner_desc);
-> +		if (IS_ERR(partner)) {
-> +			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
-> +			return;
-> +		}
-> +
-> +		port->partner = partner;
->  		typec_partner_set_usb_power_delivery(port->partner, port->partner_pd);
->  	}
->  }
-> @@ -4323,9 +4334,11 @@ static void tcpm_typec_disconnect(struct tcpm_port *port)
->  	port->plug_prime = NULL;
->  	port->cable = NULL;
->  	if (port->connected) {
-> -		typec_partner_set_usb_power_delivery(port->partner, NULL);
-> -		typec_unregister_partner(port->partner);
-> -		port->partner = NULL;
-> +		if (port->partner) {
-> +			typec_partner_set_usb_power_delivery(port->partner, NULL);
-> +			typec_unregister_partner(port->partner);
-> +			port->partner = NULL;
-> +		}
->  		port->connected = false;
->  	}
->  }
-> @@ -4549,6 +4562,9 @@ static enum typec_cc_status tcpm_pwr_opmode_to_rp(enum typec_pwr_opmode opmode)
->  
->  static void tcpm_set_initial_svdm_version(struct tcpm_port *port)
->  {
-> +	if (!port->partner)
-> +		return;
-> +
->  	switch (port->negotiated_rev) {
->  	case PD_REV30:
->  		break;
-> 
-> base-commit: 3f12222a4bebeb13ce06ddecc1610ad32fa835dd
-> -- 
-> 2.44.0.769.g3c40516874-goog
+FWIW, we could stay more vague here and use a text like """Use ``Cc:
+stable@kernel.org`` instead when fixing something that should be kept
+private for the timing being: it will prevent the change for
+accidentally being exposed to the public through 'git send-email', as
+mails sent to that address are not delivered anywhere."""
 
--- 
-heikki
+The sign would not be that huge anymore, but I'm not sure if that makes
+any difference.
+
+> That being said, it's good to have this documented now, thanks for it:
+
+yw!
+
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+Many thx for your feedback to this and the other patches. Do you want to
+pick those up (last time I changes something in that text that was the
+case) or let Jonathan handle them?
+
+Ciao, Thorsten
 
