@@ -1,128 +1,79 @@
-Return-Path: <stable+bounces-41706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5578B588C
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:30:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D83F8B587F
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B287F1F24897
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:30:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2AA11F246B5
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51220539A;
-	Mon, 29 Apr 2024 12:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Ule6R+K6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F087353E33;
+	Mon, 29 Apr 2024 12:27:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9293A322E;
-	Mon, 29 Apr 2024 12:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7FD1B94D;
+	Mon, 29 Apr 2024 12:27:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714393854; cv=none; b=KO4PcIvIqGC0WC3UnA0HzWzVb3QLXv6EZVY+VXvjtl5D6Y3nKuuKVPpHmb5Z6E87jvbatmLC2NsIgi/GIFsQK3fP1yrxDe1vzrsPJWOhnHG5vOL3sj5fwCMtdM0kBhlvlRz23imgAmOMeTUqLtFLDrASD0aRbzjPerLBmQwVv20=
+	t=1714393630; cv=none; b=tPGr32hSZPgbKFCefz2aN2iXSFbaNqkynjAw5FDX+NJH88g5r96pYjIEvdxgSUCyVgPVLynYF95Sr29FF40Oa7WkNSET5NrJCziSjHQLhyQBB9PeskVcj/atzHjlZ51JAwSU2oN1nKCKzEpHtngsuS65zxSvTq/wL02FDL+gtqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714393854; c=relaxed/simple;
-	bh=7N0utKAEx4E/O+TGpndTrMTBy90ouwclTFUM80d5C0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UICQN7v8SRtN289dlCcMeY6ytKyY25J5jc7jKq2FQvo7DdjT+f+5kK91RQJ7pAvI2dXZM3e6op6HmXH2nJ1LWraAheWkDUzIwXK1VLqM26IMyQmTeXQHOpC9NIxEDVkERQgqRnx8kOYPF7i5NCL8kAQYEkzIqJG7/NsySVo1B1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Ule6R+K6; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 065FA40E0187;
-	Mon, 29 Apr 2024 12:30:48 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id hjGpXXIOrkZm; Mon, 29 Apr 2024 12:30:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1714393844; bh=P53mqjXOTmkoFUZX78LGD91nZVEGE1SG7dpgszC6P1M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ule6R+K6K4cCkTfEev7OmO5agpjnJMB1butWf2LNU9DbJ7cYvoLoGfrzDVVibk7Ar
-	 lOtczadxrOmM9IdzJPDZjFSZohe3ulrAABFx/oqYiQrOejCd35YffTY3D0Vau8CXht
-	 WiOVXig5ocdgn3lBNve7Ya3LDT9z9uxezxFaM4v6UqZUs7tOu7g+HpsXWpgF63/srg
-	 YIXkBdBoRaj+nBabw/9Czd62kVt5BuY1LgRFU7xwkckuvCE8OYTaYrFcJXVJkfHLdx
-	 1s4ChX1J2YbfBMG1pzvlhNGZ2FolO00mDtuU+tlUiu/Nk9OiDU288UzzvSeYCsyzsb
-	 WtZToIRWHu60GFTXnkBc3I9a6SFAKPpwrvoniYL3swieAlRFmIUTgHhUNhQS/C3TqI
-	 9Vdn4NC6b8V2UMSNaZBBJOSnv1vh+iRdgVi602C4blcqAqXf61riyXVEODkqmha5Ij
-	 9wPL6Gg2iiTuEVAOGByblZoHjeJ4YmQkV/tR1WikTo+Em5RLPfxZnNKuOc4JRZAjED
-	 TbwROhjjEnrLFEWYYZz6gLOkgH17xBCk7Y1Baah4ty79QrK8QQJX+0Hy29YFvva6nv
-	 jNnUMpQFiU9Z8zjqqKDfjER9xh3nmiCWxEw3C2pAy24sJQl9RdAb46YGT1e5iekNyN
-	 jmXINKOX3//0gf1bA8TEkUjs=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4787740E00B2;
-	Mon, 29 Apr 2024 12:30:29 +0000 (UTC)
-Date: Mon, 29 Apr 2024 14:30:22 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Matz <matz@suse.de>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Song Liu <song@kernel.org>,
-	Ricardo Ribalda <ribalda@kernel.org>,
-	Fangrui Song <maskray@google.com>,
-	Arthur Eubanks <aeubanks@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/purgatory: Switch to the position-independent small
- code model
-Message-ID: <20240429123022.GBZi-S3p4vlPK10pYM@fat_crate.local>
-References: <20240418201705.3673200-2-ardb+git@google.com>
- <3f23b551-4815-4a06-9217-ff5beeb80df2@kernel.org>
- <20240420131717.GAZiPAXY9EAYnHajaw@fat_crate.local>
- <836c267f-a028-acce-8b19-180162a5febc@suse.de>
+	s=arc-20240116; t=1714393630; c=relaxed/simple;
+	bh=g8D+f+ZZS/3YuLxsTPmjnspbgQBVz930bA/5ZEJUnKA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N8znwKM9dxy1so182EtoHYFy5lfRdbPVdqpsqqhPUZoBus39bPd8ue8NqBIZA04hztQ8cUxD7wUIXwwXYRH4/8smhAO1EY90iLY4zZpj0H6b4gWH7L/gJA3xypBgdiCbQccWoVMLI/qjfTDE5+ZsyGlo9nFQII04lwrSzJ1lsjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VSjGv5XZKzccdb;
+	Mon, 29 Apr 2024 20:25:59 +0800 (CST)
+Received: from dggpeml500026.china.huawei.com (unknown [7.185.36.106])
+	by mail.maildlp.com (Postfix) with ESMTPS id B6DDD18007D;
+	Mon, 29 Apr 2024 20:27:06 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
+ (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 29 Apr
+ 2024 20:27:06 +0800
+From: Zhengchao Shao <shaozhengchao@huawei.com>
+To: <stable@vger.kernel.org>
+CC: <netdev@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+	<davem@davemloft.net>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>,
+	<kuba@kernel.org>, <edumazet@google.com>, <kuniyu@amazon.com>,
+	<weiyongjun1@huawei.com>, <yuehaibing@huawei.com>, <shaozhengchao@huawei.com>
+Subject: [PATCH stable,4.19 0/2] introduce stop timer to solve the problem of CVE-2024-26865
+Date: Mon, 29 Apr 2024 20:32:22 +0800
+Message-ID: <20240429123224.2730596-1-shaozhengchao@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <836c267f-a028-acce-8b19-180162a5febc@suse.de>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500026.china.huawei.com (7.185.36.106)
 
-On Mon, Apr 29, 2024 at 02:05:12PM +0200, Michael Matz wrote:
-> It may be so ingrained in my brain that I'm not _always_ saying it when 
-> talking about the large code model over a beer.
+For the CVE-2024-26865 issue, the stable 4.19 branch code also involves
+this issue. However, the patch of the mainline version cannot be used on
+stable 4.19 branch. The commit 740ea3c4a0b2("tcp: Clean up kernel
+listener' s reqsk in inet_twsk_purge()") is required to stop the timer.
 
-Doh, you should. This is what you start with! :-P
+Eric Dumazet (1):
+  tcp: Fix NEW_SYN_RECV handling in inet_twsk_purge()
 
-> And indeed I know of no particular problems with it vis GCC, but that
-> doesn't mean it's a good idea to use :-)
->
-> So once again: "everyone should simply stop using -mcmodel=large.  Noone
-> should use it."
->
-> So the patch goes strictly into the direction of betterment of the
-> universe. :)
+Kuniyuki Iwashima (1):
+  tcp: Clean up kernel listener's reqsk in inet_twsk_purge()
 
-Yeah, it is already on its way to every kernel near you. And looka here:
-
-$ git grep mcmodel=large
-arch/powerpc/Makefile:125:      # 64bit relocation for this to work, hence -mcmodel=large.
-arch/powerpc/Makefile:126:      KBUILD_CFLAGS_MODULE += -mcmodel=large
-arch/um/Makefile:34:    KBUILD_CFLAGS += -mcmodel=large
-
-x86 is all free of the large model now.
-
-One less thing to worry about - gazillion more to go.
-
-:-P
-
-See ya on Thu.
+ net/ipv4/inet_timewait_sock.c | 32 +++++++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
 -- 
-Regards/Gruss,
-    Boris.
+2.34.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
