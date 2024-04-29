@@ -1,279 +1,312 @@
-Return-Path: <stable+bounces-41711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8FE8B592C
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:55:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5BA8B5931
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2BD51F21896
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:55:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D59751F20F86
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0502176F1D;
-	Mon, 29 Apr 2024 12:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B27A535C1;
+	Mon, 29 Apr 2024 12:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="JnYNtv7R"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="U04SVER+"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E9B5338D;
-	Mon, 29 Apr 2024 12:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E805537EC
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714395161; cv=none; b=Huod66ZTUFMHTYjLpAStr352jCKKq7L1cQ22GbPwEHePELJBuAfOdnYO9dxjSB3q8Cnph8Op6jbAkVLp1JftQRzDeJkt87oGUbsJgassOTzYdXesENEBGiSv2LlKkl2jfjndm/Kc5KvKPMraSPXlyacQdDhcJVPBbtSgEFKBq6I=
+	t=1714395329; cv=none; b=CPmv1vSyYVFS8oXx/eqRu7Y393sItgXkhiSMoOgNKIRXq9ato3Q+4z7qdIz0RERhKg5Qdm4uOJa3ODij2hw7mSVCXwQCzPOutE8h6N6FxblhgIKcX5hpcTYlHp6j/LMbTciYCPHC8VkYgLAFIx1tw4YbQQ+0KLuO6dWxCYgMkBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714395161; c=relaxed/simple;
-	bh=km3KJf6bn17tbrz+DOTcOX7bRwMzDaGgUowCCvL1kds=;
-	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:References; b=eJR6C6vWjUAl403U/+Q7f5qDMwEwWVTBLWS1XiXv+0Kg7+fQUnAfOrC+uZtif8jIdXq6g3+EQc2SMaMfOOsxhvKJ4xFdQxlloNwlYfbKWxEGh1dG8e7NWwSqbEtfQf7mtOmudZQAOKjkZByC78z1yUzf3CucTKwNfOnGWktQ4TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=JnYNtv7R; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240429125237euoutp02be885112706353b82ce95083d2165baf~KwU-ko2zJ0762607626euoutp02i;
-	Mon, 29 Apr 2024 12:52:37 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240429125237euoutp02be885112706353b82ce95083d2165baf~KwU-ko2zJ0762607626euoutp02i
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1714395157;
-	bh=ZpGozA/g5Y27vWcnYSjq0fcfRyzSKVOELfD+MtTbh50=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=JnYNtv7R+1AVMQdMCh/td2arTQQHZchK14+ZwVfZl/7jRhXyXpXmv+/brD0zwf2di
-	 lrk96ZWi2gks+YXPtIIECNGoyYVGuDe3P0L5VhTJpVnAbg2bi8brVFEt5MQwbBKED8
-	 /+1FHZaUyv0Xn09OGz2yAKfPgX+mltTpRFPDN4KI=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20240429125236eucas1p2259a040fba43cbe4b15166274efe9234~KwU-Ti5Bs0938209382eucas1p2b;
-	Mon, 29 Apr 2024 12:52:36 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-	eusmges2new.samsung.com (EUCPMTA) with SMTP id 4F.05.09875.4189F266; Mon, 29
-	Apr 2024 13:52:36 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20240429125236eucas1p24219f2d332e0267794a2f87dea9f39c4~KwU_4QlXO0725807258eucas1p2b;
-	Mon, 29 Apr 2024 12:52:36 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240429125236eusmtrp23f0f6bea6cee94b5ea67a2c733ba577b~KwU_2j3nl2188021880eusmtrp2f;
-	Mon, 29 Apr 2024 12:52:36 +0000 (GMT)
-X-AuditID: cbfec7f4-11bff70000002693-14-662f981462ff
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id DF.70.09010.4189F266; Mon, 29
-	Apr 2024 13:52:36 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20240429125235eusmtip2ee5e6dfc75c147ac32e12e62e05dccc6~KwU_knLdn3170331703eusmtip2B;
-	Mon, 29 Apr 2024 12:52:35 +0000 (GMT)
-Received: from localhost (106.110.32.44) by CAMSVWEXC02.scsc.local
-	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
-	Mon, 29 Apr 2024 13:52:34 +0100
-Date: Mon, 29 Apr 2024 14:52:30 +0200
-From: Joel Granados <j.granados@samsung.com>
-To: Nam Cao <namcao@linutronix.de>
-CC: Mike Rapoport <rppt@kernel.org>, Andreas Dilger <adilger@dilger.ca>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	<linux-riscv@lists.infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>, "ndesaulniers @ google . com"
-	<ndesaulniers@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Ingo Molnar
-	<mingo@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun
-	Heo <tj@kernel.org>, Krister Johansen <kjlx@templeofstupid.com>, Changbin Du
-	<changbin.du@huawei.com>, Arnd Bergmann <arnd@arndb.de>, Geert Uytterhoeven
-	<geert+renesas@glider.be>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH] init: fix allocated page overlapping with PTR_ERR
-Message-ID: <20240429125230.s5pbeye24iw5aurz@joelS2.panther.com>
+	s=arc-20240116; t=1714395329; c=relaxed/simple;
+	bh=EOmKlOeZhbkTLn4shySR4+4gyrEpkywWI85JiodNrj4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VSFBpRnfimQmcK+bKSRhwjLqVlr+PMhpdPkedtKfmEVvdXXDaTLlKlZE9Gml82UGUsVEwoo94gF8U2acbIqbrX/25oweAc+akdZrh/ZeE8UeTfCxkzOE6jLkvTHJHsOrZwZ57SmAvH0kOMuAQdRVbksHcvvK5/f2dkkBxIlABeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=U04SVER+; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=1r2ALBjWJzw+L27cXZmRo34ri17hNeAVGRyDVgLwmIU=; b=U04SVER+LcncaDh+SdyufzlEWM
+	VA+gcZr3LHvl4xK8eOWigSaAO1N7SzCgeIy9sNGDlqdmUzWiP9Jr89WKADJ4+rrqV3KZr7Asl6Lf0
+	Dvlnsj0+H5FJaLP8fEhg/6fvjvAITDuPI+PBzUYSkQDvc3rZ23Cr9f3gK7ed25ljCg/LRt/9as3f8
+	agNZ2ZINt7etBxZZGKZ5BjipcYgbR6uc1ee9XNXAjL5xy4fMBnI/u8KiNeJlekOKc6qhmfitcSVvT
+	x5nAIHOxlWM/A7A7M/i53hrUL/6eTge9I1IYRqEO+C3V+Bt56U21xY2OUYzOeNoVJSuee4rfHuJNc
+	3So4VfuQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1s1QXS-0000000CSpd-1v4N;
+	Mon, 29 Apr 2024 12:55:22 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: stable@vger.kernel.org
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8.y] mm: turn folio_test_hugetlb into a PageType
+Date: Mon, 29 Apr 2024 13:55:19 +0100
+Message-ID: <20240429125519.2970760-1-willy@infradead.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <2024042907-unquote-thank-8de2@gregkh>
+References: <2024042907-unquote-thank-8de2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="s6e23wdofaldi5z4"
-Content-Disposition: inline
-In-Reply-To: <20240418102943.180510-1-namcao@linutronix.de>
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMJsWRmVeSWpSXmKPExsWy7djPc7oiM/TTDH51alosO/mIyWLO+jVs
-	Fn8nHWO32Pp+FYvF0TeyFncmPWe3mDt7EqPFxh0zmSwu75rDZrHtcwubxY0JTxktVv87xWix
-	d/8eZosPE/4zWRxZv53JYsHGR4wWmzdNZbb4tfwoo4OQx+9fkxg9vt48x+TRsrncY+JZXY8F
-	m0o9Wo68ZfXYtKqTzePduXPsHidm/Gbx2Lyk3mPVkzXMHp83yQXwRHHZpKTmZJalFunbJXBl
-	vFo+g6XgmF5F24te1gbGZRpdjJwcEgImEq8vP2HpYuTiEBJYwSgxsXEvI4TzhVHi06P3rBDO
-	Z0aJa8tamWBa9vxbC9WynFFi/4kH7HBVT7tWMkE4mxkl9k44zgjSwiKgKrGxaQMbiM0moCNx
-	/s0dZhBbREBJ4sDL32wgDcwCS1klGmceAmsQFnCTmLekHWgHBwevgINEw7sAkDCvgKDEyZkg
-	13IC1VdI3OjoZAMpYRaQllj+jwMkzClgLfFn/1pmiEsVJb4uvscCYddKnNpyC+w2CYG5XBL3
-	zn1hg0i4SNz7uwHqNWGJV8e3sEPYMhL/d86HapgM9Oa/D+wQzmpGiWWNX6E6rCVarjxhB7lC
-	QsBR4tnfKgiTT+LGW0GIO/kkJm2bzgwR5pXoaBOCaFSTWH3vDcsERuVZSD6bheSzWQifQYR1
-	JBbs/oQprC2xbOFrZgjbVmLduvcsCxjZVzGKp5YW56anFhvlpZbrFSfmFpfmpesl5+duYgSm
-	3dP/jn/Zwbj81Ue9Q4xMHIyHGFWAmh9tWH2BUYolLz8vVUmEN2OifpoQb0piZVVqUX58UWlO
-	avEhRmkOFiVxXtUU+VQhgfTEktTs1NSC1CKYLBMHp1QDk7c1o+qD7EXxp0RDt/qWbFnfuTTu
-	yl/ZdWanDpdbLU2te+sZeXKF2bWgfav3LN/zzOFKv2TO65NL2ctuep3byzi7zDRc18xe45GL
-	iYm3kTp3DKucvKWK3bz9C58bPpxdGPnc4yV/d+7qpZo2GrvFVts5Xpp2at79Bp1li+/nVf+f
-	ov+jb+qnPwvun/dMzFl56/4Sg5W/4lxlHkStX/ZP6/XKwAnZOXuK/xw2Wr09Z05p131mBm5e
-	nvDOZT9lfxZLKTH2qpzjucAtJZXjddrqpHdeWd3M5/PiIwRjL/DZnHxfNPmu0K51zJ1Mcqeu
-	q2QpXX32LTXRSvz8vJ+XYryqGueZ29uZvptrK5BbL/3cTImlOCPRUIu5qDgRAEnd2aI2BAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrPKsWRmVeSWpSXmKPExsVy+t/xe7oiM/TTDOYeY7NYdvIRk8Wc9WvY
-	LP5OOsZusfX9KhaLo29kLe5Mes5uMXf2JEaLjTtmMllc3jWHzWLb5xY2ixsTnjJarP53itFi
-	7/49zBYfJvxnsjiyfjuTxYKNjxgtNm+aymzxa/lRRgchj9+/JjF6fL15jsmjZXO5x8Szuh4L
-	NpV6tBx5y+qxaVUnm8e7c+fYPU7M+M3isXlJvceqJ2uYPT5vkgvgidKzKcovLUlVyMgvLrFV
-	ija0MNIztLTQMzKx1DM0No+1MjJV0rezSUnNySxLLdK3S9DLODR7PmPBEb2K/vYO1gbGJRpd
-	jJwcEgImEnv+rWXpYuTiEBJYyigxa+NGdoiEjMTGL1dZIWxhiT/Xutggij4ySsw89wPK2cwo
-	ceTGOhaQKhYBVYmNTRvYQGw2AR2J82/uMIPYIgJKEgde/gZrYBZYyirRsfsxI0hCWMBNYt6S
-	dqBmDg5eAQeJhncBIGEhASuJU4vngvXyCghKnJz5BGw+s0CZxNedK9hBypkFpCWW/+MACXMK
-	WEv82b+WGeJQRYmvi++xQNi1Ep//PmOcwCg8C8mkWUgmzUKYBBHWkrjx7yUThrC2xLKFr5kh
-	bFuJdevesyxgZF/FKJJaWpybnltspFecmFtcmpeul5yfu4kRmHq2Hfu5ZQfjylcf9Q4xMnEw
-	HmJUAep8tGH1BUYplrz8vFQlEd6MifppQrwpiZVVqUX58UWlOanFhxhNgYE4kVlKNDkfmBTz
-	SuINzQxMDU3MLA1MLc2MlcR5PQs6EoUE0hNLUrNTUwtSi2D6mDg4pRqYlPMqpTifzDMqNlqZ
-	8LNsZZjdVnfxjG99f9S6WgTUD0TYi0tHf4mZfnPVPdePPZdV12Ys5Ni/dEaefKZbpue9dz7z
-	vj45LqZz4u/X338Ocx20t1s2s92QJeFm5G2GhhNbnOfZb8o6fseV8XfljDXnPMzcK16KGVpI
-	HeU1iFm20i++7ETCg8vZp23Nt/zK1//fWf/j7umd69+75J2K7LXRODflu/arIwxf9ihyzQ9W
-	P5lssSGI+7IFsy37+V7FyJa5oWseOMhU20zdudHj+IcVyWySXjrsMo2mTXzz05f9Ujt578DT
-	QIdJ1vHzF58NPLRl5UNDXpd3kg6lgiL7PG+8j+tIu3w56QaH+PyUa757lViKMxINtZiLihMB
-	R+F7G9IDAAA=
-X-CMS-MailID: 20240429125236eucas1p24219f2d332e0267794a2f87dea9f39c4
-X-Msg-Generator: CA
-X-RootMTR: 20240429125236eucas1p24219f2d332e0267794a2f87dea9f39c4
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240429125236eucas1p24219f2d332e0267794a2f87dea9f39c4
-References: <20240418102943.180510-1-namcao@linutronix.de>
-	<CGME20240429125236eucas1p24219f2d332e0267794a2f87dea9f39c4@eucas1p2.samsung.com>
+Content-Transfer-Encoding: 8bit
 
---s6e23wdofaldi5z4
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The current folio_test_hugetlb() can be fooled by a concurrent folio split
+into returning true for a folio which has never belonged to hugetlbfs.
+This can't happen if the caller holds a refcount on it, but we have a few
+places (memory-failure, compaction, procfs) which do not and should not
+take a speculative reference.
 
-On Thu, Apr 18, 2024 at 12:29:43PM +0200, Nam Cao wrote:
-> There is nothing preventing kernel memory allocators from allocating a
-> page that overlaps with PTR_ERR(), except for architecture-specific
-> code that setup memblock.
->=20
-> It was discovered that RISCV architecture doesn't setup memblock
-> corectly, leading to a page overlapping with PTR_ERR() being allocated,
-> and subsequently crashing the kernel (link in Close: )
->=20
-> The reported crash has nothing to do with PTR_ERR(): the last page
-> (at address 0xfffff000) being allocated leads to an unexpected
-> arithmetic overflow in ext4; but still, this page shouldn't be
-> allocated in the first place.
->=20
-> Because PTR_ERR() is an architecture-independent thing, we shouldn't
-> ask every single architecture to set this up. There may be other
-> architectures beside RISCV that have the same problem.
->=20
-> Fix this one and for all by reserving the physical memory page that
-> may be mapped to the last virtual memory page as part of low memory.
->=20
-> Unfortunately, this means if there is actual memory at this reserved
-> location, that memory will become inaccessible. However, if this page
-> is not reserved, it can only be accessed as high memory, so this
-> doesn't matter if high memory is not supported. Even if high memory is
-> supported, it is still only one page.
->=20
-> Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.=
-are.belong.to.us
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Cc: <stable@vger.kernel.org> # all versions
-> ---
->  init/main.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/init/main.c b/init/main.c
-> index 881f6230ee59..f8d2793c4641 100644
-> --- a/init/main.c
-> +++ b/init/main.c
-> @@ -900,6 +900,7 @@ void start_kernel(void)
->  	page_address_init();
->  	pr_notice("%s", linux_banner);
->  	early_security_init();
-> +	memblock_reserve(__pa(-PAGE_SIZE), PAGE_SIZE); /* reserve last page for=
- ERR_PTR */
->  	setup_arch(&command_line);
->  	setup_boot_config();
->  	setup_command_line(command_line);
-> --=20
-> 2.39.2
->=20
+Since hugetlb pages do not use individual page mapcounts (they are always
+fully mapped and use the entire_mapcount field to record the number of
+mappings), the PageType field is available now that page_mapcount()
+ignores the value in this field.
 
-I received a similar(ish) report recently
-https://lore.kernel.org/oe-kbuild-all/202404211031.J6l2AfJk-lkp@intel.com/
-regarding RISC-V in init/mail.c. Here is the meat of the report in case
-you want to avoid going to the actual link:
-"
-=2E..
-   riscv64-linux-ld: section .data LMA [000000000099b000,0000000001424de7] =
-overlaps section .text LMA [0000000000104040,000000000213c543]
-   riscv64-linux-ld: section .data..percpu LMA [00000000024e2000,0000000002=
-6b46e7] overlaps section .rodata LMA [000000000213c580,000000000292d0dd]
-   riscv64-linux-ld: section .rodata VMA [ffffffff8213c580,ffffffff8292d0dd=
-] overlaps section .data VMA [ffffffff82000000,ffffffff82a89de7]
-   init/main.o: in function `rdinit_setup':
->> init/main.c:613:(.init.text+0x358): relocation truncated to fit: R_RISCV=
-_GPREL_I against symbol `__setup_start' defined in .init.rodata section in =
-=2Etmp_vmlinux.kallsyms1
-   net/ipv4/ipconfig.o: in function `ic_dhcp_init_options':
-   net/ipv4/ipconfig.c:682:(.init.text+0x9b4): relocation truncated to fit:=
- R_RISCV_GPREL_I against `ic_bootp_cookie'
-   net/sunrpc/auth_gss/gss_krb5_mech.o: in function `gss_krb5_prepare_encty=
-pe_priority_list':
->> net/sunrpc/auth_gss/gss_krb5_mech.c:213:(.text.gss_krb5_prepare_enctype_=
-priority_list+0x9c): relocation truncated to fit: R_RISCV_GPREL_I against `=
-gss_krb5_enctypes.0'
-   lib/maple_tree.o: in function `mas_leaf_max_gap':
->> lib/maple_tree.c:1512:(.text.mas_leaf_max_gap+0x2b8): relocation truncat=
-ed to fit: R_RISCV_GPREL_I against `mt_pivots'
-   lib/maple_tree.o: in function `ma_dead_node':
->> lib/maple_tree.c:560:(.text.mas_data_end+0x110): relocation truncated to=
- fit: R_RISCV_GPREL_I against `mt_pivots'
-   lib/maple_tree.o: in function `mas_extend_spanning_null':
->> lib/maple_tree.c:3662:(.text.mas_extend_spanning_null+0x69c): relocation=
- truncated to fit: R_RISCV_GPREL_I against `mt_pivots'
-   lib/maple_tree.o: in function `mas_mab_cp':
->> lib/maple_tree.c:1943:(.text.mas_mab_cp+0x248): relocation truncated to =
-fit: R_RISCV_GPREL_I against `mt_pivots'
-   lib/maple_tree.o: in function `mab_mas_cp':
->> lib/maple_tree.c:2000:(.text.mab_mas_cp+0x15c): relocation truncated to =
-fit: R_RISCV_GPREL_I against `mt_pivots'
-   lib/maple_tree.o: in function `mas_reuse_node':
->> lib/maple_tree.c:3416:(.text.mas_reuse_node+0x17c): relocation truncated=
- to fit: R_RISCV_GPREL_I against `mt_slots'
-   lib/maple_tree.o: in function `mt_free_walk':
->> lib/maple_tree.c:5238:(.text.mt_free_walk+0x15c): relocation truncated t=
-o fit: R_RISCV_GPREL_I against `mt_slots'
-   lib/maple_tree.o: in function `mtree_lookup_walk':
-   lib/maple_tree.c:3700:(.text.mtree_lookup_walk+0x94): additional relocat=
-ion overflows omitted from the output
-=2E..
+In compaction and with CONFIG_DEBUG_VM enabled, the current implementation
+can result in an oops, as reported by Luis. This happens since 9c5ccf2db04b
+("mm: remove HUGETLB_PAGE_DTOR") effectively added some VM_BUG_ON() checks
+in the PageHuge() testing path.
 
-"
+[willy@infradead.org: update vmcoreinfo]
+  Link: https://lkml.kernel.org/r/ZgGZUvsdhaT1Va-T@casper.infradead.org
+Link: https://lkml.kernel.org/r/20240321142448.1645400-6-willy@infradead.org
+Fixes: 9c5ccf2db04b ("mm: remove HUGETLB_PAGE_DTOR")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: Luis Chamberlain <mcgrof@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218227
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit d99e3140a4d33e26066183ff727d8f02f56bec64)
+---
+ include/linux/page-flags.h     | 70 ++++++++++++++++------------------
+ include/trace/events/mmflags.h |  1 +
+ kernel/crash_core.c            |  5 +--
+ mm/hugetlb.c                   | 22 ++---------
+ 4 files changed, 39 insertions(+), 59 deletions(-)
 
-Could the fix that you have posted here be related to that report?
-Comments are greatly appreciated.
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 0d86052ae5e5..68e9973cd62d 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -190,7 +190,6 @@ enum pageflags {
+ 
+ 	/* At least one page in this folio has the hwpoison flag set */
+ 	PG_has_hwpoisoned = PG_error,
+-	PG_hugetlb = PG_active,
+ 	PG_large_rmappable = PG_workingset, /* anon or file-backed */
+ };
+ 
+@@ -850,29 +849,6 @@ TESTPAGEFLAG_FALSE(LargeRmappable, large_rmappable)
+ 
+ #define PG_head_mask ((1UL << PG_head))
+ 
+-#ifdef CONFIG_HUGETLB_PAGE
+-int PageHuge(struct page *page);
+-SETPAGEFLAG(HugeTLB, hugetlb, PF_SECOND)
+-CLEARPAGEFLAG(HugeTLB, hugetlb, PF_SECOND)
+-
+-/**
+- * folio_test_hugetlb - Determine if the folio belongs to hugetlbfs
+- * @folio: The folio to test.
+- *
+- * Context: Any context.  Caller should have a reference on the folio to
+- * prevent it from being turned into a tail page.
+- * Return: True for hugetlbfs folios, false for anon folios or folios
+- * belonging to other filesystems.
+- */
+-static inline bool folio_test_hugetlb(struct folio *folio)
+-{
+-	return folio_test_large(folio) &&
+-		test_bit(PG_hugetlb, folio_flags(folio, 1));
+-}
+-#else
+-TESTPAGEFLAG_FALSE(Huge, hugetlb)
+-#endif
+-
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ /*
+  * PageHuge() only returns true for hugetlbfs pages, but not for
+@@ -928,18 +904,6 @@ PAGEFLAG_FALSE(HasHWPoisoned, has_hwpoisoned)
+ 	TESTSCFLAG_FALSE(HasHWPoisoned, has_hwpoisoned)
+ #endif
+ 
+-/*
+- * Check if a page is currently marked HWPoisoned. Note that this check is
+- * best effort only and inherently racy: there is no way to synchronize with
+- * failing hardware.
+- */
+-static inline bool is_page_hwpoison(struct page *page)
+-{
+-	if (PageHWPoison(page))
+-		return true;
+-	return PageHuge(page) && PageHWPoison(compound_head(page));
+-}
+-
+ /*
+  * For pages that are never mapped to userspace (and aren't PageSlab),
+  * page_type may be used.  Because it is initialised to -1, we invert the
+@@ -956,6 +920,7 @@ static inline bool is_page_hwpoison(struct page *page)
+ #define PG_offline	0x00000100
+ #define PG_table	0x00000200
+ #define PG_guard	0x00000400
++#define PG_hugetlb	0x00000800
+ 
+ #define PageType(page, flag)						\
+ 	((page->page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
+@@ -1050,6 +1015,37 @@ PAGE_TYPE_OPS(Table, table, pgtable)
+  */
+ PAGE_TYPE_OPS(Guard, guard, guard)
+ 
++#ifdef CONFIG_HUGETLB_PAGE
++FOLIO_TYPE_OPS(hugetlb, hugetlb)
++#else
++FOLIO_TEST_FLAG_FALSE(hugetlb)
++#endif
++
++/**
++ * PageHuge - Determine if the page belongs to hugetlbfs
++ * @page: The page to test.
++ *
++ * Context: Any context.
++ * Return: True for hugetlbfs pages, false for anon pages or pages
++ * belonging to other filesystems.
++ */
++static inline bool PageHuge(const struct page *page)
++{
++	return folio_test_hugetlb(page_folio(page));
++}
++
++/*
++ * Check if a page is currently marked HWPoisoned. Note that this check is
++ * best effort only and inherently racy: there is no way to synchronize with
++ * failing hardware.
++ */
++static inline bool is_page_hwpoison(struct page *page)
++{
++	if (PageHWPoison(page))
++		return true;
++	return PageHuge(page) && PageHWPoison(compound_head(page));
++}
++
+ extern bool is_free_buddy_page(struct page *page);
+ 
+ PAGEFLAG(Isolated, isolated, PF_ANY);
+@@ -1116,7 +1112,7 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
+  */
+ #define PAGE_FLAGS_SECOND						\
+ 	(0xffUL /* order */		| 1UL << PG_has_hwpoisoned |	\
+-	 1UL << PG_hugetlb		| 1UL << PG_large_rmappable)
++	 1UL << PG_large_rmappable)
+ 
+ #define PAGE_FLAGS_PRIVATE				\
+ 	(1UL << PG_private | 1UL << PG_private_2)
+diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
+index d801409b33cf..d55e53ac91bd 100644
+--- a/include/trace/events/mmflags.h
++++ b/include/trace/events/mmflags.h
+@@ -135,6 +135,7 @@ IF_HAVE_PG_ARCH_X(arch_3)
+ #define DEF_PAGETYPE_NAME(_name) { PG_##_name, __stringify(_name) }
+ 
+ #define __def_pagetype_names						\
++	DEF_PAGETYPE_NAME(hugetlb),					\
+ 	DEF_PAGETYPE_NAME(offline),					\
+ 	DEF_PAGETYPE_NAME(guard),					\
+ 	DEF_PAGETYPE_NAME(table),					\
+diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+index 40bd908e0a81..ebde3063b531 100644
+--- a/kernel/crash_core.c
++++ b/kernel/crash_core.c
+@@ -814,11 +814,10 @@ static int __init crash_save_vmcoreinfo_init(void)
+ 	VMCOREINFO_NUMBER(PG_head_mask);
+ #define PAGE_BUDDY_MAPCOUNT_VALUE	(~PG_buddy)
+ 	VMCOREINFO_NUMBER(PAGE_BUDDY_MAPCOUNT_VALUE);
+-#ifdef CONFIG_HUGETLB_PAGE
+-	VMCOREINFO_NUMBER(PG_hugetlb);
++#define PAGE_HUGETLB_MAPCOUNT_VALUE	(~PG_hugetlb)
++	VMCOREINFO_NUMBER(PAGE_HUGETLB_MAPCOUNT_VALUE);
+ #define PAGE_OFFLINE_MAPCOUNT_VALUE	(~PG_offline)
+ 	VMCOREINFO_NUMBER(PAGE_OFFLINE_MAPCOUNT_VALUE);
+-#endif
+ 
+ #ifdef CONFIG_KALLSYMS
+ 	VMCOREINFO_SYMBOL(kallsyms_names);
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index e5e3df1d3b87..fd7bc09eb5e0 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1623,7 +1623,7 @@ static inline void __clear_hugetlb_destructor(struct hstate *h,
+ {
+ 	lockdep_assert_held(&hugetlb_lock);
+ 
+-	folio_clear_hugetlb(folio);
++	__folio_clear_hugetlb(folio);
+ }
+ 
+ /*
+@@ -1710,7 +1710,7 @@ static void add_hugetlb_folio(struct hstate *h, struct folio *folio,
+ 		h->surplus_huge_pages_node[nid]++;
+ 	}
+ 
+-	folio_set_hugetlb(folio);
++	__folio_set_hugetlb(folio);
+ 	folio_change_private(folio, NULL);
+ 	/*
+ 	 * We have to set hugetlb_vmemmap_optimized again as above
+@@ -2048,7 +2048,7 @@ static void __prep_account_new_huge_page(struct hstate *h, int nid)
+ 
+ static void init_new_hugetlb_folio(struct hstate *h, struct folio *folio)
+ {
+-	folio_set_hugetlb(folio);
++	__folio_set_hugetlb(folio);
+ 	INIT_LIST_HEAD(&folio->lru);
+ 	hugetlb_set_folio_subpool(folio, NULL);
+ 	set_hugetlb_cgroup(folio, NULL);
+@@ -2158,22 +2158,6 @@ static bool prep_compound_gigantic_folio_for_demote(struct folio *folio,
+ 	return __prep_compound_gigantic_folio(folio, order, true);
+ }
+ 
+-/*
+- * PageHuge() only returns true for hugetlbfs pages, but not for normal or
+- * transparent huge pages.  See the PageTransHuge() documentation for more
+- * details.
+- */
+-int PageHuge(struct page *page)
+-{
+-	struct folio *folio;
+-
+-	if (!PageCompound(page))
+-		return 0;
+-	folio = page_folio(page);
+-	return folio_test_hugetlb(folio);
+-}
+-EXPORT_SYMBOL_GPL(PageHuge);
+-
+ /*
+  * Find and lock address space (mapping) in write mode.
+  *
+-- 
+2.43.0
 
-Best
---
-
-Joel Granados
-
---s6e23wdofaldi5z4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmYvmA0ACgkQupfNUreW
-QU/TcAv/R+pAjTDoAeoU3WyOOx6zyEtWCvRsTNWxaadNCk5n4YLTRmFZRke/ETZo
-A4yKXDjtCXhcwL7pDR0BicIVEJQa0MujxGb2Re0S5ijajV93/KtJ4UXZri1Ij1la
-zBbc0UEhVO39bgFkmtyWFR+4Ln+ugL6hOOO0rN2FQ76i2W6X+stesxjBydf9cmil
-fYsHn/UHLBXgsP2wHt6nP6/qT+RvXDG/cfRhYmHUOOAphed5HuK+TKekNGDr2Dxw
-VDzxzPleawaT0O8bfKwfGH9qi+AbfK0LanHBJIsTdSAPUbot7K1P5f7IDLgnDUgk
-pw6GipBbpEKuSJL5fFrok10uI5Z+6lfiocfI91xRluVUoSJf9ZsvT9l4jTGVmcRU
-+gjX/LRFZP4iuVjeiAOZdER7+42QQtxyPWZvnPM/xZ3vOJQ5DmsPYzxDMQqxq2i0
-dhWobw9vNWAQMCdqt3kqE52WswbMKFMQNZdxN1/BFIOPCjeZQRkJ/sgz/G1+VsJM
-saTJu/RZ
-=UHv0
------END PGP SIGNATURE-----
-
---s6e23wdofaldi5z4--
 
