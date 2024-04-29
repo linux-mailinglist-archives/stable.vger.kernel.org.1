@@ -1,102 +1,115 @@
-Return-Path: <stable+bounces-41660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258328B5683
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:27:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B898B5677
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:26:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B932D1F21CA3
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:27:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2A1F1F22F9C
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E85944C60;
-	Mon, 29 Apr 2024 11:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DEB3FBBD;
+	Mon, 29 Apr 2024 11:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C5Yt5+o3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dARjAP2S"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA623FE28
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54422375B
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390016; cv=none; b=hphxnxb8soaTfR7hyxB5OIZNS6ZYA2F9lxbohFxgDiO/PkGZU8Nh/h3QkZ7ZhO51qiyYbwOcipnP5m0dXyIF+bvrZU8YcW91fqDV/tiq4tF910xSHjwg+I97c0D05CFmXfm+wXwNXI6gAk04MMBT7bSrBqZtWUlXODeQ/q0Ysdw=
+	t=1714389977; cv=none; b=BLbNJJmc08Rs8Oo0GLAuRKOPxCifH73jlWE8KtEcVxVuLJPOMH+VwjQN9UooGy2b6QQyXF+iBhzVm3w+O2iGEukzAeDY8meSDRCr8xG+wlr14epODREEqcwYRC26FYN17EyBMWsp+MMvkfAG89M0C+B8XY6nuLkzbImB/khHKYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714390016; c=relaxed/simple;
-	bh=+Uwz0MxQZNzbokQ2el4xPehPAStf8Z19ctV2eYB6qjM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X0yN6mLGWV1wPsFsJy8lpyX95EhVEMQ4yNjSKeP0/HUcF9PvAAqSz/P4PmmIj0OStf01A9tIAwg66yyaXWIjfNpEBHVx0qFzcWCeLY98Ms/YuHCBkTp8aeOOAaCqgI7LmgXN/4fEWITrbD5phxHnyblacWtiWOz+NPrARaSazL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C5Yt5+o3; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-5dcc4076c13so3033219a12.0
-        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 04:26:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714390014; x=1714994814; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+Uwz0MxQZNzbokQ2el4xPehPAStf8Z19ctV2eYB6qjM=;
-        b=C5Yt5+o3Rl2iOxhBqkn3wX54mYlLw7z1B8NdotKJ56p7fZ6eESlCoVVQt7W2P7BGaT
-         C4MuG2ymvhA76NIUYhwi02jMFliSte4N1a8OeLj6lhq2BxD/mtTjCt2RekBYjpE6FjV0
-         HTh/O+4u5Nikp664R6qaFrMbKeYFOu5INudva/uP7tu8cYDiylwvw4AgBfHdyf1W/jxC
-         4z7yMVupU2EGX4QXw5bui4ZrKhrbXNvCZIFKUTNWVL50JsqeehFLsRH/oiTDCJmSV/V4
-         6HiB4ABhf9qMhyv9oCehSW8pxQssWcgDwsMBNeJwn6kHZiLsr235tWlfzFir9wSR9tDE
-         7DtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714390014; x=1714994814;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+Uwz0MxQZNzbokQ2el4xPehPAStf8Z19ctV2eYB6qjM=;
-        b=lC+zGho9TO5zsQZM4WvXesgBR+DABnHoVHBdY4G360kU546LOuUHuCkaVJ+z5XmWpx
-         ruanRPSXdxm2pF5HIRRo1ZkcpQHhiacODSpAuGCy8YdkXaL2iBEuuBEbvJxgEADV/aSZ
-         r0Mj0qmLPuOH3OLaEnwN73EtNhwSXiR7foT0fPLTaPuhWY8eS6/UZAjAnCvybwU9dWY1
-         GivUsQXkBUNnR/O1kS57b5PsZrLpMMIwAzh/mMSFQAS0xEB92xhO/W0r6w6uTkULh2E4
-         Gl+ie/zXV6D72q4NbLpN4hNTMnLbZG/lwIX5LRQZ6JVb2vpr31C+LE1x8xZYxcSh2Qbo
-         w4ng==
-X-Forwarded-Encrypted: i=1; AJvYcCXboNEsrOZaSfhamH9sCBolY8N0r5mJUeAzOeq3uk8OvemN8pbqIeUrDa+axj3SLB5XeKtvg53Ty02frQXD7ObhT/XWuG/I
-X-Gm-Message-State: AOJu0YyU4QA5vCyQbWUu1CXOkbR2RyQlhP45M8AKZ+lEUinlfsRMOrtE
-	Ybsg5SHb3ra/M5Pxqp2XLJls+Qbt74VW8lCq4v+pWaKkIOk/GKhqG3R7d3aYomXx2/P4frAn/Wq
-	NOswESyzAjaBJrQvYvxoK3YfMZMs=
-X-Google-Smtp-Source: AGHT+IGxGXtmfm3MRau/hjBx978SefbIg85hTvuVXadodIrv1ApeRimeXRwrW62RkiJFdDOc9AJnfeRoP8vS60hzC6U=
-X-Received: by 2002:a17:90a:134c:b0:2ad:9382:35be with SMTP id
- y12-20020a17090a134c00b002ad938235bemr13391989pjf.16.1714390014152; Mon, 29
- Apr 2024 04:26:54 -0700 (PDT)
+	s=arc-20240116; t=1714389977; c=relaxed/simple;
+	bh=e2vT6uMubRXAReRzor7YyS8ejyvTFW1oQtjn5joUyUw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XCsd+H/yolR+g+yph5cYmlNlGuYWSvRVxwZokDMkv37ai03vEe7zApX1AOpWKyL2RBAi9Vkuo0vATS76uCW4uc9ZiESQrALkFpnmckr3XSFBSGYTvkaz2HmI2pnzfxnBZqVQSjkX2oU93S5TC0LSqOefSIyqKAYgY5+Yk1M30QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dARjAP2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477BDC113CD;
+	Mon, 29 Apr 2024 11:26:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714389977;
+	bh=e2vT6uMubRXAReRzor7YyS8ejyvTFW1oQtjn5joUyUw=;
+	h=Subject:To:Cc:From:Date:From;
+	b=dARjAP2S0mBiFEqzffPO7QdES59bllI68WzdekXGioheEqJR7Cl+kU00c/hrnxGEm
+	 rnBPRh55WlTQgqCLOIn+sDxZPcmpus35RidMLreK5uDF0Sm1H0RKOoCbeP9KX/IEFs
+	 QZ2aJN+6yZbRrOO0PSRDYRwyh38vR/6DgUY/0eas=
+Subject: FAILED: patch "[PATCH] smb3: missing lock when picking channel" failed to apply to 6.1-stable tree
+To: stfrench@microsoft.com,sprasad@microsoft.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Apr 2024 13:26:14 +0200
+Message-ID: <2024042914-scariness-polka-0293@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024042909-whimsical-drapery-40d1@gregkh>
-In-Reply-To: <2024042909-whimsical-drapery-40d1@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 29 Apr 2024 13:25:37 +0200
-Message-ID: <CANiq72ndLzts-KzUv_22vHF0tYkPvROv=oG+KP2KhbCvHkn60g@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] kbuild: rust: force `alloc` extern to
- allow "empty" Rust" failed to apply to 6.1-stable tree
-To: gregkh@linuxfoundation.org
-Cc: ojeda@kernel.org, aliceryhl@google.com, daniel.almeida@collabora.com, 
-	gary@garyguo.net, julian.stecklina@cyberus-technology.de, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 29, 2024 at 1:21=E2=80=AFPM <gregkh@linuxfoundation.org> wrote:
->
-> The patch below does not apply to the 6.1-stable tree.
 
-Yeah, this one was only intended for 6.6+:
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> Cc: stable@vger.kernel.org # v6.6+
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Was the annotation above incorrect?
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8094a600245e9b28eb36a13036f202ad67c1f887
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042914-scariness-polka-0293@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Thanks!
+Possible dependencies:
 
-Cheers,
-Miguel
+8094a600245e ("smb3: missing lock when picking channel")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+ea90708d3cf3 ("cifs: use the least loaded channel for sending requests")
+abdb1742a312 ("cifs: get rid of mount options string parsing")
+9fd29a5bae6e ("cifs: use fs_context for automounts")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8094a600245e9b28eb36a13036f202ad67c1f887 Mon Sep 17 00:00:00 2001
+From: Steve French <stfrench@microsoft.com>
+Date: Thu, 25 Apr 2024 11:30:16 -0500
+Subject: [PATCH] smb3: missing lock when picking channel
+
+Coverity spotted a place where we should have been holding the
+channel lock when accessing the ses channel index.
+
+Addresses-Coverity: 1582039 ("Data race condition (MISSING_LOCK)")
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index 994d70193432..e1a79e031b28 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -1057,9 +1057,11 @@ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
+ 		index = (uint)atomic_inc_return(&ses->chan_seq);
+ 		index %= ses->chan_count;
+ 	}
++
++	server = ses->chans[index].server;
+ 	spin_unlock(&ses->chan_lock);
+ 
+-	return ses->chans[index].server;
++	return server;
+ }
+ 
+ int
+
 
