@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FAA8B567B
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:26:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A795F8B567C
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2658F1F22F97
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D2D41F22FFD
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E0F40843;
-	Mon, 29 Apr 2024 11:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E71D3FBBD;
+	Mon, 29 Apr 2024 11:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vp2c/XIO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fXa6kD5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E4E2375B
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8942375B
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714389996; cv=none; b=Up79ZP7A7h3RsVBdZUpGtOuaonItXoYn+APuWzLyonkSAPMcRGBnJ8868WXb+5EOFX4d90b7kETYeDkRDpy9Ud9aVPqa9oaGkoNTKrRYhsIBYiQvGiii+MYvhfoq3Cvh/MSfwIv0T+IbTqJJmWMXd124cDDbc8D56+mwrm+L4s0=
+	t=1714390001; cv=none; b=DtHG452Dt0M8UT/g5qMbwa1+uRHF3Uyu+lME8VCVzhbDJvNT1V3R35P9cLDXWDbQAFXL+SmrMs2McnyViW00IRd9FAyt+Fr1W19SYXTycelaHBFCgpiADksGndbyWgKeJVpL9CYqm4ziWqbxgovwyCukdSWKMvusAQRBUHvJwJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714389996; c=relaxed/simple;
-	bh=1iajA0kHXeTM7pr6TFUyU8qAjzugDVGdt6WlBCKxHdM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=r3PrjSeo04sWcJdt2UD8rH/Ct4xilximkX61RjfyVS1HXcKm2wGgz+3yTf/z4rM6Zq/wqFKjuIdH98Lux+YLLYWMa3V0gWtKUmk8RM4MZYmY0LqLTuNeUU6VeC2PAbylxfeT5YwTMtAxjA94A79zvUtT5uisSWtuGNR3Am556og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vp2c/XIO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9E4C113CD;
-	Mon, 29 Apr 2024 11:26:35 +0000 (UTC)
+	s=arc-20240116; t=1714390001; c=relaxed/simple;
+	bh=tfjhM84T/BT6fF7gUpoEaorgC9XS1J1t2BskmVnAV68=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qbC6a1XSEdr1Rrk55zOgfQJhzr6WXy+HZOFHL5/x7tg7sJG8otKMqwxO8YnAHsEsP2adnZZ0XFwlKUJruKPiuxF+9qfTwZixRCjeKbGJKhc+hnCU6ufnApyRwaKTSMz0Fjni9Sp+JNXYFbpBl4Wo7uXppWVvaRUFAnsMe2QcILY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fXa6kD5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBA7C113CD;
+	Mon, 29 Apr 2024 11:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714389995;
-	bh=1iajA0kHXeTM7pr6TFUyU8qAjzugDVGdt6WlBCKxHdM=;
+	s=korg; t=1714390001;
+	bh=tfjhM84T/BT6fF7gUpoEaorgC9XS1J1t2BskmVnAV68=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Vp2c/XIO5o1n2R3SFi74PlMiFgCW+saaHer/nTFBXXuXDJEr4N5t/jk3Zh+uEgLQF
-	 lCFBq4kZvgb92Okwtklf5zhiQP+Vvz5rQupR6omJn7ph+cX28TUoZgVtmtKX7AaLft
-	 6YFe7+OVKcSZO3wTX+Q7n48zZOYrDbLZsaFhOgsU=
-Subject: FAILED: patch "[PATCH] smb3: missing lock when picking channel" failed to apply to 4.19-stable tree
+	b=fXa6kD5FU9KNKAeFFlY2dETwxlEJJTtd5aqP/rftKJdFdr5lxfRt6qr2F1foM5aX4
+	 yPZFbtqmSGNrOxH4O6LWXQamedRYPPKhd8LfQlLOPzHKI5szAL3bd2qGMHjp4xTmR9
+	 724TfuMJZ/HPiIE5t1LrD0YuW7emlb+2r6WQjMuI=
+Subject: FAILED: patch "[PATCH] smb3: fix lock ordering potential deadlock in" failed to apply to 5.15-stable tree
 To: stfrench@microsoft.com,sprasad@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:26:17 +0200
-Message-ID: <2024042917-regulate-exquisite-3f14@gregkh>
+Date: Mon, 29 Apr 2024 13:26:29 +0200
+Message-ID: <2024042929-repave-emerald-63ea@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8094a600245e9b28eb36a13036f202ad67c1f887
+git cherry-pick -x 8861fd5180476f45f9e8853db154600469a0284f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042917-regulate-exquisite-3f14@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042929-repave-emerald-63ea@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-8094a600245e ("smb3: missing lock when picking channel")
+8861fd518047 ("smb3: fix lock ordering potential deadlock in cifs_sync_mid_result")
 38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
-ea90708d3cf3 ("cifs: use the least loaded channel for sending requests")
 abdb1742a312 ("cifs: get rid of mount options string parsing")
 9fd29a5bae6e ("cifs: use fs_context for automounts")
 5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
@@ -83,35 +82,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8094a600245e9b28eb36a13036f202ad67c1f887 Mon Sep 17 00:00:00 2001
+From 8861fd5180476f45f9e8853db154600469a0284f Mon Sep 17 00:00:00 2001
 From: Steve French <stfrench@microsoft.com>
-Date: Thu, 25 Apr 2024 11:30:16 -0500
-Subject: [PATCH] smb3: missing lock when picking channel
+Date: Thu, 25 Apr 2024 12:49:50 -0500
+Subject: [PATCH] smb3: fix lock ordering potential deadlock in
+ cifs_sync_mid_result
 
-Coverity spotted a place where we should have been holding the
-channel lock when accessing the ses channel index.
+Coverity spotted that the cifs_sync_mid_result function could deadlock
 
-Addresses-Coverity: 1582039 ("Data race condition (MISSING_LOCK)")
+"Thread deadlock (ORDER_REVERSAL) lock_order: Calling spin_lock acquires
+lock TCP_Server_Info.srv_lock while holding lock TCP_Server_Info.mid_lock"
+
+Addresses-Coverity: 1590401 ("Thread deadlock (ORDER_REVERSAL)")
 Cc: stable@vger.kernel.org
 Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
 diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index 994d70193432..e1a79e031b28 100644
+index e1a79e031b28..ddf1a3aafee5 100644
 --- a/fs/smb/client/transport.c
 +++ b/fs/smb/client/transport.c
-@@ -1057,9 +1057,11 @@ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
- 		index = (uint)atomic_inc_return(&ses->chan_seq);
- 		index %= ses->chan_count;
+@@ -909,12 +909,15 @@ cifs_sync_mid_result(struct mid_q_entry *mid, struct TCP_Server_Info *server)
+ 			list_del_init(&mid->qhead);
+ 			mid->mid_flags |= MID_DELETED;
+ 		}
++		spin_unlock(&server->mid_lock);
+ 		cifs_server_dbg(VFS, "%s: invalid mid state mid=%llu state=%d\n",
+ 			 __func__, mid->mid, mid->mid_state);
+ 		rc = -EIO;
++		goto sync_mid_done;
  	}
-+
-+	server = ses->chans[index].server;
- 	spin_unlock(&ses->chan_lock);
+ 	spin_unlock(&server->mid_lock);
  
--	return ses->chans[index].server;
-+	return server;
++sync_mid_done:
+ 	release_mid(mid);
+ 	return rc;
  }
- 
- int
 
 
