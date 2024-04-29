@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-41626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CCD8B55EC
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:00:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E718B55F0
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3172BB24326
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:00:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CA5B1F23371
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396993A8EF;
-	Mon, 29 Apr 2024 11:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644D63A8FF;
+	Mon, 29 Apr 2024 11:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgN2Zeq7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7lls3F1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD1DBA2E
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243DABA2E
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714388420; cv=none; b=QRitJZ4IE8+gIzPdxEVwyZYTBnTaFkAaKH6keNlCnuXroVKbwzvm7bMkY9ftyJNzc2TEq96NE3HwSof/Ne5wAx1ac/+67Pep1xenMOPOuWULmo6vMhkzlfROHtr9rhk1Pze22LGD4UApZqAyPh0BObJzw47C3rmKG9JXgXSuWK0=
+	t=1714388595; cv=none; b=Nnv8P0g5wlhM8AZF16GN1dEC0avL86aE/+WFuHsAF2urUqiMujDFgMuREz8P0DvDZm1GJ8EXNBnx7TxYdbaX35XWMOixmSSpj3SlyqDrxx8GaqSnq1rUKm8nijWL6C/5yBf6shKXs0cAPtL8L7ZJdu/bHmOY+oezoBtUnnKepuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714388420; c=relaxed/simple;
-	bh=FL4DGtRvZ9CMTyBVdHAGUxxn9UM9oPFl+hSwFEOxirk=;
+	s=arc-20240116; t=1714388595; c=relaxed/simple;
+	bh=uQnLUEM2UUpSk0wdFHfUmRw22eOx/gYtefL5oaEyUFk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mcC/Fyhv9rOnB2DKmhwHNaTMfIv2zbryQV5aFud14rSHROwOyDyeTrSE0HJe6hops+lU/TQQdRTkXRlHmtlsZeY3OESx8jYoIzZfiTi3W9+/tgpZGZCXd/DjVZwTn+t9NE4cKJgvGwabZb17BSp9f2B2FswwUBF22w52kKyNfjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgN2Zeq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A81C113CD;
-	Mon, 29 Apr 2024 11:00:18 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=J1Z9on0tGJ1gtpai0NKwjsVhWVKiTzWrNqwf5+ky8h2Ji33n1CqePG10skAlmHoxUebuiJsAoNWzGpITILnuYoXeYqgcPau8KUyWsENtneX9EyrcmPVi7r0iYwx20/bRLifz+6srHeweI4ajic3qyJqe9LLN2szuG2bFkzV8vlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7lls3F1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6602BC113CD;
+	Mon, 29 Apr 2024 11:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714388419;
-	bh=FL4DGtRvZ9CMTyBVdHAGUxxn9UM9oPFl+hSwFEOxirk=;
+	s=korg; t=1714388594;
+	bh=uQnLUEM2UUpSk0wdFHfUmRw22eOx/gYtefL5oaEyUFk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VgN2Zeq7WW6GajGGPFFSqzekN2l6paOrSTJPBF5H6WKBDRy9ZRBRzOhbE+EPX5jJb
-	 bYp8BcXzHalcQdKOup2XBXNnbh+fALQQK26n9PRqJymCE3lhGUw9Fi02a5G34z/cWZ
-	 AEU66+Ky0qKfwb3rhwhU1TGZTQ4UpN+9rlHdBSCc=
-Date: Mon, 29 Apr 2024 13:00:16 +0200
+	b=A7lls3F19DlbNH4noPvVeQT7fso8/EYBAeDQcG//mKVtDEI0YSSoQwbH51Ra1a1yD
+	 Zt6uqqJyIkc/bKVTGsDzfqZJadT7ZZDGOhDUrC/9U47ZrwDe5MQUoYNEvKegKi+Aki
+	 ZSKPcXxgVMjDP/Ju1RtC0oPGtdTn2s3SNxEr8z4E=
+Date: Mon, 29 Apr 2024 13:03:12 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Terry Tritton <terry.tritton@linaro.org>
-Cc: stable@vger.kernel.org
-Subject: Re: Backport request for [PATCH 0/3] selftests/seccomp seccomp_bpf
- test fixes
-Message-ID: <2024042905-badland-uncheck-167d@gregkh>
-References: <CABeuJB3YcaYHK=qcRbrr-QuU1-sduG3v+Xzg9b3fdAPVDDfyaA@mail.gmail.com>
+To: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Cc: saeedm@nvidia.com, lishifeng@sangfor.com.cn, stable@vger.kernel.org,
+	moshe@nvidia.com
+Subject: Re: [Patch 5.4.y] net/mlx5e: Fix a race in command alloc flow
+Message-ID: <2024042902-swipe-glitter-c383@gregkh>
+References: <20240426002703.709499-1-samasth.norway.ananda@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,26 +54,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CABeuJB3YcaYHK=qcRbrr-QuU1-sduG3v+Xzg9b3fdAPVDDfyaA@mail.gmail.com>
+In-Reply-To: <20240426002703.709499-1-samasth.norway.ananda@oracle.com>
 
-On Fri, Apr 26, 2024 at 07:12:21PM +0100, Terry Tritton wrote:
-> Please backport the following fixes for selftest/seccomp.
-> I forgot to send the original patches to the stable list!
-> They resolve some edge cases in the testing.
+On Thu, Apr 25, 2024 at 05:27:03PM -0700, Samasth Norway Ananda wrote:
+> From: Shifeng Li <lishifeng@sangfor.com.cn>
 > 
-> commit 8e3c9f9f3a0742cd12b682a1766674253b33fcf0
-> selftests/seccomp: user_notification_addfd check nextfd is available
-> 
-> commit: 471dbc547612adeaa769e48498ef591c6c95a57a
-> selftests/seccomp: Change the syscall used in KILL_THREAD test
-> 
-> commit: ecaaa55c9fa5e8058445a8b891070b12208cdb6d
-> selftests/seccomp: Handle EINVAL on unshare(CLONE_NEWPID)
-> 
-> Please backport to 6.6 onwards.
-> 
+> [ Upstream commit 8f5100da56b3980276234e812ce98d8f075194cd ]
 
-All now queued up, thanks.
+Both backports now queued up, thanks.
 
 greg k-h
 
