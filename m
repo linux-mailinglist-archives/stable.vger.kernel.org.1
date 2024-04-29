@@ -1,106 +1,104 @@
-Return-Path: <stable+bounces-41741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33108B5BD8
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 16:48:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A478B5C12
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 16:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EBCB284921
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:48:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24E9D1F22494
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F95B7F7DB;
-	Mon, 29 Apr 2024 14:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF1980029;
+	Mon, 29 Apr 2024 14:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="M4lUK+ST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLntf43X"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2167F484;
-	Mon, 29 Apr 2024 14:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A574745C5
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 14:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714402095; cv=none; b=GLFVUH1Mf+frv2OSvhYjOTpGHps8b7vle5gWNkrjnz+X888jCByt2STM1n9RlricPVXLrIykKADzR5O0/7TVqQcGB+CV9mgMEGIwtTb3rQEBNNj5JSmhgrpmKJjOe3nEUml3TmttFrguP83IvNg7GiSX/u+5P96gnDuShGccIy0=
+	t=1714402653; cv=none; b=MDqklwGD5x09HV9stfdETKoe2yoJVCSP8HnbdI+9P+MSeak2LXUVTlmXlSFyFk2P7yRqbVKDbvnW9j+Cj5mIlfgjG56ZghrHEt2TdNtihtlrgx7i/oCDR4Q8XJ3RLsaoiM3wBvo/lg7FFmVN9Rnd6/8qJTx56RDNBLaQ6nrW3yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714402095; c=relaxed/simple;
-	bh=f2huQc8fgahHmmdrk7phmkAWcANNiX2OWpdSEhRxXQY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a/SXiYWp9h7BTKgpAA7uwB7J8G+uVL1F8CSKVr9+DLvJ2LOGf4XSz5WET8d/yQ4veBK7R1PSGEjSuquiszaM8ddEzh87JEJIbEpizfKK38GtApGvt2Z1xrdyRFF0Vqlwha0tlqtf8AX5JJ1LtazAhC3gkQu8AjuwqkcfyOMkGGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=M4lUK+ST; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=a72aaBnq0xl8vUQw09satK7vYq0lUsnM7DmGvD8Qw/w=; b=M4lUK+STHg96v36YHu6yR1iWnh
-	lFHxxPMnAQ3FOJycNnT6ILXyel8hhibbfB2qCvlsMFpj0+qNAYLWaUQatyjngBbAumkx3hNk/uiqh
-	Nv0/alzeyMASuDFhRoWQDR0p1cFqkNNqrG5XIu8u1aHyVaW0X88Qfi59qF5HUxobM5Mk6MbrMoqX6
-	EWRSSY0JFLc2jYUve76OI7v2P4+2JpGFkiR5AVjxVtro4UWU9jcZNpuQv119yu0kVBEDjKG6d36ZA
-	W/skIqqQJeSqHcMlCoKN7XvsNFS52gKuF/4h2/Ux5aR18HmIjDmN2l1+xlJcxvns83PSznzOiHoy8
-	0rOqKhMw==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s1SIb-0000000Cdfi-3vd5;
-	Mon, 29 Apr 2024 14:48:10 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	=?UTF-8?q?=D0=9C=D0=B8=D1=85=D0=B0=D0=B8=D0=BB=20=D0=9D=D0=BE=D0=B2=D0=BE=D1=81=D0=B5=D0=BB=D0=BE=D0=B2?= <m.novosyolov@rosalinux.ru>,
-	=?UTF-8?q?=D0=98=D0=BB=D1=8C=D1=84=D0=B0=D1=82=20=D0=93=D0=B0=D0=BF=D1=82=D1=80=D0=B0=D1=85=D0=BC=D0=B0=D0=BD=D0=BE=D0=B2?= <i.gaptrakhmanov@rosalinux.ru>,
-	stable@vger.kernel.org,
-	Rik van Riel <riel@surriel.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH] bounds: Use the right number of bits for power-of-two CONFIG_NR_CPUS
-Date: Mon, 29 Apr 2024 15:47:51 +0100
-Message-ID: <20240429144807.3012361-1-willy@infradead.org>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1714402653; c=relaxed/simple;
+	bh=8r0P58xs7RkJkaLYeTE0S+NOa4GIjsTXtLOzguDs/rk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ekiyVKBe2Np4/Nq6yo7Nz9BB4SxQR5ywoSLzE/VbiRUFHqEWz4oP0RsC3VsSGX/sDjCDH7hl41ZgKmenogo1qtv+tLzMrHHjPDOYBlcC+0s2wirTWC3RzNn57JCVW7RDebg/ynjwrQVs6+ioN7S0wR+aCfAHRBmL7yvNVSw1bwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLntf43X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363C0C113CD;
+	Mon, 29 Apr 2024 14:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714402652;
+	bh=8r0P58xs7RkJkaLYeTE0S+NOa4GIjsTXtLOzguDs/rk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NLntf43XUN8VBkk4Z6J23Faa0s7NdSJ6kSuj56mNeyrEvMlKWSFuwP4HPUa630ZJ5
+	 ypx1w+KTZQNqfusJpiZZLu+4dCAixquJVv7KLQAqKQYmtuJbYF/45Vutn+1CPtvwWW
+	 pqIc4YC+OJHTmLx16iK4fCWnkNHdHkUCgKkohdWQ=
+Date: Mon, 29 Apr 2024 16:57:29 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH 5.15.y] fbdev: fix incorrect address computation in
+ deferred IO
+Message-ID: <2024042920-sacrament-wages-b9eb@gregkh>
+References: <2024042951-barbell-aeration-a1ce@gregkh>
+ <20240429144041.3498362-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240429144041.3498362-1-namcao@linutronix.de>
 
-bits_per() rounds up to the next power of two when passed a power of
-two.  This causes crashes on some machines and configurations.
+On Mon, Apr 29, 2024 at 04:40:41PM +0200, Nam Cao wrote:
+> commit 78d9161d2bcd442d93d917339297ffa057dbee8c upstream.
+> 
+> With deferred IO enabled, a page fault happens when data is written to the
+> framebuffer device. Then driver determines which page is being updated by
+> calculating the offset of the written virtual address within the virtual
+> memory area, and uses this offset to get the updated page within the
+> internal buffer. This page is later copied to hardware (thus the name
+> "deferred IO").
+> 
+> This offset calculation is only correct if the virtual memory area is
+> mapped to the beginning of the internal buffer. Otherwise this is wrong.
+> For example, if users do:
+>     mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
+> 
+> Then the virtual memory area will mapped at offset 0xff000 within the
+> internal buffer. This offset 0xff000 is not accounted for, and wrong page
+> is updated.
+> 
+> Correct the calculation by using vmf->pgoff instead. With this change, the
+> variable "offset" will no longer hold the exact offset value, but it is
+> rounded down to multiples of PAGE_SIZE. But this is still correct, because
+> this variable is only used to calculate the page offset.
+> 
+> Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+> Closes: https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4ab341a@oracle.com
+> Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Link: https://patchwork.freedesktop.org/patch/msgid/20240423115053.4490-1-namcao@linutronix.de
+> [rebase to v5.15]
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> ---
+>  drivers/video/fbdev/core/fb_defio.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reported-by: Михаил Новоселов <m.novosyolov@rosalinux.ru>
-Tested-by: Ильфат Гаптрахманов <i.gaptrakhmanov@rosalinux.ru>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3347
-Link: https://lore.kernel.org/all/1c978cf1-2934-4e66-e4b3-e81b04cb3571@rosalinux.ru/
-Fixes: f2d5dcb48f7b (bounds: support non-power-of-two CONFIG_NR_CPUS)
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
----
- kernel/bounds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Now queued up, thanks.
 
-diff --git a/kernel/bounds.c b/kernel/bounds.c
-index c5a9fcd2d622..8553368ccf79 100644
---- a/kernel/bounds.c
-+++ b/kernel/bounds.c
-@@ -19,7 +19,7 @@ int main(void)
- 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
- 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
- #ifdef CONFIG_SMP
--	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
-+	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS - 1));
- #endif
- 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
- #ifdef CONFIG_LRU_GEN
--- 
-2.43.0
-
+greg k-h
 
