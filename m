@@ -1,147 +1,90 @@
-Return-Path: <stable+bounces-41624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA59B8B55DB
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:52:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2188B55E9
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 697C01F22FF2
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:52:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3813F285C62
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53E33B298;
-	Mon, 29 Apr 2024 10:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BF23A8FF;
+	Mon, 29 Apr 2024 10:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LMHKa8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZinP82u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B4F2C86A
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 10:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE513A28E
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 10:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714387929; cv=none; b=dct1p10Q9Pp/eVG06quVPfsTqKOtyR3LovRFmZbvcYtTPPSQQcqVHCnuCCvYZUEcJIwo3HZI1DUF997ih0JPbyCgGfMh13+ND/taTgRwQm2ip4Mx3HoZZn8yvOizgrkpsQsRi8/dADFR1Df7vxELyUW52Jw5l/cUkG97MLoqyNA=
+	t=1714388359; cv=none; b=tN4E5ofPOObodburQrZUda10R3BoznM+d+87fKLEK75rWQ/GGtawUxBKMR+F5ho1qz1T/bitgTjj824KengqnDXepVHyus7ix8Z2sC1hm8Ob9BWjqoKEjPFu1ZwfJtSx+Glk24tb4EIZDeNWaKN36EYo8TinpSiRuLJ0yB7IERA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714387929; c=relaxed/simple;
-	bh=TplSGSvyRT6W63ok8ViJuEHmTniOYHRptY4QwWjj9OE=;
+	s=arc-20240116; t=1714388359; c=relaxed/simple;
+	bh=fpegKsluG3NaYfdhInhesD6K+QSWQNNMwXh/8jDbNiM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZYonNzLPlD61m/8scJdlyg7s2Qj1p3gIIM2TbsbXoMWqWOIYiaSdZzBiroce9cfHEp4Alpi09gBspg5nfVnpnsx0ffuNDb5L4S+IIBUimQ4x7bepQlcN1nkK1ZmG4aeTlwz+gb0UCvifgoP6Lami/hl8ehD9YjLt8lN6MrJrGvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LMHKa8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B786FC113CD;
-	Mon, 29 Apr 2024 10:52:08 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=AUIPZZxz882JdBFT1Dt57ASAFQizaPnKp+ghv+oGct6IoWQEaTtuep/e9ogBzeLWfgWlaHtF2Lj1Jjp+MdFNEnL8NXNdkEmSHit+t9zBWIL7wnhoQaqOgWnUx7RVe+1eufGgwVaDnZIJDolm2XvJqbNeD0Rvzr9GEFnS+yLOZco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZinP82u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2225C113CD;
+	Mon, 29 Apr 2024 10:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714387929;
-	bh=TplSGSvyRT6W63ok8ViJuEHmTniOYHRptY4QwWjj9OE=;
+	s=korg; t=1714388359;
+	bh=fpegKsluG3NaYfdhInhesD6K+QSWQNNMwXh/8jDbNiM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0LMHKa8LlxQAVkaE0WvaBYVXdkWOfPuTdDSjbFTBVrTgXi6rKW0Atpsq+87AoMfpQ
-	 N+Wedbu77bd3H8P3KOG5WD0EroKyAJNVEhAo/zckCPSP5zW0L5vQAUhXX4M6qdZJEe
-	 wezow37NnGWwUdTeVk0b0GxHPLQLVRBvzO1psrww=
-Date: Mon, 29 Apr 2024 12:52:06 +0200
+	b=RZinP82uh50iFZL1TXxB1uvJ2FTfV+wX+NXdeiycNXq6AHqa3+wJ0zSa8+Mn/7Vnj
+	 5e3PVLZts5WOJpiyh/We4LMcsL4aWk5E3M3hOvj/DFOtyXa9WjTQTmg54qEzAIdd9G
+	 ZN36venGxJ6+o5rVPw1vs3kGzZj2t1lbsdF9fAh8=
+Date: Mon, 29 Apr 2024 12:59:16 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Cc: stable@vger.kernel.org, Chen Jiahao <chenjiahao16@huawei.com>,
-	Baoquan He <bhe@redhat.com>, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH] Revert "riscv: kdump: fix crashkernel reserving problem
- on RISC-V"
-Message-ID: <2024042944-wriggle-countable-627c@gregkh>
-References: <20240416085647.14376-1-xingmingzheng@iscas.ac.cn>
- <2024041927-remedial-choking-c548@gregkh>
- <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
- <2024041939-isotope-client-3d75@gregkh>
- <a5493f44-2aac-4005-992b-f2ac90cd1835@iscas.ac.cn>
- <2024042318-muppet-snippet-617c@gregkh>
- <5d49f626-a66f-4969-a03f-fcf83e2d2bab@iscas.ac.cn>
+To: Geliang Tang <geliang@kernel.org>
+Cc: stable@vger.kernel.org
+Subject: Re: [6.6.y] "selftests/bpf: Add netkit to tc_redirect selftest"
+ needs to be reverted
+Message-ID: <2024042959-steering-periscope-a87b@gregkh>
+References: <ea05dcf2a0417aa2068a4dfa61bd562a6e8127d6.camel@kernel.org>
+ <2024042610-tiring-overdue-a6b5@gregkh>
+ <e890da3e6b47059a496f743623800223282d7984.camel@kernel.org>
+ <2024042648-dweeb-serotonin-f76f@gregkh>
+ <0d29b3a324d851402f247a33ef89efe6103e90da.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <5d49f626-a66f-4969-a03f-fcf83e2d2bab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0d29b3a324d851402f247a33ef89efe6103e90da.camel@kernel.org>
 
-On Wed, Apr 24, 2024 at 11:40:16AM +0800, Mingzheng Xing wrote:
-> On 4/23/24 21:12, Greg Kroah-Hartman wrote:
-> > On Fri, Apr 19, 2024 at 10:55:44PM +0800, Mingzheng Xing wrote:
-> >> On 4/19/24 21:58, Greg Kroah-Hartman wrote:
-> >>> On Fri, Apr 19, 2024 at 08:26:07PM +0800, Mingzheng Xing wrote:
-> >>>> On 4/19/24 18:44, Greg Kroah-Hartman wrote:
-> >>>>> On Tue, Apr 16, 2024 at 04:56:47PM +0800, Mingzheng Xing wrote:
-> >>>>>> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which has been
-> >>>>>> merged into the mainline commit 39365395046f ("riscv: kdump: use generic
-> >>>>>> interface to simplify crashkernel reservation"), but the latter's series of
-> >>>>>> patches are not included in the 6.6 branch.
-> >>>>>>
-> >>>>>> This will result in the loss of Crash kernel data in /proc/iomem, and kdump
-> >>>>>> loading the kernel will also cause an error:
-> >>>>>>
-> >>>>>> ```
-> >>>>>> Memory for crashkernel is not reserved
-> >>>>>> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
-> >>>>>> Then try to loading kdump kernel
-> >>>>>> ```
-> >>>>>>
-> >>>>>> After revert this patch, verify that it works properly on QEMU riscv.
-> >>>>>>
-> >>>>>> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv
-> >>>>>> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-> >>>>>> ---
-> >>>>>
-> >>>>> I do not understand, what branch is this for?  Why have you not cc:ed
-> >>>>> any of the original developers here?  Why does Linus's tree not have the
-> >>>>> same problem?  And the first sentence above does not make much sense as
-> >>>>> a 6.6 change is merged into 6.7?
-> >>>>
-> >>>> Sorry, I'll try to explain it more clearly.
-> >>>>
-> >>>> This commit 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem
-> >>>> on RISC-V") should not have existed because this patch has been merged into
-> >>>> another larger patch [1]. Here is that complete series:
-> >>>
-> >>> What "larger patch"?  It is in Linus's tree, so it's not part of
-> >>> something different, right?  I'm confused.
-> >>>
-> >>
-> >> Hi, Greg
-> >>
-> >> The email Cc:ed to author Chen Jiahao was bounced by the system, so maybe
-> >> we can wait for Baoquan He to confirm.
-> >>
-> >> This is indeed a bit confusing. The Fixes: tag in 1d6cd2146c2b58 is a false
-> >> reference. If I understand correctly, this is similar to the following
-> >> scenario:
-> >>
-> >> A Fixes B, B doesn't go into linus mainline. C contains A, C goes into linus
-> >> mainline 6.7, and C has more reconstruction code. but A goes into 6.6, so
-> >> it doesn't make sense for A to be in the mainline, and there's no C in 6.6
-> >> but there's an A, thus resulting in an incomplete code that creates an error.
-> >>
-> >> The link I quoted [1] shows that Baoquan had expressed an opinion on this
-> >> at the time.
-> >>
-> >> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
+On Fri, Apr 26, 2024 at 06:22:53PM +0800, Geliang Tang wrote:
+> On Fri, 2024-04-26 at 12:21 +0200, Greg Kroah-Hartman wrote:
+> > On Fri, Apr 26, 2024 at 06:12:22PM +0800, Geliang Tang wrote:
+> > > cc stable@vger.kernel.org
 > > 
-> > I'm sorry, but I still do not understand what I need to do here for a
-> > stable branch.  Do I need to apply something?  Revert something?
-> > Something else?
+> > I'm confused, where is the original message here?  You just forwarded
+> > my
+> > bot response to the list.
+> > 
+> > greg k-h
 > 
-> Hi, Greg
+> Hi Greg,
 > 
-> I saw Baoquan's reply in thread[1], thanks Baoquan for confirming.
+> I'm writing to inform you that the commit adfeae2d243d ("selftests/bpf:
+> Add netkit to tc_redirect selftest") on linux-stable should be reverted
+> from linux-6.6.y. It depends on bpf netkit series [1] which isn't on
+> linux-6.6.y branch yet. Otherwise, a bpf selftests building error
+> "netlink_helpers.h: No such file or directory" occurs.
 > 
-> So I think the right thing to do would be just to REVERT the commit
-> 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem on RISC-V")
-> in the 6.6.y branch, which is exactly the patch I submitted. If I need to
-> make changes to my commit message, feel free to let me know and I'll post
-> the second version.
-> 
-> Link: https://lore.kernel.org/stable/ZihbAYMOI4ylazpt@MiWiFi-R3L-srv [1]
+> [1]
+> https://lore.kernel.org/all/20231024214904.29825-1-daniel@iogearbox.net/
 
-Can someone just send me a patch series showing EXACTLY what needs to be
-done here, as I am _still_ confused.
+It does not revert cleanly, so can you provide a working revert for us
+to queue up?
 
 thanks,
 
