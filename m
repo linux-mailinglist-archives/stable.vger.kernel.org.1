@@ -1,160 +1,129 @@
-Return-Path: <stable+bounces-41623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B228B55D6
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:52:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790EA8B55CC
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12FE61C20F2D
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:52:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3346E286117
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593BA3EA9C;
-	Mon, 29 Apr 2024 10:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC653D0B3;
+	Mon, 29 Apr 2024 10:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MlPSGjih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaV+cRX8"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8816A3BBFE;
-	Mon, 29 Apr 2024 10:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20AE3CF74
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 10:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714387916; cv=none; b=iRrGoCjBruUy7EKJQ9mckGxc1OcZ/A4OS+L8XZQwD57C+cYNw40GOyk6EoKbC03K+I2SxZtK7puqkvUfON6l3AcJxtb/6C/eHr4Szp4Y/bUBFCoiX+oiEjSURqziHw5oVA9qCKOE298GcnEQtMKig6cdxZmaCO9EVhvuLgaHq5g=
+	t=1714387804; cv=none; b=r0pPZMOMofBG7cS92w+DCaQR6jGhmWjzCA5fsqPedGcMm3FvwwbADP02PSiQC9SGYH1Ga+4IxeScxlYcg1vGQvwrATASGvKu789DwQ0yBlFJRqLafmoUVxsqYZkpuBYjLg/lYzFqFyxs5ryhDyf6j5+CKCwX4nztPRqcE69vwiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714387916; c=relaxed/simple;
-	bh=g81innlEewrLFposHO2uObGU0GQGyQGxN7UIEasnQRw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Xb7RHP04h2/0dwYAIJLLhwG2lhVPhYhTmu6Y3RQi4BNg4fzACTyA24xwpTYUE1koJw4HYbIlwENJ8VOWF0FQz0JL/2TPXMTS8ExUN7wOl1OCek9Q4M7ByF387lSdUvpX2VajzJ79PLUMws/q9DmshqoNrzyQr3PwMtZylY6tmks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MlPSGjih; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714387915; x=1745923915;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=g81innlEewrLFposHO2uObGU0GQGyQGxN7UIEasnQRw=;
-  b=MlPSGjihbac1a2A/7vw08QHkhTkjqJ47uVn/6Z4n8Ptm0qiNz/3NNmhp
-   mBZCRSNAuDI1yWCKqSWZz4lLNGf5fZsQoXGI+H9eYLBclQdp89jE5TRvB
-   ClCWIwQ9fh1qJ1m1ygENqP10ivYKEmE8cjBGuj4A1UaE8F77lvXnRBF0r
-   4yBswBgXZnPvtKvFit94YRE0RmALh2GVf5LaJM9dxnp65WvGDKq4Ulhlv
-   naZy0YnI9LxZ6yNkevNz+syyYO/0tZOrRT7kvL7RYl+hBcPAVN9wNZbSQ
-   xRkTa5urLQa+KPmH9Z7ALJn89T3sXaBG8TvAIcnfli6Igf3Xg6BRG+Q1t
-   A==;
-X-CSE-ConnectionGUID: H5W5ZiVcQkGzXOeDUQCZSQ==
-X-CSE-MsgGUID: 7oK2eF9ySESQluag8xXCMg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10202101"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="10202101"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 03:51:52 -0700
-X-CSE-ConnectionGUID: c5Kmju7cSBmnBJr3bLpt4Q==
-X-CSE-MsgGUID: 3RReAbxdQNqOxX/diGdDmA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="26590749"
-Received: from mehlow-prequal01.jf.intel.com ([10.54.102.156])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 03:51:52 -0700
-From: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
-To: dave.hansen@linux.intel.com,
-	jarkko@kernel.org,
-	kai.huang@intel.com,
-	haitao.huang@linux.intel.com,
-	reinette.chatre@intel.com,
-	linux-sgx@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: mona.vij@intel.com,
-	kailun.qin@intel.com,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] x86/sgx: Resolve EREMOVE page vs EAUG page data race
-Date: Mon, 29 Apr 2024 03:43:30 -0700
-Message-Id: <20240429104330.3636113-3-dmitrii.kuvaiskii@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240429104330.3636113-1-dmitrii.kuvaiskii@intel.com>
-References: <20240429104330.3636113-1-dmitrii.kuvaiskii@intel.com>
+	s=arc-20240116; t=1714387804; c=relaxed/simple;
+	bh=Nl9gMivwT24dSkcBiPoGQClajMHtX4eAjYkm4cRIQFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jadPypEyQ+s+Nr7yfmLlpBIFkGTyqB7STr7lWTTHy/asR2qNukSUFCwpi8uct+Au5aWDYNAzyjZsfy9GUqwX5W4R2JEaWitlsd4qF3sU3n30gDrukZZys8YA6iQY171Q9C3kdYnoLJaGyrUoRn+YyoxOk+DfUfUKp4AH7vHFJHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaV+cRX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C75C4AF17;
+	Mon, 29 Apr 2024 10:50:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714387803;
+	bh=Nl9gMivwT24dSkcBiPoGQClajMHtX4eAjYkm4cRIQFI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PaV+cRX8fifDk3gsYuK0k2fzlG0Ym+sfWdFBeQ6uvSEvos+iR2Lgq7j3x+OH5OW39
+	 dPyMBs42tcCi8nvC7u7cLoFA91I5F9tYTHZj8T2m4QGaIHr/u314QhtPH755QruGJ0
+	 wGnGxZjzPgmAhbWUhfgBXylG4T+TxUkN4HYLNivk=
+Date: Mon, 29 Apr 2024 12:49:59 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
+	jan.setjeeilers@oracle.com
+Subject: Re: v5.15 backport request
+Message-ID: <2024042947-smith-shallow-1439@gregkh>
+References: <CAMj1kXEGNNZm9RrDxT6RzmE8WGFG-3kZePaZZNKJrT4fj3iveg@mail.gmail.com>
+ <2024041134-strobe-childhood-cc74@gregkh>
+ <2024041113-flyaway-headphone-df2b@gregkh>
+ <CAMj1kXEagP6psCc=YcpV9Ye=cMYgu-O8npbzH4qaN1xxe=eQDA@mail.gmail.com>
+ <Zifui1Z8p4R24wyL@char.us.oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Deutschland GmbH - Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zifui1Z8p4R24wyL@char.us.oracle.com>
 
-Two enclave threads may try to add and remove the same enclave page
-simultaneously (e.g., if the SGX runtime supports both lazy allocation
-and `MADV_DONTNEED` semantics). Consider this race:
+On Tue, Apr 23, 2024 at 01:23:23PM -0400, Konrad Rzeszutek Wilk wrote:
+> On Thu, Apr 11, 2024 at 03:14:23PM +0200, Ard Biesheuvel wrote:
+> > On Thu, 11 Apr 2024 at 13:50, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Thu, Apr 11, 2024 at 12:30:30PM +0200, Greg KH wrote:
+> > > > On Thu, Apr 11, 2024 at 12:23:37PM +0200, Ard Biesheuvel wrote:
+> > > > > Please consider the commits below for backporting to v5.15. These
+> > > > > patches are prerequisites for the backport of the x86 EFI stub
+> > > > > refactor that is needed for distros to sign v5.15 images for secure
+> > > > > boot in a way that complies with new MS requirements for memory
+> 
+> Secure Boot needn't be enabled.
+> > > > > protections while running in the EFI firmware.
+> 
+> And here is the background:
+> https://microsoft.github.io/mu/WhatAndWhy/enhancedmemoryprotection/
+> 
+> > > >
+> > > > What old distros still care about this for a kernel that was released in
+> > > > 2021?  I can almost understand this for 6.1.y and newer, but why for
+> > > > this one too?
+> > >
+> > > To be more specific, we have taken very large backports for some
+> > > subsystems recently for 5.15 in order to fix a lot of known security
+> > > issues with the current codebase, and to make the maintenance of that
+> > > kernel easier over time (i.e. keeping it in sync to again, fix security
+> > > issues.)
+> > >
+> > > But this feels like a "new feature" that is being imposed by an external
+> > > force, and is not actually "fixing" anything wrong with the current
+> > > codebase, other than it not supporting this type of architecture.  And
+> > > for that, wouldn't it just make more sense to use a newer kernel?
+> > >
+> > 
+> > Jan (on cc) raised this: apparently, Oracle has v5.15 based long term
+> > supported distro releases, and these will not be installable on future
+> > x86 PC hardware with secure boot enabled unless the EFI stub changes
+> > are backported.
+> > 
+> > >From my pov, the situation is not that different from v6.1: the number
+> > of backports is not that much higher than the number that went/are
+> > going into v6.1, and most of the fallout of the v6.1 backport has been
+> > addressed by now.
+> > 
+> > For an operational pov, I need to defer to Jan: I have no idea what
+> > OEMs are planning to do wrt these new MS requirements, if they will
+> 
+> .. snip..
+> 
+> Hey Greg,
+> 
+> This is driven by the BlackLotus exploit and alike to fix boot-time
+> security lapses. From a risk perspective it is boot-time code so it is
+> very easy to figure out if it backports are busted.
+> 
+> In terms of OEMs, it is actually more of a cloud vendor wanting to roll
+> this soon-ish and that combined with our customers worshipping these
+> crusty old 5.15 kernels that puts us in this situation.
 
-1. T1 performs page removal in sgx_encl_remove_pages() and stops right
-   after removing the page table entry and right before re-acquiring the
-   enclave lock to EREMOVE and xa_erase(&encl->page_array) the page.
-2. T2 tries to access the page, and #PF[not_present] is raised. The
-   condition to EAUG in sgx_vma_fault() is not satisfied because the
-   page is still present in encl->page_array, thus the SGX driver
-   assumes that the fault happened because the page was swapped out. The
-   driver continues on a code path that installs a page table entry
-   *without* performing EAUG.
-3. The enclave page metadata is in inconsistent state: the PTE is
-   installed but there was no EAUG. Thus, T2 in userspace infinitely
-   receives SIGSEGV on this page (and EACCEPT always fails).
+I think that worship needs to stop when they desire massive new features
+like this, sorry.  Please have them move to the 6.1 kernel tree instead
+if they wish to care about this type of thing, or better yet, 6.6.
 
-Fix this by making sure that T1 (the page-removing thread) always wins
-this data race. In particular, the page-being-removed is marked as such,
-and T2 retries until the page is fully removed.
+thanks,
 
-Fixes: 9849bb27152c ("x86/sgx: Support complete page removal")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
----
- arch/x86/kernel/cpu/sgx/encl.c  | 3 ++-
- arch/x86/kernel/cpu/sgx/encl.h  | 3 +++
- arch/x86/kernel/cpu/sgx/ioctl.c | 1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index 41f14b1a3025..7ccd8b2fce5f 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -257,7 +257,8 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 
- 	/* Entry successfully located. */
- 	if (entry->epc_page) {
--		if (entry->desc & SGX_ENCL_PAGE_BEING_RECLAIMED)
-+		if (entry->desc & (SGX_ENCL_PAGE_BEING_RECLAIMED |
-+				   SGX_ENCL_PAGE_BEING_REMOVED))
- 			return ERR_PTR(-EBUSY);
- 
- 		return entry;
-diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
-index f94ff14c9486..fff5f2293ae7 100644
---- a/arch/x86/kernel/cpu/sgx/encl.h
-+++ b/arch/x86/kernel/cpu/sgx/encl.h
-@@ -25,6 +25,9 @@
- /* 'desc' bit marking that the page is being reclaimed. */
- #define SGX_ENCL_PAGE_BEING_RECLAIMED	BIT(3)
- 
-+/* 'desc' bit marking that the page is being removed. */
-+#define SGX_ENCL_PAGE_BEING_REMOVED	BIT(2)
-+
- struct sgx_encl_page {
- 	unsigned long desc;
- 	unsigned long vm_max_prot_bits:8;
-diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
-index b65ab214bdf5..c542d4dd3e64 100644
---- a/arch/x86/kernel/cpu/sgx/ioctl.c
-+++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-@@ -1142,6 +1142,7 @@ static long sgx_encl_remove_pages(struct sgx_encl *encl,
- 		 * Do not keep encl->lock because of dependency on
- 		 * mmap_lock acquired in sgx_zap_enclave_ptes().
- 		 */
-+		entry->desc |= SGX_ENCL_PAGE_BEING_REMOVED;
- 		mutex_unlock(&encl->lock);
- 
- 		sgx_zap_enclave_ptes(encl, addr);
--- 
-2.34.1
-
+greg k-h
 
