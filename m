@@ -1,98 +1,163 @@
-Return-Path: <stable+bounces-41715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E19F8B5968
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:07:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6597A8B595E
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:06:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04F80B2B40D
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:07:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18C5228AE71
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988A156B6A;
-	Mon, 29 Apr 2024 13:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D5354905;
+	Mon, 29 Apr 2024 13:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VAeZ0wZu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nlcpst8q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDC75338A
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 13:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAE653E08
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 13:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714395846; cv=none; b=sHcI5sAPJVvskPWU5GCgu0gkS5++rD9I7pHuesO0H38g387u6dYaohsjSdnOOUlQfxQhSOCbsWjKMIwwRNWYMPBGJ6GPtVYDvlX5Xq1PW/98K9/KJSJcVSSvXT2uwg4h2DoTcLuNoQm1o2zNmj26CWt7vz9yJPqzGisw6Qx5RXg=
+	t=1714395824; cv=none; b=jc8bNnoJFMfI8+4K7M7SpyM6oUbuNZ5T2kioXB7waBfrcLHThP0kULEXFMRFqNfT9AWnzrCSVPf6mUVsiKqiprvLKFxdWTISZq+XnQ4pUinWXh0F+5PMKL0HhDCMYLk+Gfpi046Vct1cuOWoSg8C3lMub+2UdutkruHi2MUzDp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714395846; c=relaxed/simple;
-	bh=PBZU2TMMW/6C3ulEQlDznqnr5EeT+3FH17yZRtH6p74=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qYo05hnMoeTo0ZXvtHoqyfO4YldfEySbjmFCqGZT8X59iMI7p+GkArkfpd0JPoT5MioxZf5qwpdhw/RzsyCCR6pIJnqXfi+Hhv4JvqlZH8T9vJBoIU5B43YGE0+lICb3qXfYkXvNrGbXKTfHu7wn4SE6QO1BxGRbNpMdNnpEzy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VAeZ0wZu; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2b18e829acfso692802a91.0
-        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 06:04:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714395844; x=1715000644; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PBZU2TMMW/6C3ulEQlDznqnr5EeT+3FH17yZRtH6p74=;
-        b=VAeZ0wZu9hd1fLis7oLVTvan4aWch0mKbX/8clPCRM2m5v9N+TO4obo+2BTt3Wpghg
-         L/hpCjQlc8oPfoLgCKVOKH8kllXtQvgZfYDZVspBJmnomeXrFkRhn9fph3lS/RlxXxFq
-         Hru+kkDuXp3t0zWon0X8TUDMWTdcyQcjomFY9HpQ+VTKFQ+MUrFchzNqFVAn9vJZn7Mm
-         2LQBew/CDlQOMX9qAUDB3n1YoQ94PUsermDfImM3rKpV+X1Fb2E8/yCckdbybG7kQ6XQ
-         dh1CwSz2RCHO5BGM0r85Y3hrrMfRChjlIeIsK3SqcyeFIvFBzslkiBWrn+GmPj5SCN47
-         UEgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714395844; x=1715000644;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PBZU2TMMW/6C3ulEQlDznqnr5EeT+3FH17yZRtH6p74=;
-        b=tav+OJWwPuoQI4II+9y9zwOL1ApioFsaZFIyVm81V2Vf3lyUO6DAHKyY+RWG2tfbpX
-         GsjewGauaRf/5Z5rrDP3kMEc3BQqXYoUVHy4UnmJmCCRRIEqftXomKkRToziJhjaU+vy
-         sqFrMALcGDVSiT21qe4uug77JeryYD0IVOV4Npa2PmsKkbWwOqH+K08cV70rcOqjR4eV
-         RjOk0Fnbvsgt5S50/qyCzojJ2eVRjibbSO7iLRL7FoYRpG+6rR4uVeS++nRBlAO6xzhS
-         jBRnJL98lRSUJU0O8KJU9hsPzbkAJ6kTDmucuW0Hv4yCOQFifJgsdoD3NiiWYsnhJVqx
-         qbSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX3uso6wOOh17zS9jJyMDb+DPiyYttDdSWzL/AJ939ssoDfoKECTkG1Jm+ohFRFCfXN1OiLXx8zCad0UwD1jn+7sTjn3iDK
-X-Gm-Message-State: AOJu0YzPbnNCzPJO2xxl9AIqWxal2cga9W4ok+0isEtYKcOe9I2P1UgQ
-	r1rLcOVUItYk7ZLyqTM5iaLS5gKg3roFJeQvXx7lQFjuXxNQht6OOx7g5thseSFhDA6EDF0Cene
-	5VR5PexoHaiKnCd2DtB3uH2uidXw=
-X-Google-Smtp-Source: AGHT+IG30yKQbLv/5JlDHB2oWrg55LZXzirKMbM6Up0KptAG3UPbFYwDE7uOWxQGC/troGRZiJZ4PyFrHFK+Zuwzx5s=
-X-Received: by 2002:a17:90a:654c:b0:2a0:215f:dc9c with SMTP id
- f12-20020a17090a654c00b002a0215fdc9cmr9486969pjs.35.1714395842959; Mon, 29
- Apr 2024 06:04:02 -0700 (PDT)
+	s=arc-20240116; t=1714395824; c=relaxed/simple;
+	bh=s+wl6/a5NHwbPwH1CMvyZN/Vs2XdIwQE41uea25G+74=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VziR/5kGP56/E0LDCG0cg1nYzzq+bWalFNVWvUr3k05V4oelxFlyjTiqrpzzEI6hama9vLRosB6g0f8AIqGN6ZGjnuca2ng+M/AwEp9Xn4enUE+sTIVuLACD8ioCbxZDJPO0NC1+/QBUkU+UXOrrtJCKkPY7AqsR9pk/8uBHiHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nlcpst8q; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714395823; x=1745931823;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=s+wl6/a5NHwbPwH1CMvyZN/Vs2XdIwQE41uea25G+74=;
+  b=nlcpst8qDxHGxMhHbzsRq9cKPLQP1d350OqKDS+1ObsdgW1u9I1Kro85
+   a9R8oCTaWQLB2ZC4KDb3SGD9EQz3J3f/YsmLgYoK8xZJdeBPFY6XkvZoH
+   F6plf9DAU8B+7X7dY0C4kk6sjNx+Y980K3nZg8/K1103fCTY3F0e6H+yu
+   1Oem8NvSuSEjSyADwqRGXf4r/ZmxkdF2kkFldC2TSmy7dVTZVmN9HX8lb
+   DC/fGgnjT4Nmd7hKCsgKFYsED9x7+HlANOaK9FthQoOD9/SqIvKqx2xJB
+   EvSPMWkhOweP4r7l+MclL28kfXRJpZ2G1WeW3sUKHjD0/2u7Rp/ANGfS3
+   w==;
+X-CSE-ConnectionGUID: clZvmD19Sq2Iw7NFEv7XmA==
+X-CSE-MsgGUID: KB4AC9I0Sm+a7N5auvntow==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="32554072"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
+   d="scan'208";a="32554072"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 06:03:43 -0700
+X-CSE-ConnectionGUID: iyi9BDO3Tg+FEC1S+qmrbg==
+X-CSE-MsgGUID: 0q/rjLZSQ/i27+cjP7Zucg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
+   d="scan'208";a="26609152"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa007.jf.intel.com with ESMTP; 29 Apr 2024 06:03:41 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 4F0CF179; Mon, 29 Apr 2024 16:03:39 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Chris Oo <cho@microsoft.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: [PATCH 6.1.y] x86/tdx: Preserve shared bit on mprotect()
+Date: Mon, 29 Apr 2024 16:03:36 +0300
+Message-ID: <20240429130336.1622067-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024042908-cesarean-sulfur-8a97@gregkh>
+References: <2024042908-cesarean-sulfur-8a97@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024042909-whimsical-drapery-40d1@gregkh> <CANiq72ndLzts-KzUv_22vHF0tYkPvROv=oG+KP2KhbCvHkn60g@mail.gmail.com>
- <2024042901-wired-monsoon-010b@gregkh> <CANiq72nLGum-AqCW=xfHZ5fNw5xQ+Cnmab3VZ+NeHEN1tSNpzw@mail.gmail.com>
-In-Reply-To: <CANiq72nLGum-AqCW=xfHZ5fNw5xQ+Cnmab3VZ+NeHEN1tSNpzw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 29 Apr 2024 15:02:47 +0200
-Message-ID: <CANiq72kr2zNZtKZqqmHeBW0XXnMHhXeF4S6UysCrb2_BNCm-kA@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] kbuild: rust: force `alloc` extern to
- allow "empty" Rust" failed to apply to 6.1-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: ojeda@kernel.org, aliceryhl@google.com, daniel.almeida@collabora.com, 
-	gary@garyguo.net, julian.stecklina@cyberus-technology.de, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 29, 2024 at 2:22=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Let me send them manually then.
+The TDX guest platform takes one bit from the physical address to
+indicate if the page is shared (accessible by VMM). This bit is not part
+of the physical_mask and is not preserved during mprotect(). As a
+result, the 'shared' bit is lost during mprotect() on shared mappings.
 
-I see you queued them already for 6.6.y and 6.8.y -- thanks!
+_COMMON_PAGE_CHG_MASK specifies which PTE bits need to be preserved
+during modification. AMD includes 'sme_me_mask' in the define to
+preserve the 'encrypt' bit.
 
-Cheers,
-Miguel
+To cover both Intel and AMD cases, include 'cc_mask' in
+_COMMON_PAGE_CHG_MASK instead of 'sme_me_mask'.
+
+Reported-and-tested-by: Chris Oo <cho@microsoft.com>
+
+Fixes: 41394e33f3a0 ("x86/tdx: Extend the confidential computing API to support TDX guests")
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240424082035.4092071-1-kirill.shutemov%40linux.intel.com
+(cherry picked from commit a0a8d15a798be4b8f20aca2ba91bf6b688c6a640)
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/include/asm/coco.h          | 5 ++++-
+ arch/x86/include/asm/pgtable_types.h | 3 ++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
+index 1f97d00ad858..100a752c33bb 100644
+--- a/arch/x86/include/asm/coco.h
++++ b/arch/x86/include/asm/coco.h
+@@ -13,9 +13,10 @@ enum cc_vendor {
+ };
+ 
+ extern enum cc_vendor cc_vendor;
+-extern u64 cc_mask;
+ 
+ #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
++extern u64 cc_mask;
++
+ static inline void cc_set_mask(u64 mask)
+ {
+ 	RIP_REL_REF(cc_mask) = mask;
+@@ -25,6 +26,8 @@ u64 cc_mkenc(u64 val);
+ u64 cc_mkdec(u64 val);
+ void cc_random_init(void);
+ #else
++static const u64 cc_mask = 0;
++
+ static inline u64 cc_mkenc(u64 val)
+ {
+ 	return val;
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index f6116b66f289..f0b9b37c4609 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -127,7 +127,7 @@
+  */
+ #define _COMMON_PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |	       \
+ 				 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |\
+-				 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP | _PAGE_ENC | \
++				 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP | _PAGE_CC | \
+ 				 _PAGE_UFFD_WP)
+ #define _PAGE_CHG_MASK	(_COMMON_PAGE_CHG_MASK | _PAGE_PAT)
+ #define _HPAGE_CHG_MASK (_COMMON_PAGE_CHG_MASK | _PAGE_PSE | _PAGE_PAT_LARGE)
+@@ -153,6 +153,7 @@ enum page_cache_mode {
+ };
+ #endif
+ 
++#define _PAGE_CC		(_AT(pteval_t, cc_mask))
+ #define _PAGE_ENC		(_AT(pteval_t, sme_me_mask))
+ 
+ #define _PAGE_CACHE_MASK	(_PAGE_PWT | _PAGE_PCD | _PAGE_PAT)
+-- 
+2.43.0
+
 
