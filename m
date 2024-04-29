@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59CE68B5681
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:27:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57748B5685
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15DFF283E13
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:27:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E70671C23539
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DC640BFE;
-	Mon, 29 Apr 2024 11:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9034779C;
+	Mon, 29 Apr 2024 11:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWWVNg5S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ont3qEKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DF340872
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BCA3FBBD
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390015; cv=none; b=NTm1NfMWyiGngJ8aaSw1WLHYVo/BI2/NsEUUyPhLMW+LRA875yBt8HosSw9SiDs0jxfah+WkrEcg9n1q45zoynWPveXE5t1GkVmAZWCrOTog8ykrtVFludSB4VzRtU0lVSzffUp61b3wvkdLji48ZPCd76QIA17sngRH1JeRnd8=
+	t=1714390019; cv=none; b=KXLwHImIrB/kr8u/YIRyUY6vLB1S4V0ZIixvpPTLiNeYMBv2Owbsr4PzBTZQuaHSQyD3nS3NICCzQQI7khFPDCfjDF/5dxxRMZmI0wB6RB9kbSloYlfVTnuL7HsE7sSCv5e9gmEcWUmc5kswzsmuF1cKKz2sqNDMuBVYeaiRZ1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714390015; c=relaxed/simple;
-	bh=XubqkzvbIrNyj7Lu6ft9FG3CrmpFaavtfL9nBagNUTI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KuT7Dh5E4K1hwhsHgOxaAY68kd+vk1PK7v/y0fdNZd0EmHZGfYHgr9ej8n5xSLXfKugKPfFln9BJquQFvMPAvQwXftQZOs71iVK5vuDMpjQhORPFhJbzXEMH/2kBsPlznS64T2tkMS/8Gcj5OhAv/akazmiszMNkt8LrvZmeDK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWWVNg5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316D9C4AF17;
-	Mon, 29 Apr 2024 11:26:54 +0000 (UTC)
+	s=arc-20240116; t=1714390019; c=relaxed/simple;
+	bh=QRkhnUW3kuCrpftDo1h3MjjnhDPIwQ/1uuE/7kL4YxU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aplJBLzjQYV/pjPAoPG7lZjsY1w5uaqM7Vp7eDRqERQy79ja7oVqRA+JsuMXVQ6NPAqZFH3qH2dk2ZYYJm2Ec89gE71FC5m6wWAqFLKEJ4ZVse3oEeSxK/UekwxHrxVrOGQfU/1vWWyGd3LcOvMaQ4TQyNYAwa0BPSWH7tZ389E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ont3qEKI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7598FC116B1;
+	Mon, 29 Apr 2024 11:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714390015;
-	bh=XubqkzvbIrNyj7Lu6ft9FG3CrmpFaavtfL9nBagNUTI=;
+	s=korg; t=1714390018;
+	bh=QRkhnUW3kuCrpftDo1h3MjjnhDPIwQ/1uuE/7kL4YxU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DWWVNg5ST16MCi8zpXOZRTlosm7aJxGOmLb/GohkWyZrJ2+ulerv6JxVUYvjJHZ1c
-	 MG6dY2oGNLAT85ezxediy98Fxzag+0msOV1oRk7j7naSctEpp9M5mV/RFKR4IaX1EQ
-	 Q/lfeWIBhxc7RFMUM53HW4zuBIWtS3wjkZzH5GWA=
-Subject: FAILED: patch "[PATCH] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent" failed to apply to 5.15-stable tree
+	b=Ont3qEKILWKW3nfd2OB9wHAnOPfJVkgz1ZR5cz7jPymhR9PkCmlm5YUYCVzuiQkPh
+	 Ynv3TaC0WXfVTgJ83Vw1chidfZ+beR8lSFYirCzzJ/SM5MkIKdXOHSRo+csOmkFUqG
+	 /rM2ddgKbEuAaYzariMRTXQY0WV1FUbEG5fUjC8o=
+Subject: FAILED: patch "[PATCH] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent" failed to apply to 5.10-stable tree
 To: namcao@linutronix.de,jkosina@suse.com,nyandarknessgirl@gmail.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:26:52 +0200
-Message-ID: <2024042952-germless-unguarded-1be2@gregkh>
+Date: Mon, 29 Apr 2024 13:26:53 +0200
+Message-ID: <2024042953-unstitch-causing-de1d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042952-germless-unguarded-1be2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042953-unstitch-causing-de1d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,9 @@ b26fc3161b78 ("HID: i2c-hid: refactor reset command")
 d34c6105499b ("HID: i2c-hid: use "struct i2c_hid" as argument in most calls")
 a5e5e03e9476 ("HID: i2c-hid: fix GET/SET_REPORT for unnumbered reports")
 cf5b2fb012c0 ("HID: i2c-hid: fix handling numbered reports with IDs of 15 and above")
+ca66a6770bd9 ("HID: i2c-hid: Skip ELAN power-on command after reset")
+b33752c30023 ("HID: i2c-hid: Reorganize so ACPI and OF are separate modules")
+19a0b6d79c97 ("Merge branch 'for-5.11/i2c-hid' into for-linus")
 
 thanks,
 
