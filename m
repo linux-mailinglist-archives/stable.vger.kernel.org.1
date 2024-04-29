@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BEF8B574E
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:01:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B8F8B574F
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D49891C2166C
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:01:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 067E71F22EFE
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E2552F8E;
-	Mon, 29 Apr 2024 12:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA0A53385;
+	Mon, 29 Apr 2024 12:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDDFCeaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rEqSex+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8D04652D
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD694652D
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714392067; cv=none; b=hQGwT6RHi5bXnJvg2uK8pGcp++4N1XTMamvBhwSSup+E8BFIz7jcw0YjLpYPzJ91YfnEV6xznlz7CRxwpya0927uWclW4PvyFTYZK3+VPYoJzOE+N77lDFenhwYYLNyaLJ6fvKDKMLDgNx5V1UTvZy1yYvif9DcFg8Q5AUxqsus=
+	t=1714392070; cv=none; b=grKzvDd9v3yuc7kV0ETs/DzSf93qHpxAAJw5su4hMbiG2GxPgdTamGsrGdF0gSR35eLp5SA4qH3O49ZuOjSp3aPzabRJBk5aMLBqLoChhpIumIKw5fN2JMxvrxDxbG7iFolEmoypvV+UVTDbFcWTf2Z1fCKcTc5lEN8/YThUCcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714392067; c=relaxed/simple;
-	bh=HBtd2LVjyBEYL2S86PT5nphUebhGGkcW2B3CYkVplsg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qGx3uhROVDoikbCR8vK4Kc949OiebvrpeRuQM+n17RmJlcJVPKnVCN3Kx/GHmeMOycTqZ/VlAgXP5Ypu2MI0IX5ujk5cmH4N3B6GmpIH458tNxFpfJzGhvhGlyy6iGKFgyNnnZijWfoUM4oQy/73203/qZxQmw6z6ZbEQUcqljk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDDFCeaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D542C113CD;
-	Mon, 29 Apr 2024 12:01:06 +0000 (UTC)
+	s=arc-20240116; t=1714392070; c=relaxed/simple;
+	bh=t1lw3Yw4FrvXS9bVn0pBnFmbRlNrU1KN8G2EmYWRoRk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hngPUDFeYU/PSYbKOZXUTkJOgnrzZPe8Oc1pIJldixfmjFZBPHCxqAzu2DBGM1nG9C3LLNqIy3oPwBDacvnF5fsMRjL6BS/6ClNrgmEbDsHhNDwzPq2BFIbTOSsoqNPLMP8kYtdXDNx80kPwrimTsJ1dg86Eu6+O4KnP6OTLhdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rEqSex+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C94DC113CD;
+	Mon, 29 Apr 2024 12:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714392066;
-	bh=HBtd2LVjyBEYL2S86PT5nphUebhGGkcW2B3CYkVplsg=;
+	s=korg; t=1714392069;
+	bh=t1lw3Yw4FrvXS9bVn0pBnFmbRlNrU1KN8G2EmYWRoRk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VDDFCeaMB06gD5UGEDtI0sybyKN8OsXKRFV+iaXdPyRey7yo6ZxRFDaHt55QoeUn9
-	 iOaeBlNCeVZRN9lSclbe6S+u61V5FngoIHCintyN61LQEdbHbjSKXZNv3HlvsXiqai
-	 CEptxkDOaTxKjNjIWxgbwG+TY4d5XScgVAk85zJM=
-Subject: FAILED: patch "[PATCH] mtd: limit OTP NVMEM cell parse to non-NAND devices" failed to apply to 6.1-stable tree
+	b=1rEqSex+FtqrMTo73+oMxtY9we0RBeHRX5/x+QrRRxX53/E1giq/lBJ1TkNCBZiX0
+	 ZWtyOu6u7LmyA953X9MxyY3umMVbVkkP5mbS6K98eqtt/omsXAUwHKz19lt62AeGNl
+	 NxqZ7xfHCdrEJCGia1av07KTcip8oGm5YqekpNiA=
+Subject: FAILED: patch "[PATCH] mtd: limit OTP NVMEM cell parse to non-NAND devices" failed to apply to 5.15-stable tree
 To: ansuelsmth@gmail.com,miquel.raynal@bootlin.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 14:00:55 +0200
-Message-ID: <2024042955-overture-backlight-50ec@gregkh>
+Date: Mon, 29 Apr 2024 14:00:57 +0200
+Message-ID: <2024042956-tricking-matted-50cf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x d2d73a6dd17365c43e109263841f7c26da55cfb0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042955-overture-backlight-50ec@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042956-tricking-matted-50cf@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -85,6 +85,10 @@ ab3428cfd9aa ("nvmem: core: fix registration vs use race")
 569653f022a2 ("nvmem: core: remove nvmem_config wp_gpio")
 3bd747c7ea13 ("nvmem: core: initialise nvmem->id early")
 a3816a7d7c09 ("nvmem: stm32: add nvmem type attribute")
+a06d9e5a63b7 ("nvmem: sort config symbols alphabetically")
+28fc7c986f01 ("nvmem: prefix all symbols with NVMEM_")
+5544e90c8126 ("nvmem: core: add error handling for dev_set_name")
+d5542923f200 ("nvmem: add driver handling U-Boot environment variables")
 
 thanks,
 
