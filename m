@@ -1,124 +1,142 @@
-Return-Path: <stable+bounces-41730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DAD8B5A66
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8F88B5A78
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 821C3B223C1
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:46:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DE0BB2677F
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA4174404;
-	Mon, 29 Apr 2024 13:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A297374E0A;
+	Mon, 29 Apr 2024 13:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="X2bFC7Qq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZNzYrq4C"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="cYHKVQPi"
 X-Original-To: stable@vger.kernel.org
-Received: from fout4-smtp.messagingengine.com (fout4-smtp.messagingengine.com [103.168.172.147])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E69D2C69C
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 13:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D673745C5;
+	Mon, 29 Apr 2024 13:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714398359; cv=none; b=fKqBYuRkjdhG/2VhmIZc5DyYdISDopO5ohxHyrOEaVI2ROYpwK3IynNRp11bDa3CVG/AvRfn2qADNeHRf1J9ts/dWoZ7fpZu6MLZr/wIO4iuiAg2IWEIkecVc69QYGlIHT7NRQsckpwzZydag0+DddtZ6QlR14tHXGUqxhR8ZxE=
+	t=1714398452; cv=none; b=bJDspt5mPf02BtbxhslPwii8L7knqw3D1MFoGwuQV73jPG1zsGNsa5MR95b3vdH8OfkvWOeifNhvNOtETGoOqmNlAbkXLkCLHcGTbmmVemBGJaiBZQnWIGdiA0Y+IhlYWoxbWvrhkBsubXlBuZM/T5qyO8Ax0/XgaOJH6d08CPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714398359; c=relaxed/simple;
-	bh=ztPjcQhkOQD3ur5W4BHLxdkoJDy7lboSLeRwWQc8CuA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kU8WQp3ON9t4rPMEs7eXkAPOZ6ZtUokkjPKeFmQh5A1100rEaX8HT9KWGsoEngw0bYFKT0CmhKWvRSWOoa4eOnL9l4XGXmKFWexW2bQn4yoXw7O5P3MPv4ToHZYeisSHmpGKfjRyHNqaHNsvev7q/862jh3hqIRPiCcS5ZpzfOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=X2bFC7Qq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZNzYrq4C; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 550631381A5B;
-	Mon, 29 Apr 2024 09:45:56 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Mon, 29 Apr 2024 09:45:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1714398356; x=1714484756; bh=LJo4o96rAK
-	Z5NBkctl5AV1MUthszAiXNv6xuuTFiv2A=; b=X2bFC7QqVliMvfHevN8m7P7TLX
-	CPRU5paTzTSfblRbFU/wzRmogMfnur9F9BO7IJsEoMTQ95FFp5helDH4PJNHviTu
-	bEuJMGiWd02QmZjHwpQOvc3sv39pDroauFgDRujOQk0s3Qlb4roFe/ydnpeMNB+X
-	830lVf7ZmolZzCn4hYUxFRHXfIQRf1Ov79bRKFk1XCz4DvyNNjAzGfjy79yhKqvJ
-	NubOtmHHuno3u1jHX1maxtlFsthurdOJT9jNN9gQGRbFRWytX1Bgg47YMEWnFodE
-	vOyjCAAF0GzDQhNxoeLuvXcjty04Yi8ECj4UAZv+aCVM2z/7QUcz9tPbOoBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1714398356; x=1714484756; bh=LJo4o96rAKZ5NBkctl5AV1MUthsz
-	AiXNv6xuuTFiv2A=; b=ZNzYrq4CAoFDnbNjplEbw7N2akZhBHypWnhrZc4ZaiKI
-	vniJ2ovmYxUr+YCD2JDOpxi9Cwmi3Mado3jVj0l2i9sspk08N1eavAoQ16aPU3RI
-	ldvee58US5vnJulf+hiZ5D6Mnk4cxTnxiBmFtXr04Emf2PzqHi5jgaE85FAEsJ4u
-	ps1xXk/5XQixkbS2tDcAyB4Z4C1JuWTiwQup5rt4rekDD5pQ6oOf8lhMr4z5p3EA
-	olFqcsSzdSYDY5lRdvrv7lE+ncWsosZQ5LKwjStoxQXt2u7mg+Kau5cY+IS4XJD6
-	qaJL/SNfUfi82pjpgTdhXL0fFQKoAnFl3rvKQTiN8w==
-X-ME-Sender: <xms:lKQvZm9DYfE5g0Rp5636G6SOh_oxzKBhAQRzkJ0SV7V3LGO-hZoVRA>
-    <xme:lKQvZmuMSd2HGONTGTSMMCgxIx04-y9rgj6viWne2-4HxXYJ1sV1sOEHGWd-lhUMY
-    HdRl3ohEO3Zzw>
-X-ME-Received: <xmr:lKQvZsBDfYDIwPF4IbH7FKKb7VIyRZXca618tw7Y3yoFEFYVzrG3csDbSfoK3RnaBBaxN80txzSNCNOseo85yxTYK32umLlcurIFmQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdduuddgieejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
-    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:lKQvZufEF3phCnswSXIiete6FWbhcWh5ZYUacB9xqvsreaPAzPyOKg>
-    <xmx:lKQvZrMkPmp84HQStJdfAHtWmoeYC9kmyjo3i3wIJrDOhYhpjGN1TQ>
-    <xmx:lKQvZokOWaGwSpGGlTBJD3ga-8GSnhjXkGcvhzN8s8pqlWtA4clTig>
-    <xmx:lKQvZtvX41ypVHwMsL1Xl0zVsoIw-T9r3Mm5ZRzLhBwCwpGP3zjJ8Q>
-    <xmx:lKQvZkicBIX4mylHqsOiSiruQtZqwdSO82l-JFsgNF4BVcBxosYbsouK>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 29 Apr 2024 09:45:55 -0400 (EDT)
-Date: Mon, 29 Apr 2024 15:45:52 +0200
-From: Greg KH <greg@kroah.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: stable@vger.kernel.org, Aswin Unnikrishnan <aswinunni01@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH 6.1.y] rust: remove `params` from `module` macro example
-Message-ID: <2024042943-oxidizing-suave-8501@gregkh>
-References: <2024042924-ribcage-browsing-7e8b@gregkh>
- <20240429124505.28432-1-ojeda@kernel.org>
+	s=arc-20240116; t=1714398452; c=relaxed/simple;
+	bh=8qW/AiTuh5RfV5Y3WsEwv1Sr3kSET/1uMKux5Eab8c0=;
+	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
+	 Content-Type:Subject; b=APwWBUtb/sKydEqXFD04le3YDMcLxA/gfkK72Q8TNa2rcy7PXhtKDEDpyC40BLDS6XlUijoxgwtU1bxyijofV09D3IVAVAg8ueWDGCAzaVFf7ypYj2TtVVN4z0AJeCs+iWf8HfGfLOlJGZKBFUBblfPUZElv0KKew9ldQzhd9kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=cYHKVQPi; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=JOScwd5emOA8f50rEfismq1Niilar7kDI+5Uq6EhCPs=; b=cYHKVQPi227WuXG120+O8hG3qn
+	XjmPCTL36uOSO+8lXNETngTWDy2ooeTc6iIGIV4yPmFBkcOM7VjDiniSTMLjeYWy0AzyDf4eUWtA/
+	1E/EZM0pe7qlFh7UOuMoHB6PEGdU+gmlDnov857ZlO7BE8UcDhR6o7r2lmYPSSGk3RxM=;
+Received: from [70.80.174.168] (port=58788 helo=pettiford)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1s1RLi-00052M-6X; Mon, 29 Apr 2024 09:47:18 -0400
+Date: Mon, 29 Apr 2024 09:47:17 -0400
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jon Ringle
+ <jringle@gridpoint.com>, ria.freelander@gmail.com, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Message-Id: <20240429094717.de45ad35814e3c618e08c36b@hugovil.com>
+In-Reply-To: <17d2cc58-cf68-430d-9248-25abe4c5b0f0@kernel.org>
+References: <20240426135937.3810959-1-hugo@hugovil.com>
+	<17d2cc58-cf68-430d-9248-25abe4c5b0f0@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240429124505.28432-1-ojeda@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -1.1 NICE_REPLY_A Looks like a legit reply (A)
+Subject: Re: [PATCH] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when
+ using prescaler
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-On Mon, Apr 29, 2024 at 02:45:05PM +0200, Miguel Ojeda wrote:
-> From: Aswin Unnikrishnan <aswinunni01@gmail.com>
+On Mon, 29 Apr 2024 08:39:22 +0200
+Jiri Slaby <jirislaby@kernel.org> wrote:
+
+> On 26. 04. 24, 15:59, Hugo Villeneuve wrote:
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > 
+> > When using a high speed clock with a low baud rate, the 4x prescaler is
+> > automatically selected if required. In that case, sc16is7xx_set_baud()
+> > properly configures the chip registers, but returns an incorrect baud
+> > rate by not taking into account the prescaler value. This incorrect baud
+> > rate is then fed to uart_update_timeout().
+> > 
+> > For example, with an input clock of 80MHz, and a selected baud rate of 50,
+> > sc16is7xx_set_baud() will return 200 instead of 50.
+> > 
+> > Fix this by first changing the prescaler variable to hold the selected
+> > prescaler value instead of the MCR bitfield. Then properly take into
+> > account the selected prescaler value in the return value computation.
+> > 
+> > Also add better documentation about the divisor value computation.
+> > 
+> > Fixes: dfeae619d781 ("serial: sc16is7xx")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > ---
+> >   drivers/tty/serial/sc16is7xx.c | 23 ++++++++++++++++++-----
+> >   1 file changed, 18 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> > index 03cf30e20b75..dcd6c5615401 100644
+> > --- a/drivers/tty/serial/sc16is7xx.c
+> > +++ b/drivers/tty/serial/sc16is7xx.c
+> > @@ -555,16 +555,28 @@ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
+> >   	return reg == SC16IS7XX_RHR_REG;
+> >   }
+> >   
+> > +/*
+> > + * Configure programmable baud rate generator (divisor) according to the
+> > + * desired baud rate.
+> > + *
+> > + * From the datasheet, the divisor is computed according to:
+> > + *
+> > + *              XTAL1 input frequency
+> > + *             -----------------------
+> > + *                    prescaler
+> > + * divisor = ---------------------------
+> > + *            baud-rate x sampling-rate
+> > + */
+> >   static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+> >   {
+> >   	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+> >   	u8 lcr;
+> > -	u8 prescaler = 0;
+> > +	int prescaler = 1;
 > 
-> Remove argument `params` from the `module` macro example, because the
-> macro does not currently support module parameters since it was not sent
-> with the initial merge.
-> 
-> Signed-off-by: Aswin Unnikrishnan <aswinunni01@gmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-> Link: https://lore.kernel.org/r/20240419215015.157258-1-aswinunni01@gmail.com
-> [ Reworded slightly. ]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> (cherry picked from commit 19843452dca40e28d6d3f4793d998b681d505c7f)
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  rust/macros/lib.rs | 12 ------------
->  1 file changed, 12 deletions(-)
+> Ugh, why do you move to signed arithmetics?
 
-Now queued up, thanks.
+Hi Jiri,
+before this patch, the variable prescaler was used to store an 8 bit
+bitfield. Now the variable meaning is changed to be used as the
+prescaler value, which can be 1 or 4 in this case. Leaving
+it as u8 would still be ok, or making it "unsigned int" maybe?
 
-greg k-h
+Hugo.
+
+-- 
+Hugo Villeneuve
 
