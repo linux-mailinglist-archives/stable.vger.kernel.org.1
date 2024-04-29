@@ -1,140 +1,183 @@
-Return-Path: <stable+bounces-41757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1348B5FF7
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 19:20:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C95F8B602E
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 19:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F113A1F21761
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:20:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2960E1F21E98
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52ED86642;
-	Mon, 29 Apr 2024 17:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC058126F02;
+	Mon, 29 Apr 2024 17:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nwFE0+gA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dYP4Qowj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E82083A15;
-	Mon, 29 Apr 2024 17:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670D48614C;
+	Mon, 29 Apr 2024 17:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714411250; cv=none; b=TZnBaNG4aK7ucaWNLM+hZ+y73tKnbLIlZEeXVKnw2PCjqZGKBwKtgmZBab8fCF4/Eb5jYerh4GgwLzdCumJSRVICYw3xAI8FMM7zqaZ7TtRggEO//FNBoyJkjG4SbJzB66oJdC/6Z8SJMp/LTs0FFBH9Dh2N7/PmodMahBP7uf8=
+	t=1714411931; cv=none; b=IHQE4K2sy3ooQl2yMX7TVDizxv0KPAAf5uYnWl00Ahila7CBS5qmkCYRqTCiRf7zLBs/vEkpXgYK+FxKTn7hmcAJHyW/cd/jUb7huTtu6tDB+eQbiqII+euaQbLii71FsODXYyX0nG3Zde/UDnjkPRxhrEEIcujkYQNHXYWO1uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714411250; c=relaxed/simple;
-	bh=VEizP2sb+9gplc2zo1WpkCLO8WsKqm6/wkG3G0z+dn4=;
-	h=Date:To:From:Subject:Message-Id; b=gPOL3fcv6Ow5XXiItQHSL1t7CV0OxdbmMASBQgZ27NDtAFx81Y0+8bHeOCtxqp+X0JNop3aslZAeNzt/dh6B9T+fM3arDUWHh9QGZLfi53esPRL9ypvQPf0DgFKuge5iUaRbHJbVr3Agm4CTeLmHbJZohAhRbHLsCylAdX6xsng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nwFE0+gA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C9DC113CD;
-	Mon, 29 Apr 2024 17:20:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1714411250;
-	bh=VEizP2sb+9gplc2zo1WpkCLO8WsKqm6/wkG3G0z+dn4=;
-	h=Date:To:From:Subject:From;
-	b=nwFE0+gAzYVfy4lyYI/0BBTkIb34g5n/djH2wWHLf+eeZJ0AQZwcufYYYf2nQYmEH
-	 11VNpSVj0qkXdJje4fvo6RH2UoI11v9dj8e3FxZF7ieSu7eC0aMF3whPyTxWSbo7GJ
-	 MwQUj4r1WcidBJtRdlXpZJ/UZFVsSozob1h8ySfk=
-Date: Mon, 29 Apr 2024 10:20:48 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,riel@surriel.com,peterz@infradead.org,m.novosyolov@rosalinux.ru,mingo@kernel.org,mgorman@techsingularity.net,i.gaptrakhmanov@rosalinux.ru,willy@infradead.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged] bounds-use-the-right-number-of-bits-for-power-of-two-config_nr_cpus.patch removed from -mm tree
-Message-Id: <20240429172049.D7C9DC113CD@smtp.kernel.org>
+	s=arc-20240116; t=1714411931; c=relaxed/simple;
+	bh=iqIHXbJjoR/NNhKJl08ktzgkIFOTMzL85HRzlBgYroM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rc6CaSQFdNngsrjEwbvwnjWio5Givm67fEcKFaggbdRzJFLABnH6ZvPcsrzrWpC+r3nHr1TIe1qUrRI4Gg9WRxcXyEzaoVKEaszpimlm+VeB8z+0Hzr1c8IdaCHjIclF/JZgYx2KL2wLuUr7ZNFI8bq6vUFLOODT4CAit2wL/bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dYP4Qowj; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e51398cc4eso42966675ad.2;
+        Mon, 29 Apr 2024 10:32:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714411928; x=1715016728; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7yO0axpmFWwXDk/UVwdYYKF708XKLao28CV2qhrurHw=;
+        b=dYP4QowjUoq/cUSxtQfW8kUmDChpDErO8rEp7zZVc5qb4ZPBfzqBcCOa40pWeycGJr
+         Doa9s0SWI7+5YJzp4njdOu6XvshCIIaC/lmEbg/MuJdAKUBFF6OXtjI7CC39nHI0iL0L
+         rKCf46RmZCJVKY8QrJiRBg24rTMAENCIO5N2/3ofzkKvKY/eItkrl6Tiv0Nos6rbpYLU
+         FgI0jziAo0an8G4yuJOK2U5WZreQch3tg08zOIsp/hIpYSdB0xtV5EtHiRX4y329Up9o
+         x5Wn1yThvfSsmagD5fLeTF/e08xioSfl0Tc93XjhHAUErpwK4bvndaScPQfTiLZKwXwo
+         tuxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714411928; x=1715016728;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7yO0axpmFWwXDk/UVwdYYKF708XKLao28CV2qhrurHw=;
+        b=HCePAj8CeCMUW7cTgSO4v0CAUnRyNjYIZI2YEmPofna6z/n3X1goJ5WYWUHXT2vddS
+         te2sysOrHBjcjpsD3ji8uL1OZge/b7g1PtFOBjTuVBJHO1cV13i75lCh+rIgXJviR/pO
+         dW6UFFFWTarea0rizhxtORJ25itdbJOvmk5zpPbNwlonp4/LnUSBEB+I49VWMiADDh/x
+         46/AeAkWQ8oKTw+z+EXKB5d1dUGQCghNiUS64tUd4a+ooVSDUG37unIWV54oSu4Lhnfn
+         F4clHs06JTfNntUWlGIEU6YCFwv6vaGIwoLDZvwPg4GLElQc7JEoJh6JtTp6pRoBC8d/
+         VTVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVC8XHI5eRMoi+BifPZ+Lhr/0hj9btrN29Zz+QVIXGAFIpYHgn/GkUqQjxKuZbhkialEtstapPvFVNqWwGWieuE6UxFL2qSQEmnLZ9dOrT3792aTBglI6PdgzUUCrIkrR8ZmssTncc/xo3gzPV7wFvPVBOhP4h9/WiDrRzd80Pw1zHNP2iI
+X-Gm-Message-State: AOJu0YwlxISgri9b9Z5uoeesAHDGNeMljVrfP5C+uzwZVxkMYpFD4yIk
+	M8JZNJqDGLoJfCcFyBP7KARzAa3X8JgfT8O8bgT+dbN3w+A7/faCi9My7Winx7miV1MxiiM9w0P
+	SuNF6OP9RYwLM1wmxLfE6Lf1BqKc=
+X-Google-Smtp-Source: AGHT+IF/cMVRZqUF4PJpmz/ctyeQby+RhUwdslYpqxX493gwiftDdBuuSTd0L/iWow1IH+ELZJg2338tGJD7t+pWy6s=
+X-Received: by 2002:a17:902:ce87:b0:1eb:7285:d6fe with SMTP id
+ f7-20020a170902ce8700b001eb7285d6femr8369860plg.23.1714411928438; Mon, 29 Apr
+ 2024 10:32:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240426155801.25277-1-johan+linaro@kernel.org>
+ <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
+ <ZizKmtcUIYAMpvOQ@hovoldconsulting.com> <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
+ <Zi-ohCWv58d2h5VM@hovoldconsulting.com> <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
+In-Reply-To: <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Mon, 29 Apr 2024 13:31:53 -0400
+Message-ID: <CABBYNZJyRR9FA7TYN4+aWMtG9FPUBWMvCtMNUfvaEzxVcYOt-g@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
+To: Johan Hovold <johan@kernel.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>, Doug Anderson <dianders@chromium.org>, 
+	Johan Hovold <johan+linaro@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, quic_mohamull@quicinc.com, quic_hbandi@quicinc.com, 
+	quic_anubhavg@quicinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Mon, Apr 29, 2024 at 1:12=E2=80=AFPM Luiz Augusto von Dentz
+<luiz.dentz@gmail.com> wrote:
+>
+> Hi,
+>
+> On Mon, Apr 29, 2024 at 10:02=E2=80=AFAM Johan Hovold <johan@kernel.org> =
+wrote:
+> >
+> > Hi Janaki,
+> >
+> > Please avoid top and remember to trim unnecessary context when replying
+> > to the mailing lists.
+> >
+> > On Mon, Apr 29, 2024 at 03:34:32PM +0530, Janaki Ramaiah Thota wrote:
+> >
+> > > Having a default BDA list from NVM BDA tag value will prevent develop=
+ers
+> > > from using the device if there is no user space app(In Fluoride) to s=
+et
+> > > the BDA. Therefore, we are requesting to use default address check pa=
+tch,
+> > > so that developer can change the NVM BDA to make use of the device.
+> >
+> > But a developer on such an old platform that can patch and replace the
+> > NVM configuration file should also be able to just disable the check in
+> > the driver right (e.g. by commenting out the call to
+> > qca_check_bdaddr())?
+> >
+> > >   List Of default Addresses:
+> > >   ---------------------------------------------------------
+> > > |       BDA          |      Chipset                       |
+> > >   ---------------------------------------------------------
+> > > | 39 80 10 00 00 20  |  WCN3988 with ROM Version 0x0200   |
+> > >   ---------------------------------------------------------
+> > > | 39 80 12 74 08 00  |  WCN3988 with ROM Version 0x0201   |
+> > >   ---------------------------------------------------------
+> > > | 39 90 21 64 07 00  |  WCN3990                           |
+> > >   ---------------------------------------------------------
+> > > | 39 98 00 00 5A AD  |  WCN3991                           |
+> > >   ---------------------------------------------------------
+> > > | 00 00 00 00 5A AD  |  QCA DEFAULT                       |
+> > >   ---------------------------------------------------------
+> >
+> > What about WCN6750 and 64:90:00:00:5a:ad?
+> >
+> > And then there's currently also:
+> >
+> > > > bluetooth hci0: bd_addr =3D 61:47:aa:31:22:14 (qca/nvm_00130300.bin=
+)
+> > > > bluetooth hci0: bd_addr =3D 61:47:aa:32:44:07 (qca/nvm_00130302.bin=
+)
+> >
+> > Which controllers use these configurations?
+>
+> These are not unique addresses though, we can't just have addresses by
+> chipset address mapping logic as that would cause address clashes over
+> the air, e.g. if there are other devices with the same chipset in the
+> vicinity.
+
+I see where this is going now, the firmware actually contain these
+duplicated addresses which then are checked and cause
+HCI_QUIRK_USE_BDADDR_PROPERTY then the tries
+hci_dev_get_bd_addr_from_property which loads the local-bd-address
+property from the parente device (SOC?), btw that could also have an
+invalid/duplicated address.
+
+Anyway the fact that firmware loading itself is programming a
+potentially duplicated address already seems wrong enough to me,
+either it shall leave it as 00... or set a valid address otherwise we
+always risk missing yet another duplicate address being introduced and
+then used over the air causing all sorts of problems for users.
+
+So to be clear, QCA firmware shall never attempt to flash anything
+other than 00:00:00:00:00:00 if you don't have a valid and unique
+identity address, so we can get rid of this table altogether.
+
+ps: If the intention is to have these addresses for testing then these
+firmwares files shall probably be kept private, since as explained
+above the use of duplicated addresses will cause problems to users who
+have no idea they have to be changed.
+
+>
+> --
+> Luiz Augusto von Dentz
 
 
-The quilt patch titled
-     Subject: bounds: use the right number of bits for power-of-two CONFIG_NR_CPUS
-has been removed from the -mm tree.  Its filename was
-     bounds-use-the-right-number-of-bits-for-power-of-two-config_nr_cpus.patch
 
-This patch was dropped because it was merged into mainline or a subsystem tree
-
-------------------------------------------------------
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: bounds: use the right number of bits for power-of-two CONFIG_NR_CPUS
-Date: Mon, 29 Apr 2024 15:47:51 +0100
-
-bits_per() rounds up to the next power of two when passed a power of two. 
-This causes crashes on some machines and configurations.
-
-Link: https://lkml.kernel.org/r/20240429144807.3012361-1-willy@infradead.org
-Fixes: f2d5dcb48f7b (bounds: support non-power-of-two CONFIG_NR_CPUS)
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Михаил Новоселов <m.novosyolov@rosalinux.ru>
-Tested-by: Ильфат Гаптрахманов <i.gaptrakhmanov@rosalinux.ru>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3347
-Link: https://lore.kernel.org/all/1c978cf1-2934-4e66-e4b3-e81b04cb3571@rosalinux.ru/
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/bounds.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/kernel/bounds.c~bounds-use-the-right-number-of-bits-for-power-of-two-config_nr_cpus
-+++ a/kernel/bounds.c
-@@ -19,7 +19,7 @@ int main(void)
- 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
- 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
- #ifdef CONFIG_SMP
--	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
-+	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS - 1));
- #endif
- 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
- #ifdef CONFIG_LRU_GEN
-_
-
-Patches currently in -mm which might be from willy@infradead.org are
-
-doc-improve-the-description-of-__folio_mark_dirty.patch
-buffer-add-kernel-doc-for-block_dirty_folio.patch
-buffer-add-kernel-doc-for-try_to_free_buffers.patch
-buffer-fix-__bread-and-__bread_gfp-kernel-doc.patch
-buffer-add-kernel-doc-for-brelse-and-__brelse.patch
-buffer-add-kernel-doc-for-bforget-and-__bforget.patch
-buffer-improve-bdev_getblk-documentation.patch
-doc-split-bufferrst-out-of-api-summaryrst.patch
-doc-split-bufferrst-out-of-api-summaryrst-fix.patch
-mm-memory-failure-remove-fsdax_pgoff-argument-from-__add_to_kill.patch
-mm-memory-failure-pass-addr-to-__add_to_kill.patch
-mm-return-the-address-from-page_mapped_in_vma.patch
-mm-make-page_mapped_in_vma-conditional-on-config_memory_failure.patch
-mm-memory-failure-convert-shake_page-to-shake_folio.patch
-mm-convert-hugetlb_page_mapping_lock_write-to-folio.patch
-mm-memory-failure-convert-memory_failure-to-use-a-folio.patch
-mm-memory-failure-convert-hwpoison_user_mappings-to-take-a-folio.patch
-mm-memory-failure-add-some-folio-conversions-to-unpoison_memory.patch
-mm-memory-failure-use-folio-functions-throughout-collect_procs.patch
-mm-memory-failure-pass-the-folio-to-collect_procs_ksm.patch
-fscrypt-convert-bh_get_inode_and_lblk_num-to-use-a-folio.patch
-f2fs-convert-f2fs_clear_page_cache_dirty_tag-to-use-a-folio.patch
-memory-failure-remove-calls-to-page_mapping.patch
-migrate-expand-the-use-of-folio-in-__migrate_device_pages.patch
-userfault-expand-folio-use-in-mfill_atomic_install_pte.patch
-mm-remove-page_cache_alloc.patch
-mm-remove-put_devmap_managed_page.patch
-mm-convert-put_devmap_managed_page_refs-to-put_devmap_managed_folio_refs.patch
-mm-remove-page_ref_sub_return.patch
-gup-use-folios-for-gup_devmap.patch
-mm-add-kernel-doc-for-folio_mark_accessed.patch
-mm-remove-pagereferenced.patch
-mm-simplify-thp_vma_allowable_order.patch
-mm-assert-the-mmap_lock-is-held-in-__anon_vma_prepare.patch
-mm-delay-the-check-for-a-null-anon_vma.patch
-mm-fix-some-minor-per-vma-lock-issues-in-userfaultfd.patch
-mm-optimise-vmf_anon_prepare-for-vmas-without-an-anon_vma.patch
-squashfs-convert-squashfs_symlink_read_folio-to-use-folio-apis.patch
-squashfs-remove-calls-to-set-the-folio-error-flag.patch
-
+--=20
+Luiz Augusto von Dentz
 
