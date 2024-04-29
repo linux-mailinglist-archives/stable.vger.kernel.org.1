@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1768B5742
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:59:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3508B5743
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444741C20DDC
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D9ED1C20F95
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A24853377;
-	Mon, 29 Apr 2024 11:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D4953385;
+	Mon, 29 Apr 2024 11:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+Y6Y+hd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxmJSaAC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C130524D9
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77467524D9
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714391953; cv=none; b=rK50Kefwu3TQuXz8Nu9PEuKhIWvAJzTsQflQDRoI2raebLTl+T1WPQ0JedToT0IQnZ4Qlx++I/je/ZThufTcgtZm63p2KI54fzpepgeqDBdBoh8z72D2RZZHH0jgDvMRSFTVkz87Q2FRh6IrhPrliNeOuG0nT8ejsU9ExOS5QkI=
+	t=1714391956; cv=none; b=t1a+5pK0SMkoHX4ipkkBbm6M+sSNLEKdzuBEt+Sexs46BMWdegKFMJ4JXWTyhnuw4b0J1WhDrZghU3bFff9ovyIM95gd6p6Gog/F8i5Am7B2FrCjg03OsUB5vppmecR3oM40O+/v+2YO6q5Zl3b3+j/nkAY8nGTwr+xx16rZFAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714391953; c=relaxed/simple;
-	bh=4DDNgIs5847t1noPTjXSLzeBT8NDmKHgPO1BlQvJD2c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Loo3z7DKfIlCrEoKYjJSNq+dK+J3UuX8iW0V9vgiofHATvDwpJJT2i2RbfqCLV4vQ9oi/Y+Zbazre5IZGwUbgddkLp3qoDxIfafauRubCVht9vUHXjr5L8IGNYaJn6VF/KHVInS6vY82iscPFhm+B7mQJCRAxYCzWuadhTGC7sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+Y6Y+hd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89ECC4AF17;
-	Mon, 29 Apr 2024 11:59:12 +0000 (UTC)
+	s=arc-20240116; t=1714391956; c=relaxed/simple;
+	bh=5ejb2tXW/Q0dvPwVchPVZGxIqEWmn7/A0WXZ1HQvyYo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QWcqWQufuQHdjVSnCsTypFRTjycIhmNwhC+5BQFrYVgv2qvcjJ5pFNfpfmZB9Ftdw4rMbjWjEESbsyPxKUaOJ/3SqVtb/uGSaZKYy8jEWK5BGtShUnoujTPPR8REoMgf774dLKx/AGoyquOpf7eK0O9sMllaG5WKZ9frrY2+m+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxmJSaAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8824C113CD;
+	Mon, 29 Apr 2024 11:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714391953;
-	bh=4DDNgIs5847t1noPTjXSLzeBT8NDmKHgPO1BlQvJD2c=;
+	s=korg; t=1714391956;
+	bh=5ejb2tXW/Q0dvPwVchPVZGxIqEWmn7/A0WXZ1HQvyYo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=n+Y6Y+hdeQ10y4Drg/CMIkH0PzhrQvo3YboqE1yjIzxfTd/OJj6EjhtzFca5+OM6P
-	 RBd2EyFJBteuTVwym8N2r/H90ehjSzfpM4/pGuzQpzObE7dd8AVRhgQd+6qbUFxWxm
-	 AuaC2D6pdOMDK+qIuTISMBP5cezkYaPpeNeVnek0=
-Subject: FAILED: patch "[PATCH] macsec: Enable devices to advertise whether they update" failed to apply to 6.6-stable tree
+	b=MxmJSaACTTrphPXmzSVI8H0awr2czuJKSd4Rqu5J/MyJyj1XX+qU9OGHnQD0lpR/t
+	 lsV/pj2XowEJZvroFjF4STFh9z2T20LiumlzJjXoh+lVa2Vb3j7zN80JoqKS8iMKnX
+	 tOAXeomw1zAgvdGq6GesqeVzUAkfkk/F1lLD09xs=
+Subject: FAILED: patch "[PATCH] macsec: Enable devices to advertise whether they update" failed to apply to 6.1-stable tree
 To: rrameshbabu@nvidia.com,bpoirier@nvidia.com,cratiu@nvidia.com,kuba@kernel.org,sd@queasysnail.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:59:09 +0200
-Message-ID: <2024042909-drab-untapped-78a4@gregkh>
+Date: Mon, 29 Apr 2024 13:59:10 +0200
+Message-ID: <2024042910-reopen-tiara-5796@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 475747a19316b08e856c666a20503e73d7ed67ed
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042909-drab-untapped-78a4@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042910-reopen-tiara-5796@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 475747a19316 ("macsec: Enable devices to advertise whether they update sk_buff md_dst during offloads")
 a73d8779d61a ("net: macsec: introduce mdo_insert_tx_tag")
 eb97b9bd38f9 ("net: macsec: documentation for macsec_context and macsec_ops")
+15f1735520f9 ("macsec: add support for IFLA_MACSEC_OFFLOAD in macsec_changelink")
+f3b4a00f0f62 ("net: macsec: fix net device access prior to holding a lock")
 
 thanks,
 
