@@ -1,152 +1,84 @@
-Return-Path: <stable+bounces-41619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19AC8B5599
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:42:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952088B5577
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AA9A1C212D1
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:42:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA0CAB22FDD
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE862C68F;
-	Mon, 29 Apr 2024 10:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D3D2375B;
+	Mon, 29 Apr 2024 10:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IjiJCKl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SldjUTq9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF607249FF
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 10:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C350C446AF;
+	Mon, 29 Apr 2024 10:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714387330; cv=none; b=nNUab78LGxYKuvAi48UIhHEykfrHASKe5vVDgDe45ChfkfUkHWfcPyT5+aEzwMAIBeHzJJ7bM0P6BuYQwAL4YcJkXe7v3cwCNE+HO86E5VrvbbUxaA9yHaDpViYdHYBf13y2X22AbyoM87u8ZfhSKUq+30gtyC1v2MbO1tGSRSo=
+	t=1714386958; cv=none; b=Uyy5caUNEpdud2i28Ok9cQVTuql6NdEzJsQaER1wtV9ku/jfGbRbbnZc/6NT+PMzxuATs8eoVEZXOz4XSZIG3h4g36UAyux8Que1SQUTxIw5tOthyZ5uxcb6frE6FJ+4LeKRtdO1J5Eh8n4ojbXoUNDDaJSpIoUYkIDmuG0jZQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714387330; c=relaxed/simple;
-	bh=g81innlEewrLFposHO2uObGU0GQGyQGxN7UIEasnQRw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I2ObmOEivovLDOjtmuCsKJtjYxdxosZuVMaa9kj6REVkupwa2HbkMuShnFLdH+dzeha7cWj6oVa34E8t/x973tEmM0qU9sG/JCh0nVn+kSOEibfx1kxjn1MIREQdeKBhf6k5mJhleRuWYT13B7puJvYEm9aCkTdqeKJIuC1I8Uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IjiJCKl7; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714387329; x=1745923329;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=g81innlEewrLFposHO2uObGU0GQGyQGxN7UIEasnQRw=;
-  b=IjiJCKl7p/OHl7d6lGWtaVTf1rCyOSakPvRiPsNuhUAHesLXcxWWrM0c
-   Qm6D6d6Jz7zVj0EUGqiSXnaLZjmg5L+FRwHAdFdwZOkn2IUDy8Xwp2tVj
-   LhMb+A7Qf1F+32bk5mtt0sRVupp/XDdSDjZY3zJJ4SGTgAah7kaCenO8x
-   wJj0QiDPhBjVw5vNivaU5fKJvod+o4HE7PbK7M1fnqYNaW4GrDf+V57+8
-   MhOi4FHQ7jCkttSoNDivRePAkzdl9TiKtqdZN8gh9BGNhUqnbN98PmzZh
-   ZLSGDcUpchYioWfr/0wDoLKDe0as3wHSeFykd++QeQY0aKnIWpODNuIsB
-   A==;
-X-CSE-ConnectionGUID: hMBlkhjhQ6SAiUUMmdhLcQ==
-X-CSE-MsgGUID: EpmoostjTQS55Lg95iFcKw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="9901815"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="9901815"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 03:42:06 -0700
-X-CSE-ConnectionGUID: ocHIw0VPTGu7Bolthd/M/w==
-X-CSE-MsgGUID: xGdrgHD8TmaFqQH/U/BJAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="30754951"
-Received: from mehlow-prequal01.jf.intel.com ([10.54.102.156])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 03:42:05 -0700
-From: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
-To: dmitry.kuvayskiy@gmail.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH 2/2] x86/sgx: Resolve EREMOVE page vs EAUG page data race
-Date: Mon, 29 Apr 2024 03:33:44 -0700
-Message-Id: <20240429103344.3553708-3-dmitrii.kuvaiskii@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240429103344.3553708-1-dmitrii.kuvaiskii@intel.com>
-References: <20240429103344.3553708-1-dmitrii.kuvaiskii@intel.com>
+	s=arc-20240116; t=1714386958; c=relaxed/simple;
+	bh=8L5ew9A7WdOChCw8/SB9gDA9/eCczR5FVrYTu73V6Hg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B96m62Gjc7gayi3IIo1QvDLeOJVm7rcbypuiAP7Nrh2D6MLOxOrMs2e9Rf+lMK29X+IGoBPrDTkLazWWab5X8yem11NWCac9QL70bY1lkJxHzZY/NqhJAeyc4e6Flx4/WqkUCBSNc1hib1ZPkXcSCsWK3SCE0x6movspTGoN5sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SldjUTq9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC12C4AF1A;
+	Mon, 29 Apr 2024 10:35:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714386958;
+	bh=8L5ew9A7WdOChCw8/SB9gDA9/eCczR5FVrYTu73V6Hg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SldjUTq9X2Iy4FQI7gYxJAXR7qAFxjlWl2SMtO7G1Lee8bsY1ID6LrGFuHeIyLBoa
+	 xqltKQ0dEikzSUZXAoN/rq0tpPOTv7RahM25Jer8HDvfuU5Fw7JuYRLkl26hJ/Pr2N
+	 ZGFvMaI9pQ9UCRwaukmq6IeP9GJOSqHVzWl+um74=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.1.89
+Date: Mon, 29 Apr 2024 12:35:49 +0200
+Message-ID: <2024042914-steadfast-skirmish-6b76@gregkh>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Deutschland GmbH - Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
 Content-Transfer-Encoding: 8bit
 
-Two enclave threads may try to add and remove the same enclave page
-simultaneously (e.g., if the SGX runtime supports both lazy allocation
-and `MADV_DONTNEED` semantics). Consider this race:
+I'm announcing the release of the 6.1.89 kernel.
 
-1. T1 performs page removal in sgx_encl_remove_pages() and stops right
-   after removing the page table entry and right before re-acquiring the
-   enclave lock to EREMOVE and xa_erase(&encl->page_array) the page.
-2. T2 tries to access the page, and #PF[not_present] is raised. The
-   condition to EAUG in sgx_vma_fault() is not satisfied because the
-   page is still present in encl->page_array, thus the SGX driver
-   assumes that the fault happened because the page was swapped out. The
-   driver continues on a code path that installs a page table entry
-   *without* performing EAUG.
-3. The enclave page metadata is in inconsistent state: the PTE is
-   installed but there was no EAUG. Thus, T2 in userspace infinitely
-   receives SIGSEGV on this page (and EACCEPT always fails).
+Only users of the 6.1 kernel series that had build problems with 6.1.88 need to upgrade.
 
-Fix this by making sure that T1 (the page-removing thread) always wins
-this data race. In particular, the page-being-removed is marked as such,
-and T2 retries until the page is fully removed.
+The updated 6.1.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.1.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-Fixes: 9849bb27152c ("x86/sgx: Support complete page removal")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
----
- arch/x86/kernel/cpu/sgx/encl.c  | 3 ++-
- arch/x86/kernel/cpu/sgx/encl.h  | 3 +++
- arch/x86/kernel/cpu/sgx/ioctl.c | 1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
+thanks,
 
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index 41f14b1a3025..7ccd8b2fce5f 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -257,7 +257,8 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 
- 	/* Entry successfully located. */
- 	if (entry->epc_page) {
--		if (entry->desc & SGX_ENCL_PAGE_BEING_RECLAIMED)
-+		if (entry->desc & (SGX_ENCL_PAGE_BEING_RECLAIMED |
-+				   SGX_ENCL_PAGE_BEING_REMOVED))
- 			return ERR_PTR(-EBUSY);
- 
- 		return entry;
-diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
-index f94ff14c9486..fff5f2293ae7 100644
---- a/arch/x86/kernel/cpu/sgx/encl.h
-+++ b/arch/x86/kernel/cpu/sgx/encl.h
-@@ -25,6 +25,9 @@
- /* 'desc' bit marking that the page is being reclaimed. */
- #define SGX_ENCL_PAGE_BEING_RECLAIMED	BIT(3)
- 
-+/* 'desc' bit marking that the page is being removed. */
-+#define SGX_ENCL_PAGE_BEING_REMOVED	BIT(2)
-+
- struct sgx_encl_page {
- 	unsigned long desc;
- 	unsigned long vm_max_prot_bits:8;
-diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
-index b65ab214bdf5..c542d4dd3e64 100644
---- a/arch/x86/kernel/cpu/sgx/ioctl.c
-+++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-@@ -1142,6 +1142,7 @@ static long sgx_encl_remove_pages(struct sgx_encl *encl,
- 		 * Do not keep encl->lock because of dependency on
- 		 * mmap_lock acquired in sgx_zap_enclave_ptes().
- 		 */
-+		entry->desc |= SGX_ENCL_PAGE_BEING_REMOVED;
- 		mutex_unlock(&encl->lock);
- 
- 		sgx_zap_enclave_ptes(encl, addr);
--- 
-2.34.1
+greg k-h
+
+------------
+
+ Makefile                           |    2 -
+ arch/arm/mach-omap2/pdata-quirks.c |   10 -----
+ sound/soc/ti/omap3pandora.c        |   63 +++++++++++++++++++++++--------------
+ 3 files changed, 41 insertions(+), 34 deletions(-)
+
+Greg Kroah-Hartman (2):
+      Revert "ASoC: ti: Convert Pandora ASoC to GPIO descriptors"
+      Linux 6.1.89
 
 
