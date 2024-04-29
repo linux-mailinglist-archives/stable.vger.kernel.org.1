@@ -1,178 +1,107 @@
-Return-Path: <stable+bounces-41707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056508B58B1
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:35:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F373F8B5902
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84D391F24973
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:35:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16FBCB26EB9
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C9CC2C6;
-	Mon, 29 Apr 2024 12:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E9D535C1;
+	Mon, 29 Apr 2024 12:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1nVjbE7G";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Op/UpWeU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0KMtun6"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F00110A1B;
-	Mon, 29 Apr 2024 12:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769AC53383
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714394149; cv=none; b=R9h5J7uo0VRzUu+qzbiTvxnDvRuwqhbn/gGjRQOmc3rQn/uvXUkecV6sUl5QZNPe91mFXNTQMDbJklgUTIX1yS+DVziwd2US9GXvttLbigoXPK6D3xz/KTLkiihMQcHCi60SPOIYtf5uirl4rpMci6aVyrXi1LqorMAv6vEdSqk=
+	t=1714394776; cv=none; b=j80W9QsQUIrVvFdMsDIY/V2Vvk0S0zfFhlYB5gqjOJsIBc/+IYk4UQenDq0UhQzNULG2XR/yUHOUV91faI7UU2lIukXnHzvzg7t9XrQqCXkj93O0+qg1bXRcTqm3hGV1kjapNbQ17J6tcgAAaPyf43FpMNS9tLtu5GKZoeRD67c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714394149; c=relaxed/simple;
-	bh=W++bsTCgt8Ak/qvxrG28b6/jckWokkT+K0XZBHvpYNY=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=tF1foAOO0aidj+Ub51wAz4kzllcxAIlfcR4vo/AOaQjdSEhO2dmu/GX+NHpuC7D5ZgTJkAr+q5vG/VI+64+SP/fgOv5cI2VvWCpbiENW6ngFhiPLLZeH4NMMYVdjOpwNREvFDbrZXpSFhdCDOv8M5fjz9HmWRcbg31or5oHHfRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1nVjbE7G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Op/UpWeU; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Apr 2024 12:35:41 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714394142;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IE/HEyswWWxEYsgZH5K3MXvim58TtiuexS9UWmxw+jw=;
-	b=1nVjbE7GDK5i6kstvTxUkjO1i1NkzrRTq2ygDvVGTl8MGfagyCfkCbEKh2fFw1zrY8xRQ5
-	evphsVltqGWX38J3Adf6BTRkKpw3PqdgtYakI3RX/G+ESJniMdX2h2aUg7cboIwTJo5Daz
-	+qKIGrvXEJB407M3inFCp2jiH00CqXa/IslUx4PnlVX/2MHgPeJLgF49HzRlg8/CTURrr1
-	CSu/id18r/O2SqhfRIm/+Dg6rpxooAUZLH8Mz4HSXUjVHA7ufCiz6NnURZSZlTCkZXk+0x
-	YK+AWSEdWLlWxJpWopx6Jrt7XArQFkjWuF8/21+7oVkK/rmYq+iS3t4LWrhJ2A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714394142;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IE/HEyswWWxEYsgZH5K3MXvim58TtiuexS9UWmxw+jw=;
-	b=Op/UpWeUKWL1SvQmd+tE+QaxNnWFtqdVphGs6Onss3RGuIHtoVJv+hgL9H2Hr/D+Kv8JCp
-	gflEsaNOAapiqzBg==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/apic: Don't access the APIC when disabling X2APIC
-Cc: Adrian Huang <ahuang12@lenovo.com>, Thomas Gleixner <tglx@linutronix.de>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <875xw5t6r7.ffs@tglx>
-References: <875xw5t6r7.ffs@tglx>
+	s=arc-20240116; t=1714394776; c=relaxed/simple;
+	bh=sDK40VaPsRW0CucKpZKJA+3fb2KuJArruyVdtchsTB4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qFoIzxcQDPehc/yE7A7l8XBVHmbwuvNk8Xsn1fsgE/6LR12aktS4QQ0v+YTMGwxBq+Mrnw88N7a3sppyYX2Viy+5PrmerJzu7TWN+5XKhf4PCqFispeJvflHOggdxLtkLCNNPJXavY4GnmhFrLdHGb9AsRNOJMAtP9WycSNMD6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0KMtun6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1078CC113CD;
+	Mon, 29 Apr 2024 12:46:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714394776;
+	bh=sDK40VaPsRW0CucKpZKJA+3fb2KuJArruyVdtchsTB4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Y0KMtun6ezkRBZ56f1fo/WGZ70+1XB4mdm8sRIt0fwD3KoVtaQ7FSXXXg9Xb0TAv5
+	 RGKedcqrXpibyNLTNnE0LcemdkVbbPvB+lRcPUII3oxTWR5KsHqyVCiov1BVaUmZ1r
+	 EvP6XmqEh4ewuhgD9os9g1SfIXhdtl3wyxYdj+gMwKM2mYceGvLqLboqMFH0CZKolF
+	 NCvxWzkVIQ0RvmYbxUDTpuAdXdzRzu96WpuNWzbNGgqmX7fK0nlvHXGMd1xEhpbd4q
+	 ttgBm0el5ie92QsHk3tfwvxItpIWXlU5NPpfgG/VYpyPBqTIQLin7w49L9VAN0HFEY
+	 WqidHkvWLSOFQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: stable@vger.kernel.org
+Cc: Aswin Unnikrishnan <aswinunni01@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.1.y] rust: remove `params` from `module` macro example
+Date: Mon, 29 Apr 2024 14:45:05 +0200
+Message-ID: <20240429124505.28432-1-ojeda@kernel.org>
+In-Reply-To: <2024042924-ribcage-browsing-7e8b@gregkh>
+References: <2024042924-ribcage-browsing-7e8b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171439414186.10875.17224463643261311678.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+From: Aswin Unnikrishnan <aswinunni01@gmail.com>
 
-Commit-ID:     1e1dd773644e9de88f54386f7147c1068375fc75
-Gitweb:        https://git.kernel.org/tip/1e1dd773644e9de88f54386f7147c1068375fc75
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 26 Apr 2024 00:30:36 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 29 Apr 2024 12:08:07 +02:00
+Remove argument `params` from the `module` macro example, because the
+macro does not currently support module parameters since it was not sent
+with the initial merge.
 
-x86/apic: Don't access the APIC when disabling X2APIC
-
-With 'iommu=off' on the kernel command line and X2APIC enabled by the BIOS
-the code which disables the X2APIC triggers an unchecked MSR access error:
-
-  RDMSR from 0x802 at rIP: 0xffffffff94079992 (native_apic_msr_read+0x12/0x50)
-
-This is happens because default_acpi_madt_oem_check() selects an X2APIC
-driver before the X2APIC is disabled.
-
-When the X2APIC is disabled because interrupt remapping cannot be enabled
-due to 'iommu=off' on the command line, x2apic_disable() invokes
-apic_set_fixmap() which in turn tries to read the APIC ID. This triggers
-the MSR warning because X2APIC is disabled, but the APIC driver is still
-X2APIC based.
-
-Prevent that by adding an argument to apic_set_fixmap() which makes the
-APIC ID read out conditional and set it to false from the X2APIC disable
-path. That's correct as the APIC ID has already been read out during early
-discovery.
-
-Fixes: d10a904435fa ("x86/apic: Consolidate boot_cpu_physical_apicid initialization sites")
-Reported-by: Adrian Huang <ahuang12@lenovo.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Adrian Huang <ahuang12@lenovo.com>
+Signed-off-by: Aswin Unnikrishnan <aswinunni01@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/875xw5t6r7.ffs@tglx
+Fixes: 1fbde52bde73 ("rust: add `macros` crate")
+Link: https://lore.kernel.org/r/20240419215015.157258-1-aswinunni01@gmail.com
+[ Reworded slightly. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+(cherry picked from commit 19843452dca40e28d6d3f4793d998b681d505c7f)
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- arch/x86/kernel/apic/apic.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ rust/macros/lib.rs | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index c342c4a..b229648 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1771,7 +1771,7 @@ void x2apic_setup(void)
- 	__x2apic_enable();
- }
- 
--static __init void apic_set_fixmap(void);
-+static __init void apic_set_fixmap(bool read_apic);
- 
- static __init void x2apic_disable(void)
- {
-@@ -1793,7 +1793,12 @@ static __init void x2apic_disable(void)
- 	}
- 
- 	__x2apic_disable();
--	apic_set_fixmap();
-+	/*
-+	 * Don't reread the APIC ID as it was already done from
-+	 * check_x2apic() and the apic driver still is a x2APIC variant,
-+	 * which fails to do the read after x2APIC was disabled.
-+	 */
-+	apic_set_fixmap(false);
- }
- 
- static __init void x2apic_enable(void)
-@@ -2057,13 +2062,14 @@ void __init init_apic_mappings(void)
- 	}
- }
- 
--static __init void apic_set_fixmap(void)
-+static __init void apic_set_fixmap(bool read_apic)
- {
- 	set_fixmap_nocache(FIX_APIC_BASE, mp_lapic_addr);
- 	apic_mmio_base = APIC_BASE;
- 	apic_printk(APIC_VERBOSE, "mapped APIC to %16lx (%16lx)\n",
- 		    apic_mmio_base, mp_lapic_addr);
--	apic_read_boot_cpu_id(false);
-+	if (read_apic)
-+		apic_read_boot_cpu_id(false);
- }
- 
- void __init register_lapic_address(unsigned long address)
-@@ -2073,7 +2079,7 @@ void __init register_lapic_address(unsigned long address)
- 	mp_lapic_addr = address;
- 
- 	if (!x2apic_mode)
--		apic_set_fixmap();
-+		apic_set_fixmap(true);
- }
- 
- /*
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 91764bfb1f89..f2efa86a747a 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -27,18 +27,6 @@ use proc_macro::TokenStream;
+ ///     author: b"Rust for Linux Contributors",
+ ///     description: b"My very own kernel module!",
+ ///     license: b"GPL",
+-///     params: {
+-///        my_i32: i32 {
+-///            default: 42,
+-///            permissions: 0o000,
+-///            description: b"Example of i32",
+-///        },
+-///        writeable_i32: i32 {
+-///            default: 42,
+-///            permissions: 0o644,
+-///            description: b"Example of i32",
+-///        },
+-///    },
+ /// }
+ ///
+ /// struct MyModule;
+-- 
+2.44.0
+
 
