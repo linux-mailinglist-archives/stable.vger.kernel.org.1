@@ -1,116 +1,76 @@
-Return-Path: <stable+bounces-41597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9904F8B5219
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 09:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2168B528A
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 09:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE7F91C20E22
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 07:18:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C0841C20B1E
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 07:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30A914A8C;
-	Mon, 29 Apr 2024 07:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B6E14A90;
+	Mon, 29 Apr 2024 07:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="foPejAjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEGcJgPW"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F352913AC5;
-	Mon, 29 Apr 2024 07:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C44171C1;
+	Mon, 29 Apr 2024 07:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714375118; cv=none; b=CwFWvwZjMOWmyUptSjDvU9N48vekVeSxoN70YWdGVx6GHA26TboN6HIJZGrXROYQ4umjWOgoUj2espplcIeh+UsoIb1USsmAVfIJLtxuEVJtsMxL11VBXxetBgde+/ZHRwegv4IhCreL4fYM2K31j/ZBTkFJ0Fv9a1ijhVh3NpQ=
+	t=1714376949; cv=none; b=TlfYUKMgjoID3jHKFmGQN670LnNWXOblPmINK0iPgDvti0cBL3EF8D/jCCPqUrtwWvTPR6j+Bx70XduOxg+GH5eqrGhL7Ghy3WQFdFncCcI+x/TPPBV5VhLP4Q4AQTwxN/VGGTs7QOGrIBNPyb0PLZHHsLt6Qpf+3N5w9xw3ao0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714375118; c=relaxed/simple;
-	bh=lTfHUa+6X3dBbbyMHNjxRT794QlSydTwuuVcDpoSGiw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CDs2tQUPmRq73flQFLKyshs7YL4raUxGPJcAgZQ6SYrQF1rIC6OCmJ14FXnpprbbyCcNMravBH1n2jRGIBLnsNlL2aVa9HKCQZmmcmGjqWbBX/xdgvnxbTnZXo3VQXWPMpKOT2uzHSQPoiN0EmCRDmyGCJvZysbzMUBZnYYTfEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=foPejAjy; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:From:Sender:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=v4MB+irPk//D9YryabZUxAaUkrcUIos/DQ/+395gmH4=; t=1714375117;
-	x=1714807117; b=foPejAjyBmSo2ZG3HPi5DU+Xdkgrr+5bW/86BesxCGJVlffyNpz8ywiga2Rlg
-	y65Z8ghV4llz3A/CpJjLpUtqUN9R+STkB9EHXHNcwIufNL+nIpoB1KmpG21uZnp5PZOQJqqh0g2RR
-	b/PBNMYo2DN+Ic3UNR9g3ovR1oElmQN48PmEcM8a4wyePzpsisGSWcWWo3IF3Vpqqhw/1R0civIVX
-	nQiV3FcctnKLMnKFq/9upgjFM0nhHLwMjDUrWCBbEY0Vf6GnsT8t+e216cfdai34OAcEWyailiTcd
-	hvN4aOWC5/TPgMTq3sQ2fCidivm+JhsvlFMIoJe1jO9SEdnENw==;
-Received: from ip4d148da6.dynamic.kabel-deutschland.de ([77.20.141.166] helo=truhe.fritz.box); authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	id 1s1LHV-0004e1-Ah; Mon, 29 Apr 2024 09:18:33 +0200
-From: Thorsten Leemhuis <linux@leemhuis.info>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	stable@vger.kernel.org,
-	workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] docs: stable-kernel-rules: create special tag to flag 'no backporting'
-Date: Mon, 29 Apr 2024 09:18:30 +0200
-Message-ID: <35989d3b2f3f8cf23828b0c84fde9b17a74be97c.1714367921.git.linux@leemhuis.info>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1714367921.git.linux@leemhuis.info>
+	s=arc-20240116; t=1714376949; c=relaxed/simple;
+	bh=yKavsInFyLfIS2QTxbS6Mq2KLQgz3M/8o98Y1G9Rr1c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rPyMNt1IS7RY9MrRE4Dk/oaAr8Z56lPyEqpRpFGjzJ6w0b0rzcetgu2LHIUz6qy5mubB7SJvEX7huhPDcWQf4uxCOlA9qLbfN0+IzlTvY44jPg3II5gP1PbIjXIwgf2Rp9tKwrFnYTM2OzRkNzc8883CVjr0/CN/ERfXXs27yCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEGcJgPW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F79C113CD;
+	Mon, 29 Apr 2024 07:49:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714376948;
+	bh=yKavsInFyLfIS2QTxbS6Mq2KLQgz3M/8o98Y1G9Rr1c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kEGcJgPWODsG6NlRAa6VZaA64nylaqIpNUiga16VoZmHbfC4jYdBZorUEMuf5iIqB
+	 SJUGO3LKF6KfmLf+Ps749YhV9JgETdIl88u365C3LlQXEbPpCAPknEQFpfPfkcdWEb
+	 4Hykrqm59qy99abUO1AunxPxVzJxLLC7JYBzOCTs=
+Date: Mon, 29 Apr 2024 09:49:05 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	stable@vger.kernel.org, workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] docs: stable-kernel-rules: call mainline by its
+ name and change example
+Message-ID: <2024042952-prelude-slinging-77ca@gregkh>
 References: <cover.1714367921.git.linux@leemhuis.info>
+ <0a120573ea827aee12d45e7bd802ba85c09884da.1714367921.git.linux@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1714375117;b475376d;
-X-HE-SMSGID: 1s1LHV-0004e1-Ah
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0a120573ea827aee12d45e7bd802ba85c09884da.1714367921.git.linux@leemhuis.info>
 
-Document a new variant of the stable tag developers can use to make the
-stable team's tools ignore a change[1].
+On Mon, Apr 29, 2024 at 09:18:27AM +0200, Thorsten Leemhuis wrote:
+> Fine-tuning:
+> 
+> * s/Linus' tree/Linux mainline/, as mainline is the term used elsewhere
+>   in the document.
+> 
+> * Provide a better example for the 'delayed backporting' case that uses
+>   a fixed rather than a relative reference point, which makes it easier
+>   to handle for the stable team.
+> 
+> Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
 
-That way developers can use 'Fixes:' tags without fearing the changes
-might be backported in semi-automatic fashion. Such concerns are the
-reason why some developers deliberately omit the 'Fixes:' tag in
-changes[2] -- which somewhat undermines the reason for the existence of
-that tag and might be unwise in the long term[3].
 
-Link: https://lore.kernel.org/all/b452fd54-fdc6-47e4-8c26-6627f6b7eff3@leemhuis.info/ [1]
-Link: https://lore.kernel.org/all/cover.1712226175.git.antony.antony@secunet.com/ [2]
-Link: https://lore.kernel.org/all/dfd87673-c581-4b4b-b37a-1cf5c817240d@leemhuis.info/ [3]
-Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
-
----
-
-A patch to make one of the stable-script honor the flag can be found in
-https://lore.kernel.org/all/655ce2a3-eb04-4ade-999e-23fc5dc5fb3a@leemhuis.info/
-
-For autosel I was unable to locate the code.
----
- Documentation/process/stable-kernel-rules.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/Documentation/process/stable-kernel-rules.rst b/Documentation/process/stable-kernel-rules.rst
-index ebf4152659f2d0..9ca8083b41c7f1 100644
---- a/Documentation/process/stable-kernel-rules.rst
-+++ b/Documentation/process/stable-kernel-rules.rst
-@@ -129,6 +129,12 @@ comment to pass arbitrary or predefined notes:
- 
-     Cc: <stable@vger.kernel.org> # see patch description, needs adjustments for <= 6.3
- 
-+There furthermore is a variant of the stable tag you can use to make the stable
-+team's backporting tools (e.g AUTOSEL or scripts that look for commits
-+containing a 'Fixes:' tag) ignore a change::
-+
-+     Cc: <stable+noautosel@kernel.org> # reason goes here, and must be present
-+
- .. _option_2:
- 
- Option 2
--- 
-2.44.0
-
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
