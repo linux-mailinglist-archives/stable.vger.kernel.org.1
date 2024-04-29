@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-41765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFF58B62CA
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 21:46:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D3F8B6306
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 22:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72F531C212A8
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 19:46:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5403B20E73
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 20:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D9313B5B6;
-	Mon, 29 Apr 2024 19:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45941411E7;
+	Mon, 29 Apr 2024 20:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="M7EWROTE"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="AHjuTeZ1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B51913B2A4
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 19:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C331411CC
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 20:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714419977; cv=none; b=NaxswWAbuNHCTC/OBSZiJ05t/XMUYBQLnSy36EDAp77je6ItlQdhdwjXsklTjgXyW6MwCCTsJgnDBomryoM4HSxWSvQgGqXTNGB8suYsciiJepz86TmAlmmPTf4POiCddzA6jYvijgimmtBwKtXfR7KrqgGMbVvXI5yM/C9XWmk=
+	t=1714420820; cv=none; b=tsVkG9Hf92GfskGfJDKUUfZpHO/GniH9PNKH2GNxtiEKFsMjF+P+16OGX5I60fpfz3yVumeiQaNNW38XUtMwDjjchOjQ37kIkVVL+UtgwER0pnH3ofmSIHX5asPXHffgmCyW9Wh65yvHklUYAWHtL9NdRN7cLFFA5O+Hmx02LwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714419977; c=relaxed/simple;
-	bh=Fflv2happyBtuC7pAoLoJyMtZKZg3vbQFe9oCckEd2g=;
+	s=arc-20240116; t=1714420820; c=relaxed/simple;
+	bh=mcotd9NbVeWkgG22NKKI0lo1QJrij1pYaryZYmTYxmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbIHS82d/Ac05bXRU7tcI0N+oy/9wtSOYQrVE0m9D7odJL2U2yu1X1B3x7+OL/aeCtbeO9jVlFIuDvMePC6sX7u5beQWczMzXYefIRCWGJea/jOqHYqfUI/1hRhi40PnkRAr7/Y2A4AZsJ3EpoQ9Sfd7wfngwS9QpqYoo2Rn0Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=M7EWROTE; arc=none smtp.client-ip=209.85.214.174
+	 MIME-Version; b=hMY/RD515d1gxkKlQBC95Cz03HNlhNztK71Iy2I5ho4ZvesE42yWJx5gLVJ9f1F6TN4JR+fs/wFMKhrkngSYNCEsq1O0YnhBUiRXXxHew/HcUl65cTYA5I0cOdanmeAnPz32cmO/CLNDyKwuSYRA3RAapGo95g4Fe56yTG8vZMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=AHjuTeZ1; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1e36b7e7dd2so40056095ad.1
-        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:46:15 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1e86d56b3bcso44970355ad.1
+        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 13:00:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1714419975; x=1715024775; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1714420818; x=1715025618; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4QjCg8SYenXS+XuIi5qqPpTiXsYXZeRvUkEwlZZQZlc=;
-        b=M7EWROTEIEMVgjPqceUVtdRpjHqOZrJVFvgyTMEe4QpVpUbyj76J5RGydPOPZG21Ib
-         bgqS667BfYX/rXh4SW/oR1j+8EIHw4umY1hoW8ThQeruDYc/2OpxRJdS9+49GkXdJ9Zy
-         qU0cBsIp7zJWK+PBAQzL5t7z1Kly1cko4P3MA=
+        bh=eWmqn49eFC/BkS9yD3r0ttTtLZEtxmHbf5T1oMc/M28=;
+        b=AHjuTeZ1ni73eIt4kzBBlsyMojqqdNWoYivdA1esJL9OpUjt6r94H4EUpp+HtXizqg
+         FH9w+rszxfYJm3Ejw6Lij9vnktihGDZFccnzJZGM+D7FECVXNaWuBDWg9NaeDyNRMTnZ
+         8utk3ka/u3zAv8UheMfy9KItq4X73uyG+wucE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714419975; x=1715024775;
+        d=1e100.net; s=20230601; t=1714420818; x=1715025618;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4QjCg8SYenXS+XuIi5qqPpTiXsYXZeRvUkEwlZZQZlc=;
-        b=vDUvavncn0G0r7pRrr+VRB2VErEcsc+fbpBCAXZql+AchvSmL4wZUTJTtWK/tiLi5s
-         tGWn7S9ecQBYNF4t0iXNEncEmTtR1jmqT1Nxxn5egJyDOZ5AhQ9Bc9r1npEy3oxCxhUr
-         Se8TRhkBuJ0E0cMJYtg804GUtFkxvcK03UmJi5q71r/sHe/hwJGVPFSmq6cAFL7dV+bm
-         GO8bkKzAdurpEwm76C7i69xqTyEEUUEyhC2MuRJ56RpCBsUxSAuUhFKRYfG4efAjWsa0
-         uO5cw+ieUHHaufDLqk3068FzC81xVGXYsH5sbw4CFrPXAWRebdJi/6Qngj5kiZ/xq974
-         XlGw==
-X-Gm-Message-State: AOJu0YzqxWO686VcctLwsPxGSFt7jQFcfUowOL1reaXVfNu9dkPy5t1Y
-	HX5D3rNffbv/4YgZDqRR9jo/xBNML68RWyyh1lXFbcySh42xWo47RXQc6Ya4OFanxdvkrLjE0lI
+        bh=eWmqn49eFC/BkS9yD3r0ttTtLZEtxmHbf5T1oMc/M28=;
+        b=JhB6TlJIS50+Ixw4qNKSTrjEPX1hERpJNulkHKJO6pyZUneAFesvG96/D79kS8dbtv
+         8SXXqCsbJydYDtC4/4p4emNnVs3uB65TxWu+VRY4pZj+ozmNbP9iZbtTiNhrV+aCtJkg
+         tTvEvMOLGkJrjZRqh1DwREqlkzcvuRJuOHp/B+EbC0Q+GRTeLd71O/Zm19Qf+IxszYaD
+         w828SRYrKkQf+iNsqLiOkHhZXD3AG7jA1pPiqsvbt8FKSHD8Dodo52c3zTidGGmzL/+i
+         gi5agcSiIyJsQjCD1K4hO0JHYaeGHIx9H10w664gsPwB1q5q5sbi34PzQi9mxT8wYg0T
+         C+xA==
+X-Gm-Message-State: AOJu0Yy1yl8HHNn6IAVQPXl5aLqk+tNidjiyg3+EmXMy8DAcgA1LpD64
+	stbligSqDzt6bUAux4061x+CqcF0P/naY/kUBPyJipcnFHTWRqzfubU1Qdg/gtVTqcY7HFDJZHs
 	=
-X-Google-Smtp-Source: AGHT+IFvxwrm+Nf34l1bmpd2F1KsT83NJku+4ZXZlMzkvoySXOfcschxgtys9x2RHfgzmnb0ut+qdA==
-X-Received: by 2002:a17:903:40cc:b0:1e4:a667:550e with SMTP id t12-20020a17090340cc00b001e4a667550emr10072628pld.20.1714419974796;
-        Mon, 29 Apr 2024 12:46:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOGMjnKO1WeszkOemOXgZRC4K/j70GXMxjESfhh2aV3SKMhi9+phdW8z27ivdQdfK41WIRAg==
+X-Received: by 2002:a17:902:6b09:b0:1eb:2fb2:8ea8 with SMTP id o9-20020a1709026b0900b001eb2fb28ea8mr594981plk.50.1714420818183;
+        Mon, 29 Apr 2024 13:00:18 -0700 (PDT)
 Received: from localhost (4.198.125.34.bc.googleusercontent.com. [34.125.198.4])
-        by smtp.gmail.com with UTF8SMTPSA id o16-20020a170902d4d000b001eb3f4e96c2sm5236162plg.157.2024.04.29.12.46.13
+        by smtp.gmail.com with UTF8SMTPSA id a4-20020a170902ecc400b001eac9aa55edsm8059703plh.250.2024.04.29.13.00.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Apr 2024 12:46:14 -0700 (PDT)
+        Mon, 29 Apr 2024 13:00:17 -0700 (PDT)
 From: Stephen Boyd <swboyd@chromium.org>
 To: stable@vger.kernel.org
 Cc: Johan Hovold <johan+linaro@kernel.org>,
@@ -72,12 +72,12 @@ Cc: Johan Hovold <johan+linaro@kernel.org>,
 	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.8.y] phy: qcom: qmp-combo: fix VCO div offset on v5_5nm and v6
-Date: Mon, 29 Apr 2024 12:46:12 -0700
-Message-ID: <20240429194612.3412821-1-swboyd@chromium.org>
+Subject: [PATCH 6.6.y] phy: qcom: qmp-combo: fix VCO div offset on v5_5nm and v6
+Date: Mon, 29 Apr 2024 13:00:16 -0700
+Message-ID: <20240429200017.3751576-1-swboyd@chromium.org>
 X-Mailer: git-send-email 2.45.0.rc0.197.gbae5840b3b-goog
-In-Reply-To: <2024042918-jet-harmonica-e767@gregkh>
-References: <2024042918-jet-harmonica-e767@gregkh>
+In-Reply-To: <2024042919-enlisted-punch-79a5@gregkh>
+References: <2024042919-enlisted-punch-79a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -116,7 +116,7 @@ Signed-off-by: Stephen Boyd <swboyd@chromium.org>
  2 files changed, 4 insertions(+)
 
 diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-index d83859e955a8..dee666f8e29e 100644
+index 27d7895a9b61..be837dee81f7 100644
 --- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
 +++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
 @@ -188,6 +188,7 @@ static const unsigned int qmp_v5_5nm_usb3phy_regs_layout[QPHY_LAYOUT_SIZE] = {
@@ -136,12 +136,12 @@ index d83859e955a8..dee666f8e29e 100644
  	[QPHY_TX_TX_POL_INV]		= QSERDES_V6_TX_TX_POL_INV,
  	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V6_TX_TX_DRV_LVL,
 diff --git a/drivers/phy/qualcomm/phy-qcom-qmp.h b/drivers/phy/qualcomm/phy-qcom-qmp.h
-index 6923496cbfee..49ceded9b3cb 100644
+index 32d897684755..e2c22edfe653 100644
 --- a/drivers/phy/qualcomm/phy-qcom-qmp.h
 +++ b/drivers/phy/qualcomm/phy-qcom-qmp.h
-@@ -132,9 +132,11 @@
- #define QSERDES_V4_DP_PHY_AUX_INTERRUPT_STATUS		0x0d8
- #define QSERDES_V4_DP_PHY_STATUS			0x0dc
+@@ -134,9 +134,11 @@
+ #define QPHY_V4_PCS_MISC_TYPEC_STATUS			0x10
+ #define QPHY_V4_PCS_MISC_PLACEHOLDER_STATUS		0x14
  
 +#define QSERDES_V5_DP_PHY_VCO_DIV			0x070
  #define QSERDES_V5_DP_PHY_STATUS			0x0dc
