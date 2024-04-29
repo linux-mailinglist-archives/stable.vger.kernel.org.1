@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7AE8B574C
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9C58B574D
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F535B22891
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:00:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0D8BB228A6
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67828535A9;
-	Mon, 29 Apr 2024 12:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD6252F8E;
+	Mon, 29 Apr 2024 12:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7nfugSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L45shF1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296E6535A2
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F171D4652D
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714392035; cv=none; b=jmJMW+O7aSzHP2wtV8t9+Fm6ObautsyesEWbPtkTJ4jMY2TUkXb+ouyncedpVURJsihEf/YuLFxg03Z16ydwRDXUqESIDETp3DiU1b406hZqDgpJZa+ll+xgN15Le90EAHjiLYf2Uh8+Cn8k3xemMWZluMMZy4gqUUj9oaMpavs=
+	t=1714392058; cv=none; b=AOlz4lfjzfg7Vx3G4DLKfPrRkEKH3OJ9uEUZxVTgb0KLeA2RsTBW6XecHbLiaqpwKFF45FygUb40EG/O84JEhl4tmQMt7iQT3HGzRizsveYRDA0tC3Dj8znWynQkkvJGUlo24M5fEDbROaYYkVgI8e/f+sgv3e/UM/+mS2+jhWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714392035; c=relaxed/simple;
-	bh=moe0K2Hw+W/o9uPidgUXJ6QJvgp0PWGEey+4jEBL26E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mqmjopE7zx66sUkjcVDDThlk27+B+hYvFZhHTAkEoZzkfLj0PaTpstavhqdtNHXaAIEcEofHDSsWgIbIo32FovAVeJabbtSeUj4WS0nWCoOc/FBuTQiP4pDdpwPUpn9OrFKoesXIbYQZV3uniC4uN4w9gyudtEhGl4BbOipMP2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7nfugSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49823C113CD;
-	Mon, 29 Apr 2024 12:00:34 +0000 (UTC)
+	s=arc-20240116; t=1714392058; c=relaxed/simple;
+	bh=kMkR9Tbw36Sc6atxuBSvKfpHkGN91Kk9e6mucGMIzes=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Wrst2yf0tOf9ppGw/PVhVi+5xvK+LGFGE2ECvI5jFoTyzFyNVtJBkxSjC8R3EclAAKt49xUNTbnKFF55QX3j/Zaha5CGPdu6Guok+R9jjjNjFCo2Tb3ZUdRUdjZ7IqQeZur4K8rSBzrCZQbsExShzGRm53E97V1SuPWtEl7M+a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L45shF1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125BFC113CD;
+	Mon, 29 Apr 2024 12:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714392034;
-	bh=moe0K2Hw+W/o9uPidgUXJ6QJvgp0PWGEey+4jEBL26E=;
+	s=korg; t=1714392057;
+	bh=kMkR9Tbw36Sc6atxuBSvKfpHkGN91Kk9e6mucGMIzes=;
 	h=Subject:To:Cc:From:Date:From;
-	b=p7nfugSPZtDmm60+VYkO3FYhbUPD99UiesYiGR7VpaFZ1MeeVl+AqQpNhPIMjEfJF
-	 JfR9pYvblv+qgrKxTtpGnrsGctoAAfrqVoBlSUipefoLz5MHq4iNqBxrsL8i1q8J++
-	 79FnlEsvBU3r9IUrHcpVaqjq970F4NycOotDEGj0=
-Subject: FAILED: patch "[PATCH] udp: preserve the connected status if only UDP cmsg" failed to apply to 4.19-stable tree
-To: yick.xie@gmail.com,kuba@kernel.org,willemb@google.com
+	b=L45shF1qFWzmo5pvXvXyDyDLdifk05VKnXxel2lnMp90RM3Df0u2hmngW0i6/gkLJ
+	 0ApmC6zOPmYwXFa7+xZ03uGaUoqrufzP/D7vPII+pXbtqlExLI+ILRFVNe6gxiz6x4
+	 bXT3bR7QUqt2TZlddHORpHS8erfDVrJudpJtgWB4=
+Subject: FAILED: patch "[PATCH] mtd: limit OTP NVMEM cell parse to non-NAND devices" failed to apply to 6.6-stable tree
+To: ansuelsmth@gmail.com,miquel.raynal@bootlin.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 14:00:25 +0200
-Message-ID: <2024042925-enrich-charbroil-ce36@gregkh>
+Date: Mon, 29 Apr 2024 14:00:54 +0200
+Message-ID: <2024042954-throwaway-recluse-d3a6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,30 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 680d11f6e5427b6af1321932286722d24a8b16c1
+git cherry-pick -x d2d73a6dd17365c43e109263841f7c26da55cfb0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042925-enrich-charbroil-ce36@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042954-throwaway-recluse-d3a6@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-680d11f6e542 ("udp: preserve the connected status if only UDP cmsg")
-5298953e742d ("udp6: don't make extra copies of iflow")
-42dcfd850e51 ("udp6: allow SO_MARK ctrl msg to affect routing")
-3df98d79215a ("lsm,selinux: pass flowi_common instead of flowi to the LSM hooks")
-e94ee171349d ("xfrm: Use correct address family in xfrm_state_find")
-5eff06902394 ("ipv4: fill fl4_icmp_{type,code} in ping_v4_sendmsg")
-6abde0b24122 ("crypto/chtls: IPv6 support for inline TLS")
-ed52f2c608c9 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next")
+d2d73a6dd173 ("mtd: limit OTP NVMEM cell parse to non-NAND devices")
+2cc3b37f5b6d ("nvmem: add explicit config option to read old syntax fixed OF cells")
 
 thanks,
 
@@ -84,70 +78,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 680d11f6e5427b6af1321932286722d24a8b16c1 Mon Sep 17 00:00:00 2001
-From: Yick Xie <yick.xie@gmail.com>
-Date: Fri, 19 Apr 2024 01:06:10 +0800
-Subject: [PATCH] udp: preserve the connected status if only UDP cmsg
+From d2d73a6dd17365c43e109263841f7c26da55cfb0 Mon Sep 17 00:00:00 2001
+From: Christian Marangi <ansuelsmth@gmail.com>
+Date: Fri, 12 Apr 2024 12:50:26 +0200
+Subject: [PATCH] mtd: limit OTP NVMEM cell parse to non-NAND devices
 
-If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-"connected" should not be set to 0. Otherwise it stops
-the connected socket from using the cached route.
+MTD OTP logic is very fragile on parsing NVMEM cell and can be
+problematic with some specific kind of devices.
 
-Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The problem was discovered by e87161321a40 ("mtd: rawnand: macronix:
+OTP access for MX30LFxG18AC") where OTP support was added to a NAND
+device. With the case of NAND devices, it does require a node where ECC
+info are declared and all the fixed partitions, and this cause the OTP
+codepath to parse this node as OTP NVMEM cells, making probe fail and
+the NAND device registration fail.
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index c02bf011d4a6..420905be5f30 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1123,16 +1123,17 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 
- 	if (msg->msg_controllen) {
- 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip_cmsg_send(sk, msg, &ipc,
- 					   sk->sk_family == AF_INET6);
-+			connected = 0;
-+		}
- 		if (unlikely(err < 0)) {
- 			kfree(ipc.opt);
- 			return err;
- 		}
- 		if (ipc.opt)
- 			free = 1;
--		connected = 0;
- 	}
- 	if (!ipc.opt) {
- 		struct ip_options_rcu *inet_opt;
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 8b1dd7f51249..1a4cccdd40c9 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1474,9 +1474,11 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 		ipc6.opt = opt;
- 
- 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, fl6,
- 						    &ipc6);
-+			connected = false;
-+		}
- 		if (err < 0) {
- 			fl6_sock_release(flowlabel);
- 			return err;
-@@ -1488,7 +1490,6 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 		}
- 		if (!(opt->opt_nflen|opt->opt_flen))
- 			opt = NULL;
--		connected = false;
- 	}
- 	if (!opt) {
- 		opt = txopt_get(np);
+MTD OTP parsing should have been limited to always using compatible to
+prevent this error by using node with compatible "otp-user" or
+"otp-factory".
+
+NVMEM across the years had various iteration on how cells could be
+declared in DT, in some old implementation, no_of_node should have been
+enabled but now add_legacy_fixed_of_cells should be used to disable
+NVMEM to parse child node as NVMEM cell.
+
+To fix this and limit any regression with other MTD that makes use of
+declaring OTP as direct child of the dev node, disable
+add_legacy_fixed_of_cells if we detect the MTD type is Nand.
+
+With the following logic, the OTP NVMEM entry is correctly created with
+no cells and the MTD Nand is correctly probed and partitions are
+correctly exposed.
+
+Fixes: 4b361cfa8624 ("mtd: core: add OTP nvmem provider support")
+Cc: <stable@vger.kernel.org> # v6.7+
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240412105030.1598-1-ansuelsmth@gmail.com
+
+diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
+index 5887feb347a4..0de87bc63840 100644
+--- a/drivers/mtd/mtdcore.c
++++ b/drivers/mtd/mtdcore.c
+@@ -900,7 +900,7 @@ static struct nvmem_device *mtd_otp_nvmem_register(struct mtd_info *mtd,
+ 	config.name = compatible;
+ 	config.id = NVMEM_DEVID_AUTO;
+ 	config.owner = THIS_MODULE;
+-	config.add_legacy_fixed_of_cells = true;
++	config.add_legacy_fixed_of_cells = !mtd_type_is_nand(mtd);
+ 	config.type = NVMEM_TYPE_OTP;
+ 	config.root_only = true;
+ 	config.ignore_wp = true;
 
 
