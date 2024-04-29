@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-41604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3BA8B5298
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 09:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1962B8B529C
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 09:51:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7341281E0C
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 07:51:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C917E28213E
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 07:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA8314AB4;
-	Mon, 29 Apr 2024 07:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41A214AB0;
+	Mon, 29 Apr 2024 07:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zjl2L+fS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWgtLpMB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97075883D;
-	Mon, 29 Apr 2024 07:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBF514AA3;
+	Mon, 29 Apr 2024 07:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714377068; cv=none; b=A7BG0P0B4zYFtNb0s/AZ/6NoO7tk9J0782WJ4zd8FgT+HtmghyQRVKqrYS9hggqws22viHKuKB/Y9MwHPreWNV/psliEujg4j8iLu3n+oRAv1gNGSzih2425y2OgBbysW14GFhetAcUzGYE4BeMIUFxTV6V8pLadTpu0CbGJ1oY=
+	t=1714377103; cv=none; b=UacXx7Q/r5HLjexo0hTQYKfHvExqDrDd/uTCY/rEFspemZYrjlinGNGZMEKhNmXR0ZNbTw32jW0LOVhGjJkfADpFqa0qVBFj8/YKii5G2OZsTB1kK/N7mxkFsVmtDHzHsDHy+BdKrin/NUIqzIfgTlcGjlTq6npmpsFy8hdwkxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714377068; c=relaxed/simple;
-	bh=McMEvZTQ6MNqR/t54W2eBDQB6SXAnERPBrY+KwJc16Y=;
+	s=arc-20240116; t=1714377103; c=relaxed/simple;
+	bh=xp1MqptAb4gk4u0qt7wVJibOwKdhPFQMAPrlbTDArvw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L1ZmrQPf596CUXiLfjJf5ePfk2+hRgI9hwh7olIePfasIs53b4Ytw0kwmB/mWBR2fp5b2ysejrvMaImVWpYbr7x2jq6cRdO4YAa1p9RAPdHNiQy4SjdspkkojbYP/bIU7WI+wfCsJVzpf4cwb9CFj5kt9AES41Mv4/VQYE0v/uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zjl2L+fS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015AFC113CD;
-	Mon, 29 Apr 2024 07:51:07 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=utijv4bKhL5d9sdI0NmPzzniMLqCbokQF8Un7Gc6egJPxL7hS1chGcV/wxcEFbBsrgHTVTpwJrFHv8UtbKISCK12mJUhy2akucFwKUI17Y+Mt/YwwPDwqONRTU0iFynZfHx306dThL5IZLjw0Cg5b/62lC8/YpSxh+nLkbuP608=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWgtLpMB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C890AC113CD;
+	Mon, 29 Apr 2024 07:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714377068;
-	bh=McMEvZTQ6MNqR/t54W2eBDQB6SXAnERPBrY+KwJc16Y=;
+	s=korg; t=1714377103;
+	bh=xp1MqptAb4gk4u0qt7wVJibOwKdhPFQMAPrlbTDArvw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zjl2L+fShKi1Srk5oK9LjSUdOYVVoFxv4TbxuKP2BxTrzdtIqKC20YbMx6t4y2Ccj
-	 d94jmHjjk88Q915550yLOZvNSey3AnNJMFKr8uI6RGEhDk5VhY4M3JXBZRo3CBj29e
-	 S8zThCWLdJ+cowu5VzrTiGRLJqju7cRrA0GPWUd8=
-Date: Mon, 29 Apr 2024 09:51:05 +0200
+	b=fWgtLpMBpQoMdaRdU/8FfIbs9vPp0v81fsIp0nrwxg/aLfIg80ZSEX/UtNqotnhEw
+	 TlhB0C88NSYB7Df9hCM5oA8q+pHQE5GVuEpysM0O/gIF+xO6JNnzsdEjgnseonhHJ9
+	 DmQ+S9AG1IKKznQZPbKgKMQF2FI9iokRWrtv00TU=
+Date: Mon, 29 Apr 2024 09:51:40 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Thorsten Leemhuis <linux@leemhuis.info>
 Cc: Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
 	stable@vger.kernel.org, workflows@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] docs: stable-kernel-rules: explain use of
- stable@kernel.org (w/o @vger.)
-Message-ID: <2024042957-revision-sublevel-57c2@gregkh>
+Subject: Re: [PATCH v2 5/5] docs: stable-kernel-rules: create special tag to
+ flag 'no backporting'
+Message-ID: <2024042914-bleep-imbecile-5f68@gregkh>
 References: <cover.1714367921.git.linux@leemhuis.info>
- <6783b71da48aac5290756343f58591dc42da87bc.1714367921.git.linux@leemhuis.info>
+ <35989d3b2f3f8cf23828b0c84fde9b17a74be97c.1714367921.git.linux@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,38 +57,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6783b71da48aac5290756343f58591dc42da87bc.1714367921.git.linux@leemhuis.info>
+In-Reply-To: <35989d3b2f3f8cf23828b0c84fde9b17a74be97c.1714367921.git.linux@leemhuis.info>
 
-On Mon, Apr 29, 2024 at 09:18:29AM +0200, Thorsten Leemhuis wrote:
-> Document when to use of stable@kernel.org instead of
-> stable@vger.kernel.org, as the two are easily mixed up and their
-> difference not explained anywhere[1].
+On Mon, Apr 29, 2024 at 09:18:30AM +0200, Thorsten Leemhuis wrote:
+> Document a new variant of the stable tag developers can use to make the
+> stable team's tools ignore a change[1].
 > 
-> Link: https://lore.kernel.org/all/20240422231550.3cf5f723@sal.lan/ [1]
+> That way developers can use 'Fixes:' tags without fearing the changes
+> might be backported in semi-automatic fashion. Such concerns are the
+> reason why some developers deliberately omit the 'Fixes:' tag in
+> changes[2] -- which somewhat undermines the reason for the existence of
+> that tag and might be unwise in the long term[3].
+> 
+> Link: https://lore.kernel.org/all/b452fd54-fdc6-47e4-8c26-6627f6b7eff3@leemhuis.info/ [1]
+> Link: https://lore.kernel.org/all/cover.1712226175.git.antony.antony@secunet.com/ [2]
+> Link: https://lore.kernel.org/all/dfd87673-c581-4b4b-b37a-1cf5c817240d@leemhuis.info/ [3]
 > Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
+> 
 > ---
->  Documentation/process/stable-kernel-rules.rst | 4 ++++
->  1 file changed, 4 insertions(+)
+> 
+> A patch to make one of the stable-script honor the flag can be found in
+> https://lore.kernel.org/all/655ce2a3-eb04-4ade-999e-23fc5dc5fb3a@leemhuis.info/
+> 
+> For autosel I was unable to locate the code.
+> ---
+>  Documentation/process/stable-kernel-rules.rst | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
 > diff --git a/Documentation/process/stable-kernel-rules.rst b/Documentation/process/stable-kernel-rules.rst
-> index b4af627154f1d8..ebf4152659f2d0 100644
+> index ebf4152659f2d0..9ca8083b41c7f1 100644
 > --- a/Documentation/process/stable-kernel-rules.rst
 > +++ b/Documentation/process/stable-kernel-rules.rst
-> @@ -72,6 +72,10 @@ for stable trees, add this tag in the sign-off area::
+> @@ -129,6 +129,12 @@ comment to pass arbitrary or predefined notes:
 >  
->    Cc: stable@vger.kernel.org
+>      Cc: <stable@vger.kernel.org> # see patch description, needs adjustments for <= 6.3
 >  
-> +Use ``Cc: stable@kernel.org`` instead when fixing unpublished vulnerabilities:
-> +it reduces the chance of accidentally exposing the fix to the public by way of
-> +'git send-email', as mails sent to that address are not delivered anywhere.
+> +There furthermore is a variant of the stable tag you can use to make the stable
+> +team's backporting tools (e.g AUTOSEL or scripts that look for commits
+> +containing a 'Fixes:' tag) ignore a change::
+> +
+> +     Cc: <stable+noautosel@kernel.org> # reason goes here, and must be present
+> +
+>  .. _option_2:
+>  
 
-The "fun" part of just saying this is that then it is a huge "signal" to
-others that "hey, this might be a security fix!" when it lands in
-Linus's tree.  But hey, we do what we can, I know my scripts always use
-this address just to put a bit more noise into that signal :)
-
-That being said, it's good to have this documented now, thanks for it:
+Thanks for seeing this through:
 
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
 
