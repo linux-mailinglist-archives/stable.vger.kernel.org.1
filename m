@@ -1,177 +1,178 @@
-Return-Path: <stable+bounces-41704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3138B5885
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:27:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 056508B58B1
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A1802891E1
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:27:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84D391F24973
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111B25490D;
-	Mon, 29 Apr 2024 12:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C9CC2C6;
+	Mon, 29 Apr 2024 12:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1nVjbE7G";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Op/UpWeU"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5C554743;
-	Mon, 29 Apr 2024 12:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F00110A1B;
+	Mon, 29 Apr 2024 12:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714393632; cv=none; b=FJROaHoIAEF8FwobE6awWUyImz4ksFSrLQ8vPKUtpz11x2AgLezmSzIGKOZs9szxHmG8br2X0ZyzQiHvtuWrojUV/6sqQxRhOfmlFvLRBm21rBhJaT+f1sV5DvIb35jHyVl0hsXozOYzPOkaUP8hZ1WCitB3UsNcbMzGIIDHSKo=
+	t=1714394149; cv=none; b=R9h5J7uo0VRzUu+qzbiTvxnDvRuwqhbn/gGjRQOmc3rQn/uvXUkecV6sUl5QZNPe91mFXNTQMDbJklgUTIX1yS+DVziwd2US9GXvttLbigoXPK6D3xz/KTLkiihMQcHCi60SPOIYtf5uirl4rpMci6aVyrXi1LqorMAv6vEdSqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714393632; c=relaxed/simple;
-	bh=dUle5HSqtreqdGJVBgZoTRHHb/1VpgMrIKybSKN1NcM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZQY1ngZVS+Ho/MwkIdh+VilHT6jqQcdf5NfgQTY7C0CkaiBYvhuqDvo6sU5Nav+YwnGAEPs4LgawosKq+HJjlPhg9mIydgCCh/AqmtVUAt5ambJTR+tnCaPUVC4NFBunU8MsxzSCd4MWT71OW2e2tUVjmOcNvLPdUqUrln2FVCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4VSjDb5HnQz1R9pq;
-	Mon, 29 Apr 2024 20:23:59 +0800 (CST)
-Received: from dggpeml500026.china.huawei.com (unknown [7.185.36.106])
-	by mail.maildlp.com (Postfix) with ESMTPS id DF86C18007D;
-	Mon, 29 Apr 2024 20:27:07 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
- (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 29 Apr
- 2024 20:27:07 +0800
-From: Zhengchao Shao <shaozhengchao@huawei.com>
-To: <stable@vger.kernel.org>
-CC: <netdev@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<davem@davemloft.net>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>,
-	<kuba@kernel.org>, <edumazet@google.com>, <kuniyu@amazon.com>,
-	<weiyongjun1@huawei.com>, <yuehaibing@huawei.com>, <shaozhengchao@huawei.com>
-Subject: [PATCH stable,4.19 2/2] tcp: Fix NEW_SYN_RECV handling in inet_twsk_purge()
-Date: Mon, 29 Apr 2024 20:32:24 +0800
-Message-ID: <20240429123224.2730596-3-shaozhengchao@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240429123224.2730596-1-shaozhengchao@huawei.com>
-References: <20240429123224.2730596-1-shaozhengchao@huawei.com>
+	s=arc-20240116; t=1714394149; c=relaxed/simple;
+	bh=W++bsTCgt8Ak/qvxrG28b6/jckWokkT+K0XZBHvpYNY=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=tF1foAOO0aidj+Ub51wAz4kzllcxAIlfcR4vo/AOaQjdSEhO2dmu/GX+NHpuC7D5ZgTJkAr+q5vG/VI+64+SP/fgOv5cI2VvWCpbiENW6ngFhiPLLZeH4NMMYVdjOpwNREvFDbrZXpSFhdCDOv8M5fjz9HmWRcbg31or5oHHfRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1nVjbE7G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Op/UpWeU; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 29 Apr 2024 12:35:41 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1714394142;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IE/HEyswWWxEYsgZH5K3MXvim58TtiuexS9UWmxw+jw=;
+	b=1nVjbE7GDK5i6kstvTxUkjO1i1NkzrRTq2ygDvVGTl8MGfagyCfkCbEKh2fFw1zrY8xRQ5
+	evphsVltqGWX38J3Adf6BTRkKpw3PqdgtYakI3RX/G+ESJniMdX2h2aUg7cboIwTJo5Daz
+	+qKIGrvXEJB407M3inFCp2jiH00CqXa/IslUx4PnlVX/2MHgPeJLgF49HzRlg8/CTURrr1
+	CSu/id18r/O2SqhfRIm/+Dg6rpxooAUZLH8Mz4HSXUjVHA7ufCiz6NnURZSZlTCkZXk+0x
+	YK+AWSEdWLlWxJpWopx6Jrt7XArQFkjWuF8/21+7oVkK/rmYq+iS3t4LWrhJ2A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1714394142;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IE/HEyswWWxEYsgZH5K3MXvim58TtiuexS9UWmxw+jw=;
+	b=Op/UpWeUKWL1SvQmd+tE+QaxNnWFtqdVphGs6Onss3RGuIHtoVJv+hgL9H2Hr/D+Kv8JCp
+	gflEsaNOAapiqzBg==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/urgent] x86/apic: Don't access the APIC when disabling X2APIC
+Cc: Adrian Huang <ahuang12@lenovo.com>, Thomas Gleixner <tglx@linutronix.de>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <875xw5t6r7.ffs@tglx>
+References: <875xw5t6r7.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500026.china.huawei.com (7.185.36.106)
+Message-ID: <171439414186.10875.17224463643261311678.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Eric Dumazet <edumazet@google.com>
+The following commit has been merged into the x86/urgent branch of tip:
 
-commit 1c4e97dd2d3c9a3e84f7e26346aa39bc426d3249 upstream
+Commit-ID:     1e1dd773644e9de88f54386f7147c1068375fc75
+Gitweb:        https://git.kernel.org/tip/1e1dd773644e9de88f54386f7147c1068375fc75
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 26 Apr 2024 00:30:36 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 29 Apr 2024 12:08:07 +02:00
 
-inet_twsk_purge() uses rcu to find TIME_WAIT and NEW_SYN_RECV
-objects to purge.
+x86/apic: Don't access the APIC when disabling X2APIC
 
-These objects use SLAB_TYPESAFE_BY_RCU semantic and need special
-care. We need to use refcount_inc_not_zero(&sk->sk_refcnt).
+With 'iommu=off' on the kernel command line and X2APIC enabled by the BIOS
+the code which disables the X2APIC triggers an unchecked MSR access error:
 
-Reuse the existing correct logic I wrote for TIME_WAIT,
-because both structures have common locations for
-sk_state, sk_family, and netns pointer.
+  RDMSR from 0x802 at rIP: 0xffffffff94079992 (native_apic_msr_read+0x12/0x50)
 
-If after the refcount_inc_not_zero() the object fields longer match
-the keys, use sock_gen_put(sk) to release the refcount.
+This is happens because default_acpi_madt_oem_check() selects an X2APIC
+driver before the X2APIC is disabled.
 
-Then we can call inet_twsk_deschedule_put() for TIME_WAIT,
-inet_csk_reqsk_queue_drop_and_put() for NEW_SYN_RECV sockets,
-with BH disabled.
+When the X2APIC is disabled because interrupt remapping cannot be enabled
+due to 'iommu=off' on the command line, x2apic_disable() invokes
+apic_set_fixmap() which in turn tries to read the APIC ID. This triggers
+the MSR warning because X2APIC is disabled, but the APIC driver is still
+X2APIC based.
 
-Then we need to restart the loop because we had drop rcu_read_lock().
+Prevent that by adding an argument to apic_set_fixmap() which makes the
+APIC ID read out conditional and set it to false from the X2APIC disable
+path. That's correct as the APIC ID has already been read out during early
+discovery.
 
-Fixes: 740ea3c4a0b2 ("tcp: Clean up kernel listener's reqsk in inet_twsk_purge()")
-Link: https://lore.kernel.org/netdev/CANn89iLvFuuihCtt9PME2uS1WJATnf5fKjDToa1WzVnRzHnPfg@mail.gmail.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240308200122.64357-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[shaozhengchao: resolved conflicts in 5.10]
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Fixes: d10a904435fa ("x86/apic: Consolidate boot_cpu_physical_apicid initialization sites")
+Reported-by: Adrian Huang <ahuang12@lenovo.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Adrian Huang <ahuang12@lenovo.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/875xw5t6r7.ffs@tglx
 ---
- net/ipv4/inet_timewait_sock.c | 41 ++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 22 deletions(-)
+ arch/x86/kernel/apic/apic.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
-index 0ab4e0e28baf..fc01efef980a 100644
---- a/net/ipv4/inet_timewait_sock.c
-+++ b/net/ipv4/inet_timewait_sock.c
-@@ -253,12 +253,12 @@ void __inet_twsk_schedule(struct inet_timewait_sock *tw, int timeo, bool rearm)
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index c342c4a..b229648 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1771,7 +1771,7 @@ void x2apic_setup(void)
+ 	__x2apic_enable();
  }
- EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
  
-+/* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
- void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
+-static __init void apic_set_fixmap(void);
++static __init void apic_set_fixmap(bool read_apic);
+ 
+ static __init void x2apic_disable(void)
  {
--	struct inet_timewait_sock *tw;
--	struct sock *sk;
- 	struct hlist_nulls_node *node;
- 	unsigned int slot;
-+	struct sock *sk;
+@@ -1793,7 +1793,12 @@ static __init void x2apic_disable(void)
+ 	}
  
- 	for (slot = 0; slot <= hashinfo->ehash_mask; slot++) {
- 		struct inet_ehash_bucket *head = &hashinfo->ehash[slot];
-@@ -267,38 +267,35 @@ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
- 		rcu_read_lock();
- restart:
- 		sk_nulls_for_each_rcu(sk, node, &head->chain) {
--			if (sk->sk_state != TCP_TIME_WAIT) {
--				/* A kernel listener socket might not hold refcnt for net,
--				 * so reqsk_timer_handler() could be fired after net is
--				 * freed.  Userspace listener and reqsk never exist here.
--				 */
--				if (unlikely(sk->sk_state == TCP_NEW_SYN_RECV &&
--					     hashinfo->pernet)) {
--					struct request_sock *req = inet_reqsk(sk);
--
--					inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
--				}
-+			int state = inet_sk_state_load(sk);
+ 	__x2apic_disable();
+-	apic_set_fixmap();
++	/*
++	 * Don't reread the APIC ID as it was already done from
++	 * check_x2apic() and the apic driver still is a x2APIC variant,
++	 * which fails to do the read after x2APIC was disabled.
++	 */
++	apic_set_fixmap(false);
+ }
  
-+			if ((1 << state) & ~(TCPF_TIME_WAIT |
-+					     TCPF_NEW_SYN_RECV))
- 				continue;
--			}
+ static __init void x2apic_enable(void)
+@@ -2057,13 +2062,14 @@ void __init init_apic_mappings(void)
+ 	}
+ }
  
--			tw = inet_twsk(sk);
--			if ((tw->tw_family != family) ||
--				refcount_read(&twsk_net(tw)->count))
-+			if (sk->sk_family != family ||
-+			    refcount_read(&sock_net(sk)->count))
- 				continue;
+-static __init void apic_set_fixmap(void)
++static __init void apic_set_fixmap(bool read_apic)
+ {
+ 	set_fixmap_nocache(FIX_APIC_BASE, mp_lapic_addr);
+ 	apic_mmio_base = APIC_BASE;
+ 	apic_printk(APIC_VERBOSE, "mapped APIC to %16lx (%16lx)\n",
+ 		    apic_mmio_base, mp_lapic_addr);
+-	apic_read_boot_cpu_id(false);
++	if (read_apic)
++		apic_read_boot_cpu_id(false);
+ }
  
--			if (unlikely(!refcount_inc_not_zero(&tw->tw_refcnt)))
-+			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
- 				continue;
+ void __init register_lapic_address(unsigned long address)
+@@ -2073,7 +2079,7 @@ void __init register_lapic_address(unsigned long address)
+ 	mp_lapic_addr = address;
  
--			if (unlikely((tw->tw_family != family) ||
--				     refcount_read(&twsk_net(tw)->count))) {
--				inet_twsk_put(tw);
-+			if (unlikely(sk->sk_family != family ||
-+				     refcount_read(&sock_net(sk)->count))) {
-+				sock_gen_put(sk);
- 				goto restart;
- 			}
+ 	if (!x2apic_mode)
+-		apic_set_fixmap();
++		apic_set_fixmap(true);
+ }
  
- 			rcu_read_unlock();
- 			local_bh_disable();
--			inet_twsk_deschedule_put(tw);
-+			if (state == TCP_TIME_WAIT) {
-+				inet_twsk_deschedule_put(inet_twsk(sk));
-+			} else {
-+				struct request_sock *req = inet_reqsk(sk);
-+
-+				inet_csk_reqsk_queue_drop_and_put(req->rsk_listener,
-+								  req);
-+			}
- 			local_bh_enable();
- 			goto restart_rcu;
- 		}
--- 
-2.34.1
-
+ /*
 
