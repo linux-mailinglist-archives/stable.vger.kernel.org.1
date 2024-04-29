@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35688B5744
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:59:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42B98B5746
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B0E91F21CA8
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:59:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F0F6B207C2
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0053753381;
-	Mon, 29 Apr 2024 11:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FA453381;
+	Mon, 29 Apr 2024 11:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzvNQL5b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+B/XZEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F3653378
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B43524D9
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714391966; cv=none; b=NwJ9HJ7zBjm88lVynGwRF9qqNl0l6kYciTKPSBnPlhaH61EmbXOfaxFaY/FAOOfniUroIfe78mQhhPM38EFELK0Z4N8cBpIyGKcxC/REiYkPIfa3sdj9kwm5EB7ThHunY+2GMoPNqdwMJQe19KYMcWtpEkh4xUINyGzn1G+tl0w=
+	t=1714391995; cv=none; b=IJUH+UqOIyVnaupktuF8kYCaZc9Rcp0Amx64sJZo6Y4HaK6MnZMvMTegFlGwpzB5P1PwCs7sLIRWBwF8OgWSBp3kxGK97RJgSbhXEEiL3/lzbm/A2o4IuPHXPiuJrAqdmCXAv1CCfn+iRAeetiIRplcSEuSG/jDCVDeaBArueqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714391966; c=relaxed/simple;
-	bh=nFOqLyzSjSoY6iPmsi/15sZA/IZDh0mDmsLU7UP5lKg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FkWzQACYxDimajGzpCgmEIcFB9JdX7HGysjRsLDtro++asC4bJhJnJOiO1kWfBEeIJLoRgP2fXc/Gsy9lSErknwPCWTn391IP2cPPO/RNu+QEgilvEfjYTw5oIgLqHoCVmAzlfkHD+KdWqS9+tKnBLP5sd4UChm+ANDayHiKe0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzvNQL5b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0324CC113CD;
-	Mon, 29 Apr 2024 11:59:25 +0000 (UTC)
+	s=arc-20240116; t=1714391995; c=relaxed/simple;
+	bh=lmZ80jeR1IsX8SVEtaBo8VUHwHRwc+CgREn2KHjwHYs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=o7+jWOGtFYfZyS/lCOR1xgYAKgWAFRGrdNmNWdauScYAYVuvuXOSJ+i7n7Yvb54Ypr7tvGoZHzHH1+hJbgCrLVzRdSp2m6kPBnrMTxqHH9PxhsLV1SGmpjJOHa9KO/9e/KWFLAHpdgYLFxNFah27PC5s/1ZyXFE1+EctZsokqss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+B/XZEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A46C113CD;
+	Mon, 29 Apr 2024 11:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714391966;
-	bh=nFOqLyzSjSoY6iPmsi/15sZA/IZDh0mDmsLU7UP5lKg=;
+	s=korg; t=1714391995;
+	bh=lmZ80jeR1IsX8SVEtaBo8VUHwHRwc+CgREn2KHjwHYs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=XzvNQL5by4h2+BpChenGwveI2/z8zX1VsW41MWZVMqClFGPSVY8CEhKiPNy/vWcG9
-	 6kM722nexklgZmJGfwWPPc1KzQY4DJssWLIfjnOhjx7u4d0+jlsQHNuk8AiPD3jGrH
-	 SzHa/KXmYK9kI3igkyMCuFRGMNKvr89qfbJDTcZc=
-Subject: FAILED: patch "[PATCH] macsec: Detect if Rx skb is macsec-related for offloading" failed to apply to 6.6-stable tree
-To: rrameshbabu@nvidia.com,bpoirier@nvidia.com,cratiu@nvidia.com,kuba@kernel.org,sd@queasysnail.net
+	b=o+B/XZEz6VPHr9xzsVH5RLYGpel3O/7Bs60RFQC7iDd3T3pzmQ7niNSvx7g0SqyjT
+	 WKtbbyZITA0UPR3DfJGyaVqg/IZoXJLglu74nEruJwj3I9c9ng7UyLhXn6V6vWxXN2
+	 ghU2VENLfRfGBcrNUwyQBrk9KVMooaImQNmMu+0A=
+Subject: FAILED: patch "[PATCH] fbdev: fix incorrect address computation in deferred IO" failed to apply to 5.15-stable tree
+To: namcao@linutronix.de,harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org,tzimmermann@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:59:23 +0200
-Message-ID: <2024042923-sufferer-anywhere-76a7@gregkh>
+Date: Mon, 29 Apr 2024 13:59:51 +0200
+Message-ID: <2024042951-barbell-aeration-a1ce@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 642c984dd0e37dbaec9f87bd1211e5fac1f142bf
+git cherry-pick -x 78d9161d2bcd442d93d917339297ffa057dbee8c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042923-sufferer-anywhere-76a7@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042951-barbell-aeration-a1ce@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-642c984dd0e3 ("macsec: Detect if Rx skb is macsec-related for offloading devices that update md_dst")
+78d9161d2bcd ("fbdev: fix incorrect address computation in deferred IO")
+3ed3811283dd ("fbdev: Refactor implementation of page_mkwrite")
+56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
+856082f021a2 ("fbdev: defio: fix the pagelist corruption")
+8c30e2d81bfd ("fbdev: Don't sort deferred-I/O pages by default")
+105a940416fc ("fbdev/defio: Early-out if page is already enlisted")
+67b723f5b742 ("drm/fb-helper: Calculate damaged area in separate helper")
+aa15c677cc34 ("drm/fb-helper: Fix vertical damage clipping")
+a3c286dcef7f ("drm/fb-helper: Fix clip rectangle height")
 
 thanks,
 
@@ -77,113 +85,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 642c984dd0e37dbaec9f87bd1211e5fac1f142bf Mon Sep 17 00:00:00 2001
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Date: Tue, 23 Apr 2024 11:13:04 -0700
-Subject: [PATCH] macsec: Detect if Rx skb is macsec-related for offloading
- devices that update md_dst
+From 78d9161d2bcd442d93d917339297ffa057dbee8c Mon Sep 17 00:00:00 2001
+From: Nam Cao <namcao@linutronix.de>
+Date: Tue, 23 Apr 2024 13:50:53 +0200
+Subject: [PATCH] fbdev: fix incorrect address computation in deferred IO
 
-Can now correctly identify where the packets should be delivered by using
-md_dst or its absence on devices that provide it.
+With deferred IO enabled, a page fault happens when data is written to the
+framebuffer device. Then driver determines which page is being updated by
+calculating the offset of the written virtual address within the virtual
+memory area, and uses this offset to get the updated page within the
+internal buffer. This page is later copied to hardware (thus the name
+"deferred IO").
 
-This detection is not possible without device drivers that update md_dst. A
-fallback pattern should be used for supporting such device drivers. This
-fallback mode causes multicast messages to be cloned to both the non-macsec
-and macsec ports, independent of whether the multicast message received was
-encrypted over MACsec or not. Other non-macsec traffic may also fail to be
-handled correctly for devices in promiscuous mode.
+This offset calculation is only correct if the virtual memory area is
+mapped to the beginning of the internal buffer. Otherwise this is wrong.
+For example, if users do:
+    mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
 
-Link: https://lore.kernel.org/netdev/ZULRxX9eIbFiVi7v@hog/
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Cc: stable@vger.kernel.org
-Fixes: 860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path support")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240423181319.115860-4-rrameshbabu@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Then the virtual memory area will mapped at offset 0xff000 within the
+internal buffer. This offset 0xff000 is not accounted for, and wrong page
+is updated.
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 0206b84284ab..ff016c11b4a0 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -999,10 +999,12 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 	struct metadata_dst *md_dst;
- 	struct macsec_rxh_data *rxd;
- 	struct macsec_dev *macsec;
-+	bool is_macsec_md_dst;
+Correct the calculation by using vmf->pgoff instead. With this change, the
+variable "offset" will no longer hold the exact offset value, but it is
+rounded down to multiples of PAGE_SIZE. But this is still correct, because
+this variable is only used to calculate the page offset.
+
+Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Closes: https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4ab341a@oracle.com
+Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240423115053.4490-1-namcao@linutronix.de
+
+diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
+index dae96c9f61cf..806ecd32219b 100644
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -196,7 +196,7 @@ static vm_fault_t fb_deferred_io_track_page(struct fb_info *info, unsigned long
+  */
+ static vm_fault_t fb_deferred_io_page_mkwrite(struct fb_info *info, struct vm_fault *vmf)
+ {
+-	unsigned long offset = vmf->address - vmf->vma->vm_start;
++	unsigned long offset = vmf->pgoff << PAGE_SHIFT;
+ 	struct page *page = vmf->page;
  
- 	rcu_read_lock();
- 	rxd = macsec_data_rcu(skb->dev);
- 	md_dst = skb_metadata_dst(skb);
-+	is_macsec_md_dst = md_dst && md_dst->type == METADATA_MACSEC;
- 
- 	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
- 		struct sk_buff *nskb;
-@@ -1013,14 +1015,42 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 		 * the SecTAG, so we have to deduce which port to deliver to.
- 		 */
- 		if (macsec_is_offloaded(macsec) && netif_running(ndev)) {
--			struct macsec_rx_sc *rx_sc = NULL;
-+			const struct macsec_ops *ops;
- 
--			if (md_dst && md_dst->type == METADATA_MACSEC)
--				rx_sc = find_rx_sc(&macsec->secy, md_dst->u.macsec_info.sci);
-+			ops = macsec_get_ops(macsec, NULL);
- 
--			if (md_dst && md_dst->type == METADATA_MACSEC && !rx_sc)
-+			if (ops->rx_uses_md_dst && !is_macsec_md_dst)
- 				continue;
- 
-+			if (is_macsec_md_dst) {
-+				struct macsec_rx_sc *rx_sc;
-+
-+				/* All drivers that implement MACsec offload
-+				 * support using skb metadata destinations must
-+				 * indicate that they do so.
-+				 */
-+				DEBUG_NET_WARN_ON_ONCE(!ops->rx_uses_md_dst);
-+				rx_sc = find_rx_sc(&macsec->secy,
-+						   md_dst->u.macsec_info.sci);
-+				if (!rx_sc)
-+					continue;
-+				/* device indicated macsec offload occurred */
-+				skb->dev = ndev;
-+				skb->pkt_type = PACKET_HOST;
-+				eth_skb_pkt_type(skb, ndev);
-+				ret = RX_HANDLER_ANOTHER;
-+				goto out;
-+			}
-+
-+			/* This datapath is insecure because it is unable to
-+			 * enforce isolation of broadcast/multicast traffic and
-+			 * unicast traffic with promiscuous mode on the macsec
-+			 * netdev. Since the core stack has no mechanism to
-+			 * check that the hardware did indeed receive MACsec
-+			 * traffic, it is possible that the response handling
-+			 * done by the MACsec port was to a plaintext packet.
-+			 * This violates the MACsec protocol standard.
-+			 */
- 			if (ether_addr_equal_64bits(hdr->h_dest,
- 						    ndev->dev_addr)) {
- 				/* exact match, divert skb to this port */
-@@ -1036,14 +1066,10 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 					break;
- 
- 				nskb->dev = ndev;
--				if (ether_addr_equal_64bits(hdr->h_dest,
--							    ndev->broadcast))
--					nskb->pkt_type = PACKET_BROADCAST;
--				else
--					nskb->pkt_type = PACKET_MULTICAST;
-+				eth_skb_pkt_type(nskb, ndev);
- 
- 				__netif_rx(nskb);
--			} else if (rx_sc || ndev->flags & IFF_PROMISC) {
-+			} else if (ndev->flags & IFF_PROMISC) {
- 				skb->dev = ndev;
- 				skb->pkt_type = PACKET_HOST;
- 				ret = RX_HANDLER_ANOTHER;
+ 	file_update_time(vmf->vma->vm_file);
 
 
