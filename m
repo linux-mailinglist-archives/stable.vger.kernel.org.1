@@ -1,103 +1,135 @@
-Return-Path: <stable+bounces-41763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4898B6150
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 20:46:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDD38B620E
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 21:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9321CB20DB9
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 18:46:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A63221C210AD
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 19:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38ED713AD11;
-	Mon, 29 Apr 2024 18:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669C013B2A2;
+	Mon, 29 Apr 2024 19:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="mMqrnJ+F"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OSsEnDau"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4AD13AA20;
-	Mon, 29 Apr 2024 18:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AC813AA5A;
+	Mon, 29 Apr 2024 19:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714416367; cv=none; b=qY2KV0gaSgFwGkdo+kSR/1+1Sh5hS3nZBIzpndUV7bph3mi7eJZTuz1Y6YgzfhivtBmB3FQP26QpdXMNjIhp6FzF8H5ECWzve1MV8RsMFwwEBgcRBe2E1xMTY2NQrA8lYxjbMMYA8D7VPWFQNgQmRt04sz+pC3UcWD8wMPVtn3s=
+	t=1714419134; cv=none; b=V+dmFT+Ett0c2peW4tQ5xMjuWy+XcHOK9v5kGIBpeQ59kG5dr0gRz4kQyMLrHP+JtL3sEFB26TPL46K3hMVJWH3wOkTc3MFTUq3pE+PcT+41mqkmHt2EsuNx5XgQJHlo+naJOk73dQCyliPdY9qerg8IRj44WFFXE0cqrf3CtUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714416367; c=relaxed/simple;
-	bh=3LH0ATCDUz78r2Tey+5bXVs+rUczTd3e47hk9qUT2uA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ulpn8ns6Z3JGQXVFDc+0W7pKQiUkOIDS01+1+aW8PsIV5UBQgPH0Rv71hVfTkM+uCc2tIOFW1aC/RNVm6UBG03WtFklDb/PbOJeagAM7aZS67sT3IXIjUrhoFaJOr24llcIvtiS0Lhcqya8HlI6XUdLaCYDb7kwtP7qg1ZXvSKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=mMqrnJ+F; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=ZkJzNvR/m4pjy1+DgD6tXtFggu8kp9OwAo85IxPakxg=;
-	t=1714416364; x=1714848364; b=mMqrnJ+FhZXdK5FEOih/T4F32qHzR2uAmg+7T27fDijNOlP
-	2HrrSBmYOaMVb9btdat2GHy+fsfJnlUOdi6GKad0ToGfTXwoJMJ3KVE4vy4ajTrW0B7fylikChbg+
-	ehjWazipG4om9YLyitMEIcvf0rRTeTkPKvfD7su/10CioE4Oh8IEKlIp9+G8P3NgLxFcmrkh4Lge9
-	4tr4n0Iz3TOk5JfJ2tHchZj8VV/0QnLSYrqt/eX61J4JoJCpGLTJ7ZD3VlvMNhGUvUSZUBGYZE4DW
-	UpTsOefxSDXaTJ3YEsPdYW6fD2U57Dky2A1+k9VDPYH97hFx/f2q81pESJ66oKIA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s1W0o-0000lq-9l; Mon, 29 Apr 2024 20:46:02 +0200
-Message-ID: <8e8ca7a6-1511-4794-a214-2b75326e5484@leemhuis.info>
-Date: Mon, 29 Apr 2024 20:46:00 +0200
+	s=arc-20240116; t=1714419134; c=relaxed/simple;
+	bh=MxxpWFWIkQTnaHMmRSSNu1GlLY2Bctt1yjxnIAL7ar4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XwcDHnd9u5YoYbmQmTejD/EOdFznTAIzO1eCfTDPTaf1Ax9pWqdRpO/gUJPRdoT6iiepcwe26qX8FfNIZk6fx3/sTkVsswKenvIqyl+730CV99tJovzGIOqpg4H0hYYXto9mDhmPpipqv1KTl21jH8vEte9N+JsnlhxMU1T2XM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OSsEnDau; arc=none smtp.client-ip=209.85.166.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-7d6ad896c6dso215357539f.1;
+        Mon, 29 Apr 2024 12:32:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714419132; x=1715023932; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ap0abnHnzuA+pCntBOpzm99vZ6Zv5ODzcROoP3CQSrg=;
+        b=OSsEnDau1VjQGx8YkSLalVJRWqWN1bRmA9+G9st5w1h74n+bqM1uapiXx+5T1p4YFw
+         NozIf/qtgApZPtglsaXmjCEO/MdHUeOocnGB2TFl2RhBV68SeH9UlMuagdOHPzvFFgcS
+         5KvYmxccYhdcQpAaN45Z9fEMT4M0OFbcWqnD20wEUuuLP5EdHXyBWrsTc+6jz0du0eFp
+         Omx0a64u0fnhPc+yjQKD2HKtkmnJOQc9GbtF2UO0AFORpA9XsSzG8y+IKI5oAZfL9InL
+         DQ2Ys09Kzr1XDT7pZ5XL/UmW4q3iTisNRAO8chwv6AJbgb8f3asCY4arlnxgzPN+ZL6z
+         FhMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714419132; x=1715023932;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ap0abnHnzuA+pCntBOpzm99vZ6Zv5ODzcROoP3CQSrg=;
+        b=JLP4bXxzRhewUjKR3MwK2tA8wY7P3s7rZo5hrpHqgs1IQOv9d002qWG0XNcdCvVLfx
+         8SToQ7dhOPI0rfLFVNDNyDilZ4gZ7j4mOb0bmAeO0Zf1TbZL660vTnFrtjeFLV90c9FF
+         TsWFR6YCF8DumcVC/bgJWWH+W4YbkLVB3JBZ/zyjbKFu9YzO7HJvEX6mgyODmhVB1t3K
+         kdSnrFKEUaSIL0Ovexio+1WuUsp7udAQyfhtm6qYmIwfIXI3S0Z+U4K6lc/20sMKpOV9
+         F9nSNi5geoRqCTFEiXmoYEUGsalq42/oantPA8Ax6CBy24jH8VLeAqWdRor7wHitcviM
+         EamA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqmst+evQn8gWvRirg/ZaWp8QLTws+EOYx+JMk1L/qiNj53+J2CgR1rJjRY8/MUYsxynFb3t6dJRZ17adJSV4O2DMbGsHNr5kYBw9GXIOB85el9TIbLFhWS5vA6dRukzFR7XxkAfqB2Sj+5Lxo86BZMA6NT7Sjfu4PjkmExS7O
+X-Gm-Message-State: AOJu0YyXV4Yk2h7ZYCv32TWqCnzBszodCcC89QNlpKNnVVvewuNcjRYS
+	DPCIjHxBOw2Ct6kYJL6GmAwH0+pbUegvcYRhlVne6+2jg61jKq8a
+X-Google-Smtp-Source: AGHT+IGRdeeN+u2zMfjhDij9Il5S46oy16VyUUR7QmAHR8HDMNzTIxpnF8fD58yH4IXlMsHdP3l6HQ==
+X-Received: by 2002:a6b:6417:0:b0:7d0:8cff:cff3 with SMTP id t23-20020a6b6417000000b007d08cffcff3mr13514911iog.8.1714419132083;
+        Mon, 29 Apr 2024 12:32:12 -0700 (PDT)
+Received: from frodo.. (c-73-78-62-130.hsd1.co.comcast.net. [73.78.62.130])
+        by smtp.googlemail.com with ESMTPSA id dq18-20020a0566021b9200b007d5ec9b77aesm5988402iob.51.2024.04.29.12.32.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Apr 2024 12:32:11 -0700 (PDT)
+From: Jim Cromie <jim.cromie@gmail.com>
+To: jbaron@akamai.com,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	amd-gfx@lists.freedesktop.org,
+	intel-gvt-dev@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org
+Cc: ukaszb@chromium.org,
+	linux-doc@vger.kernel.org,
+	daniel.vetter@ffwll.ch,
+	tvrtko.ursulin@linux.intel.com,
+	jani.nikula@intel.com,
+	ville.syrjala@linux.intel.com,
+	seanpaul@chromium.org,
+	robdclark@gmail.com,
+	groeck@google.com,
+	yanivt@google.com,
+	bleung@google.com,
+	Jim Cromie <jim.cromie@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v8 01/35] dyndbg: fix old BUG_ON in >control parser
+Date: Mon, 29 Apr 2024 13:31:11 -0600
+Message-ID: <20240429193145.66543-2-jim.cromie@gmail.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240429193145.66543-1-jim.cromie@gmail.com>
+References: <20240429193145.66543-1-jim.cromie@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bluetooth kernel BUG with Intel AX211 (regression in 6.1.83)
-To: =?UTF-8?Q?Jeremy_Lain=C3=A9?= <jeremy.laine@m4x.org>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- linux-bluetooth@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>,
- Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-References: <CADRbXaDqx6S+7tzdDPPEpRu9eDLrHQkqoWTTGfKJSRxY=hT5MQ@mail.gmail.com>
- <1de62bb7-93bb-478e-8af4-ba9abf5ae330@leemhuis.info>
- <4bf3497d-0ede-4e05-a432-e88e9cbc10b4@leemhuis.info>
- <CADRbXaBkkGmqnibGvcAF2YH5CjLRJ2bnnix1xKozKdw_Hv3qNg@mail.gmail.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CADRbXaBkkGmqnibGvcAF2YH5CjLRJ2bnnix1xKozKdw_Hv3qNg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1714416364;7c17985c;
-X-HE-SMSGID: 1s1W0o-0000lq-9l
 
-On 29.04.24 20:28, Jeremy Lainé wrote:
-> 
-> On Mon, Apr 29, 2024 at 12:24 PM Linux regression tracking (Thorsten
-> Leemhuis) <regressions@leemhuis.info> wrote:
->>
->> So we either need to find the cause (likely a missing backport) through
->> some other way or maybe revert the culprit in the 6.1.y series. Jeremy,
->> did you try if the latter is an option? If not: could you do that
->> please? And could you also try cherry-pikcing c7eaf80bfb0c8c
->> ("Bluetooth: Fix hci_link_tx_to RCU lock usage") [v6.6-rc5] into 6.1.y
->> helps? It's just a wild guess, but it contains a Fixes: tag for the
->> commit in question.
-> 
-> I gave it a try, and sadly I'm still hitting the exact same bug when I
-> cherry-pick the patch you mentioned on top of 6.1.y (at tag v6.1.87).
-> 
-> Thanks for trying, is there any other patch that looks like a good candidate?
+Fix a BUG_ON from 2009.  Even if it looks "unreachable" (I didn't
+really look), lets make sure by removing it, doing pr_err and return
+-EINVAL instead.
 
-Well, did you try what I suggested earlier (see above) and check if a
-revert of 6083089ab00631617f9eac678df3ab050a9d837a ontop of latest 6.1.y
-helps?
+cc: stable@vger.kernel.org
+Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
+---
+ lib/dynamic_debug.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Ciao, Thorsten
+diff --git a/lib/dynamic_debug.c b/lib/dynamic_debug.c
+index c78f335fa981..f2c5e7910bb1 100644
+--- a/lib/dynamic_debug.c
++++ b/lib/dynamic_debug.c
+@@ -302,7 +302,11 @@ static int ddebug_tokenize(char *buf, char *words[], int maxwords)
+ 		} else {
+ 			for (end = buf; *end && !isspace(*end); end++)
+ 				;
+-			BUG_ON(end == buf);
++			if (end == buf) {
++				pr_err("parse err after word:%d=%s\n", nwords,
++				       nwords ? words[nwords - 1] : "<none>");
++				return -EINVAL;
++			}
+ 		}
+ 
+ 		/* `buf' is start of word, `end' is one past its end */
+-- 
+2.44.0
+
 
