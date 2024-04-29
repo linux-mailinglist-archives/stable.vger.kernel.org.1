@@ -1,182 +1,107 @@
-Return-Path: <stable+bounces-41595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1518B5193
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 08:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2208B5224
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 09:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83C5E281399
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 06:39:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9723B28119D
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 07:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09799111A5;
-	Mon, 29 Apr 2024 06:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70DE1758D;
+	Mon, 29 Apr 2024 07:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="XKQapkLQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462D21118A;
-	Mon, 29 Apr 2024 06:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD822134DE;
+	Mon, 29 Apr 2024 07:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714372768; cv=none; b=REOPkz1WtdUSWQp/Kpg6j+yOFX6+Pb2dIfyGBvJ2nm0Cjj6UJW8kKzgMNJkZsoLTE0tHsdQfFcJUGdzdkxoZvvDEpp7FgL//+nk5hO1jUA+w6NAqa2JtSfiJ/D4Pw/KFycqvsxBa4irSGMZ3AD5Is84KaeXAUsaFgV2KaOD11cg=
+	t=1714375119; cv=none; b=brHzbJpl9jXgN+E6hgZQX4eZhIpXKZdAi1oge5jnbt9HRqHl17VYLhJLGx9Mo08H3xag4hWg1yrvBEOJ2bn+Qu4Y7S94bWr/cwH7OcQ9okDr7cemjc/8q8tZGUQDgHeG3ISvN3RN2vG8RaBi3pTrPR21kwyrROjb3UlgdTyFx88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714372768; c=relaxed/simple;
-	bh=0uTdj+DLwPtNgb7rqdkpWnQhW3OkgzuJ/zq7PblRgPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=acoRHsKZxFg05v+wIqhjCDxi8K2ErfdhEy13hiMW1gWMlxDG9Y72PC2qyKpPYyetSsMqZELOCzWYf2x1Tz4MFbMGwUAFaIj5voqQ65XJ673aghQwkDj46XoOspuyLLVce+4W46+L/8pMIF5LKJvXOEYhwQAB6hMwhlqs7+5VGK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-56e477db7fbso6665006a12.3;
-        Sun, 28 Apr 2024 23:39:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714372764; x=1714977564;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OY9oeBWyxdXXlsTYn0DXXRwkgynS0Yhyhd4AqIGsWyY=;
-        b=kJ96GsWAilVwV663nLUbsrt7nzMB0bGWMwTB9hPzBRlhuDbBjs5nXiRb0Nsys6tgMY
-         ZdLnLDYPxACOnHSxp5BPI2cC7ZM8YBUyt2hiV5hm0eGvzVMCAuTT7/rZIh3kkfANOZe5
-         OIO4JKD7Ef7/bOxPveBEG6uCSN1VtFmViyJZsRiNVKHIDWl4OgvIZOGdqq0da7zGPHXG
-         KAnGKJf1GSB8aMlfzd91qIU7Yt+EVXHRX3mupqyjsvQSyy9/NMYKBBFikR6nVwg06+Mu
-         cmwsJmTtDzAxqsw4FfkW1SpWXXFqIrn25LoMEMNWuniTYuqg2Ms+P5y7+e1WggWoTtox
-         wo0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU1tIEMgUIhJzdWqLjSMqH2wDmS5zeRnlpMU52YxDU0B3rYl2eQW3vlHaqv8W5p8o2lLc+/Fd5yOrwa+S/rpPLL6l1L3KR8PK2sp+qA67SRxTXrq5UZVt4xh7gtzAmS95WhjPtjpRVWLaCynknneg1KHMafXPPav5ZOv3p+UJxnUc90
-X-Gm-Message-State: AOJu0YyZz0bvZbpe9eSDBlIaQghsjol4mDMrixTuBIbpYQbm5f9AQj2i
-	D5a5rttVxt04Fq6CoNA8Y+HZvcAkRtOFKq2MTgBvwI3eI2MYCIkA
-X-Google-Smtp-Source: AGHT+IHGhz5rOceE37OOJuNYQOh5BT5cJ3AQu8BjMY7uzLBItL/SNywwJrzVBQbwQjsGZoCCmW/RPw==
-X-Received: by 2002:a50:a6da:0:b0:56e:60d:9b16 with SMTP id f26-20020a50a6da000000b0056e060d9b16mr6416549edc.6.1714372764391;
-        Sun, 28 Apr 2024 23:39:24 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
-        by smtp.gmail.com with ESMTPSA id c26-20020aa7c99a000000b00572405680e8sm4224454edt.21.2024.04.28.23.39.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 28 Apr 2024 23:39:23 -0700 (PDT)
-Message-ID: <17d2cc58-cf68-430d-9248-25abe4c5b0f0@kernel.org>
-Date: Mon, 29 Apr 2024 08:39:22 +0200
+	s=arc-20240116; t=1714375119; c=relaxed/simple;
+	bh=AkB16l2d8zShJAWap2HKlTOHGrssPwSZSU7S5r1EcMA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U25SGY7hcI46KPnCAKykcstWoknx9MurjNMJWey1/1OkpoacPECOMf0MFs49jmfqLmj5GPmb6bfpk3bIlcLkntb7YX7E0HaeZhVu8H8HYLu/hweza5EvSbotKkHPT/2rMLseaH2KuhBLktw7Ypv2SN3fR8+iqylSwA+A692QMgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=XKQapkLQ; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:Subject:Date:
+	Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=AR7EKzJbNScSDSl4HGuD1ekuOyaMHYWeSjknrxIfYFk=; t=1714375117; x=1714807117;
+	 b=XKQapkLQEIOT38cXy1ojiZFSOvNuV2yuXJ6kapRmk0xWvRQPPuto6Bt1gyM5EWuESUHkoQtrzp
+	qoH8pTAxMvpfrcSfoO7S0LsFtO7mkXhUmstRTOIljTP5tB3cycafrgvmVNb8sZgJmRqa600CXyDDk
+	nP+sJq2E1eJHdzm0PWpSsVNv+GgK3peMqu4NqBQSelKNEVQr1sog6+qrbH8naE4m3QlrG0Wv/HCTh
+	GmAalAtlmE4iqzjLv9N1isfTJTa2sy2bv8H4xjh4KB8YjUsufda1BvYZbEguxiYAgJhmTSEqavwse
+	5A9Zrv0MetJ4fxi8FQqHzGvhZ/vzLkBnGdLng==;
+Received: from ip4d148da6.dynamic.kabel-deutschland.de ([77.20.141.166] helo=truhe.fritz.box); authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	id 1s1LHT-0004e1-IR; Mon, 29 Apr 2024 09:18:31 +0200
+From: Thorsten Leemhuis <linux@leemhuis.info>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	stable@vger.kernel.org,
+	workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/5] docs: stable-kernel-rules: fine-tuning and 'no stable backport' tag
+Date: Mon, 29 Apr 2024 09:18:25 +0200
+Message-ID: <cover.1714367921.git.linux@leemhuis.info>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when
- using prescaler
-To: Hugo Villeneuve <hugo@hugovil.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jon Ringle <jringle@gridpoint.com>
-Cc: ria.freelander@gmail.com, Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org
-References: <20240426135937.3810959-1-hugo@hugovil.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20240426135937.3810959-1-hugo@hugovil.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1714375117;b475376d;
+X-HE-SMSGID: 1s1LHT-0004e1-IR
 
-On 26. 04. 24, 15:59, Hugo Villeneuve wrote:
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> 
-> When using a high speed clock with a low baud rate, the 4x prescaler is
-> automatically selected if required. In that case, sc16is7xx_set_baud()
-> properly configures the chip registers, but returns an incorrect baud
-> rate by not taking into account the prescaler value. This incorrect baud
-> rate is then fed to uart_update_timeout().
-> 
-> For example, with an input clock of 80MHz, and a selected baud rate of 50,
-> sc16is7xx_set_baud() will return 200 instead of 50.
-> 
-> Fix this by first changing the prescaler variable to hold the selected
-> prescaler value instead of the MCR bitfield. Then properly take into
-> account the selected prescaler value in the return value computation.
-> 
-> Also add better documentation about the divisor value computation.
-> 
-> Fixes: dfeae619d781 ("serial: sc16is7xx")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> ---
->   drivers/tty/serial/sc16is7xx.c | 23 ++++++++++++++++++-----
->   1 file changed, 18 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-> index 03cf30e20b75..dcd6c5615401 100644
-> --- a/drivers/tty/serial/sc16is7xx.c
-> +++ b/drivers/tty/serial/sc16is7xx.c
-> @@ -555,16 +555,28 @@ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
->   	return reg == SC16IS7XX_RHR_REG;
->   }
->   
-> +/*
-> + * Configure programmable baud rate generator (divisor) according to the
-> + * desired baud rate.
-> + *
-> + * From the datasheet, the divisor is computed according to:
-> + *
-> + *              XTAL1 input frequency
-> + *             -----------------------
-> + *                    prescaler
-> + * divisor = ---------------------------
-> + *            baud-rate x sampling-rate
-> + */
->   static int sc16is7xx_set_baud(struct uart_port *port, int baud)
->   {
->   	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
->   	u8 lcr;
-> -	u8 prescaler = 0;
-> +	int prescaler = 1;
+After a recent discussion regarding "do we need a 'nobackport' tag" I
+set out to create one change for stable-kernel-rules.rst. This is now
+the last patch in the series, which links to that discussion with
+all the details; the other stuff is fine-tuning that happened along the
+way.
 
-Ugh, why do you move to signed arithmetics?
+Ciao, Thorsten
+---
+v1->v2:
+* Add reviewed-by tag from Greg to the first patch.
+* Change the backport example in 2 as suggested by Greg.
+* Improve description of patch 3 while also making the change remove a
+  level of indenting.
+* Add patch explaining stable@kernel.org (w/o @vger.)
+* Move the patch adding a 'make AUTOSEL et. al. ignore a change' flag to
+  the end of the series and use stable+noautosel@kernel.org as
+  suggested my Konstantin and ACKed by Greg.
 
-regards,
+v1: https://lore.kernel.org/all/cover.1712812895.git.linux@leemhuis.info/
+
+Thorsten Leemhuis (5):
+  docs: stable-kernel-rules: reduce redundancy
+  docs: stable-kernel-rules: call mainline by its name and change
+    example
+  docs: stable-kernel-rules: remove code-labels tags and a indention
+    level
+  docs: stable-kernel-rules: explain use of stable@kernel.org (w/o
+    @vger.)
+  docs: stable-kernel-rules: create special tag to flag 'no backporting'
+
+ Documentation/process/stable-kernel-rules.rst | 234 ++++++++----------
+ 1 file changed, 110 insertions(+), 124 deletions(-)
+
+
+base-commit: 5eb4573ea63d0c83bf58fb7c243fc2c2b6966c02
 -- 
-js
-suse labs
+2.44.0
 
 
