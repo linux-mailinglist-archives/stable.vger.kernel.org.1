@@ -1,107 +1,79 @@
-Return-Path: <stable+bounces-41699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D06A8B5876
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:25:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248698B5852
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E72471F240CE
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:25:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D38B2286487
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65F27BAE3;
-	Mon, 29 Apr 2024 12:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YwbXEdY9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3653F75804;
+	Mon, 29 Apr 2024 12:19:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652F379949
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C2382885;
+	Mon, 29 Apr 2024 12:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714393411; cv=none; b=toAYV5hdO4BOzo8DqsBxdUfD0RkUwGff8vlkH1nx4xGCPmDXuP28mpOZLwd4z9WetsCDj7M1daWg+MuvaDmaRqe9zcfJ6ew2JyrKlyYRGcRIfZ8O2saNS1cUhLM8mj596qPSPu3LQyDBQXR8EML+CaCPEvjUCoZ4kImf2LmVaZA=
+	t=1714393175; cv=none; b=SQNlLuCNQMQxCGObwgn/cYcLZPzwSUySwRDcnh+kapaufUZYoHEE44RUb/LfFx057S7cnzHlpPfNpms+HO7ZeLzg3VG1INPA5utjwo15/WfsLnIRzk20EgNjUQW+L7p6syxmZLuNwP0EVm6cJ4ETtHeQ/aHe2RVdgJzbk2TRfKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714393411; c=relaxed/simple;
-	bh=H9tmO4FBsf+fJCiyGeiD38PtImq0LgXQ31FDjkjTA8I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=et9QEuew9A5DMg8OerNfEDDT4UO6RpSyWM61ZUhwNtr5ax8feqlj823204O0yGaUxBgc9JPaEZ34Vq38Nm6TRBPn4IriEIdDw17U49cAW2Xhm7LmoiAu3tOG+dVpJ5TUWZ1ThpcOwYo1P409wmxhcSN+dQ1cI2zL+mX+lxAIr7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YwbXEdY9; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2a52c544077so3233813a91.1
-        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 05:23:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714393410; x=1714998210; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mnSIqS7RvlBRy7PCOZ4mk7jHwVd6VHL3yInBCZ+chQg=;
-        b=YwbXEdY98E5MKDIpzVhVosjuzKzWIOu8jTA2FlgDZImQ/7ShhtlsNrC+wCNdXlh2Su
-         nQnVwtplYQfIZUCmpJQwXZHv+ySPNmTex+mQfCDtmI7+oRv1hKOlIgqr09GWnnBFsHpu
-         IOoBJyfu0xQSe6jZNmmDbiZXg85i4DJuaPO4KyGBxUGcEByzVqylLnXppp9nIsB9vWCN
-         LS3jZKzsroOOwTi1t4Jh5x2O17eCy0ohlLDPEsUSmSXOG5qO6Kv30kmxFs2klTLCkHJY
-         ykSFRkjzkYHiDQ8an7GzeA2FN1T1rogxRXfs7d8CTa95R4FykdreagNmDn1gcB/OZbjw
-         Lz7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714393410; x=1714998210;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mnSIqS7RvlBRy7PCOZ4mk7jHwVd6VHL3yInBCZ+chQg=;
-        b=FLH5Z2+9ezuYUz+YOnkWQNqmEoUs8F4mg9Q0ZIBts78mzbSkTagYm6qf+chm4rBjVC
-         FnQwYUYs+K95B3EqqC2n0G69XfHMTEgtYb9yb24TnrTOMnV9L8V3b4ecaN5rPTh2hgea
-         zx/wiGipfzWMuUEUFQzLs2yrNVhDjQsHJ3R6YMdq5FxIcxpeaDwS6mvA8wYRJod+hYYj
-         205MlrZE5+PHMo1SAgo0M7p7L9K2h1gNCCXvbgqg1C2qe2ORzBz+IvO5WptjmHW92BxF
-         QQEhCZyol8M0R5k0a+0Vch+HXCiWa92OiyFOpii5ZRDMCs8KmRanPfgjMTqpQt6iyVNq
-         bKwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWnDojYfZxQ6wLvxp80thmhC7QVjVSnxmDYSzkTFzT3CyGATic9MWesYRKEYB5vIl0rnrMjGg8kl+iI1/NyDvJ0sl8g9Z3W
-X-Gm-Message-State: AOJu0YxF5S0Avd3ubRSkSz0yTdiCYBIK0wjOcdP4/CjH9jHh1d/E61sk
-	hr7Az23B5gbYvmg75hCLgcQFvdrjsRCilmGVT+lsleix3Bu5szN1Je0UgBgttJf7qP7ds/MLRHC
-	OxyCt2itn/PxEy2W9GNierf4Hhu8=
-X-Google-Smtp-Source: AGHT+IE8i+LmcnPffbEC+ZT4PO2gFF4gIsi8XfIRqMQYcN8wOd7EeItxodpJWOz5v70KqOdgpKX/27jqTJobBDUpQOE=
-X-Received: by 2002:a17:90a:6d02:b0:2a6:d064:15d5 with SMTP id
- z2-20020a17090a6d0200b002a6d06415d5mr9510289pjj.18.1714393409678; Mon, 29 Apr
- 2024 05:23:29 -0700 (PDT)
+	s=arc-20240116; t=1714393175; c=relaxed/simple;
+	bh=7HPT+NaSwsOe9xBj7yjCD21Nzbxt0ufzpWTMlFll3tM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RF5ZrvXWA1YRqPkU++ilGNbVhVnpHUKapR7pC8UwLGJWvR53KS+bmosDZiNbn0ptmCufF0lVcRJvLWLIwVelJyu667Un5vSc5xg0RIX0DjUmWeo/awkZgukQD03fTGH1FybJEZAuSOwYinSytClViHe0FbMTM8IJcZcRX3aJGIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4VSj3p3tnFz1R5qb;
+	Mon, 29 Apr 2024 20:16:22 +0800 (CST)
+Received: from dggpeml500026.china.huawei.com (unknown [7.185.36.106])
+	by mail.maildlp.com (Postfix) with ESMTPS id A8C4D180021;
+	Mon, 29 Apr 2024 20:19:30 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
+ (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 29 Apr
+ 2024 20:19:30 +0800
+From: Zhengchao Shao <shaozhengchao@huawei.com>
+To: <stable@vger.kernel.org>
+CC: <netdev@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+	<davem@davemloft.net>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>,
+	<kuba@kernel.org>, <edumazet@google.com>, <kuniyu@amazon.com>,
+	<weiyongjun1@huawei.com>, <yuehaibing@huawei.com>, <shaozhengchao@huawei.com>
+Subject: [PATCH stable,5.15 0/2] introduce stop timer to solve the problem of CVE-2024-26865
+Date: Mon, 29 Apr 2024 20:24:46 +0800
+Message-ID: <20240429122448.2661647-1-shaozhengchao@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024042909-whimsical-drapery-40d1@gregkh> <CANiq72ndLzts-KzUv_22vHF0tYkPvROv=oG+KP2KhbCvHkn60g@mail.gmail.com>
- <2024042901-wired-monsoon-010b@gregkh>
-In-Reply-To: <2024042901-wired-monsoon-010b@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 29 Apr 2024 14:22:13 +0200
-Message-ID: <CANiq72nLGum-AqCW=xfHZ5fNw5xQ+Cnmab3VZ+NeHEN1tSNpzw@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] kbuild: rust: force `alloc` extern to
- allow "empty" Rust" failed to apply to 6.1-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: ojeda@kernel.org, aliceryhl@google.com, daniel.almeida@collabora.com, 
-	gary@garyguo.net, julian.stecklina@cyberus-technology.de, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpeml500026.china.huawei.com (7.185.36.106)
 
-On Mon, Apr 29, 2024 at 1:37=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> That was, but you also say:
->         Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-> which is in 6.1, so what am I supposed to believe?
->
-> Hence the email :)
+For the CVE-2024-26865 issue, the stable 5.15 branch code also involves
+this issue. However, the patch of the mainline version cannot be used on
+stable 5.15 branch. The commit 740ea3c4a0b2("tcp: Clean up kernel
+listener' s reqsk in inet_twsk_purge()") is required to stop the timer.
 
-Ah, I see. I thought the annotation "overrides" what could be found
-automatically via the `Fixes`.
+Eric Dumazet (1):
+  tcp: Fix NEW_SYN_RECV handling in inet_twsk_purge()
 
-Let me send them manually then.
+Kuniyuki Iwashima (1):
+  tcp: Clean up kernel listener's reqsk in inet_twsk_purge()
 
-Thanks!
+ net/ipv4/inet_timewait_sock.c | 32 +++++++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-Cheers,
-Miguel
+-- 
+2.34.1
+
 
