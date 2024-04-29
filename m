@@ -1,78 +1,79 @@
-Return-Path: <stable+bounces-41638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02F58B5665
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:21:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 269358B5667
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:23:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE94E1C22D29
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:21:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CDFAB240C4
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3125F3FB9B;
-	Mon, 29 Apr 2024 11:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06333EA8C;
+	Mon, 29 Apr 2024 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4J0p12S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pju7s2vf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32C11EB2F
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8F91EB2F
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714389714; cv=none; b=iqMVyV7tUHfjCWxFZDf+JGqoApQJ06u8brKIDGEN4F5szFS1Brg47tpNjAWfoJj5Lt9f1k5iTPkBJEZbcQ2lIUw4LtvZ7M7ssKgheQO6PLAW3Zk+cppJpB7UJmhKmhPPI4Z1TX6XjbPzt9k6sMLSB/BhRngZzA4BAVRAoVoh5yk=
+	t=1714389778; cv=none; b=pCp6EmYC876OZSIq4IYT3ogqCUYoNLzJA5wTlauxEMqkUYfVjzRopepJtDbGzOCPMyTeIISfpx6SJbiyyK1naIk/wQ2Zkt3EM13AZC159AVCEV29k4U0jhPre5VIl+4AS99AmNzGqg359rqaF4PWzfPZXjFt0bwMJjs+54xd3gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714389714; c=relaxed/simple;
-	bh=twmJj6/xzIrnJkWkYTJTKb5pqAYYD7cV+m8X+pGuD4Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QL9o7PPuhc9kKeJU4ti55LI5K4p21GbQS7wKh7dXeUlG9nBgxLMcagbU0FzueMpJSDf0Ku0lu1JE9yON6CzYtShUZx6FmokOKCxsmWcDIpQLosvZPEpiGY3Jiqm6DLP5GOW6obNWqgVnCTitFU8I1dgVkWKFKZQBgZnwN3D+HIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4J0p12S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54291C113CD;
-	Mon, 29 Apr 2024 11:21:53 +0000 (UTC)
+	s=arc-20240116; t=1714389778; c=relaxed/simple;
+	bh=n8ZNvPVOOvBQgsQb2mnZTnIu9gJeFupM5GPdxk4NRgg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dC56g59xJxTt0dJULE9RT5suH9CYmbPhT1Y7qSm/8rDAUzWq5uVmlD3lAVr5iACU81mfyz7gyiYyjVtEB6oKD2EJnkyE2nnxn1qBlJKbw/p3xZWfAYSHFk0a2TSd5jnUfErWoZqiNUxubVCXppoIb98k+0u8VGvU1nJRm4r207w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pju7s2vf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7730C113CD;
+	Mon, 29 Apr 2024 11:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714389713;
-	bh=twmJj6/xzIrnJkWkYTJTKb5pqAYYD7cV+m8X+pGuD4Q=;
+	s=korg; t=1714389778;
+	bh=n8ZNvPVOOvBQgsQb2mnZTnIu9gJeFupM5GPdxk4NRgg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=i4J0p12SE9XLsah2Pndkq/Sw5ZCUvm2eOMd3diX9fII3+JWA8ACed2DKQw4jx7Abi
-	 h3pzMUJ64u9CbY96i31+z9BdPfO7DmEIJuHf1kPlsdtVVPNcRaKnihJIQm8ibzfR5d
-	 XF+a6bAJ0oP718Qs5EwatbFsU72hKOFoKldjiawo=
-Subject: FAILED: patch "[PATCH] rust: macros: fix soundness issue in `module!` macro" failed to apply to 6.1-stable tree
-To: benno.lossin@proton.me,bjorn3_gh@protonmail.com,ojeda@kernel.org,walmeida@microsoft.com
+	b=Pju7s2vf+Jo8PTTkAzbapq8g9ZLK7XB7pv6d4caREgz/CuRKdwr4yFvIlStkxlN1L
+	 NuP4nU02FP/Znwg+OkaglMBDeiaykRc64GQ/Gr7aSpsVYW18UWs4HYuR0wkdkAxpi6
+	 ay3pFW7UeSvVGmrxmJezuEn04G8Un1qDTShkxNtA=
+Subject: FAILED: patch "[PATCH] Bluetooth: qca: fix invalid device address check" failed to apply to 6.6-stable tree
+To: johan+linaro@kernel.org,luiz.von.dentz@intel.com,mka@chromium.org,quic_janathot@quicinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:21:40 +0200
-Message-ID: <2024042940-plod-embellish-5a76@gregkh>
+Date: Mon, 29 Apr 2024 13:22:55 +0200
+Message-ID: <2024042954-refract-eraser-aaf8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7044dcff8301b29269016ebd17df27c4736140d2
+git cherry-pick -x 32868e126c78876a8a5ddfcb6ac8cb2fffcf4d27
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042940-plod-embellish-5a76@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042954-refract-eraser-aaf8@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-7044dcff8301 ("rust: macros: fix soundness issue in `module!` macro")
-1b6170ff7a20 ("rust: module: place generated init_module() function in .init.text")
-41bdc6decda0 ("btf, scripts: rust: drop is_rust_module.sh")
-310897659cf0 ("Merge tag 'rust-6.4' of https://github.com/Rust-for-Linux/linux")
+32868e126c78 ("Bluetooth: qca: fix invalid device address check")
+77f45cca8bc5 ("Bluetooth: qca: fix device-address endianness")
+4790a73ace86 ("Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT"")
+7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT")
+a7f8dedb4be2 ("Bluetooth: qca: add support for QCA2066")
 
 thanks,
 
@@ -80,260 +81,116 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7044dcff8301b29269016ebd17df27c4736140d2 Mon Sep 17 00:00:00 2001
-From: Benno Lossin <benno.lossin@proton.me>
-Date: Mon, 1 Apr 2024 18:52:50 +0000
-Subject: [PATCH] rust: macros: fix soundness issue in `module!` macro
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 32868e126c78876a8a5ddfcb6ac8cb2fffcf4d27 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Tue, 16 Apr 2024 11:15:09 +0200
+Subject: [PATCH] Bluetooth: qca: fix invalid device address check
 
-The `module!` macro creates glue code that are called by C to initialize
-the Rust modules using the `Module::init` function. Part of this glue
-code are the local functions `__init` and `__exit` that are used to
-initialize/destroy the Rust module.
+Qualcomm Bluetooth controllers may not have been provisioned with a
+valid device address and instead end up using the default address
+00:00:00:00:5a:ad.
 
-These functions are safe and also visible to the Rust mod in which the
-`module!` macro is invoked. This means that they can be called by other
-safe Rust code. But since they contain `unsafe` blocks that rely on only
-being called at the right time, this is a soundness issue.
+This was previously believed to be due to lack of persistent storage for
+the address but it may also be due to integrators opting to not use the
+on-chip OTP memory and instead store the address elsewhere (e.g. in
+storage managed by secure world firmware).
 
-Wrap these generated functions inside of two private modules, this
-guarantees that the public functions cannot be called from the outside.
-Make the safe functions `unsafe` and add SAFETY comments.
+According to Qualcomm, at least WCN6750, WCN6855 and WCN7850 have
+on-chip OTP storage for the address.
 
-Cc: stable@vger.kernel.org
-Reported-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/629
-Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Wedson Almeida Filho <walmeida@microsoft.com>
-Link: https://lore.kernel.org/r/20240401185222.12015-1-benno.lossin@proton.me
-[ Moved `THIS_MODULE` out of the private-in-private modules since it
-  should remain public, as Dirk Behme noticed [1]. Capitalized comments,
-  avoided newline in non-list SAFETY comments and reworded to add
-  Reported-by and newline. ]
-Link: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic/x/near/433512583 [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+As the device type alone cannot be used to determine when the address is
+valid, instead read back the address during setup() and only set the
+HCI_QUIRK_USE_BDADDR_PROPERTY flag when needed.
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 27979e582e4b..acd0393b5095 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -199,17 +199,6 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             /// Used by the printing macros, e.g. [`info!`].
-             const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
+This specifically makes sure that controllers that have been provisioned
+with an address do not start as unconfigured.
+
+Reported-by: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Link: https://lore.kernel.org/r/124a7d54-5a18-4be7-9a76-a12017f6cce5@quicinc.com/
+Fixes: 5971752de44c ("Bluetooth: hci_qca: Set HCI_QUIRK_USE_BDADDR_PROPERTY for wcn3990")
+Fixes: e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD address missing in dts")
+Fixes: 6945795bc81a ("Bluetooth: fix use-bdaddr-property quirk")
+Cc: stable@vger.kernel.org	# 6.5
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reported-by: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 19cfc342fc7b..216826c31ee3 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -15,6 +15,8 @@
  
--            /// The \"Rust loadable module\" mark.
--            //
--            // This may be best done another way later on, e.g. as a new modinfo
--            // key or a new section. For the moment, keep it simple.
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[used]
--            static __IS_RUST_MODULE: () = ();
+ #define VERSION "0.1"
+ 
++#define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00, 0x00 }})
++
+ int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
+ 			 enum qca_btsoc_type soc_type)
+ {
+@@ -612,6 +614,38 @@ int qca_set_bdaddr_rome(struct hci_dev *hdev, const bdaddr_t *bdaddr)
+ }
+ EXPORT_SYMBOL_GPL(qca_set_bdaddr_rome);
+ 
++static int qca_check_bdaddr(struct hci_dev *hdev)
++{
++	struct hci_rp_read_bd_addr *bda;
++	struct sk_buff *skb;
++	int err;
++
++	if (bacmp(&hdev->public_addr, BDADDR_ANY))
++		return 0;
++
++	skb = __hci_cmd_sync(hdev, HCI_OP_READ_BD_ADDR, 0, NULL,
++			     HCI_INIT_TIMEOUT);
++	if (IS_ERR(skb)) {
++		err = PTR_ERR(skb);
++		bt_dev_err(hdev, "Failed to read device address (%d)", err);
++		return err;
++	}
++
++	if (skb->len != sizeof(*bda)) {
++		bt_dev_err(hdev, "Device address length mismatch");
++		kfree_skb(skb);
++		return -EIO;
++	}
++
++	bda = (struct hci_rp_read_bd_addr *)skb->data;
++	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT))
++		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
++
++	kfree_skb(skb);
++
++	return 0;
++}
++
+ static void qca_generate_hsp_nvm_name(char *fwname, size_t max_size,
+ 		struct qca_btsoc_version ver, u8 rom_ver, u16 bid)
+ {
+@@ -818,6 +852,10 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 		break;
+ 	}
+ 
++	err = qca_check_bdaddr(hdev);
++	if (err)
++		return err;
++
+ 	bt_dev_info(hdev, "QCA setup on UART is completed");
+ 
+ 	return 0;
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index ecbc52eaf101..92fa20f5ac7d 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1905,8 +1905,6 @@ static int qca_setup(struct hci_uart *hu)
+ 	case QCA_WCN6750:
+ 	case QCA_WCN6855:
+ 	case QCA_WCN7850:
+-		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
 -
--            static mut __MOD: Option<{type_}> = None;
--
-             // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
-             // freed until the module is unloaded.
-             #[cfg(MODULE)]
-@@ -221,81 +210,132 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-                 kernel::ThisModule::from_ptr(core::ptr::null_mut())
-             }};
- 
--            // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
--            /// # Safety
--            ///
--            /// This function must not be called after module initialization, because it may be
--            /// freed after that completes.
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[no_mangle]
--            #[link_section = \".init.text\"]
--            pub unsafe extern \"C\" fn init_module() -> core::ffi::c_int {{
--                __init()
--            }}
-+            // Double nested modules, since then nobody can access the public items inside.
-+            mod __module_init {{
-+                mod __module_init {{
-+                    use super::super::{type_};
- 
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn cleanup_module() {{
--                __exit()
--            }}
-+                    /// The \"Rust loadable module\" mark.
-+                    //
-+                    // This may be best done another way later on, e.g. as a new modinfo
-+                    // key or a new section. For the moment, keep it simple.
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[used]
-+                    static __IS_RUST_MODULE: () = ();
- 
--            // Built-in modules are initialized through an initcall pointer
--            // and the identifiers need to be unique.
--            #[cfg(not(MODULE))]
--            #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
--            #[doc(hidden)]
--            #[link_section = \"{initcall_section}\"]
--            #[used]
--            pub static __{name}_initcall: extern \"C\" fn() -> core::ffi::c_int = __{name}_init;
-+                    static mut __MOD: Option<{type_}> = None;
- 
--            #[cfg(not(MODULE))]
--            #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
--            core::arch::global_asm!(
--                r#\".section \"{initcall_section}\", \"a\"
--                __{name}_initcall:
--                    .long   __{name}_init - .
--                    .previous
--                \"#
--            );
-+                    // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
-+                    /// # Safety
-+                    ///
-+                    /// This function must not be called after module initialization, because it may be
-+                    /// freed after that completes.
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    #[link_section = \".init.text\"]
-+                    pub unsafe extern \"C\" fn init_module() -> core::ffi::c_int {{
-+                        // SAFETY: This function is inaccessible to the outside due to the double
-+                        // module wrapping it. It is called exactly once by the C side via its
-+                        // unique name.
-+                        unsafe {{ __init() }}
-+                    }}
- 
--            #[cfg(not(MODULE))]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn __{name}_init() -> core::ffi::c_int {{
--                __init()
--            }}
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn cleanup_module() {{
-+                        // SAFETY:
-+                        // - This function is inaccessible to the outside due to the double
-+                        //   module wrapping it. It is called exactly once by the C side via its
-+                        //   unique name,
-+                        // - furthermore it is only called after `init_module` has returned `0`
-+                        //   (which delegates to `__init`).
-+                        unsafe {{ __exit() }}
-+                    }}
- 
--            #[cfg(not(MODULE))]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn __{name}_exit() {{
--                __exit()
--            }}
-+                    // Built-in modules are initialized through an initcall pointer
-+                    // and the identifiers need to be unique.
-+                    #[cfg(not(MODULE))]
-+                    #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
-+                    #[doc(hidden)]
-+                    #[link_section = \"{initcall_section}\"]
-+                    #[used]
-+                    pub static __{name}_initcall: extern \"C\" fn() -> core::ffi::c_int = __{name}_init;
- 
--            fn __init() -> core::ffi::c_int {{
--                match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
--                    Ok(m) => {{
--                        unsafe {{
--                            __MOD = Some(m);
-+                    #[cfg(not(MODULE))]
-+                    #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
-+                    core::arch::global_asm!(
-+                        r#\".section \"{initcall_section}\", \"a\"
-+                        __{name}_initcall:
-+                            .long   __{name}_init - .
-+                            .previous
-+                        \"#
-+                    );
-+
-+                    #[cfg(not(MODULE))]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn __{name}_init() -> core::ffi::c_int {{
-+                        // SAFETY: This function is inaccessible to the outside due to the double
-+                        // module wrapping it. It is called exactly once by the C side via its
-+                        // placement above in the initcall section.
-+                        unsafe {{ __init() }}
-+                    }}
-+
-+                    #[cfg(not(MODULE))]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn __{name}_exit() {{
-+                        // SAFETY:
-+                        // - This function is inaccessible to the outside due to the double
-+                        //   module wrapping it. It is called exactly once by the C side via its
-+                        //   unique name,
-+                        // - furthermore it is only called after `__{name}_init` has returned `0`
-+                        //   (which delegates to `__init`).
-+                        unsafe {{ __exit() }}
-+                    }}
-+
-+                    /// # Safety
-+                    ///
-+                    /// This function must only be called once.
-+                    unsafe fn __init() -> core::ffi::c_int {{
-+                        match <{type_} as kernel::Module>::init(&super::super::THIS_MODULE) {{
-+                            Ok(m) => {{
-+                                // SAFETY: No data race, since `__MOD` can only be accessed by this
-+                                // module and there only `__init` and `__exit` access it. These
-+                                // functions are only called once and `__exit` cannot be called
-+                                // before or during `__init`.
-+                                unsafe {{
-+                                    __MOD = Some(m);
-+                                }}
-+                                return 0;
-+                            }}
-+                            Err(e) => {{
-+                                return e.to_errno();
-+                            }}
-                         }}
--                        return 0;
-                     }}
--                    Err(e) => {{
--                        return e.to_errno();
-+
-+                    /// # Safety
-+                    ///
-+                    /// This function must
-+                    /// - only be called once,
-+                    /// - be called after `__init` has been called and returned `0`.
-+                    unsafe fn __exit() {{
-+                        // SAFETY: No data race, since `__MOD` can only be accessed by this module
-+                        // and there only `__init` and `__exit` access it. These functions are only
-+                        // called once and `__init` was already called.
-+                        unsafe {{
-+                            // Invokes `drop()` on `__MOD`, which should be used for cleanup.
-+                            __MOD = None;
-+                        }}
-                     }}
-+
-+                    {modinfo}
-                 }}
-             }}
--
--            fn __exit() {{
--                unsafe {{
--                    // Invokes `drop()` on `__MOD`, which should be used for cleanup.
--                    __MOD = None;
--                }}
--            }}
--
--            {modinfo}
-         ",
-         type_ = info.type_,
-         name = info.name,
+ 		qcadev = serdev_device_get_drvdata(hu->serdev);
+ 		if (qcadev->bdaddr_property_broken)
+ 			set_bit(HCI_QUIRK_BDADDR_PROPERTY_BROKEN, &hdev->quirks);
 
 
