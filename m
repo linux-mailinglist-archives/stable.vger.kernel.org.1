@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-41735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7500F8B5AD3
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 16:03:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8978B5AE9
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 16:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A63B41C21E1F
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:03:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BD081C21217
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437D176F1D;
-	Mon, 29 Apr 2024 14:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292817BB01;
+	Mon, 29 Apr 2024 14:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIQAiOwY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ogSygeqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5707350E;
-	Mon, 29 Apr 2024 14:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BBF763FC;
+	Mon, 29 Apr 2024 14:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714399366; cv=none; b=rzxDTs5nriDPFuwnris9c8KD1rhu2noB13Ug+tOiLQipMhCS0LSfvilOsTLNVkGEi0ns6VGnLdG+qXA3cN+yHaQgX4GUgmeGr7IYbcOpEOrQirHKf2cY4R5ZSurL4NAYmLMZGOXu/HV1rfHL6hlZxWCJ+H1icFv0SnW/E5UvvJ0=
+	t=1714399614; cv=none; b=jYaa2nCXafI80Dvqfd9X8eUlNJRiyBKJPId+jX7bFPYmk8laAoHJbpA3nJx0qJ9hhOP3EPNtnh/SzzWVIjhpLUuypH2msWqFCQItMbxeU9m/+FfNOUzcYQJR+dEOVi35Jd7td8/r0++1F9zI5pnw41rBKUCHDxVCCf742UHibDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714399366; c=relaxed/simple;
-	bh=835iAcXRfjIYlXFFIwTdN1EOMd6MN3KDBFjtdpw5a40=;
+	s=arc-20240116; t=1714399614; c=relaxed/simple;
+	bh=sJO/Lcs+rY37o08NZeFavwRGMkijjGwoIQvZuzab768=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cbUe4wh+6uUb3TrU4E3p60GILpjjEjNW4cdfxI1i9/huV8htQfYCSyGIOT6G/KxDNCIY7sC8RRhmX3iClF6zY4ToH53Jq934CrcNeTSdMOGHu8kpbhkG89foXOWaDgIOukE623nPeEvO1/4+DFjBwVhPmIARpkuhHkfDNSFGegQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mIQAiOwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BA2C4AF19;
-	Mon, 29 Apr 2024 14:02:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=YuIK6Jlpwiogb2jZxw/hx0/WH3RJSzOE6nDyItW4XArDz7v/Ji7rCflM9HHCivNR+jmeDfV2E8q9GuWYF/7zn1hgGBJnDn+CByi0CZZ6XB9K1YxCgzLuY49qaeQzj8NFd0q/h3+q4/Ssahh2Qw8ksIh4Q8pjAZPna3BgNaX97YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ogSygeqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522CDC113CD;
+	Mon, 29 Apr 2024 14:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714399365;
-	bh=835iAcXRfjIYlXFFIwTdN1EOMd6MN3KDBFjtdpw5a40=;
+	s=k20201202; t=1714399614;
+	bh=sJO/Lcs+rY37o08NZeFavwRGMkijjGwoIQvZuzab768=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mIQAiOwY1X+S90URPul8ZL26gdeBGQLXhnXDeQTxIa9KM0vKzNqP617ep23xAxHIy
-	 HQTxTRtMK//6MVqQmnif3WNYgzKoeENyXTBUNKtVRPRimNodrWIqLylyT0VWKVhdCh
-	 gls/b9VJftbfJCNIFHj9dlE0UcP/4vXJwuiPuXWOurv3ojJqBwSnluGK3VrqWOnb6N
-	 qYgyAW8fYDw96zokhC9yx2Zt8QIhHPVCWxPkerfplACVIE7+jY2AgqP8lXbgVtmBZy
-	 LFX2TbJJq0gVAd7UaaUyb0ZZ8a++pX75g69OAOoEQKxC6+FIF0nAeC5hAdgTRzSTc1
-	 2bN3YBjgBhsSA==
+	b=ogSygeqS3rlcEe3fU4U6rujK5dm0ka5/nrKXwi4j7NozemxPIl4ZTcKZsbzbLuvSC
+	 93DPMYeSc8r0kS2G24ODhiLf/3hhV0N7r+wyRUepwjM32X4wOu4ENBMXxWLYwKOceb
+	 CQ3izCEz/t6P9KjRM+Nton6IwVGoZyITXRM389xurXSKfnerXxKpaFV5Rl38yTORTp
+	 yDzAbPVtKPEsV6mWpKFqGk3Jm3JmTD5XcF4ywySqVbJ1DDBLvxrcJjYcZ+aPEmN8Dd
+	 /GpQ+T4WVhQsuA7Nc4nXcUM7Bd0tZX8ORCoGWcAcWjZjSjq13njAc9U70Q/zxykCIx
+	 aZ6+NIwx1x2vQ==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1s1Rae-000000004KY-3wOG;
-	Mon, 29 Apr 2024 16:02:45 +0200
-Date: Mon, 29 Apr 2024 16:02:44 +0200
+	id 1s1Reg-000000004R6-0cMD;
+	Mon, 29 Apr 2024 16:06:54 +0200
+Date: Mon, 29 Apr 2024 16:06:54 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
 Cc: Doug Anderson <dianders@chromium.org>,
@@ -56,11 +56,12 @@ Cc: Doug Anderson <dianders@chromium.org>,
 	stable@vger.kernel.org, quic_mohamull@quicinc.com,
 	quic_hbandi@quicinc.com, quic_anubhavg@quicinc.com
 Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
-Message-ID: <Zi-ohCWv58d2h5VM@hovoldconsulting.com>
+Message-ID: <Zi-pfqUplv6VZ-aC@hovoldconsulting.com>
 References: <20240426155801.25277-1-johan+linaro@kernel.org>
  <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
  <ZizKmtcUIYAMpvOQ@hovoldconsulting.com>
  <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
+ <Zi-ohCWv58d2h5VM@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,48 +70,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
+In-Reply-To: <Zi-ohCWv58d2h5VM@hovoldconsulting.com>
 
-Hi Janaki,
+On Mon, Apr 29, 2024 at 04:02:44PM +0200, Johan Hovold wrote:
 
-Please avoid top and remember to trim unnecessary context when replying
-to the mailing lists.
+> Please avoid top and remember to trim unnecessary context when replying
+> to the mailing lists.
 
-On Mon, Apr 29, 2024 at 03:34:32PM +0530, Janaki Ramaiah Thota wrote:
+This was supposed to say: Please avoid top-posting and ...
 
-> Having a default BDA list from NVM BDA tag value will prevent developers
-> from using the device if there is no user space app(In Fluoride) to set
-> the BDA. Therefore, we are requesting to use default address check patch,
-> so that developer can change the NVM BDA to make use of the device.
+See also:
 
-But a developer on such an old platform that can patch and replace the
-NVM configuration file should also be able to just disable the check in
-the driver right (e.g. by commenting out the call to
-qca_check_bdaddr())?
-
->   List Of default Addresses:
->   ---------------------------------------------------------
-> |       BDA          |      Chipset                       |
->   ---------------------------------------------------------
-> | 39 80 10 00 00 20  |  WCN3988 with ROM Version 0x0200   |
->   ---------------------------------------------------------
-> | 39 80 12 74 08 00  |  WCN3988 with ROM Version 0x0201   |
->   ---------------------------------------------------------
-> | 39 90 21 64 07 00  |  WCN3990                           |
->   ---------------------------------------------------------
-> | 39 98 00 00 5A AD  |  WCN3991                           |
->   ---------------------------------------------------------
-> | 00 00 00 00 5A AD  |  QCA DEFAULT                       |
->   ---------------------------------------------------------
-
-What about WCN6750 and 64:90:00:00:5a:ad?
-
-And then there's currently also:
-
-> > bluetooth hci0: bd_addr = 61:47:aa:31:22:14 (qca/nvm_00130300.bin)
-> > bluetooth hci0: bd_addr = 61:47:aa:32:44:07 (qca/nvm_00130302.bin)
-
-Which controllers use these configurations?
+	https://people.kernel.org/tglx/notes-about-netiquette
+	http://daringfireball.net/2007/07/on_top
 
 Johan
 
