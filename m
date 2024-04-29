@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837428B566C
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:24:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35A88B566E
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:24:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4A851C21FAB
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:24:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62BB7284295
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821183FE28;
-	Mon, 29 Apr 2024 11:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1F53FBA3;
+	Mon, 29 Apr 2024 11:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ET2O/U8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oevZSeS5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306323DB8E
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8663FBAF
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714389844; cv=none; b=PqKU99fIcML3n5ZKrIauodC0nhjlaeHTPfYsW/PW46wpt8K0WdkOgApYhBnBgu5PbVt8pNZ1Zx2mSRBFkATSwusq3QXy40EVtOMx9kPkEBC2iOnZDFYQVmcIELiEFfncuJIohavGfKH2ir9mbU52jsnacqa6/3ozpWddkX0xD+E=
+	t=1714389853; cv=none; b=iWiiDzFeUS5hsgCOHbpsOjCTV4qVITcOiqLObfe9h/FOBAb0mzCWKUiy280N7uw+LrdAOVY4hF8kFT8+qAAVMRffeWf05cM8BjyGM8ZsnSZNfnk5red2bZF7B+kRjpu4wJO54YnQtBMAlJKttwAlwDNBWTYeO543awq0c0jyNXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714389844; c=relaxed/simple;
-	bh=m8WMtpoPLhHdcpMAAC0cucJlpDo8fgPtEXVxJAMY5PA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Nbqqj9C5EEvfMTpmWaF7iuJS3CzNSRbPeeeR8AIs75BQbxLij8xaHcNDNdqgR+tXn0VNJGJNmCjN9XdtMEALvuD2r4nsVjAbik88/bJ9p5XMXRmcSFs891tHeaYeRkPAq88sKhLgYE/HwgkD64CxcxR6Fc5fuT9YaHfgLUxjwPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ET2O/U8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCC0C113CD;
-	Mon, 29 Apr 2024 11:24:03 +0000 (UTC)
+	s=arc-20240116; t=1714389853; c=relaxed/simple;
+	bh=by/p0VSkZVx1idGO2KT/ng4lkvOCDuJ/gcViIiaG5F0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=auwolBDgVjDJuiwx4yGgaeuMDxUuj7wAayLATrXC//KlwlpGL6RjuW0MEypQr6jvaBX8OezoR05VOckP7C8snn4Ha3oJ+81HrrP8Yxv0J7oUxvJljhqggnUngTtKU4IPUQayMF4+Env0C0xiE/YHba5PpJgfSIaf0V9uRny6Lps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oevZSeS5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD9FC113CD;
+	Mon, 29 Apr 2024 11:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714389844;
-	bh=m8WMtpoPLhHdcpMAAC0cucJlpDo8fgPtEXVxJAMY5PA=;
+	s=korg; t=1714389853;
+	bh=by/p0VSkZVx1idGO2KT/ng4lkvOCDuJ/gcViIiaG5F0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ET2O/U8KzSUFbjTIJoGIGfNzUCiLW8julWLI5uZe07Elv7Lndxkssy3H6Y+2+wltl
-	 SBKepp2krHiqtSKtTCoasX9MUQAbNPUDmljuqTlM1lv51LHEYB11Q18NFvYd+gh8oM
-	 RibsFtrLam5od3iUHHzd9elvpGFF+UFK+hma2ur8=
-Subject: FAILED: patch "[PATCH] mm/hugetlb: fix missing hugetlb_lock for resv uncharge" failed to apply to 5.10-stable tree
-To: peterx@redhat.com,akpm@linux-foundation.org,almasrymina@google.com,david@redhat.com,stable@vger.kernel.org
+	b=oevZSeS5dUL61F2oyxbtWoU8R/jGJVThH6a7Sf2EkNhGrR15t3er9jZUogmuLxIpx
+	 ZjJzgr3nXdra6FlVmndXAIE5p60c4B9AIbVqj15y06u60DiQ9OdSXgm4nce5f+8MqD
+	 V+Og498/jol/tLRvziYU73IfBHnUhIsDcyM00cK0=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-msm: pervent access to suspended controller" failed to apply to 5.10-stable tree
+To: mantas@8devices.com,adrian.hunter@intel.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:23:50 +0200
-Message-ID: <2024042950-distaste-resource-3555@gregkh>
+Date: Mon, 29 Apr 2024 13:24:10 +0200
+Message-ID: <2024042910-obnoxious-sleep-f776@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,26 +62,15 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x b76b46902c2d0395488c8412e1116c2486cdfcb2
+git cherry-pick -x f8def10f73a516b771051a2f70f2f0446902cb4f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042950-distaste-resource-3555@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042910-obnoxious-sleep-f776@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-b76b46902c2d ("mm/hugetlb: fix missing hugetlb_lock for resv uncharge")
-d4ab0316cc33 ("mm/hugetlb_cgroup: convert hugetlb_cgroup_uncharge_page() to folios")
-0356c4b96f68 ("mm/hugetlb: convert free_huge_page to folios")
-78fbe906cc90 ("mm/page-flags: reuse PG_mappedtodisk as PG_anon_exclusive for PageAnon() pages")
-c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
-84d60fdd3733 ("mm: slightly clarify KSM logic in do_swap_page()")
-5cbf9942c963 ("mm: generalize the pgmap based page_free infrastructure")
-27674ef6c73f ("mm: remove the extra ZONE_DEVICE struct page refcount")
-dc90f0846df4 ("mm: don't include <linux/memremap.h> in <linux/mm.h>")
-895749455f60 ("mm: simplify freeing of devmap managed pages")
-75e55d8a107e ("mm: move free_devmap_managed_page to memremap.c")
-730ff52194cd ("mm: remove pointless includes from <linux/hmm.h>")
-f56caedaf94f ("Merge branch 'akpm' (patches from Andrew)")
+f8def10f73a5 ("mmc: sdhci-msm: pervent access to suspended controller")
+c93767cf64eb ("mmc: sdhci-msm: add Inline Crypto Engine support")
 
 thanks,
 
@@ -89,50 +78,63 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b76b46902c2d0395488c8412e1116c2486cdfcb2 Mon Sep 17 00:00:00 2001
-From: Peter Xu <peterx@redhat.com>
-Date: Wed, 17 Apr 2024 17:18:35 -0400
-Subject: [PATCH] mm/hugetlb: fix missing hugetlb_lock for resv uncharge
+From f8def10f73a516b771051a2f70f2f0446902cb4f Mon Sep 17 00:00:00 2001
+From: Mantas Pucka <mantas@8devices.com>
+Date: Thu, 21 Mar 2024 14:30:01 +0000
+Subject: [PATCH] mmc: sdhci-msm: pervent access to suspended controller
 
-There is a recent report on UFFDIO_COPY over hugetlb:
+Generic sdhci code registers LED device and uses host->runtime_suspended
+flag to protect access to it. The sdhci-msm driver doesn't set this flag,
+which causes a crash when LED is accessed while controller is runtime
+suspended. Fix this by setting the flag correctly.
 
-https://lore.kernel.org/all/000000000000ee06de0616177560@google.com/
+Cc: stable@vger.kernel.org
+Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
+Signed-off-by: Mantas Pucka <mantas@8devices.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-350:	lockdep_assert_held(&hugetlb_lock);
-
-Should be an issue in hugetlb but triggered in an userfault context, where
-it goes into the unlikely path where two threads modifying the resv map
-together.  Mike has a fix in that path for resv uncharge but it looks like
-the locking criteria was overlooked: hugetlb_cgroup_uncharge_folio_rsvd()
-will update the cgroup pointer, so it requires to be called with the lock
-held.
-
-Link: https://lkml.kernel.org/r/20240417211836.2742593-3-peterx@redhat.com
-Fixes: 79aa925bf239 ("hugetlb_cgroup: fix reservation accounting")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: syzbot+4b8077a5fccc61c385a1@syzkaller.appspotmail.com
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 31d00eee028f..53e0ab5c0845 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3268,9 +3268,12 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 668e0aceeeba..e113b99a3eab 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -2694,6 +2694,11 @@ static __maybe_unused int sdhci_msm_runtime_suspend(struct device *dev)
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	unsigned long flags;
++
++	spin_lock_irqsave(&host->lock, flags);
++	host->runtime_suspended = true;
++	spin_unlock_irqrestore(&host->lock, flags);
  
- 		rsv_adjust = hugepage_subpool_put_pages(spool, 1);
- 		hugetlb_acct_memory(h, -rsv_adjust);
--		if (deferred_reserve)
-+		if (deferred_reserve) {
-+			spin_lock_irq(&hugetlb_lock);
- 			hugetlb_cgroup_uncharge_folio_rsvd(hstate_index(h),
- 					pages_per_huge_page(h), folio);
-+			spin_unlock_irq(&hugetlb_lock);
-+		}
- 	}
+ 	/* Drop the performance vote */
+ 	dev_pm_opp_set_rate(dev, 0);
+@@ -2708,6 +2713,7 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	unsigned long flags;
+ 	int ret;
  
- 	if (!memcg_charge_ret)
+ 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
+@@ -2726,7 +2732,15 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
+ 
+ 	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
+ 
+-	return sdhci_msm_ice_resume(msm_host);
++	ret = sdhci_msm_ice_resume(msm_host);
++	if (ret)
++		return ret;
++
++	spin_lock_irqsave(&host->lock, flags);
++	host->runtime_suspended = false;
++	spin_unlock_irqrestore(&host->lock, flags);
++
++	return ret;
+ }
+ 
+ static const struct dev_pm_ops sdhci_msm_pm_ops = {
 
 
