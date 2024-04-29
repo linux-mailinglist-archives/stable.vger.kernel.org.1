@@ -1,183 +1,168 @@
-Return-Path: <stable+bounces-41758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C95F8B602E
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 19:32:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4335F8B60D8
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 20:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2960E1F21E98
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:32:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 894E9286C91
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 18:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC058126F02;
-	Mon, 29 Apr 2024 17:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B29127E2A;
+	Mon, 29 Apr 2024 18:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dYP4Qowj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l4r0V0Cj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670D48614C;
-	Mon, 29 Apr 2024 17:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0855883CBA;
+	Mon, 29 Apr 2024 18:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714411931; cv=none; b=IHQE4K2sy3ooQl2yMX7TVDizxv0KPAAf5uYnWl00Ahila7CBS5qmkCYRqTCiRf7zLBs/vEkpXgYK+FxKTn7hmcAJHyW/cd/jUb7huTtu6tDB+eQbiqII+euaQbLii71FsODXYyX0nG3Zde/UDnjkPRxhrEEIcujkYQNHXYWO1uk=
+	t=1714413693; cv=none; b=IPKxnvrKSmfUUydyeuvv+3gHk+mEEkaMKfjukZkWp92dSM7aKXKWxsU9A78biZAbQ0vZWtHEB8LzzwGNyUmIWf28IxJy9XmTSqWRTXmyWS4uK6sI8KL5kHnJyFq+YUJ8XcBVcvkqVi6Sc7n1BYTE0TRqIpOfQF+PQSft4Sut2EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714411931; c=relaxed/simple;
-	bh=iqIHXbJjoR/NNhKJl08ktzgkIFOTMzL85HRzlBgYroM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rc6CaSQFdNngsrjEwbvwnjWio5Givm67fEcKFaggbdRzJFLABnH6ZvPcsrzrWpC+r3nHr1TIe1qUrRI4Gg9WRxcXyEzaoVKEaszpimlm+VeB8z+0Hzr1c8IdaCHjIclF/JZgYx2KL2wLuUr7ZNFI8bq6vUFLOODT4CAit2wL/bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dYP4Qowj; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e51398cc4eso42966675ad.2;
-        Mon, 29 Apr 2024 10:32:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714411928; x=1715016728; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7yO0axpmFWwXDk/UVwdYYKF708XKLao28CV2qhrurHw=;
-        b=dYP4QowjUoq/cUSxtQfW8kUmDChpDErO8rEp7zZVc5qb4ZPBfzqBcCOa40pWeycGJr
-         Doa9s0SWI7+5YJzp4njdOu6XvshCIIaC/lmEbg/MuJdAKUBFF6OXtjI7CC39nHI0iL0L
-         rKCf46RmZCJVKY8QrJiRBg24rTMAENCIO5N2/3ofzkKvKY/eItkrl6Tiv0Nos6rbpYLU
-         FgI0jziAo0an8G4yuJOK2U5WZreQch3tg08zOIsp/hIpYSdB0xtV5EtHiRX4y329Up9o
-         x5Wn1yThvfSsmagD5fLeTF/e08xioSfl0Tc93XjhHAUErpwK4bvndaScPQfTiLZKwXwo
-         tuxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714411928; x=1715016728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7yO0axpmFWwXDk/UVwdYYKF708XKLao28CV2qhrurHw=;
-        b=HCePAj8CeCMUW7cTgSO4v0CAUnRyNjYIZI2YEmPofna6z/n3X1goJ5WYWUHXT2vddS
-         te2sysOrHBjcjpsD3ji8uL1OZge/b7g1PtFOBjTuVBJHO1cV13i75lCh+rIgXJviR/pO
-         dW6UFFFWTarea0rizhxtORJ25itdbJOvmk5zpPbNwlonp4/LnUSBEB+I49VWMiADDh/x
-         46/AeAkWQ8oKTw+z+EXKB5d1dUGQCghNiUS64tUd4a+ooVSDUG37unIWV54oSu4Lhnfn
-         F4clHs06JTfNntUWlGIEU6YCFwv6vaGIwoLDZvwPg4GLElQc7JEoJh6JtTp6pRoBC8d/
-         VTVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVC8XHI5eRMoi+BifPZ+Lhr/0hj9btrN29Zz+QVIXGAFIpYHgn/GkUqQjxKuZbhkialEtstapPvFVNqWwGWieuE6UxFL2qSQEmnLZ9dOrT3792aTBglI6PdgzUUCrIkrR8ZmssTncc/xo3gzPV7wFvPVBOhP4h9/WiDrRzd80Pw1zHNP2iI
-X-Gm-Message-State: AOJu0YwlxISgri9b9Z5uoeesAHDGNeMljVrfP5C+uzwZVxkMYpFD4yIk
-	M8JZNJqDGLoJfCcFyBP7KARzAa3X8JgfT8O8bgT+dbN3w+A7/faCi9My7Winx7miV1MxiiM9w0P
-	SuNF6OP9RYwLM1wmxLfE6Lf1BqKc=
-X-Google-Smtp-Source: AGHT+IF/cMVRZqUF4PJpmz/ctyeQby+RhUwdslYpqxX493gwiftDdBuuSTd0L/iWow1IH+ELZJg2338tGJD7t+pWy6s=
-X-Received: by 2002:a17:902:ce87:b0:1eb:7285:d6fe with SMTP id
- f7-20020a170902ce8700b001eb7285d6femr8369860plg.23.1714411928438; Mon, 29 Apr
- 2024 10:32:08 -0700 (PDT)
+	s=arc-20240116; t=1714413693; c=relaxed/simple;
+	bh=HnQX04g3H4aGl0kOgsahnA7O/urfcjX5rQYi9xXRvfA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=S9cmJV5kgG6H3ZebeA1uk4NxMll5VD4InFNDjnr2djfbLOFZQm+4banu/B+ftsRhmrZmCDbRA1kVF80DyiJg80uLhX3Vgb2RO7AarE5vzg2MZnS9Tm9Dw8am+B9EeNL68SD/x/sQo1/Ls8+tG/UNcyQ9oPpg3CY1F7jZwLajlnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l4r0V0Cj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD37C113CD;
+	Mon, 29 Apr 2024 18:01:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714413692;
+	bh=HnQX04g3H4aGl0kOgsahnA7O/urfcjX5rQYi9xXRvfA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=l4r0V0Cj/ClfZtI2+M6SVJ009QE5l00rm0yGksF08mH8aqqq5eVFdU8auSlCHli5s
+	 KMaUrrs+eeXS+4DoYLqQuLDfQpSNcCQS7IrVlZvvwfj9w06E6REFcrHGWXFhu6TKW/
+	 54uecAJnjZYEJgDWhgYOHujTre977PDeYGFfTcqFtWVGZ6OPX4BS3GPygxr5Lol5SK
+	 cSAVULvtwjhttNae5v5OSkwJ8jJ1yJAOn/QFOgu2Gu6GualOlTzvTFhOXie83EGx38
+	 4h9zIu5z+qFIs98WyeJjh2iqUpDWV2ZXACVsn7kxXpknVAqGudVdo0P/c8RmH4a5fc
+	 gRYJr1vvSYaWg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Mon, 29 Apr 2024 20:00:31 +0200
+Subject: [PATCH net] mptcp: ensure snd_nxt is properly initialized on
+ connect
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240426155801.25277-1-johan+linaro@kernel.org>
- <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
- <ZizKmtcUIYAMpvOQ@hovoldconsulting.com> <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
- <Zi-ohCWv58d2h5VM@hovoldconsulting.com> <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
-In-Reply-To: <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Mon, 29 Apr 2024 13:31:53 -0400
-Message-ID: <CABBYNZJyRR9FA7TYN4+aWMtG9FPUBWMvCtMNUfvaEzxVcYOt-g@mail.gmail.com>
-Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
-To: Johan Hovold <johan@kernel.org>
-Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>, Doug Anderson <dianders@chromium.org>, 
-	Johan Hovold <johan+linaro@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, quic_mohamull@quicinc.com, quic_hbandi@quicinc.com, 
-	quic_anubhavg@quicinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240429-upstream-net-20240429-mptcp-snd_nxt-init-connect-v1-1-59ceac0a7dcb@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAD7gL2YC/z2NMQrDMAwAvxI0V+AaDU6/UkoJttJqiGIstQRC/
+ h7ToePdcLeDcRM2uA07NP6KyaodrpcB8nvSF6OUzhBDpEBxxE81bzwtqOz4t0v1XNG0PHVzFBX
+ HvKpydixjIiophZkS9GxtPMv2W96hR+BxHCe/WyL+hwAAAA==
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Davide Caratti <dcaratti@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Christoph Paasch <cpaasch@apple.com>, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3765; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=4DC3uSMFTJhiH+tjuyCzuGWfOrPmEvBhyUaXOn+ngXI=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmL+B4xsRUyWBPNFj4ImKhOSMfiA0bEkPlKfCuo
+ gS2+pFda4uJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZi/geAAKCRD2t4JPQmmg
+ cw6ZEACKIZuD6B9nxlXS0mrv/rrVLtxTD70oRzZUAEY5D5RIIwQLC+cely9HUTKBrg/+OW1Uul/
+ hCidmg+XZGD0gghxawOeOhbLUo+n/xzrHtgU+AgYsS1+jHUG5zHaj9T2NhBpGWQLEPxYzB3LbIF
+ iDDDkqwPB8CfD/Va08UQsu13wsGxCepM7Rc2devVjvCIBpKvUqlwKNXNa5nAmMGl2jk0d4mP7S9
+ h+7RrYVDRZd65Dh3eAKsyR/fwS7DTsiaZRu8yJ6hsFlMk3xTpxLqjHvvT7ptfCuLVaJllxNHlhZ
+ WxxUF21HPSKrp3y5tEoUNIEswwsTyi76rwqk6HKBs96W1JVN1AtRg4Sk9NJgxa3eQ0DqU6TTvax
+ ipbKBD4dGlccDNMlIAhotDmsnLT1tcijoSLZbP8uuQgUq1FwOK73uowh7oHo9foajmHfqSsCURr
+ xaX2FSfdPcZ6SBRsyfkOracvUjTDAak+VwYEikjcy96KCEMhE/ry+r5oHzI48XjJSc0G1mRIQEI
+ obG6HxfFElc7PIvHVkCzJ529aGzfkwrBzDTBRa4CWxKa32vhlBGGT2LqVwYkZDpDpxuP+5+qI1h
+ l9DycXQaw2mgul0KadqjUw/xZa/3NGQecIWZkl5P7jn2ncyhtkx9zmsTsmjMj1ECxGbVj8KIEvc
+ tSHTWSH50i7S89w==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Hi,
+From: Paolo Abeni <pabeni@redhat.com>
 
-On Mon, Apr 29, 2024 at 1:12=E2=80=AFPM Luiz Augusto von Dentz
-<luiz.dentz@gmail.com> wrote:
->
-> Hi,
->
-> On Mon, Apr 29, 2024 at 10:02=E2=80=AFAM Johan Hovold <johan@kernel.org> =
-wrote:
-> >
-> > Hi Janaki,
-> >
-> > Please avoid top and remember to trim unnecessary context when replying
-> > to the mailing lists.
-> >
-> > On Mon, Apr 29, 2024 at 03:34:32PM +0530, Janaki Ramaiah Thota wrote:
-> >
-> > > Having a default BDA list from NVM BDA tag value will prevent develop=
-ers
-> > > from using the device if there is no user space app(In Fluoride) to s=
-et
-> > > the BDA. Therefore, we are requesting to use default address check pa=
-tch,
-> > > so that developer can change the NVM BDA to make use of the device.
-> >
-> > But a developer on such an old platform that can patch and replace the
-> > NVM configuration file should also be able to just disable the check in
-> > the driver right (e.g. by commenting out the call to
-> > qca_check_bdaddr())?
-> >
-> > >   List Of default Addresses:
-> > >   ---------------------------------------------------------
-> > > |       BDA          |      Chipset                       |
-> > >   ---------------------------------------------------------
-> > > | 39 80 10 00 00 20  |  WCN3988 with ROM Version 0x0200   |
-> > >   ---------------------------------------------------------
-> > > | 39 80 12 74 08 00  |  WCN3988 with ROM Version 0x0201   |
-> > >   ---------------------------------------------------------
-> > > | 39 90 21 64 07 00  |  WCN3990                           |
-> > >   ---------------------------------------------------------
-> > > | 39 98 00 00 5A AD  |  WCN3991                           |
-> > >   ---------------------------------------------------------
-> > > | 00 00 00 00 5A AD  |  QCA DEFAULT                       |
-> > >   ---------------------------------------------------------
-> >
-> > What about WCN6750 and 64:90:00:00:5a:ad?
-> >
-> > And then there's currently also:
-> >
-> > > > bluetooth hci0: bd_addr =3D 61:47:aa:31:22:14 (qca/nvm_00130300.bin=
-)
-> > > > bluetooth hci0: bd_addr =3D 61:47:aa:32:44:07 (qca/nvm_00130302.bin=
-)
-> >
-> > Which controllers use these configurations?
->
-> These are not unique addresses though, we can't just have addresses by
-> chipset address mapping logic as that would cause address clashes over
-> the air, e.g. if there are other devices with the same chipset in the
-> vicinity.
+Christoph reported a splat hinting at a corrupted snd_una:
 
-I see where this is going now, the firmware actually contain these
-duplicated addresses which then are checked and cause
-HCI_QUIRK_USE_BDADDR_PROPERTY then the tries
-hci_dev_get_bd_addr_from_property which loads the local-bd-address
-property from the parente device (SOC?), btw that could also have an
-invalid/duplicated address.
+  WARNING: CPU: 1 PID: 38 at net/mptcp/protocol.c:1005 __mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
+  Modules linked in:
+  CPU: 1 PID: 38 Comm: kworker/1:1 Not tainted 6.9.0-rc1-gbbeac67456c9 #59
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
+  Workqueue: events mptcp_worker
+  RIP: 0010:__mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
+  Code: be 06 01 00 00 bf 06 01 00 00 e8 a8 12 e7 fe e9 00 fe ff ff e8
+  	8e 1a e7 fe 0f b7 ab 3e 02 00 00 e9 d3 fd ff ff e8 7d 1a e7 fe
+  	<0f> 0b 4c 8b bb e0 05 00 00 e9 74 fc ff ff e8 6a 1a e7 fe 0f 0b e9
+  RSP: 0018:ffffc9000013fd48 EFLAGS: 00010293
+  RAX: 0000000000000000 RBX: ffff8881029bd280 RCX: ffffffff82382fe4
+  RDX: ffff8881003cbd00 RSI: ffffffff823833c3 RDI: 0000000000000001
+  RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+  R10: 0000000000000000 R11: fefefefefefefeff R12: ffff888138ba8000
+  R13: 0000000000000106 R14: ffff8881029bd908 R15: ffff888126560000
+  FS:  0000000000000000(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f604a5dae38 CR3: 0000000101dac002 CR4: 0000000000170ef0
+  Call Trace:
+   <TASK>
+   __mptcp_clean_una_wakeup net/mptcp/protocol.c:1055 [inline]
+   mptcp_clean_una_wakeup net/mptcp/protocol.c:1062 [inline]
+   __mptcp_retrans+0x7f/0x7e0 net/mptcp/protocol.c:2615
+   mptcp_worker+0x434/0x740 net/mptcp/protocol.c:2767
+   process_one_work+0x1e0/0x560 kernel/workqueue.c:3254
+   process_scheduled_works kernel/workqueue.c:3335 [inline]
+   worker_thread+0x3c7/0x640 kernel/workqueue.c:3416
+   kthread+0x121/0x170 kernel/kthread.c:388
+   ret_from_fork+0x44/0x50 arch/x86/kernel/process.c:147
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:243
+   </TASK>
 
-Anyway the fact that firmware loading itself is programming a
-potentially duplicated address already seems wrong enough to me,
-either it shall leave it as 00... or set a valid address otherwise we
-always risk missing yet another duplicate address being introduced and
-then used over the air causing all sorts of problems for users.
+When fallback to TCP happens early on a client socket, snd_nxt
+is not yet initialized and any incoming ack will copy such value
+into snd_una. If the mptcp worker (dumbly) tries mptcp-level
+re-injection after such ack, that would unconditionally trigger a send
+buffer cleanup using 'bad' snd_una values.
 
-So to be clear, QCA firmware shall never attempt to flash anything
-other than 00:00:00:00:00:00 if you don't have a valid and unique
-identity address, so we can get rid of this table altogether.
+We could easily disable re-injection for fallback sockets, but such
+dumb behavior already helped catching a few subtle issues and a very
+low to zero impact in practice.
 
-ps: If the intention is to have these addresses for testing then these
-firmwares files shall probably be kept private, since as explained
-above the use of duplicated addresses will cause problems to users who
-have no idea they have to be changed.
+Instead address the issue always initializing snd_nxt (and write_seq,
+for consistency) at connect time.
 
->
-> --
-> Luiz Augusto von Dentz
+Fixes: 8fd738049ac3 ("mptcp: fallback in case of simultaneous connect")
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/485
+Tested-by: Christoph Paasch <cpaasch@apple.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/protocol.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 7e74b812e366..965eb69dc5de 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3723,6 +3723,9 @@ static int mptcp_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
+ 		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_TOKENFALLBACKINIT);
+ 		mptcp_subflow_early_fallback(msk, subflow);
+ 	}
++
++	WRITE_ONCE(msk->write_seq, subflow->idsn);
++	WRITE_ONCE(msk->snd_nxt, subflow->idsn);
+ 	if (likely(!__mptcp_check_fallback(msk)))
+ 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEACTIVE);
+ 
 
+---
+base-commit: ba1cb99b559e3b12db8b65ca9ff03358ea318064
+change-id: 20240429-upstream-net-20240429-mptcp-snd_nxt-init-connect-d9844d880f48
 
---=20
-Luiz Augusto von Dentz
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
