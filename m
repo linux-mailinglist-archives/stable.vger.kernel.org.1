@@ -1,153 +1,147 @@
-Return-Path: <stable+bounces-41753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F378B5FB6
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 19:10:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B6F8B5FCB
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 19:13:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B1AD1C2189D
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:10:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 273E21F21C0A
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075FB8662B;
-	Mon, 29 Apr 2024 17:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4BD86AE9;
+	Mon, 29 Apr 2024 17:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VQEbmlSW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F+wWeS0n"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4631147A5C;
-	Mon, 29 Apr 2024 17:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DA58665A;
+	Mon, 29 Apr 2024 17:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714410649; cv=none; b=TTfoWx1k1wbuUQZDnClSrNJnSJ58dwDyVv2gLPDJukG3MnZmokfoSOdHT4PG+K18W9jlSOA2ntjigWMbB4qaK/syM9VBDGTJX32Ulo+A3KpB31vbcNAMcOqSxdJ7pHEQUNn+w30oLrZ2G9237ww6ItS5400RwHAszV5fmVFP6Ro=
+	t=1714410777; cv=none; b=rqFEf9zhl4pT3M/LFoRv42jQ8jnwQN/+Okmz0GzuzU6m133ad+7T14Got+xVoN69f5rI3UE5EFx8EqZIGMESeqseWBPSz1nDD5UEbSJ3W9RQETFJryo47EyORTAgVyvnkcS9FJ8pQVk9Xk/rioDMWnyhDspMkAULqI7IILJETSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714410649; c=relaxed/simple;
-	bh=WKdk6WwgPqc2YoANVbL2/w23zvFWOoCOfZ03rXJUwiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EI82BwUXAzq0REHJnJ6Zw8oJsNPoVLzFq0rT337lEaVzv26OFtxJ2tCmJvw7VpKR0gUhV8JsbUVXUymM55/Olqj9r0vuuR/mXRTF2iHeHytTewO8owvBLgKvCOyLyllwLvXQQmslVMGqCEfWhg53lM+bm0kq6dcEjleRYbSfUPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VQEbmlSW; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714410647; x=1745946647;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=WKdk6WwgPqc2YoANVbL2/w23zvFWOoCOfZ03rXJUwiE=;
-  b=VQEbmlSWU047JzvVCLY6f0shtYqCbVAz2gDAWj2C9jR2/sSXSNi2U0bW
-   bGv7/vmclDZ8Ln47TPv6jsTIsv9Q8uxkrXPuq1RTd0ssO76Tus7bRbZGP
-   o0L/5LIC8I/DdHHFH9OnJRT06KIm3UOtX6DJbN0QbHFucI06It0KsTFES
-   Mj6/cx7eq48EG5eTs70+nWTDCVtqNfuKlZco0DVCSGED0FtLUwq1f46WM
-   9LJvjDhckZfLy1ZTASq66jxXGR2+EIRLLEF9HooKeKCPNnm2Zr0GJgwW5
-   de65WFHFFsFL4JJdT6xCcN5lDb9e2sQozQTqnxB6pppOHHZyzTmVAQeh7
-   g==;
-X-CSE-ConnectionGUID: 6b9TkGKGQGyUbfWQClWORQ==
-X-CSE-MsgGUID: gXRQySm3RoilEhCmZQ8Cew==
-X-IronPort-AV: E=McAfee;i="6600,9927,11059"; a="13909560"
-X-IronPort-AV: E=Sophos;i="6.07,240,1708416000"; 
-   d="scan'208";a="13909560"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 10:10:46 -0700
-X-CSE-ConnectionGUID: Nuo6ZQFPSsul+fuSL7vKIw==
-X-CSE-MsgGUID: VKUvT9ANRqmsO2/og0S4uQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,240,1708416000"; 
-   d="scan'208";a="26788735"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa008.jf.intel.com with ESMTP; 29 Apr 2024 10:10:46 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	netdev@vger.kernel.org
-Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	anthony.l.nguyen@intel.com,
-	regressions@leemhuis.info,
-	stable@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Carretero?= <cJ@zougloub.eu>,
-	Sasha Neftin <sasha.neftin@intel.com>,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>
-Subject: [PATCH net] e1000e: change usleep_range to udelay in PHY mdic access
-Date: Mon, 29 Apr 2024 10:10:40 -0700
-Message-ID: <20240429171040.1152516-1-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.41.0
+	s=arc-20240116; t=1714410777; c=relaxed/simple;
+	bh=/MPV5FzIfjehuMgB7WhfgO6UyJ+ldK02eXZDzKyMkmM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VdxauHvER0JT78SSqqO93YIlmZDKhHPDidZQbTynIBDtHPxBzezrrw8MCq5I8pNylhAXAswvCrxn1wIUPWA0323HrQOUi4Wnp/xmDXWZlSXh1S4WkCizvYB0JCB83JPNDHSnQCz04uGzz1MTdkAha+Fg102WX7lLQDSxjfE7rmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F+wWeS0n; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2e0b2ddc54fso9695671fa.0;
+        Mon, 29 Apr 2024 10:12:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714410774; x=1715015574; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EVVcC2d3P9RfUE14S22XAZSzG+fQaw6/pld3YgfjEfA=;
+        b=F+wWeS0nayIvstVZLirQ3ly7ixhRat7IJLXBEm6k1mC4qY9B6ZP/1pJtDVUqdhm7Pn
+         SadjJnKyg0ic6RZmJKKJYTIc+0yhRDG4p1SmFFs7vRrx4u6unZc4FYeJOYFzFNxjGIAn
+         d+vhpOudwU8p71VLrlozJgH4d1p8sqFX4Kbc8aDaCMSxw7NsmWebw9XUajAeHRd0a4I2
+         U2+7RJrIzgQABwEiSGfyzU4C67dtxWKPbMsXzeEATyW1PwEKF+H76k/gxikmLglorbit
+         i/b3OFOujDpKrJ2GULEeEZRXKcM1Md8rRsIgoJai+75spWMOO3qD/zu+OYDolgnWgtdj
+         6Mow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714410774; x=1715015574;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EVVcC2d3P9RfUE14S22XAZSzG+fQaw6/pld3YgfjEfA=;
+        b=bwsi7pxcCOGv/iKnVnLeSRQHPgnqdVvV9cdyALSJonhhh7Xwo1AZtRfcn7q67eWqvu
+         HGZMm1lM0mRhHjudbLm3qL7j2KzgxHLpxlGUGBZmHnMXMZHuaEPS/Y2UsvSZMLLNnLIu
+         RkSrGjc182EYZbejAumWMZYU8HyTAXXxCQ9xRzyRyZXF6kW7GPX2subQyhAlla8exXA/
+         HwbWK1/AcuaE5T2T2cv4ioMxN3LyzgFP3XZWN78ns+StAJSD0pdvw46eKWH5OvwEzE7d
+         5o+395QuxjSXPef7txtfj5D1XgEZJPyGM2P19JIReRshW525enV0d3CG1tCGCyyi2uGI
+         FQug==
+X-Forwarded-Encrypted: i=1; AJvYcCWOCX0FzG/4jXclB6MpByHd8zqsh7KNMyJczjSzwm/IxjLetQPq4cIc8yRZiY7hbW1ER8od89HM+kJxt/QU0ojkDu/5k1jbjV8562V5zOzFoS3lnxuVV2ZBihU0S3XlgkTDkR7DMsXsciTceDUAGcxd4Ji8rU9fG1+J4rvW5utf47vY/4Wi
+X-Gm-Message-State: AOJu0YzbwyQ9R5AgLFx/4Gw7ytnO+I21Gjsu+4uSVOKQVlmT7vhQPyOX
+	cNto19rN16lrsEtbb3E7/xDtwDinSOCeqzMBi4zpAW7QsASH1GjlLuTYG3IOiMaXHXYgwNBolm3
+	EYb/2CKndYbdHLSYNOCUj/12ARNXuwA==
+X-Google-Smtp-Source: AGHT+IGNiSfJ4BwPEI0kDNwbXBcoy1KPjFvzf3fyMLy02hho60uukqxepyJT3bcAhnIBhdizWy6pmmRLNgIX/C++Log=
+X-Received: by 2002:a2e:3615:0:b0:2df:a29f:8b45 with SMTP id
+ d21-20020a2e3615000000b002dfa29f8b45mr4883802lja.49.1714410773438; Mon, 29
+ Apr 2024 10:12:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240426155801.25277-1-johan+linaro@kernel.org>
+ <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
+ <ZizKmtcUIYAMpvOQ@hovoldconsulting.com> <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
+ <Zi-ohCWv58d2h5VM@hovoldconsulting.com>
+In-Reply-To: <Zi-ohCWv58d2h5VM@hovoldconsulting.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Mon, 29 Apr 2024 13:12:40 -0400
+Message-ID: <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
+To: Johan Hovold <johan@kernel.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>, Doug Anderson <dianders@chromium.org>, 
+	Johan Hovold <johan+linaro@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, quic_mohamull@quicinc.com, quic_hbandi@quicinc.com, 
+	quic_anubhavg@quicinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Hi,
 
-This is a partial revert of commit 6dbdd4de0362 ("e1000e: Workaround
-for sporadic MDI error on Meteor Lake systems"). The referenced commit
-used usleep_range inside the PHY access routines, which are sometimes
-called from an atomic context. This can lead to a kernel panic in some
-scenarios, such as cable disconnection and reconnection on vPro systems.
+On Mon, Apr 29, 2024 at 10:02=E2=80=AFAM Johan Hovold <johan@kernel.org> wr=
+ote:
+>
+> Hi Janaki,
+>
+> Please avoid top and remember to trim unnecessary context when replying
+> to the mailing lists.
+>
+> On Mon, Apr 29, 2024 at 03:34:32PM +0530, Janaki Ramaiah Thota wrote:
+>
+> > Having a default BDA list from NVM BDA tag value will prevent developer=
+s
+> > from using the device if there is no user space app(In Fluoride) to set
+> > the BDA. Therefore, we are requesting to use default address check patc=
+h,
+> > so that developer can change the NVM BDA to make use of the device.
+>
+> But a developer on such an old platform that can patch and replace the
+> NVM configuration file should also be able to just disable the check in
+> the driver right (e.g. by commenting out the call to
+> qca_check_bdaddr())?
+>
+> >   List Of default Addresses:
+> >   ---------------------------------------------------------
+> > |       BDA          |      Chipset                       |
+> >   ---------------------------------------------------------
+> > | 39 80 10 00 00 20  |  WCN3988 with ROM Version 0x0200   |
+> >   ---------------------------------------------------------
+> > | 39 80 12 74 08 00  |  WCN3988 with ROM Version 0x0201   |
+> >   ---------------------------------------------------------
+> > | 39 90 21 64 07 00  |  WCN3990                           |
+> >   ---------------------------------------------------------
+> > | 39 98 00 00 5A AD  |  WCN3991                           |
+> >   ---------------------------------------------------------
+> > | 00 00 00 00 5A AD  |  QCA DEFAULT                       |
+> >   ---------------------------------------------------------
+>
+> What about WCN6750 and 64:90:00:00:5a:ad?
+>
+> And then there's currently also:
+>
+> > > bluetooth hci0: bd_addr =3D 61:47:aa:31:22:14 (qca/nvm_00130300.bin)
+> > > bluetooth hci0: bd_addr =3D 61:47:aa:32:44:07 (qca/nvm_00130302.bin)
+>
+> Which controllers use these configurations?
 
-Solve this by changing the usleep_range calls back to udelay.
+These are not unique addresses though, we can't just have addresses by
+chipset address mapping logic as that would cause address clashes over
+the air, e.g. if there are other devices with the same chipset in the
+vicinity.
 
-Fixes: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
-Cc: stable@vger.kernel.org
-Reported-by: Jérôme Carretero <cJ@zougloub.eu>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218740
-Closes: https://lore.kernel.org/lkml/a7eb665c74b5efb5140e6979759ed243072cb24a.camel@zougloub.eu/
-Co-developed-by: Sasha Neftin <sasha.neftin@intel.com>
-Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/e1000e/phy.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/e1000e/phy.c b/drivers/net/ethernet/intel/e1000e/phy.c
-index 93544f1cc2a5..f7ae0e0aa4a4 100644
---- a/drivers/net/ethernet/intel/e1000e/phy.c
-+++ b/drivers/net/ethernet/intel/e1000e/phy.c
-@@ -157,7 +157,7 @@ s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data)
- 		 * the lower time out
- 		 */
- 		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--			usleep_range(50, 60);
-+			udelay(50);
- 			mdic = er32(MDIC);
- 			if (mdic & E1000_MDIC_READY)
- 				break;
-@@ -181,7 +181,7 @@ s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data)
- 		 * reading duplicate data in the next MDIC transaction.
- 		 */
- 		if (hw->mac.type == e1000_pch2lan)
--			usleep_range(100, 150);
-+			udelay(100);
- 
- 		if (success) {
- 			*data = (u16)mdic;
-@@ -237,7 +237,7 @@ s32 e1000e_write_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 data)
- 		 * the lower time out
- 		 */
- 		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--			usleep_range(50, 60);
-+			udelay(50);
- 			mdic = er32(MDIC);
- 			if (mdic & E1000_MDIC_READY)
- 				break;
-@@ -261,7 +261,7 @@ s32 e1000e_write_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 data)
- 		 * reading duplicate data in the next MDIC transaction.
- 		 */
- 		if (hw->mac.type == e1000_pch2lan)
--			usleep_range(100, 150);
-+			udelay(100);
- 
- 		if (success)
- 			return 0;
--- 
-2.41.0
-
+--=20
+Luiz Augusto von Dentz
 
