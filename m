@@ -1,168 +1,134 @@
-Return-Path: <stable+bounces-41743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04CB8B5C2D
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:00:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D5A8B5D4A
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8683D285A02
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:00:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 283DB1C217FE
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263AD81AD0;
-	Mon, 29 Apr 2024 15:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146DA127E3D;
+	Mon, 29 Apr 2024 15:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e2lHkh/1";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LV3TJBbF";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e2lHkh/1";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LV3TJBbF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MtqDRFoz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3616D81729;
-	Mon, 29 Apr 2024 15:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC51128363;
+	Mon, 29 Apr 2024 15:11:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714402828; cv=none; b=phCuGUeI27lq9Lcvn77L0/qCTKdbvz4o/YLNEEshvtDyoxmC3M91q9m/POx/BW4uM/5OBFdN7L6mMzizrvmmCbqTzhqCz5MvnRDpTVSXLsd0Svyi6icOkfHE25kRWQyg8YvDum42jG5YcJaqKSC3DWexuNHDOCYheqUW+e3i+k8=
+	t=1714403513; cv=none; b=N59gb+T4ikhwaPoca8+LpkuVqgNeWuTNyLfvwFEyAVOPi4Nzy65Jsz1f/XwsMYjPd7kX0pscuX3abHllMiBN345PnY84kweTdiCVxhru9sdT4sRa5omQ/J3SiYkRPQiZ63A4eOm+EtbXMhArqXBHOCUOuw46ajmRsJhdHoJqJr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714402828; c=relaxed/simple;
-	bh=AoEcZWPaPmzELVD9CbCwfoVXprt2zSFSuipKEKqMbz4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XW7FFoZy6+A6rdLXqp1isLr6hGrLmxS2SH4PmJqB83ve6tRsDrP59hVJen+jdgUT+cXzDKHBellvsZrhCDVK/vRpn5LJz0OCFNR9nkcGNw2axeCy737sdGrzzfLaNMMAqgFlGpe3a4bw9u/mL4k/FdMMpC3Ae7HXJlGjq4WZ0Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e2lHkh/1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LV3TJBbF; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e2lHkh/1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LV3TJBbF; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 107DE1F445;
-	Mon, 29 Apr 2024 15:00:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1714402824; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+6ISOxBlAV6CDQEEnStu0qtNtqvx4/HjkaEqq8aneuI=;
-	b=e2lHkh/1yUv8ZHdX2ry60AaD6xgrs6pdjSud8tisrs8VriJV6sk4EnVnflfqvPx2E5G+oe
-	VmQV01B93zU/0DRHkPWU4TrKmaQGaDC+VllVnqfLbIql4z3DoCtm5wHgKLOqRsNMLPOIoM
-	7ND7IZ06ZyVrmMFqPQPFcBqEnZ34QaI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1714402824;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+6ISOxBlAV6CDQEEnStu0qtNtqvx4/HjkaEqq8aneuI=;
-	b=LV3TJBbFwtRB0h9S76K2/GSkJ532TdH4vtPe1dA2QLBuRPDezgNp7W/66cYfmiROsf8jMw
-	wdJ8UjwAFDkYVHCg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1714402824; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+6ISOxBlAV6CDQEEnStu0qtNtqvx4/HjkaEqq8aneuI=;
-	b=e2lHkh/1yUv8ZHdX2ry60AaD6xgrs6pdjSud8tisrs8VriJV6sk4EnVnflfqvPx2E5G+oe
-	VmQV01B93zU/0DRHkPWU4TrKmaQGaDC+VllVnqfLbIql4z3DoCtm5wHgKLOqRsNMLPOIoM
-	7ND7IZ06ZyVrmMFqPQPFcBqEnZ34QaI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1714402824;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+6ISOxBlAV6CDQEEnStu0qtNtqvx4/HjkaEqq8aneuI=;
-	b=LV3TJBbFwtRB0h9S76K2/GSkJ532TdH4vtPe1dA2QLBuRPDezgNp7W/66cYfmiROsf8jMw
-	wdJ8UjwAFDkYVHCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AD2D0138A7;
-	Mon, 29 Apr 2024 15:00:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WKavKAe2L2Y7FQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 29 Apr 2024 15:00:23 +0000
-Date: Mon, 29 Apr 2024 17:00:35 +0200
-Message-ID: <875xw0p624.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,	Takashi Iwai
- <tiwai@suse.de>,	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-kernel@vger.kernel.org,	Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
- <amadeuszx.slawinski@linux.intel.com>,	Bard Liao
- <yung-chuan.liao@linux.intel.com>,	Brady Norander
- <bradynorander@gmail.com>,	Jaroslav Kysela <perex@perex.cz>,	Mark Brown
- <broonie@kernel.org>,	Mark Hasemeyer <markhas@chromium.org>,	Takashi Iwai
- <tiwai@suse.com>,	linux-sound@vger.kernel.org,	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda: intel-dsp-config: Fix Huawei Matebook D14 NBLB-WAX9N quirk detection
-In-Reply-To: <c0120da6-ac95-46c6-94d5-471f31e7c857@linux.intel.com>
-References: <5e6ba980c0738199589749b68b83f2d730512107.1713430105.git.mchehab@kernel.org>
-	<20240418110453.10efcb60@sal.lan>
-	<848bcc94-3a31-4fb4-81bc-bd3f138e12f6@linux.intel.com>
-	<87edaopdlt.wl-tiwai@suse.de>
-	<Zi-RpauZjcWg0t_q@smile.fi.intel.com>
-	<c0120da6-ac95-46c6-94d5-471f31e7c857@linux.intel.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1714403513; c=relaxed/simple;
+	bh=2mOGvwx0F2IpPY4iGZ/syNebrU7aiO2c7zkOquYWlm4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QViWvkU70SLbhGk9zg6EthnWjeKFvFtlYmIU+kglTDpmwAu5pyW2gUhzTXbjf3nlQ6cITxq2d07e35X0u8eysbloPszCHep4TQtN4V2Ka6pfnQb+IPr+USgFe8eknvsXq7g4OP02pVBhiPyy3fm0ezuXVgOaKg28fWp1Ck2pMOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MtqDRFoz; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5729221ed74so371185a12.0;
+        Mon, 29 Apr 2024 08:11:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714403510; x=1715008310; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xU/iLoQXl7tXUx6T6JsQIJsicG3iO7GQdCCzHimssM0=;
+        b=MtqDRFozNysbaJT4cpy3/Bf06vxhMOXuyPpPgPTGGAEblUoF2SrMoQB0antoUlQuNT
+         GwX0nOb08P6IgZQLq5S5KV1/i1XPTLLkaEB5rX+O90I0EdaowKv9l4qQDMfTYHi+go6T
+         E+oNVVzKF3GB/+3kfD2TJuhe4+wmPA3cuO0f3L1QvRUJ+YADC/R9QBfOFDGueAmhZeSD
+         HAJsGUFsaJ3Jq5XW7iNXfEed8ZuZ1cBl3xdyrCrDw7TEoaRmEz2oIKVjGATuiO/1ptLk
+         GJsBimfRBN0EYgl36cx9nXvVnQQ6J6X8Qer/X8a4/C8XG8XMaJsBRPyr9eTYFqW3z6kV
+         +83g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714403510; x=1715008310;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xU/iLoQXl7tXUx6T6JsQIJsicG3iO7GQdCCzHimssM0=;
+        b=tgIyJgoFO11kJ7n3KMkevDZSSctLBSBW8+Zt9mApEZXXSV7V1LuLsjuVS1xBw9o04I
+         9J4au1FEtnj0ZxzbUlWU9U7CFvtfkhmFMUAhHC86zliU7lCFDv+DYpxw/bpPEWLXomyX
+         X1SwunMTfYJCEEYNXwcHWcO9qNTnNcXSbNMGn+sNnH6+CiKkvp72hw3DeCz1aPRJC3gh
+         0JqRFDrVcg2e7FvqUhvjOKfHN387Jra8npwk8O+Dn1MBDPUI8W+7QzaLnjJYmHE1u8GS
+         PbvK1GMGRl17U3JDL6eE4443BfuNpnlYVTbxujUISp8NnhLxxuUNwePTF4wh5c90XpZY
+         icqg==
+X-Forwarded-Encrypted: i=1; AJvYcCU/LR3Qhyyb2Oez9YZ5521o2aBLn/fVKe1O4TGTFLq+FEVV+JUrerTIZx7Wal+mOJzs54HrCovviyRXP0m0ov4afZORza6LC6tZFvALNWvBo5zi1WAMLm8P2Tphdwcz389FHA==
+X-Gm-Message-State: AOJu0YyEOh4H2niotDzptiVSYTuSlJszwzSlBjm/5cVLJRE1tIkeXabm
+	H9qaKzSPn28VuruvXUb8jFWJo9bJqTCwF2QD1kZVJvTJ0Xcy72BO
+X-Google-Smtp-Source: AGHT+IEhEdiaiCJzabxzHgv5ya2RGGdycN3jCTy0tJ1kx0ZZPY/5fGE7WGoJhcAGrpmB7uFA67IDWg==
+X-Received: by 2002:a17:906:e2c3:b0:a54:e183:6248 with SMTP id gr3-20020a170906e2c300b00a54e1836248mr7519853ejb.0.1714403510018;
+        Mon, 29 Apr 2024 08:11:50 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id wt8-20020a170906ee8800b00a55ac292b66sm10253316ejb.219.2024.04.29.08.11.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Apr 2024 08:11:48 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 5F51DBE2EE8; Mon, 29 Apr 2024 17:11:47 +0200 (CEST)
+Date: Mon, 29 Apr 2024 17:11:47 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Paulo Alcantara <pc@manguebit.com>, regressions@lists.linux.dev,
+	Steve French <stfrench@microsoft.com>, sashal@kernel.org,
+	stable@vger.kernel.org, linux-cifs@vger.kernel.org
+Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
+ overflow frame end of buf" and invisible files under certain conditions and
+ at least with noserverino mount option
+Message-ID: <Zi-4s-7QSFO1OR17@eldamar.lan>
+References: <ZiBCsoc0yf_I8In8@eldamar.lan>
+ <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
+ <ZiCoYjr79HXxiTjr@eldamar.lan>
+ <29e0cbcab5be560608d1dfbfb0ccbc96@manguebit.com>
+ <ZiLQG4x0m1L70ugu@eldamar.lan>
+ <adfd2a680e289404140ef917cf0bd0ab@manguebit.com>
+ <Zigg4RWtRfQYW1RR@eldamar.lan>
+ <2024042912-unloader-slighting-c756@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,suse.de,kernel.org,vger.kernel.org,gmail.com,perex.cz,chromium.org,suse.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_DN_SOME(0.00)[]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024042912-unloader-slighting-c756@gregkh>
 
-On Mon, 29 Apr 2024 15:51:03 +0200,
-Pierre-Louis Bossart wrote:
-> 
-> 
-> 
-> On 4/29/24 07:25, Andy Shevchenko wrote:
-> > On Mon, Apr 29, 2024 at 02:17:34PM +0200, Takashi Iwai wrote:
-> >> On Thu, 18 Apr 2024 15:24:10 +0200,
-> >> Pierre-Louis Bossart wrote:
-> >>> On 4/18/24 05:04, Mauro Carvalho Chehab wrote:
+Hi,
+
+On Mon, Apr 29, 2024 at 12:50:45PM +0200, Greg KH wrote:
+> On Tue, Apr 23, 2024 at 10:58:09PM +0200, Salvatore Bonaccorso wrote:
+> > Hi Paulo,
 > > 
-> > ...
+> > On Mon, Apr 22, 2024 at 12:08:53PM -0300, Paulo Alcantara wrote:
+> > > Salvatore Bonaccorso <carnil@debian.org> writes:
+> > > 
+> > > > I'm still failing to provide you a recipe with a minimal as possible
+> > > > setup, but with the instance I was able to reproduce the issue the
+> > > > regression seems gone with cherry-picking 35235e19b393 ("cifs: Replace
+> > > > remaining 1-element arrays") .
+> > > 
+> > > It's OK, no problem.  Could you please provide the backport to stable
+> > > team?
 > > 
-> >>> Andy, what do you think and what would be your recommendation?
-> >>
-> >> This one is still pending, and I'd like to hear the decision from
-> >> Intel people.  Let me know if this hack is acceptable.
-> > 
-> > IIRC it was resolved on GitHub by Pierre, anything else I need to contribute?
+> > Sure, here it is. Greg or Sasha is it ok to pick that up for the 6.1.y
+> > queues?
 > 
-> This initial patch was replaced by the one I sent on Friday
-> "[PATCH] ALSA: hda: intel-dsp-config: harden I2C/I2S codec detection"
-> 
-> I should have made it clearer in the commit message, sorry.
+> Glad to, for some reason I thought this caused problems, but if it
+> passes your testing, great!  I'll go queue it up now, thanks.
 
-OK, thanks for the updates!
+Thanks! Unfortunately I'm not having a good test(case/suite) for this
+myself for such cases. All issues recently forwarded as regressions in
+the 6.1.y series were unfortunately only uncovered by Debian users
+once we did release the version :(. Hopefully this will "calm down"
+now.
 
+Thanks to all of you, for your work!
 
-Takashi
+Regards,
+Salvatore
 
