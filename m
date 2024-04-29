@@ -1,154 +1,124 @@
-Return-Path: <stable+bounces-41769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00198B64C2
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 23:45:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1648B65F3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 00:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D429B20CE4
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 21:45:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92A8F1F21E98
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 22:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD6F184105;
-	Mon, 29 Apr 2024 21:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FA438DF2;
+	Mon, 29 Apr 2024 22:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="Fypz/9Js";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gKpafJve"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
+Received: from fout2-smtp.messagingengine.com (fout2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332131836E9;
-	Mon, 29 Apr 2024 21:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.217.213.242
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21761E886
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 22:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714427100; cv=none; b=J8neQFC3sKH5m7kVDylai5LbBBDJmvje4JjNNPlpoXnA7gNViE6MXilwhISESnlJ+1yWHcroxxX0/ATw59OLafVO/TE+PvxO+SOdhA4dh2Fv0USkSIGMkzHQtVmB9hMlrh4cbDJ4V0aGqsps2rEVaCUUjyecM2ZlTEColb9/rq4=
+	t=1714431578; cv=none; b=XOVCrSprFMkXtEu+Y+/Wy8/kS020Au4KsxQpy0tKAUpH0fXxy0pvyE/jDjiISLMDn/zLNcIYmqmhJRGzAhnTmKLUJ3KiXjiaIjxABa5/CDlPcJFEQ36GLJFYFrgISu36Imv9SvZPvX/lDtSBdjOzC72Vd98ZpBwIdQhL0/CHtSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714427100; c=relaxed/simple;
-	bh=RoWHTWHhsord5pYxLYxgW7KTMxod+abyWlHDgLf0u/w=;
+	s=arc-20240116; t=1714431578; c=relaxed/simple;
+	bh=b7PuDTfZzum8/mOGBQEB7kq2YuRHeGNR1tSITz++qpw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dc4sxLswWmpeUBUGlSRre1UYUgDSfGTKs5fdnEkIS4cV8Hl28+yKWAir94o3HJpHkUr4WimZGkh2oE+YXqUycYJaph4AlOhaBY3VYqPs5X3cT/o9Usb8byYSO35spql5/FoyB6HnmD5oJsv3suy23/kHHGtLTl7dwJCyfV0hqA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=95.217.213.242
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from 213.219.156.63.adsl.dyn.edpnet.net ([213.219.156.63] helo=deadeye)
-	by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1s1Ynq-00069t-QU; Mon, 29 Apr 2024 23:44:50 +0200
-Received: from ben by deadeye with local (Exim 4.97)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1s1Ynq-00000001wOL-0yVl;
-	Mon, 29 Apr 2024 23:44:50 +0200
-Date: Mon, 29 Apr 2024 23:44:50 +0200
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg KH <gregkh@linuxfoundation.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: [PATCH 4.19] Revert "y2038: rusage: use __kernel_old_timeval"
-Message-ID: <ZjAU0hFgBDotATCy@decadent.org.uk>
-References: <2024041118-slingshot-contented-1586@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JRi/PflVboTrDDTOFBtGCO2nwO8ddCUKkZS7sELlCYDzX5TkJ6tUiFyUWlaY8lO+lyC/5ZLMEtHLY1ijU/fwORfCHBJTmfs8I4+L68o0Nb/Utsk2M0umQ09ZqAGTPo63dV+Ay31Q7Nqx04E03xDldjl9Jk7SHeMweaXr3CGOEEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=Fypz/9Js; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gKpafJve; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailfout.nyi.internal (Postfix) with ESMTP id D035D138037F;
+	Mon, 29 Apr 2024 18:59:34 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Mon, 29 Apr 2024 18:59:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1714431574; x=
+	1714517974; bh=ow7pbetPiD769eRr/jvSgAEgZbwWNOQZgRPag4f9+U0=; b=F
+	ypz/9JsjCxZUPjCMEw7UanvhgGP5OEoyCsIiZfdBy1w+XA4f0KsUQ1wI95Z86nOo
+	pGLyt4yov/BeMJ/4E9kDY4QWYtQWkF+cnSDClKnUIQzC8HtL3yrEoGZqQE/nbeSk
+	TLx1l266ZTaL9SYeBwVxLUjVal7kiXZSbrvvIceRU0EgHWVxr/tfOywrsNyEtqS5
+	IYXQnIjdeB/l/6enJ/d4qq7kJyR6JTtnft/6vCjPf6zMQOjJmSvFnx4woafvs5/G
+	0st1MNG4rRKXbu8Omp5fDqXSHj2ZHQ7piTXKXllyBtdF48Bml5ZeChjXEJ6farvF
+	ikB+UFaKOFVDEUlAZ7eKg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1714431574; x=1714517974; bh=ow7pbetPiD769eRr/jvSgAEgZbwW
+	NOQZgRPag4f9+U0=; b=gKpafJvezhc91yZCFmMuiQ5Rg4xchKN+mT6dlsIdMISM
+	rZa7+Pd/kKKpdioreIDEMye7k5Z/4/evfmpaXBFz1/1/6GwN5FHXiOAlD0qAzgJH
+	Tp2lEu2nvgG5YNKrs/qFP4WEcE0sPmvd9JIarBMSkAl6tMioZRATdjC2lfVvjOz0
+	jLAAM33OejnQpVQK6zd/+BA9WpDPZBdXF5kP9YGbrmNzUpt9DY/WksO/yHVEVMu5
+	59eWeCGPVmKfkvWbvCUcWMGPNULzWAch/2mDK79pfXv3EkVe6mzS8p/oFgT10t92
+	iKK6WrI2FVyyDe6tT9vhwY0Pp/ymzKHi4gfCIL2AgQ==
+X-ME-Sender: <xms:ViYwZv7DBGA6D9sPleS-NSTCVRTpGitaGoyyJt1Efmub9JvJb7LZWw>
+    <xme:ViYwZk7DO2TujUlowfA9LLMd7scUNQLrnkFgSo4NOZDhywnSr7FIlSfrFS5Y5WeII
+    xsO2RZgP96RCTgBjXU>
+X-ME-Received: <xmr:ViYwZmeUMga2dm_lTdeXYZmqPOfRay0fKTaX0SjoFADnYTH4YgaeEFFs6lT8VOGGoi1pvxL5dSGZea2-oWZwDONQF2XDYXCao3c>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdduvddgudeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttd
+    ertddttddvnecuhfhrohhmpefvrghkrghshhhiucfurghkrghmohhtohcuoehoqdhtrghk
+    rghshhhisehsrghkrghmohgttghhihdrjhhpqeenucggtffrrghtthgvrhhnpeehhffhte
+    etgfekvdeiueffveevueeftdelhfejieeitedvleeftdfgfeeuudekueenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehoqdhtrghkrghshhhise
+    hsrghkrghmohgttghhihdrjhhp
+X-ME-Proxy: <xmx:ViYwZgImtXr2hLn2Nyzbc0NuCIdyh13HLulYsDjvRpvBQe-EGdsLyA>
+    <xmx:ViYwZjK_YgHnt3j2FKNNaBBpUtxnUEaw7oX8fTt5ch5aLmUcxafyXw>
+    <xmx:ViYwZpzw0G0fSuEyskLbaGo36E9U5BiSogFIUYjIn8SQPUTOU3kTog>
+    <xmx:ViYwZvIrkASSTIdigZsRqFWzaVD4zfkVit5mCnVmSx66YZUCtfdEiw>
+    <xmx:ViYwZqXAf--Rg8PhT9QNE-6QuFVjIDonrEz0PUHKYwgGHw0boXGe-mAF>
+Feedback-ID: ie8e14432:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Apr 2024 18:59:33 -0400 (EDT)
+Date: Tue, 30 Apr 2024 07:59:31 +0900
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+To: linux1394-devel@lists.sourceforge.net
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] firewire: ohci: fulfill timestamp for some local
+ asynchronous transaction
+Message-ID: <20240429225931.GA714896@workstation.local>
+Mail-Followup-To: linux1394-devel@lists.sourceforge.net,
+	stable@vger.kernel.org
+References: <20240429084709.707473-1-o-takashi@sakamocchi.jp>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Nn+ogYiDFdDnSeEP"
-Content-Disposition: inline
-In-Reply-To: <2024041118-slingshot-contented-1586@gregkh>
-X-SA-Exim-Connect-IP: 213.219.156.63
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-
-
---Nn+ogYiDFdDnSeEP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240429084709.707473-1-o-takashi@sakamocchi.jp>
 
-This reverts commit d5e38d6b84d6d21a4f8a4f555a0908b6d9ffe224, which
-was commit bdd565f817a74b9e30edec108f7cb1dbc762b8a6 upstream.  It
-broke the build for alpha and that can't be fixed without backporting
-other more intrusive y2038 changes.
+On Mon, Apr 29, 2024 at 05:47:08PM +0900, Takashi Sakamoto wrote:
+> 1394 OHCI driver generates packet data for the response subaction to the
+> request subaction to some local registers. In the case, the driver should
+> assign timestamp to them by itself.
+> 
+> This commit fulfills the timestamp for the subaction.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: dcadfd7f7c74 ("firewire: core: use union for callback of transaction completion")
+> Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+> ---
+>  drivers/firewire/ohci.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 
-This was not a completely clean revert as the affected code in
-getrusage() was moved by subsequent changes.
+Applied to for-linus branch. I'll send it to mainline as the fix for
+v6.9-rc7 kernel.
 
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/alpha/kernel/osf_sys.c   | 2 +-
- include/uapi/linux/resource.h | 4 ++--
- kernel/sys.c                  | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
-index d5694f263dd6..cff52d8ffdb1 100644
---- a/arch/alpha/kernel/osf_sys.c
-+++ b/arch/alpha/kernel/osf_sys.c
-@@ -964,7 +964,7 @@ put_tv32(struct timeval32 __user *o, struct timespec64 =
-*i)
- }
-=20
- static inline long
--put_tv_to_tv32(struct timeval32 __user *o, struct __kernel_old_timeval *i)
-+put_tv_to_tv32(struct timeval32 __user *o, struct timeval *i)
- {
- 	return copy_to_user(o, &(struct timeval32){
- 				.tv_sec =3D i->tv_sec,
-diff --git a/include/uapi/linux/resource.h b/include/uapi/linux/resource.h
-index 74ef57b38f9f..cc00fd079631 100644
---- a/include/uapi/linux/resource.h
-+++ b/include/uapi/linux/resource.h
-@@ -22,8 +22,8 @@
- #define	RUSAGE_THREAD	1		/* only the calling thread */
-=20
- struct	rusage {
--	struct __kernel_old_timeval ru_utime;	/* user time used */
--	struct __kernel_old_timeval ru_stime;	/* system time used */
-+	struct timeval ru_utime;	/* user time used */
-+	struct timeval ru_stime;	/* system time used */
- 	__kernel_long_t	ru_maxrss;	/* maximum resident set size */
- 	__kernel_long_t	ru_ixrss;	/* integral shared memory size */
- 	__kernel_long_t	ru_idrss;	/* integral unshared data size */
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 62930aac0bad..690ab55449e7 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -1795,8 +1795,8 @@ void getrusage(struct task_struct *p, int who, struct=
- rusage *r)
-=20
- out_children:
- 	r->ru_maxrss =3D maxrss * (PAGE_SIZE / 1024); /* convert pages to KBs */
--	r->ru_utime =3D ns_to_kernel_old_timeval(utime);
--	r->ru_stime =3D ns_to_kernel_old_timeval(stime);
-+	r->ru_utime =3D ns_to_timeval(utime);
-+	r->ru_stime =3D ns_to_timeval(stime);
- }
-=20
- SYSCALL_DEFINE2(getrusage, int, who, struct rusage __user *, ru)
+Regards
 
---Nn+ogYiDFdDnSeEP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmYwFMcACgkQ57/I7JWG
-EQnF5Q//VBXRzWWcHeyNlMbFndboUCUpjtohfoY5iVPhbs1ESOxb6yl8JJekeR2n
-LQyhcftbM4k8ZOG2dlb363TKh6i3pQBKNxrKoT9zcLEcSvjtVWwtF5n2ypJ1S4Dp
-saKTGM8YDWcnKKid8PJfH+A0uvvii+JSQlX/CzUIbpq+MGvwyjg0qBVHUvvr38MU
-cwzYMubOCWiULZpOYp46L2tLZzDXp0fB/bCnVqj69Za31mDcrWVQ4w+LjzVO/Bx5
-nLzPDLvto7bp74ddB8MAB6xHyqAuwj7keZjMQ5bASKdIW9GEnWPgDAb5YjRPfi1w
-lOTNOhFq4MIjai6uvolWrhINRTDerdMrD4TuPdocx69+/0FKXHcmfN9gIgD/UiEz
-OV2A421j6HaAM9CZ+yJ3NHFz2D7RixFgTn/iMx7S3nPILaV4bCjgfUaR3B3mc9BV
-EKVmSWmm1ivqZ+WQdTID/75OrPkdYwMO1cBjosTEW6jdTmcfZs5St46a+Xc1e3Km
-ozjyLrs/KtZ/qhcCjHIsHu39LYXVtz8bVCmKUdTe6LMPTowlZYLmuhExgb/q+RJC
-pHPTOTxyP3+pMFVJDqnAImyJr6e7Ekl+C3UironQO7XCMcUCLjgCMT+B0ik/ChGq
-QQXT26fUkdpTwy4Yy5T0zsuRMDGsrolYrw7xenF/fprMgVizGSo=
-=UsXv
------END PGP SIGNATURE-----
-
---Nn+ogYiDFdDnSeEP--
+Takashi Sakamoto
 
