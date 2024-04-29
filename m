@@ -1,94 +1,115 @@
-Return-Path: <stable+bounces-41748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B18268B5DEF
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:42:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5CBF8B5E04
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEDEEB21536
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:41:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D75681C20F8D
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC19823A2;
-	Mon, 29 Apr 2024 15:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35BD82C6B;
+	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMXlve6D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMc9yYED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87F27E0F6
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 15:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C0282881;
+	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714405286; cv=none; b=r3SfAC84pyd+2vgUvKZWKCwTPr7zAgKRSxDm6doyYvRjCS2HRdmRzQN0v70j9ohNitR2Qor5C+WsALMKtoaCuh5UKrH6trDau7FEYhyEl1YjTXeto6OGOnHvCHvscQbNHg8+IO9LuNmu27ivB0HxYMI21fRZXydcvK6mhuTE1cg=
+	t=1714405698; cv=none; b=gCshtltMs7aQygQ8UBthwvgXvEm+o/Gt5k4AHszLa+uRMB0ydwixdoNbVvfKAwvNu0oegvNMHujqH/r8RIRpwwpaR6j90KePtxlq3xoDLSRIf5/RuyrWmRWxe4Rf95p2MY+FSeb+K10bVt0a1JTdn95n1ff7njCF9J8MBv7TuBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714405286; c=relaxed/simple;
-	bh=s0bMMn0xw66iKofOyRvkxvyapwQg/Bdw2IRyjfyiM6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kCmAo4OCZMdSzQ5O1++WTrGKFt0SFcdDZjul8LR8fYy/ZimMlym2V8f6OIMB3QE7nyn+67Grfrh0SfHhB2CiyqAIC4D92KU4O/twPVABu7oxpVxzv+GR7GO984GmZK2TpyTknO6X+fFeFVx2crM5LSDJqkP+ewcxQHmPcZSCtfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMXlve6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1204BC113CD;
-	Mon, 29 Apr 2024 15:41:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714405286;
-	bh=s0bMMn0xw66iKofOyRvkxvyapwQg/Bdw2IRyjfyiM6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KMXlve6DMN6QzsBrb+kSuwHi1NNOVx3i80udIJ6o+Gz7OLQxQUmFcSLG2O0iRjpcB
-	 vgBhD9eo3IwwbT9RsoZ8xgwvbyVaL/Zx3uTgFAf4qhvJh87C7TMCqgrHHuEEJAKcGK
-	 Of1UY577PM3kXGDbxlDobFkS5n1BwSSODQ5jjVes=
-Date: Mon, 29 Apr 2024 17:41:23 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org, Eva Kurchatova <nyandarknessgirl@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: Re: [PATCH 5.15.y, 5.10.y, 5.4.y, 4.19.y] HID: i2c-hid: remove
- I2C_HID_READ_PENDING flag to prevent lock-up
-Message-ID: <2024042914-asparagus-undercook-5b64@gregkh>
-References: <2024042952-germless-unguarded-1be2@gregkh>
- <20240429152514.652751-1-namcao@linutronix.de>
+	s=arc-20240116; t=1714405698; c=relaxed/simple;
+	bh=q0TrEuqJ399P2tU46vjogSsElHWc/nM7/9Z+Al4Ihls=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OBI0cy5evpflUZidOkyAmvjxuksL4qTgu+1nC5mycEJrnwxhaqnP50Yk4pBD8KIHGbn2qeHYFsdcbfP+kSV05gS4nrvPko2fwskoXXOb6WtLG/hGngcnAfT5dwEexLjp/7HhANd3hI3F/ZVZx7v0AuT4hZmx2Ar+pFXNg7qSfbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMc9yYED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13401C113CD;
+	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714405698;
+	bh=q0TrEuqJ399P2tU46vjogSsElHWc/nM7/9Z+Al4Ihls=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lMc9yYEDyzeRZOJ1DRUT7SFpqY0LFuNwm2GRW2x2+4sUM7hTHv2OuNtKaNnQRJKHJ
+	 ZQxj5mkTm8xhpjAE+gbLHw4eaTyF58ajvnGBOcHEY+04zix7O+IFSlWCa7RG2grPXU
+	 bASVDmSzzNxqEKnUWhe66Lv/D8jUNNmhOiHs810CbbJYDiLAXDh0NQuPKM3gIUiJjE
+	 NWqBY/ffZIk/VT1uhSMNEOSDWi3Ke7G+hILanka25TL5nSmc5g4JI4GJNeoNpnRn5c
+	 qfDacGm6CMtmvyOq8M0a3yxpeZVKBongaytfhWthBPy24zkIx15HjVN+Ir57f7dppL
+	 Kbpvz+lYzGXRA==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51ca95db667so4074055e87.0;
+        Mon, 29 Apr 2024 08:48:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUP5nZVHWN9lHtDCg/dvclg1HKyxFE0UaWtTRUgDd2NBhycQsO5z62Ihmv5CI2f2TtheRsWcmuuuBVGddMY56gaPZ0c+OSyItqo6bk5OXKy+9kEHV/JwCjWnzNJ1jyJoSRLRVkE5IqHOKJiqZs6/qwq+TeSWPHGFgadePtRIwfq
+X-Gm-Message-State: AOJu0YyOvLxrGORjvkqf2N7jeQpWYMOmbqEA5ygfnVW+jZAFptY2hV/p
+	Sfb3pLX+jRn8H2GD7O04kp0DS8/p4KNwiWUl5XGVPX0jKBDi42iyYhUklN4KEJ3R/Vtjw9160UT
+	aRrMYFY7/B07g2vZBoxx42xAGv0k=
+X-Google-Smtp-Source: AGHT+IH8dW+HR1/IwDDX3dJknVDKeoWFxn3QWuqcOlBwnDTa15PNjBagiz2MJ/zAfJQ1b/bGC3FTypm4Ztu41t9o6iE=
+X-Received: by 2002:a05:6512:781:b0:51a:f31f:fc6e with SMTP id
+ x1-20020a056512078100b0051af31ffc6emr7462063lfr.14.1714405696431; Mon, 29 Apr
+ 2024 08:48:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240429152514.652751-1-namcao@linutronix.de>
+References: <20240423135928.1200-1-hagarhem@amazon.com>
+In-Reply-To: <20240423135928.1200-1-hagarhem@amazon.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 29 Apr 2024 17:48:05 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHiPcgC7-kXToivcbfyHe9g3Cg6__TFWhHYRUcOJ8hy1g@mail.gmail.com>
+Message-ID: <CAMj1kXHiPcgC7-kXToivcbfyHe9g3Cg6__TFWhHYRUcOJ8hy1g@mail.gmail.com>
+Subject: Re: [PATCH v2] efi: libstub: only free priv.runtime_map when allocated
+To: Hagar Hemdan <hagarhem@amazon.com>
+Cc: Maximilian Heyne <mheyne@amazon.de>, Pratyush Yadav <ptyadav@amazon.de>, 
+	Norbert Manthey <nmanthey@amazon.de>, stable@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Apr 29, 2024 at 05:25:15PM +0200, Nam Cao wrote:
-> commit 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e upstream.
-> 
-> The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
-> However, this is not necessary, because I2C core already has its own
-> locking for that.
-> 
-> More importantly, this flag can cause a lock-up: if the flag is set in
-> i2c_hid_xfer() and an interrupt happens, the interrupt handler
-> (i2c_hid_irq) will check this flag and return immediately without doing
-> anything, then the interrupt handler will be invoked again in an
-> infinite loop.
-> 
-> Since interrupt handler is an RT task, it takes over the CPU and the
-> flag-clearing task never gets scheduled, thus we have a lock-up.
-> 
-> Delete this unnecessary flag.
-> 
-> Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
-> Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
-> Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Signed-off-by: Jiri Kosina <jkosina@suse.com>
-> [apply to v4.19 -> v5.15]
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
+On Tue, 23 Apr 2024 at 16:00, Hagar Hemdan <hagarhem@amazon.com> wrote:
+>
+> priv.runtime_map is only allocated when efi_novamap is not set.
+> Otherwise, it is an uninitialized value.
+> In the error path, it is freed unconditionally.
+> Avoid passing an uninitialized value to free_pool.
+> Free priv.runtime_map only when it was allocated.
+>
+> This bug was discovered and resolved using Coverity Static Analysis
+> Security Testing (SAST) by Synopsys, Inc.
+>
+> Fixes: f80d26043af9 ("efi: libstub: avoid efi_get_memory_map() for allocating the virt map")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
 > ---
->  drivers/hid/i2c-hid/i2c-hid-core.c | 8 --------
->  1 file changed, 8 deletions(-)
+> v2: added Cc stable tag to the commit message as requested by kernel
+> test robot.
+> ---
+>  drivers/firmware/efi/libstub/fdt.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
 
-Now queued up, thanks.
+Queued up in efi/next, thanks.
 
-greg k-h
+> diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
+> index 70e9789ff9de..6a337f1f8787 100644
+> --- a/drivers/firmware/efi/libstub/fdt.c
+> +++ b/drivers/firmware/efi/libstub/fdt.c
+> @@ -335,8 +335,8 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
+>
+>  fail:
+>         efi_free(fdt_size, fdt_addr);
+> -
+> -       efi_bs_call(free_pool, priv.runtime_map);
+> +       if (!efi_novamap)
+> +               efi_bs_call(free_pool, priv.runtime_map);
+>
+>         return EFI_LOAD_ERROR;
+>  }
+> --
+> 2.40.1
+>
 
