@@ -1,80 +1,79 @@
-Return-Path: <stable+bounces-41760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06E68B60ED
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 20:14:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 300018B610D
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 20:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D8A81C2111A
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 18:14:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D8B1F222D7
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 18:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9080012838D;
-	Mon, 29 Apr 2024 18:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697DD1292D7;
+	Mon, 29 Apr 2024 18:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Eje0KCDt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vm6rrWQd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5280A8614C
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 18:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705061292D4
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 18:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714414458; cv=none; b=aQXFAKA3AMN5wVRxWC3RE7eKxCkplgoIcN06Mv2TXGFXhNQIErEJE6PqamODBzFqxZSsvMAh5gZKxNC1O1JJEqTwnN47GJ5w1I2IGDs8cuFuU3187QSAP3vfoF/Py5CMzqKZOHtES741EdhoRlV/RN8+rhYwyfJ552q1fyanaKs=
+	t=1714415025; cv=none; b=YAQu4kDz10zjKlqnQNn2JLGMv/hfWg8NjdXN6bQFvV7fM+wnxPlwCceBMIL2cF+Wxbx2mTi/ispJ6+MWby3QuJoVB6OD03rd1VZXJe6wxzyXyKmGRurW6iYwIYfBcfn9teQpbBkIy7c6aYnkPllUe3O1ggUJfyNfUIMoP/bXF+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714414458; c=relaxed/simple;
-	bh=YCowSaEVxz5Th4+eEyP+ngkS+IVErBSdGo7rFV+gYM4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UH4btOrzuunelBNwgH9JOUiYU28+gBO1lhP7SPYUMBGg1qoetJFGZtENFnXkrox6T2gyOnMj6hKdRt3gLU2rAZTOWiYTuib1S/BsJLrUcFUUm05lbac23nLeoCGQ2RP3Yg94kLQAVEsKmcagykGTDLb3pwo/yxPnGEbKlVSDWV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Eje0KCDt; arc=none smtp.client-ip=209.85.166.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-7da42137c64so204047739f.1
-        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:14:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1714414455; x=1715019255; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5U5Ovsd+M0JJ1E5zOP2YrAXuvUNDgcSQFNzhJAAl8DQ=;
-        b=Eje0KCDtLkm5WDDkWq9uwedzpjwICh7ENWTFN3b+Ffd28RNHm3F4djae9mTfFUDR6v
-         hcvaVu3KYE2UgcYF2DYOfIwcFfmLh/sqFhvh4AJfo0jw66xyV6lwqVRyrs7TO6ZcAB+B
-         eMniB5z2L2P/4mkVEWJ/YEl9hfKGpeoafDAJQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714414455; x=1715019255;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5U5Ovsd+M0JJ1E5zOP2YrAXuvUNDgcSQFNzhJAAl8DQ=;
-        b=oNQqxizJ6WPGm6aLKkhujrflR1ABRaIJYCkVz8BGvviHTsMSXoyL9h1U0OV8Gi/yXA
-         D4tssmUYcxHmsUE7Uy08XlAM6fjeYhJxvqvFC72j+iJaLka6iq49nYilqt9ozAWy7AzT
-         Zi1XZPhS3F2dbr5miVHvM0uXhuwCRN904ky3LDlvygqHd+qx4chKoUDX3CX9UrBnqHar
-         0kLn2DPwh6aBPLh0S6KegP8S/13qyykoVRy3ZhV5mpfYOyIrCpyYTOZEF+h3zbU0RKcL
-         kkBtH5zsZxTHcUEc0eD7lQx++zPcRTj+7gLH7b6LIrgPaWbIP1WmRJFh/t3MgBu6uwmg
-         sUuA==
-X-Forwarded-Encrypted: i=1; AJvYcCW/fsIfadGnuH9Qw8zwSn3mxVq+v2Y+MlCA1BGQ7Zj/HJWXtp52yehk2E0C2yfYASbgbHQ7w2wuSen5oSKGQ/E5omAT3nlr
-X-Gm-Message-State: AOJu0YyRMcwNigTTeVLUX0U2MPssUeP1noQEuBfWDEW0J8dkP+jPY/Qp
-	QGpK8a2fC/ZlT+ukQuzB2oGjoWqVrV66UJUinuAMjoTb5bcu3Zu4MzQkt9IXzg==
-X-Google-Smtp-Source: AGHT+IELaJ8zCPU56vHLqlO0m0JFHKddtNX1XApb9dDhvl4jX4rekMtYaF/Fr00J+p1noZD9iNJccw==
-X-Received: by 2002:a6b:5814:0:b0:7d5:c00a:7d30 with SMTP id m20-20020a6b5814000000b007d5c00a7d30mr768321iob.8.1714414455464;
-        Mon, 29 Apr 2024 11:14:15 -0700 (PDT)
-Received: from kramasub2.cros.corp.google.com ([100.107.108.189])
-        by smtp.gmail.com with ESMTPSA id n21-20020a6b4115000000b007d05927cb31sm6068548ioa.45.2024.04.29.11.14.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 11:14:14 -0700 (PDT)
-From: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: Karthikeyan Ramasubramanian <kramasub@chromium.org>,
+	s=arc-20240116; t=1714415025; c=relaxed/simple;
+	bh=2N8oyanNrkyKqFDzJd7H/3d3P1eVswNz12mYCtWrSuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DEkT4cCipWjZ8OHzJ+jkErXDtDFJb+GGtO62JKdZFt9ZmhvVP3IH1K33LLXv3heCHq2K7Vm2z//GONfMr9V9G8wy/F4J954TlT52mHUXLhMQbyO3qVecP0SFSdhVoyZ10FrLlrWY2vvcuZPG5nLuVMrMdQWgxnGoW1ha7lheQvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vm6rrWQd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714415022;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/xJ39egjPXPVzQcGg1vJ7sp0qcrk9q2He5yMjws7WO0=;
+	b=Vm6rrWQdvFebZwl8nz1G5g9fCTdqn3gWzMy+tRB+XGAC+4GUUtAJLeMlHA63EFWdLb4wXT
+	INJ6mkfBiu+cnBy4LXdAylpAk+bxwTFJl0ZvtCbJYvlcx5kOvqIpxz4cAK9ZLKAbwuRPqO
+	ALjtaxr8eT3QgXgQn3bRLu7d+DpIDsw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-616-MrxGKN92McqdMFBZJYLD9w-1; Mon, 29 Apr 2024 14:23:38 -0400
+X-MC-Unique: MrxGKN92McqdMFBZJYLD9w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 60D518059E0;
+	Mon, 29 Apr 2024 18:23:37 +0000 (UTC)
+Received: from chopper.lyude.net (unknown [10.22.9.159])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 5F4F31121306;
+	Mon, 29 Apr 2024 18:23:36 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: nouveau@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
 	stable@vger.kernel.org,
-	Lalith Rajendran <lalithkraj@chromium.org>,
-	chrome-platform@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH v2] chrome/cros_ec: Handle events during suspend after resume completion
-Date: Mon, 29 Apr 2024 12:13:45 -0600
-Message-ID: <20240429121343.v2.1.If2e0cef959f1f6df9f4d1ab53a97c54aa54208af@changeid>
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
+	Karol Herbst <kherbst@redhat.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Dave Airlie <airlied@redhat.com>,
+	Ben Skeggs <bskeggs@redhat.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2 2/2] drm/nouveau/gsp: Use the sg allocator for level 2 of radix3
+Date: Mon, 29 Apr 2024 14:23:09 -0400
+Message-ID: <20240429182318.189668-2-lyude@redhat.com>
+In-Reply-To: <20240429182318.189668-1-lyude@redhat.com>
+References: <20240426154138.64643-1-lyude@redhat.com>
+ <20240429182318.189668-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,83 +81,210 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-Commit 47ea0ddb1f56 ("platform/chrome: cros_ec_lpc: Separate host
-command and irq disable") re-ordered the resume sequence. Before that
-change, cros_ec resume sequence is:
-1) Enable IRQ
-2) Send resume event
-3) Handle events during suspend
+Currently we allocate all 3 levels of radix3 page tables using
+nvkm_gsp_mem_ctor(), which uses dma_alloc_coherent() for allocating all of
+the relevant memory. This can end up failing in scenarios where the system
+has very high memory fragmentation, and we can't find enough contiguous
+memory to allocate level 2 of the page table.
 
-After commit 47ea0ddb1f56 ("platform/chrome: cros_ec_lpc: Separate host
-command and irq disable"), cros_ec resume sequence is:
-1) Enable IRQ
-2) Handle events during suspend
-3) Send resume event.
+Currently, this can result in runtime PM issues on systems where memory
+fragmentation is high - as we'll fail to allocate the page table for our
+suspend/resume buffer:
 
-This re-ordering leads to delayed handling of any events queued between
-items 2) and 3) with the updated sequence. Also in certain platforms, EC
-skips triggering interrupt for certain events eg. mkbp events until the
-resume event is received. Such events are stuck in the host event queue
-indefinitely. This change puts back the original order to avoid any
-delay in handling the pending events.
+  kworker/10:2: page allocation failure: order:7, mode:0xcc0(GFP_KERNEL),
+  nodemask=(null),cpuset=/,mems_allowed=0
+  CPU: 10 PID: 479809 Comm: kworker/10:2 Not tainted
+  6.8.6-201.ChopperV6.fc39.x86_64 #1
+  Hardware name: SLIMBOOK Executive/Executive, BIOS N.1.10GRU06 02/02/2024
+  Workqueue: pm pm_runtime_work
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x64/0x80
+   warn_alloc+0x165/0x1e0
+   ? __alloc_pages_direct_compact+0xb3/0x2b0
+   __alloc_pages_slowpath.constprop.0+0xd7d/0xde0
+   __alloc_pages+0x32d/0x350
+   __dma_direct_alloc_pages.isra.0+0x16a/0x2b0
+   dma_direct_alloc+0x70/0x270
+   nvkm_gsp_radix3_sg+0x5e/0x130 [nouveau]
+   r535_gsp_fini+0x1d4/0x350 [nouveau]
+   nvkm_subdev_fini+0x67/0x150 [nouveau]
+   nvkm_device_fini+0x95/0x1e0 [nouveau]
+   nvkm_udevice_fini+0x53/0x70 [nouveau]
+   nvkm_object_fini+0xb9/0x240 [nouveau]
+   nvkm_object_fini+0x75/0x240 [nouveau]
+   nouveau_do_suspend+0xf5/0x280 [nouveau]
+   nouveau_pmops_runtime_suspend+0x3e/0xb0 [nouveau]
+   pci_pm_runtime_suspend+0x67/0x1e0
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   __rpm_callback+0x41/0x170
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   rpm_callback+0x5d/0x70
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   rpm_suspend+0x120/0x6a0
+   pm_runtime_work+0x98/0xb0
+   process_one_work+0x171/0x340
+   worker_thread+0x27b/0x3a0
+   ? __pfx_worker_thread+0x10/0x10
+   kthread+0xe5/0x120
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x31/0x50
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1b/0x30
 
-Fixes: 47ea0ddb1f56 ("platform/chrome: cros_ec_lpc: Separate host command and irq disable")
+Luckily, we don't actually need to allocate coherent memory for the page
+table thanks to being able to pass the GPU a radix3 page table for
+suspend/resume data. So, let's rewrite nvkm_gsp_radix3_sg() to use the sg
+allocator for level 2. We continue using coherent allocations for lvl0 and
+1, since they only take a single page.
+
+V2:
+* Don't forget to actually jump to the next scatterlist when we reach the
+  end of the scatterlist we're currently on when writing out the page table
+  for level 2
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
 Cc: stable@vger.kernel.org
-Cc: Lalith Rajendran <lalithkraj@chromium.org>
-Cc: chrome-platform@lists.linux.dev
-Signed-off-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
 ---
+ .../gpu/drm/nouveau/include/nvkm/subdev/gsp.h |  4 +-
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/r535.c    | 77 ++++++++++++-------
+ 2 files changed, 54 insertions(+), 27 deletions(-)
 
-Changes in v2:
-- Updated the commit message with the right problem description
-
- drivers/platform/chrome/cros_ec.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/platform/chrome/cros_ec.c b/drivers/platform/chrome/cros_ec.c
-index badc68bbae8cc..41714df053916 100644
---- a/drivers/platform/chrome/cros_ec.c
-+++ b/drivers/platform/chrome/cros_ec.c
-@@ -432,6 +432,12 @@ static void cros_ec_send_resume_event(struct cros_ec_device *ec_dev)
- void cros_ec_resume_complete(struct cros_ec_device *ec_dev)
+diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
+index 6f5d376d8fcc1..a11d16a16c3b2 100644
+--- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
+@@ -15,7 +15,9 @@ struct nvkm_gsp_mem {
+ };
+ 
+ struct nvkm_gsp_radix3 {
+-	struct nvkm_gsp_mem mem[3];
++	struct nvkm_gsp_mem lvl0;
++	struct nvkm_gsp_mem lvl1;
++	struct sg_table lvl2;
+ };
+ 
+ int nvkm_gsp_sg(struct nvkm_device *, u64 size, struct sg_table *);
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+index 9858c1438aa7f..fd4e80ba6adfc 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -1624,7 +1624,7 @@ r535_gsp_wpr_meta_init(struct nvkm_gsp *gsp)
+ 	meta->magic = GSP_FW_WPR_META_MAGIC;
+ 	meta->revision = GSP_FW_WPR_META_REVISION;
+ 
+-	meta->sysmemAddrOfRadix3Elf = gsp->radix3.mem[0].addr;
++	meta->sysmemAddrOfRadix3Elf = gsp->radix3.lvl0.addr;
+ 	meta->sizeOfRadix3Elf = gsp->fb.wpr2.elf.size;
+ 
+ 	meta->sysmemAddrOfBootloader = gsp->boot.fw.addr;
+@@ -1919,8 +1919,9 @@ nvkm_gsp_sg(struct nvkm_device *device, u64 size, struct sg_table *sgt)
+ static void
+ nvkm_gsp_radix3_dtor(struct nvkm_gsp *gsp, struct nvkm_gsp_radix3 *rx3)
  {
- 	cros_ec_send_resume_event(ec_dev);
-+	/*
-+	 * Let the mfd devices know about events that occur during
-+	 * suspend. This way the clients know what to do with them.
-+	 */
-+	cros_ec_report_events_during_suspend(ec_dev);
-+
- }
- EXPORT_SYMBOL(cros_ec_resume_complete);
- 
-@@ -442,12 +448,6 @@ static void cros_ec_enable_irq(struct cros_ec_device *ec_dev)
- 
- 	if (ec_dev->wake_enabled)
- 		disable_irq_wake(ec_dev->irq);
--
--	/*
--	 * Let the mfd devices know about events that occur during
--	 * suspend. This way the clients know what to do with them.
--	 */
--	cros_ec_report_events_during_suspend(ec_dev);
+-	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--)
+-		nvkm_gsp_mem_dtor(gsp, &rx3->mem[i]);
++	nvkm_gsp_sg_free(gsp->subdev.device, &rx3->lvl2);
++	nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
++	nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
  }
  
  /**
-@@ -475,8 +475,9 @@ EXPORT_SYMBOL(cros_ec_resume_early);
-  */
- int cros_ec_resume(struct cros_ec_device *ec_dev)
+@@ -1960,36 +1961,60 @@ static int
+ nvkm_gsp_radix3_sg(struct nvkm_gsp *gsp, struct sg_table *sgt, u64 size,
+ 		   struct nvkm_gsp_radix3 *rx3)
  {
--	cros_ec_enable_irq(ec_dev);
--	cros_ec_send_resume_event(ec_dev);
-+	cros_ec_resume_early(ec_dev);
-+	cros_ec_resume_complete(ec_dev);
+-	u64 addr;
++	struct sg_dma_page_iter sg_dma_iter;
++	struct scatterlist *sg;
++	size_t bufsize;
++	u64 *pte;
++	int ret, i, page_idx = 0;
+ 
+-	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--) {
+-		u64 *ptes;
+-		size_t bufsize;
+-		int ret, idx;
++	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl0);
++	if (ret)
++		return ret;
+ 
+-		bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
+-		ret = nvkm_gsp_mem_ctor(gsp, bufsize, &rx3->mem[i]);
+-		if (ret)
+-			return ret;
++	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl1);
++	if (ret)
++		goto lvl1_fail;
+ 
+-		ptes = rx3->mem[i].data;
+-		if (i == 2) {
+-			struct scatterlist *sgl;
++	// Allocate level 2
++	bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
++	ret = nvkm_gsp_sg(gsp->subdev.device, bufsize, &rx3->lvl2);
++	if (ret)
++		goto lvl2_fail;
+ 
+-			for_each_sgtable_dma_sg(sgt, sgl, idx) {
+-				for (int j = 0; j < sg_dma_len(sgl) / GSP_PAGE_SIZE; j++)
+-					*ptes++ = sg_dma_address(sgl) + (GSP_PAGE_SIZE * j);
+-			}
+-		} else {
+-			for (int j = 0; j < size / GSP_PAGE_SIZE; j++)
+-				*ptes++ = addr + GSP_PAGE_SIZE * j;
++	// Write the bus address of level 1 to level 0
++	pte = rx3->lvl0.data;
++	*pte = rx3->lvl1.addr;
 +
- 	return 0;
++	// Write the bus address of each page in level 2 to level 1
++	pte = rx3->lvl1.data;
++	for_each_sgtable_dma_page(&rx3->lvl2, &sg_dma_iter, 0)
++		*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
++
++	// Finally, write the bus address of each page in sgt to level 2
++	for_each_sgtable_sg(&rx3->lvl2, sg, i) {
++		void *sgl_end;
++
++		pte = sg_virt(sg);
++		sgl_end = (void*)pte + sg->length;
++
++		for_each_sgtable_dma_page(sgt, &sg_dma_iter, page_idx) {
++			*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
++			page_idx++;
++
++			// Go to the next scatterlist for level 2 if we've reached the end
++			if ((void*)pte >= sgl_end)
++				break;
+ 		}
++	}
+ 
+-		size = rx3->mem[i].size;
+-		addr = rx3->mem[i].addr;
++	if (ret) {
++lvl2_fail:
++		nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
++lvl1_fail:
++		nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
+ 	}
+ 
+-	return 0;
++	return ret;
  }
- EXPORT_SYMBOL(cros_ec_resume);
+ 
+ int
+@@ -2021,7 +2046,7 @@ r535_gsp_fini(struct nvkm_gsp *gsp, bool suspend)
+ 		sr = gsp->sr.meta.data;
+ 		sr->magic = GSP_FW_SR_META_MAGIC;
+ 		sr->revision = GSP_FW_SR_META_REVISION;
+-		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.mem[0].addr;
++		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.lvl0.addr;
+ 		sr->sizeOfSuspendResumeData = len;
+ 
+ 		mbox0 = lower_32_bits(gsp->sr.meta.addr);
 -- 
-2.44.0.769.g3c40516874-goog
+2.44.0
 
 
