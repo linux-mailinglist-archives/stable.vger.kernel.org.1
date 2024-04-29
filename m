@@ -1,124 +1,89 @@
-Return-Path: <stable+bounces-41611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDD68B53C6
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:05:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AA58B540E
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17C4D283413
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 09:05:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE636B21340
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 09:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D02436AF3;
-	Mon, 29 Apr 2024 09:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D4222338;
+	Mon, 29 Apr 2024 09:14:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA562C68F;
-	Mon, 29 Apr 2024 09:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8331C225D9
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 09:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.86.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714381473; cv=none; b=EGJvccZyVr3HFu/sYUou0j4b6uWRiXehUCxxFRyhDRBc5mNl5bv+J7NJneybf1RcQIDDGM/n2kV+nqznTeaBvQgIFJPuGaESVyzY4WzjEpGNTlBeV9mZUXvUVCEIaW4f/AY8/iC+e5NglJTCqXQmvZq3dG7wgVLAUZcMiP+Nhcg=
+	t=1714382094; cv=none; b=m6RP4160ajSGRwNCnoavgEQpdHRu7/st5Yga9qXsBRjZWyOBUe6R0n0xilnAElyml9GAFcPXFzSLn4l3KDsZ/LQuQdA4E3PIo3taXiYBGQIxL35bv6HRtJguvSHupjzKqIFpNrc3ooWhBQNaVlaBBdUhH5zBhAfycn9ECPqcnk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714381473; c=relaxed/simple;
-	bh=H9ZBiwkmJv4MZD4a/1cw2hcXmMAF0/Sg7nByLKv3/h8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XhP8+1ftttm48kyKbGLACY+yajZ24jE2FJTppVTvArl0DmcZtMkqxW4ASFNsmZQZ0wyxC/GUfMCHcyH4wG45PHHx48zFo+yq7l26EuT9nMGDZ/XomrZm3tnu2+HrbIwP+WuXFr1RbqoUlvu34OzvpFSbbuHJnE+HnKKCfhuEpzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de; spf=pass smtp.mailfrom=0pointer.de; arc=none smtp.client-ip=85.214.157.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0pointer.de
-Received: from gardel-login.0pointer.net (gardel-mail [IPv6:2a01:238:43ed:c300:10c3:bcf3:3266:da74])
-	by gardel.0pointer.net (Postfix) with ESMTP id ECCD1E80F27;
-	Mon, 29 Apr 2024 11:04:21 +0200 (CEST)
-Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
-	id 852A81600A1; Mon, 29 Apr 2024 11:04:21 +0200 (CEST)
-Date: Mon, 29 Apr 2024 11:04:21 +0200
-From: Lennart Poettering <mzxreary@0pointer.de>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Alexander Graf <graf@amazon.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Babis Chalios <bchalios@amazon.es>, Theodore Ts'o <tytso@mit.edu>,
-	"Cali, Marco" <xmarcalx@amazon.co.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"rostedt@goodmis.org" <rostedt@goodmis.org>,
-	Christian Brauner <brauner@kernel.org>, linux@leemhuis.info,
-	regressions@lists.linux.dev
-Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when
- VMGENID updates"
-Message-ID: <Zi9ilaX3254KL3Pp@gardel-login>
-References: <20240418114814.24601-1-Jason@zx2c4.com>
- <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
- <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
- <ZieoRxn-On0gD-H2@gardel-login>
- <b819717c-74ea-4556-8577-ccd90e9199e9@amazon.com>
- <Ziujox51oPzZmwzA@zx2c4.com>
+	s=arc-20240116; t=1714382094; c=relaxed/simple;
+	bh=TwIt8dL4+4FciE3Jbqznx0mwOtJY9K54EjWjrWQb+TQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=TSUJwPNSPXvcQma9bj5jLw44jEuXtCiLeRRzmIPdh3EHg3t+x6RuJ7qSL3pl3TInUx/cnlefxm77/3cOrvLrHQRaIROBJEgqteM9om1D0YUnLi4WtnCymOeWDN1wqVg+F0k6rp5l16TJhgu76X3r/WLvBkZKbihrXw5ckFyMNHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.86.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-83-8-pfOq6XNPGGCsa-FnWE_A-1; Mon, 29 Apr 2024 10:14:43 +0100
+X-MC-Unique: 8-pfOq6XNPGGCsa-FnWE_A-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 29 Apr
+ 2024 10:14:06 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Mon, 29 Apr 2024 10:14:06 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Jiri Slaby' <jirislaby@kernel.org>, Hugo Villeneuve <hugo@hugovil.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jon Ringle
+	<jringle@gridpoint.com>
+CC: "ria.freelander@gmail.com" <ria.freelander@gmail.com>, Hugo Villeneuve
+	<hvilleneuve@dimonoff.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-serial@vger.kernel.org"
+	<linux-serial@vger.kernel.org>
+Subject: RE: [PATCH] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when
+ using prescaler
+Thread-Topic: [PATCH] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when
+ using prescaler
+Thread-Index: AQHamf/sWZGWHPbUOU+NpCCP8YCCu7F+9eqA
+Date: Mon, 29 Apr 2024 09:14:06 +0000
+Message-ID: <6ea689ace38d47f285efe026772efcae@AcuMS.aculab.com>
+References: <20240426135937.3810959-1-hugo@hugovil.com>
+ <17d2cc58-cf68-430d-9248-25abe4c5b0f0@kernel.org>
+In-Reply-To: <17d2cc58-cf68-430d-9248-25abe4c5b0f0@kernel.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Ziujox51oPzZmwzA@zx2c4.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On Fr, 26.04.24 14:52, Jason A. Donenfeld (Jason@zx2c4.com) wrote:
+RnJvbTogSmlyaSBTbGFieQ0KPiBTZW50OiAyOSBBcHJpbCAyMDI0IDA3OjM5DQouLi4NCj4gPiAt
+CXU4IHByZXNjYWxlciA9IDA7DQo+ID4gKwlpbnQgcHJlc2NhbGVyID0gMTsNCj4gDQo+IFVnaCwg
+d2h5IGRvIHlvdSBtb3ZlIHRvIHNpZ25lZCBhcml0aG1ldGljcz8NCg0KQW55IGFyaXRobWV0aWMg
+d291bGQgYWx3YXlzIGhhdmUgYmVlbiBzaWduZWQuDQp1OCBpcyBwcm9tb3RlZCB0byAnc2lnbmVk
+IGludCcgYmVmb3JlIGJlaW5nIHVzZWQgZm9yIHByZXR0eSBtdWNoIGFueXRoaW5nLg0KDQondW5z
+aWduZWQgaW50IHByZXNjYWxlcicgbWlnaHQgaGF2ZSBjaGFuZ2VkIGFyaXRobWV0aWMgdG8gYmUg
+dW5zaWduZWQuDQoNCk9UT0ggeW91IHByb2JhYmx5IGRvbid0IHdhbnQgYSB1OCAtIHRoYXQgbWln
+aHQgcmVxdWlyZSB0aGUgY29tcGlsZXINCm1hc2sgYW4gYXJpdGhtZXRpYyByZXN1bHQgdG8gOCBi
+aXRzLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5
+IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRp
+b24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
-> I don't think adding UAPI to an individual device driver like this
-
-Does vmgenid really qualify as "an individual device driver"? It's a
-pretty generic software interface, implemented by various different
-VMMs these days. It is also the only interface I am aware of that
-actually exists and would provide the concept right now?
-
-if this was really hyperv specific, then I'd agree it's just an
-"individual device driver". But it's widely implemented, for example a
-trivial command line switch in qemu.
-
-Hence, for something this generic, and widely deployed with multiple
-backend implementations I think we can say it's kinda more of a
-subsystem and less of an individual driver, no?
-
-> is a good approach especially considering that the virtio changes we
-> discussed some time ago will likely augment this and create another
-> means of a similar notification. And given that this intersects with
-> other userspace-oriented work I hope to get back to pretty soon, I
-> think introducing some adhoc mechanism like this adds clutter and
-> isn't the ideal way forward.
-
-If one day a virtio-based equivalent shows up, then I'd be entirely
-fine with supporting this in userspace directly too , because virtio
-too is a generic thing typically implemented by multiple VMM
-backends. From my userspace perspective I see little benefit in the
-kernel abstracting over vmgenid and virtio-genid (if that ever
-materializes), as a systemd person I am not asking for this kind of
-abstraction (in case anyone wonders). A generic ACPI device such as
-vmgenid is entirely enough of "generic" for me.
-
-The way we would process the event in userspace in systemd (from a
-udev rule) is so generic that it's trivial to match against two
-generic interfaces, instead of just one.
-
-And even if there's value in a generic abstraction provided by the
-kernel over both vmgenid and a future virtio-based thing: the kernel
-patch in question was a *single* line, and our hookup in userspace
-could easily be moved over when the day comes, because it's really not
-a rocket science level interface. It's a single parameterless event,
-how much easier could things get?
-
-I understand that how this all happened wasn't to everyones wishes,
-but do we really have to make all of this so complex if it could just
-be so simple? Why delay this further, why go back again given the
-event, the interface itself is such an utter triviality? Do we really
-make such a threatre around a single line change, a single additional
-uevent, just because of politics?
-
-Lennart
-
---
-Lennart Poettering, Berlin
 
