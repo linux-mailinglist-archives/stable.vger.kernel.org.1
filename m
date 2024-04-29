@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12ED18B5755
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:02:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C33C8B5756
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:02:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC87D1F20F8D
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:02:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D11A1F22500
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DF34D5A2;
-	Mon, 29 Apr 2024 12:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652DA52F9A;
+	Mon, 29 Apr 2024 12:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feN6+HHk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q92vpOJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769DF52F9A
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2201853385
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714392141; cv=none; b=RCBTP31IFAt7FfqDcKdByVgydpr5T9oI74e2SYXpuBrkNTsiTL1bmFJ5xCXLVTU1xgA+K5MyvJdyaGtJx2xQVXSBTnS3erqfP6Mx/xb9ymEE77Ulhh3MnBxhJRrqytjYtYw4gySWj+LGRslZUv8PNoepFabh+utHm+l3h1ZWeAo=
+	t=1714392150; cv=none; b=fl4kcx3AzDcfEYIyMN6Bw6LjsdSKVkHFrTQkQbIeuozy+RLKZf/Tzq/t9Kpq8DVLgGTnngHXVFXfo637oee992IL4iNkbSDcwAVqZ0rmt6QZQwEJmLtdP2Jm4LJfLM9INQtLEQvynap8tg/qm5L4RMuvvzNHpVLk+tp6PIfoU/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714392141; c=relaxed/simple;
-	bh=jxMwTqxGroXNSjDpiIaLNu9wBd4z7C0pRzHjwP0fQHw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=grjxA7OET8GXPnglwWFEZAexrDNGvMla95AP2uRPZulRjxo/bN0atVohRVDpWmfw/QYxgxLVPNRUMsrGWmzCcIadjfRi9vmBy4PE7MILrJpkmD15m2jGBCBdPUmtJzjR4S5rdap90SuUyasXSZpaTI1sGC1hrTcNx5LhcX2AzhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feN6+HHk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE3BC113CD;
-	Mon, 29 Apr 2024 12:02:20 +0000 (UTC)
+	s=arc-20240116; t=1714392150; c=relaxed/simple;
+	bh=oVZ4rbCip4mxFRyT7/jP8j/BZx08Nnqes3OuuroIHaw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GrHdlbvWBtHftDoSekSAhtjWnqmaI//1FgwhtiKjzVuGzS8QkDk8KvROWDvVpzSuH9BoJNN3rPUCkvQGn1UT5vGgFdlPgQFOf+uwBx5JyvS84CNqb4AOXZJwuwFrZVAfEGqT+Xa37y06VGW2QW3KHMJW0oP6tAHyzY26v/oei/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q92vpOJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D0EC113CD;
+	Mon, 29 Apr 2024 12:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714392141;
-	bh=jxMwTqxGroXNSjDpiIaLNu9wBd4z7C0pRzHjwP0fQHw=;
+	s=korg; t=1714392150;
+	bh=oVZ4rbCip4mxFRyT7/jP8j/BZx08Nnqes3OuuroIHaw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=feN6+HHkyobbyiHWluPAg54fqgagMA8EmvMfJcuEHr/yviL2gA9jOxISZomWA9DJE
-	 Sv9t72t9NdFaPtcCtI9ccmQlImqRmRVAxZ7Rms2wVkqOPYnWYf9gJUXER5H2+DIXo8
-	 HMnB/QXufav8uVweoy1aZuDOn8uW5KGYVGLfafkM=
-Subject: FAILED: patch "[PATCH] phy: qcom: qmp-combo: fix VCO div offset on v5_5nm and v6" failed to apply to 6.8-stable tree
+	b=Q92vpOJmmwskoq3WnldTXzIJetY2NHBb3ccDiGHyf29oZkSUjle4RSd2y3kdymNgY
+	 89a6rlVTv/5n8N5pdyS+mYnbngjGE0YgwahNCWzb5Wv5Bgzlu9MRiReBxT4Lwy0Pu6
+	 bgFZbQkAtFY4+g/65Ksf/Mcub6L+/e9g0w0nDnBw=
+Subject: FAILED: patch "[PATCH] phy: qcom: qmp-combo: fix VCO div offset on v5_5nm and v6" failed to apply to 6.6-stable tree
 To: johan+linaro@kernel.org,dmitry.baryshkov@linaro.org,quic_abhinavk@quicinc.com,swboyd@chromium.org,vkoul@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 14:02:18 +0200
-Message-ID: <2024042918-jet-harmonica-e767@gregkh>
+Date: Mon, 29 Apr 2024 14:02:19 +0200
+Message-ID: <2024042919-enlisted-punch-79a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.8-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 025a6f7448f7bb5f4fceb62498ee33d89ae266bb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042918-jet-harmonica-e767@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042919-enlisted-punch-79a5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 025a6f7448f7 ("phy: qcom: qmp-combo: fix VCO div offset on v5_5nm and v6")
 ef643d55fdeb ("phy: qcom: qmp: split DP PHY registers to separate headers")
+7b98cf0e9b5f ("phy: qcom-qmp: pcs: Add v7 register offsets")
+dc32762214e4 ("phy: qcom-qmp: move PCS MISC V4 registers to separate header")
 
 thanks,
 
