@@ -1,146 +1,123 @@
-Return-Path: <stable+bounces-41746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39DD8B5DAC
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:29:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3611A8B5DC9
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C97A1C21CDB
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:29:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF63D1F21686
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DC2127E3F;
-	Mon, 29 Apr 2024 15:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A498823AE;
+	Mon, 29 Apr 2024 15:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CKxtKCbT";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="45FlEKfV"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CTQtebj4"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3022127E1E
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 15:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A657F487
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 15:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714404349; cv=none; b=C12lwySJpaBxygRnSBOIFJPPRVIKX2MkxlcpP6wGVccDAC6qWEyxLqr3Qd7f5j7NU4+bPGeAv74avRlGaBD16jVKqWGWAUMUSfxWNB1nFZT6azxocTsK/PujCHN1Hk5jDZS9X4JNB9AXK2rUl92HpwrH3Q4Im0lWmLNmwq8jP6I=
+	t=1714404781; cv=none; b=ZCqqpXlJK44AgaKFNhPqGztmNC//VrfcLPKqMayhuBxRR30uKixQyFZgNaJUInpkr+bSGbQvY5QywIUZIuxsCbEJw17s3/GOvf8a3yW0WGNDfXNgQmtIcXNUNLJ/KIAqb1AgKjD38KGPAiuKXN2HP6tqOXW5U6kviA+ccxqdFws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714404349; c=relaxed/simple;
-	bh=cPbEV8uadshxfnPNvXNipABDQJ0Tu9njMXiOnVOVd4k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PuuQIJZBG/H1dTH+B3m0oPXZtf9f1OU/YjQt68c7Kt9pzNnyBcOF2lJN6xSRz3OilSbifvWQFKd5OapKs4DdLjb17n3ZJNwI2sZciEMgmdIIrWQw2ZryW5qTvjVDD4dYaJHqefAViATn5KdcOSnFjaiQTvO4wNXG5d1mKcL2JuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CKxtKCbT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=45FlEKfV; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714404345;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1ruEBNWojs5DSZqzc2DFaDePAehmBFXj5N4Ab1fABYM=;
-	b=CKxtKCbTBDbvrc3pv5CmEa9zg6HNFwQKpKczBA53LjVZnQiB0FGxnwme3Upz70lYLcwfTT
-	YkHeCzfUIq9Z8NxsOmvg3Q3auCvMfOqSCCOTTOYzaBPYP1oFl8vi0vcyB8XLo/hoKbQvuz
-	MMgHYY+JvT74RK2AmCtNNuxgH1PgOfz6xRotb+Xd9ji2bEDAp4HlgySiraoQWHvQFy2+pj
-	yCM5FfWvTDS+2LJ9h1byft4DtAi+f1LJhhuA9GMRCM8PbjgXODa/HwGalwTIrJsDuUPAwe
-	oEl6ijJax3eY80DTnyS4W32MvkdhHyGj/N/84oZtNwdAzsne5YGAaCLqMAr+WA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714404345;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1ruEBNWojs5DSZqzc2DFaDePAehmBFXj5N4Ab1fABYM=;
-	b=45FlEKfV3FW0A34lTOlnMTzbg0U+b7egwFGucejMlOTFiZKYW0ZkUeSVy01DgL+Rw+l/CS
-	XcQLbiZeREIUTIDg==
-To: stable@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>,
-	Eva Kurchatova <nyandarknessgirl@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.15.y, 5.10.y, 5.4.y, 4.19.y] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up
-Date: Mon, 29 Apr 2024 17:25:15 +0200
-Message-Id: <20240429152514.652751-1-namcao@linutronix.de>
-In-Reply-To: <2024042952-germless-unguarded-1be2@gregkh>
-References: <2024042952-germless-unguarded-1be2@gregkh>
+	s=arc-20240116; t=1714404781; c=relaxed/simple;
+	bh=wDxA9I9+VmVVSI9BroVzQWlSN5RXJEUSc5DnHUzQWGg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZRO/+LPQOrQGuBi/ksLB+o+hciKt/aihZlC+LQic9uhoI5vmBTtFeuGEp0Imh690+Vek+1X41u5CzyUS1Ov4FIB34Q7HYjgJAdAIhvgczOtO7oF3lO9ZUXmULwAxnhlkQAZvBBCG1xM/3WOA7JbJQ/KC4kNdeSqiUnJgg5cK2XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CTQtebj4; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-51aa6a8e49aso5607360e87.3
+        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 08:32:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1714404778; x=1715009578; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=F8YJLjrLtk5N3O9qDCOgLkM7hm+XAZ4QGYxxZrlDK20=;
+        b=CTQtebj4ihLIpLWckxpEu4DQFeSjn72SYH9b4eaK50hm9uIrWWY24Sj78wGUnZAoCb
+         PN2rvNE9yiEZX9zEWidbtPRNEDSGJvFEk/DdWgNKcuJIcw37uNZCwbEflRu3iK7PJdOq
+         FDZ2EswPQnHM4igm4abSTnganwhhmYNqCI9Yo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714404778; x=1715009578;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F8YJLjrLtk5N3O9qDCOgLkM7hm+XAZ4QGYxxZrlDK20=;
+        b=uqZL1md/0IhZxdZbdWjsfZ910qcczB2r7ofONX1JyUB9AGlFmw9pYRbUz0YxC1Y6um
+         XviRPJgC6iLShhmMgMRXLnYR892zYg5m1M0rf7XffwI5JbfGgjtGUcnuoDCTgw9EwU2T
+         0igjCrgjsV4nTrK3BTV31zUKCZLkiG5EuUI80CR5W/TJhQt717NZ4OqkXYvJ8+sugmy6
+         5IlEjBFZSHvowXwTTKH4SAjiRaJeNqD0qTO25sOp5dKDg4GVcHVOp3Y323SPgSBFDb89
+         giOM01kqL/K5/F4VBBt7pkXo/BH6Knhak7ZbHfDhUEvfOpoulIoakHoS0uFnjJOAPplT
+         Pkww==
+X-Forwarded-Encrypted: i=1; AJvYcCX5Lf1q/pvDw1caJyFrTlhzt5yA8EfLRidXownzqGQwSnsU2lrzbOTcPkUxqIwMHMC2SWatEH9WlrShSpWJgqZ1dJaPBhZd
+X-Gm-Message-State: AOJu0YzqDyH7yHyd9WKqVU1kEPsBDwhXLsibYwd5vZ3tIThDlaYEzQMe
+	nnyqCaALr2JTiEskSOl7jp4BxXmq0LLANm7BJ16s8PE134tduODufpuHkFFKZ2BL5j/oTjvFEjh
+	9SMwqbA==
+X-Google-Smtp-Source: AGHT+IHwa6mLleDLs9sBkQGeawR9WZZFWC8mDZMw+LhVN1fW/BQvW97IK+d1Y6ViV6X1LsAlI0BfCw==
+X-Received: by 2002:a19:8c01:0:b0:51d:2529:7c36 with SMTP id o1-20020a198c01000000b0051d25297c36mr3491496lfd.35.1714404777699;
+        Mon, 29 Apr 2024 08:32:57 -0700 (PDT)
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
+        by smtp.gmail.com with ESMTPSA id nb33-20020a1709071ca100b00a55778c1af7sm13908375ejc.11.2024.04.29.08.32.56
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Apr 2024 08:32:57 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-57225322312so6202076a12.1
+        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 08:32:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUKh+dQdDCmh5MBAAR8wJeJQeHp7XsuBul8o2d9oBDG307gHZwR4dJSiOCcLqTK8ImAzkmf8q+JMG05HsLdUWvrwyC3paFT
+X-Received: by 2002:a17:906:12c1:b0:a55:3707:781d with SMTP id
+ l1-20020a17090612c100b00a553707781dmr6533136ejb.73.1714404776259; Mon, 29 Apr
+ 2024 08:32:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240429144807.3012361-1-willy@infradead.org>
+In-Reply-To: <20240429144807.3012361-1-willy@infradead.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 29 Apr 2024 08:32:39 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whEMvpPLrzsi6BoH=o+-ScRKuuqxrdWSnrTtGEi=JvcNA@mail.gmail.com>
+Message-ID: <CAHk-=whEMvpPLrzsi6BoH=o+-ScRKuuqxrdWSnrTtGEi=JvcNA@mail.gmail.com>
+Subject: Re: [PATCH] bounds: Use the right number of bits for power-of-two CONFIG_NR_CPUS
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, 
+	=?UTF-8?B?0JzQuNGF0LDQuNC7INCd0L7QstC+0YHQtdC70L7Qsg==?= <m.novosyolov@rosalinux.ru>, 
+	=?UTF-8?B?0JjQu9GM0YTQsNGCINCT0LDQv9GC0YDQsNGF0LzQsNC90L7Qsg==?= <i.gaptrakhmanov@rosalinux.ru>, 
+	stable@vger.kernel.org, Rik van Riel <riel@surriel.com>, 
+	Mel Gorman <mgorman@techsingularity.net>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
 
-commit 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e upstream.
+On Mon, 29 Apr 2024 at 07:48, Matthew Wilcox (Oracle)
+<willy@infradead.org> wrote:
+>
+> bits_per() rounds up to the next power of two when passed a power of
+> two.  This causes crashes on some machines and configurations.
 
-The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
-However, this is not necessary, because I2C core already has its own
-locking for that.
+Bah. Your patch is *still* wrong, because bits_per() thinks you need
+one bit for a zero value, so when you do
 
-More importantly, this flag can cause a lock-up: if the flag is set in
-i2c_hid_xfer() and an interrupt happens, the interrupt handler
-(i2c_hid_irq) will check this flag and return immediately without doing
-anything, then the interrupt handler will be invoked again in an
-infinite loop.
+        bits_per(CONFIG_NR_CPUS - 1)
 
-Since interrupt handler is an RT task, it takes over the CPU and the
-flag-clearing task never gets scheduled, thus we have a lock-up.
+and some insane person has enabled SMP and managed to set
+CONFIG_NR_CPUS to 1, the math is *still* broken.
 
-Delete this unnecessary flag.
+The right thing to do is
 
-Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
-Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
-Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-[apply to v4.19 -> v5.15]
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
- drivers/hid/i2c-hid/i2c-hid-core.c | 8 --------
- 1 file changed, 8 deletions(-)
+        order_base_2(CONFIG_NR_CPUS)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 7c61bb9291e4..f8c56810d260 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -51,7 +51,6 @@
- /* flags */
- #define I2C_HID_STARTED		0
- #define I2C_HID_RESET_PENDING	1
--#define I2C_HID_READ_PENDING	2
- 
- #define I2C_HID_PWR_ON		0x00
- #define I2C_HID_PWR_SLEEP	0x01
-@@ -251,7 +250,6 @@ static int __i2c_hid_command(struct i2c_client *client,
- 		msg[1].len = data_len;
- 		msg[1].buf = buf_recv;
- 		msg_num = 2;
--		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
- 	}
- 
- 	if (wait)
-@@ -259,9 +257,6 @@ static int __i2c_hid_command(struct i2c_client *client,
- 
- 	ret = i2c_transfer(client->adapter, msg, msg_num);
- 
--	if (data_len > 0)
--		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
--
- 	if (ret != msg_num)
- 		return ret < 0 ? ret : -EIO;
- 
-@@ -533,9 +528,6 @@ static irqreturn_t i2c_hid_irq(int irq, void *dev_id)
- {
- 	struct i2c_hid *ihid = dev_id;
- 
--	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
--		return IRQ_HANDLED;
--
- 	i2c_hid_get_input(ihid);
- 
- 	return IRQ_HANDLED;
--- 
-2.39.2
+and 'bits_per()' should be avoided, having completely crazy semantics
+(you can tell how almost all users actually do "x-1" as the argument).
 
+We should probably get rid of that horrid bits_per(() entirely.
+
+I applied your patch with that fixed (which admittedly make it all
+*my* patch, but applying it as yours just to get the changelog).
+
+               Linus
 
