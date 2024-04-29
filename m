@@ -1,104 +1,168 @@
-Return-Path: <stable+bounces-41742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A478B5C12
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 16:57:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04CB8B5C2D
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24E9D1F22494
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:57:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8683D285A02
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF1980029;
-	Mon, 29 Apr 2024 14:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263AD81AD0;
+	Mon, 29 Apr 2024 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLntf43X"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e2lHkh/1";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LV3TJBbF";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e2lHkh/1";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LV3TJBbF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A574745C5
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 14:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3616D81729;
+	Mon, 29 Apr 2024 15:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714402653; cv=none; b=MDqklwGD5x09HV9stfdETKoe2yoJVCSP8HnbdI+9P+MSeak2LXUVTlmXlSFyFk2P7yRqbVKDbvnW9j+Cj5mIlfgjG56ZghrHEt2TdNtihtlrgx7i/oCDR4Q8XJ3RLsaoiM3wBvo/lg7FFmVN9Rnd6/8qJTx56RDNBLaQ6nrW3yc=
+	t=1714402828; cv=none; b=phCuGUeI27lq9Lcvn77L0/qCTKdbvz4o/YLNEEshvtDyoxmC3M91q9m/POx/BW4uM/5OBFdN7L6mMzizrvmmCbqTzhqCz5MvnRDpTVSXLsd0Svyi6icOkfHE25kRWQyg8YvDum42jG5YcJaqKSC3DWexuNHDOCYheqUW+e3i+k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714402653; c=relaxed/simple;
-	bh=8r0P58xs7RkJkaLYeTE0S+NOa4GIjsTXtLOzguDs/rk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ekiyVKBe2Np4/Nq6yo7Nz9BB4SxQR5ywoSLzE/VbiRUFHqEWz4oP0RsC3VsSGX/sDjCDH7hl41ZgKmenogo1qtv+tLzMrHHjPDOYBlcC+0s2wirTWC3RzNn57JCVW7RDebg/ynjwrQVs6+ioN7S0wR+aCfAHRBmL7yvNVSw1bwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLntf43X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363C0C113CD;
-	Mon, 29 Apr 2024 14:57:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714402652;
-	bh=8r0P58xs7RkJkaLYeTE0S+NOa4GIjsTXtLOzguDs/rk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NLntf43XUN8VBkk4Z6J23Faa0s7NdSJ6kSuj56mNeyrEvMlKWSFuwP4HPUa630ZJ5
-	 ypx1w+KTZQNqfusJpiZZLu+4dCAixquJVv7KLQAqKQYmtuJbYF/45Vutn+1CPtvwWW
-	 pqIc4YC+OJHTmLx16iK4fCWnkNHdHkUCgKkohdWQ=
-Date: Mon, 29 Apr 2024 16:57:29 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH 5.15.y] fbdev: fix incorrect address computation in
- deferred IO
-Message-ID: <2024042920-sacrament-wages-b9eb@gregkh>
-References: <2024042951-barbell-aeration-a1ce@gregkh>
- <20240429144041.3498362-1-namcao@linutronix.de>
+	s=arc-20240116; t=1714402828; c=relaxed/simple;
+	bh=AoEcZWPaPmzELVD9CbCwfoVXprt2zSFSuipKEKqMbz4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XW7FFoZy6+A6rdLXqp1isLr6hGrLmxS2SH4PmJqB83ve6tRsDrP59hVJen+jdgUT+cXzDKHBellvsZrhCDVK/vRpn5LJz0OCFNR9nkcGNw2axeCy737sdGrzzfLaNMMAqgFlGpe3a4bw9u/mL4k/FdMMpC3Ae7HXJlGjq4WZ0Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e2lHkh/1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LV3TJBbF; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e2lHkh/1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LV3TJBbF; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 107DE1F445;
+	Mon, 29 Apr 2024 15:00:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1714402824; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+6ISOxBlAV6CDQEEnStu0qtNtqvx4/HjkaEqq8aneuI=;
+	b=e2lHkh/1yUv8ZHdX2ry60AaD6xgrs6pdjSud8tisrs8VriJV6sk4EnVnflfqvPx2E5G+oe
+	VmQV01B93zU/0DRHkPWU4TrKmaQGaDC+VllVnqfLbIql4z3DoCtm5wHgKLOqRsNMLPOIoM
+	7ND7IZ06ZyVrmMFqPQPFcBqEnZ34QaI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1714402824;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+6ISOxBlAV6CDQEEnStu0qtNtqvx4/HjkaEqq8aneuI=;
+	b=LV3TJBbFwtRB0h9S76K2/GSkJ532TdH4vtPe1dA2QLBuRPDezgNp7W/66cYfmiROsf8jMw
+	wdJ8UjwAFDkYVHCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1714402824; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+6ISOxBlAV6CDQEEnStu0qtNtqvx4/HjkaEqq8aneuI=;
+	b=e2lHkh/1yUv8ZHdX2ry60AaD6xgrs6pdjSud8tisrs8VriJV6sk4EnVnflfqvPx2E5G+oe
+	VmQV01B93zU/0DRHkPWU4TrKmaQGaDC+VllVnqfLbIql4z3DoCtm5wHgKLOqRsNMLPOIoM
+	7ND7IZ06ZyVrmMFqPQPFcBqEnZ34QaI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1714402824;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+6ISOxBlAV6CDQEEnStu0qtNtqvx4/HjkaEqq8aneuI=;
+	b=LV3TJBbFwtRB0h9S76K2/GSkJ532TdH4vtPe1dA2QLBuRPDezgNp7W/66cYfmiROsf8jMw
+	wdJ8UjwAFDkYVHCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AD2D0138A7;
+	Mon, 29 Apr 2024 15:00:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WKavKAe2L2Y7FQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 29 Apr 2024 15:00:23 +0000
+Date: Mon, 29 Apr 2024 17:00:35 +0200
+Message-ID: <875xw0p624.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,	Takashi Iwai
+ <tiwai@suse.de>,	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-kernel@vger.kernel.org,	Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?=
+ <amadeuszx.slawinski@linux.intel.com>,	Bard Liao
+ <yung-chuan.liao@linux.intel.com>,	Brady Norander
+ <bradynorander@gmail.com>,	Jaroslav Kysela <perex@perex.cz>,	Mark Brown
+ <broonie@kernel.org>,	Mark Hasemeyer <markhas@chromium.org>,	Takashi Iwai
+ <tiwai@suse.com>,	linux-sound@vger.kernel.org,	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda: intel-dsp-config: Fix Huawei Matebook D14 NBLB-WAX9N quirk detection
+In-Reply-To: <c0120da6-ac95-46c6-94d5-471f31e7c857@linux.intel.com>
+References: <5e6ba980c0738199589749b68b83f2d730512107.1713430105.git.mchehab@kernel.org>
+	<20240418110453.10efcb60@sal.lan>
+	<848bcc94-3a31-4fb4-81bc-bd3f138e12f6@linux.intel.com>
+	<87edaopdlt.wl-tiwai@suse.de>
+	<Zi-RpauZjcWg0t_q@smile.fi.intel.com>
+	<c0120da6-ac95-46c6-94d5-471f31e7c857@linux.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240429144041.3498362-1-namcao@linutronix.de>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux.intel.com,suse.de,kernel.org,vger.kernel.org,gmail.com,perex.cz,chromium.org,suse.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_DN_SOME(0.00)[]
 
-On Mon, Apr 29, 2024 at 04:40:41PM +0200, Nam Cao wrote:
-> commit 78d9161d2bcd442d93d917339297ffa057dbee8c upstream.
+On Mon, 29 Apr 2024 15:51:03 +0200,
+Pierre-Louis Bossart wrote:
 > 
-> With deferred IO enabled, a page fault happens when data is written to the
-> framebuffer device. Then driver determines which page is being updated by
-> calculating the offset of the written virtual address within the virtual
-> memory area, and uses this offset to get the updated page within the
-> internal buffer. This page is later copied to hardware (thus the name
-> "deferred IO").
 > 
-> This offset calculation is only correct if the virtual memory area is
-> mapped to the beginning of the internal buffer. Otherwise this is wrong.
-> For example, if users do:
->     mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
 > 
-> Then the virtual memory area will mapped at offset 0xff000 within the
-> internal buffer. This offset 0xff000 is not accounted for, and wrong page
-> is updated.
+> On 4/29/24 07:25, Andy Shevchenko wrote:
+> > On Mon, Apr 29, 2024 at 02:17:34PM +0200, Takashi Iwai wrote:
+> >> On Thu, 18 Apr 2024 15:24:10 +0200,
+> >> Pierre-Louis Bossart wrote:
+> >>> On 4/18/24 05:04, Mauro Carvalho Chehab wrote:
+> > 
+> > ...
+> > 
+> >>> Andy, what do you think and what would be your recommendation?
+> >>
+> >> This one is still pending, and I'd like to hear the decision from
+> >> Intel people.  Let me know if this hack is acceptable.
+> > 
+> > IIRC it was resolved on GitHub by Pierre, anything else I need to contribute?
 > 
-> Correct the calculation by using vmf->pgoff instead. With this change, the
-> variable "offset" will no longer hold the exact offset value, but it is
-> rounded down to multiples of PAGE_SIZE. But this is still correct, because
-> this variable is only used to calculate the page offset.
+> This initial patch was replaced by the one I sent on Friday
+> "[PATCH] ALSA: hda: intel-dsp-config: harden I2C/I2S codec detection"
 > 
-> Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-> Closes: https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4ab341a@oracle.com
-> Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20240423115053.4490-1-namcao@linutronix.de
-> [rebase to v5.15]
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> ---
->  drivers/video/fbdev/core/fb_defio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> I should have made it clearer in the commit message, sorry.
 
-Now queued up, thanks.
+OK, thanks for the updates!
 
-greg k-h
+
+Takashi
 
