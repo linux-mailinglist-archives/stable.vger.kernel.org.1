@@ -1,163 +1,288 @@
-Return-Path: <stable+bounces-41702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15D08B5881
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:27:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2CA8B588B
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 14:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8115E289102
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:27:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EE8D1F23783
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E8D53E08;
-	Mon, 29 Apr 2024 12:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BA1322E;
+	Mon, 29 Apr 2024 12:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PcNBED0G"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hR2IgmP+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89933F9C2
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714393632; cv=none; b=Neosi7ldAPsH2T2oSvCSSbJh2f9kHp9LLBI/kC1RApQD6vaUU1rssyHwdb4dJCUPzceY50RNIk5BLiMXXgic/M5DvNQbJoIH4zG1QqgkiuolSlOI3B6oFYHx8D5GsUiXbk5rQH3NFZ+JzpnHy8CGaVSnjNoM44ncqVlYuIPw4XY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714393632; c=relaxed/simple;
-	bh=fwTcbBZmxDKd30Xxc+UFRhkEvjLzkvsKdkLyt4x7734=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUpbkeImUL9S8D/FRI8J0vYrfVFOwpogxRj1d1ANqVpSbNJcjJgxPbCXg5FEem0+gwrz0H+xV2l4wxamlIvTrXxBsHqr9PjNAXavgyGq2416RVYqMsdEeuz7vyPigQojA3IcOvJi6md1X7PNCFmkGUASz0Av4DypkmCPsXu+lRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PcNBED0G; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0802F29
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 12:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714393821; cv=fail; b=NOESEGLIYochtuyvTUq0ZE3dASpRBBqK8i2WX9P+lxen7O0Yf1Zwwr5L7VPfuc79EbZRqp1SCxfy/RqIu1lxvc53KYBketxH175kBYdEaWPpZeuQp2Zfvayx6QfX/ZV+tS7Q5xZvpxTTMlVQkU1Oi01oNDtoN/hrpVZ2jC6Dmmo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714393821; c=relaxed/simple;
+	bh=21uk46vGV5V/YBhLu+M6w4B33ZfVV0Rl5WEWjaa/StQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=f7e9CMDm2ZUAAylLhsmzH61E6KS1xU72bM0Sz74iR87h7PNSuiUEbMxSFMYe+zFP2z2aS6Ofl+Io3I0wgQy9grehAsKoY60Jw6jNPINKG98XwTqGwTjCMYduAwia2mafqSBnhzztzdrEeP9ZvgNJkP5fO8jypNokIZIPq8Oe09o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hR2IgmP+; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714393631; x=1745929631;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=fwTcbBZmxDKd30Xxc+UFRhkEvjLzkvsKdkLyt4x7734=;
-  b=PcNBED0Gq2EmakD7kh4qWsY6mf+ZiRu+VkAh9fPTaPxUs1myWkSnuKZX
-   ssl2vGfWkLrV8Lb/ON8RNcZQmuxkgw+rtjAFyc8uKnTaQ1qkEHT//FKnG
-   BOqUFBUT2olBlT+pXcSGpjk9J/orWzXsJDV0oIYRpeMRrDg5aa+U7OFDk
-   yL25zPqUnv42XRNkEopHIWN07clVIisrkroqvavAHvTCgKAVquPjFUzsM
-   sUGBADXe/vCAa2RrprWGzk06Fvzx+yx7kosuEa954kLGlRAHUMJajd8zU
-   Fc5ahCBJyV1ep3KEy8+jg6Kjbr78ESiIiY7CyPdws7ynsTROaLxQK2EGu
-   A==;
-X-CSE-ConnectionGUID: JmWajcJXSxmnJcWvmKfsNw==
-X-CSE-MsgGUID: 2ubBO70nT3ewV1l1sQa9lA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10268721"
+  t=1714393819; x=1745929819;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=21uk46vGV5V/YBhLu+M6w4B33ZfVV0Rl5WEWjaa/StQ=;
+  b=hR2IgmP+rtepinbKTSyw0Tw5rf9YTTIQ1cVbwZW9wzB0N+j1fpdCuHND
+   V1HL70z9wWKpUFUkc5C4DG2DmsqhXr8EqP3tspm7b8o4c0MR46f1VrPXY
+   Aye7JDFX4gR9hIozjXNUKTbyUX54y8l+SZWuNPd9kE4gn2nfE9rDj439C
+   5XvhikcK1MHgPoJC8kEoSFgmof++2n1ydROxhSzl+XI+quRKKmUkJgeZ1
+   1mtkqMwFSt2S7R4L4bpmEHtB0cZnrqAfhjGVQAUAcYxKUW5sgECn72m6s
+   fhAH3hlM5z13PcfDncG+obImYNwXLXiqrpVJ2EbdlJ6CuEIO9VkiKSIus
+   g==;
+X-CSE-ConnectionGUID: MVRJu2rnRQWGLTHQfzb1cQ==
+X-CSE-MsgGUID: TWEKHpYZQAyVA0tTfpAiKA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10160092"
 X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="10268721"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 05:27:07 -0700
-X-CSE-ConnectionGUID: klYzi3psQWyGnupMsiQR6Q==
-X-CSE-MsgGUID: L+Wu4kXsRnevL1UFFs4aLg==
+   d="scan'208";a="10160092"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 05:30:18 -0700
+X-CSE-ConnectionGUID: EX9uCASrQ5OHFIwfh3do3g==
+X-CSE-MsgGUID: lVmC5Y7iT0yJNF+Zjx6IYA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="30894823"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa005.jf.intel.com with ESMTP; 29 Apr 2024 05:27:05 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 85C7515B; Mon, 29 Apr 2024 15:27:03 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Chris Oo <cho@microsoft.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH 6.6.y] x86/tdx: Preserve shared bit on mprotect()
-Date: Mon, 29 Apr 2024 15:27:00 +0300
-Message-ID: <20240429122700.4100457-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024042908-modular-case-bbd4@gregkh>
-References: <2024042908-modular-case-bbd4@gregkh>
+   d="scan'208";a="57287663"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 29 Apr 2024 05:30:18 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 29 Apr 2024 05:30:18 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Mon, 29 Apr 2024 05:30:18 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 29 Apr 2024 05:30:17 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Zjoxddwo/tDrvo0OBZZZvtyg7kidYLIkN0Xm47wZaqkTCkXtMdVrHTm3gjzPqkO7XaH4GHsb2g7xVVWdtEXtTD+BxruSTUyw90TYIXrB2v5347WzmlVHAc2t5fmHqgM/omEz+/LzeY8XxHJxXPIcO30CVt5P+Z6n0GmYDHtpjNK/k7bex+Jo5TZdPcgHTX9qc6f705jJeU5EV2Z5mKz8/77CQnA2Shxluqgx6cHbh7keLJN1v7uvC5w2naC9f2OIKo2m2UFxOUxcskptS7KwDM8o6rM82xFoirtmhGn0oaIW+7IdWBOc7KMHldnTVMkPHneikg3lnOxQlV3a9+mAFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7iB3jhH5Uwx5Rp2IGITaKM/vwSK+zZVrXkU0Sj/XplY=;
+ b=BuSuGhV/jf/cMYGi3IQomABCyTz1NmA+iBLqkdxbRoYRSIUjZqsSwhLZFptqHTN1U1HMuXTfrX0BvhO82LMlqpQ7k4YA2XnsNwwHiRQhnloRu8iClgFa+vXOIA5TDsxHSaW0tMueiA7WaAr/CaE90ntW2DZDpCLifFkcxJ/Xb3WP5wduZLzTBrPEl/fsW4y2bnvjQFDuIdkb2D45DWAsiVhgtKNJCFmjDhi9zzDMiNKluuqZu9EyanHHhBR6HkEr77PMCjVL44t92r7CPaWludFbg/3OQFYrfbJbK/pgbtuX9Q3hEHRihZyCJn6EjTz8nbRa0wl45xkQvYVBm/TfDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN0PR11MB6059.namprd11.prod.outlook.com (2603:10b6:208:377::9)
+ by BL1PR11MB5977.namprd11.prod.outlook.com (2603:10b6:208:384::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.34; Mon, 29 Apr
+ 2024 12:30:10 +0000
+Received: from MN0PR11MB6059.namprd11.prod.outlook.com
+ ([fe80::cf6f:eb9e:9143:f413]) by MN0PR11MB6059.namprd11.prod.outlook.com
+ ([fe80::cf6f:eb9e:9143:f413%5]) with mapi id 15.20.7519.031; Mon, 29 Apr 2024
+ 12:30:10 +0000
+Date: Mon, 29 Apr 2024 08:30:06 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+CC: intel-gfx <intel-gfx@lists.freedesktop.org>, dri-devel
+	<dri-devel@lists.freedesktop.org>, Andi Shyti <andi.shyti@kernel.org>,
+	"Gnattu OC" <gnattuoc@me.com>, Chris Wilson <chris.p.wilson@linux.intel.com>,
+	"Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, Matt Roper
+	<matthew.d.roper@intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/i915/gt: Automate CCS Mode setting during engine
+ resets
+Message-ID: <Zi-SzrXPlEpL0Bun@intel.com>
+References: <20240426000723.229296-1-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240426000723.229296-1-andi.shyti@linux.intel.com>
+X-ClientProxiedBy: BYAPR06CA0064.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::41) To MN0PR11MB6059.namprd11.prod.outlook.com
+ (2603:10b6:208:377::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR11MB6059:EE_|BL1PR11MB5977:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2590300c-71ed-4147-45a6-08dc68481c5b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|1800799015|376005;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?8Xs7WNxE5rWDqnVqWPbAEiN5sZAhXmFuvy2lp5ePkFtBNriI1tdnpgorFX+Q?=
+ =?us-ascii?Q?R7tW/gE5XuhOkSe2AuliBDMi2gwrsFnrdyH4oOM8T/GwirF9F4BUJVLJ45dW?=
+ =?us-ascii?Q?v9N2rCTgaTYkIczd0L2wnsANh/SCDwcb+ZPA7pX941DT2Ec4FEWf6oOTotEG?=
+ =?us-ascii?Q?lpvmbRJPrqmVwKCuPf0fvBbaen7SB2Cmja6RbKfa2ZPwEhQtm+Mt6rucWWOW?=
+ =?us-ascii?Q?/gUqJjT53KyxAWGe0ngOD0ePZHw3DUP4tID36QYdsqkNO+vc/Lt9t+PLetjv?=
+ =?us-ascii?Q?hePPBG+xSF6fziPB+ibSWZOtiO76Yg9zRYyPiU2nKGRab/m7jRdrOqXNHhG3?=
+ =?us-ascii?Q?gDlWVjOaDu6IEO7bmXIAVMKAo6VD0tLWdzN/FKje0X6fNB4vGyzr8q/f2jr7?=
+ =?us-ascii?Q?fvxW9UZ4HKhfeEO96/HLadpYsb/kKuGB7LA7fwzwTFp7gP3hTJPmchBoUWoP?=
+ =?us-ascii?Q?L6E3W5X3WsMHmGpVanEupXERDEUsvB4Z+xZcZEu8wuoCbJKfrTSyx+Z6p+an?=
+ =?us-ascii?Q?4vvY6pyaSPWmR4MKRNsnuTdCyOtsxPABL139Y5MpdbfLJbyr5/nsvNHQ+gxs?=
+ =?us-ascii?Q?EC+Qx1uAHjA3jLGPzQnmsbYw1JzJxpUJiYzR8KFoO4xto5W5HiWCB2QzXIR5?=
+ =?us-ascii?Q?ev2QK8trvksa0rXzsaJdwNkp159FskMpRkIH2Tjq3/kO1tC1gIZx9corDruR?=
+ =?us-ascii?Q?DXC4ul5JUlY+aAOhg9s7QmEt8gNfg0dkwmquExDkkTMHaMQzB5jU1OiyaLuY?=
+ =?us-ascii?Q?u1IP+nNO9EcK1h/hyZrmt8qZaZStAEXPF2pJcMqp67JBAMjpS+wd44sDrCzA?=
+ =?us-ascii?Q?NFu5BoKjKus82WRg8uOI0PWYr64kQlVwb9s5uQ/Alv3tmDEsrDhOJbYEXRHF?=
+ =?us-ascii?Q?iWU+SumBKMFnAUEHWpN1mynhjZFl1T8M0Z5AeAZGW7rlmLG+BY66xLrJ3qtJ?=
+ =?us-ascii?Q?qqi8DzrCET65Is4619Lzt6+CLvFDwl0Q4cIldit7WtVBqOa86keMmypFYk4I?=
+ =?us-ascii?Q?7ZLtD5haj7zDUNDu95XvoQpOi/CQXCRiK7yGb+dWIGFSTh/g72lLPgTVnina?=
+ =?us-ascii?Q?EblaFsr8wOjgwpajZW7dmeq4WuKzTOuNzSFKaak0miDBW7VRh8PCuIhk75FK?=
+ =?us-ascii?Q?ZwNPBAO6yB7Kh4GnowrMlsp6u0z6tFynfLgKZXoc2lBvzzBaG5MEDSnr09FX?=
+ =?us-ascii?Q?3uQp5fGPkZaF9nOX2QGbsV5I+oxvjGaUGM1HlQ=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB6059.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/kAGShtEMQCSOU2oXxtjVjq8kTMxkdmYmTobLihDvLy8olXeT0evFxWc8D6s?=
+ =?us-ascii?Q?hDWKdZ2AvBun1ux51ao4/s/yPwLCAypPv0iqv1q/aGK/IliFfkZRmXQDzuSQ?=
+ =?us-ascii?Q?HAZWKMskIi3tafTQJtlZqHoXekHLfcXJfIRpCUNSnRZHhtMNCKuyMrgGnMTO?=
+ =?us-ascii?Q?s+XGo+NGUSYRZjBJU2CUjCqVh17F2qg3fFC33pk7aoQXF/mUM2GH8FiKXAe2?=
+ =?us-ascii?Q?RGdSYiYr+VfIecYdJN9+EDp/kHJ5jLzBSwQCDmqC97i06ChCthZrsb4xfiwh?=
+ =?us-ascii?Q?W80QD4BMbmQtAjjPlLJra8eSmmC8ceAvyulZ3C7WYr9F4YA+41naNPNhhxWG?=
+ =?us-ascii?Q?Q+sfMTWStkDI0nOPPfLPUUlRE1HXsvPe0+vbhwsWH2lb1XyeafTZxkX8u/MB?=
+ =?us-ascii?Q?m6xvEIqbWjIinX4/u968micfIF3t5AjO1AuF+RC+8k8aaOGRbrOzvcK7Yxx/?=
+ =?us-ascii?Q?bcebEgas9ZJtrH9eSRj2xz8t+FcozQccHOgmycQBsrkZZBLGYO1G/26dPBsu?=
+ =?us-ascii?Q?KHmXi8ossDKHsxKbZYz7IkbgdLoCYV/3qnUDdACHsVfVMrNgy/cZKepVJRhu?=
+ =?us-ascii?Q?inkBMk0pdhFTco79/8T64+uP9H3Zixr64gzN69Eg9uXs8QDaFgzyQCtL7eXg?=
+ =?us-ascii?Q?aGc5qxBQcFBTFzI6vd04AuBvFXLNKZZsP7m6brEbHiPm4W3tFkbXNXWLzTCc?=
+ =?us-ascii?Q?ghECDP8ZhUTvck3BsH4NqdpI/LtCWRTEY4Y6gTxvvVlqWURfok27PPOEgIQ8?=
+ =?us-ascii?Q?jlG5h7UETlE5pfGTa6jWXBqMo4pu7tUrQclSwc8KjtCbLz9BZtSjEajA90Cb?=
+ =?us-ascii?Q?Jo85P2QrtkbRNk0x7X/zzJyOBY+Wo0P1u1HI6GPIiXmIjV9V5Qcdz1rrvgfc?=
+ =?us-ascii?Q?ui7GMRtUD756RJMxvZAINnl5TAL2AgRUaq5AheeGFlCzUGpW8WquyquCDjIc?=
+ =?us-ascii?Q?gYR2DjB7rGC2YkV6J5LhAoca4KmAxEI7WQrVz71HYQlusrZz1WNP0IsvhEAh?=
+ =?us-ascii?Q?dJlPkTHcf+NXzvCgyvtusf21yFtIzuqff9wYMsc+1c2T0xmuq+vq9GnvT+Lw?=
+ =?us-ascii?Q?5nMwITxBE7wjGQgr7WsTtWBS0k1W8PqSajRA0vMw1z54f5SS56nAayYPlyS+?=
+ =?us-ascii?Q?zPSWXRxkXI3eOhriuJuNg5K9lCyVb6/rKDVemehU2UsfAHEEM0lJuM47CXOe?=
+ =?us-ascii?Q?5dntc6J2wNaxwJbs7DMaNJxTWWJXhB19Ie1sshyRDhdM2WhraL5E53wtCqer?=
+ =?us-ascii?Q?KPAduXUw39/WL82AL0Y2hWi0c4C/CqjwKKEAQCgA66RvKxDyIkbDKH0Nf/+B?=
+ =?us-ascii?Q?IJ1cuyF2EI0HW6Ye2GGFGwqafIbnZb3yv57uO4iJ9kbAOkaWOByL9jiQ8wKK?=
+ =?us-ascii?Q?u/rr77Jhz3uUNX2qRdE9ikQ5KRGuPmEORa3y9R37qZYSTIoato9eSvj8Qjb5?=
+ =?us-ascii?Q?7MmI73tEXZO+RDG8I8Ey01R2I+o4V9t1fYlvhSku1yMhxBa2KTUMC8NzTpAR?=
+ =?us-ascii?Q?yLIPaRFYXxdfRA0uv5DrwZATG9NrKPCGtXGpgp33m/rJnLXkz10bZIub2NIG?=
+ =?us-ascii?Q?Y4EkuMH2SZ8EwChIL5YKQSo8msJd0DcVYf1UdO7F?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2590300c-71ed-4147-45a6-08dc68481c5b
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6059.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2024 12:30:10.5502
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xjXDWwiv2/jrVn0dHXMmmiHTqQuTgzZ9KwjJIFauycO0R5xFeVEhjxBh4quSAnGgxY9UC2BJWx4N03XwRdDzEQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5977
+X-OriginatorOrg: intel.com
 
-The TDX guest platform takes one bit from the physical address to
-indicate if the page is shared (accessible by VMM). This bit is not part
-of the physical_mask and is not preserved during mprotect(). As a
-result, the 'shared' bit is lost during mprotect() on shared mappings.
+On Fri, Apr 26, 2024 at 02:07:23AM +0200, Andi Shyti wrote:
+> We missed setting the CCS mode during resume and engine resets.
+> Create a workaround to be added in the engine's workaround list.
+> This workaround sets the XEHP_CCS_MODE value at every reset.
+> 
+> The issue can be reproduced by running:
+> 
+>   $ clpeak --kernel-latency
+> 
+> Without resetting the CCS mode, we encounter a fence timeout:
+> 
+>   Fence expiration time out i915-0000:03:00.0:clpeak[2387]:2!
+> 
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10895
+> Fixes: 6db31251bb26 ("drm/i915/gt: Enable only one CCS for compute workload")
+> Reported-by: Gnattu OC <gnattuoc@me.com>
+> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.2+
 
-_COMMON_PAGE_CHG_MASK specifies which PTE bits need to be preserved
-during modification. AMD includes 'sme_me_mask' in the define to
-preserve the 'encrypt' bit.
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-To cover both Intel and AMD cases, include 'cc_mask' in
-_COMMON_PAGE_CHG_MASK instead of 'sme_me_mask'.
-
-Reported-and-tested-by: Chris Oo <cho@microsoft.com>
-
-Fixes: 41394e33f3a0 ("x86/tdx: Extend the confidential computing API to support TDX guests")
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240424082035.4092071-1-kirill.shutemov%40linux.intel.com
-(cherry picked from commit a0a8d15a798be4b8f20aca2ba91bf6b688c6a640)
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/include/asm/coco.h          | 5 ++++-
- arch/x86/include/asm/pgtable_types.h | 3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
-index de03537a0182..c72b3553081c 100644
---- a/arch/x86/include/asm/coco.h
-+++ b/arch/x86/include/asm/coco.h
-@@ -12,9 +12,10 @@ enum cc_vendor {
- };
- 
- extern enum cc_vendor cc_vendor;
--extern u64 cc_mask;
- 
- #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
-+extern u64 cc_mask;
-+
- static inline void cc_set_mask(u64 mask)
- {
- 	RIP_REL_REF(cc_mask) = mask;
-@@ -24,6 +25,8 @@ u64 cc_mkenc(u64 val);
- u64 cc_mkdec(u64 val);
- void cc_random_init(void);
- #else
-+static const u64 cc_mask = 0;
-+
- static inline u64 cc_mkenc(u64 val)
- {
- 	return val;
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 0b748ee16b3d..9abb8cc4cd47 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -148,7 +148,7 @@
- #define _COMMON_PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |	\
- 				 _PAGE_SPECIAL | _PAGE_ACCESSED |	\
- 				 _PAGE_DIRTY_BITS | _PAGE_SOFT_DIRTY |	\
--				 _PAGE_DEVMAP | _PAGE_ENC | _PAGE_UFFD_WP)
-+				 _PAGE_DEVMAP | _PAGE_CC | _PAGE_UFFD_WP)
- #define _PAGE_CHG_MASK	(_COMMON_PAGE_CHG_MASK | _PAGE_PAT)
- #define _HPAGE_CHG_MASK (_COMMON_PAGE_CHG_MASK | _PAGE_PSE | _PAGE_PAT_LARGE)
- 
-@@ -173,6 +173,7 @@ enum page_cache_mode {
- };
- #endif
- 
-+#define _PAGE_CC		(_AT(pteval_t, cc_mask))
- #define _PAGE_ENC		(_AT(pteval_t, sme_me_mask))
- 
- #define _PAGE_CACHE_MASK	(_PAGE_PWT | _PAGE_PCD | _PAGE_PAT)
--- 
-2.43.0
-
+> ---
+> Hi Gnattu,
+> 
+> thanks again for reporting this issue and for your prompt
+> replies on the issue. Would you give this patch a chance?
+> 
+> Andi
+> 
+>  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c | 6 +++---
+>  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h | 2 +-
+>  drivers/gpu/drm/i915/gt/intel_workarounds.c | 4 +++-
+>  3 files changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+> index 044219c5960a..99b71bb7da0a 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+> +++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+> @@ -8,14 +8,14 @@
+>  #include "intel_gt_ccs_mode.h"
+>  #include "intel_gt_regs.h"
+>  
+> -void intel_gt_apply_ccs_mode(struct intel_gt *gt)
+> +unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt)
+>  {
+>  	int cslice;
+>  	u32 mode = 0;
+>  	int first_ccs = __ffs(CCS_MASK(gt));
+>  
+>  	if (!IS_DG2(gt->i915))
+> -		return;
+> +		return 0;
+>  
+>  	/* Build the value for the fixed CCS load balancing */
+>  	for (cslice = 0; cslice < I915_MAX_CCS; cslice++) {
+> @@ -35,5 +35,5 @@ void intel_gt_apply_ccs_mode(struct intel_gt *gt)
+>  						     XEHP_CCS_MODE_CSLICE_MASK);
+>  	}
+>  
+> -	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
+> +	return mode;
+>  }
+> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+> index 9e5549caeb26..55547f2ff426 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+> +++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+> @@ -8,6 +8,6 @@
+>  
+>  struct intel_gt;
+>  
+> -void intel_gt_apply_ccs_mode(struct intel_gt *gt);
+> +unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt);
+>  
+>  #endif /* __INTEL_GT_CCS_MODE_H__ */
+> diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> index 68b6aa11bcf7..58693923bf6c 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> +++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> @@ -2703,6 +2703,7 @@ add_render_compute_tuning_settings(struct intel_gt *gt,
+>  static void ccs_engine_wa_mode(struct intel_engine_cs *engine, struct i915_wa_list *wal)
+>  {
+>  	struct intel_gt *gt = engine->gt;
+> +	u32 mode;
+>  
+>  	if (!IS_DG2(gt->i915))
+>  		return;
+> @@ -2719,7 +2720,8 @@ static void ccs_engine_wa_mode(struct intel_engine_cs *engine, struct i915_wa_li
+>  	 * After having disabled automatic load balancing we need to
+>  	 * assign all slices to a single CCS. We will call it CCS mode 1
+>  	 */
+> -	intel_gt_apply_ccs_mode(gt);
+> +	mode = intel_gt_apply_ccs_mode(gt);
+> +	wa_masked_en(wal, XEHP_CCS_MODE, mode);
+>  }
+>  
+>  /*
+> -- 
+> 2.43.0
+> 
 
