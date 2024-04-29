@@ -1,152 +1,124 @@
-Return-Path: <stable+bounces-41610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA948B5361
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:47:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDD68B53C6
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:05:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7722B21280
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 08:47:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17C4D283413
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 09:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1121773A;
-	Mon, 29 Apr 2024 08:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="HpaOvqYI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Qgv7Ps2B"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D02436AF3;
+	Mon, 29 Apr 2024 09:04:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from wfout2-smtp.messagingengine.com (wfout2-smtp.messagingengine.com [64.147.123.145])
+Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029321755A
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 08:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA562C68F;
+	Mon, 29 Apr 2024 09:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714380438; cv=none; b=C6EnVahTwUnh4FXIzcCEIo7sQfEfovU1pQGHGB8GIy+tyejc/fa9WlVY9zcgltdJO+lJMzT6uu5zJnsDiDX7w/CJtJxUt7+ddC0e+/YI3w5ZGHbxVWHaI/UhbRFSVvTI5dn3q8Kcw9tC+fTNmqbN+296YVupmw8aQXwGGpU4TTY=
+	t=1714381473; cv=none; b=EGJvccZyVr3HFu/sYUou0j4b6uWRiXehUCxxFRyhDRBc5mNl5bv+J7NJneybf1RcQIDDGM/n2kV+nqznTeaBvQgIFJPuGaESVyzY4WzjEpGNTlBeV9mZUXvUVCEIaW4f/AY8/iC+e5NglJTCqXQmvZq3dG7wgVLAUZcMiP+Nhcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714380438; c=relaxed/simple;
-	bh=1b4Kkc0kiLEcyOQNktWwGEHOj425UHUowt2t5XFXVgc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sEGlKbX9+DJT5LFHHPQmvAHiIMY51ljcVxJr51rpd4B15qJsDPRNapsAhhAiE6XznpYRJ283pZ2JUH9BV9nJUPsRZ+GE+2QPJaW48Ft41nLa3+cikTvyaVLrai2a2ZM1p+ZEdaeMgGYIeXJojNJSvzcYlxOKlFluGhQMuRFMVBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=HpaOvqYI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Qgv7Ps2B; arc=none smtp.client-ip=64.147.123.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailfout.west.internal (Postfix) with ESMTP id D96DA1C00074;
-	Mon, 29 Apr 2024 04:47:14 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Mon, 29 Apr 2024 04:47:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1714380434; x=1714466834; bh=AA0D+kue/3
-	xTdnBt87jovrwup14dV6tF3IPu6PUcZ7I=; b=HpaOvqYIUi0nW3i02BK1nDOhLD
-	KGkF7skAJ/FeaqHuPiLYlOrKmOmvHRzCuCLZ6ot4EuUXW4pEu+5hUaCnr9PwX1h5
-	cKrS78LAE6mUKsc2v4QR47Z78RLZz+b6nsfl9CeeKe3kQrhQzRApTeUfMN4XfsuS
-	8IHAmCFF6v2kgtZhki2ocLcIj7PCs33pSDlxljMHzIEnSjuBJVheE1QJUECxmPpx
-	abfkSsMZFrAdh0FKgS3LHGg+BUpOUPylrI4CoyuHrUr/dV3arA5OO398eU9L9Wr+
-	3KPf3N2LDaw/MIZXc/6uGGHqNq0epqop8PZOiriWoxIDzxSuruDe2u7IG26g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1714380434; x=1714466834; bh=AA0D+kue/3xTdnBt87jovrwup14d
-	V6tF3IPu6PUcZ7I=; b=Qgv7Ps2BnurNZBL5fC0zArMg36YjWOLZ8VvPW1psFJzL
-	GgIY+taa4ll9NMTZ3aWvrZTngdZS3uvN80caPb7+j05+WPNeyqDGwMRKl2sSRFqB
-	2HdGi4amL+CUxhq5xVT6Ejx+Y64/2VbC03ngfsJCF324/jbKNd1I90HqlzASkqRH
-	s2fdyUgFkX7CcWd7tePXYT9vmDUpxav3+jgmDRDTiIV8W70jz1ErgTl4tM7tDU5f
-	DCKfvj69J+tjhdsXjCid8KS/4M09cczsbM74ymioxLJHbI1x2oer0A9qt72/MOhN
-	JUC7wByCUq+NPEZC+MAg6Ckmbf+T2Rkqwiwdtf1HIQ==
-X-ME-Sender: <xms:kl4vZjbvtmWRdS4fCXHPTcxdUYnmnsajQ68T7pr94XfDvUAkwZnteA>
-    <xme:kl4vZiZ6jEudER2yA4xFJhc788wUqswa2n7vk44UNLrwxUJ227oV4C_ABMq5whqJa
-    iAvIxEg0PzaNxx70pA>
-X-ME-Received: <xmr:kl4vZl9-9uZQJSOob-cXYWbhUYEjEtN_Hd1SwTfN3tvSGqbIkd6vX5veowXtrhoqU96NxrMLV2c2R_de04xQpNUTGb_Lu6YqkMrBakM2-Zgenw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdduuddgtdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertd
-    ertddtnecuhfhrohhmpefvrghkrghshhhiucfurghkrghmohhtohcuoehoqdhtrghkrghs
-    hhhisehsrghkrghmohgttghhihdrjhhpqeenucggtffrrghtthgvrhhnpeffvdeuleffve
-    ekudfhteejudffgefhtedtgfeutdfgvdfgueefudehveehveekkeenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehoqdhtrghkrghshhhisehsrg
-    hkrghmohgttghhihdrjhhp
-X-ME-Proxy: <xmx:kl4vZpqU9PIahi4zMf7SJOlJAs2N8w2iscuaLKOZ2vT-WMExM6aPsQ>
-    <xmx:kl4vZupl4fXxs57KjgGL6fFZA_sVuPnWkG0q4pGXM5Yzb7omK5_NeA>
-    <xmx:kl4vZvQ8J5P7j_M1hFDQCRf_L3TP7ttQXU5DUdsdNq6GSwqOozrFCw>
-    <xmx:kl4vZmq9BSR7h3tgJB96U8ce6jkJWDUyQIe0pxHLy4S2l7ukbdx_4A>
-    <xmx:kl4vZl2G93346UGyZFlLKgNBgcgcSt-dmngdyKfc2u_fq0_Ozb0-YKSO>
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 29 Apr 2024 04:47:13 -0400 (EDT)
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: linux1394-devel@lists.sourceforge.net
-Cc: stable@vger.kernel.org
-Subject: [PATCH] firewire: ohci: fulfill timestamp for some local asynchronous transaction
-Date: Mon, 29 Apr 2024 17:47:08 +0900
-Message-ID: <20240429084709.707473-1-o-takashi@sakamocchi.jp>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1714381473; c=relaxed/simple;
+	bh=H9ZBiwkmJv4MZD4a/1cw2hcXmMAF0/Sg7nByLKv3/h8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XhP8+1ftttm48kyKbGLACY+yajZ24jE2FJTppVTvArl0DmcZtMkqxW4ASFNsmZQZ0wyxC/GUfMCHcyH4wG45PHHx48zFo+yq7l26EuT9nMGDZ/XomrZm3tnu2+HrbIwP+WuXFr1RbqoUlvu34OzvpFSbbuHJnE+HnKKCfhuEpzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de; spf=pass smtp.mailfrom=0pointer.de; arc=none smtp.client-ip=85.214.157.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0pointer.de
+Received: from gardel-login.0pointer.net (gardel-mail [IPv6:2a01:238:43ed:c300:10c3:bcf3:3266:da74])
+	by gardel.0pointer.net (Postfix) with ESMTP id ECCD1E80F27;
+	Mon, 29 Apr 2024 11:04:21 +0200 (CEST)
+Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
+	id 852A81600A1; Mon, 29 Apr 2024 11:04:21 +0200 (CEST)
+Date: Mon, 29 Apr 2024 11:04:21 +0200
+From: Lennart Poettering <mzxreary@0pointer.de>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Alexander Graf <graf@amazon.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Babis Chalios <bchalios@amazon.es>, Theodore Ts'o <tytso@mit.edu>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"rostedt@goodmis.org" <rostedt@goodmis.org>,
+	Christian Brauner <brauner@kernel.org>, linux@leemhuis.info,
+	regressions@lists.linux.dev
+Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when
+ VMGENID updates"
+Message-ID: <Zi9ilaX3254KL3Pp@gardel-login>
+References: <20240418114814.24601-1-Jason@zx2c4.com>
+ <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
+ <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
+ <ZieoRxn-On0gD-H2@gardel-login>
+ <b819717c-74ea-4556-8577-ccd90e9199e9@amazon.com>
+ <Ziujox51oPzZmwzA@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Ziujox51oPzZmwzA@zx2c4.com>
 
-1394 OHCI driver generates packet data for the response subaction to the
-request subaction to some local registers. In the case, the driver should
-assign timestamp to them by itself.
+On Fr, 26.04.24 14:52, Jason A. Donenfeld (Jason@zx2c4.com) wrote:
 
-This commit fulfills the timestamp for the subaction.
+> I don't think adding UAPI to an individual device driver like this
 
-Cc: stable@vger.kernel.org
-Fixes: dcadfd7f7c74 ("firewire: core: use union for callback of transaction completion")
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
----
- drivers/firewire/ohci.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Does vmgenid really qualify as "an individual device driver"? It's a
+pretty generic software interface, implemented by various different
+VMMs these days. It is also the only interface I am aware of that
+actually exists and would provide the concept right now?
 
-diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
-index 38d19410a2be..b9ae0340b8a7 100644
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -1556,6 +1556,8 @@ static int handle_at_packet(struct context *context,
- #define HEADER_GET_DATA_LENGTH(q)	(((q) >> 16) & 0xffff)
- #define HEADER_GET_EXTENDED_TCODE(q)	(((q) >> 0) & 0xffff)
- 
-+static u32 get_cycle_time(struct fw_ohci *ohci);
-+
- static void handle_local_rom(struct fw_ohci *ohci,
- 			     struct fw_packet *packet, u32 csr)
- {
-@@ -1580,6 +1582,8 @@ static void handle_local_rom(struct fw_ohci *ohci,
- 				 (void *) ohci->config_rom + i, length);
- 	}
- 
-+	// Timestamping on behalf of the hardware.
-+	response.timestamp = cycle_time_to_ohci_tstamp(get_cycle_time(ohci));
- 	fw_core_handle_response(&ohci->card, &response);
- }
- 
-@@ -1628,6 +1632,8 @@ static void handle_local_lock(struct fw_ohci *ohci,
- 	fw_fill_response(&response, packet->header, RCODE_BUSY, NULL, 0);
- 
-  out:
-+	// Timestamping on behalf of the hardware.
-+	response.timestamp = cycle_time_to_ohci_tstamp(get_cycle_time(ohci));
- 	fw_core_handle_response(&ohci->card, &response);
- }
- 
-@@ -1670,8 +1676,6 @@ static void handle_local_request(struct context *ctx, struct fw_packet *packet)
- 	}
- }
- 
--static u32 get_cycle_time(struct fw_ohci *ohci);
--
- static void at_context_transmit(struct context *ctx, struct fw_packet *packet)
- {
- 	unsigned long flags;
--- 
-2.43.0
+if this was really hyperv specific, then I'd agree it's just an
+"individual device driver". But it's widely implemented, for example a
+trivial command line switch in qemu.
 
+Hence, for something this generic, and widely deployed with multiple
+backend implementations I think we can say it's kinda more of a
+subsystem and less of an individual driver, no?
+
+> is a good approach especially considering that the virtio changes we
+> discussed some time ago will likely augment this and create another
+> means of a similar notification. And given that this intersects with
+> other userspace-oriented work I hope to get back to pretty soon, I
+> think introducing some adhoc mechanism like this adds clutter and
+> isn't the ideal way forward.
+
+If one day a virtio-based equivalent shows up, then I'd be entirely
+fine with supporting this in userspace directly too , because virtio
+too is a generic thing typically implemented by multiple VMM
+backends. From my userspace perspective I see little benefit in the
+kernel abstracting over vmgenid and virtio-genid (if that ever
+materializes), as a systemd person I am not asking for this kind of
+abstraction (in case anyone wonders). A generic ACPI device such as
+vmgenid is entirely enough of "generic" for me.
+
+The way we would process the event in userspace in systemd (from a
+udev rule) is so generic that it's trivial to match against two
+generic interfaces, instead of just one.
+
+And even if there's value in a generic abstraction provided by the
+kernel over both vmgenid and a future virtio-based thing: the kernel
+patch in question was a *single* line, and our hookup in userspace
+could easily be moved over when the day comes, because it's really not
+a rocket science level interface. It's a single parameterless event,
+how much easier could things get?
+
+I understand that how this all happened wasn't to everyones wishes,
+but do we really have to make all of this so complex if it could just
+be so simple? Why delay this further, why go back again given the
+event, the interface itself is such an utter triviality? Do we really
+make such a threatre around a single line change, a single additional
+uevent, just because of politics?
+
+Lennart
+
+--
+Lennart Poettering, Berlin
 
