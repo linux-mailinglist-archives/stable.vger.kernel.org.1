@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05BD8B56CF
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:35:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F09118B56D2
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:35:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E89501C2179A
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:35:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 660401F25873
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68BC146452;
-	Mon, 29 Apr 2024 11:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A755A482C7;
+	Mon, 29 Apr 2024 11:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgP40Vub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzh2bU70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0B34501B
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6829D46B9A
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390456; cv=none; b=bC0AOFxrlHQdggaMIX4jhXIReJyWhYbY6m0ksjmDAqksXjybn1FcB+hgIqU9QEnCdqsYmCP/S6aQ+2NLZW3YsFUnSzN1e9TTp9It7Z/N3GJDmKGnZrkKpeyZHPhpC8Bco0mivb8q2Tuhrl4s0KRkM61T7Eo8lbrAsPhdChNVwQ0=
+	t=1714390467; cv=none; b=njZ82ccwvLwXuTCROt3LB7RnCiggqjgsSodO6d4hyv0vxTEZnhgbTFLkxgywVM0z+7XfT6mfeSdb6hzynKiO8J7Ac7U9H8p1T6A7Mx7idtn/CIIMxUw8SJlHGCgbpCfKrO++kJlKbn6ivZ6rqgNNhddFzmiyFvs1But0Eh78F3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714390456; c=relaxed/simple;
-	bh=4hEPd8P5kRnbYbFJ5Oh1Djn8VTLmb49g1RgFccS6h9Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FQLuezX4sD6DKLjRopk34+vA+6cIHhQTwFezbDYwK165riFduhdBOlM5oaHkZUNTg2uo5Mm6lISWpJ41jwHQX0PbiF6qRqcE3wZbIOHVZahvy7EHR31bVAEjb/RsxUbWD6GwltFLUD00f4T+6bRNQiVC7Dw7lXm/UoHcpC5RU9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgP40Vub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683B3C113CD;
-	Mon, 29 Apr 2024 11:34:15 +0000 (UTC)
+	s=arc-20240116; t=1714390467; c=relaxed/simple;
+	bh=s1vS6BVXmjN0RhtCYATLp0a0lPVFlvMkbrQKzsKpNOo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nXOQnRVVmFR1o8RrZ3ttbCI44INe0XRSvai3ZPX4PfuhpTqBSAOlCTcQEbcybq6L4NjPQs8YmS9S4qzlmCOApK1lHJtpjtrjql4JN+Klcq4w0kzqJgdqal3A3dB0XRIZuVP/pLzhpGtVyDym4WULgnOiGuY6OiP5bnPspzCh+Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzh2bU70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19FCC113CD;
+	Mon, 29 Apr 2024 11:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714390455;
-	bh=4hEPd8P5kRnbYbFJ5Oh1Djn8VTLmb49g1RgFccS6h9Q=;
+	s=korg; t=1714390466;
+	bh=s1vS6BVXmjN0RhtCYATLp0a0lPVFlvMkbrQKzsKpNOo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NgP40Vub7Q8tG1u7RC69UNT0+CY6RnGH454bhxaASJrv9eSCkKryiwO6iInUjl/sj
-	 nxigTkvsYMyXTz+5lsMZ5edqpN29/bPbUKXxRsFrezafFzJ6nvy1EWMaJIsOELj6pK
-	 c4i3vmmXtX+XS5BcLwuqgQBRQLOUrnKJenb2pFfg=
-Subject: FAILED: patch "[PATCH] mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when" failed to apply to 6.1-stable tree
+	b=wzh2bU70Eepp5Q2b/TnrMQXQx5ebRH1U4RiktNfj4CuPL4u0Fm/BxSUogWfk3dlBD
+	 LkMHgLsnW2mK/+rq3Fq9sLfTmgoxpqPVzglzE24VmoTF5fMZ2uJZhfBobUIhlK0NYE
+	 q0WcslGg800q8Xc05pVIqnax7E7MQWc4bx3KE2VY=
+Subject: FAILED: patch "[PATCH] mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when" failed to apply to 6.6-stable tree
 To: linmiaohe@huawei.com,akpm@linux-foundation.org,osalvador@suse.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:34:13 +0200
-Message-ID: <2024042912-visibly-carpool-70bd@gregkh>
+Date: Mon, 29 Apr 2024 13:34:15 +0200
+Message-ID: <2024042914-rectified-grab-1bbb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,37 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 52ccdde16b6540abe43b6f8d8e1e1ec90b0983af
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042912-visibly-carpool-70bd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042914-rectified-grab-1bbb@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 52ccdde16b65 ("mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when dissolve_free_hugetlb_folio()")
-32c877191e02 ("hugetlb: do not clear hugetlb dtor until allocating vmemmap")
-d6ef19e25df2 ("mm/hugetlb: convert update_and_free_page() to folios")
-cfd5082b5147 ("mm/hugetlb: convert remove_hugetlb_page() to folios")
-1a7cdab59b22 ("mm/hugetlb: convert dissolve_free_huge_page() to folios")
-911565b82853 ("mm/hugetlb: convert destroy_compound_gigantic_page() to folios")
-cb67f4282bf9 ("mm,thp,rmap: simplify compound page mapcount handling")
-dad6a5eb5556 ("mm,hugetlb: use folio fields in second tail page")
-0356c4b96f68 ("mm/hugetlb: convert free_huge_page to folios")
-de656ed376c4 ("mm/hugetlb_cgroup: convert set_hugetlb_cgroup*() to folios")
-f074732d599e ("mm/hugetlb_cgroup: convert hugetlb_cgroup_from_page() to folios")
-a098c977722c ("mm/hugetlb_cgroup: convert __set_hugetlb_cgroup() to folios")
-4781593d5dba ("mm/hugetlb: unify clearing of RestoreReserve for private pages")
-149562f75094 ("mm/hugetlb: add hugetlb_folio_subpool() helpers")
-d340625f4849 ("mm: add private field of first tail to struct page and struct folio")
 
 thanks,
 
