@@ -1,290 +1,96 @@
-Return-Path: <stable+bounces-41761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300018B610D
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 20:23:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317DD8B6112
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 20:28:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D8B1F222D7
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 18:23:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB109282553
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 18:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697DD1292D7;
-	Mon, 29 Apr 2024 18:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vm6rrWQd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C75128826;
+	Mon, 29 Apr 2024 18:28:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705061292D4
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 18:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8474183CB1;
+	Mon, 29 Apr 2024 18:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714415025; cv=none; b=YAQu4kDz10zjKlqnQNn2JLGMv/hfWg8NjdXN6bQFvV7fM+wnxPlwCceBMIL2cF+Wxbx2mTi/ispJ6+MWby3QuJoVB6OD03rd1VZXJe6wxzyXyKmGRurW6iYwIYfBcfn9teQpbBkIy7c6aYnkPllUe3O1ggUJfyNfUIMoP/bXF+w=
+	t=1714415309; cv=none; b=eKNy6eR+ufwFdK11oyjZqXUGMkMymXXNbXRUubznUVAdx5Afi+0GIRdcHDp7/Huere13JvuwRGNWWj0IEY4BH2g4aRImaVicNH6N/qLO18SiSzO9UoWjL/DA0W0Z7U+0hLqn7HCt+Nl0fdd2z4JCx6lcUuyibABn0NWoXFG/FJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714415025; c=relaxed/simple;
-	bh=2N8oyanNrkyKqFDzJd7H/3d3P1eVswNz12mYCtWrSuA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DEkT4cCipWjZ8OHzJ+jkErXDtDFJb+GGtO62JKdZFt9ZmhvVP3IH1K33LLXv3heCHq2K7Vm2z//GONfMr9V9G8wy/F4J954TlT52mHUXLhMQbyO3qVecP0SFSdhVoyZ10FrLlrWY2vvcuZPG5nLuVMrMdQWgxnGoW1ha7lheQvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vm6rrWQd; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714415022;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/xJ39egjPXPVzQcGg1vJ7sp0qcrk9q2He5yMjws7WO0=;
-	b=Vm6rrWQdvFebZwl8nz1G5g9fCTdqn3gWzMy+tRB+XGAC+4GUUtAJLeMlHA63EFWdLb4wXT
-	INJ6mkfBiu+cnBy4LXdAylpAk+bxwTFJl0ZvtCbJYvlcx5kOvqIpxz4cAK9ZLKAbwuRPqO
-	ALjtaxr8eT3QgXgQn3bRLu7d+DpIDsw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-MrxGKN92McqdMFBZJYLD9w-1; Mon, 29 Apr 2024 14:23:38 -0400
-X-MC-Unique: MrxGKN92McqdMFBZJYLD9w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 60D518059E0;
-	Mon, 29 Apr 2024 18:23:37 +0000 (UTC)
-Received: from chopper.lyude.net (unknown [10.22.9.159])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 5F4F31121306;
-	Mon, 29 Apr 2024 18:23:36 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: nouveau@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org,
-	Karol Herbst <kherbst@redhat.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Dave Airlie <airlied@redhat.com>,
-	Ben Skeggs <bskeggs@redhat.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2 2/2] drm/nouveau/gsp: Use the sg allocator for level 2 of radix3
-Date: Mon, 29 Apr 2024 14:23:09 -0400
-Message-ID: <20240429182318.189668-2-lyude@redhat.com>
-In-Reply-To: <20240429182318.189668-1-lyude@redhat.com>
-References: <20240426154138.64643-1-lyude@redhat.com>
- <20240429182318.189668-1-lyude@redhat.com>
+	s=arc-20240116; t=1714415309; c=relaxed/simple;
+	bh=8gKah3ghORwSGGK/lLqzKUstmtlsU0Ko8BP6JJhYCX8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DCqTqz+uwBwqPcuohxWEMRerG6tHMv6F5DAs0TflESFo6OJfZLgatlxIF6t/GbXhpC/RTa9EGYAh4JpqvwGhPOxLh7/B2Prh/25lPyN7w957HjEZ1r8jkXGQLP6YiIktgUTB40Uzt+iddT/UvLa7wwcC/8/HGFZoOTQGJhfUQ2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=m4x.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=m4x.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-db4364ecd6aso5186703276.2;
+        Mon, 29 Apr 2024 11:28:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714415306; x=1715020106;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8gKah3ghORwSGGK/lLqzKUstmtlsU0Ko8BP6JJhYCX8=;
+        b=VY59Nu7xrAPGA4Yxd2WNs6nop5Xe2xJeym2KC9PHmWyhKpno+4Dn2NtreInMfo/dtk
+         H8fVIRK+TvzSu4tYIB+g5WsBrKLw8ueL3GW1cLNiZKCqLHs98hJSED8lNz18BjTn9wsp
+         r8xU25iQOYpR1N65RLRnQ2qMKPtcQEN09MdG+VIik1Fd3MlE1Xc4hzkIH/t/WXieDO4V
+         wdK8MxBFALKlESxwi6pUCApK/m0pwJRowIo+ZzOgO9WMWn/RPe+5gnXnU3tPVF9/QQN8
+         UxIfuPfTX57hMxVHzW2Wl/TMPjkzesZQ6gwaCKE63x+AOw3ud5atllqxIIRFJyVtCoEf
+         iecw==
+X-Forwarded-Encrypted: i=1; AJvYcCV6WTZ+oVogACmpuKF9jEnvx6RPYxfo1KP0h/naS9oM9VYISyLWBCu5blYmkBJBWgPjxfmQZOubXkXTIbzDmQrqcg8HzotZ/eLP4RBGx+1b
+X-Gm-Message-State: AOJu0YycbTvB5QXSuUn9U218qUtM2cHHt27QlRMPkeY8KxHBTslpmoLE
+	3R7vdlWa0okZkEs72F7dcQurupMFS8/Jdx9AIUABtIAHSSRZSZ2MOWE7iVxOPtBO8ZlmHTBULGX
+	tZ9z8IvkYCVP8e42+AZlo7yKluAk=
+X-Google-Smtp-Source: AGHT+IHOyBFS0F26owaRkYzjeQ6P7JZp13vcQ6OpfgJfXqxeemEwewCnezmmd/d2OHC+eX+zxX0/6o4drbJoo9aPPc8=
+X-Received: by 2002:a05:6902:1b8d:b0:de5:d1cd:b580 with SMTP id
+ ei13-20020a0569021b8d00b00de5d1cdb580mr443367ybb.36.1714415306415; Mon, 29
+ Apr 2024 11:28:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+References: <CADRbXaDqx6S+7tzdDPPEpRu9eDLrHQkqoWTTGfKJSRxY=hT5MQ@mail.gmail.com>
+ <1de62bb7-93bb-478e-8af4-ba9abf5ae330@leemhuis.info> <4bf3497d-0ede-4e05-a432-e88e9cbc10b4@leemhuis.info>
+In-Reply-To: <4bf3497d-0ede-4e05-a432-e88e9cbc10b4@leemhuis.info>
+From: =?UTF-8?Q?Jeremy_Lain=C3=A9?= <jeremy.laine@m4x.org>
+Date: Mon, 29 Apr 2024 20:28:15 +0200
+Message-ID: <CADRbXaBkkGmqnibGvcAF2YH5CjLRJ2bnnix1xKozKdw_Hv3qNg@mail.gmail.com>
+Subject: Re: Bluetooth kernel BUG with Intel AX211 (regression in 6.1.83)
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+	Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	linux-bluetooth@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>, 
+	Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently we allocate all 3 levels of radix3 page tables using
-nvkm_gsp_mem_ctor(), which uses dma_alloc_coherent() for allocating all of
-the relevant memory. This can end up failing in scenarios where the system
-has very high memory fragmentation, and we can't find enough contiguous
-memory to allocate level 2 of the page table.
+Hi Thorsten,
 
-Currently, this can result in runtime PM issues on systems where memory
-fragmentation is high - as we'll fail to allocate the page table for our
-suspend/resume buffer:
+On Mon, Apr 29, 2024 at 12:24=E2=80=AFPM Linux regression tracking (Thorste=
+n
+Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> So we either need to find the cause (likely a missing backport) through
+> some other way or maybe revert the culprit in the 6.1.y series. Jeremy,
+> did you try if the latter is an option? If not: could you do that
+> please? And could you also try cherry-pikcing c7eaf80bfb0c8c
+> ("Bluetooth: Fix hci_link_tx_to RCU lock usage") [v6.6-rc5] into 6.1.y
+> helps? It's just a wild guess, but it contains a Fixes: tag for the
+> commit in question.
 
-  kworker/10:2: page allocation failure: order:7, mode:0xcc0(GFP_KERNEL),
-  nodemask=(null),cpuset=/,mems_allowed=0
-  CPU: 10 PID: 479809 Comm: kworker/10:2 Not tainted
-  6.8.6-201.ChopperV6.fc39.x86_64 #1
-  Hardware name: SLIMBOOK Executive/Executive, BIOS N.1.10GRU06 02/02/2024
-  Workqueue: pm pm_runtime_work
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x64/0x80
-   warn_alloc+0x165/0x1e0
-   ? __alloc_pages_direct_compact+0xb3/0x2b0
-   __alloc_pages_slowpath.constprop.0+0xd7d/0xde0
-   __alloc_pages+0x32d/0x350
-   __dma_direct_alloc_pages.isra.0+0x16a/0x2b0
-   dma_direct_alloc+0x70/0x270
-   nvkm_gsp_radix3_sg+0x5e/0x130 [nouveau]
-   r535_gsp_fini+0x1d4/0x350 [nouveau]
-   nvkm_subdev_fini+0x67/0x150 [nouveau]
-   nvkm_device_fini+0x95/0x1e0 [nouveau]
-   nvkm_udevice_fini+0x53/0x70 [nouveau]
-   nvkm_object_fini+0xb9/0x240 [nouveau]
-   nvkm_object_fini+0x75/0x240 [nouveau]
-   nouveau_do_suspend+0xf5/0x280 [nouveau]
-   nouveau_pmops_runtime_suspend+0x3e/0xb0 [nouveau]
-   pci_pm_runtime_suspend+0x67/0x1e0
-   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
-   __rpm_callback+0x41/0x170
-   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
-   rpm_callback+0x5d/0x70
-   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
-   rpm_suspend+0x120/0x6a0
-   pm_runtime_work+0x98/0xb0
-   process_one_work+0x171/0x340
-   worker_thread+0x27b/0x3a0
-   ? __pfx_worker_thread+0x10/0x10
-   kthread+0xe5/0x120
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x31/0x50
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1b/0x30
+I gave it a try, and sadly I'm still hitting the exact same bug when I
+cherry-pick the patch you mentioned on top of 6.1.y (at tag v6.1.87).
 
-Luckily, we don't actually need to allocate coherent memory for the page
-table thanks to being able to pass the GPU a radix3 page table for
-suspend/resume data. So, let's rewrite nvkm_gsp_radix3_sg() to use the sg
-allocator for level 2. We continue using coherent allocations for lvl0 and
-1, since they only take a single page.
+Thanks for trying, is there any other patch that looks like a good candidat=
+e?
 
-V2:
-* Don't forget to actually jump to the next scatterlist when we reach the
-  end of the scatterlist we're currently on when writing out the page table
-  for level 2
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Cc: stable@vger.kernel.org
----
- .../gpu/drm/nouveau/include/nvkm/subdev/gsp.h |  4 +-
- .../gpu/drm/nouveau/nvkm/subdev/gsp/r535.c    | 77 ++++++++++++-------
- 2 files changed, 54 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-index 6f5d376d8fcc1..a11d16a16c3b2 100644
---- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-+++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-@@ -15,7 +15,9 @@ struct nvkm_gsp_mem {
- };
- 
- struct nvkm_gsp_radix3 {
--	struct nvkm_gsp_mem mem[3];
-+	struct nvkm_gsp_mem lvl0;
-+	struct nvkm_gsp_mem lvl1;
-+	struct sg_table lvl2;
- };
- 
- int nvkm_gsp_sg(struct nvkm_device *, u64 size, struct sg_table *);
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-index 9858c1438aa7f..fd4e80ba6adfc 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-@@ -1624,7 +1624,7 @@ r535_gsp_wpr_meta_init(struct nvkm_gsp *gsp)
- 	meta->magic = GSP_FW_WPR_META_MAGIC;
- 	meta->revision = GSP_FW_WPR_META_REVISION;
- 
--	meta->sysmemAddrOfRadix3Elf = gsp->radix3.mem[0].addr;
-+	meta->sysmemAddrOfRadix3Elf = gsp->radix3.lvl0.addr;
- 	meta->sizeOfRadix3Elf = gsp->fb.wpr2.elf.size;
- 
- 	meta->sysmemAddrOfBootloader = gsp->boot.fw.addr;
-@@ -1919,8 +1919,9 @@ nvkm_gsp_sg(struct nvkm_device *device, u64 size, struct sg_table *sgt)
- static void
- nvkm_gsp_radix3_dtor(struct nvkm_gsp *gsp, struct nvkm_gsp_radix3 *rx3)
- {
--	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--)
--		nvkm_gsp_mem_dtor(gsp, &rx3->mem[i]);
-+	nvkm_gsp_sg_free(gsp->subdev.device, &rx3->lvl2);
-+	nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
-+	nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
- }
- 
- /**
-@@ -1960,36 +1961,60 @@ static int
- nvkm_gsp_radix3_sg(struct nvkm_gsp *gsp, struct sg_table *sgt, u64 size,
- 		   struct nvkm_gsp_radix3 *rx3)
- {
--	u64 addr;
-+	struct sg_dma_page_iter sg_dma_iter;
-+	struct scatterlist *sg;
-+	size_t bufsize;
-+	u64 *pte;
-+	int ret, i, page_idx = 0;
- 
--	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--) {
--		u64 *ptes;
--		size_t bufsize;
--		int ret, idx;
-+	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl0);
-+	if (ret)
-+		return ret;
- 
--		bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
--		ret = nvkm_gsp_mem_ctor(gsp, bufsize, &rx3->mem[i]);
--		if (ret)
--			return ret;
-+	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl1);
-+	if (ret)
-+		goto lvl1_fail;
- 
--		ptes = rx3->mem[i].data;
--		if (i == 2) {
--			struct scatterlist *sgl;
-+	// Allocate level 2
-+	bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
-+	ret = nvkm_gsp_sg(gsp->subdev.device, bufsize, &rx3->lvl2);
-+	if (ret)
-+		goto lvl2_fail;
- 
--			for_each_sgtable_dma_sg(sgt, sgl, idx) {
--				for (int j = 0; j < sg_dma_len(sgl) / GSP_PAGE_SIZE; j++)
--					*ptes++ = sg_dma_address(sgl) + (GSP_PAGE_SIZE * j);
--			}
--		} else {
--			for (int j = 0; j < size / GSP_PAGE_SIZE; j++)
--				*ptes++ = addr + GSP_PAGE_SIZE * j;
-+	// Write the bus address of level 1 to level 0
-+	pte = rx3->lvl0.data;
-+	*pte = rx3->lvl1.addr;
-+
-+	// Write the bus address of each page in level 2 to level 1
-+	pte = rx3->lvl1.data;
-+	for_each_sgtable_dma_page(&rx3->lvl2, &sg_dma_iter, 0)
-+		*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
-+
-+	// Finally, write the bus address of each page in sgt to level 2
-+	for_each_sgtable_sg(&rx3->lvl2, sg, i) {
-+		void *sgl_end;
-+
-+		pte = sg_virt(sg);
-+		sgl_end = (void*)pte + sg->length;
-+
-+		for_each_sgtable_dma_page(sgt, &sg_dma_iter, page_idx) {
-+			*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
-+			page_idx++;
-+
-+			// Go to the next scatterlist for level 2 if we've reached the end
-+			if ((void*)pte >= sgl_end)
-+				break;
- 		}
-+	}
- 
--		size = rx3->mem[i].size;
--		addr = rx3->mem[i].addr;
-+	if (ret) {
-+lvl2_fail:
-+		nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
-+lvl1_fail:
-+		nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- int
-@@ -2021,7 +2046,7 @@ r535_gsp_fini(struct nvkm_gsp *gsp, bool suspend)
- 		sr = gsp->sr.meta.data;
- 		sr->magic = GSP_FW_SR_META_MAGIC;
- 		sr->revision = GSP_FW_SR_META_REVISION;
--		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.mem[0].addr;
-+		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.lvl0.addr;
- 		sr->sizeOfSuspendResumeData = len;
- 
- 		mbox0 = lower_32_bits(gsp->sr.meta.addr);
--- 
-2.44.0
-
+Jeremy
 
