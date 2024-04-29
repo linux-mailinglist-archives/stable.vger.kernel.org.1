@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-41620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790EA8B55CC
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:50:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068E28B55CE
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 12:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3346E286117
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:50:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 333051C23128
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 10:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC653D0B3;
-	Mon, 29 Apr 2024 10:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A853A1CB;
+	Mon, 29 Apr 2024 10:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaV+cRX8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmWLiqFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20AE3CF74
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 10:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4C4A937;
+	Mon, 29 Apr 2024 10:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714387804; cv=none; b=r0pPZMOMofBG7cS92w+DCaQR6jGhmWjzCA5fsqPedGcMm3FvwwbADP02PSiQC9SGYH1Ga+4IxeScxlYcg1vGQvwrATASGvKu789DwQ0yBlFJRqLafmoUVxsqYZkpuBYjLg/lYzFqFyxs5ryhDyf6j5+CKCwX4nztPRqcE69vwiI=
+	t=1714387848; cv=none; b=h42ZQAY4QDfJip/JTenvy5pdyDEREvo36VV9yk24afhzMR2A5lLAKtwpivqlgz3ZOi0weRW06QxSg9VIHdZxvL4SmSZvkpBU2V9sRBpTj7tbF3jXkAJ5qi2Zibayc1GjPdiUi6Dhvl4wMKVut848IABOqBhox4UYLrSy65g2fKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714387804; c=relaxed/simple;
-	bh=Nl9gMivwT24dSkcBiPoGQClajMHtX4eAjYkm4cRIQFI=;
+	s=arc-20240116; t=1714387848; c=relaxed/simple;
+	bh=DsoKwItt0T3i6xV7miD8GkO5Dax6KkM58wXFBhQngqM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jadPypEyQ+s+Nr7yfmLlpBIFkGTyqB7STr7lWTTHy/asR2qNukSUFCwpi8uct+Au5aWDYNAzyjZsfy9GUqwX5W4R2JEaWitlsd4qF3sU3n30gDrukZZys8YA6iQY171Q9C3kdYnoLJaGyrUoRn+YyoxOk+DfUfUKp4AH7vHFJHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaV+cRX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C75C4AF17;
-	Mon, 29 Apr 2024 10:50:02 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=EN5LYPSoRG9AfyTzBlJ+fnWx+U7XwKzZ5bCD22VfzYO42DJL36vs36VTQeIW0rA5OsQ+2JR3SmdNuMMCzSFXmzXbClafPsJ5x0tLqUqOZrgTAsUEGAgU7MFqbc7iWAmvnmatCSCwJDivG7hs3b43T9DxSynn+S1k8tVXjWSecLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmWLiqFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB62C4AF1B;
+	Mon, 29 Apr 2024 10:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714387803;
-	bh=Nl9gMivwT24dSkcBiPoGQClajMHtX4eAjYkm4cRIQFI=;
+	s=korg; t=1714387848;
+	bh=DsoKwItt0T3i6xV7miD8GkO5Dax6KkM58wXFBhQngqM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PaV+cRX8fifDk3gsYuK0k2fzlG0Ym+sfWdFBeQ6uvSEvos+iR2Lgq7j3x+OH5OW39
-	 dPyMBs42tcCi8nvC7u7cLoFA91I5F9tYTHZj8T2m4QGaIHr/u314QhtPH755QruGJ0
-	 wGnGxZjzPgmAhbWUhfgBXylG4T+TxUkN4HYLNivk=
-Date: Mon, 29 Apr 2024 12:49:59 +0200
+	b=WmWLiqFZBhcGzWXukEbDsqsobkDcBGLvQ3JlWNG9PQE7eIn6BX7kKSnHqL2dqffQJ
+	 qS0G58p9dNiWYu4RB6RETtc/xfmOhHCq+2sjTOWO7mclHZVFLd/VtAnyCZ1xsmzlvx
+	 mbi+4LOT9WwccnRb0Fjz7Qw3kHgfKkRshll4vh2g=
+Date: Mon, 29 Apr 2024 12:50:45 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
-	jan.setjeeilers@oracle.com
-Subject: Re: v5.15 backport request
-Message-ID: <2024042947-smith-shallow-1439@gregkh>
-References: <CAMj1kXEGNNZm9RrDxT6RzmE8WGFG-3kZePaZZNKJrT4fj3iveg@mail.gmail.com>
- <2024041134-strobe-childhood-cc74@gregkh>
- <2024041113-flyaway-headphone-df2b@gregkh>
- <CAMj1kXEagP6psCc=YcpV9Ye=cMYgu-O8npbzH4qaN1xxe=eQDA@mail.gmail.com>
- <Zifui1Z8p4R24wyL@char.us.oracle.com>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Paulo Alcantara <pc@manguebit.com>, regressions@lists.linux.dev,
+	Steve French <stfrench@microsoft.com>, sashal@kernel.org,
+	stable@vger.kernel.org, linux-cifs@vger.kernel.org
+Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
+ overflow frame end of buf" and invisible files under certain conditions and
+ at least with noserverino mount option
+Message-ID: <2024042912-unloader-slighting-c756@gregkh>
+References: <ZiBCsoc0yf_I8In8@eldamar.lan>
+ <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
+ <ZiCoYjr79HXxiTjr@eldamar.lan>
+ <29e0cbcab5be560608d1dfbfb0ccbc96@manguebit.com>
+ <ZiLQG4x0m1L70ugu@eldamar.lan>
+ <adfd2a680e289404140ef917cf0bd0ab@manguebit.com>
+ <Zigg4RWtRfQYW1RR@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,72 +63,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zifui1Z8p4R24wyL@char.us.oracle.com>
+In-Reply-To: <Zigg4RWtRfQYW1RR@eldamar.lan>
 
-On Tue, Apr 23, 2024 at 01:23:23PM -0400, Konrad Rzeszutek Wilk wrote:
-> On Thu, Apr 11, 2024 at 03:14:23PM +0200, Ard Biesheuvel wrote:
-> > On Thu, 11 Apr 2024 at 13:50, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Thu, Apr 11, 2024 at 12:30:30PM +0200, Greg KH wrote:
-> > > > On Thu, Apr 11, 2024 at 12:23:37PM +0200, Ard Biesheuvel wrote:
-> > > > > Please consider the commits below for backporting to v5.15. These
-> > > > > patches are prerequisites for the backport of the x86 EFI stub
-> > > > > refactor that is needed for distros to sign v5.15 images for secure
-> > > > > boot in a way that complies with new MS requirements for memory
+On Tue, Apr 23, 2024 at 10:58:09PM +0200, Salvatore Bonaccorso wrote:
+> Hi Paulo,
 > 
-> Secure Boot needn't be enabled.
-> > > > > protections while running in the EFI firmware.
-> 
-> And here is the background:
-> https://microsoft.github.io/mu/WhatAndWhy/enhancedmemoryprotection/
-> 
-> > > >
-> > > > What old distros still care about this for a kernel that was released in
-> > > > 2021?  I can almost understand this for 6.1.y and newer, but why for
-> > > > this one too?
-> > >
-> > > To be more specific, we have taken very large backports for some
-> > > subsystems recently for 5.15 in order to fix a lot of known security
-> > > issues with the current codebase, and to make the maintenance of that
-> > > kernel easier over time (i.e. keeping it in sync to again, fix security
-> > > issues.)
-> > >
-> > > But this feels like a "new feature" that is being imposed by an external
-> > > force, and is not actually "fixing" anything wrong with the current
-> > > codebase, other than it not supporting this type of architecture.  And
-> > > for that, wouldn't it just make more sense to use a newer kernel?
-> > >
+> On Mon, Apr 22, 2024 at 12:08:53PM -0300, Paulo Alcantara wrote:
+> > Salvatore Bonaccorso <carnil@debian.org> writes:
 > > 
-> > Jan (on cc) raised this: apparently, Oracle has v5.15 based long term
-> > supported distro releases, and these will not be installable on future
-> > x86 PC hardware with secure boot enabled unless the EFI stub changes
-> > are backported.
+> > > I'm still failing to provide you a recipe with a minimal as possible
+> > > setup, but with the instance I was able to reproduce the issue the
+> > > regression seems gone with cherry-picking 35235e19b393 ("cifs: Replace
+> > > remaining 1-element arrays") .
 > > 
-> > >From my pov, the situation is not that different from v6.1: the number
-> > of backports is not that much higher than the number that went/are
-> > going into v6.1, and most of the fallout of the v6.1 backport has been
-> > addressed by now.
-> > 
-> > For an operational pov, I need to defer to Jan: I have no idea what
-> > OEMs are planning to do wrt these new MS requirements, if they will
+> > It's OK, no problem.  Could you please provide the backport to stable
+> > team?
 > 
-> .. snip..
-> 
-> Hey Greg,
-> 
-> This is driven by the BlackLotus exploit and alike to fix boot-time
-> security lapses. From a risk perspective it is boot-time code so it is
-> very easy to figure out if it backports are busted.
-> 
-> In terms of OEMs, it is actually more of a cloud vendor wanting to roll
-> this soon-ish and that combined with our customers worshipping these
-> crusty old 5.15 kernels that puts us in this situation.
+> Sure, here it is. Greg or Sasha is it ok to pick that up for the 6.1.y
+> queues?
 
-I think that worship needs to stop when they desire massive new features
-like this, sorry.  Please have them move to the 6.1 kernel tree instead
-if they wish to care about this type of thing, or better yet, 6.6.
-
-thanks,
+Glad to, for some reason I thought this caused problems, but if it
+passes your testing, great!  I'll go queue it up now, thanks.
 
 greg k-h
 
