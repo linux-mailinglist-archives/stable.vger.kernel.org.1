@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2056F8B56E0
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:36:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E758B56E1
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAE0B2826C1
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:36:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28DF81F25FC6
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C5D52F87;
-	Mon, 29 Apr 2024 11:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A7F481A0;
+	Mon, 29 Apr 2024 11:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRWNGFId"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdZefiRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443AF52F82
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A1646452
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390544; cv=none; b=tumHjxtsgFh4jvuTcdNb9sjB0car8/5SgEGsn+YAsA3Ho6qO/Lj9DIFID5rrm7n4CFipIJvHCogZgWW393dHVvleTI00r73l0wwf57w04GDmHpKAqA3WNDgV9bqWumZpHWZuct5NWX62bJCwjp5zw6ak3RuTDb+kc35VW3l1dZE=
+	t=1714390553; cv=none; b=VP8o5vYih/ePGHgNb2exnP0oQvMp3pgb5KaYaSZAUVhUCEVPQboDugeVHJkZYsPYMnYtT+7yJzo0kuA9c9Q2z4q5PPlVA1F6I2MXYwMK4+xJh82Sqlsxq9gRTN03S0am6z8NmruybaEybAwHwXAIzxMJ6b7PIRLuIcwVlHHOWgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714390544; c=relaxed/simple;
-	bh=gyDBfrlDXx5+ov6Z9aLlc5ZoxnOS1VP/AwBW1zWdm6I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pBtms+KcHTPSFCp5L8teGfLb7I+iTp0W/RWEZlydRseRpOIfIjN421CPPjyx8Im92BTTDJMeKiBCTwdg3ykLEVcVf+VAfDtIlC3zaaIYW4Xvs3Tq5f2zlxowMrCRc9o+DR6nXRdnYxZ1nDjozx2OgV7ledxF3ZnmYPVBVGvZ8ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRWNGFId; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C85C113CD;
-	Mon, 29 Apr 2024 11:35:43 +0000 (UTC)
+	s=arc-20240116; t=1714390553; c=relaxed/simple;
+	bh=wY5b0sJbqFlkBrhbxeprSBrcnZK/LW+UN8UyjMye2Pg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WifbCNDFMGJ10eK3lXReynE801o0bMJryIgcxIA5FDiTGdCX6EcYZpj87H/Hvhp5XmsOKJypMv+WNH+YkpAKFsCGu2p9q7S3WtiqHbIg9Vfqsu3yVqQsupFOOZmONSF+vCbBx9umzISdRsBePXNt5wh5cN4xKyVW1NllTyJXn0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdZefiRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C0DC113CD;
+	Mon, 29 Apr 2024 11:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714390543;
-	bh=gyDBfrlDXx5+ov6Z9aLlc5ZoxnOS1VP/AwBW1zWdm6I=;
+	s=korg; t=1714390552;
+	bh=wY5b0sJbqFlkBrhbxeprSBrcnZK/LW+UN8UyjMye2Pg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HRWNGFIdoXrT2Z8cfpstW0WTiwYMltaupaNeVMaK+wxpjcLMX+ffDAWvAAcLycsPr
-	 Q7RXGpn90lk1AhWi/mXE6SzL3pR/8S/G6+5nliXcFYQ50zkdf9hzRcD6dFbkFJDztv
-	 sAF40xusyXQlhakbPAfeo/Io5UjYDzhHaaPolcxk=
-Subject: FAILED: patch "[PATCH] eeprom: at24: fix memory corruption race condition" failed to apply to 6.6-stable tree
+	b=QdZefiRYtE3PiTdZBPygHGV5OsEkh+oJ969okN68iWrryKB+w9AyQTzszntWK/pkT
+	 SFRjYKY/TFGu++jLOiEKSiNvhhKOVDgkKnzDMHgZhg3J2MaR4LoWGqceElZylrnu0c
+	 Y5nyF2vQcOOewEUH036Wb6SNBUAVhuhn5Klj2kB4=
+Subject: FAILED: patch "[PATCH] eeprom: at24: fix memory corruption race condition" failed to apply to 6.1-stable tree
 To: dtokazaki@google.com,bartosz.golaszewski@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2024 13:35:41 +0200
-Message-ID: <2024042940-resize-urgent-402d@gregkh>
+Message-ID: <2024042941-payphone-elf-fac2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x f42c97027fb75776e2e9358d16bf4a99aeb04cf2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042940-resize-urgent-402d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042941-payphone-elf-fac2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 f42c97027fb7 ("eeprom: at24: fix memory corruption race condition")
 caba40ec3531 ("eeprom: at24: Probe for DDR3 thermal sensor in the SPD case")
+a3c10035d12f ("eeprom: at24: Use dev_err_probe for nvmem register failure")
 
 thanks,
 
