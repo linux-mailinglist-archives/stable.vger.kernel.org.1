@@ -1,134 +1,125 @@
-Return-Path: <stable+bounces-41744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D5A8B5D4A
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:20:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A545C8B5D71
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 17:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 283DB1C217FE
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:20:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC172827FD
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 15:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146DA127E3D;
-	Mon, 29 Apr 2024 15:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EC782D7C;
+	Mon, 29 Apr 2024 15:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MtqDRFoz"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bBz5yI39"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC51128363;
-	Mon, 29 Apr 2024 15:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C6682C67
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 15:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714403513; cv=none; b=N59gb+T4ikhwaPoca8+LpkuVqgNeWuTNyLfvwFEyAVOPi4Nzy65Jsz1f/XwsMYjPd7kX0pscuX3abHllMiBN345PnY84kweTdiCVxhru9sdT4sRa5omQ/J3SiYkRPQiZ63A4eOm+EtbXMhArqXBHOCUOuw46ajmRsJhdHoJqJr8=
+	t=1714404021; cv=none; b=ZiQUjX6KpSkB/eISw+Ojhp71TRkC9TLW5sX1EDoxzDmoHToX/3OZm9KHBegdbKuFUf9r0rL/oVYDTUpT5TjNLiF46pGdIPjOae9VgI2x3WblSrbjO93uOYukH7XvPPUoQiAOiwKpg9JBbRZGEBBYfUaU60qbcXoNfNK5VJF0JUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714403513; c=relaxed/simple;
-	bh=2mOGvwx0F2IpPY4iGZ/syNebrU7aiO2c7zkOquYWlm4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QViWvkU70SLbhGk9zg6EthnWjeKFvFtlYmIU+kglTDpmwAu5pyW2gUhzTXbjf3nlQ6cITxq2d07e35X0u8eysbloPszCHep4TQtN4V2Ka6pfnQb+IPr+USgFe8eknvsXq7g4OP02pVBhiPyy3fm0ezuXVgOaKg28fWp1Ck2pMOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MtqDRFoz; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5729221ed74so371185a12.0;
-        Mon, 29 Apr 2024 08:11:51 -0700 (PDT)
+	s=arc-20240116; t=1714404021; c=relaxed/simple;
+	bh=w5oGRP4JPpb4te+A558b3tkZ+H0uAyOnUSQkFgcHJek=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eYPy2L+2cYkzcub6huZxoUYeOPHtMa8j2Wv5Z7JNQpOcLXnIwEu4g2sI8He2i1Z0QuYJ5kLWzFjy1JrmszcShbBo6b0jpZp10AuVqxu5fVSZty90rwodt9RW8LEqy4Eb9LhVZ5Q1rq84znRLUBQZAjTNdoHcrHIuH4nGOIpben4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bBz5yI39; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-69b730fc89bso18232976d6.1
+        for <stable@vger.kernel.org>; Mon, 29 Apr 2024 08:20:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714403510; x=1715008310; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xU/iLoQXl7tXUx6T6JsQIJsicG3iO7GQdCCzHimssM0=;
-        b=MtqDRFozNysbaJT4cpy3/Bf06vxhMOXuyPpPgPTGGAEblUoF2SrMoQB0antoUlQuNT
-         GwX0nOb08P6IgZQLq5S5KV1/i1XPTLLkaEB5rX+O90I0EdaowKv9l4qQDMfTYHi+go6T
-         E+oNVVzKF3GB/+3kfD2TJuhe4+wmPA3cuO0f3L1QvRUJ+YADC/R9QBfOFDGueAmhZeSD
-         HAJsGUFsaJ3Jq5XW7iNXfEed8ZuZ1cBl3xdyrCrDw7TEoaRmEz2oIKVjGATuiO/1ptLk
-         GJsBimfRBN0EYgl36cx9nXvVnQQ6J6X8Qer/X8a4/C8XG8XMaJsBRPyr9eTYFqW3z6kV
-         +83g==
+        d=chromium.org; s=google; t=1714404019; x=1715008819; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Whc+kehZFOrnNVxoQ+aJ0hCobdq4Ed5IJwv8Dg8dkaE=;
+        b=bBz5yI39HX4qu5MrsmmWmYqeYLbM56I2IgDAkPYyh9Mc/FdlQ5ua3RI9EostKLOzKH
+         DeOQqvPyX3HoUAwLUbaA/nkll/dOjxE+bvyt5LvBGsntsZIBk37eICBzb+23SEQDsSVm
+         hh8suDjARnvQBVtX1vYbj6HKjzgTAVMT+fTiw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714403510; x=1715008310;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xU/iLoQXl7tXUx6T6JsQIJsicG3iO7GQdCCzHimssM0=;
-        b=tgIyJgoFO11kJ7n3KMkevDZSSctLBSBW8+Zt9mApEZXXSV7V1LuLsjuVS1xBw9o04I
-         9J4au1FEtnj0ZxzbUlWU9U7CFvtfkhmFMUAhHC86zliU7lCFDv+DYpxw/bpPEWLXomyX
-         X1SwunMTfYJCEEYNXwcHWcO9qNTnNcXSbNMGn+sNnH6+CiKkvp72hw3DeCz1aPRJC3gh
-         0JqRFDrVcg2e7FvqUhvjOKfHN387Jra8npwk8O+Dn1MBDPUI8W+7QzaLnjJYmHE1u8GS
-         PbvK1GMGRl17U3JDL6eE4443BfuNpnlYVTbxujUISp8NnhLxxuUNwePTF4wh5c90XpZY
-         icqg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/LR3Qhyyb2Oez9YZ5521o2aBLn/fVKe1O4TGTFLq+FEVV+JUrerTIZx7Wal+mOJzs54HrCovviyRXP0m0ov4afZORza6LC6tZFvALNWvBo5zi1WAMLm8P2Tphdwcz389FHA==
-X-Gm-Message-State: AOJu0YyEOh4H2niotDzptiVSYTuSlJszwzSlBjm/5cVLJRE1tIkeXabm
-	H9qaKzSPn28VuruvXUb8jFWJo9bJqTCwF2QD1kZVJvTJ0Xcy72BO
-X-Google-Smtp-Source: AGHT+IEhEdiaiCJzabxzHgv5ya2RGGdycN3jCTy0tJ1kx0ZZPY/5fGE7WGoJhcAGrpmB7uFA67IDWg==
-X-Received: by 2002:a17:906:e2c3:b0:a54:e183:6248 with SMTP id gr3-20020a170906e2c300b00a54e1836248mr7519853ejb.0.1714403510018;
-        Mon, 29 Apr 2024 08:11:50 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id wt8-20020a170906ee8800b00a55ac292b66sm10253316ejb.219.2024.04.29.08.11.48
+        d=1e100.net; s=20230601; t=1714404019; x=1715008819;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Whc+kehZFOrnNVxoQ+aJ0hCobdq4Ed5IJwv8Dg8dkaE=;
+        b=DLJNaTPYduEUbjbZVjfFqnA7LGI6Ie4HoFINDipWtUKBsWiDgAymtdf+eAeVsm5Pwt
+         gw1YzB9L166xQcrVBOkEKwrPozLs5xezOCG0nEd9G7+Q4yvkqdHrJt/y3Ec4f5BsAYlp
+         OVZ/F7/ZsQZHF62Ldfn8oY00Ya9/cvEWiiCEC4J+ZHti/CdZmO4eyw+iuzH8HF7kwrq1
+         pJsjuYT2IFCfhLa44pUm8M93T88PM/HWpBhVSn/apJdjgW7jwDHKnShH3Bf/cW8gBMi6
+         0w3WuVk7PN0SGFHiHdpyAny0bd9dYIV0lRZn/mqUjA2EMvVQ1dCjIImu5W3HWmzRiyIp
+         MM6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUsFqcS3GZtrAqf/lUOZ+j+WgqahMDZS0N02xnwdnq5TeUAymZ27c9p27ZZaeRmLzfzBOkVuXcEgflspgdju8HaP956SDQB
+X-Gm-Message-State: AOJu0YzY3VoHGyzURVIiAZMPI0IYZMtnCyw27Pp01LzeYeYBzcWhdKxx
+	HHDRV5R/4/X22THJ+bn+wx/dTLHpMCKLnXCW8nsUULIif+4mKVAukX8JsrVaw9KG560VWMcT54M
+	=
+X-Google-Smtp-Source: AGHT+IGWePekp5A7s1qkOnq7jbAIN0fjYPvsoPXi4euuiHJbROBgSQZcRgE0mfjqCDMBTLUA73If/w==
+X-Received: by 2002:a05:6214:2a8f:b0:6a0:b905:97b1 with SMTP id jr15-20020a0562142a8f00b006a0b90597b1mr7524418qvb.51.1714404018764;
+        Mon, 29 Apr 2024 08:20:18 -0700 (PDT)
+Received: from denia.c.googlers.com (114.152.245.35.bc.googleusercontent.com. [35.245.152.114])
+        by smtp.gmail.com with ESMTPSA id r3-20020a0cf603000000b006a0affc7c6esm3020797qvm.63.2024.04.29.08.20.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 08:11:48 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 5F51DBE2EE8; Mon, 29 Apr 2024 17:11:47 +0200 (CEST)
-Date: Mon, 29 Apr 2024 17:11:47 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Paulo Alcantara <pc@manguebit.com>, regressions@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>, sashal@kernel.org,
-	stable@vger.kernel.org, linux-cifs@vger.kernel.org
-Subject: Re: [regression 6.1.80+] "CIFS: VFS: directory entry name would
- overflow frame end of buf" and invisible files under certain conditions and
- at least with noserverino mount option
-Message-ID: <Zi-4s-7QSFO1OR17@eldamar.lan>
-References: <ZiBCsoc0yf_I8In8@eldamar.lan>
- <cc3eea56282f4b43d0fe151a9390c512@manguebit.com>
- <ZiCoYjr79HXxiTjr@eldamar.lan>
- <29e0cbcab5be560608d1dfbfb0ccbc96@manguebit.com>
- <ZiLQG4x0m1L70ugu@eldamar.lan>
- <adfd2a680e289404140ef917cf0bd0ab@manguebit.com>
- <Zigg4RWtRfQYW1RR@eldamar.lan>
- <2024042912-unloader-slighting-c756@gregkh>
+        Mon, 29 Apr 2024 08:20:18 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 29 Apr 2024 15:20:18 +0000
+Subject: [PATCH] media: dw2102: Fix size check
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024042912-unloader-slighting-c756@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240429-dw2102-v1-1-a5d81dfc1453@chromium.org>
+X-B4-Tracking: v=1; b=H4sIALG6L2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDEyNL3ZRyI0MDI93UFOMUQyOLRENTCyMloOKCotS0zAqwQdGxtbUAmJ8
+ APVgAAAA=
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>, linux-media@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.12.4
 
-Hi,
+The data is going to be copied at state->data[4], not at state->data[1],
+fix the check to avoid stack overruns.
 
-On Mon, Apr 29, 2024 at 12:50:45PM +0200, Greg KH wrote:
-> On Tue, Apr 23, 2024 at 10:58:09PM +0200, Salvatore Bonaccorso wrote:
-> > Hi Paulo,
-> > 
-> > On Mon, Apr 22, 2024 at 12:08:53PM -0300, Paulo Alcantara wrote:
-> > > Salvatore Bonaccorso <carnil@debian.org> writes:
-> > > 
-> > > > I'm still failing to provide you a recipe with a minimal as possible
-> > > > setup, but with the instance I was able to reproduce the issue the
-> > > > regression seems gone with cherry-picking 35235e19b393 ("cifs: Replace
-> > > > remaining 1-element arrays") .
-> > > 
-> > > It's OK, no problem.  Could you please provide the backport to stable
-> > > team?
-> > 
-> > Sure, here it is. Greg or Sasha is it ok to pick that up for the 6.1.y
-> > queues?
-> 
-> Glad to, for some reason I thought this caused problems, but if it
-> passes your testing, great!  I'll go queue it up now, thanks.
+Found with smatch:
+drivers/media/usb/dvb-usb/dw2102.c:802 su3000_i2c_transfer() error: __builtin_memcpy() '&state->data[4]' too small (64 vs 67)
+drivers/media/usb/dvb-usb/dw2102.c:802 su3000_i2c_transfer() error: __builtin_memcpy() '&state->data[4]' too small (64 vs 67)
 
-Thanks! Unfortunately I'm not having a good test(case/suite) for this
-myself for such cases. All issues recently forwarded as regressions in
-the 6.1.y series were unfortunately only uncovered by Debian users
-once we did release the version :(. Hopefully this will "calm down"
-now.
+Cc:  <stable@vger.kernel.org>
+Fixes: 0e148a522b84 ("media: dw2102: Don't translate i2c read into write")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+This time it could be relevant though.
+---
+ drivers/media/usb/dvb-usb/dw2102.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks to all of you, for your work!
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index 03b411ad64bb..79e2ccf974c9 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -789,7 +789,7 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 
+ 			if (msg[j].flags & I2C_M_RD) {
+ 				/* single read */
+-				if (1 + msg[j].len > sizeof(state->data)) {
++				if (4 + msg[j].len > sizeof(state->data)) {
+ 					warn("i2c rd: len=%d is too big!\n", msg[j].len);
+ 					num = -EOPNOTSUPP;
+ 					break;
 
-Regards,
-Salvatore
+---
+base-commit: cefc10d0d9164eb2f62e789b69dc658dc851eb58
+change-id: 20240429-dw2102-ed3d128a1582
+
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
+
 
