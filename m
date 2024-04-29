@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417F58B56E4
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:36:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D668B56E2
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84C33B260BE
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:36:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD0A41F26112
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69F24652D;
-	Mon, 29 Apr 2024 11:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BC9481A8;
+	Mon, 29 Apr 2024 11:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsY+/yYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7b/pKDm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974F544C87
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC9644C87
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390558; cv=none; b=WS3saeZbKdtk98hJzmYU/MBShksSrs7tuHX+JyD4Ah6TKCVGDMDHnCvVk9lZGZ6uWhGMCHRfdXsAZ8ZMTeS5um8ztUr/cx/FAdBN4NLEOgeFSd1O3Q68IovYyUnvbX7yu5Tom0+NudeGEVnxSeF7xsGss5S4Yzo+/QGw0SUv8wc=
+	t=1714390561; cv=none; b=MLM2CYeSz5O3LJNzripgDxJyy5lcV/YOrCc4GETjf0//qdbLZa+KM/razt7NbPO0bxwKJxQtQaIKISkn7foeDFLsypIE74CQeqpu0Wa2SgRY5qUbSy3QrFYOKi++ewe6erxcKx4AKF9epdGcaahlqpGR1zXdobGWXp/9FBpnGK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714390558; c=relaxed/simple;
-	bh=bNRy/HRjp/5yF6QpFXtq7XMVem/y1VEmWMMGAI66wDk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NrvxGpejGK9jqN8LqhV+LsLQx3V03VGEIHvzTMUMdeiFyp7gourj6vZF6vEyF2SzApPUqv5WjIDY4Kr/Gk86DU50yr/qLEOVq1F0UI3MWE6WiWaid1e1UtzWy+Ld9k1F99MPPgl+vyQWKav/zLjajiErer2U6j8ZBuD+QvwQbjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsY+/yYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BDAC113CD;
-	Mon, 29 Apr 2024 11:35:57 +0000 (UTC)
+	s=arc-20240116; t=1714390561; c=relaxed/simple;
+	bh=mMcPr8SR4QsAeYYxAjWAbSctOInLUa5SCsZhIFARAPA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YKunCYU0YTwdmpR2bbIh2SbbobV3jgsVyDI8t8eqn0V+f74KOjuwWquMzPPtnp7G/rcnQG3qyDnJ1KEyOi1FECUTLj3BzK5Iutwc7Y9nQJpKOXO2Bhj8zgxpNKDFUkfSwG9PiFdXgtjxobhsL0YR1Fac/9DlCst14NjWc4z3wR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7b/pKDm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134E5C113CD;
+	Mon, 29 Apr 2024 11:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714390558;
-	bh=bNRy/HRjp/5yF6QpFXtq7XMVem/y1VEmWMMGAI66wDk=;
+	s=korg; t=1714390561;
+	bh=mMcPr8SR4QsAeYYxAjWAbSctOInLUa5SCsZhIFARAPA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EsY+/yYlL1VFc044zJaGTTSeT6O3hwd0clhjJLi9dqFvG4VIB7SJnOh8KcHzXuKru
-	 Tva94m2JV6vEooT+KPwXe6Z+qAIgjNOFCZ5LBRNINN6yTQAkUeAgFaAKMJBVqvPsDO
-	 kveEMjYP0PQl4lyafaTCsLBXdJERWPuEkqpDlWZw=
-Subject: FAILED: patch "[PATCH] eeprom: at24: fix memory corruption race condition" failed to apply to 5.4-stable tree
+	b=z7b/pKDmNHL324zbGzXclNuwKqy6zI/IyfdLP8WI+2qwgzC6dlMhey1FM8LscNViE
+	 KKu9QAaOeDcp0NGsxveAbLe0MQRuRkZhK+9TGT+ExjlBRQjUcVYi2YwZ1uay6YiN7D
+	 lxjF4gEWEKF0irNKx0ajVnLgQxWi+GYuXjL7FMOY=
+Subject: FAILED: patch "[PATCH] eeprom: at24: fix memory corruption race condition" failed to apply to 5.10-stable tree
 To: dtokazaki@google.com,bartosz.golaszewski@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2024 13:35:43 +0200
-Message-ID: <2024042943-elves-patrol-347f@gregkh>
+Message-ID: <2024042942-headboard-dweeb-a026@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x f42c97027fb75776e2e9358d16bf4a99aeb04cf2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042943-elves-patrol-347f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042942-headboard-dweeb-a026@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,12 +73,6 @@ f42c97027fb7 ("eeprom: at24: fix memory corruption race condition")
 caba40ec3531 ("eeprom: at24: Probe for DDR3 thermal sensor in the SPD case")
 a3c10035d12f ("eeprom: at24: Use dev_err_probe for nvmem register failure")
 2962484dfef8 ("misc: eeprom: at24: check suspend status before disable regulator")
-45df80d7605c ("misc: eeprom: at24: register nvmem only after eeprom is ready to use")
-58d6fee50e67 ("misc: eeprom: at24: fix regulator underflow")
-cd5676db0574 ("misc: eeprom: at24: support pm_runtime control")
-1c89074bf850 ("eeprom: at24: remove the write-protect pin support")
-69afc4b62308 ("eeprom: at24: sort headers alphabetically")
-285be87c79e1 ("eeprom: at24: Improve confusing log message")
 
 thanks,
 
