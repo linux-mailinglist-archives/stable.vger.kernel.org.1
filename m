@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-41663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B8E8B5687
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3C18B5688
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 13:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E91E2283BCE
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:27:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95E54283DA2
+	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 11:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80B740872;
-	Mon, 29 Apr 2024 11:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F343FB84;
+	Mon, 29 Apr 2024 11:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQbWT420"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSSMiMi/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984BE3FBBD
-	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4570523772
+	for <stable@vger.kernel.org>; Mon, 29 Apr 2024 11:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390025; cv=none; b=ccOGvKcJSxPJLWDUoHbEIFu7FlFh0Gemfc0fAJ4mJ60ulD407PlDFYOfE52m4Uf49MeS3VHTzctO5/48dCvASUQ9V8UqkqdmFzjc9GmKCJEgL3B5p+KYkZgB22Rm+RYYP1gNqRRpCYEkMAQ8zbkeuEY5ItRxLtnzuFo2OcLW1Uo=
+	t=1714390053; cv=none; b=RDs8KBuPAIo/QRjj9UfBBX5ZuDEp58IeO7KPB+VOESVSjBSaPwEpDLCqPv+Qe3wBTewWWItfL0uRg4aLjwwbh/u//QY95E2JzzBUn7OMKgXfzWBVe/kJfFKlkdmx3CHizH6n5T7rCzKY/VLLrU7mgmyzwBca+Tmau2sQvclgEcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714390025; c=relaxed/simple;
-	bh=kLN8gwCxuESPuwYu1C6sOTNjwGJJK6KdNUokvcrXBhw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WPO0BesenvSLPrgIvA+81gRdiGesk+bvOA7XOCVxCoCwwiw8wKMq4UvbmPnLNcMruJ4FaWNQPno3tXh4L6XVRMfJWf0cmSDpcoL7AJ0y4ajT9nzhkFh24EoLvQEJaqJJ2XZFdg0hv85x7yKkrdDlRBf6uGMWML3nyO+alnkjbCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQbWT420; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AAAC113CD;
-	Mon, 29 Apr 2024 11:27:04 +0000 (UTC)
+	s=arc-20240116; t=1714390053; c=relaxed/simple;
+	bh=p/3h91v1M8cFflg3qNpP5nYGbnDFYkY2BLCGwwdCElk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=S0cRViIUMWBlbr9N2pMiGTt8AsiX+W8LRKgNPsmhwO9c0FJkybTRY/TFafUcw7notvYb//imkUxLxEQpbgJYPZrE/Yk6PDJu+/eJ/bdvqVG3WX0f4fZybRCpfVBNozlQH0GTksAeIMV3o4U8czJBBcJvFtJsEgE8ZH78tyW5v1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSSMiMi/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1628C113CD;
+	Mon, 29 Apr 2024 11:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714390025;
-	bh=kLN8gwCxuESPuwYu1C6sOTNjwGJJK6KdNUokvcrXBhw=;
+	s=korg; t=1714390053;
+	bh=p/3h91v1M8cFflg3qNpP5nYGbnDFYkY2BLCGwwdCElk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kQbWT420zMGb+cQDoUTsri1tNmZ6oWvZekYPBmuqP9EK1m0rdCO9rAIkyfFJ1Wrpn
-	 vAtMnG+/jtpLc9hlHqXYpa3Ics30Ci5EDO8W/v82ybG8+vgbsD0vOCfUFxy8Sa2vIy
-	 JYbxpQVfLK2LBMlNqx9JMJTHEtsSSTqISb8Ckw5M=
-Subject: FAILED: patch "[PATCH] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent" failed to apply to 4.19-stable tree
-To: namcao@linutronix.de,jkosina@suse.com,nyandarknessgirl@gmail.com,stable@vger.kernel.org
+	b=kSSMiMi/mfSU9ntQOnqqz91mJxonXXBVo5eMsmY4IWnsEgMC9lbpQU1jbMfRR0Ci5
+	 Mnuvsy6cFO6P2P0503AgRud+ObFi5Uy/jS1zWZCvSwRoEHthEzfxtbOP5Hqw/y5Fes
+	 yQE0Z+ejn9RYDBbloeBu1/oEJxBEziCYSmnNC3gk=
+Subject: FAILED: patch "[PATCH] btrfs: fallback if compressed IO fails for ENOSPC" failed to apply to 6.1-stable tree
+To: sweettea-kernel@dorminy.me,dsterba@suse.com,neal@gompa.dev,wqu@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2024 13:26:55 +0200
-Message-ID: <2024042955-boxer-slinky-3da2@gregkh>
+Date: Mon, 29 Apr 2024 13:27:25 +0200
+Message-ID: <2024042924-filling-contact-97aa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,31 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e
+git cherry-pick -x 131a821a243f89be312ced9e62ccc37b2cf3846c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042955-boxer-slinky-3da2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042924-filling-contact-97aa@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-9c0f59e47a90 ("HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up")
-dbe0dd5fd2e0 ("HID: i2c-hid: explicitly code setting and sending reports")
-b26fc3161b78 ("HID: i2c-hid: refactor reset command")
-d34c6105499b ("HID: i2c-hid: use "struct i2c_hid" as argument in most calls")
-a5e5e03e9476 ("HID: i2c-hid: fix GET/SET_REPORT for unnumbered reports")
-cf5b2fb012c0 ("HID: i2c-hid: fix handling numbered reports with IDs of 15 and above")
-ca66a6770bd9 ("HID: i2c-hid: Skip ELAN power-on command after reset")
-b33752c30023 ("HID: i2c-hid: Reorganize so ACPI and OF are separate modules")
-19a0b6d79c97 ("Merge branch 'for-5.11/i2c-hid' into for-linus")
+131a821a243f ("btrfs: fallback if compressed IO fails for ENOSPC")
+a994310aa26f ("btrfs: remove PAGE_SET_ERROR")
+99a01bd6388e ("btrfs: use btrfs_inode inside compress_file_range")
+99a81a444448 ("btrfs: switch async_chunk::inode to btrfs_inode")
+fd8d2951f478 ("btrfs: convert extent_io page op defines to enum bits")
 
 thanks,
 
@@ -85,71 +81,70 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e Mon Sep 17 00:00:00 2001
-From: Nam Cao <namcao@linutronix.de>
-Date: Mon, 18 Mar 2024 11:59:02 +0100
-Subject: [PATCH] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent
- lock-up
+From 131a821a243f89be312ced9e62ccc37b2cf3846c Mon Sep 17 00:00:00 2001
+From: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Date: Sat, 6 Apr 2024 04:45:02 -0400
+Subject: [PATCH] btrfs: fallback if compressed IO fails for ENOSPC
 
-The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
-However, this is not necessary, because I2C core already has its own
-locking for that.
+In commit b4ccace878f4 ("btrfs: refactor submit_compressed_extents()"), if
+an async extent compressed but failed to find enough space, we changed
+from falling back to an uncompressed write to just failing the write
+altogether. The principle was that if there's not enough space to write
+the compressed version of the data, there can't possibly be enough space
+to write the larger, uncompressed version of the data.
 
-More importantly, this flag can cause a lock-up: if the flag is set in
-i2c_hid_xfer() and an interrupt happens, the interrupt handler
-(i2c_hid_irq) will check this flag and return immediately without doing
-anything, then the interrupt handler will be invoked again in an
-infinite loop.
+However, this isn't necessarily true: due to fragmentation, there could
+be enough discontiguous free blocks to write the uncompressed version,
+but not enough contiguous free blocks to write the smaller but
+unsplittable compressed version.
 
-Since interrupt handler is an RT task, it takes over the CPU and the
-flag-clearing task never gets scheduled, thus we have a lock-up.
+This has occurred to an internal workload which relied on write()'s
+return value indicating there was space. While rare, it has happened a
+few times.
 
-Delete this unnecessary flag.
+Thus, in order to prevent early ENOSPC, re-add a fallback to
+uncompressed writing.
 
-Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
-Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
-Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: b4ccace878f4 ("btrfs: refactor submit_compressed_extents()")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Co-developed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 2df1ab3c31cc..1c86c97688e9 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -64,7 +64,6 @@
- /* flags */
- #define I2C_HID_STARTED		0
- #define I2C_HID_RESET_PENDING	1
--#define I2C_HID_READ_PENDING	2
- 
- #define I2C_HID_PWR_ON		0x00
- #define I2C_HID_PWR_SLEEP	0x01
-@@ -190,15 +189,10 @@ static int i2c_hid_xfer(struct i2c_hid *ihid,
- 		msgs[n].len = recv_len;
- 		msgs[n].buf = recv_buf;
- 		n++;
--
--		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index c65fe5de4022..7fed887e700c 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1145,13 +1145,13 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
+ 				   0, *alloc_hint, &ins, 1, 1);
+ 	if (ret) {
+ 		/*
+-		 * Here we used to try again by going back to non-compressed
+-		 * path for ENOSPC.  But we can't reserve space even for
+-		 * compressed size, how could it work for uncompressed size
+-		 * which requires larger size?  So here we directly go error
+-		 * path.
++		 * We can't reserve contiguous space for the compressed size.
++		 * Unlikely, but it's possible that we could have enough
++		 * non-contiguous space for the uncompressed size instead.  So
++		 * fall back to uncompressed.
+ 		 */
+-		goto out_free;
++		submit_uncompressed_range(inode, async_extent, locked_page);
++		goto done;
  	}
  
- 	ret = i2c_transfer(client->adapter, msgs, n);
- 
--	if (recv_len)
--		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
--
- 	if (ret != n)
- 		return ret < 0 ? ret : -EIO;
- 
-@@ -556,9 +550,6 @@ static irqreturn_t i2c_hid_irq(int irq, void *dev_id)
- {
- 	struct i2c_hid *ihid = dev_id;
- 
--	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
--		return IRQ_HANDLED;
--
- 	i2c_hid_get_input(ihid);
- 
- 	return IRQ_HANDLED;
+ 	/* Here we're doing allocation and writeback of the compressed pages */
+@@ -1203,7 +1203,6 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
+ out_free_reserve:
+ 	btrfs_dec_block_group_reservations(fs_info, ins.objectid);
+ 	btrfs_free_reserved_extent(fs_info, ins.objectid, ins.offset, 1);
+-out_free:
+ 	mapping_set_error(inode->vfs_inode.i_mapping, -EIO);
+ 	extent_clear_unlock_delalloc(inode, start, end,
+ 				     NULL, EXTENT_LOCKED | EXTENT_DELALLOC |
 
 
