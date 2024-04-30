@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-42724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08668B7457
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EBA68B7383
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EDDC1C233D3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2359A1F241B6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275BA12D769;
-	Tue, 30 Apr 2024 11:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DC912D1E8;
+	Tue, 30 Apr 2024 11:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHnbvO2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leQ1sM0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB23F12BF32;
-	Tue, 30 Apr 2024 11:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C4A8801;
+	Tue, 30 Apr 2024 11:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476579; cv=none; b=UB8GorLsskl5HBfrPDs0+YFb+Dc2SDJR8D8OAoRXDb5+cuzysHeRzTozp1jGwEH7nA3avcThmPoJMLjJbEmEHVBRVPgB0BqQh8F/shgWqdf8/DoR3gMxy/gam7uw85OPlf1dlw1+8ti86AkxquKFkDR5SKRZ/Uk9rjtToI72qw0=
+	t=1714475999; cv=none; b=PK0A8x8o56qmZ/vNQPIJwyHwIuZnaDslKdNoeEcOfXEydRigPLgLmq9fZRk+R3Db7LhXjOiZZel7dh6y5qhz6sH9maexqTrLjH7GuZDhA/y+sOKYQ7/e78LImv4FxmOcgu1CHzORsnlqwAUFudxG7FN5zH/Osn9zvaskNGD5akQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476579; c=relaxed/simple;
-	bh=I0T9B/BHBDTZYRwqFOn48zFYEB4QNEAW5MZWg5h1Bgc=;
+	s=arc-20240116; t=1714475999; c=relaxed/simple;
+	bh=dmkHSwigI71YiAkUsRE6+hCkF8pbtD49c7Upj+kDe8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CI4VvXOa1349K26IA04swfQ1rcYiwOH9C6TKrxzahGFdV95VZuSwnWTOD/8Mo52kNAgyPA3V272pyXaG9mHiLXz1LVgCoJT63Eu9s6wrWopR/HpSWnHyzixl4yc25rJDO8AtJKdHwsFyZ+8iK/dOZQifFAfkplaWonsND6bf8Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHnbvO2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65984C2BBFC;
-	Tue, 30 Apr 2024 11:29:39 +0000 (UTC)
+	 MIME-Version; b=Agph7uDRs8ZIMw2w4a/uYHAqbUnp79vbp+QzrNkQG7NP1N+kZ44x5nvL+ZbwER3st64fdEJj91Johi+XCSXPEs+NgUmUuKas+6UzdOpBjskJxRzYUjL4dGOeH0pqFmsXQ9NMFahIiGDiYkBPM724+bLwRcxddGNE3mppZpZx/tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leQ1sM0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EAEC2BBFC;
+	Tue, 30 Apr 2024 11:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476579;
-	bh=I0T9B/BHBDTZYRwqFOn48zFYEB4QNEAW5MZWg5h1Bgc=;
+	s=korg; t=1714475999;
+	bh=dmkHSwigI71YiAkUsRE6+hCkF8pbtD49c7Upj+kDe8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHnbvO2yvYVWrOuX6IAUnx+/FqCz8lxHPFbJRaZf1ZXECvfurhJFkh7bOjsFyncrK
-	 HmFZ+qnCng9sXcY53xL1Gs73gqBYiDvqu4ht7alrZkh/e6zl8BaWjAlssXdNzvdjCi
-	 QIHCoynGf4zXh/0MpTJTf69YldZ8yuRuLjLe6RXY=
+	b=leQ1sM0oNEbgMeiwSY/11jy54Qv+84iGSp+AZCA/8i3/nEx3xTZA8eA8LXEuZqRX1
+	 t/nl8gNvW/CD+NpvBXK8pryWS2YC0aJ0CVNwapYoLrICDBAi3CbKEKVxAvZuK8iR9p
+	 hTwJ4YZ2w9h6UxmqAmcQITMBIc+HkUTLj8uSmh9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiantao Shan <shanjiantao@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 076/110] LoongArch: Fix access error when read fault on a write-only VMA
-Date: Tue, 30 Apr 2024 12:40:45 +0200
-Message-ID: <20240430103049.810033677@linuxfoundation.org>
+	Samuel Holland <samuel.holland@sifive.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Bo Gan <ganboing@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 74/80] riscv: Fix TASK_SIZE on 64-bit NOMMU
+Date: Tue, 30 Apr 2024 12:40:46 +0200
+Message-ID: <20240430103045.597968654@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiantao Shan <shanjiantao@loongson.cn>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit efb44ff64c95340b06331fc48634b99efc9dd77c upstream.
+[ Upstream commit 6065e736f82c817c9a597a31ee67f0ce4628e948 ]
 
-As with most architectures, allow handling of read faults in VMAs that
-have VM_WRITE but without VM_READ (WRITE implies READ).
+On NOMMU, userspace memory can come from anywhere in physical RAM. The
+current definition of TASK_SIZE is wrong if any RAM exists above 4G,
+causing spurious failures in the userspace access routines.
 
-Otherwise, reading before writing a write-only memory will error while
-reading after writing everything is fine.
-
-BTW, move the VM_EXEC judgement before VM_READ/VM_WRITE to make logic a
-little clearer.
-
-Cc: stable@vger.kernel.org
-Fixes: 09cfefb7fa70c3af01 ("LoongArch: Add memory management")
-Signed-off-by: Jiantao Shan <shanjiantao@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6bd33e1ece52 ("riscv: add nommu support")
+Fixes: c3f896dcf1e4 ("mm: switch the test_vmalloc module to use __vmalloc_node")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
+Reviewed-by: Bo Gan <ganboing@gmail.com>
+Link: https://lore.kernel.org/r/20240227003630.3634533-2-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/fault.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/mm/fault.c
-+++ b/arch/loongarch/mm/fault.c
-@@ -193,10 +193,10 @@ good_area:
- 		if (!(vma->vm_flags & VM_WRITE))
- 			goto bad_area;
- 	} else {
--		if (!(vma->vm_flags & VM_READ) && address != exception_era(regs))
--			goto bad_area;
- 		if (!(vma->vm_flags & VM_EXEC) && address == exception_era(regs))
- 			goto bad_area;
-+		if (!(vma->vm_flags & (VM_READ | VM_WRITE)) && address != exception_era(regs))
-+			goto bad_area;
- 	}
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 17e22eb76a815..776528fd64050 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -675,7 +675,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+ #define PAGE_SHARED		__pgprot(0)
+ #define PAGE_KERNEL		__pgprot(0)
+ #define swapper_pg_dir		NULL
+-#define TASK_SIZE		0xffffffffUL
++#define TASK_SIZE		_AC(-1, UL)
+ #define VMALLOC_START		_AC(0, UL)
+ #define VMALLOC_END		TASK_SIZE
  
- 	/*
+-- 
+2.43.0
+
 
 
 
