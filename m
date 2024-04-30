@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-41935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD2F8B7089
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:46:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4E08B708B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A74E8286AE1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:46:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCD181C226C3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5318412C49E;
-	Tue, 30 Apr 2024 10:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC8712C494;
+	Tue, 30 Apr 2024 10:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To1Ch3Jy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spa/P/Y5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D04512C486;
-	Tue, 30 Apr 2024 10:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D9C1292C8;
+	Tue, 30 Apr 2024 10:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474006; cv=none; b=rGH30dN8cak6xngbgzL3NirTVSNnuyN9PClTOHjUydcZCcxMwPC24Q7QVbmb4fGSqAzVleOVHstMI4qglFqc9nNYB8edNZcd2I3j3qH6gQr24i6wTJSA2fN/upOR1ErJ/Yya+Deku2UEDR3ntfkr2t/U3qi86ghVAnirYsfZDzA=
+	t=1714474012; cv=none; b=Oz8MwFAc5WKbIUzKwcZOzLeH3M4NtT5j2SHyXznkuB/DiiSihctllRJbg9m4jFfX7qszrX1tGZQNiCe9cQ/svpbKqp0XiQNej9eaAswivVCFfwDQQKPeZcsqDP56g6JzuhNgBgVuootNZGYMg4e0zi2Di4Pal6ALZG7jNKhbPJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474006; c=relaxed/simple;
-	bh=dOOJhd4PqlnkKdTM+2dJQA01qdkeOL6em7keGZwnY/k=;
+	s=arc-20240116; t=1714474012; c=relaxed/simple;
+	bh=BpFEz+70OYUlnR+ZdWsrTOJcT83aKAzgYQE03lfJ47I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IW9pZkMI20+pn9q0pjzfASueeWkFhlK1os0JSbgGKNJP3l0ghSlCJQ5zag0UKpRTmeutbHiucQLQ6VYtrUucmQ03sSl7a0aUbCxTCgau21jkaV2svp5QVU6GzRTeRzxRkPAvk9TmTHpbBaPgKswln7fNHYu0mwH25Xndvb+IsBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=To1Ch3Jy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8856DC2BBFC;
-	Tue, 30 Apr 2024 10:46:45 +0000 (UTC)
+	 MIME-Version; b=KDzUnVZyUprxX2hwsXQeFc2mddBI6Y8rmQ1kHOnTO64P3HpckWuGisGJNW7sfzBRfw5IrGQdIOwdgEIP0XE+GY29iMqlo6KXCuA+DgStTnomCEH3rVfxYK9V/SLya77jnEVNw5WNll1tg4fu6GzYKGrYbH8kdsOIiDtyO8/GFFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spa/P/Y5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8110C4AF1A;
+	Tue, 30 Apr 2024 10:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474005;
-	bh=dOOJhd4PqlnkKdTM+2dJQA01qdkeOL6em7keGZwnY/k=;
+	s=korg; t=1714474012;
+	bh=BpFEz+70OYUlnR+ZdWsrTOJcT83aKAzgYQE03lfJ47I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=To1Ch3JyIqp7IXIVJZm/Yy01bH/eIc67tIcBF0Jfn4fFreEZb41vJkuSWbxsvtyWf
-	 rZuSKt/6/8ye7MAHIj/ysKnMtpaeqyzF+IajhHHjPd1zhiiRzf2bM8UMdBBmoX143S
-	 RD5RnEmyUn9wnxveBpyvVtze3RZADkPUbj6uP148=
+	b=spa/P/Y56+mngCrFSyiXK5cerEIr+K+pMm+9oojoLpvVGTF962nIpmd2ec02MK3Kj
+	 /JsToQCcC4UrhxRtfY04LJnDUZ6ayBhOcPaTk0SNHlPYkuRHrAj5V8TvWLekmDs8j+
+	 U5WdenuMyxZFP0Q166+GDtuun2o2V2zVqxX955KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 033/228] arm64: dts: rockchip: regulator for sd needs to be always on for BPI-R2Pro
-Date: Tue, 30 Apr 2024 12:36:51 +0200
-Message-ID: <20240430103104.772704192@linuxfoundation.org>
+Subject: [PATCH 6.8 034/228] block: fix module reference leakage from bdev_open_by_dev error path
+Date: Tue, 30 Apr 2024 12:36:52 +0200
+Message-ID: <20240430103104.801197164@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 References: <20240430103103.806426847@linuxfoundation.org>
@@ -66,40 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 433d54818f64a2fe0562f8c04c7a81f562368515 ]
+[ Upstream commit 9617cd6f24b294552a817f80f5225431ef67b540 ]
 
-With default dts configuration for BPI-R2Pro, the regulator for sd card is
-powered off when reboot is commanded, and the only solution to detect the
-sd card again, and therefore, allow rebooting from there, is to do a
-hardware reset.
+At the time bdev_may_open() is called, module reference is grabbed
+already, hence module reference should be released if bdev_may_open()
+failed.
 
-Configure the regulator for sd to be always on for BPI-R2Pro in order to
-avoid this issue.
+This problem is found by code review.
 
-Fixes: f901aaadaa2a ("arm64: dts: rockchip: Add Bananapi R2 Pro")
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Link: https://lore.kernel.org/r/20240305143222.189413-1-jtornosm@redhat.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: ed5cc702d311 ("block: Add config option to not allow writing to mounted devices")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240406090930.2252838-22-yukuai1@huaweicloud.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ block/bdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts b/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
-index 87c45d8be420f..dc5892d25c100 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
-@@ -416,6 +416,8 @@
- 
- 			vccio_sd: LDO_REG5 {
- 				regulator-name = "vccio_sd";
-+				regulator-always-on;
-+				regulator-boot-on;
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
- 
+diff --git a/block/bdev.c b/block/bdev.c
+index 2b0f97651a0a7..812872cdc0bef 100644
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -873,7 +873,7 @@ struct bdev_handle *bdev_open_by_dev(dev_t dev, blk_mode_t mode, void *holder,
+ 		goto abort_claiming;
+ 	ret = -EBUSY;
+ 	if (!bdev_may_open(bdev, mode))
+-		goto abort_claiming;
++		goto put_module;
+ 	if (bdev_is_partition(bdev))
+ 		ret = blkdev_get_part(bdev, mode);
+ 	else
 -- 
 2.43.0
 
