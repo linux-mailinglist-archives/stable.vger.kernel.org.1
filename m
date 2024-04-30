@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-42157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824CA8B71AA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA08F8B7110
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DA8C283987
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276DA1C2202C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C026612C47A;
-	Tue, 30 Apr 2024 10:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DA912C48B;
+	Tue, 30 Apr 2024 10:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+1HHmC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6byFdu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9FE7464;
-	Tue, 30 Apr 2024 10:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4236E4176D;
+	Tue, 30 Apr 2024 10:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474751; cv=none; b=DJ7HPg4FlW7N5d/SKwSJ5Yjjf3ZucOhSf8k75LWecUVF26cR6ieHrci8L7jujMS4V/jVYRiU/wt2fDAUuku6QrCdFpzU+yoyMQ+VSokm7EvUDHHn0yd8b6gExFHJD7fzm7XXkwf9ls41/SfdvBr900Cxmobg2XYcgPPWpS+zyrA=
+	t=1714474355; cv=none; b=F0JqvhBzYrsys7ciUo1lfyTx+BPahy5P/LgaDMIlZPV+FS/SChCGTrlEF4pPrkYg4ciLM46+K98nlwDJ+WmzbXf6tH0/zCOTjYrv51/uWPNAHw0K1dX8FkY5YU6W9KeJiQMMnsCwJfhOuXsZFKWZi5VB7uhxJPGNbQJCYPpvShw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474751; c=relaxed/simple;
-	bh=VQwxaojVVd/bazEu8DoxVssDDCghBUuMOXY/mugBkiQ=;
+	s=arc-20240116; t=1714474355; c=relaxed/simple;
+	bh=1SCj6RtobMHdH89nlHQWlrbICeTNJj8ex0KLihchP70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IECYugRZMI5bmyp1O2IE5eDE/xCkWn/8J1RNMEhKbnas3PT5IGdfamSh6AvYGKxP1OpcqcZWQCTKb9hf0OOuW+fnoYpNXTC2DPHGpZX+HIPRjenK4PV1pBYrrTbOovZoyPLnEtlDO4k/H/3fg3+lKpzxtat7kXrBl32eZYVfWyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+1HHmC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031CFC4AF19;
-	Tue, 30 Apr 2024 10:59:10 +0000 (UTC)
+	 MIME-Version; b=YmmyTuEtnD57qkdfVGAfvDIvZh9P0bRtlMpiii100jOdlb8Wwm6c+DlyJKwMphq7cjA6O7KzRAVkjMel2VAQAVe9COj1rIJhL7i1iI9R0y1rMTLJ9lcR2J5xnAmJHVqDbBivA0dWGgbFDQ0iEQSkU+pxXEfr7DVOqS7BsBWXxNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6byFdu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC605C2BBFC;
+	Tue, 30 Apr 2024 10:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474751;
-	bh=VQwxaojVVd/bazEu8DoxVssDDCghBUuMOXY/mugBkiQ=;
+	s=korg; t=1714474355;
+	bh=1SCj6RtobMHdH89nlHQWlrbICeTNJj8ex0KLihchP70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+1HHmC8833sL4E3EagOKGEwMFfcB8VBVOrFVDfcsQ55quS7gjKfWqD40aGFTRL4k
-	 YvidHBsWZUtyOTLhsJt/oFCY62t8BsU72e1sf6RVlBRETjFvJdMLjsuX0kU2lAIYei
-	 Kdo34sUvZqBkTn9AU9O0yYCuboZF2J4jCzvFK35Y=
+	b=z6byFdu6U4JrWWXzy7frWZPdKHlmzzvJuRta2PCCsqaeYBG0DtNu5zOp1KdX+Becy
+	 J3KLbHt1zplGqO5CXag50t5ZrJLWcMClNjXf94KXlIgzoUvHSJRr47x68FYL61Dc0y
+	 1DhiYaLWt7q0T6xmC5BAVkx0xTMotHgHj6M6kVcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.10 024/138] drm/client: Fully protect modes[] with dev->mode_config.mutex
-Date: Tue, 30 Apr 2024 12:38:29 +0200
-Message-ID: <20240430103050.140206923@linuxfoundation.org>
+	Wenkuan Wang <Wenkuan.Wang@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.8 132/228] x86/CPU/AMD: Add models 0x10-0x1f to the Zen5 range
+Date: Tue, 30 Apr 2024 12:38:30 +0200
+Message-ID: <20240430103107.612535041@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +59,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Wenkuan Wang <Wenkuan.Wang@amd.com>
 
-commit 3eadd887dbac1df8f25f701e5d404d1b90fd0fea upstream.
+commit 2718a7fdf292b2dcb49c856fa8a6a955ebbbc45f upstream.
 
-The modes[] array contains pointers to modes on the connectors'
-mode lists, which are protected by dev->mode_config.mutex.
-Thus we need to extend modes[] the same protection or by the
-time we use it the elements may already be pointing to
-freed/reused memory.
+Add some more Zen5 models.
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10583
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404203336.10454-2-ville.syrjala@linux.intel.com
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 3e4147f33f8b ("x86/CPU/AMD: Add X86_FEATURE_ZEN5")
+Signed-off-by: Wenkuan Wang <Wenkuan.Wang@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240423144111.1362-1-bp@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_client_modeset.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -774,6 +774,7 @@ int drm_client_modeset_probe(struct drm_
- 	unsigned int total_modes_count = 0;
- 	struct drm_client_offset *offsets;
- 	unsigned int connector_count = 0;
-+	/* points to modes protected by mode_config.mutex */
- 	struct drm_display_mode **modes;
- 	struct drm_crtc **crtcs;
- 	int i, ret = 0;
-@@ -842,7 +843,6 @@ int drm_client_modeset_probe(struct drm_
- 		drm_client_pick_crtcs(client, connectors, connector_count,
- 				      crtcs, modes, 0, width, height);
- 	}
--	mutex_unlock(&dev->mode_config.mutex);
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -572,8 +572,7 @@ static void bsp_init_amd(struct cpuinfo_
  
- 	drm_client_modeset_release(client);
- 
-@@ -872,6 +872,7 @@ int drm_client_modeset_probe(struct drm_
- 			modeset->y = offset->y;
- 		}
- 	}
-+	mutex_unlock(&dev->mode_config.mutex);
- 
- 	mutex_unlock(&client->modeset_mutex);
- out:
+ 	case 0x1a:
+ 		switch (c->x86_model) {
+-		case 0x00 ... 0x0f:
+-		case 0x20 ... 0x2f:
++		case 0x00 ... 0x2f:
+ 		case 0x40 ... 0x4f:
+ 		case 0x70 ... 0x7f:
+ 			setup_force_cpu_cap(X86_FEATURE_ZEN5);
 
 
 
