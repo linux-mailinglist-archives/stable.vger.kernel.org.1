@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D7B8B73AF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF338B72CD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9D101C21AD2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06DD1B22E7E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525E112D746;
-	Tue, 30 Apr 2024 11:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231E012D75C;
+	Tue, 30 Apr 2024 11:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHxcAre+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVN/ehdw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1215F12C48B;
-	Tue, 30 Apr 2024 11:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D560212D753;
+	Tue, 30 Apr 2024 11:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476127; cv=none; b=fdjokKQJbFt2kogxl9RBiAIoWLQw98fCUy7VjstP2YkJDbzwNFah6su2ka7SrxFmWap8WRZoTcuj2gbf3JGW+RFjoD1oU/bWaEBCHv3VD0mD2TmhCTu+NXI0KB2DqeY2jhFWaISn4Iy4JWbmwpAcD5jAFSfye+G0qiyyXr1ytoo=
+	t=1714475503; cv=none; b=k2ywi8uh64GdhIvYowlukNwiWK8PK/Gq3Szc1tYORDkt45moNSJvmY8I+IZvPd0dSyh3k8aHdyNjnxlf5ncWTzuRD826cD2qq5nv8UIGDT1yfYQJMFufz8nCXZRQ5J3qLaTkC2mnRCCBU7CTubzeuTSMAkz3KGoCf8bGZI5jZIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476127; c=relaxed/simple;
-	bh=r01qXQzCioYTOwq41XnTsjEF207pFzqgiCXrRPpUvh8=;
+	s=arc-20240116; t=1714475503; c=relaxed/simple;
+	bh=l6D8ver5jj290xtoPMjvkhD4atFKhWPEiKyeY5fMSDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SX5brAJ2qUdjdjskA5p7ab0bNP4DHrCd7j8c1DjZkDFDFGSx2FngZ6vf4tS/8jkR9jsNyNDvoocZD0siGoRo7gF5BUeWUlfrbzil/VCTbD88HAdMkJ9TjwDfPMPdVL6aNhpBnpy3PdG4tidrTTAAL9s5UF2qhm3KSKW0pCdvPho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHxcAre+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778DFC2BBFC;
-	Tue, 30 Apr 2024 11:22:06 +0000 (UTC)
+	 MIME-Version; b=UL30ianlPm3ceCAJ/XGTsYnPegYHZIiLh0m10qnr5eXCP14pULVONi1wnuTFrfMmyzJHgcwx0cEUvNMcG9n5qJFcFuxBAEczLbsTsjJAWTGckWQhPVY+LWRZfsT4HwT/k/4PwVTup4tuDGTeucKoYztaFuatoeva8giEc+XbbFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVN/ehdw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA222C2BBFC;
+	Tue, 30 Apr 2024 11:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476126;
-	bh=r01qXQzCioYTOwq41XnTsjEF207pFzqgiCXrRPpUvh8=;
+	s=korg; t=1714475503;
+	bh=l6D8ver5jj290xtoPMjvkhD4atFKhWPEiKyeY5fMSDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHxcAre+ZOEMsInRSNdeAYapDUZGkbXGpdQ5mDToe19CC6Pkdsna76jFSrI7qNws1
-	 LDuFIslQI5mkmm0y7UIhn+l6BhpRp/FeJ4D5kd+pfW/M2txoeeQf7dWXDkCdheOwYM
-	 U04NFyWHnYoeBg0QQ+wSo/vuwOGVLWXV8/jZA3DA=
+	b=oVN/ehdwMd9jsderDkPgh/BuZUvC7JhoqQdsftadLfAGO6wVuzaRFwdsiwQY7S9aX
+	 hHK1YChhQdMsB3yv/w9CjGNF/5ZXkx4ovrG7bKPMffTX8CLTgxSEtoiZvxujYZS9G/
+	 5l0lJ6y7LFvjAnJGuO4eInsAa3R4RDSorYQZxtHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Tesarik <petr@tesarici.cz>,
-	Simon Horman <horms@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 005/107] u64_stats: fix u64_stats_init() for lockdep when used repeatedly in one file
-Date: Tue, 30 Apr 2024 12:39:25 +0200
-Message-ID: <20240430103044.816720381@linuxfoundation.org>
+	Conor Dooley <conor.dooley@microchip.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.6 114/186] rust: make mutually exclusive with CFI_CLANG
+Date: Tue, 30 Apr 2024 12:39:26 +0200
+Message-ID: <20240430103101.342149379@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Tesarik <petr@tesarici.cz>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit 38a15d0a50e0a43778561a5861403851f0b0194c ]
+commit 8933cf4651e02853ca679be7b2d978dfcdcc5e0c upstream.
 
-Fix bogus lockdep warnings if multiple u64_stats_sync variables are
-initialized in the same file.
+On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
+loading a rust module will trigger a kernel panic. Support for
+sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
+they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
+to prevent configuring a kernel without symmetrical support for kfi.
 
-With CONFIG_LOCKDEP, seqcount_init() is a macro which declares:
+[ Matthew Maurer writes [1]:
 
-	static struct lock_class_key __key;
+    This patch is fine by me - the last patch needed for KCFI to be
+    functional in Rust just landed upstream last night, so we should
+    revisit this (in the form of enabling it) once we move to
+    `rustc-1.79.0` or later.
 
-Since u64_stats_init() is a function (albeit an inline one), all calls
-within the same file end up using the same instance, effectively treating
-them all as a single lock-class.
+  Ramon de C Valle also gave feedback [2] on the status of KCFI for
+  Rust and created a tracking issue [3] in upstream Rust.   - Miguel ]
 
-Fixes: 9464ca650008 ("net: make u64_stats_init() a function")
-Closes: https://lore.kernel.org/netdev/ea1567d9-ce66-45e6-8168-ac40a47d1821@roeck-us.net/
-Signed-off-by: Petr Tesarik <petr@tesarici.cz>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240404075740.30682-1-petr@tesarici.cz
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/rust-for-linux/CAGSQo024u1gHJgzsO38Xg3c4or+JupoPABQx_+0BLEpPg0cOEA@mail.gmail.com/ [1]
+Link: https://lore.kernel.org/rust-for-linux/CAOcBZOS2kPyH0Dm7Fuh4GC3=v7nZhyzBj_-dKu3PfAnrHZvaxg@mail.gmail.com/ [2]
+Link: https://github.com/rust-lang/rust/issues/123479 [3]
+Link: https://lore.kernel.org/r/20240404-providing-emporium-e652e359c711@spud
+[ Added feedback from the list, links, and used Cc for the tag. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/u64_stats_sync.h |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ init/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/u64_stats_sync.h
-+++ b/include/linux/u64_stats_sync.h
-@@ -70,7 +70,11 @@ struct u64_stats_sync {
- 
- 
- #if BITS_PER_LONG == 32 && defined(CONFIG_SMP)
--#define u64_stats_init(syncp)	seqcount_init(&(syncp)->seq)
-+#define u64_stats_init(syncp)				\
-+	do {						\
-+		struct u64_stats_sync *__s = (syncp);	\
-+		seqcount_init(&__s->seq);		\
-+	} while (0)
- #else
- static inline void u64_stats_init(struct u64_stats_sync *syncp)
- {
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1894,6 +1894,7 @@ config RUST
+ 	bool "Rust support"
+ 	depends on HAVE_RUST
+ 	depends on RUST_IS_AVAILABLE
++	depends on !CFI_CLANG
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
 
 
 
