@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B74F8B73E5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA2A8B72EE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF4FE1F22384
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 504E11F215A9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755F012D20F;
-	Tue, 30 Apr 2024 11:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD75E12C47A;
+	Tue, 30 Apr 2024 11:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuvs967H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VD6OvBKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DF412CDAE;
-	Tue, 30 Apr 2024 11:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2EF8801;
+	Tue, 30 Apr 2024 11:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476273; cv=none; b=jreapMCxlFv2zoBO76V5n55S4GtB4cwtNX7MyL/AhMfrdMVdP4xTT+WQVzUb04FIlr08SFKa42SEQjEB+DG4hZDtqAgn7p3D1WVyizXocTveeqFK95uO6hkpUtzc2anzZL8k0dbFSVLFPyZFvoJpj86yCSFC2aWDx+vHk/zGpck=
+	t=1714475610; cv=none; b=BUlS5sI1vw360iGu4g7P0yThOkRb8Ijpp1wsT+peOWyTforOVJNzw8lmJsXJBFri04/8/ng4bGDjnOg9Qd/8dShRJy41U6/DQTYkOTcmQBujrLS3rdqR/HhOWRU9bdZ9xkwBheZ4bAMho3GNX5KKnkDdLcZvIdcM6A5pp/iuXVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476273; c=relaxed/simple;
-	bh=rMN9/b3K5u7wkK6Ut/XvtAfZwCUvl3TeLY148J+V0OM=;
+	s=arc-20240116; t=1714475610; c=relaxed/simple;
+	bh=+cGhsZNLBaGvAYeTP7Ou1qNpOdyLBjh12Z4lZzq9YUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfrBvAMP8tyzy11LC8HbZzIoFQUdDD0P3/DYtJ3dX7lu6kvhWzvR5AZ4PTB3cC0Vpq8D3AhTEclkeAQpaiYn30v5RjchM0R9uSZcAusG84AXsJUiHaz6hHHV0esh6kzsIGwvwxVcCEGog+suFzTD/q5t9qNh/Ybdl+7uYeHPPGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuvs967H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965C0C2BBFC;
-	Tue, 30 Apr 2024 11:24:32 +0000 (UTC)
+	 MIME-Version; b=fUYFUq0gemiVFkP/MtW5RNWXQGNSwdVYVj7IRiaa0//TA1rPel7Bsv65PAhMOCkYLKzAzPUKOGQiZnyQxr+RZsO4KdyfydCPCSOT4oPY4OANZYZ/Nyjmc1WuGa7mtEyDNDdx5bisU4WNb52wFWOIrctaZbmr621lV78/4iawtao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VD6OvBKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF4CC2BBFC;
+	Tue, 30 Apr 2024 11:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476273;
-	bh=rMN9/b3K5u7wkK6Ut/XvtAfZwCUvl3TeLY148J+V0OM=;
+	s=korg; t=1714475610;
+	bh=+cGhsZNLBaGvAYeTP7Ou1qNpOdyLBjh12Z4lZzq9YUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uuvs967Hki4iKqUoqPCYXNJxsD5ZA+v3u7VU070Xf6gIwMsIwU/nSntpbbBjQbCyc
-	 zrmiNgKA83tTWNA57xtGMfOubplzQSrFVPfEFJoeTczAPEwO5pMXGW+A2HIl3QpYFa
-	 QWeS+6+Rqo2GV8fRSuWfUbLAv4H3m2FiN9/TKFr8=
+	b=VD6OvBKvPoNM0Ux3COHhet7DHdAR9ezP71FI8PfZ54A9NErk1Gxq5ZD1HCs/G4P/H
+	 hPsPqS9ZGiUdwsztV5RoBctgAHRixuUUgpVUb/DitL7l1uB6LeMs2uqbLPUeAbWOY1
+	 F1FWWCmm9QcL03E2rwZZHekXUa9iDr8IkeFd9hRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coia Prant <coiaprant@gmail.com>,
-	Lars Melin <larsm17@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 040/107] USB: serial: option: add Lonsung U8300/U9300 product
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 148/186] ethernet: Add helper for assigning packet type when dest address does not match device address
 Date: Tue, 30 Apr 2024 12:40:00 +0200
-Message-ID: <20240430103045.841121822@linuxfoundation.org>
+Message-ID: <20240430103102.330279041@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coia Prant <coiaprant@gmail.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit cf16ffa17c398434a77b8a373e69287c95b60de2 upstream.
+commit 6e159fd653d7ebf6290358e0330a0cb8a75cf73b upstream.
 
-Update the USB serial option driver to support Longsung U8300/U9300.
+Enable reuse of logic in eth_type_trans for determining packet type.
 
-For U8300
-
-Interface 4 is used by for QMI interface in stock firmware of U8300, the
-router which uses U8300 modem.
-Interface 5 is used by for ADB interface in stock firmware of U8300, the
-router which uses U8300 modem.
-
-Interface mapping is:
-0: unknown (Debug), 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI, 5: ADB
-
-T:  Bus=05 Lev=01 Prnt=03 Port=02 Cnt=01 Dev#=  4 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b05 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-For U9300
-
-Interface 1 is used by for ADB interface in stock firmware of U9300, the
-router which uses U9300 modem.
-Interface 4 is used by for QMI interface in stock firmware of U9300, the
-router which uses U9300 modem.
-
-Interface mapping is:
-0: ADB, 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI
-
-Note: Interface 3 of some models of the U9300 series can send AT commands.
-
-T:  Bus=05 Lev=01 Prnt=05 Port=04 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b3c Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-
-Tested successfully using Modem Manager on U9300.
-Tested successfully AT commands using If=1, If=2 and If=3 on U9300.
-
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
-Reviewed-by: Lars Melin <larsm17@gmail.com>
-[ johan: drop product defines, trim commit message ]
+Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240423181319.115860-3-rrameshbabu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/etherdevice.h |   25 +++++++++++++++++++++++++
+ net/ethernet/eth.c          |   12 +-----------
+ 2 files changed, 26 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2052,6 +2052,10 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(LONGCHEER_VENDOR_ID, 0x9803, 0xff),
- 	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b05),	/* Longsung U8300 */
-+	  .driver_info = RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b3c),	/* Longsung U9300 */
-+	  .driver_info = RSVD(0) | RSVD(4) },
- 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
- 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
- 	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
+--- a/include/linux/etherdevice.h
++++ b/include/linux/etherdevice.h
+@@ -608,6 +608,31 @@ static inline void eth_hw_addr_gen(struc
+ }
+ 
+ /**
++ * eth_skb_pkt_type - Assign packet type if destination address does not match
++ * @skb: Assigned a packet type if address does not match @dev address
++ * @dev: Network device used to compare packet address against
++ *
++ * If the destination MAC address of the packet does not match the network
++ * device address, assign an appropriate packet type.
++ */
++static inline void eth_skb_pkt_type(struct sk_buff *skb,
++				    const struct net_device *dev)
++{
++	const struct ethhdr *eth = eth_hdr(skb);
++
++	if (unlikely(!ether_addr_equal_64bits(eth->h_dest, dev->dev_addr))) {
++		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
++			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
++				skb->pkt_type = PACKET_BROADCAST;
++			else
++				skb->pkt_type = PACKET_MULTICAST;
++		} else {
++			skb->pkt_type = PACKET_OTHERHOST;
++		}
++	}
++}
++
++/**
+  * eth_skb_pad - Pad buffer to mininum number of octets for Ethernet frame
+  * @skb: Buffer to pad
+  *
+--- a/net/ethernet/eth.c
++++ b/net/ethernet/eth.c
+@@ -164,17 +164,7 @@ __be16 eth_type_trans(struct sk_buff *sk
+ 	eth = (struct ethhdr *)skb->data;
+ 	skb_pull_inline(skb, ETH_HLEN);
+ 
+-	if (unlikely(!ether_addr_equal_64bits(eth->h_dest,
+-					      dev->dev_addr))) {
+-		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
+-			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
+-				skb->pkt_type = PACKET_BROADCAST;
+-			else
+-				skb->pkt_type = PACKET_MULTICAST;
+-		} else {
+-			skb->pkt_type = PACKET_OTHERHOST;
+-		}
+-	}
++	eth_skb_pkt_type(skb, dev);
+ 
+ 	/*
+ 	 * Some variants of DSA tagging don't have an ethertype field
 
 
 
