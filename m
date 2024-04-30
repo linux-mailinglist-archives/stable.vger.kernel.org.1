@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B858B7431
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE4D8B73C1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D81F28640C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC7741F22079
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C165512D209;
-	Tue, 30 Apr 2024 11:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528F412D1F1;
+	Tue, 30 Apr 2024 11:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcAUJfZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Io22eqkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D66612C47A;
-	Tue, 30 Apr 2024 11:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F46F17592;
+	Tue, 30 Apr 2024 11:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476498; cv=none; b=soq7AbQW80OHtJgRO58qxv5uLwPGNTp4lFATzfOK+F1veD/smktorgsFrAV4ZorsutwsVzW2yBUOa+U3WpuxdPliXna2iQRJainhcdu4vagsjFpDij6VY1sfsrOLQfiycJnvVJTJpTsT9+ZIgUfAwdzV7ecmwX42LGz38HvyZjo=
+	t=1714476175; cv=none; b=XSsq2RfFAdPO6qUHhEPNG6zhLuuhT37LN+sQhbzZzZ7VFGxSOvTsA4ucFdDvtNlG50ji4B1UHSp5TOSKtEYIUc/tcrWAXL2+NLpTvN4DQ/1ftWawJXXnjxJeYCbupV9wM2Qkhw4zVs2ExyKhLBbwRDMz7ebB8VylaQTiIm2wh9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476498; c=relaxed/simple;
-	bh=f2YcC8l7hDFJEqXXpkn/F5FGnLgSa3w5NRt/kClzInA=;
+	s=arc-20240116; t=1714476175; c=relaxed/simple;
+	bh=EJl3l/cbxQ+sqSjILYwKAajzAWlsQcmC6/FYBXvmJeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=np/o7BzGuEHRiup8NZnj2Yigbnd73czTF55P8/E44CUgJz+SznIOI6VlJhzMgnyYK06goVRk/wunHiZgddOwiEMje8KDzDc92FVdyD69AUuAyHTXbIf3HaQgK+ztumf4W9EqodoV18x/6QEX5nOS6wLfkWq2YoxcdZPEak7oZKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcAUJfZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035E4C2BBFC;
-	Tue, 30 Apr 2024 11:28:17 +0000 (UTC)
+	 MIME-Version; b=jkj43Ww1ANaiXHilT3JfCzpj6i/3TT2JV5EZ9i5shB7RoXc1aQ9HBePwFwALH8WmDiEWwEu8XF3+vwB3LACB+ecbIeNqfw9fJ7zC8ut8VF/tp92NGRIpB+DgyeLwjuPuEixXrmx0BdjnTpzcQfZULtplczlsW5s5hvkLGNnA8ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Io22eqkA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0F5C2BBFC;
+	Tue, 30 Apr 2024 11:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476498;
-	bh=f2YcC8l7hDFJEqXXpkn/F5FGnLgSa3w5NRt/kClzInA=;
+	s=korg; t=1714476174;
+	bh=EJl3l/cbxQ+sqSjILYwKAajzAWlsQcmC6/FYBXvmJeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IcAUJfZCwzugc+P822D3wnwPRqJDgye3fE1XAo3gsijzuj59JSjsJXH8uNSliLF0h
-	 +53C30FGMwdYAL3yJK4QlFndVwYm9cFLyoB9isA3vwhhZLmwbq2buO7A1iPCnSKRMp
-	 amoI8x5EmmXmIEhvYLWN2F2P3iZfc6q6hvNYkaYk=
+	b=Io22eqkAbgg2o/QtdmiNZ0eJLEz/VjD2fnMJpR7E6YG+yh1MoPqfpJy8nhUXCU73Y
+	 aFTD4KNyWe9K6miV00HF5a8ntLn+5eXN0+4hr/+SnR5Nf08VMav5Sml9di6ku8GcKZ
+	 loFHp7rQZ3g5xVSBgeubw9nfvWRKWgb0hox7Zs6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Biao Huang <biao.huang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/110] mlxsw: spectrum_acl_tcam: Fix warning during rehash
+Subject: [PATCH 5.4 058/107] arm64: dts: mt2712: add ethernet device node
 Date: Tue, 30 Apr 2024 12:40:18 +0200
-Message-ID: <20240430103049.015408146@linuxfoundation.org>
+Message-ID: <20240430103046.369402676@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,135 +62,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Biao Huang <biao.huang@mediatek.com>
 
-[ Upstream commit 743edc8547a92b6192aa1f1b6bb78233fa21dc9b ]
+[ Upstream commit e9cabfd046d55d05f11d05fccc4019aa4bad29c6 ]
 
-As previously explained, the rehash delayed work migrates filters from
-one region to another. This is done by iterating over all chunks (all
-the filters with the same priority) in the region and in each chunk
-iterating over all the filters.
+This patch add device node for mt2712 ethernet.
 
-When the work runs out of credits it stores the current chunk and entry
-as markers in the per-work context so that it would know where to resume
-the migration from the next time the work is scheduled.
-
-Upon error, the chunk marker is reset to NULL, but without resetting the
-entry markers despite being relative to it. This can result in migration
-being resumed from an entry that does not belong to the chunk being
-migrated. In turn, this will eventually lead to a chunk being iterated
-over as if it is an entry. Because of how the two structures happen to
-be defined, this does not lead to KASAN splats, but to warnings such as
-[1].
-
-Fix by creating a helper that resets all the markers and call it from
-all the places the currently only reset the chunk marker. For good
-measures also call it when starting a completely new rehash. Add a
-warning to avoid future cases.
-
-[1]
-WARNING: CPU: 7 PID: 1076 at drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c:407 mlxsw_afk_encode+0x242/0x2f0
-Modules linked in:
-CPU: 7 PID: 1076 Comm: kworker/7:24 Tainted: G        W          6.9.0-rc3-custom-00880-g29e61d91b77b #29
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-RIP: 0010:mlxsw_afk_encode+0x242/0x2f0
-[...]
-Call Trace:
- <TASK>
- mlxsw_sp_acl_atcam_entry_add+0xd9/0x3c0
- mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
- mlxsw_sp_acl_tcam_vchunk_migrate_all+0x109/0x290
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x6c/0x470
- process_one_work+0x151/0x370
- worker_thread+0x2cb/0x3e0
- kthread+0xd0/0x100
- ret_from_fork+0x34/0x50
- </TASK>
-
-Fixes: 6f9579d4e302 ("mlxsw: spectrum_acl: Remember where to continue rehash migration")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/cc17eed86b41dd829d39b07906fec074a9ce580e.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Biao Huang <biao.huang@mediatek.com>
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Stable-dep-of: 3baac7291eff ("arm64: dts: mediatek: mt2712: fix validation errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlxsw/spectrum_acl_tcam.c        | 20 ++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt2712-evb.dts | 74 +++++++++++++++++++++
+ arch/arm64/boot/dts/mediatek/mt2712e.dtsi   | 65 ++++++++++++++++++
+ 2 files changed, 139 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index adaad9fc5fa50..1a6c774c8b7b0 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -792,6 +792,17 @@ static void mlxsw_sp_acl_tcam_vregion_rehash_work(struct work_struct *work)
- 		mlxsw_sp_acl_tcam_vregion_rehash_work_schedule(vregion);
- }
+diff --git a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
+index 45e37aa67ce73..9d20cabf4f699 100644
+--- a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
+@@ -105,7 +105,81 @@
+ 	proc-supply = <&cpus_fixed_vproc1>;
+ };
  
-+static void
-+mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(struct mlxsw_sp_acl_tcam_rehash_ctx *ctx)
-+{
-+	/* The entry markers are relative to the current chunk and therefore
-+	 * needs to be reset together with the chunk marker.
-+	 */
-+	ctx->current_vchunk = NULL;
-+	ctx->start_ventry = NULL;
-+	ctx->stop_ventry = NULL;
-+}
++&eth {
++	phy-mode ="rgmii-rxid";
++	phy-handle = <&ethernet_phy0>;
++	mediatek,tx-delay-ps = <1530>;
++	snps,reset-gpio = <&pio 87 GPIO_ACTIVE_LOW>;
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&eth_default>;
++	pinctrl-1 = <&eth_sleep>;
++	status = "okay";
 +
- static void
- mlxsw_sp_acl_tcam_rehash_ctx_vchunk_changed(struct mlxsw_sp_acl_tcam_vchunk *vchunk)
- {
-@@ -814,7 +825,7 @@ mlxsw_sp_acl_tcam_rehash_ctx_vregion_changed(struct mlxsw_sp_acl_tcam_vregion *v
- 	 * the current chunk pointer to make sure all chunks
- 	 * are properly migrated.
- 	 */
--	vregion->rehash.ctx.current_vchunk = NULL;
-+	mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(&vregion->rehash.ctx);
- }
- 
- static struct mlxsw_sp_acl_tcam_vregion *
-@@ -1317,7 +1328,7 @@ mlxsw_sp_acl_tcam_vchunk_migrate_end(struct mlxsw_sp *mlxsw_sp,
- {
- 	mlxsw_sp_acl_tcam_chunk_destroy(mlxsw_sp, vchunk->chunk2);
- 	vchunk->chunk2 = NULL;
--	ctx->current_vchunk = NULL;
-+	mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(ctx);
- }
- 
- static int
-@@ -1349,6 +1360,8 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
- 		ventry = list_first_entry(&vchunk->ventry_list,
- 					  typeof(*ventry), list);
- 
-+	WARN_ON(ventry->vchunk != vchunk);
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		ethernet_phy0: ethernet-phy@5 {
++			compatible = "ethernet-phy-id0243.0d90";
++			reg = <0x5>;
++		};
++	};
++};
 +
- 	list_for_each_entry_from(ventry, &vchunk->ventry_list, list) {
- 		/* During rollback, once we reach the ventry that failed
- 		 * to migrate, we are done.
-@@ -1440,7 +1453,7 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
- 		 * to vregion->region.
- 		 */
- 		swap(vregion->region, vregion->region2);
--		ctx->current_vchunk = NULL;
-+		mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(ctx);
- 		ctx->this_is_rollback = true;
- 		err2 = mlxsw_sp_acl_tcam_vchunk_migrate_all(mlxsw_sp, vregion,
- 							    ctx, credits);
-@@ -1499,6 +1512,7 @@ mlxsw_sp_acl_tcam_vregion_rehash_start(struct mlxsw_sp *mlxsw_sp,
+ &pio {
++	eth_default: eth_default {
++		tx_pins {
++			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GBE_TXD3>,
++				 <MT2712_PIN_72_GBE_TXD2__FUNC_GBE_TXD2>,
++				 <MT2712_PIN_73_GBE_TXD1__FUNC_GBE_TXD1>,
++				 <MT2712_PIN_74_GBE_TXD0__FUNC_GBE_TXD0>,
++				 <MT2712_PIN_75_GBE_TXC__FUNC_GBE_TXC>,
++				 <MT2712_PIN_76_GBE_TXEN__FUNC_GBE_TXEN>;
++			drive-strength = <MTK_DRIVE_8mA>;
++		};
++		rx_pins {
++			pinmux = <MT2712_PIN_78_GBE_RXD3__FUNC_GBE_RXD3>,
++				 <MT2712_PIN_79_GBE_RXD2__FUNC_GBE_RXD2>,
++				 <MT2712_PIN_80_GBE_RXD1__FUNC_GBE_RXD1>,
++				 <MT2712_PIN_81_GBE_RXD0__FUNC_GBE_RXD0>,
++				 <MT2712_PIN_82_GBE_RXDV__FUNC_GBE_RXDV>,
++				 <MT2712_PIN_84_GBE_RXC__FUNC_GBE_RXC>;
++			input-enable;
++		};
++		mdio_pins {
++			pinmux = <MT2712_PIN_85_GBE_MDC__FUNC_GBE_MDC>,
++				 <MT2712_PIN_86_GBE_MDIO__FUNC_GBE_MDIO>;
++			drive-strength = <MTK_DRIVE_8mA>;
++			input-enable;
++		};
++	};
++
++	eth_sleep: eth_sleep {
++		tx_pins {
++			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GPIO71>,
++				 <MT2712_PIN_72_GBE_TXD2__FUNC_GPIO72>,
++				 <MT2712_PIN_73_GBE_TXD1__FUNC_GPIO73>,
++				 <MT2712_PIN_74_GBE_TXD0__FUNC_GPIO74>,
++				 <MT2712_PIN_75_GBE_TXC__FUNC_GPIO75>,
++				 <MT2712_PIN_76_GBE_TXEN__FUNC_GPIO76>;
++		};
++		rx_pins {
++			pinmux = <MT2712_PIN_78_GBE_RXD3__FUNC_GPIO78>,
++				 <MT2712_PIN_79_GBE_RXD2__FUNC_GPIO79>,
++				 <MT2712_PIN_80_GBE_RXD1__FUNC_GPIO80>,
++				 <MT2712_PIN_81_GBE_RXD0__FUNC_GPIO81>,
++				 <MT2712_PIN_82_GBE_RXDV__FUNC_GPIO82>,
++				 <MT2712_PIN_84_GBE_RXC__FUNC_GPIO84>;
++			input-disable;
++		};
++		mdio_pins {
++			pinmux = <MT2712_PIN_85_GBE_MDC__FUNC_GPIO85>,
++				 <MT2712_PIN_86_GBE_MDIO__FUNC_GPIO86>;
++			input-disable;
++			bias-disable;
++		};
++	};
++
+ 	usb0_id_pins_float: usb0_iddig {
+ 		pins_iddig {
+ 			pinmux = <MT2712_PIN_12_IDDIG_P0__FUNC_IDDIG_A>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
+index 3b12bb313dcdf..4de82e91649f9 100644
+--- a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
+@@ -632,6 +632,71 @@
+ 		status = "disabled";
+ 	};
  
- 	ctx->hints_priv = hints_priv;
- 	ctx->this_is_rollback = false;
-+	mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(ctx);
- 
- 	return 0;
- 
++	stmmac_axi_setup: stmmac-axi-config {
++		snps,wr_osr_lmt = <0x7>;
++		snps,rd_osr_lmt = <0x7>;
++		snps,blen = <0 0 0 0 16 8 4>;
++	};
++
++	mtl_rx_setup: rx-queues-config {
++		snps,rx-queues-to-use = <1>;
++		snps,rx-sched-sp;
++		queue0 {
++			snps,dcb-algorithm;
++			snps,map-to-dma-channel = <0x0>;
++			snps,priority = <0x0>;
++		};
++	};
++
++	mtl_tx_setup: tx-queues-config {
++		snps,tx-queues-to-use = <3>;
++		snps,tx-sched-wrr;
++		queue0 {
++			snps,weight = <0x10>;
++			snps,dcb-algorithm;
++			snps,priority = <0x0>;
++		};
++		queue1 {
++			snps,weight = <0x11>;
++			snps,dcb-algorithm;
++			snps,priority = <0x1>;
++		};
++		queue2 {
++			snps,weight = <0x12>;
++			snps,dcb-algorithm;
++			snps,priority = <0x2>;
++		};
++	};
++
++	eth: ethernet@1101c000 {
++		compatible = "mediatek,mt2712-gmac";
++		reg = <0 0x1101c000 0 0x1300>;
++		interrupts = <GIC_SPI 237 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-names = "macirq";
++		mac-address = [00 55 7b b5 7d f7];
++		clock-names = "axi",
++			      "apb",
++			      "mac_main",
++			      "ptp_ref";
++		clocks = <&pericfg CLK_PERI_GMAC>,
++			 <&pericfg CLK_PERI_GMAC_PCLK>,
++			 <&topckgen CLK_TOP_ETHER_125M_SEL>,
++			 <&topckgen CLK_TOP_ETHER_50M_SEL>;
++		assigned-clocks = <&topckgen CLK_TOP_ETHER_125M_SEL>,
++				  <&topckgen CLK_TOP_ETHER_50M_SEL>;
++		assigned-clock-parents = <&topckgen CLK_TOP_ETHERPLL_125M>,
++					 <&topckgen CLK_TOP_APLL1_D3>;
++		power-domains = <&scpsys MT2712_POWER_DOMAIN_AUDIO>;
++		mediatek,pericfg = <&pericfg>;
++		snps,axi-config = <&stmmac_axi_setup>;
++		snps,mtl-rx-config = <&mtl_rx_setup>;
++		snps,mtl-tx-config = <&mtl_tx_setup>;
++		snps,txpbl = <1>;
++		snps,rxpbl = <1>;
++		clk_csr = <0>;
++		status = "disabled";
++	};
++
+ 	mmc0: mmc@11230000 {
+ 		compatible = "mediatek,mt2712-mmc";
+ 		reg = <0 0x11230000 0 0x1000>;
 -- 
 2.43.0
 
