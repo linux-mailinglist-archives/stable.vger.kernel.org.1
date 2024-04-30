@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191B38B7385
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3B88B7400
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A7191C231D7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ED8A1C23393
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB68F12CDA5;
-	Tue, 30 Apr 2024 11:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A2B12D215;
+	Tue, 30 Apr 2024 11:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLMTrAlZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5QcjqGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687EF8801;
-	Tue, 30 Apr 2024 11:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5321212C47A;
+	Tue, 30 Apr 2024 11:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476005; cv=none; b=psKU3iAyLjELdEXiHv9CoO2VhlKD3sycpe6mpXzuBNPxDePKni5CYJMRtGABhns3weow9fON8fvilKJoMsn3nymyVxEmr3VhgUSVkmm9aUVbi7+8dn3r6G+BLW5eClQIbMCWpL0WeryBMNNF+pUQIz1EEtH/UkwF2hT79smJh24=
+	t=1714476349; cv=none; b=RaMwq0VNrgaVeXWtHtoMGEyuILIeHeashKVmEFU5qFzHxnmLd4S0L684AtaTAIAgM8U9+EblDg3IOJw0qA8KFlyYq3eZw8mu3V7rFUQOB7nDxlvETmh0QqEZmJ81d32syHgnYPZ4z6swZM35w3OCoPvNgG4V1FMbelsjlXK9z3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476005; c=relaxed/simple;
-	bh=jdrLYYb2pPU/uE5/TRPWVEZjHf5LtJzyzlGsQpwBlu8=;
+	s=arc-20240116; t=1714476349; c=relaxed/simple;
+	bh=9UlOT9HEzGvkMj9cZh/v7LwuIYDyn6HrgBZMS2qXuEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsUFW3YwkXqp8p/N8zCDkg19M6m6vz2cGc9JRqgoQxd763X55f66/5+QFTZ0kZg+qfhWL7pHViEExTGJ0LdJdg1si0tpg6SY6VJiGkNe87eqE7WAvuchGbySXwsQuMdhVHn7yhvCIhFf6y+ZRvQUySsIInpZw8UCWlzqgyOr2EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLMTrAlZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA6CC2BBFC;
-	Tue, 30 Apr 2024 11:20:04 +0000 (UTC)
+	 MIME-Version; b=NdShYz670OzVdy8rW+uCkb+NLoImBTBgzRPBzvHmsc+02H6tdyc9wg0Zwwr4nigkoe8NvGDqurNad5EoAISRDysu6LYkumsRqb58/DPNNUUZoOTJdi8jLH1FeIhu7g8CP+qBkaxevFk2m9L9H0WLAElQeG4YW5WKxBK+8sc05TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5QcjqGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614C4C2BBFC;
+	Tue, 30 Apr 2024 11:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476005;
-	bh=jdrLYYb2pPU/uE5/TRPWVEZjHf5LtJzyzlGsQpwBlu8=;
+	s=korg; t=1714476348;
+	bh=9UlOT9HEzGvkMj9cZh/v7LwuIYDyn6HrgBZMS2qXuEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLMTrAlZS3eN2jlmKQm0TAT3c5GMi0IK93YElgUBeXhHXWCPzoiniGDfJo/LehJ6c
-	 80sqhg05iUNSsUICFE7QQtX0t+C8N/v2Z57IGKkhWSdfcIFAF6x/CLsqyxjQI75uYu
-	 jognZ1/8EQOtj8zWFuBN7sIJrWNdpgJ9iT1l37RM=
+	b=a5QcjqGzFF0Dy77uILAomy9rqXmNAyUdy0SRjAYGF1HyYEdg1DS72oK48cC6m4bBl
+	 KMNSDf2uunW8QodMSI9/HTxVLa7P++V+hdwpf4QyANO9IqZh2eh1yQeXvJ1NkVErJq
+	 cLi3rh5fM76YHkAR9hr+a5VddljBcQm87SqpjX5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.15 76/80] fbdev: fix incorrect address computation in deferred IO
+	Nathan Chancellor <nathan@kernel.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.4 088/107] Bluetooth: Fix type of len in {l2cap,sco}_sock_getsockopt_old()
 Date: Tue, 30 Apr 2024 12:40:48 +0200
-Message-ID: <20240430103045.656528789@linuxfoundation.org>
+Message-ID: <20240430103047.254811120@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 78d9161d2bcd442d93d917339297ffa057dbee8c upstream.
+commit 9bf4e919ccad613b3596eebf1ff37b05b6405307 upstream.
 
-With deferred IO enabled, a page fault happens when data is written to the
-framebuffer device. Then driver determines which page is being updated by
-calculating the offset of the written virtual address within the virtual
-memory area, and uses this offset to get the updated page within the
-internal buffer. This page is later copied to hardware (thus the name
-"deferred IO").
+After an innocuous optimization change in LLVM main (19.0.0), x86_64
+allmodconfig (which enables CONFIG_KCSAN / -fsanitize=thread) fails to
+build due to the checks in check_copy_size():
 
-This offset calculation is only correct if the virtual memory area is
-mapped to the beginning of the internal buffer. Otherwise this is wrong.
-For example, if users do:
-    mmap(ptr, 4096, PROT_WRITE, MAP_FIXED | MAP_SHARED, fd, 0xff000);
+  In file included from net/bluetooth/sco.c:27:
+  In file included from include/linux/module.h:13:
+  In file included from include/linux/stat.h:19:
+  In file included from include/linux/time.h:60:
+  In file included from include/linux/time32.h:13:
+  In file included from include/linux/timex.h:67:
+  In file included from arch/x86/include/asm/timex.h:6:
+  In file included from arch/x86/include/asm/tsc.h:10:
+  In file included from arch/x86/include/asm/msr.h:15:
+  In file included from include/linux/percpu.h:7:
+  In file included from include/linux/smp.h:118:
+  include/linux/thread_info.h:244:4: error: call to '__bad_copy_from'
+  declared with 'error' attribute: copy source size is too small
+    244 |                         __bad_copy_from();
+        |                         ^
 
-Then the virtual memory area will mapped at offset 0xff000 within the
-internal buffer. This offset 0xff000 is not accounted for, and wrong page
-is updated.
+The same exact error occurs in l2cap_sock.c. The copy_to_user()
+statements that are failing come from l2cap_sock_getsockopt_old() and
+sco_sock_getsockopt_old(). This does not occur with GCC with or without
+KCSAN or Clang without KCSAN enabled.
 
-Correct the calculation by using vmf->pgoff instead. With this change, the
-variable "offset" will no longer hold the exact offset value, but it is
-rounded down to multiples of PAGE_SIZE. But this is still correct, because
-this variable is only used to calculate the page offset.
+len is defined as an 'int' because it is assigned from
+'__user int *optlen'. However, it is clamped against the result of
+sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
+platforms). This is done with min_t() because min() requires compatible
+types, which results in both len and the result of sizeof() being casted
+to 'unsigned int', meaning len changes signs and the result of sizeof()
+is truncated. From there, len is passed to copy_to_user(), which has a
+third parameter type of 'unsigned long', so it is widened and changes
+signs again. This excessive casting in combination with the KCSAN
+instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
+call, failing the build.
 
-Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Closes: https://lore.kernel.org/linux-fbdev/271372d6-e665-4e7f-b088-dee5f4ab341a@oracle.com
-Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240423115053.4490-1-namcao@linutronix.de
-[rebase to v5.15]
-Signed-off-by: Nam Cao <namcao@linutronix.de>
+The official recommendation from LLVM developers is to consistently use
+long types for all size variables to avoid the unnecessary casting in
+the first place. Change the type of len to size_t in both
+l2cap_sock_getsockopt_old() and sco_sock_getsockopt_old(). This clears
+up the error while allowing min_t() to be replaced with min(), resulting
+in simpler code with no casts and fewer implicit conversions. While len
+is a different type than optlen now, it should result in no functional
+change because the result of sizeof() will clamp all values of optlen in
+the same manner as before.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2007
+Link: https://github.com/llvm/llvm-project/issues/85647
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fb_defio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/l2cap_sock.c |    7 ++++---
+ net/bluetooth/sco.c        |    7 ++++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -149,7 +149,7 @@ static vm_fault_t fb_deferred_io_mkwrite
- 	unsigned long offset;
- 	vm_fault_t ret;
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -405,7 +405,8 @@ static int l2cap_sock_getsockopt_old(str
+ 	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
+ 	struct l2cap_options opts;
+ 	struct l2cap_conninfo cinfo;
+-	int len, err = 0;
++	int err = 0;
++	size_t len;
+ 	u32 opt;
  
--	offset = (vmf->address - vmf->vma->vm_start);
-+	offset = vmf->pgoff << PAGE_SHIFT;
+ 	BT_DBG("sk %p", sk);
+@@ -450,7 +451,7 @@ static int l2cap_sock_getsockopt_old(str
+ 		opts.max_tx   = chan->max_tx;
+ 		opts.txwin_size = chan->tx_win;
  
- 	/* this is a callback we get when userspace first tries to
- 	write to the page. we schedule a workqueue. that workqueue
+-		len = min_t(unsigned int, len, sizeof(opts));
++		len = min(len, sizeof(opts));
+ 		if (copy_to_user(optval, (char *) &opts, len))
+ 			err = -EFAULT;
+ 
+@@ -500,7 +501,7 @@ static int l2cap_sock_getsockopt_old(str
+ 		cinfo.hci_handle = chan->conn->hcon->handle;
+ 		memcpy(cinfo.dev_class, chan->conn->hcon->dev_class, 3);
+ 
+-		len = min_t(unsigned int, len, sizeof(cinfo));
++		len = min(len, sizeof(cinfo));
+ 		if (copy_to_user(optval, (char *) &cinfo, len))
+ 			err = -EFAULT;
+ 
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -880,7 +880,8 @@ static int sco_sock_getsockopt_old(struc
+ 	struct sock *sk = sock->sk;
+ 	struct sco_options opts;
+ 	struct sco_conninfo cinfo;
+-	int len, err = 0;
++	int err = 0;
++	size_t len;
+ 
+ 	BT_DBG("sk %p", sk);
+ 
+@@ -902,7 +903,7 @@ static int sco_sock_getsockopt_old(struc
+ 
+ 		BT_DBG("mtu %d", opts.mtu);
+ 
+-		len = min_t(unsigned int, len, sizeof(opts));
++		len = min(len, sizeof(opts));
+ 		if (copy_to_user(optval, (char *)&opts, len))
+ 			err = -EFAULT;
+ 
+@@ -920,7 +921,7 @@ static int sco_sock_getsockopt_old(struc
+ 		cinfo.hci_handle = sco_pi(sk)->conn->hcon->handle;
+ 		memcpy(cinfo.dev_class, sco_pi(sk)->conn->hcon->dev_class, 3);
+ 
+-		len = min_t(unsigned int, len, sizeof(cinfo));
++		len = min(len, sizeof(cinfo));
+ 		if (copy_to_user(optval, (char *)&cinfo, len))
+ 			err = -EFAULT;
+ 
 
 
 
