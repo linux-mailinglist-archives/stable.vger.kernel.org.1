@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1FD8B72D8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F258B7347
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9D89283381
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B571B2195C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0738B12DD8E;
-	Tue, 30 Apr 2024 11:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6005412CD9B;
+	Tue, 30 Apr 2024 11:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gR4SzCIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oedqhrAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2A312DD83;
-	Tue, 30 Apr 2024 11:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA271E50A;
+	Tue, 30 Apr 2024 11:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475541; cv=none; b=driDxkrHcE4ioKg0C7I6R2SFeEI8yDb0aBTlMNg9vLzVFuYNRjIVJQX69/r0/siXdLPZEiar3G9EZetnpa2VdI005gDT8z8Znk2IerRqV1/Qw++NHSmAKguBw9xz16u+a6x4/AixxYmBR+l09tH3y1zFgKHOFjjq2VHvWIgtLCM=
+	t=1714475836; cv=none; b=JnJyPU4zb2owdqaY4lKxzUhuN7FLaOLDL6nhrW/dqgn+qFIr6V8jFJ4CgsfJRt6ShYNZIro1e6Kmoi5gu5EgP874tN+bkfaAo4HuKaFirlc8xUaZNTGnW+6h4qRGt+ydaZ6sw8hII3E9+Fs+f0hzH4HPOYzDm0uuTfilQLYZRI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475541; c=relaxed/simple;
-	bh=vtSBKbfqeb9jakt4H+TxbMZDamK64PYHs+vcI2GbqNs=;
+	s=arc-20240116; t=1714475836; c=relaxed/simple;
+	bh=J+L5GHvDk54ZPsYbW9yBU0UCi5zae6vAGQqhX/Gye08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDcLHHbQADb+UZBIWgFVKpmCFeIBvSuEFlz5dkuHzPLute8fjSOxUYx9ozoQw7K/104sluvHefXSOkM54wDAQBW3U46R0riugJ3/Aaz7JDII73NgFbuoLMHTT5hzfRITU0z7ErEKocZ8lNiS8ogEdbXCmImj9uhU549i4XvT5Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gR4SzCIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A820C2BBFC;
-	Tue, 30 Apr 2024 11:12:20 +0000 (UTC)
+	 MIME-Version; b=Gmpki4Pb8137Tiibwt/g6DY4O4Kun/UZud91iczROL1Mn4I3i6O6cejk4BybH+3arPegSxMIWZyovTUmCWBJiKN6jURj6T5dbDsJBubOiBUV7McvG6FAbPQiwVaMuPCPYW7yrJpdR3/Sk/yRBSphJU4rFFvcnGS+OG7oLCTlHB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oedqhrAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F48C2BBFC;
+	Tue, 30 Apr 2024 11:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475541;
-	bh=vtSBKbfqeb9jakt4H+TxbMZDamK64PYHs+vcI2GbqNs=;
+	s=korg; t=1714475836;
+	bh=J+L5GHvDk54ZPsYbW9yBU0UCi5zae6vAGQqhX/Gye08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gR4SzCIHRib7yGrcB5Vcm8LQy6dlpDEDSPpKx28mEL33G/h6/1ZIjkBFJrfWZQwQB
-	 /D7eU+059JsaZUSORPZ0NiviEI0yOJ1Lb6BVf5vG1NK1+GzUB8dgCfBxB8KPaED/0/
-	 437mkwZVj7Spdl4lDSm9GWDY6SVCKUlCNJ52/Z0Q=
+	b=oedqhrApYs1X49ky+X9TP9cYHy1BT3HUznnIjZWSDZF/sF8w9OOhif5vUqWsSgUJO
+	 dB1wNHtqMGTPbVlpLcYq89f6klA3s5xMMBaHN4VTpFSNqjgsV6bFcn3F4BpNwjpUz3
+	 Xxq6J0u+J9kYOTUslYNknHPDU2EVLZr7CvG6QIEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 128/186] smb3: missing lock when picking channel
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 08/80] arm64: dts: rockchip: Remove unsupported node from the Pinebook Pro dts
 Date: Tue, 30 Apr 2024 12:39:40 +0200
-Message-ID: <20240430103101.747949481@linuxfoundation.org>
+Message-ID: <20240430103043.654915861@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Dragan Simic <dsimic@manjaro.org>
 
-commit 8094a600245e9b28eb36a13036f202ad67c1f887 upstream.
+[ Upstream commit 43853e843aa6c3d47ff2b0cce898318839483d05 ]
 
-Coverity spotted a place where we should have been holding the
-channel lock when accessing the ses channel index.
+Remove a redundant node from the Pine64 Pinebook Pro dts, which is intended
+to provide a value for the delay in PCI Express enumeration, but that isn't
+supported without additional out-of-tree kernel patches.
 
-Addresses-Coverity: 1582039 ("Data race condition (MISSING_LOCK)")
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There were already efforts to upstream those kernel patches, because they
+reportedly make some PCI Express cards (such as LSI SAS HBAs) usable in
+Pine64 RockPro64 (which is also based on the RK3399);  otherwise, those PCI
+Express cards fail to enumerate.  However, providing the required background
+and explanations proved to be a tough nut to crack, which is the reason why
+those patches remain outside of the kernel mainline for now.
+
+If those out-of-tree patches eventually become upstreamed, the resulting
+device-tree changes will almost surely belong to the RK3399 SoC dtsi.  Also,
+the above-mentioned unusable-without-out-of-tree-patches PCI Express devices
+are in all fairness not usable in a Pinebook Pro without some extensive
+hardware modifications, which is another reason to delete this redundant
+node.  When it comes to the Pinebook Pro, only M.2 NVMe SSDs can be installed
+out of the box (using an additional passive adapter PCB sold separately by
+Pine64), which reportedly works fine with no additional patches.
+
+Fixes: 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/0f82c3f97cb798d012270d13b34d8d15305ef293.1711923520.git.dsimic@manjaro.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/transport.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -1057,9 +1057,11 @@ struct TCP_Server_Info *cifs_pick_channe
- 		index = (uint)atomic_inc_return(&ses->chan_seq);
- 		index %= ses->chan_count;
- 	}
-+
-+	server = ses->chans[index].server;
- 	spin_unlock(&ses->chan_lock);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 9e5d07f5712e6..e5d057ef8160e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -790,7 +790,6 @@
+ };
  
--	return ses->chans[index].server;
-+	return server;
- }
- 
- int
+ &pcie0 {
+-	bus-scan-delay-ms = <1000>;
+ 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
+ 	num-lanes = <4>;
+ 	pinctrl-names = "default";
+-- 
+2.43.0
+
 
 
 
