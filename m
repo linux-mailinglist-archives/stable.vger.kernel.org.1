@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-42106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4848B7170
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628F08B7396
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFB941C225CA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F303288854
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D61312C805;
-	Tue, 30 Apr 2024 10:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CF512CD9B;
+	Tue, 30 Apr 2024 11:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqAT3CwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOVFGk4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3880812C487;
-	Tue, 30 Apr 2024 10:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A108801;
+	Tue, 30 Apr 2024 11:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474590; cv=none; b=bbEukWmdY8j+S54wdXi7eZytXB+o53Bftl12J1G+SSagFyj3UgH4RYnaniDetoSLWL89+C9bO7MPBP/cQzb33hHDKWpK3iR7bYrrYeadkWeh/bJ5FPUvdQen6g05E4TvSY7O/LfmLOzrE78xVqDl2wOOw72Xq7Qh3bDmSYTzu8s=
+	t=1714476056; cv=none; b=T2HMtEi7xf9C1ZV+yGxSnrBPPxhD6G78MPjkFsnhz/sX2eQPJ7k0w1CB5+d69EOoBm/Z7OFtHF6gTlpfG2mz6KJHPcLI5IMGF/23I2ZsV4ma2L/ZZMmFYRbg3hMPAuF33+aTibLT1uQo+dOC2GJc1JiMJKj3I9XBARIDe8sfIEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474590; c=relaxed/simple;
-	bh=f6ew9JXI7fgevhYo4FiHkIi4YvD5apzYcEt6J4e3UQ4=;
+	s=arc-20240116; t=1714476056; c=relaxed/simple;
+	bh=BIOB3psQ+Hn+AyIs/Zhl7s7628hHA9TYeWTQA14krj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OwimI1clVjr++VSbiYXqFBxuYpDpaeqHaMt1s1RYu7rr3rXBQu0uJYkgRGUoiUOHyV7g9zVO9ief48QMkIRnOKL6xpgZ22vzOdhEUbPFT1ixS8ADJLJi4tM6rAS2B2nJXZeevzh+LIoYoHF47UoYBLQoNrMUFZ4sGEQS9XYm80w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqAT3CwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A0EC2BBFC;
-	Tue, 30 Apr 2024 10:56:29 +0000 (UTC)
+	 MIME-Version; b=LVq8XkoN76w4I8kisuT26e5vJ+6+DR9JdZ9QDabKFiMHElHCK6o6GJR1RDMlSbxs5R7HEt18NiHtZOaZP2XalDMcK3NYSvG8QlfcV0CrfBrFqU3aw8gaJQ8PS8pSzVlOQIAJU7E7M/yrkGLBJdmLmKJDZ5ckuDCvf06fUcZdrlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOVFGk4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66FCC2BBFC;
+	Tue, 30 Apr 2024 11:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474589;
-	bh=f6ew9JXI7fgevhYo4FiHkIi4YvD5apzYcEt6J4e3UQ4=;
+	s=korg; t=1714476056;
+	bh=BIOB3psQ+Hn+AyIs/Zhl7s7628hHA9TYeWTQA14krj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqAT3CwOImXeAY/3t4Oidnz5Pyd84UO59/YyXckPC+94z/oubf/dyhG95JWfG/6qb
-	 uPaLZ45yDrCaqpeMNzIMc+KElf2qOsNwYloQJZUHr0VPTIRpQxhYKdKvrf+KUvbCId
-	 VOFgXNHMcvVN/VXza8kB4v/ZTvMt6y4pgk/DvaFE=
+	b=sOVFGk4L7MsV5JZfHSGbKYEurFM3XADYyPw80z0C0iiLMGcxrSC05d9nB44JcDcCJ
+	 A/zVbWK/unY2biYnqudgjkKsQceOduaDwAt3vmOCCjGnRHdYd/K7dbU+SpX79sPzC9
+	 F4tdtrMtfsZcpMbvC3GbW7VMzupxiPcID3YM0M0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 202/228] idma64: Dont try to serve interrupts when device is powered off
+	Yuanhe Shu <xiangzao@linux.alibaba.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.4 020/107] selftests/ftrace: Limit length in subsystem-enable tests
 Date: Tue, 30 Apr 2024 12:39:40 +0200
-Message-ID: <20240430103109.631096004@linuxfoundation.org>
+Message-ID: <20240430103045.261139315@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Yuanhe Shu <xiangzao@linux.alibaba.com>
 
-[ Upstream commit 9140ce47872bfd89fca888c2f992faa51d20c2bc ]
+commit 1a4ea83a6e67f1415a1f17c1af5e9c814c882bb5 upstream.
 
-When iDMA 64-bit device is powered off, the IRQ status register
-is all 1:s. This is never happen in real case and signalling that
-the device is simply powered off. Don't try to serve interrupts
-that are not ours.
+While sched* events being traced and sched* events continuously happen,
+"[xx] event tracing - enable/disable with subsystem level files" would
+not stop as on some slower systems it seems to take forever.
+Select the first 100 lines of output would be enough to judge whether
+there are more than 3 types of sched events.
 
-Fixes: 667dfed98615 ("dmaengine: add a driver for Intel integrated DMA 64-bit")
-Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
-Closes: https://lore.kernel.org/r/700bbb84-90e1-4505-8ff0-3f17ea8bc631@gmail.com
-Tested-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240321120453.1360138-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 815b18ea66d6 ("ftracetest: Add basic event tracing test cases")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idma64.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
-index 78a938969d7d7..1398814d8fbb6 100644
---- a/drivers/dma/idma64.c
-+++ b/drivers/dma/idma64.c
-@@ -171,6 +171,10 @@ static irqreturn_t idma64_irq(int irq, void *dev)
- 	u32 status_err;
- 	unsigned short i;
+--- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
++++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
+@@ -22,7 +22,7 @@ echo 'sched:*' > set_event
  
-+	/* Since IRQ may be shared, check if DMA controller is powered on */
-+	if (status == GENMASK(31, 0))
-+		return IRQ_NONE;
-+
- 	dev_vdbg(idma64->dma.dev, "%s: status=%#x\n", __func__, status);
+ yield
  
- 	/* Check if we have any interrupt from the DMA controller */
--- 
-2.43.0
-
+-count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
+@@ -33,7 +33,7 @@ echo 1 > events/sched/enable
+ 
+ yield
+ 
+-count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
+@@ -44,7 +44,7 @@ echo 0 > events/sched/enable
+ 
+ yield
+ 
+-count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
+ if [ $count -ne 0 ]; then
+     fail "any of scheduler events should not be recorded"
+ fi
 
 
 
