@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-42705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76ACC8B7437
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71AA58B7307
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C04A1F22CAE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0E9D1F240E8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FD712D209;
-	Tue, 30 Apr 2024 11:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB0E12F360;
+	Tue, 30 Apr 2024 11:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE9qwM/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z52dbDfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F6712BF32;
-	Tue, 30 Apr 2024 11:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBE412D770;
+	Tue, 30 Apr 2024 11:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476519; cv=none; b=tWHsOoRUrSAk3TLb3ea/NGXT4punjeibdnWdtxhtjzK8GL0LrxWGv678phMsLB5F26BvE455ynGJbRZzUE/KG23f/b3qIg8Ta5p+IaER+eLqd+nMAmXXvVHPHsXsLrUswCx3qrPnUV98OmJzznTwecVSsEyUn+vwdvBLOnZeSR0=
+	t=1714475659; cv=none; b=kGe1l1tijoDSKzVnixEMW3SNoFQ6St9ilB7SG3MzggHzr3ZOLnb8yKtBmKUE3hqg4jMKxye7QAje2EVCtw0wJlpvKxmyGqntb3GCj2Q3wWSVeOpfazoBFo4afIlwF6PKT1vJ9QNPG47TMSXQeesbiPs+MPmzFORxjMM6suMAa7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476519; c=relaxed/simple;
-	bh=oRHSn/3LaOecRJtf5/SD50H0IU+L5PhYbuSUi3Jc4lk=;
+	s=arc-20240116; t=1714475659; c=relaxed/simple;
+	bh=N3Seo0Y0v8aBgO5QlgTAXOjh0gqOAxz37ilXfdXvKOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIHLzzqlGPD8EqMiPp19XqM+CutOfNGqLpwy8d0As4p1tWmZOgYrS8Si1Xy4Oxc3XO/P+caTotKdCY2O5XM+1bEQ3bWvJI4jOxu4yInUQrpUg/oIQA+HBBN2cuBHwRhkn28BFUbmSQ0ibLfHnVjRgU4gKf8FQhr+cWhXmb+Qp7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE9qwM/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769CEC2BBFC;
-	Tue, 30 Apr 2024 11:28:38 +0000 (UTC)
+	 MIME-Version; b=LzlNlf9rhvJFwjme94vTSeeZl8wbbV9GjKWnmGGkjsFFRlkXhQOD5hqrt0B5jtqjm311ydcZJzr5OI5jrEaz2HyBYwrb3w9/O/xqQ36dl7/iPSQNX1DsdX69wvK962ulCm5V9Iu2uaPO3bb/yQnLUPr67S5USSmufodxD99cXNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z52dbDfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E60C4AF19;
+	Tue, 30 Apr 2024 11:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476518;
-	bh=oRHSn/3LaOecRJtf5/SD50H0IU+L5PhYbuSUi3Jc4lk=;
+	s=korg; t=1714475658;
+	bh=N3Seo0Y0v8aBgO5QlgTAXOjh0gqOAxz37ilXfdXvKOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tE9qwM/ypgl2E9EV35cvZn6ZK0S6JLh2PZ3kCAB5Avnm2KOQj1oQPD4ixu2VsYC/F
-	 Gob3jIXwH/eLR/8ye88KXFrio5/ezev1lYrow8yNLXohUpp3+bZSPQi5fchkdJjrF3
-	 s9qpF+npQZaSms0vvxbtH9V9z/zo89h9iZ22Ri6Q=
+	b=z52dbDfdkGdknGVHsn6oDIaTALEe76ajFVgpl/a+pRD+UUPq4PKeT953DGk+o3Q/6
+	 6Hzv0iZTzMkNREdszOjkWo/paB/loxpp+IKz+85jVKX36LM8zsM3/KJwwH2T9Nt67s
+	 bIgTyMw2gpditxVgmv5cnv3USJagdlkzVwvDS5Q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/110] arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 125/186] mm: create FOLIO_FLAG_FALSE and FOLIO_TYPE_OPS macros
 Date: Tue, 30 Apr 2024 12:39:37 +0200
-Message-ID: <20240430103047.815692028@linuxfoundation.org>
+Message-ID: <20240430103101.661289671@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +66,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 945a7c8570916650a415757d15d83e0fa856a686 ]
+commit 12bbaae7635a56049779db3bef6e7140d9aa5f67 upstream.
 
-The PCIE_WAKE# has a diode used as a level-shifter, and is used as an
-input pin. While the SoC default is to enable the pull-up, the core
-rk3399 pinconf for this pin opted for pull-none. So as to not disturb
-the behaviour of other boards which may rely on pull-none instead of
-pull-up, set the needed pull-up only for RK3399 Puma.
+Following the separation of FOLIO_FLAGS from PAGEFLAGS, separate
+FOLIO_FLAG_FALSE from PAGEFLAG_FALSE and FOLIO_TYPE_OPS from
+PAGE_TYPE_OPS.
 
-Fixes: 60fd9f72ce8a ("arm64: dts: rockchip: add Haikou baseboard with RK3399-Q7 SoM")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-2-309f83da110a@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240321142448.1645400-3-willy@infradead.org
+Fixes: 9c5ccf2db04b ("mm: remove HUGETLB_PAGE_DTOR")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/page-flags.h |   70 ++++++++++++++++++++++++++++++---------------
+ 1 file changed, 47 insertions(+), 23 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index a060419bca901..a77f922107c20 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -401,6 +401,11 @@
- 	gpio1830-supply = <&vcc_1v8>;
- };
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -432,30 +432,51 @@ static __always_inline int TestClearPage
+ 	TESTSETFLAG(uname, lname, policy)				\
+ 	TESTCLEARFLAG(uname, lname, policy)
  
-+&pcie_clkreqn_cpm {
-+	rockchip,pins =
-+		<2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_up>;
-+};
++#define FOLIO_TEST_FLAG_FALSE(name)					\
++static inline bool folio_test_##name(const struct folio *folio)		\
++{ return false; }
++#define FOLIO_SET_FLAG_NOOP(name)					\
++static inline void folio_set_##name(struct folio *folio) { }
++#define FOLIO_CLEAR_FLAG_NOOP(name)					\
++static inline void folio_clear_##name(struct folio *folio) { }
++#define __FOLIO_SET_FLAG_NOOP(name)					\
++static inline void __folio_set_##name(struct folio *folio) { }
++#define __FOLIO_CLEAR_FLAG_NOOP(name)					\
++static inline void __folio_clear_##name(struct folio *folio) { }
++#define FOLIO_TEST_SET_FLAG_FALSE(name)					\
++static inline bool folio_test_set_##name(struct folio *folio)		\
++{ return false; }
++#define FOLIO_TEST_CLEAR_FLAG_FALSE(name)				\
++static inline bool folio_test_clear_##name(struct folio *folio)		\
++{ return false; }
 +
- &pinctrl {
- 	i2c8 {
- 		i2c8_xfer_a: i2c8-xfer {
--- 
-2.43.0
-
++#define FOLIO_FLAG_FALSE(name)						\
++FOLIO_TEST_FLAG_FALSE(name)						\
++FOLIO_SET_FLAG_NOOP(name)						\
++FOLIO_CLEAR_FLAG_NOOP(name)
++
+ #define TESTPAGEFLAG_FALSE(uname, lname)				\
+-static inline bool folio_test_##lname(const struct folio *folio) { return false; } \
++FOLIO_TEST_FLAG_FALSE(lname)						\
+ static inline int Page##uname(const struct page *page) { return 0; }
+ 
+ #define SETPAGEFLAG_NOOP(uname, lname)					\
+-static inline void folio_set_##lname(struct folio *folio) { }		\
++FOLIO_SET_FLAG_NOOP(lname)						\
+ static inline void SetPage##uname(struct page *page) {  }
+ 
+ #define CLEARPAGEFLAG_NOOP(uname, lname)				\
+-static inline void folio_clear_##lname(struct folio *folio) { }		\
++FOLIO_CLEAR_FLAG_NOOP(lname)						\
+ static inline void ClearPage##uname(struct page *page) {  }
+ 
+ #define __CLEARPAGEFLAG_NOOP(uname, lname)				\
+-static inline void __folio_clear_##lname(struct folio *folio) { }	\
++__FOLIO_CLEAR_FLAG_NOOP(lname)						\
+ static inline void __ClearPage##uname(struct page *page) {  }
+ 
+ #define TESTSETFLAG_FALSE(uname, lname)					\
+-static inline bool folio_test_set_##lname(struct folio *folio)		\
+-{ return 0; }								\
++FOLIO_TEST_SET_FLAG_FALSE(lname)					\
+ static inline int TestSetPage##uname(struct page *page) { return 0; }
+ 
+ #define TESTCLEARFLAG_FALSE(uname, lname)				\
+-static inline bool folio_test_clear_##lname(struct folio *folio)	\
+-{ return 0; }								\
++FOLIO_TEST_CLEAR_FLAG_FALSE(lname)					\
+ static inline int TestClearPage##uname(struct page *page) { return 0; }
+ 
+ #define PAGEFLAG_FALSE(uname, lname) TESTPAGEFLAG_FALSE(uname, lname)	\
+@@ -937,35 +958,38 @@ static inline int page_has_type(struct p
+ 	return page_type_has_type(page->page_type);
+ }
+ 
++#define FOLIO_TYPE_OPS(lname, fname)					\
++static __always_inline bool folio_test_##fname(const struct folio *folio)\
++{									\
++	return folio_test_type(folio, PG_##lname);			\
++}									\
++static __always_inline void __folio_set_##fname(struct folio *folio)	\
++{									\
++	VM_BUG_ON_FOLIO(!folio_test_type(folio, 0), folio);		\
++	folio->page.page_type &= ~PG_##lname;				\
++}									\
++static __always_inline void __folio_clear_##fname(struct folio *folio)	\
++{									\
++	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
++	folio->page.page_type |= PG_##lname;				\
++}
++
+ #define PAGE_TYPE_OPS(uname, lname, fname)				\
++FOLIO_TYPE_OPS(lname, fname)						\
+ static __always_inline int Page##uname(const struct page *page)		\
+ {									\
+ 	return PageType(page, PG_##lname);				\
+ }									\
+-static __always_inline int folio_test_##fname(const struct folio *folio)\
+-{									\
+-	return folio_test_type(folio, PG_##lname);			\
+-}									\
+ static __always_inline void __SetPage##uname(struct page *page)		\
+ {									\
+ 	VM_BUG_ON_PAGE(!PageType(page, 0), page);			\
+ 	page->page_type &= ~PG_##lname;					\
+ }									\
+-static __always_inline void __folio_set_##fname(struct folio *folio)	\
+-{									\
+-	VM_BUG_ON_FOLIO(!folio_test_type(folio, 0), folio);		\
+-	folio->page.page_type &= ~PG_##lname;				\
+-}									\
+ static __always_inline void __ClearPage##uname(struct page *page)	\
+ {									\
+ 	VM_BUG_ON_PAGE(!Page##uname(page), page);			\
+ 	page->page_type |= PG_##lname;					\
+-}									\
+-static __always_inline void __folio_clear_##fname(struct folio *folio)	\
+-{									\
+-	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
+-	folio->page.page_type |= PG_##lname;				\
+-}									\
++}
+ 
+ /*
+  * PageBuddy() indicates that the page is free and in the buddy system
 
 
 
