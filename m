@@ -1,161 +1,177 @@
-Return-Path: <stable+bounces-41771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19188B6618
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 01:16:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF9A8B66AF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 02:02:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20CB31F21FBB
-	for <lists+stable@lfdr.de>; Mon, 29 Apr 2024 23:16:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 322941C213BD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 00:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE08127E30;
-	Mon, 29 Apr 2024 23:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D668938C;
+	Tue, 30 Apr 2024 00:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivaldi.net header.i=@vivaldi.net header.b="HtobcFcy";
-	dkim=pass (2048-bit key) header.d=vivaldi.net header.i=@vivaldi.net header.b="A2t+mgaE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bPWmrphM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.vivaldi.net (smtp.vivaldi.net [31.209.137.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCF81EA90;
-	Mon, 29 Apr 2024 23:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.209.137.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4E8161
+	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 00:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714432604; cv=none; b=Xp09ucTg6URKxds5twe7vQN1n6eLfBjIsjvG6K12pEtoaLTb3qnqe0v16wnWHj8A3TZKsWR2nwGwsixNJcdQ6tQuF4m0qmYqaRAYyMMXUBI46DD6RTW0IPqvTJgSraVVGzqwjkDfvg5w745fyXx2tGonsqClTH7JWOmTFuQyHec=
+	t=1714435368; cv=none; b=NeiRiEq4cMqSOIYOXfwKj2BGh9N9iWmnr0+Se9vIfbHvPMfxXgpcRCjDS+T6ms03QHmgPPv3rPUfws/u3Ysydgo/QFwVYCUdBOCKpNkZpv+r8Md7NZS4xJVQmyVeQEwaaJ/wci5YSgZLJDJw2FZIgyBbrCvtASQZUSxRpULggA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714432604; c=relaxed/simple;
-	bh=byf9Z71+sb0GLOb3GdyWbm5OBgcDZx9meWJrrQxJ3yU=;
-	h=Date:From:To:Cc:Subject:Message-ID:Content-Type:
-	 Content-Disposition; b=UWIFbtJ39XEvoZ/nyITPiORlinKeeWrnZA4QqxSfvQIn6ZCfwF4GOMhGZ7AKZSM0WgWdF9rfOn6V/UuvvPeG8dVMj03MG4GbtCxjTlPhLunMXXMh6N7d7g623L9H8y9SnhyjG9ZC5qN7O2sDseQSmg6hob25rNN5WcGvFJ4XOsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vivaldi.net; spf=pass smtp.mailfrom=vivaldi.net; dkim=pass (2048-bit key) header.d=vivaldi.net header.i=@vivaldi.net header.b=HtobcFcy; dkim=pass (2048-bit key) header.d=vivaldi.net header.i=@vivaldi.net header.b=A2t+mgaE; arc=none smtp.client-ip=31.209.137.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vivaldi.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivaldi.net
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.vivaldi.net (Postfix) with ESMTP id 0BB6ABD871;
-	Mon, 29 Apr 2024 23:16:28 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp.vivaldi.net 0BB6ABD871
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivaldi.net;
-	s=default; t=1714432588;
-	bh=gmlOdeuOOqOrPjRFOowspShiT6SLu9pZIyUtwclj2CM=;
-	h=Date:From:To:Cc:Subject:From;
-	b=HtobcFcyrnUvMtU9i7nM2fVDAtYTPhl0TbvUYAgKthzbirMl+v09V2V5godpz/xV7
-	 MFpZdHQqrhln6jlPdyWq4kM6o4Yec5TvtcD3mD6SqkLu02F6mRRnLVlJDy3Pv6m5vH
-	 pkwzDQEAaTHqWTxCAw3eUu3FzWCLA5wV8KXpDB8D2vcWwh3P4qCgNuHbMlntIJMHA8
-	 vP+ib7wlc+qHONW19xWhdYM65Y0knFMvSOPp4sLWCNG3oUTTNmZ/ywcAQkl5HRS15S
-	 UqhJis+zHxw3whFWHzUspRitblMdgLw9SwLbpPr7nqJxW8+LKSA5BqNfmkWU20oXKk
-	 ZbN9pS4DQ5hAA==
-X-Virus-Scanned: Debian amavisd-new at smtp.vivaldi.net
-Received: from smtp.vivaldi.net ([127.0.0.1])
-	by localhost (mxo.viv.dc01 [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id KXrbchY7OmMQ; Mon, 29 Apr 2024 23:16:24 +0000 (UTC)
-Date: Mon, 29 Apr 2024 18:16:05 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp.vivaldi.net 673B8BD6FC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivaldi.net;
-	s=default; t=1714432584;
-	bh=gmlOdeuOOqOrPjRFOowspShiT6SLu9pZIyUtwclj2CM=;
-	h=Date:From:To:Cc:Subject:From;
-	b=A2t+mgaEWjnyp81IIVmf++ILe0m/k+aihZovm2QIzZfgZAfZ2WYIrDerKMGrFYncx
-	 wm0YlasYu0ONoAChz5KaPa2rQ2C3zLjrjIO8HLw/0ndPtn+rjr8Xt3YCEnju+YTaji
-	 5GFb6o1IxTMTCV67WtBx/a4pFunD39dlJSGj4aDWEM1WZmsqqtYgySbzKFVTeBvA+w
-	 3iV5o2P8mG8GHQcp2JPPywYy2EjSSQQn8MXvd6KTRAoedJJE1ts4qJ1G3FVBbpjn56
-	 UXEXSr1AMpblXrVRofOa6svAx7INUmcQupcukOU1/oWzwdAD1zgFxZVDg9e9HqtG1Z
-	 cv++XT95GJucQ==
-From: Isaac Ganoung <inventor500@vivaldi.net>
-To: jtornosm@redhat.com
-Cc: jtornosm@redhat.com, davem@davemloft.net, edumazet@google.com, 
-	jarkko.palviainen@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	stable@vger.kernel.org
-Subject: RE: [PATCH v2] net: usb: ax88179_178a: avoid writing the mac address
- before first reading
-Message-ID: <hzhomd7d7uc4dcnpvd6ki6v2f6camzm5ufqp2syqudrvzzfxi4@ykcirhonbqql>
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="n3kbqcmcqkpkrtj4"
-Content-Disposition: inline
+	s=arc-20240116; t=1714435368; c=relaxed/simple;
+	bh=J/bn0PDKjY7OLk7uvCmeNUbuo3DX2c5Ogzce4zs/bP4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YklgmrojV+kJVH4LwBfEGFUjarfsWoLJQf5WClNwyyO6N2mA1JYtwFfD7PbSiSQCW/vBY/tQ5Ykj+QE36GXwNVW2sr5fCCIEKFmAyqFwaNVMQ1TDHeQcAq9dPL066QtzrTWbpJg2kF8+YEL1/eGi5LzBYQHAZhfMgy1ynKpATqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bPWmrphM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714435365;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lWZkiX6zsf6w2HczntfinTak8uCIlY7jOU3B2wGIYng=;
+	b=bPWmrphMCB/wAgqDsDQ9gch3kfcqi+aEixhKMdaNHNAkdHCSpY46UA+JI5IcrUIW1WyxAf
+	0MjwtJavH6q1iby2ftTytI+BnjXqP3TG8qxWlmoeua5FmY2r3qWiqzbVf9Xa4LBhUKG8HI
+	6OvC7qTZUTgTT0g0o7LJKMWTJ/4hA/I=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-501-mTijwM27N-6Yt7PBHQTwog-1; Mon, 29 Apr 2024 20:02:43 -0400
+X-MC-Unique: mTijwM27N-6Yt7PBHQTwog-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7463F834FB4;
+	Tue, 30 Apr 2024 00:02:43 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.6])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D32940C6CC1;
+	Tue, 30 Apr 2024 00:02:40 +0000 (UTC)
+Date: Tue, 30 Apr 2024 08:02:37 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Cc: stable@vger.kernel.org, Chen Jiahao <chenjiahao16@huawei.com>,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH] Revert "riscv: kdump: fix crashkernel reserving problem
+ on RISC-V"
+Message-ID: <ZjA1Hbik7NiTkZOw@MiWiFi-R3L-srv>
+References: <20240416085647.14376-1-xingmingzheng@iscas.ac.cn>
+ <2024041927-remedial-choking-c548@gregkh>
+ <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
+ <2024041939-isotope-client-3d75@gregkh>
+ <a5493f44-2aac-4005-992b-f2ac90cd1835@iscas.ac.cn>
+ <2024042318-muppet-snippet-617c@gregkh>
+ <5d49f626-a66f-4969-a03f-fcf83e2d2bab@iscas.ac.cn>
+ <2024042944-wriggle-countable-627c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-
-
---n3kbqcmcqkpkrtj4
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <2024042944-wriggle-countable-627c@gregkh>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
+On 04/29/24 at 12:52pm, Greg Kroah-Hartman wrote:
+> On Wed, Apr 24, 2024 at 11:40:16AM +0800, Mingzheng Xing wrote:
+> > On 4/23/24 21:12, Greg Kroah-Hartman wrote:
+> > > On Fri, Apr 19, 2024 at 10:55:44PM +0800, Mingzheng Xing wrote:
+> > >> On 4/19/24 21:58, Greg Kroah-Hartman wrote:
+> > >>> On Fri, Apr 19, 2024 at 08:26:07PM +0800, Mingzheng Xing wrote:
+> > >>>> On 4/19/24 18:44, Greg Kroah-Hartman wrote:
+> > >>>>> On Tue, Apr 16, 2024 at 04:56:47PM +0800, Mingzheng Xing wrote:
+> > >>>>>> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which has been
+> > >>>>>> merged into the mainline commit 39365395046f ("riscv: kdump: use generic
+> > >>>>>> interface to simplify crashkernel reservation"), but the latter's series of
+> > >>>>>> patches are not included in the 6.6 branch.
+> > >>>>>>
+> > >>>>>> This will result in the loss of Crash kernel data in /proc/iomem, and kdump
+> > >>>>>> loading the kernel will also cause an error:
+> > >>>>>>
+> > >>>>>> ```
+> > >>>>>> Memory for crashkernel is not reserved
+> > >>>>>> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
+> > >>>>>> Then try to loading kdump kernel
+> > >>>>>> ```
+> > >>>>>>
+> > >>>>>> After revert this patch, verify that it works properly on QEMU riscv.
+> > >>>>>>
+> > >>>>>> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv
+> > >>>>>> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+> > >>>>>> ---
+> > >>>>>
+> > >>>>> I do not understand, what branch is this for?  Why have you not cc:ed
+> > >>>>> any of the original developers here?  Why does Linus's tree not have the
+> > >>>>> same problem?  And the first sentence above does not make much sense as
+> > >>>>> a 6.6 change is merged into 6.7?
+> > >>>>
+> > >>>> Sorry, I'll try to explain it more clearly.
+> > >>>>
+> > >>>> This commit 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem
+> > >>>> on RISC-V") should not have existed because this patch has been merged into
+> > >>>> another larger patch [1]. Here is that complete series:
+> > >>>
+> > >>> What "larger patch"?  It is in Linus's tree, so it's not part of
+> > >>> something different, right?  I'm confused.
+> > >>>
+> > >>
+> > >> Hi, Greg
+> > >>
+> > >> The email Cc:ed to author Chen Jiahao was bounced by the system, so maybe
+> > >> we can wait for Baoquan He to confirm.
+> > >>
+> > >> This is indeed a bit confusing. The Fixes: tag in 1d6cd2146c2b58 is a false
+> > >> reference. If I understand correctly, this is similar to the following
+> > >> scenario:
+> > >>
+> > >> A Fixes B, B doesn't go into linus mainline. C contains A, C goes into linus
+> > >> mainline 6.7, and C has more reconstruction code. but A goes into 6.6, so
+> > >> it doesn't make sense for A to be in the mainline, and there's no C in 6.6
+> > >> but there's an A, thus resulting in an incomplete code that creates an error.
+> > >>
+> > >> The link I quoted [1] shows that Baoquan had expressed an opinion on this
+> > >> at the time.
+> > >>
+> > >> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
+> > > 
+> > > I'm sorry, but I still do not understand what I need to do here for a
+> > > stable branch.  Do I need to apply something?  Revert something?
+> > > Something else?
+> > 
+> > Hi, Greg
+> > 
+> > I saw Baoquan's reply in thread[1], thanks Baoquan for confirming.
+> > 
+> > So I think the right thing to do would be just to REVERT the commit
+> > 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem on RISC-V")
+> > in the 6.6.y branch, which is exactly the patch I submitted. If I need to
+> > make changes to my commit message, feel free to let me know and I'll post
+> > the second version.
+> > 
+> > Link: https://lore.kernel.org/stable/ZihbAYMOI4ylazpt@MiWiFi-R3L-srv [1]
+> 
+> Can someone just send me a patch series showing EXACTLY what needs to be
+> done here, as I am _still_ confused.
 
-Hello,
+I think Mingzheng's patch is good to apply in the 6.6.y stable branch.
 
-I am using a TP-Link UE306 USB Ethernet adapter. The kernel detects it as an ASIX AX88179A USB Ethernet adapter. When using a different MAC address than the adapter's own (i.e. MAC address randomization), I am unable to send or receive packets unless set to promiscuous mode.
+Hi Mingzheng,
 
-I am using NetworkManager to manage my connections. When I set 802-3-ethernet.cloned-mac-address to the device's MAC address in the connection settings (i.e. `nmcli con edit), the device works as expected. When that property is not set (null value), the device is only able to receive packets when set to promiscuous mode.
+Can you resend this patch to Greg and stable@vger.kernel.org and CC me?
+I would like to Ack your patch, but can't find the original patch since
+you didn't cc me.
 
-uname -a output: Linux hostname 6.8.8-arch1-1 #1 SMP PREEMPT_DYNAMIC Sun, 28 Apr 2024 18:53:26 +0000 x86_64 GNU/Linux
-This is Arch Linux's kernel. The patches applied are here: <https://github.com/archlinux/linux/releases/tag/v6.8.8-arch1>
+Thanks
+Baoquan
 
-dmesg:
-[37988.917741] usb 2-2: new SuperSpeed USB device number 4 using xhci_hcd
-[37989.208722] usb 2-2: New USB device found, idVendor=0b95, idProduct=1790, bcdDevice= 2.00
-[37989.208744] usb 2-2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[37989.208753] usb 2-2: Product: AX88179A
-[37989.208760] usb 2-2: Manufacturer: ASIX
-[37989.208766] usb 2-2: SerialNumber: 0003B40D
-[37989.481930] cdc_ncm 2-2:2.0: MAC-Address: <removed>
-[37989.481949] cdc_ncm 2-2:2.0: setting rx_max = 16384
-[37989.494646] cdc_ncm 2-2:2.0: setting tx_max = 16384
-[37989.506072] cdc_ncm 2-2:2.0 eth1: register 'cdc_ncm' at usb-0000:00:14.0-2, CDC NCM (NO ZLP), <removed>
-
-journalctl (from when not in promiscuous mode):
-Apr 29 17:34:47 hostname kernel: usb 2-1: new SuperSpeed USB device number 5 using xhci_hcd
-Apr 29 17:34:48 hostname kernel: usb 2-1: New USB device found, idVendor=0b95, idProduct=1790, bcdDevice= 2.00
-Apr 29 17:34:48 hostname kernel: usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-Apr 29 17:34:48 hostname kernel: usb 2-1: Product: AX88179A
-Apr 29 17:34:48 hostname kernel: usb 2-1: Manufacturer: ASIX
-Apr 29 17:34:48 hostname kernel: usb 2-1: SerialNumber: 0003B40D
-Apr 29 17:34:48 hostname kernel: cdc_ncm 2-1:2.0: MAC-Address: <removed>
-Apr 29 17:34:48 hostname kernel: cdc_ncm 2-1:2.0: setting rx_max = 16384
-Apr 29 17:34:48 hostname kernel: cdc_ncm 2-1:2.0: setting tx_max = 16384
-Apr 29 17:34:48 hostname kernel: cdc_ncm 2-1:2.0 eth1: register 'cdc_ncm' at usb-0000:00:14.0-1, CDC NCM (NO ZLP), <removed>
-Apr 29 17:34:48 hostname NetworkManager[5652]: <info>  [1714430088.5005] manager: (eth1): new Ethernet device (/org/freedesktop/NetworkManager/Devices/14)
-Apr 29 17:34:48 hostname mtp-probe[6423]: checking bus 2, device 5: "/sys/devices/pci0000:00/0000:00:14.0/usb2/2-1"
-Apr 29 17:34:48 hostname mtp-probe[6423]: bus: 2, device: 5 was not an MTP device
-Apr 29 17:34:49 hostname (udev-worker)[6422]: Network interface NamePolicy= disabled on kernel command line.
-Apr 29 17:34:49 hostname NetworkManager[5652]: <info>  [1714430089.1558] device (eth1): state change: unmanaged -> unavailable (reason 'managed', sys-iface-state: 'external')
-Apr 29 17:34:49 hostname mtp-probe[6456]: checking bus 2, device 5: "/sys/devices/pci0000:00/0000:00:14.0/usb2/2-1"
-Apr 29 17:34:49 hostname mtp-probe[6456]: bus: 2, device: 5 was not an MTP device
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.2247] device (eth1): carrier: link connected
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.2255] device (eth1): state change: unavailable -> disconnected (reason 'carrier-changed', sys-iface-state: 'managed')
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.2275] policy: auto-activating connection 'Wired connection 2' (e1106b48-8695-3ed4-b512-a0909ddaa247)
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.2279] device (eth1): Activation: starting connection 'Wired connection 2' (e1106b48-8695-3ed4-b512-a0909ddaa247)
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.2280] device (eth1): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.2282] manager: NetworkManager state is now CONNECTING
-Apr 29 17:34:51 hostname NetworkManager[5652]: <warn>  [1714430091.2284] platform-linux: do-change-link[9]: failure 16 (Device or resource busy)
-Apr 29 17:34:51 hostname systemd[1]: NetworkManager-dispatcher.service: Deactivated successfully.
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.3634] device (eth1): set-hw-addr: set-cloned MAC address to 6A:0D:A2:E2:9D:A6 (random)
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.3646] device (eth1): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.3729] device (eth1): state change: config -> ip-config (reason 'none', sys-iface-state: 'managed')
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.3740] dhcp4 (eth1): activation: beginning transaction (timeout in 45 seconds)
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.3791] dhcp4 (eth1): dhclient started with pid 6459
-Apr 29 17:34:51 hostname dhclient[6459]: DHCPREQUEST for 192.168.1.169 on eth1 to 255.255.255.255 port 67
-Apr 29 17:34:51 hostname dhclient[6459]: DHCPNAK from 192.168.1.1
-Apr 29 17:34:51 hostname NetworkManager[5652]: <info>  [1714430091.4578] dhcp4 (eth1): state changed no lease
-
-Thanks,
-Isaac Ganoung
-
---n3kbqcmcqkpkrtj4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iKkFABYIACkiIQWu9OejSHRObh6wRzaYOt2b+sY1MbPYEve6H7+92tvbBgUCZjAq
-LgAALDEByM/RpJzrN4tsyayqlxQ6z1zu7GXBcKiNOWq4mkAk5ZNOS+EMr9Xm44S1
-Pq44eyG79m3d2NHw2fIMAAHHez3UYwCShykJyyvbM/dRBY4LoMxfxV1fcuca9udH
-Iosz4Sv/gnMLaxGkmS3cwLQ2RRSf3DEtdCYA
-=gXUS
------END PGP SIGNATURE-----
-
---n3kbqcmcqkpkrtj4--
 
