@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303D68B7395
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6888B7187
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF08528884D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 631CBB23024
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0C212D1E8;
-	Tue, 30 Apr 2024 11:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CFA12C805;
+	Tue, 30 Apr 2024 10:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uG4Z4BlZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGWAoYU4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF688801;
-	Tue, 30 Apr 2024 11:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78DA12C499;
+	Tue, 30 Apr 2024 10:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476053; cv=none; b=KGDbAy/byiqa4aIuQQ7NK5znIcONouVK1JQcob7W7Re7EgCrnVAUpzHpmpZsGCPOBIuI2M8K4SHTvtXMXHFQmCh051qjLIuaWyswJ9edE6qNgpLmZl+H6YvRtQjZEmUIg42KWpU+zZHEPPaFqDRUabC30C266MpCYqgcTmFQNc0=
+	t=1714474650; cv=none; b=jV1SluqOlHQye4a02ossnEBBG+OgCmjmGOk0ugROn6y/TL2DInQlArNOwOYWZYiGjRSAQB9C5XDPSvc1lllX7TFLc8HhFipaitGJDi0Wdf51Y/qz4spO+eT5UUQFXZRaK5cXao3l8fhawPZDgfhY6ITI7Ew0UzIa3lL+VYWzRzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476053; c=relaxed/simple;
-	bh=KnfD3PEtQI1s1Bhd1kjMc+BqSkY3EYz1zbeFad/uZ50=;
+	s=arc-20240116; t=1714474650; c=relaxed/simple;
+	bh=/NPikGZAQlmbGd9c8vuVlKXxGnbAqRl5P6cJy/9tAVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDosXavEyWKB8sTS/GEqz3wcMhd2WxQppOH4fA7EciYP8IiIVSzUAMHxnTEAHhYMUN/dwNLI3ST4t/VjIpDTn93T1T7yD5qIXe+F+A5hgbuQmxV67j87P/unMo42XV18p8rTzJTeIkGX1M9F0z1Un+MCaIsbS8imfHuzF6EANI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uG4Z4BlZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95D1C2BBFC;
-	Tue, 30 Apr 2024 11:20:52 +0000 (UTC)
+	 MIME-Version; b=e/0hrZz2YmYcg8Z1NMh3DOUxHa+RqyRWQMOitiXDRhdtrSRTWagbc/KMjReEQyS5xRq42vxo/fXQPOytCGPTygbl20DPuaLNChg/n5pM26bIXpf1BIYwLrqgb1sPD0KnKM6H7/LbefY6BMWc7Vy4sBTkia+NH2a5AmdPjtYpxEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGWAoYU4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C46BC2BBFC;
+	Tue, 30 Apr 2024 10:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476053;
-	bh=KnfD3PEtQI1s1Bhd1kjMc+BqSkY3EYz1zbeFad/uZ50=;
+	s=korg; t=1714474650;
+	bh=/NPikGZAQlmbGd9c8vuVlKXxGnbAqRl5P6cJy/9tAVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uG4Z4BlZq999t7Jl4it4dXoI2LVtqxmeqrpjyvR9IvrqW5Oc1kZmbYN6uU8DF/6uO
-	 wf4z3DG307DKa2Va89HoW7ObM5wzVNYosktooiMg8sy/wmvQQAoH4e83DFCF00WEYP
-	 uWtaWSaU1ZJ9gTrnSD7CxW/WGxaGfYs38Dty5pVQ=
+	b=CGWAoYU4xrdzPc2cusvIMGoJBCT/FOWbaj8HoNwroQpjPCXqtIY3abZQLwS0v2Ead
+	 ggtQrc+NCBWsmOGkrxsT5j9rVSyI+7dRANYegxxp5TzvRY1qogLy8+ZKMbCO8uNPC+
+	 7bR7LwxdIiHekMz+WeEtEwUb4PhSJwRtdyFJij/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.4 002/107] Bluetooth: Fix memory leak in hci_req_sync_complete()
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	Jarred White <jarredwhite@linux.microsoft.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.8 184/228] ACPI: CPPC: Fix access width used for PCC registers
 Date: Tue, 30 Apr 2024 12:39:22 +0200
-Message-ID: <20240430103044.730213999@linuxfoundation.org>
+Message-ID: <20240430103109.113154348@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
 
-commit 45d355a926ab40f3ae7bc0b0a00cb0e3e8a5a810 upstream.
+commit f489c948028b69cea235d9c0de1cc10eeb26a172 upstream.
 
-In 'hci_req_sync_complete()', always free the previous sync
-request state before assigning reference to a new one.
+commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system
+memory accesses") modified cpc_read()/cpc_write() to use access_width to
+read CPC registers.
 
-Reported-by: syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=39ec16ff6cc18b1d066d
-Cc: stable@vger.kernel.org
-Fixes: f60cb30579d3 ("Bluetooth: Convert hci_req_sync family of function to new request API")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+However, for PCC registers the access width field in the ACPI register
+macro specifies the PCC subspace ID.  For non-zero PCC subspace ID it is
+incorrectly treated as access width. This causes errors when reading
+from PCC registers in the CPPC driver.
+
+For PCC registers, base the size of read/write on the bit width field.
+The debug message in cpc_read()/cpc_write() is updated to print relevant
+information for the address space type used to read the register.
+
+Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
+Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
+Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
+Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_request.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/cppc_acpi.c |   53 ++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 37 insertions(+), 16 deletions(-)
 
---- a/net/bluetooth/hci_request.c
-+++ b/net/bluetooth/hci_request.c
-@@ -107,8 +107,10 @@ static void hci_req_sync_complete(struct
- 	if (hdev->req_status == HCI_REQ_PEND) {
- 		hdev->req_result = result;
- 		hdev->req_status = HCI_REQ_DONE;
--		if (skb)
-+		if (skb) {
-+			kfree_skb(hdev->req_skb);
- 			hdev->req_skb = skb_get(skb);
-+		}
- 		wake_up_interruptible(&hdev->req_wait_q);
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1002,14 +1002,14 @@ static int cpc_read(int cpu, struct cpc_
  	}
- }
+ 
+ 	*val = 0;
++	size = GET_BIT_WIDTH(reg);
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+-		u32 width = GET_BIT_WIDTH(reg);
+ 		u32 val_u32;
+ 		acpi_status status;
+ 
+ 		status = acpi_os_read_port((acpi_io_address)reg->address,
+-					   &val_u32, width);
++					   &val_u32, size);
+ 		if (ACPI_FAILURE(status)) {
+ 			pr_debug("Error: Failed to read SystemIO port %llx\n",
+ 				 reg->address);
+@@ -1018,17 +1018,22 @@ static int cpc_read(int cpu, struct cpc_
+ 
+ 		*val = val_u32;
+ 		return 0;
+-	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
++	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
++		/*
++		 * For registers in PCC space, the register size is determined
++		 * by the bit width field; the access size is used to indicate
++		 * the PCC subspace id.
++		 */
++		size = reg->bit_width;
+ 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
++	}
+ 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		vaddr = reg_res->sys_mem_vaddr;
+ 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
+ 		return cpc_read_ffh(cpu, reg, val);
+ 	else
+ 		return acpi_os_read_memory((acpi_physical_address)reg->address,
+-				val, reg->bit_width);
+-
+-	size = GET_BIT_WIDTH(reg);
++				val, size);
+ 
+ 	switch (size) {
+ 	case 8:
+@@ -1044,8 +1049,13 @@ static int cpc_read(int cpu, struct cpc_
+ 		*val = readq_relaxed(vaddr);
+ 		break;
+ 	default:
+-		pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
+-			 reg->bit_width, pcc_ss_id);
++		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
++			pr_debug("Error: Cannot read %u bit width from system memory: 0x%llx\n",
++				size, reg->address);
++		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
++			pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
++				size, pcc_ss_id);
++		}
+ 		return -EFAULT;
+ 	}
+ 
+@@ -1063,12 +1073,13 @@ static int cpc_write(int cpu, struct cpc
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+ 
++	size = GET_BIT_WIDTH(reg);
++
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+-		u32 width = GET_BIT_WIDTH(reg);
+ 		acpi_status status;
+ 
+ 		status = acpi_os_write_port((acpi_io_address)reg->address,
+-					    (u32)val, width);
++					    (u32)val, size);
+ 		if (ACPI_FAILURE(status)) {
+ 			pr_debug("Error: Failed to write SystemIO port %llx\n",
+ 				 reg->address);
+@@ -1076,17 +1087,22 @@ static int cpc_write(int cpu, struct cpc
+ 		}
+ 
+ 		return 0;
+-	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
++	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
++		/*
++		 * For registers in PCC space, the register size is determined
++		 * by the bit width field; the access size is used to indicate
++		 * the PCC subspace id.
++		 */
++		size = reg->bit_width;
+ 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
++	}
+ 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		vaddr = reg_res->sys_mem_vaddr;
+ 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
+ 		return cpc_write_ffh(cpu, reg, val);
+ 	else
+ 		return acpi_os_write_memory((acpi_physical_address)reg->address,
+-				val, reg->bit_width);
+-
+-	size = GET_BIT_WIDTH(reg);
++				val, size);
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		val = MASK_VAL(reg, val);
+@@ -1105,8 +1121,13 @@ static int cpc_write(int cpu, struct cpc
+ 		writeq_relaxed(val, vaddr);
+ 		break;
+ 	default:
+-		pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
+-			 reg->bit_width, pcc_ss_id);
++		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
++			pr_debug("Error: Cannot write %u bit width to system memory: 0x%llx\n",
++				size, reg->address);
++		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
++			pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
++				size, pcc_ss_id);
++		}
+ 		ret_val = -EFAULT;
+ 		break;
+ 	}
 
 
 
