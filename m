@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-42228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9318B7200
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10488B72D9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C90A91F235BA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADB07282893
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC9A12C530;
-	Tue, 30 Apr 2024 11:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA4B12DD93;
+	Tue, 30 Apr 2024 11:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEU3vY1R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYlYUGpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989E412C801;
-	Tue, 30 Apr 2024 11:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C2012D77C;
+	Tue, 30 Apr 2024 11:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474981; cv=none; b=m5qav1gXECQLv7NhA87ExjCARnbR6ZMmXDRtVygtY/x+uQQQnQo+Riy+QV5YFgFnh01x4/SaLQ2yIPw/rkCEXlZ8NvltHr20qv/7QocW3/X417xTPLpgCMgkNUSi6u2KSc5SrApCvhiHFGLuyyXEPIrxfP3PbOJ5tG6ssw6T8VE=
+	t=1714475544; cv=none; b=aoBaTkRO9SDlX9zo9pOkhmZIM9UtxkT0wZ0gpuVeL5eus5lPAKxZrHqitKWPKnsibK8m4Dw63TS5NqOowm9bfD0kqy60sN/8kOpc4Zg88cwmhGkQRwusRq6y7+Z0Rb6L/m3gJ+0DYfy9NN63XGA4NIIrQmvkmnNyv9oiq5CqVnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474981; c=relaxed/simple;
-	bh=GZ45Rssixe6/htk9FPrGhTBkpDjTcYsgKxSr1C6M8FM=;
+	s=arc-20240116; t=1714475544; c=relaxed/simple;
+	bh=94bMu1sX+niZQJAsaXUeDOBwOlH4EnaJ+iGxzehE2lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXgX2I3XaJn7rvhtBkxpmAvwe0qc2sY46YF9VAthYT7UrKlJ0rkrSoLUW/hJBNotJMDyJw6kAdLFM1poAIcXcO5TtP4a8hxv+3TCYK71Qb2CRzSeBtUxMEKbW/JLaK81XJWSJgfu+AD+b0+UgfOKpJscaCNmudtI4kBNZ2hB06o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEU3vY1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089D3C2BBFC;
-	Tue, 30 Apr 2024 11:03:00 +0000 (UTC)
+	 MIME-Version; b=c4yuIRMm/4XsqsupkY4fef1hir0CF0ZPBxwPl3hIDaV1tkrwsB+7T6jQQgV6w2fwOwlK/wEPdEuCI4OYrb/w1i9e4XcSPlfkORRAvhWPQOGDSVOeDuinVIwq8cgGmWNkR8k/Wp86VeCJurO6A4cvYLbo4h5oha0vQoPm8+BUnlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYlYUGpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0102BC2BBFC;
+	Tue, 30 Apr 2024 11:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474981;
-	bh=GZ45Rssixe6/htk9FPrGhTBkpDjTcYsgKxSr1C6M8FM=;
+	s=korg; t=1714475544;
+	bh=94bMu1sX+niZQJAsaXUeDOBwOlH4EnaJ+iGxzehE2lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEU3vY1R8k4L7VsORDEUIF6lE5eNWKvsxTEGjat0tfJ8k/aNaEobq5Md4EO5PhhZx
-	 YV/T/rdYz7rdg2Sb4C2ad6lYkqPGO17Jr+Fo8+tJoMn5ZCegsLsyZM50fK76Odsg6v
-	 eppioEn6lKkMzimBfdHDNtZOSxs47xbBsHlMeEVo=
+	b=bYlYUGpRuEgoadfPzw/mRnlPdRx/ZvQplAmqTDB0GU1Vr6fgimPCqfyRsy+Hwpc7Y
+	 W6R1qqVnqL4eFh3VmA0mj+UEhTFz2hvOpI4b4/fdQHUHcGHDkMtkaIKFXzguRIPfUa
+	 zLGR5VHOS+sLi2CjLpVFWOGxmji7gi4MBKkZwOCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 096/138] mlxsw: spectrum_acl_tcam: Rate limit error message
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 129/186] smb3: fix lock ordering potential deadlock in cifs_sync_mid_result
 Date: Tue, 30 Apr 2024 12:39:41 +0200
-Message-ID: <20240430103052.241409133@linuxfoundation.org>
+Message-ID: <20240430103101.776534503@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 5bcf925587e9b5d36420d572a0b4d131c90fb306 ]
+commit 8861fd5180476f45f9e8853db154600469a0284f upstream.
 
-In the rare cases when the device resources are exhausted it is likely
-that the rehash delayed work will fail. An error message will be printed
-whenever this happens which can be overwhelming considering the fact
-that the work is per-region and that there can be hundreds of regions.
+Coverity spotted that the cifs_sync_mid_result function could deadlock
 
-Fix by rate limiting the error message.
+"Thread deadlock (ORDER_REVERSAL) lock_order: Calling spin_lock acquires
+lock TCP_Server_Info.srv_lock while holding lock TCP_Server_Info.mid_lock"
 
-Fixes: e5e7962ee5c2 ("mlxsw: spectrum_acl: Implement region migration according to hints")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/c510763b2ebd25e7990d80183feff91cde593145.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Addresses-Coverity: 1590401 ("Thread deadlock (ORDER_REVERSAL)")
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/transport.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index a60d511f00eaa..cdad4772b60a0 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1480,7 +1480,7 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
- 	err = mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion,
- 						ctx, credits);
- 	if (err) {
--		dev_err(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
-+		dev_err_ratelimited(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
- 		return;
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -909,12 +909,15 @@ cifs_sync_mid_result(struct mid_q_entry
+ 			list_del_init(&mid->qhead);
+ 			mid->mid_flags |= MID_DELETED;
+ 		}
++		spin_unlock(&server->mid_lock);
+ 		cifs_server_dbg(VFS, "%s: invalid mid state mid=%llu state=%d\n",
+ 			 __func__, mid->mid, mid->mid_state);
+ 		rc = -EIO;
++		goto sync_mid_done;
  	}
+ 	spin_unlock(&server->mid_lock);
  
--- 
-2.43.0
-
++sync_mid_done:
+ 	release_mid(mid);
+ 	return rc;
+ }
 
 
 
