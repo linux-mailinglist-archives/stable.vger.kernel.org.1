@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CC18B7346
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AABA38B7419
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F52C287CBD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603AB1F215C4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543DD12CDA5;
-	Tue, 30 Apr 2024 11:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C135012CDAE;
+	Tue, 30 Apr 2024 11:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="um6oILc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiv2Tt8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132628801;
-	Tue, 30 Apr 2024 11:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA2317592;
+	Tue, 30 Apr 2024 11:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475833; cv=none; b=gQ4vF7iTdP8ItuRZzBDkDcRbKjikl7aPPJIeJiLq7DbIDQ3P1zN0Tc6PnBtBrFLIVBGND3QPErbyj6FPrS3NP4PdkJr6Vtka2HSAdISGQ5Z/ZeP4pUHoj/jB7dUjSkzzKBF4M1b0gW+c/Y7VyuNc+wUBH5lEnEGfrMHCd94Lk+Y=
+	t=1714476422; cv=none; b=NYeu4T2K9Ik9MVYf8wT6dlWFc+4okXXTGYicMVRWpqat/Pg+NM0yiQeoyNBBDO+3bYIKyy5p7iSYIYm3yBUvdsHZKIff5H/g331bFcCvFJRUacUCvFIkx9taaUIpo7kfTB5jCtaHj+c8MYkO4ZTIyu88aYFM2JL6hKVPsvyDeXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475833; c=relaxed/simple;
-	bh=g9WL2HxjbBW5Mo6W6slDYENElOmw2RZwwrCkaXG79Zk=;
+	s=arc-20240116; t=1714476422; c=relaxed/simple;
+	bh=i6q1u6WhYHlStZ6XNz5nthnmfv9hZQntGw6YQ4if2Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/wjPssd0iv8sNiYQtxMVXjpdkOT1bRH+gZ7Ci7uzl0AidNc+JqQzaUbyX/rV8cIUjH5fbxBlSsiC9GVykY5FcQvHbctZ9gf7KfF1UDyD51vsgu7H7L9JUuCh0QPKDFuG+LI8uIaQZgpbxbWuwHQ9xAANPRsNJo2KqlMF71+3Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=um6oILc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79043C2BBFC;
-	Tue, 30 Apr 2024 11:17:12 +0000 (UTC)
+	 MIME-Version; b=qbWjnSK/8hZxQAfCr4H4RDJWkkfB0om6S7YphpC4ATYo1N0O/Lr/rjrI8xMb7+3oyDiS1LPSULQc5SdWxjrXZJsKdSrr8K50OzIUYKjEh6Y/PFX2gHw2fAWJlHyR6eideUisKdLWLnbsg55SsY+Y3GyH4LSmtWVwn/BtVQfjcOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiv2Tt8F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1686C2BBFC;
+	Tue, 30 Apr 2024 11:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475832;
-	bh=g9WL2HxjbBW5Mo6W6slDYENElOmw2RZwwrCkaXG79Zk=;
+	s=korg; t=1714476422;
+	bh=i6q1u6WhYHlStZ6XNz5nthnmfv9hZQntGw6YQ4if2Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=um6oILc3B9RtuE/mqW661ERR1hmlOtaHFze/eSaWER0cGyBSsugH/c4LwXJISuJZY
-	 IUv4WE71luhXGo0boPZx8aDQODMjy4/ANUN8soAGm7WmjxnVqQJZextUkU4US1VT/B
-	 uXcSiNNadm+rsBn4LmluKtZZ1hO+EaFRCffkoxPo=
+	b=tiv2Tt8FsTFp3e+8p8JjV+eTiOfzNjZ5ImhWTo8FenE+O2W4pi0fBvzQ6ehbrzIBF
+	 QUr+g3Ccvp0j0jvzNER3uj/jAMVS3dFSQSUW5slNo3gU574H8t8yCLyMMNPmRrf3du
+	 TwExXUtpDCAhmFR52U17kwhN7i/UOutkGu2bLm2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Weiyi Lu <weiyi.lu@mediatek.com>,
+	Ikjoon Jang <ikjn@chromium.org>,
+	Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 07/80] arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma
+Subject: [PATCH 6.1 010/110] arm64: dts: mediatek: mt8183: Add power-domains properity to mfgcfg
 Date: Tue, 30 Apr 2024 12:39:39 +0200
-Message-ID: <20240430103043.625656293@linuxfoundation.org>
+Message-ID: <20240430103047.873706537@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Ikjoon Jang <ikjn@chromium.org>
 
-[ Upstream commit 945a7c8570916650a415757d15d83e0fa856a686 ]
+[ Upstream commit 1781f2c461804c0123f59afc7350e520a88edffb ]
 
-The PCIE_WAKE# has a diode used as a level-shifter, and is used as an
-input pin. While the SoC default is to enable the pull-up, the core
-rk3399 pinconf for this pin opted for pull-none. So as to not disturb
-the behaviour of other boards which may rely on pull-none instead of
-pull-up, set the needed pull-up only for RK3399 Puma.
+mfgcfg clock is under MFG_ASYNC power domain.
 
-Fixes: 60fd9f72ce8a ("arm64: dts: rockchip: add Haikou baseboard with RK3399-Q7 SoM")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-2-309f83da110a@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: e526c9bc11f8 ("arm64: dts: Add Mediatek SoC MT8183 and evaluation board dts and Makefile")
+Fixes: 37fb78b9aeb7 ("arm64: dts: mediatek: Add mt8183 power domains controller")
+Signed-off-by: Weiyi Lu <weiyi.lu@mediatek.com>
+Signed-off-by: Ikjoon Jang <ikjn@chromium.org>
+Reviewed-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20240223091122.2430037-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index 14d343aae53f4..1c10baa25ffa3 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -390,6 +390,11 @@
- 	gpio1830-supply = <&vcc_1v8>;
- };
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+index d5d9b954c449a..2147e152683bf 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1554,6 +1554,7 @@
+ 			compatible = "mediatek,mt8183-mfgcfg", "syscon";
+ 			reg = <0 0x13000000 0 0x1000>;
+ 			#clock-cells = <1>;
++			power-domains = <&spm MT8183_POWER_DOMAIN_MFG_ASYNC>;
+ 		};
  
-+&pcie_clkreqn_cpm {
-+	rockchip,pins =
-+		<2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_up>;
-+};
-+
- &pinctrl {
- 	i2c8 {
- 		i2c8_xfer_a: i2c8-xfer {
+ 		gpu: gpu@13040000 {
 -- 
 2.43.0
 
