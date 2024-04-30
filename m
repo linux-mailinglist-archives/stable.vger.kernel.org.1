@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-42323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062928B7272
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC168B71A4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2180281A04
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57CF22831DF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7680212D772;
-	Tue, 30 Apr 2024 11:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF6512C487;
+	Tue, 30 Apr 2024 10:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohlctfzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfnjDPLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31ECE12D1E8;
-	Tue, 30 Apr 2024 11:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2187464;
+	Tue, 30 Apr 2024 10:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475288; cv=none; b=RpdZqgbqGcFU1vlVUMrEKUk4CeVEg6MepAjj3IbRjxYKMhoDb/4W09ZVMaJB0LGgybRmZAeaGHDI+ur6hyNQ3x8AeZc1FOPcH8dEZM742xykx6Xvxd2mGmIbGa5AExMJJXuiZej6mkciUAEd9u8Ee8jR419E2OBm4urZtv+AKEk=
+	t=1714474732; cv=none; b=Nm6jq2gJqKYsbbe2M1JLjLXjAMfDjU+F4VrXOkQ2WvAswRbjfa25MZQssuFRULSXzpUBPIKQHA0SablflckMM76cN7vvN41reFUCXYja5EgpJdGXnu1iJO4A7bRy7hkjTxVdV6XJSr9XX8E4qENs4WvtGxODHZAmnVSG3wCKio8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475288; c=relaxed/simple;
-	bh=swF9UoJpOGcVFvBue55Jk6ugeaTqFKF8jgdH2G4giqs=;
+	s=arc-20240116; t=1714474732; c=relaxed/simple;
+	bh=qF9lAL4PlTprYXFFKUGx8Db6pN7mw4igV4I/3WAf+kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X8FDrModrWM4j7RJ7KM9Vzb23NVzhcNG0dIQAKbplhRPwS+hEVPQDHUck3DzsKuznEUr/Kt+96SnbitVsNRXN/GLxDr6hxHdGmNdZKsQfI0XFfS+hh+ODiZFbwF0kyRXB6Hfnr7mdOetg1JlU86KioSB8AO+FIUE5DM+2ULnuxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohlctfzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97644C2BBFC;
-	Tue, 30 Apr 2024 11:08:07 +0000 (UTC)
+	 MIME-Version; b=uXSsCLHM5V45PsRvfAC7qbiGXTFiOkXT8II2G1wNwIldhyt+zqp+AW9ARyCz7WGAsvjVaJrsYRVK07uVY31V8OmipsOu2Z53zdzaBddP58GNpdOXIgr19l+OtnvspAvqJBHA+Rfq4B+La5+v2AYYf3MqeVINo3bu6VmEbRet2Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfnjDPLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F77C2BBFC;
+	Tue, 30 Apr 2024 10:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475288;
-	bh=swF9UoJpOGcVFvBue55Jk6ugeaTqFKF8jgdH2G4giqs=;
+	s=korg; t=1714474732;
+	bh=qF9lAL4PlTprYXFFKUGx8Db6pN7mw4igV4I/3WAf+kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohlctfzFhwCMwpRR6qsXLuOhCBBo7k0N4xJZjWaUuzdm3PLKz+uevQIaFLqSmdRpq
-	 Bn70iTcGgNweFq+YRcCg0dAaIXGDSj5p3G7nLSKiWLFc70ITQSjippuioJik31dgXE
-	 lXyrykAMx3qKCXDWBiKXJnKPYIMH5Vh+oXaW9h8M=
+	b=EfnjDPLDt/lK6uUH60vyJ6p+atlP6sJ0emtYQHsMMxEeZ2uKS+8inod42fFExoU7D
+	 XKwPxjDGWILzeC94Aui/h/xulbP5ZUsaaqEavlPj3ENEi79ABBj/N51qVHkLyWKn1Y
+	 CLFmxLMtlwuoKuqTFFI0rGgcc/SRUpA9Wl5tuHdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Amit Bernstein <amitbern@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/186] bnxt_en: refactor reset close code
+Subject: [PATCH 5.10 019/138] net: ena: Wrong missing IO completions check order
 Date: Tue, 30 Apr 2024 12:38:24 +0200
-Message-ID: <20240430103059.542414673@linuxfoundation.org>
+Message-ID: <20240430103049.992471126@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikas Gupta <vikas.gupta@broadcom.com>
+From: David Arinzon <darinzon@amazon.com>
 
-[ Upstream commit 7474b1c82be3780692d537d331f9aa7fc1e5a368 ]
+[ Upstream commit f7e417180665234fdb7af2ebe33d89aaa434d16f ]
 
-Introduce bnxt_fw_fatal_close() API which can be used
-to stop data path and disable device when firmware
-is in fatal state.
+Missing IO completions check is called every second (HZ jiffies).
+This commit fixes several issues with this check:
 
-Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: a1acdc226bae ("bnxt_en: Fix the PCI-AER routines")
+1. Duplicate queues check:
+   Max of 4 queues are scanned on each check due to monitor budget.
+   Once reaching the budget, this check exits under the assumption that
+   the next check will continue to scan the remainder of the queues,
+   but in practice, next check will first scan the last already scanned
+   queue which is not necessary and may cause the full queue scan to
+   last a couple of seconds longer.
+   The fix is to start every check with the next queue to scan.
+   For example, on 8 IO queues:
+   Bug: [0,1,2,3], [3,4,5,6], [6,7]
+   Fix: [0,1,2,3], [4,5,6,7]
+
+2. Unbalanced queues check:
+   In case the number of active IO queues is not a multiple of budget,
+   there will be checks which don't utilize the full budget
+   because the full scan exits when reaching the last queue id.
+   The fix is to run every TX completion check with exact queue budget
+   regardless of the queue id.
+   For example, on 7 IO queues:
+   Bug: [0,1,2,3], [4,5,6], [0,1,2,3]
+   Fix: [0,1,2,3], [4,5,6,0], [1,2,3,4]
+   The budget may be lowered in case the number of IO queues is less
+   than the budget (4) to make sure there are no duplicate queues on
+   the same check.
+   For example, on 3 IO queues:
+   Bug: [0,1,2,0], [1,2,0,1]
+   Fix: [0,1,2], [0,1,2]
+
+Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
+Signed-off-by: Amit Bernstein <amitbern@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 21 +++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 38e3b2225ff1c..1cf4aae8702b4 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11807,6 +11807,16 @@ static void bnxt_rx_ring_reset(struct bnxt *bp)
- 	bnxt_rtnl_unlock_sp(bp);
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index fa65971949fce..f403a5acda5b0 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -3672,10 +3672,11 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
+ {
+ 	struct ena_ring *tx_ring;
+ 	struct ena_ring *rx_ring;
+-	int i, budget, rc;
++	int qid, budget, rc;
+ 	int io_queue_count;
+ 
+ 	io_queue_count = adapter->xdp_num_queues + adapter->num_io_queues;
++
+ 	/* Make sure the driver doesn't turn the device in other process */
+ 	smp_rmb();
+ 
+@@ -3688,27 +3689,29 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
+ 	if (adapter->missing_tx_completion_to == ENA_HW_HINTS_NO_TIMEOUT)
+ 		return;
+ 
+-	budget = ENA_MONITORED_TX_QUEUES;
++	budget = min_t(u32, io_queue_count, ENA_MONITORED_TX_QUEUES);
+ 
+-	for (i = adapter->last_monitored_tx_qid; i < io_queue_count; i++) {
+-		tx_ring = &adapter->tx_ring[i];
+-		rx_ring = &adapter->rx_ring[i];
++	qid = adapter->last_monitored_tx_qid;
++
++	while (budget) {
++		qid = (qid + 1) % io_queue_count;
++
++		tx_ring = &adapter->tx_ring[qid];
++		rx_ring = &adapter->rx_ring[qid];
+ 
+ 		rc = check_missing_comp_in_tx_queue(adapter, tx_ring);
+ 		if (unlikely(rc))
+ 			return;
+ 
+-		rc =  !ENA_IS_XDP_INDEX(adapter, i) ?
++		rc =  !ENA_IS_XDP_INDEX(adapter, qid) ?
+ 			check_for_rx_interrupt_queue(adapter, rx_ring) : 0;
+ 		if (unlikely(rc))
+ 			return;
+ 
+ 		budget--;
+-		if (!budget)
+-			break;
+ 	}
+ 
+-	adapter->last_monitored_tx_qid = i % io_queue_count;
++	adapter->last_monitored_tx_qid = qid;
  }
  
-+static void bnxt_fw_fatal_close(struct bnxt *bp)
-+{
-+	bnxt_tx_disable(bp);
-+	bnxt_disable_napi(bp);
-+	bnxt_disable_int_sync(bp);
-+	bnxt_free_irq(bp);
-+	bnxt_clear_int_mode(bp);
-+	pci_disable_device(bp->pdev);
-+}
-+
- static void bnxt_fw_reset_close(struct bnxt *bp)
- {
- 	bnxt_ulp_stop(bp);
-@@ -11820,12 +11830,7 @@ static void bnxt_fw_reset_close(struct bnxt *bp)
- 		pci_read_config_word(bp->pdev, PCI_SUBSYSTEM_ID, &val);
- 		if (val == 0xffff)
- 			bp->fw_reset_min_dsecs = 0;
--		bnxt_tx_disable(bp);
--		bnxt_disable_napi(bp);
--		bnxt_disable_int_sync(bp);
--		bnxt_free_irq(bp);
--		bnxt_clear_int_mode(bp);
--		pci_disable_device(bp->pdev);
-+		bnxt_fw_fatal_close(bp);
- 	}
- 	__bnxt_close_nic(bp, true, false);
- 	bnxt_vf_reps_free(bp);
+ /* trigger napi schedule after 2 consecutive detections */
 -- 
 2.43.0
 
