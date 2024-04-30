@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-42403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171408B72DC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D763D8B7054
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C12D2282F66
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15371B20AEB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C945812D215;
-	Tue, 30 Apr 2024 11:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D15E12D757;
+	Tue, 30 Apr 2024 10:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpF72JEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCexCsYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8841012D1FD;
-	Tue, 30 Apr 2024 11:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9AA12D753;
+	Tue, 30 Apr 2024 10:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475553; cv=none; b=YzHBT0WajiEmf31flVttfgZtDV+SLsT5GYIK7M09OJtELZINuHYIRpZV0uFSfkqpVWrIkdRBEoYzLg77V4EYVG6r6xVhymz/udYNBZt9NwwgWWz1rdmJEs8Gg5CEFIwiWk9LaW/eweakiNGAef/Ibkvz4Nsb4JYrXrbcTLHqEx8=
+	t=1714473869; cv=none; b=e14dPOx1tBZu1DCL3MLdKmOPekMFTVRvG+94WWYEaW3RZTs4M6KLsV3aaNz9uN6UDxqUJPGooRjSjdf4P1PE6liPiQw5RGqjQzJ+zssiZqxacHJ03Ds+FxP1eKQtLxN3Wj+BjImu+wRsCzWicutM/e2dSr9aO0TChQdwwZZsmvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475553; c=relaxed/simple;
-	bh=xWd6e2lOp3M54BYZpG39L8icXcQ1Hvs/VCNRSGamfFU=;
+	s=arc-20240116; t=1714473869; c=relaxed/simple;
+	bh=qoIKNIK42t+BbniKY3CAVDVpqPNkGJKD7G7jO/2T5eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQCTm0j4IxgkxJD9S/egJmdO2dVeXnPU0XyOjxM5Wv3CJGbhb+zw3mDSQiYj2ptsEzT1Ju0V5pYDT6kBRvnNYujdbLzcRzY48wRL/6Nk5wR19JVi4LhoKifiQQYeFuy0L3vgZQOuoen4dY5b9v1EvA6uXiicIoJu8t3ShJTqN3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpF72JEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B63C2BBFC;
-	Tue, 30 Apr 2024 11:12:32 +0000 (UTC)
+	 MIME-Version; b=KpxgR/wwrFh2Q7WY5TSiAV1qi/FkhnJirmXcR/nNgqt3IcdImijl83S/j4ClV0JQNCOzU62Q+/8IQ8MM5NeB7+WIuw5gwGGIY/kPictV28T9/+aXhd8t5cgcdwIGlrc9Dh0uxzZcv6iRu7KVXHIhjgTyhebh2kQjRKssDXRaFvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCexCsYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530FEC2BBFC;
+	Tue, 30 Apr 2024 10:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475553;
-	bh=xWd6e2lOp3M54BYZpG39L8icXcQ1Hvs/VCNRSGamfFU=;
+	s=korg; t=1714473868;
+	bh=qoIKNIK42t+BbniKY3CAVDVpqPNkGJKD7G7jO/2T5eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vpF72JEg+FuQVEWY8YmgfZUqe28k2m11Q+ZQf23ve/Yoihl+yPCdqaqU6hP//1NXr
-	 i6ctV2pXadGNnr3bN3hTQVorNBFl4BKcrVbAQMDPwSEmC8cFMbzMYl06y83W72Jchh
-	 YhextkKY7/Lr63SdLH+1ggGyaLMCenti/pbtPQJw=
+	b=kCexCsYZG4MY9KSiyi/WywQB7o4whSSZFWo0tyl8HDLlkCjgS8U1YjtkTgJFHbaK6
+	 X6NQamMQc1Lti0YWo9HLvG1LKWTytxHuQeLmSUI2zzttQl4zpt/tORg7sz1hbdIHlJ
+	 3dM4aPu4Q0ZSb+ziy4fzpADs1NDgvK6s/M0PS9j4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 132/186] btrfs: fix wrong block_start calculation for btrfs_drop_extent_map_range()
-Date: Tue, 30 Apr 2024 12:39:44 +0200
-Message-ID: <20240430103101.862880896@linuxfoundation.org>
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Dave Chinner <david@fromorbit.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 66/77] stackdepot: respect __GFP_NOLOCKDEP allocation flag
+Date: Tue, 30 Apr 2024 12:39:45 +0200
+Message-ID: <20240430103043.087028730@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +66,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 
-commit fe1c6c7acce10baf9521d6dccc17268d91ee2305 upstream.
+commit 6fe60465e1d53ea321ee909be26d97529e8f746c upstream.
 
-[BUG]
-During my extent_map cleanup/refactor, with extra sanity checks,
-extent-map-tests::test_case_7() would not pass the checks.
+If stack_depot_save_flags() allocates memory it always drops
+__GFP_NOLOCKDEP flag.  So when KASAN tries to track __GFP_NOLOCKDEP
+allocation we may end up with lockdep splat like bellow:
 
-The problem is, after btrfs_drop_extent_map_range(), the resulted
-extent_map has a @block_start way too large.
-Meanwhile my btrfs_file_extent_item based members are returning a
-correct @disk_bytenr/@offset combination.
+======================================================
+ WARNING: possible circular locking dependency detected
+ 6.9.0-rc3+ #49 Not tainted
+ ------------------------------------------------------
+ kswapd0/149 is trying to acquire lock:
+ ffff88811346a920
+(&xfs_nondir_ilock_class){++++}-{4:4}, at: xfs_reclaim_inode+0x3ac/0x590
+[xfs]
 
-The extent map layout looks like this:
+ but task is already holding lock:
+ ffffffff8bb33100 (fs_reclaim){+.+.}-{0:0}, at:
+balance_pgdat+0x5d9/0xad0
 
-     0        16K    32K       48K
-     | PINNED |      | Regular |
+ which lock already depends on the new lock.
 
-The regular em at [32K, 48K) also has 32K @block_start.
+ the existing dependency chain (in reverse order) is:
+ -> #1 (fs_reclaim){+.+.}-{0:0}:
+        __lock_acquire+0x7da/0x1030
+        lock_acquire+0x15d/0x400
+        fs_reclaim_acquire+0xb5/0x100
+ prepare_alloc_pages.constprop.0+0xc5/0x230
+        __alloc_pages+0x12a/0x3f0
+        alloc_pages_mpol+0x175/0x340
+        stack_depot_save_flags+0x4c5/0x510
+        kasan_save_stack+0x30/0x40
+        kasan_save_track+0x10/0x30
+        __kasan_slab_alloc+0x83/0x90
+        kmem_cache_alloc+0x15e/0x4a0
+        __alloc_object+0x35/0x370
+        __create_object+0x22/0x90
+ __kmalloc_node_track_caller+0x477/0x5b0
+        krealloc+0x5f/0x110
+        xfs_iext_insert_raw+0x4b2/0x6e0 [xfs]
+        xfs_iext_insert+0x2e/0x130 [xfs]
+        xfs_iread_bmbt_block+0x1a9/0x4d0 [xfs]
+        xfs_btree_visit_block+0xfb/0x290 [xfs]
+        xfs_btree_visit_blocks+0x215/0x2c0 [xfs]
+        xfs_iread_extents+0x1a2/0x2e0 [xfs]
+ xfs_buffered_write_iomap_begin+0x376/0x10a0 [xfs]
+        iomap_iter+0x1d1/0x2d0
+ iomap_file_buffered_write+0x120/0x1a0
+        xfs_file_buffered_write+0x128/0x4b0 [xfs]
+        vfs_write+0x675/0x890
+        ksys_write+0xc3/0x160
+        do_syscall_64+0x94/0x170
+ entry_SYSCALL_64_after_hwframe+0x71/0x79
 
-Then drop range [0, 36K), which should shrink the regular one to be
-[36K, 48K).
-However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
+Always preserve __GFP_NOLOCKDEP to fix this.
 
-[CAUSE]
-Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
-that covers the target range but is still beyond it, we need to split
-that extent map into half:
-
-	|<-- drop range -->|
-		 |<----- existing extent_map --->|
-
-And if the extent map is not compressed, we need to forward
-extent_map::block_start by the difference between the end of drop range
-and the extent map start.
-
-However in that particular case, the difference is calculated using
-(start + len - em->start).
-
-The problem is @start can be modified if the drop range covers any
-pinned extent.
-
-This leads to wrong calculation, and would be caught by my later
-extent_map sanity checks, which checks the em::block_start against
-btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
-
-This is a regression caused by commit c962098ca4af ("btrfs: fix
-incorrect splitting in btrfs_drop_extent_map_range"), which removed the
-@len update for pinned extents.
-
-[FIX]
-Fix it by avoiding using @start completely, and use @end - em->start
-instead, which @end is exclusive bytenr number.
-
-And update the test case to verify the @block_start to prevent such
-problem from happening.
-
-Thankfully this is not going to lead to any data corruption, as IO path
-does not utilize btrfs_drop_extent_map_range() with @skip_pinned set.
-
-So this fix is only here for the sake of consistency/correctness.
-
-CC: stable@vger.kernel.org # 6.5+
-Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://lkml.kernel.org/r/20240418141133.22950-1-ryabinin.a.a@gmail.com
+Fixes: cd11016e5f52 ("mm, kasan: stackdepot implementation. Enable stackdepot for SLAB")
+Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Reported-by: Xiubo Li <xiubli@redhat.com>
+Closes: https://lore.kernel.org/all/a0caa289-ca02-48eb-9bf2-d86fd47b71f4@redhat.com/
+Reported-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Closes: https://lore.kernel.org/all/f9ff999a-e170-b66b-7caf-293f2b147ac2@opensource.wdc.com/
+Suggested-by: Dave Chinner <david@fromorbit.com>
+Tested-by: Xiubo Li <xiubli@redhat.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_map.c             |    2 +-
- fs/btrfs/tests/extent-map-tests.c |    5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ lib/stackdepot.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -843,7 +843,7 @@ void btrfs_drop_extent_map_range(struct
- 					split->block_len = em->block_len;
- 					split->orig_start = em->orig_start;
- 				} else {
--					const u64 diff = start + len - em->start;
-+					const u64 diff = end - em->start;
- 
- 					split->block_len = split->len;
- 					split->block_start += diff;
---- a/fs/btrfs/tests/extent-map-tests.c
-+++ b/fs/btrfs/tests/extent-map-tests.c
-@@ -826,6 +826,11 @@ static int test_case_7(void)
- 		goto out;
- 	}
- 
-+	if (em->block_start != SZ_32K + SZ_4K) {
-+		test_err("em->block_start is %llu, expected 36K", em->block_start);
-+		goto out;
-+	}
-+
- 	free_extent_map(em);
- 
- 	read_lock(&em_tree->lock);
+--- a/lib/stackdepot.c
++++ b/lib/stackdepot.c
+@@ -256,10 +256,10 @@ depot_stack_handle_t depot_save_stack(st
+ 		/*
+ 		 * Zero out zone modifiers, as we don't have specific zone
+ 		 * requirements. Keep the flags related to allocation in atomic
+-		 * contexts and I/O.
++		 * contexts, I/O, nolockdep.
+ 		 */
+ 		alloc_flags &= ~GFP_ZONEMASK;
+-		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL);
++		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL | __GFP_NOLOCKDEP);
+ 		alloc_flags |= __GFP_NOWARN;
+ 		page = alloc_pages(alloc_flags, STACK_ALLOC_ORDER);
+ 		if (page)
 
 
 
