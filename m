@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-42100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CBB8B7167
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6158B7390
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D3E31F2399E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 420F11F24185
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B0612C47A;
-	Tue, 30 Apr 2024 10:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54B112CDAE;
+	Tue, 30 Apr 2024 11:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/oZonSl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NU/CIGXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739D112C487;
-	Tue, 30 Apr 2024 10:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EB58801;
+	Tue, 30 Apr 2024 11:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474570; cv=none; b=jHlPXSJuYluhIRrF09e7ujR7nyXYDVBILABQBPlSbAZbJ0Oww/brJ9HZ/udmQo0MHW5wbBwT/6p9iIzkHE4S2ILUiY+2NB2Y0lMH9bF+VodxyXtj3YCWGI3X0ErsPp3m0bXWZ9k2otpHMl32AhuzJiI+nL78PjcY8pplLko+BJ0=
+	t=1714476037; cv=none; b=hVD6Bxn18lfxRgFCN41a5moHuT8M9hJUhEoUUvydZwjcD23dUA3WcdL4zBfIlKttMsOJu7FwCuzMQLXLgpLQB1f2g/U8lcQaMXoMZzLg3HhjwhGCPjUx2n9eGtSKZCqB3krPgvuxfiXcGhr+LgAbM8rhRUoQ0p7idJm1xJI3jG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474570; c=relaxed/simple;
-	bh=EjtyEZjcgtRdQtVIeiNiAQ3VTB+ccRqFIHlQSmxnWM0=;
+	s=arc-20240116; t=1714476037; c=relaxed/simple;
+	bh=kQHtj4+xmjX0cyc6cCJDcGhWCCiP5wKos6hEpQ8MOhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3KeVhF/e39IiUAc0XNZfYGfnmLc4KIz2iuAxdm1pWWBQfCvFBQ8GV+WShCHJdVORgWgKOQzcoaTMzYqtUTOCUL5tcGfI6LG1nYNiBcTXXQqA+z9OtdbxEabP+Gfo/mo6t9JviQQLEgWMRf31Lsiqvn45SqOX4juHzFCkgIgKrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/oZonSl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B9EC2BBFC;
-	Tue, 30 Apr 2024 10:56:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JtFWkBSKRmvcOFWpU+OIf86opJMEFUTEUEYoOn8SnOEsqD7hLqO7EC93SxCD7AGmYVHIEEOBLHFe6kZoKVcIRHfu2SOzh3oRtIoTnKiKDG3vO6szyY3V9qdKCsFgEupF5NeyM41tZGcdxKu86wELzHdJQRrUI6gefENO+DLKykQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NU/CIGXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1197C2BBFC;
+	Tue, 30 Apr 2024 11:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474570;
-	bh=EjtyEZjcgtRdQtVIeiNiAQ3VTB+ccRqFIHlQSmxnWM0=;
+	s=korg; t=1714476037;
+	bh=kQHtj4+xmjX0cyc6cCJDcGhWCCiP5wKos6hEpQ8MOhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/oZonSlG274iHL1Jrj8Ni0u7vbPassK0qCGowtTnLz0TiL0LE2nW1HgPF67vPqJ5
-	 +2zQUGu1MRbMWGh9KoVNCo5I1TLXhDh3kmWHkVERFWXE0CWaurjb2br6cH5BqFEaLF
-	 Z02G6hGDZ/6fgabueK32fnNaEGiiArK9pPUUBEbs=
+	b=NU/CIGXGKAR1VxodvTogcBw5b77KipBTsEQ/ksHkfaQ5TqJMvjEhDaPwNOa3ZUSvj
+	 K59V0oHRaz5nwTrkOf38AisaHpXvAec9YNwarW49j2K13OL/bdsOW4b/W2jB1HpR4Q
+	 Ild/iAd5Fp0jeHeZaVgmkb8k249F/Dot0WDL5YF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.8 197/228] phy: qcom: qmp-combo: Fix VCO div offset on v3
+	Jani Nikula <jani.nikula@intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 5.4 015/107] drm/client: Fully protect modes[] with dev->mode_config.mutex
 Date: Tue, 30 Apr 2024 12:39:35 +0200
-Message-ID: <20240430103109.485781279@linuxfoundation.org>
+Message-ID: <20240430103045.111905028@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 5abed58a8bde6d349bde364a160510b5bb904d18 upstream.
+commit 3eadd887dbac1df8f25f701e5d404d1b90fd0fea upstream.
 
-Commit ec17373aebd0 ("phy: qcom: qmp-combo: extract common function to
-setup clocks") changed the offset that is used to write to
-DP_PHY_VCO_DIV from QSERDES_V3_DP_PHY_VCO_DIV to
-QSERDES_V4_DP_PHY_VCO_DIV. Unfortunately, this offset is different
-between v3 and v4 phys:
+The modes[] array contains pointers to modes on the connectors'
+mode lists, which are protected by dev->mode_config.mutex.
+Thus we need to extend modes[] the same protection or by the
+time we use it the elements may already be pointing to
+freed/reused memory.
 
- #define QSERDES_V3_DP_PHY_VCO_DIV                 0x064
- #define QSERDES_V4_DP_PHY_VCO_DIV                 0x070
-
-meaning that we write the wrong register on v3 phys now. Add another
-generic register to 'regs' and use it here instead of a version specific
-define to fix this.
-
-This was discovered after Abhinav looked over register dumps with me
-from sc7180 Trogdor devices that started failing to light up the
-external display with v6.6 based kernels. It turns out that some
-monitors are very specific about their link clk frequency and if the
-default power on reset value is still there the monitor will show a
-blank screen or a garbled display. Other monitors are perfectly happy to
-get a bad clock signal.
-
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Fixes: ec17373aebd0 ("phy: qcom: qmp-combo: extract common function to setup clocks")
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10583
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404203336.10454-2-ville.syrjala@linux.intel.com
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240404234345.1446300-1-swboyd@chromium.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_client_modeset.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -112,6 +112,7 @@ enum qphy_reg_layout {
- 	QPHY_COM_BIAS_EN_CLKBUFLR_EN,
- 
- 	QPHY_DP_PHY_STATUS,
-+	QPHY_DP_PHY_VCO_DIV,
- 
- 	QPHY_TX_TX_POL_INV,
- 	QPHY_TX_TX_DRV_LVL,
-@@ -137,6 +138,7 @@ static const unsigned int qmp_v3_usb3phy
- 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V3_COM_BIAS_EN_CLKBUFLR_EN,
- 
- 	[QPHY_DP_PHY_STATUS]		= QSERDES_V3_DP_PHY_STATUS,
-+	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V3_DP_PHY_VCO_DIV,
- 
- 	[QPHY_TX_TX_POL_INV]		= QSERDES_V3_TX_TX_POL_INV,
- 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V3_TX_TX_DRV_LVL,
-@@ -161,6 +163,7 @@ static const unsigned int qmp_v45_usb3ph
- 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V4_COM_BIAS_EN_CLKBUFLR_EN,
- 
- 	[QPHY_DP_PHY_STATUS]		= QSERDES_V4_DP_PHY_STATUS,
-+	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V4_DP_PHY_VCO_DIV,
- 
- 	[QPHY_TX_TX_POL_INV]		= QSERDES_V4_TX_TX_POL_INV,
- 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V4_TX_TX_DRV_LVL,
-@@ -2223,6 +2226,7 @@ static int qmp_combo_configure_dp_clocks
- 	const struct phy_configure_opts_dp *dp_opts = &qmp->dp_opts;
- 	u32 phy_vco_div;
- 	unsigned long pixel_freq;
-+	const struct qmp_phy_cfg *cfg = qmp->cfg;
- 
- 	switch (dp_opts->link_rate) {
- 	case 1620:
-@@ -2245,7 +2249,7 @@ static int qmp_combo_configure_dp_clocks
- 		/* Other link rates aren't supported */
- 		return -EINVAL;
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -700,6 +700,7 @@ int drm_client_modeset_probe(struct drm_
+ 	unsigned int total_modes_count = 0;
+ 	struct drm_client_offset *offsets;
+ 	unsigned int connector_count = 0;
++	/* points to modes protected by mode_config.mutex */
+ 	struct drm_display_mode **modes;
+ 	struct drm_crtc **crtcs;
+ 	int i, ret = 0;
+@@ -768,7 +769,6 @@ int drm_client_modeset_probe(struct drm_
+ 		drm_client_pick_crtcs(client, connectors, connector_count,
+ 				      crtcs, modes, 0, width, height);
  	}
--	writel(phy_vco_div, qmp->dp_dp_phy + QSERDES_V4_DP_PHY_VCO_DIV);
-+	writel(phy_vco_div, qmp->dp_dp_phy + cfg->regs[QPHY_DP_PHY_VCO_DIV]);
+-	mutex_unlock(&dev->mode_config.mutex);
  
- 	clk_set_rate(qmp->dp_link_hw.clk, dp_opts->link_rate * 100000);
- 	clk_set_rate(qmp->dp_pixel_hw.clk, pixel_freq);
+ 	drm_client_modeset_release(client);
+ 
+@@ -798,6 +798,7 @@ int drm_client_modeset_probe(struct drm_
+ 			modeset->y = offset->y;
+ 		}
+ 	}
++	mutex_unlock(&dev->mode_config.mutex);
+ 
+ 	mutex_unlock(&client->modeset_mutex);
+ out:
 
 
 
