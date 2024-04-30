@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A5E8B73CE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0D48B7318
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3406B1C21E10
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B429A1F215D2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D8912D20F;
-	Tue, 30 Apr 2024 11:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6557312DD9A;
+	Tue, 30 Apr 2024 11:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kj/4zbRV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjEiLOds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C3F8801;
-	Tue, 30 Apr 2024 11:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2508012D1EA;
+	Tue, 30 Apr 2024 11:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476219; cv=none; b=m5FihLRalR2Cxtjw19XgpTXEBACBHH7EP2meTVnzHdRPSYmqBDcC1GHUDjwpj1xOD+FN+k+ozFSDttEpn9+HTyVN/U1RVW3SCMBB3xqc3GYuBG4tdeFo+Zfrk1mw0gOsCtD37QqZ+QlKZ1OzIN5CJKKKVODf6Q2UDQ8Ev8GJEjc=
+	t=1714475708; cv=none; b=c7O3Zoozl1+ZkmylaOpECMeQw+7eP1b7xbINzo3fmyh/zuF9/V6W05eRohp8EvdWSpk72w4zOrgNw2pQFBehfSvSdVrx5Q3uh/xWjDDtyDT1tns0R48ZEMHUg9IN4iHaGoJJL+g4v8avwEmSxI3d2nqCtZf1mF0T33Ai2+KtnyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476219; c=relaxed/simple;
-	bh=0NVB2QWKdVU3W6JYLb4KME/Nq4nMTjmYlq9BfXH+xd4=;
+	s=arc-20240116; t=1714475708; c=relaxed/simple;
+	bh=MVROt6RcWBNBpWrwwQWc+B6pQGC56VP+C6eVPiNQxuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHV5Yz2vkOtwpHjR+YjmTHxfebrIVTWeyj+7es1Zd3AVBV9yrLnX/V68/EnNaDQT6LsZSqagvwzMU5x7foZDYPRnS6sVX6ZRPiQrHrCbJs+X827f5Tt/ITrrxK/fJymLI4AxQBZ9NTkGh4sPj4F+gCOg+SETNWvCn2HS1a8cQQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kj/4zbRV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EC1C2BBFC;
-	Tue, 30 Apr 2024 11:23:38 +0000 (UTC)
+	 MIME-Version; b=j9qbZKJbAMz8TfvTThcTejuQ3yMHhz6u42fCbh+Ly4cfHnyA6xlAqRxuLVZ1wqxz3d1+yOabCN8dASiOuwvl3AwQfMpl8f2Wg1ILz0DjcHWwWztK6l02njLlF0I1CVy4yOINE+6UXXF9pVffV+MGrkSTY9tVQijLSqRvYMVSeAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjEiLOds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E924C2BBFC;
+	Tue, 30 Apr 2024 11:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476219;
-	bh=0NVB2QWKdVU3W6JYLb4KME/Nq4nMTjmYlq9BfXH+xd4=;
+	s=korg; t=1714475708;
+	bh=MVROt6RcWBNBpWrwwQWc+B6pQGC56VP+C6eVPiNQxuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kj/4zbRVax3nWXppxY7efc8vIwIkaRW31GUoCmPt68hB0JMHgRHAq1Oc9kY0N3wDG
-	 yD2jZt95HvfCgphK2kHas32brpdsxnkcqfKzlOD2NCZ4H3t3ySQk+nPjlgXCtxXfEl
-	 9nAVFCWZsUUW620fSp0Oyzzw+OkCC3OP8nxIajDE=
+	b=PjEiLOdsagy0Lqm7/rPmbnMrJ4LEi0un3Ijr2zWsw4nDqy0GE7YlMLrCp6623lYXc
+	 ehYIoE9Ovhf+WZGZqujbP1BNEhj+pPFatJ7pW4G2pK/X2edJleJ0ow8++U6I3MvqBs
+	 hzEnfxtLIKlv0IWinX93kFTxGcQiFkrKj0cX3t9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 070/107] mlxsw: spectrum_acl_tcam: Fix possible use-after-free during rehash
-Date: Tue, 30 Apr 2024 12:40:30 +0200
-Message-ID: <20240430103046.722020866@linuxfoundation.org>
+Subject: [PATCH 6.6 179/186] i2c: smbus: fix NULL function pointer dereference
+Date: Tue, 30 Apr 2024 12:40:31 +0200
+Message-ID: <20240430103103.227018407@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 54225988889931467a9b55fdbef534079b665519 ]
+[ Upstream commit 91811a31b68d3765b3065f4bb6d7d6d84a7cfc9f ]
 
-The rehash delayed work migrates filters from one region to another
-according to the number of available credits.
+Baruch reported an OOPS when using the designware controller as target
+only. Target-only modes break the assumption of one transfer function
+always being available. Fix this by always checking the pointer in
+__i2c_transfer.
 
-The migrated from region is destroyed at the end of the work if the
-number of credits is non-negative as the assumption is that this is
-indicative of migration being complete. This assumption is incorrect as
-a non-negative number of credits can also be the result of a failed
-migration.
-
-The destruction of a region that still has filters referencing it can
-result in a use-after-free [1].
-
-Fix by not destroying the region if migration failed.
-
-[1]
-BUG: KASAN: slab-use-after-free in mlxsw_sp_acl_ctcam_region_entry_remove+0x21d/0x230
-Read of size 8 at addr ffff8881735319e8 by task kworker/0:31/3858
-
-CPU: 0 PID: 3858 Comm: kworker/0:31 Tainted: G        W          6.9.0-rc2-custom-00782-gf2275c2157d8 #5
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0xc6/0x120
- print_report+0xce/0x670
- kasan_report+0xd7/0x110
- mlxsw_sp_acl_ctcam_region_entry_remove+0x21d/0x230
- mlxsw_sp_acl_ctcam_entry_del+0x2e/0x70
- mlxsw_sp_acl_atcam_entry_del+0x81/0x210
- mlxsw_sp_acl_tcam_vchunk_migrate_all+0x3cd/0xb50
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x157/0x1300
- process_one_work+0x8eb/0x19b0
- worker_thread+0x6c9/0xf70
- kthread+0x2c9/0x3b0
- ret_from_fork+0x4d/0x80
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Allocated by task 174:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x8f/0xa0
- __kmalloc+0x19c/0x360
- mlxsw_sp_acl_tcam_region_create+0xdf/0x9c0
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x954/0x1300
- process_one_work+0x8eb/0x19b0
- worker_thread+0x6c9/0xf70
- kthread+0x2c9/0x3b0
- ret_from_fork+0x4d/0x80
- ret_from_fork_asm+0x1a/0x30
-
-Freed by task 7:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x60
- poison_slab_object+0x102/0x170
- __kasan_slab_free+0x14/0x30
- kfree+0xc1/0x290
- mlxsw_sp_acl_tcam_region_destroy+0x272/0x310
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x731/0x1300
- process_one_work+0x8eb/0x19b0
- worker_thread+0x6c9/0xf70
- kthread+0x2c9/0x3b0
- ret_from_fork+0x4d/0x80
- ret_from_fork_asm+0x1a/0x30
-
-Fixes: c9c9af91f1d9 ("mlxsw: spectrum_acl: Allow to interrupt/continue rehash work")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/3e412b5659ec2310c5c615760dfe5eac18dd7ebd.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Baruch Siach <baruch@tkos.co.il>
+Closes: https://lore.kernel.org/r/4269631780e5ba789cf1ae391eec1b959def7d99.1712761976.git.baruch@tkos.co.il
+Fixes: 4b1acc43331d ("i2c: core changes for slave support")
+[wsa: dropped the simplification in core-smbus to avoid theoretical regressions]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Baruch Siach <baruch@tkos.co.il>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/i2c-core-base.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 7cd3338ed4742..7e5dc664c55c7 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1522,6 +1522,7 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
- 						ctx, credits);
- 	if (err) {
- 		dev_err(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
-+		return;
- 	}
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 7f30bcceebaed..3642d42463209 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -2187,13 +2187,18 @@ static int i2c_check_for_quirks(struct i2c_adapter *adap, struct i2c_msg *msgs,
+  * Returns negative errno, else the number of messages executed.
+  *
+  * Adapter lock must be held when calling this function. No debug logging
+- * takes place. adap->algo->master_xfer existence isn't checked.
++ * takes place.
+  */
+ int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ {
+ 	unsigned long orig_jiffies;
+ 	int ret, try;
  
- 	if (*credits >= 0)
++	if (!adap->algo->master_xfer) {
++		dev_dbg(&adap->dev, "I2C level transfers not supported\n");
++		return -EOPNOTSUPP;
++	}
++
+ 	if (WARN_ON(!msgs || num < 1))
+ 		return -EINVAL;
+ 
+@@ -2260,11 +2265,6 @@ int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ {
+ 	int ret;
+ 
+-	if (!adap->algo->master_xfer) {
+-		dev_dbg(&adap->dev, "I2C level transfers not supported\n");
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	/* REVISIT the fault reporting model here is weak:
+ 	 *
+ 	 *  - When we get an error after receiving N bytes from a slave,
 -- 
 2.43.0
 
