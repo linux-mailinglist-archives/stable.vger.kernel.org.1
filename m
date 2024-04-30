@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-42037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA08F8B7110
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2518B71AB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276DA1C2202C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BCE2283AF4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DA912C48B;
-	Tue, 30 Apr 2024 10:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E7212C490;
+	Tue, 30 Apr 2024 10:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6byFdu6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmKTyoPT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4236E4176D;
-	Tue, 30 Apr 2024 10:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9025B7464;
+	Tue, 30 Apr 2024 10:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474355; cv=none; b=F0JqvhBzYrsys7ciUo1lfyTx+BPahy5P/LgaDMIlZPV+FS/SChCGTrlEF4pPrkYg4ciLM46+K98nlwDJ+WmzbXf6tH0/zCOTjYrv51/uWPNAHw0K1dX8FkY5YU6W9KeJiQMMnsCwJfhOuXsZFKWZi5VB7uhxJPGNbQJCYPpvShw=
+	t=1714474754; cv=none; b=lYAfapXQUG0mZqV3UhKVzglJUItn1egJ/ZgneWhX41WnFn5kR8JGRp/JndpM4mYHMTKowefxY4qCbQxQfQHRq/e2mDC4GLoMKa9PhPcooxki91Xk9qI56Y0cDZWp9xOxSyt+Y0FJIhmrLjF/C0pA9ZnAIPI5px+rqMMzx2IOJdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474355; c=relaxed/simple;
-	bh=1SCj6RtobMHdH89nlHQWlrbICeTNJj8ex0KLihchP70=;
+	s=arc-20240116; t=1714474754; c=relaxed/simple;
+	bh=HHB6QzpVk6W1CqZMhNZDh3WTqlKjccpQsRaLX2DnCIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmmyTuEtnD57qkdfVGAfvDIvZh9P0bRtlMpiii100jOdlb8Wwm6c+DlyJKwMphq7cjA6O7KzRAVkjMel2VAQAVe9COj1rIJhL7i1iI9R0y1rMTLJ9lcR2J5xnAmJHVqDbBivA0dWGgbFDQ0iEQSkU+pxXEfr7DVOqS7BsBWXxNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6byFdu6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC605C2BBFC;
-	Tue, 30 Apr 2024 10:52:34 +0000 (UTC)
+	 MIME-Version; b=jNazeZFiBDxL7y1UZFMTKOS2JSTkXTsuB4NRAKrt/LcitV9SxxN0x/+KEMmyFM2nNu0E350rCaE9GQdFkmwQURPXowydIpOo4cH10O2uDViY2uTogAVdG0acIbAHHF/d2EdvZm/c/pIDm3KhTsn39dQELZ6keGjZyAviFoyE0qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmKTyoPT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3BFC2BBFC;
+	Tue, 30 Apr 2024 10:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474355;
-	bh=1SCj6RtobMHdH89nlHQWlrbICeTNJj8ex0KLihchP70=;
+	s=korg; t=1714474754;
+	bh=HHB6QzpVk6W1CqZMhNZDh3WTqlKjccpQsRaLX2DnCIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6byFdu6U4JrWWXzy7frWZPdKHlmzzvJuRta2PCCsqaeYBG0DtNu5zOp1KdX+Becy
-	 J3KLbHt1zplGqO5CXag50t5ZrJLWcMClNjXf94KXlIgzoUvHSJRr47x68FYL61Dc0y
-	 1DhiYaLWt7q0T6xmC5BAVkx0xTMotHgHj6M6kVcA=
+	b=xmKTyoPTWR/T/f4jUWMqkB25ap5sbKZwispEPjrXy9kz4gHjYKJV3HfURxpaq2lm9
+	 UChbcJ7NFoQ1G9QN4Q0ydp/pbpRcwGIuZmo+wBE4XChzTtE7A6B2JSVCQ8dhUG67gr
+	 hNqfiooZcsFyPRTnjukRfyHdhxoROI23DS1k0voo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenkuan Wang <Wenkuan.Wang@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.8 132/228] x86/CPU/AMD: Add models 0x10-0x1f to the Zen5 range
+	Yihuang Yu <yihyu@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	stable@kernel.org
+Subject: [PATCH 5.10 025/138] vhost: Add smp_rmb() in vhost_vq_avail_empty()
 Date: Tue, 30 Apr 2024 12:38:30 +0200
-Message-ID: <20240430103107.612535041@linuxfoundation.org>
+Message-ID: <20240430103050.169939747@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +66,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenkuan Wang <Wenkuan.Wang@amd.com>
+From: Gavin Shan <gshan@redhat.com>
 
-commit 2718a7fdf292b2dcb49c856fa8a6a955ebbbc45f upstream.
+commit 22e1992cf7b034db5325660e98c41ca5afa5f519 upstream.
 
-Add some more Zen5 models.
+A smp_rmb() has been missed in vhost_vq_avail_empty(), spotted by
+Will. Otherwise, it's not ensured the available ring entries pushed
+by guest can be observed by vhost in time, leading to stale available
+ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
+Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
 
-Fixes: 3e4147f33f8b ("x86/CPU/AMD: Add X86_FEATURE_ZEN5")
-Signed-off-by: Wenkuan Wang <Wenkuan.Wang@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240423144111.1362-1-bp@kernel.org
+  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
+  -accel kvm -machine virt,gic-version=host -cpu host          \
+  -smp maxcpus=1,cpus=1,sockets=1,clusters=1,cores=1,threads=1 \
+  -m 4096M,slots=16,maxmem=64G                                 \
+  -object memory-backend-ram,id=mem0,size=4096M                \
+   :                                                           \
+  -netdev tap,id=vnet0,vhost=true                              \
+  -device virtio-net-pci,bus=pcie.8,netdev=vnet0,mac=52:54:00:f1:26:b0
+   :
+  guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
+  virtio_net virtio0: output.0:id 100 is not a head!
+
+Add the missed smp_rmb() in vhost_vq_avail_empty(). When tx_can_batch()
+returns true, it means there's still pending tx buffers. Since it might
+read indices, so it still can bypass the smp_rmb() in vhost_get_vq_desc().
+Note that it should be safe until vq->avail_idx is changed by commit
+275bf960ac697 ("vhost: better detection of available buffers").
+
+Fixes: 275bf960ac69 ("vhost: better detection of available buffers")
+Cc: <stable@kernel.org> # v4.11+
+Reported-by: Yihuang Yu <yihyu@redhat.com>
+Suggested-by: Will Deacon <will@kernel.org>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240328002149.1141302-2-gshan@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/vhost/vhost.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -572,8 +572,7 @@ static void bsp_init_amd(struct cpuinfo_
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2513,9 +2513,19 @@ bool vhost_vq_avail_empty(struct vhost_d
+ 	r = vhost_get_avail_idx(vq, &avail_idx);
+ 	if (unlikely(r))
+ 		return false;
++
+ 	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
++	if (vq->avail_idx != vq->last_avail_idx) {
++		/* Since we have updated avail_idx, the following
++		 * call to vhost_get_vq_desc() will read available
++		 * ring entries. Make sure that read happens after
++		 * the avail_idx read.
++		 */
++		smp_rmb();
++		return false;
++	}
  
- 	case 0x1a:
- 		switch (c->x86_model) {
--		case 0x00 ... 0x0f:
--		case 0x20 ... 0x2f:
-+		case 0x00 ... 0x2f:
- 		case 0x40 ... 0x4f:
- 		case 0x70 ... 0x7f:
- 			setup_force_cpu_cap(X86_FEATURE_ZEN5);
+-	return vq->avail_idx == vq->last_avail_idx;
++	return true;
+ }
+ EXPORT_SYMBOL_GPL(vhost_vq_avail_empty);
+ 
 
 
 
