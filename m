@@ -1,305 +1,151 @@
-Return-Path: <stable+bounces-42797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300048B7A76
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 16:46:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8B08B7A40
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 16:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 761FE1F2182A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 14:46:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAFF11C2274B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 14:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA0177102;
-	Tue, 30 Apr 2024 14:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDAF173344;
+	Tue, 30 Apr 2024 14:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yn371kQb"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="11b+x3A2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BD677109;
-	Tue, 30 Apr 2024 14:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42FF1527AF;
+	Tue, 30 Apr 2024 14:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714488325; cv=none; b=SwgLMSEfUhmLe+JAvrkWQw63AlpRON6qLOufCZZMIeELuR1yOlOR37dTWlV+W1hx39vpB2ebYdwV/iMLhLhRkLKBRWGALc1e7SFOgOqbhQqZRoSua3jwrhzBHLUL7up+IlE0Uf4ZWZXgUIUVOiqkENM26rjMfEiogw264rlQtuc=
+	t=1714487835; cv=none; b=NJBizbVEilWvBJi1evqXV5hvmNZjWGppNS4YHL43BkOXI05+5myobgu9TDwp6hAdeeSzk8Kl0lLSUVDbHMAwuhKP449U3Tr2O4KYJpWpLVsUqqbDVcvUq/GXl6IZ4+7sqpJErzzMBilwT67kCqmSfiJWPKHCuRoJEmGKa7Tv+q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714488325; c=relaxed/simple;
-	bh=GO3JqT8vODgdjJL18arG9BEgpjAliVjYhrBCpB/dLvA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GNEql8dkCDAu4tqqbITFkcxOa6ujjZWJbGaGaeKpkXRCpISQ3Dc9h+WcWgaUbwrEkfjqOTzMLS2EWFiDurAJ3AJUelR4QuQS3KdqO/Q7k6DQUkCYKbmOudHOW+3jaRHu+VT3pEyK2lllZx+gwKD0pIWEHjimo1xxbIQqwaZkp/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yn371kQb; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714488324; x=1746024324;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=GO3JqT8vODgdjJL18arG9BEgpjAliVjYhrBCpB/dLvA=;
-  b=Yn371kQbD/cdimhXXi2QPcaquh0EwkmXQrAlFD3Q8ClS8U46ds3MunSu
-   HSNdL4npnc+kvDKch9+kSqSuoCwFzidDbLg4/gPgu4o0iDnk9XLTzTaqv
-   oZ/qhJWONFMjVeREyDYwEWioukUiHOgGxU43ss3Hn8bgPCcB6NsX6EMbg
-   zVVv0XtSbMYsdvhFsucseuEalpLOE24dRSjdvhYZ1LQVH2jt1HAG/VHyc
-   391lA+rQs0OD69FX6Yjih40+shuqCzZdvNFgHLj6OGuBafC7c9mTCi/WN
-   9xrBU6LWLfUnn4RKU+Mqs5izO3zLqc4DV1bZll3hSWtAug6AnEkcoAebK
-   w==;
-X-CSE-ConnectionGUID: x2i2zLUYTTub7r//AC45ZA==
-X-CSE-MsgGUID: UOEzPH1IRJOv7EoTjE3ccQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="14025512"
-X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="14025512"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 07:45:24 -0700
-X-CSE-ConnectionGUID: p7IfGD9fS0OzmfhDsU+daA==
-X-CSE-MsgGUID: 04tj7VsLTmCw6qYFqInTuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="26566817"
-Received: from mehlow-prequal01.jf.intel.com ([10.54.102.156])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 07:45:22 -0700
-From: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
-To: jarkko@kernel.org
-Cc: dave.hansen@linux.intel.com,
-	dmitrii.kuvaiskii@intel.com,
-	haitao.huang@linux.intel.com,
-	kai.huang@intel.com,
-	kailun.qin@intel.com,
-	linux-kernel@vger.kernel.org,
-	linux-sgx@vger.kernel.org,
-	mona.vij@intel.com,
-	mwk@invisiblethingslab.com,
-	reinette.chatre@intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] x86/sgx: Resolve EAUG race where losing thread returns SIGBUS
-Date: Tue, 30 Apr 2024 07:37:01 -0700
-Message-Id: <20240430143701.902597-1-dmitrii.kuvaiskii@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <D0WMM3MYQODE.3A89L7D6OVG3E@kernel.org>
-References: <D0WMM3MYQODE.3A89L7D6OVG3E@kernel.org>
+	s=arc-20240116; t=1714487835; c=relaxed/simple;
+	bh=9rSMcuzwwI4PZXYWrwTd12QwuXTRkoqlwdLl9+RkQRQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wh3SzqaJHFdPadbz5mjfUAfdMrfaNQFylTuUlLcGaAFDLNoEKQO3OoUu1w30olhbZTawhrCpMEFzKHjSIVpRz/vW6Wm6FunHbqlh+2vkpkhNcuaBoxmU8KdMoQWcmHW92wFFANYv2d6b014Wt5GJI+zDUREwqKLgO1BHx7PgHWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=11b+x3A2; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1714487831;
+	bh=9rSMcuzwwI4PZXYWrwTd12QwuXTRkoqlwdLl9+RkQRQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=11b+x3A2LoV33qAbm8z7E2/OtwouJCH3Dze4nn/7xdxRdyGQLmAD3n9HxQF9jx6TM
+	 AYsRJdxUU+AwcwcHhG4+pFoRWIEVcKbKgqVb7yQaBbOOKat/jU3jATY6m0Vs3oNcD0
+	 9IxpyEPHyEjrxoElf7H/6gmt3JDX8ull5sUTZPoPvg19dmxaKE5lv3GwoWL7paOkVj
+	 OF3uBz2sQ4DNad7v6g1rXimlLfqxi0D20KXu2vDofBnpAY8WVr9fhIlt4nDJyFwBxU
+	 uumfBWP5JbCvT9Dq2ZdgSvVq2m1/fpxQL2O9JgNzD2ofAINpkjWgWbIRoc/iV+4ri/
+	 1JB8uZpnUD5qw==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 6F270378212D;
+	Tue, 30 Apr 2024 14:37:11 +0000 (UTC)
+Message-ID: <d145f7d8-73f2-40db-b65f-dd56000d2e25@collabora.com>
+Date: Tue, 30 Apr 2024 16:37:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Deutschland GmbH - Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "arm64: dts: mediatek: mt7622: drop "reset-names" from
+ thermal block" has been added to the 4.19-stable tree
+To: Matthias Brugger <matthias.bgg@gmail.com>, stable@vger.kernel.org,
+ stable-commits@vger.kernel.org, rafal@milecki.pl
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+References: <20240428112459.2019420-1-sashal@kernel.org>
+ <8ca4ceee-b64d-49ca-8eb8-0dd894181051@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <8ca4ceee-b64d-49ca-8eb8-0dd894181051@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 29, 2024 at 04:04:24PM +0300, Jarkko Sakkinen wrote:
-> On Mon Apr 29, 2024 at 1:43 PM EEST, Dmitrii Kuvaiskii wrote:
-> > Two enclave threads may try to access the same non-present enclave page
-> > simultaneously (e.g., if the SGX runtime supports lazy allocation). The
-> > threads will end up in sgx_encl_eaug_page(), racing to acquire the
-> > enclave lock. The winning thread will perform EAUG, set up the page
-> > table entry, and insert the page into encl->page_array. The losing
-> > thread will then get -EBUSY on xa_insert(&encl->page_array) and proceed
-> > to error handling path.
+Il 30/04/24 16:24, Matthias Brugger ha scritto:
 > 
-> And that path removes page. Not sure I got gist of this tbh.
-
-Well, this is not about a redundant EREMOVE performed. This is about the
-enclave page becoming inaccessible due to a bug triggered with a data race.
-
-Consider some enclave page not yet added to the enclave. The enclave
-performs a memory access to it at the same time on CPU1 and CPU2. Since the
-page does not yet have a corresponding PTE, the #PF handler on both CPUs
-calls sgx_vma_fault(). Scenario proceeds as follows:
-
-/*
- * Fault on CPU1
- */
-sgx_vma_fault() {
-
-  xa_load(&encl->page_array) == NULL ->
-
-  sgx_encl_eaug_page() {
-
-    ...                            /*
-                                    * Fault on CPU2
-                                    */
-                                   sgx_vma_fault() {
-
-                                     xa_load(&encl->page_array) == NULL ->
-
-                                     sgx_encl_eaug_page() {
-
-                                       ...
-
-                                       mutex_lock(&encl->lock);
-                                       /*
-                                        * alloc encl_page
-                                        */
-                                       /*
-                                        * alloc EPC page
-                                        */
-                                       epc_page = sgx_alloc_epc_page(...);
-                                       /*
-                                        * add page_to enclave's xarray
-                                        */
-                                       xa_insert(&encl->page_array, ...);
-                                       /*
-                                        * add page to enclave via EAUG
-                                        * (page is in pending state)
-                                        */
-                                       /*
-                                        * add PTE entry
-                                        */
-                                       vmf_insert_pfn(...);
-
-                                       mutex_unlock(&encl->lock);
-                                       return VM_FAULT_NOPAGE;
-                                     }
-                                   }
-     mutex_lock(&encl->lock);
-     /*
-      * alloc encl_page
-      */
-     /*
-      * alloc EPC page
-      */
-     epc_page = sgx_alloc_epc_page(...);
-     /*
-      * add page_to enclave's xarray,
-      * this fails with -EBUSY
-      */
-     xa_insert(&encl->page_array, ...);
-
-   err_out_shrink:
-     sgx_encl_free_epc_page(epc_page) {
-       /*
-        * remove page via EREMOVE
-        */
-       /*
-        * free EPC page
-        */
-       sgx_free_epc_page(epc_page);
-     }
-
-      mutex_unlock(&encl->lock);
-      return VM_FAULT_SIGBUS;
-    }
-  }
-
-CPU2 added the enclave page (in pending state) to the enclave and installed
-the PTE. The kernel gives control back to the user space, without raising a
-signal. The user space on CPU2 retries the memory access and induces a page
-fault, but now with the SGX bit set in the #PF error code. The #PF handler
-calls do_user_addr_fault(), which calls access_error() and ultimately
-raises a SIGSEGV. The userspace SIGSEGV handler is supposed to perform
-EACCEPT, after which point the enclave page becomes accessible.
-
-CPU1 however jumps to the error handling path because the page was already
-inserted into the enclave's xarray. This error handling path EREMOVEs the
-page and also raises a SIGBUS signal to user space. The PTE entry is not
-removed.
-
-After CPU1 performs EREMOVE, this enclave page becomes perpetually
-inaccessible (until an SGX_IOC_ENCLAVE_REMOVE_PAGES ioctl). This is because
-the page is marked accessible in the PTE entry but is not EAUGed. Because
-of this combination, the #PF handler sees the SGX bit set in the #PF error
-code and does not call sgx_vma_fault() but instead raises a SIGSEGV. The
-userspace SIGSEGV handler cannot perform EACCEPT because the page was not
-EAUGed. Thus, the user space is stuck with the inaccessible page.
-
-Also note that in the scenario, CPU1 raises a SIGBUS signal to user space
-unnecessarily. This signal is spurious because a page-access retry on CPU2
-will also raise the SIGBUS signal. That said, this side effect is less
-severe because it affects only user space. Therefore, it could be
-circumvented in user space alone, but it seems reasonable to fix it in this
-patch.
-
-> > This error handling path contains two bugs: (1) SIGBUS is sent to
-> > userspace even though the enclave page is correctly installed by another
-> > thread, and (2) sgx_encl_free_epc_page() is called that performs EREMOVE
-> > even though the enclave page was never intended to be removed. The first
-> > bug is less severe because it impacts only the user space; the second
-> > bug is more severe because it also impacts the OS state by ripping the
-> > page (added by the winning thread) from the enclave.
-> >
-> > Fix these two bugs (1) by returning VM_FAULT_NOPAGE to the generic Linux
-> > fault handler so that no signal is sent to userspace, and (2) by
-> > replacing sgx_encl_free_epc_page() with sgx_free_epc_page() so that no
-> > EREMOVE is performed.
 > 
-> What is the collateral damage caused by ENCLS[EREMOVE]?
-
-As explained above, the damage is that the SGX driver leaves the enclave
-page metadata in an inconsistent state: on the one hand, the PTE entry is
-installed which forces the generic Linux fault handler to raise SIGSEGV,
-and on the other hand, the page is not in a correct state to be EACCEPTed
-(i.e., EAUG was not performed on this page).
-
-> > Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized enclave")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Marcelina Kościelnicka <mwk@invisiblethingslab.com>
-> > Suggested-by: Reinette Chatre <reinette.chatre@intel.com>
-> > Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
-> > ---
-> >  arch/x86/kernel/cpu/sgx/encl.c | 7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-> > index 279148e72459..41f14b1a3025 100644
-> > --- a/arch/x86/kernel/cpu/sgx/encl.c
-> > +++ b/arch/x86/kernel/cpu/sgx/encl.c
-> > @@ -382,8 +382,11 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
-> >  	 * If ret == -EBUSY then page was created in another flow while
-> >  	 * running without encl->lock
-> >  	 */
-> > -	if (ret)
-> > +	if (ret) {
-> > +		if (ret == -EBUSY)
-> > +			vmret = VM_FAULT_NOPAGE;
-> >  		goto err_out_shrink;
-> > +	}
-> >  
-> >  	pginfo.secs = (unsigned long)sgx_get_epc_virt_addr(encl->secs.epc_page);
-> >  	pginfo.addr = encl_page->desc & PAGE_MASK;
-> > @@ -419,7 +422,7 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
-> >  err_out_shrink:
-> >  	sgx_encl_shrink(encl, va_page);
-> >  err_out_epc:
-> > -	sgx_encl_free_epc_page(epc_page);
-> > +	sgx_free_epc_page(epc_page);
+> On 4/28/24 13:24, Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>      arm64: dts: mediatek: mt7622: drop "reset-names" from thermal block
+>>
+>> to the 4.19-stable tree which can be found at:
+>>      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>> The filename of the patch is:
+>>       arm64-dts-mediatek-mt7622-drop-reset-names-from-ther.patch
+>> and it can be found in the queue-4.19 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>>
+>>
+>>
+>> commit 9628765c4a0eefa9474ef4a0698691a10395a469
+>> Author: Rafał Miłecki <rafal@milecki.pl>
+>> Date:   Sun Mar 17 23:10:50 2024 +0100
+>>
+>>      arm64: dts: mediatek: mt7622: drop "reset-names" from thermal block
+>>      [ Upstream commit ecb5b0034f5bcc35003b4b965cf50c6e98316e79 ]
+>>      Binding doesn't specify "reset-names" property and Linux driver also
+>>      doesn't use it.
 > 
-> This ignores check for the page being reclaimer tracked, i.e. it does
-> changes that have been ignored in the commit message.
-
-Indeed, sgx_encl_free_epc_page() performs the following check:
-
-  WARN_ON_ONCE(page->flags & SGX_EPC_PAGE_RECLAIMER_TRACKED);
-
-However, the EPC page is allocated in sgx_encl_eaug_page() and has
-zeroed-out flags in all error-handling paths. In other words, the page is
-marked as reclaimable only in the happy path of sgx_encl_eaug_page().
-Therefore, in the particular code path that I changed this "page reclaimer
-tracked" condition is always false, and the warning is never printed.
-
-Do you want me to explain this in the commit message?
-
----
-
-(Below questions are from follow-up emails, I add them to this reply email
-to have all discussions in one place.)
-
-> > > > What is the collateral damage caused by ENCLS[EREMOVE]?
-> >
-> > Have you measured cost of eremove on an empty page?
-> >
-> > I tried to lookup for a thread from lore because I have a faint memory
-> > that it was concluded that its cost irrelevant. Please correct if I'm
-> > wrong.
+> I think that's an open discussion item if fixes to DTS checks are valid stable 
+> backports. From my point of view there is no bug so it shouldn't be in stable.
 > 
-> Also pseudocode for EREMOVE supports this as it just returns without
-> actually doing anything.
 
-I have not measured the cost of EREMOVE on an empty page. This cost may be
-negligible. But as stated above, my patch does not get rid of EREMOVE
-simply for performance reasons. My patch removes a data race that leads to
-a forever-inaccessible enclave page.
+The only benefit apart from one less warning is a few bytes less in a *.dtb file...
 
---
-Dmitrii Kuvaiskii
+I don't feel like I agree with you, but at the same time I also don't feel like
+disagreeing - as those are not "fixing practical issues" in the end.
+
+Passing the word to devicetree/bindings maintainers... :-)
+
+Cheers,
+Angelo
+
+> Regards,
+> Matthias
+> 
+>>      Fix following validation error:
+>>      arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: thermal@1100b000: Unevaluated 
+>> properties are not allowed ('reset-names' was unexpected)
+>>              from schema $id: 
+>> http://devicetree.org/schemas/thermal/mediatek,thermal.yaml#
+>>      Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related 
+>> device nodes")
+>>      Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+>>      Reviewed-by: AngeloGioacchino Del Regno 
+>> <angelogioacchino.delregno@collabora.com>
+>>      Link: https://lore.kernel.org/r/20240317221050.18595-5-zajec5@gmail.com
+>>      Signed-off-by: AngeloGioacchino Del Regno 
+>> <angelogioacchino.delregno@collabora.com>
+>>      Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>
+>> diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi 
+>> b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+>> index 76297dac2d459..f8df34ac1e64d 100644
+>> --- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+>> +++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+>> @@ -459,7 +459,6 @@ thermal: thermal@1100b000 {
+>>                <&pericfg CLK_PERI_AUXADC_PD>;
+>>           clock-names = "therm", "auxadc";
+>>           resets = <&pericfg MT7622_PERI_THERM_SW_RST>;
+>> -        reset-names = "therm";
+>>           mediatek,auxadc = <&auxadc>;
+>>           mediatek,apmixedsys = <&apmixedsys>;
+>>           nvmem-cells = <&thermal_calibration>;
+
+
+
 
