@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-41936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08C58B708A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:46:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5313E8B7098
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:47:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91C511F23EDD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:46:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84A371C210E6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDE812C486;
-	Tue, 30 Apr 2024 10:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B814312C48B;
+	Tue, 30 Apr 2024 10:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5mK3b7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vR1QuNE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660C71292C8;
-	Tue, 30 Apr 2024 10:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C101292C8;
+	Tue, 30 Apr 2024 10:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474009; cv=none; b=W4W6Nh4JBzoUjZSQaKJIknmMQD5Hz50LnSAwXx3nTrpBzY+ObKK4cgOPmTLyQDBENm4+M53kApwYDhHpSuhAnVI6zzZLhzZeTeeE5Ha3Q8HZGYnTBqLQZi9mmYM86TeD5QzQkkPR5LrVp9FfHWWc6JJhDe4uxctNIy+Ll6GZRek=
+	t=1714474051; cv=none; b=ML7MrgMUCzLPmQ/hIcEMaTu6YQXNPl/1Xt5WBBD68Jrp0YrTwtOUf8MgDD/VfIrY/mlhqyh8dUVtnGOuUO6yT+4nRtJ6oEisjqvYLaCwzYyExRJfKeJGGZEpT0v9XN2dNwrpKAuF/WtjrjHWfWwyP+b/y6DAlKrdXnK7kEl6/rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474009; c=relaxed/simple;
-	bh=jJOcq85pZrQDvPFA9YgtdbQsF9URnvHjm9MNsVY2Vzw=;
+	s=arc-20240116; t=1714474051; c=relaxed/simple;
+	bh=S9NkVb6XVWbUcK4rWvnE4A4b8J1a5wo3sY5zKOgzjxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RdWasWem01G+5uyF3euuWunaTqa3pEjSIkZKgs2X7/FOtInh48uztP1T8Ds+eBCvn4RqS5+gB9x8fTdbf9nFdqTfRUvzE5a+ZsvlKS5uJ8yam+NwaMO66z+EmOUgxmJbZu3t9YGQlixhYh4sk2MrZW4rDP904WRSCGbHOOChD50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5mK3b7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81495C2BBFC;
-	Tue, 30 Apr 2024 10:46:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AkusuM6OeQvPfXcJuCm54LbB16A7w4fXJ281VwL9thBwIu4g3c4Fyl9pzWzAyXNTLFpd05y/QBTdFEp0UdaZAuqdd4uckAjHq6M1H9yaPdc2RW0BUYdrvB7GvsuikljXT65H63UUsLsl7U/RqkXbHhOlKKEMILJSdlrVLEd3Po0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vR1QuNE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E81C2BBFC;
+	Tue, 30 Apr 2024 10:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474009;
-	bh=jJOcq85pZrQDvPFA9YgtdbQsF9URnvHjm9MNsVY2Vzw=;
+	s=korg; t=1714474050;
+	bh=S9NkVb6XVWbUcK4rWvnE4A4b8J1a5wo3sY5zKOgzjxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5mK3b7m944oDgCh6Us8uZ9tEAa8vK0p+3tu2Rhf5UAABhJBPyq4lSBr0ooA8h3w3
-	 EezHeqT2ii0ZJd1Fqjo6bdji+Rf8/cEvGZRScLXuwuE5ZgsJ2vzRVsIYDqlbop/xqd
-	 dECw1KbXahf2RZZgXz7tFTb0fnYITYPBLrqE1ZS8=
+	b=1vR1QuNEYiXpeZgZ+/WdPMn1lJdRk5LgZgh6xJ81RUOYYL2ofE/scsHV3I54R6DuD
+	 EfHCVs0Fw1ASw1ryEZ94Lz2vBXDn9BN8Bd7VqcdAbUw9peGcCJA4Pvd/QikG6+Sbfk
+	 zmrxnoHj9RNAhICXi9VIlSJD6iuXaIUOHYTy2eXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 016/228] arm64: dts: mediatek: mt8195: Add missing gce-client-reg to mutex1
-Date: Tue, 30 Apr 2024 12:36:34 +0200
-Message-ID: <20240430103104.283554636@linuxfoundation.org>
+Subject: [PATCH 6.8 017/228] arm64: dts: mediatek: cherry: Describe CPU supplies
+Date: Tue, 30 Apr 2024 12:36:35 +0200
+Message-ID: <20240430103104.312110978@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 References: <20240430103103.806426847@linuxfoundation.org>
@@ -69,34 +69,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 58f126296c3c52d02bf3fad1f68c331d718c4a9b ]
+[ Upstream commit 17b33dd9e4a38fbaca87c68e532b52f9d0492ba7 ]
 
-Add the missing mediatek,gce-client-reg property to the mutex1 node to
-allow it to use the GCE. This prevents the "can't parse gce-client-reg
-property" error from being printed and should result in better
-performance.
+Describe in each CPU node the regulator supplying it.
 
-Fixes: 92d2c23dc269 ("arm64: dts: mt8195: add display node for vdosys1")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 260c04d425eb ("arm64: dts: mediatek: cherry: Enable MT6315 regulators on SPMI bus")
 Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20240229-gce-client-reg-add-missing-mt8192-95-v1-4-b12c233a8a33@collabora.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240110142305.755367-2-nfraprado@collabora.com
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ .../boot/dts/mediatek/mt8195-cherry.dtsi      | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 6cea6612e2feb..4dd7f755630ea 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -3305,6 +3305,7 @@
- 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
- 			clocks = <&vdosys1 CLK_VDO1_DISP_MUTEX>;
- 			clock-names = "vdo1_mutex";
-+			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0x1000 0x1000>;
- 			mediatek,gce-events = <CMDQ_EVENT_VDO1_STREAM_DONE_ENG_0>;
- 		};
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+index 3c6079edda190..1f3a6755f1550 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+@@ -264,6 +264,38 @@
+ 	status = "okay";
+ };
+ 
++&cpu0 {
++	cpu-supply = <&mt6359_vcore_buck_reg>;
++};
++
++&cpu1 {
++	cpu-supply = <&mt6359_vcore_buck_reg>;
++};
++
++&cpu2 {
++	cpu-supply = <&mt6359_vcore_buck_reg>;
++};
++
++&cpu3 {
++	cpu-supply = <&mt6359_vcore_buck_reg>;
++};
++
++&cpu4 {
++	cpu-supply = <&mt6315_6_vbuck1>;
++};
++
++&cpu5 {
++	cpu-supply = <&mt6315_6_vbuck1>;
++};
++
++&cpu6 {
++	cpu-supply = <&mt6315_6_vbuck1>;
++};
++
++&cpu7 {
++	cpu-supply = <&mt6315_6_vbuck1>;
++};
++
+ &dp_intf0 {
+ 	status = "okay";
  
 -- 
 2.43.0
