@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-42511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE698B7360
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E105E8B73C8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55728B2110D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 973BF1F21FC3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C308412CDA5;
-	Tue, 30 Apr 2024 11:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032628801;
+	Tue, 30 Apr 2024 11:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fp4N618h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MC4JNI5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810028801;
-	Tue, 30 Apr 2024 11:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E0917592;
+	Tue, 30 Apr 2024 11:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475899; cv=none; b=OENESs1Xa6F0ntw12bMtWbLfQO2GOPvy7zQ8sdto1XuyYzBpbAMakqisNI5osZeOXe7k0SSK/coc0TS7fK5QGvANBaibrj3KTxlrlsDvHDRn8W5aMruWOSOnqV1M7230J9s1+YDUsxx80nCwooJrtZih83ZRes3YwoTFRcC2bBU=
+	t=1714476196; cv=none; b=Sea/Aj25gv2pAC+jOtZgDdDgezTXqujeeJjqAf44tusNEHYZ5/oErWN3G0stzgAEsmwo/etFiXJZ+56NdXHhQtYYj1Ic7RSxHEIWkxsV4cusJjP1kU45q4AvVlw/TqVR3ekIym2A/5zGcK8S+Ig7RCUYeLsDdOPYPXond3nXvhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475899; c=relaxed/simple;
-	bh=MJByaQLO9ThzVfG8Qu+Zf6i520tvZ9d611LOwJ+pD9g=;
+	s=arc-20240116; t=1714476196; c=relaxed/simple;
+	bh=7w1F6tUqly0yoPZpAJbgQS7IeAPUunyl17Fpv81xa8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y24grwsOLxEXyDUcDmWy3EKUS6xN00pSqaZqKYDfdh1MtEcequCACMu43V9Jn4gELpJ4u3TFQzzs+tLlFIxdBX5HoKpAW6SbXWT/pO/G8pKp1aDB37H31gkDjtoGBcKjZiHxS32t/00e1G+l9PuoVytHOfe2UbQ8Q2marNVMsQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fp4N618h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CABC2BBFC;
-	Tue, 30 Apr 2024 11:18:18 +0000 (UTC)
+	 MIME-Version; b=Cx/mF0CSYOykkVI0ApkKBPpU1pLqxiMm9xKlCVSqGcaSqJ7IitL5DgNE6RAcMKRc+q3Upv2VDpvOodRSqS6r28EICcfhSfAQceQZs1QljOJTmN1td3oJDDV1oFWxmhQYVWNlKlqYWHjZSESt0Bi1retwo1Lut6s+kwGV2lwe+tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MC4JNI5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32446C2BBFC;
+	Tue, 30 Apr 2024 11:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475899;
-	bh=MJByaQLO9ThzVfG8Qu+Zf6i520tvZ9d611LOwJ+pD9g=;
+	s=korg; t=1714476196;
+	bh=7w1F6tUqly0yoPZpAJbgQS7IeAPUunyl17Fpv81xa8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fp4N618hR6S2/bBFJYtgSMK2J2v1pkGff/D+U0YLfD2t8FH/vk7kSLFz37lXLOU7a
-	 QB6CRjQDjJJAcof6uKkyY3INArklY15GEoefVH1jvF2bsmFBg0EL2Mb9XTgtGC1LEG
-	 y82e88k0mj57qeOV2lMOWIEeLAIrfi+AIErm8ULo=
+	b=MC4JNI5qu+klA/Jh2/8h6+GNXKhbeTqEiq7r0ss8XcB9yALx1g/mq5e5+dPM9G/LS
+	 qp1d3MeNgfhUN4LH1Ux8g+uXqfQQMVANfMN2AtzTds/5oBTEHRApWyjezd1VTmRqv8
+	 ZUq1nW9pyWB+w+KC0TMcU2dqLExfrgpWiNMXg39I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Kaplan <david.kaplan@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 52/80] x86/cpu: Fix check for RDPKRU in __show_regs()
+	shironeko <shironeko@tesaguri.club>,
+	Eric Dumazet <edumazet@google.com>,
+	Jose Alonso <joalonsof@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 064/107] net: usb: ax88179_178a: stop lying about skb->truesize
 Date: Tue, 30 Apr 2024 12:40:24 +0200
-Message-ID: <20240430103044.954452437@linuxfoundation.org>
+Message-ID: <20240430103046.544941882@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Kaplan <david.kaplan@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b53c6bd5d271d023857174b8fd3e32f98ae51372 upstream.
+[ Upstream commit 4ce62d5b2f7aecd4900e7d6115588ad7f9acccca ]
 
-cpu_feature_enabled(X86_FEATURE_OSPKE) does not necessarily reflect
-whether CR4.PKE is set on the CPU.  In particular, they may differ on
-non-BSP CPUs before setup_pku() is executed.  In this scenario, RDPKRU
-will #UD causing the system to hang.
+Some usb drivers try to set small skb->truesize and break
+core networking stacks.
 
-Fix by checking CR4 for PKE enablement which is always correct for the
-current CPU.
+In this patch, I removed one of the skb->truesize overide.
 
-The scenario happens by inserting a WARN* before setup_pku() in
-identiy_cpu() or some other diagnostic which would lead to calling
-__show_regs().
+I also replaced one skb_clone() by an allocation of a fresh
+and small skb, to get minimally sized skbs, like we did
+in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
+in rx path")
 
-  [ bp: Massage commit message. ]
-
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240421191728.32239-1-bp@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f8ebb3ac881b ("net: usb: ax88179_178a: Fix packet receiving")
+Reported-by: shironeko <shironeko@tesaguri.club>
+Closes: https://lore.kernel.org/netdev/c110f41a0d2776b525930f213ca9715c@tesaguri.club/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jose Alonso <joalonsof@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240421193828.1966195-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process_64.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/ax88179_178a.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -137,7 +137,7 @@ void __show_regs(struct pt_regs *regs, e
- 		       log_lvl, d3, d6, d7);
- 	}
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 84dc9fb2b1f3f..c6159b521e063 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1452,21 +1452,16 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			/* Skip IP alignment pseudo header */
+ 			skb_pull(skb, 2);
  
--	if (cpu_feature_enabled(X86_FEATURE_OSPKE))
-+	if (cr4 & X86_CR4_PKE)
- 		printk("%sPKRU: %08x\n", log_lvl, read_pkru());
- }
+-			skb->truesize = SKB_TRUESIZE(pkt_len_plus_padd);
+ 			ax88179_rx_checksum(skb, pkt_hdr);
+ 			return 1;
+ 		}
  
+-		ax_skb = skb_clone(skb, GFP_ATOMIC);
++		ax_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
+ 		if (!ax_skb)
+ 			return 0;
+-		skb_trim(ax_skb, pkt_len);
++		skb_put(ax_skb, pkt_len);
++		memcpy(ax_skb->data, skb->data + 2, pkt_len);
+ 
+-		/* Skip IP alignment pseudo header */
+-		skb_pull(ax_skb, 2);
+-
+-		skb->truesize = pkt_len_plus_padd +
+-				SKB_DATA_ALIGN(sizeof(struct sk_buff));
+ 		ax88179_rx_checksum(ax_skb, pkt_hdr);
+ 		usbnet_skb_return(dev, ax_skb);
+ 
+-- 
+2.43.0
+
 
 
 
