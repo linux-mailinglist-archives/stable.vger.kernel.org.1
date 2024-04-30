@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DB78B7230
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E618B7316
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B87ABB2077E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0FAB1F21BA0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB1D12C54B;
-	Tue, 30 Apr 2024 11:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155FA12D75C;
+	Tue, 30 Apr 2024 11:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLend8aD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTBZld3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EE312C462;
-	Tue, 30 Apr 2024 11:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C9B12D1F1;
+	Tue, 30 Apr 2024 11:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475127; cv=none; b=Qlo4Corfhre7xmm/t65Nym0j0aF5VoZpJd4Wf0Zlwmg35PaqJfjPlYqn4AOBTvKApbRNXcOOaB7d0LTfvc8bIDclmaRoKzSx1lGS6LXc2MhHNchfbY3aj053S414GqUr+iydLTdCMrAG6zPjOREYJGculMx1UHfFXCPqeCa0GWg=
+	t=1714475701; cv=none; b=KkuRjo8Bt/q7NbPgJJqtxgjIamLCHkAFk5lSpOdqQaCAlUd30u8Drdp309Atujwlupgxro5AQgJgfntN7QQmi+Ksqz9S76z/+NfhLCF48F7Rt2dIz3JR3b5RFNCEg4/tzZxmQ/2mVnPR02QU32VzP3vS23jjZ1FCZkoZ4vZ26SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475127; c=relaxed/simple;
-	bh=IEAA24vLsShFCqaBaZKJWAJLj1Zdbfq+CDBVV2mrRrg=;
+	s=arc-20240116; t=1714475701; c=relaxed/simple;
+	bh=j1zC3fxSRM/0u6BDBimoylFMx4H/dIV7Hyf1pc8duYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Or9UhzWNhwJ3BKj0yicE+6y4ifgMVoWLaJSugle6eR8e7gjM2kS1d/PboRVPfPy0f5Z4VmxGwJAeOHqM/UHkPJSdBG2ZlgCtOgqcMcyKzaoF0D22Xph7vmRsvaPdyRbSaAXJuyQfo3nwp3xvkLJyaIMKSY6nQFlhkZl509PxKoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLend8aD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B554C2BBFC;
-	Tue, 30 Apr 2024 11:05:26 +0000 (UTC)
+	 MIME-Version; b=Lli9hQ1zZh4MWtwu7404UiAibhx5xDzLnOLMU9hJ/+CxndY7xtcso/Lik8GATzQAlauh2fwzmzzM9avD3ziKqxT9Dh91WoUL9W9TzCsGIch/F/fo9JgezHiHPstyddU1cmSsy0sste8zWF1RPbp5V0JBC+RVK6NQbfdEpvfYoIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTBZld3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E1BC2BBFC;
+	Tue, 30 Apr 2024 11:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475126;
-	bh=IEAA24vLsShFCqaBaZKJWAJLj1Zdbfq+CDBVV2mrRrg=;
+	s=korg; t=1714475701;
+	bh=j1zC3fxSRM/0u6BDBimoylFMx4H/dIV7Hyf1pc8duYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLend8aD0YqO/NCcw8W68wq/THp7MTm934cOAU46u5B/QgXdmOdVN6MBxFYnjf1Nu
-	 RQ54h8CLEBYCePxAN9qlNmHq7jcmvaOL3tgL5CHQn/7MbmKhcix1baKxrn7BaQxyp3
-	 QofVRIYtqIPyBdBUQutsiJfg2TajTNbkILO7Uljg=
+	b=PTBZld3gKBKrT+12AYs9sGK3UhvUVXSZ24TszyUWN00zpHJw+gxfYYSscxlWoXrhu
+	 UfOc6fyshY0oNc5zk3RrCSuiEaSWkg55awqH98jLd3FrQ15GvVVddhzUBgh4YFiYQs
+	 JOFhg91uUQLDMaqK4jl7byeQepdEmyHGEwVXYNow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Zhengchao Shao <shaozhengchao@huawei.com>
-Subject: [PATCH 5.10 127/138] tcp: Fix NEW_SYN_RECV handling in inet_twsk_purge()
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 160/186] idma64: Dont try to serve interrupts when device is powered off
 Date: Tue, 30 Apr 2024 12:40:12 +0200
-Message-ID: <20240430103053.142536727@linuxfoundation.org>
+Message-ID: <20240430103102.678198444@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 1c4e97dd2d3c9a3e84f7e26346aa39bc426d3249 upstream.
+[ Upstream commit 9140ce47872bfd89fca888c2f992faa51d20c2bc ]
 
-inet_twsk_purge() uses rcu to find TIME_WAIT and NEW_SYN_RECV
-objects to purge.
+When iDMA 64-bit device is powered off, the IRQ status register
+is all 1:s. This is never happen in real case and signalling that
+the device is simply powered off. Don't try to serve interrupts
+that are not ours.
 
-These objects use SLAB_TYPESAFE_BY_RCU semantic and need special
-care. We need to use refcount_inc_not_zero(&sk->sk_refcnt).
-
-Reuse the existing correct logic I wrote for TIME_WAIT,
-because both structures have common locations for
-sk_state, sk_family, and netns pointer.
-
-If after the refcount_inc_not_zero() the object fields longer match
-the keys, use sock_gen_put(sk) to release the refcount.
-
-Then we can call inet_twsk_deschedule_put() for TIME_WAIT,
-inet_csk_reqsk_queue_drop_and_put() for NEW_SYN_RECV sockets,
-with BH disabled.
-
-Then we need to restart the loop because we had drop rcu_read_lock().
-
-Fixes: 740ea3c4a0b2 ("tcp: Clean up kernel listener's reqsk in inet_twsk_purge()")
-Link: https://lore.kernel.org/netdev/CANn89iLvFuuihCtt9PME2uS1WJATnf5fKjDToa1WzVnRzHnPfg@mail.gmail.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240308200122.64357-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[shaozhengchao: resolved conflicts in 5.10]
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 667dfed98615 ("dmaengine: add a driver for Intel integrated DMA 64-bit")
+Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
+Closes: https://lore.kernel.org/r/700bbb84-90e1-4505-8ff0-3f17ea8bc631@gmail.com
+Tested-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240321120453.1360138-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_timewait_sock.c |   41 +++++++++++++++++++----------------------
- 1 file changed, 19 insertions(+), 22 deletions(-)
+ drivers/dma/idma64.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/ipv4/inet_timewait_sock.c
-+++ b/net/ipv4/inet_timewait_sock.c
-@@ -254,12 +254,12 @@ void __inet_twsk_schedule(struct inet_ti
- }
- EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
+diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
+index 0ac634a51c5e3..f86939fa33b95 100644
+--- a/drivers/dma/idma64.c
++++ b/drivers/dma/idma64.c
+@@ -171,6 +171,10 @@ static irqreturn_t idma64_irq(int irq, void *dev)
+ 	u32 status_err;
+ 	unsigned short i;
  
-+/* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
- void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
- {
--	struct inet_timewait_sock *tw;
--	struct sock *sk;
- 	struct hlist_nulls_node *node;
- 	unsigned int slot;
-+	struct sock *sk;
- 
- 	for (slot = 0; slot <= hashinfo->ehash_mask; slot++) {
- 		struct inet_ehash_bucket *head = &hashinfo->ehash[slot];
-@@ -268,38 +268,35 @@ restart_rcu:
- 		rcu_read_lock();
- restart:
- 		sk_nulls_for_each_rcu(sk, node, &head->chain) {
--			if (sk->sk_state != TCP_TIME_WAIT) {
--				/* A kernel listener socket might not hold refcnt for net,
--				 * so reqsk_timer_handler() could be fired after net is
--				 * freed.  Userspace listener and reqsk never exist here.
--				 */
--				if (unlikely(sk->sk_state == TCP_NEW_SYN_RECV &&
--					     hashinfo->pernet)) {
--					struct request_sock *req = inet_reqsk(sk);
--
--					inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
--				}
-+			int state = inet_sk_state_load(sk);
- 
-+			if ((1 << state) & ~(TCPF_TIME_WAIT |
-+					     TCPF_NEW_SYN_RECV))
- 				continue;
--			}
- 
--			tw = inet_twsk(sk);
--			if ((tw->tw_family != family) ||
--				refcount_read(&twsk_net(tw)->count))
-+			if (sk->sk_family != family ||
-+			    refcount_read(&sock_net(sk)->count))
- 				continue;
- 
--			if (unlikely(!refcount_inc_not_zero(&tw->tw_refcnt)))
-+			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
- 				continue;
- 
--			if (unlikely((tw->tw_family != family) ||
--				     refcount_read(&twsk_net(tw)->count))) {
--				inet_twsk_put(tw);
-+			if (unlikely(sk->sk_family != family ||
-+				     refcount_read(&sock_net(sk)->count))) {
-+				sock_gen_put(sk);
- 				goto restart;
- 			}
- 
- 			rcu_read_unlock();
- 			local_bh_disable();
--			inet_twsk_deschedule_put(tw);
-+			if (state == TCP_TIME_WAIT) {
-+				inet_twsk_deschedule_put(inet_twsk(sk));
-+			} else {
-+				struct request_sock *req = inet_reqsk(sk);
++	/* Since IRQ may be shared, check if DMA controller is powered on */
++	if (status == GENMASK(31, 0))
++		return IRQ_NONE;
 +
-+				inet_csk_reqsk_queue_drop_and_put(req->rsk_listener,
-+								  req);
-+			}
- 			local_bh_enable();
- 			goto restart_rcu;
- 		}
+ 	dev_vdbg(idma64->dma.dev, "%s: status=%#x\n", __func__, status);
+ 
+ 	/* Check if we have any interrupt from the DMA controller */
+-- 
+2.43.0
+
 
 
 
