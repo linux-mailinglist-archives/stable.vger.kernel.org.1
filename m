@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB248B713E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF38E8B703E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AB2BB22EB5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CBFF1C2194E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D8B12CDA5;
-	Tue, 30 Apr 2024 10:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1343312CDBA;
+	Tue, 30 Apr 2024 10:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2U6k2acn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnUhpKO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDC712CD99;
-	Tue, 30 Apr 2024 10:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26B012C7E3;
+	Tue, 30 Apr 2024 10:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474460; cv=none; b=gU3Ur4uAkxDceG8ftzn+5yfZIIJJIMt2I4kOGJn/oqVB7v+N9aq7U1bxK7IHsCob/hDGEtYgbp9BiejAeKYvGuynJtS8ULCiLAoYDIxBlF0jv9NY2k7tsO1NgvkQDKoxccavzB9VPv1E1OAMqq/BLITOKd6UT9KN8mbEoVscFnE=
+	t=1714473853; cv=none; b=rcNaGY7fWSGuP3UPWYVOMZSlAmyADrHQM9psPxsVZSwWo1LNvrS73CRfcQ7JSHK2vxhEfRQO+ROWjVZmmf3FHr3v4qI8ZkQ/4r2tGwGRrMe0CJu9J1RsWrt5uc+n7MuGw7ppGrsg91pOM4gc7dzEJ4FapZyORZBVyoPZlQ4Xf7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474460; c=relaxed/simple;
-	bh=VO1eHLIUEVVVaD7kzKfGi8fHpLBqaAlQJqpEB4ZclJE=;
+	s=arc-20240116; t=1714473853; c=relaxed/simple;
+	bh=6TltmW1IjyMliMHTXCzWdMI3g4VV7pesox8b+X5aZUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDDDOBk1ARm8OZm1uKUfA09K+EHO212XXQxW77aAJEHDxBnAVlP0yjMXZKIuIzmMRVALcnSKgW5vrI1C9hrvbUkyp1Wl0QU7cPBxsOJjAZWs6uSVn12xO6++KMcR/GB1OsLhGiXNYuqpqrGOGbD9qOm3n4IVwKWQS2yjptsEBRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2U6k2acn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423F0C2BBFC;
-	Tue, 30 Apr 2024 10:54:19 +0000 (UTC)
+	 MIME-Version; b=HYQdVUL4DifLPWBEUjrlSCdFn+J3tjNzJtG1hudU80nRjAehBkJeqnMtgJ137ythiQitMZSOtM2giIiP7GkYaPsJYvuV/wP9I2LFJPKXU4KnLfOb+78+xCMaq3v/fnZ8qKpj4eRcqT3iFOXKK7eEQfVVnVBqY7u3EZiOxt5WfJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnUhpKO9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDCEC2BBFC;
+	Tue, 30 Apr 2024 10:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474459;
-	bh=VO1eHLIUEVVVaD7kzKfGi8fHpLBqaAlQJqpEB4ZclJE=;
+	s=korg; t=1714473853;
+	bh=6TltmW1IjyMliMHTXCzWdMI3g4VV7pesox8b+X5aZUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2U6k2acnqTIs4yTy8/kj3T8WD0jtnCTng+3TGhBMb900jzNdwujVHrt0Cyr/xwBrl
-	 lHaeyTREx9dHSBDRKzYtK8BCM7tvTF+TrKBE7ziUnXyRYo0gbIinxXgY4kHDD+9knr
-	 +uy04UBt7a/NQnxDi8mEMwNDtjhtnfn/l1EqDduk=
+	b=fnUhpKO9beNIODFUE7DIBo2VX5+7eDBwa//jTBKAyvf5qDXNd8Ztzid+g7VtG5pZk
+	 IGN1lO1y1hJvM7T/A0ZJd3UcCEHabr5/dER4BZqkvebh85Tcql7D504wIQArcYAxaG
+	 5Hb+JB0k695L8O1WdStpZf0IhNN+UkchGsn0U7MY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sean Christopherson <seanjc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 6.8 163/228] cpu: Re-enable CPU mitigations by default for !X86 architectures
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 22/77] comedi: vmk80xx: fix incomplete endpoint checking
 Date: Tue, 30 Apr 2024 12:39:01 +0200
-Message-ID: <20240430103108.511314772@linuxfoundation.org>
+Message-ID: <20240430103041.783158093@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,113 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit fe42754b94a42d08cf9501790afc25c4f6a5f631 upstream.
+commit d1718530e3f640b7d5f0050e725216eab57a85d8 upstream.
 
-Rename x86's to CPU_MITIGATIONS, define it in generic code, and force it
-on for all architectures exception x86.  A recent commit to turn
-mitigations off by default if SPECULATION_MITIGATIONS=n kinda sorta
-missed that "cpu_mitigations" is completely generic, whereas
-SPECULATION_MITIGATIONS is x86-specific.
+While vmk80xx does have endpoint checking implemented, some things
+can fall through the cracks. Depending on the hardware model,
+URBs can have either bulk or interrupt type, and current version
+of vmk80xx_find_usb_endpoints() function does not take that fully
+into account. While this warning does not seem to be too harmful,
+at the very least it will crash systems with 'panic_on_warn' set on
+them.
 
-Rename x86's SPECULATIVE_MITIGATIONS instead of keeping both and have it
-select CPU_MITIGATIONS, as having two configs for the same thing is
-unnecessary and confusing.  This will also allow x86 to use the knob to
-manage mitigations that aren't strictly related to speculative
-execution.
+Fix the issue found by Syzkaller [1] by somewhat simplifying the
+endpoint checking process with usb_find_common_endpoints() and
+ensuring that only expected endpoint types are present.
 
-Use another Kconfig to communicate to common code that CPU_MITIGATIONS
-is already defined instead of having x86's menu depend on the common
-CPU_MITIGATIONS.  This allows keeping a single point of contact for all
-of x86's mitigations, and it's not clear that other architectures *want*
-to allow disabling mitigations at compile-time.
+This patch has not been tested on real hardware.
 
-Fixes: f337a6a21e2f ("x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n")
-Closes: https://lkml.kernel.org/r/20240413115324.53303a68%40canb.auug.org.au
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240420000556.2645001-2-seanjc@google.com
+[1] Syzkaller report:
+usb 1-1: BOGUS urb xfer, pipe 1 != type 3
+WARNING: CPU: 0 PID: 781 at drivers/usb/core/urb.c:504 usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
+...
+Call Trace:
+ <TASK>
+ usb_start_wait_urb+0x113/0x520 drivers/usb/core/message.c:59
+ vmk80xx_reset_device drivers/comedi/drivers/vmk80xx.c:227 [inline]
+ vmk80xx_auto_attach+0xa1c/0x1a40 drivers/comedi/drivers/vmk80xx.c:818
+ comedi_auto_config+0x238/0x380 drivers/comedi/drivers.c:1067
+ usb_probe_interface+0x5cd/0xb00 drivers/usb/core/driver.c:399
+...
+
+Similar issue also found by Syzkaller:
+Link: https://syzkaller.appspot.com/bug?extid=5205eb2f17de3e01946e
+
+Reported-and-tested-by: syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Fixes: 49253d542cc0 ("staging: comedi: vmk80xx: factor out usb endpoint detection")
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240408171633.31649-1-n.zhandarovich@fintech.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/Kconfig     |    8 ++++++++
- arch/x86/Kconfig |   11 ++++++-----
- kernel/cpu.c     |    4 ++--
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ drivers/staging/comedi/drivers/vmk80xx.c |   35 ++++++++++---------------------
+ 1 file changed, 12 insertions(+), 23 deletions(-)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -9,6 +9,14 @@
- #
- source "arch/$(SRCARCH)/Kconfig"
+--- a/drivers/staging/comedi/drivers/vmk80xx.c
++++ b/drivers/staging/comedi/drivers/vmk80xx.c
+@@ -642,33 +642,22 @@ static int vmk80xx_find_usb_endpoints(st
+ 	struct vmk80xx_private *devpriv = dev->private;
+ 	struct usb_interface *intf = comedi_to_usb_interface(dev);
+ 	struct usb_host_interface *iface_desc = intf->cur_altsetting;
+-	struct usb_endpoint_descriptor *ep_desc;
+-	int i;
++	struct usb_endpoint_descriptor *ep_rx_desc, *ep_tx_desc;
++	int ret;
  
-+config ARCH_CONFIGURES_CPU_MITIGATIONS
-+	bool
+-	if (iface_desc->desc.bNumEndpoints != 2)
+-		return -ENODEV;
+-
+-	for (i = 0; i < iface_desc->desc.bNumEndpoints; i++) {
+-		ep_desc = &iface_desc->endpoint[i].desc;
+-
+-		if (usb_endpoint_is_int_in(ep_desc) ||
+-		    usb_endpoint_is_bulk_in(ep_desc)) {
+-			if (!devpriv->ep_rx)
+-				devpriv->ep_rx = ep_desc;
+-			continue;
+-		}
++	if (devpriv->model == VMK8061_MODEL)
++		ret = usb_find_common_endpoints(iface_desc, &ep_rx_desc,
++						&ep_tx_desc, NULL, NULL);
++	else
++		ret = usb_find_common_endpoints(iface_desc, NULL, NULL,
++						&ep_rx_desc, &ep_tx_desc);
+ 
+-		if (usb_endpoint_is_int_out(ep_desc) ||
+-		    usb_endpoint_is_bulk_out(ep_desc)) {
+-			if (!devpriv->ep_tx)
+-				devpriv->ep_tx = ep_desc;
+-			continue;
+-		}
+-	}
+-
+-	if (!devpriv->ep_rx || !devpriv->ep_tx)
++	if (ret)
+ 		return -ENODEV;
+ 
++	devpriv->ep_rx = ep_rx_desc;
++	devpriv->ep_tx = ep_tx_desc;
 +
-+if !ARCH_CONFIGURES_CPU_MITIGATIONS
-+config CPU_MITIGATIONS
-+	def_bool y
-+endif
-+
- menu "General architecture-dependent options"
+ 	if (!usb_endpoint_maxp(devpriv->ep_rx) || !usb_endpoint_maxp(devpriv->ep_tx))
+ 		return -EINVAL;
  
- config ARCH_HAS_SUBPAGE_FAULTS
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -62,6 +62,7 @@ config X86
- 	select ACPI_HOTPLUG_CPU			if ACPI_PROCESSOR && HOTPLUG_CPU
- 	select ARCH_32BIT_OFF_T			if X86_32
- 	select ARCH_CLOCKSOURCE_INIT
-+	select ARCH_CONFIGURES_CPU_MITIGATIONS
- 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
-@@ -2467,17 +2468,17 @@ config PREFIX_SYMBOLS
- 	def_bool y
- 	depends on CALL_PADDING && !CFI_CLANG
- 
--menuconfig SPECULATION_MITIGATIONS
--	bool "Mitigations for speculative execution vulnerabilities"
-+menuconfig CPU_MITIGATIONS
-+	bool "Mitigations for CPU vulnerabilities"
- 	default y
- 	help
--	  Say Y here to enable options which enable mitigations for
--	  speculative execution hardware vulnerabilities.
-+	  Say Y here to enable options which enable mitigations for hardware
-+	  vulnerabilities (usually related to speculative execution).
- 
- 	  If you say N, all mitigations will be disabled. You really
- 	  should know what you are doing to say so.
- 
--if SPECULATION_MITIGATIONS
-+if CPU_MITIGATIONS
- 
- config PAGE_TABLE_ISOLATION
- 	bool "Remove the kernel mapping in user mode"
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -3207,8 +3207,8 @@ enum cpu_mitigations {
- };
- 
- static enum cpu_mitigations cpu_mitigations __ro_after_init =
--	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
--						     CPU_MITIGATIONS_OFF;
-+	IS_ENABLED(CONFIG_CPU_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
-+					     CPU_MITIGATIONS_OFF;
- 
- static int __init mitigations_parse_cmdline(char *arg)
- {
 
 
 
