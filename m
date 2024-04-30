@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD74D8B70CA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:49:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B43F8B723B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D170B21EC1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:49:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0FB51F23AB0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7E412C46B;
-	Tue, 30 Apr 2024 10:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FED012C819;
+	Tue, 30 Apr 2024 11:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cMTLvs0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IWCTlUa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845E12B176;
-	Tue, 30 Apr 2024 10:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A5612C530;
+	Tue, 30 Apr 2024 11:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474193; cv=none; b=hx/lMnKAiC/cEhjwnQ7pH291d16IlcNm0/9rJCIzpkXyBwEmMkkHXxm8jHaAcvq38GJkJ+dYyStOmj0gllMjh+7IXBzB+nmGlwsMFKuxTV6W2N5WTF4JhnPIBDR4ZfT5gxBp6/AfDqyEJzklckhDsGxKMSlPArqIIhUwkZjfOxg=
+	t=1714475152; cv=none; b=S1egtrqfX8T4OFKpFvJ8kKjA9qFT+UM4YoNxNm3DyfM/Nuh3tJ8VPsiufW7lCA1bIH9SIFv4entuyjInhIi7oB89x8xJaey41+qR2P3L59OEY/I+AMguKpejzZ1dTunEA35VQ6pJuU2GwV2Oyzu8IOjC8nApnGlTgwlZWiW3sWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474193; c=relaxed/simple;
-	bh=0sN67SVKhwEfJk6kmHcJ/mwBmZRk2cMAfnrCbldHgLA=;
+	s=arc-20240116; t=1714475152; c=relaxed/simple;
+	bh=2waA15l35+VW0f4uzFUcA8qsIcV122iMy7fXGgkTh18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kak8banUQpj58gQINs8+KZzUJ1CgCnPNlPBMBSFq+t0ape+w+KYlCRO3y0nC8LMBGsSGXNge++RK8ccOcbB1SyLRVZhr1DSMTPWsA6x8OJ6M5pM/4geseTIMsLIMV+GfaraJtfEmJ+Ua9wMNWoPRRNaQuza2zpnZLZTzFuI9sAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cMTLvs0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847C4C2BBFC;
-	Tue, 30 Apr 2024 10:49:52 +0000 (UTC)
+	 MIME-Version; b=QeEcAhf7Hij8XvPb8C3QLXOl4wba3HpWCc4Rd7A8NbAikqoB+cW23DfHfdBo1SRVzrHtAg7m8rjjvo8sZiuBHkEomISjQP+j5OVzD8PK7cyaXamjeOscyTiq7EtkdfjHOd1KsqsY7WzdojY62qYm3wrRhMcKZEqeoS8rvjNLuq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IWCTlUa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8BDC2BBFC;
+	Tue, 30 Apr 2024 11:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474192;
-	bh=0sN67SVKhwEfJk6kmHcJ/mwBmZRk2cMAfnrCbldHgLA=;
+	s=korg; t=1714475152;
+	bh=2waA15l35+VW0f4uzFUcA8qsIcV122iMy7fXGgkTh18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cMTLvs0KJq4Fp05wUqFrQBTjYzOLEUhEczcB0u8/jW6Hanp/WZuoJiYPuplEw92fK
-	 MuGl7/RFVaZy3SQBBqD3TPPN8xZ69Rx8BQYjNhGv5IehJ5E++BFpKV2OlSqTyhsVpY
-	 I6Q8P1Rwll7lYDwkwEafeAdAmkQVM6fUgE/ZSv8E=
+	b=0IWCTlUaBOAuMouEAqUe3+i0wqyOUiS3oPImdD3M3R5nMQmHkK/tzQ1vAEwK4VWyx
+	 utEXlXYn7SZndg1yOGqGG3MhCRL0OxvOU3VQFegshffr1kjxTh4S3sk3twF19MARCZ
+	 ch1pVhncvcNxKwrW2okylETT2R+1kXvclXjB2hlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 084/228] Bluetooth: ISO: Reassemble PA data for bcast sink
+Subject: [PATCH 6.6 010/186] arm64: dts: rockchip: Remove unsupported node from the Pinebook Pro dts
 Date: Tue, 30 Apr 2024 12:37:42 +0200
-Message-ID: <20240430103106.227114867@linuxfoundation.org>
+Message-ID: <20240430103058.319107737@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit 168d9bf9c7f01df71e6404cfff66d9c2a8e968fb ]
+[ Upstream commit 43853e843aa6c3d47ff2b0cce898318839483d05 ]
 
-This adds support to reassemble PA data for a Broadcast Sink
-listening socket. This is needed in case the BASE is received
-fragmented in multiple PA reports.
+Remove a redundant node from the Pine64 Pinebook Pro dts, which is intended
+to provide a value for the delay in PCI Express enumeration, but that isn't
+supported without additional out-of-tree kernel patches.
 
-PA data is first reassembled inside the hcon, before the BASE
-is extracted and stored inside the socket. The length of the
-le_per_adv_data hcon array has been raised to 1650, to accommodate
-the maximum PA data length that can come fragmented, according to
-spec.
+There were already efforts to upstream those kernel patches, because they
+reportedly make some PCI Express cards (such as LSI SAS HBAs) usable in
+Pine64 RockPro64 (which is also based on the RK3399);  otherwise, those PCI
+Express cards fail to enumerate.  However, providing the required background
+and explanations proved to be a tough nut to crack, which is the reason why
+those patches remain outside of the kernel mainline for now.
 
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 2e7ed5f5e69b ("Bluetooth: hci_sync: Use advertised PHYs on hci_le_ext_create_conn_sync")
+If those out-of-tree patches eventually become upstreamed, the resulting
+device-tree changes will almost surely belong to the RK3399 SoC dtsi.  Also,
+the above-mentioned unusable-without-out-of-tree-patches PCI Express devices
+are in all fairness not usable in a Pinebook Pro without some extensive
+hardware modifications, which is another reason to delete this redundant
+node.  When it comes to the Pinebook Pro, only M.2 NVMe SSDs can be installed
+out of the box (using an additional passive adapter PCB sold separately by
+Pine64), which reportedly works fine with no additional patches.
+
+Fixes: 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/0f82c3f97cb798d012270d13b34d8d15305ef293.1711923520.git.dsimic@manjaro.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci.h      |  5 ++++
- include/net/bluetooth/hci_core.h |  5 ++--
- net/bluetooth/iso.c              | 50 +++++++++++++++++++++++++++++---
- 3 files changed, 54 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index bfddb648fcc3e..2cfd8d862639f 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -2053,6 +2053,7 @@ struct hci_cp_le_set_per_adv_params {
- } __packed;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 054c6a4d1a45f..294eb2de263de 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -779,7 +779,6 @@
+ };
  
- #define HCI_MAX_PER_AD_LENGTH	252
-+#define HCI_MAX_PER_AD_TOT_LEN	1650
- 
- #define HCI_OP_LE_SET_PER_ADV_DATA		0x203f
- struct hci_cp_le_set_per_adv_data {
-@@ -2813,6 +2814,10 @@ struct hci_ev_le_per_adv_report {
- 	__u8     data[];
- } __packed;
- 
-+#define LE_PA_DATA_COMPLETE	0x00
-+#define LE_PA_DATA_MORE_TO_COME	0x01
-+#define LE_PA_DATA_TRUNCATED	0x02
-+
- #define HCI_EV_LE_EXT_ADV_SET_TERM	0x12
- struct hci_evt_le_ext_adv_set_term {
- 	__u8	status;
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 93e2b17b11267..1da71254caf61 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -735,8 +735,9 @@ struct hci_conn {
- 	__u16		le_supv_timeout;
- 	__u8		le_adv_data[HCI_MAX_EXT_AD_LENGTH];
- 	__u8		le_adv_data_len;
--	__u8		le_per_adv_data[HCI_MAX_PER_AD_LENGTH];
--	__u8		le_per_adv_data_len;
-+	__u8		le_per_adv_data[HCI_MAX_PER_AD_TOT_LEN];
-+	__u16		le_per_adv_data_len;
-+	__u16		le_per_adv_data_offset;
- 	__u8		le_tx_phy;
- 	__u8		le_rx_phy;
- 	__s8		rssi;
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index a8b05baa8e5a9..fa6c2e95d5542 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1955,16 +1955,58 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 
- 	ev3 = hci_recv_event_data(hdev, HCI_EV_LE_PER_ADV_REPORT);
- 	if (ev3) {
--		size_t base_len = ev3->length;
-+		size_t base_len = 0;
- 		u8 *base;
-+		struct hci_conn *hcon;
- 
- 		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
- 					 iso_match_sync_handle_pa_report, ev3);
--		base = eir_get_service_data(ev3->data, ev3->length,
--					    EIR_BAA_SERVICE_UUID, &base_len);
--		if (base && sk && base_len <= sizeof(iso_pi(sk)->base)) {
-+		if (!sk)
-+			goto done;
-+
-+		hcon = iso_pi(sk)->conn->hcon;
-+		if (!hcon)
-+			goto done;
-+
-+		if (ev3->data_status == LE_PA_DATA_TRUNCATED) {
-+			/* The controller was unable to retrieve PA data. */
-+			memset(hcon->le_per_adv_data, 0,
-+			       HCI_MAX_PER_AD_TOT_LEN);
-+			hcon->le_per_adv_data_len = 0;
-+			hcon->le_per_adv_data_offset = 0;
-+			goto done;
-+		}
-+
-+		if (hcon->le_per_adv_data_offset + ev3->length >
-+		    HCI_MAX_PER_AD_TOT_LEN)
-+			goto done;
-+
-+		memcpy(hcon->le_per_adv_data + hcon->le_per_adv_data_offset,
-+		       ev3->data, ev3->length);
-+		hcon->le_per_adv_data_offset += ev3->length;
-+
-+		if (ev3->data_status == LE_PA_DATA_COMPLETE) {
-+			/* All PA data has been received. */
-+			hcon->le_per_adv_data_len =
-+				hcon->le_per_adv_data_offset;
-+			hcon->le_per_adv_data_offset = 0;
-+
-+			/* Extract BASE */
-+			base = eir_get_service_data(hcon->le_per_adv_data,
-+						    hcon->le_per_adv_data_len,
-+						    EIR_BAA_SERVICE_UUID,
-+						    &base_len);
-+
-+			if (!base || base_len > BASE_MAX_LENGTH)
-+				goto done;
-+
- 			memcpy(iso_pi(sk)->base, base, base_len);
- 			iso_pi(sk)->base_len = base_len;
-+		} else {
-+			/* This is a PA data fragment. Keep pa_data_len set to 0
-+			 * until all data has been reassembled.
-+			 */
-+			hcon->le_per_adv_data_len = 0;
- 		}
- 	} else {
- 		sk = iso_get_sock_listen(&hdev->bdaddr, BDADDR_ANY, NULL, NULL);
+ &pcie0 {
+-	bus-scan-delay-ms = <1000>;
+ 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
+ 	num-lanes = <4>;
+ 	pinctrl-names = "default";
 -- 
 2.43.0
 
