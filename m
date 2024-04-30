@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-42235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217B88B7207
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F678B7052
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8361E1F22DE9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0F0F1C21E33
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D10212C534;
-	Tue, 30 Apr 2024 11:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0381312D1FA;
+	Tue, 30 Apr 2024 10:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15GDd4/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Zi9qj+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0112B176;
-	Tue, 30 Apr 2024 11:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B604C12C487;
+	Tue, 30 Apr 2024 10:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475003; cv=none; b=rpQ1MbeWF8+I8jVt2kaJnn/ZaHzDv4cO2sVNuA814hYfuTm1o+m2vBC9Dv2xxmgi9VTbE8fYEXaepmOONw6HpQcKuNHD7wllQLhP0M36ouWtcQMLG0am8ab/6z4DLHXO+ANL4Y6ZzXmHHbO6lsMExUc0Ux6+EDTGGW3wYsWTu2k=
+	t=1714473874; cv=none; b=f5SuIMpkvhOjN63CbjuFe6g1pcdtxsBHw6wvWGdNAf17ATRfMeAag/tQx0JxF9SRL8RZMyjuXAtk5M10auzsIERwaW+CrmDHvh9/yQdw7BYAN+tJnA8X70x9oRapAUBh56PAnnA27akwU/WMcOZdYoi6e220RiabuIn2zHWl9QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475003; c=relaxed/simple;
-	bh=NdFZLwhJqaNIxbyFPMFBf0CdWUcIF5KNA4bCmRSMOiE=;
+	s=arc-20240116; t=1714473874; c=relaxed/simple;
+	bh=tN0N32CmE39x1Rc+6zIClPvwYlNHb3YwawRyGN5OxtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OjsaUgUNkpeCkDcCpgzStZnpFCIBdjtveWsRZAFxhd/lqXgF+7YOxQX7lV+5PbR648ND+YFhVr4gbFBScRDHgUC/QtzXdp3AUQ9w0d0nZvSR0ER3dnXkGX2fS2lXvLlH5PZdZ0GOQsUa1ZV/faNy4HyvcumwBeKAp2Yz5dcqgMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15GDd4/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D006C2BBFC;
-	Tue, 30 Apr 2024 11:03:23 +0000 (UTC)
+	 MIME-Version; b=qm6f3nGuv5Gcy36Nn5JL+P1pSFH8KcrU+eXO4GGLLcwk48m/PRJNDETYItuHjxbblmN8VmH7XIJM52CszIRd164JVFUimKF/cIJrwf3ZZsRMUW3beM0ugDfaPkWhEXQTy5GxCynRzDDcscF8OtI6jv7A2DXAvQp3iRbPw61CHiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Zi9qj+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C20C2BBFC;
+	Tue, 30 Apr 2024 10:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475003;
-	bh=NdFZLwhJqaNIxbyFPMFBf0CdWUcIF5KNA4bCmRSMOiE=;
+	s=korg; t=1714473874;
+	bh=tN0N32CmE39x1Rc+6zIClPvwYlNHb3YwawRyGN5OxtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15GDd4/cG0G+BTn7rkvGFD246YwmIuHAUKneF03bv2+vEoFTgIZWuKaVDUxD95PGg
-	 3bezub3HA8+On84vOfB2aiUMIe/EiqaiiFu9mI0Y0+Zb+VMjzliD6mSFGYLFHqU4Mu
-	 C2+h59XmTaXtkYFjE21F6sMrFqfjmAY6pDuzsKSc=
+	b=2Zi9qj+eHshH3ZQDQbPy9YPle4jlzZi6ZeuyxjcdJ1ZT6gIgsSDGcNf6xulOrhPxv
+	 kfQARmDPKx4d5QyL463+KGvI66Lu9e9PKPt0Pp2byOWFP379D1E3XZ852MQh4RhAPE
+	 BoRUM0DYWhm1XKP2CAQxMEZvFbPvSKdshZhTqWCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sindhu Devale <sindhu.devale@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Robert Ganzynkowicz <robert.ganzynkowicz@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/138] i40e: Do not use WQ_MEM_RECLAIM flag for workqueue
+	Zhengchao Shao <shaozhengchao@huawei.com>
+Subject: [PATCH 4.19 68/77] tcp: Clean up kernel listeners reqsk in inet_twsk_purge()
 Date: Tue, 30 Apr 2024 12:39:47 +0200
-Message-ID: <20240430103052.415978656@linuxfoundation.org>
+Message-ID: <20240430103043.146240320@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,130 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sindhu Devale <sindhu.devale@intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 2cc7d150550cc981aceedf008f5459193282425c ]
+commit 740ea3c4a0b2e326b23d7cdf05472a0e92aa39bc upstream.
 
-Issue reported by customer during SRIOV testing, call trace:
-When both i40e and the i40iw driver are loaded, a warning
-in check_flush_dependency is being triggered. This seems
-to be because of the i40e driver workqueue is allocated with
-the WQ_MEM_RECLAIM flag, and the i40iw one is not.
+Eric Dumazet reported a use-after-free related to the per-netns ehash
+series. [0]
 
-Similar error was encountered on ice too and it was fixed by
-removing the flag. Do the same for i40e too.
+When we create a TCP socket from userspace, the socket always holds a
+refcnt of the netns.  This guarantees that a reqsk timer is always fired
+before netns dismantle.  Each reqsk has a refcnt of its listener, so the
+listener is not freed before the reqsk, and the net is not freed before
+the listener as well.
 
-[Feb 9 09:08] ------------[ cut here ]------------
-[  +0.000004] workqueue: WQ_MEM_RECLAIM i40e:i40e_service_task [i40e] is
-flushing !WQ_MEM_RECLAIM infiniband:0x0
-[  +0.000060] WARNING: CPU: 0 PID: 937 at kernel/workqueue.c:2966
-check_flush_dependency+0x10b/0x120
-[  +0.000007] Modules linked in: snd_seq_dummy snd_hrtimer snd_seq
-snd_timer snd_seq_device snd soundcore nls_utf8 cifs cifs_arc4
-nls_ucs2_utils rdma_cm iw_cm ib_cm cifs_md4 dns_resolver netfs qrtr
-rfkill sunrpc vfat fat intel_rapl_msr intel_rapl_common irdma
-intel_uncore_frequency intel_uncore_frequency_common ice ipmi_ssif
-isst_if_common skx_edac nfit libnvdimm x86_pkg_temp_thermal
-intel_powerclamp gnss coretemp ib_uverbs rapl intel_cstate ib_core
-iTCO_wdt iTCO_vendor_support acpi_ipmi mei_me ipmi_si intel_uncore
-ioatdma i2c_i801 joydev pcspkr mei ipmi_devintf lpc_ich
-intel_pch_thermal i2c_smbus ipmi_msghandler acpi_power_meter acpi_pad
-xfs libcrc32c ast sd_mod drm_shmem_helper t10_pi drm_kms_helper sg ixgbe
-drm i40e ahci crct10dif_pclmul libahci crc32_pclmul igb crc32c_intel
-libata ghash_clmulni_intel i2c_algo_bit mdio dca wmi dm_mirror
-dm_region_hash dm_log dm_mod fuse
-[  +0.000050] CPU: 0 PID: 937 Comm: kworker/0:3 Kdump: loaded Not
-tainted 6.8.0-rc2-Feb-net_dev-Qiueue-00279-gbd43c5687e05 #1
-[  +0.000003] Hardware name: Intel Corporation S2600BPB/S2600BPB, BIOS
-SE5C620.86B.02.01.0013.121520200651 12/15/2020
-[  +0.000001] Workqueue: i40e i40e_service_task [i40e]
-[  +0.000024] RIP: 0010:check_flush_dependency+0x10b/0x120
-[  +0.000003] Code: ff 49 8b 54 24 18 48 8d 8b b0 00 00 00 49 89 e8 48
-81 c6 b0 00 00 00 48 c7 c7 b0 97 fa 9f c6 05 8a cc 1f 02 01 e8 35 b3 fd
-ff <0f> 0b e9 10 ff ff ff 80 3d 78 cc 1f 02 00 75 94 e9 46 ff ff ff 90
-[  +0.000002] RSP: 0018:ffffbd294976bcf8 EFLAGS: 00010282
-[  +0.000002] RAX: 0000000000000000 RBX: ffff94d4c483c000 RCX:
-0000000000000027
-[  +0.000001] RDX: ffff94d47f620bc8 RSI: 0000000000000001 RDI:
-ffff94d47f620bc0
-[  +0.000001] RBP: 0000000000000000 R08: 0000000000000000 R09:
-00000000ffff7fff
-[  +0.000001] R10: ffffbd294976bb98 R11: ffffffffa0be65e8 R12:
-ffff94c5451ea180
-[  +0.000001] R13: ffff94c5ab5e8000 R14: ffff94c5c20b6e05 R15:
-ffff94c5f1330ab0
-[  +0.000001] FS:  0000000000000000(0000) GS:ffff94d47f600000(0000)
-knlGS:0000000000000000
-[  +0.000002] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  +0.000001] CR2: 00007f9e6f1fca70 CR3: 0000000038e20004 CR4:
-00000000007706f0
-[  +0.000000] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-0000000000000000
-[  +0.000001] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:
-0000000000000400
-[  +0.000001] PKRU: 55555554
-[  +0.000001] Call Trace:
-[  +0.000001]  <TASK>
-[  +0.000002]  ? __warn+0x80/0x130
-[  +0.000003]  ? check_flush_dependency+0x10b/0x120
-[  +0.000002]  ? report_bug+0x195/0x1a0
-[  +0.000005]  ? handle_bug+0x3c/0x70
-[  +0.000003]  ? exc_invalid_op+0x14/0x70
-[  +0.000002]  ? asm_exc_invalid_op+0x16/0x20
-[  +0.000006]  ? check_flush_dependency+0x10b/0x120
-[  +0.000002]  ? check_flush_dependency+0x10b/0x120
-[  +0.000002]  __flush_workqueue+0x126/0x3f0
-[  +0.000015]  ib_cache_cleanup_one+0x1c/0xe0 [ib_core]
-[  +0.000056]  __ib_unregister_device+0x6a/0xb0 [ib_core]
-[  +0.000023]  ib_unregister_device_and_put+0x34/0x50 [ib_core]
-[  +0.000020]  i40iw_close+0x4b/0x90 [irdma]
-[  +0.000022]  i40e_notify_client_of_netdev_close+0x54/0xc0 [i40e]
-[  +0.000035]  i40e_service_task+0x126/0x190 [i40e]
-[  +0.000024]  process_one_work+0x174/0x340
-[  +0.000003]  worker_thread+0x27e/0x390
-[  +0.000001]  ? __pfx_worker_thread+0x10/0x10
-[  +0.000002]  kthread+0xdf/0x110
-[  +0.000002]  ? __pfx_kthread+0x10/0x10
-[  +0.000002]  ret_from_fork+0x2d/0x50
-[  +0.000003]  ? __pfx_kthread+0x10/0x10
-[  +0.000001]  ret_from_fork_asm+0x1b/0x30
-[  +0.000004]  </TASK>
-[  +0.000001] ---[ end trace 0000000000000000 ]---
+OTOH, when in-kernel users create a TCP socket, it might not hold a refcnt
+of its netns.  Thus, a reqsk timer can be fired after the netns dismantle
+and access freed per-netns ehash.
 
-Fixes: 4d5957cbdecd ("i40e: remove WQ_UNBOUND and the task limit of our workqueue")
-Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Robert Ganzynkowicz <robert.ganzynkowicz@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240423182723.740401-2-anthony.l.nguyen@intel.com
+To avoid the use-after-free, we need to clean up TCP_NEW_SYN_RECV sockets
+in inet_twsk_purge() if the netns uses a per-netns ehash.
+
+[0]: https://lore.kernel.org/netdev/CANn89iLXMup0dRD_Ov79Xt8N9FM0XdhCHEN05sf3eLwxKweM6w@mail.gmail.com/
+
+BUG: KASAN: use-after-free in tcp_or_dccp_get_hashinfo
+include/net/inet_hashtables.h:181 [inline]
+BUG: KASAN: use-after-free in reqsk_queue_unlink+0x320/0x350
+net/ipv4/inet_connection_sock.c:913
+Read of size 8 at addr ffff88807545bd80 by task syz-executor.2/8301
+
+CPU: 1 PID: 8301 Comm: syz-executor.2 Not tainted
+6.0.0-syzkaller-02757-gaf7d23f9d96a #0
+Hardware name: Google Google Compute Engine/Google Compute Engine,
+BIOS Google 09/22/2022
+Call Trace:
+<IRQ>
+__dump_stack lib/dump_stack.c:88 [inline]
+dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:106
+print_address_description mm/kasan/report.c:317 [inline]
+print_report.cold+0x2ba/0x719 mm/kasan/report.c:433
+kasan_report+0xb1/0x1e0 mm/kasan/report.c:495
+tcp_or_dccp_get_hashinfo include/net/inet_hashtables.h:181 [inline]
+reqsk_queue_unlink+0x320/0x350 net/ipv4/inet_connection_sock.c:913
+inet_csk_reqsk_queue_drop net/ipv4/inet_connection_sock.c:927 [inline]
+inet_csk_reqsk_queue_drop_and_put net/ipv4/inet_connection_sock.c:939 [inline]
+reqsk_timer_handler+0x724/0x1160 net/ipv4/inet_connection_sock.c:1053
+call_timer_fn+0x1a0/0x6b0 kernel/time/timer.c:1474
+expire_timers kernel/time/timer.c:1519 [inline]
+__run_timers.part.0+0x674/0xa80 kernel/time/timer.c:1790
+__run_timers kernel/time/timer.c:1768 [inline]
+run_timer_softirq+0xb3/0x1d0 kernel/time/timer.c:1803
+__do_softirq+0x1d0/0x9c8 kernel/softirq.c:571
+invoke_softirq kernel/softirq.c:445 [inline]
+__irq_exit_rcu+0x123/0x180 kernel/softirq.c:650
+irq_exit_rcu+0x5/0x20 kernel/softirq.c:662
+sysvec_apic_timer_interrupt+0x93/0xc0 arch/x86/kernel/apic/apic.c:1107
+</IRQ>
+
+Fixes: d1e5e6408b30 ("tcp: Introduce optional per-netns ehash.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reported-by: Eric Dumazet <edumazet@google.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20221012145036.74960-1-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[shaozhengchao: resolved conflicts in 5.10]
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/inet_timewait_sock.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 6ea2d94c3ddea..d01338a9bbaf4 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -16023,7 +16023,7 @@ static int __init i40e_init_module(void)
- 	 * since we need to be able to guarantee forward progress even under
- 	 * memory pressure.
- 	 */
--	i40e_wq = alloc_workqueue("%s", WQ_MEM_RECLAIM, 0, i40e_driver_name);
-+	i40e_wq = alloc_workqueue("%s", 0, 0, i40e_driver_name);
- 	if (!i40e_wq) {
- 		pr_err("%s: Failed to create workqueue\n", i40e_driver_name);
- 		return -ENOMEM;
--- 
-2.43.0
-
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -267,8 +267,21 @@ restart_rcu:
+ 		rcu_read_lock();
+ restart:
+ 		sk_nulls_for_each_rcu(sk, node, &head->chain) {
+-			if (sk->sk_state != TCP_TIME_WAIT)
++			if (sk->sk_state != TCP_TIME_WAIT) {
++				/* A kernel listener socket might not hold refcnt for net,
++				 * so reqsk_timer_handler() could be fired after net is
++				 * freed.  Userspace listener and reqsk never exist here.
++				 */
++				if (unlikely(sk->sk_state == TCP_NEW_SYN_RECV &&
++					     hashinfo->pernet)) {
++					struct request_sock *req = inet_reqsk(sk);
++
++					inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
++				}
++
+ 				continue;
++			}
++
+ 			tw = inet_twsk(sk);
+ 			if ((tw->tw_family != family) ||
+ 				refcount_read(&twsk_net(tw)->count))
 
 
 
