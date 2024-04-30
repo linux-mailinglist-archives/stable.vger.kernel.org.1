@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-42201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3478B71DD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7748B700C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E60E31F23243
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 855212851C6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DCA12C530;
-	Tue, 30 Apr 2024 11:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBC012C46E;
+	Tue, 30 Apr 2024 10:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOV5hkfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vwXyxrK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308C512B176;
-	Tue, 30 Apr 2024 11:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE32A127B70;
+	Tue, 30 Apr 2024 10:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474895; cv=none; b=us4vLdf/2NUKaboBbtdR9RIEKbpZlFg37fZOxnYSB3B8ZRNpWU6+mxYA1ABWdrP1P6gt5hZVieyoqVf6DWVlOS+NtcNCzT6IJ4OwMKOSFCTJ9SwO1k8htS73QZ0tl0RbUe/9LWdX8sLIV8mnWEUIWNXKq6NpFzetdmTOXL6azhA=
+	t=1714473776; cv=none; b=Kc0eyjYwt7n8BUD2XB3qTQa35M5iv4rDY7IakOsewurmXCa6vMMj26/RD10ilbcsVLmeAsMx3Y81eU2o0SYV0QqoTAIv6iRKbR0i9gYOBlzGZgrsrrGfRcSL4AgUUsXgu00TQO4pBGHSqbGgfcYAqan7GaxEVe7P3B7RSIUoVCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474895; c=relaxed/simple;
-	bh=OIQ83GnHu82uhUfRDy9aN3hpwc/aPZMQLPDT/PZPLII=;
+	s=arc-20240116; t=1714473776; c=relaxed/simple;
+	bh=I7WCdCALFFv4alFa3QZxEAFbqYx8phJdCnUavK06mtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axmGS+7XH512jIK8UrOdk/ohWnf3ayITAtmSKK9guz41RPXRC5vLxzXuZtQ0Q73ajVLxDc3KXsp0vPMbef5WTy62mHMtm46oh8f7tPR5tmjE+5OlxDOu8rTj00Pv+xcuIewWqR/qZqhbgJ6uKDg9+oOqyJOTn9Qe31+O2/PorMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOV5hkfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928B0C2BBFC;
-	Tue, 30 Apr 2024 11:01:34 +0000 (UTC)
+	 MIME-Version; b=vF7wOLp8pS3vw09067//8OT84ulgMKqxZ2w68jBD+MRzsvVriYAjnUQ0z9bPUyX5Zi0eOVFYGia43F/wRKpKJLeEpFTnq3F4XlN3q909pTN9H99Icw9SpucaG4m3uedaHEDm1+XwD/bKawrb6qfpau70+FVeIQXbCMdF7mSNG3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vwXyxrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65941C2BBFC;
+	Tue, 30 Apr 2024 10:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474895;
-	bh=OIQ83GnHu82uhUfRDy9aN3hpwc/aPZMQLPDT/PZPLII=;
+	s=korg; t=1714473775;
+	bh=I7WCdCALFFv4alFa3QZxEAFbqYx8phJdCnUavK06mtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOV5hkfXgodnUF3vlGlnt+kHz++wfDF/yPpBlaZPlS5QaMzJ2XWcOWIwH7dyForzh
-	 hlfv8n/j8/m3B/ah7bXqqQIZ5oUZ7NEHUDZHqJHpQMvkh6yXZ+w0jpKtSePrHfVNe7
-	 xob2IQ0msJ80kTkoJiQfOGuKpBA2hdQy1KqDuJkI=
+	b=2vwXyxrKtxEEEgPQcK817mtuZ6tgEf1m5X+kCNTlyB9hqDfXt5e1qeExjxZoIWUJQ
+	 FqSRXhFBg2zuAcOSFXg2ogm/lbCf5BFXbRWu7PRCNTzhHzDbWG9PtOhzuJ/zM/MfoT
+	 mEGGFsrJ2e0L8Fmpe8rX51Ss8X7qDO69zDZErN7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <ytcoode@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.10 068/138] init/main.c: Fix potential static_command_line memory overflow
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@redhat.com>
+Subject: [PATCH 4.19 34/77] nouveau: fix instmem race condition around ptr stores
 Date: Tue, 30 Apr 2024 12:39:13 +0200
-Message-ID: <20240430103051.423242624@linuxfoundation.org>
+Message-ID: <20240430103042.139562036@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <ytcoode@gmail.com>
+From: Dave Airlie <airlied@redhat.com>
 
-commit 46dad3c1e57897ab9228332f03e1c14798d2d3b9 upstream.
+commit fff1386cc889d8fb4089d285f883f8cba62d82ce upstream.
 
-We allocate memory of size 'xlen + strlen(boot_command_line) + 1' for
-static_command_line, but the strings copied into static_command_line are
-extra_command_line and command_line, rather than extra_command_line and
-boot_command_line.
+Running a lot of VK CTS in parallel against nouveau, once every
+few hours you might see something like this crash.
 
-When strlen(command_line) > strlen(boot_command_line), static_command_line
-will overflow.
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+PGD 8000000114e6e067 P4D 8000000114e6e067 PUD 109046067 PMD 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 7 PID: 53891 Comm: deqp-vk Not tainted 6.8.0-rc6+ #27
+Hardware name: Gigabyte Technology Co., Ltd. Z390 I AORUS PRO WIFI/Z390 I AORUS PRO WIFI-CF, BIOS F8 11/05/2021
+RIP: 0010:gp100_vmm_pgt_mem+0xe3/0x180 [nouveau]
+Code: c7 48 01 c8 49 89 45 58 85 d2 0f 84 95 00 00 00 41 0f b7 46 12 49 8b 7e 08 89 da 42 8d 2c f8 48 8b 47 08 41 83 c7 01 48 89 ee <48> 8b 40 08 ff d0 0f 1f 00 49 8b 7e 08 48 89 d9 48 8d 75 04 48 c1
+RSP: 0000:ffffac20c5857838 EFLAGS: 00010202
+RAX: 0000000000000000 RBX: 00000000004d8001 RCX: 0000000000000001
+RDX: 00000000004d8001 RSI: 00000000000006d8 RDI: ffffa07afe332180
+RBP: 00000000000006d8 R08: ffffac20c5857ad0 R09: 0000000000ffff10
+R10: 0000000000000001 R11: ffffa07af27e2de0 R12: 000000000000001c
+R13: ffffac20c5857ad0 R14: ffffa07a96fe9040 R15: 000000000000001c
+FS:  00007fe395eed7c0(0000) GS:ffffa07e2c980000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000008 CR3: 000000011febe001 CR4: 00000000003706f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
 
-This patch just recovers strlen(command_line) which was miss-consolidated
-with strlen(boot_command_line) in the commit f5c7310ac73e ("init/main: add
-checks for the return value of memblock_alloc*()")
+...
 
-Link: https://lore.kernel.org/all/20240412081733.35925-2-ytcoode@gmail.com/
+ ? gp100_vmm_pgt_mem+0xe3/0x180 [nouveau]
+ ? gp100_vmm_pgt_mem+0x37/0x180 [nouveau]
+ nvkm_vmm_iter+0x351/0xa20 [nouveau]
+ ? __pfx_nvkm_vmm_ref_ptes+0x10/0x10 [nouveau]
+ ? __pfx_gp100_vmm_pgt_mem+0x10/0x10 [nouveau]
+ ? __pfx_gp100_vmm_pgt_mem+0x10/0x10 [nouveau]
+ ? __lock_acquire+0x3ed/0x2170
+ ? __pfx_gp100_vmm_pgt_mem+0x10/0x10 [nouveau]
+ nvkm_vmm_ptes_get_map+0xc2/0x100 [nouveau]
+ ? __pfx_nvkm_vmm_ref_ptes+0x10/0x10 [nouveau]
+ ? __pfx_gp100_vmm_pgt_mem+0x10/0x10 [nouveau]
+ nvkm_vmm_map_locked+0x224/0x3a0 [nouveau]
 
-Fixes: f5c7310ac73e ("init/main: add checks for the return value of memblock_alloc*()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Adding any sort of useful debug usually makes it go away, so I hand
+wrote the function in a line, and debugged the asm.
+
+Every so often pt->memory->ptrs is NULL. This ptrs ptr is set in
+the nv50_instobj_acquire called from nvkm_kmap.
+
+If Thread A and Thread B both get to nv50_instobj_acquire around
+the same time, and Thread A hits the refcount_set line, and in
+lockstep thread B succeeds at refcount_inc_not_zero, there is a
+chance the ptrs value won't have been stored since refcount_set
+is unordered. Force a memory barrier here, I picked smp_mb, since
+we want it on all CPUs and it's write followed by a read.
+
+v2: use paired smp_rmb/smp_wmb.
+
+Cc: <stable@vger.kernel.org>
+Fixes: be55287aa5ba ("drm/nouveau/imem/nv50: embed nvkm_instobj directly into nv04_instobj")
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240411011510.2546857-1-airlied@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/main.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/init/main.c
-+++ b/init/main.c
-@@ -627,6 +627,8 @@ static void __init setup_command_line(ch
- 	if (!saved_command_line)
- 		panic("%s: Failed to allocate %zu bytes\n", __func__, len + ilen);
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c
+@@ -221,8 +221,11 @@ nv50_instobj_acquire(struct nvkm_memory
+ 	void __iomem *map = NULL;
  
-+	len = xlen + strlen(command_line) + 1;
-+
- 	static_command_line = memblock_alloc(len, SMP_CACHE_BYTES);
- 	if (!static_command_line)
- 		panic("%s: Failed to allocate %zu bytes\n", __func__, len);
+ 	/* Already mapped? */
+-	if (refcount_inc_not_zero(&iobj->maps))
++	if (refcount_inc_not_zero(&iobj->maps)) {
++		/* read barrier match the wmb on refcount set */
++		smp_rmb();
+ 		return iobj->map;
++	}
+ 
+ 	/* Take the lock, and re-check that another thread hasn't
+ 	 * already mapped the object in the meantime.
+@@ -249,6 +252,8 @@ nv50_instobj_acquire(struct nvkm_memory
+ 			iobj->base.memory.ptrs = &nv50_instobj_fast;
+ 		else
+ 			iobj->base.memory.ptrs = &nv50_instobj_slow;
++		/* barrier to ensure the ptrs are written before refcount is set */
++		smp_wmb();
+ 		refcount_set(&iobj->maps, 1);
+ 	}
+ 
 
 
 
