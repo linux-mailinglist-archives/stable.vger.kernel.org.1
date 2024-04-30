@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-42602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84798B73C6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF188B730D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 841F8281885
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90769287154
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3190A12D1F1;
-	Tue, 30 Apr 2024 11:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D8612D1FD;
+	Tue, 30 Apr 2024 11:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caWMEO/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDoAJxEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E397B8801;
-	Tue, 30 Apr 2024 11:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4026612CDA5;
+	Tue, 30 Apr 2024 11:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476191; cv=none; b=ZyPhFk4rvzJ57v452fAA0SowqioMxS6rKhCm4Cb5NLRsbsrCfU1H72d1AA2NdHU+keurK6f6+6WiehYHyyt60y+k3SG7ewnuxSazIaaEUTQPc7HowWQvuZcQSG/az6SBUGhBdd6t4Up/QgZpiHORSKcX8TUILMl1Z3hN3y6qvtk=
+	t=1714475675; cv=none; b=KnwbuTejxaJfp/7/GdPBZWXGfQFXjft4D1ZgaAKpy2+P/tUo+3UJjd0J+krqjpUTidOaxT+b/pcS9YnmOkpyCslAIpwhoIHSygG1vSv2ucbvEfksJwQKUWeE+wqjdSo8+hGejvV23MtEzQvyvfmUsHg3VusYxqXxAzhySz+OxuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476191; c=relaxed/simple;
-	bh=3k9CdTI/8OVdl52+BaJCE8aHJlrXvaKWJOQ/S5QkmBw=;
+	s=arc-20240116; t=1714475675; c=relaxed/simple;
+	bh=+hWHZIOj2xCdGaJPmakFzQLIzcurj5B5slOlTkuDkTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oN1toqxikieGCDG2pjeGXm0arg1LBSQBMDqHal1e6js81q+La2EI9XibSoWafQ9GHUWOYd1icXQhF+oB7xw2qZbyrAlyXnCR1AmyZJJF4yS9RDOEJq1fuMdjmE2V8cYDt8biZkDJzfv+OalLNCpCNHNbbZnjtrPlzFyBfyHcD9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caWMEO/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FC8C2BBFC;
-	Tue, 30 Apr 2024 11:23:09 +0000 (UTC)
+	 MIME-Version; b=SHgtUlVnMJ5kDR8qBL+veZZxLP7nsuC6RMonjTxZWZ3lW4Ub0ewngSKTnNcT9ztSinE1JQnvae4usq71m3grqg+/JKo5AQLDUUdAOzokQZg6/PnQJX69N0vPFIAlAh19yBuyWWl13/UeYky83vACJ5qcr58PVfSz+GpsGANvMg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDoAJxEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB524C2BBFC;
+	Tue, 30 Apr 2024 11:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476190;
-	bh=3k9CdTI/8OVdl52+BaJCE8aHJlrXvaKWJOQ/S5QkmBw=;
+	s=korg; t=1714475675;
+	bh=+hWHZIOj2xCdGaJPmakFzQLIzcurj5B5slOlTkuDkTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=caWMEO/dJ60ZtPKXsxwt7JOzseW+zRxGYXyBXdL0ZGo59O1ZlmA3fUSt7vXovJTI5
-	 oJQBKQ0mWreaApkh5InHAu5hHGcTPNB3XiLDoWZsiyNIDTnXNJYcz3jTWeWXgB+I3u
-	 T4crvWIYAm2tCWWZdY1s9Cole88Il4KOH/HC6V5k=
+	b=RDoAJxEyzFegq0Z8XkVXGq1HsY+XAKCzHgt8JyNaiu6x9xPfNSx20THkn0lLu8lec
+	 mgtrTvuQEQ2ALhx1YyuSm2FknOofl4XooAX61+iOmUr+4WS5TI1Bt4oC5SAcJbu3PX
+	 wZBbpMFsRwNT4Bg5ImBzSMt2G92wcSt6Dhz7MKP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/107] mlxsw: core: Unregister EMAD trap using FORWARD action
+Subject: [PATCH 6.6 170/186] dma: xilinx_dpdma: Fix locking
 Date: Tue, 30 Apr 2024 12:40:22 +0200
-Message-ID: <20240430103046.486478356@linuxfoundation.org>
+Message-ID: <20240430103102.966083542@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 976c44af48141cd8595601c0af2a19a43c5b228b ]
+[ Upstream commit 244296cc3a155199a8b080d19e645d7d49081a38 ]
 
-The device's manual (PRM - Programmer's Reference Manual) classifies the
-trap that is used to deliver EMAD responses as an "event trap". Among
-other things, it means that the only actions that can be associated with
-the trap are TRAP and FORWARD (NOP).
+There are several places where either chan->lock or chan->vchan.lock was
+not held. Add appropriate locking. This fixes lockdep warnings like
 
-Currently, during driver de-initialization the driver unregisters the
-trap by setting its action to DISCARD, which violates the above
-guideline. Future firmware versions will prevent such misuses by
-returning an error. This does not prevent the driver from working, but
-an error will be printed to the kernel log during module removal /
-devlink reload:
+[   31.077578] ------------[ cut here ]------------
+[   31.077831] WARNING: CPU: 2 PID: 40 at drivers/dma/xilinx/xilinx_dpdma.c:834 xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
+[   31.077953] Modules linked in:
+[   31.078019] CPU: 2 PID: 40 Comm: kworker/u12:1 Not tainted 6.6.20+ #98
+[   31.078102] Hardware name: xlnx,zynqmp (DT)
+[   31.078169] Workqueue: events_unbound deferred_probe_work_func
+[   31.078272] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   31.078377] pc : xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
+[   31.078473] lr : xilinx_dpdma_chan_queue_transfer+0x270/0x5e0
+[   31.078550] sp : ffffffc083bb2e10
+[   31.078590] x29: ffffffc083bb2e10 x28: 0000000000000000 x27: ffffff880165a168
+[   31.078754] x26: ffffff880164e920 x25: ffffff880164eab8 x24: ffffff880164d480
+[   31.078920] x23: ffffff880165a148 x22: ffffff880164e988 x21: 0000000000000000
+[   31.079132] x20: ffffffc082aa3000 x19: ffffff880164e880 x18: 0000000000000000
+[   31.079295] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[   31.079453] x14: 0000000000000000 x13: ffffff8802263dc0 x12: 0000000000000001
+[   31.079613] x11: 0001ffc083bb2e34 x10: 0001ff880164e98f x9 : 0001ffc082aa3def
+[   31.079824] x8 : 0001ffc082aa3dec x7 : 0000000000000000 x6 : 0000000000000516
+[   31.079982] x5 : ffffffc7f8d43000 x4 : ffffff88003c9c40 x3 : ffffffffffffffff
+[   31.080147] x2 : ffffffc7f8d43000 x1 : 00000000000000c0 x0 : 0000000000000000
+[   31.080307] Call trace:
+[   31.080340]  xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
+[   31.080518]  xilinx_dpdma_issue_pending+0x11c/0x120
+[   31.080595]  zynqmp_disp_layer_update+0x180/0x3ac
+[   31.080712]  zynqmp_dpsub_plane_atomic_update+0x11c/0x21c
+[   31.080825]  drm_atomic_helper_commit_planes+0x20c/0x684
+[   31.080951]  drm_atomic_helper_commit_tail+0x5c/0xb0
+[   31.081139]  commit_tail+0x234/0x294
+[   31.081246]  drm_atomic_helper_commit+0x1f8/0x210
+[   31.081363]  drm_atomic_commit+0x100/0x140
+[   31.081477]  drm_client_modeset_commit_atomic+0x318/0x384
+[   31.081634]  drm_client_modeset_commit_locked+0x8c/0x24c
+[   31.081725]  drm_client_modeset_commit+0x34/0x5c
+[   31.081812]  __drm_fb_helper_restore_fbdev_mode_unlocked+0x104/0x168
+[   31.081899]  drm_fb_helper_set_par+0x50/0x70
+[   31.081971]  fbcon_init+0x538/0xc48
+[   31.082047]  visual_init+0x16c/0x23c
+[   31.082207]  do_bind_con_driver.isra.0+0x2d0/0x634
+[   31.082320]  do_take_over_console+0x24c/0x33c
+[   31.082429]  do_fbcon_takeover+0xbc/0x1b0
+[   31.082503]  fbcon_fb_registered+0x2d0/0x34c
+[   31.082663]  register_framebuffer+0x27c/0x38c
+[   31.082767]  __drm_fb_helper_initial_config_and_unlock+0x5c0/0x91c
+[   31.082939]  drm_fb_helper_initial_config+0x50/0x74
+[   31.083012]  drm_fbdev_dma_client_hotplug+0xb8/0x108
+[   31.083115]  drm_client_register+0xa0/0xf4
+[   31.083195]  drm_fbdev_dma_setup+0xb0/0x1cc
+[   31.083293]  zynqmp_dpsub_drm_init+0x45c/0x4e0
+[   31.083431]  zynqmp_dpsub_probe+0x444/0x5e0
+[   31.083616]  platform_probe+0x8c/0x13c
+[   31.083713]  really_probe+0x258/0x59c
+[   31.083793]  __driver_probe_device+0xc4/0x224
+[   31.083878]  driver_probe_device+0x70/0x1c0
+[   31.083961]  __device_attach_driver+0x108/0x1e0
+[   31.084052]  bus_for_each_drv+0x9c/0x100
+[   31.084125]  __device_attach+0x100/0x298
+[   31.084207]  device_initial_probe+0x14/0x20
+[   31.084292]  bus_probe_device+0xd8/0xdc
+[   31.084368]  deferred_probe_work_func+0x11c/0x180
+[   31.084451]  process_one_work+0x3ac/0x988
+[   31.084643]  worker_thread+0x398/0x694
+[   31.084752]  kthread+0x1bc/0x1c0
+[   31.084848]  ret_from_fork+0x10/0x20
+[   31.084932] irq event stamp: 64549
+[   31.084970] hardirqs last  enabled at (64548): [<ffffffc081adf35c>] _raw_spin_unlock_irqrestore+0x80/0x90
+[   31.085157] hardirqs last disabled at (64549): [<ffffffc081adf010>] _raw_spin_lock_irqsave+0xc0/0xdc
+[   31.085277] softirqs last  enabled at (64503): [<ffffffc08001071c>] __do_softirq+0x47c/0x500
+[   31.085390] softirqs last disabled at (64498): [<ffffffc080017134>] ____do_softirq+0x10/0x1c
+[   31.085501] ---[ end trace 0000000000000000 ]---
 
-mlxsw_spectrum 0000:03:00.0: Reg cmd access status failed (status=7(bad parameter))
-mlxsw_spectrum 0000:03:00.0: Reg cmd access failed (reg_id=7003(hpkt),type=write)
-
-Suppress the error message by aligning the driver to the manual and use
-a FORWARD (NOP) action when unregistering the trap.
-
-Fixes: 4ec14b7634b2 ("mlxsw: Add interface to access registers and process events")
-Cc: Jiri Pirko <jiri@resnulli.us>
-Cc: Amit Cohen <amcohen@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/753a89e14008fde08cb4a2c1e5f537b81d8eb2d6.1713446092.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7cbb0c63de3f ("dmaengine: xilinx: dpdma: Add the Xilinx DisplayPort DMA engine driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240308210034.3634938-2-sean.anderson@linux.dev
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/xilinx/xilinx_dpdma.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.c b/drivers/net/ethernet/mellanox/mlxsw/core.c
-index 2d39bade89e33..bb9299481b45b 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core.c
-@@ -566,7 +566,7 @@ static void mlxsw_emad_rx_listener_func(struct sk_buff *skb, u8 local_port,
+diff --git a/drivers/dma/xilinx/xilinx_dpdma.c b/drivers/dma/xilinx/xilinx_dpdma.c
+index 84dc5240a8074..93938ed80fc83 100644
+--- a/drivers/dma/xilinx/xilinx_dpdma.c
++++ b/drivers/dma/xilinx/xilinx_dpdma.c
+@@ -214,7 +214,8 @@ struct xilinx_dpdma_tx_desc {
+  * @running: true if the channel is running
+  * @first_frame: flag for the first frame of stream
+  * @video_group: flag if multi-channel operation is needed for video channels
+- * @lock: lock to access struct xilinx_dpdma_chan
++ * @lock: lock to access struct xilinx_dpdma_chan. Must be taken before
++ *        @vchan.lock, if both are to be held.
+  * @desc_pool: descriptor allocation pool
+  * @err_task: error IRQ bottom half handler
+  * @desc: References to descriptors being processed
+@@ -1097,12 +1098,14 @@ static void xilinx_dpdma_chan_vsync_irq(struct  xilinx_dpdma_chan *chan)
+ 	 * Complete the active descriptor, if any, promote the pending
+ 	 * descriptor to active, and queue the next transfer, if any.
+ 	 */
++	spin_lock(&chan->vchan.lock);
+ 	if (chan->desc.active)
+ 		vchan_cookie_complete(&chan->desc.active->vdesc);
+ 	chan->desc.active = pending;
+ 	chan->desc.pending = NULL;
  
- static const struct mlxsw_listener mlxsw_emad_rx_listener =
- 	MLXSW_RXL(mlxsw_emad_rx_listener_func, ETHEMAD, TRAP_TO_CPU, false,
--		  EMAD, DISCARD);
-+		  EMAD, FORWARD);
+ 	xilinx_dpdma_chan_queue_transfer(chan);
++	spin_unlock(&chan->vchan.lock);
  
- static int mlxsw_emad_init(struct mlxsw_core *mlxsw_core)
- {
+ out:
+ 	spin_unlock_irqrestore(&chan->lock, flags);
+@@ -1264,10 +1267,12 @@ static void xilinx_dpdma_issue_pending(struct dma_chan *dchan)
+ 	struct xilinx_dpdma_chan *chan = to_xilinx_chan(dchan);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&chan->vchan.lock, flags);
++	spin_lock_irqsave(&chan->lock, flags);
++	spin_lock(&chan->vchan.lock);
+ 	if (vchan_issue_pending(&chan->vchan))
+ 		xilinx_dpdma_chan_queue_transfer(chan);
+-	spin_unlock_irqrestore(&chan->vchan.lock, flags);
++	spin_unlock(&chan->vchan.lock);
++	spin_unlock_irqrestore(&chan->lock, flags);
+ }
+ 
+ static int xilinx_dpdma_config(struct dma_chan *dchan,
+@@ -1495,7 +1500,9 @@ static void xilinx_dpdma_chan_err_task(struct tasklet_struct *t)
+ 		    XILINX_DPDMA_EINTR_CHAN_ERR_MASK << chan->id);
+ 
+ 	spin_lock_irqsave(&chan->lock, flags);
++	spin_lock(&chan->vchan.lock);
+ 	xilinx_dpdma_chan_queue_transfer(chan);
++	spin_unlock(&chan->vchan.lock);
+ 	spin_unlock_irqrestore(&chan->lock, flags);
+ }
+ 
 -- 
 2.43.0
 
