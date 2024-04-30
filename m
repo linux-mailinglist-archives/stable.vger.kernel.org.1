@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BAE8B7203
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171408B72DC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7D501C22B36
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C12D2282F66
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4CE12C490;
-	Tue, 30 Apr 2024 11:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C945812D215;
+	Tue, 30 Apr 2024 11:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0f2wD9ub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpF72JEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD3B12B176;
-	Tue, 30 Apr 2024 11:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8841012D1FD;
+	Tue, 30 Apr 2024 11:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474991; cv=none; b=iz8QkU3Pwr392O2tZBXP0F3N45FbUBNe98jMiWhkJQDxnDEJLq+AmxqgUVy+atXj4AKFq9M3cctq4dp71dnU3Mq7SyVfbvxxzT0kufraH1Vgr+vXlgIUGrpcyB1E4cBOiOQpoMpUfSdkUqZ54speFepyz055IOfXvpcrpJE3sog=
+	t=1714475553; cv=none; b=YzHBT0WajiEmf31flVttfgZtDV+SLsT5GYIK7M09OJtELZINuHYIRpZV0uFSfkqpVWrIkdRBEoYzLg77V4EYVG6r6xVhymz/udYNBZt9NwwgWWz1rdmJEs8Gg5CEFIwiWk9LaW/eweakiNGAef/Ibkvz4Nsb4JYrXrbcTLHqEx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474991; c=relaxed/simple;
-	bh=+9uxBENkUN+/4pgBbCQdzxc3DO92LaTgO51XI+h+F00=;
+	s=arc-20240116; t=1714475553; c=relaxed/simple;
+	bh=xWd6e2lOp3M54BYZpG39L8icXcQ1Hvs/VCNRSGamfFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZzXniw88OLF/hi5oFSEBF5k5jjgv4Kt0D0/rAJNMNgFIo/mfC8Ggal7oZ1qKha8lsm5uoDfIlTkpkhX/8mWITIXfUOXFywmDIxqWubKRiNSr0qjd/tUI7JPThisqStaaOpcjKW6MwmijHLzQuwQJDn0+bQdLpxqfFvN+6vCKFfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0f2wD9ub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598DFC2BBFC;
-	Tue, 30 Apr 2024 11:03:10 +0000 (UTC)
+	 MIME-Version; b=qQCTm0j4IxgkxJD9S/egJmdO2dVeXnPU0XyOjxM5Wv3CJGbhb+zw3mDSQiYj2ptsEzT1Ju0V5pYDT6kBRvnNYujdbLzcRzY48wRL/6Nk5wR19JVi4LhoKifiQQYeFuy0L3vgZQOuoen4dY5b9v1EvA6uXiicIoJu8t3ShJTqN3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpF72JEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B63C2BBFC;
+	Tue, 30 Apr 2024 11:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474990;
-	bh=+9uxBENkUN+/4pgBbCQdzxc3DO92LaTgO51XI+h+F00=;
+	s=korg; t=1714475553;
+	bh=xWd6e2lOp3M54BYZpG39L8icXcQ1Hvs/VCNRSGamfFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0f2wD9ubQpfj62PDTETN/i+84JHfz++B8sYmSoILDdMt6kx5pMUnq0Q/X29SmCj2i
-	 Hdt+86YxUDKFdgIvfoy/4FfwrxYyoacnU+VZ1fipNwsdLFsmX+E00p0A1maeqcnHEL
-	 MGlty8k2uwrp9GRqwHUuRHDpxMGWERn3hv4PPIp0=
+	b=vpF72JEg+FuQVEWY8YmgfZUqe28k2m11Q+ZQf23ve/Yoihl+yPCdqaqU6hP//1NXr
+	 i6ctV2pXadGNnr3bN3hTQVorNBFl4BKcrVbAQMDPwSEmC8cFMbzMYl06y83W72Jchh
+	 YhextkKY7/Lr63SdLH+1ggGyaLMCenti/pbtPQJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 099/138] mlxsw: spectrum_acl_tcam: Fix incorrect list API usage
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 132/186] btrfs: fix wrong block_start calculation for btrfs_drop_extent_map_range()
 Date: Tue, 30 Apr 2024 12:39:44 +0200
-Message-ID: <20240430103052.328897668@linuxfoundation.org>
+Message-ID: <20240430103101.862880896@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit b377add0f0117409c418ddd6504bd682ebe0bf79 ]
+commit fe1c6c7acce10baf9521d6dccc17268d91ee2305 upstream.
 
-Both the function that migrates all the chunks within a region and the
-function that migrates all the entries within a chunk call
-list_first_entry() on the respective lists without checking that the
-lists are not empty. This is incorrect usage of the API, which leads to
-the following warning [1].
+[BUG]
+During my extent_map cleanup/refactor, with extra sanity checks,
+extent-map-tests::test_case_7() would not pass the checks.
 
-Fix by returning if the lists are empty as there is nothing to migrate
-in this case.
+The problem is, after btrfs_drop_extent_map_range(), the resulted
+extent_map has a @block_start way too large.
+Meanwhile my btrfs_file_extent_item based members are returning a
+correct @disk_bytenr/@offset combination.
 
-[1]
-WARNING: CPU: 0 PID: 6437 at drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c:1266 mlxsw_sp_acl_tcam_vchunk_migrate_all+0x1f1/0>
-Modules linked in:
-CPU: 0 PID: 6437 Comm: kworker/0:37 Not tainted 6.9.0-rc3-custom-00883-g94a65f079ef6 #39
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-RIP: 0010:mlxsw_sp_acl_tcam_vchunk_migrate_all+0x1f1/0x2c0
-[...]
-Call Trace:
- <TASK>
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x6c/0x4a0
- process_one_work+0x151/0x370
- worker_thread+0x2cb/0x3e0
- kthread+0xd0/0x100
- ret_from_fork+0x34/0x50
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+The extent map layout looks like this:
 
-Fixes: 6f9579d4e302 ("mlxsw: spectrum_acl: Remember where to continue rehash migration")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/4628e9a22d1d84818e28310abbbc498e7bc31bc9.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+     0        16K    32K       48K
+     | PINNED |      | Regular |
+
+The regular em at [32K, 48K) also has 32K @block_start.
+
+Then drop range [0, 36K), which should shrink the regular one to be
+[36K, 48K).
+However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
+
+[CAUSE]
+Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
+that covers the target range but is still beyond it, we need to split
+that extent map into half:
+
+	|<-- drop range -->|
+		 |<----- existing extent_map --->|
+
+And if the extent map is not compressed, we need to forward
+extent_map::block_start by the difference between the end of drop range
+and the extent map start.
+
+However in that particular case, the difference is calculated using
+(start + len - em->start).
+
+The problem is @start can be modified if the drop range covers any
+pinned extent.
+
+This leads to wrong calculation, and would be caught by my later
+extent_map sanity checks, which checks the em::block_start against
+btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
+
+This is a regression caused by commit c962098ca4af ("btrfs: fix
+incorrect splitting in btrfs_drop_extent_map_range"), which removed the
+@len update for pinned extents.
+
+[FIX]
+Fix it by avoiding using @start completely, and use @end - em->start
+instead, which @end is exclusive bytenr number.
+
+And update the test case to verify the @block_start to prevent such
+problem from happening.
+
+Thankfully this is not going to lead to any data corruption, as IO path
+does not utilize btrfs_drop_extent_map_range() with @skip_pinned set.
+
+So this fix is only here for the sake of consistency/correctness.
+
+CC: stable@vger.kernel.org # 6.5+
+Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/btrfs/extent_map.c             |    2 +-
+ fs/btrfs/tests/extent-map-tests.c |    5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 8c1e97d463eb7..e0e7f630801a9 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1284,6 +1284,9 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
- 		return 0;
+--- a/fs/btrfs/extent_map.c
++++ b/fs/btrfs/extent_map.c
+@@ -843,7 +843,7 @@ void btrfs_drop_extent_map_range(struct
+ 					split->block_len = em->block_len;
+ 					split->orig_start = em->orig_start;
+ 				} else {
+-					const u64 diff = start + len - em->start;
++					const u64 diff = end - em->start;
+ 
+ 					split->block_len = split->len;
+ 					split->block_start += diff;
+--- a/fs/btrfs/tests/extent-map-tests.c
++++ b/fs/btrfs/tests/extent-map-tests.c
+@@ -826,6 +826,11 @@ static int test_case_7(void)
+ 		goto out;
  	}
  
-+	if (list_empty(&vchunk->ventry_list))
++	if (em->block_start != SZ_32K + SZ_4K) {
++		test_err("em->block_start is %llu, expected 36K", em->block_start);
 +		goto out;
++	}
 +
- 	/* If the migration got interrupted, we have the ventry to start from
- 	 * stored in context.
- 	 */
-@@ -1335,6 +1338,7 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
- 		}
- 	}
+ 	free_extent_map(em);
  
-+out:
- 	mlxsw_sp_acl_tcam_vchunk_migrate_end(mlxsw_sp, vchunk, ctx);
- 	return 0;
- }
-@@ -1348,6 +1352,9 @@ mlxsw_sp_acl_tcam_vchunk_migrate_all(struct mlxsw_sp *mlxsw_sp,
- 	struct mlxsw_sp_acl_tcam_vchunk *vchunk;
- 	int err;
- 
-+	if (list_empty(&vregion->vchunk_list))
-+		return 0;
-+
- 	/* If the migration got interrupted, we have the vchunk
- 	 * we are working on stored in context.
- 	 */
--- 
-2.43.0
-
+ 	read_lock(&em_tree->lock);
 
 
 
