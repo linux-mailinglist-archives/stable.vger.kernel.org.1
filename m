@@ -1,219 +1,199 @@
-Return-Path: <stable+bounces-42776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FB28B7734
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 15:34:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27188B7741
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 15:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F9DBB21232
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:33:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D63151C20491
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78F917164F;
-	Tue, 30 Apr 2024 13:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E11C171E49;
+	Tue, 30 Apr 2024 13:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="sjyslyhE"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0B417165C;
-	Tue, 30 Apr 2024 13:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D609742AA5;
+	Tue, 30 Apr 2024 13:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714483914; cv=none; b=aylwXWKJsW0LjyaXXAG7meUsFJP051OP3oxpCleWxhwjtyk6hZkN54iuWnLnNvwd2yHe5akLqQdyPSi8C1KAMujQJu6rYFtBC1auxrjG0yRZflUL8sKb/OA1OWwZYnDnk+dd54k8geDICMzvkVeSkdZFqV8/PMq/Y4erw+rSIi4=
+	t=1714484169; cv=none; b=QW+QN4vOXZKo9AZwCd8YaHOKrKz8cKndn48TMewmbt8PhfoHvRBQcoWNrDzhVH4zvR+bp6Q53Yc+LBHfLla/3gKMDWbT75SQNKB9kxPQrGUzMH+eWcIpUOUPIi5dRpdY4uiS63eU0Q9tRPL6/8dsLTU5B8dGJIMRdQ9L1MW5icw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714483914; c=relaxed/simple;
-	bh=hD6QLqSLsE+vq7qrfMWamupfDTBtpVkRT+1l1z85hHY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c8yll/SbxCzdlNQT2vdqXBju8/iGJEqsO4vZbWx+SMaevW/WSevK6+lCKaNU/9HG7ZaPW19irr6Bg4zVlPZW/JmmDTKI+2OOC5Ovq8+8vgnCdJDCLhhJ9k7OI2ekGB1/1nWaiX1A3ZgHrLPyCeKuc+0pS8C0iHA9MByy3bZfbek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 33C712F4;
-	Tue, 30 Apr 2024 06:32:18 -0700 (PDT)
-Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3A9F63F793;
-	Tue, 30 Apr 2024 06:31:50 -0700 (PDT)
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Zi Yan <zi.yan@cs.rutgers.edu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] arm64/mm: pmd_mkinvalid() must handle swap pmds
-Date: Tue, 30 Apr 2024 14:31:38 +0100
-Message-Id: <20240430133138.732088-1-ryan.roberts@arm.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1714484169; c=relaxed/simple;
+	bh=hIBQmr1iIdGfeAcj6CDd054mPC2lR9TE2NlZkFYMpLg=;
+	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:References; b=DhZY718ub9mQVCpTyGd9Q6e1EaVY0okRqMYVbkcFFqZmre7AZ8r4JiVhe9Kq1rujG8/kR31rGDMYLb/njrmJ7012dffC90fSCpAB3ezvmB50X/l4iOgc9y9DqhhsSxv5q8NfF+R4VoOA5I37fUmARn6x+AqQMgvQ/u9hPkV6hvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=sjyslyhE; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240430133605euoutp026ca7bbaf49ec4d394fb942e3854e4d32~LEkOthw3u2611726117euoutp02Q;
+	Tue, 30 Apr 2024 13:36:05 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240430133605euoutp026ca7bbaf49ec4d394fb942e3854e4d32~LEkOthw3u2611726117euoutp02Q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1714484165;
+	bh=hIBQmr1iIdGfeAcj6CDd054mPC2lR9TE2NlZkFYMpLg=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=sjyslyhE6JErOwZypmfHWxFal39SQ2HV6OX4nDn/Ajv7tK83ZF93YX0FpOY/bfg87
+	 nMtEFHpzCuutuIVFmvx7KrBRDzRPQGpwxPYvMDkfzZgj6u0a+3cUN1FQ1oQ2Nt1Km2
+	 GMfsDaTIcnTznIKKZYQPaLRF2HgLXzz8AQPbSgk8=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20240430133604eucas1p2abd111c18e752e9c9ec180ad5700e6cc~LEkORvPyb0661406614eucas1p2H;
+	Tue, 30 Apr 2024 13:36:04 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+	eusmges3new.samsung.com (EUCPMTA) with SMTP id A3.F1.09620.4C3F0366; Tue, 30
+	Apr 2024 14:36:04 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20240430133603eucas1p2b18f143ca1f76b388ee3bc32a2a92394~LEkNvfC5N3071630716eucas1p2E;
+	Tue, 30 Apr 2024 13:36:03 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240430133603eusmtrp13eaaf4735e444dd7cbcf061679831ccb~LEkNun9wb3005630056eusmtrp1V;
+	Tue, 30 Apr 2024 13:36:03 +0000 (GMT)
+X-AuditID: cbfec7f5-d1bff70000002594-e3-6630f3c4328e
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id 62.93.08810.3C3F0366; Tue, 30
+	Apr 2024 14:36:03 +0100 (BST)
+Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20240430133603eusmtip115e3012568dcbfaf9672af418502f8e0~LEkNfbXtF0409904099eusmtip1n;
+	Tue, 30 Apr 2024 13:36:03 +0000 (GMT)
+Received: from localhost (106.210.248.68) by CAMSVWEXC02.scsc.local
+	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
+	Tue, 30 Apr 2024 14:36:02 +0100
+Date: Tue, 30 Apr 2024 15:35:58 +0200
+From: Joel Granados <j.granados@samsung.com>
+To: Alexandre Ghiti <alex@ghiti.fr>
+CC: Nam Cao <namcao@linutronix.de>, Mike Rapoport <rppt@kernel.org>,
+	"Andreas Dilger" <adilger@dilger.ca>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?=
+	<bjorn@kernel.org>, <linux-riscv@lists.infradead.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>,
+	"ndesaulniers @ google . com" <ndesaulniers@google.com>, Luis Chamberlain
+	<mcgrof@kernel.org>, Ingo Molnar <mingo@kernel.org>, Christophe Leroy
+	<christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Krister Johansen
+	<kjlx@templeofstupid.com>, Changbin Du <changbin.du@huawei.com>, "Arnd
+ Bergmann" <arnd@arndb.de>, Geert Uytterhoeven <geert+renesas@glider.be>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] init: fix allocated page overlapping with PTR_ERR
+Message-ID: <20240430133558.bonevzcshxm6xntt@joelS2.panther.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="2dq6zdwzjqmuy54k"
+Content-Disposition: inline
+In-Reply-To: <0049995a-07d0-4aaa-abc7-5bfc0dc22ace@ghiti.fr>
+X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
+	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
+X-Brightmail-Tracker: H4sIAAAAAAAAA2WSfUxbZRTG9957e3upK14KyCurzhTZMj4KBmOuEwtTw65myWYyTZh/uDru
+	YAEK9q5s1BFByNgWjVCYUGxJ9yFgywqUDstXUCwfBe1YWuLaIZsNzm2wD4aNs7BOust0if/9
+	znPO857zJC+Bis7hscQBxUFGqZAXSHAB1jP6tzPZvpS6P9X607NUi8OHULqOdpy6NuPnUQ80
+	o3zq/B0jRo0sPEfNaP7gU/qvNYDqsmkRytWnw6mepSqculTzO6BMwQlADQ4NoNTdmocIZe/4
+	DqEMXT5AdVtOolSgdQRkRtLLAQ2g/R4nQld1H6Jnx7/i0bU/J9MGi4qust/i0RbjcZy+7XTy
+	6fHGZYzuPvspbZxrR+kly/O7hHsE6TlMwYESRpki2yvIc9iug+Jp4WFz7UV+OfA9dQKEEZB8
+	GY5f7QQngIAQkW0Ajl68jnPFnwDO10/xuGIJwKn2CvSxRbu6g2u0Aljru8//d8qrs651rADq
+	/C1IyIKR8fC4xvjIjpNJ8MLCzCoTRBQZB3vtcaF5lHTw4P0bC3hoJpLMgs1nq7EQC8lM6D32
+	C5/jCOjQzj3SUfIwdLVe5oXeQckNsDVIhOQwMh1OGEZx7lIJ/KJRj3BcBiesXiS0C5LfCKC+
+	+txanLfg5LfuNUMkvDlm5XMshpN1n2OcoQ7AoeBdPleYAGyp8K89+xqscs/xQ1dAchu89kDN
+	YTi8dCuCuzMcanoaUE4WwmNHRZxxEzTNLmA1IK7piWRNTyRr+i8ZJydBQ/89/H9yImw5NY9y
+	/Do0m+9gBsA3ghhGxRbmMmyagjkkZeWFrEqRK91XVGgBq794Mjjmt4G2m4vSYYAQYBi8uGr2
+	dZqmQCymKFIwkihh/amU/SJhjrxUzSiLPlSqChh2GGwgMEmMMD5nIyMic+UHmXyGKWaUj7sI
+	ERZbjuzYGDgjbj4StGS0Sd/ZIz4TlZ7dEFBP+5vPT8sr0dvPOFwvDH+ivnIa221zm/EFWaJ6
+	39bw2YS0PLmnckuXa9vgl9szs5wZqiMfmSzsX7xdbf3uGH1+8m9BNq93ZaVhXrTXU+E2rd+x
+	or3seW+w/tXSOcXi96ZOusSZNTSpHxj7cWupbZMq/Wim7TPR+0lW37o3y7yvBFJSqo1Pf2BM
+	m/HkbN5Zcnqx+12w29sRveUNgcms9ssGSqIv3Kv+oTzB1RhMlVXEZGD5b49Er08srbuimYhY
+	7q/UrUOjAsJacV8ZE53fe5Jdfng1Wybd/LFY25fdV9z+a/yN7ZhOaNwZbpdgbJ78pQRUycr/
+	AZU+EgJABAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrFKsWRmVeSWpSXmKPExsVy+t/xu7qHPxukGTScMrZYdvIRk8Wc9WvY
+	LJ7d+cpq8XfSMXaLre9XsVgcfSNrcWfSc3aLubMnMVps3DGTyeLyrjlsFts+t7BZ3JjwlNFi
+	9b9TjBZ79+9htvgw4T+TxZH125ksFmx8xGixedNUZotfy48yOgh7/P41idHj681zTB4tm8s9
+	7p2Yxuox8ayux4JNpR4tR96yemxa1cnm8e7cOXaPEzN+s3hsXlLvserJGmaPz5vkAnij9GyK
+	8ktLUhUy8otLbJWiDS2M9AwtLfSMTCz1DI3NY62MTJX07WxSUnMyy1KL9O0S9DKu33/JWnCZ
+	t+LPlnbWBsYH3F2MnBwSAiYSM4GGdjFycQgJLGWUeN57kAkiISOx8ctVVghbWOLPtS42iKKP
+	jBJN99ZCOVsYJRatOMQOUsUioCrROWkVM4jNJqAjcf7NHSCbg0NEQFli5xFlkHpmgZOsEp0T
+	14BtEBZwk5i3pJ0FxOYVcJC41XGdHWLoQiaJrXPvQyUEJU7OfAJmMwuUSTzYdAxsKLOAtMTy
+	fxwgYU4BG4lTC46xQVyqJNE7Yy7UB7USn/8+Y5zAKDwLyaRZSCbNQpgEEdaSuPHvJROGsLbE
+	soWvmSFsW4l1696zLGBkX8UoklpanJueW2yoV5yYW1yal66XnJ+7iRGYkLYd+7l5B+O8Vx/1
+	DjEycTAeYlQB6ny0YfUFRimWvPy8VCUR3ikL9dOEeFMSK6tSi/Lji0pzUosPMZoCQ3Eis5Ro
+	cj4wVeaVxBuaGZgamphZGphamhkrifN6FnQkCgmkJ5akZqemFqQWwfQxcXBKNTAp3Fi3Klu3
+	i3XzqYUnfkrOSTJeK3f8Np8dx/57LTPzj6fLat2dsOrJu7LXTKbHXz2xlpb7XR78Iu/6vvgd
+	G1bn6j2aaL1vYuvxa7q35131uBNffTXHKWLbkk2LT2/ZPOMDU4xWWTZrenj+jOJOveNRjdvu
+	yG7dYJm2lCVKmsXBP+Osvfd9sWUCYptdNSNWlX1PSSgOfvg8ZENUsdqWny7Bfdn5944XvYp7
+	9cDj6eqjtUFnhSR5it5X2/BeKj9XK9NZ/CDBjCfu91GGYJ/KDMaE/9dV7hr9/Cb6ZcbGTHuj
+	DQsMk7c6fL7knv/h9rN3277ZMpvX801fwfVP8vXNFi53ixK5JusYy4mys6fveFKsxFKckWio
+	xVxUnAgA8g+6490DAAA=
+X-CMS-MailID: 20240430133603eucas1p2b18f143ca1f76b388ee3bc32a2a92394
+X-Msg-Generator: CA
+X-RootMTR: 20240429125236eucas1p24219f2d332e0267794a2f87dea9f39c4
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240429125236eucas1p24219f2d332e0267794a2f87dea9f39c4
+References: <20240418102943.180510-1-namcao@linutronix.de>
+	<CGME20240429125236eucas1p24219f2d332e0267794a2f87dea9f39c4@eucas1p2.samsung.com>
+	<20240429125230.s5pbeye24iw5aurz@joelS2.panther.com>
+	<20240430073056.bEG4-yk8@linutronix.de>
+	<0049995a-07d0-4aaa-abc7-5bfc0dc22ace@ghiti.fr>
 
-__split_huge_pmd_locked() can be called for a present THP, devmap or
-(non-present) migration entry. It calls pmdp_invalidate()
-unconditionally on the pmdp and only determines if it is present or not
-based on the returned old pmd.
+--2dq6zdwzjqmuy54k
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-But arm64's pmd_mkinvalid(), called by pmdp_invalidate(),
-unconditionally sets the PMD_PRESENT_INVALID flag, which causes future
-pmd_present() calls to return true - even for a swap pmd. Therefore any
-lockless pgtable walker could see the migration entry pmd in this state
-and start interpretting the fields (e.g. pmd_pfn()) as if it were
-present, leading to BadThings (TM). GUP-fast appears to be one such
-lockless pgtable walker.
+On Tue, Apr 30, 2024 at 10:37:59AM +0200, Alexandre Ghiti wrote:
+=2E..
+> > the issue is about overlapping sections during linking (maybe something
+> > wrong with riscv linker script?)
+> >
+> > Also, FWIW, this patch is not going to be in mainline because of a
+> > regression.
+> >
+> > Nonetheless, I will have a look at this later.
+>=20
+>=20
+> The config shows that it is a XIP kernel that comes with its own=20
+> limitations (text is limited to 32MB for example), so I'm not surprised=
+=20
+> to see those overlaps.
+>=20
+> We already discussed the removal of randconfig builds on XIP configs,=20
+> but IIRC it is not possible.
+Have you had them in public? Do you have a link to the discussions.
+Maybe there is something there that will tell me what to with this
+report.
 
-While the obvious fix is for core-mm to avoid such calls for non-present
-pmds (pmdp_invalidate() will also issue TLBI which is not necessary for
-this case either), all other arches that implement pmd_mkinvalid() do it
-in such a way that it is robust to being called with a non-present pmd.
-So it is simpler and safer to make arm64 robust too. This approach means
-we can even add tests to debug_vm_pgtable.c to validate the required
-behaviour.
+Best
 
-This is a theoretical bug found during code review. I don't have any
-test case to trigger it in practice.
+--=20
 
-Cc: stable@vger.kernel.org
-Fixes: 53fa117bb33c ("arm64/mm: Enable THP migration")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
----
+Joel Granados
 
-Hi all,
+--2dq6zdwzjqmuy54k
+Content-Type: application/pgp-signature; name="signature.asc"
 
-v1 of this fix [1] took the approach of fixing core-mm to never call
-pmdp_invalidate() on a non-present pmd. But Zi Yan highlighted that only arm64
-suffers this problem; all other arches are robust. So his suggestion was to
-instead make arm64 robust in the same way and add tests to validate it. Despite
-my stated reservations in the context of the v1 discussion, having thought on it
-for a bit, I now agree with Zi Yan. Hence this post.
+-----BEGIN PGP SIGNATURE-----
 
-Andrew has v1 in mm-unstable at the moment, so probably the best thing to do is
-remove it from there and have this go in through the arm64 tree? Assuming there
-is agreement that this approach is right one.
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmYw874ACgkQupfNUreW
+QU/5KAwAhUAnVr1eR0wkyaXz0NCNO59yT7pgKDv2O2EJwhiivZ+CQpbg1qbMlKKa
+ZOy+tIb7ffsxJ9hY6SEaKOMX3tEfzcu2hLWrqrXEEQ/p3JlRYFaueqvWQRaPZRFE
+xsmFm0ed/iAxtjruRBm5+pkfd3W15HcS1cqoyTqS4pjsHWSE8GW50ks56xbGYXh7
+Aq+55Ebar9pHQ1s7mUtE/OOtKrM4WhFKSfFiKprMkhhrTLRWd0duPomISBdG/ftY
+zF/7zLSALU8E7UwB9O/Ve7PEdpmWFleiKRKkdbJAksw7hcOVjtdAbb/maEK3yqQ+
+N2K2IKGN3EmNdRaf+wYVNMe7ocIKmsGRc/yoTxDKcZwUUyVMshZkbO0/uRd5MUeI
+ItHonlqZJsQ7q0OZ7uYTP2SdfRyqn47TxVCNRqWiPeLdI8wx4U63/i+82+LHaNHu
+fY2GWYy2HE75UA5WhUze1RTISUqCw2+WakCh2ts7MoucuXFTRVzd8ZrX63w5Xgce
+wvjI7ToS
+=zGuC
+-----END PGP SIGNATURE-----
 
-This applies on top of v6.9-rc5. Passes all the mm selftests on arm64.
-
-[1] https://lore.kernel.org/linux-mm/20240425170704.3379492-1-ryan.roberts@arm.com/
-
-Thanks,
-Ryan
-
-
- arch/arm64/include/asm/pgtable.h | 12 +++++--
- mm/debug_vm_pgtable.c            | 61 ++++++++++++++++++++++++++++++++
- 2 files changed, 71 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index afdd56d26ad7..7d580271a46d 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -511,8 +511,16 @@ static inline int pmd_trans_huge(pmd_t pmd)
-
- static inline pmd_t pmd_mkinvalid(pmd_t pmd)
- {
--	pmd = set_pmd_bit(pmd, __pgprot(PMD_PRESENT_INVALID));
--	pmd = clear_pmd_bit(pmd, __pgprot(PMD_SECT_VALID));
-+	/*
-+	 * If not valid then either we are already present-invalid or we are
-+	 * not-present (i.e. none or swap entry). We must not convert
-+	 * not-present to present-invalid. Unbelievably, the core-mm may call
-+	 * pmd_mkinvalid() for a swap entry and all other arches can handle it.
-+	 */
-+	if (pmd_valid(pmd)) {
-+		pmd = set_pmd_bit(pmd, __pgprot(PMD_PRESENT_INVALID));
-+		pmd = clear_pmd_bit(pmd, __pgprot(PMD_SECT_VALID));
-+	}
-
- 	return pmd;
- }
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 65c19025da3d..7e9c387d06b0 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -956,6 +956,65 @@ static void __init hugetlb_basic_tests(struct pgtable_debug_args *args) { }
- #endif /* CONFIG_HUGETLB_PAGE */
-
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+#if !defined(__HAVE_ARCH_PMDP_INVALIDATE) && defined(CONFIG_ARCH_ENABLE_THP_MIGRATION)
-+static void __init swp_pmd_mkinvalid_tests(struct pgtable_debug_args *args)
-+{
-+	unsigned long max_swap_offset;
-+	swp_entry_t swp_set, swp_clear, swp_convert;
-+	pmd_t pmd_set, pmd_clear;
-+
-+	/*
-+	 * See generic_max_swapfile_size(): probe the maximum offset, then
-+	 * create swap entry will all possible bits set and a swap entry will
-+	 * all bits clear.
-+	 */
-+	max_swap_offset = swp_offset(pmd_to_swp_entry(swp_entry_to_pmd(swp_entry(0, ~0UL))));
-+	swp_set = swp_entry((1 << MAX_SWAPFILES_SHIFT) - 1, max_swap_offset);
-+	swp_clear = swp_entry(0, 0);
-+
-+	/* Convert to pmd. */
-+	pmd_set = swp_entry_to_pmd(swp_set);
-+	pmd_clear = swp_entry_to_pmd(swp_clear);
-+
-+	/*
-+	 * Sanity check that the pmds are not-present, not-huge and swap entry
-+	 * is recoverable without corruption.
-+	 */
-+	WARN_ON(pmd_present(pmd_set));
-+	WARN_ON(pmd_trans_huge(pmd_set));
-+	swp_convert = pmd_to_swp_entry(pmd_set);
-+	WARN_ON(swp_type(swp_set) != swp_type(swp_convert));
-+	WARN_ON(swp_offset(swp_set) != swp_offset(swp_convert));
-+	WARN_ON(pmd_present(pmd_clear));
-+	WARN_ON(pmd_trans_huge(pmd_clear));
-+	swp_convert = pmd_to_swp_entry(pmd_clear);
-+	WARN_ON(swp_type(swp_clear) != swp_type(swp_convert));
-+	WARN_ON(swp_offset(swp_clear) != swp_offset(swp_convert));
-+
-+	/* Now invalidate the pmd. */
-+	pmd_set = pmd_mkinvalid(pmd_set);
-+	pmd_clear = pmd_mkinvalid(pmd_clear);
-+
-+	/*
-+	 * Since its a swap pmd, invalidation should effectively be a noop and
-+	 * the checks we already did should give the same answer. Check the
-+	 * invalidation didn't corrupt any fields.
-+	 */
-+	WARN_ON(pmd_present(pmd_set));
-+	WARN_ON(pmd_trans_huge(pmd_set));
-+	swp_convert = pmd_to_swp_entry(pmd_set);
-+	WARN_ON(swp_type(swp_set) != swp_type(swp_convert));
-+	WARN_ON(swp_offset(swp_set) != swp_offset(swp_convert));
-+	WARN_ON(pmd_present(pmd_clear));
-+	WARN_ON(pmd_trans_huge(pmd_clear));
-+	swp_convert = pmd_to_swp_entry(pmd_clear);
-+	WARN_ON(swp_type(swp_clear) != swp_type(swp_convert));
-+	WARN_ON(swp_offset(swp_clear) != swp_offset(swp_convert));
-+}
-+#else
-+static void __init swp_pmd_mkinvalid_tests(struct pgtable_debug_args *args) { }
-+#endif /* !__HAVE_ARCH_PMDP_INVALIDATE && CONFIG_ARCH_ENABLE_THP_MIGRATION */
-+
- static void __init pmd_thp_tests(struct pgtable_debug_args *args)
- {
- 	pmd_t pmd;
-@@ -982,6 +1041,8 @@ static void __init pmd_thp_tests(struct pgtable_debug_args *args)
- 	WARN_ON(!pmd_trans_huge(pmd_mkinvalid(pmd_mkhuge(pmd))));
- 	WARN_ON(!pmd_present(pmd_mkinvalid(pmd_mkhuge(pmd))));
- #endif /* __HAVE_ARCH_PMDP_INVALIDATE */
-+
-+	swp_pmd_mkinvalid_tests(args);
- }
-
- #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
---
-2.25.1
-
+--2dq6zdwzjqmuy54k--
 
