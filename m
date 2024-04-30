@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47D08B71FB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAE38B740A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E560D1C2275D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA3832837F6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077B212C534;
-	Tue, 30 Apr 2024 11:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A25112CDAE;
+	Tue, 30 Apr 2024 11:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGlzX6gW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2y7arw+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B877712B176;
-	Tue, 30 Apr 2024 11:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB80417592;
+	Tue, 30 Apr 2024 11:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474965; cv=none; b=l9vHmCtG+xH8vR7Mztz702MPv5x3OVv1/SF87552sm4r4LCehQIa4dL3WIl/8uOnmzfSBNAZlFE9CV3o36icVa1oMXZg4Ud4ZNUPIXeBb4/wZOCobP66PRvM6UxSVjHh20th1kY39Sq2IeCfoG/J1aJzosL1JbjoVtC7mkqBvlM=
+	t=1714476380; cv=none; b=XrNcpY/n/lIg45Nl7yYpuKWF47Vk2RIQPB/1cglJp8gYHWEhjODjH0SfPPrNERcXK4s1TPtFK/OKU0WJghTEY11IEA6ay3ZfK9SBMmSGV9731GvUuhGHJldoM3xINM8Dl4ML8/EupKUSuZYLaETNKGOc4isXXHHmxG5nfTtdaxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474965; c=relaxed/simple;
-	bh=mWcrr9HsUxegn5ZoR+IdTjdDpyKIL81x+I4fhSUmOmQ=;
+	s=arc-20240116; t=1714476380; c=relaxed/simple;
+	bh=gP7autKI2LiO1SYbdG52b7EA4URLW6inhQOtg/WOZgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/Xo6/xWhrhdVMZ3Li+eN5mpm3iNBZL9wy0Yu9E/YnCG3sIEie6yY+WVPw6jX2mLR9F09GniGj0r4dm1UHfKaHxW6T7YVi+nmVQgnrZjNpqyoX2SUOQCD5Z3J65ijdeYGQFBkG2l81aRx6QqWWmiVnkPNdpiQxAG34QhkB5U2Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGlzX6gW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D05C2BBFC;
-	Tue, 30 Apr 2024 11:02:45 +0000 (UTC)
+	 MIME-Version; b=eqgG9FPdmssdq4Zm+Q86JulyQeBXqL6kaQCsUP+bWPqr0EzsQunv1Zzat4uddts7NG/1A8MUUCZcb4BKHOWPCu+A/aREKlnagHGXAIWUWfBtcO5Nk0+AzM2U6i0JB8TqVhDYnvGR2OF5Cmht8pea302JtPblTUrDDpaPIlQte/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2y7arw+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A25C2BBFC;
+	Tue, 30 Apr 2024 11:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474965;
-	bh=mWcrr9HsUxegn5ZoR+IdTjdDpyKIL81x+I4fhSUmOmQ=;
+	s=korg; t=1714476380;
+	bh=gP7autKI2LiO1SYbdG52b7EA4URLW6inhQOtg/WOZgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xGlzX6gWZmmjkmUJPc3ttObp6gMePBxzbRGt19Ql8KYQlYP6E2X2BtEVkf7lQUHf6
-	 PiRQiwtG7rns/hS5yXxrFR9F5UB8/xmpmHDz+rrw/mPz+NLl9d70E9lV5JxkR5tmJn
-	 q5rjMX9Xg8kDG/nhsSTDQ058qAe2fIvZ3njem2Tk=
+	b=y2y7arw+VZDpLGrEz8KQj5gffg63MzcrUD+/wbRDNaxCiS4Xl1eh+1yTp6jA+sckc
+	 fS4HZH2kf1lp7RI4OtIbCtgYJtrOsftJihXUUPh4xJ64mJ+AX2Faj969fziAJ7puYB
+	 PNVAczztAbNab2/fqGM8gK80Wg+uZsg1IIgvUg1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ismael Luceno <iluceno@suse.de>,
-	Andreas Taschner <andreas.taschner@suse.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Firo Yang <firo.yang@suse.com>
-Subject: [PATCH 5.10 091/138] ipvs: Fix checksumming on GSO of SCTP packets
+	Iskander Amara <iskander.amara@theobroma-systems.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 007/110] arm64: dts: rockchip: fix alphabetical ordering RK3399 puma
 Date: Tue, 30 Apr 2024 12:39:36 +0200
-Message-ID: <20240430103052.098134575@linuxfoundation.org>
+Message-ID: <20240430103047.786162553@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ismael Luceno <iluceno@suse.de>
+From: Iskander Amara <iskander.amara@theobroma-systems.com>
 
-[ Upstream commit e10d3ba4d434ed172914617ed8d74bd411421193 ]
+[ Upstream commit f0abb4b2c7acf3c3e4130dc3f54cd90cf2ae62bc ]
 
-It was observed in the wild that pairs of consecutive packets would leave
-the IPVS with the same wrong checksum, and the issue only went away when
-disabling GSO.
+Nodes overridden by their reference should be ordered alphabetically to
+make it easier to read the DTS. pinctrl node is defined in the wrong
+location so let's reorder it.
 
-IPVS needs to avoid computing the SCTP checksum when using GSO.
-
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Co-developed-by: Firo Yang <firo.yang@suse.com>
-Signed-off-by: Ismael Luceno <iluceno@suse.de>
-Tested-by: Andreas Taschner <andreas.taschner@suse.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240308085243.69903-2-iskander.amara@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Stable-dep-of: 945a7c857091 ("arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index a0921adc31a9f..1e689c7141271 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -126,7 +126,8 @@ sctp_snat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	if (sctph->source != cp->vport || payload_csum ||
- 	    skb->ip_summed == CHECKSUM_PARTIAL) {
- 		sctph->source = cp->vport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 	}
-@@ -174,7 +175,8 @@ sctp_dnat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	    (skb->ip_summed == CHECKSUM_PARTIAL &&
- 	     !(skb_dst(skb)->dev->features & NETIF_F_SCTP_CRC))) {
- 		sctph->dest = cp->dport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else if (skb->ip_summed != CHECKSUM_PARTIAL) {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+index fee2cc035613c..a060419bca901 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -401,15 +401,6 @@
+ 	gpio1830-supply = <&vcc_1v8>;
+ };
+ 
+-&pmu_io_domains {
+-	status = "okay";
+-	pmu1830-supply = <&vcc_1v8>;
+-};
+-
+-&pwm2 {
+-	status = "okay";
+-};
+-
+ &pinctrl {
+ 	i2c8 {
+ 		i2c8_xfer_a: i2c8-xfer {
+@@ -448,6 +439,15 @@
+ 	};
+ };
+ 
++&pmu_io_domains {
++	status = "okay";
++	pmu1830-supply = <&vcc_1v8>;
++};
++
++&pwm2 {
++	status = "okay";
++};
++
+ &sdhci {
+ 	/*
+ 	 * Signal integrity isn't great at 200MHz but 100MHz has proven stable
 -- 
 2.43.0
 
