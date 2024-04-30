@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CF38B7420
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF728B721B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA24D1C21E86
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3EEDB223A6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EA512D209;
-	Tue, 30 Apr 2024 11:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4366D12C801;
+	Tue, 30 Apr 2024 11:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z50m99ji"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqzfPMP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A2D17592;
-	Tue, 30 Apr 2024 11:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F7112C487;
+	Tue, 30 Apr 2024 11:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476445; cv=none; b=sHlGEvAAAwzfUxTGHX9DxNSzBCBmDlV9d10B4e8ZWc+T63XyNa7YGtEOhcuyz3vuxGoXoWt64oqHVO/cBjlgLdgV6i/QrLMCDFpfgS7md4f3PT4m5bt/QXAnDOFQTbiOVqyUsc0s8NVk7/7RNy8dmnWwQSrPFqhwkoUGrV0BO5Q=
+	t=1714475060; cv=none; b=fuunf2Xz/oYD3Ed9hux6kwUQA9FW+2f3sqaQ6z5rGfVlVpefu5m6W+PIsEd8ofDfWYCXao3dt05bEI5Y9CCPwPttwp70/DWptakMq7Ay41Upm6M/izczXB+D5W4wL7BR0rkC2uaRcl2B5a9ip7Z5kdKtCBO4eJOqkgupGfC6jWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476445; c=relaxed/simple;
-	bh=VXGkVtYtRAPDAhCEVRS3QeKY93HcHWQ2cp2eyi2rJ2U=;
+	s=arc-20240116; t=1714475060; c=relaxed/simple;
+	bh=NfLl1y8kG80UKA//yfmbq4erA7Y3Lp8x/L3Ce1N+j+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUi+KxuxIalOylQh24OVDirbjCDQ8hDO5Cb1lfMXl8JVHpHKL9EJ9SQQNxXtuZJpWp0vMRz3uafDfK9Z5vBNzeEO8tuit+cXGJ/6DLuWEOZuTd9GJagOo8ISfi8E4DGh4iH6zI6f8+nMAd1RvPBEjqqehPdgBokxfwYp4gIZqck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z50m99ji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE9AC2BBFC;
-	Tue, 30 Apr 2024 11:27:24 +0000 (UTC)
+	 MIME-Version; b=aeUimaktd1wEC4DAIH7KHRC+CzKSFaawnUcJOXBleU5hvSnfaZ4u/iDaBrzO0hLDFjXJ/6CMbwLhCJ9p55TeLGBLuewkvgKc42pDrW6/g7UET6wUj9SFObTJ4LBO+5+YbgajcVznFlzbh9YXaJamKL5+OE8CDqcOCros7udvukQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqzfPMP2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29064C2BBFC;
+	Tue, 30 Apr 2024 11:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476445;
-	bh=VXGkVtYtRAPDAhCEVRS3QeKY93HcHWQ2cp2eyi2rJ2U=;
+	s=korg; t=1714475059;
+	bh=NfLl1y8kG80UKA//yfmbq4erA7Y3Lp8x/L3Ce1N+j+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z50m99jiUYV6IXgpPMmVW5SqnbkM1+CliKRzVuudnzZbW1E+bzf61EEKsLbPhNNGl
-	 +2qf3mogyBd5SBzCO/UhyaJFlvGzOinjSfFKlGOZYsvRLczdCaFkaRr9SdpFtFRKvb
-	 54/jLiYX42TBO1nD6IohU3pKbfLOnYJz7rNwvBKI=
+	b=eqzfPMP2SQDwjE7rsbCZCE5QkIgVb6anQIBNl2DvCsHgMe9StAooZIMa8c4YFNCCV
+	 X+UpzSD9D65rLcC0YppVu887s7eeAYAz1YMqqJeUxYePj8D1LPtNaodI+bBayyPptp
+	 r6qV0I2wrpjlCthWVd9bwAGQL344DryjahsZFaE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Li <adamli@os.amperecomputing.com>,
-	"Christoph Lameter (Ampere)" <cl@linux.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/110] net: make SK_MEMORY_PCPU_RESERV tunable
+	Iskander Amara <iskander.amara@theobroma-systems.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 5.10 118/138] arm64: dts: rockchip: enable internal pull-up for Q7_THRM# on RK3399 Puma
 Date: Tue, 30 Apr 2024 12:40:03 +0200
-Message-ID: <20240430103048.575884108@linuxfoundation.org>
+Message-ID: <20240430103052.880800879@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Li <adamli@os.amperecomputing.com>
+From: Iskander Amara <iskander.amara@theobroma-systems.com>
 
-[ Upstream commit 12a686c2e761f1f1f6e6e2117a9ab9c6de2ac8a7 ]
+commit 0ac417b8f124427c90ec8c2ef4f632b821d924cc upstream.
 
-This patch adds /proc/sys/net/core/mem_pcpu_rsv sysctl file,
-to make SK_MEMORY_PCPU_RESERV tunable.
+Q7_THRM# pin is connected to a diode on the module which is used
+as a level shifter, and the pin have a pull-down enabled by
+default. We need to configure it to internal pull-up, other-
+wise whenever the pin is configured as INPUT and we try to
+control it externally the value will always remain zero.
 
-Commit 3cd3399dd7a8 ("net: implement per-cpu reserves for
-memory_allocated") introduced per-cpu forward alloc cache:
-
-"Implement a per-cpu cache of +1/-1 MB, to reduce number
-of changes to sk->sk_prot->memory_allocated, which
-would otherwise be cause of false sharing."
-
-sk_prot->memory_allocated points to global atomic variable:
-atomic_long_t tcp_memory_allocated ____cacheline_aligned_in_smp;
-
-If increasing the per-cpu cache size from 1MB to e.g. 16MB,
-changes to sk->sk_prot->memory_allocated can be further reduced.
-Performance may be improved on system with many cores.
-
-Signed-off-by: Adam Li <adamli@os.amperecomputing.com>
-Reviewed-by: Christoph Lameter (Ampere) <cl@linux.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 3584718cf2ec ("net: fix sk_memory_allocated_{add|sub} vs softirqs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240308085243.69903-1-iskander.amara@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/sysctl/net.rst | 5 +++++
- include/net/sock.h                       | 5 +++--
- net/core/sock.c                          | 1 +
- net/core/sysctl_net_core.c               | 9 +++++++++
- 4 files changed, 18 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-index 6394f5dc2303d..e3894c928118c 100644
---- a/Documentation/admin-guide/sysctl/net.rst
-+++ b/Documentation/admin-guide/sysctl/net.rst
-@@ -205,6 +205,11 @@ Will increase power usage.
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -436,6 +436,16 @@
+ };
  
- Default: 0 (off)
- 
-+mem_pcpu_rsv
-+------------
+ &pinctrl {
++	pinctrl-names = "default";
++	pinctrl-0 = <&q7_thermal_pin>;
 +
-+Per-cpu reserved forward alloc cache size in page units. Default 1MB per CPU.
++	gpios {
++		q7_thermal_pin: q7-thermal-pin {
++			rockchip,pins =
++				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
++	};
 +
- rmem_default
- ------------
- 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 60577751ea9e8..6ef6ce43a2edc 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1483,6 +1483,7 @@ sk_memory_allocated(const struct sock *sk)
- 
- /* 1 MB per cpu, in page units */
- #define SK_MEMORY_PCPU_RESERVE (1 << (20 - PAGE_SHIFT))
-+extern int sysctl_mem_pcpu_rsv;
- 
- static inline void
- sk_memory_allocated_add(struct sock *sk, int amt)
-@@ -1491,7 +1492,7 @@ sk_memory_allocated_add(struct sock *sk, int amt)
- 
- 	preempt_disable();
- 	local_reserve = __this_cpu_add_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
--	if (local_reserve >= SK_MEMORY_PCPU_RESERVE) {
-+	if (local_reserve >= READ_ONCE(sysctl_mem_pcpu_rsv)) {
- 		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
- 		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
- 	}
-@@ -1505,7 +1506,7 @@ sk_memory_allocated_sub(struct sock *sk, int amt)
- 
- 	preempt_disable();
- 	local_reserve = __this_cpu_sub_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
--	if (local_reserve <= -SK_MEMORY_PCPU_RESERVE) {
-+	if (local_reserve <= -READ_ONCE(sysctl_mem_pcpu_rsv)) {
- 		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
- 		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
- 	}
-diff --git a/net/core/sock.c b/net/core/sock.c
-index c8803b95ea0da..550af616f5359 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -279,6 +279,7 @@ __u32 sysctl_rmem_max __read_mostly = SK_RMEM_MAX;
- EXPORT_SYMBOL(sysctl_rmem_max);
- __u32 sysctl_wmem_default __read_mostly = SK_WMEM_MAX;
- __u32 sysctl_rmem_default __read_mostly = SK_RMEM_MAX;
-+int sysctl_mem_pcpu_rsv __read_mostly = SK_MEMORY_PCPU_RESERVE;
- 
- /* Maximal space eaten by iovec or ancillary data plus some space */
- int sysctl_optmem_max __read_mostly = sizeof(unsigned long)*(2*UIO_MAXIOV+512);
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 5b1ce656baa1d..d281d5343ff4a 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -29,6 +29,7 @@ static int int_3600 = 3600;
- static int min_sndbuf = SOCK_MIN_SNDBUF;
- static int min_rcvbuf = SOCK_MIN_RCVBUF;
- static int max_skb_frags = MAX_SKB_FRAGS;
-+static int min_mem_pcpu_rsv = SK_MEMORY_PCPU_RESERVE;
- 
- static int net_msg_warn;	/* Unused, but still a sysctl */
- 
-@@ -348,6 +349,14 @@ static struct ctl_table net_core_table[] = {
- 		.proc_handler	= proc_dointvec_minmax,
- 		.extra1		= &min_rcvbuf,
- 	},
-+	{
-+		.procname	= "mem_pcpu_rsv",
-+		.data		= &sysctl_mem_pcpu_rsv,
-+		.maxlen		= sizeof(int),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= &min_mem_pcpu_rsv,
-+	},
- 	{
- 		.procname	= "dev_weight",
- 		.data		= &weight_p,
--- 
-2.43.0
-
+ 	i2c8 {
+ 		i2c8_xfer_a: i2c8-xfer {
+ 			rockchip,pins =
 
 
 
