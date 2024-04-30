@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-42457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6298B7320
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FD38B7371
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E11521C2320C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA96FB21472
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FACA12E1C9;
-	Tue, 30 Apr 2024 11:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693D012D1EA;
+	Tue, 30 Apr 2024 11:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2f4r6I5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFGZzqls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C89512D76F;
-	Tue, 30 Apr 2024 11:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B7A8801;
+	Tue, 30 Apr 2024 11:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475727; cv=none; b=pziYzRKX6udhCbVWJQHgxpHoCD4SRXSPb3OFEUYzccb3p15tHf0jaRFc9b5BC9ZAFqQ61r48NLP0f3ohlipPy03HbMB3CDvDgF8LmWXK7XcqiyWoBZH/Z8zVrbaYmcepB+xhRgt56ombutsUiaAkWzrkUorSJOorFI74aemTYMs=
+	t=1714475944; cv=none; b=KV2JTqWC5RVXiQZ1s5KXvlgy6H2ZMFVIYtHStCakz+DTZp0Ce0NJZa3Qk8erKii9tnKRCnBe5Pn/a6NocdjjQY0qk+yMKGA3MeOhqsE+E6nIj3WYMg5sYQZKzbWLIJvLbrkrg4xeEmjVEKszqIdZ1hsQPEWCvSQ5bRCZNJd5oCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475727; c=relaxed/simple;
-	bh=TKx4ABt9G5wDsi2jpP0ZgHBwGlf/9LotGEHr2w19N1g=;
+	s=arc-20240116; t=1714475944; c=relaxed/simple;
+	bh=wO6IL0kco8a6U53ak02JNtF1v6RkgSmMBf0aivRM2+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CXbST3k9sjPUipR+WbQsNxys1urorh6OcaifQmAsHwljVSvQ7Pbz/Sh+XlwlfExL9EOwilupnlQRH3aUqRJOe/I8sneprEZHWt9cPteZ7IRdj6IKZRzewv3pKcj9XOamqO1lS3dk01jpmdaaZ0k/Go4mL7wV5k0C4JtyR++g8Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2f4r6I5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F94C2BBFC;
-	Tue, 30 Apr 2024 11:15:26 +0000 (UTC)
+	 MIME-Version; b=TlAA3QGtYX3ODg4HO7ILiruARcXB5TqXTyoL/k/u5jb5+shJ02RRPMm0fUx6/xWe9fjPimnuDtMWTZtNcm9Qu0VbfZzglhLb5mn8wG/goGtY3ZN2wIOU7qWvT4BoVrTewLL9zc7kvI8TxfzbPsT45GxhR+E6P4y37aWtVONyzx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFGZzqls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A563BC2BBFC;
+	Tue, 30 Apr 2024 11:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475727;
-	bh=TKx4ABt9G5wDsi2jpP0ZgHBwGlf/9LotGEHr2w19N1g=;
+	s=korg; t=1714475944;
+	bh=wO6IL0kco8a6U53ak02JNtF1v6RkgSmMBf0aivRM2+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2f4r6I5j7L5Nce2B3XPCoa5h+jVZlJcCesu5YpSw4xg8YFlnXDs8xNVd8b5R2wrLw
-	 9eRG6F13qsjWutWYVlzhimRShp6KxAwHt61/cLZQgNlx97fD2u6WxcWMklg/OXE90M
-	 kcn0HWiIOIbawcV9qD0cxCTj1G4ho9aS83w4H9Fc=
+	b=pFGZzqlsr0KjqQuXtNipCw5romu2jwLzt7s/NPHKe4K8Z46LgF2Qec8W8fWVEl0/T
+	 gYSS/IaYKBv5H1yzVj2plJpI8wVl1/u5ES9NLi9QTepFmsE4gWITymPZN+/2s97BlC
+	 n0S0y2e+yi7tvteQjRePES+eS5GLNQqeiyU/Ie+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 185/186] net/mlx5e: Advertise mlx5 ethernet driver updates sk_buff md_dst for MACsec
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Dave Chinner <david@fromorbit.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 65/80] stackdepot: respect __GFP_NOLOCKDEP allocation flag
 Date: Tue, 30 Apr 2024 12:40:37 +0200
-Message-ID: <20240430103103.402032645@linuxfoundation.org>
+Message-ID: <20240430103045.337275689@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +66,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 
-commit 39d26a8f2efcb8b5665fe7d54a7dba306a8f1dff upstream.
+commit 6fe60465e1d53ea321ee909be26d97529e8f746c upstream.
 
-mlx5 Rx flow steering and CQE handling enable the driver to be able to
-update an skb's md_dst attribute as MACsec when MACsec traffic arrives when
-a device is configured for offloading. Advertise this to the core stack to
-take advantage of this capability.
+If stack_depot_save_flags() allocates memory it always drops
+__GFP_NOLOCKDEP flag.  So when KASAN tries to track __GFP_NOLOCKDEP
+allocation we may end up with lockdep splat like bellow:
 
-Cc: stable@vger.kernel.org
-Fixes: b7c9400cbc48 ("net/mlx5e: Implement MACsec Rx data path using MACsec skb_metadata_dst")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240423181319.115860-5-rrameshbabu@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+======================================================
+ WARNING: possible circular locking dependency detected
+ 6.9.0-rc3+ #49 Not tainted
+ ------------------------------------------------------
+ kswapd0/149 is trying to acquire lock:
+ ffff88811346a920
+(&xfs_nondir_ilock_class){++++}-{4:4}, at: xfs_reclaim_inode+0x3ac/0x590
+[xfs]
+
+ but task is already holding lock:
+ ffffffff8bb33100 (fs_reclaim){+.+.}-{0:0}, at:
+balance_pgdat+0x5d9/0xad0
+
+ which lock already depends on the new lock.
+
+ the existing dependency chain (in reverse order) is:
+ -> #1 (fs_reclaim){+.+.}-{0:0}:
+        __lock_acquire+0x7da/0x1030
+        lock_acquire+0x15d/0x400
+        fs_reclaim_acquire+0xb5/0x100
+ prepare_alloc_pages.constprop.0+0xc5/0x230
+        __alloc_pages+0x12a/0x3f0
+        alloc_pages_mpol+0x175/0x340
+        stack_depot_save_flags+0x4c5/0x510
+        kasan_save_stack+0x30/0x40
+        kasan_save_track+0x10/0x30
+        __kasan_slab_alloc+0x83/0x90
+        kmem_cache_alloc+0x15e/0x4a0
+        __alloc_object+0x35/0x370
+        __create_object+0x22/0x90
+ __kmalloc_node_track_caller+0x477/0x5b0
+        krealloc+0x5f/0x110
+        xfs_iext_insert_raw+0x4b2/0x6e0 [xfs]
+        xfs_iext_insert+0x2e/0x130 [xfs]
+        xfs_iread_bmbt_block+0x1a9/0x4d0 [xfs]
+        xfs_btree_visit_block+0xfb/0x290 [xfs]
+        xfs_btree_visit_blocks+0x215/0x2c0 [xfs]
+        xfs_iread_extents+0x1a2/0x2e0 [xfs]
+ xfs_buffered_write_iomap_begin+0x376/0x10a0 [xfs]
+        iomap_iter+0x1d1/0x2d0
+ iomap_file_buffered_write+0x120/0x1a0
+        xfs_file_buffered_write+0x128/0x4b0 [xfs]
+        vfs_write+0x675/0x890
+        ksys_write+0xc3/0x160
+        do_syscall_64+0x94/0x170
+ entry_SYSCALL_64_after_hwframe+0x71/0x79
+
+Always preserve __GFP_NOLOCKDEP to fix this.
+
+Link: https://lkml.kernel.org/r/20240418141133.22950-1-ryabinin.a.a@gmail.com
+Fixes: cd11016e5f52 ("mm, kasan: stackdepot implementation. Enable stackdepot for SLAB")
+Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Reported-by: Xiubo Li <xiubli@redhat.com>
+Closes: https://lore.kernel.org/all/a0caa289-ca02-48eb-9bf2-d86fd47b71f4@redhat.com/
+Reported-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Closes: https://lore.kernel.org/all/f9ff999a-e170-b66b-7caf-293f2b147ac2@opensource.wdc.com/
+Suggested-by: Dave Chinner <david@fromorbit.com>
+Tested-by: Xiubo Li <xiubli@redhat.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c |    1 +
- 1 file changed, 1 insertion(+)
+ lib/stackdepot.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-@@ -1640,6 +1640,7 @@ static const struct macsec_ops macsec_of
- 	.mdo_add_secy = mlx5e_macsec_add_secy,
- 	.mdo_upd_secy = mlx5e_macsec_upd_secy,
- 	.mdo_del_secy = mlx5e_macsec_del_secy,
-+	.rx_uses_md_dst = true,
- };
- 
- bool mlx5e_macsec_handle_tx_skb(struct mlx5e_macsec *macsec, struct sk_buff *skb)
+--- a/lib/stackdepot.c
++++ b/lib/stackdepot.c
+@@ -294,10 +294,10 @@ depot_stack_handle_t stack_depot_save(un
+ 		/*
+ 		 * Zero out zone modifiers, as we don't have specific zone
+ 		 * requirements. Keep the flags related to allocation in atomic
+-		 * contexts and I/O.
++		 * contexts, I/O, nolockdep.
+ 		 */
+ 		alloc_flags &= ~GFP_ZONEMASK;
+-		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL);
++		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL | __GFP_NOLOCKDEP);
+ 		alloc_flags |= __GFP_NOWARN;
+ 		page = alloc_pages(alloc_flags, STACK_ALLOC_ORDER);
+ 		if (page)
 
 
 
