@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB39D8B7325
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A1A88B73BD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18E3FB22619
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E48961F215DE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B777812D77C;
-	Tue, 30 Apr 2024 11:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E65E12D215;
+	Tue, 30 Apr 2024 11:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyYmK8Da"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3gaRmoM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7754412CD90;
-	Tue, 30 Apr 2024 11:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1A812D209;
+	Tue, 30 Apr 2024 11:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475739; cv=none; b=qF6vGzvSB57JeCKn67FblXfO0c1Y5LaFGwfhV3O3t9KCwYj+ReWmclkdTHp+aUZBdePEkS6JGxSy99hoDYzJDC1XCgDNNFwv5vg5+28cdMhU59p/zX6WRQqww9N/yP54S8hxGYPa6zBnIGyVdoX0t3FrauFYTFvLMHgcip0pu74=
+	t=1714476166; cv=none; b=XlCehWaruCLndXVjQFhSRObkEak50OHIOMGW3ylSBqeef5HEFlrIUkCxN5nwCqQSLam/Cg1vF5JlI6BB8Re/vuv/Yn3/97HZzf2x6kxP778CwGWD+05orYrS3YXeqZ0kSQ9ozUlCM8qAUJaQ8B9cIIIiAFDno1fKsM0BMWsRevk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475739; c=relaxed/simple;
-	bh=LgJ1b3RCZ7XJ9k6mWpuQ1U9eSImfREWuuVN6G++FRN8=;
+	s=arc-20240116; t=1714476166; c=relaxed/simple;
+	bh=WN6rY4JqqSYSStpCUJxrETuNgAIWyG11grU0SwCq8Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOr2IO4Qi6Wti0pxdu0nvoXGLsbmXAusSgzu2YczolNmjehZS4qAiXRsoPXSZrktrZshnCl7+//TZ0t4gHaiJOFKAq43lCEht99WbXqILejrAicN8KwOeXjD6yaHqjlyAJUo7yaKtELV0z7tSQRpnM1W57+WZAPVnAPWGKSaHFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyYmK8Da; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC82C2BBFC;
-	Tue, 30 Apr 2024 11:15:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nsF1cTmZcpZxZMd1TxKrDPgxH005YjzaRf0Wt8CR8Kydg5io+EsoMyrviCkoZxM39eO7eetAZ4qGi2Z2kyyxZjckZoZjmdlGr4yncBx9PGO7XrpxrUTz4sgV05nk9vwE30HbXRLdb3a8LJepMivr2pNfO5NPsYxY4OWNFPIj05U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3gaRmoM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DB8C2BBFC;
+	Tue, 30 Apr 2024 11:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475739;
-	bh=LgJ1b3RCZ7XJ9k6mWpuQ1U9eSImfREWuuVN6G++FRN8=;
+	s=korg; t=1714476165;
+	bh=WN6rY4JqqSYSStpCUJxrETuNgAIWyG11grU0SwCq8Wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MyYmK8Darj+J2jBNcJLPWBT/nA3Cdy5IDFrm5v/gDsnqGJp8ZxtEzVLpyaen/iJCI
-	 fOKZfQY66nFZ/uFPgGbNh1JJT0mS60WMqHughV89F5Gr5xByPVGubrEuq2s3/A2Qa2
-	 QphfP7+MA5kjobwczOYLDvqVnV4Y0da7fSubl/y4=
+	b=d3gaRmoMeyXETVsZyv+2uh53L45z+rCMZKeTB1in8COJVoQ0JCRPm1izL7jE9BKv2
+	 SScJ6LP/f8getGZH+OoYqdfD1GAWb3DLRUPHIjxdRMxWArnTChN7fxEPRHtn6f3g6T
+	 WsewnmkuIT0zvOXSxr/XZw/7Ay68eaY+GFBO7OPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Vinod Koul <vkoul@kernel.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/186] phy: marvell: a3700-comphy: Fix hardcoded array size
+Subject: [PATCH 5.4 055/107] arm64: dts: mediatek: mt7622: fix IR nodename
 Date: Tue, 30 Apr 2024 12:40:15 +0200
-Message-ID: <20240430103102.764358157@linuxfoundation.org>
+Message-ID: <20240430103046.280930068@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kobuk <m.kobuk@ispras.ru>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 627207703b73615653eea5ab7a841d5b478d961e ]
+[ Upstream commit 800dc93c3941e372c94278bf4059e6e82f60bd66 ]
 
-Replace hardcoded 'gbe_phy_init' array size by explicit one.
+Fix following validation error:
+arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: cir@10009000: $nodename:0: 'cir@10009000' does not match '^ir(-receiver)?(@[a-f0-9]+)?$'
+        from schema $id: http://devicetree.org/schemas/media/mediatek,mt7622-cir.yaml#
 
-Fixes: 934337080c6c ("phy: marvell: phy-mvebu-a3700-comphy: Add native kernel implementation")
-Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Link: https://lore.kernel.org/r/20240321164734.49273-2-m.kobuk@ispras.ru
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related device nodes")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240317221050.18595-3-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/marvell/phy-mvebu-a3700-comphy.c | 2 +-
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/marvell/phy-mvebu-a3700-comphy.c b/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
-index e2d0bf92a9ada..27f221a0f922d 100644
---- a/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
-+++ b/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
-@@ -603,7 +603,7 @@ static void comphy_gbe_phy_init(struct mvebu_a3700_comphy_lane *lane,
- 	u16 val;
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index 3bfe9f5d2a14f..7f5ffbd2381fb 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -244,7 +244,7 @@
+ 		clock-names = "hif_sel";
+ 	};
  
- 	fix_idx = 0;
--	for (addr = 0; addr < 512; addr++) {
-+	for (addr = 0; addr < ARRAY_SIZE(gbe_phy_init); addr++) {
- 		/*
- 		 * All PHY register values are defined in full for 3.125Gbps
- 		 * SERDES speed. The values required for 1.25 Gbps are almost
+-	cir: cir@10009000 {
++	cir: ir-receiver@10009000 {
+ 		compatible = "mediatek,mt7622-cir";
+ 		reg = <0 0x10009000 0 0x1000>;
+ 		interrupts = <GIC_SPI 175 IRQ_TYPE_LEVEL_LOW>;
 -- 
 2.43.0
 
