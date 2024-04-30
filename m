@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4124B8B701A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF23B8B72CA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72EBE1C21A1F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:43:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F01F51C2366D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BB712C46C;
-	Tue, 30 Apr 2024 10:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE9712D769;
+	Tue, 30 Apr 2024 11:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fDuP13m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DP+UfFgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD5112B176;
-	Tue, 30 Apr 2024 10:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF52812E1F8;
+	Tue, 30 Apr 2024 11:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473809; cv=none; b=uiav6J9BNsLxQ6bRj3JNJ35NVaapwsKglD+cFChtdDd2EYdDyZpM5z7sZefUl909vh+y2yTOP76feWPhMvoDEFYn6zKTgcsKb5dvZsEpUJP3o8QvTQApZqUEXjyrRvQ3ffsrPn3+eSBRLE4fo80gaHscv/DaC6EABBSCkBCxCLo=
+	t=1714475497; cv=none; b=Mfdrr9fRunGOa3lu8SVUlhIoOBtHr4dwOU61ZDookMc6WmWiS1j/oGNsXe72rwVCEGb2m9BigjhqQVKZQmTt8R8flHkHRi3CnO3vzf4pzAV09wBBbW2/tprp4Zp3SXdg8FvrqWWRxBeh4ubC3zJmdBZWfBpw0STN2teZPKv6OLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473809; c=relaxed/simple;
-	bh=IWI2ArPW4FTReLIYMyL1DD9EG/oYyBKsEf90EEPfFcs=;
+	s=arc-20240116; t=1714475497; c=relaxed/simple;
+	bh=52exE09QOeGQy/ycTOq9ptjLIxvLTVLWU2BVUh0ySeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ob8Y0pfLRNmK7n0/+pxdyrUB97+vRQXx0cs5q9R54AsMXaAAinhqBBOqu1ksDkPwslg0EYbPXnKMg4/lrH+bX2G39gaRgQVDTltkCcS1hQlyt3TRoRhcnqPP9QPRK1Ta710DpXberX0e1EdWPO/i4x7zmTuGvTiAe+pul3ARTzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fDuP13m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A2CC2BBFC;
-	Tue, 30 Apr 2024 10:43:28 +0000 (UTC)
+	 MIME-Version; b=qocEWAlCturWWTL9fgqktmkc/DKwPVph45mbix1EAerNM2zu33JWmL/ruy1OfBOXavlE8I1CNJNbeAZ358FLkS1J3kgkOGBacX6VHJ6WZFKEssLkYMRgwWIVOT5uZE5RdEuTUuwVSwW8iIaN/FI76N/xA0jWk1OsIIN67T6WkkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DP+UfFgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C263C4AF1D;
+	Tue, 30 Apr 2024 11:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473809;
-	bh=IWI2ArPW4FTReLIYMyL1DD9EG/oYyBKsEf90EEPfFcs=;
+	s=korg; t=1714475496;
+	bh=52exE09QOeGQy/ycTOq9ptjLIxvLTVLWU2BVUh0ySeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fDuP13maaBYH3+oqYSggdlMcoYHMqxYIFxlHEFseXAzvLUSdACFK8c4PduxgP9RP
-	 ZdqkJ8I0LQGTzus3IM5c0HdR8AX09RNlaQH2khXsERfYb2TKRInI3SbHsAeUT3+XEh
-	 A7CXMP/tjRojCxQxeM75qWkJHCN8i9pV+oforyaM=
+	b=DP+UfFglcWNXe6poK2AURNJStI7U2D5PjkvZGBPX6ghdBz9nkIBS7seCO3+2C0sDy
+	 WmzwpYqhLKsQ4YSNJuOfn7j6hJt6/wN8+uvVraBTiGh+3O/6L2qFSlmS+c+Lg8AD5H
+	 HvsoMlApbr0NXzhUmIYfH+xVUaZqNCiG9D/gLvIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Bauer <mail@david-bauer.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 44/77] vxlan: drop packets from invalid src-address
-Date: Tue, 30 Apr 2024 12:39:23 +0200
-Message-ID: <20240430103042.436086664@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.6 112/186] rust: dont select CONSTRUCTORS
+Date: Tue, 30 Apr 2024 12:39:24 +0200
+Message-ID: <20240430103101.284870656@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit f58f45c1e5b92975e91754f5407250085a6ae7cf ]
+commit 7d49f53af4b988b188d3932deac2c9c80fd7d9ce upstream.
 
-The VXLAN driver currently does not check if the inner layer2
-source-address is valid.
+This was originally part of commit 4b9a68f2e59a0 ("rust: add support for
+static synchronisation primitives") from the old Rust branch, which used
+module constructors to initialize globals containing various
+synchronisation primitives with pin-init. That commit has never been
+upstreamed, but the `select CONSTRUCTORS` statement ended up being
+included in the patch that initially added Rust support to the Linux
+Kernel.
 
-In case source-address snooping/learning is enabled, a entry in the FDB
-for the invalid address is created with the layer3 address of the tunnel
-endpoint.
+We are not using module constructors, so let's remove the select.
 
-If the frame happens to have a non-unicast address set, all this
-non-unicast traffic is subsequently not flooded to the tunnel network
-but sent to the learnt host in the FDB. To make matters worse, this FDB
-entry does not expire.
-
-Apply the same filtering for packets as it is done for bridges. This not
-only drops these invalid packets but avoids them from being learnt into
-the FDB.
-
-Fixes: d342894c5d2f ("vxlan: virtual extensible lan")
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Cc: stable@vger.kernel.org
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Link: https://lore.kernel.org/r/20240308-constructors-v1-1-4c811342391c@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ init/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/vxlan.c b/drivers/net/vxlan.c
-index d5c8d0d54b33d..b004c8b6ec28e 100644
---- a/drivers/net/vxlan.c
-+++ b/drivers/net/vxlan.c
-@@ -1320,6 +1320,10 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
- 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
- 		return false;
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1898,7 +1898,6 @@ config RUST
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+-	select CONSTRUCTORS
+ 	help
+ 	  Enables Rust support in the kernel.
  
-+	/* Ignore packets from invalid src-address */
-+	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
-+		return false;
-+
- 	/* Get address from the outer IP header */
- 	if (vxlan_get_sk_family(vs) == AF_INET) {
- 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
--- 
-2.43.0
-
 
 
 
