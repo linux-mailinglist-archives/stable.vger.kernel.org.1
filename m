@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92A28B733E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175868B7214
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD30F1C23180
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56AA4B2200C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A63C12C805;
-	Tue, 30 Apr 2024 11:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F0412CD98;
+	Tue, 30 Apr 2024 11:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pX5vsopa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3CkvH1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6618801;
-	Tue, 30 Apr 2024 11:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E6812C487;
+	Tue, 30 Apr 2024 11:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475810; cv=none; b=O5lv7n6Rc6bucCj1xxnqXMLT1wLGazs8kikhzpWwjJgg4Y9cSt0AonZY37f0YEFDjvPBsA0iaubU23bUPKbbws29jdgXVKW8cRNm6nKBOnf90ERpsDZF1HYgrlU/Vjz8JoP2BogwAc7f//rgpYCIsyXu8bKN3xxji4Q8fxvTEFQ=
+	t=1714475036; cv=none; b=EKQ1HbiUQnO013FRbCYDOBvxmqx3KS8/ix7VwJhFohJ0WBSqgZvZrj1sD6+YBLYjlaIBKkun4hSWg+snDYRkLPzWF284noEy5kESXILfs4iftKMNaYVco88vXLLURDd2gTtQ1KzQKNnxtxG2M4Pc2ZywdkyYh6fKM6/VEm16KPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475810; c=relaxed/simple;
-	bh=MrrjtcwPwQYA/ZX5IW2PmstEUIgcuQ8tUOMaeaO7V6g=;
+	s=arc-20240116; t=1714475036; c=relaxed/simple;
+	bh=PeYMISmSCuIyN8qBMQ5Yqf0nDpi5Cc+6oFRcn2+aS/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fM5bH+66eGqgn4oEzN8BaH7aICHqHK2DP7mBt30BtSdRy4iM5ec64nHIFlzs3nEI/3zemdI6QbPtyJGlDKqtx2KXGKlvafVQFavGNbXYT/QyKr6LkwgF1QLkwXZn8lSM5avfJS2uXELoaMYGqH0fFpukU0yxAHbu5Y+FL/k9z6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pX5vsopa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F002C2BBFC;
-	Tue, 30 Apr 2024 11:16:49 +0000 (UTC)
+	 MIME-Version; b=rJld0I6RfVq1IkeznBAjxw3OgpqRhg7p8bzSNZqzTYoO/sjdu3pWnoabJpUTA7Dzowg0vHGoGdP41cm992vuno/aK6E0h7yGh5cRZDz1Ed+7NLqGyl74rhPA0+kvYhf4sA4m3xHovOgipJXlxhKrjG43J3LGaC1jghhlxh9c7nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3CkvH1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036AEC2BBFC;
+	Tue, 30 Apr 2024 11:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475809;
-	bh=MrrjtcwPwQYA/ZX5IW2PmstEUIgcuQ8tUOMaeaO7V6g=;
+	s=korg; t=1714475036;
+	bh=PeYMISmSCuIyN8qBMQ5Yqf0nDpi5Cc+6oFRcn2+aS/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pX5vsopaZCeqRhh4Hyo8+9rvf7hxW+wBDyQBqqJnQHYCjLxfgMYCuAcrUNe3pB+bO
-	 QCsXteqpca/L3Ku94psp6K3xYF/5NWJ5m/4ch+00NxtIPWruNgaguINl2Lat16qIGH
-	 tmZT3Fbo833cgRqYYGP78YXQoJiblqvdR8S3utbQ=
+	b=d3CkvH1FQ1O9OVvbj/aUabRiHiBi60mHOgKqU37wDiNJUjMkKj/0LJb6g4z+ResZS
+	 NsLREPpOyhttE19MQTkRLYiPqz5KNmCrVVBhAVQrSRJbcCzvskxBGihLRP564MLD6E
+	 4BIWhCoBApAgReN0s/yVBjD04GM7S034QRy50uGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Geurts <paul_geurts@live.nl>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 24/80] NFC: trf7970a: disable all regulators on removal
+	"Robin H. Johnson" <robbat2@gentoo.org>,
+	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.10 111/138] tracing: Show size of requested perf buffer
 Date: Tue, 30 Apr 2024 12:39:56 +0200
-Message-ID: <20240430103044.130383491@linuxfoundation.org>
+Message-ID: <20240430103052.678258520@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,150 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Geurts <paul_geurts@live.nl>
+From: Robin H. Johnson <robbat2@gentoo.org>
 
-[ Upstream commit 6bea4f03c6a4e973ef369e15aac88f37981db49e ]
+commit a90afe8d020da9298c98fddb19b7a6372e2feb45 upstream.
 
-During module probe, regulator 'vin' and 'vdd-io' are used and enabled,
-but the vdd-io regulator overwrites the 'vin' regulator pointer. During
-remove, only the vdd-io is disabled, as the vin regulator pointer is not
-available anymore. When regulator_put() is called during resource
-cleanup a kernel warning is given, as the regulator is still enabled.
+If the perf buffer isn't large enough, provide a hint about how large it
+needs to be for whatever is running.
 
-Store the two regulators in separate pointers and disable both the
-regulators on module remove.
+Link: https://lkml.kernel.org/r/20210831043723.13481-1-robbat2@gentoo.org
 
-Fixes: 49d22c70aaf0 ("NFC: trf7970a: Add device tree option of 1.8 Volt IO voltage")
-Signed-off-by: Paul Geurts <paul_geurts@live.nl>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/DB7PR09MB26847A4EBF88D9EDFEB1DA0F950E2@DB7PR09MB2684.eurprd09.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- drivers/nfc/trf7970a.c | 42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ kernel/trace/trace_event_perf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index 8890fcd59c39e..cfc2a7e652719 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -424,7 +424,8 @@ struct trf7970a {
- 	enum trf7970a_state		state;
- 	struct device			*dev;
- 	struct spi_device		*spi;
--	struct regulator		*regulator;
-+	struct regulator		*vin_regulator;
-+	struct regulator		*vddio_regulator;
- 	struct nfc_digital_dev		*ddev;
- 	u32				quirks;
- 	bool				is_initiator;
-@@ -1883,7 +1884,7 @@ static int trf7970a_power_up(struct trf7970a *trf)
- 	if (trf->state != TRF7970A_ST_PWR_OFF)
- 		return 0;
+--- a/kernel/trace/trace_event_perf.c
++++ b/kernel/trace/trace_event_perf.c
+@@ -400,7 +400,8 @@ void *perf_trace_buf_alloc(int size, str
+ 	BUILD_BUG_ON(PERF_MAX_TRACE_SIZE % sizeof(unsigned long));
  
--	ret = regulator_enable(trf->regulator);
-+	ret = regulator_enable(trf->vin_regulator);
- 	if (ret) {
- 		dev_err(trf->dev, "%s - Can't enable VIN: %d\n", __func__, ret);
- 		return ret;
-@@ -1926,7 +1927,7 @@ static int trf7970a_power_down(struct trf7970a *trf)
- 	if (trf->en2_gpiod && !(trf->quirks & TRF7970A_QUIRK_EN2_MUST_STAY_LOW))
- 		gpiod_set_value_cansleep(trf->en2_gpiod, 0);
+ 	if (WARN_ONCE(size > PERF_MAX_TRACE_SIZE,
+-		      "perf buffer not large enough"))
++		      "perf buffer not large enough, wanted %d, have %d",
++		      size, PERF_MAX_TRACE_SIZE))
+ 		return NULL;
  
--	ret = regulator_disable(trf->regulator);
-+	ret = regulator_disable(trf->vin_regulator);
- 	if (ret)
- 		dev_err(trf->dev, "%s - Can't disable VIN: %d\n", __func__,
- 			ret);
-@@ -2065,37 +2066,37 @@ static int trf7970a_probe(struct spi_device *spi)
- 	mutex_init(&trf->lock);
- 	INIT_DELAYED_WORK(&trf->timeout_work, trf7970a_timeout_work_handler);
- 
--	trf->regulator = devm_regulator_get(&spi->dev, "vin");
--	if (IS_ERR(trf->regulator)) {
--		ret = PTR_ERR(trf->regulator);
-+	trf->vin_regulator = devm_regulator_get(&spi->dev, "vin");
-+	if (IS_ERR(trf->vin_regulator)) {
-+		ret = PTR_ERR(trf->vin_regulator);
- 		dev_err(trf->dev, "Can't get VIN regulator: %d\n", ret);
- 		goto err_destroy_lock;
- 	}
- 
--	ret = regulator_enable(trf->regulator);
-+	ret = regulator_enable(trf->vin_regulator);
- 	if (ret) {
- 		dev_err(trf->dev, "Can't enable VIN: %d\n", ret);
- 		goto err_destroy_lock;
- 	}
- 
--	uvolts = regulator_get_voltage(trf->regulator);
-+	uvolts = regulator_get_voltage(trf->vin_regulator);
- 	if (uvolts > 4000000)
- 		trf->chip_status_ctrl = TRF7970A_CHIP_STATUS_VRS5_3;
- 
--	trf->regulator = devm_regulator_get(&spi->dev, "vdd-io");
--	if (IS_ERR(trf->regulator)) {
--		ret = PTR_ERR(trf->regulator);
-+	trf->vddio_regulator = devm_regulator_get(&spi->dev, "vdd-io");
-+	if (IS_ERR(trf->vddio_regulator)) {
-+		ret = PTR_ERR(trf->vddio_regulator);
- 		dev_err(trf->dev, "Can't get VDD_IO regulator: %d\n", ret);
--		goto err_destroy_lock;
-+		goto err_disable_vin_regulator;
- 	}
- 
--	ret = regulator_enable(trf->regulator);
-+	ret = regulator_enable(trf->vddio_regulator);
- 	if (ret) {
- 		dev_err(trf->dev, "Can't enable VDD_IO: %d\n", ret);
--		goto err_destroy_lock;
-+		goto err_disable_vin_regulator;
- 	}
- 
--	if (regulator_get_voltage(trf->regulator) == 1800000) {
-+	if (regulator_get_voltage(trf->vddio_regulator) == 1800000) {
- 		trf->io_ctrl = TRF7970A_REG_IO_CTRL_IO_LOW;
- 		dev_dbg(trf->dev, "trf7970a config vdd_io to 1.8V\n");
- 	}
-@@ -2108,7 +2109,7 @@ static int trf7970a_probe(struct spi_device *spi)
- 	if (!trf->ddev) {
- 		dev_err(trf->dev, "Can't allocate NFC digital device\n");
- 		ret = -ENOMEM;
--		goto err_disable_regulator;
-+		goto err_disable_vddio_regulator;
- 	}
- 
- 	nfc_digital_set_parent_dev(trf->ddev, trf->dev);
-@@ -2137,8 +2138,10 @@ static int trf7970a_probe(struct spi_device *spi)
- 	trf7970a_shutdown(trf);
- err_free_ddev:
- 	nfc_digital_free_device(trf->ddev);
--err_disable_regulator:
--	regulator_disable(trf->regulator);
-+err_disable_vddio_regulator:
-+	regulator_disable(trf->vddio_regulator);
-+err_disable_vin_regulator:
-+	regulator_disable(trf->vin_regulator);
- err_destroy_lock:
- 	mutex_destroy(&trf->lock);
- 	return ret;
-@@ -2157,7 +2160,8 @@ static int trf7970a_remove(struct spi_device *spi)
- 	nfc_digital_unregister_device(trf->ddev);
- 	nfc_digital_free_device(trf->ddev);
- 
--	regulator_disable(trf->regulator);
-+	regulator_disable(trf->vddio_regulator);
-+	regulator_disable(trf->vin_regulator);
- 
- 	mutex_destroy(&trf->lock);
- 
--- 
-2.43.0
-
+ 	*rctxp = rctx = perf_swevent_get_recursion_context();
 
 
 
