@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F258B7347
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623FD8B7063
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B571B2195C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85A6F1C219D2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6005412CD9B;
-	Tue, 30 Apr 2024 11:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4E512C49E;
+	Tue, 30 Apr 2024 10:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oedqhrAp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MiLPYNB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA271E50A;
-	Tue, 30 Apr 2024 11:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B144E560;
+	Tue, 30 Apr 2024 10:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475836; cv=none; b=JnJyPU4zb2owdqaY4lKxzUhuN7FLaOLDL6nhrW/dqgn+qFIr6V8jFJ4CgsfJRt6ShYNZIro1e6Kmoi5gu5EgP874tN+bkfaAo4HuKaFirlc8xUaZNTGnW+6h4qRGt+ydaZ6sw8hII3E9+Fs+f0hzH4HPOYzDm0uuTfilQLYZRI0=
+	t=1714473916; cv=none; b=q0fNf29acPymcCN+7Z1uCbSARPCmC0gm1JJl7StZ37CWR3PnU8nDJywy9ecfNtP/20BSq85c7w3fYGozQxeNl22g27of9RIEsSVGY6e5jbANV6pulhhuMNKqiSaW1EfYkqv+SgNMfFwXIq7cCQEJkn8tLw3Ew51fgwHUoY8/qv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475836; c=relaxed/simple;
-	bh=J+L5GHvDk54ZPsYbW9yBU0UCi5zae6vAGQqhX/Gye08=;
+	s=arc-20240116; t=1714473916; c=relaxed/simple;
+	bh=9Q1XXABVnzo+8UlPosnyQ61d401f1J06jLzeaFwe/0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gmpki4Pb8137Tiibwt/g6DY4O4Kun/UZud91iczROL1Mn4I3i6O6cejk4BybH+3arPegSxMIWZyovTUmCWBJiKN6jURj6T5dbDsJBubOiBUV7McvG6FAbPQiwVaMuPCPYW7yrJpdR3/Sk/yRBSphJU4rFFvcnGS+OG7oLCTlHB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oedqhrAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F48C2BBFC;
-	Tue, 30 Apr 2024 11:17:15 +0000 (UTC)
+	 MIME-Version; b=u4TFnLEarq2YzJq+cxcivJx2P/Ine2WRE5FDdxQ8DWv8dSj6afHAfvefLc8vE9jZgZ+48YMnkCekA4SrQYo3oxukLiW4Utknbb9ghP4Jkh8oDW1TM8/N2DLx4FecNzACwGh1phgxvvJ90+UBSROnMFVU/dMSFHxdZPbKjrxx63M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MiLPYNB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8752C2BBFC;
+	Tue, 30 Apr 2024 10:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475836;
-	bh=J+L5GHvDk54ZPsYbW9yBU0UCi5zae6vAGQqhX/Gye08=;
+	s=korg; t=1714473916;
+	bh=9Q1XXABVnzo+8UlPosnyQ61d401f1J06jLzeaFwe/0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oedqhrApYs1X49ky+X9TP9cYHy1BT3HUznnIjZWSDZF/sF8w9OOhif5vUqWsSgUJO
-	 dB1wNHtqMGTPbVlpLcYq89f6klA3s5xMMBaHN4VTpFSNqjgsV6bFcn3F4BpNwjpUz3
-	 Xxq6J0u+J9kYOTUslYNknHPDU2EVLZr7CvG6QIEU=
+	b=0MiLPYNB6cwTuz3M9bsRr6B3dmoIt9l8tRqb27sCtwem1nvycCfk48s6gF3Qws26a
+	 lLnGEL9Bzfe+iNkGJXthyRpssFBtilZa2wjRyknknEwSacxJ+oxF3Pfd1dyFImENC5
+	 mY93LptmDtv58l4qYcBmDMJ1OSnCe7iWwHGaiXkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 08/80] arm64: dts: rockchip: Remove unsupported node from the Pinebook Pro dts
+	Nathan Chancellor <nathan@kernel.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 4.19 61/77] Bluetooth: Fix type of len in {l2cap,sco}_sock_getsockopt_old()
 Date: Tue, 30 Apr 2024 12:39:40 +0200
-Message-ID: <20240430103043.654915861@linuxfoundation.org>
+Message-ID: <20240430103042.937903261@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 43853e843aa6c3d47ff2b0cce898318839483d05 ]
+commit 9bf4e919ccad613b3596eebf1ff37b05b6405307 upstream.
 
-Remove a redundant node from the Pine64 Pinebook Pro dts, which is intended
-to provide a value for the delay in PCI Express enumeration, but that isn't
-supported without additional out-of-tree kernel patches.
+After an innocuous optimization change in LLVM main (19.0.0), x86_64
+allmodconfig (which enables CONFIG_KCSAN / -fsanitize=thread) fails to
+build due to the checks in check_copy_size():
 
-There were already efforts to upstream those kernel patches, because they
-reportedly make some PCI Express cards (such as LSI SAS HBAs) usable in
-Pine64 RockPro64 (which is also based on the RK3399);  otherwise, those PCI
-Express cards fail to enumerate.  However, providing the required background
-and explanations proved to be a tough nut to crack, which is the reason why
-those patches remain outside of the kernel mainline for now.
+  In file included from net/bluetooth/sco.c:27:
+  In file included from include/linux/module.h:13:
+  In file included from include/linux/stat.h:19:
+  In file included from include/linux/time.h:60:
+  In file included from include/linux/time32.h:13:
+  In file included from include/linux/timex.h:67:
+  In file included from arch/x86/include/asm/timex.h:6:
+  In file included from arch/x86/include/asm/tsc.h:10:
+  In file included from arch/x86/include/asm/msr.h:15:
+  In file included from include/linux/percpu.h:7:
+  In file included from include/linux/smp.h:118:
+  include/linux/thread_info.h:244:4: error: call to '__bad_copy_from'
+  declared with 'error' attribute: copy source size is too small
+    244 |                         __bad_copy_from();
+        |                         ^
 
-If those out-of-tree patches eventually become upstreamed, the resulting
-device-tree changes will almost surely belong to the RK3399 SoC dtsi.  Also,
-the above-mentioned unusable-without-out-of-tree-patches PCI Express devices
-are in all fairness not usable in a Pinebook Pro without some extensive
-hardware modifications, which is another reason to delete this redundant
-node.  When it comes to the Pinebook Pro, only M.2 NVMe SSDs can be installed
-out of the box (using an additional passive adapter PCB sold separately by
-Pine64), which reportedly works fine with no additional patches.
+The same exact error occurs in l2cap_sock.c. The copy_to_user()
+statements that are failing come from l2cap_sock_getsockopt_old() and
+sco_sock_getsockopt_old(). This does not occur with GCC with or without
+KCSAN or Clang without KCSAN enabled.
 
-Fixes: 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/0f82c3f97cb798d012270d13b34d8d15305ef293.1711923520.git.dsimic@manjaro.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+len is defined as an 'int' because it is assigned from
+'__user int *optlen'. However, it is clamped against the result of
+sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
+platforms). This is done with min_t() because min() requires compatible
+types, which results in both len and the result of sizeof() being casted
+to 'unsigned int', meaning len changes signs and the result of sizeof()
+is truncated. From there, len is passed to copy_to_user(), which has a
+third parameter type of 'unsigned long', so it is widened and changes
+signs again. This excessive casting in combination with the KCSAN
+instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
+call, failing the build.
+
+The official recommendation from LLVM developers is to consistently use
+long types for all size variables to avoid the unnecessary casting in
+the first place. Change the type of len to size_t in both
+l2cap_sock_getsockopt_old() and sco_sock_getsockopt_old(). This clears
+up the error while allowing min_t() to be replaced with min(), resulting
+in simpler code with no casts and fewer implicit conversions. While len
+is a different type than optlen now, it should result in no functional
+change because the result of sizeof() will clamp all values of optlen in
+the same manner as before.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2007
+Link: https://github.com/llvm/llvm-project/issues/85647
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 -
- 1 file changed, 1 deletion(-)
+ net/bluetooth/l2cap_sock.c |    7 ++++---
+ net/bluetooth/sco.c        |    7 ++++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index 9e5d07f5712e6..e5d057ef8160e 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-@@ -790,7 +790,6 @@
- };
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -405,7 +405,8 @@ static int l2cap_sock_getsockopt_old(str
+ 	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
+ 	struct l2cap_options opts;
+ 	struct l2cap_conninfo cinfo;
+-	int len, err = 0;
++	int err = 0;
++	size_t len;
+ 	u32 opt;
  
- &pcie0 {
--	bus-scan-delay-ms = <1000>;
- 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
- 	num-lanes = <4>;
- 	pinctrl-names = "default";
--- 
-2.43.0
-
+ 	BT_DBG("sk %p", sk);
+@@ -436,7 +437,7 @@ static int l2cap_sock_getsockopt_old(str
+ 		opts.max_tx   = chan->max_tx;
+ 		opts.txwin_size = chan->tx_win;
+ 
+-		len = min_t(unsigned int, len, sizeof(opts));
++		len = min(len, sizeof(opts));
+ 		if (copy_to_user(optval, (char *) &opts, len))
+ 			err = -EFAULT;
+ 
+@@ -486,7 +487,7 @@ static int l2cap_sock_getsockopt_old(str
+ 		cinfo.hci_handle = chan->conn->hcon->handle;
+ 		memcpy(cinfo.dev_class, chan->conn->hcon->dev_class, 3);
+ 
+-		len = min_t(unsigned int, len, sizeof(cinfo));
++		len = min(len, sizeof(cinfo));
+ 		if (copy_to_user(optval, (char *) &cinfo, len))
+ 			err = -EFAULT;
+ 
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -880,7 +880,8 @@ static int sco_sock_getsockopt_old(struc
+ 	struct sock *sk = sock->sk;
+ 	struct sco_options opts;
+ 	struct sco_conninfo cinfo;
+-	int len, err = 0;
++	int err = 0;
++	size_t len;
+ 
+ 	BT_DBG("sk %p", sk);
+ 
+@@ -902,7 +903,7 @@ static int sco_sock_getsockopt_old(struc
+ 
+ 		BT_DBG("mtu %d", opts.mtu);
+ 
+-		len = min_t(unsigned int, len, sizeof(opts));
++		len = min(len, sizeof(opts));
+ 		if (copy_to_user(optval, (char *)&opts, len))
+ 			err = -EFAULT;
+ 
+@@ -920,7 +921,7 @@ static int sco_sock_getsockopt_old(struc
+ 		cinfo.hci_handle = sco_pi(sk)->conn->hcon->handle;
+ 		memcpy(cinfo.dev_class, sco_pi(sk)->conn->hcon->dev_class, 3);
+ 
+-		len = min_t(unsigned int, len, sizeof(cinfo));
++		len = min(len, sizeof(cinfo));
+ 		if (copy_to_user(optval, (char *)&cinfo, len))
+ 			err = -EFAULT;
+ 
 
 
 
