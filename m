@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FE78B7359
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DD98B73C2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72DF91C22ECC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E41761F2204A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FE612CD9B;
-	Tue, 30 Apr 2024 11:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B82E12CDAE;
+	Tue, 30 Apr 2024 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhrpfUw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYuZtwRs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C9C8801;
-	Tue, 30 Apr 2024 11:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277698801;
+	Tue, 30 Apr 2024 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475877; cv=none; b=ALO67O2UnIzLOCnDAcwkHhPSSU68H5T3E7GXxXYRDBExgDg+BZM4PSM9wBQ8sHTj1Yk6+gxXNjYzpBZtDA8DvEs22LX+UhKK/0hHqhltn3eoVBjA3n8Uc7oACLbVy96qjpm1OaJvylLL7T64tUfjxfYHKdFL7aOPIDZ//ZhFsxE=
+	t=1714476178; cv=none; b=Tkda+Usw89UYNSqz+juKWO/WC0ObEGC5Z650KFLSisZigUCewbyTETK3um+aAYLBGgt1YTFtPsZvDLsckHbXDPHafYSGw4qhKj7uX0M2y/DWfsGUm3LMcBq0Bc47xwzZH0EtZMsj56yTyCO8v4J3SklnARdU8aq/acT7LYGpYfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475877; c=relaxed/simple;
-	bh=aDn7CEskH/niRsIE2UFHLSrHzLbEkc4iWCmQhLP9LCs=;
+	s=arc-20240116; t=1714476178; c=relaxed/simple;
+	bh=HQtWXZKDhKpeaOhwBsEjlE4udQcM2FqWASGVZIJc1XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aPRZN8Ab61/t9jQs8SoOCgYlkfgZbEGtXa3EXDJfwlkUZ4UVLRM3LaPZtDrgE2nyhRtoXf4F/XlrkKA89LsOryHc1i1t9TIGTUcoN1n/RU6fXnZz86QQfadcW4GzOpJWnNnZ+onz3XnNBS79+wKfwUE/qbykCn6BfIJklGFyOdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhrpfUw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF9EC2BBFC;
-	Tue, 30 Apr 2024 11:17:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=etojpzrT/fe0C1jNhh+arjdjuCTi+I1hjUA2VZl7yWVGm5V78YTOVxYjH4qkIdKilCjwYKc/AgsX7c0BsdQ8mO6lyHI/N29o9ETs8H0PlhYleNdLI/R1vnnHqrdjjIt05DYnRKUi48CKSsy88xAXNoXH91St5tF5luD8XU53how=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYuZtwRs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F534C2BBFC;
+	Tue, 30 Apr 2024 11:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475877;
-	bh=aDn7CEskH/niRsIE2UFHLSrHzLbEkc4iWCmQhLP9LCs=;
+	s=korg; t=1714476178;
+	bh=HQtWXZKDhKpeaOhwBsEjlE4udQcM2FqWASGVZIJc1XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhrpfUw9YwZ2wId4v7DoRhaLODHftZl0Dt6pj4Rwk5FOYmwJuLC4whXQdK6B7WPnE
-	 TIsUF3uLs8ttC2oaTMKPC6n4Py836gObKyiPHGVpGDMhxyCgcXcoO7nNqXgUyRQtzS
-	 r6a2D6EImT/YQvUzlBbwQc5KunWV0m9lj8ntwPew=
+	b=HYuZtwRs69x/JFo2KidcvqY9NNmZIM1kRuCmePlxF5w9fAcCAWgZ8bIAAi2Q3s5Yc
+	 Q66IQdm14RtKzIkDOzXpbcPZrAtciIH9gd7DruFBm7iyiLfM8Q3UyiZ1tfHzHjV9x4
+	 GQV2ZNu/P9dxDNUWQnHOoqNxt1t9pHxtdETIWsRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Cromie <jim.cromie@gmail.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 46/80] drm-print: add drm_dbg_driver to improve namespace symmetry
-Date: Tue, 30 Apr 2024 12:40:18 +0200
-Message-ID: <20240430103044.779441109@linuxfoundation.org>
+Subject: [PATCH 5.4 059/107] arm64: dts: mediatek: mt2712: fix validation errors
+Date: Tue, 30 Apr 2024 12:40:19 +0200
+Message-ID: <20240430103046.398674854@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Cromie <jim.cromie@gmail.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 95a77b6331c2d2313aa843fa77ec91cd092ab0e4 ]
+[ Upstream commit 3baac7291effb501c4d52df7019ebf52011e5772 ]
 
-drm_print defines all of these:
-    drm_dbg_{core,kms,prime,atomic,vbl,lease,_dp,_drmres}
+1. Fixup infracfg clock controller binding
+   It also acts as reset controller so #reset-cells is required.
+2. Use -pins suffix for pinctrl
 
-but not drm_dbg_driver itself, since it was the original drm_dbg.
+This fixes:
+arch/arm64/boot/dts/mediatek/mt2712-evb.dtb: syscon@10001000: '#reset-cells' is a required property
+        from schema $id: http://devicetree.org/schemas/arm/mediatek/mediatek,infracfg.yaml#
+arch/arm64/boot/dts/mediatek/mt2712-evb.dtb: pinctrl@1000b000: 'eth_default', 'eth_sleep', 'usb0_iddig', 'usb1_iddig' do not match any of the regexes: 'pinctrl-[0-9]+', 'pins$'
+        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt65xx-pinctrl.yaml#
 
-To improve namespace symmetry, change the drm_dbg defn to
-drm_dbg_driver, and redef grandfathered name to symmetric one.
-
-This will help with nouveau, which uses its own stack of macros to
-construct calls to dev_info, dev_dbg, etc, for which adaptation means
-drm_dbg_##driver constructs.
-
-Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
-Link: https://lore.kernel.org/r/20220912052852.1123868-7-jim.cromie@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: a60ccade88f9 ("drm/vmwgfx: Fix crtc's atomic check conditional")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240301074741.8362-1-zajec5@gmail.com
+[Angelo: Added Fixes tags]
+Fixes: 5d4839709c8e ("arm64: dts: mt2712: Add clock controller device nodes")
+Fixes: 1724f4cc5133 ("arm64: dts: Add USB3 related nodes for MT2712")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_print.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt2712-evb.dts | 8 ++++----
+ arch/arm64/boot/dts/mediatek/mt2712e.dtsi   | 3 ++-
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/include/drm/drm_print.h b/include/drm/drm_print.h
-index 15a089a87c225..f7ece14b10227 100644
---- a/include/drm/drm_print.h
-+++ b/include/drm/drm_print.h
-@@ -444,7 +444,7 @@ void drm_dev_dbg(const struct device *dev, enum drm_debug_category category,
+diff --git a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
+index 9d20cabf4f699..99515c13da3cf 100644
+--- a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
+@@ -127,7 +127,7 @@
+ };
  
- #define drm_dbg_core(drm, fmt, ...)					\
- 	drm_dev_dbg((drm) ? (drm)->dev : NULL, DRM_UT_CORE, fmt, ##__VA_ARGS__)
--#define drm_dbg(drm, fmt, ...)						\
-+#define drm_dbg_driver(drm, fmt, ...)						\
- 	drm_dev_dbg((drm) ? (drm)->dev : NULL, DRM_UT_DRIVER, fmt, ##__VA_ARGS__)
- #define drm_dbg_kms(drm, fmt, ...)					\
- 	drm_dev_dbg((drm) ? (drm)->dev : NULL, DRM_UT_KMS, fmt, ##__VA_ARGS__)
-@@ -463,6 +463,7 @@ void drm_dev_dbg(const struct device *dev, enum drm_debug_category category,
- #define drm_dbg_drmres(drm, fmt, ...)					\
- 	drm_dev_dbg((drm) ? (drm)->dev : NULL, DRM_UT_DRMRES, fmt, ##__VA_ARGS__)
+ &pio {
+-	eth_default: eth_default {
++	eth_default: eth-default-pins {
+ 		tx_pins {
+ 			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GBE_TXD3>,
+ 				 <MT2712_PIN_72_GBE_TXD2__FUNC_GBE_TXD2>,
+@@ -154,7 +154,7 @@
+ 		};
+ 	};
  
-+#define drm_dbg(drm, fmt, ...)	drm_dbg_driver(drm, fmt, ##__VA_ARGS__)
+-	eth_sleep: eth_sleep {
++	eth_sleep: eth-sleep-pins {
+ 		tx_pins {
+ 			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GPIO71>,
+ 				 <MT2712_PIN_72_GBE_TXD2__FUNC_GPIO72>,
+@@ -180,14 +180,14 @@
+ 		};
+ 	};
  
- /*
-  * printk based logging
+-	usb0_id_pins_float: usb0_iddig {
++	usb0_id_pins_float: usb0-iddig-pins {
+ 		pins_iddig {
+ 			pinmux = <MT2712_PIN_12_IDDIG_P0__FUNC_IDDIG_A>;
+ 			bias-pull-up;
+ 		};
+ 	};
+ 
+-	usb1_id_pins_float: usb1_iddig {
++	usb1_id_pins_float: usb1-iddig-pins {
+ 		pins_iddig {
+ 			pinmux = <MT2712_PIN_14_IDDIG_P1__FUNC_IDDIG_B>;
+ 			bias-pull-up;
+diff --git a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
+index 4de82e91649f9..2c20a1be0699d 100644
+--- a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
+@@ -249,10 +249,11 @@
+ 		#clock-cells = <1>;
+ 	};
+ 
+-	infracfg: syscon@10001000 {
++	infracfg: clock-controller@10001000 {
+ 		compatible = "mediatek,mt2712-infracfg", "syscon";
+ 		reg = <0 0x10001000 0 0x1000>;
+ 		#clock-cells = <1>;
++		#reset-cells = <1>;
+ 	};
+ 
+ 	pericfg: syscon@10003000 {
 -- 
 2.43.0
 
