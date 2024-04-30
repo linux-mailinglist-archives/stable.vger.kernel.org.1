@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFF38B7409
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CBB8B7167
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 953261F23F83
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D3E31F2399E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F92412D210;
-	Tue, 30 Apr 2024 11:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B0612C47A;
+	Tue, 30 Apr 2024 10:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDz9nEIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/oZonSl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C7B17592;
-	Tue, 30 Apr 2024 11:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739D112C487;
+	Tue, 30 Apr 2024 10:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476378; cv=none; b=Ard/6O8UWJSx6g2AWUdIj1EYNGiaN4NNThU1eN0u8DxwCB19CrHIYLCe9r5UqK2Im4A+arUHYt7mxfc8lt2MI8NAu832W3CgIQk50nLNxR3AeciEa//rD97nWfMarfnXrYV6fi+s9OcLG052+1rkcVRY6GuI4Vvze2t8qZ+2k18=
+	t=1714474570; cv=none; b=jHlPXSJuYluhIRrF09e7ujR7nyXYDVBILABQBPlSbAZbJ0Oww/brJ9HZ/udmQo0MHW5wbBwT/6p9iIzkHE4S2ILUiY+2NB2Y0lMH9bF+VodxyXtj3YCWGI3X0ErsPp3m0bXWZ9k2otpHMl32AhuzJiI+nL78PjcY8pplLko+BJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476378; c=relaxed/simple;
-	bh=dnIya9NE5YszuhsOyMbm7q8UZW9RX608jVYPSiKAQig=;
+	s=arc-20240116; t=1714474570; c=relaxed/simple;
+	bh=EjtyEZjcgtRdQtVIeiNiAQ3VTB+ccRqFIHlQSmxnWM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r87OTx6cocYSRq1Ex7LC+v5pPw34Q0LeQ8Ph8120KBz2tTdFUjIw4uWJOseJHUzyaSREU3dp/IKcS0h54dT9OKwM/0aQaijodZteC+rSjYoVEOqZo7ZBGn3+Y48IMpnh1FGZUM4pxYFuPS5SaUXEqVx7f2ycTWTEhtPvay8+P2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDz9nEIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0158DC2BBFC;
-	Tue, 30 Apr 2024 11:26:16 +0000 (UTC)
+	 MIME-Version; b=X3KeVhF/e39IiUAc0XNZfYGfnmLc4KIz2iuAxdm1pWWBQfCvFBQ8GV+WShCHJdVORgWgKOQzcoaTMzYqtUTOCUL5tcGfI6LG1nYNiBcTXXQqA+z9OtdbxEabP+Gfo/mo6t9JviQQLEgWMRf31Lsiqvn45SqOX4juHzFCkgIgKrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/oZonSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B9EC2BBFC;
+	Tue, 30 Apr 2024 10:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476377;
-	bh=dnIya9NE5YszuhsOyMbm7q8UZW9RX608jVYPSiKAQig=;
+	s=korg; t=1714474570;
+	bh=EjtyEZjcgtRdQtVIeiNiAQ3VTB+ccRqFIHlQSmxnWM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDz9nEIfXEzgDyenRziM6V0RBCGAy6547afZyvvbRfmg7ozGPg94GEe8MmPh6oSLB
-	 Y0rHbBspQPrREdgbtR52AGD8V+a9VOVMsKdABvmU2t9P9q0pqQj2PtukiTcQrQO4I9
-	 qliey1ES2abUyXmkzEjkv24taGmn1Z9p7SRk7vcQ=
+	b=C/oZonSlG274iHL1Jrj8Ni0u7vbPassK0qCGowtTnLz0TiL0LE2nW1HgPF67vPqJ5
+	 +2zQUGu1MRbMWGh9KoVNCo5I1TLXhDh3kmWHkVERFWXE0CWaurjb2br6cH5BqFEaLF
+	 Z02G6hGDZ/6fgabueK32fnNaEGiiArK9pPUUBEbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/110] arm64: dts: rockchip: enable internal pull-up on Q7_USB_ID for RK3399 Puma
+	Douglas Anderson <dianders@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.8 197/228] phy: qcom: qmp-combo: Fix VCO div offset on v3
 Date: Tue, 30 Apr 2024 12:39:35 +0200
-Message-ID: <20240430103047.756623677@linuxfoundation.org>
+Message-ID: <20240430103109.485781279@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit e6b1168f37e3f86d9966276c5a3fff9eb0df3e5f ]
+commit 5abed58a8bde6d349bde364a160510b5bb904d18 upstream.
 
-The Q7_USB_ID has a diode used as a level-shifter, and is used as an
-input pin. The SoC default for this pin is a pull-up, which is correct
-but the pinconf in the introducing commit missed that, so let's fix this
-oversight.
+Commit ec17373aebd0 ("phy: qcom: qmp-combo: extract common function to
+setup clocks") changed the offset that is used to write to
+DP_PHY_VCO_DIV from QSERDES_V3_DP_PHY_VCO_DIV to
+QSERDES_V4_DP_PHY_VCO_DIV. Unfortunately, this offset is different
+between v3 and v4 phys:
 
-Fixes: ed2c66a95c0c ("arm64: dts: rockchip: fix rk3399-puma-haikou USB OTG mode")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-1-309f83da110a@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ #define QSERDES_V3_DP_PHY_VCO_DIV                 0x064
+ #define QSERDES_V4_DP_PHY_VCO_DIV                 0x070
+
+meaning that we write the wrong register on v3 phys now. Add another
+generic register to 'regs' and use it here instead of a version specific
+define to fix this.
+
+This was discovered after Abhinav looked over register dumps with me
+from sc7180 Trogdor devices that started failing to light up the
+external display with v6.6 based kernels. It turns out that some
+monitors are very specific about their link clk frequency and if the
+default power on reset value is still there the monitor will show a
+blank screen or a garbled display. Other monitors are perfectly happy to
+get a bad clock signal.
+
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: ec17373aebd0 ("phy: qcom: qmp-combo: extract common function to setup clocks")
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240404234345.1446300-1-swboyd@chromium.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-combo.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index aa3e21bd6c8f4..fee2cc035613c 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -443,7 +443,7 @@
- 	usb3 {
- 		usb3_id: usb3-id {
- 			rockchip,pins =
--			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
-+			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_up>;
- 		};
- 	};
- };
--- 
-2.43.0
-
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+@@ -112,6 +112,7 @@ enum qphy_reg_layout {
+ 	QPHY_COM_BIAS_EN_CLKBUFLR_EN,
+ 
+ 	QPHY_DP_PHY_STATUS,
++	QPHY_DP_PHY_VCO_DIV,
+ 
+ 	QPHY_TX_TX_POL_INV,
+ 	QPHY_TX_TX_DRV_LVL,
+@@ -137,6 +138,7 @@ static const unsigned int qmp_v3_usb3phy
+ 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V3_COM_BIAS_EN_CLKBUFLR_EN,
+ 
+ 	[QPHY_DP_PHY_STATUS]		= QSERDES_V3_DP_PHY_STATUS,
++	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V3_DP_PHY_VCO_DIV,
+ 
+ 	[QPHY_TX_TX_POL_INV]		= QSERDES_V3_TX_TX_POL_INV,
+ 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V3_TX_TX_DRV_LVL,
+@@ -161,6 +163,7 @@ static const unsigned int qmp_v45_usb3ph
+ 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V4_COM_BIAS_EN_CLKBUFLR_EN,
+ 
+ 	[QPHY_DP_PHY_STATUS]		= QSERDES_V4_DP_PHY_STATUS,
++	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V4_DP_PHY_VCO_DIV,
+ 
+ 	[QPHY_TX_TX_POL_INV]		= QSERDES_V4_TX_TX_POL_INV,
+ 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V4_TX_TX_DRV_LVL,
+@@ -2223,6 +2226,7 @@ static int qmp_combo_configure_dp_clocks
+ 	const struct phy_configure_opts_dp *dp_opts = &qmp->dp_opts;
+ 	u32 phy_vco_div;
+ 	unsigned long pixel_freq;
++	const struct qmp_phy_cfg *cfg = qmp->cfg;
+ 
+ 	switch (dp_opts->link_rate) {
+ 	case 1620:
+@@ -2245,7 +2249,7 @@ static int qmp_combo_configure_dp_clocks
+ 		/* Other link rates aren't supported */
+ 		return -EINVAL;
+ 	}
+-	writel(phy_vco_div, qmp->dp_dp_phy + QSERDES_V4_DP_PHY_VCO_DIV);
++	writel(phy_vco_div, qmp->dp_dp_phy + cfg->regs[QPHY_DP_PHY_VCO_DIV]);
+ 
+ 	clk_set_rate(qmp->dp_link_hw.clk, dp_opts->link_rate * 100000);
+ 	clk_set_rate(qmp->dp_pixel_hw.clk, pixel_freq);
 
 
 
