@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E678B7182
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAA08B73A5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB3C11F21C5E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 262D8B21A5E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFFA12C499;
-	Tue, 30 Apr 2024 10:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FA112D1FD;
+	Tue, 30 Apr 2024 11:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4ub7JCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5YsSfCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B10A12C487;
-	Tue, 30 Apr 2024 10:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3800812CD9B;
+	Tue, 30 Apr 2024 11:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474638; cv=none; b=YOhHanApM+H3yIKThV4mm6RNNk+TxhgKurO1iFr1iDaDScJxDVRnWhZJv/rGbi88IzsWW39N+F5RzTQL6zQBqP+Eao0KHIQXbXgEVlW7Pri/sr825asnqggneYYCI4cMbSsAbhT+GD9MpDKVMchP1ov7Pu4K7jUojjDDTUEQqLQ=
+	t=1714476104; cv=none; b=q9L1dQ3MZV6c9mbNHUYAtIQHmVqlmuyeBWS30neKguyVFkt4FMD6645CaD2uUUOOhAdEyqpYLxw7RVODGic0DQfeWf232+0e/IcEAWsyuCXVtU4Jc1b9lYFvTkr78yCwt9qZivCZmaJWSiOG0zqp9J93y5cwyFTKOLMgGKOQb5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474638; c=relaxed/simple;
-	bh=x5Jl3xLbesGWvOpBXk1EQLYwpIi10keyqcWo2LhEjcg=;
+	s=arc-20240116; t=1714476104; c=relaxed/simple;
+	bh=FrCVIzmXmNWq9KY40yo3A1gHDkRZXFdY6F59MbQ9mWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucb0FEmvkzO3ruhyPXDN/yiVY++n+0HVoGqbtlYbjOXezblDqcdi074QUwxR4p3ZtckLTj/H+XKavNBfuLMBxf11nMVO3vN43WXK0UX+kD/k0WifMeDsrrKv6e9e3+HVXvjs/i6O7vpBXQw+TbfB7LdUCL8gWiunvpdi+ekUq80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4ub7JCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1565CC2BBFC;
-	Tue, 30 Apr 2024 10:57:17 +0000 (UTC)
+	 MIME-Version; b=AXkyXSLkbFwW/89vHgsTJltVZN0jlIQGr4ykCn4FghGjRlRG6icqi7Yune8M2Cr05WX/roOp12PjodYI+EaaH+0PyvtFVsPs0gThOTUeIJVC8Q3X0ywk/2BS/GbVhZZumj7f6WUjGa2TsQjsLDYFtFym4k9orAcW/uacnNxQj1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5YsSfCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83C9C2BBFC;
+	Tue, 30 Apr 2024 11:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474638;
-	bh=x5Jl3xLbesGWvOpBXk1EQLYwpIi10keyqcWo2LhEjcg=;
+	s=korg; t=1714476104;
+	bh=FrCVIzmXmNWq9KY40yo3A1gHDkRZXFdY6F59MbQ9mWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4ub7JCWS7bU6bJbzEF4l/kMyE9jjEEHePbEh0cmQ+jjdrfv+8PGSjR6RURObOdvZ
-	 nVvBoxy3IN4peGZ0uYWRA+BJvBuGIpOj0LiCfaMrVIpAIhdnVIcjL9R0z3aG1ZfjET
-	 qSw3rYX6g1DVlP3hNT0vvPmdkyPCBxXJzF84x7ZI=
+	b=E5YsSfCumR0Oyrp+qK4oj0wqyvtTi2bHP4CC20EzRnu2aYYOJv47niVxQ4PedG3LO
+	 DDWNwQDixLvHF6/4kTejxOvqztvrB9DxGOUs8CPQes+SQZEsz42NhneE6YCIMzJMZl
+	 LMJsEEMi3UuIy1lK7AHt4hhbjn/8SDXdBmMUmyVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 216/228] phy: ti: tusb1210: Resolve charger-det crash if charger psy is unregistered
+Subject: [PATCH 5.4 034/107] x86/cpufeatures: Fix dependencies for GFNI, VAES, and VPCLMULQDQ
 Date: Tue, 30 Apr 2024 12:39:54 +0200
-Message-ID: <20240430103110.038218517@linuxfoundation.org>
+Message-ID: <20240430103045.667964700@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit bf6e4ee5c43690e4c5a8a057bbcd4ff986bed052 ]
+[ Upstream commit 9543f6e26634537997b6e909c20911b7bf4876de ]
 
-The power_supply frame-work is not really designed for there to be
-long living in kernel references to power_supply devices.
+Fix cpuid_deps[] to list the correct dependencies for GFNI, VAES, and
+VPCLMULQDQ.  These features don't depend on AVX512, and there exist CPUs
+that support these features but not AVX512.  GFNI actually doesn't even
+depend on AVX.
 
-Specifically unregistering a power_supply while some other code has
-a reference to it triggers a WARN in power_supply_unregister():
+This prevents GFNI from being unnecessarily disabled if AVX is disabled
+to mitigate the GDS vulnerability.
 
-	WARN_ON(atomic_dec_return(&psy->use_cnt));
+This also prevents all three features from being unnecessarily disabled
+if AVX512VL (or its dependency AVX512F) were to be disabled, but it
+looks like there isn't any case where this happens anyway.
 
-Folllowed by the power_supply still getting removed and the
-backing data freed anyway, leaving the tusb1210 charger-detect code
-with a dangling reference, resulting in a crash the next time
-tusb1210_get_online() is called.
-
-Fix this by only holding the reference in tusb1210_get_online()
-freeing it at the end of the function. Note this still leaves
-a theoretical race window, but it avoids the issue when manually
-rmmod-ing the charger chip driver during development.
-
-Fixes: 48969a5623ed ("phy: ti: tusb1210: Add charger detection")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240406140821.18624-1-hdegoede@redhat.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: c128dbfa0f87 ("x86/cpufeatures: Enable new SSE/AVX/AVX512 CPU features")
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240417060434.47101-1-ebiggers@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/ti/phy-tusb1210.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ arch/x86/kernel/cpu/cpuid-deps.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/ti/phy-tusb1210.c b/drivers/phy/ti/phy-tusb1210.c
-index b4881cb344759..c23eecc7d1800 100644
---- a/drivers/phy/ti/phy-tusb1210.c
-+++ b/drivers/phy/ti/phy-tusb1210.c
-@@ -65,7 +65,6 @@ struct tusb1210 {
- 	struct delayed_work chg_det_work;
- 	struct notifier_block psy_nb;
- 	struct power_supply *psy;
--	struct power_supply *charger;
- #endif
- };
- 
-@@ -231,19 +230,24 @@ static const char * const tusb1210_chargers[] = {
- 
- static bool tusb1210_get_online(struct tusb1210 *tusb)
- {
-+	struct power_supply *charger = NULL;
- 	union power_supply_propval val;
--	int i;
-+	bool online = false;
-+	int i, ret;
- 
--	for (i = 0; i < ARRAY_SIZE(tusb1210_chargers) && !tusb->charger; i++)
--		tusb->charger = power_supply_get_by_name(tusb1210_chargers[i]);
-+	for (i = 0; i < ARRAY_SIZE(tusb1210_chargers) && !charger; i++)
-+		charger = power_supply_get_by_name(tusb1210_chargers[i]);
- 
--	if (!tusb->charger)
-+	if (!charger)
- 		return false;
- 
--	if (power_supply_get_property(tusb->charger, POWER_SUPPLY_PROP_ONLINE, &val))
--		return false;
-+	ret = power_supply_get_property(charger, POWER_SUPPLY_PROP_ONLINE, &val);
-+	if (ret == 0)
-+		online = val.intval;
-+
-+	power_supply_put(charger);
- 
--	return val.intval;
-+	return online;
- }
- 
- static void tusb1210_chg_det_work(struct work_struct *work)
-@@ -467,9 +471,6 @@ static void tusb1210_remove_charger_detect(struct tusb1210 *tusb)
- 		cancel_delayed_work_sync(&tusb->chg_det_work);
- 		power_supply_unregister(tusb->psy);
- 	}
--
--	if (tusb->charger)
--		power_supply_put(tusb->charger);
- }
- #else
- static void tusb1210_probe_charger_detect(struct tusb1210 *tusb) { }
+diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+index 3cbe24ca80abd..f50d4422c7b5b 100644
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -44,7 +44,10 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_F16C,			X86_FEATURE_XMM2,     },
+ 	{ X86_FEATURE_AES,			X86_FEATURE_XMM2      },
+ 	{ X86_FEATURE_SHA_NI,			X86_FEATURE_XMM2      },
++	{ X86_FEATURE_GFNI,			X86_FEATURE_XMM2      },
+ 	{ X86_FEATURE_FMA,			X86_FEATURE_AVX       },
++	{ X86_FEATURE_VAES,			X86_FEATURE_AVX       },
++	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX       },
+ 	{ X86_FEATURE_AVX2,			X86_FEATURE_AVX,      },
+ 	{ X86_FEATURE_AVX512F,			X86_FEATURE_AVX,      },
+ 	{ X86_FEATURE_AVX512IFMA,		X86_FEATURE_AVX512F   },
+@@ -56,9 +59,6 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_AVX512VL,			X86_FEATURE_AVX512F   },
+ 	{ X86_FEATURE_AVX512VBMI,		X86_FEATURE_AVX512F   },
+ 	{ X86_FEATURE_AVX512_VBMI2,		X86_FEATURE_AVX512VL  },
+-	{ X86_FEATURE_GFNI,			X86_FEATURE_AVX512VL  },
+-	{ X86_FEATURE_VAES,			X86_FEATURE_AVX512VL  },
+-	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_VNNI,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_BITALG,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_4VNNIW,		X86_FEATURE_AVX512F   },
 -- 
 2.43.0
 
