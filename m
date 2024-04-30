@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6848B7311
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E218B7362
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E07E41C231EC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA84B1C22971
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403B312D746;
-	Tue, 30 Apr 2024 11:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B1612CD9B;
+	Tue, 30 Apr 2024 11:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBrD+2xb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyn/Y8dE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0B012D1F1;
-	Tue, 30 Apr 2024 11:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7567E8801;
+	Tue, 30 Apr 2024 11:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475689; cv=none; b=OpBc+VLnJ5rHcxf4EvhgvvKKIuMKc8T0xO3uvTUM+ci+UJ4lbmSDrXyvBiQk1CJUwLt29FbQ3HXpg4b1ZItlopWpJwzEDhJjVjhxkCwhWIj34CZcighzaPaLSjJnfyiOUZ0+IHgC56Y7zjL1BVSYeekE5NLZP51KoDWcoOKMObM=
+	t=1714475905; cv=none; b=VHnsn2qNw/LPR/w9Oqy7/tUXDTCybcKcjYkSvsCEf7jxKbpUlfumXn9yqTWbdhgOU8MaORpvLiBlr5bA5U3THHeFgRQD31lgodpOMB/MlwGyFqMbikNgJNcqsoe7HglAbiwhRSnQy8dkPdQMxnvXIaxFXaWOnD9qPGNQG1LGiPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475689; c=relaxed/simple;
-	bh=WO1uyREcCV9ds+3P7pVWcznnHwJjePuGlLKlR8QifxI=;
+	s=arc-20240116; t=1714475905; c=relaxed/simple;
+	bh=rHZOIYyRXr4thRAWk62yzd2jv7XOUeDrmxUyx+azThE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKMmnHC6xRrQ+V2e3so1/OXNPd8DrO2nPwh8Tps3QBKQ+AF5Ij6HuW4JLAsgxX1zgdxJmj521i+WityBz8/JHQPy/84ZZFc49uhY0301czyyh1h1xKjEZmEA+mCB//MNISozHlbZinwmKvYXx8SIkN7YX3JbV4RelWb1Xy6n3OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBrD+2xb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3596DC2BBFC;
-	Tue, 30 Apr 2024 11:14:48 +0000 (UTC)
+	 MIME-Version; b=F9hnKZptQJ6GVg5EUfGoINZUJRiE5hNHObjCxI1xgtLwmH0SY8p4EUktEUG/q5ME74WfSDDoW59Q5YiRjojkDjx/5rCO5mTLm6Dw9L4IFk1OkgIWQsW5Z0AY3gsYEfPiMvvc36iseYT0MI1aPP6EiLF7X5sr/iED2CUGBXIBhx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyn/Y8dE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE71CC2BBFC;
+	Tue, 30 Apr 2024 11:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475688;
-	bh=WO1uyREcCV9ds+3P7pVWcznnHwJjePuGlLKlR8QifxI=;
+	s=korg; t=1714475905;
+	bh=rHZOIYyRXr4thRAWk62yzd2jv7XOUeDrmxUyx+azThE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBrD+2xbNDYGmhp189uQ3SlliPP8qKp6CtuJWdwIrLUyigAMshx5sGxdc87VDJ+fk
-	 KBbeMBTWnUfP+M9WVKF5qE/CSPJPA/7GrtHw2+iaax35WbhwSnuyVg+MkuD77Io/Um
-	 HkLati6lAGTHWNc9+3/1iPyl7DrbQEjOLj4njMYM=
+	b=kyn/Y8dEzXGgHtjts/f9agkCie7gDDQu9MMRhDNDb6QHpMmHQbMTvvAoYPDNsCj43
+	 b0qw/7eLGWkxkLaF6nM0YTsX0EOVz1KtnMcmZ5UKTZWKM64LU22bP7K84szJuM2ZfB
+	 m3bJx5WgZBJWmUvsXgNEyL1aqxl6nUJgJaZVcOVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/186] riscv: Fix loading 64-bit NOMMU kernels past the start of RAM
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	WangYuli <wangyuli@uniontech.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 54/80] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x0bda:0x4853
 Date: Tue, 30 Apr 2024 12:40:26 +0200
-Message-ID: <20240430103103.082778934@linuxfoundation.org>
+Message-ID: <20240430103045.012399647@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit aea702dde7e9876fb00571a2602f25130847bf0f ]
+commit d1a5a7eede2977da3d2002d5ea3b519019cc1a98 upstream.
 
-commit 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear
-mapping") added logic to allow using RAM below the kernel load address.
-However, this does not work for NOMMU, where PAGE_OFFSET is fixed to the
-kernel load address. Since that range of memory corresponds to PFNs
-below ARCH_PFN_OFFSET, mm initialization runs off the beginning of
-mem_map and corrupts adjacent kernel memory. Fix this by restoring the
-previous behavior for NOMMU kernels.
+Add the support ID(0x0bda, 0x4853) to usb_device_id table for
+Realtek RTL8852BE.
 
-Fixes: 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear mapping")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20240227003630.3634533-3-samuel.holland@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without this change the device utilizes an obsolete version of
+the firmware that is encoded in it rather than the updated Realtek
+firmware and config files from the firmware directory. The latter
+files implement many new features.
+
+The device table is as follows:
+
+T: Bus=03 Lev=01 Prnt=01 Port=09 Cnt=03 Dev#= 4 Spd=12 MxCh= 0
+D: Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs= 1
+P: Vendor=0bda ProdID=4853 Rev= 0.00
+S: Manufacturer=Realtek
+S: Product=Bluetooth Radio
+S: SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
+E: Ad=02(O) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/page.h | 2 +-
- arch/riscv/mm/init.c          | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/riscv/include/asm/page.h b/arch/riscv/include/asm/page.h
-index 57e887bfa34cb..94b3d6930fc37 100644
---- a/arch/riscv/include/asm/page.h
-+++ b/arch/riscv/include/asm/page.h
-@@ -89,7 +89,7 @@ typedef struct page *pgtable_t;
- #define PTE_FMT "%08lx"
- #endif
- 
--#ifdef CONFIG_64BIT
-+#if defined(CONFIG_64BIT) && defined(CONFIG_MMU)
- /*
-  * We override this value as its generic definition uses __pa too early in
-  * the boot process (before kernel_map.va_pa_offset is set).
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index b50faa232b5e9..ec02ea86aa39f 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -230,7 +230,7 @@ static void __init setup_bootmem(void)
- 	 * In 64-bit, any use of __va/__pa before this point is wrong as we
- 	 * did not know the start of DRAM before.
- 	 */
--	if (IS_ENABLED(CONFIG_64BIT))
-+	if (IS_ENABLED(CONFIG_64BIT) && IS_ENABLED(CONFIG_MMU))
- 		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
- 
- 	/*
--- 
-2.43.0
-
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -439,6 +439,8 @@ static const struct usb_device_id blackl
+ 	/* Realtek 8852BE Bluetooth devices */
+ 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0bda, 0x4853), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
 
 
 
