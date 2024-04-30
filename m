@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-42254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1998B721C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336998B72F6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B591285B5C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D6AD1C22742
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298D112C530;
-	Tue, 30 Apr 2024 11:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA3512CDA5;
+	Tue, 30 Apr 2024 11:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlGt5a/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSSpx+Ny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD2F12C462;
-	Tue, 30 Apr 2024 11:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E2C211C;
+	Tue, 30 Apr 2024 11:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475066; cv=none; b=gw03/QpLUCgiHLvvVtL8xxFa0oeyyyGvOthpyvytbuMHj765lolvczspHkNea3LYV2CV5WBQz9cjcbvIbfw6nrdOkBNRSqPHcINsMtLU35EctrymBTuidY/pArs5ewBD0LCVHFVhDBeRBmAj0thBXSiB4NFXGGIVl6zZE69RkSI=
+	t=1714475626; cv=none; b=K5WQ94gjDnvlt/xQgf3VeH2iEF92vrJJt9RsYCQWlvXhG7SaFhcPsruW9wLGKPfMJRk+eNB9CVI41aHGVP8i3aD2XIpuawfwxdHMbXn3K0ajohKQvD1F7HWRXJZrYmA2H5YsUhZxvw1zAeqVZKZOm1hdayn2yW9P6n6XDac2zJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475066; c=relaxed/simple;
-	bh=ExyWy5Q0RMHwZ79HBO7v8BB3F8OsG6fTxBLgDXqOJ+M=;
+	s=arc-20240116; t=1714475626; c=relaxed/simple;
+	bh=xaZlMGuoBQQpWEACIAYRigKSuIuTGvu41kmcIM2kXRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X8lQ/WhaEU+xH8s5MsrjCwnys4fJWLqKTaZ59HBo9CcTFy1IKwnsekz6PpBuZ0Ey4JsRq8oMIdgJ4Isnf+8uUBTQGbJDm2cOqbnffC+Yn4I906sTrYqabONxInfXxh365jfLiLtIiWUq+3hjC0ZCZLdauJChF7riGKRE7gIK+fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlGt5a/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554A0C2BBFC;
-	Tue, 30 Apr 2024 11:04:25 +0000 (UTC)
+	 MIME-Version; b=leJKqErfwKrboDj/OlAdQG3ethMO3/adWfh9TJ/ZT2zJGvBmVX8v92a7lmZu7yRxgMZTmlbtuv9VUxcVye6F4hDgiljbTL5DGFmizS8NualfK7r573VVWK+2bAyzz2TDGThm0xYZfnWxX3Gl1Sw8/f6jPLr3ViO0t5Wi0+Bbxug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSSpx+Ny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CBAC2BBFC;
+	Tue, 30 Apr 2024 11:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475065;
-	bh=ExyWy5Q0RMHwZ79HBO7v8BB3F8OsG6fTxBLgDXqOJ+M=;
+	s=korg; t=1714475626;
+	bh=xaZlMGuoBQQpWEACIAYRigKSuIuTGvu41kmcIM2kXRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlGt5a/Wp5ldK+Lmbf/MHzX+nGqJnBj8gwiom/gcS7ZKOhDhhAA8edIDvSd8PPVQv
-	 p0bkEoF3A0iw8N3PSvkLrPGbfysa+DqCYl1wNxzlbE7ifj3MtlSrVm2sTBjr+5lMf8
-	 Xio9JuqMUSTvPwVOqi//DcI/E6N1Tp2tjRQAC5eE=
+	b=FSSpx+NyIcY9L6XeYnPBOU8Xy5SLW/cbDW/fMbHFNQwN9RnXhxczijWeoJCb8k0x3
+	 O26wcowNwysWt1ckXJR7tKeOIvAn4DPXYB9x2EDS+4/O8xDG+dEMHvRLR/EdaT21Wr
+	 u+PDXbnIwrqh5hcIkjM4SdH1DOQlX3W3l6+Fm6ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukul Joshi <mukul.joshi@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 120/138] drm/amdgpu: Fix leak when GPU memory allocation fails
+	Arnd Bergmann <arnd@arndb.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 153/186] mtd: diskonchip: work around ubsan link failure
 Date: Tue, 30 Apr 2024 12:40:05 +0200
-Message-ID: <20240430103052.938491270@linuxfoundation.org>
+Message-ID: <20240430103102.475647456@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukul Joshi <mukul.joshi@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 25e9227c6afd200bed6774c866980b8e36d033af upstream.
+commit 21c9fb611c25d5cd038f6fe485232e7884bb0b3d upstream.
 
-Free the sync object if the memory allocation fails for any
-reason.
+I ran into a randconfig build failure with UBSAN using gcc-13.2:
 
-Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+arm-linux-gnueabi-ld: error: unplaced orphan section `.bss..Lubsan_data31' from `drivers/mtd/nand/raw/diskonchip.o'
+
+I'm not entirely sure what is going on here, but I suspect this has something
+to do with the check for the end of the doc_locations[] array that contains
+an (unsigned long)0xffffffff element, which is compared against the signed
+(int)0xffffffff. If this is the case, we should get a runtime check for
+undefined behavior, but we instead get an unexpected build-time error.
+
+I would have expected this to work fine on 32-bit architectures despite the
+signed integer overflow, though on 64-bit architectures this likely won't
+ever work.
+
+Changing the contition to instead check for the size of the array makes the
+code safe everywhere and avoids the ubsan check that leads to the link
+error. The loop code goes back to before 2.6.12.
+
 Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240405143015.717429-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/raw/diskonchip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -1259,6 +1259,7 @@ allocate_init_user_pages_failed:
- err_bo_create:
- 	unreserve_mem_limit(adev, size, alloc_domain, !!sg);
- err_reserve_limit:
-+	amdgpu_sync_free(&(*mem)->sync);
- 	mutex_destroy(&(*mem)->lock);
- 	kfree(*mem);
- err:
+--- a/drivers/mtd/nand/raw/diskonchip.c
++++ b/drivers/mtd/nand/raw/diskonchip.c
+@@ -53,7 +53,7 @@ static unsigned long doc_locations[] __i
+ 	0xe8000, 0xea000, 0xec000, 0xee000,
+ #endif
+ #endif
+-	0xffffffff };
++};
+ 
+ static struct mtd_info *doclist = NULL;
+ 
+@@ -1552,7 +1552,7 @@ static int __init init_nanddoc(void)
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
+-		for (i = 0; (doc_locations[i] != 0xffffffff); i++) {
++		for (i = 0; i < ARRAY_SIZE(doc_locations); i++) {
+ 			doc_probe(doc_locations[i]);
+ 		}
+ 	}
 
 
 
