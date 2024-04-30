@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-42644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3658B73F5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:25:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD9178B7484
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AD17285693
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:25:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E035CB216C6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EADB12CDAE;
-	Tue, 30 Apr 2024 11:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E64712D755;
+	Tue, 30 Apr 2024 11:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQkZ0S+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ybhqs7bD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E5B17592;
-	Tue, 30 Apr 2024 11:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0B8128816;
+	Tue, 30 Apr 2024 11:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476323; cv=none; b=F1IiirGPcz6/sc3u/lBrO9MBITGKVpJMsDbyBHzM6eGiuxqRy5CHo2m3B02nhs1LWP8Pd8nhdq0p+4T8F2IR4WmUKKdJj3UuqlXA5vc8yCwK6SueYoeNTm9VsFLN/nUOxrx9dOU1z9JYnMdgZ/eRSyZFrHPcaJaPH9c3EDtEZK4=
+	t=1714476695; cv=none; b=UOpmbxgUA3biquBc3gKckthnpXPXWKVfMDuTxDkI5vy5OWSqE9SfEaDnpNsKqW7iLXsmP5bn+zlETcXe1toEHuqSk5ESd2UiKepSKLpaQ/bMMghLysgobHZO3N00dbeVuqVENbYQ+Rw7XFKcj5hncSZAoPOH/dgD0CUxZK44bE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476323; c=relaxed/simple;
-	bh=IOwer0Q/Ce0kwi0knytkXifaCOrVFLFP3U9gVatYoRk=;
+	s=arc-20240116; t=1714476695; c=relaxed/simple;
+	bh=S73grUK3po/myPetf6l7TEpP0imMgP2KnJQlvB4pGxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eUYOfceIkfBLtJTvlPOLw0VOjiHoYNCdxGJJHFTY4n45VwhAUMvCjmZPXYtJCWCZOSbjjZIVyooV9RBBndXTAAfYx9H9eeYArrZZZTiazUEmVI/0OjNzzvaoTKuMXvv7UtMGQekOt/tqCcjtzPguF6u0AFsHQFPVMh8QHd3WTWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQkZ0S+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A75BC4AF19;
-	Tue, 30 Apr 2024 11:25:23 +0000 (UTC)
+	 MIME-Version; b=kMbs5Ycesf56Sx8dLKbHJlmBsCbnVsxuTV8yDQuXjAJKFABEBLo4YA5Q8VDPsQ138LTh/CZhInJw8MKdxcNeX66WdNre01ozr8Qc5AcJVQaUkBhPAePQsdDBdTljm5CLUSYoS4Qj5wNdNJXom+sw04wCgUQBKkNB11yBXihk7jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ybhqs7bD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A95C2BBFC;
+	Tue, 30 Apr 2024 11:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476323;
-	bh=IOwer0Q/Ce0kwi0knytkXifaCOrVFLFP3U9gVatYoRk=;
+	s=korg; t=1714476695;
+	bh=S73grUK3po/myPetf6l7TEpP0imMgP2KnJQlvB4pGxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TQkZ0S+MrmcngXd8ntOUb04EY7vKGNaUZYG43oc9/ZzxYbwwmppXzh/GWT897d70G
-	 zM5D9g/lNw6eihhuMxwSOHir2u5Sd7aEHYm0madSPR4/EG/gnfpc59Lp7flpQ++3wr
-	 4ZWV2C3xm5NLeciat4xUhfMIw32x3tjE4Qgo0iik=
+	b=Ybhqs7bDhjGtDprXhQG+qRZY7fXqG7uHoLDpBdh8AhOzY6EXBBxgESZlISCWJOzko
+	 TLBme0FvnWWDZU5+4LgMCdSnQcfagGNRCdTAxrtyk8HJOviuWdI4MVFdYyjDwZkOmw
+	 Y/AoqdNfIy9Io27t5YgClUzzYZtddb2RXz4Dbyiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=D0=9C=D0=B8=D1=85=D0=B0=D0=B8=D0=BB=20=D0=9D=D0=BE=D0=B2=D0=BE=D1=81=D0=B5=D0=BB=D0=BE=D0=B2?= <m.novosyolov@rosalinux.ru>,
-	=?UTF-8?q?=D0=98=D0=BB=D1=8C=D1=84=D0=B0=D1=82=20=D0=93=D0=B0=D0=BF=D1=82=D1=80=D0=B0=D1=85=D0=BC=D0=B0=D0=BD=D0=BE=D0=B2?= <i.gaptrakhmanov@rosalinux.ru>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Rik van Riel <riel@surriel.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.4 104/107] bounds: Use the right number of bits for power-of-two CONFIG_NR_CPUS
+	Mikhail Kobuk <m.kobuk@ispras.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/110] phy: marvell: a3700-comphy: Fix out of bounds read
 Date: Tue, 30 Apr 2024 12:41:04 +0200
-Message-ID: <20240430103047.727449709@linuxfoundation.org>
+Message-ID: <20240430103050.377570661@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-commit 5af385f5f4cddf908f663974847a4083b2ff2c79 upstream.
+[ Upstream commit e4308bc22b9d46cf33165c9dfaeebcf29cd56f04 ]
 
-bits_per() rounds up to the next power of two when passed a power of
-two.  This causes crashes on some machines and configurations.
+There is an out of bounds read access of 'gbe_phy_init_fix[fix_idx].addr'
+every iteration after 'fix_idx' reaches 'ARRAY_SIZE(gbe_phy_init_fix)'.
 
-Reported-by: Михаил Новоселов <m.novosyolov@rosalinux.ru>
-Tested-by: Ильфат Гаптрахманов <i.gaptrakhmanov@rosalinux.ru>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3347
-Link: https://lore.kernel.org/all/1c978cf1-2934-4e66-e4b3-e81b04cb3571@rosalinux.ru/
-Fixes: f2d5dcb48f7b (bounds: support non-power-of-two CONFIG_NR_CPUS)
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make sure 'gbe_phy_init[addr]' is used when all elements of
+'gbe_phy_init_fix' array are handled.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 934337080c6c ("phy: marvell: phy-mvebu-a3700-comphy: Add native kernel implementation")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20240321164734.49273-1-m.kobuk@ispras.ru
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bounds.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/marvell/phy-mvebu-a3700-comphy.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/kernel/bounds.c
-+++ b/kernel/bounds.c
-@@ -19,7 +19,7 @@ int main(void)
- 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
- 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
- #ifdef CONFIG_SMP
--	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
-+	DEFINE(NR_CPUS_BITS, order_base_2(CONFIG_NR_CPUS));
- #endif
- 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
- 	/* End of constants */
+diff --git a/drivers/phy/marvell/phy-mvebu-a3700-comphy.c b/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
+index d641b345afa35..392a8ae1bc667 100644
+--- a/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
++++ b/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
+@@ -610,11 +610,12 @@ static void comphy_gbe_phy_init(struct mvebu_a3700_comphy_lane *lane,
+ 		 * comparison to 3.125 Gbps values. These register values are
+ 		 * stored in "gbe_phy_init_fix" array.
+ 		 */
+-		if (!is_1gbps && gbe_phy_init_fix[fix_idx].addr == addr) {
++		if (!is_1gbps &&
++		    fix_idx < ARRAY_SIZE(gbe_phy_init_fix) &&
++		    gbe_phy_init_fix[fix_idx].addr == addr) {
+ 			/* Use new value */
+ 			val = gbe_phy_init_fix[fix_idx].value;
+-			if (fix_idx < ARRAY_SIZE(gbe_phy_init_fix))
+-				fix_idx++;
++			fix_idx++;
+ 		} else {
+ 			val = gbe_phy_init[addr];
+ 		}
+-- 
+2.43.0
+
 
 
 
