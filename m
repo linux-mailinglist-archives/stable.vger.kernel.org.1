@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-42322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3E78B7271
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 265448B71A3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB9A41C21D39
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D58E9283038
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C9112D205;
-	Tue, 30 Apr 2024 11:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7056412C476;
+	Tue, 30 Apr 2024 10:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeDgUEMb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnpLhNMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E5512D74B;
-	Tue, 30 Apr 2024 11:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF787464;
+	Tue, 30 Apr 2024 10:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475285; cv=none; b=cAzraBhUrkFRusTNKhxmsjFpHUlUIpIWBNjQdGcgaiGNsAcMZfCPoOQKklAfVVpocYhgcjP8f+btPeGANNy40TWCFJ4W9B0OT8cr8FaJKiDQLyJLcB11jcC68xhGloeAdhgjyq0Qb4I3oTOrkXDL2PGvKrYxCbfBRwUtOSkdHHM=
+	t=1714474729; cv=none; b=mYg3I61lScCTpU0HQ6rfHxXiWCI/KXxXIz2deMZeTiLbQvzn+qnzXTjiBWc/wsAZnrZ4HwUroaEnuLS5tJylYHrb5MiMsb9W+JNJIxiOfjiKpGJp1FkkaZVcndwYDZHf+AMGj7w4iEyWPV0sFwK1wwkQNwa3S2DdaUs0aNu8n8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475285; c=relaxed/simple;
-	bh=WCseeRhWhXWP87jlpZJROJZtvb0m/LBpUbvYxT9r51M=;
+	s=arc-20240116; t=1714474729; c=relaxed/simple;
+	bh=1Fx14G7St93U9GKNuwE8xy8vZbtK2FfNfeAZ7w+3K1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=statAY7nHblCwpnbobv/V6QkyvlACTkmljWV5dr7mTzaT/aBKqkJGcSU+P215LPpfNu07af5jqe83WEUsu4gAvmF7uX8sNLEJk+TVz1O9sP4ri6yTodrfD/TAhMIzIUkSVqTpucu8U3gxuB3gldM/xIskhRmcitLllLWB7V7k7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeDgUEMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CA7C2BBFC;
-	Tue, 30 Apr 2024 11:08:04 +0000 (UTC)
+	 MIME-Version; b=ZTYOjtUtmF/o4vCTysEyoqPkvUky815bjL0OcRzGPk/9L5Qemvz+BfdM2PUczyF/4hqcltqV3Z/5MMUDNHJpL8hy3dsa6GCJZ1nNcIBAlfT2YE/NyhRa395/P2I/JwPmRVhhIv1ydA4rh4HJd15+nkjKtgVkrFy7K/e9dX+2/tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnpLhNMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA960C2BBFC;
+	Tue, 30 Apr 2024 10:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475284;
-	bh=WCseeRhWhXWP87jlpZJROJZtvb0m/LBpUbvYxT9r51M=;
+	s=korg; t=1714474729;
+	bh=1Fx14G7St93U9GKNuwE8xy8vZbtK2FfNfeAZ7w+3K1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SeDgUEMbveiU9iQy0G1sLQsgcnoeogmzgbrUVpaBKliryPWrVQzlKgvNy5KjaTKCr
-	 lZxNyqOyh3czuXpMPJZp9+AxL8rZoUBaD9EABGaZH54tr2OAD9+WAbphFPTpOGjsMU
-	 BVgylzgQdg3i7YQ26eo3KBpvyw0iewalgSYGT5lQ=
+	b=CnpLhNMwKxlFCCR1ZN9gOyNHKre6lVb90kbNfQGFYZpHfM6lwZ7BMW1WKhQszwKs6
+	 +quecYifev2bgy/FEdlvjJ3IMX3Oodqpkvg7EMYx+jc1dEiWRZTkEYmi4y4TEtj8Dl
+	 9uRa1QES1IjEfqjXP7IggdiHM0q0R0JyBxUcdl7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Arthur Kiyanovski <akiyano@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/186] bridge/br_netlink.c: no need to return void function
+Subject: [PATCH 5.10 018/138] net: ena: Fix potential sign extension issue
 Date: Tue, 30 Apr 2024 12:38:23 +0200
-Message-ID: <20240430103059.513326514@linuxfoundation.org>
+Message-ID: <20240430103049.963733155@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: David Arinzon <darinzon@amazon.com>
 
-[ Upstream commit 4fd1edcdf13c0d234543ecf502092be65c5177db ]
+[ Upstream commit 713a85195aad25d8a26786a37b674e3e5ec09e3c ]
 
-br_info_notify is a void function. There is no need to return.
+Small unsigned types are promoted to larger signed types in
+the case of multiplication, the result of which may overflow.
+In case the result of such a multiplication has its MSB
+turned on, it will be sign extended with '1's.
+This changes the multiplication result.
 
-Fixes: b6d0425b816e ("bridge: cfm: Netlink Notifications.")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Code example of the phenomenon:
+-------------------------------
+u16 x, y;
+size_t z1, z2;
+
+x = y = 0xffff;
+printk("x=%x y=%x\n",x,y);
+
+z1 = x*y;
+z2 = (size_t)x*y;
+
+printk("z1=%lx z2=%lx\n", z1, z2);
+
+Output:
+-------
+x=ffff y=ffff
+z1=fffffffffffe0001 z2=fffe0001
+
+The expected result of ffff*ffff is fffe0001, and without the
+explicit casting to avoid the unwanted sign extension we got
+fffffffffffe0001.
+
+This commit adds an explicit casting to avoid the sign extension
+issue.
+
+Fixes: 689b2bdaaa14 ("net: ena: add functions for handling Low Latency Queues in ena_com")
+Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netlink.c | 2 +-
+ drivers/net/ethernet/amazon/ena/ena_com.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index 10f0d33d8ccf2..65e9ed3851425 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -666,7 +666,7 @@ void br_ifinfo_notify(int event, const struct net_bridge *br,
- {
- 	u32 filter = RTEXT_FILTER_BRVLAN_COMPRESSED;
+diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
+index d59ea5148c16c..60645ea7c0f80 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_com.c
++++ b/drivers/net/ethernet/amazon/ena/ena_com.c
+@@ -352,7 +352,7 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
+ 			ENA_COM_BOUNCE_BUFFER_CNTRL_CNT;
+ 		io_sq->bounce_buf_ctrl.next_to_use = 0;
  
--	return br_info_notify(event, br, port, filter);
-+	br_info_notify(event, br, port, filter);
- }
+-		size = io_sq->bounce_buf_ctrl.buffer_size *
++		size = (size_t)io_sq->bounce_buf_ctrl.buffer_size *
+ 			io_sq->bounce_buf_ctrl.buffers_num;
  
- /*
+ 		dev_node = dev_to_node(ena_dev->dmadev);
 -- 
 2.43.0
 
