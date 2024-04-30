@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298CC8B7105
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA3E78B7271
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B42E1C21957
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB9A41C21D39
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3003212CD8F;
-	Tue, 30 Apr 2024 10:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C9112D205;
+	Tue, 30 Apr 2024 11:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ec20zXfF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeDgUEMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDFC12C487;
-	Tue, 30 Apr 2024 10:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E5512D74B;
+	Tue, 30 Apr 2024 11:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474327; cv=none; b=m9VM14qtI+l2Az0eGH0F/G5eM05LZv9WKR2am0+Oe98wN922C1RrJgq7ezCL3rsCK3hUPQ6gg3ySH6abPqdQ90ZbkTcdFNQgrnny7TMkK3QoFNBi+SCdBEVHNfMqowEs7xAah3DFXlATJe+T2X5XrdyFGd9tXuUoEsPpip0Sc/I=
+	t=1714475285; cv=none; b=cAzraBhUrkFRusTNKhxmsjFpHUlUIpIWBNjQdGcgaiGNsAcMZfCPoOQKklAfVVpocYhgcjP8f+btPeGANNy40TWCFJ4W9B0OT8cr8FaJKiDQLyJLcB11jcC68xhGloeAdhgjyq0Qb4I3oTOrkXDL2PGvKrYxCbfBRwUtOSkdHHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474327; c=relaxed/simple;
-	bh=C5xIJH3WtbaMjGskFKiG69gyq7wNCB8b0kvUYGocuCk=;
+	s=arc-20240116; t=1714475285; c=relaxed/simple;
+	bh=WCseeRhWhXWP87jlpZJROJZtvb0m/LBpUbvYxT9r51M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fumERIf2m1MA3kmSnXvnjCckb/SJDa3COs6ztbE56GaNiHVeAJf2a+OrJaSz/QUfmRBOo6uz2oocOVfE7rmK+TZVBKU+EELClSO2Tu3mf8xGHgIvWXQA28erl5DFrrU/I7HihdXf/KCa/mQsUssuIlSiB1kyYnQ57KNKgS7j92Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ec20zXfF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B03C2BBFC;
-	Tue, 30 Apr 2024 10:52:06 +0000 (UTC)
+	 MIME-Version; b=statAY7nHblCwpnbobv/V6QkyvlACTkmljWV5dr7mTzaT/aBKqkJGcSU+P215LPpfNu07af5jqe83WEUsu4gAvmF7uX8sNLEJk+TVz1O9sP4ri6yTodrfD/TAhMIzIUkSVqTpucu8U3gxuB3gldM/xIskhRmcitLllLWB7V7k7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeDgUEMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CA7C2BBFC;
+	Tue, 30 Apr 2024 11:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474326;
-	bh=C5xIJH3WtbaMjGskFKiG69gyq7wNCB8b0kvUYGocuCk=;
+	s=korg; t=1714475284;
+	bh=WCseeRhWhXWP87jlpZJROJZtvb0m/LBpUbvYxT9r51M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ec20zXfF2J2Oe6p7o1xcf/2Y9rv05yEf53eXqx3lKeTFmA70vX5CswgrON9wsVKWv
-	 7qKE2A0EagOb6MMoUVAieON/A8nv9fSagnklvPOWTatwGjYBzEkrKXO6LrV2RdrW3q
-	 TOPOQ9wq3jD0qkqdaDa7CdqSSadhJo4wCui0LZSs=
+	b=SeDgUEMbveiU9iQy0G1sLQsgcnoeogmzgbrUVpaBKliryPWrVQzlKgvNy5KjaTKCr
+	 lZxNyqOyh3czuXpMPJZp9+AxL8rZoUBaD9EABGaZH54tr2OAD9+WAbphFPTpOGjsMU
+	 BVgylzgQdg3i7YQ26eo3KBpvyw0iewalgSYGT5lQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Khorenko <khorenko@virtuozzo.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 124/228] KVM: x86/pmu: Zero out PMU metadata on AMD if PMU is disabled
-Date: Tue, 30 Apr 2024 12:38:22 +0200
-Message-ID: <20240430103107.385297493@linuxfoundation.org>
+Subject: [PATCH 6.6 051/186] bridge/br_netlink.c: no need to return void function
+Date: Tue, 30 Apr 2024 12:38:23 +0200
+Message-ID: <20240430103059.513326514@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit f933b88e20150f15787390e2a1754a7e412754ed ]
+[ Upstream commit 4fd1edcdf13c0d234543ecf502092be65c5177db ]
 
-Move the purging of common PMU metadata from intel_pmu_refresh() to
-kvm_pmu_refresh(), and invoke the vendor refresh() hook if and only if
-the VM is supposed to have a vPMU.
+br_info_notify is a void function. There is no need to return.
 
-KVM already denies access to the PMU based on kvm->arch.enable_pmu, as
-get_gp_pmc_amd() returns NULL for all PMCs in that case, i.e. KVM already
-violates AMD's architecture by not virtualizing a PMU (kernels have long
-since learned to not panic when the PMU is unavailable).  But configuring
-the PMU as if it were enabled causes unwanted side effects, e.g. calls to
-kvm_pmu_trigger_event() waste an absurd number of cycles due to the
-all_valid_pmc_idx bitmap being non-zero.
-
-Fixes: b1d66dad65dc ("KVM: x86/svm: Add module param to control PMU virtualization")
-Reported-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-Closes: https://lore.kernel.org/all/20231109180646.2963718-2-khorenko@virtuozzo.com
-Link: https://lore.kernel.org/r/20231110022857.1273836-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: de120e1d692d ("KVM: x86/pmu: Set enable bits for GP counters in PERF_GLOBAL_CTRL at "RESET"")
+Fixes: b6d0425b816e ("bridge: cfm: Netlink Notifications.")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/pmu.c           | 20 ++++++++++++++++++--
- arch/x86/kvm/vmx/pmu_intel.c | 16 ++--------------
- 2 files changed, 20 insertions(+), 16 deletions(-)
+ net/bridge/br_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index 87cc6c8809ad8..38512954ec267 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -741,6 +741,8 @@ static void kvm_pmu_reset(struct kvm_vcpu *vcpu)
-  */
- void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
+diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
+index 10f0d33d8ccf2..65e9ed3851425 100644
+--- a/net/bridge/br_netlink.c
++++ b/net/bridge/br_netlink.c
+@@ -666,7 +666,7 @@ void br_ifinfo_notify(int event, const struct net_bridge *br,
  {
-+	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-+
- 	if (KVM_BUG_ON(kvm_vcpu_has_run(vcpu), vcpu->kvm))
- 		return;
+ 	u32 filter = RTEXT_FILTER_BRVLAN_COMPRESSED;
  
-@@ -750,8 +752,22 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
- 	 */
- 	kvm_pmu_reset(vcpu);
- 
--	bitmap_zero(vcpu_to_pmu(vcpu)->all_valid_pmc_idx, X86_PMC_IDX_MAX);
--	static_call(kvm_x86_pmu_refresh)(vcpu);
-+	pmu->version = 0;
-+	pmu->nr_arch_gp_counters = 0;
-+	pmu->nr_arch_fixed_counters = 0;
-+	pmu->counter_bitmask[KVM_PMC_GP] = 0;
-+	pmu->counter_bitmask[KVM_PMC_FIXED] = 0;
-+	pmu->reserved_bits = 0xffffffff00200000ull;
-+	pmu->raw_event_mask = X86_RAW_EVENT_MASK;
-+	pmu->global_ctrl_mask = ~0ull;
-+	pmu->global_status_mask = ~0ull;
-+	pmu->fixed_ctr_ctrl_mask = ~0ull;
-+	pmu->pebs_enable_mask = ~0ull;
-+	pmu->pebs_data_cfg_mask = ~0ull;
-+	bitmap_zero(pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX);
-+
-+	if (vcpu->kvm->arch.enable_pmu)
-+		static_call(kvm_x86_pmu_refresh)(vcpu);
+-	return br_info_notify(event, br, port, filter);
++	br_info_notify(event, br, port, filter);
  }
  
- void kvm_pmu_init(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 315c7c2ba89b1..600a021ae958b 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -491,19 +491,6 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
- 	u64 counter_mask;
- 	int i;
- 
--	pmu->nr_arch_gp_counters = 0;
--	pmu->nr_arch_fixed_counters = 0;
--	pmu->counter_bitmask[KVM_PMC_GP] = 0;
--	pmu->counter_bitmask[KVM_PMC_FIXED] = 0;
--	pmu->version = 0;
--	pmu->reserved_bits = 0xffffffff00200000ull;
--	pmu->raw_event_mask = X86_RAW_EVENT_MASK;
--	pmu->global_ctrl_mask = ~0ull;
--	pmu->global_status_mask = ~0ull;
--	pmu->fixed_ctr_ctrl_mask = ~0ull;
--	pmu->pebs_enable_mask = ~0ull;
--	pmu->pebs_data_cfg_mask = ~0ull;
--
- 	memset(&lbr_desc->records, 0, sizeof(lbr_desc->records));
- 
- 	/*
-@@ -515,8 +502,9 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
- 		return;
- 
- 	entry = kvm_find_cpuid_entry(vcpu, 0xa);
--	if (!entry || !vcpu->kvm->arch.enable_pmu)
-+	if (!entry)
- 		return;
-+
- 	eax.full = entry->eax;
- 	edx.full = entry->edx;
- 
+ /*
 -- 
 2.43.0
 
