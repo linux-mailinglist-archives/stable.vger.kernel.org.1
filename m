@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DD98B73C2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C03A8B7227
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E41761F2204A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46F201F20010
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B82E12CDAE;
-	Tue, 30 Apr 2024 11:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07CC12C534;
+	Tue, 30 Apr 2024 11:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYuZtwRs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nf381xHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277698801;
-	Tue, 30 Apr 2024 11:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD4312C462;
+	Tue, 30 Apr 2024 11:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476178; cv=none; b=Tkda+Usw89UYNSqz+juKWO/WC0ObEGC5Z650KFLSisZigUCewbyTETK3um+aAYLBGgt1YTFtPsZvDLsckHbXDPHafYSGw4qhKj7uX0M2y/DWfsGUm3LMcBq0Bc47xwzZH0EtZMsj56yTyCO8v4J3SklnARdU8aq/acT7LYGpYfQ=
+	t=1714475104; cv=none; b=RGsZkUQUUoqDte6lMd9oH4xje8SnuuCG/kuUhWt3456FErDS0BVoSAFpFUHP1eQSJRhUElIOtvSaypPSgqKvoIRiXG0csxDs1dEk3pKeETaMVWun4VYgkGTU9gUKRlVE22sJQgVuZMeNBEwuP54tRl1/DihGlXno+QZZ0U5m9b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476178; c=relaxed/simple;
-	bh=HQtWXZKDhKpeaOhwBsEjlE4udQcM2FqWASGVZIJc1XE=;
+	s=arc-20240116; t=1714475104; c=relaxed/simple;
+	bh=SKWKuR5sLVLj8gGI77wXf4mZbY2sO54eNOAOVHPNYkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=etojpzrT/fe0C1jNhh+arjdjuCTi+I1hjUA2VZl7yWVGm5V78YTOVxYjH4qkIdKilCjwYKc/AgsX7c0BsdQ8mO6lyHI/N29o9ETs8H0PlhYleNdLI/R1vnnHqrdjjIt05DYnRKUi48CKSsy88xAXNoXH91St5tF5luD8XU53how=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYuZtwRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F534C2BBFC;
-	Tue, 30 Apr 2024 11:22:57 +0000 (UTC)
+	 MIME-Version; b=kFoow+y5zJGEwFvqKnJNDbODCsBlE//6yYYtp4heZykZ4B138CjaVdN4p6QKBWVnEfceNxANCEMpT8u4JLm2X84M8AzeVpEDn9Xfre7b05Y29dckJBDdaeXG/mjltlXc1IEm1oIIgIdjs+IzibhFwECU9+0pzUfN/LflRTQaX5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nf381xHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A32AC2BBFC;
+	Tue, 30 Apr 2024 11:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476178;
-	bh=HQtWXZKDhKpeaOhwBsEjlE4udQcM2FqWASGVZIJc1XE=;
+	s=korg; t=1714475104;
+	bh=SKWKuR5sLVLj8gGI77wXf4mZbY2sO54eNOAOVHPNYkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYuZtwRs69x/JFo2KidcvqY9NNmZIM1kRuCmePlxF5w9fAcCAWgZ8bIAAi2Q3s5Yc
-	 Q66IQdm14RtKzIkDOzXpbcPZrAtciIH9gd7DruFBm7iyiLfM8Q3UyiZ1tfHzHjV9x4
-	 GQV2ZNu/P9dxDNUWQnHOoqNxt1t9pHxtdETIWsRw=
+	b=nf381xHWdf5soy9kslTctmv/M0KMO1RFGuQXc9u6XXGHFa7frdIkCRUlr8rF+r/zi
+	 fmrXOlCiG/aPjbZV7kz3zv0ePXbPe4ClpvbeIjJDm8jZbijDHzBs7uioOZb7FhM54a
+	 y3CnlV4Utq5HRAJz6dynORRbnsR7MwUlLbXMeiuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 059/107] arm64: dts: mediatek: mt2712: fix validation errors
+	Nam Cao <namcao@linutronix.de>,
+	Jiri Kosina <jkosina@suse.com>,
+	Eva Kurchatova <nyandarknessgirl@gmail.com>
+Subject: [PATCH 5.10 134/138] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up
 Date: Tue, 30 Apr 2024 12:40:19 +0200
-Message-ID: <20240430103046.398674854@linuxfoundation.org>
+Message-ID: <20240430103053.346373367@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 3baac7291effb501c4d52df7019ebf52011e5772 ]
+commit 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e upstream.
 
-1. Fixup infracfg clock controller binding
-   It also acts as reset controller so #reset-cells is required.
-2. Use -pins suffix for pinctrl
+The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
+However, this is not necessary, because I2C core already has its own
+locking for that.
 
-This fixes:
-arch/arm64/boot/dts/mediatek/mt2712-evb.dtb: syscon@10001000: '#reset-cells' is a required property
-        from schema $id: http://devicetree.org/schemas/arm/mediatek/mediatek,infracfg.yaml#
-arch/arm64/boot/dts/mediatek/mt2712-evb.dtb: pinctrl@1000b000: 'eth_default', 'eth_sleep', 'usb0_iddig', 'usb1_iddig' do not match any of the regexes: 'pinctrl-[0-9]+', 'pins$'
-        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt65xx-pinctrl.yaml#
+More importantly, this flag can cause a lock-up: if the flag is set in
+i2c_hid_xfer() and an interrupt happens, the interrupt handler
+(i2c_hid_irq) will check this flag and return immediately without doing
+anything, then the interrupt handler will be invoked again in an
+infinite loop.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240301074741.8362-1-zajec5@gmail.com
-[Angelo: Added Fixes tags]
-Fixes: 5d4839709c8e ("arm64: dts: mt2712: Add clock controller device nodes")
-Fixes: 1724f4cc5133 ("arm64: dts: Add USB3 related nodes for MT2712")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since interrupt handler is an RT task, it takes over the CPU and the
+flag-clearing task never gets scheduled, thus we have a lock-up.
+
+Delete this unnecessary flag.
+
+Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
+Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
+Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+[apply to v4.19 -> v5.15]
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt2712-evb.dts | 8 ++++----
- arch/arm64/boot/dts/mediatek/mt2712e.dtsi   | 3 ++-
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-core.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
-index 9d20cabf4f699..99515c13da3cf 100644
---- a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
-@@ -127,7 +127,7 @@
- };
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -56,7 +56,6 @@
+ /* flags */
+ #define I2C_HID_STARTED		0
+ #define I2C_HID_RESET_PENDING	1
+-#define I2C_HID_READ_PENDING	2
  
- &pio {
--	eth_default: eth_default {
-+	eth_default: eth-default-pins {
- 		tx_pins {
- 			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GBE_TXD3>,
- 				 <MT2712_PIN_72_GBE_TXD2__FUNC_GBE_TXD2>,
-@@ -154,7 +154,7 @@
- 		};
- 	};
+ #define I2C_HID_PWR_ON		0x00
+ #define I2C_HID_PWR_SLEEP	0x01
+@@ -256,7 +255,6 @@ static int __i2c_hid_command(struct i2c_
+ 		msg[1].len = data_len;
+ 		msg[1].buf = buf_recv;
+ 		msg_num = 2;
+-		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
+ 	}
  
--	eth_sleep: eth_sleep {
-+	eth_sleep: eth-sleep-pins {
- 		tx_pins {
- 			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GPIO71>,
- 				 <MT2712_PIN_72_GBE_TXD2__FUNC_GPIO72>,
-@@ -180,14 +180,14 @@
- 		};
- 	};
+ 	if (wait)
+@@ -264,9 +262,6 @@ static int __i2c_hid_command(struct i2c_
  
--	usb0_id_pins_float: usb0_iddig {
-+	usb0_id_pins_float: usb0-iddig-pins {
- 		pins_iddig {
- 			pinmux = <MT2712_PIN_12_IDDIG_P0__FUNC_IDDIG_A>;
- 			bias-pull-up;
- 		};
- 	};
+ 	ret = i2c_transfer(client->adapter, msg, msg_num);
  
--	usb1_id_pins_float: usb1_iddig {
-+	usb1_id_pins_float: usb1-iddig-pins {
- 		pins_iddig {
- 			pinmux = <MT2712_PIN_14_IDDIG_P1__FUNC_IDDIG_B>;
- 			bias-pull-up;
-diff --git a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
-index 4de82e91649f9..2c20a1be0699d 100644
---- a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
-@@ -249,10 +249,11 @@
- 		#clock-cells = <1>;
- 	};
+-	if (data_len > 0)
+-		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
+-
+ 	if (ret != msg_num)
+ 		return ret < 0 ? ret : -EIO;
  
--	infracfg: syscon@10001000 {
-+	infracfg: clock-controller@10001000 {
- 		compatible = "mediatek,mt2712-infracfg", "syscon";
- 		reg = <0 0x10001000 0 0x1000>;
- 		#clock-cells = <1>;
-+		#reset-cells = <1>;
- 	};
+@@ -538,9 +533,6 @@ static irqreturn_t i2c_hid_irq(int irq,
+ {
+ 	struct i2c_hid *ihid = dev_id;
  
- 	pericfg: syscon@10003000 {
--- 
-2.43.0
-
+-	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
+-		return IRQ_HANDLED;
+-
+ 	i2c_hid_get_input(ihid);
+ 
+ 	return IRQ_HANDLED;
 
 
 
