@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720DC8B72C4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:11:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0078B73A0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDC2AB2283E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:11:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C26A1C2325B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7D712D76B;
-	Tue, 30 Apr 2024 11:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCDA12D1F1;
+	Tue, 30 Apr 2024 11:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RslYPGeR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orygfRat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4F812D1EA;
-	Tue, 30 Apr 2024 11:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB6F12C805;
+	Tue, 30 Apr 2024 11:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475493; cv=none; b=XL7mSJecJ6b/EhIwWBdlCSUdevLRACPCuC9iQi31a0sUUZo5ksIEtmxLAC7/GDfivtAMZXLdtp5mK7DlJ++B2A1pCv5QXCxdPUWOh8cBB7eaofYBl5POea29I185Xl1/7zj6HLfDnoul4bdTGmneZld+gSqfvHJrUVoMV/zSV6A=
+	t=1714476088; cv=none; b=IqYyN7nbEBkKp1YUsjP7PYfBwjrzEQbtXMYJCcs0Kkg4QpnE6v6bavj5fBEXszCZ1q2pmpi7ZwoTZb4/xWDfHEErENlBfdoeRwzm9I4ZkPshiYwekNULMDs+j21I0XJNFYg30a/YXyW1IrC1F8SWn1sx2yZbdkYNC73S+k5cNp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475493; c=relaxed/simple;
-	bh=g/jyeQPePLLuHIhKdAHn4qTCz02jDrUFjOsUfGPgvro=;
+	s=arc-20240116; t=1714476088; c=relaxed/simple;
+	bh=uHhMbJX/tj6aP0gocKNsXJ7EhVRajLf4dv4erULeQl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsbrYpHedOqoSZyrTHf2SQIE3K1eeAacJjI+zalIZnMAe+XJo9lJOwAburyPjQveV/Tr3/6QOUw8fBQ8Nxu1FGft1TUoY12e6Uia/ncrAVQ0OR/GAiDxdBQVY325fpyzDLtBDI52q9PeSkF3LYWSASsJDd4S/vOdA1psjJZiuuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RslYPGeR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9E6C2BBFC;
-	Tue, 30 Apr 2024 11:11:33 +0000 (UTC)
+	 MIME-Version; b=pv1itJxYfcM8oqHQ82vUT+nRB5Dgd6UZ40uDfjnr6jKpHcn+Nhjz5bzYXGZ4odrh81LoSYl610vqxc4YfWzCXTje5Y4SZpM3WSWLY6lXY7oQF5H7Ff2WuDq3crWdRoCos/iMi1WC9JTu3rQaocIS4eqRK/U8pf3ntbpVdke6XqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orygfRat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C839C4AF1A;
+	Tue, 30 Apr 2024 11:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475493;
-	bh=g/jyeQPePLLuHIhKdAHn4qTCz02jDrUFjOsUfGPgvro=;
+	s=korg; t=1714476088;
+	bh=uHhMbJX/tj6aP0gocKNsXJ7EhVRajLf4dv4erULeQl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RslYPGeRu57m33shbuvMpCTz9/7II315oWDFNqEfwmbooNC8Zq/eBN3XDNcR8xGJh
-	 CLMFPRBhNkKhnWqoeV0/SL9rD4PPxt7A9wRU0n79U0Xwyo0ZPfZ4E4O9PZUJe2IUjZ
-	 fLwBN2FyiHDdJH6snIFmc15lm6I5nlqq7+GIEPhY=
+	b=orygfRatyhy4/bk4q9ORt7tVXA5lwkahWThs76res+5gqI/m2i6jUwYEJ1gCT88DD
+	 /nTsyvnkYXGNzfRsDaBn0XILWEaNxOpNZDsRNYrRs+TcOe1iaZWm3LB5NqGjhoIN7v
+	 Vj3m+6x82rtMrRvNaxFqGl6h/uzYMSx9VM9uq8KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Kaplan <david.kaplan@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 111/186] x86/cpu: Fix check for RDPKRU in __show_regs()
+	Arnd Bergmann <arnd@arndb.de>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 003/107] nouveau: fix function cast warning
 Date: Tue, 30 Apr 2024 12:39:23 +0200
-Message-ID: <20240430103101.255954766@linuxfoundation.org>
+Message-ID: <20240430103044.759249028@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Kaplan <david.kaplan@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit b53c6bd5d271d023857174b8fd3e32f98ae51372 upstream.
+[ Upstream commit 185fdb4697cc9684a02f2fab0530ecdd0c2f15d4 ]
 
-cpu_feature_enabled(X86_FEATURE_OSPKE) does not necessarily reflect
-whether CR4.PKE is set on the CPU.  In particular, they may differ on
-non-BSP CPUs before setup_pku() is executed.  In this scenario, RDPKRU
-will #UD causing the system to hang.
+Calling a function through an incompatible pointer type causes breaks
+kcfi, so clang warns about the assignment:
 
-Fix by checking CR4 for PKE enablement which is always correct for the
-current CPU.
+drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c:73:10: error: cast from 'void (*)(const void *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+   73 |         .fini = (void(*)(void *))kfree,
 
-The scenario happens by inserting a WARN* before setup_pku() in
-identiy_cpu() or some other diagnostic which would lead to calling
-__show_regs().
+Avoid this with a trivial wrapper.
 
-  [ bp: Massage commit message. ]
-
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240421191728.32239-1-bp@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c39f472e9f14 ("drm/nouveau: remove symlinks, move core/ to nvkm/ (no code changes)")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404160234.2923554-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process_64.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -138,7 +138,7 @@ void __show_regs(struct pt_regs *regs, e
- 		       log_lvl, d3, d6, d7);
- 	}
- 
--	if (cpu_feature_enabled(X86_FEATURE_OSPKE))
-+	if (cr4 & X86_CR4_PKE)
- 		printk("%sPKRU: %08x\n", log_lvl, read_pkru());
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c
+index 4bf486b571013..cb05f7f48a98b 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c
+@@ -66,11 +66,16 @@ of_init(struct nvkm_bios *bios, const char *name)
+ 	return ERR_PTR(-EINVAL);
  }
  
++static void of_fini(void *p)
++{
++	kfree(p);
++}
++
+ const struct nvbios_source
+ nvbios_of = {
+ 	.name = "OpenFirmware",
+ 	.init = of_init,
+-	.fini = (void(*)(void *))kfree,
++	.fini = of_fini,
+ 	.read = of_read,
+ 	.size = of_size,
+ 	.rw = false,
+-- 
+2.43.0
+
 
 
 
