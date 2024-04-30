@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E918B7102
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BEC8B71A0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1C03288DE6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53FB21C222A9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99ECD12CD99;
-	Tue, 30 Apr 2024 10:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73FE12C48A;
+	Tue, 30 Apr 2024 10:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0GbWHmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeRcyA8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5816812C80B;
-	Tue, 30 Apr 2024 10:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7482C7464;
+	Tue, 30 Apr 2024 10:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474320; cv=none; b=spPkBAPgsGWx5SCV3k0r9eo1yZXpoyUoT90KscSPPQzFV82ItfS0mAIG8QrFwn4Q22jhf0qKZDe5PPDcNeM/i6AFM8f4AwaQev9wOGSJMktQmA5pMQVfbL3JHgbvlbjkrXYkJESMk043viHOUdNd/o1pIUahgjwsxcPdSi2cVoY=
+	t=1714474719; cv=none; b=g7MUmvpPZItD4UIGVxiMeMIyUlzd7cGRZTw1rgtBy6ei0RxHgaOlLgiwcGmh1gjpbWU5Py/cq+pvPQ9uQvicLOgAgsQClB2F4qyceV3tw0Uu4NXr4oMiFc2mRakmw6DLi1lOIFP02lguIxCg3L55/ZXYb9DrYRfvzR47ggmXORk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474320; c=relaxed/simple;
-	bh=EWdcG+wFoFVY8OEybVQjNVm513k1Yn4CBKUzHka4miM=;
+	s=arc-20240116; t=1714474719; c=relaxed/simple;
+	bh=lsq7McuREHMYt1jrNxxxWb80bXOcBygw9fw3+voee9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8FW2n3WuR9miYB5BIEXLoPGSBsTaecDj08auEsLOCAHF0D9CFLnpZjKquQ+l1kj4t3aCshtri8zWiZEGPgwCzqp5HidWJ45QeqRNcmpsp9Ww+Gpq6vFQN89XnXu7hv0GQAS12UcXszvWOVCN7d34wGhC58Mh90Xw9NDDWs4yxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0GbWHmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91A3C2BBFC;
-	Tue, 30 Apr 2024 10:51:59 +0000 (UTC)
+	 MIME-Version; b=lP/W54lPnLYD1ebdMvLhUmQQBaJhHYZagTJO81AvqNwZAvPXDKmXJJF3rInnteD6nVMfLU+tzcbOqNTVKQG0VyxVTuuIYGH5N8vTyOCsdI0pEwulNbUJaOfnn2npqnJFoDD6JfgrFRTaVdl+ISrkh4Jpv5niJjFQAjHmI7Cq1jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeRcyA8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8BAC2BBFC;
+	Tue, 30 Apr 2024 10:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474320;
-	bh=EWdcG+wFoFVY8OEybVQjNVm513k1Yn4CBKUzHka4miM=;
+	s=korg; t=1714474719;
+	bh=lsq7McuREHMYt1jrNxxxWb80bXOcBygw9fw3+voee9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0GbWHmW5+QqAFUiLzuaZ976b7c0fOPNpY+y4rinImtzptiIkSHaSNG0nfzHfmYeF
-	 x0/KCphG7HmJE+2D3SrzJ4uvSVyaRbEE2m7uMzb1Xqd8XhjfWBx1xLBabBWvFcq5Tn
-	 l9x93IOimd4toTEpHcaLIaH/f8cjTcGAZ7bIeKN8=
+	b=BeRcyA8ojpOiypvM2N0mFShL8jLpDYzSg+6SB8TE4ISdWtmb6BE+N1AxFiKQG6oIc
+	 GN1lAwRDurOrY4AScWCjTpY8B4A5Sft4aVn9ueJtKT/oQYpffVZLqOa2+A282PCJvC
+	 HyCSSNjOJjU/hBeKJYI/J4tA2nrRLUkIfuUH8Y+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 122/228] xhci: move event processing for one interrupter to a separate function
+Subject: [PATCH 5.10 015/138] net/mlx5: Properly link new fs rules into the tree
 Date: Tue, 30 Apr 2024 12:38:20 +0200
-Message-ID: <20240430103107.327603443@linuxfoundation.org>
+Message-ID: <20240430103049.875405335@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 84ac5e4fa517f5d1da0054547a82ce905678dc08 ]
+[ Upstream commit 7c6782ad4911cbee874e85630226ed389ff2e453 ]
 
-Split the main XHCI interrupt handler into a different API, so that other
-potential interrupters can utilize similar event ring handling.  A scenario
-would be if a secondary interrupter required to skip pending events in the
-event ring, which would warrant a similar set of operations.
+Previously, add_rule_fg would only add newly created rules from the
+handle into the tree when they had a refcount of 1. On the other hand,
+create_flow_handle tries hard to find and reference already existing
+identical rules instead of creating new ones.
 
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20240217001017.29969-7-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 5bfc311dd6c3 ("usb: xhci: correct return value in case of STS_HCE")
+These two behaviors can result in a situation where create_flow_handle
+1) creates a new rule and references it, then
+2) in a subsequent step during the same handle creation references it
+   again,
+resulting in a rule with a refcount of 2 that is not linked into the
+tree, will have a NULL parent and root and will result in a crash when
+the flow group is deleted because del_sw_hw_rule, invoked on rule
+deletion, assumes node->parent is != NULL.
+
+This happened in the wild, due to another bug related to incorrect
+handling of duplicate pkt_reformat ids, which lead to the code in
+create_flow_handle incorrectly referencing a just-added rule in the same
+flow handle, resulting in the problem described above. Full details are
+at [1].
+
+This patch changes add_rule_fg to add new rules without parents into
+the tree, properly initializing them and avoiding the crash. This makes
+it more consistent with how rules are added to an FTE in
+create_flow_handle.
+
+Fixes: 74491de93712 ("net/mlx5: Add multi dest support")
+Link: https://lore.kernel.org/netdev/ea5264d6-6b55-4449-a602-214c6f509c1e@163.com/T/#u [1]
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240409190820.227554-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 87 +++++++++++++++++-------------------
- 1 file changed, 42 insertions(+), 45 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 61bd29dd71a2f..2306a95d6251a 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -3075,6 +3075,46 @@ static void xhci_clear_interrupt_pending(struct xhci_hcd *xhci,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 4e8e3797aed08..074c9eb44ab73 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -1675,8 +1675,9 @@ static struct mlx5_flow_handle *add_rule_fg(struct mlx5_flow_group *fg,
  	}
- }
+ 	trace_mlx5_fs_set_fte(fte, false);
  
-+static int xhci_handle_events(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
-+{
-+	int event_loop = 0;
-+	u64 temp;
-+
-+	xhci_clear_interrupt_pending(xhci, ir);
-+
-+	if (xhci->xhc_state & XHCI_STATE_DYING ||
-+	    xhci->xhc_state & XHCI_STATE_HALTED) {
-+		xhci_dbg(xhci, "xHCI dying, ignoring interrupt. Shouldn't IRQs be disabled?\n");
-+
-+		/* Clear the event handler busy flag (RW1C) */
-+		temp = xhci_read_64(xhci, &ir->ir_set->erst_dequeue);
-+		xhci_write_64(xhci, temp | ERST_EHB, &ir->ir_set->erst_dequeue);
-+		return -ENODEV;
-+	}
-+
-+	while (xhci_handle_event(xhci, ir) > 0) {
-+		/*
-+		 * If half a segment of events have been handled in one go then
-+		 * update ERDP, and force isoc trbs to interrupt more often
-+		 */
-+		if (event_loop++ > TRBS_PER_SEGMENT / 2) {
-+			xhci_update_erst_dequeue(xhci, ir, false);
-+
-+			if (ir->isoc_bei_interval > AVOID_BEI_INTERVAL_MIN)
-+				ir->isoc_bei_interval = ir->isoc_bei_interval / 2;
-+
-+			event_loop = 0;
-+		}
-+
-+		/* Update SW event ring dequeue pointer */
-+		inc_deq(xhci, ir->event_ring);
-+	}
-+
-+	xhci_update_erst_dequeue(xhci, ir, true);
-+
-+	return 0;
-+}
-+
- /*
-  * xHCI spec says we can get an interrupt, and if the HC has an error condition,
-  * we might get bad data out of the event ring.  Section 4.10.2.7 has a list of
-@@ -3083,11 +3123,8 @@ static void xhci_clear_interrupt_pending(struct xhci_hcd *xhci,
- irqreturn_t xhci_irq(struct usb_hcd *hcd)
- {
- 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
--	struct xhci_interrupter *ir;
- 	irqreturn_t ret = IRQ_NONE;
--	u64 temp_64;
- 	u32 status;
--	int event_loop = 0;
- 
- 	spin_lock(&xhci->lock);
- 	/* Check if the xHC generated the interrupt, or the irq is shared */
-@@ -3120,50 +3157,10 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 	 */
- 	status |= STS_EINT;
- 	writel(status, &xhci->op_regs->status);
--
--	/* This is the handler of the primary interrupter */
--	ir = xhci->interrupters[0];
--
--	xhci_clear_interrupt_pending(xhci, ir);
--
--	if (xhci->xhc_state & XHCI_STATE_DYING ||
--	    xhci->xhc_state & XHCI_STATE_HALTED) {
--		xhci_dbg(xhci, "xHCI dying, ignoring interrupt. "
--				"Shouldn't IRQs be disabled?\n");
--		/* Clear the event handler busy flag (RW1C);
--		 * the event ring should be empty.
--		 */
--		temp_64 = xhci_read_64(xhci, &ir->ir_set->erst_dequeue);
--		xhci_write_64(xhci, temp_64 | ERST_EHB,
--				&ir->ir_set->erst_dequeue);
--		ret = IRQ_HANDLED;
--		goto out;
--	}
--
--	/* FIXME this should be a delayed service routine
--	 * that clears the EHB.
--	 */
--	while (xhci_handle_event(xhci, ir) > 0) {
--		/*
--		 * If half a segment of events have been handled in one go then
--		 * update ERDP, and force isoc trbs to interrupt more often
--		 */
--		if (event_loop++ > TRBS_PER_SEGMENT / 2) {
--			xhci_update_erst_dequeue(xhci, ir, false);
--
--			if (ir->isoc_bei_interval > AVOID_BEI_INTERVAL_MIN)
--				ir->isoc_bei_interval = ir->isoc_bei_interval / 2;
--
--			event_loop = 0;
--		}
--
--		/* Update SW event ring dequeue pointer */
--		inc_deq(xhci, ir->event_ring);
--	}
--
--	xhci_update_erst_dequeue(xhci, ir, true);
- 	ret = IRQ_HANDLED;
- 
-+	/* This is the handler of the primary interrupter */
-+	xhci_handle_events(xhci, xhci->interrupters[0]);
- out:
- 	spin_unlock(&xhci->lock);
- 
++	/* Link newly added rules into the tree. */
+ 	for (i = 0; i < handle->num_rules; i++) {
+-		if (refcount_read(&handle->rule[i]->node.refcount) == 1) {
++		if (!handle->rule[i]->node.parent) {
+ 			tree_add_node(&handle->rule[i]->node, &fte->node);
+ 			trace_mlx5_fs_add_rule(handle->rule[i]);
+ 		}
 -- 
 2.43.0
 
