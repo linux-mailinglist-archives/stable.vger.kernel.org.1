@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED288B710E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A1C8B71A9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A4D2288E1C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3686C1C2231B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5645A12CD9B;
-	Tue, 30 Apr 2024 10:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F6E12C490;
+	Tue, 30 Apr 2024 10:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DIh2FZj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiTl4Y31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1523B12CD84;
-	Tue, 30 Apr 2024 10:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571CE12B176;
+	Tue, 30 Apr 2024 10:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474349; cv=none; b=q7lxQvTYxdmKwgocoTGMx+6QEER8nn3e4EmaQs3G3P07Vw++VyI0SHpErZJZCAK43J6ozz2G2qc5jQpUCGMT8c4aYtRiPf6RctM4NYHMZ9TCoCndtnhxC2xqRgbzs5tGqFSveXuWbXdb664UgN1j/tDKzeduaoUKVwdTtNykO7E=
+	t=1714474748; cv=none; b=CNtHzBKoAl3FvY9gBckIu8933F5PyiNYPRWqcNBBqBdrAtkBlrjVkB1jIfiUutlWUsjTmiQRpGya84mPFrchnXz7aUUXVcPrr4MJH+NbpXWDCZ4Kx/ZvtX5LbBiARIfXiOlXfTXslh0jgT7XQCseC2eV7p/toQ8+Sx+hzHwkr9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474349; c=relaxed/simple;
-	bh=NgFwAGMrOh0mbcxolAdoalXTbG1J6vi6SDMrJU4jnm4=;
+	s=arc-20240116; t=1714474748; c=relaxed/simple;
+	bh=0tmYN4/7vK/iQr6jMn+UoNHUKZmND2Wk6cRFGFEbnaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rBNgveTAgIUGt7gT9Lou130cLGydWvYya3qqioEl1t5VYgY/azVNs8yTI+JMt38WtMyzABfvTd+Do7kxb8hiqsSlYYFep1WAOpzq1qOtRm0pxRO3MWecEbTqyUimg3u3EGYSTujStKANxUd6lgFe9B0wFy01Hfx06PQXaMaDOx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DIh2FZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92573C4AF49;
-	Tue, 30 Apr 2024 10:52:28 +0000 (UTC)
+	 MIME-Version; b=NhJ/qZ7odDNadxa2nUvKTqxM4XAXwOimCJ1uvjx1r6rnG7Jpd/3WfcRX0xCkw5kfR9dV64r+Mz8wNoSz6cKrFEtjrpK90aRau6MMkrq+R7VuXw7HAiem6/60M+UplHWDjRP1Ni+Slk174akjuHuMQn+b9KyF9yhHMgLJPLDMSqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiTl4Y31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DADC4AF19;
+	Tue, 30 Apr 2024 10:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474349;
-	bh=NgFwAGMrOh0mbcxolAdoalXTbG1J6vi6SDMrJU4jnm4=;
+	s=korg; t=1714474748;
+	bh=0tmYN4/7vK/iQr6jMn+UoNHUKZmND2Wk6cRFGFEbnaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DIh2FZj4LzY2i/GBANQgcM1PJDgAKvNnxlrrBrJLJsh1MQx2IAyKkyWrxuIAUqUI
-	 9qSrPxekr1T39nSeSCC4mH4ofZnA2SZzy5ceW69oLOUBu1mU1xBC7mANjDiIASpW2K
-	 gdYXP1XA4SRrJLtwAkoGhVD3QYaxjF2R6xYDsqUI=
+	b=OiTl4Y310s7c48pKJ/qNcSsfjHo+aRNSHwtpspf0cMfc84O5kicIrsL52KRu5C5/a
+	 Arh+FIkTGe0qBOUo42n9NJxCpddK9GdcJ5wivUDKQ1qBWZafHPmnFqQvSmwJcP3+mR
+	 sPCFPLMJ4U9TIIdXB3+zq76+q4jcShEGYWR7lvLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Tritton <terry.tritton@linaro.org>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6.8 130/228] selftests/seccomp: Change the syscall used in KILL_THREAD test
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 023/138] btrfs: qgroup: correctly model root qgroup rsv in convert
 Date: Tue, 30 Apr 2024 12:38:28 +0200
-Message-ID: <20240430103107.556222561@linuxfoundation.org>
+Message-ID: <20240430103050.109356737@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Tritton <terry.tritton@linaro.org>
+From: Boris Burkov <boris@bur.io>
 
-commit 471dbc547612adeaa769e48498ef591c6c95a57a upstream.
+commit 141fb8cd206ace23c02cd2791c6da52c1d77d42a upstream.
 
-The Bionic version of pthread_create used on Android calls the prctl
-function to give the stack and thread local storage a useful name. This
-will cause the KILL_THREAD test to fail as it will kill the thread as
-soon as it is created.
+We use add_root_meta_rsv and sub_root_meta_rsv to track prealloc and
+pertrans reservations for subvolumes when quotas are enabled. The
+convert function does not properly increment pertrans after decrementing
+prealloc, so the count is not accurate.
 
-change the test to use getpid instead of prctl.
+Note: we check that the fs is not read-only to mirror the logic in
+qgroup_convert_meta, which checks that before adding to the pertrans rsv.
 
-Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
-Link: https://lore.kernel.org/r/20240124141357.1243457-3-terry.tritton@linaro.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: 8287475a2055 ("btrfs: qgroup: Use root::qgroup_meta_rsv_* to record qgroup meta reserved space")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/seccomp/seccomp_bpf.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/btrfs/qgroup.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-+++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -784,7 +784,7 @@ void *kill_thread(void *data)
- 	bool die = (bool)data;
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -4114,6 +4114,8 @@ void btrfs_qgroup_convert_reserved_meta(
+ 				      BTRFS_QGROUP_RSV_META_PREALLOC);
+ 	trace_qgroup_meta_convert(root, num_bytes);
+ 	qgroup_convert_meta(fs_info, root->root_key.objectid, num_bytes);
++	if (!sb_rdonly(fs_info->sb))
++		add_root_meta_rsv(root, num_bytes, BTRFS_QGROUP_RSV_META_PERTRANS);
+ }
  
- 	if (die) {
--		prctl(PR_GET_SECCOMP, 0, 0, 0, 0);
-+		syscall(__NR_getpid);
- 		return (void *)SIBLING_EXIT_FAILURE;
- 	}
- 
-@@ -803,11 +803,11 @@ void kill_thread_or_group(struct __test_
- {
- 	pthread_t thread;
- 	void *status;
--	/* Kill only when calling __NR_prctl. */
-+	/* Kill only when calling __NR_getpid. */
- 	struct sock_filter filter_thread[] = {
- 		BPF_STMT(BPF_LD|BPF_W|BPF_ABS,
- 			offsetof(struct seccomp_data, nr)),
--		BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, __NR_prctl, 0, 1),
-+		BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, __NR_getpid, 0, 1),
- 		BPF_STMT(BPF_RET|BPF_K, SECCOMP_RET_KILL_THREAD),
- 		BPF_STMT(BPF_RET|BPF_K, SECCOMP_RET_ALLOW),
- 	};
-@@ -819,7 +819,7 @@ void kill_thread_or_group(struct __test_
- 	struct sock_filter filter_process[] = {
- 		BPF_STMT(BPF_LD|BPF_W|BPF_ABS,
- 			offsetof(struct seccomp_data, nr)),
--		BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, __NR_prctl, 0, 1),
-+		BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, __NR_getpid, 0, 1),
- 		BPF_STMT(BPF_RET|BPF_K, kill),
- 		BPF_STMT(BPF_RET|BPF_K, SECCOMP_RET_ALLOW),
- 	};
+ /*
 
 
 
