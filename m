@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A2C8B7149
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A9C8B700A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5F1282E65
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D9A52850B4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFEF12D215;
-	Tue, 30 Apr 2024 10:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1291412C471;
+	Tue, 30 Apr 2024 10:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRpAXwCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yC6S1QBc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E0612D209;
-	Tue, 30 Apr 2024 10:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5289129E81;
+	Tue, 30 Apr 2024 10:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474494; cv=none; b=gfdUb/UXdqUxEGvt2WPcMOEAXVMv6cyU4PrEIMD89uMzjdSz8MxmKxj+ZNAJnqKnUsMdugn19tZoNzUxl+hPuUkhZf1Ilq1vkD1WHwou2lBPAvWyeruA3fky3yy3fato5rRjmiBzOJ8sygqdoJ+mfEAKGKyjkxsWqDp4WxjU5Rw=
+	t=1714473769; cv=none; b=iriZSGYyegJtaWT1kqBrZ7YHWxCEpJzyeRav3C5DPavpIBn9+FwI6IusOBjZ9rYoXvhCvOprj/SFY+YapzqygL3wAm5Hmjpi3iOwmE/D6BgqrJ4fqkwcEL5n5PsOSLu4D+N+pYKxmHBlKa1Ccxpa/p+X+qRAGn7ceEIcyRxOQIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474494; c=relaxed/simple;
-	bh=tvJizQV9A4wLduHoxYlxbO7769zZTHSF8N13PfI0U9k=;
+	s=arc-20240116; t=1714473769; c=relaxed/simple;
+	bh=hAy7FjLwADrv2uPEm3Nt5fkA/tSsAE3YTCrmRXVOOFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DzV8SLAQF/opJ61mkx67GiEwX/SpfM4HjpKKvTgFWDZsnPXKGbBFGwv9JuGfMuMrmxByXs/JViCnD0+Emne81vDrFNTGn/NsurUIBuknz4x4FtbN3569EC9mwAF+JvvLb2rZTI2H9azDRnDnR8ZKO23eR2zvrSDF1z6sSb3yZik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRpAXwCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF314C2BBFC;
-	Tue, 30 Apr 2024 10:54:53 +0000 (UTC)
+	 MIME-Version; b=kiHV2SdK6/UsCvE7XFWxWPQQTc5I5H2xbkCv4e458eRnxETGjZMEFcfLcSB6M6vmeTe8vGJN6PS8KogwKnM5EANmzWw79eWdDevOVg80bBBcnjSLrnSAyGNCigMY6/4OCgGIxOGBBwxDgxNWzarmh9WTFcKNjhKynnrCbbnV+yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yC6S1QBc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F01EC2BBFC;
+	Tue, 30 Apr 2024 10:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474494;
-	bh=tvJizQV9A4wLduHoxYlxbO7769zZTHSF8N13PfI0U9k=;
+	s=korg; t=1714473769;
+	bh=hAy7FjLwADrv2uPEm3Nt5fkA/tSsAE3YTCrmRXVOOFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRpAXwCUqDL4kzAYF9V3lSMkgLEXwqX+BuYiFrlMhQBy02juZeE99l/NrWCS98QOl
-	 jnwmO6bAFQlDH0MiylqHWc1LCV2BLCEkE1qzjIrRNKFv/1j2fNUMu8Z4gVaPvsxmv6
-	 inU8Ke14JsiSYSP5xatE7Pc0mR+dOsijBMZ2ZV7k=
+	b=yC6S1QBc7iT6QVhvMFRVZZYbQDIjZkBtrHr8NmAMwL8H5ytNRbzD+cu+UOeHVSfUn
+	 EvbDHcouGC5xV3VGSyhhA2YXGQ3WAKzIq/KFDqD6rBMCurcbiY2a35Qp7tYucID3+g
+	 N/hy19GXn+3+vkX6Dg0x4GGmUevsQCdH4m2y6AWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.8 173/228] drm/amdgpu/sdma5.2: use legacy HDP flush for SDMA2/3
-Date: Tue, 30 Apr 2024 12:39:11 +0200
-Message-ID: <20240430103108.795751194@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 4.19 33/77] fs: sysfs: Fix reference leak in sysfs_break_active_protection()
+Date: Tue, 30 Apr 2024 12:39:12 +0200
+Message-ID: <20240430103042.109430405@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 9792b7cc18aaa0c2acae6af5d0acf249bcb1ab0d upstream.
+commit a90bca2228c0646fc29a72689d308e5fe03e6d78 upstream.
 
-This avoids a potential conflict with firmwares with the newer
-HDP flush mechanism.
+The sysfs_break_active_protection() routine has an obvious reference
+leak in its error path.  If the call to kernfs_find_and_get() fails then
+kn will be NULL, so the companion sysfs_unbreak_active_protection()
+routine won't get called (and would only cause an access violation by
+trying to dereference kn->parent if it was called).  As a result, the
+reference to kobj acquired at the start of the function will never be
+released.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix the leak by adding an explicit kobject_put() call when kn is NULL.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 2afc9166f79b ("scsi: sysfs: Introduce sysfs_{un,}break_active_protection()")
+Cc: Bart Van Assche <bvanassche@acm.org>
 Cc: stable@vger.kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/8a4d3f0f-c5e3-4b70-a188-0ca433f9e6f9@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ fs/sysfs/file.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-@@ -292,17 +292,21 @@ static void sdma_v5_2_ring_emit_hdp_flus
- 	u32 ref_and_mask = 0;
- 	const struct nbio_hdp_flush_reg *nbio_hf_reg = adev->nbio.hdp_flush_reg;
- 
--	ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
-+	if (ring->me > 1) {
-+		amdgpu_asic_flush_hdp(adev, ring);
-+	} else {
-+		ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
- 
--	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
--			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
--			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
--	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
--	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
--	amdgpu_ring_write(ring, ref_and_mask); /* reference */
--	amdgpu_ring_write(ring, ref_and_mask); /* mask */
--	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
--			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
-+		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
-+				  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
-+				  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
-+		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
-+		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
-+		amdgpu_ring_write(ring, ref_and_mask); /* reference */
-+		amdgpu_ring_write(ring, ref_and_mask); /* mask */
-+		amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
-+				  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
-+	}
+--- a/fs/sysfs/file.c
++++ b/fs/sysfs/file.c
+@@ -429,6 +429,8 @@ struct kernfs_node *sysfs_break_active_p
+ 	kn = kernfs_find_and_get(kobj->sd, attr->name);
+ 	if (kn)
+ 		kernfs_break_active_protection(kn);
++	else
++		kobject_put(kobj);
+ 	return kn;
  }
- 
- /**
+ EXPORT_SYMBOL_GPL(sysfs_break_active_protection);
 
 
 
