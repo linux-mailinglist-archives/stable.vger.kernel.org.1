@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-42216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DBF8B71EF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 479178B6FF2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C44231F237C5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E905A1F240D1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E8212C805;
-	Tue, 30 Apr 2024 11:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B641712C46D;
+	Tue, 30 Apr 2024 10:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrzyUT4c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bImZO0cK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7C912C7FB;
-	Tue, 30 Apr 2024 11:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667C9129E81;
+	Tue, 30 Apr 2024 10:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474943; cv=none; b=T4lFUbUnC4KN7IPGUm1PZShexPFqK+vcdECksvQU8mID9sqRGqXzL9NGPYoU4LOVqRjEdPFTBKOHR8aop1mjdBfvkc0rzLQe5+CPEJidAKejpZzKOi4AYGN9kBdL1pgFS42Uvqkk6ZGT1NdkxVj3p1KPIXZ/4RJ+dUM2oiU+11s=
+	t=1714473702; cv=none; b=sqbhC6zubz0rqGhSGCycs/3AJ840ne0LfXYCUsO13IHFi/k1gZ65YccE25hSxItFrSNR35OMp/FlRQ/ZyzPaO5XTh3Z1aeIYwVtuqUWzqv9WeKS0oYzMoJY47Q81Dgxs8wLH4LUsio4mayMPV0mV5pFkOiVarY+8iwMXprOjGIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474943; c=relaxed/simple;
-	bh=4zSkOEyQeFk1s+GQcu2ZePjEDODfxrd72dv5jY4eH2U=;
+	s=arc-20240116; t=1714473702; c=relaxed/simple;
+	bh=UYr6g1KvOjMJuBGnnL3YVTxuxdVRBYXIs0ALbakW5iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISHEGg4/wOJLDhVDcAorAIdjiTvLqPwRVmUcmKaDAIU0ULgtlhdJovokEhQPG4MexiDQYlNlzgxcV8NGb/Sk/O/ff++4ZIoFoWrHqD8FzIoonS5qVrf8QSoeksBFdQ6ziYeRNnLS2zVPLiC8dlcEuGwbht4dG85I/aLlarBuOPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrzyUT4c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D29AC2BBFC;
-	Tue, 30 Apr 2024 11:02:22 +0000 (UTC)
+	 MIME-Version; b=cwSIpB0buMx3E26oYdebhUMx1/uwfNw0n1EDmtG9/vVMsc2FmngMjBx0ws2P6iezU5xl/MOhoA/3Gajewv0l4OsPN0vh+ng8b31JPGJrKN2XjCSNo8SUrQ14MneZRGu+cp4VCLmztF6+wZiaQTnlPZg2jzhsQ9bcwycUMyFNc9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bImZO0cK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A429C2BBFC;
+	Tue, 30 Apr 2024 10:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474943;
-	bh=4zSkOEyQeFk1s+GQcu2ZePjEDODfxrd72dv5jY4eH2U=;
+	s=korg; t=1714473701;
+	bh=UYr6g1KvOjMJuBGnnL3YVTxuxdVRBYXIs0ALbakW5iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mrzyUT4cJSqLzY9latXXQmFiooWQ3cyOoXMRzZdzqNbMDfz7Q1TSNmxMiM2np+5aA
-	 qec/k+CpjP7Ctaouo42JO5IgW4S8jHkjQ1VQnFEqHmh2uWL6OpNg2yek0/fvdV25Ns
-	 iWbV/I6k3Un5aKvTRTehAg/ZB1n6tlmlrDZsmpkY=
+	b=bImZO0cKNPQkrsm/sunwsTnH9x2rVVY19AxxRDFTkowLRj04isEnhdWMAS60yknjh
+	 5zqWr5aISlvcNtkSFpopIvVWHg+P4l+w4bO0WjoFkjwA1MBHwle3GNwApxyVPMsWil
+	 v1izoikfCKITKbLCNt54vITyExNYe807qaPw1km8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/138] clk: Remove prepare_lock hold assertion in __clk_release()
+	Yihuang Yu <yihyu@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	stable@kernel.org
+Subject: [PATCH 4.19 10/77] vhost: Add smp_rmb() in vhost_vq_avail_empty()
 Date: Tue, 30 Apr 2024 12:38:49 +0200
-Message-ID: <20240430103050.728409902@linuxfoundation.org>
+Message-ID: <20240430103041.425493448@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +66,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Gavin Shan <gshan@redhat.com>
 
-[ Upstream commit 8358a76cfb47c9a5af627a0c4e7168aa14fa25f6 ]
+commit 22e1992cf7b034db5325660e98c41ca5afa5f519 upstream.
 
-Removing this assertion lets us move the kref_put() call outside the
-prepare_lock section. We don't need to hold the prepare_lock here to
-free memory and destroy the clk_core structure. We've already unlinked
-the clk from the clk tree and by the time the release function runs
-nothing holds a reference to the clk_core anymore so anything with the
-pointer can't access the memory that's being freed anyway. Way back in
-commit 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of
-prepare_lock") we didn't need to have this assertion either.
+A smp_rmb() has been missed in vhost_vq_avail_empty(), spotted by
+Will. Otherwise, it's not ensured the available ring entries pushed
+by guest can be observed by vhost in time, leading to stale available
+ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
+Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
 
-Fixes: 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of prepare_lock")
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-2-sboyd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
+  -accel kvm -machine virt,gic-version=host -cpu host          \
+  -smp maxcpus=1,cpus=1,sockets=1,clusters=1,cores=1,threads=1 \
+  -m 4096M,slots=16,maxmem=64G                                 \
+  -object memory-backend-ram,id=mem0,size=4096M                \
+   :                                                           \
+  -netdev tap,id=vnet0,vhost=true                              \
+  -device virtio-net-pci,bus=pcie.8,netdev=vnet0,mac=52:54:00:f1:26:b0
+   :
+  guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
+  virtio_net virtio0: output.0:id 100 is not a head!
+
+Add the missed smp_rmb() in vhost_vq_avail_empty(). When tx_can_batch()
+returns true, it means there's still pending tx buffers. Since it might
+read indices, so it still can bypass the smp_rmb() in vhost_get_vq_desc().
+Note that it should be safe until vq->avail_idx is changed by commit
+275bf960ac697 ("vhost: better detection of available buffers").
+
+Fixes: 275bf960ac69 ("vhost: better detection of available buffers")
+Cc: <stable@kernel.org> # v4.11+
+Reported-by: Yihuang Yu <yihyu@redhat.com>
+Suggested-by: Will Deacon <will@kernel.org>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240328002149.1141302-2-gshan@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/vhost/vhost.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index aa2f1f8aa2994..67a882e03dfdd 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4006,8 +4006,6 @@ static void __clk_release(struct kref *ref)
- {
- 	struct clk_core *core = container_of(ref, struct clk_core, ref);
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2426,9 +2426,19 @@ bool vhost_vq_avail_empty(struct vhost_d
+ 	r = vhost_get_avail(vq, avail_idx, &vq->avail->idx);
+ 	if (unlikely(r))
+ 		return false;
++
+ 	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
++	if (vq->avail_idx != vq->last_avail_idx) {
++		/* Since we have updated avail_idx, the following
++		 * call to vhost_get_vq_desc() will read available
++		 * ring entries. Make sure that read happens after
++		 * the avail_idx read.
++		 */
++		smp_rmb();
++		return false;
++	}
  
--	lockdep_assert_held(&prepare_lock);
--
- 	clk_core_free_parent_map(core);
- 	kfree_const(core->name);
- 	kfree(core);
--- 
-2.43.0
-
+-	return vq->avail_idx == vq->last_avail_idx;
++	return true;
+ }
+ EXPORT_SYMBOL_GPL(vhost_vq_avail_empty);
+ 
 
 
 
