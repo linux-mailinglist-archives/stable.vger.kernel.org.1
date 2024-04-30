@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17EF8B73FE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:25:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5168B7384
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1FE61C2335E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:25:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33A191F241A6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3691E12DD85;
-	Tue, 30 Apr 2024 11:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FA212CD9B;
+	Tue, 30 Apr 2024 11:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRlWnNXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjILW7F/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E874A12D77F;
-	Tue, 30 Apr 2024 11:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5309C8801;
+	Tue, 30 Apr 2024 11:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476343; cv=none; b=GCYq/+BE7WCfJTTUskt63jwCVkV3wkRgG6nqUO6sf0V4tbce1VaAxgazdW2LGUkmUzpmrzbwJQF5Eac49gCXopjMMuy1VPjQVpLMfDP4f5t0lALQFxcr9ryvOuIYydYb/x5kFFeD55pQlD4iYRfsAfPG5O38XST1s2ddo1a2pFs=
+	t=1714476002; cv=none; b=jDkUmEjZRRFdOWQDeDDUwSCnz0VfOpY2sg59pM3vdVD459aM/D+KjI2BhzWLDMXUr55pYUlaxwO4QBX16dGmoKg1P9/CIETszGXh1DaDiizFIe+Ww1PX7txfcEot33skCJcIr56omNJe9Vgd97HTIvIJM+PGcwJ4WAYOePZDlpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476343; c=relaxed/simple;
-	bh=GIaQw0xALEATdH2i3pVgPxI2YFM28qROfU9mNWXWCBY=;
+	s=arc-20240116; t=1714476002; c=relaxed/simple;
+	bh=snb6GboBo7PNNAIBFh6LY65CP/8shjphSJ1kUA2+prc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8Q0V+PwpTBggPJDBHOgLrSsJVOFvIPOT+Pcv13mBwFU7xzZ3HL7SNrcJk+WRdZI6owScTow3X+iT/duNZ7le362yBeFxhBEIqNuEN4TkVUkHyU8DTUc8I2aD9OzsiQqjDPvF7Ns+0Ap/YY4f2MGrSVdEas/JcMhKICQTiMDqdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRlWnNXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5554EC2BBFC;
-	Tue, 30 Apr 2024 11:25:42 +0000 (UTC)
+	 MIME-Version; b=hK3aTzyxMgRpfBWvjV6gD7kOR5U9sKBWAPFagdTt3TX8f9IcWpUmif31AomkJP55VOZi+VDOLq6vZ54Qib/Lbam4AsS0dHfbKUtVw+J/aoXt2n5CLl8zH10b6BhQcTHmGA+VA42vmF845PfWQyB+4ONaFqursnd3UvsTMkootlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjILW7F/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65F2C2BBFC;
+	Tue, 30 Apr 2024 11:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476342;
-	bh=GIaQw0xALEATdH2i3pVgPxI2YFM28qROfU9mNWXWCBY=;
+	s=korg; t=1714476002;
+	bh=snb6GboBo7PNNAIBFh6LY65CP/8shjphSJ1kUA2+prc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MRlWnNXVQ1AAKkwZlkfNeeDZRVnRcOlbotFUHTg1Wkj3o9HZd4hNgX4AX8zE3yhXY
-	 /SB2lz2z83OBW1FHQLBq1Fi7wJzILqf7w5osDbqzGFSa4NdERXf8VmOM059rcaJBTy
-	 rvR7ldnghIyKwYb9CIt1lWVET96oQtfkg3/A2MnU=
+	b=YjILW7F/m81V6WKV9TZSWHv6scYCus5D8m6M04gaxHfunIkD03WZhiZnVXyCMaf0w
+	 15tjxbwVgQhBFYGuERcU0NnkTklxkLOkFqZIn8IJQnAsAKx/ugxoFVZ4QXQJkePcca
+	 DIILjPHKgjkkqH6oZXvZLfGuJuOkYxDIW3lK6l1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Robin H. Johnson" <robbat2@gentoo.org>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.4 086/107] tracing: Show size of requested perf buffer
-Date: Tue, 30 Apr 2024 12:40:46 +0200
-Message-ID: <20240430103047.196043226@linuxfoundation.org>
+	Baruch Siach <baruch@tkos.co.il>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 75/80] i2c: smbus: fix NULL function pointer dereference
+Date: Tue, 30 Apr 2024 12:40:47 +0200
+Message-ID: <20240430103045.627071203@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin H. Johnson <robbat2@gentoo.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit a90afe8d020da9298c98fddb19b7a6372e2feb45 upstream.
+[ Upstream commit 91811a31b68d3765b3065f4bb6d7d6d84a7cfc9f ]
 
-If the perf buffer isn't large enough, provide a hint about how large it
-needs to be for whatever is running.
+Baruch reported an OOPS when using the designware controller as target
+only. Target-only modes break the assumption of one transfer function
+always being available. Fix this by always checking the pointer in
+__i2c_transfer.
 
-Link: https://lkml.kernel.org/r/20210831043723.13481-1-robbat2@gentoo.org
-
-Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Reported-by: Baruch Siach <baruch@tkos.co.il>
+Closes: https://lore.kernel.org/r/4269631780e5ba789cf1ae391eec1b959def7d99.1712761976.git.baruch@tkos.co.il
+Fixes: 4b1acc43331d ("i2c: core changes for slave support")
+[wsa: dropped the simplification in core-smbus to avoid theoretical regressions]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_event_perf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/i2c-core-base.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/kernel/trace/trace_event_perf.c
-+++ b/kernel/trace/trace_event_perf.c
-@@ -395,7 +395,8 @@ void *perf_trace_buf_alloc(int size, str
- 	BUILD_BUG_ON(PERF_MAX_TRACE_SIZE % sizeof(unsigned long));
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 8fb065caf30b4..1810a994c07ca 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -2072,13 +2072,18 @@ static int i2c_check_for_quirks(struct i2c_adapter *adap, struct i2c_msg *msgs,
+  * Returns negative errno, else the number of messages executed.
+  *
+  * Adapter lock must be held when calling this function. No debug logging
+- * takes place. adap->algo->master_xfer existence isn't checked.
++ * takes place.
+  */
+ int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ {
+ 	unsigned long orig_jiffies;
+ 	int ret, try;
  
- 	if (WARN_ONCE(size > PERF_MAX_TRACE_SIZE,
--		      "perf buffer not large enough"))
-+		      "perf buffer not large enough, wanted %d, have %d",
-+		      size, PERF_MAX_TRACE_SIZE))
- 		return NULL;
++	if (!adap->algo->master_xfer) {
++		dev_dbg(&adap->dev, "I2C level transfers not supported\n");
++		return -EOPNOTSUPP;
++	}
++
+ 	if (WARN_ON(!msgs || num < 1))
+ 		return -EINVAL;
  
- 	*rctxp = rctx = perf_swevent_get_recursion_context();
+@@ -2145,11 +2150,6 @@ int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ {
+ 	int ret;
+ 
+-	if (!adap->algo->master_xfer) {
+-		dev_dbg(&adap->dev, "I2C level transfers not supported\n");
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	/* REVISIT the fault reporting model here is weak:
+ 	 *
+ 	 *  - When we get an error after receiving N bytes from a slave,
+-- 
+2.43.0
+
 
 
 
