@@ -1,143 +1,186 @@
-Return-Path: <stable+bounces-41790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FDF8B6916
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 05:40:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C318B692C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 05:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 260C71F21D65
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 03:40:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6E7F1C21A92
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 03:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFED10799;
-	Tue, 30 Apr 2024 03:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P4qI9tzF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3902010799;
+	Tue, 30 Apr 2024 03:42:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5595E1119A
-	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 03:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E25511737
+	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 03:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714448408; cv=none; b=tk4HAzogh/rbnxYAm/k17f15NDnX5xD05RhvF0IcWCh6kS09lEVUPHxjlWLcoBQXuZIJXvdO/oeOV9tIzwyiO2qHffTEoXieWDXGN/cbrM38qbzNhrBSJAcnyuk2e/6F4Ms0M+yaW2ebrCNjGBc5ZWt+utt8U+JINzQBBjUCVIs=
+	t=1714448538; cv=none; b=peuPXk6ze5QANqAEnmnqi/zk9JhV9ci7BE1RwhkEC9Nha/VkfsaR65dfuk4LKErrp2g+FE/YKrHU3I+UlBfs950tcOR+BjkVZ0YOgq+4lR0YyYn4nO/JDo9YA1gL/7Fqko9c30fFWFsbKmAqSFmcxtLmmCv4RgrkGB/O1uv0s/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714448408; c=relaxed/simple;
-	bh=m/p/IgRYePojDeT7PwzlS+lqlu3d/yqc6YD7XQM6Sug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aF8EfilZ5M19G3zm95ZsenUrwgjfuA4JE200I3dVAgKPy/MNAyIFtJbLvUHURmLeXZr+pbC9Mhzfu1HLDA8QaRyLK4N1zd8n6LDWTxe8kzrZX/xeOct/o9hfxsR6FQ1g/lU1F/TMDCbDDf/irHB09Y3uQ2XnugAFLotZuOC04eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P4qI9tzF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714448405;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H8kTq/NFS4+YJ9jH3Ma0+wYkL5Q7oA3OoNJBEMfeUMg=;
-	b=P4qI9tzFiLakr4mTLyDFblXcRI5bNVaSEfHWChE0DycNgAJ3SKMlRr8buV2Lhv6Dtsv5zn
-	RnHr7QGFGVV/AYHLizr0dfhwxl27/HeWKyUdaI6geV9wYvtHWwNLNjAd9h+UtOIOx4GXbA
-	AT8nD9f0T9xcyQ18NoRlRRnOuWg1Tpo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-sh7g9oh4NbyEqvdHixjlgg-1; Mon, 29 Apr 2024 23:39:54 -0400
-X-MC-Unique: sh7g9oh4NbyEqvdHixjlgg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EB7FF18065B1;
-	Tue, 30 Apr 2024 03:39:53 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.6])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 912AD1C060D0;
-	Tue, 30 Apr 2024 03:39:52 +0000 (UTC)
-Date: Tue, 30 Apr 2024 11:39:49 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	Chen Jiahao <chenjiahao16@huawei.com>
-Subject: Re: [PATCH v2] Revert "riscv: kdump: fix crashkernel reserving
- problem on RISC-V"
-Message-ID: <ZjBoBYwdPMyPDGhG@MiWiFi-R3L-srv>
-References: <20240430032403.19562-1-xingmingzheng@iscas.ac.cn>
+	s=arc-20240116; t=1714448538; c=relaxed/simple;
+	bh=brIpXaaa1HeDCJJrRqnmpqEEactkF/axtb7k4YoLe6s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n6igwi8JIQfGQEdYzwd2ayFLQur3UmGjuU2oYcCevbL55WYMdQD+QuqJgcZOmxEld3v++asueOnE3bMltCVF8Vw2G8Lwbms99dQxsmJQcsNsGPMaWE9o/Ii6QCant/IBIC5qBsKql2GsRL3fLdeLpCSq1qmwjeu5rp253BPoUXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [192.168.1.103] (unknown [120.221.12.99])
+	by APP-05 (Coremail) with SMTP id zQCowABXXgKMaDBmqmdxBw--.35639S2;
+	Tue, 30 Apr 2024 11:42:05 +0800 (CST)
+Message-ID: <cf921110-4df5-40bb-a197-03c660b51f4a@iscas.ac.cn>
+Date: Tue, 30 Apr 2024 11:42:04 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240430032403.19562-1-xingmingzheng@iscas.ac.cn>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "riscv: kdump: fix crashkernel reserving problem
+ on RISC-V"
+To: Baoquan He <bhe@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Chen Jiahao <chenjiahao16@huawei.com>,
+ linux-riscv@lists.infradead.org
+References: <20240416085647.14376-1-xingmingzheng@iscas.ac.cn>
+ <2024041927-remedial-choking-c548@gregkh>
+ <3d6784be-f6ba-48eb-ae0e-b8a20fe90f58@iscas.ac.cn>
+ <2024041939-isotope-client-3d75@gregkh>
+ <a5493f44-2aac-4005-992b-f2ac90cd1835@iscas.ac.cn>
+ <2024042318-muppet-snippet-617c@gregkh>
+ <5d49f626-a66f-4969-a03f-fcf83e2d2bab@iscas.ac.cn>
+ <2024042944-wriggle-countable-627c@gregkh> <ZjA1Hbik7NiTkZOw@MiWiFi-R3L-srv>
+From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Content-Language: en-US
+In-Reply-To: <ZjA1Hbik7NiTkZOw@MiWiFi-R3L-srv>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:zQCowABXXgKMaDBmqmdxBw--.35639S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGw15tF18KFW8uw4kZr4rAFb_yoWrZry7pF
+	W8GF4Utr4DJr1rKws7tr18KFy8tw13Jry5WrykJw18JFyqvFyrKr43Wr15ua4DWrn8Kw42
+	qr4jq342vw18A37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUy2b7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
+	C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JV
+	WxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41l42xK82IYc2Ij64vIr41l4I8I
+	3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxV
+	WUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAF
+	wI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcI
+	k0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j
+	6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jzHq7UUUUU=
+X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiCREDCmYwMTLCKgAAss
 
-On 04/30/24 at 11:24am, Mingzheng Xing wrote:
-> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which was
-> mistakenly added into v6.6.y and the commit corresponding to the 'Fixes:'
-> tag is invalid. For more information, see link [1].
+On 4/30/24 08:02, Baoquan He wrote:
+> On 04/29/24 at 12:52pm, Greg Kroah-Hartman wrote:
+>> On Wed, Apr 24, 2024 at 11:40:16AM +0800, Mingzheng Xing wrote:
+>>> On 4/23/24 21:12, Greg Kroah-Hartman wrote:
+>>>> On Fri, Apr 19, 2024 at 10:55:44PM +0800, Mingzheng Xing wrote:
+>>>>> On 4/19/24 21:58, Greg Kroah-Hartman wrote:
+>>>>>> On Fri, Apr 19, 2024 at 08:26:07PM +0800, Mingzheng Xing wrote:
+>>>>>>> On 4/19/24 18:44, Greg Kroah-Hartman wrote:
+>>>>>>>> On Tue, Apr 16, 2024 at 04:56:47PM +0800, Mingzheng Xing wrote:
+>>>>>>>>> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which has been
+>>>>>>>>> merged into the mainline commit 39365395046f ("riscv: kdump: use generic
+>>>>>>>>> interface to simplify crashkernel reservation"), but the latter's series of
+>>>>>>>>> patches are not included in the 6.6 branch.
+>>>>>>>>>
+>>>>>>>>> This will result in the loss of Crash kernel data in /proc/iomem, and kdump
+>>>>>>>>> loading the kernel will also cause an error:
+>>>>>>>>>
+>>>>>>>>> ```
+>>>>>>>>> Memory for crashkernel is not reserved
+>>>>>>>>> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
+>>>>>>>>> Then try to loading kdump kernel
+>>>>>>>>> ```
+>>>>>>>>>
+>>>>>>>>> After revert this patch, verify that it works properly on QEMU riscv.
+>>>>>>>>>
+>>>>>>>>> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv
+>>>>>>>>> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+>>>>>>>>> ---
+>>>>>>>>
+>>>>>>>> I do not understand, what branch is this for?  Why have you not cc:ed
+>>>>>>>> any of the original developers here?  Why does Linus's tree not have the
+>>>>>>>> same problem?  And the first sentence above does not make much sense as
+>>>>>>>> a 6.6 change is merged into 6.7?
+>>>>>>>
+>>>>>>> Sorry, I'll try to explain it more clearly.
+>>>>>>>
+>>>>>>> This commit 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem
+>>>>>>> on RISC-V") should not have existed because this patch has been merged into
+>>>>>>> another larger patch [1]. Here is that complete series:
+>>>>>>
+>>>>>> What "larger patch"?  It is in Linus's tree, so it's not part of
+>>>>>> something different, right?  I'm confused.
+>>>>>>
+>>>>>
+>>>>> Hi, Greg
+>>>>>
+>>>>> The email Cc:ed to author Chen Jiahao was bounced by the system, so maybe
+>>>>> we can wait for Baoquan He to confirm.
+>>>>>
+>>>>> This is indeed a bit confusing. The Fixes: tag in 1d6cd2146c2b58 is a false
+>>>>> reference. If I understand correctly, this is similar to the following
+>>>>> scenario:
+>>>>>
+>>>>> A Fixes B, B doesn't go into linus mainline. C contains A, C goes into linus
+>>>>> mainline 6.7, and C has more reconstruction code. but A goes into 6.6, so
+>>>>> it doesn't make sense for A to be in the mainline, and there's no C in 6.6
+>>>>> but there's an A, thus resulting in an incomplete code that creates an error.
+>>>>>
+>>>>> The link I quoted [1] shows that Baoquan had expressed an opinion on this
+>>>>> at the time.
+>>>>>
+>>>>> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
+>>>>
+>>>> I'm sorry, but I still do not understand what I need to do here for a
+>>>> stable branch.  Do I need to apply something?  Revert something?
+>>>> Something else?
+>>>
+>>> Hi, Greg
+>>>
+>>> I saw Baoquan's reply in thread[1], thanks Baoquan for confirming.
+>>>
+>>> So I think the right thing to do would be just to REVERT the commit
+>>> 1d6cd2146c2b ("riscv: kdump: fix crashkernel reserving problem on RISC-V")
+>>> in the 6.6.y branch, which is exactly the patch I submitted. If I need to
+>>> make changes to my commit message, feel free to let me know and I'll post
+>>> the second version.
+>>>
+>>> Link: https://lore.kernel.org/stable/ZihbAYMOI4ylazpt@MiWiFi-R3L-srv [1]
+>>
+>> Can someone just send me a patch series showing EXACTLY what needs to be
+>> done here, as I am _still_ confused.
 > 
-> This will result in the loss of Crashkernel data in /proc/iomem, and kdump
-> failed:
+> I think Mingzheng's patch is good to apply in the 6.6.y stable branch.
 > 
-> ```
-> Memory for crashkernel is not reserved
-> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
-> Then try to loading kdump kernel
-> ```
+> Hi Mingzheng,
 > 
-> After revert, kdump works fine. Tested on QEMU riscv.
-> 
-> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Chen Jiahao <chenjiahao16@huawei.com>
-> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+> Can you resend this patch to Greg and stable@vger.kernel.org and CC me?
+> I would like to Ack your patch, but can't find the original patch since
+> you didn't cc me.
 
-Ack. This is necessary for v6.6.y stable branch.
+Hi, Greg, Baoquan,
 
-Acked-by: Baoquan He <bhe@redhat.com>
+I sent the second version [1]. Thank you for taking the time.
 
-> ---
+Link: https://lore.kernel.org/stable/20240430032403.19562-1-xingmingzheng@iscas.ac.cn [1]
+
+
+
+Best wishes
+Mingzheng
+
 > 
-> v1 -> v2:
-> 
-> - Changed the commit message
-> - Added Cc:
-> 
-> v1:
-> https://lore.kernel.org/stable/20240416085647.14376-1-xingmingzheng@iscas.ac.cn
-> 
->  arch/riscv/kernel/setup.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-> index aac853ae4eb74..e600aab116a40 100644
-> --- a/arch/riscv/kernel/setup.c
-> +++ b/arch/riscv/kernel/setup.c
-> @@ -173,6 +173,19 @@ static void __init init_resources(void)
->  	if (ret < 0)
->  		goto error;
->  
-> +#ifdef CONFIG_KEXEC_CORE
-> +	if (crashk_res.start != crashk_res.end) {
-> +		ret = add_resource(&iomem_resource, &crashk_res);
-> +		if (ret < 0)
-> +			goto error;
-> +	}
-> +	if (crashk_low_res.start != crashk_low_res.end) {
-> +		ret = add_resource(&iomem_resource, &crashk_low_res);
-> +		if (ret < 0)
-> +			goto error;
-> +	}
-> +#endif
-> +
->  #ifdef CONFIG_CRASH_DUMP
->  	if (elfcorehdr_size > 0) {
->  		elfcorehdr_res.start = elfcorehdr_addr;
-> -- 
-> 2.34.1
-> 
+> Thanks
+> Baoquan
 
 
