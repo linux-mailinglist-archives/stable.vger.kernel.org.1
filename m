@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0ABE8B72DB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C75E8B7399
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DF4A1C2327C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B69BB209E3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B485012D746;
-	Tue, 30 Apr 2024 11:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3C812D1EA;
+	Tue, 30 Apr 2024 11:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BwGtHIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOxAudmJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709D212D215;
-	Tue, 30 Apr 2024 11:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC8112C805;
+	Tue, 30 Apr 2024 11:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475550; cv=none; b=prICRYyb3rT5E0pnXvNYKEmNIy1EBhNP7SZj99jsFQzC8bgX3NT7Qs62V/t+2HLNA5tP0i+0vGGpN8Wc09JrpE+A5tpuD/spRm1d2OWTXd4mGTd9EWf0U9MO1xQqI7h+MdUxml3aXG5y91PTl7+bkokoVyXJjHvvHgTJyBXr6Pg=
+	t=1714476066; cv=none; b=n8L7lT5vBVyjIW9COk4nZXWtagZLv7lo6IpW5rJeZoo0zKw+l3E3yI5k6anaf/xIKFC1xtxYTBcMFTwkh6HVyX9kvWUi4+dZWoGRCJG0AyvE+EqtYASoniu0G5UNDZy+UID3upEo/Ahp9hcneuDm3Bai7WakQT1aA9cqPJDtRbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475550; c=relaxed/simple;
-	bh=ZViiC/SNHBkhr//K7NdbhC+eMGvfxwatAHeE7VPdKHU=;
+	s=arc-20240116; t=1714476066; c=relaxed/simple;
+	bh=MLEdjMFzUMa6C3PlsQaE5zsbLn/hX1Ob2Sle+LfM3mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXbcgkSv4mZkk/LO1Hn7pjzeRM7Ki9+/gLUOSGkJ5vP3QCtD4PgFGB4m2OujcimIMmO5InAFiPPlV11+997RTD4NELCA+B9k8C/XL/oRXmGQUjScb30+wZjWJIa5syHZ98xVfPTPCs0vkA+d2sizXTiffupYBHBlRAGobCwTkE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BwGtHIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C12C2BBFC;
-	Tue, 30 Apr 2024 11:12:29 +0000 (UTC)
+	 MIME-Version; b=lBrWdCEfBMvisAJYRcac+aeph1JQmd759KDHGBF/P2UBgHS6tlE4YRox7Vkf4KjlqwRZoUGFpl/8baFsfRKeLR871CfhkhQ3MU9kJrUjXC80ToIRHkGV7YBHx/tjMcZLWlQ4dpgLy2+cOWzvbf/arQAAaYxdQ3HpqmRQyVYLtDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOxAudmJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE7FC2BBFC;
+	Tue, 30 Apr 2024 11:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475550;
-	bh=ZViiC/SNHBkhr//K7NdbhC+eMGvfxwatAHeE7VPdKHU=;
+	s=korg; t=1714476066;
+	bh=MLEdjMFzUMa6C3PlsQaE5zsbLn/hX1Ob2Sle+LfM3mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BwGtHIbgYgGJJyp2ZB/US5hR1/x/zMwLH2+be5oX6Pd94esZoEYMw+be0Tdk6jcB
-	 kaJK+GGZzDBFn8a3narEWEKMtCrKtkY/cSETnc0FYZ2rUMawdHoxyPSqaxCYddlb1v
-	 O0dmiAoqqJGgNdop8E1/dbdNw0k6DTeI7fFL4qQA=
+	b=zOxAudmJDzxPJcFL9Ir/my8v/PdMLjdUtwpM5vKwguIRzzKH9aUkXp3xH27a5xlCx
+	 jf1MD+SeTU4+UOhEJGLs3rXbkFlg9YOajFB1OUxdCVhq/p2JgGifLUdi17XDdDmxme
+	 IQn7pu102P35nc5i7hkKeT4/IPvca2JdS2UJRjN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Neal Gompa <neal@gompa.dev>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 131/186] btrfs: fallback if compressed IO fails for ENOSPC
+	Ziyang Xuan <william.xuanziyang@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 023/107] netfilter: nf_tables: Fix potential data-race in __nft_expr_type_get()
 Date: Tue, 30 Apr 2024 12:39:43 +0200
-Message-ID: <20240430103101.833765587@linuxfoundation.org>
+Message-ID: <20240430103045.347620858@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-commit 131a821a243f89be312ced9e62ccc37b2cf3846c upstream.
+[ Upstream commit f969eb84ce482331a991079ab7a5c4dc3b7f89bf ]
 
-In commit b4ccace878f4 ("btrfs: refactor submit_compressed_extents()"), if
-an async extent compressed but failed to find enough space, we changed
-from falling back to an uncompressed write to just failing the write
-altogether. The principle was that if there's not enough space to write
-the compressed version of the data, there can't possibly be enough space
-to write the larger, uncompressed version of the data.
+nft_unregister_expr() can concurrent with __nft_expr_type_get(),
+and there is not any protection when iterate over nf_tables_expressions
+list in __nft_expr_type_get(). Therefore, there is potential data-race
+of nf_tables_expressions list entry.
 
-However, this isn't necessarily true: due to fragmentation, there could
-be enough discontiguous free blocks to write the uncompressed version,
-but not enough contiguous free blocks to write the smaller but
-unsplittable compressed version.
+Use list_for_each_entry_rcu() to iterate over nf_tables_expressions
+list in __nft_expr_type_get(), and use rcu_read_lock() in the caller
+nft_expr_type_get() to protect the entire type query process.
 
-This has occurred to an internal workload which relied on write()'s
-return value indicating there was space. While rare, it has happened a
-few times.
-
-Thus, in order to prevent early ENOSPC, re-add a fallback to
-uncompressed writing.
-
-Fixes: b4ccace878f4 ("btrfs: refactor submit_compressed_extents()")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Co-developed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ef1f7df9170d ("netfilter: nf_tables: expression ops overloading")
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c |   13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ net/netfilter/nf_tables_api.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1134,13 +1134,13 @@ static void submit_one_async_extent(stru
- 				   0, *alloc_hint, &ins, 1, 1);
- 	if (ret) {
- 		/*
--		 * Here we used to try again by going back to non-compressed
--		 * path for ENOSPC.  But we can't reserve space even for
--		 * compressed size, how could it work for uncompressed size
--		 * which requires larger size?  So here we directly go error
--		 * path.
-+		 * We can't reserve contiguous space for the compressed size.
-+		 * Unlikely, but it's possible that we could have enough
-+		 * non-contiguous space for the uncompressed size instead.  So
-+		 * fall back to uncompressed.
- 		 */
--		goto out_free;
-+		submit_uncompressed_range(inode, async_extent, locked_page);
-+		goto done;
- 	}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index b4bb93b9aafc7..8131d858f38d9 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2239,7 +2239,7 @@ static const struct nft_expr_type *__nft_expr_type_get(u8 family,
+ {
+ 	const struct nft_expr_type *type, *candidate = NULL;
  
- 	/* Here we're doing allocation and writeback of the compressed pages */
-@@ -1192,7 +1192,6 @@ done:
- out_free_reserve:
- 	btrfs_dec_block_group_reservations(fs_info, ins.objectid);
- 	btrfs_free_reserved_extent(fs_info, ins.objectid, ins.offset, 1);
--out_free:
- 	mapping_set_error(inode->vfs_inode.i_mapping, -EIO);
- 	extent_clear_unlock_delalloc(inode, start, end,
- 				     NULL, EXTENT_LOCKED | EXTENT_DELALLOC |
+-	list_for_each_entry(type, &nf_tables_expressions, list) {
++	list_for_each_entry_rcu(type, &nf_tables_expressions, list) {
+ 		if (!nla_strcmp(nla, type->name)) {
+ 			if (!type->family && !candidate)
+ 				candidate = type;
+@@ -2271,9 +2271,13 @@ static const struct nft_expr_type *nft_expr_type_get(struct net *net,
+ 	if (nla == NULL)
+ 		return ERR_PTR(-EINVAL);
+ 
++	rcu_read_lock();
+ 	type = __nft_expr_type_get(family, nla);
+-	if (type != NULL && try_module_get(type->owner))
++	if (type != NULL && try_module_get(type->owner)) {
++		rcu_read_unlock();
+ 		return type;
++	}
++	rcu_read_unlock();
+ 
+ 	lockdep_nfnl_nft_mutex_not_held();
+ #ifdef CONFIG_MODULES
+-- 
+2.43.0
+
 
 
 
