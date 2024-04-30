@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1718B738E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2568B7069
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC0CF288827
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41399B21945
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6A612CD9B;
-	Tue, 30 Apr 2024 11:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D2212C498;
+	Tue, 30 Apr 2024 10:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTCa3wee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0gjSRQ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC2D8801;
-	Tue, 30 Apr 2024 11:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0320F12C461;
+	Tue, 30 Apr 2024 10:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476034; cv=none; b=fFAdtwC89jWMNUMbd0SreSQSnfbpgzITh6HwENPVoYxc3Uw6uXPBp4xZhR86ANcOe9TmeHyH4H6jVwnwhUQbr22lqrEdePZKeOfrcRAn2DS7zneHchsEbNAKeNGiY9UkvlCT/O5B1FTj/zebWbqsjYlkF+YYXovEZMCq0ElYd1Y=
+	t=1714473928; cv=none; b=QdPNqURYv2qr5VXoiRHLRs1Sci+LjjXVt/LNn4FJoxb1NDcHtiTYJo3bVLP0y1nv7+aJMi8pO5zT8EB3vITXXmurUz1dtEfj5QTbmRg0JwZMDARlalr7P9kw11B9Xv2eBa4oDUyP2TnjIkYvrbuZ71GU7Jt6CZb1ZENeNSklzls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476034; c=relaxed/simple;
-	bh=5/7lR0q0V8NcAcWLLxlc45wc1i1G+YI7Cdt6C6xngL0=;
+	s=arc-20240116; t=1714473928; c=relaxed/simple;
+	bh=rRpxk2yXVK4TtmT+YMlCQfr6wY206MUM2ICUUOZnjE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FtKEVC2AOT9ofxcS4hD7cV0/dYrBbLrU9wzwblzwyMiOU3DMIxR92beIVVp311nbKTNLjqtHvz8Xi5j95MELAGnsc4ox5HQwsr0rZbc6kQYi0KiJHUHY94nY7PV5dPyw2OX1JzjbeKQ0OtAaaJBORwZqoWnZDMdm3wTK12ZdIaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTCa3wee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA9BC2BBFC;
-	Tue, 30 Apr 2024 11:20:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EBy1Brm2W3u62NeKuRnSjwuvJMzW/l5WagXBZcGiKNXo6lSEpDgK83pIQrIk76QGlT5vMv2Cm/qBAOH1Z+j96Bx7BwY7ERdQmRHu9P0yEJF7BLJkfsSbxeuU/carC2yxLggjnD0ouvNrRHKxZCU5rmpsqIva74Kle0zfusSXLPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0gjSRQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80701C2BBFC;
+	Tue, 30 Apr 2024 10:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476034;
-	bh=5/7lR0q0V8NcAcWLLxlc45wc1i1G+YI7Cdt6C6xngL0=;
+	s=korg; t=1714473927;
+	bh=rRpxk2yXVK4TtmT+YMlCQfr6wY206MUM2ICUUOZnjE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTCa3wee8x7gACqw9pLqUnHWjtg0pb0UA0kjnM1iTN65ig1W0NWjlMd/RwG8xej0A
-	 QwSFuD/oMWSt0rQBJiltrA1TjGNukOF4LSSFO3Xo7EIanD8AxAa5gKnAorBqmv6Ymg
-	 UK6lZdPsGH9i6RM3kmftPTFQ7Af7k4dM+c8aOQSE=
+	b=M0gjSRQ3LdNYtrRxaVzapRG0fMkCGmiaz8T306Nav79hse3oham6ESNRF+yLNSgaY
+	 M/zYll/+F0fMmZkw3UiixhVqod+rGTGcxtaG6WVhcxkjJcpWeCBbhFtPxu55MoygBf
+	 BHaVkTs83MRN4glLvC7m2u+DuIZA6m81vs/GJ6+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 014/107] btrfs: qgroup: correctly model root qgroup rsv in convert
+	Oak Zeng <oak.zeng@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 55/77] drm/amdgpu: restrict bo mapping within gpu address limits
 Date: Tue, 30 Apr 2024 12:39:34 +0200
-Message-ID: <20240430103045.082310293@linuxfoundation.org>
+Message-ID: <20240430103042.762486586@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +63,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>
 
-commit 141fb8cd206ace23c02cd2791c6da52c1d77d42a upstream.
+[ Upstream commit 8b80d74bdb2285d3022b349c8451eb16535f7906 ]
 
-We use add_root_meta_rsv and sub_root_meta_rsv to track prealloc and
-pertrans reservations for subvolumes when quotas are enabled. The
-convert function does not properly increment pertrans after decrementing
-prealloc, so the count is not accurate.
+Have strict check on bo mapping since on some systems, such as A+A or
+hybrid, the cpu might support 5 level paging or can address memory above
+48 bits but gpu might be limited by hardware to just use 48 bits. In
+general, this applies to all asics where this limitation can be checked
+against their max_pfn range. This restricts the range to map bo within
+pratical limits of cpu and gpu for shared virtual memory access.
 
-Note: we check that the fs is not read-only to mirror the logic in
-qgroup_convert_meta, which checks that before adding to the pertrans rsv.
-
-Fixes: 8287475a2055 ("btrfs: qgroup: Use root::qgroup_meta_rsv_* to record qgroup meta reserved space")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Oak Zeng <oak.zeng@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 6fef2d4c00b5 ("drm/amdgpu: validate the parameters of bo mapping operations more clearly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -4061,6 +4061,8 @@ void btrfs_qgroup_convert_reserved_meta(
- 				      BTRFS_QGROUP_RSV_META_PREALLOC);
- 	trace_qgroup_meta_convert(root, num_bytes);
- 	qgroup_convert_meta(fs_info, root->root_key.objectid, num_bytes);
-+	if (!sb_rdonly(fs_info->sb))
-+		add_root_meta_rsv(root, num_bytes, BTRFS_QGROUP_RSV_META_PERTRANS);
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index cdcf9e697c398..acf03c716aca5 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2083,7 +2083,8 @@ int amdgpu_vm_bo_map(struct amdgpu_device *adev,
+ 	/* make sure object fit at this offset */
+ 	eaddr = saddr + size - 1;
+ 	if (saddr >= eaddr ||
+-	    (bo && offset + size > amdgpu_bo_size(bo)))
++	    (bo && offset + size > amdgpu_bo_size(bo)) ||
++	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+ 		return -EINVAL;
  
- /*
+ 	saddr /= AMDGPU_GPU_PAGE_SIZE;
+@@ -2148,7 +2149,8 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
+ 	/* make sure object fit at this offset */
+ 	eaddr = saddr + size - 1;
+ 	if (saddr >= eaddr ||
+-	    (bo && offset + size > amdgpu_bo_size(bo)))
++	    (bo && offset + size > amdgpu_bo_size(bo)) ||
++	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+ 		return -EINVAL;
+ 
+ 	/* Allocate all the needed memory */
+-- 
+2.43.0
+
 
 
 
