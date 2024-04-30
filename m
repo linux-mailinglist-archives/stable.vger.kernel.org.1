@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-42466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C798B732C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628EA8B722E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57BBB1C231CE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F861281CB4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69BD12D210;
-	Tue, 30 Apr 2024 11:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D5812C54B;
+	Tue, 30 Apr 2024 11:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2fL8qBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXVrPaaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52A612D209;
-	Tue, 30 Apr 2024 11:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8486812C47A;
+	Tue, 30 Apr 2024 11:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475755; cv=none; b=g+euNloa5UVITbxUHjoPskSjmo84GB3o44CDHS+8L5MfKn/1incoy2FYdH1kxkljGszEchhMEZ6BdGPAcok3O2sgjULLaA6kQmxvN+XzGO+Kafbskiy5SJZ1TixxKP3fEoCcgyNT+UKpqWcB4MFDDJKIz0XAQWIGH47VlbigyiM=
+	t=1714475120; cv=none; b=DXvClVOSfut8pbDFuy4Qw/J1oWk7tvK6NKP4rlBWEWigf5WqgZJcdaqrn/gRv4yWSFzROxcFTzWwqpbIRsF1WYKmjmPpw6ZZnnJokiOMyTUIcLNgMAM94559ysPxPCtoqm3e6s3SkDXF/w9sKE3IcQgKOzlhJNmP+iPMIMT2KEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475755; c=relaxed/simple;
-	bh=yoEf/jLkskwEwiUGktfhWNELYT8knpZ8ZgCjdMamZBQ=;
+	s=arc-20240116; t=1714475120; c=relaxed/simple;
+	bh=gJY9nEP7/DFfNjDluoSalQ0AnIYfTjgt81NFSlKFwCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yf6ttyCwQYkaO3YEDWXTlQ/1O2OwCh9z0jJNN5v6qQBlpz8X6d55Uyby1RZl1pmMuSOgH2tli7RKBT74dEJLpIbiBFy+C34CUcx8byqv23aDiqcEiVGQYG8rblScXgWm5jYJjc/uAoPWvxTWeQkgNx7VHTBN9LP8wy6+xFV8SEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2fL8qBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD01C2BBFC;
-	Tue, 30 Apr 2024 11:15:54 +0000 (UTC)
+	 MIME-Version; b=clzDN2t01nkF8yIc2K41xs+xMZkPanC4O2Rb8TPMe01iCcrvHP2NP4k08P5mxf8eGCEgUbybqHqWCWjC4P/KsOAEwoOlhXBTSuTjy9to9Cj5VWXz/yTRPICCBEREy4oD4faiYueX1td6kxEcX3qLL0WYMGS82FEhkJXG4Do53OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXVrPaaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F160EC2BBFC;
+	Tue, 30 Apr 2024 11:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475755;
-	bh=yoEf/jLkskwEwiUGktfhWNELYT8knpZ8ZgCjdMamZBQ=;
+	s=korg; t=1714475120;
+	bh=gJY9nEP7/DFfNjDluoSalQ0AnIYfTjgt81NFSlKFwCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2fL8qBVnLqZ9fLHhkjLK74qlv80NqrUFOFCxPFPgZCnq5KY/25b/yFYGRdF+TXDq
-	 8LaG0IVfB5yW6yzv70pK0Tw1u0CnJd6IprvtR7yoC3HScV2JTsp9fecrc0ouJLGasI
-	 s6iCMwvVaMqzaZ+wfVr7TnWSn1FoXibg0fHKVCyQ=
+	b=nXVrPaaNoUiYk14K06yOMzYu8+wjSy+vYQu66y2U4PPmjmG31lOHy/iIZ3WY7K8Qg
+	 PAYLmgynStcn629nrYkus1S53jCHSxLXAW1mlLLkFBFUu8pPS329e4/Cr3eUKQu3US
+	 PJnQhuIZbaJPAcO53dyQQ2lw/l4u1sQGYYc6qDbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Arnd Bergmann <arnd@arndb.de>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/186] dmaengine: owl: fix register access functions
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 125/138] mtd: diskonchip: work around ubsan link failure
 Date: Tue, 30 Apr 2024 12:40:10 +0200
-Message-ID: <20240430103102.620125596@linuxfoundation.org>
+Message-ID: <20240430103053.084372070@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 43c633ef93a5d293c96ebcedb40130df13128428 ]
+commit 21c9fb611c25d5cd038f6fe485232e7884bb0b3d upstream.
 
-When building with 'make W=1', clang notices that the computed register
-values are never actually written back but instead the wrong variable
-is set:
+I ran into a randconfig build failure with UBSAN using gcc-13.2:
 
-drivers/dma/owl-dma.c:244:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  244 |         u32 regval;
-      |             ^
-drivers/dma/owl-dma.c:268:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  268 |         u32 regval;
-      |             ^
+arm-linux-gnueabi-ld: error: unplaced orphan section `.bss..Lubsan_data31' from `drivers/mtd/nand/raw/diskonchip.o'
 
-Change these to what was most likely intended.
+I'm not entirely sure what is going on here, but I suspect this has something
+to do with the check for the end of the doc_locations[] array that contains
+an (unsigned long)0xffffffff element, which is compared against the signed
+(int)0xffffffff. If this is the case, we should get a runtime check for
+undefined behavior, but we instead get an unexpected build-time error.
 
-Fixes: 47e20577c24d ("dmaengine: Add Actions Semi Owl family S900 DMA driver")
+I would have expected this to work fine on 32-bit architectures despite the
+signed integer overflow, though on 64-bit architectures this likely won't
+ever work.
+
+Changing the contition to instead check for the size of the array makes the
+code safe everywhere and avoids the ubsan check that leads to the link
+error. The loop code goes back to before 2.6.12.
+
+Cc: stable@vger.kernel.org
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240322132116.906475-1-arnd@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240405143015.717429-1-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/owl-dma.c | 4 ++--
+ drivers/mtd/nand/raw/diskonchip.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/owl-dma.c b/drivers/dma/owl-dma.c
-index 384476757c5e3..3bcf73ef69dc7 100644
---- a/drivers/dma/owl-dma.c
-+++ b/drivers/dma/owl-dma.c
-@@ -250,7 +250,7 @@ static void pchan_update(struct owl_dma_pchan *pchan, u32 reg,
- 	else
- 		regval &= ~val;
+--- a/drivers/mtd/nand/raw/diskonchip.c
++++ b/drivers/mtd/nand/raw/diskonchip.c
+@@ -53,7 +53,7 @@ static unsigned long doc_locations[] __i
+ 	0xe8000, 0xea000, 0xec000, 0xee000,
+ #endif
+ #endif
+-	0xffffffff };
++};
  
--	writel(val, pchan->base + reg);
-+	writel(regval, pchan->base + reg);
- }
+ static struct mtd_info *doclist = NULL;
  
- static void pchan_writel(struct owl_dma_pchan *pchan, u32 reg, u32 data)
-@@ -274,7 +274,7 @@ static void dma_update(struct owl_dma *od, u32 reg, u32 val, bool state)
- 	else
- 		regval &= ~val;
- 
--	writel(val, od->base + reg);
-+	writel(regval, od->base + reg);
- }
- 
- static void dma_writel(struct owl_dma *od, u32 reg, u32 data)
--- 
-2.43.0
-
+@@ -1552,7 +1552,7 @@ static int __init init_nanddoc(void)
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
+-		for (i = 0; (doc_locations[i] != 0xffffffff); i++) {
++		for (i = 0; i < ARRAY_SIZE(doc_locations); i++) {
+ 			doc_probe(doc_locations[i]);
+ 		}
+ 	}
 
 
 
