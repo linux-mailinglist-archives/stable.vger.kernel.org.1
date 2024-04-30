@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-42277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8E68B7235
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1815D8B73C0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EEE21F23ADA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49E771C22DF8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEB012C47A;
-	Tue, 30 Apr 2024 11:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3258212D1F1;
+	Tue, 30 Apr 2024 11:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrvhBRbj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiPr8dZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190D212CDB2;
-	Tue, 30 Apr 2024 11:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32EB8801;
+	Tue, 30 Apr 2024 11:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475140; cv=none; b=mJ7eTlbCrQdwFz6YLQ4cm1IzOwu7BvBG1N3O3M//L6l4B/GV5ybgQ49/rlV/+Q4w73bafpfdvMEVojdj5pB0GyaivlKeQoYN/71EBK97HVbResrR57tF0NfqEoQEovDDqq/IOrEF8gIGRY9LCHIvCUCMop69iIDwJwJuzGc7lT0=
+	t=1714476172; cv=none; b=GAEEff2yAFVs431RJ8lyb47mXWPAe3urISm2B6GwhWiAJlZSGQxuFOrcMzPRa8xhpLPM7vvpYkcJYmOitb1NOb51vitv2J6DclafNNSx14ACEANBqxdwCtkHFozIGc0sGiRmm+FtHPziySc22f7KUyZy5ii56lFYizHIzTvBvFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475140; c=relaxed/simple;
-	bh=UvkB+X+P5SNeCmKSPx8FrUJrlrf9L2CwBa84QUihv0w=;
+	s=arc-20240116; t=1714476172; c=relaxed/simple;
+	bh=GEuMQ4FZg4c78sOf76K7OwnQIIKTUg2f0wnn/8USN8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTZeP95Teimzz56gaOVTEccD2Ub+9FflxWwYV1t0Ump8Nk0ZbR7KvMBvq6n9/iMFjJ8FxjvaN7JnDgm1ir+wvw0NMXyHiIPvb70dmi4raS4SKMYX1RPszfhlEM9AcKvmDcV5H8rX00dGD8gnrkMAsYXpHhjrRtlN+ut7hTdYvTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrvhBRbj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08033C2BBFC;
-	Tue, 30 Apr 2024 11:05:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uSxnBsekA56fVeavXpuE6TRLqGAWHa87QQdCHiVX3sFsSulg+w0XA4n+vVtoED6syIMplq/bcpMQS9G1i5bYHYmuDvtN1h+r2RoNWsmvPeGsZz9kOqWu+Y8mjy2Fe/OnXLG9nJULbuZYpItGc3cskr/z+JHlbFiVZD6kkVLkcww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiPr8dZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673F0C4AF1C;
+	Tue, 30 Apr 2024 11:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475139;
-	bh=UvkB+X+P5SNeCmKSPx8FrUJrlrf9L2CwBa84QUihv0w=;
+	s=korg; t=1714476171;
+	bh=GEuMQ4FZg4c78sOf76K7OwnQIIKTUg2f0wnn/8USN8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrvhBRbjGZw+VAWstOsLhl4mMOhXNPQk++ouCHOgLXg/6KmQN2Ju+fl0fqmdhdnya
-	 6ZGQMO+hiojBXFDOuwJ3+dirnizHz5Ft2GoLl8Ilb4xGCx0OCodyqn0qTAmDR9q7gb
-	 /K8LAPGp5ZN4PXUktTvnAV+gF5vovObofH+SlC2g=
+	b=jiPr8dZTO3rCLvUKejGZIPnNIpkCGWMWHN9QVNQFku+cgVdzMLqKTdAJBTY564zjn
+	 f4mecxpZPt20iH5cBQK0GppJa0euJJwmIw2CmHXKmJTWLUeFhgrg3G3GGWdeIz89f5
+	 gSRgyQ9vVNhYFnNxg4/JiW2DqlvLY3mybJMZzkPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baoquan He <bhe@redhat.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Eric DeVolder <eric_devolder@yahoo.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 131/138] riscv: fix VMALLOC_START definition
-Date: Tue, 30 Apr 2024 12:40:16 +0200
-Message-ID: <20240430103053.257702271@linuxfoundation.org>
+Subject: [PATCH 5.4 057/107] arm64: dts: mediatek: mt7622: drop "reset-names" from thermal block
+Date: Tue, 30 Apr 2024 12:40:17 +0200
+Message-ID: <20240430103046.339464033@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baoquan He <bhe@redhat.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit ac88ff6b9d7dea9f0907c86bdae204dde7d5c0e6 ]
+[ Upstream commit ecb5b0034f5bcc35003b4b965cf50c6e98316e79 ]
 
-When below config items are set, compiler complained:
+Binding doesn't specify "reset-names" property and Linux driver also
+doesn't use it.
 
---------------------
-CONFIG_CRASH_CORE=y
-CONFIG_KEXEC_CORE=y
-CONFIG_CRASH_DUMP=y
-......
------------------------
+Fix following validation error:
+arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: thermal@1100b000: Unevaluated properties are not allowed ('reset-names' was unexpected)
+        from schema $id: http://devicetree.org/schemas/thermal/mediatek,thermal.yaml#
 
--------------------------------------------------------------------
-arch/riscv/kernel/crash_core.c: In function 'arch_crash_save_vmcoreinfo':
-arch/riscv/kernel/crash_core.c:11:58: warning: format '%lx' expects argument of type 'long unsigned int', but argument 2 has type 'int' [-Wformat=]
-11 |         vmcoreinfo_append_str("NUMBER(VMALLOC_START)=0x%lx\n", VMALLOC_START);
-   |                                                        ~~^
-   |                                                          |
-   |                                                          long unsigned int
-   |                                                        %x
-----------------------------------------------------------------------
-
-This is because on riscv macro VMALLOC_START has different type when
-CONFIG_MMU is set or unset.
-
-arch/riscv/include/asm/pgtable.h:
---------------------------------------------------
-
-Changing it to _AC(0, UL) in case CONFIG_MMU=n can fix the warning.
-
-Link: https://lkml.kernel.org/r/ZW7OsX4zQRA3mO4+@MiWiFi-R3L-srv
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>	# build-tested
-Cc: Eric DeVolder <eric_devolder@yahoo.com>
-Cc: Ignat Korchagin <ignat@cloudflare.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 6065e736f82c ("riscv: Fix TASK_SIZE on 64-bit NOMMU")
+Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related device nodes")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240317221050.18595-5-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 5ab13570daa53..d048fb5faa691 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -457,7 +457,7 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
- #define PAGE_KERNEL		__pgprot(0)
- #define swapper_pg_dir		NULL
- #define TASK_SIZE		0xffffffffUL
--#define VMALLOC_START		0
-+#define VMALLOC_START		_AC(0, UL)
- #define VMALLOC_END		TASK_SIZE
- 
- static inline void __kernel_map_pages(struct page *page, int numpages, int enable) {}
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index aa4593af576c7..122ff44a092e5 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -507,7 +507,6 @@
+ 			 <&pericfg CLK_PERI_AUXADC_PD>;
+ 		clock-names = "therm", "auxadc";
+ 		resets = <&pericfg MT7622_PERI_THERM_SW_RST>;
+-		reset-names = "therm";
+ 		mediatek,auxadc = <&auxadc>;
+ 		mediatek,apmixedsys = <&apmixedsys>;
+ 		nvmem-cells = <&thermal_calibration>;
 -- 
 2.43.0
 
