@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-42328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604B38B7278
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 011618B710F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67AC6B20CFE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B12D1288DC7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FCA12D753;
-	Tue, 30 Apr 2024 11:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6784B12C487;
+	Tue, 30 Apr 2024 10:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6FsjlP4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUk7e9nL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C60812C490;
-	Tue, 30 Apr 2024 11:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CC512C462;
+	Tue, 30 Apr 2024 10:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475303; cv=none; b=st5E8zmdpE7vyJPYwxyBH9h+1IT0d+Xy2mNmLlzpCWzqy+Bj4OFNXx7nShE7oDd6W4W44GXlOmknDfkszzfAyDh3pbeTbJ7i7d8s46as8VDL5jhlrTJNDuQ5f1fpdQK3prhX5RS3U/Q6Wr32j5Nnm6tM0+t+VXPjjPusIL/WvMY=
+	t=1714474352; cv=none; b=Dde5P5rLxniiRheGcYuLm85UaAyhb4CZ+0CYWlkaHgVUk3BptkQs51XSHLlgV+YhGvunR2YrGFxT6cmI5+Yj18+GmHjCCKB9Q3ao60kdcaTGMUsJu/tY8vN13N3vV8yFOEVqYbzc+2FRACUrGBJQjymlVBlK63A56e6gzy41e3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475303; c=relaxed/simple;
-	bh=jWMRoEfma6T1owyML03AsWhQcJ96NXZJKzD/nuKJeis=;
+	s=arc-20240116; t=1714474352; c=relaxed/simple;
+	bh=/hiDeTv0tVkuNjPwdcuIChKw1aszxw1iK/qlFPs5mR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCqPx0TDluQwxo0Y+GwkQg1+w+Iv4J9tgc0d2VKQ0h/8cm6JaSuUtbgEnnzVx4GFQKlg0pqlMVFqihSZaFUneg/8jh4xrqTvpYxPqW4iEHcY4Tebl06bfSuEaptpxYcnfyPC2wSlOeM0+0pcgZLak4uQMBi6kIjRO19EpE+GExU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6FsjlP4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8891C2BBFC;
-	Tue, 30 Apr 2024 11:08:22 +0000 (UTC)
+	 MIME-Version; b=ZUuqMno01VrXgHOa1tEnv5CSxxWcf/YIykiQDixGVm5CpS7kzdSAf+NZeAXX43aP6hv1aqes05aa8tK2vAPpNjhw6SC2msvIDeNBsAMD7+uegd6xvcITET6u2Q8ra1OiiXhqBepOKj3EpcaBNxXZW5omcqyyCdztsDaor0qqoIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUk7e9nL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF04C2BBFC;
+	Tue, 30 Apr 2024 10:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475303;
-	bh=jWMRoEfma6T1owyML03AsWhQcJ96NXZJKzD/nuKJeis=;
+	s=korg; t=1714474352;
+	bh=/hiDeTv0tVkuNjPwdcuIChKw1aszxw1iK/qlFPs5mR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6FsjlP41voeI7SM5kGC/G2F4myoQ8G508gXRxSmDVuIcFbz8W3lBa8fk/gFnD7P6
-	 VwLu6i5afo9FWMIg54oXvAg/3t9fFHK4Dic2eV/9E5XeibQAETCo9oiHiz8UhN2e6R
-	 0xYy5m0vFSa986JHz8DK9w1GnXiI0R6J5AX/onOQ=
+	b=jUk7e9nLcW9OTqgsvPP1utWNjD4oPXNj92Mes4xzpKAm2w6jwZEQVD5llAy2bqzzv
+	 03sI8Genib0AezLKMSdtP5Grlw6jXWAZlDMaqauVteOABIjH99+SdJVy9TPELs0IQC
+	 H9P09cctdHWM5TtAGyEzH9+jw9bT5z0o+rjVQKDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Geurts <paul_geurts@live.nl>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/186] NFC: trf7970a: disable all regulators on removal
-Date: Tue, 30 Apr 2024 12:38:28 +0200
-Message-ID: <20240430103059.666675892@linuxfoundation.org>
+	Terry Tritton <terry.tritton@linaro.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.8 131/228] selftests/seccomp: Handle EINVAL on unshare(CLONE_NEWPID)
+Date: Tue, 30 Apr 2024 12:38:29 +0200
+Message-ID: <20240430103107.584006468@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,150 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Geurts <paul_geurts@live.nl>
+From: Terry Tritton <terry.tritton@linaro.org>
 
-[ Upstream commit 6bea4f03c6a4e973ef369e15aac88f37981db49e ]
+commit ecaaa55c9fa5e8058445a8b891070b12208cdb6d upstream.
 
-During module probe, regulator 'vin' and 'vdd-io' are used and enabled,
-but the vdd-io regulator overwrites the 'vin' regulator pointer. During
-remove, only the vdd-io is disabled, as the vin regulator pointer is not
-available anymore. When regulator_put() is called during resource
-cleanup a kernel warning is given, as the regulator is still enabled.
+unshare(CLONE_NEWPID) can return EINVAL if the kernel does not have the
+CONFIG_PID_NS option enabled.
 
-Store the two regulators in separate pointers and disable both the
-regulators on module remove.
+Add a check on these calls to skip the test if we receive EINVAL.
 
-Fixes: 49d22c70aaf0 ("NFC: trf7970a: Add device tree option of 1.8 Volt IO voltage")
-Signed-off-by: Paul Geurts <paul_geurts@live.nl>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/DB7PR09MB26847A4EBF88D9EDFEB1DA0F950E2@DB7PR09MB2684.eurprd09.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
+Link: https://lore.kernel.org/r/20240124141357.1243457-2-terry.tritton@linaro.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/trf7970a.c | 42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ tools/testing/selftests/seccomp/seccomp_bpf.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index 7eb17f46a8153..9e1a34e23af26 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -424,7 +424,8 @@ struct trf7970a {
- 	enum trf7970a_state		state;
- 	struct device			*dev;
- 	struct spi_device		*spi;
--	struct regulator		*regulator;
-+	struct regulator		*vin_regulator;
-+	struct regulator		*vddio_regulator;
- 	struct nfc_digital_dev		*ddev;
- 	u32				quirks;
- 	bool				is_initiator;
-@@ -1883,7 +1884,7 @@ static int trf7970a_power_up(struct trf7970a *trf)
- 	if (trf->state != TRF7970A_ST_PWR_OFF)
- 		return 0;
+--- a/tools/testing/selftests/seccomp/seccomp_bpf.c
++++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+@@ -3709,7 +3709,12 @@ TEST(user_notification_sibling_pid_ns)
+ 	ASSERT_GE(pid, 0);
  
--	ret = regulator_enable(trf->regulator);
-+	ret = regulator_enable(trf->vin_regulator);
- 	if (ret) {
- 		dev_err(trf->dev, "%s - Can't enable VIN: %d\n", __func__, ret);
- 		return ret;
-@@ -1926,7 +1927,7 @@ static int trf7970a_power_down(struct trf7970a *trf)
- 	if (trf->en2_gpiod && !(trf->quirks & TRF7970A_QUIRK_EN2_MUST_STAY_LOW))
- 		gpiod_set_value_cansleep(trf->en2_gpiod, 0);
+ 	if (pid == 0) {
+-		ASSERT_EQ(unshare(CLONE_NEWPID), 0);
++		ASSERT_EQ(unshare(CLONE_NEWPID), 0) {
++			if (errno == EPERM)
++				SKIP(return, "CLONE_NEWPID requires CAP_SYS_ADMIN");
++			else if (errno == EINVAL)
++				SKIP(return, "CLONE_NEWPID is invalid (missing CONFIG_PID_NS?)");
++		}
  
--	ret = regulator_disable(trf->regulator);
-+	ret = regulator_disable(trf->vin_regulator);
- 	if (ret)
- 		dev_err(trf->dev, "%s - Can't disable VIN: %d\n", __func__,
- 			ret);
-@@ -2065,37 +2066,37 @@ static int trf7970a_probe(struct spi_device *spi)
- 	mutex_init(&trf->lock);
- 	INIT_DELAYED_WORK(&trf->timeout_work, trf7970a_timeout_work_handler);
- 
--	trf->regulator = devm_regulator_get(&spi->dev, "vin");
--	if (IS_ERR(trf->regulator)) {
--		ret = PTR_ERR(trf->regulator);
-+	trf->vin_regulator = devm_regulator_get(&spi->dev, "vin");
-+	if (IS_ERR(trf->vin_regulator)) {
-+		ret = PTR_ERR(trf->vin_regulator);
- 		dev_err(trf->dev, "Can't get VIN regulator: %d\n", ret);
- 		goto err_destroy_lock;
+ 		pid2 = fork();
+ 		ASSERT_GE(pid2, 0);
+@@ -3727,6 +3732,8 @@ TEST(user_notification_sibling_pid_ns)
+ 	ASSERT_EQ(unshare(CLONE_NEWPID), 0) {
+ 		if (errno == EPERM)
+ 			SKIP(return, "CLONE_NEWPID requires CAP_SYS_ADMIN");
++		else if (errno == EINVAL)
++			SKIP(return, "CLONE_NEWPID is invalid (missing CONFIG_PID_NS?)");
  	}
+ 	ASSERT_EQ(errno, 0);
  
--	ret = regulator_enable(trf->regulator);
-+	ret = regulator_enable(trf->vin_regulator);
- 	if (ret) {
- 		dev_err(trf->dev, "Can't enable VIN: %d\n", ret);
- 		goto err_destroy_lock;
- 	}
- 
--	uvolts = regulator_get_voltage(trf->regulator);
-+	uvolts = regulator_get_voltage(trf->vin_regulator);
- 	if (uvolts > 4000000)
- 		trf->chip_status_ctrl = TRF7970A_CHIP_STATUS_VRS5_3;
- 
--	trf->regulator = devm_regulator_get(&spi->dev, "vdd-io");
--	if (IS_ERR(trf->regulator)) {
--		ret = PTR_ERR(trf->regulator);
-+	trf->vddio_regulator = devm_regulator_get(&spi->dev, "vdd-io");
-+	if (IS_ERR(trf->vddio_regulator)) {
-+		ret = PTR_ERR(trf->vddio_regulator);
- 		dev_err(trf->dev, "Can't get VDD_IO regulator: %d\n", ret);
--		goto err_destroy_lock;
-+		goto err_disable_vin_regulator;
- 	}
- 
--	ret = regulator_enable(trf->regulator);
-+	ret = regulator_enable(trf->vddio_regulator);
- 	if (ret) {
- 		dev_err(trf->dev, "Can't enable VDD_IO: %d\n", ret);
--		goto err_destroy_lock;
-+		goto err_disable_vin_regulator;
- 	}
- 
--	if (regulator_get_voltage(trf->regulator) == 1800000) {
-+	if (regulator_get_voltage(trf->vddio_regulator) == 1800000) {
- 		trf->io_ctrl = TRF7970A_REG_IO_CTRL_IO_LOW;
- 		dev_dbg(trf->dev, "trf7970a config vdd_io to 1.8V\n");
- 	}
-@@ -2108,7 +2109,7 @@ static int trf7970a_probe(struct spi_device *spi)
- 	if (!trf->ddev) {
- 		dev_err(trf->dev, "Can't allocate NFC digital device\n");
- 		ret = -ENOMEM;
--		goto err_disable_regulator;
-+		goto err_disable_vddio_regulator;
- 	}
- 
- 	nfc_digital_set_parent_dev(trf->ddev, trf->dev);
-@@ -2137,8 +2138,10 @@ static int trf7970a_probe(struct spi_device *spi)
- 	trf7970a_shutdown(trf);
- err_free_ddev:
- 	nfc_digital_free_device(trf->ddev);
--err_disable_regulator:
--	regulator_disable(trf->regulator);
-+err_disable_vddio_regulator:
-+	regulator_disable(trf->vddio_regulator);
-+err_disable_vin_regulator:
-+	regulator_disable(trf->vin_regulator);
- err_destroy_lock:
- 	mutex_destroy(&trf->lock);
- 	return ret;
-@@ -2157,7 +2160,8 @@ static void trf7970a_remove(struct spi_device *spi)
- 	nfc_digital_unregister_device(trf->ddev);
- 	nfc_digital_free_device(trf->ddev);
- 
--	regulator_disable(trf->regulator);
-+	regulator_disable(trf->vddio_regulator);
-+	regulator_disable(trf->vin_regulator);
- 
- 	mutex_destroy(&trf->lock);
- }
--- 
-2.43.0
-
 
 
 
