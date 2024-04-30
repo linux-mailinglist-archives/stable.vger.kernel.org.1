@@ -1,67 +1,59 @@
-Return-Path: <stable+bounces-42709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C6D8B743D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B30808B73D1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 745601C22C8C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A3E41F22490
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD16B12CDAE;
-	Tue, 30 Apr 2024 11:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0144212D1F1;
+	Tue, 30 Apr 2024 11:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjVWTQsY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjVZTkbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8BC12BF32;
-	Tue, 30 Apr 2024 11:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B143917592;
+	Tue, 30 Apr 2024 11:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476531; cv=none; b=WieOXlV4/9r/SilZnJItCGUfCamhVjH/HGIiVjv3S/UZbdIAm9vfbXgaQWmmowJU/IM2tEbT/P3Nj1/2MADtjlCjMyS2CS05SPEieyaVntnT/SL/zpSd9sIenMFA+j0g9L3TFkmfdxrje72qtD/LB0igl9o2FifDFfiwDPT0G6A=
+	t=1714476222; cv=none; b=hcshR9AhTwrXz9/rhGz1rYxDm2Pnp57ANTspBc13vYeWV1cMpXlxVeRRZ3d6bWoKWVuy+9wUNr7gR7hCTArEbJEysxfoQ/kiCJZQhFinKeebtDQCOoYmxLzE1DLxmZ+SgnLTZEvg7RiaCBK3zkPu8wx/pIRJDCDo3gW3uVziias=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476531; c=relaxed/simple;
-	bh=pNQJr94EBvjDJ6NpQf0ZQKHhFlWspGy7TszASxaPcHQ=;
+	s=arc-20240116; t=1714476222; c=relaxed/simple;
+	bh=MAw0mowXNLwC8o2bCrGjl8ztPd/LECfczMJHMrQIcB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csBjf7NN9KFvG5oy19ngYJkgOf7KimRhyN199LKDOrNDaCRzkPJWvjuXb4zh63OnOULnjnqpMnBTPv9Y72Kpjj2f6lb/efBaHzZHUgz8X3Fq4tKRE6SSRp2xVRoVR3Fr9ys1vXXP4vIMNeFTWOWO5fcIxfxSOVstri7qcjH6NzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjVWTQsY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66DAC2BBFC;
-	Tue, 30 Apr 2024 11:28:50 +0000 (UTC)
+	 MIME-Version; b=K2O+ogM8uriCjO+zX40hWYuOZAjgpGmdeLBMBOawerVaeTcMG7oz6Gzsom4TOEhhHZtQvMdr/gbaaAHdXLWRmNGjHsDaaKbU2Xh6UclwOOxmRIEJ0QsWMy9Z4XYZpT2vw9ZD9EFV+T8X2L2ERR8bEwmdWfYWurE7w9sWSwFbqvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjVZTkbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2222DC2BBFC;
+	Tue, 30 Apr 2024 11:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476531;
-	bh=pNQJr94EBvjDJ6NpQf0ZQKHhFlWspGy7TszASxaPcHQ=;
+	s=korg; t=1714476222;
+	bh=MAw0mowXNLwC8o2bCrGjl8ztPd/LECfczMJHMrQIcB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MjVWTQsY0N4ss6O8tGcvuIB8GKcE4BaGe9sRfxTsHMQNUZgEkdQnlKm9BaNaavqbg
-	 jQ3Sizml4xTqk7e5jSpwSeA0SzvHirjTlmE4xGoL5obRzrxesYIyCSo1of2AmilgAf
-	 0j79ZzK8wWGBA/4pC1yGedr9HyqaK9jyVcOwEwww=
+	b=OjVZTkbYhPPT8t3cP1pkSVxRqoVuPGyFLJsqdMny6nUB4mTahtw3QW6LtU2rPpzd3
+	 MauoT8YrYhowz+03CzuUsxaSsCOSY3X6W6URAEFQ383wZxlfbTJllB7d6xykBBOVS4
+	 alYUgrMKLQgXqflGABIr/7IAHwqrRjWRZ7eeezD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Thorvald Natvig <thorvald@google.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peng Zhang <zhangpeng.00@bytedance.com>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 062/110] fork: defer linking file vma until vma is fully initialized
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 071/107] mlxsw: spectrum_acl_tcam: Rate limit error message
 Date: Tue, 30 Apr 2024 12:40:31 +0200
-Message-ID: <20240430103049.397742271@linuxfoundation.org>
+Message-ID: <20240430103046.751572332@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,102 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19 upstream.
+[ Upstream commit 5bcf925587e9b5d36420d572a0b4d131c90fb306 ]
 
-Thorvald reported a WARNING [1]. And the root cause is below race:
+In the rare cases when the device resources are exhausted it is likely
+that the rehash delayed work will fail. An error message will be printed
+whenever this happens which can be overwhelming considering the fact
+that the work is per-region and that there can be hundreds of regions.
 
- CPU 1					CPU 2
- fork					hugetlbfs_fallocate
-  dup_mmap				 hugetlbfs_punch_hole
-   i_mmap_lock_write(mapping);
-   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
-   i_mmap_unlock_write(mapping);
-   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
-					 i_mmap_lock_write(mapping);
-   					 hugetlb_vmdelete_list
-					  vma_interval_tree_foreach
-					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
-   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
-					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
-					 i_mmap_unlock_write(mapping);
+Fix by rate limiting the error message.
 
-hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
-i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
-by deferring linking file vma until vma is fully initialized.  Those vmas
-should be initialized first before they can be used.
-
-Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
-Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Reported-by: Thorvald Natvig <thorvald@google.com>
-Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: Tycho Andersen <tandersen@netflix.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e5e7962ee5c2 ("mlxsw: spectrum_acl: Implement region migration according to hints")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/c510763b2ebd25e7990d80183feff91cde593145.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -662,6 +662,15 @@ static __latent_entropy int dup_mmap(str
- 		} else if (anon_vma_fork(tmp, mpnt))
- 			goto fail_nomem_anon_vma_fork;
- 		tmp->vm_flags &= ~(VM_LOCKED | VM_LOCKONFAULT);
-+		/*
-+		 * Copy/update hugetlb private vma information.
-+		 */
-+		if (is_vm_hugetlb_page(tmp))
-+			hugetlb_dup_vma_private(tmp);
-+
-+		if (tmp->vm_ops && tmp->vm_ops->open)
-+			tmp->vm_ops->open(tmp);
-+
- 		file = tmp->vm_file;
- 		if (file) {
- 			struct address_space *mapping = file->f_mapping;
-@@ -678,12 +687,6 @@ static __latent_entropy int dup_mmap(str
- 			i_mmap_unlock_write(mapping);
- 		}
- 
--		/*
--		 * Copy/update hugetlb private vma information.
--		 */
--		if (is_vm_hugetlb_page(tmp))
--			hugetlb_dup_vma_private(tmp);
--
- 		/* Link the vma into the MT */
- 		mas.index = tmp->vm_start;
- 		mas.last = tmp->vm_end - 1;
-@@ -695,9 +698,6 @@ static __latent_entropy int dup_mmap(str
- 		if (!(tmp->vm_flags & VM_WIPEONFORK))
- 			retval = copy_page_range(tmp, mpnt);
- 
--		if (tmp->vm_ops && tmp->vm_ops->open)
--			tmp->vm_ops->open(tmp);
--
- 		if (retval)
- 			goto loop_out;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 7e5dc664c55c7..5175ed6cdae08 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -1521,7 +1521,7 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
+ 	err = mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion,
+ 						ctx, credits);
+ 	if (err) {
+-		dev_err(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
++		dev_err_ratelimited(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
+ 		return;
  	}
+ 
+-- 
+2.43.0
+
 
 
 
