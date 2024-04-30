@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22EB48B744C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B05368B735D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 467591C21F96
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D592883A0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57A612D746;
-	Tue, 30 Apr 2024 11:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1884212CD9B;
+	Tue, 30 Apr 2024 11:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTTxjV37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIMO7KVB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741F612BF32;
-	Tue, 30 Apr 2024 11:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94A38801;
+	Tue, 30 Apr 2024 11:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476557; cv=none; b=WklEduAPtnBPsDV8Yx5kVYpmDoWD60gqS1NyNOQCWKMiFqz3w8xxnXa7zmSDCClP/y83WBuStcJ9N0EfjzJhA1KBvwApRs4i2Pp4whKvHHkp1/kLkG0E2Zu1cHIMKykWbc8WOsjRKOVDi4yuwCJPvwDaktYp/dIKTbmXLhv9SqE=
+	t=1714475889; cv=none; b=utC1Uq7z7dOmS/xsaoGEiSqlYUswm07cyLzw/St+jLJyTS5kBGpDbuykualoOONXj8IWiLCHlJvKNCpeCvC6pp6MvXudAkAzYnnOdA2SSHMRVugfS0LihiXsoIk3SEucsZ12ZjuWI/9c+JNp5zUIY4Xfyx9FuNtJczJvmPd9p6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476557; c=relaxed/simple;
-	bh=AdxRXs4MqDrMgh/fXmt0zPXat8wP/5HDmT0pFjFZmqc=;
+	s=arc-20240116; t=1714475889; c=relaxed/simple;
+	bh=qYNejDpzSjT6N3YmcfCPI6PDRU6RY9XgUIcNzQ9m+iQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VxIC3OAMEtDDhUmxDPZFQVuk6ii3Vijfmg2yaGxbI0XNipV+Pg6SlLapUU1B4doLQUTQ1/WTEsynF+9bTYWJCJzOI/o38GF7cFhG3gbZ+tusuD6sFq0P7FV4bW+oSxW/RiX+f1b4TtER30nnpzetoJ7JkGM5NSEInybIrcVewZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTTxjV37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83B9C4AF1A;
-	Tue, 30 Apr 2024 11:29:16 +0000 (UTC)
+	 MIME-Version; b=Rexl4a4wZKQIwJLmVaRZo/Xr3CuOjV9vfPsU+nwfzHQ1goJYJIcD8uOkOEaJ28t5y5OZ5ZSHYYGIV04ckI46+l3YO4mcrX2PZt0WSVdkKYWQN8P+r2D5nFuSOXgOHKxiXTZZAXuW68LyELSGF4E6Utfbi5rQR+XyJoIp9rY0tv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIMO7KVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDDFC2BBFC;
+	Tue, 30 Apr 2024 11:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476557;
-	bh=AdxRXs4MqDrMgh/fXmt0zPXat8wP/5HDmT0pFjFZmqc=;
+	s=korg; t=1714475889;
+	bh=qYNejDpzSjT6N3YmcfCPI6PDRU6RY9XgUIcNzQ9m+iQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTTxjV37U7+3Sv2dBKK31F0PBKYk5A86Q8HJlKAqaQdNHtxBCx6Y96npfUBcbAT+l
-	 4C31VEbPhklXUyGRTpNYzsGUMxrPYCSNZUA/2Y4KW5cXPj0DoZiGRaMt24+/58Ienu
-	 E7+TYc0d9/HQUSsxvRRG1GM2zKBqaHMPf38GfwEw=
+	b=eIMO7KVB4nK6aLhj3wiQ6dnDeRbMZiMXe+/wirDrltP4FYH/qc6acAEX4W42MUBSL
+	 633k44WvoohF0yBuLLCt6hN87C7dmY7VM2FTpXonu8aFwhmo4STyOZbl//xg8e9Mw0
+	 lEkdqoRgfX2kwGn3X6cWAno7Hjk4zZcOkFg4dF4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/110] eth: bnxt: fix counting packets discarded due to OOM and netpoll
+	Moshe Shemesh <moshe@nvidia.com>,
+	Shifeng Li <lishifeng@sangfor.com.cn>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Subject: [PATCH 5.15 49/80] net/mlx5e: Fix a race in command alloc flow
 Date: Tue, 30 Apr 2024 12:40:21 +0200
-Message-ID: <20240430103049.102337925@linuxfoundation.org>
+Message-ID: <20240430103044.866859144@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Shifeng Li <lishifeng@sangfor.com.cn>
 
-[ Upstream commit 730117730709992c9f6535dd7b47638ee561ec45 ]
+commit 8f5100da56b3980276234e812ce98d8f075194cd upstream.
 
-I added OOM and netpoll discard counters, naively assuming that
-the cpr pointer is pointing to a common completion ring.
-Turns out that is usually *a* completion ring but not *the*
-completion ring which bnapi->cp_ring points to. bnapi->cp_ring
-is where the stats are read from, so we end up reporting 0
-thru ethtool -S and qstat even though the drop events have happened.
-Make 100% sure we're recording statistics in the correct structure.
+Fix a cmd->ent use after free due to a race on command entry.
+Such race occurs when one of the commands releases its last refcount and
+frees its index and entry while another process running command flush
+flow takes refcount to this command entry. The process which handles
+commands flush may see this command as needed to be flushed if the other
+process allocated a ent->idx but didn't set ent to cmd->ent_arr in
+cmd_work_handler(). Fix it by moving the assignment of cmd->ent_arr into
+the spin lock.
 
-Fixes: 907fd4a294db ("bnxt: count discards due to memory allocation errors")
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20240424002148.3937059-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[70013.081955] BUG: KASAN: use-after-free in mlx5_cmd_trigger_completions+0x1e2/0x4c0 [mlx5_core]
+[70013.081967] Write of size 4 at addr ffff88880b1510b4 by task kworker/26:1/1433361
+[70013.081968]
+[70013.082028] Workqueue: events aer_isr
+[70013.082053] Call Trace:
+[70013.082067]  dump_stack+0x8b/0xbb
+[70013.082086]  print_address_description+0x6a/0x270
+[70013.082102]  kasan_report+0x179/0x2c0
+[70013.082173]  mlx5_cmd_trigger_completions+0x1e2/0x4c0 [mlx5_core]
+[70013.082267]  mlx5_cmd_flush+0x80/0x180 [mlx5_core]
+[70013.082304]  mlx5_enter_error_state+0x106/0x1d0 [mlx5_core]
+[70013.082338]  mlx5_try_fast_unload+0x2ea/0x4d0 [mlx5_core]
+[70013.082377]  remove_one+0x200/0x2b0 [mlx5_core]
+[70013.082409]  pci_device_remove+0xf3/0x280
+[70013.082439]  device_release_driver_internal+0x1c3/0x470
+[70013.082453]  pci_stop_bus_device+0x109/0x160
+[70013.082468]  pci_stop_and_remove_bus_device+0xe/0x20
+[70013.082485]  pcie_do_fatal_recovery+0x167/0x550
+[70013.082493]  aer_isr+0x7d2/0x960
+[70013.082543]  process_one_work+0x65f/0x12d0
+[70013.082556]  worker_thread+0x87/0xb50
+[70013.082571]  kthread+0x2e9/0x3a0
+[70013.082592]  ret_from_fork+0x1f/0x40
+
+The logical relationship of this error is as follows:
+
+             aer_recover_work              |          ent->work
+-------------------------------------------+------------------------------
+aer_recover_work_func                      |
+|- pcie_do_recovery                        |
+  |- report_error_detected                 |
+    |- mlx5_pci_err_detected               |cmd_work_handler
+      |- mlx5_enter_error_state            |  |- cmd_alloc_index
+        |- enter_error_state               |    |- lock cmd->alloc_lock
+          |- mlx5_cmd_flush                |    |- clear_bit
+            |- mlx5_cmd_trigger_completions|    |- unlock cmd->alloc_lock
+              |- lock cmd->alloc_lock      |
+              |- vector = ~dev->cmd.vars.bitmask
+              |- for_each_set_bit          |
+                |- cmd_ent_get(cmd->ent_arr[i]) (UAF)
+              |- unlock cmd->alloc_lock    |  |- cmd->ent_arr[ent->idx]=ent
+
+The cmd->ent_arr[ent->idx] assignment and the bit clearing are not
+protected by the cmd->alloc_lock in cmd_work_handler().
+
+Fixes: 50b2412b7e78 ("net/mlx5: Avoid possible free of command entry while timeout comp handler")
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Shifeng Li <lishifeng@sangfor.com.cn>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 44 ++++++++++-------------
- 1 file changed, 18 insertions(+), 26 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 70021b5eb54a6..77ea19bcdc6fe 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -1697,7 +1697,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
- 		skb = bnxt_copy_skb(bnapi, data_ptr, len, mapping);
- 		if (!skb) {
- 			bnxt_abort_tpa(cpr, idx, agg_bufs);
--			cpr->sw_stats.rx.rx_oom_discards += 1;
-+			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
- 			return NULL;
- 		}
- 	} else {
-@@ -1707,7 +1707,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
- 		new_data = __bnxt_alloc_rx_frag(bp, &new_mapping, GFP_ATOMIC);
- 		if (!new_data) {
- 			bnxt_abort_tpa(cpr, idx, agg_bufs);
--			cpr->sw_stats.rx.rx_oom_discards += 1;
-+			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
- 			return NULL;
- 		}
- 
-@@ -1723,7 +1723,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
- 		if (!skb) {
- 			skb_free_frag(data);
- 			bnxt_abort_tpa(cpr, idx, agg_bufs);
--			cpr->sw_stats.rx.rx_oom_discards += 1;
-+			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
- 			return NULL;
- 		}
- 		skb_reserve(skb, bp->rx_offset);
-@@ -1734,7 +1734,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
- 		skb = bnxt_rx_agg_pages_skb(bp, cpr, skb, idx, agg_bufs, true);
- 		if (!skb) {
- 			/* Page reuse already handled by bnxt_rx_pages(). */
--			cpr->sw_stats.rx.rx_oom_discards += 1;
-+			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
- 			return NULL;
- 		}
- 	}
-@@ -1950,11 +1950,8 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 			u32 frag_len = bnxt_rx_agg_pages_xdp(bp, cpr, &xdp,
- 							     cp_cons, agg_bufs,
- 							     false);
--			if (!frag_len) {
--				cpr->sw_stats.rx.rx_oom_discards += 1;
--				rc = -ENOMEM;
--				goto next_rx;
--			}
-+			if (!frag_len)
-+				goto oom_next_rx;
- 		}
- 		xdp_active = true;
- 	}
-@@ -1977,9 +1974,7 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 				else
- 					bnxt_xdp_buff_frags_free(rxr, &xdp);
- 			}
--			cpr->sw_stats.rx.rx_oom_discards += 1;
--			rc = -ENOMEM;
--			goto next_rx;
-+			goto oom_next_rx;
- 		}
- 	} else {
- 		u32 payload;
-@@ -1990,29 +1985,21 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 			payload = 0;
- 		skb = bp->rx_skb_func(bp, rxr, cons, data, data_ptr, dma_addr,
- 				      payload | len);
--		if (!skb) {
--			cpr->sw_stats.rx.rx_oom_discards += 1;
--			rc = -ENOMEM;
--			goto next_rx;
--		}
-+		if (!skb)
-+			goto oom_next_rx;
- 	}
- 
- 	if (agg_bufs) {
- 		if (!xdp_active) {
- 			skb = bnxt_rx_agg_pages_skb(bp, cpr, skb, cp_cons, agg_bufs, false);
--			if (!skb) {
--				cpr->sw_stats.rx.rx_oom_discards += 1;
--				rc = -ENOMEM;
--				goto next_rx;
--			}
-+			if (!skb)
-+				goto oom_next_rx;
- 		} else {
- 			skb = bnxt_xdp_build_skb(bp, skb, agg_bufs, rxr->page_pool, &xdp, rxcmp1);
- 			if (!skb) {
- 				/* we should be able to free the old skb here */
- 				bnxt_xdp_buff_frags_free(rxr, &xdp);
--				cpr->sw_stats.rx.rx_oom_discards += 1;
--				rc = -ENOMEM;
--				goto next_rx;
-+				goto oom_next_rx;
- 			}
- 		}
- 	}
-@@ -2090,6 +2077,11 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 	*raw_cons = tmp_raw_cons;
- 
- 	return rc;
-+
-+oom_next_rx:
-+	cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
-+	rc = -ENOMEM;
-+	goto next_rx;
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -114,15 +114,18 @@ static u8 alloc_token(struct mlx5_cmd *c
+ 	return token;
  }
  
- /* In netpoll mode, if we are using a combined completion ring, we need to
-@@ -2135,7 +2127,7 @@ static int bnxt_force_rx_discard(struct bnxt *bp,
- 	}
- 	rc = bnxt_rx_pkt(bp, cpr, raw_cons, event);
- 	if (rc && rc != -EBUSY)
--		cpr->sw_stats.rx.rx_netpoll_discards += 1;
-+		cpr->bnapi->cp_ring.sw_stats.rx.rx_netpoll_discards += 1;
- 	return rc;
- }
+-static int cmd_alloc_index(struct mlx5_cmd *cmd)
++static int cmd_alloc_index(struct mlx5_cmd *cmd, struct mlx5_cmd_work_ent *ent)
+ {
+ 	unsigned long flags;
+ 	int ret;
  
--- 
-2.43.0
-
+ 	spin_lock_irqsave(&cmd->alloc_lock, flags);
+ 	ret = find_first_bit(&cmd->bitmask, cmd->max_reg_cmds);
+-	if (ret < cmd->max_reg_cmds)
++	if (ret < cmd->max_reg_cmds) {
+ 		clear_bit(ret, &cmd->bitmask);
++		ent->idx = ret;
++		cmd->ent_arr[ent->idx] = ent;
++	}
+ 	spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+ 
+ 	return ret < cmd->max_reg_cmds ? ret : -ENOMEM;
+@@ -924,7 +927,7 @@ static void cmd_work_handler(struct work
+ 	sem = ent->page_queue ? &cmd->pages_sem : &cmd->sem;
+ 	down(sem);
+ 	if (!ent->page_queue) {
+-		alloc_ret = cmd_alloc_index(cmd);
++		alloc_ret = cmd_alloc_index(cmd, ent);
+ 		if (alloc_ret < 0) {
+ 			mlx5_core_err_rl(dev, "failed to allocate command entry\n");
+ 			if (ent->callback) {
+@@ -939,15 +942,14 @@ static void cmd_work_handler(struct work
+ 			up(sem);
+ 			return;
+ 		}
+-		ent->idx = alloc_ret;
+ 	} else {
+ 		ent->idx = cmd->max_reg_cmds;
+ 		spin_lock_irqsave(&cmd->alloc_lock, flags);
+ 		clear_bit(ent->idx, &cmd->bitmask);
++		cmd->ent_arr[ent->idx] = ent;
+ 		spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+ 	}
+ 
+-	cmd->ent_arr[ent->idx] = ent;
+ 	lay = get_inst(cmd, ent->idx);
+ 	ent->lay = lay;
+ 	memset(lay, 0, sizeof(*lay));
 
 
 
