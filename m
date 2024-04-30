@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9988B742B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB71F8B7322
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0D3B1C22C8C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 192AC1C23234
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F86B12D214;
-	Tue, 30 Apr 2024 11:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FB912D770;
+	Tue, 30 Apr 2024 11:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NT5OdwmF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2aqBQ0+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D231017592;
-	Tue, 30 Apr 2024 11:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7730F12D755;
+	Tue, 30 Apr 2024 11:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476479; cv=none; b=LchFvtrWlqvZzdtSLLLF1GMUjZAAbVP1yzBD4S9sViedLRAS8MUk4A3lOcL9ESuFuL3zZWxFp4xjKkjqVwLz0Ij+uE9LNnN09JaYPQg//RfoiSwgq2nZ+0z6mDdT0hFcks1RU0qHJmb31rsog2sQXHtQW+s85NZwHlUdfVREEZI=
+	t=1714475733; cv=none; b=UkGNmzM7zFuQF1ki6TmgD6dk2h5KkHY9KK4bynveYV7mAxaSQ9CZloWoNPmaF/cdIyDqQFw7htplegMKoqpJlLrPmHbEQlWjQZ/qg2JtUK69/mOrPKT7F7LIPHoL3gFLeiyrsvNTW2DeY2oRCHAgoNdqfwt4SBS+sEaSCbkXl2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476479; c=relaxed/simple;
-	bh=6cQnw30DmOAlT3cICvUi5vd+ekMYYB0Pwjlz7c/YsAQ=;
+	s=arc-20240116; t=1714475733; c=relaxed/simple;
+	bh=rU3r815yod2YWXObHgCFacKZa8a0Kuiv0gPzVR0nDsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N93QA+8C9Ofs9ep2PS8kdEHTbWOnZ14U+QncC1ysWdsI9HJnZkrY4uFuQTYEIxRrFWkT0o+KVhu+uiGKq4VzfSyY0uTeHMXHCfZyIq8uIvVdiw4giNSI0QzXgxzYKRK1bhBZGJ0I9GKziVIvzt+jucE0gmtbqYgN/JDBdX4qfKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NT5OdwmF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522F9C2BBFC;
-	Tue, 30 Apr 2024 11:27:59 +0000 (UTC)
+	 MIME-Version; b=dyz+cXuNKHiqxpOeBgvMlYReIb+B2j1vpu65uqYVVjLT7DPwGnlAAla6JdH3UFzRjpRw5lZcS/IsEN8u+7iROIyuS3gQaynJORvpMGUkDADutTkNi6fkvDjYCzBc1FpjEGgkBjpB1r92P7Smq3V7GQNXg2f/mNnEGXRNlmd9ixA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2aqBQ0+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEFBC2BBFC;
+	Tue, 30 Apr 2024 11:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476479;
-	bh=6cQnw30DmOAlT3cICvUi5vd+ekMYYB0Pwjlz7c/YsAQ=;
+	s=korg; t=1714475733;
+	bh=rU3r815yod2YWXObHgCFacKZa8a0Kuiv0gPzVR0nDsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NT5OdwmFa2CeRFgwMQD8z1xLpFVQ2UcROZAFnb3J1J1xloYDpuhnKyDOsU7VCKRuK
-	 8MIqZf05RiE82WA7uCNsIsF3mdFfoBMW4vyBAqa2kUw9rqWagKEqzY4YPGMoCjZ0Jb
-	 jtMbjsXocFhkeaVXTzeBykD52YzTwoOIb7/7n+44=
+	b=k2aqBQ0+5IImtu8HrI6WaSXkw0Xyl1/sStKxQg8a4QJxAJut0K6PrybFYqgi+j0L2
+	 fqEgekPQT/ZF9afr8M8/5Ku4yvAzXpWEUtFFosmFBAEJeQU9TqoNyaaB5JZagOZQAo
+	 /sfSf2+Y8b8Ky+sWlbRxq1FxsN09JvYTG1ON99fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/110] mlxsw: spectrum_acl_tcam: Fix race during rehash delayed work
+Subject: [PATCH 6.6 161/186] soundwire: amd: fix for wake interrupt handling for clockstop mode
 Date: Tue, 30 Apr 2024 12:40:13 +0200
-Message-ID: <20240430103048.868518163@linuxfoundation.org>
+Message-ID: <20240430103102.707096134@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit d90cfe20562407d9f080d24123078d666d730707 ]
+[ Upstream commit 63dc588e7af1392576071a1841298198c9cddee3 ]
 
-The purpose of the rehash delayed work is to reduce the number of masks
-(eRPs) used by an ACL region as the eRP bank is a global and limited
-resource.
+When SoundWire Wake interrupt is enabled along with SoundWire Wake
+enable register, SoundWire wake interrupt will be reported
+when SoundWire manager is in D3 state and ACP is in D3 state.
 
-This is done in three steps:
+When SoundWire Wake interrupt is reported, it will invoke runtime
+resume of the SoundWire manager device.
 
-1. Creating a new set of masks and a new ACL region which will use the
-   new masks and to which the existing filters will be migrated to. The
-   new region is assigned to 'vregion->region' and the region from which
-   the filters are migrated from is assigned to 'vregion->region2'.
+In case of system level suspend, for ClockStop Mode SoundWire Wake
+interrupt should be disabled.
+It should be enabled only for runtime suspend scenario.
+Change wake interrupt enable/disable sequence for ClockStop Mode in
+system level suspend and runtime suspend sceanrio.
 
-2. Migrating all the filters from the old region to the new region.
-
-3. Destroying the old region and setting 'vregion->region2' to NULL.
-
-Only the second steps is performed under the 'vregion->lock' mutex
-although its comments says that among other things it "Protects
-consistency of region, region2 pointers".
-
-This is problematic as the first step can race with filter insertion
-from user space that uses 'vregion->region', but under the mutex.
-
-Fix by holding the mutex across the entirety of the delayed work and not
-only during the second step.
-
-Fixes: 2bffc5322fd8 ("mlxsw: spectrum_acl: Don't take mutex in mlxsw_sp_acl_tcam_vregion_rehash_work()")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/1ec1d54edf2bad0a369e6b4fa030aba64e1f124b.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9cf1efc5ed2d ("soundwire: amd: add pm_prepare callback and pm ops support")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20240327063143.2266464-2-Vijendar.Mukunda@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soundwire/amd_manager.c | 15 +++++++++++++++
+ drivers/soundwire/amd_manager.h |  3 ++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 41eac7dfb67e7..508c0b1b80fd9 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -780,7 +780,9 @@ static void mlxsw_sp_acl_tcam_vregion_rehash_work(struct work_struct *work)
- 			     rehash.dw.work);
- 	int credits = MLXSW_SP_ACL_TCAM_VREGION_REHASH_CREDITS;
- 
-+	mutex_lock(&vregion->lock);
- 	mlxsw_sp_acl_tcam_vregion_rehash(vregion->mlxsw_sp, vregion, &credits);
-+	mutex_unlock(&vregion->lock);
- 	if (credits < 0)
- 		/* Rehash gone out of credits so it was interrupted.
- 		 * Schedule the work as soon as possible to continue.
-@@ -1420,7 +1422,6 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
- 	int err, err2;
- 
- 	trace_mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion);
--	mutex_lock(&vregion->lock);
- 	err = mlxsw_sp_acl_tcam_vchunk_migrate_all(mlxsw_sp, vregion,
- 						   ctx, credits);
- 	if (err) {
-@@ -1440,7 +1441,6 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
- 			/* Let the rollback to be continued later on. */
- 		}
- 	}
--	mutex_unlock(&vregion->lock);
- 	trace_mlxsw_sp_acl_tcam_vregion_migrate_end(mlxsw_sp, vregion);
- 	return err;
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index a3b1f4e6f0f90..79173ab540a6b 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -148,6 +148,19 @@ static void amd_sdw_set_frameshape(struct amd_sdw_manager *amd_manager)
+ 	writel(frame_size, amd_manager->mmio + ACP_SW_FRAMESIZE);
  }
+ 
++static void amd_sdw_wake_enable(struct amd_sdw_manager *amd_manager, bool enable)
++{
++	u32 wake_ctrl;
++
++	wake_ctrl = readl(amd_manager->mmio + ACP_SW_STATE_CHANGE_STATUS_MASK_8TO11);
++	if (enable)
++		wake_ctrl |= AMD_SDW_WAKE_INTR_MASK;
++	else
++		wake_ctrl &= ~AMD_SDW_WAKE_INTR_MASK;
++
++	writel(wake_ctrl, amd_manager->mmio + ACP_SW_STATE_CHANGE_STATUS_MASK_8TO11);
++}
++
+ static void amd_sdw_ctl_word_prep(u32 *lower_word, u32 *upper_word, struct sdw_msg *msg,
+ 				  int cmd_offset)
+ {
+@@ -1122,6 +1135,7 @@ static int __maybe_unused amd_suspend(struct device *dev)
+ 	}
+ 
+ 	if (amd_manager->power_mode_mask & AMD_SDW_CLK_STOP_MODE) {
++		amd_sdw_wake_enable(amd_manager, false);
+ 		return amd_sdw_clock_stop(amd_manager);
+ 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
+ 		/*
+@@ -1148,6 +1162,7 @@ static int __maybe_unused amd_suspend_runtime(struct device *dev)
+ 		return 0;
+ 	}
+ 	if (amd_manager->power_mode_mask & AMD_SDW_CLK_STOP_MODE) {
++		amd_sdw_wake_enable(amd_manager, true);
+ 		return amd_sdw_clock_stop(amd_manager);
+ 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
+ 		ret = amd_sdw_clock_stop(amd_manager);
+diff --git a/drivers/soundwire/amd_manager.h b/drivers/soundwire/amd_manager.h
+index 5f040151a259b..6dcc7a449346e 100644
+--- a/drivers/soundwire/amd_manager.h
++++ b/drivers/soundwire/amd_manager.h
+@@ -152,7 +152,7 @@
+ #define AMD_SDW0_EXT_INTR_MASK		0x200000
+ #define AMD_SDW1_EXT_INTR_MASK		4
+ #define AMD_SDW_IRQ_MASK_0TO7		0x77777777
+-#define AMD_SDW_IRQ_MASK_8TO11		0x000d7777
++#define AMD_SDW_IRQ_MASK_8TO11		0x000c7777
+ #define AMD_SDW_IRQ_ERROR_MASK		0xff
+ #define AMD_SDW_MAX_FREQ_NUM		1
+ #define AMD_SDW0_MAX_TX_PORTS		3
+@@ -190,6 +190,7 @@
+ #define AMD_SDW_CLK_RESUME_REQ				2
+ #define AMD_SDW_CLK_RESUME_DONE				3
+ #define AMD_SDW_WAKE_STAT_MASK				BIT(16)
++#define AMD_SDW_WAKE_INTR_MASK				BIT(16)
+ 
+ static u32 amd_sdw_freq_tbl[AMD_SDW_MAX_FREQ_NUM] = {
+ 	AMD_SDW_DEFAULT_CLK_FREQ,
 -- 
 2.43.0
 
