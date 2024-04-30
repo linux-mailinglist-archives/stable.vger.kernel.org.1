@@ -1,240 +1,128 @@
-Return-Path: <stable+bounces-42805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798718B7C79
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 18:05:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F3988B7C7C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 18:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2677B2842D4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 16:05:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D2871C21F90
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 16:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D33E132C15;
-	Tue, 30 Apr 2024 16:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918E3172BCB;
+	Tue, 30 Apr 2024 16:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="GbDidP89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Trsa9OpC"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8211527B1
-	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 16:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302731527B1;
+	Tue, 30 Apr 2024 16:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714493133; cv=none; b=gSkuHLGaIYd/0vOBNB1qKXJWTCeJNCrcMu2XjPrxD2/OBr0dm8U4dehECnlcD/wGqy07Co0MVPTZyGXYEGA4ZIAdu27E+4HQqvVm/G4eLRubJVtaIZTWhVxZY/luvSY6bJTPM76qN4M5CoY4nVqkF+mwjyRW9wWxwf7MHzDe2ac=
+	t=1714493205; cv=none; b=QegZ6wlOdT1PxDAwKIjz223ZVzG42k67ir2z7m+ZRn7wUmAzi+4aPjLKxpODMCuTXWyLQGy22wMm8BSy6GABkyfFoV9kKsRbZ1rptqhjmZPU8DAEahU4pa/9RSuDz/G0eISZPXcbkoU1sIG5uUgD3vVtA2PZsr855+KVoE3S0KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714493133; c=relaxed/simple;
-	bh=lIEddZUcZaBOljTrJx8m0K3MclZOU/1/cmQlfdnOh7Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Z691xtunFnZ3szPTt2IWg5TuXwdl2PCjbRp0tRhPmXK/tp2SsII7JQAMuMY320fL1bkyrriTQCVwHfsxj9sIqj2W8YyuAvkFqEJ0jqsMTqKW90LlSSLzOdvQUEEsLTtrHc0yptHFAeQ8tldnxxX52vZL95vvstqfzJ6qnk3UqXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=GbDidP89; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.65.32.120] (unknown [20.236.11.29])
-	by linux.microsoft.com (Postfix) with ESMTPSA id D2A09210FBD9;
-	Tue, 30 Apr 2024 09:05:30 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D2A09210FBD9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1714493131;
-	bh=ONUFyfDi5nlxIUE4KTnAh4qS2rc7xZgrzsgFW6I+XbM=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=GbDidP89KPQYA51Y6c+C6h61MSvITO+J0Qc41zOqTx2RsskiRBpcf+B1AGS5Ggm6m
-	 3jrOj6CB7I64KN7NF2loAYrcOAjvm+NkYIah3KA+xl+vyslmLchLBl9aWynr3x4QI9
-	 U4t6lkwwjkfl5DnF7y/4vTUPt0alveTO3QQc98g8=
-Message-ID: <24df5fe0-9e1a-4929-b132-3654ec9d8bf3@linux.microsoft.com>
-Date: Tue, 30 Apr 2024 09:05:28 -0700
+	s=arc-20240116; t=1714493205; c=relaxed/simple;
+	bh=36pB0GQAKQuOsq3AByAb3OXyPXgZ6QZz7qChxKaHd74=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g89M3zkiax+xawhcZK02fbZFwbmvpuPVtvVrjIR9uNb6Z57PLR8U2j5M4yURUM3LNQ26p3wJvOnVOCILFXecNvqcS4cvGgwaw9juYJZP8uN1j1KfCePOTI7Wosb3c85aY6SCkkAMBD6hep77lvkYzssdJDisyOqtV1ERRg2aIWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Trsa9OpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F86C2BBFC;
+	Tue, 30 Apr 2024 16:06:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714493204;
+	bh=36pB0GQAKQuOsq3AByAb3OXyPXgZ6QZz7qChxKaHd74=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Trsa9OpCArsRh1drLMBPcVhkyklWUNkMN8H91XyFl/FgG4tcbgcbGmkek5benYgYp
+	 OhQ6tBFcDU6buvSnLwduvbd9fq3WWbe9X1zaHpTRmjDZqPR4IFwziLmjTQ0eh9UGkq
+	 uVSGFP+e+Gut+lKrVBbSIm5pAAIXqMRLv7fBZBtE=
+Date: Tue, 30 Apr 2024 18:06:41 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: Prashanth K <quic_prashk@quicinc.com>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] usb: dwc3: Wait unconditionally after issuing EndXfer
+ command
+Message-ID: <2024043022-chatroom-backwash-371e@gregkh>
+References: <20240425045749.1493541-1-quic_prashk@quicinc.com>
+ <20240425232200.kozymtwjxjs7nmoz@synopsys.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] ACPI: CPPC: Fix access width used for PCC
- registers" failed to apply to 5.15-stable tree
-To: gregkh@linuxfoundation.org, vanshikonda@os.amperecomputing.com,
- jarredwhite@linux.microsoft.com, rafael.j.wysocki@intel.com,
- stable@vger.kernel.org
-References: <2024042905-puppy-heritage-e422@gregkh>
-Content-Language: en-CA
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-In-Reply-To: <2024042905-puppy-heritage-e422@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240425232200.kozymtwjxjs7nmoz@synopsys.com>
 
-On 4/29/2024 4:53 AM, gregkh@linuxfoundation.org wrote:
+On Thu, Apr 25, 2024 at 11:22:08PM +0000, Thinh Nguyen wrote:
+> On Thu, Apr 25, 2024, Prashanth K wrote:
+> > Currently all controller IP/revisions except DWC3_usb3 >= 310a
+> > wait 1ms unconditionally for ENDXFER completion when IOC is not
+> > set. This is because DWC_usb3 controller revisions >= 3.10a
+> > supports GUCTL2[14: Rst_actbitlater] bit which allows polling
+> > CMDACT bit to know whether ENDXFER command is completed.
+> > 
+> > Consider a case where an IN request was queued, and parallelly
+> > soft_disconnect was called (due to ffs_epfile_release). This
+> > eventually calls stop_active_transfer with IOC cleared, hence
+> > send_gadget_ep_cmd() skips waiting for CMDACT cleared during
+> > EndXfer. For DWC3 controllers with revisions >= 310a, we don't
+> > forcefully wait for 1ms either, and we proceed by unmapping the
+> > requests. If ENDXFER didn't complete by this time, it leads to
+> > SMMU faults since the controller would still be accessing those
+> > requests.
+> > 
+> > Fix this by ensuring ENDXFER completion by adding 1ms delay in
+> > __dwc3_stop_active_transfer() unconditionally.
+> > 
+> > Cc: <stable@vger.kernel.org>
+> > Fixes: b353eb6dc285 ("usb: dwc3: gadget: Skip waiting for CMDACT cleared during endxfer")
+> > Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+> > ---
+> > Changes in v2:
+> > Changed the patch logic from CMDACT polling to 1ms mdelay.
+> > Updated subject and commit accordingly.
+> > Link to v1: https://urldefense.com/v3/__https://lore.kernel.org/all/20240422090539.3986723-1-quic_prashk@quicinc.com/__;!!A4F2R9G_pg!fa3zoJhmfdChG32lHtAa-7bxJpxPsw2wgzQwQAq9gWG2LwWyr9WnIzm9Eol6hmiKLEOTJuqjOeTYVYZ_sNnER6p_uF4$ 
+> > 
+> >  drivers/usb/dwc3/gadget.c | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+> > index 4df2661f6675..666eae94524f 100644
+> > --- a/drivers/usb/dwc3/gadget.c
+> > +++ b/drivers/usb/dwc3/gadget.c
+> > @@ -1724,8 +1724,7 @@ static int __dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force, bool int
+> >  	dep->resource_index = 0;
+> >  
+> >  	if (!interrupt) {
+> > -		if (!DWC3_IP_IS(DWC3) || DWC3_VER_IS_PRIOR(DWC3, 310A))
+> > -			mdelay(1);
+> > +		mdelay(1);
+> >  		dep->flags &= ~DWC3_EP_TRANSFER_STARTED;
+> >  	} else if (!ret) {
+> >  		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
+> > -- 
+> > 2.25.1
+> > 
 > 
-> The patch below does not apply to the 5.15-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x f489c948028b69cea235d9c0de1cc10eeb26a172
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024042905-puppy-heritage-e422@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> f489c948028b ("ACPI: CPPC: Fix access width used for PCC registers")
-> 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-> 0651ab90e4ad ("ACPI: CPPC: Check _OSC for flexible address space")
-> c42fa24b4475 ("ACPI: bus: Avoid using CPPC if not supported by firmware")
-> 2ca8e6285250 ("Revert "ACPI: Pass the same capabilities to the _OSC regardless of the query flag"")
-> f684b1075128 ("ACPI: CPPC: Drop redundant local variable from cpc_read()")
-> 5f51c7ce1dc3 ("ACPI: CPPC: Fix up I/O port access in cpc_read()")
-> a2c8f92bea5f ("ACPI: CPPC: Implement support for SystemIO registers")
-> 
-> thanks,
-> 
-> greg k-h
-> 
+> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-Hi Greg,
+This patch breaks the build on my systems:
 
-Please fix this with the following set of changes in linux-5.15.y.
+  CC [M]  drivers/usb/dwc3/gadget.o
+drivers/usb/dwc3/gadget.c: In function ‘__dwc3_stop_active_transfer’:
+drivers/usb/dwc3/gadget.c:1702:22: error: unused variable ‘dwc’ [-Werror=unused-variable]
+ 1702 |         struct dwc3 *dwc = dep->dwc;
+      |                      ^~~
+cc1: all warnings being treated as errors
 
-Revert b54c4632946ae42f2b39ed38abd909bbf78cbcc2 from linux-5.15.y
-Cherry-pick 05d92ee782eeb7b939bdd0189e6efcab9195bf95 from upstream
-Pick the following backport of f489c948028b69cea235d9c0de1cc10eeb26a172 from upstream
-
-
-----------------------x8-------------------------------------------------
-From d3260c1d3c9021d3f1b9aa4cf5c85e7501dacbdf Mon Sep 17 00:00:00 2001
-From: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Date: Thu, 11 Apr 2024 16:18:44 -0700
-Subject: [PATCH] ACPI: CPPC: Fix access width used for PCC registers
-
-commit f489c948028b69cea235d9c0de1cc10eeb26a172 upstream
-
-commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system
-memory accesses") modified cpc_read()/cpc_write() to use access_width to
-read CPC registers.
-
-However, for PCC registers the access width field in the ACPI register
-macro specifies the PCC subspace ID.  For non-zero PCC subspace ID it is
-incorrectly treated as access width. This causes errors when reading
-from PCC registers in the CPPC driver.
-
-For PCC registers, base the size of read/write on the bit width field.
-The debug message in cpc_read()/cpc_write() is updated to print relevant
-information for the address space type used to read the register.
-
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
-Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
-Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
----
- drivers/acpi/cppc_acpi.c | 48 ++++++++++++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 6aa456cda0ed..6dcce036adb9 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -955,17 +955,24 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 	}
- 
- 	*val = 0;
--	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	size = GET_BIT_WIDTH(reg);
-+
-+	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
- 		return cpc_read_ffh(cpu, reg, val);
- 	else
- 		return acpi_os_read_memory((acpi_physical_address)reg->address,
--				val, reg->bit_width);
--
--	size = GET_BIT_WIDTH(reg);
-+				val, size);
- 
- 	switch (size) {
- 	case 8:
-@@ -981,8 +988,13 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 		*val = readq_relaxed(vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
--			 reg->bit_width, pcc_ss_id);
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot read %u bit width from system memory: 0x%llx\n",
-+				size, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
-+				size, pcc_ss_id);
-+		}
- 		ret_val = -EFAULT;
- 	}
- 
-@@ -1000,17 +1012,24 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 
--	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	size = GET_BIT_WIDTH(reg);
-+
-+	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
- 		return cpc_write_ffh(cpu, reg, val);
- 	else
- 		return acpi_os_write_memory((acpi_physical_address)reg->address,
--				val, reg->bit_width);
--
--	size = GET_BIT_WIDTH(reg);
-+				val, size);
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		val = MASK_VAL(reg, val);
-@@ -1029,8 +1048,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		writeq_relaxed(val, vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
--			 reg->bit_width, pcc_ss_id);
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot write %u bit width to system memory: 0x%llx\n",
-+				size, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
-+				size, pcc_ss_id);
-+		}
- 		ret_val = -EFAULT;
- 		break;
- 	}
--- 
-2.34.1
-
-----------------------8x-------------------------------------------------
-
-Thanks,
-Easwar
-
+so I can't take it :(
 
