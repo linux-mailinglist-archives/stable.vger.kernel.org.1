@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3978B7117
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:53:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151C18B727D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFADBB22A76
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46A131C2192B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E5912C499;
-	Tue, 30 Apr 2024 10:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6461B12C819;
+	Tue, 30 Apr 2024 11:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuCif9Jm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTnYg0tb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E2A12C487;
-	Tue, 30 Apr 2024 10:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B531E50A;
+	Tue, 30 Apr 2024 11:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474369; cv=none; b=ETKtm2zirMHtK6zLSwUAH20mh5p+uwUYYPPksJurc8F8QBNhZHzC252JL03QgIORq2GgHT6Dc5NdM2OaED7yx6ry5bu8NdVwLGZ5ZSAxTOxX3hFLLTnjTfk8vgf05fEwarQLlP+uqBUomdwE5VaNC5uifkgj1P7TvqATgvvaunk=
+	t=1714475323; cv=none; b=iK3wPcaDiX4kawwMtxTHmx5G40ojk0BRzrxlEKjZnEowoqOx7EmzTGVKZuO3EoZpIaH2tvgNrQe+BQa5hROSrPIIMbZF3SEQPj8pRHus6ZJSTlu29/QCF0eG3WJI0Dh/dHSICBiFb05AI9r9GKGj7l59Y5KebUGsMOkvHvODQEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474369; c=relaxed/simple;
-	bh=SWcoPSLxCXskqVVJwNefBCmsM8mmi2ZGqxRrrm7wX4s=;
+	s=arc-20240116; t=1714475323; c=relaxed/simple;
+	bh=ien2W0vUjyEyqPDY0Pvplgmb1ZVEZ9UZ64X8Er97ePY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLPY0gUR7gInH4Ob94R4oMfjarwVJTpiyNiANnYWynuJEA/qyZgcEWqFTUmiP0CMiqUJeyzjfqe2FuRL0UqQztdOiJMKWsRolFklRt5+cO1ySfcum8tPW8emGVvsLomwsiqPNujRCJhrpxy/PkDO8wyqOqktfI8H/eS4pikxgXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuCif9Jm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3658CC2BBFC;
-	Tue, 30 Apr 2024 10:52:49 +0000 (UTC)
+	 MIME-Version; b=oCREnggdNYk53cRV0X8UJfC1vaDRlXUhEPrlyTefikQRepdJ82LFMfZCzMh9IZsudFfxJrHh8GUmPF0q8+/FiqeloN8/PJfDzuAW8Sv5laDLngcHrIQKM+ii+Z1KWH3+z9QUJt76VUCS3txV5n3mOR/7tmnZmHJBKOlQmmwpbuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTnYg0tb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864C7C2BBFC;
+	Tue, 30 Apr 2024 11:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474369;
-	bh=SWcoPSLxCXskqVVJwNefBCmsM8mmi2ZGqxRrrm7wX4s=;
+	s=korg; t=1714475323;
+	bh=ien2W0vUjyEyqPDY0Pvplgmb1ZVEZ9UZ64X8Er97ePY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuCif9Jmu7k4vaml3uak6BgErhvAE6yL1Pz6zolQwGFJTz4PxwgGlD5hg2Ltp7Xum
-	 3XDPvxVonZLL0kOQLq3Y0Gdwn9daRhAN7j7Rw+HtOYeZvGlU+TFVQxyoYpB9Vgc/4q
-	 E3/ESe3nPdrY1do2J1jppQZtq+qlX3J8O9fcaT1Q=
+	b=iTnYg0tbG++oUcbriN0V52cFGfyznkSHaPhL9sAZx8p9AXNsd7mhjTdPkdp2hLyS3
+	 2Bo8u5CaQRXoXfN/ta8gJYAayrzFD2pT2RPLYjI0nHB27fEjISYT1mDIfvMOVMrMJ+
+	 ZOCvv4H0YN5OSEW0c8yYBKefMWSKiQ3s7ERhmgns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.8 136/228] rust: dont select CONSTRUCTORS
+	shironeko <shironeko@tesaguri.club>,
+	Eric Dumazet <edumazet@google.com>,
+	Jose Alonso <joalonsof@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 062/186] net: usb: ax88179_178a: stop lying about skb->truesize
 Date: Tue, 30 Apr 2024 12:38:34 +0200
-Message-ID: <20240430103107.726554402@linuxfoundation.org>
+Message-ID: <20240430103059.839419178@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 7d49f53af4b988b188d3932deac2c9c80fd7d9ce upstream.
+[ Upstream commit 4ce62d5b2f7aecd4900e7d6115588ad7f9acccca ]
 
-This was originally part of commit 4b9a68f2e59a0 ("rust: add support for
-static synchronisation primitives") from the old Rust branch, which used
-module constructors to initialize globals containing various
-synchronisation primitives with pin-init. That commit has never been
-upstreamed, but the `select CONSTRUCTORS` statement ended up being
-included in the patch that initially added Rust support to the Linux
-Kernel.
+Some usb drivers try to set small skb->truesize and break
+core networking stacks.
 
-We are not using module constructors, so let's remove the select.
+In this patch, I removed one of the skb->truesize overide.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Cc: stable@vger.kernel.org
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Link: https://lore.kernel.org/r/20240308-constructors-v1-1-4c811342391c@google.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I also replaced one skb_clone() by an allocation of a fresh
+and small skb, to get minimally sized skbs, like we did
+in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
+in rx path")
+
+Fixes: f8ebb3ac881b ("net: usb: ax88179_178a: Fix packet receiving")
+Reported-by: shironeko <shironeko@tesaguri.club>
+Closes: https://lore.kernel.org/netdev/c110f41a0d2776b525930f213ca9715c@tesaguri.club/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jose Alonso <joalonsof@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240421193828.1966195-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/usb/ax88179_178a.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1908,7 +1908,6 @@ config RUST
- 	depends on !GCC_PLUGINS
- 	depends on !RANDSTRUCT
- 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
--	select CONSTRUCTORS
- 	help
- 	  Enables Rust support in the kernel.
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 3078511f76083..21b6c4d94a632 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1456,21 +1456,16 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			/* Skip IP alignment pseudo header */
+ 			skb_pull(skb, 2);
  
+-			skb->truesize = SKB_TRUESIZE(pkt_len_plus_padd);
+ 			ax88179_rx_checksum(skb, pkt_hdr);
+ 			return 1;
+ 		}
+ 
+-		ax_skb = skb_clone(skb, GFP_ATOMIC);
++		ax_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
+ 		if (!ax_skb)
+ 			return 0;
+-		skb_trim(ax_skb, pkt_len);
++		skb_put(ax_skb, pkt_len);
++		memcpy(ax_skb->data, skb->data + 2, pkt_len);
+ 
+-		/* Skip IP alignment pseudo header */
+-		skb_pull(ax_skb, 2);
+-
+-		skb->truesize = pkt_len_plus_padd +
+-				SKB_DATA_ALIGN(sizeof(struct sk_buff));
+ 		ax88179_rx_checksum(ax_skb, pkt_hdr);
+ 		usbnet_skb_return(dev, ax_skb);
+ 
+-- 
+2.43.0
+
 
 
 
