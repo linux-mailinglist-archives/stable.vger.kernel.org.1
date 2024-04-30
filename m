@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C6E8B71DE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184208B7295
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 068FF1F238EC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 498621C22FA0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8795B12CD90;
-	Tue, 30 Apr 2024 11:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE75B12CD9B;
+	Tue, 30 Apr 2024 11:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfkS1k+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRFrLsbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4686612B176;
-	Tue, 30 Apr 2024 11:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C36B1E50A;
+	Tue, 30 Apr 2024 11:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474898; cv=none; b=P3Hg8N4tUMIIBZYtwMXzjpal7UpuQQlgOOt0iXm7pRYWZVCNKLutCEBgWHEqkfuJktg2YpkCpmdoD55rgRPNiUYtFzgACFaXgaymLVKPYILQ8ZvEnUQY7UnhmgJ00KiNWL83t9PFbgcHBRE9sZCdO8SYf3DM5uJZ0FDnDvwHEgE=
+	t=1714475401; cv=none; b=eQejL0AiCLBRB/9j5S1r5sHRRbtXvjeE0I2yq6QkocXRq/rRtIGVW4u2WAFZTxzTMeu6CfNWmHSakVhASjbxFEr2c2+C/FlN2qG70FIU2M+cPC6cFBxOUt/FYCOGWTh/D4m2riRq9XzThfUTCB6+lHAcfpj4j7l9pT1XI5vYYQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474898; c=relaxed/simple;
-	bh=ysiiPAARKVaEcrrCtvDORgi838mxQJBzZr5gYqxW81o=;
+	s=arc-20240116; t=1714475401; c=relaxed/simple;
+	bh=Xp5fUGKytgrTTMae2mzti197VHuc+RvHgMOCOCXAbyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dves7lSINVuwOn+olH2yUM+1Q3Sj51pFO6lMJfb/Etlwljp0En4ULXdY2F5f6qs6NoG6ZoOVZsugqZaZomIo/fqWZ1tsNd0rX5frUxEtYJnAehfyr16hRRwncMLBi3YNQSQ78yRZfZGpsQFlt/W4KZ3qbqZLToz6UmYTGJ6nabA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfkS1k+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C536CC2BBFC;
-	Tue, 30 Apr 2024 11:01:37 +0000 (UTC)
+	 MIME-Version; b=D8nY0GUkdHetHvehWhn8e0iU3fqnrJ+BLskP3EdwkJYswEEFTpMTsC0viWD+Y2+1sC3oSArvskp/s3IPZXY+LMKiPA6hGPqtBLWYR/cXVu5AZ/zi1zGIREizPWx5yOq7yZ8I6a+VdszFt8nMwgBKWQJuirY9YtzAmwO4SSFycuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRFrLsbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D585CC2BBFC;
+	Tue, 30 Apr 2024 11:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474898;
-	bh=ysiiPAARKVaEcrrCtvDORgi838mxQJBzZr5gYqxW81o=;
+	s=korg; t=1714475401;
+	bh=Xp5fUGKytgrTTMae2mzti197VHuc+RvHgMOCOCXAbyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kfkS1k+HNHTCUkYn6uTQdP0BQDY9TGQU0mqVTrdaVezr/l8ExznoA3QAR2k715aNf
-	 pQZd+NTwCGGrnHwKx3YRYB0laI4okJKiKTpqPphKQBmzt6gEDrz8bXKkg9YHiWEbO7
-	 NtukQLICP2LcaHuDF2T/jG/k/QYKjh+SuYRWqNc8=
+	b=lRFrLsbOel8jBN7N6ZltWuvYIvYvoKH9HS9pb9CwDQl+8ni2t7ANtWwNIu2QCzD3N
+	 M5BolbGSxNP0QcJukD2SI5QY7EvvY1UGRhV4MoFrAP5vqL9Ih/CncP2xMDtestcC+h
+	 sJYFacPP4D9TV87s/Mypxo6gYaO4pZ4MtevOahO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/138] drm: nv04: Fix out of bounds access
-Date: Tue, 30 Apr 2024 12:38:47 +0200
-Message-ID: <20240430103050.670747331@linuxfoundation.org>
+Subject: [PATCH 6.6 076/186] mlxsw: spectrum_acl_tcam: Fix race during rehash delayed work
+Date: Tue, 30 Apr 2024 12:38:48 +0200
+Message-ID: <20240430103100.244539624@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kobuk <m.kobuk@ispras.ru>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit cf92bb778eda7830e79452c6917efa8474a30c1e ]
+[ Upstream commit d90cfe20562407d9f080d24123078d666d730707 ]
 
-When Output Resource (dcb->or) value is assigned in
-fabricate_dcb_output(), there may be out of bounds access to
-dac_users array in case dcb->or is zero because ffs(dcb->or) is
-used as index there.
-The 'or' argument of fabricate_dcb_output() must be interpreted as a
-number of bit to set, not value.
+The purpose of the rehash delayed work is to reduce the number of masks
+(eRPs) used by an ACL region as the eRP bank is a global and limited
+resource.
 
-Utilize macros from 'enum nouveau_or' in calls instead of hardcoding.
+This is done in three steps:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+1. Creating a new set of masks and a new ACL region which will use the
+   new masks and to which the existing filters will be migrated to. The
+   new region is assigned to 'vregion->region' and the region from which
+   the filters are migrated from is assigned to 'vregion->region2'.
 
-Fixes: 2e5702aff395 ("drm/nouveau: fabricate DCB encoder table for iMac G4")
-Fixes: 670820c0e6a9 ("drm/nouveau: Workaround incorrect DCB entry on a GeForce3 Ti 200.")
-Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240411110854.16701-1-m.kobuk@ispras.ru
+2. Migrating all the filters from the old region to the new region.
+
+3. Destroying the old region and setting 'vregion->region2' to NULL.
+
+Only the second steps is performed under the 'vregion->lock' mutex
+although its comments says that among other things it "Protects
+consistency of region, region2 pointers".
+
+This is problematic as the first step can race with filter insertion
+from user space that uses 'vregion->region', but under the mutex.
+
+Fix by holding the mutex across the entirety of the delayed work and not
+only during the second step.
+
+Fixes: 2bffc5322fd8 ("mlxsw: spectrum_acl: Don't take mutex in mlxsw_sp_acl_tcam_vregion_rehash_work()")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/1ec1d54edf2bad0a369e6b4fa030aba64e1f124b.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bios.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_bios.c b/drivers/gpu/drm/nouveau/nouveau_bios.c
-index d204ea8a5618e..5cdf0d8d4bc18 100644
---- a/drivers/gpu/drm/nouveau/nouveau_bios.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
-@@ -23,6 +23,7 @@
-  */
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index b6a4652a6475a..9c0c728bb42dc 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -718,7 +718,9 @@ static void mlxsw_sp_acl_tcam_vregion_rehash_work(struct work_struct *work)
+ 			     rehash.dw.work);
+ 	int credits = MLXSW_SP_ACL_TCAM_VREGION_REHASH_CREDITS;
  
- #include "nouveau_drv.h"
-+#include "nouveau_bios.h"
- #include "nouveau_reg.h"
- #include "dispnv04/hw.h"
- #include "nouveau_encoder.h"
-@@ -1672,7 +1673,7 @@ apply_dcb_encoder_quirks(struct drm_device *dev, int idx, u32 *conn, u32 *conf)
- 	 */
- 	if (nv_match_device(dev, 0x0201, 0x1462, 0x8851)) {
- 		if (*conn == 0xf2005014 && *conf == 0xffffffff) {
--			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, 1);
-+			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, DCB_OUTPUT_B);
- 			return false;
++	mutex_lock(&vregion->lock);
+ 	mlxsw_sp_acl_tcam_vregion_rehash(vregion->mlxsw_sp, vregion, &credits);
++	mutex_unlock(&vregion->lock);
+ 	if (credits < 0)
+ 		/* Rehash gone out of credits so it was interrupted.
+ 		 * Schedule the work as soon as possible to continue.
+@@ -1323,7 +1325,6 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
+ 	int err, err2;
+ 
+ 	trace_mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion);
+-	mutex_lock(&vregion->lock);
+ 	err = mlxsw_sp_acl_tcam_vchunk_migrate_all(mlxsw_sp, vregion,
+ 						   ctx, credits);
+ 	if (err) {
+@@ -1343,7 +1344,6 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
+ 			/* Let the rollback to be continued later on. */
  		}
  	}
-@@ -1758,26 +1759,26 @@ fabricate_dcb_encoder_table(struct drm_device *dev, struct nvbios *bios)
- #ifdef __powerpc__
- 	/* Apple iMac G4 NV17 */
- 	if (of_machine_is_compatible("PowerMac4,5")) {
--		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, 1);
--		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, 2);
-+		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, DCB_OUTPUT_B);
-+		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, DCB_OUTPUT_C);
- 		return;
- 	}
- #endif
- 
- 	/* Make up some sane defaults */
- 	fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG,
--			     bios->legacy.i2c_indices.crt, 1, 1);
-+			     bios->legacy.i2c_indices.crt, 1, DCB_OUTPUT_B);
- 
- 	if (nv04_tv_identify(dev, bios->legacy.i2c_indices.tv) >= 0)
- 		fabricate_dcb_output(dcb, DCB_OUTPUT_TV,
- 				     bios->legacy.i2c_indices.tv,
--				     all_heads, 0);
-+				     all_heads, DCB_OUTPUT_A);
- 
- 	else if (bios->tmds.output0_script_ptr ||
- 		 bios->tmds.output1_script_ptr)
- 		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS,
- 				     bios->legacy.i2c_indices.panel,
--				     all_heads, 1);
-+				     all_heads, DCB_OUTPUT_B);
+-	mutex_unlock(&vregion->lock);
+ 	trace_mlxsw_sp_acl_tcam_vregion_migrate_end(mlxsw_sp, vregion);
+ 	return err;
  }
- 
- static int
 -- 
 2.43.0
 
