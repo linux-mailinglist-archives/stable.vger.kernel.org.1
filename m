@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286AD8B7199
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B74F8B73E5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AA5D1C20C88
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF4FE1F22384
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0027912C47A;
-	Tue, 30 Apr 2024 10:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755F012D20F;
+	Tue, 30 Apr 2024 11:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFjQUF6v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuvs967H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F4C12B176;
-	Tue, 30 Apr 2024 10:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DF412CDAE;
+	Tue, 30 Apr 2024 11:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474697; cv=none; b=J7FsQjavtVJx70qXzYLivDBUO+vIQHx/dIPDQzBz/TEQ/8jbhLzGcA3MNw4ptEbhnfk9ki+/WH1Hs1NVDP2xMvS29/hK83ROypb7xLaU2OXvNf9RwJAL4x1CGmfCzq/9lqRxcPx6sjtCc7UYTjt0lSis1FILbt0iEzf6ZunpU9E=
+	t=1714476273; cv=none; b=jreapMCxlFv2zoBO76V5n55S4GtB4cwtNX7MyL/AhMfrdMVdP4xTT+WQVzUb04FIlr08SFKa42SEQjEB+DG4hZDtqAgn7p3D1WVyizXocTveeqFK95uO6hkpUtzc2anzZL8k0dbFSVLFPyZFvoJpj86yCSFC2aWDx+vHk/zGpck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474697; c=relaxed/simple;
-	bh=uCTjn1BA2rB6wfqZnqAgHz2wsuGpAfIBgzeLMZa8PLA=;
+	s=arc-20240116; t=1714476273; c=relaxed/simple;
+	bh=rMN9/b3K5u7wkK6Ut/XvtAfZwCUvl3TeLY148J+V0OM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvzaFsylhIxvY5GFGG3REAOH+Iz1RM9QIXhOs05lDvbG360wnTpi662XEOvjj2StCtwKdWkpn05J09weOml98j7yCyVjkX+SDICCk3qDVE051yoU1MzL2Dl7wDAHJ2s57K6CxFK6bJ7hgu8G+Gu/7yHgVVF87jS7mYxDDqWoDCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFjQUF6v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12B0C2BBFC;
-	Tue, 30 Apr 2024 10:58:16 +0000 (UTC)
+	 MIME-Version; b=GfrBvAMP8tyzy11LC8HbZzIoFQUdDD0P3/DYtJ3dX7lu6kvhWzvR5AZ4PTB3cC0Vpq8D3AhTEclkeAQpaiYn30v5RjchM0R9uSZcAusG84AXsJUiHaz6hHHV0esh6kzsIGwvwxVcCEGog+suFzTD/q5t9qNh/Ybdl+7uYeHPPGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuvs967H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965C0C2BBFC;
+	Tue, 30 Apr 2024 11:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474697;
-	bh=uCTjn1BA2rB6wfqZnqAgHz2wsuGpAfIBgzeLMZa8PLA=;
+	s=korg; t=1714476273;
+	bh=rMN9/b3K5u7wkK6Ut/XvtAfZwCUvl3TeLY148J+V0OM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFjQUF6vK+M31U2GIE+rjtVYD9arMG1SZ/NjAgH4t03T+TpshWf5oCQJg+xvICDiq
-	 BlJIjt4leT4xi83almDKGxE5mtkAO0UMV9Hckda1rsN5oAfRGNyHIsmpSiyRXECXco
-	 bgjb28MLy0AGymGO90M+D6aPMA8lXy4uNCqW7Np4=
+	b=uuvs967Hki4iKqUoqPCYXNJxsD5ZA+v3u7VU070Xf6gIwMsIwU/nSntpbbBjQbCyc
+	 zrmiNgKA83tTWNA57xtGMfOubplzQSrFVPfEFJoeTczAPEwO5pMXGW+A2HIl3QpYFa
+	 QWeS+6+Rqo2GV8fRSuWfUbLAv4H3m2FiN9/TKFr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Woodrow Shen <woodrow.shen@sifive.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 222/228] RISC-V: selftests: cbo: Ensure asm operands match constraints, take 2
+	Coia Prant <coiaprant@gmail.com>,
+	Lars Melin <larsm17@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 040/107] USB: serial: option: add Lonsung U8300/U9300 product
 Date: Tue, 30 Apr 2024 12:40:00 +0200
-Message-ID: <20240430103110.208792996@linuxfoundation.org>
+Message-ID: <20240430103045.841121822@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Coia Prant <coiaprant@gmail.com>
 
-[ Upstream commit 49408400d683ae4f41e414dfcb615166cc93be5c ]
+commit cf16ffa17c398434a77b8a373e69287c95b60de2 upstream.
 
-Commit 0de65288d75f ("RISC-V: selftests: cbo: Ensure asm operands
-match constraints") attempted to ensure MK_CBO() would always
-provide to a compile-time constant when given a constant, but
-cpu_to_le32() isn't necessarily going to do that. Switch to manually
-shifting the bytes, when needed, to finally get this right.
+Update the USB serial option driver to support Longsung U8300/U9300.
 
-Reported-by: Woodrow Shen <woodrow.shen@sifive.com>
-Closes: https://lore.kernel.org/all/CABquHATcBTUwfLpd9sPObBgNobqQKEAZ2yxk+TWSpyO5xvpXpg@mail.gmail.com/
-Fixes: a29e2a48afe3 ("RISC-V: selftests: Add CBO tests")
-Fixes: 0de65288d75f ("RISC-V: selftests: cbo: Ensure asm operands match constraints")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240322134728.151255-2-ajones@ventanamicro.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For U8300
+
+Interface 4 is used by for QMI interface in stock firmware of U8300, the
+router which uses U8300 modem.
+Interface 5 is used by for ADB interface in stock firmware of U8300, the
+router which uses U8300 modem.
+
+Interface mapping is:
+0: unknown (Debug), 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI, 5: ADB
+
+T:  Bus=05 Lev=01 Prnt=03 Port=02 Cnt=01 Dev#=  4 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1c9e ProdID=9b05 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=Android
+C:  #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+For U9300
+
+Interface 1 is used by for ADB interface in stock firmware of U9300, the
+router which uses U9300 modem.
+Interface 4 is used by for QMI interface in stock firmware of U9300, the
+router which uses U9300 modem.
+
+Interface mapping is:
+0: ADB, 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI
+
+Note: Interface 3 of some models of the U9300 series can send AT commands.
+
+T:  Bus=05 Lev=01 Prnt=05 Port=04 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1c9e ProdID=9b3c Rev=03.18
+S:  Manufacturer=Android
+S:  Product=Android
+C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+
+Tested successfully using Modem Manager on U9300.
+Tested successfully AT commands using If=1, If=2 and If=3 on U9300.
+
+Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Reviewed-by: Lars Melin <larsm17@gmail.com>
+[ johan: drop product defines, trim commit message ]
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/riscv/hwprobe/cbo.c     |  2 +-
- tools/testing/selftests/riscv/hwprobe/hwprobe.h | 10 ++++++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/riscv/hwprobe/cbo.c b/tools/testing/selftests/riscv/hwprobe/cbo.c
-index c537d52fafc58..a40541bb7c7de 100644
---- a/tools/testing/selftests/riscv/hwprobe/cbo.c
-+++ b/tools/testing/selftests/riscv/hwprobe/cbo.c
-@@ -19,7 +19,7 @@
- #include "hwprobe.h"
- #include "../../kselftest.h"
- 
--#define MK_CBO(fn) cpu_to_le32((fn) << 20 | 10 << 15 | 2 << 12 | 0 << 7 | 15)
-+#define MK_CBO(fn) le32_bswap((uint32_t)(fn) << 20 | 10 << 15 | 2 << 12 | 0 << 7 | 15)
- 
- static char mem[4096] __aligned(4096) = { [0 ... 4095] = 0xa5 };
- 
-diff --git a/tools/testing/selftests/riscv/hwprobe/hwprobe.h b/tools/testing/selftests/riscv/hwprobe/hwprobe.h
-index e3fccb390c4dc..f3de970c32227 100644
---- a/tools/testing/selftests/riscv/hwprobe/hwprobe.h
-+++ b/tools/testing/selftests/riscv/hwprobe/hwprobe.h
-@@ -4,6 +4,16 @@
- #include <stddef.h>
- #include <asm/hwprobe.h>
- 
-+#if __BYTE_ORDER == __BIG_ENDIAN
-+# define le32_bswap(_x)				\
-+	((((_x) & 0x000000ffU) << 24) |		\
-+	 (((_x) & 0x0000ff00U) <<  8) |		\
-+	 (((_x) & 0x00ff0000U) >>  8) |		\
-+	 (((_x) & 0xff000000U) >> 24))
-+#else
-+# define le32_bswap(_x) (_x)
-+#endif
-+
- /*
-  * Rather than relying on having a new enough libc to define this, just do it
-  * ourselves.  This way we don't need to be coupled to a new-enough libc to
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2052,6 +2052,10 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(LONGCHEER_VENDOR_ID, 0x9803, 0xff),
+ 	  .driver_info = RSVD(4) },
++	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b05),	/* Longsung U8300 */
++	  .driver_info = RSVD(4) | RSVD(5) },
++	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b3c),	/* Longsung U9300 */
++	  .driver_info = RSVD(0) | RSVD(4) },
+ 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
+ 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
+ 	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
 
 
 
