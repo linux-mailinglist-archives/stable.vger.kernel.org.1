@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2A48B7306
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9676E8B7343
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CC1C1C22891
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376E01F2117C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB51312EBF0;
-	Tue, 30 Apr 2024 11:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6561D12CDA5;
+	Tue, 30 Apr 2024 11:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ysdw0rM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9X4zLmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6731412EBE8;
-	Tue, 30 Apr 2024 11:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2480F17592;
+	Tue, 30 Apr 2024 11:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475655; cv=none; b=nfF2sXvd8ZkY2kDep4Eit6oEl7pmOr13ylMMswuhvXonnNOfWpWWq1OYlux/3YDkCSGHhu11ySvDvNa81/5gQNrTBAF1S80ckv+c/+OIR9bgsZ5jow2r41OchxsrnHeKAMYt/Cwkjdn01wppCS/px1cuqq13T00S+S7HFY/3nw8=
+	t=1714475823; cv=none; b=SFRk00gapZDdNg7A+BfAArrBtPQDUu5c+PKSjWYcmHlql8TMpZDMvwU2LYiLl5y52lWrcowM9rzbEln+LdY57/ooFelGTztaR4PHwbDDlycY9+p+QufKtioJ9mxwB61VpB/b/l/2Qk31Vj5tzhKYO/MXbO6kpkNQaBIuH/qsfF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475655; c=relaxed/simple;
-	bh=dJEbUlXroSbfTZwJizSqMqyfwvKwjtK2slvIWPWd0pQ=;
+	s=arc-20240116; t=1714475823; c=relaxed/simple;
+	bh=KlVTx/jmPA2yyRIGjjCtIp3BzkvC2VNe7JqXXnjvQmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQhGB3t8XBB3ESh2kAGA3greFhwidzpcXfAO/9dhCEpKpq4OHbNojiroLWx52Vxuh/aZZGtk1+l0bmQYCAZ4yx6jQqvM9Il5wdKAScHToFG2j4HIrwfz5sRpqhcn4pG2nvbFc/Zcz7FZQf2hVhJX/d6DfMJrkE1OrM2srmKhpak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ysdw0rM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E5CC4AF1C;
-	Tue, 30 Apr 2024 11:14:14 +0000 (UTC)
+	 MIME-Version; b=lruaOgw32kVKfcbK1nEGP+cJqpZxn2DFz8TcqFQuKTR+aMhKabvh8cx6uHpB66FYDEibAn5GDvPL7Zb62TwCKNZT3Dc9IoLsgW02cKgou20rXhcwS52g2dDg4IpAqthU3XRhpFpwiRILrvLAV6ofIStXah07wmCAj6QIAqIAJ14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9X4zLmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21EFC2BBFC;
+	Tue, 30 Apr 2024 11:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475655;
-	bh=dJEbUlXroSbfTZwJizSqMqyfwvKwjtK2slvIWPWd0pQ=;
+	s=korg; t=1714475823;
+	bh=KlVTx/jmPA2yyRIGjjCtIp3BzkvC2VNe7JqXXnjvQmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Ysdw0rMDHG5BJEDCGVdDwOekZHxP9t1IjT9ZAXvTOtMpjeS/lMH/8NQO0MvcejFd
-	 8aAKcA8gfEVtdQwwK8x/wXF3Eg3h4lOI6TN4pRds7bsFJ35M5AhhX7dML/ZaH03IXi
-	 pnHvK+dvZzNkIbzTv4yiYzcIiBApqLw1I7x/fYkY=
+	b=P9X4zLmPXXvOzIcvR4VfmJViIx8SLq8YK+thxdM7HumncRs7fVDxQK+azfeTDM8cD
+	 k+GQSolux947a5WJDZATKaifiXCKlK0d0lUwr0QqIfjyE94svRTYoAApa5CQtqIOSj
+	 dPPA+cGVbuC2C7wVUh94Hjuy9SWPgwjrbTOeLJ6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mantas Pucka <mantas@8devices.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 124/186] mmc: sdhci-msm: pervent access to suspended controller
+	Yaraslau Furman <yaro330@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 04/80] HID: logitech-dj: allow mice to use all types of reports
 Date: Tue, 30 Apr 2024 12:39:36 +0200
-Message-ID: <20240430103101.632586770@linuxfoundation.org>
+Message-ID: <20240430103043.531674743@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mantas Pucka <mantas@8devices.com>
+From: Yaraslau Furman <yaro330@gmail.com>
 
-commit f8def10f73a516b771051a2f70f2f0446902cb4f upstream.
+[ Upstream commit 21f28a7eb78dea6c59be6b0a5e0b47bf3d25fcbb ]
 
-Generic sdhci code registers LED device and uses host->runtime_suspended
-flag to protect access to it. The sdhci-msm driver doesn't set this flag,
-which causes a crash when LED is accessed while controller is runtime
-suspended. Fix this by setting the flag correctly.
+You can bind whatever action you want to the mouse's reprogrammable
+buttons using Windows application. Allow Linux to receive multimedia keycodes.
 
-Cc: stable@vger.kernel.org
-Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
-Signed-off-by: Mantas Pucka <mantas@8devices.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3ed224e273ac ("HID: logitech-dj: Fix 064d:c52f receiver support")
+Signed-off-by: Yaraslau Furman <yaro330@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/hid/hid-logitech-dj.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -2694,6 +2694,11 @@ static __maybe_unused int sdhci_msm_runt
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	host->runtime_suspended = true;
-+	spin_unlock_irqrestore(&host->lock, flags);
- 
- 	/* Drop the performance vote */
- 	dev_pm_opp_set_rate(dev, 0);
-@@ -2708,6 +2713,7 @@ static __maybe_unused int sdhci_msm_runt
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	unsigned long flags;
- 	int ret;
- 
- 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
-@@ -2726,7 +2732,15 @@ static __maybe_unused int sdhci_msm_runt
- 
- 	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
- 
--	return sdhci_msm_ice_resume(msm_host);
-+	ret = sdhci_msm_ice_resume(msm_host);
-+	if (ret)
-+		return ret;
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	host->runtime_suspended = false;
-+	spin_unlock_irqrestore(&host->lock, flags);
-+
-+	return ret;
+diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
+index 08768e5accedc..57697605b2e24 100644
+--- a/drivers/hid/hid-logitech-dj.c
++++ b/drivers/hid/hid-logitech-dj.c
+@@ -965,9 +965,7 @@ static void logi_hidpp_dev_conn_notif_equad(struct hid_device *hdev,
+ 		}
+ 		break;
+ 	case REPORT_TYPE_MOUSE:
+-		workitem->reports_supported |= STD_MOUSE | HIDPP;
+-		if (djrcv_dev->type == recvr_type_mouse_only)
+-			workitem->reports_supported |= MULTIMEDIA;
++		workitem->reports_supported |= STD_MOUSE | HIDPP | MULTIMEDIA;
+ 		break;
+ 	}
  }
- 
- static const struct dev_pm_ops sdhci_msm_pm_ops = {
+-- 
+2.43.0
+
 
 
 
