@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-42336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A2A8B727F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D900E8B71B1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAB1BB20519
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77DD11F214D8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690E412CD90;
-	Tue, 30 Apr 2024 11:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7EE12C530;
+	Tue, 30 Apr 2024 10:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGqBBMu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRINQWkQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279861E50A;
-	Tue, 30 Apr 2024 11:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFE27464;
+	Tue, 30 Apr 2024 10:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475329; cv=none; b=PAIlds0oHK8QZZ9Mk1omUK6iDipFNG5fl5xnK6Zjgvjl6o4vLrcJ13KvynPQTtPdsK58TOsV7PxAmFSAJpmKSR0+CI2PUJWZPyU3g7CLcrEyUmW64ESSR0+7L4fLTXe3LuIQu+p2BNzJpeFB+gTB01twS2zOj4J6fU1WnVdbD40=
+	t=1714474774; cv=none; b=RlRPTRzB7D0gkv7GpIiwGZPcKt9RwfOoAuXFhOH4QPlB94Qj/RrrYWsdOlaREW7CvfOKIGZiN/S/9AItIQwebbPeaziFgtL3ssh+hAEM6BRoKqkfCk+SgEz4uJkqDSqU3W+fFArikhuXlzTcZSRvamNnj6wqEBOIl0jWElvkrEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475329; c=relaxed/simple;
-	bh=Cjk2XUUujfqFPcegyMPs9chzbvlgc/hk+Cx4Kf4t1RM=;
+	s=arc-20240116; t=1714474774; c=relaxed/simple;
+	bh=uRem7jWQvSFSxhkK2BLVocUdC0lVLrBM24f7Qj6Zq44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewR6bFn1M/44YVAlR0MzgepexU447KtHmmMvawn+SlO3ax0ZBkJcGNBNwLGL8FIe45J7SEabaGQHawEYMlbQZpMYpIvMxjfy9yRr/mNRyVmJnffrIf+JQV3vq3Iafg1Ja09ga9i+a8hE5epJhoMmrVbA9JyFyH8lTz0zea3hYF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGqBBMu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A969C2BBFC;
-	Tue, 30 Apr 2024 11:08:48 +0000 (UTC)
+	 MIME-Version; b=OmnG3Wxisfioxgkaf3jZ9BUUCspDTjeRCCUofF/k0TphlOy2Nm5iADZY4uS44LDjGPSj6HH/CLre5XpMxydpEwm/1946sgZkBFvbB4b7LS95RyWv2p7UIt/UbciwWktHHFVhx1YnAYQS076qh1sEPs3nlM6pMxO3tCg0Upjai3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRINQWkQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58682C2BBFC;
+	Tue, 30 Apr 2024 10:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475329;
-	bh=Cjk2XUUujfqFPcegyMPs9chzbvlgc/hk+Cx4Kf4t1RM=;
+	s=korg; t=1714474773;
+	bh=uRem7jWQvSFSxhkK2BLVocUdC0lVLrBM24f7Qj6Zq44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGqBBMu/LR2JXI8KhZV+GuAKFleMbJovjL8nZlr9vp59AZe8hNClRL+PBE05bFrig
-	 NDsss8sevMkXmouKioHgWwzz0/DmKIpvRQ6NAA8E2fWoxNnuiX9A+FIL7zHcTVZcM2
-	 i5y9Ia+ZrL69UP4lrn0FvXGMlMOYuppJNuoMVT2o=
+	b=ZRINQWkQkePKz1RuRie2oszOLVH9xjCiR1ZUsRnfd1MCmHoAcK+Qhqf35h/6Lj7NM
+	 acC/ntdCws1To1RaFAtmT4C2InX/+vZk5WMYsWW5VHAr3OevwNsW4GCZJDxBVpwNHV
+	 0Q/O15Ng9syxsFQmIufBMBCQ/W/QuezNmtgo1rqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/186] net: gtp: Fix Use-After-Free in gtp_dellink
+Subject: [PATCH 5.10 030/138] btrfs: record delayed inode root in transaction
 Date: Tue, 30 Apr 2024 12:38:35 +0200
-Message-ID: <20240430103059.867864511@linuxfoundation.org>
+Message-ID: <20240430103050.317035159@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit f2a904107ee2b647bb7794a1a82b67740d7c8a64 ]
+[ Upstream commit 71537e35c324ea6fbd68377a4f26bb93a831ae35 ]
 
-Since call_rcu, which is called in the hlist_for_each_entry_rcu traversal
-of gtp_dellink, is not part of the RCU read critical section, it
-is possible that the RCU grace period will pass during the traversal and
-the key will be free.
+When running delayed inode updates, we do not record the inode's root in
+the transaction, but we do allocate PREALLOC and thus converted PERTRANS
+space for it. To be sure we free that PERTRANS meta rsv, we must ensure
+that we record the root in the transaction.
 
-To prevent this, it should be changed to hlist_for_each_entry_safe.
-
-Fixes: 94dc550a5062 ("gtp: fix an use-after-free in ipv4_pdp_find()")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 4f5427ccce5d ("btrfs: delayed-inode: Use new qgroup meta rsv for delayed inode and item")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/delayed-inode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 2b5357d94ff56..63f932256c9f5 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1111,11 +1111,12 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
- static void gtp_dellink(struct net_device *dev, struct list_head *head)
- {
- 	struct gtp_dev *gtp = netdev_priv(dev);
-+	struct hlist_node *next;
- 	struct pdp_ctx *pctx;
- 	int i;
+diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
+index bcffe7886530a..cdfc791b3c405 100644
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -1135,6 +1135,9 @@ __btrfs_commit_inode_delayed_items(struct btrfs_trans_handle *trans,
+ 	if (ret)
+ 		return ret;
  
- 	for (i = 0; i < gtp->hash_size; i++)
--		hlist_for_each_entry_rcu(pctx, &gtp->tid_hash[i], hlist_tid)
-+		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
- 			pdp_context_delete(pctx);
- 
- 	list_del_rcu(&gtp->list);
++	ret = btrfs_record_root_in_trans(trans, node->root);
++	if (ret)
++		return ret;
+ 	ret = btrfs_update_delayed_inode(trans, node->root, path, node);
+ 	return ret;
+ }
 -- 
 2.43.0
 
