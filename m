@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-41997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02B78B70D4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:50:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD238B7243
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F16FD1C21524
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:50:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7390F1F20010
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655F512C49E;
-	Tue, 30 Apr 2024 10:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182B812C805;
+	Tue, 30 Apr 2024 11:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQweahaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hB8JmvKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2335B12C48B;
-	Tue, 30 Apr 2024 10:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97E112C462;
+	Tue, 30 Apr 2024 11:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474221; cv=none; b=LeVavwVOMc79VYQCu05riL+D16iHz97FpnRTajn6t6frNX/YUzch7pR5k16SyZ3oIBbhp0PLrdyEB//ovm73w2OzDZ587CZtnSyHBgmv+rCGqfcy7aolZE/UF0MCNSQcJONERfOLyGYzhVAq6Tnd6aY6ejP3Lp0xBC4nT34nFR0=
+	t=1714475177; cv=none; b=Frs0ea42p35ZD6CiiJGNSIXE/hCnNdmQ9sJVOaf8cjGU8QuDvg47uNSGvAp/tssJhy3ZxqQ9TRJ5KtrWsnXl7mXTUwq2ui2orEP6tbJZOd843UER/K/1F4WvCgY2yyp+YYrc3c1JVOAHBcYchkgWx26yPZbnMcVaVzyUvacVYno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474221; c=relaxed/simple;
-	bh=voYEgcErQVaMVkciTRp7zsMhk2GT4Xs7rbqXYeG7lEY=;
+	s=arc-20240116; t=1714475177; c=relaxed/simple;
+	bh=b3qKoj3EoVq6Lt3A7TCAk5pkCU07LpAx+niu9tU7Xfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p83FuQcC6fCBTdS34cwZeTwDT/bmjLLB7wiPnxxZqW5OnsC4RJokimErx4tg8697DbG7KaDPjxpWkPkEdwOWjU/YMOA/H1pAcN2LiFHqzyRoH5T7orJItJOwxi25Y8M59OwG5Dkl4TB9Xe/PNRYhAChENFtPa8bx6tppfbSxkDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQweahaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DDBC2BBFC;
-	Tue, 30 Apr 2024 10:50:20 +0000 (UTC)
+	 MIME-Version; b=QsjVn2c+IIsyxvMIiQdUTgqzqkgtSUKDndNOso/5RDTrY3I14DwmkyLNUq6OrdW4ayx/EvO7OcloT+7rpMzgxAhQ3Yb2BULhA5Fu5PI7E/rEHNqv9WCaoh6thPl3wa1QMwpYCiVJyaIM28QYKBOscWiP+G/qvL/Wa/+cNyUEwI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hB8JmvKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4633EC2BBFC;
+	Tue, 30 Apr 2024 11:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474220;
-	bh=voYEgcErQVaMVkciTRp7zsMhk2GT4Xs7rbqXYeG7lEY=;
+	s=korg; t=1714475177;
+	bh=b3qKoj3EoVq6Lt3A7TCAk5pkCU07LpAx+niu9tU7Xfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQweahaUmb7S7FHCG4XL6BkU+pccga7Q6BqTSUdcbj8HV9TTZDG7lIA6Y336h2B2S
-	 5bdnlq+UvZ2dDaJPHO42Tafu0+R1VhHVqI6xHeADIJXsX9qOZj8y+mE0LEV8Fl7NCE
-	 E2TdeGgBHSX3ia7wHITPvjGcT3aw9ngAJIN7tse0=
+	b=hB8JmvKzFBCJLgUJzgpuQeaOk0V5f0WNxqFkeI4zU8AdzVwF1YDncYDGgBMHfy6CF
+	 XZAm2cFtISkHm+CKL4NmgJhPJNh6e7m8qlnCqDbKwFSAnO5sVgGjxlOHovxS7XanWj
+	 sZQJ1UAmIJ5jBuq0iYz2ZvMxwiHcjR6R5+3ofTO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ismael Luceno <iluceno@suse.de>,
-	Andreas Taschner <andreas.taschner@suse.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Firo Yang <firo.yang@suse.com>
-Subject: [PATCH 6.8 092/228] ipvs: Fix checksumming on GSO of SCTP packets
+	Pin-yen Lin <treapking@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 018/186] arm64: dts: mediatek: mt8192-asurada: Update min voltage constraint for MT6315
 Date: Tue, 30 Apr 2024 12:37:50 +0200
-Message-ID: <20240430103106.457773062@linuxfoundation.org>
+Message-ID: <20240430103058.549937520@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ismael Luceno <iluceno@suse.de>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit e10d3ba4d434ed172914617ed8d74bd411421193 ]
+[ Upstream commit 374a7c6400e314458178255a63c37d6347845092 ]
 
-It was observed in the wild that pairs of consecutive packets would leave
-the IPVS with the same wrong checksum, and the issue only went away when
-disabling GSO.
+Update the minimum voltage from 300000 uV to 400000 uV so it matches
+the MT6315 datasheet.
 
-IPVS needs to avoid computing the SCTP checksum when using GSO.
+Also update the minimum voltage for Vgpu regulator from 606250 uV to
+400000 uV because the requested voltage could be lower than the minimum
+voltage on the GPU OPP table when the MTK Smart Voltage Scaling (SVS)
+driver is enabled.
 
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Co-developed-by: Firo Yang <firo.yang@suse.com>
-Signed-off-by: Ismael Luceno <iluceno@suse.de>
-Tested-by: Andreas Taschner <andreas.taschner@suse.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 3183cb62b033 ("arm64: dts: mediatek: asurada: Add SPMI regulators")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240315111621.2263159-2-treapking@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index a0921adc31a9f..1e689c7141271 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -126,7 +126,8 @@ sctp_snat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	if (sctph->source != cp->vport || payload_csum ||
- 	    skb->ip_summed == CHECKSUM_PARTIAL) {
- 		sctph->source = cp->vport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 	}
-@@ -174,7 +175,8 @@ sctp_dnat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	    (skb->ip_summed == CHECKSUM_PARTIAL &&
- 	     !(skb_dst(skb)->dev->features & NETIF_F_SCTP_CRC))) {
- 		sctph->dest = cp->dport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else if (skb->ip_summed != CHECKSUM_PARTIAL) {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+index 4bd1494b354c0..dc39ebd1bbfc8 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+@@ -1392,7 +1392,7 @@
+ 			mt6315_6_vbuck1: vbuck1 {
+ 				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vbcpu";
+-				regulator-min-microvolt = <300000>;
++				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <1193750>;
+ 				regulator-enable-ramp-delay = <256>;
+ 				regulator-allowed-modes = <0 1 2>;
+@@ -1402,7 +1402,7 @@
+ 			mt6315_6_vbuck3: vbuck3 {
+ 				regulator-compatible = "vbuck3";
+ 				regulator-name = "Vlcpu";
+-				regulator-min-microvolt = <300000>;
++				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <1193750>;
+ 				regulator-enable-ramp-delay = <256>;
+ 				regulator-allowed-modes = <0 1 2>;
+@@ -1419,7 +1419,7 @@
+ 			mt6315_7_vbuck1: vbuck1 {
+ 				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vgpu";
+-				regulator-min-microvolt = <606250>;
++				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <800000>;
+ 				regulator-enable-ramp-delay = <256>;
+ 				regulator-allowed-modes = <0 1 2>;
 -- 
 2.43.0
 
