@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-41967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB2E8B70B0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:48:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0F98B70BE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2BDE1F21DC2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:48:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F5101C22223
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB2912C47A;
-	Tue, 30 Apr 2024 10:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6950D12C547;
+	Tue, 30 Apr 2024 10:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uk/owx2w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7YFnHuJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79041292C8;
-	Tue, 30 Apr 2024 10:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269E612C46B;
+	Tue, 30 Apr 2024 10:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474127; cv=none; b=WtUZAil1Lv68pkfainTx0tnRHYmzcXoA/J7skYW7VcEVyZRlIR3ot5usMd7AwjMLkBRwigLFGMoQ0bHaqx5zNFeHXIv+kCDhhMbUzP3eLkuSXlBWMwxtOCF13ntjd5NCYiPUv9D0Jb/wOnOul0z4e4v0RZv7o+x+vRoMbg4h2s4=
+	t=1714474164; cv=none; b=G4WCjls1wj4cgNG7hZWJ0WzOUepCA3kOqDp+HZ4l0klLslSIpx7sT4UG+HK4jqx7E1g/5rLj8Q7KYmZxbT1AJSWzTBQSMU/12QL7bfqfy10tST1i2CUxKaHnnPIzGTq3A8TdwBzczB2/P7FV4Zu8I4ETdQnatmjO7A2bO4WvAWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474127; c=relaxed/simple;
-	bh=CsriC+bCgyf+fEtUaR779fxRac7ZForcrd/tkpe4yvg=;
+	s=arc-20240116; t=1714474164; c=relaxed/simple;
+	bh=Rj5DZq6P+Ga6d6YXJiw3ra+7J1MdRscVeSWyqd+IyRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FX+KsPLMVs9loC+J42wqeBvesHbKb9sqKIjBvbEz4luQfxKQc+1Pu6R6KebLYK/nXrM5G2vwASFCuJGdRN9wGAkocSZVlxn4HXNne0570nuiGUw6AtESKZjSvf2MhAbEiP8zHtA2zbZ+UbbrhLZWLXY0xbd1AoKghLrqThu+NJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uk/owx2w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007ADC2BBFC;
-	Tue, 30 Apr 2024 10:48:46 +0000 (UTC)
+	 MIME-Version; b=Uk58BMsXk6IsIfldONle9Q/KXfsldFAnqanhcZIjiDFBjDwdKFYJdOWe2veUGrIyT0cilFlT6J58D/+StKi8XpmcyAPN3rcOzuZwQjK9jPcUpcJF4xuqoIAqOxI5w/k0R+x1t5AT1CRydr0ejGltHx+3rLRok5DYBt0HtJySuZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7YFnHuJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25F3C4AF19;
+	Tue, 30 Apr 2024 10:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474127;
-	bh=CsriC+bCgyf+fEtUaR779fxRac7ZForcrd/tkpe4yvg=;
+	s=korg; t=1714474164;
+	bh=Rj5DZq6P+Ga6d6YXJiw3ra+7J1MdRscVeSWyqd+IyRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uk/owx2w3CXjqmVVWo84N+4QuftpreG/7Vito9MK3eGDGWGEGL6e/rsGtMviif1H7
-	 8R5CZFTZ50ymFf8zU2qNPSfLooblBPSt5saeqQaJYhbsDw2289mfiPpqPPyDD7JGKh
-	 MRjODvJHOtUQYvZXcE3bPBYPZSXhZBQheuLyQeAE=
+	b=C7YFnHuJsc2APb9hYz7eLyJGdJ8gBuleTuRgwHkuJFoztOwv74OxqtRQUUaDLtfdn
+	 kork/QMrZMRgOVEe8RC8q7ZQifQ+hzgDLEznqOUGI2cn/rNzc4LNTDwixE5gzjjP4l
+	 zMx+xppHIhWdE9+2n/LSz4bkiUnEBAHO+GbBmr0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Michael Chan <michael.chan@broadcom.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 057/228] bnxt_en: refactor reset close code
-Date: Tue, 30 Apr 2024 12:37:15 +0200
-Message-ID: <20240430103105.454745732@linuxfoundation.org>
+Subject: [PATCH 6.8 058/228] bnxt_en: Fix the PCI-AER routines
+Date: Tue, 30 Apr 2024 12:37:16 +0200
+Message-ID: <20240430103105.483356814@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 References: <20240430103103.806426847@linuxfoundation.org>
@@ -69,56 +69,75 @@ Content-Transfer-Encoding: 8bit
 
 From: Vikas Gupta <vikas.gupta@broadcom.com>
 
-[ Upstream commit 7474b1c82be3780692d537d331f9aa7fc1e5a368 ]
+[ Upstream commit a1acdc226baec331512f815d6ac9dd6f8435cc7f ]
 
-Introduce bnxt_fw_fatal_close() API which can be used
-to stop data path and disable device when firmware
-is in fatal state.
+We do not support two simultaneous recoveries so check for reset
+flag, BNXT_STATE_IN_FW_RESET, and do not proceed with AER further.
+When the pci channel state is pci_channel_io_frozen, the PCIe link
+can not be trusted so we disable the traffic immediately and stop
+BAR access by calling bnxt_fw_fatal_close().  BAR access after
+AER fatal error can cause an NMI.
 
+Fixes: f75d9a0aa967 ("bnxt_en: Re-write PCI BARs after PCI fatal error.")
 Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: a1acdc226bae ("bnxt_en: Fix the PCI-AER routines")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 5e6e32d708e24..260ffd71e2a89 100644
+index 260ffd71e2a89..6bdd8c2607898 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -12776,6 +12776,16 @@ static void bnxt_rx_ring_reset(struct bnxt *bp)
- 	bnxt_rtnl_unlock_sp(bp);
- }
- 
-+static void bnxt_fw_fatal_close(struct bnxt *bp)
-+{
-+	bnxt_tx_disable(bp);
-+	bnxt_disable_napi(bp);
-+	bnxt_disable_int_sync(bp);
-+	bnxt_free_irq(bp);
-+	bnxt_clear_int_mode(bp);
-+	pci_disable_device(bp->pdev);
-+}
-+
- static void bnxt_fw_reset_close(struct bnxt *bp)
+@@ -15045,6 +15045,7 @@ static pci_ers_result_t bnxt_io_error_detected(struct pci_dev *pdev,
  {
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 	struct bnxt *bp = netdev_priv(netdev);
++	bool abort = false;
+ 
+ 	netdev_info(netdev, "PCI I/O error detected\n");
+ 
+@@ -15053,16 +15054,27 @@ static pci_ers_result_t bnxt_io_error_detected(struct pci_dev *pdev,
+ 
  	bnxt_ulp_stop(bp);
-@@ -12789,12 +12799,7 @@ static void bnxt_fw_reset_close(struct bnxt *bp)
- 		pci_read_config_word(bp->pdev, PCI_SUBSYSTEM_ID, &val);
- 		if (val == 0xffff)
- 			bp->fw_reset_min_dsecs = 0;
--		bnxt_tx_disable(bp);
--		bnxt_disable_napi(bp);
--		bnxt_disable_int_sync(bp);
--		bnxt_free_irq(bp);
--		bnxt_clear_int_mode(bp);
--		pci_disable_device(bp->pdev);
-+		bnxt_fw_fatal_close(bp);
+ 
+-	if (state == pci_channel_io_perm_failure) {
++	if (test_and_set_bit(BNXT_STATE_IN_FW_RESET, &bp->state)) {
++		netdev_err(bp->dev, "Firmware reset already in progress\n");
++		abort = true;
++	}
++
++	if (abort || state == pci_channel_io_perm_failure) {
+ 		rtnl_unlock();
+ 		return PCI_ERS_RESULT_DISCONNECT;
  	}
- 	__bnxt_close_nic(bp, true, false);
- 	bnxt_vf_reps_free(bp);
+ 
+-	if (state == pci_channel_io_frozen)
++	/* Link is not reliable anymore if state is pci_channel_io_frozen
++	 * so we disable bus master to prevent any potential bad DMAs before
++	 * freeing kernel memory.
++	 */
++	if (state == pci_channel_io_frozen) {
+ 		set_bit(BNXT_STATE_PCI_CHANNEL_IO_FROZEN, &bp->state);
++		bnxt_fw_fatal_close(bp);
++	}
+ 
+ 	if (netif_running(netdev))
+-		bnxt_close(netdev);
++		__bnxt_close_nic(bp, true, true);
+ 
+ 	if (pci_is_enabled(pdev))
+ 		pci_disable_device(pdev);
+@@ -15146,6 +15158,7 @@ static pci_ers_result_t bnxt_io_slot_reset(struct pci_dev *pdev)
+ 	}
+ 
+ reset_exit:
++	clear_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
+ 	bnxt_clear_reservations(bp, true);
+ 	rtnl_unlock();
+ 
 -- 
 2.43.0
 
