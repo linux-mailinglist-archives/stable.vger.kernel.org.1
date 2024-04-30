@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946548B73C5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22EB48B744C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C60AF1C20DCD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 467591C21F96
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E3312CDAE;
-	Tue, 30 Apr 2024 11:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57A612D746;
+	Tue, 30 Apr 2024 11:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAbNxeSD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTTxjV37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCDE8801;
-	Tue, 30 Apr 2024 11:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741F612BF32;
+	Tue, 30 Apr 2024 11:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476187; cv=none; b=gvd9MH9W34Sop6rilDBmOq+b8rqmvYo9E4uHIQXkdc1ehgRUyaEM7+XxWpjwyB+IqdlJX5BOOP0Uw7N69UyZrycR2U3DoYAZe63PjdHOI3tJvCCJ+ESRpCitbWowNSubGnb1zP5Bj43FGvpSJuiZtIMe+zZdwxKN0qoDBELGWFY=
+	t=1714476557; cv=none; b=WklEduAPtnBPsDV8Yx5kVYpmDoWD60gqS1NyNOQCWKMiFqz3w8xxnXa7zmSDCClP/y83WBuStcJ9N0EfjzJhA1KBvwApRs4i2Pp4whKvHHkp1/kLkG0E2Zu1cHIMKykWbc8WOsjRKOVDi4yuwCJPvwDaktYp/dIKTbmXLhv9SqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476187; c=relaxed/simple;
-	bh=/fs1jtg+XMVc6t5YkVGCLTRChYOWzRvZ6XNerhl76fE=;
+	s=arc-20240116; t=1714476557; c=relaxed/simple;
+	bh=AdxRXs4MqDrMgh/fXmt0zPXat8wP/5HDmT0pFjFZmqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5OiQSKzUr+/YaSMs9h9Z2S9Vc3dhg7IOaC3gBGqDo9pLgaAvaDFJZZbzwqfy4jFhqqLd9ij2gmxdDzAoXL0tFqClUV5igPkftmJNSAuSazLdPzxA1mujTdhLxkNWGN2wl7DEbncDz9MN28dM8UpMcIGy6whjNNIrq6Afx7ZdRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAbNxeSD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D050C4AF1A;
-	Tue, 30 Apr 2024 11:23:07 +0000 (UTC)
+	 MIME-Version; b=VxIC3OAMEtDDhUmxDPZFQVuk6ii3Vijfmg2yaGxbI0XNipV+Pg6SlLapUU1B4doLQUTQ1/WTEsynF+9bTYWJCJzOI/o38GF7cFhG3gbZ+tusuD6sFq0P7FV4bW+oSxW/RiX+f1b4TtER30nnpzetoJ7JkGM5NSEInybIrcVewZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTTxjV37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83B9C4AF1A;
+	Tue, 30 Apr 2024 11:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476187;
-	bh=/fs1jtg+XMVc6t5YkVGCLTRChYOWzRvZ6XNerhl76fE=;
+	s=korg; t=1714476557;
+	bh=AdxRXs4MqDrMgh/fXmt0zPXat8wP/5HDmT0pFjFZmqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eAbNxeSD4nPWCLpQG4V79LrjtwisPtTRDY1pZFLT2llS6qeVlaX+RnoGrTyDK1PYa
-	 nh3mRwPfepwQDlNkDVAuOlgJ4fXuIwQLVrYc2/p4dvd9X1VFKilaDYsr+sRDzNxRoZ
-	 JbZmWLoK/Xj9qW8QWGgRd0FXviuN3MuDSHZKM2iE=
+	b=RTTxjV37U7+3Sv2dBKK31F0PBKYk5A86Q8HJlKAqaQdNHtxBCx6Y96npfUBcbAT+l
+	 4C31VEbPhklXUyGRTpNYzsGUMxrPYCSNZUA/2Y4KW5cXPj0DoZiGRaMt24+/58Ienu
+	 E7+TYc0d9/HQUSsxvRRG1GM2zKBqaHMPf38GfwEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Bauer <mail@david-bauer.net>,
-	"David S. Miller" <davem@davemloft.net>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/107] vxlan: drop packets from invalid src-address
+Subject: [PATCH 6.1 052/110] eth: bnxt: fix counting packets discarded due to OOM and netpoll
 Date: Tue, 30 Apr 2024 12:40:21 +0200
-Message-ID: <20240430103046.456825241@linuxfoundation.org>
+Message-ID: <20240430103049.102337925@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit f58f45c1e5b92975e91754f5407250085a6ae7cf ]
+[ Upstream commit 730117730709992c9f6535dd7b47638ee561ec45 ]
 
-The VXLAN driver currently does not check if the inner layer2
-source-address is valid.
+I added OOM and netpoll discard counters, naively assuming that
+the cpr pointer is pointing to a common completion ring.
+Turns out that is usually *a* completion ring but not *the*
+completion ring which bnapi->cp_ring points to. bnapi->cp_ring
+is where the stats are read from, so we end up reporting 0
+thru ethtool -S and qstat even though the drop events have happened.
+Make 100% sure we're recording statistics in the correct structure.
 
-In case source-address snooping/learning is enabled, a entry in the FDB
-for the invalid address is created with the layer3 address of the tunnel
-endpoint.
-
-If the frame happens to have a non-unicast address set, all this
-non-unicast traffic is subsequently not flooded to the tunnel network
-but sent to the learnt host in the FDB. To make matters worse, this FDB
-entry does not expire.
-
-Apply the same filtering for packets as it is done for bridges. This not
-only drops these invalid packets but avoids them from being learnt into
-the FDB.
-
-Fixes: d342894c5d2f ("vxlan: virtual extensible lan")
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 907fd4a294db ("bnxt: count discards due to memory allocation errors")
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20240424002148.3937059-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 44 ++++++++++-------------
+ 1 file changed, 18 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/vxlan.c b/drivers/net/vxlan.c
-index 8808a6540b190..f70500c85e2a2 100644
---- a/drivers/net/vxlan.c
-+++ b/drivers/net/vxlan.c
-@@ -1605,6 +1605,10 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
- 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
- 		return false;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 70021b5eb54a6..77ea19bcdc6fe 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -1697,7 +1697,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
+ 		skb = bnxt_copy_skb(bnapi, data_ptr, len, mapping);
+ 		if (!skb) {
+ 			bnxt_abort_tpa(cpr, idx, agg_bufs);
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
++			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
+ 			return NULL;
+ 		}
+ 	} else {
+@@ -1707,7 +1707,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
+ 		new_data = __bnxt_alloc_rx_frag(bp, &new_mapping, GFP_ATOMIC);
+ 		if (!new_data) {
+ 			bnxt_abort_tpa(cpr, idx, agg_bufs);
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
++			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
+ 			return NULL;
+ 		}
  
-+	/* Ignore packets from invalid src-address */
-+	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
-+		return false;
+@@ -1723,7 +1723,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
+ 		if (!skb) {
+ 			skb_free_frag(data);
+ 			bnxt_abort_tpa(cpr, idx, agg_bufs);
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
++			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
+ 			return NULL;
+ 		}
+ 		skb_reserve(skb, bp->rx_offset);
+@@ -1734,7 +1734,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
+ 		skb = bnxt_rx_agg_pages_skb(bp, cpr, skb, idx, agg_bufs, true);
+ 		if (!skb) {
+ 			/* Page reuse already handled by bnxt_rx_pages(). */
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
++			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
+ 			return NULL;
+ 		}
+ 	}
+@@ -1950,11 +1950,8 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 			u32 frag_len = bnxt_rx_agg_pages_xdp(bp, cpr, &xdp,
+ 							     cp_cons, agg_bufs,
+ 							     false);
+-			if (!frag_len) {
+-				cpr->sw_stats.rx.rx_oom_discards += 1;
+-				rc = -ENOMEM;
+-				goto next_rx;
+-			}
++			if (!frag_len)
++				goto oom_next_rx;
+ 		}
+ 		xdp_active = true;
+ 	}
+@@ -1977,9 +1974,7 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 				else
+ 					bnxt_xdp_buff_frags_free(rxr, &xdp);
+ 			}
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
+-			rc = -ENOMEM;
+-			goto next_rx;
++			goto oom_next_rx;
+ 		}
+ 	} else {
+ 		u32 payload;
+@@ -1990,29 +1985,21 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 			payload = 0;
+ 		skb = bp->rx_skb_func(bp, rxr, cons, data, data_ptr, dma_addr,
+ 				      payload | len);
+-		if (!skb) {
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
+-			rc = -ENOMEM;
+-			goto next_rx;
+-		}
++		if (!skb)
++			goto oom_next_rx;
+ 	}
+ 
+ 	if (agg_bufs) {
+ 		if (!xdp_active) {
+ 			skb = bnxt_rx_agg_pages_skb(bp, cpr, skb, cp_cons, agg_bufs, false);
+-			if (!skb) {
+-				cpr->sw_stats.rx.rx_oom_discards += 1;
+-				rc = -ENOMEM;
+-				goto next_rx;
+-			}
++			if (!skb)
++				goto oom_next_rx;
+ 		} else {
+ 			skb = bnxt_xdp_build_skb(bp, skb, agg_bufs, rxr->page_pool, &xdp, rxcmp1);
+ 			if (!skb) {
+ 				/* we should be able to free the old skb here */
+ 				bnxt_xdp_buff_frags_free(rxr, &xdp);
+-				cpr->sw_stats.rx.rx_oom_discards += 1;
+-				rc = -ENOMEM;
+-				goto next_rx;
++				goto oom_next_rx;
+ 			}
+ 		}
+ 	}
+@@ -2090,6 +2077,11 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 	*raw_cons = tmp_raw_cons;
+ 
+ 	return rc;
 +
- 	/* Get address from the outer IP header */
- 	if (vxlan_get_sk_family(vs) == AF_INET) {
- 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
++oom_next_rx:
++	cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
++	rc = -ENOMEM;
++	goto next_rx;
+ }
+ 
+ /* In netpoll mode, if we are using a combined completion ring, we need to
+@@ -2135,7 +2127,7 @@ static int bnxt_force_rx_discard(struct bnxt *bp,
+ 	}
+ 	rc = bnxt_rx_pkt(bp, cpr, raw_cons, event);
+ 	if (rc && rc != -EBUSY)
+-		cpr->sw_stats.rx.rx_netpoll_discards += 1;
++		cpr->bnapi->cp_ring.sw_stats.rx.rx_netpoll_discards += 1;
+ 	return rc;
+ }
+ 
 -- 
 2.43.0
 
