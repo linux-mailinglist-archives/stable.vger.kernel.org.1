@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-42821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB288B7E96
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 19:31:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF908B7E9B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 19:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BBC4B21709
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 17:31:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A5BB283126
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 17:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29671802A5;
-	Tue, 30 Apr 2024 17:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEFF1802DA;
+	Tue, 30 Apr 2024 17:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAkT/R0b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M0clFbDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC0D1369AC;
-	Tue, 30 Apr 2024 17:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8181802C3;
+	Tue, 30 Apr 2024 17:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714498297; cv=none; b=mUT3BW9XHIDtGrr8MocJTr65VYuhOdrv662CK44RtIP75mX71JfOmVUyZgCx1IrB21yDyQ5lg0RSU7KnuyDsYAlfW6QA1yHvem3Vs2Y6i25xI7LjyL6VEokDwulgam8BqflqtFEt6B24jUmzekIgvx82ryL4n6dbv8PUIsh+1WQ=
+	t=1714498306; cv=none; b=Ouhj8ycXPRhSHwNiprEuYfCclMCwV9bq53VycMvujb4R1V0edPzaH5EESthWSow4MHMMAlKj+55aUGPo9h4Czu7Bj24bWE8nGsfiJ1WDLytv8YGjhRa7ZhAZtW3wbe/OGgVaMbtidMyY+zHG+vUL+zFL+ieqBMPcYSy6pLKYZOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714498297; c=relaxed/simple;
-	bh=/Ip7J5K8s7x43YQAeSS+jyAToZG38/oXcAkZGfkh/wo=;
+	s=arc-20240116; t=1714498306; c=relaxed/simple;
+	bh=OZfdAv9Kd4pWfqB6VspdLN4BDbD4/2bmL+06pd8HlHM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VZWSswqr8vbxVvxnE7RuMcjXHDO9SQ5ov93hjbwA1SrwIcGj8TPi5n5SQNYGNu0Bf604U9I7U659pDy2EUIXhBev5V6ZhyL6guHdXJtbCNX3GLa+Kah2jRFXlPHtOZ+gYt94Y2rQWvrFhCMvXmTv9c2snpeetjYIw4F4WZB9zzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAkT/R0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F02C2BBFC;
-	Tue, 30 Apr 2024 17:31:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JdMg0mi9Q9Z4c/1uJ4PGIeqhWJmQxFw8YLknK/SR8hsL5lvDVxVbZm21aQiwyyEUyftsCUdRHVJA2BRM986gqEMVcxqBocWZnHAYpU6vKjJicoMjGd68VmLLcfpVnOIkhDgfDK61rzPdQ5jvS/paub1DELH7mDtZBP0hPf1C3fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M0clFbDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A0CC2BBFC;
+	Tue, 30 Apr 2024 17:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714498297;
-	bh=/Ip7J5K8s7x43YQAeSS+jyAToZG38/oXcAkZGfkh/wo=;
+	s=k20201202; t=1714498305;
+	bh=OZfdAv9Kd4pWfqB6VspdLN4BDbD4/2bmL+06pd8HlHM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YAkT/R0bRnrRHy7aprSQ4w+lsAaNSf6+/Bg1aIiNleAzGvoeZp1cuqJPHZvAMPZpq
-	 ty8bCPy7E04znxnUlZq/h9IAtphal9Aw3CPWs3pdy1rw8WgE7/bE49Xn3BiGQMlK8n
-	 WKOWiunjdu5uhB7Y616CpnzPKFlXElercxi82RLDxjd3brpp5XR0dPkkWSiNXpqsG+
-	 Awm2RMeoiSMgOOR6eSMtWQ5i3ORv26PYMt7m5taQe+x2xsFr0NCEe2FOMiPo8xDwEr
-	 BaG3An5IlPodudMsZ/gCV2f7WMzC6iBWldoWA5A8YDyaeIvDChH+HcPRohpk3uNlGl
-	 e5+W4IDvbGN1A==
-Date: Tue, 30 Apr 2024 18:31:31 +0100
-From: Simon Horman <horms@kernel.org>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	edumazet@google.com, netdev@vger.kernel.org,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	regressions@leemhuis.info, stable@vger.kernel.org,
-	=?utf-8?B?SsOpcsO0bWU=?= Carretero <cJ@zougloub.eu>,
-	Sasha Neftin <sasha.neftin@intel.com>,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>
-Subject: Re: [PATCH net] e1000e: change usleep_range to udelay in PHY mdic
- access
-Message-ID: <20240430173131.GA2575892@kernel.org>
-References: <20240429171040.1152516-1-anthony.l.nguyen@intel.com>
+	b=M0clFbDha9R8iPiHDUgsn1ZVjkjm/cOV7b83d3UsD49XrAzNh57sVUpxiUTbDHH/b
+	 AiOryLLbKn10xcrSpBZEb3nmVKOVGpsAZ3B1r2Z4KgdobxAqQ/6eStc+GcuJm5g/kf
+	 qiajgLH5smRzG84WGTv4zWA9sqrTR47r9qvzgOndkOGiSR+X7grtOV687F4CAc3PF8
+	 kzLYKtIwljZh6iwtQOIiAxOYdiqlDuJ5M3ZA/6ysLXewYsbreyGSknjRjvgsS0SShU
+	 KZFUvzezZpmR8GMGHt50ZroWvXxHQW8ONzWNA5Nlr4tWDnk3cif12tNUsMCllmrxtD
+	 y7Im4/I4uo0uQ==
+Date: Tue, 30 Apr 2024 18:31:40 +0100
+From: Lee Jones <lee@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Edward Liaw <edliaw@google.com>, stable@vger.kernel.org,
+	Shuah Khan <shuah@kernel.org>, kernel-team@android.com,
+	Mark Brown <broonie@kernel.org>, Kees Cook <keescook@chromium.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.6.y] kselftest: Add a ksft_perror() helper
+Message-ID: <20240430173140.GA840359@google.com>
+References: <20240430010628.430427-1-edliaw@google.com>
+ <2024043037-debate-capsize-e44c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,30 +62,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240429171040.1152516-1-anthony.l.nguyen@intel.com>
+In-Reply-To: <2024043037-debate-capsize-e44c@gregkh>
 
-On Mon, Apr 29, 2024 at 10:10:40AM -0700, Tony Nguyen wrote:
-> From: Vitaly Lifshits <vitaly.lifshits@intel.com>
-> 
-> This is a partial revert of commit 6dbdd4de0362 ("e1000e: Workaround
-> for sporadic MDI error on Meteor Lake systems"). The referenced commit
-> used usleep_range inside the PHY access routines, which are sometimes
-> called from an atomic context. This can lead to a kernel panic in some
-> scenarios, such as cable disconnection and reconnection on vPro systems.
-> 
-> Solve this by changing the usleep_range calls back to udelay.
-> 
-> Fixes: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
-> Cc: stable@vger.kernel.org
-> Reported-by: Jérôme Carretero <cJ@zougloub.eu>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218740
-> Closes: https://lore.kernel.org/lkml/a7eb665c74b5efb5140e6979759ed243072cb24a.camel@zougloub.eu/
-> Co-developed-by: Sasha Neftin <sasha.neftin@intel.com>
-> Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-> Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-> Tested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+On Tue, 30 Apr 2024, Greg KH wrote:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+> On Tue, Apr 30, 2024 at 01:06:27AM +0000, Edward Liaw wrote:
+> > From: Mark Brown <broonie@kernel.org>
+> > 
+> > [ Upstream commit 907f33028871fa7c9a3db1efd467b78ef82cce20 ]
+> > 
+> > The standard library perror() function provides a convenient way to print
+> > an error message based on the current errno but this doesn't play nicely
+> > with KTAP output. Provide a helper which does an equivalent thing in a KTAP
+> > compatible format.
+> > 
+> > nolibc doesn't have a strerror() and adding the table of strings required
+> > doesn't seem like a good fit for what it's trying to do so when we're using
+> > that only print the errno.
+> > 
+> > Signed-off-by: Mark Brown <broonie@kernel.org>
+> > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+> > Stable-dep-of: 071af0c9e582 ("selftests: timers: Convert posix_timers test to generate KTAP output")
+> > Signed-off-by: Edward Liaw <edliaw@google.com>
+> > ---
+> >  tools/testing/selftests/kselftest.h | 14 ++++++++++++++
+> >  1 file changed, 14 insertions(+)
+> 
+> This commit is already in 6.6.29, why submit it again?
 
+I don't see this in v6.6.29.
+
+The function that it adds is called, but doesn't exist however:
+
+stable/linux-6.6.y:tools/testing/selftests/timers/posix_timers.c:               ksft_perror("Can't call gettimeofday()");
+stable/linux-6.6.y:tools/testing/selftests/timers/posix_timers.c:               ksft_perror("Can't set timer");
+stable/linux-6.6.y:tools/testing/selftests/timers/posix_timers.c:               ksft_perror("Can't call gettimeofday()");
+stable/linux-6.6.y:tools/testing/selftests/timers/posix_timers.c:               ksft_perror("Can't create timer");
+stable/linux-6.6.y:tools/testing/selftests/timers/posix_timers.c:               ksft_perror("Can't call gettimeofday()");
+stable/linux-6.6.y:tools/testing/selftests/timers/posix_timers.c:               ksft_perror("Can't set timer");
+stable/linux-6.6.y:tools/testing/selftests/timers/posix_timers.c:               ksft_perror("Can't call gettimeofday()");
+
+We should probably have this added to linux-6.6.y.
+
+-- 
+Lee Jones [李琼斯]
 
