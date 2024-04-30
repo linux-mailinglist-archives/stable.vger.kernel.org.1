@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-41879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525CC8B7036
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:44:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7EBE8B72F9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0964C1F21898
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:44:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63DF1283D5A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AE012C544;
-	Tue, 30 Apr 2024 10:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6731212CD90;
+	Tue, 30 Apr 2024 11:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxCCQt7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvZ306Sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510A612B176;
-	Tue, 30 Apr 2024 10:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B6C8801;
+	Tue, 30 Apr 2024 11:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473836; cv=none; b=u8KRgvLt0XXdGA+Dfk2yJvtwnLaMGomnAh949psJPdhAqeTfl4m2dcawI+QMtpMJL8TEy1hicGdcCXgTGoy2rijE+/UFO0aw+Uyvoi/6HWCXPCg/ZyqXHIzUfvCXdTvdLxsg/uYxSUnVGeeA1wC4/NxbqKhm58FCUvrZjpdYwzU=
+	t=1714475636; cv=none; b=Q6py5dXai6HNr0DQUEPxN79bYiZxO8OGkijsGP21V9pZZBxEl0TdUBdDwhjKWSwJ8x9wiDG9TAAYCq0/Cf1JbxWz0taTbnfPb0BV71VTLsq9CHC8TfdyB7JXBL4ILeEB8btDG+GCqmJbL2yWTwWfT3BFL42aSwJSCetjINcvPzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473836; c=relaxed/simple;
-	bh=mrTtu8dqNle0I1wVaCM6QGDp/pHK3r1QTdefX7H2w3M=;
+	s=arc-20240116; t=1714475636; c=relaxed/simple;
+	bh=wykQgcUw1u6O5u6y2p0wqZkpyyLpkqZL32y9Xjbv2RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W5YnB7j3zKpPSnAC/uTrxhEydjScjso+jzjxPxwIyc1qW2XuGqLPcOKBsCngTRZqe5UkOuyVVjUYwgK3nmQZPTASddmz8iHkaW2/NagHUQOsNCvJ+cw1RIBVPCSdXLTh1AKK+SuUQfyu3vaYUK4V2v1iwyHybSLJNn1Bm9yqdBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxCCQt7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC41C2BBFC;
-	Tue, 30 Apr 2024 10:43:55 +0000 (UTC)
+	 MIME-Version; b=RfSOGfALym9lssLwr1OonCPBTIu/lo3evSUopA4L+2LqHizWKavHpSvVTEcfBFxPlsKsADM1kVfYPNxrM1kmF+IH22KWxrHZlvF9NyWfg44EabYvUgUcaeBWSVhBDrKf1LkOBK6hI9m/vXAJLw44sYetwI7ejHG1vWPWpQKNAp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvZ306Sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA74C2BBFC;
+	Tue, 30 Apr 2024 11:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473835;
-	bh=mrTtu8dqNle0I1wVaCM6QGDp/pHK3r1QTdefX7H2w3M=;
+	s=korg; t=1714475636;
+	bh=wykQgcUw1u6O5u6y2p0wqZkpyyLpkqZL32y9Xjbv2RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zxCCQt7WKK6okqy3I72ftiZ6IvqtnkfbC2CtHWXdQqMYRM3o3igmXnsEzZ+Um2JMN
-	 0mlwGMYGNP194Y+REEVDNEKBzuCm5HupSSQTI1Ielu+HyJ6deinsl+fP7fXlPlZuMc
-	 KU1XFuScGm0UW1V5MCxuzc98Plj26z2L/CBm6FUo=
+	b=AvZ306SjxBfDs1kXNHX9aMghQ9m/2kzszA7jIFr7fcOe+yekj9e8D1MVDquiqXuTP
+	 RUe/i/x6JMKhO9DtfdX9hxODKCD8025UCgHYbiCO1qneiSsrCwn4Gj3dGW/ZIRDO4G
+	 7oVWuSniiFVAsZeW/6H+bNZ7ajv++WktgTRD0IB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 53/77] serial: core: Provide port lock wrappers
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 120/186] Bluetooth: qca: fix NULL-deref on non-serdev suspend
 Date: Tue, 30 Apr 2024 12:39:32 +0200
-Message-ID: <20240430103042.703277875@linuxfoundation.org>
+Message-ID: <20240430103101.515975686@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,141 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit b0af4bcb49464c221ad5f95d40f2b1b252ceedcc ]
+commit 73e87c0a49fda31d7b589edccf4c72e924411371 upstream.
 
-When a serial port is used for kernel console output, then all
-modifications to the UART registers which are done from other contexts,
-e.g. getty, termios, are interference points for the kernel console.
+Qualcomm ROME controllers can be registered from the Bluetooth line
+discipline and in this case the HCI UART serdev pointer is NULL.
 
-So far this has been ignored and the printk output is based on the
-principle of hope. The rework of the console infrastructure which aims to
-support threaded and atomic consoles, requires to mark sections which
-modify the UART registers as unsafe. This allows the atomic write function
-to make informed decisions and eventually to restore operational state. It
-also allows to prevent the regular UART code from modifying UART registers
-while printk output is in progress.
+Add the missing sanity check to prevent a NULL-pointer dereference when
+wakeup() is called for a non-serdev controller during suspend.
 
-All modifications of UART registers are guarded by the UART port lock,
-which provides an obvious synchronization point with the console
-infrastructure.
+Just return true for now to restore the original behaviour and address
+the crash with pre-6.2 kernels, which do not have commit e9b3e5b8c657
+("Bluetooth: hci_qca: only assign wakeup with serial port support") that
+causes the crash to happen already at setup() time.
 
-Provide wrapper functions for spin_[un]lock*(port->lock) invocations so
-that the console mechanics can be applied later on at a single place and
-does not require to copy the same logic all over the drivers.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Link: https://lore.kernel.org/r/20230914183831.587273-2-john.ogness@linutronix.de
+Fixes: c1a74160eaf1 ("Bluetooth: hci_qca: Add device_may_wakeup support")
+Cc: stable@vger.kernel.org      # 5.13
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 54c4ec5f8c47 ("serial: mxs-auart: add spinlock around changing cts state")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/serial_core.h | 79 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+ drivers/bluetooth/hci_qca.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index af8143fb644cc..22735ba8c19c4 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -264,6 +264,85 @@ struct uart_port {
- 	void			*private_data;		/* generic platform data pointer */
- };
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1672,6 +1672,9 @@ static bool qca_wakeup(struct hci_dev *h
+ 	struct hci_uart *hu = hci_get_drvdata(hdev);
+ 	bool wakeup;
  
-+/**
-+ * uart_port_lock - Lock the UART port
-+ * @up:		Pointer to UART port structure
-+ */
-+static inline void uart_port_lock(struct uart_port *up)
-+{
-+	spin_lock(&up->lock);
-+}
++	if (!hu->serdev)
++		return true;
 +
-+/**
-+ * uart_port_lock_irq - Lock the UART port and disable interrupts
-+ * @up:		Pointer to UART port structure
-+ */
-+static inline void uart_port_lock_irq(struct uart_port *up)
-+{
-+	spin_lock_irq(&up->lock);
-+}
-+
-+/**
-+ * uart_port_lock_irqsave - Lock the UART port, save and disable interrupts
-+ * @up:		Pointer to UART port structure
-+ * @flags:	Pointer to interrupt flags storage
-+ */
-+static inline void uart_port_lock_irqsave(struct uart_port *up, unsigned long *flags)
-+{
-+	spin_lock_irqsave(&up->lock, *flags);
-+}
-+
-+/**
-+ * uart_port_trylock - Try to lock the UART port
-+ * @up:		Pointer to UART port structure
-+ *
-+ * Returns: True if lock was acquired, false otherwise
-+ */
-+static inline bool uart_port_trylock(struct uart_port *up)
-+{
-+	return spin_trylock(&up->lock);
-+}
-+
-+/**
-+ * uart_port_trylock_irqsave - Try to lock the UART port, save and disable interrupts
-+ * @up:		Pointer to UART port structure
-+ * @flags:	Pointer to interrupt flags storage
-+ *
-+ * Returns: True if lock was acquired, false otherwise
-+ */
-+static inline bool uart_port_trylock_irqsave(struct uart_port *up, unsigned long *flags)
-+{
-+	return spin_trylock_irqsave(&up->lock, *flags);
-+}
-+
-+/**
-+ * uart_port_unlock - Unlock the UART port
-+ * @up:		Pointer to UART port structure
-+ */
-+static inline void uart_port_unlock(struct uart_port *up)
-+{
-+	spin_unlock(&up->lock);
-+}
-+
-+/**
-+ * uart_port_unlock_irq - Unlock the UART port and re-enable interrupts
-+ * @up:		Pointer to UART port structure
-+ */
-+static inline void uart_port_unlock_irq(struct uart_port *up)
-+{
-+	spin_unlock_irq(&up->lock);
-+}
-+
-+/**
-+ * uart_port_lock_irqrestore - Unlock the UART port, restore interrupts
-+ * @up:		Pointer to UART port structure
-+ * @flags:	The saved interrupt flags for restore
-+ */
-+static inline void uart_port_unlock_irqrestore(struct uart_port *up, unsigned long flags)
-+{
-+	spin_unlock_irqrestore(&up->lock, flags);
-+}
-+
- static inline int serial_port_in(struct uart_port *up, int offset)
- {
- 	return up->serial_in(up, offset);
--- 
-2.43.0
-
+ 	/* BT SoC attached through the serial bus is handled by the serdev driver.
+ 	 * So we need to use the device handle of the serdev driver to get the
+ 	 * status of device may wakeup.
 
 
 
