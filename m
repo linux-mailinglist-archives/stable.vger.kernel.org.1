@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DF78B71D3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:01:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BBDF8B7148
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A85C51C225CA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:01:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C74A71F234A6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8652112C530;
-	Tue, 30 Apr 2024 11:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869DC12D1F4;
+	Tue, 30 Apr 2024 10:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF9SOdvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZH8O+3sb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DEA12B176;
-	Tue, 30 Apr 2024 11:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4599112C491;
+	Tue, 30 Apr 2024 10:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474882; cv=none; b=N5oHb92McmxbnDP6UdAX867apYN0TCDX5gOsPTiaXrDF6dvJS2julxSLLbM+Rgi+lkqGKTUi/WSn+JOmx1963DA6RnlvSPhJgniE3qTZ3/RdnKkTq6+m+qrcnzXOWP5GrSSC+mXQPOd/gbflNsBYKHCIXnwdbawJ7Fums2kTbu8=
+	t=1714474488; cv=none; b=NQEqrGhewqoABRyZj4oaF33M/6tOux8XaQWd1iu+QxmaF1K3F8kRDb1JoB/lE+9pX+Zd8SBrvmQeRnCIAyvNFabSmQYnq6IN62qqCW+A9R5Zt62J0B0fPDJbitYxGu80azs8npGyROMKxKdNYAHTJaeFzg4DWDfFL8r5Cinnf0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474882; c=relaxed/simple;
-	bh=NEK8bNDOc6QAzLlt818HIJ2CZJ2xMkdixJz0Du1PXyU=;
+	s=arc-20240116; t=1714474488; c=relaxed/simple;
+	bh=8Zg0FUGoC+MP2IC5wjjVdrgou2WcnWL/fHrPieND2oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/701yTw2Bp42zC9uKpERFof/N1NT25xS1W2cqGjPFG2mQfiYX1P0IXLzSRwK7Wu5/IZswY9JEtW3OJRjnr5sTQvwSxuqFjwj9ID+ZUDI/HddJ4xvCYtV/GD3iwu0SPDB68mu+6apSwqxRVlbwC8g/jV0bIdG127/Q+nV6P+e1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF9SOdvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAC0C4AF19;
-	Tue, 30 Apr 2024 11:01:21 +0000 (UTC)
+	 MIME-Version; b=oHd5f9SMxlEZU3Rxuxnn/fbSmRemyKZ2AhgWmcWpNvuiHksljzWY1IFVYEIK4jIdeAh3s1qzLoMdDNRdkQQtiNsXbyGmModbiaj2NnKK6VVvDqMCVa5WB9XIWisLewyi/RE8bkMDI9YVCUNbIQas5XK1cLlNlIuGYjmOIjgqZEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZH8O+3sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7414EC2BBFC;
+	Tue, 30 Apr 2024 10:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474882;
-	bh=NEK8bNDOc6QAzLlt818HIJ2CZJ2xMkdixJz0Du1PXyU=;
+	s=korg; t=1714474487;
+	bh=8Zg0FUGoC+MP2IC5wjjVdrgou2WcnWL/fHrPieND2oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pF9SOdvggBAwC7Qj7GmCmfHnTG2T7HhPgtptdSGR3oaPONtmVxAMp7a+xhiqxG8Us
-	 476khBSbaHVM6+xGhyUH8+Qkb7TWA9q24/y0EVZv0czfRBgfS1owrC5e4JcNH3e3vg
-	 8EuWpnwNB/DqdYrZH/BFjAHkPUV/HwaqKIJIUvFI=
+	b=ZH8O+3sbTn7wThkaKPeWti2p8ddE8E9RjXBUmDPKRIhG+yVe6TyEgkLE4RgItLucB
+	 LC5Bd+PSPqjYGhrCLcVHwh847rGUExv72Su1TYD53qkQTqYtFNRZPqMcv3ONGAsiTm
+	 Kxu0guRyslXkp55kBbsgrpzzcy/IZJbjKM6ZIObk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 064/138] usb: Disable USB3 LPM at shutdown
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.8 171/228] dmaengine: xilinx: xdma: Fix wrong offsets in the buffers addresses in dma descriptor
 Date: Tue, 30 Apr 2024 12:39:09 +0200
-Message-ID: <20240430103051.308335660@linuxfoundation.org>
+Message-ID: <20240430103108.738352911@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit d920a2ed8620be04a3301e1a9c2b7cc1de65f19d upstream.
+commit 5b9706bfc094314c600ab810a61208a7cbaa4cb3 upstream.
 
-SanDisks USB3 storage may disapper after system reboot:
+The addition of interleaved transfers slightly changed the way
+addresses inside DMA descriptors are derived, breaking cyclic
+transfers.
 
-usb usb2-port3: link state change
-xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
-usb usb2-port3: do warm reset, port only
-xhci_hcd 0000:00:14.0: xhci_hub_status_data: stopping usb2 port polling
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2b0, return 0x2b0
-usb usb2-port3: not warm reset yet, waiting 50ms
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2f0, return 0x2f0
-usb usb2-port3: not warm reset yet, waiting 200ms
-...
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x6802c0, return 0x7002c0
-usb usb2-port3: not warm reset yet, waiting 200ms
-xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x4802c0
-xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x4002c0
-xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2c0, return 0x2c0
-usb usb2-port3: not enabled, trying warm reset again...
-
-This is due to the USB device still cause port change event after xHCI is
-shuted down:
-
-xhci_hcd 0000:38:00.0: // Setting command ring address to 0xffffe001
-xhci_hcd 0000:38:00.0: xhci_resume: starting usb3 port polling.
-xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb4 port polling
-xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb3 port polling
-xhci_hcd 0000:38:00.0: hcd_pci_runtime_resume: 0
-xhci_hcd 0000:38:00.0: xhci_shutdown: stopping usb3 port polling.
-xhci_hcd 0000:38:00.0: // Halt the HC
-xhci_hcd 0000:38:00.0: xhci_shutdown completed - status = 1
-xhci_hcd 0000:00:14.0: xhci_shutdown: stopping usb1 port polling.
-xhci_hcd 0000:00:14.0: // Halt the HC
-xhci_hcd 0000:00:14.0: xhci_shutdown completed - status = 1
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
-xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1311
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x201203, return 0x100203
-xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: clear port3 connect change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
-usb 2-3: device not accepting address 2, error -108
-xhci_hcd 0000:00:14.0: xHCI dying or halted, can't queue_command
-xhci_hcd 0000:00:14.0: Set port 2-3 link state, portsc: 0x1203, write 0x11261
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1263, return 0x263
-xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1271
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12b1, return 0x2b1
-usb usb2-port3: not reset yet, waiting 60ms
-ACPI: PM: Preparing to enter system sleep state S5
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12f1, return 0x2f1
-usb usb2-port3: not reset yet, waiting 200ms
-reboot: Restarting system
-
-The port change event is caused by LPM transition, so disabling LPM at shutdown
-to make sure the device is in U0 for warmboot.
-
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240305065140.66801-1-kai.heng.feng@canonical.com
+Fixes: 3e184e64c2e5 ("dmaengine: xilinx: xdma: Prepare the introduction of interleaved DMA transfers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://lore.kernel.org/r/20240327-digigram-xdma-fixes-v1-1-45f4a52c0283@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/dma/xilinx/xdma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -295,8 +295,10 @@ static void usb_port_shutdown(struct dev
- {
- 	struct usb_port *port_dev = to_usb_port(dev);
+--- a/drivers/dma/xilinx/xdma.c
++++ b/drivers/dma/xilinx/xdma.c
+@@ -704,7 +704,7 @@ xdma_prep_dma_cyclic(struct dma_chan *ch
+ 	desc_num = 0;
+ 	for (i = 0; i < periods; i++) {
+ 		desc_num += xdma_fill_descs(sw_desc, *src, *dst, period_size, desc_num);
+-		addr += i * period_size;
++		addr += period_size;
+ 	}
  
--	if (port_dev->child)
-+	if (port_dev->child) {
- 		usb_disable_usb2_hardware_lpm(port_dev->child);
-+		usb_unlocked_disable_lpm(port_dev->child);
-+	}
- }
- 
- static const struct dev_pm_ops usb_port_pm_ops = {
+ 	tx_desc = vchan_tx_prep(&xdma_chan->vchan, &sw_desc->vdesc, flags);
 
 
 
