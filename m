@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7578B742A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DB78B7230
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 896A8285FE8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B87ABB2077E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244D312D1E8;
-	Tue, 30 Apr 2024 11:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB1D12C54B;
+	Tue, 30 Apr 2024 11:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oehUWzkF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLend8aD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CB417592;
-	Tue, 30 Apr 2024 11:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EE312C462;
+	Tue, 30 Apr 2024 11:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476476; cv=none; b=DJqrsstMEaKvWXb4wDJ5RnYBLOEJLY+yv9fRIqB0A6bHMs0FVTKEHdtLjj+R1U6/Z79jG6MEBvo6rHnFAaMkpBMNRFg7LPuHacrzb3Y3XCQ6opPTHzk2FHM2mS0CqXGtCLWxc/4kwEgEVnuXuWqRELUBOkrY8lNy3H8/GgpGB64=
+	t=1714475127; cv=none; b=Qlo4Corfhre7xmm/t65Nym0j0aF5VoZpJd4Wf0Zlwmg35PaqJfjPlYqn4AOBTvKApbRNXcOOaB7d0LTfvc8bIDclmaRoKzSx1lGS6LXc2MhHNchfbY3aj053S414GqUr+iydLTdCMrAG6zPjOREYJGculMx1UHfFXCPqeCa0GWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476476; c=relaxed/simple;
-	bh=VAHXJEPYIchjv+JAJ22qzh+88pai8blMlfTxFFnZM1c=;
+	s=arc-20240116; t=1714475127; c=relaxed/simple;
+	bh=IEAA24vLsShFCqaBaZKJWAJLj1Zdbfq+CDBVV2mrRrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZrgDEWQMQN8aJdx8cCBa8jPGNfYMJEo4z5EZiiJhLq6jkWwqerevKfVFR7rHP4Oe4XvKkgSQ8dUTgq+A08h59Zxj//CWTnqCavMnww1whpMLm83/tDh6kXzCNJsOpGzZ/DDRD/l9wluwalrMP5KgF6YgKP+7hMXB7XqWXgjTIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oehUWzkF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA0FC2BBFC;
-	Tue, 30 Apr 2024 11:27:56 +0000 (UTC)
+	 MIME-Version; b=Or9UhzWNhwJ3BKj0yicE+6y4ifgMVoWLaJSugle6eR8e7gjM2kS1d/PboRVPfPy0f5Z4VmxGwJAeOHqM/UHkPJSdBG2ZlgCtOgqcMcyKzaoF0D22Xph7vmRsvaPdyRbSaAXJuyQfo3nwp3xvkLJyaIMKSY6nQFlhkZl509PxKoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLend8aD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B554C2BBFC;
+	Tue, 30 Apr 2024 11:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476476;
-	bh=VAHXJEPYIchjv+JAJ22qzh+88pai8blMlfTxFFnZM1c=;
+	s=korg; t=1714475126;
+	bh=IEAA24vLsShFCqaBaZKJWAJLj1Zdbfq+CDBVV2mrRrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oehUWzkFS/XRAjhZPXNsc2NeMwRbPYe8pCHUOSHiK5WZICONvLLY7OjbZZ82AlqzT
-	 uCvAqx4TVjnv14VPxdClichlbu8P4buuv6/mGn284MrCrdwSPyDU7/FWywVNefHBOs
-	 jEqOVQqss3KUfBldryx5MV3AQxv3FeYfVYQ5074k=
+	b=jLend8aD0YqO/NCcw8W68wq/THp7MTm934cOAU46u5B/QgXdmOdVN6MBxFYnjf1Nu
+	 RQ54h8CLEBYCePxAN9qlNmHq7jcmvaOL3tgL5CHQn/7MbmKhcix1baKxrn7BaQxyp3
+	 QofVRIYtqIPyBdBUQutsiJfg2TajTNbkILO7Uljg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
 	Eric Dumazet <edumazet@google.com>,
-	Aaron Conole <aconole@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/110] net: openvswitch: Fix Use-After-Free in ovs_ct_exit
+	Zhengchao Shao <shaozhengchao@huawei.com>
+Subject: [PATCH 5.10 127/138] tcp: Fix NEW_SYN_RECV handling in inet_twsk_purge()
 Date: Tue, 30 Apr 2024 12:40:12 +0200
-Message-ID: <20240430103048.838851168@linuxfoundation.org>
+Message-ID: <20240430103053.142536727@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5ea7b72d4fac2fdbc0425cd8f2ea33abe95235b2 ]
+commit 1c4e97dd2d3c9a3e84f7e26346aa39bc426d3249 upstream.
 
-Since kfree_rcu, which is called in the hlist_for_each_entry_rcu traversal
-of ovs_ct_limit_exit, is not part of the RCU read critical section, it
-is possible that the RCU grace period will pass during the traversal and
-the key will be free.
+inet_twsk_purge() uses rcu to find TIME_WAIT and NEW_SYN_RECV
+objects to purge.
 
-To prevent this, it should be changed to hlist_for_each_entry_safe.
+These objects use SLAB_TYPESAFE_BY_RCU semantic and need special
+care. We need to use refcount_inc_not_zero(&sk->sk_refcnt).
 
-Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://lore.kernel.org/r/ZiYvzQN/Ry5oeFQW@v4bel-B760M-AORUS-ELITE-AX
+Reuse the existing correct logic I wrote for TIME_WAIT,
+because both structures have common locations for
+sk_state, sk_family, and netns pointer.
+
+If after the refcount_inc_not_zero() the object fields longer match
+the keys, use sock_gen_put(sk) to release the refcount.
+
+Then we can call inet_twsk_deschedule_put() for TIME_WAIT,
+inet_csk_reqsk_queue_drop_and_put() for NEW_SYN_RECV sockets,
+with BH disabled.
+
+Then we need to restart the loop because we had drop rcu_read_lock().
+
+Fixes: 740ea3c4a0b2 ("tcp: Clean up kernel listener's reqsk in inet_twsk_purge()")
+Link: https://lore.kernel.org/netdev/CANn89iLvFuuihCtt9PME2uS1WJATnf5fKjDToa1WzVnRzHnPfg@mail.gmail.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240308200122.64357-2-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[shaozhengchao: resolved conflicts in 5.10]
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/conntrack.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/inet_timewait_sock.c |   41 +++++++++++++++++++----------------------
+ 1 file changed, 19 insertions(+), 22 deletions(-)
 
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index e4ba86b84b9b1..2302bae1e0128 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -1920,9 +1920,9 @@ static void ovs_ct_limit_exit(struct net *net, struct ovs_net *ovs_net)
- 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
- 		struct hlist_head *head = &info->limits[i];
- 		struct ovs_ct_limit *ct_limit;
-+		struct hlist_node *next;
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -254,12 +254,12 @@ void __inet_twsk_schedule(struct inet_ti
+ }
+ EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
  
--		hlist_for_each_entry_rcu(ct_limit, head, hlist_node,
--					 lockdep_ovsl_is_held())
-+		hlist_for_each_entry_safe(ct_limit, next, head, hlist_node)
- 			kfree_rcu(ct_limit, rcu);
- 	}
- 	kfree(info->limits);
--- 
-2.43.0
-
++/* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
+ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
+ {
+-	struct inet_timewait_sock *tw;
+-	struct sock *sk;
+ 	struct hlist_nulls_node *node;
+ 	unsigned int slot;
++	struct sock *sk;
+ 
+ 	for (slot = 0; slot <= hashinfo->ehash_mask; slot++) {
+ 		struct inet_ehash_bucket *head = &hashinfo->ehash[slot];
+@@ -268,38 +268,35 @@ restart_rcu:
+ 		rcu_read_lock();
+ restart:
+ 		sk_nulls_for_each_rcu(sk, node, &head->chain) {
+-			if (sk->sk_state != TCP_TIME_WAIT) {
+-				/* A kernel listener socket might not hold refcnt for net,
+-				 * so reqsk_timer_handler() could be fired after net is
+-				 * freed.  Userspace listener and reqsk never exist here.
+-				 */
+-				if (unlikely(sk->sk_state == TCP_NEW_SYN_RECV &&
+-					     hashinfo->pernet)) {
+-					struct request_sock *req = inet_reqsk(sk);
+-
+-					inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
+-				}
++			int state = inet_sk_state_load(sk);
+ 
++			if ((1 << state) & ~(TCPF_TIME_WAIT |
++					     TCPF_NEW_SYN_RECV))
+ 				continue;
+-			}
+ 
+-			tw = inet_twsk(sk);
+-			if ((tw->tw_family != family) ||
+-				refcount_read(&twsk_net(tw)->count))
++			if (sk->sk_family != family ||
++			    refcount_read(&sock_net(sk)->count))
+ 				continue;
+ 
+-			if (unlikely(!refcount_inc_not_zero(&tw->tw_refcnt)))
++			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+ 				continue;
+ 
+-			if (unlikely((tw->tw_family != family) ||
+-				     refcount_read(&twsk_net(tw)->count))) {
+-				inet_twsk_put(tw);
++			if (unlikely(sk->sk_family != family ||
++				     refcount_read(&sock_net(sk)->count))) {
++				sock_gen_put(sk);
+ 				goto restart;
+ 			}
+ 
+ 			rcu_read_unlock();
+ 			local_bh_disable();
+-			inet_twsk_deschedule_put(tw);
++			if (state == TCP_TIME_WAIT) {
++				inet_twsk_deschedule_put(inet_twsk(sk));
++			} else {
++				struct request_sock *req = inet_reqsk(sk);
++
++				inet_csk_reqsk_queue_drop_and_put(req->rsk_listener,
++								  req);
++			}
+ 			local_bh_enable();
+ 			goto restart_rcu;
+ 		}
 
 
 
