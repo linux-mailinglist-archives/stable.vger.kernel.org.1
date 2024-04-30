@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-41989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D278B70CD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:50:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81D08B70D8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B366EB21301
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:50:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 253631C21A94
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41ACE12C499;
-	Tue, 30 Apr 2024 10:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C8F12C48B;
+	Tue, 30 Apr 2024 10:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBQ+pnS1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVw1j11U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00ACC12C46B;
-	Tue, 30 Apr 2024 10:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4737512B176;
+	Tue, 30 Apr 2024 10:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474199; cv=none; b=Kf1KsSksbm0WwUODfMFSCdOi1A9o0Swl5be76/rwEbGLcIuKzVx/5lyK/U8jqix8Ec68i3A2sfAV2B+SwsnMwQ9MXETrTvaHUwXSZJl7BjBpnpbS8O0l67Xxy8dkSwRwU6tgOXHqZDfNMsb8QQDIzcXkbLyhgEUiv3DaLDj+h1M=
+	t=1714474234; cv=none; b=QJZ+9l6AxJY4lvKg/0bYJ7MCUwffTtaY9FwAR+S28eIu7s+e+se31TWx5tpEbF5CqdNyoUckViL1wewoWujdAKMoyyYrU6iXb1jlXLMNYsBbSm9KGjmC+NJIgJFaFF5wnlLNZ3ClUymK5DpvudDXPKCliqlCon/HViwgn/RicFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474199; c=relaxed/simple;
-	bh=ToIrrOJ7K1KIPFFaoc4DeW2po+QS2kYRa2xPVkB89S8=;
+	s=arc-20240116; t=1714474234; c=relaxed/simple;
+	bh=9uL6tDCODBLvxCnL1h4zmD8m2GfjJcqpsk0TMOWeeiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0cPRecltXetSpc+QNVp2sBEqrjbquBYa0zk6DqQP3TaqUMzR4Bbfh54vAERVp0Co4wg6J68czRJZPsMG8LAyao6qUfKZyiU4qJ8QnJKR88HMs2qYSd16+PXuYkRl2wmnbYxQ7tWsb5f5dnQ/f0TO1lj10ARFTVXPivAewBErSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBQ+pnS1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E21FC2BBFC;
-	Tue, 30 Apr 2024 10:49:58 +0000 (UTC)
+	 MIME-Version; b=jSWkKqceeEPS15LFA05HpBxmSkRHbm7by8qyHqI9j78Ex4EkGCoEh3U493c3Qc42SoNiRY7FojVOjZmnWXGDa3bVJXKxXdHxd2Z5ZkG8ln3aGz1Suomd8ZEmga0DrMAd2O+DIQPs0LW8Tvml9pBU5YysZZI6lKQSJcN5PJqvNpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVw1j11U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBABC4AF1A;
+	Tue, 30 Apr 2024 10:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474198;
-	bh=ToIrrOJ7K1KIPFFaoc4DeW2po+QS2kYRa2xPVkB89S8=;
+	s=korg; t=1714474234;
+	bh=9uL6tDCODBLvxCnL1h4zmD8m2GfjJcqpsk0TMOWeeiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sBQ+pnS1jmgd9+5GbQjUM68lfQIkV31GPBJ7wf/ednFJUfrDJzECOBvORt98dntyp
-	 YB3i725lrqpNkNdNVzK3KpSAVdn2dyQNJYAHl6S0QQBXPSGioNsevT+maueoK7jAI3
-	 Tx4F55XpT4j/4gQl+5UlQ9aaXIEnHDn+/vlxGW38=
+	b=IVw1j11UHUTWJp1nmutmtqREWrkdZurVL2lHmM+8b2Ab+dQSVGDECOFRQ69i014ys
+	 aaSm1fU16DByGEPF1cIBbgSqHPhx1GYXZdXMt9rMZAwMslRhGfJ3OYq3L0xa4dN387
+	 5IR6SqAq7Lmxh+RiAe6mU50d9sCj39sMuo7Ay43E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kwangjin Ko <kwangjin.ko@sk.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 059/228] bnxt_en: Fix error recovery for 5760X (P7) chips
-Date: Tue, 30 Apr 2024 12:37:17 +0200
-Message-ID: <20240430103105.511763577@linuxfoundation.org>
+Subject: [PATCH 6.8 060/228] cxl/core: Fix potential payload size confusion in cxl_mem_get_poison()
+Date: Tue, 30 Apr 2024 12:37:18 +0200
+Message-ID: <20240430103105.540845976@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 References: <20240430103103.806426847@linuxfoundation.org>
@@ -66,53 +69,117 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 41e54045b741daf61e03c82d442227af3d12111f ]
+[ Upstream commit 4b759dd5765503bd466defac7d93aca14c23a15d ]
 
-During error recovery, such as AER fatal error slot reset, we call
-bnxt_try_map_fw_health_reg() to try to get access to the health
-register to determine the firmware state.  Fix
-bnxt_try_map_fw_health_reg() to recognize the P7 chip correctly
-and set up the health register.
+A recent change to cxl_mem_get_records_log() [1] highlighted a subtle
+nuance of looping calls to cxl_internal_send_cmd(), i.e. that
+cxl_internal_send_cmd() modifies the 'size_out' member of the @mbox_cmd
+argument. That mechanism is useful for communicating underflow, but it
+is unwanted when reusing @mbox_cmd for a subsequent submission. It turns
+out that cxl_xfer_log() avoids this scenario by always redefining
+@mbox_cmd each iteration.
 
-This fixes this type of AER slot reset failure:
+Update cxl_mem_get_records_log() and cxl_mem_get_poison() to follow the
+same style as cxl_xfer_log(), i.e. re-define @mbox_cmd each iteration.
+The cxl_mem_get_records_log() change is just a style fixup, but the
+cxl_mem_get_poison() change is a potential fix, per Alison [2]:
 
-bnxt_en 0000:04:00.0: AER: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Inaccessible, (Unregistered Agent ID)
-bnxt_en 0000:04:00.0 enp4s0f0np0: PCI I/O error detected
-bnxt_en 0000:04:00.0 bnxt_re0: Handle device suspend call
-bnxt_en 0000:04:00.1 enp4s0f1np1: PCI I/O error detected
-bnxt_en 0000:04:00.1 bnxt_re1: Handle device suspend call
-pcieport 0000:00:02.0: AER: Root Port link has been reset (0)
-bnxt_en 0000:04:00.0 enp4s0f0np0: PCI Slot Reset
-bnxt_en 0000:04:00.0: enabling device (0000 -> 0002)
-bnxt_en 0000:04:00.0: Firmware not ready
-bnxt_en 0000:04:00.1 enp4s0f1np1: PCI Slot Reset
-bnxt_en 0000:04:00.1: enabling device (0000 -> 0002)
-bnxt_en 0000:04:00.1: Firmware not ready
-pcieport 0000:00:02.0: AER: device recovery failed
+    Poison list retrieval can hit this case if the MORE flag is set and
+    a follow on read of the list delivers more records than the previous
+    read.  ie. device gives one record, sets the _MORE flag, then gives 5.
 
-Fixes: a432a45bdba4 ("bnxt_en: Define basic P7 macros")
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Not an urgent fix since this behavior has not been seen in the wild,
+but worth tracking as a fix.
+
+Cc: Kwangjin Ko <kwangjin.ko@sk.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Fixes: ed83f7ca398b ("cxl/mbox: Add GET_POISON_LIST mailbox command")
+Link: http://lore.kernel.org/r/20240402081404.1106-2-kwangjin.ko@sk.com [1]
+Link: http://lore.kernel.org/r/ZhAhAL/GOaWFrauw@aschofie-mobl2 [2]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://lore.kernel.org/r/171235441633.2716581.12330082428680958635.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cxl/core/mbox.c | 38 +++++++++++++++++---------------------
+ 1 file changed, 17 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 6bdd8c2607898..5b4d810748f2a 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -8906,7 +8906,7 @@ static void bnxt_try_map_fw_health_reg(struct bnxt *bp)
- 					     BNXT_FW_HEALTH_WIN_BASE +
- 					     BNXT_GRC_REG_CHIP_NUM);
- 		}
--		if (!BNXT_CHIP_P5(bp))
-+		if (!BNXT_CHIP_P5_PLUS(bp))
- 			return;
+diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+index f0f54aeccc872..65185c9fa0013 100644
+--- a/drivers/cxl/core/mbox.c
++++ b/drivers/cxl/core/mbox.c
+@@ -946,25 +946,22 @@ static void cxl_mem_get_records_log(struct cxl_memdev_state *mds,
+ 	struct cxl_memdev *cxlmd = mds->cxlds.cxlmd;
+ 	struct device *dev = mds->cxlds.dev;
+ 	struct cxl_get_event_payload *payload;
+-	struct cxl_mbox_cmd mbox_cmd;
+ 	u8 log_type = type;
+ 	u16 nr_rec;
  
- 		status_loc = BNXT_GRC_REG_STATUS_P5 |
+ 	mutex_lock(&mds->event.log_lock);
+ 	payload = mds->event.buf;
+ 
+-	mbox_cmd = (struct cxl_mbox_cmd) {
+-		.opcode = CXL_MBOX_OP_GET_EVENT_RECORD,
+-		.payload_in = &log_type,
+-		.size_in = sizeof(log_type),
+-		.payload_out = payload,
+-		.min_out = struct_size(payload, records, 0),
+-	};
+-
+ 	do {
+ 		int rc, i;
+-
+-		mbox_cmd.size_out = mds->payload_size;
++		struct cxl_mbox_cmd mbox_cmd = (struct cxl_mbox_cmd) {
++			.opcode = CXL_MBOX_OP_GET_EVENT_RECORD,
++			.payload_in = &log_type,
++			.size_in = sizeof(log_type),
++			.payload_out = payload,
++			.size_out = mds->payload_size,
++			.min_out = struct_size(payload, records, 0),
++		};
+ 
+ 		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
+ 		if (rc) {
+@@ -1297,7 +1294,6 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+ 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
+ 	struct cxl_mbox_poison_out *po;
+ 	struct cxl_mbox_poison_in pi;
+-	struct cxl_mbox_cmd mbox_cmd;
+ 	int nr_records = 0;
+ 	int rc;
+ 
+@@ -1309,16 +1305,16 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+ 	pi.offset = cpu_to_le64(offset);
+ 	pi.length = cpu_to_le64(len / CXL_POISON_LEN_MULT);
+ 
+-	mbox_cmd = (struct cxl_mbox_cmd) {
+-		.opcode = CXL_MBOX_OP_GET_POISON,
+-		.size_in = sizeof(pi),
+-		.payload_in = &pi,
+-		.size_out = mds->payload_size,
+-		.payload_out = po,
+-		.min_out = struct_size(po, record, 0),
+-	};
+-
+ 	do {
++		struct cxl_mbox_cmd mbox_cmd = (struct cxl_mbox_cmd){
++			.opcode = CXL_MBOX_OP_GET_POISON,
++			.size_in = sizeof(pi),
++			.payload_in = &pi,
++			.size_out = mds->payload_size,
++			.payload_out = po,
++			.min_out = struct_size(po, record, 0),
++		};
++
+ 		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
+ 		if (rc)
+ 			break;
 -- 
 2.43.0
 
