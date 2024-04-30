@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF96D8B7434
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 218608B7173
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BC4D2864B1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD46F1F2243E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEA512D209;
-	Tue, 30 Apr 2024 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9BE12CD89;
+	Tue, 30 Apr 2024 10:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zohrrzuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSGTPeFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF9C12BF32;
-	Tue, 30 Apr 2024 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0863D2940D;
+	Tue, 30 Apr 2024 10:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476509; cv=none; b=DLc8ODiJO/dNsc8dI/bfGAkLhUdDv+kIZDxlPkoN22pQjupF/g+NQa0MeccwL7MVEhmwz/UhBKbHMKvKkMp1QoPGyIVoEJ5cUpPYTmSweUaAt7RjlFGMV7nOBYmX9RKQCYQo3qqvCrbNNpX9abtfvgc6iVRxTvWSRaP53213mmI=
+	t=1714474603; cv=none; b=Ey8ftkh0J0jgTxk1Ea0E7L93vyU67yLnNPbbCRkEAfDpDuFmd9d8wsfUmr532a84359SBK4BeKc9mJE2eQfB3L1q0qUvtLQE5z8Pv0DhHgSC3Kfe3ywEYKP5vOCzDt4sstHgwM+1VCBo/muL4I37LECG9UbOtZr2R9ARBQ5fA9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476509; c=relaxed/simple;
-	bh=vjeFcqx+cWPTb/llJagsxkZhxqgNqpgJknHy3Hkvg0M=;
+	s=arc-20240116; t=1714474603; c=relaxed/simple;
+	bh=RXauIFv/PFTrtnCdOpD7XIOGJB1ZvGTsA0NEBoS8Qmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjGM0mOdubGKUndFOZqfQkqMVog4phwOaVRImVigslhhaDsb5MASEoMlnwq5gwc5quCbhv4AdsOqnJjasbciszT27HkuIuO38EPlpTEZ+cdBA97u/PXe656QwEZtUt7inwtMKCIeWndjLH3rBmiPMUWTmUHll+Pp8bLujdoJ66Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zohrrzuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E459C2BBFC;
-	Tue, 30 Apr 2024 11:28:28 +0000 (UTC)
+	 MIME-Version; b=U+fHLIo2kzT4+f/BQoalRGtDWA4YBxs+6cLQzyX6F2MqgiKl+3fu0afsmd21jlEksPQT1eopyprm7NNG2NqkhL3X42zfyF0TsSCmdEE2i4JRWUKB93J40wuKds+mBIuVYiRwLpUTR47mg86C7QjN95Iky5zruj5hc8TQWqvE8EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSGTPeFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824B8C2BBFC;
+	Tue, 30 Apr 2024 10:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476508;
-	bh=vjeFcqx+cWPTb/llJagsxkZhxqgNqpgJknHy3Hkvg0M=;
+	s=korg; t=1714474602;
+	bh=RXauIFv/PFTrtnCdOpD7XIOGJB1ZvGTsA0NEBoS8Qmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zohrrzuh7TzYB8Itn3HKrCo+wV8g//hsmqn1Vfy7wGIiF5ixDzXRqufprRmehHf8l
-	 ipgdoRBnpdeshDARjWvtV15WbpMfNfGZi3/WlMaZHijoeTIuNLq4qPhNkI9w7VdW00
-	 ySkX9v8yLhcK8DUrFlz29rvJHWfOXXnPGwObKzKQ=
+	b=YSGTPeFFmoaeXKiki9w9eBrSy7lvD4//11sWMwFAXtpCGTKqifySDrzjkqSBAWvKc
+	 HGFXI641lnx7r+HUBUlXCZehmuwbHEY1de+9RRjIdB3dmF/xhefnz+2rDQDykp0adc
+	 +sPZ5FoDBmX1kBrDe52IapCk9GUGNqnbd9ZECZCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/110] arm64: dts: mediatek: mt8195-cherry: Update min voltage constraint for MT6315
+Subject: [PATCH 6.8 206/228] phy: freescale: imx8m-pcie: fix pcie link-up instability
 Date: Tue, 30 Apr 2024 12:39:44 +0200
-Message-ID: <20240430103048.021038647@linuxfoundation.org>
+Message-ID: <20240430103109.750044691@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
 
-[ Upstream commit e9a6b8b5c61350535c7eb5ea9b2dde0d5745bd1b ]
+[ Upstream commit 3a161017f1de55cc48be81f6156004c151f32677 ]
 
-Update the minimum voltage from 300000 uV to 400000 uV so it matches
-the MT6315 datasheet.
+Leaving AUX_PLL_REFCLK_SEL at its reset default of AUX_IN (PLL clock)
+proves to be more stable on the i.MX 8M Mini.
 
-Also update the minimum voltage for Vgpu regulator from 625000 uV to
-400000 uV because the requested voltage could be lower than the minimum
-voltage on the GPU OPP table when the MTK Smart Voltage Scaling (SVS)
-driver is enabled.
+Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
 
-Fixes: 260c04d425eb ("arm64: dts: mediatek: cherry: Enable MT6315 regulators on SPMI bus")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240315111621.2263159-3-treapking@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
+Link: https://lore.kernel.org/r/20240322130646.1016630-2-marcel@ziswiler.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-index 4b8a1c462906e..9180a73db066e 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -845,7 +845,7 @@
- 			mt6315_6_vbuck1: vbuck1 {
- 				regulator-compatible = "vbuck1";
- 				regulator-name = "Vbcpu";
--				regulator-min-microvolt = <300000>;
-+				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <1193750>;
- 				regulator-enable-ramp-delay = <256>;
- 				regulator-ramp-delay = <6250>;
-@@ -863,7 +863,7 @@
- 			mt6315_7_vbuck1: vbuck1 {
- 				regulator-compatible = "vbuck1";
- 				regulator-name = "Vgpu";
--				regulator-min-microvolt = <625000>;
-+				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <1193750>;
- 				regulator-enable-ramp-delay = <256>;
- 				regulator-ramp-delay = <6250>;
+diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+index b700f52b7b679..11fcb1867118c 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -110,8 +110,10 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 		/* Source clock from SoC internal PLL */
+ 		writel(ANA_PLL_CLK_OUT_TO_EXT_IO_SEL,
+ 		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG062);
+-		writel(AUX_PLL_REFCLK_SEL_SYS_PLL,
+-		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG063);
++		if (imx8_phy->drvdata->variant != IMX8MM) {
++			writel(AUX_PLL_REFCLK_SEL_SYS_PLL,
++			       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG063);
++		}
+ 		val = ANA_AUX_RX_TX_SEL_TX | ANA_AUX_TX_TERM;
+ 		writel(val | ANA_AUX_RX_TERM_GND_EN,
+ 		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG064);
 -- 
 2.43.0
 
