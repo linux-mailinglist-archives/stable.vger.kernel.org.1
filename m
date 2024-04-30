@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-42275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DF48B7232
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1848F8B73BE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 782401C2264E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44AE5B215BD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7458B12C819;
-	Tue, 30 Apr 2024 11:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3078B12D757;
+	Tue, 30 Apr 2024 11:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwDwEiVA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAiVsNgB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3310512C462;
-	Tue, 30 Apr 2024 11:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14C712D1F1;
+	Tue, 30 Apr 2024 11:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475133; cv=none; b=ODK2zt5zqi7iMdfMhM/PsOWuk/hHsXjKmWPfgRaekItHT232WW/SoUxk6hUvp47+riiu4Jylgd+Em+H12GZrfVOWQP0Ws4T+ylh7EWjFFONj/piHTYGIvsjuxkZhDiN0BZftP2eplU3JpsQAjPUp8iB2CN25pNnxpQyHD4dXPf0=
+	t=1714476163; cv=none; b=tJp12SotwWCHYLWnyWeqEvvqdLGzOZN8GPyPVEkbfnbm1v87TdWIA9qDqnP2SR6GPKZl+KdZYhniZda/GjGjc46pXuo2QgLrMAWUwDXjWfgY/rsUKubCwkxlUWbVkGpv1LCjlYr++fcfm7/8CwRHUOwi8sV8MM9qv/lQrVPsE8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475133; c=relaxed/simple;
-	bh=HUdREkFaw/tCaDNaPpQFzS4Dv2k43X4IQHFMba/A33U=;
+	s=arc-20240116; t=1714476163; c=relaxed/simple;
+	bh=DVRa5K9Fkgn8u7Yae6qheQueBdL7cmUqAZotkhJFqy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DvIRv+CGXQhx0BORiNcwcvA2NF9ri6DHRuxFjFKg45VWpeChqLarvkXvieiDeRwig9RAERG9J6pLIBZmbHlFZkk13fiFEd7GRPjDIOZmOG5wAl5UAX/9ecZwtKi/WE0YjK2bJWsCW5e9Yp9ywViXhzRu2JovNo5TGIn20IFbQOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwDwEiVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C11C2BBFC;
-	Tue, 30 Apr 2024 11:05:32 +0000 (UTC)
+	 MIME-Version; b=FwOeV7vUcuE17AwirGPrxX2RZF1GBwKPz7H8P08n+aJSCv+izSPdKyOY/FjdGUK+Z+9/q9n47sHVBjsLfC1x8QE9Lylk/lSPtW4VzoD+Yy6ItDAfAIFZkdiEe4H4EfLDBFJGAjNCsHW6w529MUU5plLRjTA10joQyyLohlgzeQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAiVsNgB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59647C2BBFC;
+	Tue, 30 Apr 2024 11:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475133;
-	bh=HUdREkFaw/tCaDNaPpQFzS4Dv2k43X4IQHFMba/A33U=;
+	s=korg; t=1714476162;
+	bh=DVRa5K9Fkgn8u7Yae6qheQueBdL7cmUqAZotkhJFqy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwDwEiVAq5HHTkbF0da0Y4jQWAImso/JHyTUIoh8G6I5nsJjnxlORiih0YiFHyy+1
-	 34LrdvErYsSmowa8cw/Ek8QLod3ZBvZ6VXtaFtRrwpRVtsA8SVrd/PMlpqAypOtR6r
-	 UCZd1/RpjPLN9jprvygICddqzeJXqAtHc0dzP9Aw=
+	b=gAiVsNgB1luFYBU+ZxmOt/PESWG7lmrppG65aW/FFoxnXjLQdyU4PKLF8NxMNHjO1
+	 my9UFxuKIM/0BQdJZtcSJe5H6rSy/WBvdTtuiWnMDrnxkB9EF54pUqQQm0fo9WPYxd
+	 kUPuBtwiMhIh+SORW6I7DUEp24/uyaSfA+maglt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Weiyi Lu <weiyi.lu@mediatek.com>,
+	Ikjoon Jang <ikjn@chromium.org>,
+	Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/138] idma64: Dont try to serve interrupts when device is powered off
+Subject: [PATCH 5.4 054/107] arm64: dts: mediatek: mt8183: Add power-domains properity to mfgcfg
 Date: Tue, 30 Apr 2024 12:40:14 +0200
-Message-ID: <20240430103053.200395847@linuxfoundation.org>
+Message-ID: <20240430103046.252128698@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ikjoon Jang <ikjn@chromium.org>
 
-[ Upstream commit 9140ce47872bfd89fca888c2f992faa51d20c2bc ]
+[ Upstream commit 1781f2c461804c0123f59afc7350e520a88edffb ]
 
-When iDMA 64-bit device is powered off, the IRQ status register
-is all 1:s. This is never happen in real case and signalling that
-the device is simply powered off. Don't try to serve interrupts
-that are not ours.
+mfgcfg clock is under MFG_ASYNC power domain.
 
-Fixes: 667dfed98615 ("dmaengine: add a driver for Intel integrated DMA 64-bit")
-Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
-Closes: https://lore.kernel.org/r/700bbb84-90e1-4505-8ff0-3f17ea8bc631@gmail.com
-Tested-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240321120453.1360138-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: e526c9bc11f8 ("arm64: dts: Add Mediatek SoC MT8183 and evaluation board dts and Makefile")
+Fixes: 37fb78b9aeb7 ("arm64: dts: mediatek: Add mt8183 power domains controller")
+Signed-off-by: Weiyi Lu <weiyi.lu@mediatek.com>
+Signed-off-by: Ikjoon Jang <ikjn@chromium.org>
+Reviewed-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20240223091122.2430037-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idma64.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
-index f5a84c8463945..db506e1f7ef4e 100644
---- a/drivers/dma/idma64.c
-+++ b/drivers/dma/idma64.c
-@@ -167,6 +167,10 @@ static irqreturn_t idma64_irq(int irq, void *dev)
- 	u32 status_err;
- 	unsigned short i;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+index 97f84aa9fc6e1..1c93f41bc0880 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -577,6 +577,7 @@
+ 			compatible = "mediatek,mt8183-mfgcfg", "syscon";
+ 			reg = <0 0x13000000 0 0x1000>;
+ 			#clock-cells = <1>;
++			power-domains = <&spm MT8183_POWER_DOMAIN_MFG_ASYNC>;
+ 		};
  
-+	/* Since IRQ may be shared, check if DMA controller is powered on */
-+	if (status == GENMASK(31, 0))
-+		return IRQ_NONE;
-+
- 	dev_vdbg(idma64->dma.dev, "%s: status=%#x\n", __func__, status);
- 
- 	/* Check if we have any interrupt from the DMA controller */
+ 		mmsys: syscon@14000000 {
 -- 
 2.43.0
 
