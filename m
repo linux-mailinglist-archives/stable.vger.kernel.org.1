@@ -1,104 +1,165 @@
-Return-Path: <stable+bounces-42786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012658B7817
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 16:04:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920E68B78E1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 16:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96BE51F22926
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 14:04:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 212C81F225CA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 14:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C49E17BB1C;
-	Tue, 30 Apr 2024 14:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC92317BB0D;
+	Tue, 30 Apr 2024 14:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FftPWpOh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JUphrbgv"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7445217BB1B;
-	Tue, 30 Apr 2024 14:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BF4770FC;
+	Tue, 30 Apr 2024 14:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714485694; cv=none; b=XenbudA+T5/yMFYFszynqMzXmQLh6eF1zy/l4vc8nDt593VWx2WvGb5LeMhXekt7lmPol1cMQzWBfWmGN2nWan9gW3nj/mn95Qpz5OGNCa/svBdJcmA6DdtMvKJwyupI1xPZzFSIrq/4xvrPueZmmgNEYcUOVIcilBYQN//qOMQ=
+	t=1714485861; cv=none; b=uC6m/akKqyzT7LiIUAr7HOTIJuhl8gLA5UPv59T90Fgyu4K1aLxU2aR1KU+TlSyb13sC5PONjeVycSH3gVlBmYgYlMjfpv6fSEJvZifZb0ppY425I/XahldBCJeiVY49sTgBgHweDz8qHCPB9N2NNLNFV3v2dOw7vB3uakTyFsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714485694; c=relaxed/simple;
-	bh=fOkQvKx3TkjoVLbIXCLjIhXaPdmdNknggbtEf/cT3yY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nc8UjCh1WexD2aqfOsNFiD2Da2hn9xC3gqwkoTqNJsHDpi8G7RIv1UQ9lsR+lYJecTCzIE22sUlo8snkrX6n0x88iogN7Es8RmOoJPnduf5GbWAvJhojJUgQsfjtJmG3yQ5zLLLiz3xWHBls189jzw8k3sifGaxnxlatk6sMrfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FftPWpOh; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=cAKC+FytbCMqRhx/bKnkjsTVy7JI3n8TWD+vJCpv8t4=; b=FftPWpOhN2IU3ZbF5sbRbfzVgt
-	nMLGfJs77c0MbKf6spQZjQHA6ABKs/zK4WZHPpg73aq5Vbaj65Qz6ZYA16QahFl+DhqRb/Or1PzWj
-	ezxloudXaRZU+n6QiZr8F2ie8a8YkYi0M8F1eQOtD34hsUGSYWZioTPm+djth2ucU8r4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1s1o2j-00ELSx-DV; Tue, 30 Apr 2024 16:01:13 +0200
-Date: Tue, 30 Apr 2024 16:01:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Lee Jones <lee@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Lars Povlsen <lars.povlsen@microchip.com>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 08/17] net: lan966x: remove debugfs directory in probe()
- error path
-Message-ID: <c48e18d1-c54b-417d-9f24-3ccfeb15e974@lunn.ch>
-References: <20240430083730.134918-1-herve.codina@bootlin.com>
- <20240430083730.134918-9-herve.codina@bootlin.com>
+	s=arc-20240116; t=1714485861; c=relaxed/simple;
+	bh=56t2+Ew9OfwDvnVrXTcXYDJr1lI7iCCB7vtMImxlk7Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZVb+3+rGArWNePd69zyjV3YXUVxVEiMo+wRblhaau7mTKYOnddO8SxLUJ/luWAPTyUcQKIpaRs72oUJge1zT4l2Ez+fq9cvTvhNGDYgx3qOJPTOrPA2h/aJIzKzrMhCO1TNIj9ecII5ozgQt+6a7LWTGZbczV5yrkXtj8BabPPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JUphrbgv; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2dac77cdf43so73026661fa.2;
+        Tue, 30 Apr 2024 07:04:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714485858; x=1715090658; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=56t2+Ew9OfwDvnVrXTcXYDJr1lI7iCCB7vtMImxlk7Q=;
+        b=JUphrbgvJRj5yewENT5dVWLb8yiNevloKM5oluyrkQlD8C/LL+BApZ6m3cJjXkeEDt
+         cIDY+xHh0hVwJaYJdY6iu2kICwdxA4+utXhEHJk2MXeeE+g28ulgpn4yg7moSa5rE//v
+         t058xI++wPK3wwdDIQVM2ZO1fEzHeizA4iIp6MbB7cifyr2Lzp8SPLTvTF7FHvLgKqO4
+         V84j8IA4ejYWxu6cY86Xe60q/6VC/e/ITY2ApR6+fUZQaHQePAPSdMjKilH5tTIF0fWz
+         +o863Y/Hm0uh7cDsSgecTHXN9NspVieF4GdzzfmhFcKDU2hALQgyNsrC3B5bT65MA7Vp
+         ic3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714485858; x=1715090658;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=56t2+Ew9OfwDvnVrXTcXYDJr1lI7iCCB7vtMImxlk7Q=;
+        b=pe5xaFngcoOIkGtryGeyiCGa3I0PhpYgPgLuhgu2pvhRVUSlUVtqcdrbUdYyCvDBtT
+         gsAP09jl/zxPXpMnXw+J9RMN3z0DCt4RGABTpmODvyU77eWjvcmUVsPlZq8JREyL7C9p
+         kIddZeJ/iwo+GXuIoe5F2xPeL4+SGevdh/DS0O7NOpMDayAuWNYBH0d6ZrWboAkYb7sy
+         zMNaIOIrwS8j+NsZ5T6ZuDpzqb3uYe3ac0YQoMNrmiJfsTjOzOCrJ/quPIps+KdcmPWm
+         017I5Q7gO/xTiGD5csDk06c3NuWWmrS4nYkdxqfLuJAzb28gJ7JR5xR4MC8BlwRE1Rll
+         y/+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUqjgtfIarEKxn7qdGc5HTHbZguXrbCPEU72WuMipxOlwsl66GTsyq3u7BPaGQWfCP6lH7l4VaZqAXzLNEA8dU4Oqk2Yrg4ORZXgGz3IiDYS96vSobY1LZo5Dkb5rjUrUgYP9RneHQ/qQkczLb/wHFx2+oYHiQ6oY7k0xi/+DK8K56B/bDr
+X-Gm-Message-State: AOJu0Yyawp3BjYt4uvoFWGKFaG/naHSFRbs6l6zAX9BTBuLWKsQXSb7R
+	D85O2LXtyyoQXlG+0Ak2s9mKn3kU/hX2V8YumjKTs9Lks0igCu9zlGhDIgijg1c7GC0WxW3Ba/W
+	ZzCUt3jlyW7zo6etqeIIfgkS/Hk8=
+X-Google-Smtp-Source: AGHT+IGI+0eGY8xQlwtd+je04QG3F2m7nCFOP050A/s/nGK4Rsol3C96yicHc7QyGe5D1cbzoT+YGnYnsrGJzE09imI=
+X-Received: by 2002:a05:651c:11d1:b0:2e0:dc93:52ef with SMTP id
+ z17-20020a05651c11d100b002e0dc9352efmr1906390ljo.26.1714485857803; Tue, 30
+ Apr 2024 07:04:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240430083730.134918-9-herve.codina@bootlin.com>
+References: <20240426155801.25277-1-johan+linaro@kernel.org>
+ <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
+ <ZizKmtcUIYAMpvOQ@hovoldconsulting.com> <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
+ <Zi-ohCWv58d2h5VM@hovoldconsulting.com> <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
+ <CABBYNZJyRR9FA7TYN4+aWMtG9FPUBWMvCtMNUfvaEzxVcYOt-g@mail.gmail.com>
+ <ZjCYu2pc8376rjXk@hovoldconsulting.com> <9eebd77b-c070-4260-a979-9b97f14eb5b1@quicinc.com>
+ <ZjDtDRCHT3z-3nHh@hovoldconsulting.com>
+In-Reply-To: <ZjDtDRCHT3z-3nHh@hovoldconsulting.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Tue, 30 Apr 2024 10:04:05 -0400
+Message-ID: <CABBYNZLCw08oo+RRWkBYAdBLhFK5+pQi59dz-f+P1QusfYoAAw@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
+To: Johan Hovold <johan@kernel.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>, Doug Anderson <dianders@chromium.org>, 
+	Johan Hovold <johan+linaro@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, quic_mohamull@quicinc.com, quic_hbandi@quicinc.com, 
+	quic_anubhavg@quicinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 30, 2024 at 10:37:17AM +0200, Herve Codina wrote:
-> A debugfs directory entry is create early during probe(). This entry is
-> not removed on error path leading to some "already present" issues in
-> case of EPROBE_DEFER.
-> 
-> Create this entry later in the probe() code to avoid the need to change
-> many 'return' in 'goto' and add the removal in the already present error
-> path.
-> 
-> Fixes: 942814840127 ("net: lan966x: Add VCAP debugFS support")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Hi Johan,
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+On Tue, Apr 30, 2024 at 9:07=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
+te:
+>
+> On Tue, Apr 30, 2024 at 06:22:26PM +0530, Janaki Ramaiah Thota wrote:
+> > On 4/30/2024 12:37 PM, Johan Hovold wrote:
+> > > On Mon, Apr 29, 2024 at 01:31:53PM -0400, Luiz Augusto von Dentz wrot=
+e:
+>
+> > >> Anyway the fact that firmware loading itself is programming a
+> > >> potentially duplicated address already seems wrong enough to me,
+> > >> either it shall leave it as 00... or set a valid address otherwise w=
+e
+> > >> always risk missing yet another duplicate address being introduced a=
+nd
+> > >> then used over the air causing all sorts of problems for users.
+> > >>
+> > >> So to be clear, QCA firmware shall never attempt to flash anything
+> > >> other than 00:00:00:00:00:00 if you don't have a valid and unique
+> > >> identity address, so we can get rid of this table altogether.
+> > >
+> >
+> > Yes agree with this point.
+> > BD address should be treated as invalid if it is 00:00:00:00:00:00.
+>
+> We all agree on that.
+>
+> > NVM Tag 2: bd address is default BD address (other than 0), should be
+> > configured as valid address and as its not unique address and it will
+> > be same for all devices so mark it is configured but still allow
+> > user-space to change the address.
+>
+> But here we disagree. A non-unique address is not a valid one as it will
+> cause collisions if you have more than one such controller.
+>
+> I understand that this may be convenient/good enough for developers in
+> some cases, but this can hurt end users that do not realise why things
+> break.
+>
+> And a developer can always configure an address manually or patch the
+> driver as needed for internal use.
+>
+> Are there any other reasons that makes you want to keep the option to
+> configure the device address through NVM files? I'm assuming you're not
+> relying on patching NVM files to provision device-specific addresses
+> after installation on target?
 
-    Andrew
+Exactly, a duplicated address is not a valid public/identity address.
+
+Regarding them already been in use, we will need to have it fixed one
+way or the other, so it is better to change whatever it comer within
+the firmware file to 00:00:00:00:00:00 and have it setup a proper
+address after that rather than have a table that detect the use of
+duplicated addresses since the result would be the same since
+userspace stores pairing/devices based on adapter addresses they will
+be lost and the user will need to pair its peripherals again, so my
+recommendation is that this is done via firmware update rather than
+introducing a table containing duplicate addresses.
+
+That said it seems the patch in this thread actually reads the address
+with use of EDL_TAG_ID_BD_ADDR and then proceed to check if that is
+what the controller returns as address, while that is better than
+having a table I think there is still a risk that the duplicated
+address gets used on older kernels if that is not updated in the
+firmware directly, anyway perhaps we shall be doing both so we capture
+both cases where duplicated addresses are used or when BDADDR_ANY is.
+
+--=20
+Luiz Augusto von Dentz
 
