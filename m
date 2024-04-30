@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489C08B7158
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 894B48B7282
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2B171F23341
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8041C22775
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C3A12C817;
-	Tue, 30 Apr 2024 10:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285F712C819;
+	Tue, 30 Apr 2024 11:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjVGwM17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W397aLvy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D618312C476;
-	Tue, 30 Apr 2024 10:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8641E50A;
+	Tue, 30 Apr 2024 11:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474535; cv=none; b=C9kOZO3Zcx25mv4ra8RH+8RxZg83gUdBB68lwnBHqxUyJQ4Qscs8Gd0tBj0viFHeAyVV0aGkihvy53PXAJgXEQZcD//JJCBGPJG8x/X1QsG/h3h0hcvm7cyUdnEJRa4jxjxwHkpeuH7+guYUv3mioj7OvXw25KqgQSKk12waPEY=
+	t=1714475338; cv=none; b=YWW6XiQphRdzRtUXta9ZG/LdTZiRPnfleOK/UAYGKAk58X4MTtizjfuDLq793sa+dhJzfE776CRPCANcavTMn57CdBUreYH2vZiqY+g1x0YWoL8pc5V7ZuHW0BS8hToCd5gDgqRWNWg58/yadf/vOotoLc7qsdSvMPSlwOr2Qfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474535; c=relaxed/simple;
-	bh=9XNgg5wwkW19YbfRGKtFpxZo8Qt9xkRoEvWYzxwvQck=;
+	s=arc-20240116; t=1714475338; c=relaxed/simple;
+	bh=X16JHhIvIM4aEs2f2OQVqGS5SE8jqtimzoKzEJKQf0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9cfIoIgR6TupIbnKpUBWqiW0b6Vp+Bmuwnjekr6u0fzvYmgCwcE3+zqhnigzGdnry4/OnzrcIXb/U0Hg8iOD5791aY+nEPoyntXnlbWBKf/JJkxUN5RdjK474kSieORYBlDPfMdWtt8pbSMi65nvmT8AT7Io59IAnQbzv9kS7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjVGwM17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF8EC4AF18;
-	Tue, 30 Apr 2024 10:55:35 +0000 (UTC)
+	 MIME-Version; b=fJXT0/bMs/bn96qK3Qai0AaNwe6h110RmX/Ll5l2et0LDZn3k2N9+Pekn7oq7JYPoU2mDCGk/7JyQ8s6rqCkBS8CGCEo5ITxC2zHywf2Sm4PzfsUvOQHjzx3RxgJAxZVaq7JOTj2mHDuq4txiC0qHoB1vAf7TaNL93fFRSopAVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W397aLvy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9CEC2BBFC;
+	Tue, 30 Apr 2024 11:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474535;
-	bh=9XNgg5wwkW19YbfRGKtFpxZo8Qt9xkRoEvWYzxwvQck=;
+	s=korg; t=1714475338;
+	bh=X16JHhIvIM4aEs2f2OQVqGS5SE8jqtimzoKzEJKQf0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjVGwM17jDf1oj86ZFfAt+KtbGgvbWmh/JpT8B852SSL1OCbsjH5p8CQcTPzIys4l
-	 Ckk61JdxWPQtKzvaGOyABVuRe+TTTHeIcAnzKAY52CfbiSkMvTnCcAVxVkC0gnSXvB
-	 5czVyTW6EJSMBdRPQRuPE4wNfDQuu4KWAlZrUwA4=
+	b=W397aLvywMeogf3RooHoX9tML1pMlzQqYBqL7QtC2WptgG0klV8+yPqjjVZdaefs9
+	 zEptid/dauK5ctknI2cqw/7bU/0vBlbIqs4HG+gl5awsRBXp/wHI9MZ46fFAz8WIUa
+	 87+ajG8L0TxpJI/VvqHRX2oCR+eIH0dRfD4WFmTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.8 139/228] kbuild: rust: remove unneeded `@rustc_cfg` to avoid ICE
-Date: Tue, 30 Apr 2024 12:38:37 +0200
-Message-ID: <20240430103107.811616753@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 066/186] Bluetooth: btusb: Fix triggering coredump implementation for QCA
+Date: Tue, 30 Apr 2024 12:38:38 +0200
+Message-ID: <20240430103059.954218233@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 50cfe93b01475ba36878b65d35d812e1bb48ac71 upstream.
+[ Upstream commit b23d98d46d2858dcc0fd016caff165cbdc24e70a ]
 
-When KUnit tests are enabled, under very big kernel configurations
-(e.g. `allyesconfig`), we can trigger a `rustdoc` ICE [1]:
+btusb_coredump_qca() uses __hci_cmd_sync() to send a vendor-specific
+command to trigger firmware coredump, but the command does not
+have any event as its sync response, so it is not suitable to use
+__hci_cmd_sync(), fixed by using __hci_cmd_send().
 
-      RUSTDOC TK rust/kernel/lib.rs
-    error: the compiler unexpectedly panicked. this is a bug.
-
-The reason is that this build step has a duplicated `@rustc_cfg` argument,
-which contains the kernel configuration, and thus a lot of arguments. The
-factor 2 happens to be enough to reach the ICE.
-
-Thus remove the unneeded `@rustc_cfg`. By doing so, we clean up the
-command and workaround the ICE.
-
-The ICE has been fixed in the upcoming Rust 1.79 [2].
-
-Cc: stable@vger.kernel.org
-Fixes: a66d733da801 ("rust: support running Rust documentation tests as KUnit ones")
-Link: https://github.com/rust-lang/rust/issues/122722 [1]
-Link: https://github.com/rust-lang/rust/pull/122840 [2]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240422091215.526688-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 20981ce2d5a5 ("Bluetooth: btusb: Add WCN6855 devcoredump support")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/Makefile |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/bluetooth/btusb.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -175,7 +175,6 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC
- 	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(RUSTDOC) --test $(rust_flags) \
--		@$(objtree)/include/generated/rustc_cfg \
- 		-L$(objtree)/$(obj) --extern alloc --extern kernel \
- 		--extern build_error --extern macros \
- 		--extern bindings --extern uapi \
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 1976593bc804e..02f38417aae3d 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3457,13 +3457,12 @@ static void btusb_dump_hdr_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 
+ static void btusb_coredump_qca(struct hci_dev *hdev)
+ {
++	int err;
+ 	static const u8 param[] = { 0x26 };
+-	struct sk_buff *skb;
+ 
+-	skb = __hci_cmd_sync(hdev, 0xfc0c, 1, param, HCI_CMD_TIMEOUT);
+-	if (IS_ERR(skb))
+-		bt_dev_err(hdev, "%s: triggle crash failed (%ld)", __func__, PTR_ERR(skb));
+-	kfree_skb(skb);
++	err = __hci_cmd_send(hdev, 0xfc0c, 1, param);
++	if (err < 0)
++		bt_dev_err(hdev, "%s: triggle crash failed (%d)", __func__, err);
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
