@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-42038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755698B7111
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF878B71AC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 144541F214BF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F17DB20D0A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9BF12C54A;
-	Tue, 30 Apr 2024 10:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CB412C487;
+	Tue, 30 Apr 2024 10:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvwcIhvm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJDTZLsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6956612C549;
-	Tue, 30 Apr 2024 10:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DA47464;
+	Tue, 30 Apr 2024 10:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474358; cv=none; b=g4Vf0nvB4GYGhxmmcfVxnfo8VC67VOdHGk7K2MZECYfsWE0AIZqVZ5pdhn+xJLm9WsqO37Qz7DEP1tzpQHUFMZyf0W3M7YwRQ5zRHwfih/7IW60jo1tfOOktu6jAmRFq6bSnX0bckOiGQ8h9EQIa6H7G0ex69Ms++ZLB11a5qGc=
+	t=1714474757; cv=none; b=ODOhEKOj1SZL/O+UFC8T33Ywy8RPdHF+RZsCXiSr44hzWHp9AVUdajTjMJ/ZLp0xrZ+FWVEQImqYqAmMgpgEYBMege8yd9odQCkl8Muaf164fQULiis5/IeyZ2Ewnha/aYd6EeLzwGRI/cz8r/CgnpsQJqpt5Rg8zgrawPEg+uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474358; c=relaxed/simple;
-	bh=CnhEU1qekt1b4tzVYBfRJfwByvCJcPzSyJrWCJDmjvM=;
+	s=arc-20240116; t=1714474757; c=relaxed/simple;
+	bh=fwgGE+9iYvnFOPi2uc5EZptV7u1ZxlNjNHBmJ1R8abs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGkzKJbAh9UM7pCDq7WxKKwoY3Jt04ldQW/ZAexJhL8xCsqO1bklLkkHFUitAN/ak6d9NEcbBVTJBQtMs/AEyjnETkMJuInx+da98nOrZhr3+3zSWlTyn0TUGg2SGOoqg2fWMrCNiSiG8DuMh3/WbZGuevYRur2EqqDkBHm4dBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvwcIhvm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31EEC2BBFC;
-	Tue, 30 Apr 2024 10:52:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R03KveOaVf/S1qfhbwlgj8Y3FpSl5jRXoTWVnzzFFMcFXZGJSpHQNhGrnyv1MBEtjzPEdHkQYnKns8Awi4030DAI6YvuK6LIhDDUFrLGrMaMTgYVxMu4Ap0WhX/0Xnj9n52RY2pTm6wlJsMmv0g9ibRQfZWDPOXwm4a3QS7DIzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJDTZLsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4522BC2BBFC;
+	Tue, 30 Apr 2024 10:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474358;
-	bh=CnhEU1qekt1b4tzVYBfRJfwByvCJcPzSyJrWCJDmjvM=;
+	s=korg; t=1714474757;
+	bh=fwgGE+9iYvnFOPi2uc5EZptV7u1ZxlNjNHBmJ1R8abs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvwcIhvm1LiF26ZfuuIeaF2IZIty7cuTN43+1dEadePYVeCt4m65WMRcyNppZKENJ
-	 ws4fWb2F3MXGfmcjojkK/XJ/WIGBCMYkboUsoKy9L3jTH+23tHg3YeBlthkWqvfSqM
-	 N+E54ECv1v4Sb+Ya9LzdnbcuxQ8Jt0Mf+6Mw17vc=
+	b=hJDTZLsvBeqW4B9A2kLM+jCEmF1QlkpQHKrLxmmV5wgD+guL0FJ1yMAo6nnbLV92D
+	 J/wI5y4yxfx5WDWOo/dNK6XNpXcSfqIz3r0bUu/Ef+rbjdCG+6+fWk0kHhHrNOkABa
+	 LqkvDqJN79gbld1LAXdi8lCOzse7tFga3C/ofO/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Kaplan <david.kaplan@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.8 133/228] x86/cpu: Fix check for RDPKRU in __show_regs()
+	Sean Christopherson <seanjc@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 026/138] x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n
 Date: Tue, 30 Apr 2024 12:38:31 +0200
-Message-ID: <20240430103107.641207462@linuxfoundation.org>
+Message-ID: <20240430103050.199989620@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Kaplan <david.kaplan@amd.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit b53c6bd5d271d023857174b8fd3e32f98ae51372 upstream.
+commit f337a6a21e2fd67eadea471e93d05dd37baaa9be upstream.
 
-cpu_feature_enabled(X86_FEATURE_OSPKE) does not necessarily reflect
-whether CR4.PKE is set on the CPU.  In particular, they may differ on
-non-BSP CPUs before setup_pku() is executed.  In this scenario, RDPKRU
-will #UD causing the system to hang.
+Initialize cpu_mitigations to CPU_MITIGATIONS_OFF if the kernel is built
+with CONFIG_SPECULATION_MITIGATIONS=n, as the help text quite clearly
+states that disabling SPECULATION_MITIGATIONS is supposed to turn off all
+mitigations by default.
 
-Fix by checking CR4 for PKE enablement which is always correct for the
-current CPU.
+  │ If you say N, all mitigations will be disabled. You really
+  │ should know what you are doing to say so.
 
-The scenario happens by inserting a WARN* before setup_pku() in
-identiy_cpu() or some other diagnostic which would lead to calling
-__show_regs().
+As is, the kernel still defaults to CPU_MITIGATIONS_AUTO, which results in
+some mitigations being enabled in spite of SPECULATION_MITIGATIONS=n.
 
-  [ bp: Massage commit message. ]
-
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240421191728.32239-1-bp@kernel.org
+Fixes: f43b9876e857 ("x86/retbleed: Add fine grained Kconfig knobs")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Cc: stable@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240409175108.1512861-2-seanjc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/process_64.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cpu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -138,7 +138,7 @@ void __show_regs(struct pt_regs *regs, e
- 		       log_lvl, d3, d6, d7);
- 	}
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -2600,7 +2600,8 @@ enum cpu_mitigations {
+ };
  
--	if (cpu_feature_enabled(X86_FEATURE_OSPKE))
-+	if (cr4 & X86_CR4_PKE)
- 		printk("%sPKRU: %08x\n", log_lvl, read_pkru());
- }
+ static enum cpu_mitigations cpu_mitigations __ro_after_init =
+-	CPU_MITIGATIONS_AUTO;
++	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
++						     CPU_MITIGATIONS_OFF;
  
+ static int __init mitigations_parse_cmdline(char *arg)
+ {
 
 
 
