@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8248B7146
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E438B72A4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCAF61C22466
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA07281DA9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4B512D1E7;
-	Tue, 30 Apr 2024 10:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECD112C549;
+	Tue, 30 Apr 2024 11:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+eUkElO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJOVR8CN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFF612C491;
-	Tue, 30 Apr 2024 10:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05898801;
+	Tue, 30 Apr 2024 11:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474481; cv=none; b=u4Wrk4QrzxQ7rbI/kMrnqiaOOtQu8J5Y4YUhqTaAmYSW0b81InSEwUw9CQuWPBEYJS5MjJ5zfOo6RA8PPhIpjiI0t0IMu5lz/L9wlr/6TJz/EqcaXkahtFVMJfjZ42ixUq6ROSqYNpqqa4pJyGQ0gjtg8UFYPxAaVMP0HS3mKo8=
+	t=1714475440; cv=none; b=tyojp01uxWYadMvxO1kXYj3tMceH9MmTq46opSbcTuDIk8PdT+4NIzk4/3j45xqStidzTdU/wiaOUD9ta6k/SKOHS+4OYTMOUATRB/PUSGF+LhuVHudWhO2W+hN3jrOQSEFPkaOkk1iYD2/f1dSfq/e4jdtLMfj6rTSKlUd+IHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474481; c=relaxed/simple;
-	bh=aO5yhu/keSGpdx7StUbeWklnTY1Wj9V4f2HjGf/FLRw=;
+	s=arc-20240116; t=1714475440; c=relaxed/simple;
+	bh=n1Qg6BTDb43kokqf2MAxjx6lEHzpCrOtTaA368TlF5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqgJ2TCV/bOkhUEMC3wgoKB68kIXOFEqKWBQSP8NcI0oYA9ZVeG2Et2Q2Z1gi0TO0/LbAb8I65i8ujB6yY99zPo1FXsRBUVqWymLkHEoJh8dLNF9T1879qR0m/rP+LY0RdDyaBy2G5FQAMCZFk4iWTFA+ie4CwtuVpTHBwXcrkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+eUkElO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E2AC2BBFC;
-	Tue, 30 Apr 2024 10:54:41 +0000 (UTC)
+	 MIME-Version; b=RSdN3mjSQpVkWm/6he2Zg3w+MMtr7duSuACekBNBfUV9CekuOdpyos6f8ORg0Xou/+yAcKjJxwdalKkRx+NKrRzazHwqiZLLWXjURysQplUcKWQZqlQZZAfjfAcBWBFXtQKgoTJO86tVvPaHeqFYbAP7iIbHT4qcT2kwqemZZh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJOVR8CN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7D6C2BBFC;
+	Tue, 30 Apr 2024 11:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474481;
-	bh=aO5yhu/keSGpdx7StUbeWklnTY1Wj9V4f2HjGf/FLRw=;
+	s=korg; t=1714475439;
+	bh=n1Qg6BTDb43kokqf2MAxjx6lEHzpCrOtTaA368TlF5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+eUkElO2LDVHYOXGX4DV8NNRVudxH88zXUDsWbLu+78RK79JN8ypiyk+6N/XdyQh
-	 NZLJn+EEmdk/nap2OHn6Saha9O75Y8e5656Jw1QkIvSybhb8iwi2XEpAQnWBQ2txbK
-	 fhM3nAXddXyC7YTfLv2Ig9GDRi5rtirwpngHERK8=
+	b=kJOVR8CNwK0a/oRUyV4LsODiLjmbWTCP3++G7kyr6sJXKJ1F9LS4Iw/FLJY8u43Ug
+	 KKBuW3HhY4SfzVPe4KkL5I0Z/210Pra20cmVcj83OQUPvpBrDt032yRI/Nw6dsU2A8
+	 AlYMZR4BvsGNxnd0RIDqQf9GhFPlN/L6xKVsOLs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskander Amara <iskander.amara@theobroma-systems.com>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.8 169/228] arm64: dts: rockchip: enable internal pull-up for Q7_THRM# on RK3399 Puma
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+fa379358c28cc87cc307@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 095/186] af_unix: Suppress false-positive lockdep splat for spin_lock() in __unix_gc().
 Date: Tue, 30 Apr 2024 12:39:07 +0200
-Message-ID: <20240430103108.682138029@linuxfoundation.org>
+Message-ID: <20240430103100.790899284@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iskander Amara <iskander.amara@theobroma-systems.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 0ac417b8f124427c90ec8c2ef4f632b821d924cc upstream.
+[ Upstream commit 1971d13ffa84a551d29a81fdf5b5ec5be166ac83 ]
 
-Q7_THRM# pin is connected to a diode on the module which is used
-as a level shifter, and the pin have a pull-down enabled by
-default. We need to configure it to internal pull-up, other-
-wise whenever the pin is configured as INPUT and we try to
-control it externally the value will always remain zero.
+syzbot reported a lockdep splat regarding unix_gc_lock and
+unix_state_lock().
 
-Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240308085243.69903-1-iskander.amara@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+One is called from recvmsg() for a connected socket, and another
+is called from GC for TCP_LISTEN socket.
+
+So, the splat is false-positive.
+
+Let's add a dedicated lock class for the latter to suppress the splat.
+
+Note that this change is not necessary for net-next.git as the issue
+is only applied to the old GC impl.
+
+[0]:
+WARNING: possible circular locking dependency detected
+6.9.0-rc5-syzkaller-00007-g4d2008430ce8 #0 Not tainted
+ -----------------------------------------------------
+kworker/u8:1/11 is trying to acquire lock:
+ffff88807cea4e70 (&u->lock){+.+.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ffff88807cea4e70 (&u->lock){+.+.}-{2:2}, at: __unix_gc+0x40e/0xf70 net/unix/garbage.c:302
+
+but task is already holding lock:
+ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: __unix_gc+0x117/0xf70 net/unix/garbage.c:261
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+ -> #1 (unix_gc_lock){+.+.}-{2:2}:
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
+       __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+       _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+       spin_lock include/linux/spinlock.h:351 [inline]
+       unix_notinflight+0x13d/0x390 net/unix/garbage.c:140
+       unix_detach_fds net/unix/af_unix.c:1819 [inline]
+       unix_destruct_scm+0x221/0x350 net/unix/af_unix.c:1876
+       skb_release_head_state+0x100/0x250 net/core/skbuff.c:1188
+       skb_release_all net/core/skbuff.c:1200 [inline]
+       __kfree_skb net/core/skbuff.c:1216 [inline]
+       kfree_skb_reason+0x16d/0x3b0 net/core/skbuff.c:1252
+       kfree_skb include/linux/skbuff.h:1262 [inline]
+       manage_oob net/unix/af_unix.c:2672 [inline]
+       unix_stream_read_generic+0x1125/0x2700 net/unix/af_unix.c:2749
+       unix_stream_splice_read+0x239/0x320 net/unix/af_unix.c:2981
+       do_splice_read fs/splice.c:985 [inline]
+       splice_file_to_pipe+0x299/0x500 fs/splice.c:1295
+       do_splice+0xf2d/0x1880 fs/splice.c:1379
+       __do_splice fs/splice.c:1436 [inline]
+       __do_sys_splice fs/splice.c:1652 [inline]
+       __se_sys_splice+0x331/0x4a0 fs/splice.c:1634
+       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+       do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+ -> #0 (&u->lock){+.+.}-{2:2}:
+       check_prev_add kernel/locking/lockdep.c:3134 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+       validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
+       __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
+       __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+       _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+       spin_lock include/linux/spinlock.h:351 [inline]
+       __unix_gc+0x40e/0xf70 net/unix/garbage.c:302
+       process_one_work kernel/workqueue.c:3254 [inline]
+       process_scheduled_works+0xa10/0x17c0 kernel/workqueue.c:3335
+       worker_thread+0x86d/0xd70 kernel/workqueue.c:3416
+       kthread+0x2f0/0x390 kernel/kthread.c:388
+       ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(unix_gc_lock);
+                               lock(&u->lock);
+                               lock(unix_gc_lock);
+  lock(&u->lock);
+
+ *** DEADLOCK ***
+
+3 locks held by kworker/u8:1/11:
+ #0: ffff888015089148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3229 [inline]
+ #0: ffff888015089148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_scheduled_works+0x8e0/0x17c0 kernel/workqueue.c:3335
+ #1: ffffc90000107d00 (unix_gc_work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3230 [inline]
+ #1: ffffc90000107d00 (unix_gc_work){+.+.}-{0:0}, at: process_scheduled_works+0x91b/0x17c0 kernel/workqueue.c:3335
+ #2: ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ #2: ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: __unix_gc+0x117/0xf70 net/unix/garbage.c:261
+
+stack backtrace:
+CPU: 0 PID: 11 Comm: kworker/u8:1 Not tainted 6.9.0-rc5-syzkaller-00007-g4d2008430ce8 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Workqueue: events_unbound __unix_gc
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+ check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2187
+ check_prev_add kernel/locking/lockdep.c:3134 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+ validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
+ __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
+ lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
+ __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+ _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+ spin_lock include/linux/spinlock.h:351 [inline]
+ __unix_gc+0x40e/0xf70 net/unix/garbage.c:302
+ process_one_work kernel/workqueue.c:3254 [inline]
+ process_scheduled_works+0xa10/0x17c0 kernel/workqueue.c:3335
+ worker_thread+0x86d/0xd70 kernel/workqueue.c:3416
+ kthread+0x2f0/0x390 kernel/kthread.c:388
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+Fixes: 47d8ac011fe1 ("af_unix: Fix garbage collector racing against connect()")
+Reported-and-tested-by: syzbot+fa379358c28cc87cc307@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fa379358c28cc87cc307
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240424170443.9832-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/net/af_unix.h | 3 +++
+ net/unix/garbage.c    | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -422,6 +422,16 @@
+diff --git a/include/net/af_unix.h b/include/net/af_unix.h
+index d1b07ddbe677e..77bf30203d3cf 100644
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -77,6 +77,9 @@ enum unix_socket_lock_class {
+ 	U_LOCK_NORMAL,
+ 	U_LOCK_SECOND,	/* for double locking, see unix_state_double_lock(). */
+ 	U_LOCK_DIAG, /* used while dumping icons, see sk_diag_dump_icons(). */
++	U_LOCK_GC_LISTENER, /* used for listening socket while determining gc
++			     * candidates to close a small race window.
++			     */
  };
  
- &pinctrl {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&q7_thermal_pin>;
-+
-+	gpios {
-+		q7_thermal_pin: q7-thermal-pin {
-+			rockchip,pins =
-+				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
-+		};
-+	};
-+
- 	i2c8 {
- 		i2c8_xfer_a: i2c8-xfer {
- 			rockchip,pins =
+ static inline void unix_state_lock_nested(struct sock *sk,
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 8734c0c1fc197..2a758531e1027 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -260,7 +260,7 @@ void unix_gc(void)
+ 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
+ 
+ 			if (sk->sk_state == TCP_LISTEN) {
+-				unix_state_lock(sk);
++				unix_state_lock_nested(sk, U_LOCK_GC_LISTENER);
+ 				unix_state_unlock(sk);
+ 			}
+ 		}
+-- 
+2.43.0
+
 
 
 
