@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCF88B7191
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4EDA8B7013
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:43:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D30941F216B1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBDCF1C21C97
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA7A12C817;
-	Tue, 30 Apr 2024 10:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3932312C46E;
+	Tue, 30 Apr 2024 10:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtxt4710"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxVVV6MP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A790312C48A;
-	Tue, 30 Apr 2024 10:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C5A127B70;
+	Tue, 30 Apr 2024 10:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474676; cv=none; b=GuMmzsJzp3Km0RTJpJSmQt94pjmf82n+/5klnF9JK2BvoJl+9oT09IPTlGBE3TCOAXGrEJUXem4EJvsMfhriGaX80302lf2JKS3NsZYteEYFuNSMGBDNVmagFUeIfnOXGgfYyEnQW4dNiNfE+W8PAV93hhyANdG2UZ5Sq9qyjSo=
+	t=1714473791; cv=none; b=YXIxwTDp4JJTbuP4b5Q2MVDcH6+UiTLbSA+bTUwCv35aFCSo4rNCfoIWV5neYrtX2BxJIAdDQbnzgimZbN+p0tE2wmZXHF1PX+Mx0LGdtZV2e3spUBgZ8+b2j+yXfi2KwVxWZNi9hw58MZp/9UKUBDpX6bMl24KniOw4L3bjfVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474676; c=relaxed/simple;
-	bh=vk8vgy5j3pxl2K2FFaN6EKfuEXTeVGbhZ0U8JQQniY0=;
+	s=arc-20240116; t=1714473791; c=relaxed/simple;
+	bh=7mflOkeJ1i6OTTfXPXrDo7Te1Wryu5tZm5rA6FZiOgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tsVKKDzbEJnhbBLWfWb51IWs0Vz+3UDnBHDIhJjtFmGTZJw4VmX2dZPs7O5qrtiKoGjAm1MfyRvFW/lLjZ+d3LQZqWDcqZIDSPJ8Dl+IbkVGs/SzlM9RNo1MTu5fBjhCCV4SbVGCeLuqkFVJib6CD0EvxfcNTFU9sHVXKVslfLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtxt4710; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1FDC2BBFC;
-	Tue, 30 Apr 2024 10:57:54 +0000 (UTC)
+	 MIME-Version; b=JOVMykqPfiHgFKXJFUDb4m+BCo7StvhZE6PT/SlOSYdXT1XrXl1QqSGqLV20qb4fbqAJU2ZiRC1+3rXPz/bgDTg1Nrkll5/aoey1MoFxWVjm+ZDlsrP5IObGixt/UdGas9EkNpu/EHnunFsuAQoMCCPudemlK195thIw2+SCu2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxVVV6MP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2F4C2BBFC;
+	Tue, 30 Apr 2024 10:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474675;
-	bh=vk8vgy5j3pxl2K2FFaN6EKfuEXTeVGbhZ0U8JQQniY0=;
+	s=korg; t=1714473790;
+	bh=7mflOkeJ1i6OTTfXPXrDo7Te1Wryu5tZm5rA6FZiOgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtxt47109NL4wNDltmGxLhxRlR4PSOH3LJ4us4SSvXCdzH/+JCS2HykPaU9HwnKN8
-	 TNVGW7ASbDzaeMFJ/xjMYw7/wL15j7YY2j7+Sy13pAAGg2sTwltbJPLyZycPyfziDe
-	 Q38B/sLZ0fPN7tgtsi2z0ff060j4dzJvJASdHvjk=
+	b=uxVVV6MPwLWigrBodrQilvl6h6cbh6AhxXTkTKj3CbHF4BdIZAva0Xa3aDncY53xM
+	 Ruc+aA1BbKjHO4uNxGP4C7LrStdRr5ZHCXA3G0fn/a8fZGSmcWgRLszS26daviPrYF
+	 nerCmMffhMnGX3HgYf8nkCdYNUbfkhV91JC0HNgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Gang BA <Gang.Ba@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.8 180/228] drm/amdkfd: Fix eviction fence handling
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 39/77] arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma
 Date: Tue, 30 Apr 2024 12:39:18 +0200
-Message-ID: <20240430103108.997997415@linuxfoundation.org>
+Message-ID: <20240430103042.287796040@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Kuehling <felix.kuehling@amd.com>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-commit 37865e02e6ccecdda240f33b4332105a5c734984 upstream.
+[ Upstream commit 945a7c8570916650a415757d15d83e0fa856a686 ]
 
-Handle case that dma_fence_get_rcu_safe returns NULL.
+The PCIE_WAKE# has a diode used as a level-shifter, and is used as an
+input pin. While the SoC default is to enable the pull-up, the core
+rk3399 pinconf for this pin opted for pull-none. So as to not disturb
+the behaviour of other boards which may rely on pull-none instead of
+pull-up, set the needed pull-up only for RK3399 Puma.
 
-If restore work is already scheduled, only update its timer. The same
-work item cannot be queued twice, so undo the extra queue eviction.
-
-Fixes: 9a1c1339abf9 ("drm/amdkfd: Run restore_workers on freezable WQs")
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Tested-by: Gang BA <Gang.Ba@amd.com>
-Reviewed-by: Gang BA <Gang.Ba@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 60fd9f72ce8a ("arm64: dts: rockchip: add Haikou baseboard with RK3399-Q7 SoM")
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-2-309f83da110a@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index b79986412cd8..aafdf064651f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -1922,6 +1922,8 @@ static int signal_eviction_fence(struct kfd_process *p)
- 	rcu_read_lock();
- 	ef = dma_fence_get_rcu_safe(&p->ef);
- 	rcu_read_unlock();
-+	if (!ef)
-+		return -EINVAL;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+index b79017c41ce56..1c9b4a9557082 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -426,6 +426,11 @@
+ 	gpio1830-supply = <&vcc_1v8>;
+ };
  
- 	ret = dma_fence_signal(ef);
- 	dma_fence_put(ef);
-@@ -1949,10 +1951,9 @@ static void evict_process_worker(struct work_struct *work)
- 		 * they are responsible stopping the queues and scheduling
- 		 * the restore work.
- 		 */
--		if (!signal_eviction_fence(p))
--			queue_delayed_work(kfd_restore_wq, &p->restore_work,
--				msecs_to_jiffies(PROCESS_RESTORE_TIME_MS));
--		else
-+		if (signal_eviction_fence(p) ||
-+		    mod_delayed_work(kfd_restore_wq, &p->restore_work,
-+				     msecs_to_jiffies(PROCESS_RESTORE_TIME_MS)))
- 			kfd_process_restore_queues(p);
- 
- 		pr_debug("Finished evicting pasid 0x%x\n", p->pasid);
++&pcie_clkreqn_cpm {
++	rockchip,pins =
++		<2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_up>;
++};
++
+ &pinctrl {
+ 	i2c8 {
+ 		i2c8_xfer_a: i2c8-xfer {
 -- 
-2.44.0
+2.43.0
 
 
 
