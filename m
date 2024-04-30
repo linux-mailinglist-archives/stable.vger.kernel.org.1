@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-42377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902C78B72B3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:11:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 360D68B6FF4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16351C22FA0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:11:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1A2D1F231E1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFD312D743;
-	Tue, 30 Apr 2024 11:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADB812C482;
+	Tue, 30 Apr 2024 10:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmpTPChx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCYMuMTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6118801;
-	Tue, 30 Apr 2024 11:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56989127B70;
+	Tue, 30 Apr 2024 10:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475471; cv=none; b=WiiDe2Ekzrt6srsWZfoo9XA720KpU8U/oQnTbeOwuFlBrouN4M5CfHH4KWjxN7zeDLpxRxKTVQakz/EHAZvN+I+Raa5fpOLzwqMWfHr4KAyJjafqxJEavkJfOSEZehmpS8+gpDS/tsxoNrjZHC8nFAPclR8MNHfIhJfA0GFQyF0=
+	t=1714473707; cv=none; b=qrjRJrxcOjjlGggDgqZL7fjCzJWLD6KP2FZI21qDpaQvggCqmE4Fg8tzMXf4OP5wtMFC5fPaqTGF7R1J+P8tCwstWV1n96aHKL70y6ExVBIRdjyBJmu/livQvnCAswqhdFsrBzzGBD/pCYyJ2rwz564QNIUwoI+VTPRKP/+oobE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475471; c=relaxed/simple;
-	bh=i22Rxi+V7iKBPc+cH/9X1IgTPikR1+PahnNLsYNV7JY=;
+	s=arc-20240116; t=1714473707; c=relaxed/simple;
+	bh=GTqcUG1yt4g716vPn8LVNbEzcEfNGvcDQqJKLGM+Txk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QPP+hBGIpgk6PicF7T8LkCBR1n0nEfgNxCUlNEo9E1nGeb9DRvdokC2ZLyIYNUVrxZzvw+yI96vpISgAoYvKdLzSuAdWAUCTkZG1Wp1ARioknRFGt0FfZV89vrBrbSPoLA9VSeWR1Hl6+aAKIajgR65gddLqsK4wbN/611pj+68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmpTPChx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C5BC4AF18;
-	Tue, 30 Apr 2024 11:11:10 +0000 (UTC)
+	 MIME-Version; b=Tjwbletg4P4jQU7X0D/8Zo2LG6+qANxkmUPZ/vd1BzhD+AlE7+Xh/r9RAYPXpKuB7WBHh6uHTlKx6L+T9lwPAzjC6r4MEhUgWIadZVilPhZFLBqJV+1P2hK4YYJ/Cwjl/Uc7FmIfwkqCVjNVD78ACk33L3apnPvq5zscZkujDJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCYMuMTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4B0C4AF19;
+	Tue, 30 Apr 2024 10:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475471;
-	bh=i22Rxi+V7iKBPc+cH/9X1IgTPikR1+PahnNLsYNV7JY=;
+	s=korg; t=1714473706;
+	bh=GTqcUG1yt4g716vPn8LVNbEzcEfNGvcDQqJKLGM+Txk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VmpTPChxWmqKCjZdhmQ8LoJaVrr0R+YguHh9z9KAg+bTcXCIWOrR53bW5AI6k2jjm
-	 iTZt/3GytK8CBeJMAed7D3ugOpxUhcIdNiOHI78APlqsMeYQQqwupbaK0T/xxqB8UV
-	 SQkml1IqSShgHdsEc8T9YzKxMDGFyzL0O6A/3szw=
+	b=BCYMuMTMvxqp+sD8khRzquvk1TRgxjl+HobsGoN6vIr3kq29Q1SepREzp5SCGdIqv
+	 5cADVKK83lT7rGezeqJcVOA2lHl+gIOFC/ZijMDXw3M8yzvus+kPIJWfWRb1Mqbr32
+	 JSAcWGb2eOS2sOAY4vxDsQkjHHmRI3BoL8gbsCMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/186] mlxsw: spectrum_acl_tcam: Fix possible use-after-free during rehash
-Date: Tue, 30 Apr 2024 12:38:50 +0200
-Message-ID: <20240430103100.302038976@linuxfoundation.org>
+	Adam Dunlap <acdunlap@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Kevin Loughlin <kevinloughlin@google.com>
+Subject: [PATCH 4.19 12/77] x86/apic: Force native_apic_mem_read() to use the MOV instruction
+Date: Tue, 30 Apr 2024 12:38:51 +0200
+Message-ID: <20240430103041.485191195@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Adam Dunlap <acdunlap@google.com>
 
-[ Upstream commit 54225988889931467a9b55fdbef534079b665519 ]
+commit 5ce344beaca688f4cdea07045e0b8f03dc537e74 upstream.
 
-The rehash delayed work migrates filters from one region to another
-according to the number of available credits.
+When done from a virtual machine, instructions that touch APIC memory
+must be emulated. By convention, MMIO accesses are typically performed
+via io.h helpers such as readl() or writeq() to simplify instruction
+emulation/decoding (ex: in KVM hosts and SEV guests) [0].
 
-The migrated from region is destroyed at the end of the work if the
-number of credits is non-negative as the assumption is that this is
-indicative of migration being complete. This assumption is incorrect as
-a non-negative number of credits can also be the result of a failed
-migration.
+Currently, native_apic_mem_read() does not follow this convention,
+allowing the compiler to emit instructions other than the MOV
+instruction generated by readl(). In particular, when the kernel is
+compiled with clang and run as a SEV-ES or SEV-SNP guest, the compiler
+would emit a TESTL instruction which is not supported by the SEV-ES
+emulator, causing a boot failure in that environment. It is likely the
+same problem would happen in a TDX guest as that uses the same
+instruction emulator as SEV-ES.
 
-The destruction of a region that still has filters referencing it can
-result in a use-after-free [1].
+To make sure all emulators can emulate APIC memory reads via MOV, use
+the readl() function in native_apic_mem_read(). It is expected that any
+emulator would support MOV in any addressing mode as it is the most
+generic and is what is usually emitted currently.
 
-Fix by not destroying the region if migration failed.
+The TESTL instruction is emitted when native_apic_mem_read() is inlined
+into apic_mem_wait_icr_idle(). The emulator comes from
+insn_decode_mmio() in arch/x86/lib/insn-eval.c. It's not worth it to
+extend insn_decode_mmio() to support more instructions since, in theory,
+the compiler could choose to output nearly any instruction for such
+reads which would bloat the emulator beyond reason.
 
-[1]
-BUG: KASAN: slab-use-after-free in mlxsw_sp_acl_ctcam_region_entry_remove+0x21d/0x230
-Read of size 8 at addr ffff8881735319e8 by task kworker/0:31/3858
+  [0] https://lore.kernel.org/all/20220405232939.73860-12-kirill.shutemov@linux.intel.com/
 
-CPU: 0 PID: 3858 Comm: kworker/0:31 Tainted: G        W          6.9.0-rc2-custom-00782-gf2275c2157d8 #5
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0xc6/0x120
- print_report+0xce/0x670
- kasan_report+0xd7/0x110
- mlxsw_sp_acl_ctcam_region_entry_remove+0x21d/0x230
- mlxsw_sp_acl_ctcam_entry_del+0x2e/0x70
- mlxsw_sp_acl_atcam_entry_del+0x81/0x210
- mlxsw_sp_acl_tcam_vchunk_migrate_all+0x3cd/0xb50
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x157/0x1300
- process_one_work+0x8eb/0x19b0
- worker_thread+0x6c9/0xf70
- kthread+0x2c9/0x3b0
- ret_from_fork+0x4d/0x80
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+  [ bp: Massage commit message, fix typos. ]
 
-Allocated by task 174:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x8f/0xa0
- __kmalloc+0x19c/0x360
- mlxsw_sp_acl_tcam_region_create+0xdf/0x9c0
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x954/0x1300
- process_one_work+0x8eb/0x19b0
- worker_thread+0x6c9/0xf70
- kthread+0x2c9/0x3b0
- ret_from_fork+0x4d/0x80
- ret_from_fork_asm+0x1a/0x30
-
-Freed by task 7:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x60
- poison_slab_object+0x102/0x170
- __kasan_slab_free+0x14/0x30
- kfree+0xc1/0x290
- mlxsw_sp_acl_tcam_region_destroy+0x272/0x310
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x731/0x1300
- process_one_work+0x8eb/0x19b0
- worker_thread+0x6c9/0xf70
- kthread+0x2c9/0x3b0
- ret_from_fork+0x4d/0x80
- ret_from_fork_asm+0x1a/0x30
-
-Fixes: c9c9af91f1d9 ("mlxsw: spectrum_acl: Allow to interrupt/continue rehash work")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/3e412b5659ec2310c5c615760dfe5eac18dd7ebd.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Adam Dunlap <acdunlap@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Tested-by: Kevin Loughlin <kevinloughlin@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240318230927.2191933-1-acdunlap@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/apic.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 7e69225c057de..1ff0b2c7c11de 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1451,6 +1451,7 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
- 						ctx, credits);
- 	if (err) {
- 		dev_err(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
-+		return;
- 	}
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -11,6 +11,7 @@
+ #include <asm/mpspec.h>
+ #include <asm/msr.h>
+ #include <asm/hardirq.h>
++#include <asm/io.h>
  
- 	if (*credits >= 0)
--- 
-2.43.0
-
+ #define ARCH_APICTIMER_STOPS_ON_C3	1
+ 
+@@ -110,7 +111,7 @@ static inline void native_apic_mem_write
+ 
+ static inline u32 native_apic_mem_read(u32 reg)
+ {
+-	return *((volatile u32 *)(APIC_BASE + reg));
++	return readl((void __iomem *)(APIC_BASE + reg));
+ }
+ 
+ extern void native_apic_wait_icr_idle(void);
 
 
 
