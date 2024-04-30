@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D77A8B7260
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:07:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA8A8B70C7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8B41F23225
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:07:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9175D287FB5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFCA12D758;
-	Tue, 30 Apr 2024 11:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFA812C49E;
+	Tue, 30 Apr 2024 10:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yom2dIDB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYQjQRtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF56F12C801;
-	Tue, 30 Apr 2024 11:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAE212C47A;
+	Tue, 30 Apr 2024 10:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475243; cv=none; b=aAxve0DQBch1WthexJ97vjydcYaWfXbmtpn07nQEobI9SlZMNel8kQ4FwWqp+IHwX6wlsoFAoqZi2gg/AX0TqxowlUNytPSLd+bTyLhKzLLU9uhnef6byf/MuuXB1kASGF0vva394+YHb7m943Fqje4yFyCEU7m3XOYCFKnz3yI=
+	t=1714474183; cv=none; b=NQPqv/gtOj40N8X8SQ3DXlwAc0Pek/69bAeSDciX+MHioqoL84QJ+pt4YghrQGTRm5npU9fPxtBRTBbwG57y44v2H/HRuVDuj0VNuX/8IAALoeSW93jF+B7gEKJKfyfMtf98gVXs6arhqBCF6VRoR1clV37jcPsBi69Dhb3TG7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475243; c=relaxed/simple;
-	bh=bO0ZTAYTv9dEPVfRaUoLZdHMZIXjZ9f6zd2EVkYa85Q=;
+	s=arc-20240116; t=1714474183; c=relaxed/simple;
+	bh=ECGiJoNxb881FLZlk4yqtrhw/kntk1FFX2MC42aZYi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDgPcmreDWxxxGQ8pTJHdqvFznt+JA65/4wuWiPUv3oUYL5a86vBoqc/SLupjrk3CxGk8pUhSu3CwQcU65pdCBYCU/muXoxZLMeIgXKvEECcugaRwrzuIV9Tw4ef6ZkSm9K7DAE5jE57EgH580iwG8lD+VDAYDssbsoxJ/Xr++M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yom2dIDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E056C2BBFC;
-	Tue, 30 Apr 2024 11:07:21 +0000 (UTC)
+	 MIME-Version; b=GNMu1klRqg3tQ4acrFqipBTsxaylz9qgYIaez/BI8UNRcTj7AQQHcyG5NYPRZdA9AELIkb/XInbB7w5xvOcpV/gh+WZsmkf/ePc+778l0r/xe6B5LXjvoNs1dxww104YHL/EWDY13IeVgewkSpl07YDKZQQt1Y+QqaQQ0FXYMcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYQjQRtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD5CC2BBFC;
+	Tue, 30 Apr 2024 10:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475242;
-	bh=bO0ZTAYTv9dEPVfRaUoLZdHMZIXjZ9f6zd2EVkYa85Q=;
+	s=korg; t=1714474183;
+	bh=ECGiJoNxb881FLZlk4yqtrhw/kntk1FFX2MC42aZYi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yom2dIDB7qnpHWwTw96hp6xskKRmijR0EUwTrnjQvgBn8uf/M07CQ4uJFjmNFAKeU
-	 FYRpMCaVl9sKsYPmyIdei4ZIQVIfVbxrfBjTxSucEqSjpVUvCTl2SU4llVR10JkfoY
-	 yi5ZIfkPViPBJD9ima0ytgzCTp9R/0Vx/Pq4dWZg=
+	b=hYQjQRtrtOiS2VD/RXd+JO03WqstbI88QgP30qHFOc/KoldtvPF6RC1E3uWHmyYOL
+	 5OxrpEk4vYei/VAVpVWCigNwwPV3g/fdYen8SgzE/wkjHVvtodNJSaEr+CksfBVNrQ
+	 U7VsPFyejRz8ivT0Z6aYohUa8A7qMTEVYqpwtwVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	syzbot+3f0a39be7a2035700868@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/186] arm64: dts: rockchip: enable internal pull-up on Q7_USB_ID for RK3399 Puma
+Subject: [PATCH 6.8 081/228] Bluetooth: hci_conn: Fix UAF Write in __hci_acl_create_connection_sync
 Date: Tue, 30 Apr 2024 12:37:39 +0200
-Message-ID: <20240430103058.232142549@linuxfoundation.org>
+Message-ID: <20240430103106.141449520@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit e6b1168f37e3f86d9966276c5a3fff9eb0df3e5f ]
+[ Upstream commit 5f641f03abccddd1a37233ff1b8e774b9ff1f4e8 ]
 
-The Q7_USB_ID has a diode used as a level-shifter, and is used as an
-input pin. The SoC default for this pin is a pull-up, which is correct
-but the pinconf in the introducing commit missed that, so let's fix this
-oversight.
+This fixes the UAF on __hci_acl_create_connection_sync caused by
+connection abortion, it uses the same logic as to LE_LINK which uses
+hci_cmd_sync_cancel to prevent the callback to run if the connection is
+abort prematurely.
 
-Fixes: ed2c66a95c0c ("arm64: dts: rockchip: fix rk3399-puma-haikou USB OTG mode")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-1-309f83da110a@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reported-by: syzbot+3f0a39be7a2035700868@syzkaller.appspotmail.com
+Fixes: 45340097ce6e ("Bluetooth: hci_conn: Only do ACL connections sequentially")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 2e7ed5f5e69b ("Bluetooth: hci_sync: Use advertised PHYs on hci_le_ext_create_conn_sync")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/bluetooth/hci_sync.h |  3 +--
+ net/bluetooth/hci_conn.c         |  3 ++-
+ net/bluetooth/hci_sync.c         | 16 ++++++++++------
+ 3 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index 20e3f41efe97f..9b9d70bf7f0ca 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -443,7 +443,7 @@
- 	usb3 {
- 		usb3_id: usb3-id {
- 			rockchip,pins =
--			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
-+			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_up>;
- 		};
- 	};
- };
+diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
+index 824660f8f30da..ed334c253ebcd 100644
+--- a/include/net/bluetooth/hci_sync.h
++++ b/include/net/bluetooth/hci_sync.h
+@@ -139,5 +139,4 @@ int hci_le_big_terminate_sync(struct hci_dev *hdev, u8 handle);
+ 
+ int hci_le_pa_terminate_sync(struct hci_dev *hdev, u16 handle);
+ 
+-int hci_acl_create_connection_sync(struct hci_dev *hdev,
+-				   struct hci_conn *conn);
++int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn);
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 47f117874479d..3475ea55c2534 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1645,7 +1645,7 @@ struct hci_conn *hci_connect_acl(struct hci_dev *hdev, bdaddr_t *dst,
+ 		acl->auth_type = auth_type;
+ 		acl->conn_timeout = timeout;
+ 
+-		err = hci_acl_create_connection_sync(hdev, acl);
++		err = hci_connect_acl_sync(hdev, acl);
+ 		if (err) {
+ 			hci_conn_del(acl);
+ 			return ERR_PTR(err);
+@@ -2942,6 +2942,7 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
+ 	 */
+ 	if (conn->state == BT_CONNECT && hdev->req_status == HCI_REQ_PEND) {
+ 		switch (hci_skb_event(hdev->sent_cmd)) {
++		case HCI_EV_CONN_COMPLETE:
+ 		case HCI_EV_LE_CONN_COMPLETE:
+ 		case HCI_EV_LE_ENHANCED_CONN_COMPLETE:
+ 		case HCI_EVT_LE_CIS_ESTABLISHED:
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 816fd9c38ae04..cffa61ecf234f 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6552,13 +6552,18 @@ int hci_update_adv_data(struct hci_dev *hdev, u8 instance)
+ 				  UINT_PTR(instance), NULL);
+ }
+ 
+-static int __hci_acl_create_connection_sync(struct hci_dev *hdev, void *data)
++static int hci_acl_create_conn_sync(struct hci_dev *hdev, void *data)
+ {
+-	struct hci_conn *conn = data;
++	struct hci_conn *conn;
++	u16 handle = PTR_UINT(data);
+ 	struct inquiry_entry *ie;
+ 	struct hci_cp_create_conn cp;
+ 	int err;
+ 
++	conn = hci_conn_hash_lookup_handle(hdev, handle);
++	if (!conn)
++		return 0;
++
+ 	/* Many controllers disallow HCI Create Connection while it is doing
+ 	 * HCI Inquiry. So we cancel the Inquiry first before issuing HCI Create
+ 	 * Connection. This may cause the MGMT discovering state to become false
+@@ -6615,9 +6620,8 @@ static int __hci_acl_create_connection_sync(struct hci_dev *hdev, void *data)
+ 	return err;
+ }
+ 
+-int hci_acl_create_connection_sync(struct hci_dev *hdev,
+-				   struct hci_conn *conn)
++int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn)
+ {
+-	return hci_cmd_sync_queue(hdev, __hci_acl_create_connection_sync,
+-				  conn, NULL);
++	return hci_cmd_sync_queue(hdev, hci_acl_create_conn_sync,
++				  UINT_PTR(conn->handle), NULL);
+ }
 -- 
 2.43.0
 
