@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-42264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788868B7226
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDB98B7427
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05CD31F237EA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0143F1F2167C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C16412C530;
-	Tue, 30 Apr 2024 11:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC5712D1F1;
+	Tue, 30 Apr 2024 11:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOkCpkz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esZtvzYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5894412C462;
-	Tue, 30 Apr 2024 11:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD1F12C47A;
+	Tue, 30 Apr 2024 11:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475098; cv=none; b=PFnPuidbbeTYPAZ3qlwbJVkekHYPtr07962YiYmmSr6edNlptWxyX+81mrltTYhsOo8GNtjkyK+yLyByKxxMF51HZJw+uuzI7Iozjx/WJAtFgYxsof+orAOohfONJTDBULMH+y2cLpQzRf0PKrPKzZnqE0fu1J7XRNA5gdWhQ1M=
+	t=1714476467; cv=none; b=RdiSGYH+3R9ks008dD4cAUNAyaJfFuautypCFXeAUrW/3Q2bSQQ0s7lqtOSGFvvAkFD6K8Y8wcwQ09MgZmMlC0bGyON/KOydx5bHA4usl0DTAeuydEIk5kd96cLPzw/V0602JxHfLzPCiAVyj8FdvHihr6qnG3CtFGI62x4WitE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475098; c=relaxed/simple;
-	bh=Qw0hIr41ecjcdViz1nemcXvNboxAeRC5fVFyd+rXsPQ=;
+	s=arc-20240116; t=1714476467; c=relaxed/simple;
+	bh=PmZmBQCizEfTtudEPzhb58NkQ2N53u5mRLPRRRLgtts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvFmzcOJnpHGPN274EQkFZKGremXng26jS+wmOZvVWpiixrnzxW5QdwaSvF7gMBe19SNOZABUR02T1HpuL8WBt8ev5oIMh7wchVJU2JTD0St+/clMIc9mWyh4LOin6tz3RnPp3uB5vA18LXXf0U4bTFj0xmY43GEwTNV97uiRMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOkCpkz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD119C2BBFC;
-	Tue, 30 Apr 2024 11:04:57 +0000 (UTC)
+	 MIME-Version; b=EIbHFwcnL6gxMQqZUM0WV45jJy8Bc/lcZTvj9rTMWuFA44jFKYieMkvXw3ItIGNRf5i4wRKwD3iZRIWeyw3GGdbqM9cUkg4jlWXqV+Rs3UaWtQFb+NMy9vDPHFbT4nb5npTQASOXmr36+Ft3NBRQRjTNys2145F2rZP4jdKUH/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esZtvzYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCEDC4AF19;
+	Tue, 30 Apr 2024 11:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475098;
-	bh=Qw0hIr41ecjcdViz1nemcXvNboxAeRC5fVFyd+rXsPQ=;
+	s=korg; t=1714476467;
+	bh=PmZmBQCizEfTtudEPzhb58NkQ2N53u5mRLPRRRLgtts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOkCpkz8oBX1t+Lhcr1VjRtHAkpIS1oFPcXZifuCZbjjJBqN/pYsnva+/B8pa6qUy
-	 5F8PvgNkObJtlMEEYyq5kmwTtm6vcz7AGtvxY76VK/QMCnnypqMbaOXZZ1zc1Uo18G
-	 G9zakLRMoe341tbROlkA1y4schMrckWoK6XaQa8E=
+	b=esZtvzYdId7e/7PGbdXMbcRFaGEwRZwo/DJst/5fN44IZ9cjovTNAZ3e6Dfxb9SK2
+	 pbXGq3wuQlf8xTSA25t6T1bXgkBa5GSZQkjrFOIDYQFKK19wIIcS1N1zpbNmyH/mwB
+	 wmtiAyLgKSCJYImqYephLl4czMHxv5gWbNH4DrE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-	Dave Chinner <david@fromorbit.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 124/138] stackdepot: respect __GFP_NOLOCKDEP allocation flag
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Manish Mandlik <mmandlik@google.com>,
+	Archie Pusaka <apusaka@chromium.org>,
+	Miao-chen Chou <mcchou@chromium.org>,
+	Chun-Yi Lee <jlee@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/110] Bluetooth: hci_sync: Using hci_cmd_sync_submit when removing Adv Monitor
 Date: Tue, 30 Apr 2024 12:40:09 +0200
-Message-ID: <20240430103053.055123422@linuxfoundation.org>
+Message-ID: <20240430103048.750449719@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+From: Chun-Yi Lee <jlee@suse.com>
 
-commit 6fe60465e1d53ea321ee909be26d97529e8f746c upstream.
+[ Upstream commit 88cd6e6b2d327faa13e4505b07f1e380e51b21ff ]
 
-If stack_depot_save_flags() allocates memory it always drops
-__GFP_NOLOCKDEP flag.  So when KASAN tries to track __GFP_NOLOCKDEP
-allocation we may end up with lockdep splat like bellow:
+Since the d883a4669a1de be introduced in v6.4, bluetooth daemon
+got the following failed message of MGMT_OP_REMOVE_ADV_MONITOR
+command when controller is power-off:
 
-======================================================
- WARNING: possible circular locking dependency detected
- 6.9.0-rc3+ #49 Not tainted
- ------------------------------------------------------
- kswapd0/149 is trying to acquire lock:
- ffff88811346a920
-(&xfs_nondir_ilock_class){++++}-{4:4}, at: xfs_reclaim_inode+0x3ac/0x590
-[xfs]
+bluetoothd[20976]:
+src/adapter.c:reset_adv_monitors_complete() Failed to reset Adv
+Monitors: Failed>
 
- but task is already holding lock:
- ffffffff8bb33100 (fs_reclaim){+.+.}-{0:0}, at:
-balance_pgdat+0x5d9/0xad0
+Normally this situation is happened when the bluetoothd deamon
+be started manually after system booting. Which means that
+bluetoothd received MGMT_EV_INDEX_ADDED event after kernel
+runs hci_power_off().
 
- which lock already depends on the new lock.
+Base on doc/mgmt-api.txt, the MGMT_OP_REMOVE_ADV_MONITOR command
+can be used when the controller is not powered. This patch changes
+the code in remove_adv_monitor() to use hci_cmd_sync_submit()
+instead of hci_cmd_sync_queue().
 
- the existing dependency chain (in reverse order) is:
- -> #1 (fs_reclaim){+.+.}-{0:0}:
-        __lock_acquire+0x7da/0x1030
-        lock_acquire+0x15d/0x400
-        fs_reclaim_acquire+0xb5/0x100
- prepare_alloc_pages.constprop.0+0xc5/0x230
-        __alloc_pages+0x12a/0x3f0
-        alloc_pages_mpol+0x175/0x340
-        stack_depot_save_flags+0x4c5/0x510
-        kasan_save_stack+0x30/0x40
-        kasan_save_track+0x10/0x30
-        __kasan_slab_alloc+0x83/0x90
-        kmem_cache_alloc+0x15e/0x4a0
-        __alloc_object+0x35/0x370
-        __create_object+0x22/0x90
- __kmalloc_node_track_caller+0x477/0x5b0
-        krealloc+0x5f/0x110
-        xfs_iext_insert_raw+0x4b2/0x6e0 [xfs]
-        xfs_iext_insert+0x2e/0x130 [xfs]
-        xfs_iread_bmbt_block+0x1a9/0x4d0 [xfs]
-        xfs_btree_visit_block+0xfb/0x290 [xfs]
-        xfs_btree_visit_blocks+0x215/0x2c0 [xfs]
-        xfs_iread_extents+0x1a2/0x2e0 [xfs]
- xfs_buffered_write_iomap_begin+0x376/0x10a0 [xfs]
-        iomap_iter+0x1d1/0x2d0
- iomap_file_buffered_write+0x120/0x1a0
-        xfs_file_buffered_write+0x128/0x4b0 [xfs]
-        vfs_write+0x675/0x890
-        ksys_write+0xc3/0x160
-        do_syscall_64+0x94/0x170
- entry_SYSCALL_64_after_hwframe+0x71/0x79
-
-Always preserve __GFP_NOLOCKDEP to fix this.
-
-Link: https://lkml.kernel.org/r/20240418141133.22950-1-ryabinin.a.a@gmail.com
-Fixes: cd11016e5f52 ("mm, kasan: stackdepot implementation. Enable stackdepot for SLAB")
-Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Reported-by: Xiubo Li <xiubli@redhat.com>
-Closes: https://lore.kernel.org/all/a0caa289-ca02-48eb-9bf2-d86fd47b71f4@redhat.com/
-Reported-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Closes: https://lore.kernel.org/all/f9ff999a-e170-b66b-7caf-293f2b147ac2@opensource.wdc.com/
-Suggested-by: Dave Chinner <david@fromorbit.com>
-Tested-by: Xiubo Li <xiubli@redhat.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d883a4669a1de ("Bluetooth: hci_sync: Only allow hci_cmd_sync_queue if running")
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Manish Mandlik <mmandlik@google.com>
+Cc: Archie Pusaka <apusaka@chromium.org>
+Cc: Miao-chen Chou <mcchou@chromium.org>
+Signed-off-by: Chun-Yi Lee <jlee@suse.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/stackdepot.c |    4 ++--
+ net/bluetooth/mgmt.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/lib/stackdepot.c
-+++ b/lib/stackdepot.c
-@@ -271,10 +271,10 @@ depot_stack_handle_t stack_depot_save(un
- 		/*
- 		 * Zero out zone modifiers, as we don't have specific zone
- 		 * requirements. Keep the flags related to allocation in atomic
--		 * contexts and I/O.
-+		 * contexts, I/O, nolockdep.
- 		 */
- 		alloc_flags &= ~GFP_ZONEMASK;
--		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL);
-+		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL | __GFP_NOLOCKDEP);
- 		alloc_flags |= __GFP_NOWARN;
- 		page = alloc_pages(alloc_flags, STACK_ALLOC_ORDER);
- 		if (page)
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 4f4b394370bf2..76dac5a90aef0 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -5540,8 +5540,8 @@ static int remove_adv_monitor(struct sock *sk, struct hci_dev *hdev,
+ 		goto unlock;
+ 	}
+ 
+-	err = hci_cmd_sync_queue(hdev, mgmt_remove_adv_monitor_sync, cmd,
+-				 mgmt_remove_adv_monitor_complete);
++	err = hci_cmd_sync_submit(hdev, mgmt_remove_adv_monitor_sync, cmd,
++				  mgmt_remove_adv_monitor_complete);
+ 
+ 	if (err) {
+ 		mgmt_pending_remove(cmd);
+-- 
+2.43.0
+
 
 
 
