@@ -1,94 +1,53 @@
-Return-Path: <stable+bounces-41816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3E18B6CA5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BCD8B6CA6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD9541F212A3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 08:19:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62C4E1F2164A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 08:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E60524D9;
-	Tue, 30 Apr 2024 08:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CF3524D9;
+	Tue, 30 Apr 2024 08:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="PuDeZoEv";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ysyvtcs8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNE70eYp"
 X-Original-To: stable@vger.kernel.org
-Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C552A46551
-	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 08:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229ED46551
+	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 08:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714465164; cv=none; b=nAj+MtklO4zmw9h0edTSuPeJW/PlFyX9Oz8hnsGgjWfmTuiNxRbp4qOqyu4BMEMpHEo6YkwvnwxBiff/Pfqhhd30hor+9k5RX7LES0SLzZqxjclb5Dxkvn+0ytwKDO6fxQzyE+S7nOIYaM4/2P1DzlJZQFCaonBX7IbJKu30A4s=
+	t=1714465182; cv=none; b=gOoWxH9CGcPdlRj14bqpfARyezSi/GGMZfm8zceh+zek/HBCp559xVImuDQBS3MnuWkMhGAdK1rgSd4kE5I9HuTYIaTc6TOIl+SjlFJuNttwkT5HPaR9dnF4QwmkEP7618D65leJSgomf5sORh7Ne8c+BBZryExRVQsaA7kzV4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714465164; c=relaxed/simple;
-	bh=vf+qr9lw0jufVv0hxIW8drQ7rEcld7mTJrnfbsgH/50=;
+	s=arc-20240116; t=1714465182; c=relaxed/simple;
+	bh=USY6VaIFCv+hOylo0S920q7fSDfNEHXJ7JZxBjVH8yU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DTrfekZjnhTOHa6HqIhv3yp/GYBNhGF/ZA7gwEvtvrCUHynnVKP0NqwL71D5A+g/mB616qUaiSfPDMXYRfTPXbpXdfn1RQ7opqOy/ohFNwrcMGXEp4NFCsPwdfHlxVEiKcm0pl/nexVsuR7dLQO7GMXyicRuxy70Omgya4GEshs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=PuDeZoEv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ysyvtcs8; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfout.nyi.internal (Postfix) with ESMTP id BC4FF1380A10;
-	Tue, 30 Apr 2024 04:19:20 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Tue, 30 Apr 2024 04:19:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1714465160; x=1714551560; bh=3eUPAVtApu
-	kqh9b+L2rbqq4hW7VvW1ve5V0F3FY5jZk=; b=PuDeZoEvH7poqWeZ+PImFzHAn+
-	f9rINidGYGO5+rUV/h1dBKPeiScBzSFTIKNBPEIvDahP1f0qOnL8lpofEdCDGa6h
-	OkSkCFtG9DAGkf+lim9aud9jetB1s08Tuw2sjBunjLC0R5ywOneL/dO014nC/qZa
-	/trYGzGh7Wk+BQ+i5qI3gElrBN27SHHu2IOPHFJs32OQ2Iqw7UK6tOVR9cxe//5w
-	LirA0X3NMtISdLpw5iqbZwzXCCwtTb5SMXKYtHq7xD8aN/vWP+ob4nS9ugoOVkdw
-	47d5CXU4pApblmS/Vm3UF2ENud5Z/JWyBK7XZlxofZnDlMKpvwCOrTs5nfcw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1714465160; x=1714551560; bh=3eUPAVtApukqh9b+L2rbqq4hW7Vv
-	W1ve5V0F3FY5jZk=; b=Ysyvtcs8KOHnjJEVboWz0UnwBKyH2yaA7CmxPmGFc3t1
-	SWvyFDv1/xsx4sAZxYnnAEnfjW7WJr0OGk9uyx2bghlnOzBG+Bah0+UwDEHRyFKU
-	scwuHpDYi3FJ7VS+wQvkIJaaMBReGmRfM/yuLcydIYD474i1Ql7q9wDcsTGcsnzI
-	W0Trrs8pImTIxCOJhOlsaopK3UTHdXudZSnY1ciJ3VR8maobX+X0fKKplPS4yU9V
-	+kuHGrPjNtFcLh2KocrCrLNGCr5uayUevJn4fnK/d7G+6xahWB7OE62Y+20nTVP8
-	89wgFwgn3nMTKsnm0UEzN823Ut5lsrOfNfyRQxOTJQ==
-X-ME-Sender: <xms:iKkwZjiqgzI1bdj9nk_TTEPhPx6-5WZlzOuxrmK3FYt4wTo6Q8rC3A>
-    <xme:iKkwZgDmk5C8_l9jouD6d4YGZb3fcZFKGyAJbIWvrLUJEZytQGvAHvO4LdjFfrTCQ
-    JlICye5ghFOqQ>
-X-ME-Received: <xmr:iKkwZjFG_W4oCFiAcM5kEeCggYXBkOMpenom_m0er9UoOxevXYrCSJqatgRsK76hqUf4svXPfInPyLQ80WxIV1n3DlHGCFH-fWaJ6Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddufedgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepfffgie
-    ekfedvtddtheevtdegieehheefieehtedvkefghffglefhlefhudffhfejnecuffhomhgr
-    ihhnpehqvghmuhdrohhrghdpkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:iKkwZgRV9kaP9nwfAwfkRrw-nczNa8sDIxDtw40e6IXfn5aGP0ydXw>
-    <xmx:iKkwZgyPN5ty4o6u9MGvlkRnDh61E56duCIOtoZ3fhBcea-yLd_Oag>
-    <xmx:iKkwZm5MI8mjeQnRQALU0NiKO3Ke1ElYiuQCvJpUPXNfTr2MViX4Yg>
-    <xmx:iKkwZlzwt6aPwK-1D90AECTfGALCGPonq3tjN_rVsz4Z9J6iQWzW4g>
-    <xmx:iKkwZvkcvo52Z7xnxRHeyEK-_aL43_foXJwd06Df_Lc7m8-4Ezup_sfa>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 Apr 2024 04:19:19 -0400 (EDT)
-Date: Tue, 30 Apr 2024 10:19:17 +0200
-From: Greg KH <greg@kroah.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AfLuWU0fT6Pt6dSNBWf8IqMvF1ZJRKLGQqiL0A+4uhs9YMda8XaGvEP+x4wpK15J3FusiO5UMfC3prAanuhmQsG3g/HAYJ5j+M197+JlKa+k1R0tQn0opcgSrNfu/5OIRTEf6QgCaTqlxLaMkvHsrJqqkJ5c/kR0oe9/zcNSR98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNE70eYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310E9C2BBFC;
+	Tue, 30 Apr 2024 08:19:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714465181;
+	bh=USY6VaIFCv+hOylo0S920q7fSDfNEHXJ7JZxBjVH8yU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eNE70eYp1BgkcqkGkPCi4rpoiDYQnco8NkfP/NHqRd9AsDyVLoJvOxvjvrMtBPSiG
+	 mf8S0/teVDaf5wUTyHlcs1t6ePp0cIz4safBcp5Yma5iYlE96jqS+kX2jvOLIAz6Ja
+	 dGJ/v5okEGwB3qI5URhXBiswDmBioliu4jFD5xcI=
+Date: Tue, 30 Apr 2024 10:19:38 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
 To: Miaohe Lin <linmiaohe@huawei.com>
 Cc: stable@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.1.y] mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when
+Subject: Re: [PATCH 6.6.y] mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when
  dissolve_free_hugetlb_folio()
-Message-ID: <2024043004-entwine-violation-9545@gregkh>
-References: <2024042912-visibly-carpool-70bd@gregkh>
- <20240430074146.2489498-1-linmiaohe@huawei.com>
+Message-ID: <2024043020-dropper-create-2cf5@gregkh>
+References: <2024042914-rectified-grab-1bbb@gregkh>
+ <20240430074331.2500025-1-linmiaohe@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,9 +56,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240430074146.2489498-1-linmiaohe@huawei.com>
+In-Reply-To: <20240430074331.2500025-1-linmiaohe@huawei.com>
 
-On Tue, Apr 30, 2024 at 03:41:46PM +0800, Miaohe Lin wrote:
+On Tue, Apr 30, 2024 at 03:43:31PM +0800, Miaohe Lin wrote:
 > When I did memory failure tests recently, below warning occurs:
 > 
 > DEBUG_LOCKS_WARN_ON(1)
@@ -220,23 +179,27 @@ On Tue, Apr 30, 2024 at 03:41:46PM +0800, Miaohe Lin wrote:
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 37288a7f0fa6..8573da127939 100644
+> index a17950160395..3a0f6b78f925 100644
 > --- a/mm/hugetlb.c
 > +++ b/mm/hugetlb.c
-> @@ -1796,7 +1796,7 @@ static void __update_and_free_page(struct hstate *h, struct page *page)
+> @@ -1782,7 +1782,7 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
 >  	 * If vmemmap pages were allocated above, then we need to clear the
 >  	 * hugetlb destructor under the hugetlb lock.
 >  	 */
 > -	if (clear_dtor) {
 > +	if (folio_test_hugetlb(folio)) {
 >  		spin_lock_irq(&hugetlb_lock);
->  		__clear_hugetlb_destructor(h, page);
+>  		__clear_hugetlb_destructor(h, folio);
 >  		spin_unlock_irq(&hugetlb_lock);
 > -- 
 > 2.33.0
 > 
 > 
 
-You failed to at least test-build this change, why?  :(
+Again, this breaks the build, did you not test it?  Always do so before
+sending it out :(
 
+thanks,
+
+greg k-h
 
