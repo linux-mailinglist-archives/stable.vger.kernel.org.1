@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-41810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB918B6C33
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 09:52:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B938B6C38
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 09:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4873028370B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:52:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F1192835E0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EA140BE1;
-	Tue, 30 Apr 2024 07:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDACC3FE37;
+	Tue, 30 Apr 2024 07:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fpxq5981"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxfU2zBa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658E73FB87;
-	Tue, 30 Apr 2024 07:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE733EA83;
+	Tue, 30 Apr 2024 07:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714463517; cv=none; b=WCE1dlsY+vUbW8LQVP/cZJvcYmjBjhZO5AGE+NdE/T9ahHDuuE4KLdWpOZfaUNTG/Srw1amZQywuJ2HTxktP6K4E6e/v+JzImssuO2X/qXTFT2SrQd5svcRWobRF4opGpx/c5UrHtu1WRMYTm2gqSN4VXW5d5RNns02WTB0YA2c=
+	t=1714463579; cv=none; b=QYidxXrNLIvACQQoRWVjwYIcjcroEo2RaTg2el+gZ/tS6/3EFe1ZflqaQIqkFOVGEU/bSF3kE+xMq8iyHVn//vJXv00S9QN9zkyI9gYPGNMMoCpKymCxw/OpS85Pr6AzP/CH5HiOM52ZZVPNab6A6Ru/FqT/2h0cofEMIfG9Bx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714463517; c=relaxed/simple;
-	bh=v0WF6wRNl0/o4ZfZUcYLksd3B2wnn2d8J5cCYz5LJiU=;
+	s=arc-20240116; t=1714463579; c=relaxed/simple;
+	bh=xJVRBclfh8P+8hLG+1T8YfTZhmWHpBhetFNBinVd8eU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E0yfobmPJrPvNS9UZY/4maXr/3fWSYeiRnh8J0W4mQatslPtjLJ8oSiY/AGqB+6qIHE48KaGTT+Rj8KwsKdGjHDkEVosyYGgjenmuvSFHwNtgR+CTD45ro6Hu8B1zEfMQIdSYYGrqIUgQq4vbvjI4PwymP/oCJkhsJJEY/Ve5ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fpxq5981; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6293C4AF17;
-	Tue, 30 Apr 2024 07:51:56 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=kUbD8SzzUuyOf1DZCFuEBJXIzH8ZcK2mCiTUPiIoE3XTH4vA1HSsYlRMihvSDmqd5ULWPCef6E/lju/pw5NYd+ciHaHuTvHF1WNB92JtEDzqHZHwA6Hy/8WMQYcEL6tvzIcxvyUGXq6f/I/x5Gm9CymSJer2R2xW2F0qXyMboNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxfU2zBa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC838C2BBFC;
+	Tue, 30 Apr 2024 07:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714463517;
-	bh=v0WF6wRNl0/o4ZfZUcYLksd3B2wnn2d8J5cCYz5LJiU=;
+	s=korg; t=1714463579;
+	bh=xJVRBclfh8P+8hLG+1T8YfTZhmWHpBhetFNBinVd8eU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fpxq5981i/tonHvgQuediTxuWMIbKvv5Ne3dxmiMm0+57NaqNaLrzxSit2KNKqwQt
-	 1sB2Gfq/k7rpxsTFiB/Yk2rqVvlJ7iYVvTD7vxCOApgJYPbfXjwTi04locT3zBEFeP
-	 U0FR3AVlJXYsMXTfYA0uKhbiYucrmOlhbIN9qnFg=
-Date: Tue, 30 Apr 2024 09:51:54 +0200
+	b=qxfU2zBaHoy5EyBR2oheLZJMP1PyuAf8N4E/D6slFK0xBsknZRUsHBrDulxgwxci4
+	 c7owR20uCYLyPfj6ngU64oqT172GOa8e3lBy0LIUpuFIjB/8/65M0/us4GoSD2n0BR
+	 QdK7Lz9h64B36HRRmtYzTVMsRQH68e4P5LFe2ySo=
+Date: Tue, 30 Apr 2024 09:52:56 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Edward Liaw <edliaw@google.com>
-Cc: stable@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-	kernel-team@android.com, Mark Brown <broonie@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.6.y] kselftest: Add a ksft_perror() helper
-Message-ID: <2024043037-debate-capsize-e44c@gregkh>
-References: <20240430010628.430427-1-edliaw@google.com>
+To: Jingbo Xu <jefflexu@linux.alibaba.com>
+Cc: sashal@kernel.org, stable@vger.kernel.org, amir73il@gmail.com,
+	linux-unionfs@vger.kernel.org
+Subject: Re: [STABLE 6.6.y] ovl: fix memory leak in ovl_parse_param()
+Message-ID: <2024043049-divisibly-discover-7a32@gregkh>
+References: <20240430034854.126947-1-jefflexu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,34 +54,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240430010628.430427-1-edliaw@google.com>
+In-Reply-To: <20240430034854.126947-1-jefflexu@linux.alibaba.com>
 
-On Tue, Apr 30, 2024 at 01:06:27AM +0000, Edward Liaw wrote:
-> From: Mark Brown <broonie@kernel.org>
+On Tue, Apr 30, 2024 at 11:48:54AM +0800, Jingbo Xu wrote:
+> From: Amir Goldstein <amir73il@gmail.com>
 > 
-> [ Upstream commit 907f33028871fa7c9a3db1efd467b78ef82cce20 ]
+> commit 37f32f52643869131ec01bb69bdf9f404f6109fb upstream.
 > 
-> The standard library perror() function provides a convenient way to print
-> an error message based on the current errno but this doesn't play nicely
-> with KTAP output. Provide a helper which does an equivalent thing in a KTAP
-> compatible format.
+> On failure to parse parameters in ovl_parse_param_lowerdir(), it is
+> necessary to update ctx->nr with the correct nr before using
+> ovl_reset_lowerdirs() to release l->name.
 > 
-> nolibc doesn't have a strerror() and adding the table of strings required
-> doesn't seem like a good fit for what it's trying to do so when we're using
-> that only print the errno.
-> 
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-> Stable-dep-of: 071af0c9e582 ("selftests: timers: Convert posix_timers test to generate KTAP output")
-> Signed-off-by: Edward Liaw <edliaw@google.com>
+> Reported-and-tested-by: syzbot+26eedf3631650972f17c@syzkaller.appspotmail.com
+> Fixes: c835110b588a ("ovl: remove unused code in lowerdir param parsing")
+> Co-authored-by: Edward Adam Davis <eadavis@qq.com>
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
 > ---
->  tools/testing/selftests/kselftest.h | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
+> Commit c835110b588a ("ovl: remove unused code in lowerdir param
+> parsing") was back ported to 6.6.y as a "Stable-dep-of" of commit
+> 2824083db76c ("ovl: Always reject mounting over case-insensitive
+> directories"), while omitting the fix for commit c835110b588a itself.
+> Maybe that is because by the time commit 37f32f526438 (the fix) is merged
+> into master branch, commit c835110b588a has not been back ported to 6.6.y
+> yet.
 
-This commit is already in 6.6.29, why submit it again?
-
-confused,
+Now queued up, thanks.
 
 greg k-h
 
