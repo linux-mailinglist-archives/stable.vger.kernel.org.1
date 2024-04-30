@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A788B722A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3EF8B730F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 358071C21957
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B234B21A5A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B5312C530;
-	Tue, 30 Apr 2024 11:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AF312DD95;
+	Tue, 30 Apr 2024 11:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3Vh+x7K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stoQLNxV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2786112C462;
-	Tue, 30 Apr 2024 11:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1C7211C;
+	Tue, 30 Apr 2024 11:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475111; cv=none; b=lpXVzkHuD5+GEYdpWKVrJzqs9qlG73+appfO9AmM0uyjaN06sD/ifV3DadK03P0IXy5Pa2pxK3Y4Inpr5m2CefgcotgYDq4xp/9ZS/2aaUnA4F1iNZ/ivvNrIvQPA7FrRc+nW2CLbEOZSgWXT03CtLDip4SERitqdXBYcJgYYWw=
+	t=1714475671; cv=none; b=E1LTRVlYZ7GsbWafpyrSuoX5na+mB6V8mzvYg2nQPHdBkyw8Qw+KID4PyaQL/FAgyIFGn4CX+zp+DYxe/6xgbpPS6S2TA4pHfJeZlJlZeHPfimXioiabVppoL7MTld7GZRHJjOQfmSlZkG3hnjS+mK7K+k1fZcfEMt56yjXpJgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475111; c=relaxed/simple;
-	bh=1kw9PEiirhz+smld03BUARW/SHt7NYTZLhLTqIh7qYA=;
+	s=arc-20240116; t=1714475671; c=relaxed/simple;
+	bh=JopcXuHVk5sHneoZ1ww5Za3LtXluvchCx6rsME/oeTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBULalBhXbnoGu+gHwFrwqjAtT3I3WjCkUoVqc7Q1NiMAvCTxKLsBdVopMl990i8c8rlTSCQ8NNYx5sZJwMtWj3R/h4qD57OTnJ9wQJGCYVzh5g/OP54WGVX8LXMFs/Qk2vwIkDO6k6mJ1rjB1nRvHQVqEStCYLM1MfZNuN794s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3Vh+x7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D605C2BBFC;
-	Tue, 30 Apr 2024 11:05:10 +0000 (UTC)
+	 MIME-Version; b=Ju4Nap9PtrAJcUiu1zU6xjFZAbUCIrasYJ9hiAdjwUni7QV8gV9o4nnxKE1F/twq3itWjEXdjDqf2XuioFhmnqZ2gCMkU3hYWyKbqxmA/dlnFtd4tvokR5jgyryKXLW22GBp5yrG8DiGGiDLiBbpKYMwAUPdkPcea6Ys3miR094=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stoQLNxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5B9C2BBFC;
+	Tue, 30 Apr 2024 11:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475111;
-	bh=1kw9PEiirhz+smld03BUARW/SHt7NYTZLhLTqIh7qYA=;
+	s=korg; t=1714475671;
+	bh=JopcXuHVk5sHneoZ1ww5Za3LtXluvchCx6rsME/oeTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3Vh+x7KSEPss0BftE68ityE8nfaueRsdrgG17pBS4AKTp/RZ08yTKjAkZgJnMkKu
-	 CiPBxZAGKHlhSahra/h05yy1q94A9EDlErFFbvXezAvmPbLSZ16CHy1lZo0WfznilV
-	 X7yHSqa/F3XSItvVAzGscB01Pmp5T6v0thLKgGx8=
+	b=stoQLNxVEaxWFDqSkGB9vvifxWAnZP8ReKSdnn1qlFCUGEvXQ414YUkKhLFx8OSkQ
+	 9vDkq5aJLEiBi39VZWtmrIB7HuS6kXaJ52gTsk+lQCLSa0huvSZDjEEYDSaQMQ25jd
+	 lqDj2kaN2r88h/nbnwLaGS9qPqQ2sMu+S+nfzPqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yick Xie <yick.xie@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 136/138] udp: preserve the connected status if only UDP cmsg
+	Rex Zhang <rex.zhang@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Lijun Pan <lijun.pan@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 169/186] dmaengine: idxd: Convert spinlock to mutex to lock evl workqueue
 Date: Tue, 30 Apr 2024 12:40:21 +0200
-Message-ID: <20240430103053.405662987@linuxfoundation.org>
+Message-ID: <20240430103102.937340951@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +65,209 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yick Xie <yick.xie@gmail.com>
+From: Rex Zhang <rex.zhang@intel.com>
 
-commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
+[ Upstream commit d5638de827cff0fce77007e426ec0ffdedf68a44 ]
 
-If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-"connected" should not be set to 0. Otherwise it stops
-the connected socket from using the cached route.
+drain_workqueue() cannot be called safely in a spinlocked context due to
+possible task rescheduling. In the multi-task scenario, calling
+queue_work() while drain_workqueue() will lead to a Call Trace as
+pushing a work on a draining workqueue is not permitted in spinlocked
+context.
+    Call Trace:
+    <TASK>
+    ? __warn+0x7d/0x140
+    ? __queue_work+0x2b2/0x440
+    ? report_bug+0x1f8/0x200
+    ? handle_bug+0x3c/0x70
+    ? exc_invalid_op+0x18/0x70
+    ? asm_exc_invalid_op+0x1a/0x20
+    ? __queue_work+0x2b2/0x440
+    queue_work_on+0x28/0x30
+    idxd_misc_thread+0x303/0x5a0 [idxd]
+    ? __schedule+0x369/0xb40
+    ? __pfx_irq_thread_fn+0x10/0x10
+    ? irq_thread+0xbc/0x1b0
+    irq_thread_fn+0x21/0x70
+    irq_thread+0x102/0x1b0
+    ? preempt_count_add+0x74/0xa0
+    ? __pfx_irq_thread_dtor+0x10/0x10
+    ? __pfx_irq_thread+0x10/0x10
+    kthread+0x103/0x140
+    ? __pfx_kthread+0x10/0x10
+    ret_from_fork+0x31/0x50
+    ? __pfx_kthread+0x10/0x10
+    ret_from_fork_asm+0x1b/0x30
+    </TASK>
 
-Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The current implementation uses a spinlock to protect event log workqueue
+and will lead to the Call Trace due to potential task rescheduling.
+
+To address the locking issue, convert the spinlock to mutex, allowing
+the drain_workqueue() to be called in a safe mutex-locked context.
+
+This change ensures proper synchronization when accessing the event log
+workqueue, preventing potential Call Trace and improving the overall
+robustness of the code.
+
+Fixes: c40bd7d9737b ("dmaengine: idxd: process user page faults for completion record")
+Signed-off-by: Rex Zhang <rex.zhang@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
+Reviewed-by: Lijun Pan <lijun.pan@intel.com>
+Link: https://lore.kernel.org/r/20240404223949.2885604-1-fenghua.yu@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c |    5 +++--
- net/ipv6/udp.c |    5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/dma/idxd/cdev.c    | 5 ++---
+ drivers/dma/idxd/debugfs.c | 4 ++--
+ drivers/dma/idxd/device.c  | 8 ++++----
+ drivers/dma/idxd/idxd.h    | 2 +-
+ drivers/dma/idxd/init.c    | 2 +-
+ drivers/dma/idxd/irq.c     | 4 ++--
+ 6 files changed, 12 insertions(+), 13 deletions(-)
 
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1125,16 +1125,17 @@ int udp_sendmsg(struct sock *sk, struct
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 4eeec95a66751..ad7b55dd9596d 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -342,7 +342,7 @@ static void idxd_cdev_evl_drain_pasid(struct idxd_wq *wq, u32 pasid)
+ 	if (!evl)
+ 		return;
  
- 	if (msg->msg_controllen) {
- 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip_cmsg_send(sk, msg, &ipc,
- 					   sk->sk_family == AF_INET6);
-+			connected = 0;
-+		}
- 		if (unlikely(err < 0)) {
- 			kfree(ipc.opt);
- 			return err;
- 		}
- 		if (ipc.opt)
- 			free = 1;
--		connected = 0;
+-	spin_lock(&evl->lock);
++	mutex_lock(&evl->lock);
+ 	status.bits = ioread64(idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
+ 	t = status.tail;
+ 	h = status.head;
+@@ -354,9 +354,8 @@ static void idxd_cdev_evl_drain_pasid(struct idxd_wq *wq, u32 pasid)
+ 			set_bit(h, evl->bmap);
+ 		h = (h + 1) % size;
  	}
- 	if (!ipc.opt) {
- 		struct ip_options_rcu *inet_opt;
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1453,9 +1453,11 @@ do_udp_sendmsg:
- 		ipc6.opt = opt;
+-	spin_unlock(&evl->lock);
+-
+ 	drain_workqueue(wq->wq);
++	mutex_unlock(&evl->lock);
+ }
  
- 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, &fl6,
- 						    &ipc6);
-+			connected = false;
-+		}
- 		if (err < 0) {
- 			fl6_sock_release(flowlabel);
- 			return err;
-@@ -1467,7 +1469,6 @@ do_udp_sendmsg:
- 		}
- 		if (!(opt->opt_nflen|opt->opt_flen))
- 			opt = NULL;
--		connected = false;
+ static int idxd_cdev_release(struct inode *node, struct file *filep)
+diff --git a/drivers/dma/idxd/debugfs.c b/drivers/dma/idxd/debugfs.c
+index f3f25ee676f30..ad4245cb301d5 100644
+--- a/drivers/dma/idxd/debugfs.c
++++ b/drivers/dma/idxd/debugfs.c
+@@ -66,7 +66,7 @@ static int debugfs_evl_show(struct seq_file *s, void *d)
+ 	if (!evl || !evl->log)
+ 		return 0;
+ 
+-	spin_lock(&evl->lock);
++	mutex_lock(&evl->lock);
+ 
+ 	evl_status.bits = ioread64(idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
+ 	t = evl_status.tail;
+@@ -87,7 +87,7 @@ static int debugfs_evl_show(struct seq_file *s, void *d)
+ 		dump_event_entry(idxd, s, i, &count, processed);
  	}
- 	if (!opt) {
- 		opt = txopt_get(np);
+ 
+-	spin_unlock(&evl->lock);
++	mutex_unlock(&evl->lock);
+ 	return 0;
+ }
+ 
+diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
+index fa0f880beae64..542d340552dd7 100644
+--- a/drivers/dma/idxd/device.c
++++ b/drivers/dma/idxd/device.c
+@@ -770,7 +770,7 @@ static int idxd_device_evl_setup(struct idxd_device *idxd)
+ 		goto err_alloc;
+ 	}
+ 
+-	spin_lock(&evl->lock);
++	mutex_lock(&evl->lock);
+ 	evl->log = addr;
+ 	evl->dma = dma_addr;
+ 	evl->log_size = size;
+@@ -791,7 +791,7 @@ static int idxd_device_evl_setup(struct idxd_device *idxd)
+ 	gencfg.evl_en = 1;
+ 	iowrite32(gencfg.bits, idxd->reg_base + IDXD_GENCFG_OFFSET);
+ 
+-	spin_unlock(&evl->lock);
++	mutex_unlock(&evl->lock);
+ 	return 0;
+ 
+ err_alloc:
+@@ -814,7 +814,7 @@ static void idxd_device_evl_free(struct idxd_device *idxd)
+ 	if (!gencfg.evl_en)
+ 		return;
+ 
+-	spin_lock(&evl->lock);
++	mutex_lock(&evl->lock);
+ 	gencfg.evl_en = 0;
+ 	iowrite32(gencfg.bits, idxd->reg_base + IDXD_GENCFG_OFFSET);
+ 
+@@ -831,7 +831,7 @@ static void idxd_device_evl_free(struct idxd_device *idxd)
+ 	evl_dma = evl->dma;
+ 	evl->log = NULL;
+ 	evl->size = IDXD_EVL_SIZE_MIN;
+-	spin_unlock(&evl->lock);
++	mutex_unlock(&evl->lock);
+ 
+ 	dma_free_coherent(dev, evl_log_size, evl_log, evl_dma);
+ }
+diff --git a/drivers/dma/idxd/idxd.h b/drivers/dma/idxd/idxd.h
+index 6fc79deb99bfd..df62dd1291189 100644
+--- a/drivers/dma/idxd/idxd.h
++++ b/drivers/dma/idxd/idxd.h
+@@ -279,7 +279,7 @@ struct idxd_driver_data {
+ 
+ struct idxd_evl {
+ 	/* Lock to protect event log access. */
+-	spinlock_t lock;
++	struct mutex lock;
+ 	void *log;
+ 	dma_addr_t dma;
+ 	/* Total size of event log = number of entries * entry size. */
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index d09a8553ea71d..2e323c9b2068d 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -353,7 +353,7 @@ static int idxd_init_evl(struct idxd_device *idxd)
+ 	if (!evl)
+ 		return -ENOMEM;
+ 
+-	spin_lock_init(&evl->lock);
++	mutex_init(&evl->lock);
+ 	evl->size = IDXD_EVL_SIZE_MIN;
+ 
+ 	idxd_name = dev_name(idxd_confdev(idxd));
+diff --git a/drivers/dma/idxd/irq.c b/drivers/dma/idxd/irq.c
+index 0bbc6bdc6145e..b2ca9c1f194c9 100644
+--- a/drivers/dma/idxd/irq.c
++++ b/drivers/dma/idxd/irq.c
+@@ -363,7 +363,7 @@ static void process_evl_entries(struct idxd_device *idxd)
+ 	evl_status.bits = 0;
+ 	evl_status.int_pending = 1;
+ 
+-	spin_lock(&evl->lock);
++	mutex_lock(&evl->lock);
+ 	/* Clear interrupt pending bit */
+ 	iowrite32(evl_status.bits_upper32,
+ 		  idxd->reg_base + IDXD_EVLSTATUS_OFFSET + sizeof(u32));
+@@ -380,7 +380,7 @@ static void process_evl_entries(struct idxd_device *idxd)
+ 
+ 	evl_status.head = h;
+ 	iowrite32(evl_status.bits_lower32, idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
+-	spin_unlock(&evl->lock);
++	mutex_unlock(&evl->lock);
+ }
+ 
+ irqreturn_t idxd_misc_thread(int vec, void *data)
+-- 
+2.43.0
+
 
 
 
