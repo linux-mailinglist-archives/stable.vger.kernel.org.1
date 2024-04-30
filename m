@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F558B7450
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822368B737C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3FF51C233BE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21E671F24078
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B927B12D746;
-	Tue, 30 Apr 2024 11:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B2712CDAE;
+	Tue, 30 Apr 2024 11:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6OHCyxv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pi527fok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E4412BF32;
-	Tue, 30 Apr 2024 11:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C688801;
+	Tue, 30 Apr 2024 11:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476567; cv=none; b=PHtqkrIgimCvTN4Y78yTOijbMvW3RCVfmOCQqk4ih8x/yRxZrWTnO0MzDoOhhksRZctFu5ae3vgxCgZucmaZdpEoEDCESaObc2Re9i3Fwz3hMKk2QdtoAb4jWAlMbw9VgQtK/Z99UzXzXbV5gdFhStc55ZYR8aeh7hLGCHxWiaU=
+	t=1714475980; cv=none; b=VVB46Zm2mLEei2kzyC6K2Y3hPSiAeEj1CR852dbtLRlQWXSWtnDQ9QIrdBo/s7Dq0Wl3zMsChWwiQ+769KGXRK7uo2+hS1cDfAYSEa9b6hmc5bZNdKjc+yzydQcF7Rlpi+3IFx0R5a73f04ZFq+9DEYhmi+x/WtnDLsVpSIicmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476567; c=relaxed/simple;
-	bh=LBXcx3zeYADjd2H7AVArw+n6dtIIduAKI3WJ4R6NQp8=;
+	s=arc-20240116; t=1714475980; c=relaxed/simple;
+	bh=zMXijcaXM8wbNPZqv/oVyvbN6WnpTPI6Mr1gOH+AEYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/yb670QrRJpXGsKpk/ORz+zitWeD2llybM1YiDqO9oE9jREQD2OQ9EFcXj6oqtMub+kHTT9aA3q7jWUsx5Np3VUNm7XhEFkjF3JqE86syfokTGORICks8PH0bLDIrWkV95epxCdO9sfrVxp+s2gcXrhmRk67d4K7o9Iv3LZNkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6OHCyxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95162C2BBFC;
-	Tue, 30 Apr 2024 11:29:26 +0000 (UTC)
+	 MIME-Version; b=uAzu0slEkaYgRSovRtXUc8qFeEuUg/9IzOydDWeM4iXds7VuwLnch0SRCFRwo6wL3csFoH4H0xxjbjItuJ1RXGpbyt9hy3PCSiV5uIxlMFVgqF0tJcPGjjNEuta67c8PCXDsMsloC1qiM5Zr5O2uMEimXIOWZZFXXs6353tmFcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pi527fok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B4DC2BBFC;
+	Tue, 30 Apr 2024 11:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476567;
-	bh=LBXcx3zeYADjd2H7AVArw+n6dtIIduAKI3WJ4R6NQp8=;
+	s=korg; t=1714475979;
+	bh=zMXijcaXM8wbNPZqv/oVyvbN6WnpTPI6Mr1gOH+AEYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6OHCyxvFaHlHR5NgrYPW/BeYyx9Oeb80yw665NiBmkmQlbEgIimCk/HNRnHrGCyC
-	 fd6c5zu+TZ4RAQuxTuBzteBj1EHPVL/aJGXzJtQVXsgfaZ6eU/T7edVPCVREbS64z5
-	 D27skiBv7V8TBFGVohNcgGbRmhLsbNlVb+dJcveU=
+	b=Pi527fokkWPYZN8TMXVOFc1fRq1SWn8qpv+gaZlxpCKTqZ2NpDUQpOir5dCHKdP/H
+	 r0qjhgObhrhCg7DPJv3lIwehEjjqs21EwmY4u4JVr4e97US5PS601MqUGkogmaxID3
+	 RlzASza7hS7ZYCEjT0KDcU6k7/cDtF9sRUXWn70c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>,
-	Eva Kurchatova <nyandarknessgirl@gmail.com>
-Subject: [PATCH 6.1 072/110] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up
-Date: Tue, 30 Apr 2024 12:40:41 +0200
-Message-ID: <20240430103049.691797296@linuxfoundation.org>
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 70/80] idma64: Dont try to serve interrupts when device is powered off
+Date: Tue, 30 Apr 2024 12:40:42 +0200
+Message-ID: <20240430103045.482345345@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e upstream.
+[ Upstream commit 9140ce47872bfd89fca888c2f992faa51d20c2bc ]
 
-The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
-However, this is not necessary, because I2C core already has its own
-locking for that.
+When iDMA 64-bit device is powered off, the IRQ status register
+is all 1:s. This is never happen in real case and signalling that
+the device is simply powered off. Don't try to serve interrupts
+that are not ours.
 
-More importantly, this flag can cause a lock-up: if the flag is set in
-i2c_hid_xfer() and an interrupt happens, the interrupt handler
-(i2c_hid_irq) will check this flag and return immediately without doing
-anything, then the interrupt handler will be invoked again in an
-infinite loop.
-
-Since interrupt handler is an RT task, it takes over the CPU and the
-flag-clearing task never gets scheduled, thus we have a lock-up.
-
-Delete this unnecessary flag.
-
-Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
-Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
-Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 667dfed98615 ("dmaengine: add a driver for Intel integrated DMA 64-bit")
+Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
+Closes: https://lore.kernel.org/r/700bbb84-90e1-4505-8ff0-3f17ea8bc631@gmail.com
+Tested-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240321120453.1360138-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-core.c |    9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/dma/idma64.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -61,7 +61,6 @@
- /* flags */
- #define I2C_HID_STARTED		0
- #define I2C_HID_RESET_PENDING	1
--#define I2C_HID_READ_PENDING	2
+diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
+index f4c07ad3be15b..af8777a1ec2e3 100644
+--- a/drivers/dma/idma64.c
++++ b/drivers/dma/idma64.c
+@@ -167,6 +167,10 @@ static irqreturn_t idma64_irq(int irq, void *dev)
+ 	u32 status_err;
+ 	unsigned short i;
  
- #define I2C_HID_PWR_ON		0x00
- #define I2C_HID_PWR_SLEEP	0x01
-@@ -193,15 +192,10 @@ static int i2c_hid_xfer(struct i2c_hid *
- 		msgs[n].len = recv_len;
- 		msgs[n].buf = recv_buf;
- 		n++;
--
--		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
- 	}
++	/* Since IRQ may be shared, check if DMA controller is powered on */
++	if (status == GENMASK(31, 0))
++		return IRQ_NONE;
++
+ 	dev_vdbg(idma64->dma.dev, "%s: status=%#x\n", __func__, status);
  
- 	ret = i2c_transfer(client->adapter, msgs, n);
- 
--	if (recv_len)
--		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
--
- 	if (ret != n)
- 		return ret < 0 ? ret : -EIO;
- 
-@@ -569,9 +563,6 @@ static irqreturn_t i2c_hid_irq(int irq,
- {
- 	struct i2c_hid *ihid = dev_id;
- 
--	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
--		return IRQ_HANDLED;
--
- 	i2c_hid_get_input(ihid);
- 
- 	return IRQ_HANDLED;
+ 	/* Check if we have any interrupt from the DMA controller */
+-- 
+2.43.0
+
 
 
 
