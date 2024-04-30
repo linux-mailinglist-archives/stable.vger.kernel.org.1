@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-42484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E2F8B733F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4AE8B7186
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E531287BD0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB16F2856A2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A736912CDA5;
-	Tue, 30 Apr 2024 11:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D8312C476;
+	Tue, 30 Apr 2024 10:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEIC91p6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAvelzOw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6527F211C;
-	Tue, 30 Apr 2024 11:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64F2128816;
+	Tue, 30 Apr 2024 10:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475813; cv=none; b=PCujDqFSz9H1xL206ZGbBMPoR8oM+daZwJx88OE9Z1DQML/GTGk501dU9CfesNzrJwi3tONRiiW1HkLPKgmgjnxDqH2YPl4RZ4kaDwUU+3TovtfoOseGRdSthktW9I7g1ErQPj7JEeUZHSHt6dKGYjzrywV6IOJUseuYZ4+Jf9c=
+	t=1714474653; cv=none; b=OeKpWrhwOYsNnEvoaIzmM7j9WAO61Q1uL5heZFWeopz16Q7Wqy53ekrE/kdlcmhdQ2WLwK8U5zeRUZkTmUq4vsQQGvOuOyjprT0Mi3/dibG2ewnK21vTTNl8ux14QcioxSZ4mXZJHF6qPgLBST3PxOxMV6zjygKuuqmEnTn4pKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475813; c=relaxed/simple;
-	bh=ddv3+Q3WJfZjVhKZmgbzrdQuQrvwhy1+2aLwpxb3q5c=;
+	s=arc-20240116; t=1714474653; c=relaxed/simple;
+	bh=IY6CmH7G8Bie4BJI+cAwadMlyg4Q/VFVa/KOQ41glEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fsTm2ehFXKywOJ99c35+y2YW9rVZPsm6wfxdr8nqFKS1jcXk9xts/LcWmy45Zq0kebovJXK33k2dM+lNjkJiY5qzmZcEU5T9stqEtqeBmI0Sx9M0nYwWNTNrzPAVXtmFcPGHM5Rz3Q5swpsJIRpL4pYg36hEhF7UZU4i7glTlQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEIC91p6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0FBC2BBFC;
-	Tue, 30 Apr 2024 11:16:52 +0000 (UTC)
+	 MIME-Version; b=lTSWTkq0yry4c99LRkK5Lds+/7rqFB/O4KIf2+IUGNuNynnNC84QunFbnbA2GRczpkHMSaC9yfxyyPu40TsEPHDEqlgmEK4lWS5yTqKCtYWJ3+lZUWf5Lij3S65dpPUfIcygprTiVgmX0mATTQKdbvGYbwYd0ixKQScNzThp2s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vAvelzOw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DCCC2BBFC;
+	Tue, 30 Apr 2024 10:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475813;
-	bh=ddv3+Q3WJfZjVhKZmgbzrdQuQrvwhy1+2aLwpxb3q5c=;
+	s=korg; t=1714474653;
+	bh=IY6CmH7G8Bie4BJI+cAwadMlyg4Q/VFVa/KOQ41glEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEIC91p6SNwrMUAqu8qwObpfubJ++UaMsaxBCZrCeCkvBo7uoo0U1PY/pXgOsGvcc
-	 rIy+2euIUrbPDG8xgOfCKWQx8dc1+JLse7K0xM55QEBhcxnVNEx7bQHxwfisbx2xEm
-	 D2YJ28J/oJs/9/dPD+fzqgLCg00AxBBXnudDNlls=
+	b=vAvelzOw78b3O2CkXsxSQGM7bj9D06pMeuT453AW3m2YdCsqdRLX+99BIxN+UEfkM
+	 AbC9lJmP1eq+bu6XKOG2PNahWvXDHCNfXUTzIBMnPWulrgoW4j2gSR1bch5ubTKoOy
+	 rioYmPj12cz3MN1uaxf5etvPAC7+J9S9kyb54xcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 25/80] ipv4: check for NULL idev in ip_route_use_hint()
-Date: Tue, 30 Apr 2024 12:39:57 +0200
-Message-ID: <20240430103044.159570269@linuxfoundation.org>
+	Sergei Trofimovich <slyich@gmail.com>,
+	Igor Raits <igor@gooddata.com>,
+	Breno Leitao <leitao@debian.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Yujie Liu <yujie.liu@intel.com>,
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Chen Yu <yu.c.chen@intel.com>
+Subject: [PATCH 6.8 220/228] sched/eevdf: Prevent vlag from going out of bounds in reweight_eevdf()
+Date: Tue, 30 Apr 2024 12:39:58 +0200
+Message-ID: <20240430103110.151861740@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +68,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-[ Upstream commit 58a4c9b1e5a3e53c9148e80b90e1e43897ce77d1 ]
+[ Upstream commit 1560d1f6eb6b398bddd80c16676776c0325fe5fe ]
 
-syzbot was able to trigger a NULL deref in fib_validate_source()
-in an old tree [1].
+It was possible to have pick_eevdf() return NULL, which then causes a
+NULL-deref. This turned out to be due to entity_eligible() returning
+falsely negative because of a s64 multiplcation overflow.
 
-It appears the bug exists in latest trees.
+Specifically, reweight_eevdf() computes the vlag without considering
+the limit placed upon vlag as update_entity_lag() does, and then the
+scaling multiplication (remember that weight is 20bit fixed point) can
+overflow. This then leads to the new vruntime being weird which then
+causes the above entity_eligible() to go side-ways and claim nothing
+is eligible.
 
-All calls to __in_dev_get_rcu() must be checked for a NULL result.
+Thus limit the range of vlag accordingly.
 
-[1]
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 2 PID: 3257 Comm: syz-executor.3 Not tainted 5.10.0-syzkaller #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
- RIP: 0010:fib_validate_source+0xbf/0x15a0 net/ipv4/fib_frontend.c:425
-Code: 18 f2 f2 f2 f2 42 c7 44 20 23 f3 f3 f3 f3 48 89 44 24 78 42 c6 44 20 27 f3 e8 5d 88 48 fc 4c 89 e8 48 c1 e8 03 48 89 44 24 18 <42> 80 3c 20 00 74 08 4c 89 ef e8 d2 15 98 fc 48 89 5c 24 10 41 bf
-RSP: 0018:ffffc900015fee40 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88800f7a4000 RCX: ffff88800f4f90c0
-RDX: 0000000000000000 RSI: 0000000004001eac RDI: ffff8880160c64c0
-RBP: ffffc900015ff060 R08: 0000000000000000 R09: ffff88800f7a4000
-R10: 0000000000000002 R11: ffff88800f4f90c0 R12: dffffc0000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: ffff88800f7a4000
-FS:  00007f938acfe6c0(0000) GS:ffff888058c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f938acddd58 CR3: 000000001248e000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  ip_route_use_hint+0x410/0x9b0 net/ipv4/route.c:2231
-  ip_rcv_finish_core+0x2c4/0x1a30 net/ipv4/ip_input.c:327
-  ip_list_rcv_finish net/ipv4/ip_input.c:612 [inline]
-  ip_sublist_rcv+0x3ed/0xe50 net/ipv4/ip_input.c:638
-  ip_list_rcv+0x422/0x470 net/ipv4/ip_input.c:673
-  __netif_receive_skb_list_ptype net/core/dev.c:5572 [inline]
-  __netif_receive_skb_list_core+0x6b1/0x890 net/core/dev.c:5620
-  __netif_receive_skb_list net/core/dev.c:5672 [inline]
-  netif_receive_skb_list_internal+0x9f9/0xdc0 net/core/dev.c:5764
-  netif_receive_skb_list+0x55/0x3e0 net/core/dev.c:5816
-  xdp_recv_frames net/bpf/test_run.c:257 [inline]
-  xdp_test_run_batch net/bpf/test_run.c:335 [inline]
-  bpf_test_run_xdp_live+0x1818/0x1d00 net/bpf/test_run.c:363
-  bpf_prog_test_run_xdp+0x81f/0x1170 net/bpf/test_run.c:1376
-  bpf_prog_test_run+0x349/0x3c0 kernel/bpf/syscall.c:3736
-  __sys_bpf+0x45c/0x710 kernel/bpf/syscall.c:5115
-  __do_sys_bpf kernel/bpf/syscall.c:5201 [inline]
-  __se_sys_bpf kernel/bpf/syscall.c:5199 [inline]
-  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5199
+All this was quite rare, but fatal when it does happen.
 
-Fixes: 02b24941619f ("ipv4: use dst hint for ipv4 list receive")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240421184326.1704930-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/all/ZhuYyrh3mweP_Kd8@nz.home/
+Closes: https://lore.kernel.org/all/CA+9S74ih+45M_2TPUY_mPPVDhNvyYfy1J1ftSix+KjiTVxg8nw@mail.gmail.com/
+Closes: https://lore.kernel.org/lkml/202401301012.2ed95df0-oliver.sang@intel.com/
+Fixes: eab03c23c2a1 ("sched/eevdf: Fix vruntime adjustment on reweight")
+Reported-by: Sergei Trofimovich <slyich@gmail.com>
+Reported-by: Igor Raits <igor@gooddata.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Reported-by: Yujie Liu <yujie.liu@intel.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Reviewed-and-tested-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240422082238.5784-1-xuewen.yan@unisoc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/sched/fair.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 4ff94596f8cd5..895754439393e 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2173,6 +2173,9 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 daddr, __be32 saddr,
- 	int err = -EINVAL;
- 	u32 tag = 0;
- 
-+	if (!in_dev)
-+		return -EINVAL;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index b9ee4397b484a..aee5e7a70170c 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -696,15 +696,21 @@ u64 avg_vruntime(struct cfs_rq *cfs_rq)
+  *
+  * XXX could add max_slice to the augmented data to track this.
+  */
+-static void update_entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se)
++static s64 entity_lag(u64 avruntime, struct sched_entity *se)
+ {
+-	s64 lag, limit;
++	s64 vlag, limit;
 +
- 	if (ipv4_is_multicast(saddr) || ipv4_is_lbcast(saddr))
- 		goto martian_source;
++	vlag = avruntime - se->vruntime;
++	limit = calc_delta_fair(max_t(u64, 2*se->slice, TICK_NSEC), se);
++
++	return clamp(vlag, -limit, limit);
++}
  
++static void update_entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se)
++{
+ 	SCHED_WARN_ON(!se->on_rq);
+-	lag = avg_vruntime(cfs_rq) - se->vruntime;
+ 
+-	limit = calc_delta_fair(max_t(u64, 2*se->slice, TICK_NSEC), se);
+-	se->vlag = clamp(lag, -limit, limit);
++	se->vlag = entity_lag(avg_vruntime(cfs_rq), se);
+ }
+ 
+ /*
+@@ -3754,7 +3760,7 @@ static void reweight_eevdf(struct sched_entity *se, u64 avruntime,
+ 	 *	   = V  - vl'
+ 	 */
+ 	if (avruntime != se->vruntime) {
+-		vlag = (s64)(avruntime - se->vruntime);
++		vlag = entity_lag(avruntime, se);
+ 		vlag = div_s64(vlag * old_weight, weight);
+ 		se->vruntime = avruntime - vlag;
+ 	}
 -- 
 2.43.0
 
