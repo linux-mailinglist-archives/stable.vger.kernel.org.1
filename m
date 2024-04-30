@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901178B7372
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CF38B7420
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C25D21C23248
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA24D1C21E86
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0551E12CDA5;
-	Tue, 30 Apr 2024 11:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EA512D209;
+	Tue, 30 Apr 2024 11:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GD5UdTay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z50m99ji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65118801;
-	Tue, 30 Apr 2024 11:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A2D17592;
+	Tue, 30 Apr 2024 11:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475950; cv=none; b=nQMHRoFF764Pi1ahjgjfyncZKSNRJkwRUxHjEHxGyQ503NuQKWTilyjT/2nrAwJPSuxCNFl//jc+T00RNpButoVHo2Vl7qZ+yt2DNS8OWb56WJr8g82JIyLv+DqKWxcfD7e1f3rpWcO3K9D5aD/ay+2ZTZXiVFWj+qeztnutgBA=
+	t=1714476445; cv=none; b=sHlGEvAAAwzfUxTGHX9DxNSzBCBmDlV9d10B4e8ZWc+T63XyNa7YGtEOhcuyz3vuxGoXoWt64oqHVO/cBjlgLdgV6i/QrLMCDFpfgS7md4f3PT4m5bt/QXAnDOFQTbiOVqyUsc0s8NVk7/7RNy8dmnWwQSrPFqhwkoUGrV0BO5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475950; c=relaxed/simple;
-	bh=lxXAPNBcm+IpNnsOfck79ax2Q2VeOtpx8GHbIZ+8Pt4=;
+	s=arc-20240116; t=1714476445; c=relaxed/simple;
+	bh=VXGkVtYtRAPDAhCEVRS3QeKY93HcHWQ2cp2eyi2rJ2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2RM/W+zx4R2ex7r2+/gd1lcjEjkkXc1iUMnV3kHschhInnwmHtjW3ZO+lKcT/ZAj70r92celvGAJUUAs28k1QHMLszvE7MWlJzdk8HLrFp9FAf3XgOcyi7z+vhJ2ktJe7UGC5GkHUl9rRprq/BbFZp8OhRRHZDiciU7XECdY3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GD5UdTay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25883C2BBFC;
-	Tue, 30 Apr 2024 11:19:09 +0000 (UTC)
+	 MIME-Version; b=MUi+KxuxIalOylQh24OVDirbjCDQ8hDO5Cb1lfMXl8JVHpHKL9EJ9SQQNxXtuZJpWp0vMRz3uafDfK9Z5vBNzeEO8tuit+cXGJ/6DLuWEOZuTd9GJagOo8ISfi8E4DGh4iH6zI6f8+nMAd1RvPBEjqqehPdgBokxfwYp4gIZqck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z50m99ji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE9AC2BBFC;
+	Tue, 30 Apr 2024 11:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475950;
-	bh=lxXAPNBcm+IpNnsOfck79ax2Q2VeOtpx8GHbIZ+8Pt4=;
+	s=korg; t=1714476445;
+	bh=VXGkVtYtRAPDAhCEVRS3QeKY93HcHWQ2cp2eyi2rJ2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GD5UdTayczMJkEvWatk270hlA90UYe2B7yBcpjWN4xR0SzS4ey7CY+l4P3MVWZsn0
-	 OSA/rrU7gBWiQLEUDJrCYb/oHfjnHIyEsLCU3wiX+G4ZWRjPcgSjE1ML/bqZO3R4hj
-	 /gr+HiC8DGi+WsaIyXgkpcZyxub4TKY4Em79GhgQ=
+	b=z50m99jiUYV6IXgpPMmVW5SqnbkM1+CliKRzVuudnzZbW1E+bzf61EEKsLbPhNNGl
+	 +2qf3mogyBd5SBzCO/UhyaJFlvGzOinjSfFKlGOZYsvRLczdCaFkaRr9SdpFtFRKvb
+	 54/jLiYX42TBO1nD6IohU3pKbfLOnYJz7rNwvBKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Adam Li <adamli@os.amperecomputing.com>,
+	"Christoph Lameter (Ampere)" <cl@linux.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/80] mlxsw: spectrum_acl_tcam: Fix possible use-after-free during activity update
+Subject: [PATCH 6.1 034/110] net: make SK_MEMORY_PCPU_RESERV tunable
 Date: Tue, 30 Apr 2024 12:40:03 +0200
-Message-ID: <20240430103044.335561990@linuxfoundation.org>
+Message-ID: <20240430103048.575884108@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Adam Li <adamli@os.amperecomputing.com>
 
-[ Upstream commit 79b5b4b18bc85b19d3a518483f9abbbe6d7b3ba4 ]
+[ Upstream commit 12a686c2e761f1f1f6e6e2117a9ab9c6de2ac8a7 ]
 
-The rule activity update delayed work periodically traverses the list of
-configured rules and queries their activity from the device.
+This patch adds /proc/sys/net/core/mem_pcpu_rsv sysctl file,
+to make SK_MEMORY_PCPU_RESERV tunable.
 
-As part of this task it accesses the entry pointed by 'ventry->entry',
-but this entry can be changed concurrently by the rehash delayed work,
-leading to a use-after-free [1].
+Commit 3cd3399dd7a8 ("net: implement per-cpu reserves for
+memory_allocated") introduced per-cpu forward alloc cache:
 
-Fix by closing the race and perform the activity query under the
-'vregion->lock' mutex.
+"Implement a per-cpu cache of +1/-1 MB, to reduce number
+of changes to sk->sk_prot->memory_allocated, which
+would otherwise be cause of false sharing."
 
-[1]
-BUG: KASAN: slab-use-after-free in mlxsw_sp_acl_tcam_flower_rule_activity_get+0x121/0x140
-Read of size 8 at addr ffff8881054ed808 by task kworker/0:18/181
+sk_prot->memory_allocated points to global atomic variable:
+atomic_long_t tcp_memory_allocated ____cacheline_aligned_in_smp;
 
-CPU: 0 PID: 181 Comm: kworker/0:18 Not tainted 6.9.0-rc2-custom-00781-gd5ab772d32f7 #2
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_rule_activity_update_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0xc6/0x120
- print_report+0xce/0x670
- kasan_report+0xd7/0x110
- mlxsw_sp_acl_tcam_flower_rule_activity_get+0x121/0x140
- mlxsw_sp_acl_rule_activity_update_work+0x219/0x400
- process_one_work+0x8eb/0x19b0
- worker_thread+0x6c9/0xf70
- kthread+0x2c9/0x3b0
- ret_from_fork+0x4d/0x80
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+If increasing the per-cpu cache size from 1MB to e.g. 16MB,
+changes to sk->sk_prot->memory_allocated can be further reduced.
+Performance may be improved on system with many cores.
 
-Allocated by task 1039:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x8f/0xa0
- __kmalloc+0x19c/0x360
- mlxsw_sp_acl_tcam_entry_create+0x7b/0x1f0
- mlxsw_sp_acl_tcam_vchunk_migrate_all+0x30d/0xb50
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x157/0x1300
- process_one_work+0x8eb/0x19b0
- worker_thread+0x6c9/0xf70
- kthread+0x2c9/0x3b0
- ret_from_fork+0x4d/0x80
- ret_from_fork_asm+0x1a/0x30
-
-Freed by task 1039:
- kasan_save_stack+0x33/0x60
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x60
- poison_slab_object+0x102/0x170
- __kasan_slab_free+0x14/0x30
- kfree+0xc1/0x290
- mlxsw_sp_acl_tcam_vchunk_migrate_all+0x3d7/0xb50
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x157/0x1300
- process_one_work+0x8eb/0x19b0
- worker_thread+0x6c9/0xf70
- kthread+0x2c9/0x3b0
- ret_from_fork+0x4d/0x80
- ret_from_fork_asm+0x1a/0x30
-
-Fixes: 2bffc5322fd8 ("mlxsw: spectrum_acl: Don't take mutex in mlxsw_sp_acl_tcam_vregion_rehash_work()")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/1fcce0a60b231ebeb2515d91022284ba7b4ffe7a.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Adam Li <adamli@os.amperecomputing.com>
+Reviewed-by: Christoph Lameter (Ampere) <cl@linux.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 3584718cf2ec ("net: fix sk_memory_allocated_{add|sub} vs softirqs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c    | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/sysctl/net.rst | 5 +++++
+ include/net/sock.h                       | 5 +++--
+ net/core/sock.c                          | 1 +
+ net/core/sysctl_net_core.c               | 9 +++++++++
+ 4 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 1dce4e9958c90..f663cb0fd19a3 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1189,8 +1189,14 @@ mlxsw_sp_acl_tcam_ventry_activity_get(struct mlxsw_sp *mlxsw_sp,
- 				      struct mlxsw_sp_acl_tcam_ventry *ventry,
- 				      bool *activity)
- {
--	return mlxsw_sp_acl_tcam_entry_activity_get(mlxsw_sp,
--						    ventry->entry, activity);
-+	struct mlxsw_sp_acl_tcam_vregion *vregion = ventry->vchunk->vregion;
-+	int err;
-+
-+	mutex_lock(&vregion->lock);
-+	err = mlxsw_sp_acl_tcam_entry_activity_get(mlxsw_sp, ventry->entry,
-+						   activity);
-+	mutex_unlock(&vregion->lock);
-+	return err;
- }
+diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+index 6394f5dc2303d..e3894c928118c 100644
+--- a/Documentation/admin-guide/sysctl/net.rst
++++ b/Documentation/admin-guide/sysctl/net.rst
+@@ -205,6 +205,11 @@ Will increase power usage.
  
- static int
+ Default: 0 (off)
+ 
++mem_pcpu_rsv
++------------
++
++Per-cpu reserved forward alloc cache size in page units. Default 1MB per CPU.
++
+ rmem_default
+ ------------
+ 
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 60577751ea9e8..6ef6ce43a2edc 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1483,6 +1483,7 @@ sk_memory_allocated(const struct sock *sk)
+ 
+ /* 1 MB per cpu, in page units */
+ #define SK_MEMORY_PCPU_RESERVE (1 << (20 - PAGE_SHIFT))
++extern int sysctl_mem_pcpu_rsv;
+ 
+ static inline void
+ sk_memory_allocated_add(struct sock *sk, int amt)
+@@ -1491,7 +1492,7 @@ sk_memory_allocated_add(struct sock *sk, int amt)
+ 
+ 	preempt_disable();
+ 	local_reserve = __this_cpu_add_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
+-	if (local_reserve >= SK_MEMORY_PCPU_RESERVE) {
++	if (local_reserve >= READ_ONCE(sysctl_mem_pcpu_rsv)) {
+ 		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
+ 		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
+ 	}
+@@ -1505,7 +1506,7 @@ sk_memory_allocated_sub(struct sock *sk, int amt)
+ 
+ 	preempt_disable();
+ 	local_reserve = __this_cpu_sub_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
+-	if (local_reserve <= -SK_MEMORY_PCPU_RESERVE) {
++	if (local_reserve <= -READ_ONCE(sysctl_mem_pcpu_rsv)) {
+ 		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
+ 		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
+ 	}
+diff --git a/net/core/sock.c b/net/core/sock.c
+index c8803b95ea0da..550af616f5359 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -279,6 +279,7 @@ __u32 sysctl_rmem_max __read_mostly = SK_RMEM_MAX;
+ EXPORT_SYMBOL(sysctl_rmem_max);
+ __u32 sysctl_wmem_default __read_mostly = SK_WMEM_MAX;
+ __u32 sysctl_rmem_default __read_mostly = SK_RMEM_MAX;
++int sysctl_mem_pcpu_rsv __read_mostly = SK_MEMORY_PCPU_RESERVE;
+ 
+ /* Maximal space eaten by iovec or ancillary data plus some space */
+ int sysctl_optmem_max __read_mostly = sizeof(unsigned long)*(2*UIO_MAXIOV+512);
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 5b1ce656baa1d..d281d5343ff4a 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -29,6 +29,7 @@ static int int_3600 = 3600;
+ static int min_sndbuf = SOCK_MIN_SNDBUF;
+ static int min_rcvbuf = SOCK_MIN_RCVBUF;
+ static int max_skb_frags = MAX_SKB_FRAGS;
++static int min_mem_pcpu_rsv = SK_MEMORY_PCPU_RESERVE;
+ 
+ static int net_msg_warn;	/* Unused, but still a sysctl */
+ 
+@@ -348,6 +349,14 @@ static struct ctl_table net_core_table[] = {
+ 		.proc_handler	= proc_dointvec_minmax,
+ 		.extra1		= &min_rcvbuf,
+ 	},
++	{
++		.procname	= "mem_pcpu_rsv",
++		.data		= &sysctl_mem_pcpu_rsv,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= &min_mem_pcpu_rsv,
++	},
+ 	{
+ 		.procname	= "dev_weight",
+ 		.data		= &weight_p,
 -- 
 2.43.0
 
