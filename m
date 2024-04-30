@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-42723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47CD8B7454
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873CF8B7381
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 127B41C22E5D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC2BBB209FB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3F812D753;
-	Tue, 30 Apr 2024 11:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3375E12D1EA;
+	Tue, 30 Apr 2024 11:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKBC/CM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwQuSFDW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0EA12BF32;
-	Tue, 30 Apr 2024 11:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56438801;
+	Tue, 30 Apr 2024 11:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476576; cv=none; b=NMomipL7SnxE05s1CSC2+SU/fb3oSi6gY/335F+EDkWFl1pyP3+n8CUhYGHfWL13KAbEHp0MIuGEhdGC5P6zBEbzw8TpDC38hNhBZwIIwIqFSjCjcFtNqrrH2y3G92/d9DdswCc6MCUqqgLoFRfTQZrn4GQZJF9KFafGt0gYZW4=
+	t=1714475993; cv=none; b=Bf8C2AB6t+peDlVIP+uF78MLHqpQP3rlUjKPLOtaCtKDERj4zbFfA2HN8K2Z1VVzVPt7KXZtqpUXal8a1J1XPs5765NyvK5v3AHnEgQvHZWBNmuNgyQJo2iUe9bwWjHR6cXLbBhOpaViLgtx5OM+ZL/emZw5zJdNWOWARvWONE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476576; c=relaxed/simple;
-	bh=ihLveYCqHF4ZC1MVSJFboz/bMorK+skfySnJvsKs718=;
+	s=arc-20240116; t=1714475993; c=relaxed/simple;
+	bh=C+K8NGKMlceFTLaG/xwPnraga3/+zkM+cbTzavQgmQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlFKuXwBVTnluNxnHwpuQg6nCLlLrNhKDQ4wjj5quUAGylnzDfNCXAugRI9le7mLVY54xU2Yd8hwCBB2unVjxBGHVtwjTg1iV3tuPPluIEhnu/fyvtqrcfWYTQxUJmNyq6qWQzDkh2pKplOGFXm5bpKp5nAoZsGavuCu32qo63k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKBC/CM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1222EC4AF19;
-	Tue, 30 Apr 2024 11:29:35 +0000 (UTC)
+	 MIME-Version; b=Y1QFuvm+66VX04mGgQ6p8NhQml1i0qbYhOX2giwobH/fK3kJ/CtvecE/TaSwOwZh0QrIs/urgUTDKnno/Z+xR4M3HHr4v7Bnb/oS7ttB2mo2WP4MSvACF9LMFwgUv4/PDe78NqGA+ahKycVJiyRiHT+A9ePO9baOFfeStn1eNkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwQuSFDW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A819C2BBFC;
+	Tue, 30 Apr 2024 11:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476576;
-	bh=ihLveYCqHF4ZC1MVSJFboz/bMorK+skfySnJvsKs718=;
+	s=korg; t=1714475992;
+	bh=C+K8NGKMlceFTLaG/xwPnraga3/+zkM+cbTzavQgmQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EKBC/CM8C1RMjecGHkdBeGT7DSr0Oa5bubHtOwUAl8ZPRMGyxkHTT44OlRw8hlK5f
-	 2E5ytk/MzprOR/r8H61G/DT3vkYlxieXpL8mGC60pRHbnA+4WXpP894jxbsdaWBW5k
-	 6WFefMqz1CunhA0DPRxzGFIWJvywgTiDUeAIxsbg=
+	b=mwQuSFDWRv+XnNHHghaXouY5DPnpgRwARCzDj7XgP3qMtoVJBt/8SQwKl7tGTvZpM
+	 xQ/yMZU2oxmYNckZj5CfL6IYJfOSR2KoecAwosQxxa87U/0jsxPcI6TbwH0L1TyZwZ
+	 E3FX24GdzHHDMO5edZrTHdeU9HyUyTddDv5nkCxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youling Tang <tangyouling@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 075/110] LoongArch: Fix callchain parse error with kernel tracepoint events
+	Terrence Xu <terrence.xu@intel.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 72/80] dmaengine: idxd: Fix oops during rmmod on single-CPU platforms
 Date: Tue, 30 Apr 2024 12:40:44 +0200
-Message-ID: <20240430103049.781083238@linuxfoundation.org>
+Message-ID: <20240430103045.539647828@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Fenghua Yu <fenghua.yu@intel.com>
 
-commit d3119bc985fb645ad3b2a9cf9952c1d56d9daaa3 upstream.
+[ Upstream commit f221033f5c24659dc6ad7e5cf18fb1b075f4a8be ]
 
-In order to fix perf's callchain parse error for LoongArch, we implement
-perf_arch_fetch_caller_regs() which fills several necessary registers
-used for callchain unwinding, including sp, fp, and era. This is similar
-to the following commits.
+During the removal of the idxd driver, registered offline callback is
+invoked as part of the clean up process. However, on systems with only
+one CPU online, no valid target is available to migrate the
+perf context, resulting in a kernel oops:
 
-commit b3eac0265bf6:
-("arm: perf: Fix callchain parse error with kernel tracepoint events")
+    BUG: unable to handle page fault for address: 000000000002a2b8
+    #PF: supervisor write access in kernel mode
+    #PF: error_code(0x0002) - not-present page
+    PGD 1470e1067 P4D 0
+    Oops: 0002 [#1] PREEMPT SMP NOPTI
+    CPU: 0 PID: 20 Comm: cpuhp/0 Not tainted 6.8.0-rc6-dsa+ #57
+    Hardware name: Intel Corporation AvenueCity/AvenueCity, BIOS BHSDCRB1.86B.2492.D03.2307181620 07/18/2023
+    RIP: 0010:mutex_lock+0x2e/0x50
+    ...
+    Call Trace:
+    <TASK>
+    __die+0x24/0x70
+    page_fault_oops+0x82/0x160
+    do_user_addr_fault+0x65/0x6b0
+    __pfx___rdmsr_safe_on_cpu+0x10/0x10
+    exc_page_fault+0x7d/0x170
+    asm_exc_page_fault+0x26/0x30
+    mutex_lock+0x2e/0x50
+    mutex_lock+0x1e/0x50
+    perf_pmu_migrate_context+0x87/0x1f0
+    perf_event_cpu_offline+0x76/0x90 [idxd]
+    cpuhp_invoke_callback+0xa2/0x4f0
+    __pfx_perf_event_cpu_offline+0x10/0x10 [idxd]
+    cpuhp_thread_fun+0x98/0x150
+    smpboot_thread_fn+0x27/0x260
+    smpboot_thread_fn+0x1af/0x260
+    __pfx_smpboot_thread_fn+0x10/0x10
+    kthread+0x103/0x140
+    __pfx_kthread+0x10/0x10
+    ret_from_fork+0x31/0x50
+    __pfx_kthread+0x10/0x10
+    ret_from_fork_asm+0x1b/0x30
+    <TASK>
 
-commit 5b09a094f2fb:
-("arm64: perf: Fix callchain parse error with kernel tracepoint events")
+Fix the issue by preventing the migration of the perf context to an
+invalid target.
 
-commit 9a7e8ec0d4cc:
-("riscv: perf: Fix callchain parse error with kernel tracepoint events")
-
-Test with commands:
-
- perf record -e sched:sched_switch -g --call-graph dwarf
- perf report
-
-Without this patch:
-
- Children      Self  Command        Shared Object      Symbol
- ........  ........  .............  .................  ....................
-
- 43.41%    43.41%  swapper          [unknown]          [k] 0000000000000000
-
- 10.94%    10.94%  loong-container  [unknown]          [k] 0000000000000000
-         |
-         |--5.98%--0x12006ba38
-         |
-         |--2.56%--0x12006bb84
-         |
-          --2.40%--0x12006b6b8
-
-With this patch, callchain can be parsed correctly:
-
- Children      Self  Command        Shared Object      Symbol
- ........  ........  .............  .................  ....................
-
- 47.57%    47.57%  swapper          [kernel.vmlinux]   [k] __schedule
-         |
-         ---__schedule
-
- 26.76%    26.76%  loong-container  [kernel.vmlinux]   [k] __schedule
-         |
-         |--13.78%--0x12006ba38
-         |          |
-         |          |--9.19%--__schedule
-         |          |
-         |           --4.59%--handle_syscall
-         |                     do_syscall
-         |                     sys_futex
-         |                     do_futex
-         |                     futex_wait
-         |                     futex_wait_queue_me
-         |                     hrtimer_start_range_ns
-         |                     __schedule
-         |
-         |--8.38%--0x12006bb84
-         |          handle_syscall
-         |          do_syscall
-         |          sys_epoll_pwait
-         |          do_epoll_wait
-         |          schedule_hrtimeout_range_clock
-         |          hrtimer_start_range_ns
-         |          __schedule
-         |
-          --4.59%--0x12006b6b8
-                    handle_syscall
-                    do_syscall
-                    sys_nanosleep
-                    hrtimer_nanosleep
-                    do_nanosleep
-                    hrtimer_start_range_ns
-                    __schedule
-
-Cc: stable@vger.kernel.org
-Fixes: b37042b2bb7cd751f0 ("LoongArch: Add perf events support")
-Reported-by: Youling Tang <tangyouling@kylinos.cn>
-Suggested-by: Youling Tang <tangyouling@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 81dd4d4d6178 ("dmaengine: idxd: Add IDXD performance monitor support")
+Reported-by: Terrence Xu <terrence.xu@intel.com>
+Tested-by: Terrence Xu <terrence.xu@intel.com>
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Link: https://lore.kernel.org/r/20240313214031.1658045-1-fenghua.yu@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/perf_event.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/dma/idxd/perfmon.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/perf_event.h b/arch/loongarch/include/asm/perf_event.h
-index 2a35a0bc2aaa..52b638059e40 100644
---- a/arch/loongarch/include/asm/perf_event.h
-+++ b/arch/loongarch/include/asm/perf_event.h
-@@ -7,6 +7,14 @@
- #ifndef __LOONGARCH_PERF_EVENT_H__
- #define __LOONGARCH_PERF_EVENT_H__
+diff --git a/drivers/dma/idxd/perfmon.c b/drivers/dma/idxd/perfmon.c
+index d73004f47cf4b..612ef13b71603 100644
+--- a/drivers/dma/idxd/perfmon.c
++++ b/drivers/dma/idxd/perfmon.c
+@@ -529,14 +529,11 @@ static int perf_event_cpu_offline(unsigned int cpu, struct hlist_node *node)
+ 		return 0;
  
-+#include <asm/ptrace.h>
-+
- #define perf_arch_bpf_user_pt_regs(regs) (struct user_pt_regs *)regs
+ 	target = cpumask_any_but(cpu_online_mask, cpu);
+-
+ 	/* migrate events if there is a valid target */
+-	if (target < nr_cpu_ids)
++	if (target < nr_cpu_ids) {
+ 		cpumask_set_cpu(target, &perfmon_dsa_cpu_mask);
+-	else
+-		target = -1;
+-
+-	perf_pmu_migrate_context(&idxd_pmu->pmu, cpu, target);
++		perf_pmu_migrate_context(&idxd_pmu->pmu, cpu, target);
++	}
  
-+#define perf_arch_fetch_caller_regs(regs, __ip) { \
-+	(regs)->csr_era = (__ip); \
-+	(regs)->regs[3] = current_stack_pointer; \
-+	(regs)->regs[22] = (unsigned long) __builtin_frame_address(0); \
-+}
-+
- #endif /* __LOONGARCH_PERF_EVENT_H__ */
+ 	return 0;
+ }
 -- 
-2.44.0
+2.43.0
 
 
 
