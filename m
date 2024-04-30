@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-42662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAE38B740A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F868B7391
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA3832837F6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E1A1C23272
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A25112CDAE;
-	Tue, 30 Apr 2024 11:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E112A12D1EA;
+	Tue, 30 Apr 2024 11:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2y7arw+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxxauwkJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB80417592;
-	Tue, 30 Apr 2024 11:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D478801;
+	Tue, 30 Apr 2024 11:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476380; cv=none; b=XrNcpY/n/lIg45Nl7yYpuKWF47Vk2RIQPB/1cglJp8gYHWEhjODjH0SfPPrNERcXK4s1TPtFK/OKU0WJghTEY11IEA6ay3ZfK9SBMmSGV9731GvUuhGHJldoM3xINM8Dl4ML8/EupKUSuZYLaETNKGOc4isXXHHmxG5nfTtdaxo=
+	t=1714476040; cv=none; b=dxiLfHpsb8plpfC8mGec1t+nj+nhhcuSBQTsT7Vui95v/mb+3ikMSZf9jp6d6A8dadCjjBpIVXa2okRsZmKLNd8eLnoqpob0+KLoKOgAEuaciB/Bu4yG6qdx0IpLVe0sDswQQrroYymYlr9nKfH0COq2kT/MWwOjOIE+Sk28M4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476380; c=relaxed/simple;
-	bh=gP7autKI2LiO1SYbdG52b7EA4URLW6inhQOtg/WOZgE=;
+	s=arc-20240116; t=1714476040; c=relaxed/simple;
+	bh=/xkmk5gAmw+/6+tyk97r/JPKjA9dkZ0vf5UJ0wvx/VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqgG9FPdmssdq4Zm+Q86JulyQeBXqL6kaQCsUP+bWPqr0EzsQunv1Zzat4uddts7NG/1A8MUUCZcb4BKHOWPCu+A/aREKlnagHGXAIWUWfBtcO5Nk0+AzM2U6i0JB8TqVhDYnvGR2OF5Cmht8pea302JtPblTUrDDpaPIlQte/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2y7arw+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A25C2BBFC;
-	Tue, 30 Apr 2024 11:26:20 +0000 (UTC)
+	 MIME-Version; b=DPGVLM1r9PW8t1URi1XqOZQothRzwxYaR7mhau9ioC/awxIsFP0zSJJRmFBCfLU6LokYNlME9Hmkqg2oDtEUm39EaZmjgz9qu2ZFWQ8oONIRdXsmublTxemnh1+/HrabMEOp6pePrZ+SN5XYuWpl/YtyG1P4XQqDc6r0FHhjpJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxxauwkJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDBBC2BBFC;
+	Tue, 30 Apr 2024 11:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476380;
-	bh=gP7autKI2LiO1SYbdG52b7EA4URLW6inhQOtg/WOZgE=;
+	s=korg; t=1714476040;
+	bh=/xkmk5gAmw+/6+tyk97r/JPKjA9dkZ0vf5UJ0wvx/VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2y7arw+VZDpLGrEz8KQj5gffg63MzcrUD+/wbRDNaxCiS4Xl1eh+1yTp6jA+sckc
-	 fS4HZH2kf1lp7RI4OtIbCtgYJtrOsftJihXUUPh4xJ64mJ+AX2Faj969fziAJ7puYB
-	 PNVAczztAbNab2/fqGM8gK80Wg+uZsg1IIgvUg1Q=
+	b=ZxxauwkJe3PHXNIvHWqCuBTVVOU7AnnBeHfXMS6jwI8u3bxOzw+gfFex5hU/Q0MEY
+	 yOHNTsvx/druaxlZJ57ByBCEdC6rWZB5XVB8FXSfD6RbDDycZT7nbPGj1M44HvBM5N
+	 dr6FYugZXkOkosdA/0lPzMKXl74VDuce0YBq6WgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskander Amara <iskander.amara@theobroma-systems.com>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/110] arm64: dts: rockchip: fix alphabetical ordering RK3399 puma
+	Yihuang Yu <yihyu@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	stable@kernel.org
+Subject: [PATCH 5.4 016/107] vhost: Add smp_rmb() in vhost_vq_avail_empty()
 Date: Tue, 30 Apr 2024 12:39:36 +0200
-Message-ID: <20240430103047.786162553@linuxfoundation.org>
+Message-ID: <20240430103045.141349734@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +66,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iskander Amara <iskander.amara@theobroma-systems.com>
+From: Gavin Shan <gshan@redhat.com>
 
-[ Upstream commit f0abb4b2c7acf3c3e4130dc3f54cd90cf2ae62bc ]
+commit 22e1992cf7b034db5325660e98c41ca5afa5f519 upstream.
 
-Nodes overridden by their reference should be ordered alphabetically to
-make it easier to read the DTS. pinctrl node is defined in the wrong
-location so let's reorder it.
+A smp_rmb() has been missed in vhost_vq_avail_empty(), spotted by
+Will. Otherwise, it's not ensured the available ring entries pushed
+by guest can be observed by vhost in time, leading to stale available
+ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
+Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
 
-Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308085243.69903-2-iskander.amara@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Stable-dep-of: 945a7c857091 ("arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
+  -accel kvm -machine virt,gic-version=host -cpu host          \
+  -smp maxcpus=1,cpus=1,sockets=1,clusters=1,cores=1,threads=1 \
+  -m 4096M,slots=16,maxmem=64G                                 \
+  -object memory-backend-ram,id=mem0,size=4096M                \
+   :                                                           \
+  -netdev tap,id=vnet0,vhost=true                              \
+  -device virtio-net-pci,bus=pcie.8,netdev=vnet0,mac=52:54:00:f1:26:b0
+   :
+  guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
+  virtio_net virtio0: output.0:id 100 is not a head!
+
+Add the missed smp_rmb() in vhost_vq_avail_empty(). When tx_can_batch()
+returns true, it means there's still pending tx buffers. Since it might
+read indices, so it still can bypass the smp_rmb() in vhost_get_vq_desc().
+Note that it should be safe until vq->avail_idx is changed by commit
+275bf960ac697 ("vhost: better detection of available buffers").
+
+Fixes: 275bf960ac69 ("vhost: better detection of available buffers")
+Cc: <stable@kernel.org> # v4.11+
+Reported-by: Yihuang Yu <yihyu@redhat.com>
+Suggested-by: Will Deacon <will@kernel.org>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240328002149.1141302-2-gshan@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/vhost/vhost.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index fee2cc035613c..a060419bca901 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -401,15 +401,6 @@
- 	gpio1830-supply = <&vcc_1v8>;
- };
- 
--&pmu_io_domains {
--	status = "okay";
--	pmu1830-supply = <&vcc_1v8>;
--};
--
--&pwm2 {
--	status = "okay";
--};
--
- &pinctrl {
- 	i2c8 {
- 		i2c8_xfer_a: i2c8-xfer {
-@@ -448,6 +439,15 @@
- 	};
- };
- 
-+&pmu_io_domains {
-+	status = "okay";
-+	pmu1830-supply = <&vcc_1v8>;
-+};
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2519,9 +2519,19 @@ bool vhost_vq_avail_empty(struct vhost_d
+ 	r = vhost_get_avail_idx(vq, &avail_idx);
+ 	if (unlikely(r))
+ 		return false;
 +
-+&pwm2 {
-+	status = "okay";
-+};
-+
- &sdhci {
- 	/*
- 	 * Signal integrity isn't great at 200MHz but 100MHz has proven stable
--- 
-2.43.0
-
+ 	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
++	if (vq->avail_idx != vq->last_avail_idx) {
++		/* Since we have updated avail_idx, the following
++		 * call to vhost_get_vq_desc() will read available
++		 * ring entries. Make sure that read happens after
++		 * the avail_idx read.
++		 */
++		smp_rmb();
++		return false;
++	}
+ 
+-	return vq->avail_idx == vq->last_avail_idx;
++	return true;
+ }
+ EXPORT_SYMBOL_GPL(vhost_vq_avail_empty);
+ 
 
 
 
