@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3138B7435
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BEE8B72DE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D091F20F35
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC4531F21BC0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE2412CDAE;
-	Tue, 30 Apr 2024 11:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F42012D74E;
+	Tue, 30 Apr 2024 11:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tm/KowOW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7VQhomV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1BE17592;
-	Tue, 30 Apr 2024 11:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9CB12CDAE;
+	Tue, 30 Apr 2024 11:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476512; cv=none; b=cQWeeDesXcnzobB9PJl+vkz38pODXlARa5poINGqvs/LMVWs1N41otGquyh4ExjVo2oIBks6q2ducF2+aLX6CdEs4kTttS7HU/iYr8NRw5BieThsGoNTnBI+q3qICtfs9p6zqAp9zmqntKDN7g4i86rdlRO7ioAFp11PrlvsU84=
+	t=1714475560; cv=none; b=LBOU7HUMzB/pyYCVibR0mi1o5dBRASK1HN5njqGds026O3ELIrhjURS3mUid5PBV8rWSxun96PKBhzB7Yb6ATHlpPV+ejQhvJDAxd9wdovNEW2EhJsRP8kBG3zXLamh0I+apqs1vAPL9MGUjqpyoOQRaM2KzRwae7jVVbpmdeqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476512; c=relaxed/simple;
-	bh=eJU/4urAqHnOyOYGSw/SSiSiqcnevNQbY5NsGcLmhnU=;
+	s=arc-20240116; t=1714475560; c=relaxed/simple;
+	bh=kUy7hWKy7S0wwXMJzRXZjO71FhsvR+SvoczCeLHoNjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=unih0jCKzObZYzcHJJPbpOb5we/a4t2Z6ytM49b5IVTYZ5zzl4Pzh9/FGSX5Px6//SU7uuBundThOkhGNdjZ/cDToYcgMJNC5C9fDh7FQuYvqey4a36XwGLq8uFxYwEFceFKYxvWRahM5SXubROqmB8SfN0imIldjp5NoDjh4mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tm/KowOW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9730DC2BBFC;
-	Tue, 30 Apr 2024 11:28:31 +0000 (UTC)
+	 MIME-Version; b=XZrHcO7xVEtzcAaTvk8KeuIVfWBKTMAKpcK558MloL829j+Smj8OSkPGUD8gq1NJEsC1YB9UNV/r/G6D12zwYavP/k9O56TS+EjI01fxSGqqT+N8rr4VgNMp7NkWKdL0nkdXE5DwPvEeLbmfX+61QyeqVFaNR0X9fjklsFAEGPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7VQhomV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF58C2BBFC;
+	Tue, 30 Apr 2024 11:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476512;
-	bh=eJU/4urAqHnOyOYGSw/SSiSiqcnevNQbY5NsGcLmhnU=;
+	s=korg; t=1714475559;
+	bh=kUy7hWKy7S0wwXMJzRXZjO71FhsvR+SvoczCeLHoNjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tm/KowOWWcITzwy+WwI3fdLbYey2/i1bee3ec2o+lY6/yLeZNzrrML4wXgwJVsA8J
-	 y1e7t1kef0jFGZSMsJKgx/aJbUavbdw3V+7VdlomGksHeIuC4jPruxeS6alyC4G4Sd
-	 wIgPZ7dfoWlo4OKGW6ecNC2HKK/hXf1JneiVcAUA=
+	b=F7VQhomVOuKbPQRByiya1rFQqQeac4FINxsaYtTsppuvBIMJkbvZsH0WIObcOaffu
+	 u0x9jNy80ftsf3Wo58OfN2nVs6dOdnjg6zX+viXzP7hRxhpLvsxpskv5MF5GspjwEV
+	 9pObOWRe37nThPzhwSLRRjII6JCO5G0JCPaBNxMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/110] arm64: dts: mediatek: mt7622: fix clock controllers
-Date: Tue, 30 Apr 2024 12:39:45 +0200
-Message-ID: <20240430103048.050662362@linuxfoundation.org>
+	syzbot+510a1abbb8116eeb341d@syzkaller.appspotmail.com,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Johannes Thumshirn <Johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 134/186] btrfs: fix information leak in btrfs_ioctl_logical_to_ino()
+Date: Tue, 30 Apr 2024 12:39:46 +0200
+Message-ID: <20240430103101.921880698@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +62,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 3ba5a61594347ab46e7c2cff6cd63ea0f1282efb ]
+commit 2f7ef5bb4a2f3e481ef05fab946edb97c84f67cf upstream.
 
-1. Drop unneeded "syscon"s (bindings were updated recently)
-2. Use "clock-controller" in nodenames
-3. Add missing "#clock-cells"
+Syzbot reported the following information leak for in
+btrfs_ioctl_logical_to_ino():
 
-Fixes: d7167881e03e ("arm64: dts: mt7622: add clock controller device nodes")
-Fixes: e9b65ecb7c30 ("arm64: dts: mediatek: mt7622: introduce nodes for Wireless Ethernet Dispatch")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240317221050.18595-2-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+  BUG: KMSAN: kernel-infoleak in _copy_to_user+0xbc/0x110 lib/usercopy.c:40
+   instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+   _copy_to_user+0xbc/0x110 lib/usercopy.c:40
+   copy_to_user include/linux/uaccess.h:191 [inline]
+   btrfs_ioctl_logical_to_ino+0x440/0x750 fs/btrfs/ioctl.c:3499
+   btrfs_ioctl+0x714/0x1260
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:904 [inline]
+   __se_sys_ioctl+0x261/0x450 fs/ioctl.c:890
+   __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:890
+   x64_sys_call+0x1883/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:17
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+  Uninit was created at:
+   __kmalloc_large_node+0x231/0x370 mm/slub.c:3921
+   __do_kmalloc_node mm/slub.c:3954 [inline]
+   __kmalloc_node+0xb07/0x1060 mm/slub.c:3973
+   kmalloc_node include/linux/slab.h:648 [inline]
+   kvmalloc_node+0xc0/0x2d0 mm/util.c:634
+   kvmalloc include/linux/slab.h:766 [inline]
+   init_data_container+0x49/0x1e0 fs/btrfs/backref.c:2779
+   btrfs_ioctl_logical_to_ino+0x17c/0x750 fs/btrfs/ioctl.c:3480
+   btrfs_ioctl+0x714/0x1260
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:904 [inline]
+   __se_sys_ioctl+0x261/0x450 fs/ioctl.c:890
+   __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:890
+   x64_sys_call+0x1883/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:17
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+  Bytes 40-65535 of 65536 are uninitialized
+  Memory access of size 65536 starts at ffff888045a40000
+
+This happens, because we're copying a 'struct btrfs_data_container' back
+to user-space. This btrfs_data_container is allocated in
+'init_data_container()' via kvmalloc(), which does not zero-fill the
+memory.
+
+Fix this by using kvzalloc() which zeroes out the memory on allocation.
+
+CC: stable@vger.kernel.org # 4.14+
+Reported-by:  <syzbot+510a1abbb8116eeb341d@syzkaller.appspotmail.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Johannes Thumshirn <Johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 27 +++++++++++-------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ fs/btrfs/backref.c |   12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index 7bb316922a3a9..c1747483350ef 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -282,16 +282,14 @@
- 		};
- 	};
+--- a/fs/btrfs/backref.c
++++ b/fs/btrfs/backref.c
+@@ -2770,20 +2770,14 @@ struct btrfs_data_container *init_data_c
+ 	size_t alloc_bytes;
  
--	apmixedsys: apmixedsys@10209000 {
--		compatible = "mediatek,mt7622-apmixedsys",
--			     "syscon";
-+	apmixedsys: clock-controller@10209000 {
-+		compatible = "mediatek,mt7622-apmixedsys";
- 		reg = <0 0x10209000 0 0x1000>;
- 		#clock-cells = <1>;
- 	};
+ 	alloc_bytes = max_t(size_t, total_bytes, sizeof(*data));
+-	data = kvmalloc(alloc_bytes, GFP_KERNEL);
++	data = kvzalloc(alloc_bytes, GFP_KERNEL);
+ 	if (!data)
+ 		return ERR_PTR(-ENOMEM);
  
--	topckgen: topckgen@10210000 {
--		compatible = "mediatek,mt7622-topckgen",
--			     "syscon";
-+	topckgen: clock-controller@10210000 {
-+		compatible = "mediatek,mt7622-topckgen";
- 		reg = <0 0x10210000 0 0x1000>;
- 		#clock-cells = <1>;
- 	};
-@@ -734,9 +732,8 @@
- 		power-domains = <&scpsys MT7622_POWER_DOMAIN_WB>;
- 	};
+-	if (total_bytes >= sizeof(*data)) {
++	if (total_bytes >= sizeof(*data))
+ 		data->bytes_left = total_bytes - sizeof(*data);
+-		data->bytes_missing = 0;
+-	} else {
++	else
+ 		data->bytes_missing = sizeof(*data) - total_bytes;
+-		data->bytes_left = 0;
+-	}
+-
+-	data->elem_cnt = 0;
+-	data->elem_missed = 0;
  
--	ssusbsys: ssusbsys@1a000000 {
--		compatible = "mediatek,mt7622-ssusbsys",
--			     "syscon";
-+	ssusbsys: clock-controller@1a000000 {
-+		compatible = "mediatek,mt7622-ssusbsys";
- 		reg = <0 0x1a000000 0 0x1000>;
- 		#clock-cells = <1>;
- 		#reset-cells = <1>;
-@@ -793,9 +790,8 @@
- 		};
- 	};
- 
--	pciesys: pciesys@1a100800 {
--		compatible = "mediatek,mt7622-pciesys",
--			     "syscon";
-+	pciesys: clock-controller@1a100800 {
-+		compatible = "mediatek,mt7622-pciesys";
- 		reg = <0 0x1a100800 0 0x1000>;
- 		#clock-cells = <1>;
- 		#reset-cells = <1>;
-@@ -921,12 +917,13 @@
- 		};
- 	};
- 
--	hifsys: syscon@1af00000 {
--		compatible = "mediatek,mt7622-hifsys", "syscon";
-+	hifsys: clock-controller@1af00000 {
-+		compatible = "mediatek,mt7622-hifsys";
- 		reg = <0 0x1af00000 0 0x70>;
-+		#clock-cells = <1>;
- 	};
- 
--	ethsys: syscon@1b000000 {
-+	ethsys: clock-controller@1b000000 {
- 		compatible = "mediatek,mt7622-ethsys",
- 			     "syscon";
- 		reg = <0 0x1b000000 0 0x1000>;
--- 
-2.43.0
-
+ 	return data;
+ }
 
 
 
