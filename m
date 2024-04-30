@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0492D8B72B5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:11:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DCF88B7191
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31B381C2316A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:11:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D30941F216B1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB31312D745;
-	Tue, 30 Apr 2024 11:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA7A12C817;
+	Tue, 30 Apr 2024 10:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOIc4qOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtxt4710"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E9C8801;
-	Tue, 30 Apr 2024 11:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A790312C48A;
+	Tue, 30 Apr 2024 10:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475474; cv=none; b=ti/f/hhmH/2HctzlCkofxeGamNMKj214GMtv4A9e/Lv4gI8Sv2ao+e+62hwYPaYbROcbUftHs2vTLTWyXTfVLgMQbW7vbxhwLPl8YzL1dKF2uiwMokdaXctpHGoTMOnZX0CIG9S1zk+Eroen78FrmWbzfIUonVPV6aOjXT6fNpc=
+	t=1714474676; cv=none; b=GuMmzsJzp3Km0RTJpJSmQt94pjmf82n+/5klnF9JK2BvoJl+9oT09IPTlGBE3TCOAXGrEJUXem4EJvsMfhriGaX80302lf2JKS3NsZYteEYFuNSMGBDNVmagFUeIfnOXGgfYyEnQW4dNiNfE+W8PAV93hhyANdG2UZ5Sq9qyjSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475474; c=relaxed/simple;
-	bh=l7hJm2E4iu4K7FZ9J+qI87juqw7S3rnOTKYdo9QzluU=;
+	s=arc-20240116; t=1714474676; c=relaxed/simple;
+	bh=vk8vgy5j3pxl2K2FFaN6EKfuEXTeVGbhZ0U8JQQniY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AovozSBLDlvgjqCxO8BmknfvAcRveyoo3MWHYSlTIp16tPoyjYJekxPguac5OI4LmZgEiW+rnUQpvU02+XOt2MczTb502MzC4aJSahy9qac5yCWAXO+G1zYmUST6rP0YX+FdUSjeUTZbTLMYkL7BCMMcT+F1EFMTXqyk3Dc28eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOIc4qOU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9395C2BBFC;
-	Tue, 30 Apr 2024 11:11:13 +0000 (UTC)
+	 MIME-Version; b=tsVKKDzbEJnhbBLWfWb51IWs0Vz+3UDnBHDIhJjtFmGTZJw4VmX2dZPs7O5qrtiKoGjAm1MfyRvFW/lLjZ+d3LQZqWDcqZIDSPJ8Dl+IbkVGs/SzlM9RNo1MTu5fBjhCCV4SbVGCeLuqkFVJib6CD0EvxfcNTFU9sHVXKVslfLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtxt4710; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1FDC2BBFC;
+	Tue, 30 Apr 2024 10:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475474;
-	bh=l7hJm2E4iu4K7FZ9J+qI87juqw7S3rnOTKYdo9QzluU=;
+	s=korg; t=1714474675;
+	bh=vk8vgy5j3pxl2K2FFaN6EKfuEXTeVGbhZ0U8JQQniY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOIc4qOUUYC4q6PcI1XrZsrUPbjqN/aepWhKUGmpyi0loue57nAPkhIYgQArCvUE9
-	 djqiIP6i8e7NTBMurN25Ucj2KD0x4m6WEqV6uzi+bay9EdeiLYQAeAxCHUrgSAm9zf
-	 Q84jWNAZK50oW8PE42nP91JwKy0cAyTftt3OXAAk=
+	b=qtxt47109NL4wNDltmGxLhxRlR4PSOH3LJ4us4SSvXCdzH/+JCS2HykPaU9HwnKN8
+	 TNVGW7ASbDzaeMFJ/xjMYw7/wL15j7YY2j7+Sy13pAAGg2sTwltbJPLyZycPyfziDe
+	 Q38B/sLZ0fPN7tgtsi2z0ff060j4dzJvJASdHvjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/186] squashfs: convert to new timestamp accessors
-Date: Tue, 30 Apr 2024 12:39:17 +0200
-Message-ID: <20240430103101.082843463@linuxfoundation.org>
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Gang BA <Gang.Ba@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.8 180/228] drm/amdkfd: Fix eviction fence handling
+Date: Tue, 30 Apr 2024 12:39:18 +0200
+Message-ID: <20240430103108.997997415@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Felix Kuehling <felix.kuehling@amd.com>
 
-[ Upstream commit a1f13ed8c74893ed31d41c5bca156a623b0e9a86 ]
+commit 37865e02e6ccecdda240f33b4332105a5c734984 upstream.
 
-Convert to using the new inode timestamp accessor functions.
+Handle case that dma_fence_get_rcu_safe returns NULL.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/r/20231004185347.80880-68-jlayton@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 9253c54e01b6 ("Squashfs: check the inode number is not the invalid value of zero")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If restore work is already scheduled, only update its timer. The same
+work item cannot be queued twice, so undo the extra queue eviction.
+
+Fixes: 9a1c1339abf9 ("drm/amdkfd: Run restore_workers on freezable WQs")
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Tested-by: Gang BA <Gang.Ba@amd.com>
+Reviewed-by: Gang BA <Gang.Ba@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index c6e626b00546b..aa3411354e66d 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -59,9 +59,9 @@ static int squashfs_new_inode(struct super_block *sb, struct inode *inode,
- 	i_uid_write(inode, i_uid);
- 	i_gid_write(inode, i_gid);
- 	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
--	inode->i_mtime.tv_sec = le32_to_cpu(sqsh_ino->mtime);
--	inode->i_atime.tv_sec = inode->i_mtime.tv_sec;
--	inode_set_ctime(inode, inode->i_mtime.tv_sec, 0);
-+	inode_set_mtime(inode, le32_to_cpu(sqsh_ino->mtime), 0);
-+	inode_set_atime(inode, inode_get_mtime_sec(inode), 0);
-+	inode_set_ctime(inode, inode_get_mtime_sec(inode), 0);
- 	inode->i_mode = le16_to_cpu(sqsh_ino->mode);
- 	inode->i_size = 0;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index b79986412cd8..aafdf064651f 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -1922,6 +1922,8 @@ static int signal_eviction_fence(struct kfd_process *p)
+ 	rcu_read_lock();
+ 	ef = dma_fence_get_rcu_safe(&p->ef);
+ 	rcu_read_unlock();
++	if (!ef)
++		return -EINVAL;
  
+ 	ret = dma_fence_signal(ef);
+ 	dma_fence_put(ef);
+@@ -1949,10 +1951,9 @@ static void evict_process_worker(struct work_struct *work)
+ 		 * they are responsible stopping the queues and scheduling
+ 		 * the restore work.
+ 		 */
+-		if (!signal_eviction_fence(p))
+-			queue_delayed_work(kfd_restore_wq, &p->restore_work,
+-				msecs_to_jiffies(PROCESS_RESTORE_TIME_MS));
+-		else
++		if (signal_eviction_fence(p) ||
++		    mod_delayed_work(kfd_restore_wq, &p->restore_work,
++				     msecs_to_jiffies(PROCESS_RESTORE_TIME_MS)))
+ 			kfd_process_restore_queues(p);
+ 
+ 		pr_debug("Finished evicting pasid 0x%x\n", p->pasid);
 -- 
-2.43.0
+2.44.0
 
 
 
