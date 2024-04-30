@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-42397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006C58B72D6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C27A78B7060
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 936FE1F2111D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 631361F21AEB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CF1211C;
-	Tue, 30 Apr 2024 11:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F43312CD8F;
+	Tue, 30 Apr 2024 10:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5gbd999"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3rEDaef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6150512D210;
-	Tue, 30 Apr 2024 11:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA9012C816;
+	Tue, 30 Apr 2024 10:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475535; cv=none; b=Qg7cyZxlQkEgpP6sj/8WDzLbGXq/SVLzu9Tp53SBK7eixojnQBUFwFdNNJQm48rD/iTVIPDUkbDkH8HI9tr0bIpAkSVFRtKFh8LBe6n05oyJcf0EIR1MGVPiOHdV1dh2INkeLNoBInalLRKMfLaBUfCFkzfE4YWLJp+fPEHwH5c=
+	t=1714473910; cv=none; b=FWkakxJVWaQA/Ryfxv9ubuvTJNySm5kLA1QBg8MWnwLF1gVN3/A/6O2IiHrnxhFMrX1DXhuG5MeGqYyByjqHJTIH58s64FSHFaL8t5DaylSMR7w8QO/wHDG+CdNQa/cErYimvFFrNCd697uQVEEktyCLRE3PVa+ilgKFPv9LqhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475535; c=relaxed/simple;
-	bh=dl7s23/KDJ3BIOMtr0icjKSu8Hx/oJ7Fg9yyPIrK4jk=;
+	s=arc-20240116; t=1714473910; c=relaxed/simple;
+	bh=i2cnyWuSbHYAIah4ws1zlipRdPJJICP7N8juwEU+db0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrQsEMv+ra7gEqS8uKXUgwb/MyVBcbW+WIOFEr5chGNNCaCHtlE5rKpJRqbVKwvTQ+5E9SywHBvQlVY2kEsxN8AQVBcE5j0cihVvZUBQ42dt1yQeHrCuA+kBWeT2y7XhEcrr43XcVV/kUQ9Nzfm/Fenxi04ZZQ9yE/Gy1eY4HhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5gbd999; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FE2C2BBFC;
-	Tue, 30 Apr 2024 11:12:14 +0000 (UTC)
+	 MIME-Version; b=G5pfP64n+C/+Sq0ZNyFrjEsk3KCM74l9zldOUHG/GuRmbrvKg8z1ii1rXSmPcb4VaA2ja+zew3aJkp9zE1zk0WwfhI2UbNgrXjr0829HQ9S5qbhpzwKywkxkyGSJsTwSLyxTIMWkEWOOXiJjId4EALtGiq6e50Sa4CADJBc7chk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3rEDaef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCCFC2BBFC;
+	Tue, 30 Apr 2024 10:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475535;
-	bh=dl7s23/KDJ3BIOMtr0icjKSu8Hx/oJ7Fg9yyPIrK4jk=;
+	s=korg; t=1714473910;
+	bh=i2cnyWuSbHYAIah4ws1zlipRdPJJICP7N8juwEU+db0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5gbd999B1waHIus7e/gSqWGx+FTKgfCz6PCYy0m6ChCHW3vxrurydhce5NC3h8ix
-	 YQrVhvNJQBuRg5WV1W7uUiRCGOIpX3vRhYWoD1gj/Ycsj03big+M87+90XfKsMVk6N
-	 q9jNSH7lwy0oCdzZHSzUpVZ48jpURzQdBFBrWh8k=
+	b=w3rEDaefVENNI741YbKlYhxC911NIKC3PctZJXhq9v7X0yo5X2pbeuCudGV4LstZt
+	 E+d+c9hQgUUNFBDTT2H1tYLwvwfp+LmB7YnLJrYbwAbHldP5qROgJFBUMIvlT5fy3R
+	 BUOkNuCiBZDwMLu/S8oEh/U4AUs136MuYuCfEZMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 126/186] mm: support page_mapcount() on page_has_type() pages
+	"Robin H. Johnson" <robbat2@gentoo.org>,
+	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 4.19 59/77] tracing: Show size of requested perf buffer
 Date: Tue, 30 Apr 2024 12:39:38 +0200
-Message-ID: <20240430103101.689989242@linuxfoundation.org>
+Message-ID: <20240430103042.879092399@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Robin H. Johnson <robbat2@gentoo.org>
 
-commit fd1a745ce03e37945674c14833870a9af0882e2d upstream.
+commit a90afe8d020da9298c98fddb19b7a6372e2feb45 upstream.
 
-Return 0 for pages which can't be mapped.  This matches how page_mapped()
-works.  It is more convenient for users to not have to filter out these
-pages.
+If the perf buffer isn't large enough, provide a hint about how large it
+needs to be for whatever is running.
 
-Link: https://lkml.kernel.org/r/20240321142448.1645400-5-willy@infradead.org
-Fixes: 9c5ccf2db04b ("mm: remove HUGETLB_PAGE_DTOR")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lkml.kernel.org/r/20210831043723.13481-1-robbat2@gentoo.org
+
+Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- fs/proc/page.c             |    7 ++-----
- include/linux/mm.h         |    8 +++++---
- include/linux/page-flags.h |    4 ++--
- 3 files changed, 9 insertions(+), 10 deletions(-)
+ kernel/trace/trace_event_perf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/proc/page.c
-+++ b/fs/proc/page.c
-@@ -67,7 +67,7 @@ static ssize_t kpagecount_read(struct fi
- 		 */
- 		ppage = pfn_to_online_page(pfn);
+--- a/kernel/trace/trace_event_perf.c
++++ b/kernel/trace/trace_event_perf.c
+@@ -394,7 +394,8 @@ void *perf_trace_buf_alloc(int size, str
+ 	BUILD_BUG_ON(PERF_MAX_TRACE_SIZE % sizeof(unsigned long));
  
--		if (!ppage || PageSlab(ppage) || page_has_type(ppage))
-+		if (!ppage)
- 			pcount = 0;
- 		else
- 			pcount = page_mapcount(ppage);
-@@ -124,11 +124,8 @@ u64 stable_page_flags(struct page *page)
+ 	if (WARN_ONCE(size > PERF_MAX_TRACE_SIZE,
+-		      "perf buffer not large enough"))
++		      "perf buffer not large enough, wanted %d, have %d",
++		      size, PERF_MAX_TRACE_SIZE))
+ 		return NULL;
  
- 	/*
- 	 * pseudo flags for the well known (anonymous) memory mapped pages
--	 *
--	 * Note that page->_mapcount is overloaded in SLAB, so the
--	 * simple test in page_mapped() is not enough.
- 	 */
--	if (!PageSlab(page) && page_mapped(page))
-+	if (page_mapped(page))
- 		u |= 1 << KPF_MMAP;
- 	if (PageAnon(page))
- 		u |= 1 << KPF_ANON;
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1184,14 +1184,16 @@ static inline void page_mapcount_reset(s
-  * a large folio, it includes the number of times this page is mapped
-  * as part of that folio.
-  *
-- * The result is undefined for pages which cannot be mapped into userspace.
-- * For example SLAB or special types of pages. See function page_has_type().
-- * They use this field in struct page differently.
-+ * Will report 0 for pages which cannot be mapped into userspace, eg
-+ * slab, page tables and similar.
-  */
- static inline int page_mapcount(struct page *page)
- {
- 	int mapcount = atomic_read(&page->_mapcount) + 1;
- 
-+	/* Handle page_has_type() pages */
-+	if (mapcount < 0)
-+		mapcount = 0;
- 	if (unlikely(PageCompound(page)))
- 		mapcount += folio_entire_mapcount(page_folio(page));
- 
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -931,12 +931,12 @@ static inline bool is_page_hwpoison(stru
-  * page_type may be used.  Because it is initialised to -1, we invert the
-  * sense of the bit, so __SetPageFoo *clears* the bit used for PageFoo, and
-  * __ClearPageFoo *sets* the bit used for PageFoo.  We reserve a few high and
-- * low bits so that an underflow or overflow of page_mapcount() won't be
-+ * low bits so that an underflow or overflow of _mapcount won't be
-  * mistaken for a page type value.
-  */
- 
- #define PAGE_TYPE_BASE	0xf0000000
--/* Reserve		0x0000007f to catch underflows of page_mapcount */
-+/* Reserve		0x0000007f to catch underflows of _mapcount */
- #define PAGE_MAPCOUNT_RESERVE	-128
- #define PG_buddy	0x00000080
- #define PG_offline	0x00000100
+ 	*rctxp = rctx = perf_swevent_get_recursion_context();
 
 
 
