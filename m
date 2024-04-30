@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-41915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08C88B7072
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:46:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9D98B70AF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 629B51F235C9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:46:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD3891C20D2C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311CA12D20E;
-	Tue, 30 Apr 2024 10:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A23A12C499;
+	Tue, 30 Apr 2024 10:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3ZGvrXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxQwKgBo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E496312D1FC;
-	Tue, 30 Apr 2024 10:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C021292C8;
+	Tue, 30 Apr 2024 10:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473943; cv=none; b=VZR+qJow3Cx2/M/KGO5Ioxe3E4/iJ8D8TeYxTjbYnenJ8VE5BZ1I4n3J2LI4jX5XeZOVwBayGm7JQS/PsK151lSVwIgcIYE86hFjk/vfaRw9eomU9n+gzRGq2U3Zpmh8DUrXblqMwN/19x1mKmWeX+gJBUeMnW2I2Gi4fCUn/hE=
+	t=1714474124; cv=none; b=goYeZuWbNLKa+aOfyHKIfZP4e8zw86SjLORlRdmM1G4+oOC/vBWDebga+iG02OlPWFeeEfwDgYiuuRY7H4CVwqlglew6nUTfCe8MBwoOF4hZjoZ+Ve801tnEsB4MGLa2g0Vh0iG6quDpB0bb5iCEk0/t0NXpQCGkjSCnfZihHZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473943; c=relaxed/simple;
-	bh=gAW1ZqcjroygATsg5akTYn15xbLcga1kN6CV9hDH55o=;
+	s=arc-20240116; t=1714474124; c=relaxed/simple;
+	bh=GmvgpxqS4UeEMHZFQiAdeChgYOjpflfFcN/RiThp4eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oEYj05cEmFWvH8NFyQ6j8vE/lEBMvSqU1zoN20JHMhVSEC3TIxJN7JUNMAXx7P1v6vyXxgA5JAzvP9a9pqJXT5ryKRsalzQRMWQxi1phPhmtm9J4Iz8j9Gr4DJ/VISQoBVYQ0nALuvFCSAipIQbwMZd0k3Oem0WLunP6tTJnpSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3ZGvrXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65745C2BBFC;
-	Tue, 30 Apr 2024 10:45:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QipumQPrVpjWajdqtIe70/BNFU6aAia3IoSx1mqmcMOsJtb46oLV4WWPYSBS0D4yytVfgvWxhGnvP+0D/ZlPR/1uvfu3HSSQaDikr8ZEItkWzxKM8t9PLOv9tRCn8EDCqPRaWepjWpx3C+xz/MVagIS/NIpw/SZvu3zFYZ1nUDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxQwKgBo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9820DC2BBFC;
+	Tue, 30 Apr 2024 10:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473942;
-	bh=gAW1ZqcjroygATsg5akTYn15xbLcga1kN6CV9hDH55o=;
+	s=korg; t=1714474124;
+	bh=GmvgpxqS4UeEMHZFQiAdeChgYOjpflfFcN/RiThp4eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3ZGvrXhc6Hh9Tr8g8hsEtw5GZpuOEL47mkpZwq8udNAkpIzpY8CTiEC08UumSNUV
-	 mjEnp6/VHGkLOVtBI4aG25nzhRgqJQI0p4kW9kiIMzw1nL7kx7Q/BGKKMYolx88hhV
-	 oOUV5ge1vXii9GrRgs8tBBocraLKXW45DioBL8tc=
+	b=AxQwKgBo2PxJiYKe6I7gZepzhMQ83VXCyxGz66FSPSQSAaejq0gw0lV8LVmQtYsYQ
+	 oXdmDyyzv8ZEZIYC1yFojZSOBY/2d3wNZEu9nNl2QzZ8EAaK0ZTG5PcJyTTMfEKrFI
+	 T8tEiXAwz82zS9LGPV7rbiAF7dZYH72LRic96v+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 013/228] arm64: dts: mediatek: mt8192: Add missing gce-client-reg to mutex
-Date: Tue, 30 Apr 2024 12:36:31 +0200
-Message-ID: <20240430103104.197756610@linuxfoundation.org>
+Subject: [PATCH 6.8 014/228] arm64: dts: mediatek: mt8195: Add missing gce-client-reg to vpp/vdosys
+Date: Tue, 30 Apr 2024 12:36:32 +0200
+Message-ID: <20240430103104.227026627@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 References: <20240430103103.806426847@linuxfoundation.org>
@@ -69,36 +69,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 00bcc8810d9dd69d3899a4189e2f3964f263a600 ]
+[ Upstream commit 96b0c1528ef41fe754f5d1378b1db6c098a2e33f ]
 
-Add the missing mediatek,gce-client-reg property to the mutex node to
-allow it to use the GCE. This prevents the "can't parse gce-client-reg
-property" error from being printed and should result in better
-performance.
+Add the missing mediatek,gce-client-reg property to the vppsys and
+vdosys nodes to allow them to use the GCE. This prevents the "can't
+parse gce-client-reg property" error from being printed and should
+result in better performance.
 
-Fixes: b4b75bac952b ("arm64: dts: mt8192: Add display nodes")
+Fixes: 6aa5b46d1755 ("arm64: dts: mt8195: Add vdosys and vppsys clock nodes")
 Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240229-gce-client-reg-add-missing-mt8192-95-v1-1-b12c233a8a33@collabora.com
+Link: https://lore.kernel.org/r/20240229-gce-client-reg-add-missing-mt8192-95-v1-2-b12c233a8a33@collabora.com
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8192.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8192.dtsi b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-index 0e432636b8c23..eea8d141f93cf 100644
---- a/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-@@ -1456,6 +1456,7 @@
- 			reg = <0 0x14001000 0 0x1000>;
- 			interrupts = <GIC_SPI 252 IRQ_TYPE_LEVEL_HIGH 0>;
- 			clocks = <&mmsys CLK_MM_DISP_MUTEX0>;
-+			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
- 			mediatek,gce-events = <CMDQ_EVENT_DISP_STREAM_DONE_ENG_EVENT_0>,
- 					      <CMDQ_EVENT_DISP_STREAM_DONE_ENG_EVENT_1>;
- 			power-domains = <&spm MT8192_POWER_DOMAIN_DISP>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index b9101662ce40d..775aeeb6ebd37 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -1998,6 +1998,7 @@
+ 			compatible = "mediatek,mt8195-vppsys0", "syscon";
+ 			reg = <0 0x14000000 0 0x1000>;
+ 			#clock-cells = <1>;
++			mediatek,gce-client-reg = <&gce1 SUBSYS_1400XXXX 0 0x1000>;
+ 		};
+ 
+ 		dma-controller@14001000 {
+@@ -2221,6 +2222,7 @@
+ 			compatible = "mediatek,mt8195-vppsys1", "syscon";
+ 			reg = <0 0x14f00000 0 0x1000>;
+ 			#clock-cells = <1>;
++			mediatek,gce-client-reg = <&gce1 SUBSYS_14f0XXXX 0 0x1000>;
+ 		};
+ 
+ 		mutex@14f01000 {
+@@ -3050,6 +3052,7 @@
+ 			reg = <0 0x1c01a000 0 0x1000>;
+ 			mboxes = <&gce0 0 CMDQ_THR_PRIO_4>;
+ 			#clock-cells = <1>;
++			mediatek,gce-client-reg = <&gce0 SUBSYS_1c01XXXX 0xa000 0x1000>;
+ 		};
+ 
+ 
 -- 
 2.43.0
 
