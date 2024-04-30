@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C6B8B6FF6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:41:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9291C8B7152
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04DC11C20A82
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:41:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E5482854F6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E510A127B70;
-	Tue, 30 Apr 2024 10:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D9212CDBB;
+	Tue, 30 Apr 2024 10:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jffn6SEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3TZWA0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED4112BF21;
-	Tue, 30 Apr 2024 10:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC1812CDB2;
+	Tue, 30 Apr 2024 10:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473713; cv=none; b=BpPD4WhOj6oFNyrXnVsCqE/ukgt7eKVjg/j6n7yK/X85+85LKIR005hDWq+DqerDQSVZMSpmI++U7lv+emw069UKD0se4obALUwwehUStd/EOAgSZJqSe3yJgIYH0a4TRkqcJXVfJHCG4rFJR5Y6+5poLQdlRCB1W3QUDtFIZnI=
+	t=1714474513; cv=none; b=lTF5qP2F2opITVjTKQt3jRHQrusb+UUBCEn1UslsNByCYtHkAWTsB+qoib3dB+08xil2dhCQup98iMiGIXhmchT7dPAUyaZIgRqGTOvKauhnIhhzpTaA7zXrukAAwjNi2Lysacs4k/Kij9vS0zi4zW2YzOkn6Ez4KtoFnIt1DVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473713; c=relaxed/simple;
-	bh=y1XFXVr40ZvWFTegP5jQEvK1dtlzLYJEIeWwlJNX4cQ=;
+	s=arc-20240116; t=1714474513; c=relaxed/simple;
+	bh=+B5od9LKgk+XyDPVfuq9UDo99P8Kxihx4RkIpina7Jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/+cPsgjOY+1r6cPXNQAIlAxl7yLP/JgJ4HQNfHz268pltohLTMgbbI/jVOwFAFSl9ioDHr4SPWjjkK2wi4W80cyz3nOBxwp/Gz0GcfNAtPpH8M78vPltE/ev5o3w2zm3m8V4RR/Fl5o4ITDovYSqfRXXwkSAz1TS0KktosI2Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jffn6SEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC424C2BBFC;
-	Tue, 30 Apr 2024 10:41:52 +0000 (UTC)
+	 MIME-Version; b=Ls/BTy97NKYOEp3oRGdMWW4rOMZdfUOxC1M9gLhPKgR5lu+id75/Lk2rPN+vql1/JdIn+uYqZ9ljmTFlnfVegGQaFWNPnT450psctD+te+kf2o3y/8OTvFu5Y80IwzahiORPvqj9f4fwCiKxQl5ayfKqpmLDL8ORc9y4gfRrRiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3TZWA0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB07C2BBFC;
+	Tue, 30 Apr 2024 10:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473713;
-	bh=y1XFXVr40ZvWFTegP5jQEvK1dtlzLYJEIeWwlJNX4cQ=;
+	s=korg; t=1714474513;
+	bh=+B5od9LKgk+XyDPVfuq9UDo99P8Kxihx4RkIpina7Jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jffn6SEcSuCDAPYjO8YuHm6hr3Lzvah4ZJ9ONrAM6PFykNiwWEqK3bynztDBqmRyV
-	 cbWNDKT5x1v23B9FvMV9JR8Sk7yzQJyRGJJJuHUJkSfS8AWqXEyJs9wLvIIi8jv0pC
-	 zkmX2Oi8mtBL+/VahbJkVDF3BrRs/u8fyShGXhC0=
+	b=k3TZWA0bt+SGwDvBcNoJbfKK8XGXtNS74dNVqOeEB6Rf2p7cmFNhiNYDIXdPWB8Xf
+	 4OXQB+KxQ7FbcHwt7VTq+aJ76YhVF76iUvPlWmXMUhcT5yZ73mXcTi4uHm/Nzbjxv1
+	 cSJh2TNoldmnob3Q2WiPXsIXFFc31OYxQEnYbIDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	WangYuli <wangyuli@uniontech.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.19 02/77] Bluetooth: Fix memory leak in hci_req_sync_complete()
+Subject: [PATCH 6.8 143/228] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x0bda:0x4853
 Date: Tue, 30 Apr 2024 12:38:41 +0200
-Message-ID: <20240430103041.188159131@linuxfoundation.org>
+Message-ID: <20240430103107.925451496@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 45d355a926ab40f3ae7bc0b0a00cb0e3e8a5a810 upstream.
+commit d1a5a7eede2977da3d2002d5ea3b519019cc1a98 upstream.
 
-In 'hci_req_sync_complete()', always free the previous sync
-request state before assigning reference to a new one.
+Add the support ID(0x0bda, 0x4853) to usb_device_id table for
+Realtek RTL8852BE.
 
-Reported-by: syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=39ec16ff6cc18b1d066d
+Without this change the device utilizes an obsolete version of
+the firmware that is encoded in it rather than the updated Realtek
+firmware and config files from the firmware directory. The latter
+files implement many new features.
+
+The device table is as follows:
+
+T: Bus=03 Lev=01 Prnt=01 Port=09 Cnt=03 Dev#= 4 Spd=12 MxCh= 0
+D: Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs= 1
+P: Vendor=0bda ProdID=4853 Rev= 0.00
+S: Manufacturer=Realtek
+S: Product=Bluetooth Radio
+S: SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
+E: Ad=02(O) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+
 Cc: stable@vger.kernel.org
-Fixes: f60cb30579d3 ("Bluetooth: Convert hci_req_sync family of function to new request API")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_request.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/bluetooth/hci_request.c
-+++ b/net/bluetooth/hci_request.c
-@@ -107,8 +107,10 @@ static void hci_req_sync_complete(struct
- 	if (hdev->req_status == HCI_REQ_PEND) {
- 		hdev->req_result = result;
- 		hdev->req_status = HCI_REQ_DONE;
--		if (skb)
-+		if (skb) {
-+			kfree_skb(hdev->req_skb);
- 			hdev->req_skb = skb_get(skb);
-+		}
- 		wake_up_interruptible(&hdev->req_wait_q);
- 	}
- }
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -542,6 +542,8 @@ static const struct usb_device_id quirks
+ 	/* Realtek 8852BE Bluetooth devices */
+ 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0bda, 0x4853), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
 
 
 
