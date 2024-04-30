@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-42719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087848B744F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB4A8B7403
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA0DB286B25
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77A5E285733
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6469212D215;
-	Tue, 30 Apr 2024 11:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346DB12D762;
+	Tue, 30 Apr 2024 11:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbJxSo3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSEbSOcJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2152A12BF32;
-	Tue, 30 Apr 2024 11:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E246812D209;
+	Tue, 30 Apr 2024 11:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476564; cv=none; b=IKkxlINPabpnuWZ/Y09CCD3wN0omUxUDTj0LJ8qZ6TWyYsjZpRCFcLRyeI2pkYrr+cCElfvBcBjn9l2tPNQjAw9DRCoXnV05ix0X8vhiIkfKw7TKU9TDSxoRjN11sLZ9rM1gpPV+SX2FMrJWN5/csP4aVGhQwT4NI4R83R01SpA=
+	t=1714476359; cv=none; b=GtBhGpX5K6g89gUlHch8HjifBigZxJo2ySrzxpHAU7fuun1nB6mACt6hr4LGBrpx+71zNS43qyZbWar2tqpE1C5idUMmH88V+PwG8UxA+zcZsLHw5LhRdDZT53lKoJwVCGSHxj2DDaRgPe+VyZRpeVj742k5sE3T0ypq7AeoI8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476564; c=relaxed/simple;
-	bh=mUQ72RJeknWE5TpwGII29XFkDKsqWJR3J2/Ht9+8QSQ=;
+	s=arc-20240116; t=1714476359; c=relaxed/simple;
+	bh=kS2+MhBAfK8Rg6bNVE1jqaR/JNWVc6bzyaUYzJaliis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4uaTTTkQBtAW9zG+2utIEw/TmPzfLxCho/KvGe67j926hHbEcyeeG5t1Rsts17fCMrCvo92ZgUH/aRwWn8bQ5ce47IdRwGtOMf8f3sauxmFFeXHngv6wNHvRF1CtzLXpYLjTBc7MDjPpoZxdoEZbXcGAwoojWKqi3l80PNikfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbJxSo3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38104C2BBFC;
-	Tue, 30 Apr 2024 11:29:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kh5bmEkFoc6xs3kCmGpd7eYob3tS+0NDheE2NoweqvJrog2O4Np+RB4FEQAmm9g+B8nvcHihLC+rLExbX6/VHHrOyXpB1KD9aUghfRgS7NhFB/3OtdZjE//mskRAncf7siI+I29Kse8ZvuKs+PPJqhZRYDeNDE2odjGHnjVwoKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSEbSOcJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F977C2BBFC;
+	Tue, 30 Apr 2024 11:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476563;
-	bh=mUQ72RJeknWE5TpwGII29XFkDKsqWJR3J2/Ht9+8QSQ=;
+	s=korg; t=1714476358;
+	bh=kS2+MhBAfK8Rg6bNVE1jqaR/JNWVc6bzyaUYzJaliis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UbJxSo3rpHKsbWQScH4my9bMv2rV1okFCUwcO7K9DMleRs0WLEwYnFwfVjAycIVh2
-	 FuQc0bbgoIXUpxu5yfyaG3NsS2vLDfHYGiI+KFfmWbClzKvWCIa8PmwAE/FqhOKyVw
-	 yanIuJtFlj7IR7+i2tzX+7uWUQmmDfJs2+hxpkbg=
+	b=rSEbSOcJ0jvUQJBfS3bGDe8X3V+/zQl1T9jOdONPp1Et/a/B3RJJth6ylGUldLX+J
+	 rpnTf+u1dcZqyj8XDgUPK9K9fZFYaMoovMHacsFbun0jcoG2AVlXQCQ0ImVc1ytVBd
+	 Rne8sSkcP5YBBfTsI0iyXvYPCMLzAGNZrhHazLJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 071/110] smb3: fix lock ordering potential deadlock in cifs_sync_mid_result
-Date: Tue, 30 Apr 2024 12:40:40 +0200
-Message-ID: <20240430103049.662665517@linuxfoundation.org>
+	Oak Zeng <oak.zeng@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 081/107] drm/amdgpu: restrict bo mapping within gpu address limits
+Date: Tue, 30 Apr 2024 12:40:41 +0200
+Message-ID: <20240430103047.049076273@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +63,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>
 
-commit 8861fd5180476f45f9e8853db154600469a0284f upstream.
+[ Upstream commit 8b80d74bdb2285d3022b349c8451eb16535f7906 ]
 
-Coverity spotted that the cifs_sync_mid_result function could deadlock
+Have strict check on bo mapping since on some systems, such as A+A or
+hybrid, the cpu might support 5 level paging or can address memory above
+48 bits but gpu might be limited by hardware to just use 48 bits. In
+general, this applies to all asics where this limitation can be checked
+against their max_pfn range. This restricts the range to map bo within
+pratical limits of cpu and gpu for shared virtual memory access.
 
-"Thread deadlock (ORDER_REVERSAL) lock_order: Calling spin_lock acquires
-lock TCP_Server_Info.srv_lock while holding lock TCP_Server_Info.mid_lock"
-
-Addresses-Coverity: 1590401 ("Thread deadlock (ORDER_REVERSAL)")
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Oak Zeng <oak.zeng@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 6fef2d4c00b5 ("drm/amdgpu: validate the parameters of bo mapping operations more clearly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/transport.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -931,12 +931,15 @@ cifs_sync_mid_result(struct mid_q_entry
- 			list_del_init(&mid->qhead);
- 			mid->mid_flags |= MID_DELETED;
- 		}
-+		spin_unlock(&server->mid_lock);
- 		cifs_server_dbg(VFS, "%s: invalid mid state mid=%llu state=%d\n",
- 			 __func__, mid->mid, mid->mid_state);
- 		rc = -EIO;
-+		goto sync_mid_done;
- 	}
- 	spin_unlock(&server->mid_lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index dcf23b43f323c..88f2707c69ce7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2130,7 +2130,8 @@ int amdgpu_vm_bo_map(struct amdgpu_device *adev,
+ 	/* make sure object fit at this offset */
+ 	eaddr = saddr + size - 1;
+ 	if (saddr >= eaddr ||
+-	    (bo && offset + size > amdgpu_bo_size(bo)))
++	    (bo && offset + size > amdgpu_bo_size(bo)) ||
++	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+ 		return -EINVAL;
  
-+sync_mid_done:
- 	release_mid(mid);
- 	return rc;
- }
+ 	saddr /= AMDGPU_GPU_PAGE_SIZE;
+@@ -2195,7 +2196,8 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
+ 	/* make sure object fit at this offset */
+ 	eaddr = saddr + size - 1;
+ 	if (saddr >= eaddr ||
+-	    (bo && offset + size > amdgpu_bo_size(bo)))
++	    (bo && offset + size > amdgpu_bo_size(bo)) ||
++	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+ 		return -EINVAL;
+ 
+ 	/* Allocate all the needed memory */
+-- 
+2.43.0
+
 
 
 
