@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-42452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0508D8B7319
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6ED8B743E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFADE287377
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189961C208EA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C82F12DDBB;
-	Tue, 30 Apr 2024 11:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EEC12D214;
+	Tue, 30 Apr 2024 11:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTPS15/p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpTWZRaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3883512D1EA;
-	Tue, 30 Apr 2024 11:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA41612BF32;
+	Tue, 30 Apr 2024 11:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475711; cv=none; b=AVcecBc/z1ImpU1qwNsx3Bwdqik0TUG6aAMvCbmO0yCV6QhjWKcdkQm3GovpD4o/CvEZTQXfLDIjyTSZoB9WCNaatrHAw71F3Y/tgZdQ/3guo8Kt39Ra1YbR32QD4d+i0jRUMTSxRER/PwTqWqOvyrhLcGMQdO2enGD1Y6IJcXc=
+	t=1714476534; cv=none; b=MsnLwcDLwwrhfBmXJS0e4HbRa9XYVApsegz19OstDlIXEuFYF5tXeR2Temv2rYpLA4GZgI5E/hl/NLqT7uoSEvE0NpdWhw52htk7zYPWvvHPBCYre7btA81UFPcaBafif5tf92BS5TbJIuH9weKGpW30avfXC7oLnbCWpyiV980=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475711; c=relaxed/simple;
-	bh=xG80Km175HfsjMWSeADEL4voQtMWmtjZVI2RRDTHvyc=;
+	s=arc-20240116; t=1714476534; c=relaxed/simple;
+	bh=Ly1BJJJzmALZF36eAr2BrFG3QB3znJQYbQ7aUAxctK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aEb6aHVDakZbo5J+MKGoJrPYMnuOXc19NYioLN8vOiYwOClxM5nAIiIgNMsK9QOhnWAFtUGteGg6CpIvJu8y3GcVHPdhW58kW1mJWQWwWrxzhGzrO52uT+sZWXDu7HqxTdBtU5uKHJ/td46natVmAO0Wr4C3bUxB8n3zsw9fLEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTPS15/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC60C2BBFC;
-	Tue, 30 Apr 2024 11:15:10 +0000 (UTC)
+	 MIME-Version; b=ZIhDMXgpav1czS+rO/LIO0hCUDCBh2rTAL93VkuRGroSTU+fwgodoYSEXAmMCYHBzaJrxujHq2TBUihJiYIl+MXzsB8iClnssPSPPjiZdY4Wds009XzuxEjtHwX/CqLFyHLC1CDO/2tgrAnrcYuKu6HuCCyvwf+k3UnUild7SBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpTWZRaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4529DC4AF19;
+	Tue, 30 Apr 2024 11:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475711;
-	bh=xG80Km175HfsjMWSeADEL4voQtMWmtjZVI2RRDTHvyc=;
+	s=korg; t=1714476534;
+	bh=Ly1BJJJzmALZF36eAr2BrFG3QB3znJQYbQ7aUAxctK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTPS15/pkSwBtgTMJ0y1I+QKawuBWwyMmTinW6anBJ2tdSiwAvDPkKAxJ4UqEb7jT
-	 rNoZPaf0kL7Z2uMMa2f4tMbuI1xWQ8j/B8jsHT53OIHnSTnse+yxHvxsJatRYOoyC/
-	 hOFdulLOCaJjhRtJN+qw9zDqeMSdP1gHnZUWE/8M=
+	b=JpTWZRaCKS+i4jbyzpvKEcKbzjSBsIFkKfnNgDpPsuWvD0rZkUF6dOIOESu6KYik/
+	 j0zsGqddzlZzRfZ4At0DXGscMPeiSb8i4m9hYJBNCzc5mUF2rquYrVMjzlwg98qyRv
+	 L5y3Fn34SjVIHQdnH1MmHfpnOpW2nnakXoSJv0KA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <swboyd@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 180/186] phy: qcom: qmp-combo: fix VCO div offset on v5_5nm and v6
+	David Kaplan <david.kaplan@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 063/110] x86/cpu: Fix check for RDPKRU in __show_regs()
 Date: Tue, 30 Apr 2024 12:40:32 +0200
-Message-ID: <20240430103103.256047466@linuxfoundation.org>
+Message-ID: <20240430103049.427509535@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: David Kaplan <david.kaplan@amd.com>
 
-commit 025a6f7448f7bb5f4fceb62498ee33d89ae266bb upstream.
+commit b53c6bd5d271d023857174b8fd3e32f98ae51372 upstream.
 
-Commit 5abed58a8bde ("phy: qcom: qmp-combo: Fix VCO div offset on v3")
-fixed a regression introduced in 6.5 by making sure that the correct
-offset is used for the DP_PHY_VCO_DIV register on v3 hardware.
+cpu_feature_enabled(X86_FEATURE_OSPKE) does not necessarily reflect
+whether CR4.PKE is set on the CPU.  In particular, they may differ on
+non-BSP CPUs before setup_pku() is executed.  In this scenario, RDPKRU
+will #UD causing the system to hang.
 
-Unfortunately, that fix instead broke DisplayPort on v5_5nm and v6
-hardware as it failed to add the corresponding offsets also to those
-register tables.
+Fix by checking CR4 for PKE enablement which is always correct for the
+current CPU.
 
-Fixes: 815891eee668 ("phy: qcom-qmp-combo: Introduce orientation variable")
-Fixes: 5abed58a8bde ("phy: qcom: qmp-combo: Fix VCO div offset on v3")
-Cc: stable@vger.kernel.org	# 6.5: 5abed58a8bde
-Cc: Stephen Boyd <swboyd@chromium.org>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Link: https://lore.kernel.org/r/20240408093023.506-1-johan+linaro@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The scenario happens by inserting a WARN* before setup_pku() in
+identiy_cpu() or some other diagnostic which would lead to calling
+__show_regs().
+
+  [ bp: Massage commit message. ]
+
+Signed-off-by: David Kaplan <david.kaplan@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240421191728.32239-1-bp@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c |    2 ++
- drivers/phy/qualcomm/phy-qcom-qmp.h       |    2 ++
- 2 files changed, 4 insertions(+)
+ arch/x86/kernel/process_64.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -188,6 +188,7 @@ static const unsigned int qmp_v5_5nm_usb
- 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V5_COM_BIAS_EN_CLKBUFLR_EN,
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -137,7 +137,7 @@ void __show_regs(struct pt_regs *regs, e
+ 		       log_lvl, d3, d6, d7);
+ 	}
  
- 	[QPHY_DP_PHY_STATUS]		= QSERDES_V5_DP_PHY_STATUS,
-+	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V5_DP_PHY_VCO_DIV,
- 
- 	[QPHY_TX_TX_POL_INV]		= QSERDES_V5_5NM_TX_TX_POL_INV,
- 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V5_5NM_TX_TX_DRV_LVL,
-@@ -212,6 +213,7 @@ static const unsigned int qmp_v6_usb3phy
- 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V6_COM_PLL_BIAS_EN_CLK_BUFLR_EN,
- 
- 	[QPHY_DP_PHY_STATUS]		= QSERDES_V6_DP_PHY_STATUS,
-+	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V6_DP_PHY_VCO_DIV,
- 
- 	[QPHY_TX_TX_POL_INV]		= QSERDES_V6_TX_TX_POL_INV,
- 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V6_TX_TX_DRV_LVL,
---- a/drivers/phy/qualcomm/phy-qcom-qmp.h
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp.h
-@@ -134,9 +134,11 @@
- #define QPHY_V4_PCS_MISC_TYPEC_STATUS			0x10
- #define QPHY_V4_PCS_MISC_PLACEHOLDER_STATUS		0x14
- 
-+#define QSERDES_V5_DP_PHY_VCO_DIV			0x070
- #define QSERDES_V5_DP_PHY_STATUS			0x0dc
- 
- /* Only for QMP V6 PHY - DP PHY registers */
-+#define QSERDES_V6_DP_PHY_VCO_DIV			0x070
- #define QSERDES_V6_DP_PHY_AUX_INTERRUPT_STATUS		0x0e0
- #define QSERDES_V6_DP_PHY_STATUS			0x0e4
+-	if (cpu_feature_enabled(X86_FEATURE_OSPKE))
++	if (cr4 & X86_CR4_PKE)
+ 		printk("%sPKRU: %08x\n", log_lvl, read_pkru());
+ }
  
 
 
