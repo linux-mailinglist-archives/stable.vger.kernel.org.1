@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-42171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 676A68B71B8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952C48B728A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98A261C223B2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0647B20992
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A2612C490;
-	Tue, 30 Apr 2024 10:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41F412C805;
+	Tue, 30 Apr 2024 11:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsZq8RPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNVNi0Nz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A8D7464;
-	Tue, 30 Apr 2024 10:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901701E50A;
+	Tue, 30 Apr 2024 11:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474796; cv=none; b=sU0K84M+5o/JCiZrFxokeynNVHJs6SGCrdA/PxFh+PKWwtgjXMXEQ9I1JGjm45O5/TerCLwslv7C6DfWlVSlnAq9m+D3inl0MSGuenxGC9AusSPRLgf9fKrcrE9iOF4eZ33K3++ndqLOWEuhyWw8w8WmFQtmlM7BrN5uvmiKD6E=
+	t=1714475355; cv=none; b=fs0q6eiaTlIzFRaCXvDJRTystVyzYVqg38oBzrn/M5TlTdOtHBTARxtl488RcVtHLp38BjWTBQlPNGCUqJDbMk14964GbMKHiRzy7KhK1EGpM1of1Nf/1DC6pXb5y5WtXcR6cUUetbnCg65IKqiJnynofZ9a6UOVJaUl7rtE/6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474796; c=relaxed/simple;
-	bh=ixMRRrMMH7+FJt7PJl2HRLEhRLjDavtKBVORcrOuN4o=;
+	s=arc-20240116; t=1714475355; c=relaxed/simple;
+	bh=OCmBBX6XHK8/+Nxuw7hBJHrI9XzHGDLdB5Ms8vPK+oE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbZJEMwPsEHwpNeLNI6l1G6raPGpf0jQCB9HAWNFP8MK81p4Mcimmt3bJTUD2padu6AQ6t0VgYoxDS7CnfEeIOv2LR8olFydQc2Hscoml1xhVGIajMHDeEdzrDzLNSPmbf9F6+rrEy9+xRKRWwM0EHAXoFFq5vtq1TUEb1geIj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsZq8RPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A37BC2BBFC;
-	Tue, 30 Apr 2024 10:59:55 +0000 (UTC)
+	 MIME-Version; b=gccSDLastkDVFVXwAby7A6J7nrRXiUDq7uk/C2eXiOAwdlVjofCXJvoELQb2ffF4JZjiB84A0CSTmIAieLN7P28Bu9uDTXq8i4FLBFxe9p+p7vBQ0pd7BUFxCd7hWefC6IFWD5AWn9SNqrzMIw6uNZzrS5rGjN/sSPuhGyxnfn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNVNi0Nz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EDFC2BBFC;
+	Tue, 30 Apr 2024 11:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474796;
-	bh=ixMRRrMMH7+FJt7PJl2HRLEhRLjDavtKBVORcrOuN4o=;
+	s=korg; t=1714475355;
+	bh=OCmBBX6XHK8/+Nxuw7hBJHrI9XzHGDLdB5Ms8vPK+oE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsZq8RPo4SfCpFKCi/jj59b5GhEAzLpcKTP2V2sBdBx95S5pxX5I9XNjUJm+Sd7h2
-	 ASJITPu4ZQxEG6JGWk7rZaoASPj9XKaIOvMKLjThlZHLjBrQbJAL0iVOxW8RpnWf+T
-	 XE7BJJD2vN0GoTH2osgtGK9BhBTwmW21mTuixq1E=
+	b=hNVNi0NzTo8uwwWYOE1ClD7uxYhkGqnUb5x2M4/Q3FbhU8fbt22hhSHZHlWJHCWzL
+	 hRyyBfbImJf4o9iWlGS6wPZ4F5evPy9y5xkCMRL5+jzBr2iH1nzazbIDozM5iChaCp
+	 sgRORQ+yFtPvF57l//bb4q2R/5SOGcjP+SMdYEq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
+	Wren Turkal <wt@penguintechs.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/138] netfilter: nft_set_pipapo: do not free live element
-Date: Tue, 30 Apr 2024 12:38:42 +0200
-Message-ID: <20240430103050.525342708@linuxfoundation.org>
+Subject: [PATCH 6.6 071/186] Bluetooth: qca: set power_ctrl_enabled on NULL returned by gpiod_get_optional()
+Date: Tue, 30 Apr 2024 12:38:43 +0200
+Message-ID: <20240430103100.098412795@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 3cfc9ec039af60dbd8965ae085b2c2ccdcfbe1cc ]
+[ Upstream commit 3d05fc82237aa97162d0d7dc300b55bb34e91d02 ]
 
-Pablo reports a crash with large batches of elements with a
-back-to-back add/remove pattern.  Quoting Pablo:
+Any return value from gpiod_get_optional() other than a pointer to a
+GPIO descriptor or a NULL-pointer is an error and the driver should
+abort probing. That being said: commit 56d074d26c58 ("Bluetooth: hci_qca:
+don't use IS_ERR_OR_NULL() with gpiod_get_optional()") no longer sets
+power_ctrl_enabled on NULL-pointer returned by
+devm_gpiod_get_optional(). Restore this behavior but bail-out on errors.
+While at it: also bail-out on error returned when trying to get the
+"swctrl" GPIO.
 
-  add_elem("00000000") timeout 100 ms
-  ...
-  add_elem("0000000X") timeout 100 ms
-  del_elem("0000000X") <---------------- delete one that was just added
-  ...
-  add_elem("00005000") timeout 100 ms
-
-  1) nft_pipapo_remove() removes element 0000000X
-  Then, KASAN shows a splat.
-
-Looking at the remove function there is a chance that we will drop a
-rule that maps to a non-deactivated element.
-
-Removal happens in two steps, first we do a lookup for key k and return the
-to-be-removed element and mark it as inactive in the next generation.
-Then, in a second step, the element gets removed from the set/map.
-
-The _remove function does not work correctly if we have more than one
-element that share the same key.
-
-This can happen if we insert an element into a set when the set already
-holds an element with same key, but the element mapping to the existing
-key has timed out or is not active in the next generation.
-
-In such case its possible that removal will unmap the wrong element.
-If this happens, we will leak the non-deactivated element, it becomes
-unreachable.
-
-The element that got deactivated (and will be freed later) will
-remain reachable in the set data structure, this can result in
-a crash when such an element is retrieved during lookup (stale
-pointer).
-
-Add a check that the fully matching key does in fact map to the element
-that we have marked as inactive in the deactivation step.
-If not, we need to continue searching.
-
-Add a bug/warn trap at the end of the function as well, the remove
-function must not ever be called with an invisible/unreachable/non-existent
-element.
-
-v2: avoid uneeded temporary variable (Stefano)
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reported-by: Wren Turkal <wt@penguintechs.org>
+Reported-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Closes: https://lore.kernel.org/linux-bluetooth/1713449192-25926-2-git-send-email-quic_zijuhu@quicinc.com/
+Fixes: 56d074d26c58 ("Bluetooth: hci_qca: don't use IS_ERR_OR_NULL() with gpiod_get_optional()")
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Tested-by: Wren Turkal <wt@penguintechs.org>
+Reported-by: Wren Turkal <wt@penguintechs.org>
+Reported-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Reviewed-by: Krzysztof Kozlowski<krzysztof.kozlowski@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/bluetooth/hci_qca.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index b9682e085fcef..5a8521abd8f5c 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1980,6 +1980,8 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
- 		rules_fx = rules_f0;
- 
- 		nft_pipapo_for_each_field(f, i, m) {
-+			bool last = i == m->field_count - 1;
-+
- 			if (!pipapo_match_field(f, start, rules_fx,
- 						match_start, match_end))
- 				break;
-@@ -1992,16 +1994,18 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
- 
- 			match_start += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
- 			match_end += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
--		}
- 
--		if (i == m->field_count) {
--			priv->dirty = true;
--			pipapo_drop(m, rulemap);
--			return;
-+			if (last && f->mt[rulemap[i].to].e == e) {
-+				priv->dirty = true;
-+				pipapo_drop(m, rulemap);
-+				return;
-+			}
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 8861b8017fbdf..b491dd9acf315 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -2298,16 +2298,21 @@ static int qca_serdev_probe(struct serdev_device *serdev)
+ 		    (data->soc_type == QCA_WCN6750 ||
+ 		     data->soc_type == QCA_WCN6855)) {
+ 			dev_err(&serdev->dev, "failed to acquire BT_EN gpio\n");
+-			power_ctrl_enabled = false;
++			return PTR_ERR(qcadev->bt_en);
  		}
  
- 		first_rule += rules_f0;
- 	}
++		if (!qcadev->bt_en)
++			power_ctrl_enabled = false;
 +
-+	WARN_ON_ONCE(1); /* elem_priv not found */
- }
+ 		qcadev->sw_ctrl = devm_gpiod_get_optional(&serdev->dev, "swctrl",
+ 					       GPIOD_IN);
+ 		if (IS_ERR(qcadev->sw_ctrl) &&
+ 		    (data->soc_type == QCA_WCN6750 ||
+ 		     data->soc_type == QCA_WCN6855 ||
+-		     data->soc_type == QCA_WCN7850))
+-			dev_warn(&serdev->dev, "failed to acquire SW_CTRL gpio\n");
++		     data->soc_type == QCA_WCN7850)) {
++			dev_err(&serdev->dev, "failed to acquire SW_CTRL gpio\n");
++			return PTR_ERR(qcadev->sw_ctrl);
++		}
  
- /**
+ 		qcadev->susclk = devm_clk_get_optional(&serdev->dev, NULL);
+ 		if (IS_ERR(qcadev->susclk)) {
+@@ -2326,10 +2331,13 @@ static int qca_serdev_probe(struct serdev_device *serdev)
+ 		qcadev->bt_en = devm_gpiod_get_optional(&serdev->dev, "enable",
+ 					       GPIOD_OUT_LOW);
+ 		if (IS_ERR(qcadev->bt_en)) {
+-			dev_warn(&serdev->dev, "failed to acquire enable gpio\n");
+-			power_ctrl_enabled = false;
++			dev_err(&serdev->dev, "failed to acquire enable gpio\n");
++			return PTR_ERR(qcadev->bt_en);
+ 		}
+ 
++		if (!qcadev->bt_en)
++			power_ctrl_enabled = false;
++
+ 		qcadev->susclk = devm_clk_get_optional(&serdev->dev, NULL);
+ 		if (IS_ERR(qcadev->susclk)) {
+ 			dev_warn(&serdev->dev, "failed to acquire clk\n");
 -- 
 2.43.0
 
