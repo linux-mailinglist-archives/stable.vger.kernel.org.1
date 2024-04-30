@@ -1,54 +1,63 @@
-Return-Path: <stable+bounces-42138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6F38B7198
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F708B72F7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D472CB221AA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43B141F21688
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAB212C530;
-	Tue, 30 Apr 2024 10:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E212C12D1F4;
+	Tue, 30 Apr 2024 11:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YE9yuyaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5v2ym37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB31128816;
-	Tue, 30 Apr 2024 10:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0486211C;
+	Tue, 30 Apr 2024 11:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474690; cv=none; b=OiO3LIQ/WCuD1FUjBgeONjkQqbyhUyUjTLZuggUquLd2Nml64E7PPB47qAozWyL3aOjkv5cqjNWZoG5R+mtjM8SfBB4YeryTIpflcEZ6dmxXzDcO7v3QUHyNbGDT1wepgsaxgApIHX5XULulOpqJ0ACpLiAyM93+UEHCT8HQ+Dw=
+	t=1714475629; cv=none; b=AXa37pqVgF51703q978t2xLl1IK/c0IL3w0TLfDpoKkuzsSJwQQGakCAH5q/wA7Ojd1nrsEe3ki8EWPHoomOn27q004Grgzc0ICGzqAPYrQwgh7FIxAEf129MiveKBncsFkEfnjBLy9UfcSumV+GjjRwc5n3Ltn5I7BENgqF6ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474690; c=relaxed/simple;
-	bh=4bYrz8/XJSAtLuXhMeAiIVEuLtMBD5gPukMdw7cUC58=;
+	s=arc-20240116; t=1714475629; c=relaxed/simple;
+	bh=ocUHaCR5VhFkzBvzAuPGqa8FS/z/qxShnf5xBJugNWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IgtmRJ9wUuK3hcWURTPe4y4+B/4Lxerm2Zfs4KY40OpPrjePMfBQH1VB+QOcIiN4ycP4GokMj0EAYPLvu2pf48Au8z0rmLnn8kqeabUUpCLFXRk3wMpvj4Be50MZYzh5WnErQ7Tptf7bneFD6BcMx4+HOG2F3679aK05H80+Udk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YE9yuyaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A2CC2BBFC;
-	Tue, 30 Apr 2024 10:58:09 +0000 (UTC)
+	 MIME-Version; b=ZXg2rjL06HajpZUi/YzzIRaghZIr9WEL5euRKo9Mrkwxfc2zQPe9TrxekgwyJ7giQd7HqiY6xiY6CqoHQ3VTTxEqw8JqoDfxpKx48dys/ZHXMVma1MJ0v/qmIncC95YOxxWHCNkVhMOEtPJBPPukkQwukGBL8OGVfENd8TCV2mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5v2ym37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25B6C2BBFC;
+	Tue, 30 Apr 2024 11:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474690;
-	bh=4bYrz8/XJSAtLuXhMeAiIVEuLtMBD5gPukMdw7cUC58=;
+	s=korg; t=1714475629;
+	bh=ocUHaCR5VhFkzBvzAuPGqa8FS/z/qxShnf5xBJugNWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YE9yuyaIES6fQDoqTh+Q38Aucm1B8TGoEf/TeM5L+R2tV9zK1Pc8ktbTDhKR7UrS4
-	 k2dyJpcZrwSwTSunvhHdOKh2oG6ADohxIsOGG56RBDvTcjuhO1clStjalGzQWTVe+6
-	 nxRHkpM98M7yIGvnbSVkxK6XW6LLh9cM9rCbEstA=
+	b=c5v2ym37tjTB4NExF774E75g8lZVsAUqeP3dF29EkNl75Ius87Ztz2l2JR8lrs8Ql
+	 B4FhMOcWVbgbS6m8QLX2BIpMxqvRinkglyLnJpB/ZsEs2dt41vSpcasE2ANxeTgNlC
+	 4Y75qFSOre/NEzia50JcFu7yJYsxlt+KmPWnea9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.8 227/228] Bluetooth: hci_sync: Fix UAF on create_le_conn_complete
-Date: Tue, 30 Apr 2024 12:40:05 +0200
-Message-ID: <20240430103110.353455546@linuxfoundation.org>
+	Douglas Anderson <dianders@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Steev Klimaszewski <steev@kali.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 154/186] phy: qcom: qmp-combo: Fix register base for QSERDES_DP_PHY_MODE
+Date: Tue, 30 Apr 2024 12:40:06 +0200
+Message-ID: <20240430103102.504458827@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +69,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-commit f7cbce60a38a6589f0dade720d4c2544959ecc0e upstream.
+commit ee13e1f3c72b9464a4d73017c060ab503eed653a upstream.
 
-While waiting for hci_dev_lock the hci_conn object may be cleanup
-causing the following trace:
+The register base that was used to write to the QSERDES_DP_PHY_MODE
+register was 'dp_dp_phy' before commit 815891eee668 ("phy:
+qcom-qmp-combo: Introduce orientation variable"). There isn't any
+explanation in the commit why this is changed, so I suspect it was an
+oversight or happened while being extracted from some other series.
+Oddly the value being 0x4c or 0x5c doesn't seem to matter for me, so I
+suspect this is dead code, but that can be fixed in another patch. It's
+not good to write to the wrong register space, and maybe some other
+version of this phy relies on this.
 
-BUG: KASAN: slab-use-after-free in hci_connect_le_scan_cleanup+0x29/0x350
-Read of size 8 at addr ffff888001a50a30 by task kworker/u3:1/111
-
-CPU: 0 PID: 111 Comm: kworker/u3:1 Not tainted
-6.8.0-rc2-00701-g8179b15ab3fd-dirty #6418
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-1.fc38
-04/01/2014
-Workqueue: hci0 hci_cmd_sync_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x21/0x70
- print_report+0xce/0x620
- ? preempt_count_sub+0x13/0xc0
- ? __virt_addr_valid+0x15f/0x310
- ? hci_connect_le_scan_cleanup+0x29/0x350
- kasan_report+0xdf/0x110
- ? hci_connect_le_scan_cleanup+0x29/0x350
- hci_connect_le_scan_cleanup+0x29/0x350
- create_le_conn_complete+0x25c/0x2c0
-
-Fixes: 881559af5f5c ("Bluetooth: hci_sync: Attempt to dequeue connection attempt")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Cc: Steev Klimaszewski <steev@kali.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>
+Cc: Bjorn Andersson <quic_bjorande@quicinc.com>
+Cc: stable@vger.kernel.org      # 6.5
+Fixes: 815891eee668 ("phy: qcom-qmp-combo: Introduce orientation variable")
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240405000111.1450598-1-swboyd@chromium.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/phy/qualcomm/phy-qcom-qmp-combo.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6763,6 +6763,9 @@ static void create_le_conn_complete(stru
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+@@ -2047,9 +2047,9 @@ static bool qmp_combo_configure_dp_mode(
+ 	writel(val, qmp->dp_dp_phy + QSERDES_DP_PHY_PD_CTL);
  
- 	hci_dev_lock(hdev);
+ 	if (reverse)
+-		writel(0x4c, qmp->pcs + QSERDES_DP_PHY_MODE);
++		writel(0x4c, qmp->dp_dp_phy + QSERDES_DP_PHY_MODE);
+ 	else
+-		writel(0x5c, qmp->pcs + QSERDES_DP_PHY_MODE);
++		writel(0x5c, qmp->dp_dp_phy + QSERDES_DP_PHY_MODE);
  
-+	if (!hci_conn_valid(hdev, conn))
-+		goto done;
-+
- 	if (!err) {
- 		hci_connect_le_scan_cleanup(conn, 0x00);
- 		goto done;
+ 	return reverse;
+ }
 
 
 
