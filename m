@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-41841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43D48B6FF9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E908B71F9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44D031F24221
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 055AF1C223B5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAB612C461;
-	Tue, 30 Apr 2024 10:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF1212C54B;
+	Tue, 30 Apr 2024 11:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRaqBN49"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbZHnpiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BE5127B70;
-	Tue, 30 Apr 2024 10:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2B912C487;
+	Tue, 30 Apr 2024 11:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473723; cv=none; b=AogHp6vCPzVrOnI+zPvQJshSMBy2zRQGeFImQa8QXV/WRTxZqnV8ByKs18ifqTrrnqXlwkUe2BCvC4ZCGqa9eb8ScoMitQAxoikV68rTWIPuj5PGUjampZaodjd9GSwKQgVsoC08V6EAyi6WIJrr6OSDRQ2BJ5B/zssqTdvlCZQ=
+	t=1714474959; cv=none; b=XyedkCt6KA7B5C9r/ZteetiUIMWMip48bur08wyZK/e2JKXVYNCNxkvasItK+dyKGXUpZDFEs+WaT/+SftkrT48+hMOBKxnlR1uD1kMbsKLj6BrmNumcRnEGiRN1CoXQd2AWqeourTAoLIYGm5z7hPmYFXRvCPd2QAg8bYNWUm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473723; c=relaxed/simple;
-	bh=WPOt4jvOjGtGbyrLuU2d1F2V1ai0lr6lWF33pL4trKo=;
+	s=arc-20240116; t=1714474959; c=relaxed/simple;
+	bh=Hz+64iiwa2xGMdUUB88CPLws4b0lYSiYAs+ffxtMsJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDw5UY1fVmFUsLF+5+aSg4rZNCAzKMy81ep0o9euTUXaFvIGJx7E0Jo5xdSqEQadl4mgHBYKjnsk2GkSt3fynctW+QPg4kRu4tvAPiv46Lb/77nKXxqpJp1/jBTaLAeOK+JMyLW3pbH6bi+lT8y35TBkvZd0L0abtNkaOrRUBsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRaqBN49; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C281C2BBFC;
-	Tue, 30 Apr 2024 10:42:01 +0000 (UTC)
+	 MIME-Version; b=bP3FlMmeBTRJgH2+EHJqUKYFpuD9YN6re3uDEJVY966W1MgrI8vv9aM5MgOjO9T1vKWEj8g6+W3JwKTS23BU5b03+4lTMH9DuwfgGdbLFBL0WZRJz8EBgiHuBlnzoeUkTJQ99GllfS6GvKecGRN+bmZlKugvK5drkmdFjbN3/o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbZHnpiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4D6C2BBFC;
+	Tue, 30 Apr 2024 11:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473722;
-	bh=WPOt4jvOjGtGbyrLuU2d1F2V1ai0lr6lWF33pL4trKo=;
+	s=korg; t=1714474959;
+	bh=Hz+64iiwa2xGMdUUB88CPLws4b0lYSiYAs+ffxtMsJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRaqBN49XO7YTa2ng0CW1yXFJb69RYFP5s3zRow/fnhoDcsuAfb1iEm7sQvUBN4Uo
-	 YJv8tmveujFHBjC0bTsYdcZ2eE/LPGheG1pVwxCWANURcGWAQ6GyG+rAg+wgczrjWV
-	 0z6mPsFBmYuHIyzxHYIvWjKB2ZWMoojs2m31/lr0=
+	b=RbZHnpiKQbipBiVeH5NMBabxPkN3SUk3RDLB+DJxo9xS1QEAwJpehoYdpTOcRN/dC
+	 WIH4q7FPBzzdMnJ9e1J08UtI02n+OAU8OiL9O6aY9lGU56xL/Laj7neprkIkiWHnn+
+	 gJfysyPnA+C00enWP9LAV9ctgxRO14tHPyDs4Fco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
+	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 05/77] ipv6: fib: hide unused pn variable
+Subject: [PATCH 5.10 039/138] RDMA/rxe: Fix the problem "mutex_destroy missing"
 Date: Tue, 30 Apr 2024 12:38:44 +0200
-Message-ID: <20240430103041.277892630@linuxfoundation.org>
+Message-ID: <20240430103050.583799263@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Yanjun.Zhu <yanjun.zhu@linux.dev>
 
-[ Upstream commit 74043489fcb5e5ca4074133582b5b8011b67f9e7 ]
+[ Upstream commit 481047d7e8391d3842ae59025806531cdad710d9 ]
 
-When CONFIG_IPV6_SUBTREES is disabled, the only user is hidden, causing
-a 'make W=1' warning:
+When a mutex lock is not used any more, the function mutex_destroy
+should be called to mark the mutex lock uninitialized.
 
-net/ipv6/ip6_fib.c: In function 'fib6_add':
-net/ipv6/ip6_fib.c:1388:32: error: variable 'pn' set but not used [-Werror=unused-but-set-variable]
-
-Add another #ifdef around the variable declaration, matching the other
-uses in this file.
-
-Fixes: 66729e18df08 ("[IPV6] ROUTE: Make sure we have fn->leaf when adding a node on subtree.")
-Link: https://lore.kernel.org/netdev/20240322131746.904943-1-arnd@kernel.org/
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240408074219.3030256-1-arnd@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Yanjun.Zhu <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240314065140.27468-1-yanjun.zhu@linux.dev
+Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/rxe/rxe.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 63fb9e01eb4e1..844a5ee7f76f2 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1226,7 +1226,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 	     struct nl_info *info, struct netlink_ext_ack *extack)
- {
- 	struct fib6_table *table = rt->fib6_table;
--	struct fib6_node *fn, *pn = NULL;
-+	struct fib6_node *fn;
-+#ifdef CONFIG_IPV6_SUBTREES
-+	struct fib6_node *pn = NULL;
-+#endif
- 	int err = -ENOMEM;
- 	int allow_create = 1;
- 	int replace_required = 0;
-@@ -1251,9 +1254,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 		goto out;
- 	}
+diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
+index 95f0de0c8b49c..0505c81aa8d04 100644
+--- a/drivers/infiniband/sw/rxe/rxe.c
++++ b/drivers/infiniband/sw/rxe/rxe.c
+@@ -35,6 +35,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
  
-+#ifdef CONFIG_IPV6_SUBTREES
- 	pn = fn;
+ 	if (rxe->tfm)
+ 		crypto_free_shash(rxe->tfm);
++
++	mutex_destroy(&rxe->usdev_lock);
+ }
  
--#ifdef CONFIG_IPV6_SUBTREES
- 	if (rt->fib6_src.plen) {
- 		struct fib6_node *sn;
- 
+ /* initialize rxe device parameters */
 -- 
 2.43.0
 
