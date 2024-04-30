@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904D68B7154
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1ED8B6FF7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0FA81C2283E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10E4D1C219D7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F114C12C817;
-	Tue, 30 Apr 2024 10:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C636212C486;
+	Tue, 30 Apr 2024 10:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dH35O5TT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xg4MMqjb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE82812C487;
-	Tue, 30 Apr 2024 10:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8236B12C46E;
+	Tue, 30 Apr 2024 10:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474519; cv=none; b=U6IqwncAAmAnr/ufsSPYqQM/V6+q1IDnBQhBkkyMpBvcVUciqjgRfNMMxYjsKN7NAvjIO7Le9f34JmCLgKlr/uKkYti3W9XTIvu8vSOuef5oQqJ/n79HN9bdI9GHUdOFNyGD6BXJvlccOFD1WuFFvBpfosSXLnCINirijw/9Lig=
+	t=1714473716; cv=none; b=ezEYOs73AiKXkmen6mlVZ48klh4/fVNGBGbiAQN1sP27NMXGhKNkLFd9aMtxk98wkyPnfn9Wm9tL4rWYIiC6dXr15/n4zs+SjxwQDinE95GE+RplDnBTj3X6WYUwCvJajeZh27HXqn3nFgeStIyZWEtAVLzQghw8NGm/P7547FE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474519; c=relaxed/simple;
-	bh=29t/t/bMbzy9IVK9dMB6oct62xFBq9bZEnEiw+7HnSM=;
+	s=arc-20240116; t=1714473716; c=relaxed/simple;
+	bh=ElqRgTYShYq77hfjsD6q0LaFWPIONq0Wf0VCZZD4XME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KZTri9ic89svV+ehYRrwvrO3rzao7zSC0Kn51u3c0kCVINJyj8QuJHaN0A7WdKAaZFyBoYnc7kqiGhjBbYbuicsHrK7PNNI1WbiYBLrvNKqTEZXYf1x1KFTBi3Za70ci+RxrouN9kA9JOdP6lytwXL6Pw/bzyJyvFUyFt/T/oBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dH35O5TT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A00C2BBFC;
-	Tue, 30 Apr 2024 10:55:18 +0000 (UTC)
+	 MIME-Version; b=sairI79cn0yBvrtYxHjNGGHLeE61aFz9PZEIZl7RNFEPm0ujZ6yR3cDTBOWa11yDC68LGQ9Xin65atDRJ3oHPWDvPS5h1bTHwhEDI8EzICGByB7qT0x34rhIwKH51B15ssvlX67RbumAR9t8NxkE8qvWpAzNxl6o8Qn8kukfl74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xg4MMqjb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13B3C2BBFC;
+	Tue, 30 Apr 2024 10:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474519;
-	bh=29t/t/bMbzy9IVK9dMB6oct62xFBq9bZEnEiw+7HnSM=;
+	s=korg; t=1714473716;
+	bh=ElqRgTYShYq77hfjsD6q0LaFWPIONq0Wf0VCZZD4XME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dH35O5TT7l2xMiYdPp9b2b1Pb5tFLyuSTR7LrAputoJoFLt8NeVKiyRp214BKBLSl
-	 fS8wfro7ciHgki2YvHKxYXNpJSq9h+PRXnBHWIMQ+pV1kGS260t0hIFdqQdNxHR4fb
-	 EX2vLngI+mZKAuOsSOYf9YE/50SVdfRpE/CBUeBU=
+	b=Xg4MMqjbTcSUdWMkysp7U/i3Xenmi+2Yr12SH7e/qd5RqF1qcBJEdPsN3Qr4ied+P
+	 9PtJLWJWBRM3bFky6IYoS0vacLnRO0e18bP8TwoXrLkx3VKHQSJWo2G+GrwDFONpzE
+	 00COtyjnA5B67hszpzAC6+k7m8iDx4+7zFrJ7x4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.8 144/228] Bluetooth: qca: fix NULL-deref on non-serdev suspend
+	Arnd Bergmann <arnd@arndb.de>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 03/77] nouveau: fix function cast warning
 Date: Tue, 30 Apr 2024 12:38:42 +0200
-Message-ID: <20240430103107.953680051@linuxfoundation.org>
+Message-ID: <20240430103041.217996734@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 73e87c0a49fda31d7b589edccf4c72e924411371 upstream.
+[ Upstream commit 185fdb4697cc9684a02f2fab0530ecdd0c2f15d4 ]
 
-Qualcomm ROME controllers can be registered from the Bluetooth line
-discipline and in this case the HCI UART serdev pointer is NULL.
+Calling a function through an incompatible pointer type causes breaks
+kcfi, so clang warns about the assignment:
 
-Add the missing sanity check to prevent a NULL-pointer dereference when
-wakeup() is called for a non-serdev controller during suspend.
+drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c:73:10: error: cast from 'void (*)(const void *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+   73 |         .fini = (void(*)(void *))kfree,
 
-Just return true for now to restore the original behaviour and address
-the crash with pre-6.2 kernels, which do not have commit e9b3e5b8c657
-("Bluetooth: hci_qca: only assign wakeup with serial port support") that
-causes the crash to happen already at setup() time.
+Avoid this with a trivial wrapper.
 
-Fixes: c1a74160eaf1 ("Bluetooth: hci_qca: Add device_may_wakeup support")
-Cc: stable@vger.kernel.org      # 5.13
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c39f472e9f14 ("drm/nouveau: remove symlinks, move core/ to nvkm/ (no code changes)")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404160234.2923554-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1672,6 +1672,9 @@ static bool qca_wakeup(struct hci_dev *h
- 	struct hci_uart *hu = hci_get_drvdata(hdev);
- 	bool wakeup;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c
+index 4bf486b571013..cb05f7f48a98b 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadowof.c
+@@ -66,11 +66,16 @@ of_init(struct nvkm_bios *bios, const char *name)
+ 	return ERR_PTR(-EINVAL);
+ }
  
-+	if (!hu->serdev)
-+		return true;
++static void of_fini(void *p)
++{
++	kfree(p);
++}
 +
- 	/* BT SoC attached through the serial bus is handled by the serdev driver.
- 	 * So we need to use the device handle of the serdev driver to get the
- 	 * status of device may wakeup.
+ const struct nvbios_source
+ nvbios_of = {
+ 	.name = "OpenFirmware",
+ 	.init = of_init,
+-	.fini = (void(*)(void *))kfree,
++	.fini = of_fini,
+ 	.read = of_read,
+ 	.size = of_size,
+ 	.rw = false,
+-- 
+2.43.0
+
 
 
 
