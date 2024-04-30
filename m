@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F0A8B72F5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C542F8B721A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A9F51F231C5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81983285A45
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C4E12D1EA;
-	Tue, 30 Apr 2024 11:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CAE12C54B;
+	Tue, 30 Apr 2024 11:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADcuv9+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0L901tf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93649211C;
-	Tue, 30 Apr 2024 11:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D7912C487;
+	Tue, 30 Apr 2024 11:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475623; cv=none; b=Ly36WwaV5mKmz3Q93eW/rqzwJXBikJ//PJ+Pqje9poTGW71hkB3NeQSwvOJJXQ6y84kOnadEOQe39bqLDoaGhh/NKxNF3Em2qlWO7r8JYIbURmC/uNVHbbZZwJ0Jnnib6xvldiUKdMn+naK51JTr0m7ynzT4gS3msPSlmGugdOM=
+	t=1714475062; cv=none; b=uQGTVEuJRvpdy2bPRSCWbP5BDTA40DNsHPsCzx2poDXEVFjXnh53aUBqBIqYdtVTAREA761PC2K/X7DZZz58nTkdcriDkPtnsNU5tD+eGua4sAazgKhdd6fknh4ReZ6OxVErOuoEalUhyDtpr0rsy29Wm+TXSmlemnLM+OuVhTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475623; c=relaxed/simple;
-	bh=h8OLQxdwqei9/gUUBp5duQ4QcugFP57GcrpvUbQIHY4=;
+	s=arc-20240116; t=1714475062; c=relaxed/simple;
+	bh=y2crCXY3shkGq8Jmgoj7CvUEmTgZtTSZYUsNyyqmJZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6QV2SoKQ/MYvj4g25a78I4+M/bIXQyFDNpuuQFGZAUiCDj1skEhAqSZGiNq4eDg3407biLHOhCkVOCD4Fgsq4QwM1HIGNgbzmtiHy9t+ZSfNLESThr8QhamBLjLklmKGDLJd60WC2c5sBq+FwChDufFN4Xgj5HA0EM9uyIbrow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADcuv9+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F0EC2BBFC;
-	Tue, 30 Apr 2024 11:13:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E83x7JuPdEC3lP+B+NrLEw7hAxNQeF5MJvnvU9V4nPkAXjzSFD9FvO6DWgdK7mJPTtrch8ZnDNCqTiAHQZq9IqD0W6s/kOp/Bd+PJa+jnJfYHv976Vpk7looHS/lfsR+2VFGzVpgZczrGzUNzVZ5cF45OADD7ym3jdVZYFVDIFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0L901tf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5293DC2BBFC;
+	Tue, 30 Apr 2024 11:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475623;
-	bh=h8OLQxdwqei9/gUUBp5duQ4QcugFP57GcrpvUbQIHY4=;
+	s=korg; t=1714475062;
+	bh=y2crCXY3shkGq8Jmgoj7CvUEmTgZtTSZYUsNyyqmJZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADcuv9+nrBBnmTughXdVbvR2xeDi7IbJ1j0T6AmLEUVq5yLiNANtgaKPEA1tx1Nvs
-	 9kMMOvH5ZJy4CLpTBtejJhFdq3idc7bttOxCy+Sp1BGSQpSkM3dfsBt9iqJFd0xd8a
-	 dX4iquPJMcmByiIfuj6s8KkC0Sc2xhFpnovJEGYA=
+	b=Y0L901tfKu23nCAXd2OzCPYCRfjuVpT1r2baXeqr0mtWw7zCDLAt3J6cNL1HNN3SG
+	 0ygM/N80R2G85R7SqMhwYnKN7ywz5/wiTTPAOyO2sG8eXWAeCWMsXskXl+swYH7WQV
+	 LmTWrMIWLzdrjXIAtPz3AlPJiYXaOcAPBRwJUsOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yick Xie <yick.xie@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 152/186] udp: preserve the connected status if only UDP cmsg
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 119/138] drm/amdgpu/sdma5.2: use legacy HDP flush for SDMA2/3
 Date: Tue, 30 Apr 2024 12:40:04 +0200
-Message-ID: <20240430103102.446737715@linuxfoundation.org>
+Message-ID: <20240430103052.910342635@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yick Xie <yick.xie@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
+commit 9792b7cc18aaa0c2acae6af5d0acf249bcb1ab0d upstream.
 
-If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-"connected" should not be set to 0. Otherwise it stops
-the connected socket from using the cached route.
+This avoids a potential conflict with firmwares with the newer
+HDP flush mechanism.
 
-Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp.c |    5 +++--
- net/ipv6/udp.c |    5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1124,16 +1124,17 @@ int udp_sendmsg(struct sock *sk, struct
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
+@@ -390,17 +390,21 @@ static void sdma_v5_2_ring_emit_hdp_flus
+ 	u32 ref_and_mask = 0;
+ 	const struct nbio_hdp_flush_reg *nbio_hf_reg = adev->nbio.hdp_flush_reg;
  
- 	if (msg->msg_controllen) {
- 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip_cmsg_send(sk, msg, &ipc,
- 					   sk->sk_family == AF_INET6);
-+			connected = 0;
-+		}
- 		if (unlikely(err < 0)) {
- 			kfree(ipc.opt);
- 			return err;
- 		}
- 		if (ipc.opt)
- 			free = 1;
--		connected = 0;
- 	}
- 	if (!ipc.opt) {
- 		struct ip_options_rcu *inet_opt;
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1476,9 +1476,11 @@ do_udp_sendmsg:
- 		ipc6.opt = opt;
+-	ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
++	if (ring->me > 1) {
++		amdgpu_asic_flush_hdp(adev, ring);
++	} else {
++		ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
  
- 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, fl6,
- 						    &ipc6);
-+			connected = false;
-+		}
- 		if (err < 0) {
- 			fl6_sock_release(flowlabel);
- 			return err;
-@@ -1490,7 +1492,6 @@ do_udp_sendmsg:
- 		}
- 		if (!(opt->opt_nflen|opt->opt_flen))
- 			opt = NULL;
--		connected = false;
- 	}
- 	if (!opt) {
- 		opt = txopt_get(np);
+-	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
+-			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
+-			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
+-	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
+-	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
+-	amdgpu_ring_write(ring, ref_and_mask); /* reference */
+-	amdgpu_ring_write(ring, ref_and_mask); /* mask */
+-	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
+-			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
++		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
++				  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
++				  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
++		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
++		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
++		amdgpu_ring_write(ring, ref_and_mask); /* reference */
++		amdgpu_ring_write(ring, ref_and_mask); /* mask */
++		amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
++				  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
++	}
+ }
+ 
+ /**
 
 
 
