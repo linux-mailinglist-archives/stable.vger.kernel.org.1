@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-42676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94EF8B741A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E2F8B733F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CE3D2810F1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E531287BD0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F2312D1F1;
-	Tue, 30 Apr 2024 11:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A736912CDA5;
+	Tue, 30 Apr 2024 11:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFcqbV6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEIC91p6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A585E17592;
-	Tue, 30 Apr 2024 11:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6527F211C;
+	Tue, 30 Apr 2024 11:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476425; cv=none; b=NmpwxTRkDVqjS1ARkb/GyEXwopgVhHWEm+yrzYZ+3XE5nMvsNJ+v4LpNcbQSYNHPPsiaj9I6MACHwBTgj3lJUeLDkTdAJKiXnpJPBysm2BlPUrgQHNDSDXvcdf6l6rRHB2rn4tmkjHf4gTfVLZW+vv1b/rTKrrSNoRxwug1FUQI=
+	t=1714475813; cv=none; b=PCujDqFSz9H1xL206ZGbBMPoR8oM+daZwJx88OE9Z1DQML/GTGk501dU9CfesNzrJwi3tONRiiW1HkLPKgmgjnxDqH2YPl4RZ4kaDwUU+3TovtfoOseGRdSthktW9I7g1ErQPj7JEeUZHSHt6dKGYjzrywV6IOJUseuYZ4+Jf9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476425; c=relaxed/simple;
-	bh=riD0Ipflld+4oOIp/lVUzr8uAmFLwrzJCi7IDY7BWs4=;
+	s=arc-20240116; t=1714475813; c=relaxed/simple;
+	bh=ddv3+Q3WJfZjVhKZmgbzrdQuQrvwhy1+2aLwpxb3q5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDippjn32y4Iak45cYsYZbxz6FabnYuu6Awmpn87DzbqD/C0MOaPZu/GX99Zde70wA65p3r2d+iAFxq31irt0QcH7ZjvNG0GkNJlwuVwqs23aNwXg2ge+8RT/Civ2O00Z+JV9eIQTGzRuFNW7TqT1/IwTxbktR1QEN3EVjYQHCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFcqbV6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182D7C2BBFC;
-	Tue, 30 Apr 2024 11:27:04 +0000 (UTC)
+	 MIME-Version; b=fsTm2ehFXKywOJ99c35+y2YW9rVZPsm6wfxdr8nqFKS1jcXk9xts/LcWmy45Zq0kebovJXK33k2dM+lNjkJiY5qzmZcEU5T9stqEtqeBmI0Sx9M0nYwWNTNrzPAVXtmFcPGHM5Rz3Q5swpsJIRpL4pYg36hEhF7UZU4i7glTlQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEIC91p6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0FBC2BBFC;
+	Tue, 30 Apr 2024 11:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476425;
-	bh=riD0Ipflld+4oOIp/lVUzr8uAmFLwrzJCi7IDY7BWs4=;
+	s=korg; t=1714475813;
+	bh=ddv3+Q3WJfZjVhKZmgbzrdQuQrvwhy1+2aLwpxb3q5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFcqbV6QwHtMtQf8G6TyV2gdF1kc6sbAWFYo4OcB/IT/C/Nqw7gvX0MysjKt/O3rN
-	 xHQgKy+oP883HkHfephhMuKcBiXNhWfHbbv4WjtgBU9Ojf0bDBhGZ5DJkDHap4kM7H
-	 Vx3MRq03XffFsvYr+K+H87Qh+Kwg2uNm8xQ+5n3g=
+	b=VEIC91p6SNwrMUAqu8qwObpfubJ++UaMsaxBCZrCeCkvBo7uoo0U1PY/pXgOsGvcc
+	 rIy+2euIUrbPDG8xgOfCKWQx8dc1+JLse7K0xM55QEBhcxnVNEx7bQHxwfisbx2xEm
+	 D2YJ28J/oJs/9/dPD+fzqgLCg00AxBBXnudDNlls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot <syzkaller@googlegroups.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Andreas Roeseler <andreas.a.roeseler@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/110] icmp: prevent possible NULL dereferences from icmp_build_probe()
+Subject: [PATCH 5.15 25/80] ipv4: check for NULL idev in ip_route_use_hint()
 Date: Tue, 30 Apr 2024 12:39:57 +0200
-Message-ID: <20240430103048.399995455@linuxfoundation.org>
+Message-ID: <20240430103044.159570269@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c58e88d49097bd12dfcfef4f075b43f5d5830941 ]
+[ Upstream commit 58a4c9b1e5a3e53c9148e80b90e1e43897ce77d1 ]
 
-First problem is a double call to __in_dev_get_rcu(), because
-the second one could return NULL.
+syzbot was able to trigger a NULL deref in fib_validate_source()
+in an old tree [1].
 
-if (__in_dev_get_rcu(dev) && __in_dev_get_rcu(dev)->ifa_list)
+It appears the bug exists in latest trees.
 
-Second problem is a read from dev->ip6_ptr with no NULL check:
+All calls to __in_dev_get_rcu() must be checked for a NULL result.
 
-if (!list_empty(&rcu_dereference(dev->ip6_ptr)->addr_list))
+[1]
+general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 2 PID: 3257 Comm: syz-executor.3 Not tainted 5.10.0-syzkaller #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+ RIP: 0010:fib_validate_source+0xbf/0x15a0 net/ipv4/fib_frontend.c:425
+Code: 18 f2 f2 f2 f2 42 c7 44 20 23 f3 f3 f3 f3 48 89 44 24 78 42 c6 44 20 27 f3 e8 5d 88 48 fc 4c 89 e8 48 c1 e8 03 48 89 44 24 18 <42> 80 3c 20 00 74 08 4c 89 ef e8 d2 15 98 fc 48 89 5c 24 10 41 bf
+RSP: 0018:ffffc900015fee40 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff88800f7a4000 RCX: ffff88800f4f90c0
+RDX: 0000000000000000 RSI: 0000000004001eac RDI: ffff8880160c64c0
+RBP: ffffc900015ff060 R08: 0000000000000000 R09: ffff88800f7a4000
+R10: 0000000000000002 R11: ffff88800f4f90c0 R12: dffffc0000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: ffff88800f7a4000
+FS:  00007f938acfe6c0(0000) GS:ffff888058c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f938acddd58 CR3: 000000001248e000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+  ip_route_use_hint+0x410/0x9b0 net/ipv4/route.c:2231
+  ip_rcv_finish_core+0x2c4/0x1a30 net/ipv4/ip_input.c:327
+  ip_list_rcv_finish net/ipv4/ip_input.c:612 [inline]
+  ip_sublist_rcv+0x3ed/0xe50 net/ipv4/ip_input.c:638
+  ip_list_rcv+0x422/0x470 net/ipv4/ip_input.c:673
+  __netif_receive_skb_list_ptype net/core/dev.c:5572 [inline]
+  __netif_receive_skb_list_core+0x6b1/0x890 net/core/dev.c:5620
+  __netif_receive_skb_list net/core/dev.c:5672 [inline]
+  netif_receive_skb_list_internal+0x9f9/0xdc0 net/core/dev.c:5764
+  netif_receive_skb_list+0x55/0x3e0 net/core/dev.c:5816
+  xdp_recv_frames net/bpf/test_run.c:257 [inline]
+  xdp_test_run_batch net/bpf/test_run.c:335 [inline]
+  bpf_test_run_xdp_live+0x1818/0x1d00 net/bpf/test_run.c:363
+  bpf_prog_test_run_xdp+0x81f/0x1170 net/bpf/test_run.c:1376
+  bpf_prog_test_run+0x349/0x3c0 kernel/bpf/syscall.c:3736
+  __sys_bpf+0x45c/0x710 kernel/bpf/syscall.c:5115
+  __do_sys_bpf kernel/bpf/syscall.c:5201 [inline]
+  __se_sys_bpf kernel/bpf/syscall.c:5199 [inline]
+  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5199
 
-Use the correct RCU API to fix these.
-
-v2: add missing include <net/addrconf.h>
-
-Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
+Fixes: 02b24941619f ("ipv4: use dst hint for ipv4 list receive")
+Reported-by: syzbot <syzkaller@googlegroups.com>
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Andreas Roeseler <andreas.a.roeseler@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240421184326.1704930-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/icmp.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ net/ipv4/route.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 2b09ef70752f9..31051b327e53c 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -92,6 +92,7 @@
- #include <net/inet_common.h>
- #include <net/ip_fib.h>
- #include <net/l3mdev.h>
-+#include <net/addrconf.h>
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 4ff94596f8cd5..895754439393e 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2173,6 +2173,9 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 daddr, __be32 saddr,
+ 	int err = -EINVAL;
+ 	u32 tag = 0;
  
- /*
-  *	Build xmit assembly blocks
-@@ -1029,6 +1030,8 @@ bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
- 	struct icmp_ext_hdr *ext_hdr, _ext_hdr;
- 	struct icmp_ext_echo_iio *iio, _iio;
- 	struct net *net = dev_net(skb->dev);
-+	struct inet6_dev *in6_dev;
-+	struct in_device *in_dev;
- 	struct net_device *dev;
- 	char buff[IFNAMSIZ];
- 	u16 ident_len;
-@@ -1112,10 +1115,15 @@ bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
- 	/* Fill bits in reply message */
- 	if (dev->flags & IFF_UP)
- 		status |= ICMP_EXT_ECHOREPLY_ACTIVE;
--	if (__in_dev_get_rcu(dev) && __in_dev_get_rcu(dev)->ifa_list)
++	if (!in_dev)
++		return -EINVAL;
 +
-+	in_dev = __in_dev_get_rcu(dev);
-+	if (in_dev && rcu_access_pointer(in_dev->ifa_list))
- 		status |= ICMP_EXT_ECHOREPLY_IPV4;
--	if (!list_empty(&rcu_dereference(dev->ip6_ptr)->addr_list))
-+
-+	in6_dev = __in6_dev_get(dev);
-+	if (in6_dev && !list_empty(&in6_dev->addr_list))
- 		status |= ICMP_EXT_ECHOREPLY_IPV6;
-+
- 	dev_put(dev);
- 	icmphdr->un.echo.sequence |= htons(status);
- 	return true;
+ 	if (ipv4_is_multicast(saddr) || ipv4_is_lbcast(saddr))
+ 		goto martian_source;
+ 
 -- 
 2.43.0
 
