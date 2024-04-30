@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-42258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84AD8B7220
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298F78B7035
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84AAF28165D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D9ED1C2247C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C2712C534;
-	Tue, 30 Apr 2024 11:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FD812C539;
+	Tue, 30 Apr 2024 10:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tx5dDsrD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCoq6gUl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F6D12C462;
-	Tue, 30 Apr 2024 11:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC5F12C49D;
+	Tue, 30 Apr 2024 10:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475079; cv=none; b=Uw3naCO2H62h2hBIylF9NUAdiA2CJ5Q1SMV+EzC9HCDmN/jwDR9LM2Qu+qZ5IMTj0Vicm1C13CtG7eu2gcDRRnPXw42cpylXQezmkw2RNVjeFP7umvPaj0hKgpbJEHzkHxsI/C9W9PWXT7ctRis/OLjFuZcx95GQoBPwB07G/Rg=
+	t=1714473833; cv=none; b=isiqitRIRic6k5ELCMDprLqS1c2D0hIQPZHVjoBsq8cPk30a7C+Pk3cvXao3QeSqEECFiYy+yHMHQrfPvTvZArKJX1CGfKvQLQepGNxEOsyfeT+hqTfJBxU/WaI5/eb1/TscrxvXu96/mFuxKn35LqM647Wmty0dbfqmTBx7JnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475079; c=relaxed/simple;
-	bh=gy/7f6fdw3Uqv/P/oxLzhQ4dtVBZrGbi/GljJE7itws=;
+	s=arc-20240116; t=1714473833; c=relaxed/simple;
+	bh=hYKf3MgeNOoRJNY8tMZ/OVOzhOsOfGUaUVzr47rGnu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PY3q54QD3aQDaAKL6IfxqN9eK3eEJ2zHta6oW1FbQ3Sj2+4swr5DyCcn1otzmkEoMYZODKTQbQemHHhvJ6DDXgghPQnSqkRu4ezWZ7R27axhywYAiHJWtqIFEVd5z4bbQDrLIl5butjFrFZ8i/sbH2gaMC3HqJug6zw8cUjc0qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tx5dDsrD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC831C2BBFC;
-	Tue, 30 Apr 2024 11:04:37 +0000 (UTC)
+	 MIME-Version; b=aw89SkTGMcRkKywAJLk1DATf06HOI0TjesJA4ZD9u5cmX2dtiVBbC4IkXnJbm9C0JaWiumKJbff6+ASCjxWvVEHHbwE/tRECyurAzTWDQSwxNrXMK2vr/MBW1/mxd23dMIUDy6xYs/KaSRqsJV077n2N503BTL2I1oAi01THdiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCoq6gUl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCC4C2BBFC;
+	Tue, 30 Apr 2024 10:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475078;
-	bh=gy/7f6fdw3Uqv/P/oxLzhQ4dtVBZrGbi/GljJE7itws=;
+	s=korg; t=1714473833;
+	bh=hYKf3MgeNOoRJNY8tMZ/OVOzhOsOfGUaUVzr47rGnu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tx5dDsrDU29c83+rm/vA0nIxXVrzPDHr8xgKWKhF58N6TOCAq8Rvg8FO7aW8qbM73
-	 WO8lztvyqJkmCUnkh3F7Io2Tc8Am3pz6GyKBaukAXr+DJgXurvO/8lGiGtfeZ1bNfb
-	 /NIGyRvUpw8ez0n9aixkcv/JQR8NSQkz8tsx0+xI=
+	b=lCoq6gUlmmdUdwT0LSNujl7io0zRz3s50IEViTrvy8SuXEeWRt8gdykKcndqPYvyJ
+	 pzZUTsMUq7GAZQbo12grXSebuyfrqYWViaWx+oatFGizE5sxtbjrXIQdOlyi8UfK/8
+	 ULk8SZTrbRQkoEg2z4NlHk+9UnWUGrHvnLacnIqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
+	Sindhu Devale <sindhu.devale@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Robert Ganzynkowicz <robert.ganzynkowicz@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 086/138] mlxsw: core: Unregister EMAD trap using FORWARD action
+Subject: [PATCH 4.19 52/77] i40e: Do not use WQ_MEM_RECLAIM flag for workqueue
 Date: Tue, 30 Apr 2024 12:39:31 +0200
-Message-ID: <20240430103051.952531412@linuxfoundation.org>
+Message-ID: <20240430103042.673449082@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +67,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Sindhu Devale <sindhu.devale@intel.com>
 
-[ Upstream commit 976c44af48141cd8595601c0af2a19a43c5b228b ]
+[ Upstream commit 2cc7d150550cc981aceedf008f5459193282425c ]
 
-The device's manual (PRM - Programmer's Reference Manual) classifies the
-trap that is used to deliver EMAD responses as an "event trap". Among
-other things, it means that the only actions that can be associated with
-the trap are TRAP and FORWARD (NOP).
+Issue reported by customer during SRIOV testing, call trace:
+When both i40e and the i40iw driver are loaded, a warning
+in check_flush_dependency is being triggered. This seems
+to be because of the i40e driver workqueue is allocated with
+the WQ_MEM_RECLAIM flag, and the i40iw one is not.
 
-Currently, during driver de-initialization the driver unregisters the
-trap by setting its action to DISCARD, which violates the above
-guideline. Future firmware versions will prevent such misuses by
-returning an error. This does not prevent the driver from working, but
-an error will be printed to the kernel log during module removal /
-devlink reload:
+Similar error was encountered on ice too and it was fixed by
+removing the flag. Do the same for i40e too.
 
-mlxsw_spectrum 0000:03:00.0: Reg cmd access status failed (status=7(bad parameter))
-mlxsw_spectrum 0000:03:00.0: Reg cmd access failed (reg_id=7003(hpkt),type=write)
+[Feb 9 09:08] ------------[ cut here ]------------
+[  +0.000004] workqueue: WQ_MEM_RECLAIM i40e:i40e_service_task [i40e] is
+flushing !WQ_MEM_RECLAIM infiniband:0x0
+[  +0.000060] WARNING: CPU: 0 PID: 937 at kernel/workqueue.c:2966
+check_flush_dependency+0x10b/0x120
+[  +0.000007] Modules linked in: snd_seq_dummy snd_hrtimer snd_seq
+snd_timer snd_seq_device snd soundcore nls_utf8 cifs cifs_arc4
+nls_ucs2_utils rdma_cm iw_cm ib_cm cifs_md4 dns_resolver netfs qrtr
+rfkill sunrpc vfat fat intel_rapl_msr intel_rapl_common irdma
+intel_uncore_frequency intel_uncore_frequency_common ice ipmi_ssif
+isst_if_common skx_edac nfit libnvdimm x86_pkg_temp_thermal
+intel_powerclamp gnss coretemp ib_uverbs rapl intel_cstate ib_core
+iTCO_wdt iTCO_vendor_support acpi_ipmi mei_me ipmi_si intel_uncore
+ioatdma i2c_i801 joydev pcspkr mei ipmi_devintf lpc_ich
+intel_pch_thermal i2c_smbus ipmi_msghandler acpi_power_meter acpi_pad
+xfs libcrc32c ast sd_mod drm_shmem_helper t10_pi drm_kms_helper sg ixgbe
+drm i40e ahci crct10dif_pclmul libahci crc32_pclmul igb crc32c_intel
+libata ghash_clmulni_intel i2c_algo_bit mdio dca wmi dm_mirror
+dm_region_hash dm_log dm_mod fuse
+[  +0.000050] CPU: 0 PID: 937 Comm: kworker/0:3 Kdump: loaded Not
+tainted 6.8.0-rc2-Feb-net_dev-Qiueue-00279-gbd43c5687e05 #1
+[  +0.000003] Hardware name: Intel Corporation S2600BPB/S2600BPB, BIOS
+SE5C620.86B.02.01.0013.121520200651 12/15/2020
+[  +0.000001] Workqueue: i40e i40e_service_task [i40e]
+[  +0.000024] RIP: 0010:check_flush_dependency+0x10b/0x120
+[  +0.000003] Code: ff 49 8b 54 24 18 48 8d 8b b0 00 00 00 49 89 e8 48
+81 c6 b0 00 00 00 48 c7 c7 b0 97 fa 9f c6 05 8a cc 1f 02 01 e8 35 b3 fd
+ff <0f> 0b e9 10 ff ff ff 80 3d 78 cc 1f 02 00 75 94 e9 46 ff ff ff 90
+[  +0.000002] RSP: 0018:ffffbd294976bcf8 EFLAGS: 00010282
+[  +0.000002] RAX: 0000000000000000 RBX: ffff94d4c483c000 RCX:
+0000000000000027
+[  +0.000001] RDX: ffff94d47f620bc8 RSI: 0000000000000001 RDI:
+ffff94d47f620bc0
+[  +0.000001] RBP: 0000000000000000 R08: 0000000000000000 R09:
+00000000ffff7fff
+[  +0.000001] R10: ffffbd294976bb98 R11: ffffffffa0be65e8 R12:
+ffff94c5451ea180
+[  +0.000001] R13: ffff94c5ab5e8000 R14: ffff94c5c20b6e05 R15:
+ffff94c5f1330ab0
+[  +0.000001] FS:  0000000000000000(0000) GS:ffff94d47f600000(0000)
+knlGS:0000000000000000
+[  +0.000002] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  +0.000001] CR2: 00007f9e6f1fca70 CR3: 0000000038e20004 CR4:
+00000000007706f0
+[  +0.000000] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
+0000000000000000
+[  +0.000001] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:
+0000000000000400
+[  +0.000001] PKRU: 55555554
+[  +0.000001] Call Trace:
+[  +0.000001]  <TASK>
+[  +0.000002]  ? __warn+0x80/0x130
+[  +0.000003]  ? check_flush_dependency+0x10b/0x120
+[  +0.000002]  ? report_bug+0x195/0x1a0
+[  +0.000005]  ? handle_bug+0x3c/0x70
+[  +0.000003]  ? exc_invalid_op+0x14/0x70
+[  +0.000002]  ? asm_exc_invalid_op+0x16/0x20
+[  +0.000006]  ? check_flush_dependency+0x10b/0x120
+[  +0.000002]  ? check_flush_dependency+0x10b/0x120
+[  +0.000002]  __flush_workqueue+0x126/0x3f0
+[  +0.000015]  ib_cache_cleanup_one+0x1c/0xe0 [ib_core]
+[  +0.000056]  __ib_unregister_device+0x6a/0xb0 [ib_core]
+[  +0.000023]  ib_unregister_device_and_put+0x34/0x50 [ib_core]
+[  +0.000020]  i40iw_close+0x4b/0x90 [irdma]
+[  +0.000022]  i40e_notify_client_of_netdev_close+0x54/0xc0 [i40e]
+[  +0.000035]  i40e_service_task+0x126/0x190 [i40e]
+[  +0.000024]  process_one_work+0x174/0x340
+[  +0.000003]  worker_thread+0x27e/0x390
+[  +0.000001]  ? __pfx_worker_thread+0x10/0x10
+[  +0.000002]  kthread+0xdf/0x110
+[  +0.000002]  ? __pfx_kthread+0x10/0x10
+[  +0.000002]  ret_from_fork+0x2d/0x50
+[  +0.000003]  ? __pfx_kthread+0x10/0x10
+[  +0.000001]  ret_from_fork_asm+0x1b/0x30
+[  +0.000004]  </TASK>
+[  +0.000001] ---[ end trace 0000000000000000 ]---
 
-Suppress the error message by aligning the driver to the manual and use
-a FORWARD (NOP) action when unregistering the trap.
-
-Fixes: 4ec14b7634b2 ("mlxsw: Add interface to access registers and process events")
-Cc: Jiri Pirko <jiri@resnulli.us>
-Cc: Amit Cohen <amcohen@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/753a89e14008fde08cb4a2c1e5f537b81d8eb2d6.1713446092.git.petrm@nvidia.com
+Fixes: 4d5957cbdecd ("i40e: remove WQ_UNBOUND and the task limit of our workqueue")
+Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Robert Ganzynkowicz <robert.ganzynkowicz@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240423182723.740401-2-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core.c | 2 +-
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.c b/drivers/net/ethernet/mellanox/mlxsw/core.c
-index 1a86535c49685..f568ae250393f 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core.c
-@@ -697,7 +697,7 @@ static void mlxsw_emad_rx_listener_func(struct sk_buff *skb, u8 local_port,
- 
- static const struct mlxsw_listener mlxsw_emad_rx_listener =
- 	MLXSW_RXL(mlxsw_emad_rx_listener_func, ETHEMAD, TRAP_TO_CPU, false,
--		  EMAD, DISCARD);
-+		  EMAD, FORWARD);
- 
- static int mlxsw_emad_init(struct mlxsw_core *mlxsw_core)
- {
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 491e5c776306d..3c9b28b7b5073 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -14728,7 +14728,7 @@ static int __init i40e_init_module(void)
+ 	 * since we need to be able to guarantee forward progress even under
+ 	 * memory pressure.
+ 	 */
+-	i40e_wq = alloc_workqueue("%s", WQ_MEM_RECLAIM, 0, i40e_driver_name);
++	i40e_wq = alloc_workqueue("%s", 0, 0, i40e_driver_name);
+ 	if (!i40e_wq) {
+ 		pr_err("%s: Failed to create workqueue\n", i40e_driver_name);
+ 		return -ENOMEM;
 -- 
 2.43.0
 
