@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D348B72A5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 682608B7007
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EB14B20908
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4932B20C1B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D0D8801;
-	Tue, 30 Apr 2024 11:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C075D12C461;
+	Tue, 30 Apr 2024 10:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCOr9QgQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCnXcGmw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E300C12CD90;
-	Tue, 30 Apr 2024 11:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7966512C46B;
+	Tue, 30 Apr 2024 10:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475443; cv=none; b=Zs6XcclImXk7m+MYWRWRYbigz7wdosjoapupPfa7lFUiHtEjL9POBAupGX+L8ftbHAAjSVIdyzeVyQebX8J3IDeB0UmgIa4bipFp3cxbEYaJrl6xNSW9E4U6w6V9v/4ThRmt4WhaSvAWkfNnjTPYlH4qaIAahcY8bGXijjes07Y=
+	t=1714473758; cv=none; b=J0CtDdU767EKRMWfU/q2LNb9h66yzfxRjJvkHJx2yve5xXxalQeC/lj7mEnsRSvmRY/dnxVr0bBfA6xy0VisjE6Njo2dK/FjDWpYIsZsIvHKW0oN9n8QMaOu7wiU6Ewk5KA545pWP3RABmwsYbb5HITCpv9cTp0rupa+YRivTC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475443; c=relaxed/simple;
-	bh=kJpBOzvmxtbZOl9SZ/bJnquaxGEkVz/CX+2LeMKd8mU=;
+	s=arc-20240116; t=1714473758; c=relaxed/simple;
+	bh=eyq6XNPOnChzZ+IzAo+0KcCh3GwCvCEyCcQtawiRIKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDz/NdifvHRcyM78+ory9oxnU+hri+16MEtHhIJ23AmuwvZ9z90hsqT+eK20/vPiArmMgOVvb3jcgQn8TrwKoXzZs0n5nKWuZSFgP9+1ra76SP3IBs8gYR+J3j9rNXkmIKgE0DjRrd4ewcgqL5hlhrg1ss+2IqA+1S49lfNwvn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCOr9QgQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB48C2BBFC;
-	Tue, 30 Apr 2024 11:10:41 +0000 (UTC)
+	 MIME-Version; b=r4w1bbYw6qMR+TtaVvG9Fb6uKbgFt5Mj9GDASndKhhzxHL3hKeuvbrMu4g2JMPfKtaIldJSKKBfoVLEDcooQQu5FutG6vpv6Qn9+ZoeoDnQDYy3K6+o/xGp+Ws2wecuUPDypHFluHz4N5Mnyi9ogcujF1IEPGOQfmfowAZV67ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCnXcGmw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEABC2BBFC;
+	Tue, 30 Apr 2024 10:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475442;
-	bh=kJpBOzvmxtbZOl9SZ/bJnquaxGEkVz/CX+2LeMKd8mU=;
+	s=korg; t=1714473758;
+	bh=eyq6XNPOnChzZ+IzAo+0KcCh3GwCvCEyCcQtawiRIKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCOr9QgQDRnMezZ4hw5Nhjl4tZhSbSmbUaZHYv65U+vjadEwX2fOt+mggYPnDAT1b
-	 qLTv3FBGbD585Y1UFqwSVK8Td6gSODjyHzeS1iOLiYaWEqRbvwtVo/XJyJpYpskLZw
-	 FACSoUkncW5RflJMd4yyH+oDc5HjQeIRSel5rTFA=
+	b=nCnXcGmwKK0Udb3kn+5G6RwN4AsPmUXwDaInktlyvp9J62EBMx9naba7mJ6oNyUJI
+	 PFVTNLNkANmtDWreF3mBWSLln+vbjYHRm5Xo+TeXgOCYTZ0stb/DVhZsaplCdnTUk/
+	 pyIycyZLR8HVYaeIbWqSkS7OHcKkcA9Ns7+LiBw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Khorenko <khorenko@virtuozzo.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/186] KVM: x86/pmu: Zero out PMU metadata on AMD if PMU is disabled
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 29/77] USB: serial: option: add Telit FN920C04 rmnet compositions
 Date: Tue, 30 Apr 2024 12:39:08 +0200
-Message-ID: <20240430103100.820071742@linuxfoundation.org>
+Message-ID: <20240430103041.989782933@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit f933b88e20150f15787390e2a1754a7e412754ed ]
+commit 582ee2f9d268d302595db3e36b985e5cbb93284d upstream.
 
-Move the purging of common PMU metadata from intel_pmu_refresh() to
-kvm_pmu_refresh(), and invoke the vendor refresh() hook if and only if
-the VM is supposed to have a vPMU.
+Add the following Telit FN920C04 compositions:
 
-KVM already denies access to the PMU based on kvm->arch.enable_pmu, as
-get_gp_pmc_amd() returns NULL for all PMCs in that case, i.e. KVM already
-violates AMD's architecture by not virtualizing a PMU (kernels have long
-since learned to not panic when the PMU is unavailable).  But configuring
-the PMU as if it were enabled causes unwanted side effects, e.g. calls to
-kvm_pmu_trigger_event() waste an absurd number of cycles due to the
-all_valid_pmc_idx bitmap being non-zero.
+0x10a0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  5 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: b1d66dad65dc ("KVM: x86/svm: Add module param to control PMU virtualization")
-Reported-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-Closes: https://lore.kernel.org/all/20231109180646.2963718-2-khorenko@virtuozzo.com
-Link: https://lore.kernel.org/r/20231110022857.1273836-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: de120e1d692d ("KVM: x86/pmu: Set enable bits for GP counters in PERF_GLOBAL_CTRL at "RESET"")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x10a4: rmnet + tty (AT) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a4 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10a9: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a9 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/pmu.c           | 20 ++++++++++++++++++--
- arch/x86/kvm/vmx/pmu_intel.c | 16 ++--------------
- 2 files changed, 20 insertions(+), 16 deletions(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index dc8e8e907cfbf..fa6f5cd70d4c8 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -691,6 +691,8 @@ void kvm_pmu_reset(struct kvm_vcpu *vcpu)
-  */
- void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
- {
-+	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-+
- 	if (KVM_BUG_ON(kvm_vcpu_has_run(vcpu), vcpu->kvm))
- 		return;
- 
-@@ -700,8 +702,22 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
- 	 */
- 	kvm_pmu_reset(vcpu);
- 
--	bitmap_zero(vcpu_to_pmu(vcpu)->all_valid_pmc_idx, X86_PMC_IDX_MAX);
--	static_call(kvm_x86_pmu_refresh)(vcpu);
-+	pmu->version = 0;
-+	pmu->nr_arch_gp_counters = 0;
-+	pmu->nr_arch_fixed_counters = 0;
-+	pmu->counter_bitmask[KVM_PMC_GP] = 0;
-+	pmu->counter_bitmask[KVM_PMC_FIXED] = 0;
-+	pmu->reserved_bits = 0xffffffff00200000ull;
-+	pmu->raw_event_mask = X86_RAW_EVENT_MASK;
-+	pmu->global_ctrl_mask = ~0ull;
-+	pmu->global_status_mask = ~0ull;
-+	pmu->fixed_ctr_ctrl_mask = ~0ull;
-+	pmu->pebs_enable_mask = ~0ull;
-+	pmu->pebs_data_cfg_mask = ~0ull;
-+	bitmap_zero(pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX);
-+
-+	if (vcpu->kvm->arch.enable_pmu)
-+		static_call(kvm_x86_pmu_refresh)(vcpu);
- }
- 
- void kvm_pmu_init(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 1549461fa42b7..48a2f77f62ef3 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -493,19 +493,6 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
- 	u64 counter_mask;
- 	int i;
- 
--	pmu->nr_arch_gp_counters = 0;
--	pmu->nr_arch_fixed_counters = 0;
--	pmu->counter_bitmask[KVM_PMC_GP] = 0;
--	pmu->counter_bitmask[KVM_PMC_FIXED] = 0;
--	pmu->version = 0;
--	pmu->reserved_bits = 0xffffffff00200000ull;
--	pmu->raw_event_mask = X86_RAW_EVENT_MASK;
--	pmu->global_ctrl_mask = ~0ull;
--	pmu->global_status_mask = ~0ull;
--	pmu->fixed_ctr_ctrl_mask = ~0ull;
--	pmu->pebs_enable_mask = ~0ull;
--	pmu->pebs_data_cfg_mask = ~0ull;
--
- 	memset(&lbr_desc->records, 0, sizeof(lbr_desc->records));
- 
- 	/*
-@@ -517,8 +504,9 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
- 		return;
- 
- 	entry = kvm_find_cpuid_entry(vcpu, 0xa);
--	if (!entry || !vcpu->kvm->arch.enable_pmu)
-+	if (!entry)
- 		return;
-+
- 	eax.full = entry->eax;
- 	edx.full = entry->edx;
- 
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1376,6 +1376,12 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990 (ECM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
++	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a9, 0xff),	/* Telit FN20C04 (rmnet) */
++	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
 
 
 
