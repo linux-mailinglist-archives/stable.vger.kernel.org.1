@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74AE8B7468
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9A88B73EF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D4081F22ACB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4EA11F224AD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A049312D755;
-	Tue, 30 Apr 2024 11:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3548912D1E8;
+	Tue, 30 Apr 2024 11:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xc8r190n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ge+Rl7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEEE12BF32;
-	Tue, 30 Apr 2024 11:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83A317592;
+	Tue, 30 Apr 2024 11:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476631; cv=none; b=kx1cVnOSCrIvYzfOJ8D+uIsLWMnIVmgHm4yRv6y9BeFORerSnasN39mU8zPMzMz7VYfSh8okaaF1hGskQeaoZlyrQQFAv4k8xm/jUb6mcHp43BIDNWeQNSWKUqDFHTugtAgCPZGq2OLIvAJryS3Qa5Aa1QxuK0I1ZfYZMvaBoHk=
+	t=1714476305; cv=none; b=idcl3YZtU0ER4EO7fnLCC8GQr9MTYNCktXhelRe1DUCNc4BxV+eo2o6qtsSqUXTC8uAtsAb8BnaECxTzZfkdTCT+GeMSO5sN1IUuiy3ClG2ShTw/on0CApdG8esDgZ894ZHtF7lJM/X9qBfdffsosuhZfjT1kKX+OxHYvRWdOsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476631; c=relaxed/simple;
-	bh=kqH5bPA0+R3sIvSAS52hMWA9I2uDabNEW6QXwMQNukc=;
+	s=arc-20240116; t=1714476305; c=relaxed/simple;
+	bh=DXW2NIzk+2v+4uYTB/qeozxDiRfcbgkJSPRfSJPcFE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWo7QZqDKNV1hbVddqL6QGPgf3i0RHDhx1YC3M3KLje2m+x+sJxAaWLmuAkb/BI9n06ONbs76NAnmdo9xJZOn+PYxZqr33VHBB4M51RxeXvejfAgCdfbO4lAlTbKNRjgpG8MSXZn1c9Hg0xCf0UfIe77FYYAxe2pFG+vYsRqFCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xc8r190n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB61DC2BBFC;
-	Tue, 30 Apr 2024 11:30:30 +0000 (UTC)
+	 MIME-Version; b=i/l90uT/QzBzbeUXAckGH48JoIVLQl+hN93uVlxa5SMDRXd6DKn7X51fAaqr+LVKHwX2A7aOp5XgKLbIDxZaZAIJSI23iXNf5u1+kwJXXwZU/wlSsiI7DtnhOpfefpsyyJO/c6Fo9Iayw5ePbZxKr/aDfE2ji6/nabfTMnm+mC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ge+Rl7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643AAC2BBFC;
+	Tue, 30 Apr 2024 11:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476631;
-	bh=kqH5bPA0+R3sIvSAS52hMWA9I2uDabNEW6QXwMQNukc=;
+	s=korg; t=1714476304;
+	bh=DXW2NIzk+2v+4uYTB/qeozxDiRfcbgkJSPRfSJPcFE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xc8r190nzGis00iT+ogDkm6jAUO1HT5jJ2qF+Kt1pw5Ss6AfDVOOy5QBBmOkLeYey
-	 XMGlzxrnPhCUCiKi8mjWQSiNZitF4b0r70pPVsFWCgymCTgIYw5K5czk7OlPm6VFvv
-	 JPXDWomPYiPqvrPzwWHwm2o5lW5ssozhvS+PyAVE=
+	b=2ge+Rl7b0TAuY/54bxaxn5x27mI0stliSr3yFiqyCIaTl6QxIFeWzGrECB4uqwiks
+	 gnznKqgt+nLn5ggsfwcl6bE+/wfVrwK0CO7V8gTj4sGrlDGpx+Xx/ukRviIENix91M
+	 rUWQW+MyN403VCbZkPBSofBe4ub6a7xFWrL0jdy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aswin Unnikrishnan <aswinunni01@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.1 090/110] rust: remove `params` from `module` macro example
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Zhengchao Shao <shaozhengchao@huawei.com>
+Subject: [PATCH 5.4 099/107] tcp: Fix NEW_SYN_RECV handling in inet_twsk_purge()
 Date: Tue, 30 Apr 2024 12:40:59 +0200
-Message-ID: <20240430103050.228484242@linuxfoundation.org>
+Message-ID: <20240430103047.580639725@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aswin Unnikrishnan <aswinunni01@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 19843452dca40e28d6d3f4793d998b681d505c7f upstream.
+commit 1c4e97dd2d3c9a3e84f7e26346aa39bc426d3249 upstream.
 
-Remove argument `params` from the `module` macro example, because the
-macro does not currently support module parameters since it was not sent
-with the initial merge.
+inet_twsk_purge() uses rcu to find TIME_WAIT and NEW_SYN_RECV
+objects to purge.
 
-Signed-off-by: Aswin Unnikrishnan <aswinunni01@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Cc: stable@vger.kernel.org
-Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-Link: https://lore.kernel.org/r/20240419215015.157258-1-aswinunni01@gmail.com
-[ Reworded slightly. ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+These objects use SLAB_TYPESAFE_BY_RCU semantic and need special
+care. We need to use refcount_inc_not_zero(&sk->sk_refcnt).
+
+Reuse the existing correct logic I wrote for TIME_WAIT,
+because both structures have common locations for
+sk_state, sk_family, and netns pointer.
+
+If after the refcount_inc_not_zero() the object fields longer match
+the keys, use sock_gen_put(sk) to release the refcount.
+
+Then we can call inet_twsk_deschedule_put() for TIME_WAIT,
+inet_csk_reqsk_queue_drop_and_put() for NEW_SYN_RECV sockets,
+with BH disabled.
+
+Then we need to restart the loop because we had drop rcu_read_lock().
+
+Fixes: 740ea3c4a0b2 ("tcp: Clean up kernel listener's reqsk in inet_twsk_purge()")
+Link: https://lore.kernel.org/netdev/CANn89iLvFuuihCtt9PME2uS1WJATnf5fKjDToa1WzVnRzHnPfg@mail.gmail.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240308200122.64357-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[shaozhengchao: resolved conflicts in 5.10]
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/macros/lib.rs |   12 ------------
- 1 file changed, 12 deletions(-)
+ net/ipv4/inet_timewait_sock.c |   41 +++++++++++++++++++----------------------
+ 1 file changed, 19 insertions(+), 22 deletions(-)
 
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -27,18 +27,6 @@ use proc_macro::TokenStream;
- ///     author: b"Rust for Linux Contributors",
- ///     description: b"My very own kernel module!",
- ///     license: b"GPL",
--///     params: {
--///        my_i32: i32 {
--///            default: 42,
--///            permissions: 0o000,
--///            description: b"Example of i32",
--///        },
--///        writeable_i32: i32 {
--///            default: 42,
--///            permissions: 0o644,
--///            description: b"Example of i32",
--///        },
--///    },
- /// }
- ///
- /// struct MyModule;
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -254,12 +254,12 @@ void __inet_twsk_schedule(struct inet_ti
+ }
+ EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
+ 
++/* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
+ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
+ {
+-	struct inet_timewait_sock *tw;
+-	struct sock *sk;
+ 	struct hlist_nulls_node *node;
+ 	unsigned int slot;
++	struct sock *sk;
+ 
+ 	for (slot = 0; slot <= hashinfo->ehash_mask; slot++) {
+ 		struct inet_ehash_bucket *head = &hashinfo->ehash[slot];
+@@ -268,38 +268,35 @@ restart_rcu:
+ 		rcu_read_lock();
+ restart:
+ 		sk_nulls_for_each_rcu(sk, node, &head->chain) {
+-			if (sk->sk_state != TCP_TIME_WAIT) {
+-				/* A kernel listener socket might not hold refcnt for net,
+-				 * so reqsk_timer_handler() could be fired after net is
+-				 * freed.  Userspace listener and reqsk never exist here.
+-				 */
+-				if (unlikely(sk->sk_state == TCP_NEW_SYN_RECV &&
+-					     hashinfo->pernet)) {
+-					struct request_sock *req = inet_reqsk(sk);
+-
+-					inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
+-				}
++			int state = inet_sk_state_load(sk);
+ 
++			if ((1 << state) & ~(TCPF_TIME_WAIT |
++					     TCPF_NEW_SYN_RECV))
+ 				continue;
+-			}
+ 
+-			tw = inet_twsk(sk);
+-			if ((tw->tw_family != family) ||
+-				refcount_read(&twsk_net(tw)->count))
++			if (sk->sk_family != family ||
++			    refcount_read(&sock_net(sk)->count))
+ 				continue;
+ 
+-			if (unlikely(!refcount_inc_not_zero(&tw->tw_refcnt)))
++			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+ 				continue;
+ 
+-			if (unlikely((tw->tw_family != family) ||
+-				     refcount_read(&twsk_net(tw)->count))) {
+-				inet_twsk_put(tw);
++			if (unlikely(sk->sk_family != family ||
++				     refcount_read(&sock_net(sk)->count))) {
++				sock_gen_put(sk);
+ 				goto restart;
+ 			}
+ 
+ 			rcu_read_unlock();
+ 			local_bh_disable();
+-			inet_twsk_deschedule_put(tw);
++			if (state == TCP_TIME_WAIT) {
++				inet_twsk_deschedule_put(inet_twsk(sk));
++			} else {
++				struct request_sock *req = inet_reqsk(sk);
++
++				inet_csk_reqsk_queue_drop_and_put(req->rsk_listener,
++								  req);
++			}
+ 			local_bh_enable();
+ 			goto restart_rcu;
+ 		}
 
 
 
