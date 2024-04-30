@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-42199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160F68B71D5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:01:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A2C8B7149
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47DC41C22598
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:01:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5F1282E65
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0145C12C534;
-	Tue, 30 Apr 2024 11:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFEF12D215;
+	Tue, 30 Apr 2024 10:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peY0XZIo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRpAXwCU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EE712C462;
-	Tue, 30 Apr 2024 11:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E0612D209;
+	Tue, 30 Apr 2024 10:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474888; cv=none; b=n1J8Rs/+dCZ+u3o314Anx6vqo/GZ7c2spl7VcG+D2TALQPFTjanQ5CZ4/SfLA1w9b1RWxTUzO96/+ULXZ/CbbZkFD4Zxvhp9Myn6lRBi1u8rPMUYEiiYNoK6bcxF0HxYb0QQrkjTp/Fftgv+fm0p+/wjTVKnfX3R7CcArgh31YE=
+	t=1714474494; cv=none; b=gfdUb/UXdqUxEGvt2WPcMOEAXVMv6cyU4PrEIMD89uMzjdSz8MxmKxj+ZNAJnqKnUsMdugn19tZoNzUxl+hPuUkhZf1Ilq1vkD1WHwou2lBPAvWyeruA3fky3yy3fato5rRjmiBzOJ8sygqdoJ+mfEAKGKyjkxsWqDp4WxjU5Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474888; c=relaxed/simple;
-	bh=blvGQYZkQolPD/F40j/3wuCjuUXtqM0nQ53igxogk4U=;
+	s=arc-20240116; t=1714474494; c=relaxed/simple;
+	bh=tvJizQV9A4wLduHoxYlxbO7769zZTHSF8N13PfI0U9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcFOThSPATxxi2X0svQUvo+TSXhCOGzAcMG/Hhy0Eegv/p72K0WkRA6f5TOmp8i78a5RpN1MGT+eIUtiLdJU3wqJyfuHwi44QZLuyZN8WlZ31puk1sQ2lHaT597KvG2vgnRu1pyF+8ZeMDneKmlhGkQskOg8DCuij60GNJ8UESA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peY0XZIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D0CC2BBFC;
-	Tue, 30 Apr 2024 11:01:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DzV8SLAQF/opJ61mkx67GiEwX/SpfM4HjpKKvTgFWDZsnPXKGbBFGwv9JuGfMuMrmxByXs/JViCnD0+Emne81vDrFNTGn/NsurUIBuknz4x4FtbN3569EC9mwAF+JvvLb2rZTI2H9azDRnDnR8ZKO23eR2zvrSDF1z6sSb3yZik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRpAXwCU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF314C2BBFC;
+	Tue, 30 Apr 2024 10:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474888;
-	bh=blvGQYZkQolPD/F40j/3wuCjuUXtqM0nQ53igxogk4U=;
+	s=korg; t=1714474494;
+	bh=tvJizQV9A4wLduHoxYlxbO7769zZTHSF8N13PfI0U9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=peY0XZIoR8JAXP/Eq7pm+qlL/AbUxnHpk9asIV48QYY7kkHmt1/y8P1LNSy5B/Gr+
-	 +H1mBcQDmUoUF0xwRvhvQk8x4OCz2j/be59UvszOFbYEUlPvkwT7hUz1pd87PIuGYV
-	 XOQtZw6gh6PWIPoTXya5lPnGptvy9w0hecHAw9BI=
+	b=JRpAXwCUqDL4kzAYF9V3lSMkgLEXwqX+BuYiFrlMhQBy02juZeE99l/NrWCS98QOl
+	 jnwmO6bAFQlDH0MiylqHWc1LCV2BLCEkE1qzjIrRNKFv/1j2fNUMu8Z4gVaPvsxmv6
+	 inU8Ke14JsiSYSP5xatE7Pc0mR+dOsijBMZ2ZV7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Thibault <samuel.thibault@ens-lyon.org>
-Subject: [PATCH 5.10 066/138] speakup: Avoid crash on very long word
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.8 173/228] drm/amdgpu/sdma5.2: use legacy HDP flush for SDMA2/3
 Date: Tue, 30 Apr 2024 12:39:11 +0200
-Message-ID: <20240430103051.365943721@linuxfoundation.org>
+Message-ID: <20240430103108.795751194@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,39 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Thibault <samuel.thibault@ens-lyon.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit c8d2f34ea96ea3bce6ba2535f867f0d4ee3b22e1 upstream.
+commit 9792b7cc18aaa0c2acae6af5d0acf249bcb1ab0d upstream.
 
-In case a console is set up really large and contains a really long word
-(> 256 characters), we have to stop before the length of the word buffer.
+This avoids a potential conflict with firmwares with the newer
+HDP flush mechanism.
 
-Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Fixes: c6e3fd22cd538 ("Staging: add speakup to the staging directory")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240323164843.1426997-1-samuel.thibault@ens-lyon.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accessibility/speakup/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
---- a/drivers/accessibility/speakup/main.c
-+++ b/drivers/accessibility/speakup/main.c
-@@ -576,7 +576,7 @@ static u_long get_word(struct vc_data *v
- 	}
- 	attr_ch = get_char(vc, (u_short *)tmp_pos, &spk_attr);
- 	buf[cnt++] = attr_ch;
--	while (tmpx < vc->vc_cols - 1) {
-+	while (tmpx < vc->vc_cols - 1 && cnt < sizeof(buf) - 1) {
- 		tmp_pos += 2;
- 		tmpx++;
- 		ch = get_char(vc, (u_short *)tmp_pos, &temp);
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
+@@ -292,17 +292,21 @@ static void sdma_v5_2_ring_emit_hdp_flus
+ 	u32 ref_and_mask = 0;
+ 	const struct nbio_hdp_flush_reg *nbio_hf_reg = adev->nbio.hdp_flush_reg;
+ 
+-	ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
++	if (ring->me > 1) {
++		amdgpu_asic_flush_hdp(adev, ring);
++	} else {
++		ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
+ 
+-	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
+-			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
+-			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
+-	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
+-	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
+-	amdgpu_ring_write(ring, ref_and_mask); /* reference */
+-	amdgpu_ring_write(ring, ref_and_mask); /* mask */
+-	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
+-			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
++		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
++				  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
++				  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
++		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
++		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
++		amdgpu_ring_write(ring, ref_and_mask); /* reference */
++		amdgpu_ring_write(ring, ref_and_mask); /* mask */
++		amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
++				  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
++	}
+ }
+ 
+ /**
 
 
 
