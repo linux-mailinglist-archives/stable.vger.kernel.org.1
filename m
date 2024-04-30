@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-41892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F678B7052
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0F48B7333
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0F0F1C21E33
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DCCE1C231C1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0381312D1FA;
-	Tue, 30 Apr 2024 10:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF0712D761;
+	Tue, 30 Apr 2024 11:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Zi9qj+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w50WLuA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B604C12C487;
-	Tue, 30 Apr 2024 10:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85088801;
+	Tue, 30 Apr 2024 11:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473874; cv=none; b=f5SuIMpkvhOjN63CbjuFe6g1pcdtxsBHw6wvWGdNAf17ATRfMeAag/tQx0JxF9SRL8RZMyjuXAtk5M10auzsIERwaW+CrmDHvh9/yQdw7BYAN+tJnA8X70x9oRapAUBh56PAnnA27akwU/WMcOZdYoi6e220RiabuIn2zHWl9QE=
+	t=1714475777; cv=none; b=S+NfZ8Y5J3du2iaAbBteLOf2EAwzZTQH9tz/X84EQIaC+1YY+f7oVowkvjgoAhLPoeU23PC5IV8QHAdF4fQ5Qf1ovy50pHm8F6t4ZraWhBdXCMej3KFKZz6LJqji2FgAlY6OEAxNaVGdVHSUrpIhy29u+z9sJBdiqajKWYBnoXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473874; c=relaxed/simple;
-	bh=tN0N32CmE39x1Rc+6zIClPvwYlNHb3YwawRyGN5OxtE=;
+	s=arc-20240116; t=1714475777; c=relaxed/simple;
+	bh=E+n2M29YgJFCgxEf0il+JIMO3yi93WBL2Ry1+coo1Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qm6f3nGuv5Gcy36Nn5JL+P1pSFH8KcrU+eXO4GGLLcwk48m/PRJNDETYItuHjxbblmN8VmH7XIJM52CszIRd164JVFUimKF/cIJrwf3ZZsRMUW3beM0ugDfaPkWhEXQTy5GxCynRzDDcscF8OtI6jv7A2DXAvQp3iRbPw61CHiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Zi9qj+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C20C2BBFC;
-	Tue, 30 Apr 2024 10:44:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=miBqZi9gXo936bPRonaYB4bcxbRhXsNOiX26yk/te2DHTFKfiH/fMgQODQGanEoDpjemlActwNSUkXD/1Q7SQzL/5G0/IfgBCpM7mrV3gefsDH4jr4tdYwmdmXmQs63pyidRtPY6zVFHpdxXCZuJWP5RvRc+TbvP63hNtzU4M+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w50WLuA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175FFC2BBFC;
+	Tue, 30 Apr 2024 11:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473874;
-	bh=tN0N32CmE39x1Rc+6zIClPvwYlNHb3YwawRyGN5OxtE=;
+	s=korg; t=1714475777;
+	bh=E+n2M29YgJFCgxEf0il+JIMO3yi93WBL2Ry1+coo1Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Zi9qj+eHshH3ZQDQbPy9YPle4jlzZi6ZeuyxjcdJ1ZT6gIgsSDGcNf6xulOrhPxv
-	 kfQARmDPKx4d5QyL463+KGvI66Lu9e9PKPt0Pp2byOWFP379D1E3XZ852MQh4RhAPE
-	 BoRUM0DYWhm1XKP2CAQxMEZvFbPvSKdshZhTqWCI=
+	b=w50WLuA+3bFQ5bgXZwtd1vS20Le9kxEMEjpjhNDk1o0BPO88C8QtPomMe3fk1qyko
+	 Rx7lSC70BjRaPjiZyVvrN08OJsoAVpOp55YfdKQ9cm6DJOuV8RD5YHYClnwKJEi9vZ
+	 84enDnJwWCSRZgyVdXeuAUACFoRZ7y8je3J61lAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Zhengchao Shao <shaozhengchao@huawei.com>
-Subject: [PATCH 4.19 68/77] tcp: Clean up kernel listeners reqsk in inet_twsk_purge()
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 15/80] arm64: dts: mediatek: mt7622: drop "reset-names" from thermal block
 Date: Tue, 30 Apr 2024 12:39:47 +0200
-Message-ID: <20240430103043.146240320@linuxfoundation.org>
+Message-ID: <20240430103043.862080347@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-commit 740ea3c4a0b2e326b23d7cdf05472a0e92aa39bc upstream.
+[ Upstream commit ecb5b0034f5bcc35003b4b965cf50c6e98316e79 ]
 
-Eric Dumazet reported a use-after-free related to the per-netns ehash
-series. [0]
+Binding doesn't specify "reset-names" property and Linux driver also
+doesn't use it.
 
-When we create a TCP socket from userspace, the socket always holds a
-refcnt of the netns.  This guarantees that a reqsk timer is always fired
-before netns dismantle.  Each reqsk has a refcnt of its listener, so the
-listener is not freed before the reqsk, and the net is not freed before
-the listener as well.
+Fix following validation error:
+arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: thermal@1100b000: Unevaluated properties are not allowed ('reset-names' was unexpected)
+        from schema $id: http://devicetree.org/schemas/thermal/mediatek,thermal.yaml#
 
-OTOH, when in-kernel users create a TCP socket, it might not hold a refcnt
-of its netns.  Thus, a reqsk timer can be fired after the netns dismantle
-and access freed per-netns ehash.
-
-To avoid the use-after-free, we need to clean up TCP_NEW_SYN_RECV sockets
-in inet_twsk_purge() if the netns uses a per-netns ehash.
-
-[0]: https://lore.kernel.org/netdev/CANn89iLXMup0dRD_Ov79Xt8N9FM0XdhCHEN05sf3eLwxKweM6w@mail.gmail.com/
-
-BUG: KASAN: use-after-free in tcp_or_dccp_get_hashinfo
-include/net/inet_hashtables.h:181 [inline]
-BUG: KASAN: use-after-free in reqsk_queue_unlink+0x320/0x350
-net/ipv4/inet_connection_sock.c:913
-Read of size 8 at addr ffff88807545bd80 by task syz-executor.2/8301
-
-CPU: 1 PID: 8301 Comm: syz-executor.2 Not tainted
-6.0.0-syzkaller-02757-gaf7d23f9d96a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine,
-BIOS Google 09/22/2022
-Call Trace:
-<IRQ>
-__dump_stack lib/dump_stack.c:88 [inline]
-dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:106
-print_address_description mm/kasan/report.c:317 [inline]
-print_report.cold+0x2ba/0x719 mm/kasan/report.c:433
-kasan_report+0xb1/0x1e0 mm/kasan/report.c:495
-tcp_or_dccp_get_hashinfo include/net/inet_hashtables.h:181 [inline]
-reqsk_queue_unlink+0x320/0x350 net/ipv4/inet_connection_sock.c:913
-inet_csk_reqsk_queue_drop net/ipv4/inet_connection_sock.c:927 [inline]
-inet_csk_reqsk_queue_drop_and_put net/ipv4/inet_connection_sock.c:939 [inline]
-reqsk_timer_handler+0x724/0x1160 net/ipv4/inet_connection_sock.c:1053
-call_timer_fn+0x1a0/0x6b0 kernel/time/timer.c:1474
-expire_timers kernel/time/timer.c:1519 [inline]
-__run_timers.part.0+0x674/0xa80 kernel/time/timer.c:1790
-__run_timers kernel/time/timer.c:1768 [inline]
-run_timer_softirq+0xb3/0x1d0 kernel/time/timer.c:1803
-__do_softirq+0x1d0/0x9c8 kernel/softirq.c:571
-invoke_softirq kernel/softirq.c:445 [inline]
-__irq_exit_rcu+0x123/0x180 kernel/softirq.c:650
-irq_exit_rcu+0x5/0x20 kernel/softirq.c:662
-sysvec_apic_timer_interrupt+0x93/0xc0 arch/x86/kernel/apic/apic.c:1107
-</IRQ>
-
-Fixes: d1e5e6408b30 ("tcp: Introduce optional per-netns ehash.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reported-by: Eric Dumazet <edumazet@google.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20221012145036.74960-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[shaozhengchao: resolved conflicts in 5.10]
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related device nodes")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240317221050.18595-5-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_timewait_sock.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/ipv4/inet_timewait_sock.c
-+++ b/net/ipv4/inet_timewait_sock.c
-@@ -267,8 +267,21 @@ restart_rcu:
- 		rcu_read_lock();
- restart:
- 		sk_nulls_for_each_rcu(sk, node, &head->chain) {
--			if (sk->sk_state != TCP_TIME_WAIT)
-+			if (sk->sk_state != TCP_TIME_WAIT) {
-+				/* A kernel listener socket might not hold refcnt for net,
-+				 * so reqsk_timer_handler() could be fired after net is
-+				 * freed.  Userspace listener and reqsk never exist here.
-+				 */
-+				if (unlikely(sk->sk_state == TCP_NEW_SYN_RECV &&
-+					     hashinfo->pernet)) {
-+					struct request_sock *req = inet_reqsk(sk);
-+
-+					inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
-+				}
-+
- 				continue;
-+			}
-+
- 			tw = inet_twsk(sk);
- 			if ((tw->tw_family != family) ||
- 				refcount_read(&twsk_net(tw)->count))
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index 7a54af96e1d90..5f21f1e95d095 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -505,7 +505,6 @@
+ 			 <&pericfg CLK_PERI_AUXADC_PD>;
+ 		clock-names = "therm", "auxadc";
+ 		resets = <&pericfg MT7622_PERI_THERM_SW_RST>;
+-		reset-names = "therm";
+ 		mediatek,auxadc = <&auxadc>;
+ 		mediatek,apmixedsys = <&apmixedsys>;
+ 		nvmem-cells = <&thermal_calibration>;
+-- 
+2.43.0
+
 
 
 
