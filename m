@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5168B7384
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2A38B73FF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33A191F241A6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07BFD285327
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FA212CD9B;
-	Tue, 30 Apr 2024 11:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8690312D214;
+	Tue, 30 Apr 2024 11:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjILW7F/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OX2ek7er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5309C8801;
-	Tue, 30 Apr 2024 11:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4579412D745;
+	Tue, 30 Apr 2024 11:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476002; cv=none; b=jDkUmEjZRRFdOWQDeDDUwSCnz0VfOpY2sg59pM3vdVD459aM/D+KjI2BhzWLDMXUr55pYUlaxwO4QBX16dGmoKg1P9/CIETszGXh1DaDiizFIe+Ww1PX7txfcEot33skCJcIr56omNJe9Vgd97HTIvIJM+PGcwJ4WAYOePZDlpg=
+	t=1714476346; cv=none; b=JOD+ikDd983vc1LrTZfiS1/TR3YpRmjKgUFemkeAxvRtPMCC5lJnFXkfoCdCmmFJyqXgUk9IiIvTMefe5bN54ick3Dyu4h7Xi80KTIrpkXecnftumS3E5HwA7fcUSozr7t4l3IgpXt0FZSkXBOJEgPkspI6CScl4tt2llFOT6Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476002; c=relaxed/simple;
-	bh=snb6GboBo7PNNAIBFh6LY65CP/8shjphSJ1kUA2+prc=;
+	s=arc-20240116; t=1714476346; c=relaxed/simple;
+	bh=xsqkFiSY56F8M7JMf46iqos7RVp0F5D2jJAuzoiFRcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hK3aTzyxMgRpfBWvjV6gD7kOR5U9sKBWAPFagdTt3TX8f9IcWpUmif31AomkJP55VOZi+VDOLq6vZ54Qib/Lbam4AsS0dHfbKUtVw+J/aoXt2n5CLl8zH10b6BhQcTHmGA+VA42vmF845PfWQyB+4ONaFqursnd3UvsTMkootlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjILW7F/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65F2C2BBFC;
-	Tue, 30 Apr 2024 11:20:01 +0000 (UTC)
+	 MIME-Version; b=MMMvydfCLKiOSPkkmO9X3AoaBR7KvM6gQvShke/gevQd21O9BN9j61yxhsqIme97lfIKiDhJxMuDdLsDgUots+yjRfCCrktIrxEBehg/s8bhtH38jHECs/59CdKlIcZ04j+dnkYwhdWaNKfD1iQazPHfZMKul0FKi6aIq7WoDjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OX2ek7er; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D37C2BBFC;
+	Tue, 30 Apr 2024 11:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476002;
-	bh=snb6GboBo7PNNAIBFh6LY65CP/8shjphSJ1kUA2+prc=;
+	s=korg; t=1714476345;
+	bh=xsqkFiSY56F8M7JMf46iqos7RVp0F5D2jJAuzoiFRcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjILW7F/m81V6WKV9TZSWHv6scYCus5D8m6M04gaxHfunIkD03WZhiZnVXyCMaf0w
-	 15tjxbwVgQhBFYGuERcU0NnkTklxkLOkFqZIn8IJQnAsAKx/ugxoFVZ4QXQJkePcca
-	 DIILjPHKgjkkqH6oZXvZLfGuJuOkYxDIW3lK6l1U=
+	b=OX2ek7erJqLHKC7gFr+SW7Q/DM2C0S/CnaGmin1VIHlEvYRH/fDAPlBG5ZY5as/Go
+	 IK01KQmbg3zBoZAuVvxMFCD3WXIyb7TXDNY8lB0n1smH18TlygXNJTp2B+3VUR2fjT
+	 bQUovQt0ICkcmw6gm+RIBK1fR+fuNZfYFB1/BA3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baruch Siach <baruch@tkos.co.il>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 75/80] i2c: smbus: fix NULL function pointer dereference
+	"Robin H. Johnson" <robbat2@gentoo.org>,
+	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.4 087/107] tracing: Increase PERF_MAX_TRACE_SIZE to handle Sentinel1 and docker together
 Date: Tue, 30 Apr 2024 12:40:47 +0200
-Message-ID: <20240430103045.627071203@linuxfoundation.org>
+Message-ID: <20240430103047.225926179@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Robin H. Johnson <robbat2@gentoo.org>
 
-[ Upstream commit 91811a31b68d3765b3065f4bb6d7d6d84a7cfc9f ]
+commit e531e90b5ab0f7ce5ff298e165214c1aec6ed187 upstream.
 
-Baruch reported an OOPS when using the designware controller as target
-only. Target-only modes break the assumption of one transfer function
-always being available. Fix this by always checking the pointer in
-__i2c_transfer.
+Running endpoint security solutions like Sentinel1 that use perf-based
+tracing heavily lead to this repeated dump complaining about dockerd.
+The default value of 2048 is nowhere near not large enough.
 
-Reported-by: Baruch Siach <baruch@tkos.co.il>
-Closes: https://lore.kernel.org/r/4269631780e5ba789cf1ae391eec1b959def7d99.1712761976.git.baruch@tkos.co.il
-Fixes: 4b1acc43331d ("i2c: core changes for slave support")
-[wsa: dropped the simplification in core-smbus to avoid theoretical regressions]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Baruch Siach <baruch@tkos.co.il>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Using the prior patch "tracing: show size of requested buffer", we get
+"perf buffer not large enough, wanted 6644, have 6144", after repeated
+up-sizing (I did 2/4/6/8K). With 8K, the problem doesn't occur at all,
+so below is the trace for 6K.
+
+I'm wondering if this value should be selectable at boot time, but this
+is a good starting point.
+
+```
+------------[ cut here ]------------
+perf buffer not large enough, wanted 6644, have 6144
+WARNING: CPU: 1 PID: 4997 at kernel/trace/trace_event_perf.c:402 perf_trace_buf_alloc+0x8c/0xa0
+Modules linked in: [..]
+CPU: 1 PID: 4997 Comm: sh Tainted: G                T 5.13.13-x86_64-00039-gb3959163488e #63
+Hardware name: LENOVO 20KH002JUS/20KH002JUS, BIOS N23ET66W (1.41 ) 09/02/2019
+RIP: 0010:perf_trace_buf_alloc+0x8c/0xa0
+Code: 80 3d 43 97 d0 01 00 74 07 31 c0 5b 5d 41 5c c3 ba 00 18 00 00 89 ee 48 c7 c7 00 82 7d 91 c6 05 25 97 d0 01 01 e8 22 ee bc 00 <0f> 0b 31 c0 eb db 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 55 89
+RSP: 0018:ffffb922026b7d58 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff9da5ee012000 RCX: 0000000000000027
+RDX: ffff9da881657828 RSI: 0000000000000001 RDI: ffff9da881657820
+RBP: 00000000000019f4 R08: 0000000000000000 R09: ffffb922026b7b80
+R10: ffffb922026b7b78 R11: ffffffff91dda688 R12: 000000000000000f
+R13: ffff9da5ee012108 R14: ffff9da8816570a0 R15: ffffb922026b7e30
+FS:  00007f420db1a080(0000) GS:ffff9da881640000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000060 CR3: 00000002504a8006 CR4: 00000000003706e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ kprobe_perf_func+0x11e/0x270
+ ? do_execveat_common.isra.0+0x1/0x1c0
+ ? do_execveat_common.isra.0+0x5/0x1c0
+ kprobe_ftrace_handler+0x10e/0x1d0
+ 0xffffffffc03aa0c8
+ ? do_execveat_common.isra.0+0x1/0x1c0
+ do_execveat_common.isra.0+0x5/0x1c0
+ __x64_sys_execve+0x33/0x40
+ do_syscall_64+0x6b/0xc0
+ ? do_syscall_64+0x11/0xc0
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f420dc1db37
+Code: ff ff 76 e7 f7 d8 64 41 89 00 eb df 0f 1f 80 00 00 00 00 f7 d8 64 41 89 00 eb dc 0f 1f 84 00 00 00 00 00 b8 3b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 01 43 0f 00 f7 d8 64 89 01 48
+RSP: 002b:00007ffd4e8b4e38 EFLAGS: 00000246 ORIG_RAX: 000000000000003b
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f420dc1db37
+RDX: 0000564338d1e740 RSI: 0000564338d32d50 RDI: 0000564338d28f00
+RBP: 0000564338d28f00 R08: 0000564338d32d50 R09: 0000000000000020
+R10: 00000000000001b6 R11: 0000000000000246 R12: 0000564338d28f00
+R13: 0000564338d32d50 R14: 0000564338d1e740 R15: 0000564338d28c60
+---[ end trace 83ab3e8e16275e49 ]---
+```
+
+Link: https://lkml.kernel.org/r/20210831043723.13481-2-robbat2@gentoo.org
+
+Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-base.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/trace_events.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 8fb065caf30b4..1810a994c07ca 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -2072,13 +2072,18 @@ static int i2c_check_for_quirks(struct i2c_adapter *adap, struct i2c_msg *msgs,
-  * Returns negative errno, else the number of messages executed.
-  *
-  * Adapter lock must be held when calling this function. No debug logging
-- * takes place. adap->algo->master_xfer existence isn't checked.
-+ * takes place.
-  */
- int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
- {
- 	unsigned long orig_jiffies;
- 	int ret, try;
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -427,7 +427,7 @@ struct trace_event_file {
+ 	}								\
+ 	early_initcall(trace_init_perf_perm_##name);
  
-+	if (!adap->algo->master_xfer) {
-+		dev_dbg(&adap->dev, "I2C level transfers not supported\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (WARN_ON(!msgs || num < 1))
- 		return -EINVAL;
+-#define PERF_MAX_TRACE_SIZE	2048
++#define PERF_MAX_TRACE_SIZE	8192
  
-@@ -2145,11 +2150,6 @@ int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
- {
- 	int ret;
+ #define MAX_FILTER_STR_VAL	256	/* Should handle KSYM_SYMBOL_LEN */
  
--	if (!adap->algo->master_xfer) {
--		dev_dbg(&adap->dev, "I2C level transfers not supported\n");
--		return -EOPNOTSUPP;
--	}
--
- 	/* REVISIT the fault reporting model here is weak:
- 	 *
- 	 *  - When we get an error after receiving N bytes from a slave,
--- 
-2.43.0
-
 
 
 
