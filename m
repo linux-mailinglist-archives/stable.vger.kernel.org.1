@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28F58B71FC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151A68B7344
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E43D11C23095
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 466351C22CD6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A8112CD98;
-	Tue, 30 Apr 2024 11:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98CB12BF3E;
+	Tue, 30 Apr 2024 11:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiPiNGsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVukvf8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AC612B176;
-	Tue, 30 Apr 2024 11:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692728801;
+	Tue, 30 Apr 2024 11:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474969; cv=none; b=nceQKbDa0PL+AEtsK3Ok393ZwT22VamJju3ybysVPVLStEllKX/ekrSRbRNU0E7N3Z/h6iaxsarcxihr5gBIMo6AciqEKz1x81Hwd5HSAHN9iB/YEV8XznEw9N4+fxEG3YvR7JDm13YqOcnxA2IUVYDHNRzL4BOYV9tjKJy8JQc=
+	t=1714475826; cv=none; b=ndgUyazdh831vpWR8BWh1H+Y1r0nEt8l6NpKKsJVNR/ViT43ZtuJq3TCZpaUVV3AgyIX2il5T/rZjQgjOBj7adSx/SaNd9pT+pAf3+ynIS5xxVQ2SemMMO8D0XPsimIpfBw2qKlK7i3HFQnSLqm/V41AyMBKza8BeQ+RhrCbem4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474969; c=relaxed/simple;
-	bh=I3YHXoaS1rwjRd5FLjQT9qzzf9l9e5NnxQr3X39+qjc=;
+	s=arc-20240116; t=1714475826; c=relaxed/simple;
+	bh=5anNoHDfoMYdZxh72AmA/Rgb5D9Dz6sYbKagp6XAgZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfAyNehox9cDzXftvkL+ZU8ofcRZnY88cuHId+89YlFt3yA74ArQMNSUN4mwirMFkzd/EhOKNDaPCltmEwQ2e4oU7jAnxl0YPOFJTj9JkOojq/aPMhCfDcQopIPLBUAvus0k0Tpbbd7WBPt/VhvtvaKCKzrV8n4pKAnr1GkOX/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiPiNGsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D75C2BBFC;
-	Tue, 30 Apr 2024 11:02:48 +0000 (UTC)
+	 MIME-Version; b=kGK8SFVkWUGJaO5yoq3e81hreXJxmK1lulnF31x7n1IN9dWdtqgi3B44l81T67GzfFKZU7Bu9FvlyMsxXpIaKNOIviMTOTv7lWcDB7ayoX65mTEcJm37bbQGarbsZaCMPbB44/usTBMbWJpKS7E4t72rgiHWrRx+gxHjnTDhkgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVukvf8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EF2C2BBFC;
+	Tue, 30 Apr 2024 11:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474968;
-	bh=I3YHXoaS1rwjRd5FLjQT9qzzf9l9e5NnxQr3X39+qjc=;
+	s=korg; t=1714475826;
+	bh=5anNoHDfoMYdZxh72AmA/Rgb5D9Dz6sYbKagp6XAgZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BiPiNGsv8tUbX1Eh/2GDk2npUDSYtR6JGswJ0pJSpYB2qTfsWHLzC68HSvTW7yCOs
-	 /9+XaWTydl/6IbyV5Wf5N8zg9UFvBurha1A6U1YTyPGGEKmsGKqaE847hObO8y5JJs
-	 3gSbyuisiJ0cGOUdnRhkHZykXt1pqAdNKty7vql4=
+	b=qVukvf8S2CMhdUwxu7wyHSub3hvTIDvMHK7PTuqjqzffK7OCIqyig9V8mBXXqEhkE
+	 WG/4Pia0N8B7ifBoHqISnD7E7u1LHz9xqUYT2sPuHhdl182jU66TPFRS5nVQeMhFNJ
+	 Bp2mYJJBpFhkKO+r7QFSMxndJsRJ0UKtPW2cngWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Eric Dumazet <edumazet@google.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/138] net: openvswitch: Fix Use-After-Free in ovs_ct_exit
+Subject: [PATCH 5.15 05/80] arm64: dts: rockchip: enable internal pull-up on Q7_USB_ID for RK3399 Puma
 Date: Tue, 30 Apr 2024 12:39:37 +0200
-Message-ID: <20240430103052.126827466@linuxfoundation.org>
+Message-ID: <20240430103043.560735912@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-[ Upstream commit 5ea7b72d4fac2fdbc0425cd8f2ea33abe95235b2 ]
+[ Upstream commit e6b1168f37e3f86d9966276c5a3fff9eb0df3e5f ]
 
-Since kfree_rcu, which is called in the hlist_for_each_entry_rcu traversal
-of ovs_ct_limit_exit, is not part of the RCU read critical section, it
-is possible that the RCU grace period will pass during the traversal and
-the key will be free.
+The Q7_USB_ID has a diode used as a level-shifter, and is used as an
+input pin. The SoC default for this pin is a pull-up, which is correct
+but the pinconf in the introducing commit missed that, so let's fix this
+oversight.
 
-To prevent this, it should be changed to hlist_for_each_entry_safe.
-
-Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://lore.kernel.org/r/ZiYvzQN/Ry5oeFQW@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ed2c66a95c0c ("arm64: dts: rockchip: fix rk3399-puma-haikou USB OTG mode")
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-1-309f83da110a@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/conntrack.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index d452a63d2f4b0..30f5e414018b1 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -1902,9 +1902,9 @@ static void ovs_ct_limit_exit(struct net *net, struct ovs_net *ovs_net)
- 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
- 		struct hlist_head *head = &info->limits[i];
- 		struct ovs_ct_limit *ct_limit;
-+		struct hlist_node *next;
- 
--		hlist_for_each_entry_rcu(ct_limit, head, hlist_node,
--					 lockdep_ovsl_is_held())
-+		hlist_for_each_entry_safe(ct_limit, next, head, hlist_node)
- 			kfree_rcu(ct_limit, rcu);
- 	}
- 	kfree(info->limits);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+index 7b27079fd6116..d9859fa4a7499 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -432,7 +432,7 @@
+ 	usb3 {
+ 		usb3_id: usb3-id {
+ 			rockchip,pins =
+-			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
++			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
+ 	};
+ };
 -- 
 2.43.0
 
