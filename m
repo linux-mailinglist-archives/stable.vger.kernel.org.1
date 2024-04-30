@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-41893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CF18B7055
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDF28B72E0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60592812B6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 510DB1C2332D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1592512D753;
-	Tue, 30 Apr 2024 10:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDB012CD90;
+	Tue, 30 Apr 2024 11:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0Bswu2R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gAOX3R6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63B812C48B;
-	Tue, 30 Apr 2024 10:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE2C211C;
+	Tue, 30 Apr 2024 11:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473877; cv=none; b=ROi13vhSqdLagTBDvNx3c+rqJU+dBOoJamukYKgf9DNQf9jQTFmfZm0dROF+/6PF3F1GbRpQZ2/Z07oRm0QQO4ebGNcZzHnvIPK9c49HkIAraQAHGYD5f/g5ivXilk19TVRDK504WhiBfeIw13A8IgKIoPMMHVyPUDm1jtM/LcQ=
+	t=1714475569; cv=none; b=tTx31IZ2g/evlgs5Mk2cV/j4cA6lASgS7J6PHrHD4dSV6cGJYwpBn7eEv12dRyqf50Of7Sf/UhG0XAhykxp4AstI1zktORHfNHkT6GsbIkJBu9wOZuZNQEJcG8wlm+eBktRRDN6V+3lwWuBsR/jTTP2sXKvpTpKbiSQgkTylo0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473877; c=relaxed/simple;
-	bh=/w2t+z58a9kNf0phAeiTjhzQX6LiEtS8chgqQ94J434=;
+	s=arc-20240116; t=1714475569; c=relaxed/simple;
+	bh=ChcnM5RM+24gsjg5+rIeOh5vcZJzI1Kf2nK5PondaVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8zF8VrnMikDOCoxRsU/NhJE3awi0EII53/1S3S+BVq2wwS68EpzQwM8+Mx/6TDsRDxaVez9cI5Yp5lRQNSOtcTwTuuN8VVNePrCXkZUyjudTschFuyAXINEw2U8dZXGr/sjnJo4kTfR8v8NLM94pbRx5jBc2cvsIDZoS0eKHNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0Bswu2R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479DCC2BBFC;
-	Tue, 30 Apr 2024 10:44:37 +0000 (UTC)
+	 MIME-Version; b=D97gBMRlQmSY7VZ3ijqwYDIss+RxyJ5hZrxiJMx7HLj/ZS/iXQIVYF/wIokhZ8FLVLiVO3njDWxel2ZjwPpDuOX8YC79blL1jXU3IdmusjEKkZbTNHwvqcxY7N1QWBoHTaIF2ROIdFAiEVKjRUWlqbqnh44gs4zgZmqLyqe808A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gAOX3R6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AD9C2BBFC;
+	Tue, 30 Apr 2024 11:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473877;
-	bh=/w2t+z58a9kNf0phAeiTjhzQX6LiEtS8chgqQ94J434=;
+	s=korg; t=1714475568;
+	bh=ChcnM5RM+24gsjg5+rIeOh5vcZJzI1Kf2nK5PondaVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w0Bswu2R2oMBhTP+cy8Ath3f7aSE/Zu/YbanRK3Y8nAi3WTiKyHSvGQeyyHaH/nnt
-	 UfFoNeHnJN57UxV2wq5F1+U5vKLCuZ/vfRF3nAjhsocZZ4/b6mImFMFTh2vxUNJtKB
-	 RieL0EXd4uClR9w5b31H6U2F+Ic0zGzESJN9n8SM=
+	b=0gAOX3R6gidIq6lg1stRPWUz/sjgvijI1tIValMiJ6aSEBpsy3wYrHxHqRTCMotuB
+	 iLuvbVC4WG6SZJhJZmr3snlbzenAVlxIFGAK+vw6SYVs7v4m7jCpJdXWrD3zDvvY7S
+	 jdcEOHMWAX0gmQmwqFd8xFCniF9NSEbX4dMAOc4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Zhengchao Shao <shaozhengchao@huawei.com>
-Subject: [PATCH 4.19 69/77] tcp: Fix NEW_SYN_RECV handling in inet_twsk_purge()
+	Youling Tang <tangyouling@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 136/186] LoongArch: Fix callchain parse error with kernel tracepoint events
 Date: Tue, 30 Apr 2024 12:39:48 +0200
-Message-ID: <20240430103043.176513161@linuxfoundation.org>
+Message-ID: <20240430103101.981027069@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +61,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 1c4e97dd2d3c9a3e84f7e26346aa39bc426d3249 upstream.
+commit d3119bc985fb645ad3b2a9cf9952c1d56d9daaa3 upstream.
 
-inet_twsk_purge() uses rcu to find TIME_WAIT and NEW_SYN_RECV
-objects to purge.
+In order to fix perf's callchain parse error for LoongArch, we implement
+perf_arch_fetch_caller_regs() which fills several necessary registers
+used for callchain unwinding, including sp, fp, and era. This is similar
+to the following commits.
 
-These objects use SLAB_TYPESAFE_BY_RCU semantic and need special
-care. We need to use refcount_inc_not_zero(&sk->sk_refcnt).
+commit b3eac0265bf6:
+("arm: perf: Fix callchain parse error with kernel tracepoint events")
 
-Reuse the existing correct logic I wrote for TIME_WAIT,
-because both structures have common locations for
-sk_state, sk_family, and netns pointer.
+commit 5b09a094f2fb:
+("arm64: perf: Fix callchain parse error with kernel tracepoint events")
 
-If after the refcount_inc_not_zero() the object fields longer match
-the keys, use sock_gen_put(sk) to release the refcount.
+commit 9a7e8ec0d4cc:
+("riscv: perf: Fix callchain parse error with kernel tracepoint events")
 
-Then we can call inet_twsk_deschedule_put() for TIME_WAIT,
-inet_csk_reqsk_queue_drop_and_put() for NEW_SYN_RECV sockets,
-with BH disabled.
+Test with commands:
 
-Then we need to restart the loop because we had drop rcu_read_lock().
+ perf record -e sched:sched_switch -g --call-graph dwarf
+ perf report
 
-Fixes: 740ea3c4a0b2 ("tcp: Clean up kernel listener's reqsk in inet_twsk_purge()")
-Link: https://lore.kernel.org/netdev/CANn89iLvFuuihCtt9PME2uS1WJATnf5fKjDToa1WzVnRzHnPfg@mail.gmail.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240308200122.64357-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[shaozhengchao: resolved conflicts in 5.10]
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Without this patch:
+
+ Children      Self  Command        Shared Object      Symbol
+ ........  ........  .............  .................  ....................
+
+ 43.41%    43.41%  swapper          [unknown]          [k] 0000000000000000
+
+ 10.94%    10.94%  loong-container  [unknown]          [k] 0000000000000000
+         |
+         |--5.98%--0x12006ba38
+         |
+         |--2.56%--0x12006bb84
+         |
+          --2.40%--0x12006b6b8
+
+With this patch, callchain can be parsed correctly:
+
+ Children      Self  Command        Shared Object      Symbol
+ ........  ........  .............  .................  ....................
+
+ 47.57%    47.57%  swapper          [kernel.vmlinux]   [k] __schedule
+         |
+         ---__schedule
+
+ 26.76%    26.76%  loong-container  [kernel.vmlinux]   [k] __schedule
+         |
+         |--13.78%--0x12006ba38
+         |          |
+         |          |--9.19%--__schedule
+         |          |
+         |           --4.59%--handle_syscall
+         |                     do_syscall
+         |                     sys_futex
+         |                     do_futex
+         |                     futex_wait
+         |                     futex_wait_queue_me
+         |                     hrtimer_start_range_ns
+         |                     __schedule
+         |
+         |--8.38%--0x12006bb84
+         |          handle_syscall
+         |          do_syscall
+         |          sys_epoll_pwait
+         |          do_epoll_wait
+         |          schedule_hrtimeout_range_clock
+         |          hrtimer_start_range_ns
+         |          __schedule
+         |
+          --4.59%--0x12006b6b8
+                    handle_syscall
+                    do_syscall
+                    sys_nanosleep
+                    hrtimer_nanosleep
+                    do_nanosleep
+                    hrtimer_start_range_ns
+                    __schedule
+
+Cc: stable@vger.kernel.org
+Fixes: b37042b2bb7cd751f0 ("LoongArch: Add perf events support")
+Reported-by: Youling Tang <tangyouling@kylinos.cn>
+Suggested-by: Youling Tang <tangyouling@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_timewait_sock.c |   41 +++++++++++++++++++----------------------
- 1 file changed, 19 insertions(+), 22 deletions(-)
+ arch/loongarch/include/asm/perf_event.h |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/ipv4/inet_timewait_sock.c
-+++ b/net/ipv4/inet_timewait_sock.c
-@@ -253,12 +253,12 @@ void __inet_twsk_schedule(struct inet_ti
- }
- EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
+--- a/arch/loongarch/include/asm/perf_event.h
++++ b/arch/loongarch/include/asm/perf_event.h
+@@ -7,6 +7,14 @@
+ #ifndef __LOONGARCH_PERF_EVENT_H__
+ #define __LOONGARCH_PERF_EVENT_H__
  
-+/* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
- void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
- {
--	struct inet_timewait_sock *tw;
--	struct sock *sk;
- 	struct hlist_nulls_node *node;
- 	unsigned int slot;
-+	struct sock *sk;
- 
- 	for (slot = 0; slot <= hashinfo->ehash_mask; slot++) {
- 		struct inet_ehash_bucket *head = &hashinfo->ehash[slot];
-@@ -267,38 +267,35 @@ restart_rcu:
- 		rcu_read_lock();
- restart:
- 		sk_nulls_for_each_rcu(sk, node, &head->chain) {
--			if (sk->sk_state != TCP_TIME_WAIT) {
--				/* A kernel listener socket might not hold refcnt for net,
--				 * so reqsk_timer_handler() could be fired after net is
--				 * freed.  Userspace listener and reqsk never exist here.
--				 */
--				if (unlikely(sk->sk_state == TCP_NEW_SYN_RECV &&
--					     hashinfo->pernet)) {
--					struct request_sock *req = inet_reqsk(sk);
--
--					inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
--				}
-+			int state = inet_sk_state_load(sk);
- 
-+			if ((1 << state) & ~(TCPF_TIME_WAIT |
-+					     TCPF_NEW_SYN_RECV))
- 				continue;
--			}
- 
--			tw = inet_twsk(sk);
--			if ((tw->tw_family != family) ||
--				refcount_read(&twsk_net(tw)->count))
-+			if (sk->sk_family != family ||
-+			    refcount_read(&sock_net(sk)->count))
- 				continue;
- 
--			if (unlikely(!refcount_inc_not_zero(&tw->tw_refcnt)))
-+			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
- 				continue;
- 
--			if (unlikely((tw->tw_family != family) ||
--				     refcount_read(&twsk_net(tw)->count))) {
--				inet_twsk_put(tw);
-+			if (unlikely(sk->sk_family != family ||
-+				     refcount_read(&sock_net(sk)->count))) {
-+				sock_gen_put(sk);
- 				goto restart;
- 			}
- 
- 			rcu_read_unlock();
- 			local_bh_disable();
--			inet_twsk_deschedule_put(tw);
-+			if (state == TCP_TIME_WAIT) {
-+				inet_twsk_deschedule_put(inet_twsk(sk));
-+			} else {
-+				struct request_sock *req = inet_reqsk(sk);
++#include <asm/ptrace.h>
 +
-+				inet_csk_reqsk_queue_drop_and_put(req->rsk_listener,
-+								  req);
-+			}
- 			local_bh_enable();
- 			goto restart_rcu;
- 		}
+ #define perf_arch_bpf_user_pt_regs(regs) (struct user_pt_regs *)regs
+ 
++#define perf_arch_fetch_caller_regs(regs, __ip) { \
++	(regs)->csr_era = (__ip); \
++	(regs)->regs[3] = current_stack_pointer; \
++	(regs)->regs[22] = (unsigned long) __builtin_frame_address(0); \
++}
++
+ #endif /* __LOONGARCH_PERF_EVENT_H__ */
 
 
 
