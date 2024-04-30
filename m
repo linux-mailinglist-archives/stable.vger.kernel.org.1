@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A71A8B72E1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356518B7411
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2699F281CB4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66F0D1C23344
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B31712D745;
-	Tue, 30 Apr 2024 11:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BEC12D761;
+	Tue, 30 Apr 2024 11:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/gFFiSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPM+Q/oS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E41512D1E8;
-	Tue, 30 Apr 2024 11:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2EC12D746;
+	Tue, 30 Apr 2024 11:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475572; cv=none; b=moF/HgNypCX1op9wPDYJ/3o2idxPpQBCdqR7KFNg+5wbzuuMbl2n24sbT6GURNxRyTyJI7OEF29f1kO6Eg0gmefmP4mrVpplM+vcto/a9Q8Ke6qaDhiF4U7cy57OK6XKqLepXAUES4ZPAVBVmuizqd47ZDjpJZJxfQ/446j2Q1Q=
+	t=1714476396; cv=none; b=f+WTIN+aJZiub6HPiSlU4tFvPkRIySkfRaG0aFqT1RsrkDR+X8B0rz6LK+jzEpE7F9lVkCXE1XLs63kPMMdI6qT1JlWwjn9hFiaRMfQg6lfKHPTfld6xo3JUUZPX0WsBChVavUUeICiZmyrW/Ji5k5wZ/V9riPV6CenbAao7Emk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475572; c=relaxed/simple;
-	bh=NBfnvJx0VXjiVwqx8qsDHYxoqK1uvi4yLKAJg4vGu2Q=;
+	s=arc-20240116; t=1714476396; c=relaxed/simple;
+	bh=w2kSA11sEyZ7YQz0wSu3epfTNyjpxYX0lAJvapFKwHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rp3DoQ037gpaZ3GTHuYvyGa2/FOOyjzgRJcrTlmnxBRE1dT5J0Lz0mShUYBnXDu3YhfoupxKmxIj3VT6//N4s08Jq5nn5kbOp8FJqKyV+StEgW+3GC+GuhvSTE5SEF364qyS7MeW5rHZYTXwsFbf0uXkc3IbLimsxBky7mvWy6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/gFFiSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82480C2BBFC;
-	Tue, 30 Apr 2024 11:12:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WK9RruD7I3HvM5XRkdC+qwTsxYweme80+5Fp55kh4W5Fmi60GBS5Qx6EzFgAKP4rQf3UM5qeO4B+2olKebiwnt/ymLDpd7ezooUrZasG0BzAWPaGIBFZSJO2h4NSpDA/+5p+SDQcnivQs3QAKBqSZAQG7PK7J7SHtIyjpc1JhRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPM+Q/oS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE9FC2BBFC;
+	Tue, 30 Apr 2024 11:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475571;
-	bh=NBfnvJx0VXjiVwqx8qsDHYxoqK1uvi4yLKAJg4vGu2Q=;
+	s=korg; t=1714476396;
+	bh=w2kSA11sEyZ7YQz0wSu3epfTNyjpxYX0lAJvapFKwHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/gFFiSw5fuN8m2z5Gz0c5ZkhuiPYGqYvI+HePm9dfnqrBmugjrL9RNZ+X0dHwn9k
-	 NA6ugv6MWc5BV+qtq72jHpIHfWGypjlM+lzVRlG2gP+KRfbLBeI5RRFR9h/B2MYR83
-	 NemkHZ4CbZ1CyZxu4ddCDWEH+XviotuImXBQHsaI=
+	b=GPM+Q/oSCwNmqzI80LnY76Quo824ChNLqz6+86CLIXZgFnW+RXJlTB0uiY6UAoj6X
+	 SiWoLkjAKMbu5fqLFbbkcigtt/oGXHFU0iRmyVrWJR2nMN35LVaozljN0Mq156ezpF
+	 PA+gLg518ZnwRYtsJjquYLpAqEuUTUyAnjitTlmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiantao Shan <shanjiantao@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 137/186] LoongArch: Fix access error when read fault on a write-only VMA
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 020/110] arm64: dts: mediatek: mt2712: fix validation errors
 Date: Tue, 30 Apr 2024 12:39:49 +0200
-Message-ID: <20240430103102.010267865@linuxfoundation.org>
+Message-ID: <20240430103048.168066420@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +60,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiantao Shan <shanjiantao@loongson.cn>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-commit efb44ff64c95340b06331fc48634b99efc9dd77c upstream.
+[ Upstream commit 3baac7291effb501c4d52df7019ebf52011e5772 ]
 
-As with most architectures, allow handling of read faults in VMAs that
-have VM_WRITE but without VM_READ (WRITE implies READ).
+1. Fixup infracfg clock controller binding
+   It also acts as reset controller so #reset-cells is required.
+2. Use -pins suffix for pinctrl
 
-Otherwise, reading before writing a write-only memory will error while
-reading after writing everything is fine.
+This fixes:
+arch/arm64/boot/dts/mediatek/mt2712-evb.dtb: syscon@10001000: '#reset-cells' is a required property
+        from schema $id: http://devicetree.org/schemas/arm/mediatek/mediatek,infracfg.yaml#
+arch/arm64/boot/dts/mediatek/mt2712-evb.dtb: pinctrl@1000b000: 'eth_default', 'eth_sleep', 'usb0_iddig', 'usb1_iddig' do not match any of the regexes: 'pinctrl-[0-9]+', 'pins$'
+        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt65xx-pinctrl.yaml#
 
-BTW, move the VM_EXEC judgement before VM_READ/VM_WRITE to make logic a
-little clearer.
-
-Cc: stable@vger.kernel.org
-Fixes: 09cfefb7fa70c3af01 ("LoongArch: Add memory management")
-Signed-off-by: Jiantao Shan <shanjiantao@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240301074741.8362-1-zajec5@gmail.com
+[Angelo: Added Fixes tags]
+Fixes: 5d4839709c8e ("arm64: dts: mt2712: Add clock controller device nodes")
+Fixes: 1724f4cc5133 ("arm64: dts: Add USB3 related nodes for MT2712")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/fault.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt2712-evb.dts | 8 ++++----
+ arch/arm64/boot/dts/mediatek/mt2712e.dtsi   | 3 ++-
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
---- a/arch/loongarch/mm/fault.c
-+++ b/arch/loongarch/mm/fault.c
-@@ -202,10 +202,10 @@ good_area:
- 		if (!(vma->vm_flags & VM_WRITE))
- 			goto bad_area;
- 	} else {
--		if (!(vma->vm_flags & VM_READ) && address != exception_era(regs))
--			goto bad_area;
- 		if (!(vma->vm_flags & VM_EXEC) && address == exception_era(regs))
- 			goto bad_area;
-+		if (!(vma->vm_flags & (VM_READ | VM_WRITE)) && address != exception_era(regs))
-+			goto bad_area;
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
+index d31a194124c91..03fd9df16999e 100644
+--- a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
+@@ -128,7 +128,7 @@
+ };
  
- 	/*
+ &pio {
+-	eth_default: eth_default {
++	eth_default: eth-default-pins {
+ 		tx_pins {
+ 			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GBE_TXD3>,
+ 				 <MT2712_PIN_72_GBE_TXD2__FUNC_GBE_TXD2>,
+@@ -155,7 +155,7 @@
+ 		};
+ 	};
+ 
+-	eth_sleep: eth_sleep {
++	eth_sleep: eth-sleep-pins {
+ 		tx_pins {
+ 			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GPIO71>,
+ 				 <MT2712_PIN_72_GBE_TXD2__FUNC_GPIO72>,
+@@ -181,14 +181,14 @@
+ 		};
+ 	};
+ 
+-	usb0_id_pins_float: usb0_iddig {
++	usb0_id_pins_float: usb0-iddig-pins {
+ 		pins_iddig {
+ 			pinmux = <MT2712_PIN_12_IDDIG_P0__FUNC_IDDIG_A>;
+ 			bias-pull-up;
+ 		};
+ 	};
+ 
+-	usb1_id_pins_float: usb1_iddig {
++	usb1_id_pins_float: usb1-iddig-pins {
+ 		pins_iddig {
+ 			pinmux = <MT2712_PIN_14_IDDIG_P1__FUNC_IDDIG_B>;
+ 			bias-pull-up;
+diff --git a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
+index 1ac0b2cf3d406..fde2b165f55d2 100644
+--- a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
+@@ -249,10 +249,11 @@
+ 		#clock-cells = <1>;
+ 	};
+ 
+-	infracfg: syscon@10001000 {
++	infracfg: clock-controller@10001000 {
+ 		compatible = "mediatek,mt2712-infracfg", "syscon";
+ 		reg = <0 0x10001000 0 0x1000>;
+ 		#clock-cells = <1>;
++		#reset-cells = <1>;
+ 	};
+ 
+ 	pericfg: syscon@10003000 {
+-- 
+2.43.0
+
 
 
 
