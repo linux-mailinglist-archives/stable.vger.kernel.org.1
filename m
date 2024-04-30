@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64808B705D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B7A8B733D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E812C1C2216E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16511C231C0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D573012C80B;
-	Tue, 30 Apr 2024 10:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3570B1E50A;
+	Tue, 30 Apr 2024 11:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGcwuzvI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwB6FDBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92648E560;
-	Tue, 30 Apr 2024 10:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83F78801;
+	Tue, 30 Apr 2024 11:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473901; cv=none; b=oxYrtO3WGthC1mlC2b21l653ac7neo/dS+N44XtBXPa/EGdLB9ogu1n1JMDvHdQclzDTnLAMUlKyJN1lyR9hVLCB+uYmvmyABvBbR3T0IGcFxgaRmUtU6izR7jBzrA4dalnTGFLaYY4zz+thYozr531LzVxCRW5LMRXSup4gVdw=
+	t=1714475807; cv=none; b=l2mM6yN/I4HJsesXMf+bwFZD2k/qMEah98OqpW8Db2iDy8q0w1S958zGfJL7PJCXoNNOO4poRfXs1Xu0GK24Jv4O84hEjTHdIjjJQ7APauY//+R2iKT0ul8KgNR4kkmeYy5KuRHSCvZdc2G26m87RyBDQEiM5c5+r4WVRjrpGLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473901; c=relaxed/simple;
-	bh=gU8l+ODD5Xu6b2D6+w4zdYXkNyUej/zZAPMxNNr2psM=;
+	s=arc-20240116; t=1714475807; c=relaxed/simple;
+	bh=ehIWqThAQzhCcCGHbHtKC78Q9xhaZfkgCwE725AIKF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sypEWx+dJx1/p1gv+xGPlOstreId1igEK1JGZMO/xgamgZvB8ZuCKPwbknxCfL8Nud124OqyKIfnO8hNVRcSiJ/CoXQWhLD6jyXlTL9JckCXcL+PeEtve5lmC/JTqck7x9gk9ouxdP/4XdgCUJiKsf9P9dsG1ixINvPh+k+D+oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGcwuzvI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EACC2BBFC;
-	Tue, 30 Apr 2024 10:45:00 +0000 (UTC)
+	 MIME-Version; b=GU9Y8TjsnserKyVYfqgHJD1QK/H/2wVrTdNC4Wa1ScCxF21YvE0g5FazNHMMz28BJlKz/pX0/hCuS4vx27pgQhnqmBS6h6Fg+Pbsg9rBpIPQ97nBE97gomj6+Htp2lcqMc4D2kpuDq8aY1FOnDNrtyitMaQ3fE18waVWx5A18Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwB6FDBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E112C2BBFC;
+	Tue, 30 Apr 2024 11:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473901;
-	bh=gU8l+ODD5Xu6b2D6+w4zdYXkNyUej/zZAPMxNNr2psM=;
+	s=korg; t=1714475806;
+	bh=ehIWqThAQzhCcCGHbHtKC78Q9xhaZfkgCwE725AIKF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGcwuzvIWOKIRJanDIwBTugJDu6eRaD7Ds5G1+sENDZGKrI55VDPS1zbldc/Fk5UT
-	 OCGwGJjf4KqHT5xCvyGF0epxniSNVCNnqYTdGt7RHeqOt3e/JeIIqC4fL5prW0s6lb
-	 4g1HCOB7PH3g1f6pw2seDXwihqU9R1Ow/4/75NbI=
+	b=QwB6FDBTzWquL2HfpxTFL7cqoA2VCM3PZZOTzFwfR+u9AFkgBbwEDHHqFli63JB72
+	 LscqYpB2p5sWBZta+rmTLl2piJ8jW9DtoNw/vXrHyx63R2AlsIEd8qCTgA+XNncgj8
+	 Ze6sMSMT1oZW/iVxB6ZGprbDsxVotmHYl7gSU1C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yick Xie <yick.xie@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 76/77] udp: preserve the connected status if only UDP cmsg
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 23/80] bridge/br_netlink.c: no need to return void function
 Date: Tue, 30 Apr 2024 12:39:55 +0200
-Message-ID: <20240430103043.384537921@linuxfoundation.org>
+Message-ID: <20240430103044.101067543@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yick Xie <yick.xie@gmail.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
+[ Upstream commit 4fd1edcdf13c0d234543ecf502092be65c5177db ]
 
-If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-"connected" should not be set to 0. Otherwise it stops
-the connected socket from using the cached route.
+br_info_notify is a void function. There is no need to return.
 
-Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b6d0425b816e ("bridge: cfm: Netlink Notifications.")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c |    5 +++--
- net/ipv6/udp.c |    5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ net/bridge/br_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1001,16 +1001,17 @@ int udp_sendmsg(struct sock *sk, struct
+diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
+index e365cf82f0615..a1a703b7d5235 100644
+--- a/net/bridge/br_netlink.c
++++ b/net/bridge/br_netlink.c
+@@ -619,7 +619,7 @@ void br_ifinfo_notify(int event, const struct net_bridge *br,
+ {
+ 	u32 filter = RTEXT_FILTER_BRVLAN_COMPRESSED;
  
- 	if (msg->msg_controllen) {
- 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip_cmsg_send(sk, msg, &ipc,
- 					   sk->sk_family == AF_INET6);
-+			connected = 0;
-+		}
- 		if (unlikely(err < 0)) {
- 			kfree(ipc.opt);
- 			return err;
- 		}
- 		if (ipc.opt)
- 			free = 1;
--		connected = 0;
- 	}
- 	if (!ipc.opt) {
- 		struct ip_options_rcu *inet_opt;
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1324,9 +1324,11 @@ do_udp_sendmsg:
- 		ipc6.opt = opt;
+-	return br_info_notify(event, br, port, filter);
++	br_info_notify(event, br, port, filter);
+ }
  
- 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, &fl6,
- 						    &ipc6);
-+			connected = false;
-+		}
- 		if (err < 0) {
- 			fl6_sock_release(flowlabel);
- 			return err;
-@@ -1338,7 +1340,6 @@ do_udp_sendmsg:
- 		}
- 		if (!(opt->opt_nflen|opt->opt_flen))
- 			opt = NULL;
--		connected = false;
- 	}
- 	if (!opt) {
- 		opt = txopt_get(np);
+ /*
+-- 
+2.43.0
+
 
 
 
