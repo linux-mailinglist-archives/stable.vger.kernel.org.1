@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-42115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A5D8B717B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC01D8B739E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2E51C22587
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A7028884B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A9E12C499;
-	Tue, 30 Apr 2024 10:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF8912D1EA;
+	Tue, 30 Apr 2024 11:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHDf3piH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIQUi4k5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5643F12C476;
-	Tue, 30 Apr 2024 10:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C6212CDAE;
+	Tue, 30 Apr 2024 11:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474619; cv=none; b=OVTLSY3G25fJsVd3BxVO1Hw6yAox0DWiIkfbhbea3AoGkpTl3EDkuLypq3XnL1N6tFSLiDN82lpLwDUQJTCHgbagL0VpMW76GUxn4u2BLp2yiWv4QoELOVrSFWosTePGY6n2DWRCGRzzkAw+0cg7Dd/aj6YVFt7/rj4MDYiqNoQ=
+	t=1714476082; cv=none; b=ucR+rcdr89rnoKgIwz1xHwIvcR+m/xGA5WuUFcGaf8pDDtYVJABCJg+SgKNfEaa2bgIG79ycg05zrQjB0V3jKFL4jEF/BFVGrH6fYvOtvCTu4Ql3udlzm3RawzzAOV/u2ylpcKIjMRvZsrsneoF3oDbDEEmEXJ7ND7Eafk85Vpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474619; c=relaxed/simple;
-	bh=mFgdl9O4zt1mKFB+CUoc6grKNsx38EX1ReKLM0EULgk=;
+	s=arc-20240116; t=1714476082; c=relaxed/simple;
+	bh=57I9rpAInKosPvD+P9LDZb0dYJfsYLKz/3BRx7+Pha0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eoLCnY8FPxFwhRSBTJWGIg0f/FeucnzlhifrVHTDIo2o1/40/uhFQaqc0VgYv12GzMkpBhW+mrah7Gj0c3FA2rawZG8xorML+x++HAnI/XQeFPggjmpRd0y8U17SpLZB0iZ/FUnTAAJFqOq+dJsb87+mFdhaZi/V/dzs09KsGts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHDf3piH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737D0C2BBFC;
-	Tue, 30 Apr 2024 10:56:58 +0000 (UTC)
+	 MIME-Version; b=eqf5PYRhERSnHYHafZ8rTAXO9ntv1Gr86iuoiajiVlmZxMwuhis30U+PdchODpAZ79SmbMJu19sjpIheBRvSPNhhqhWvCZyCvnRoPPMiv1AeuPKNSEtOJs3EZVfb9Q7TlhHZHpFobk3Ga6eFnvd3xIgdZEJvchYLCMTx6nB0YxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIQUi4k5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADDEC2BBFC;
+	Tue, 30 Apr 2024 11:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474618;
-	bh=mFgdl9O4zt1mKFB+CUoc6grKNsx38EX1ReKLM0EULgk=;
+	s=korg; t=1714476081;
+	bh=57I9rpAInKosPvD+P9LDZb0dYJfsYLKz/3BRx7+Pha0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHDf3piHfdvVPrt0vydS4BvqhiHyEwWjB4k8MSoaObUhDauugRBKUsLzbMFWJNn2J
-	 bcO6RQwbparKhU1YgosodnZ8Z7qOvxu3NgCAh5yoyzOWoLE7RSCcVAo85SWl67eqO+
-	 v9sg8wth8Cxnin6EENFAZPWo9sayWEzTScl4EpVc=
+	b=gIQUi4k5atsYhMqSpo4vKYVzpTWqtbvvsSHuXsFNzXk5R6jzva8Q+Sb6+oLrBuX8I
+	 WNGJ1u413Bxf00udWeL3HZdW5TsdD56kMeKQ80FDMZMAGoAb+Su9UNvnfec24xJ6O1
+	 eGq3R2p9pX6f06LQAI4FcWCZQRdj0AuXuHgpyRy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Varadarajan Narayanan <quic_varada@quicinc.com>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 210/228] phy: qcom: m31: match requested regulator name with dt schema
+Subject: [PATCH 5.4 028/107] clk: Remove prepare_lock hold assertion in __clk_release()
 Date: Tue, 30 Apr 2024 12:39:48 +0200
-Message-ID: <20240430103109.865311483@linuxfoundation.org>
+Message-ID: <20240430103045.493204740@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Stephen Boyd <sboyd@kernel.org>
 
-[ Upstream commit 47b3e2f3914ae5e8d9025d65ae5cffcbb54bc9c3 ]
+[ Upstream commit 8358a76cfb47c9a5af627a0c4e7168aa14fa25f6 ]
 
-According to the 'qcom,ipq5332-usb-hsphy.yaml' schema, the 5V
-supply regulator must be defined via the 'vdd-supply' property.
-The driver however requests for the 'vdda-phy' regulator which
-results in the following message when the driver is probed on
-a IPQ5018 based board with a device tree matching to the schema:
+Removing this assertion lets us move the kref_put() call outside the
+prepare_lock section. We don't need to hold the prepare_lock here to
+free memory and destroy the clk_core structure. We've already unlinked
+the clk from the clk tree and by the time the release function runs
+nothing holds a reference to the clk_core anymore so anything with the
+pointer can't access the memory that's being freed anyway. Way back in
+commit 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of
+prepare_lock") we didn't need to have this assertion either.
 
-  qcom-m31usb-phy 5b000.phy: supply vdda-phy not found, using dummy regulator
-  qcom-m31usb-phy 5b000.phy: Registered M31 USB phy
-
-This means that the regulator specified in the device tree never
-gets enabled.
-
-Change the driver to use the 'vdd' name for the regulator as per
-defined in the schema in order to ensure that the corresponding
-regulator gets enabled.
-
-Fixes: 08e49af50701 ("phy: qcom: Introduce M31 USB PHY driver")
-Reviewed-by: Varadarajan Narayanan <quic_varada@quicinc.com>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240406-phy-qcom-m31-regulator-fix-v2-1-c8e9795bc071@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 496eadf821c2 ("clk: Use lockdep asserts to find missing hold of prepare_lock")
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240325184204.745706-2-sboyd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-m31.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/clk.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-m31.c b/drivers/phy/qualcomm/phy-qcom-m31.c
-index 03fb0d4b75d74..20d4c020a83c1 100644
---- a/drivers/phy/qualcomm/phy-qcom-m31.c
-+++ b/drivers/phy/qualcomm/phy-qcom-m31.c
-@@ -297,7 +297,7 @@ static int m31usb_phy_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(qphy->phy),
- 				     "failed to create phy\n");
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 67051ca60920a..85a043e8a9d57 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -3883,8 +3883,6 @@ static void __clk_release(struct kref *ref)
+ {
+ 	struct clk_core *core = container_of(ref, struct clk_core, ref);
  
--	qphy->vreg = devm_regulator_get(dev, "vdda-phy");
-+	qphy->vreg = devm_regulator_get(dev, "vdd");
- 	if (IS_ERR(qphy->vreg))
- 		return dev_err_probe(dev, PTR_ERR(qphy->vreg),
- 				     "failed to get vreg\n");
+-	lockdep_assert_held(&prepare_lock);
+-
+ 	clk_core_free_parent_map(core);
+ 	kfree_const(core->name);
+ 	kfree(core);
 -- 
 2.43.0
 
