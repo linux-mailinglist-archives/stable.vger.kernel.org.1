@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF808B72E3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837D38B7338
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 403D31F23344
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4DD71C23251
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A8C12CDB2;
-	Tue, 30 Apr 2024 11:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDA212CDAE;
+	Tue, 30 Apr 2024 11:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F06Vqg4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XMp2vOs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3062D211C;
-	Tue, 30 Apr 2024 11:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBC317592;
+	Tue, 30 Apr 2024 11:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475578; cv=none; b=CyW1I+lbnrPLDnPSC5aeydlHXTPbVhTtGqwA1/iHubo7PD5d9XiAV89IbSKM+dWTUP4SSXXvg5zgncUFstXZxJF46Xx3C6d2Qpl3gBvpPrbz7UbvSks6HnQHgKUm/ifpWXPWAK1w0eNWW0b6miX0yl4rSnCK6cUB/QHAvlTAnv0=
+	t=1714475790; cv=none; b=A/LvgGsgrU68ZL8Moq8nRabM1iePO8qa82lQFgai5mRVb69HwYfuCI+g59HfZyUmxfuGPlr12ILtH8ROP1Sx5zFQTr7wxfgbYEwzdM/wSTsr757pHYYYvn/Aiw+nq2RAvRM+pz+nn+V7kKgmxEzoQacjltQKYFClcKU9DfJHmds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475578; c=relaxed/simple;
-	bh=8bcNR0bGGuezheBWTnf3CQ+ceOdL1giCkj2EGtCfDgM=;
+	s=arc-20240116; t=1714475790; c=relaxed/simple;
+	bh=ZNdIpC9GODWzTrm+G1nDkIxYggwgQ1kGFmXcz7GblCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b93+vCbd8UpMc2kt6xQTs+hgFWvXDmN+LPHrb36vFdUQxoFHCtOSEvNXn9WhBzt/2R4oYkCGl+2FS+Vb1X5dWRii7jds4FfLeH6x8zF1jw7RBjQyrQNjJE3verhzKUEGKjaEWhS52WdWEahetrsdHGxKravDAhDkF7BEwWORRcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F06Vqg4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEDAC2BBFC;
-	Tue, 30 Apr 2024 11:12:57 +0000 (UTC)
+	 MIME-Version; b=uZfdSpiLiaymFTtXbaA/NEQ0N9riuIQ/MNhOjav5McDpHQihmspAIE60AiXhX0znMkCchYPBzkj3Suajiz8RvtIpYbVpEz88X00/OA7lYfWuASxF13rTgKTH5APeeLKSjirbBGDXFTlb2jI2ROWCtf1cVxqM445TcboXmc1/+Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XMp2vOs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE64EC2BBFC;
+	Tue, 30 Apr 2024 11:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475578;
-	bh=8bcNR0bGGuezheBWTnf3CQ+ceOdL1giCkj2EGtCfDgM=;
+	s=korg; t=1714475790;
+	bh=ZNdIpC9GODWzTrm+G1nDkIxYggwgQ1kGFmXcz7GblCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F06Vqg4obopCwz4ptnmJbQnK+pEJ/2qRD69fykFirJeR7e2P6I8Frj3ZmsoRKpbxp
-	 VPzfjhUywJbMKqg3+uL0yOsFTFY8uEDdaE+mC4oZp5DniD6do6/+odv/mhPZOLpTeb
-	 Su2UK6J7p5IaPHCyj7ryF8jJIW8hBFk9XsdIQ9vs=
+	b=1XMp2vOsXGhFYFkmsGNDJEtYXucBHbO+lNeOGvvXK5VacGFbYlbS/o3TcsF58dSG6
+	 4LCB8ufvWXHIMmvIsKT1DD0GaPr04Cqqw/77LfYLMqgkPIRwW1rvq9RV/aYUEW4eIe
+	 97mixy/QVEbq+NDgio4nWWA+gHHGMUMciGUTu9nE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 139/186] arm64: dts: qcom: sm8450: Fix the msi-map entries
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 19/80] wifi: iwlwifi: mvm: return uid from iwl_mvm_build_scan_cmd
 Date: Tue, 30 Apr 2024 12:39:51 +0200
-Message-ID: <20240430103102.068304964@linuxfoundation.org>
+Message-ID: <20240430103043.981706039@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-commit ecc3ac293ed15ac2536e9fde2810154486f84010 upstream.
+[ Upstream commit bada85a3f584763deadd201147778c3e791d279c ]
 
-While adding the GIC ITS MSI support, it was found that the msi-map entries
-needed to be swapped to receive MSIs from the endpoint.
+This function is supposed to return a uid on success, and an errno in
+failure.
+But it currently returns the return value of the specific cmd version
+handler, which in turn returns 0 on success and errno otherwise.
+This means that on success, iwl_mvm_build_scan_cmd will return 0
+regardless if the actual uid.
+Fix this by returning the uid if the handler succeeded.
 
-But later it was identified that the swapping was needed due to a bug in
-the Qualcomm PCIe controller driver. And since the bug is now fixed with
-commit bf79e33cdd89 ("PCI: qcom: Enable BDF to SID translation properly"),
-let's fix the msi-map entries also to reflect the actual mapping in the
-hardware.
-
-Cc: stable@vger.kernel.org # 6.3: bf79e33cdd89 ("PCI: qcom: Enable BDF to SID translation properly")
-Fixes: ff384ab56f16 ("arm64: dts: qcom: sm8450: Use GIC-ITS for PCIe0 and PCIe1")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240318-pci-bdf-sid-fix-v1-1-acca6c5d9cf1@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 687db6ff5b70 ("iwlwifi: scan: make new scan req versioning flow")
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Link: https://msgid.link/20240415114847.5e2d602b3190.I4c4931021be74a67a869384c8f8ee7463e0c7857@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -1774,12 +1774,8 @@
- 			ranges = <0x01000000 0x0 0x00000000 0x0 0x60200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x60300000 0x0 0x60300000 0x0 0x3d00000>;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index e4fd58f043ce2..c0ffa26bc5aaa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -2571,7 +2571,8 @@ static int iwl_mvm_build_scan_cmd(struct iwl_mvm *mvm,
+ 		if (ver_handler->version != scan_ver)
+ 			continue;
  
--			/*
--			 * MSIs for BDF (1:0.0) only works with Device ID 0x5980.
--			 * Hence, the IDs are swapped.
--			 */
--			msi-map = <0x0 &gic_its 0x5981 0x1>,
--				  <0x100 &gic_its 0x5980 0x1>;
-+			msi-map = <0x0 &gic_its 0x5980 0x1>,
-+				  <0x100 &gic_its 0x5981 0x1>;
- 			msi-map-mask = <0xff00>;
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
-@@ -1888,12 +1884,8 @@
- 			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
+-		return ver_handler->handler(mvm, vif, params, type, uid);
++		err = ver_handler->handler(mvm, vif, params, type, uid);
++		return err ? : uid;
+ 	}
  
--			/*
--			 * MSIs for BDF (1:0.0) only works with Device ID 0x5a00.
--			 * Hence, the IDs are swapped.
--			 */
--			msi-map = <0x0 &gic_its 0x5a01 0x1>,
--				  <0x100 &gic_its 0x5a00 0x1>;
-+			msi-map = <0x0 &gic_its 0x5a00 0x1>,
-+				  <0x100 &gic_its 0x5a01 0x1>;
- 			msi-map-mask = <0xff00>;
- 			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
+ 	err = iwl_mvm_scan_umac(mvm, vif, params, type, uid);
+-- 
+2.43.0
+
 
 
 
