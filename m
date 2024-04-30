@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-41884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 226148B703D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C648B7299
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF78285FC8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D6A2B2098C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C2212CDB1;
-	Tue, 30 Apr 2024 10:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691A712C819;
+	Tue, 30 Apr 2024 11:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOvOSlvn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qpJb3uZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F8D12C49A;
-	Tue, 30 Apr 2024 10:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2700D12C46E;
+	Tue, 30 Apr 2024 11:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473850; cv=none; b=UxYfF02un3Svbgb8Ae4K/wtN/XrX0X6NJXNKz0mzJUbaLrKkPqjnee59edVNUzDwr9dRUV8yVQYQ1z9KGFgqajh0R6bF6ZxZx7oLE6c49/nVIC3gj6ITESlXEU5nni6d0RVhu1iQbTzEc4iu8CApQoJZx30jQZ8elOn7sC0H2HQ=
+	t=1714475414; cv=none; b=hLtch0u9x9VE+4DBFrbO5XFvMo4/ndI7GoZ7fypLWlK+ir67vwQ4lAtEVrxOYYrbb6t2txF6UuHu0mAk7MI9/wgaBo2FBS0K+HA9ksG2OCObBp6Kt7N7ITBNATzNJtynMRhF8ePUg0lZzn/x/DjR1oNikJXQb1EePtPCsjLXQT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473850; c=relaxed/simple;
-	bh=nFUnYfwnagLsWBf8kRrAO+JjXsTaPP2/f48D+WqBVP8=;
+	s=arc-20240116; t=1714475414; c=relaxed/simple;
+	bh=X5ozm7nw+7sCi/XqNl1WqpacrqUoihbfuzfmA+0C1G4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJYrhCII6zjwodvT3Dq5KvNZFQglSFqTp8jZUm0NmZbIKCCnMhq7cT90hkdCzvhEqnBRwWvWRDTcOAvTYYw/RRZmwDGdJtlrIuFxxVvrJhFuIEQ70Hmt2jsliBJFtarYeWIOyI1GHX4mrlutxln6dU84V8BHX2CPzV9bvBkHGSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOvOSlvn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434E2C2BBFC;
-	Tue, 30 Apr 2024 10:44:10 +0000 (UTC)
+	 MIME-Version; b=TYYnVD/CgSaF2x+X1piKf34fP5xvn+Rp5WNZk13skthwjmemTlTeWsA7Rzasfk53+uhjaZINoqLSUAFONfyMtms+vt+yvL11MAlkWfD0qts5GUe6BcwevD0bo6d/ndIyUpX2gKNu6N0kIDg3D3m50jk80UmfiOIjwQui05XbGo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qpJb3uZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4409C2BBFC;
+	Tue, 30 Apr 2024 11:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473850;
-	bh=nFUnYfwnagLsWBf8kRrAO+JjXsTaPP2/f48D+WqBVP8=;
+	s=korg; t=1714475414;
+	bh=X5ozm7nw+7sCi/XqNl1WqpacrqUoihbfuzfmA+0C1G4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vOvOSlvnxQB7JbTcv4Mz9f/jQnolnDGsOuQNSy/DI8NSRa7izrD9IXGOTjSpP5D3V
-	 VDMA7C5l2z9S2Kv9Mzc8a93sZKkZICJhhavc/ezPur9lNGRlXe1+BEpDGyVMMfOVGd
-	 UJdTtpyBOqsRvmwo+RoXH+VUCuKtcsPJVYcENPxQ=
+	b=1qpJb3uZDpc3OIkcDW7BLgKWZ092rQ3cbLrI8YqJ3GI4RI1w6ukknik38xhHAitI4
+	 mddFz+j2Djly2bP27JWS+LTA4KcTwU8R1FYZOYuxZF8ca+SJTKsT7SoHdPf+SkasSa
+	 iUVUAh91Cno3cFSk3DfHSlxOJpgmmdFIZmrkXDLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 21/77] drm: nv04: Fix out of bounds access
+Subject: [PATCH 6.6 088/186] net: ti: icssg-prueth: Fix signedness bug in prueth_init_rx_chns()
 Date: Tue, 30 Apr 2024 12:39:00 +0200
-Message-ID: <20240430103041.753275789@linuxfoundation.org>
+Message-ID: <20240430103100.587928278@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kobuk <m.kobuk@ispras.ru>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit cf92bb778eda7830e79452c6917efa8474a30c1e ]
+[ Upstream commit 4dcd0e83ea1d1df9b2e0174a6d3e795b3477d64e ]
 
-When Output Resource (dcb->or) value is assigned in
-fabricate_dcb_output(), there may be out of bounds access to
-dac_users array in case dcb->or is zero because ffs(dcb->or) is
-used as index there.
-The 'or' argument of fabricate_dcb_output() must be interpreted as a
-number of bit to set, not value.
+The rx_chn->irq[] array is unsigned int but it should be signed for the
+error handling to work.  Also if k3_udma_glue_rx_get_irq() returns zero
+then we should return -ENXIO instead of success.
 
-Utilize macros from 'enum nouveau_or' in calls instead of hardcoding.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2e5702aff395 ("drm/nouveau: fabricate DCB encoder table for iMac G4")
-Fixes: 670820c0e6a9 ("drm/nouveau: Workaround incorrect DCB entry on a GeForce3 Ti 200.")
-Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240411110854.16701-1-m.kobuk@ispras.ru
+Fixes: 128d5874c082 ("net: ti: icssg-prueth: Add ICSSG ethernet driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: MD Danish Anwar <danishanwar@ti.com>
+Link: https://lore.kernel.org/r/05282415-e7f4-42f3-99f8-32fde8f30936@moroto.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bios.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_bios.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
-@@ -25,6 +25,7 @@
- #include <drm/drmP.h>
- 
- #include "nouveau_drv.h"
-+#include "nouveau_bios.h"
- #include "nouveau_reg.h"
- #include "dispnv04/hw.h"
- #include "nouveau_encoder.h"
-@@ -1674,7 +1675,7 @@ apply_dcb_encoder_quirks(struct drm_devi
- 	 */
- 	if (nv_match_device(dev, 0x0201, 0x1462, 0x8851)) {
- 		if (*conn == 0xf2005014 && *conf == 0xffffffff) {
--			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, 1);
-+			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, DCB_OUTPUT_B);
- 			return false;
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index c09ecb3da7723..925044c16c6ae 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -421,12 +421,14 @@ static int prueth_init_rx_chns(struct prueth_emac *emac,
+ 		if (!i)
+ 			fdqring_id = k3_udma_glue_rx_flow_get_fdq_id(rx_chn->rx_chn,
+ 								     i);
+-		rx_chn->irq[i] = k3_udma_glue_rx_get_irq(rx_chn->rx_chn, i);
+-		if (rx_chn->irq[i] <= 0) {
+-			ret = rx_chn->irq[i];
++		ret = k3_udma_glue_rx_get_irq(rx_chn->rx_chn, i);
++		if (ret <= 0) {
++			if (!ret)
++				ret = -ENXIO;
+ 			netdev_err(ndev, "Failed to get rx dma irq");
+ 			goto fail;
  		}
++		rx_chn->irq[i] = ret;
  	}
-@@ -1760,26 +1761,26 @@ fabricate_dcb_encoder_table(struct drm_d
- #ifdef __powerpc__
- 	/* Apple iMac G4 NV17 */
- 	if (of_machine_is_compatible("PowerMac4,5")) {
--		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, 1);
--		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, 2);
-+		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, DCB_OUTPUT_B);
-+		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, DCB_OUTPUT_C);
- 		return;
- 	}
- #endif
  
- 	/* Make up some sane defaults */
- 	fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG,
--			     bios->legacy.i2c_indices.crt, 1, 1);
-+			     bios->legacy.i2c_indices.crt, 1, DCB_OUTPUT_B);
- 
- 	if (nv04_tv_identify(dev, bios->legacy.i2c_indices.tv) >= 0)
- 		fabricate_dcb_output(dcb, DCB_OUTPUT_TV,
- 				     bios->legacy.i2c_indices.tv,
--				     all_heads, 0);
-+				     all_heads, DCB_OUTPUT_A);
- 
- 	else if (bios->tmds.output0_script_ptr ||
- 		 bios->tmds.output1_script_ptr)
- 		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS,
- 				     bios->legacy.i2c_indices.panel,
--				     all_heads, 1);
-+				     all_heads, DCB_OUTPUT_B);
- }
- 
- static int
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
