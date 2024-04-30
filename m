@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-42458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C1F8B7321
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7CC8B73DD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFB50287562
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166021F22079
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0E012D76F;
-	Tue, 30 Apr 2024 11:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B0712D209;
+	Tue, 30 Apr 2024 11:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIiMu84+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAarsMvA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256BB12D776;
-	Tue, 30 Apr 2024 11:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3400A12CDAE;
+	Tue, 30 Apr 2024 11:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475730; cv=none; b=ZZZGfsIj+FTZtVUq4V8ewMg9wWNSkRENjgI8MXjpBD6yhGXT8eiABBi/UPh1FqWHHlb0PuqPtm6sfOXIW6QLSkriRjOgBraYQDSV1SqSgi1XeOdm9vcg2kiToLdh+d+3VFs/GoyKlDt6DfMq/zP8D3TXVsk1KNgukWil+T9bkkw=
+	t=1714476248; cv=none; b=KHsXomr7LhPh1yRyG4xAy1Mn/I20nrOV2iCnXfmYO3ApRijXnf+vh/zBCu5HsdK+JbeQRwC7CPXAk32U/5QJ1MqSUZQZVBUF2AucJ5OAsmpCR/rtObPS/UhjF+5uxuv0x4M95xmPJqh7Kk98mCcPZmUHUmeqF3uuvULpn3JLSaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475730; c=relaxed/simple;
-	bh=cZcyCJYZaHx9qUifVohoEXxZNbZn+WzDYY1lHCiqxH8=;
+	s=arc-20240116; t=1714476248; c=relaxed/simple;
+	bh=GS5DPl2Z01Q0Z8nQ7bAc3ppGysfmMFDSvtNwIvMy6Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N8dUI9amy3nLYvCQDp2vN0i63ObgzoANmmMS69rtHdj63/z024aKX2mbz9ojAIRY/LCRwTFg4LZ6keAjacyiq98k57AOM+cD91HIMsU+t6QRvMAqlX6KVE6jmKOi4eXVYoLiC1OT1oEv6a8HryaNT29FCfhycyOgqUKTcEZ67BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIiMu84+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D81DC2BBFC;
-	Tue, 30 Apr 2024 11:15:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W0KFMMmyzxayPqLxZ8xzoH1Xcl4XcldbRNdkTRw1CJxgKJUJUgIHxciQLN9UEIFCHSaR02tHqXC4mgv45zNJmbrDqSuc07nY7qjKbtt5RXHXLmIM+hRyOfQV2G+n/gtvei+KPOpXAjcv4kAVo3xoNeO/+EloEb7DDQz86/vY/YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAarsMvA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29C5C2BBFC;
+	Tue, 30 Apr 2024 11:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475730;
-	bh=cZcyCJYZaHx9qUifVohoEXxZNbZn+WzDYY1lHCiqxH8=;
+	s=korg; t=1714476248;
+	bh=GS5DPl2Z01Q0Z8nQ7bAc3ppGysfmMFDSvtNwIvMy6Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIiMu84+qT4QRaPGjCzSimt0XuFTosdG2hp0nKjiIs0blbWs5EeCxoHgDHmnvmMSn
-	 UMvBKPiZgfA7V5e66GFXfVSaAQtmv8NHM55pfaheFrLnK8vXc8oNJxl8+QosAouQqD
-	 ug/CoXmAxAvYBtGeMjasGJnGZQlQrQLhdjfGnqeg=
+	b=fAarsMvAaChaIJD+KXAfmq6stgs95N66AEjWnpKm6IgpvKKoGjHGlMpyWh6fGqo81
+	 QwhoUjg7+HkkXfLo2rGghhlV8q4Q5Wg1R6hjZ+QpdPQfdj+SGKcuGpZCiT7PepCL3I
+	 jhEnxF2n1FUYfvlP6tL1L/Gxze2aohmbZvJr4vD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=D0=9C=D0=B8=D1=85=D0=B0=D0=B8=D0=BB=20=D0=9D=D0=BE=D0=B2=D0=BE=D1=81=D0=B5=D0=BB=D0=BE=D0=B2?= <m.novosyolov@rosalinux.ru>,
-	=?UTF-8?q?=D0=98=D0=BB=D1=8C=D1=84=D0=B0=D1=82=20=D0=93=D0=B0=D0=BF=D1=82=D1=80=D0=B0=D1=85=D0=BC=D0=B0=D0=BD=D0=BE=D0=B2?= <i.gaptrakhmanov@rosalinux.ru>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Rik van Riel <riel@surriel.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 186/186] bounds: Use the right number of bits for power-of-two CONFIG_NR_CPUS
-Date: Tue, 30 Apr 2024 12:40:38 +0200
-Message-ID: <20240430103103.430898146@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 079/107] serial: core: Provide port lock wrappers
+Date: Tue, 30 Apr 2024 12:40:39 +0200
+Message-ID: <20240430103046.989258407@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,46 +64,138 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 5af385f5f4cddf908f663974847a4083b2ff2c79 upstream.
+[ Upstream commit b0af4bcb49464c221ad5f95d40f2b1b252ceedcc ]
 
-bits_per() rounds up to the next power of two when passed a power of
-two.  This causes crashes on some machines and configurations.
+When a serial port is used for kernel console output, then all
+modifications to the UART registers which are done from other contexts,
+e.g. getty, termios, are interference points for the kernel console.
 
-Reported-by: Михаил Новоселов <m.novosyolov@rosalinux.ru>
-Tested-by: Ильфат Гаптрахманов <i.gaptrakhmanov@rosalinux.ru>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3347
-Link: https://lore.kernel.org/all/1c978cf1-2934-4e66-e4b3-e81b04cb3571@rosalinux.ru/
-Fixes: f2d5dcb48f7b (bounds: support non-power-of-two CONFIG_NR_CPUS)
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+So far this has been ignored and the printk output is based on the
+principle of hope. The rework of the console infrastructure which aims to
+support threaded and atomic consoles, requires to mark sections which
+modify the UART registers as unsafe. This allows the atomic write function
+to make informed decisions and eventually to restore operational state. It
+also allows to prevent the regular UART code from modifying UART registers
+while printk output is in progress.
+
+All modifications of UART registers are guarded by the UART port lock,
+which provides an obvious synchronization point with the console
+infrastructure.
+
+Provide wrapper functions for spin_[un]lock*(port->lock) invocations so
+that the console mechanics can be applied later on at a single place and
+does not require to copy the same logic all over the drivers.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20230914183831.587273-2-john.ogness@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 54c4ec5f8c47 ("serial: mxs-auart: add spinlock around changing cts state")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bounds.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/serial_core.h | 79 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
---- a/kernel/bounds.c
-+++ b/kernel/bounds.c
-@@ -19,7 +19,7 @@ int main(void)
- 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
- 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
- #ifdef CONFIG_SMP
--	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
-+	DEFINE(NR_CPUS_BITS, order_base_2(CONFIG_NR_CPUS));
- #endif
- 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
- #ifdef CONFIG_LRU_GEN
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index 10f209d54f18a..bc374d9df99fe 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -255,6 +255,85 @@ struct uart_port {
+ 	void			*private_data;		/* generic platform data pointer */
+ };
+ 
++/**
++ * uart_port_lock - Lock the UART port
++ * @up:		Pointer to UART port structure
++ */
++static inline void uart_port_lock(struct uart_port *up)
++{
++	spin_lock(&up->lock);
++}
++
++/**
++ * uart_port_lock_irq - Lock the UART port and disable interrupts
++ * @up:		Pointer to UART port structure
++ */
++static inline void uart_port_lock_irq(struct uart_port *up)
++{
++	spin_lock_irq(&up->lock);
++}
++
++/**
++ * uart_port_lock_irqsave - Lock the UART port, save and disable interrupts
++ * @up:		Pointer to UART port structure
++ * @flags:	Pointer to interrupt flags storage
++ */
++static inline void uart_port_lock_irqsave(struct uart_port *up, unsigned long *flags)
++{
++	spin_lock_irqsave(&up->lock, *flags);
++}
++
++/**
++ * uart_port_trylock - Try to lock the UART port
++ * @up:		Pointer to UART port structure
++ *
++ * Returns: True if lock was acquired, false otherwise
++ */
++static inline bool uart_port_trylock(struct uart_port *up)
++{
++	return spin_trylock(&up->lock);
++}
++
++/**
++ * uart_port_trylock_irqsave - Try to lock the UART port, save and disable interrupts
++ * @up:		Pointer to UART port structure
++ * @flags:	Pointer to interrupt flags storage
++ *
++ * Returns: True if lock was acquired, false otherwise
++ */
++static inline bool uart_port_trylock_irqsave(struct uart_port *up, unsigned long *flags)
++{
++	return spin_trylock_irqsave(&up->lock, *flags);
++}
++
++/**
++ * uart_port_unlock - Unlock the UART port
++ * @up:		Pointer to UART port structure
++ */
++static inline void uart_port_unlock(struct uart_port *up)
++{
++	spin_unlock(&up->lock);
++}
++
++/**
++ * uart_port_unlock_irq - Unlock the UART port and re-enable interrupts
++ * @up:		Pointer to UART port structure
++ */
++static inline void uart_port_unlock_irq(struct uart_port *up)
++{
++	spin_unlock_irq(&up->lock);
++}
++
++/**
++ * uart_port_lock_irqrestore - Unlock the UART port, restore interrupts
++ * @up:		Pointer to UART port structure
++ * @flags:	The saved interrupt flags for restore
++ */
++static inline void uart_port_unlock_irqrestore(struct uart_port *up, unsigned long flags)
++{
++	spin_unlock_irqrestore(&up->lock, flags);
++}
++
+ static inline int serial_port_in(struct uart_port *up, int offset)
+ {
+ 	return up->serial_in(up, offset);
+-- 
+2.43.0
+
 
 
 
