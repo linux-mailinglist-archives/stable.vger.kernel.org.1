@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8AE8B7240
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:06:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4118B70D0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC8C21C227ED
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:06:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA6892880EA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F2C12C534;
-	Tue, 30 Apr 2024 11:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C3912C48B;
+	Tue, 30 Apr 2024 10:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JoFy+Ssy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gnj+cs/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D5912C462;
-	Tue, 30 Apr 2024 11:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C4E12B176;
+	Tue, 30 Apr 2024 10:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475168; cv=none; b=gc5pJ6pXwCj3EGUR7zwvgmPYdLloZCnDqicDE/9fFuEILPu7JXtA4bdxTxwU0rHU2MPsZZoH1B2khZ6fYuCiIQF+icQWElnd+LnXZpgjY/7R2RfjyFnzPAk8HhkOZou+CQ4EKkWvuuIWrJoZTJOu9gTQacjGq+8DaUnZ79FTYPo=
+	t=1714474211; cv=none; b=ZHVv3mgxkVFfNrkz7xsMIQj+dt/CU8rV+OWAfqOk+v1rEdWg9jwdm5adJHVYMJhbAPRVhToKLz3Cc9Xv8txIerMxkhjrVgudJlkIrde9m1XwM+iadVDUes8BA5Xw7xDpzWvUtrgazjYyTxLzo2tt3GEH8MD6WSmdDPRPE+IDMw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475168; c=relaxed/simple;
-	bh=ZTS0vDH/S2dfaLlU9vKOyDhrfWWNZKsf0hpjiLatg6g=;
+	s=arc-20240116; t=1714474211; c=relaxed/simple;
+	bh=0MvhvPI2mi2P7YjGhCXWkCncm7S5Wss6+8NjzwZu5zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L1Ckic8GVB7NkPYIfqXbXViZWcHTeBiW0YTWOV12jKAVv4cyqaohaRczOgOyOPK8dlYe/5hjrLr6CoGmXH0jbvQ8/hegmhE9oaxi3JIBrIsjYA6MlKQ+/MZ9m2w4/S8Ynf/aSb9yM+8iRS6Oqxze/bcupOVIcQ+VGLe63NRlEw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JoFy+Ssy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68ABC2BBFC;
-	Tue, 30 Apr 2024 11:06:07 +0000 (UTC)
+	 MIME-Version; b=nzTp7NWV78jnVQmNcsS7Z8MQN6O3f+MHQYDHPei99/CxsZIWEOX8jRnazVBNf1GbUNNjY0CectbknWorz8RpoAU8gcw4UkXW0sn2/uiESs7bldc4njwYnpuSuNPK2umDwmsJ+Tc4mceAYtrN7fWTCGnDyaoiy3/WJvJ3lZPs6zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gnj+cs/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C16C2BBFC;
+	Tue, 30 Apr 2024 10:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475168;
-	bh=ZTS0vDH/S2dfaLlU9vKOyDhrfWWNZKsf0hpjiLatg6g=;
+	s=korg; t=1714474211;
+	bh=0MvhvPI2mi2P7YjGhCXWkCncm7S5Wss6+8NjzwZu5zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JoFy+SsyvhjNtW9xPnczHpqt76u79mMWcOmhakljzV7FSqS8xYSCj9zrD0V/HDmeD
-	 K3JoJPk6R8hZfCpnNT/wWxQSjnRXpK3XZKcJbWdJr9W6Xyp/K+ErsCSTEkdfxFDEA3
-	 6UmekuP2HOGPOvtf2VElBlmCkuvtkgQolH3KB7ts=
+	b=Gnj+cs/5Y3dlSUk0hHKHYyBbCg94uXuxhtRoxSkfbuc8+/q9C2vy+EAKziXwknOns
+	 4EFVLvHZidYbnRK3ZkZapuylvjNxMugFwixvEGPCj9xRnAnwp6Io+MFSH4Uvb2Dwm5
+	 OUtmLsnAUwXHC7OLjEAs8KWU6Yhm6xASf1qPU68o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/186] arm64: dts: mediatek: mt8195: Add missing gce-client-reg to mutex1
+Subject: [PATCH 6.8 089/228] Bluetooth: btusb: mediatek: Fix double free of skb in coredump
 Date: Tue, 30 Apr 2024 12:37:47 +0200
-Message-ID: <20240430103058.463640978@linuxfoundation.org>
+Message-ID: <20240430103106.371852475@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Sean Wang <sean.wang@mediatek.com>
 
-[ Upstream commit 58f126296c3c52d02bf3fad1f68c331d718c4a9b ]
+[ Upstream commit 18bdb386a1a30e7a3d7732a98e45e69cf6b5710d ]
 
-Add the missing mediatek,gce-client-reg property to the mutex1 node to
-allow it to use the GCE. This prevents the "can't parse gce-client-reg
-property" error from being printed and should result in better
-performance.
+hci_devcd_append() would free the skb on error so the caller don't
+have to free it again otherwise it would cause the double free of skb.
 
-Fixes: 92d2c23dc269 ("arm64: dts: mt8195: add display node for vdosys1")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20240229-gce-client-reg-add-missing-mt8192-95-v1-4-b12c233a8a33@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 0b7015132878 ("Bluetooth: btusb: mediatek: add MediaTek devcoredump support")
+Reported-by : Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/btmtk.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 884e56f4a93bb..2bb9d9aa65fed 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -2850,6 +2850,7 @@
- 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
- 			clocks = <&vdosys1 CLK_VDO1_DISP_MUTEX>;
- 			clock-names = "vdo1_mutex";
-+			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0x1000 0x1000>;
- 			mediatek,gce-events = <CMDQ_EVENT_VDO1_STREAM_DONE_ENG_0>;
- 		};
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index ac8ebccd35075..812fd2a8f853e 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -380,8 +380,10 @@ int btmtk_process_coredump(struct hci_dev *hdev, struct sk_buff *skb)
+ 	switch (data->cd_info.state) {
+ 	case HCI_DEVCOREDUMP_IDLE:
+ 		err = hci_devcd_init(hdev, MTK_COREDUMP_SIZE);
+-		if (err < 0)
++		if (err < 0) {
++			kfree_skb(skb);
+ 			break;
++		}
+ 		data->cd_info.cnt = 0;
  
+ 		/* It is supposed coredump can be done within 5 seconds */
+@@ -407,9 +409,6 @@ int btmtk_process_coredump(struct hci_dev *hdev, struct sk_buff *skb)
+ 		break;
+ 	}
+ 
+-	if (err < 0)
+-		kfree_skb(skb);
+-
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(btmtk_process_coredump);
 -- 
 2.43.0
 
