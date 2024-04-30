@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-42733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5960B8B7461
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDBA48B73EA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ECB41F229E3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B34D1C22EE4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738A312D757;
-	Tue, 30 Apr 2024 11:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D58912D210;
+	Tue, 30 Apr 2024 11:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmzhYWDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py6zVVzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3009712C805;
-	Tue, 30 Apr 2024 11:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB7E12C47A;
+	Tue, 30 Apr 2024 11:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476609; cv=none; b=tXLFi/jpH1zun89lmxFp6Yzlu9JdZKF1xP+U/f2nug9yhNGaPTGAshyJLv98QdkzW/VSb2nWJ0Aze78dk+5NMJFdaity/QeHtd54NTTvYfeSW/cPe90JbB2v2wjCpRuR+n+HSZoCoOLHvh5j1GXcjRtvr1qMo5NBJ/fBXlCY7gI=
+	t=1714476289; cv=none; b=QbHDAMuBlD8SdxtlrJyFvTT1Tg7IGP0i1d4DXi7ydPCIun7H3TD4JUuv55D8TjXgk1WDjSw/VU4EVXsJzOSAupgF/4u6ZrXwc29Ze6bsPx0KfxJxWMsprUNkcVsEzhH9Nf4Bz+XcQWhfLTo9jWt6aAVaKZEOcCGzO7jTU6Cd7tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476609; c=relaxed/simple;
-	bh=fDjd2iAGdyzglUlN9QcICJGvM3XBGfV3WJa1HwCQh4U=;
+	s=arc-20240116; t=1714476289; c=relaxed/simple;
+	bh=5u5amtbsZmtUSotF/5X8qlmYceNx23czu+Wlvf86g/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jz5L9CkhiubGUB8k3ay1HA+nOc9dIO8xjzrs5iFFIzEQMkNAFeWorr8TrJ22eOksbdTA2K+JiP0uo+H9XMkyHRjvLfhUGMoRkngQw2g3OAvPmLvwxXvR22mKHity7JwPARO00Hq11IVoehygqjOPhyJlgWrzAReUoctUW8jYebU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmzhYWDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9CDC4AF19;
-	Tue, 30 Apr 2024 11:30:08 +0000 (UTC)
+	 MIME-Version; b=XwC0Oojisv4YBwjBEK9bVNX01is35GCyfb0ADAaL+rn886ISSqtQdbifmBBOjehdCMdXQ10QuiGMJRuc/SBY7PHrKfIc15vG9967sMHiekau+darlEUwd3XtlqTg3a91MmcyWrNiVUWccRM2qLo/9MEtXdfKxxNieyt/PwjvMuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py6zVVzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFF4C2BBFC;
+	Tue, 30 Apr 2024 11:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476609;
-	bh=fDjd2iAGdyzglUlN9QcICJGvM3XBGfV3WJa1HwCQh4U=;
+	s=korg; t=1714476288;
+	bh=5u5amtbsZmtUSotF/5X8qlmYceNx23czu+Wlvf86g/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmzhYWDJsV8nZTUW+ZX0qc8FgUPk5SRgKtUvsXpysQl+FD637EXPO1TBefAxba3Tg
-	 hKhiYvxzC2B8fZhLuEs6Zh8V/TaTAf8HscL6eTuOOHkt5Nu6PDdwjQolEdtLIhuKDn
-	 ISuZyEfVFQEp4+kOVcodqyNp3uOU6ekEphzZfz+w=
+	b=Py6zVVzXphTZuCoH6AWKvR6kCDVnBTsQ1LRZw5bKdILcVJrR8W+rySI6wSz9WN+Og
+	 XYdEKJKf0RFhC6RHXhduVWJ86hFBM4mxd3BXI1lDlywcfulgm60H2/mkE5fUI6c+Cu
+	 hTYbFhbPnaV2cfs/heIYa8OxSwBXy3gEO+8ofgCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 084/110] ethernet: Add helper for assigning packet type when dest address does not match device address
-Date: Tue, 30 Apr 2024 12:40:53 +0200
-Message-ID: <20240430103050.047610283@linuxfoundation.org>
+Subject: [PATCH 5.4 094/107] ethernet: Add helper for assigning packet type when dest address does not match device address
+Date: Tue, 30 Apr 2024 12:40:54 +0200
+Message-ID: <20240430103047.432051153@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,7 +86,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/include/linux/etherdevice.h
 +++ b/include/linux/etherdevice.h
-@@ -594,6 +594,31 @@ static inline void eth_hw_addr_gen(struc
+@@ -532,6 +532,31 @@ static inline unsigned long compare_ethe
  }
  
  /**
