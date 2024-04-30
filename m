@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-42040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A54C8B7114
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407D48B71AE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BECD71F217F6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F006A282717
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE24D12CD84;
-	Tue, 30 Apr 2024 10:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAC912C490;
+	Tue, 30 Apr 2024 10:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb05J+Up"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYG3K1u/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC3912C462;
-	Tue, 30 Apr 2024 10:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2697464;
+	Tue, 30 Apr 2024 10:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474366; cv=none; b=tHnXBnGJWh1J0mmPoE8UCI/vyNV+bXEUaITWO3ml0i8oodePuTf1Kfe1T1suYevbl0z3Hl308ORrtlne79qnpePr6VwdwqXjzWFL5FkxXVqjiaQZ3F2j6fxfwsVBFtjQX00Rnn23/upiT2KDVjNFAHHOzCpCnwXC/7C/64+alyE=
+	t=1714474764; cv=none; b=G99BasKcYYgnaHGdUwhC65VuOXgh2+O5om439cpVnEAcXOFFvYVwFuLAB8bDz1L2lDywGtQgSVmVX2+Ibuso02riwHY9xmLj8KMN8tWBMIZQLmXdIDRssUgWovJDWt5Er4GhLG2qoWoWneAQ5Rq4jXYe3Y211FCYlA7pfyxLosM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474366; c=relaxed/simple;
-	bh=LYUvsh9nILT2+SkXpiOSDJAHNoXtRJLJ7COuFHTBJT4=;
+	s=arc-20240116; t=1714474764; c=relaxed/simple;
+	bh=XeX2DQ6cR+sg5T4j/H8vw3v4FXPRfkRRZ/n/J6vv7qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEYlarD1lbK8czlXSFglzpU3s74AE7NmcP4yAg9S9abf2yW2C/8bJbzadLKIYROqOKKvYjit5V9aLM+U2MzFDSNPpShbLfDexZQy7V6T4SEyiVq6uTJFLLjYzQgiMSewjA5DAW8W3r1H4T4ikReAGFd8/H5nxKlA1b+zF+nHiUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb05J+Up; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15BD0C2BBFC;
-	Tue, 30 Apr 2024 10:52:45 +0000 (UTC)
+	 MIME-Version; b=JDnzhaF66QhC7NfeNs/5kcju/RdNhNEej9J8SrzJsPYTXW6tFLZ24powd7PuMZ0EPqFg2+wIX4QsmvWiUNZe/ycKT4DtU4TOANBM70AF7Al+DFktjsbWt+ifrlCL7jvTipFiH3SNsj5l5slaqqf03ANV+44Glh7tk0hxx65I+UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYG3K1u/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CF9C4AF18;
+	Tue, 30 Apr 2024 10:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474366;
-	bh=LYUvsh9nILT2+SkXpiOSDJAHNoXtRJLJ7COuFHTBJT4=;
+	s=korg; t=1714474764;
+	bh=XeX2DQ6cR+sg5T4j/H8vw3v4FXPRfkRRZ/n/J6vv7qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xb05J+UpA1Dmlu7FTwgn/MjPK8SRhE5BGTOiTbVx1W0f9gU2UFdRn8W91G5+kSzM0
-	 xtOb3YTcs4CJQEg6EUttFFOvVAogCLmYB7SSa/JX+pufzxQrpmNwK+82nGemnNeKom
-	 aVzB2R+KRtw3Arr5jDzuBy5Gyyj11JbKl87ZRacM=
+	b=oYG3K1u/1ZGQFwHj8HJMgIxB9qnv5HXoKoXT2F3xjOQJxSgQES4kcvgRrGTRMHpcg
+	 Xw3Yq/2Tl2bRg0pJZPnogSgvn1sIoBFvfCXZQZCB9aZm4kI/WMJ3wpZx2GcKv3mug2
+	 XgQnpoRCxZOUCEoiNSlIBTYVtbwOr2YHMXkrZeOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wedson Almeida Filho <walmeida@microsoft.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.8 135/228] rust: kernel: require `Send` for `Module` implementations
+	Adam Dunlap <acdunlap@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Kevin Loughlin <kevinloughlin@google.com>
+Subject: [PATCH 5.10 028/138] x86/apic: Force native_apic_mem_read() to use the MOV instruction
 Date: Tue, 30 Apr 2024 12:38:33 +0200
-Message-ID: <20240430103107.697790011@linuxfoundation.org>
+Message-ID: <20240430103050.258792193@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wedson Almeida Filho <walmeida@microsoft.com>
+From: Adam Dunlap <acdunlap@google.com>
 
-commit 323617f649c0966ad5e741e47e27e06d3a680d8f upstream.
+commit 5ce344beaca688f4cdea07045e0b8f03dc537e74 upstream.
 
-The thread that calls the module initialisation code when a module is
-loaded is not guaranteed [in fact, it is unlikely] to be the same one
-that calls the module cleanup code on module unload, therefore, `Module`
-implementations must be `Send` to account for them moving from one
-thread to another implicitly.
+When done from a virtual machine, instructions that touch APIC memory
+must be emulated. By convention, MMIO accesses are typically performed
+via io.h helpers such as readl() or writeq() to simplify instruction
+emulation/decoding (ex: in KVM hosts and SEV guests) [0].
 
-Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Cc: stable@vger.kernel.org # 6.8.x: df70d04d5697: rust: phy: implement `Send` for `Registration`
-Cc: stable@vger.kernel.org
-Fixes: 247b365dc8dc ("rust: add `kernel` crate")
-Link: https://lore.kernel.org/r/20240328195457.225001-3-wedsonaf@gmail.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Currently, native_apic_mem_read() does not follow this convention,
+allowing the compiler to emit instructions other than the MOV
+instruction generated by readl(). In particular, when the kernel is
+compiled with clang and run as a SEV-ES or SEV-SNP guest, the compiler
+would emit a TESTL instruction which is not supported by the SEV-ES
+emulator, causing a boot failure in that environment. It is likely the
+same problem would happen in a TDX guest as that uses the same
+instruction emulator as SEV-ES.
+
+To make sure all emulators can emulate APIC memory reads via MOV, use
+the readl() function in native_apic_mem_read(). It is expected that any
+emulator would support MOV in any addressing mode as it is the most
+generic and is what is usually emitted currently.
+
+The TESTL instruction is emitted when native_apic_mem_read() is inlined
+into apic_mem_wait_icr_idle(). The emulator comes from
+insn_decode_mmio() in arch/x86/lib/insn-eval.c. It's not worth it to
+extend insn_decode_mmio() to support more instructions since, in theory,
+the compiler could choose to output nearly any instruction for such
+reads which would bloat the emulator beyond reason.
+
+  [0] https://lore.kernel.org/all/20220405232939.73860-12-kirill.shutemov@linux.intel.com/
+
+  [ bp: Massage commit message, fix typos. ]
+
+Signed-off-by: Adam Dunlap <acdunlap@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Tested-by: Kevin Loughlin <kevinloughlin@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240318230927.2191933-1-acdunlap@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/lib.rs |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/apic.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -66,7 +66,7 @@ const __LOG_PREFIX: &[u8] = b"rust_kerne
- /// The top level entrypoint to implementing a kernel module.
- ///
- /// For any teardown or cleanup operations, your type may implement [`Drop`].
--pub trait Module: Sized + Sync {
-+pub trait Module: Sized + Sync + Send {
-     /// Called at module initialization time.
-     ///
-     /// Use this method to perform whatever setup or registration your module
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -12,6 +12,7 @@
+ #include <asm/mpspec.h>
+ #include <asm/msr.h>
+ #include <asm/hardirq.h>
++#include <asm/io.h>
+ 
+ #define ARCH_APICTIMER_STOPS_ON_C3	1
+ 
+@@ -111,7 +112,7 @@ static inline void native_apic_mem_write
+ 
+ static inline u32 native_apic_mem_read(u32 reg)
+ {
+-	return *((volatile u32 *)(APIC_BASE + reg));
++	return readl((void __iomem *)(APIC_BASE + reg));
+ }
+ 
+ extern void native_apic_wait_icr_idle(void);
 
 
 
