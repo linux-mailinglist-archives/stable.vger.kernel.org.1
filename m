@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABA38B7419
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590E28B7394
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603AB1F215C4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EED8C1F2415F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C135012CDAE;
-	Tue, 30 Apr 2024 11:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7809812CD9B;
+	Tue, 30 Apr 2024 11:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiv2Tt8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMWTvbMX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA2317592;
-	Tue, 30 Apr 2024 11:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3656F8801;
+	Tue, 30 Apr 2024 11:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476422; cv=none; b=NYeu4T2K9Ik9MVYf8wT6dlWFc+4okXXTGYicMVRWpqat/Pg+NM0yiQeoyNBBDO+3bYIKyy5p7iSYIYm3yBUvdsHZKIff5H/g331bFcCvFJRUacUCvFIkx9taaUIpo7kfTB5jCtaHj+c8MYkO4ZTIyu88aYFM2JL6hKVPsvyDeXQ=
+	t=1714476050; cv=none; b=sNRBNO0Bqn8igw6VpA4YYu5W0CpG758WS5rQrKM7UzziTArx7rqONIZ5aNSL49ZWmU2TruejdvlOxUVEybJKnmW9VcX9SjR57vee0SbxUENQZ3/2IFJo8th4oNxtWegO7cpDtQhVVCmM6BnNa/2faaDfWNzjXfstM9rLxo0CZA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476422; c=relaxed/simple;
-	bh=i6q1u6WhYHlStZ6XNz5nthnmfv9hZQntGw6YQ4if2Kg=;
+	s=arc-20240116; t=1714476050; c=relaxed/simple;
+	bh=MTwyskTR5CZjYLylqaxqEEHNO8DrBrpucGPRg0nk9t4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbWjnSK/8hZxQAfCr4H4RDJWkkfB0om6S7YphpC4ATYo1N0O/Lr/rjrI8xMb7+3oyDiS1LPSULQc5SdWxjrXZJsKdSrr8K50OzIUYKjEh6Y/PFX2gHw2fAWJlHyR6eideUisKdLWLnbsg55SsY+Y3GyH4LSmtWVwn/BtVQfjcOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiv2Tt8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1686C2BBFC;
-	Tue, 30 Apr 2024 11:27:01 +0000 (UTC)
+	 MIME-Version; b=knXZ/HsM7IAXt2gBCupwsaw/o56IXUsUy80WJFZsFCk1FFpkIG9phb5PCwwNAGKT9vctDftUzJGWTC2zbh6AcwGqYWhTF+gOQYAue4E5l/FWWhLF0LgdNRbJALxZXPgrXZ/3+x8RgwNNIIDpj70wfB4aNk+Xfx9K+/7jUlcl2CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMWTvbMX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E7CC2BBFC;
+	Tue, 30 Apr 2024 11:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476422;
-	bh=i6q1u6WhYHlStZ6XNz5nthnmfv9hZQntGw6YQ4if2Kg=;
+	s=korg; t=1714476050;
+	bh=MTwyskTR5CZjYLylqaxqEEHNO8DrBrpucGPRg0nk9t4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiv2Tt8FsTFp3e+8p8JjV+eTiOfzNjZ5ImhWTo8FenE+O2W4pi0fBvzQ6ehbrzIBF
-	 QUr+g3Ccvp0j0jvzNER3uj/jAMVS3dFSQSUW5slNo3gU574H8t8yCLyMMNPmRrf3du
-	 TwExXUtpDCAhmFR52U17kwhN7i/UOutkGu2bLm2Q=
+	b=WMWTvbMXzLec/Su2jfTRPhBJVaTLyt59FQx68kBlMg99L0JSalgLHTU04pv87bqRW
+	 wlEyuFykJ/RHllaXMNSk4dEMPhr//oJmKqAcehLEKtyHaWMGaxIKjeIyg9vJZPCoun
+	 oDL+M46LzeBUTdxUeDE9NO06VZnJp3uxJEd/tq00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiyi Lu <weiyi.lu@mediatek.com>,
-	Ikjoon Jang <ikjn@chromium.org>,
-	Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/110] arm64: dts: mediatek: mt8183: Add power-domains properity to mfgcfg
+Subject: [PATCH 5.4 019/107] btrfs: record delayed inode root in transaction
 Date: Tue, 30 Apr 2024 12:39:39 +0200
-Message-ID: <20240430103047.873706537@linuxfoundation.org>
+Message-ID: <20240430103045.230736525@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ikjoon Jang <ikjn@chromium.org>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 1781f2c461804c0123f59afc7350e520a88edffb ]
+[ Upstream commit 71537e35c324ea6fbd68377a4f26bb93a831ae35 ]
 
-mfgcfg clock is under MFG_ASYNC power domain.
+When running delayed inode updates, we do not record the inode's root in
+the transaction, but we do allocate PREALLOC and thus converted PERTRANS
+space for it. To be sure we free that PERTRANS meta rsv, we must ensure
+that we record the root in the transaction.
 
-Fixes: e526c9bc11f8 ("arm64: dts: Add Mediatek SoC MT8183 and evaluation board dts and Makefile")
-Fixes: 37fb78b9aeb7 ("arm64: dts: mediatek: Add mt8183 power domains controller")
-Signed-off-by: Weiyi Lu <weiyi.lu@mediatek.com>
-Signed-off-by: Ikjoon Jang <ikjn@chromium.org>
-Reviewed-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240223091122.2430037-1-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 4f5427ccce5d ("btrfs: delayed-inode: Use new qgroup meta rsv for delayed inode and item")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/delayed-inode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-index d5d9b954c449a..2147e152683bf 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1554,6 +1554,7 @@
- 			compatible = "mediatek,mt8183-mfgcfg", "syscon";
- 			reg = <0 0x13000000 0 0x1000>;
- 			#clock-cells = <1>;
-+			power-domains = <&spm MT8183_POWER_DOMAIN_MFG_ASYNC>;
- 		};
+diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
+index eacc020b1419f..95afe5ef7500c 100644
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -1137,6 +1137,9 @@ __btrfs_commit_inode_delayed_items(struct btrfs_trans_handle *trans,
+ 	if (ret)
+ 		return ret;
  
- 		gpu: gpu@13040000 {
++	ret = btrfs_record_root_in_trans(trans, node->root);
++	if (ret)
++		return ret;
+ 	ret = btrfs_update_delayed_inode(trans, node->root, path, node);
+ 	return ret;
+ }
 -- 
 2.43.0
 
