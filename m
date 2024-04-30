@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-42068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647F08B7141
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E27B78B7042
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D4FFB22EED
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2016B1C20B92
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4078112D74F;
-	Tue, 30 Apr 2024 10:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3834312D20F;
+	Tue, 30 Apr 2024 10:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uO2OnjJ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wba3kC0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF7812CDB1;
-	Tue, 30 Apr 2024 10:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E804E12D1FD;
+	Tue, 30 Apr 2024 10:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474463; cv=none; b=KZo+IyDvqZIWShj7kOuRvI4xUmkSLmDANef2mWya26aZnxChYSTQwct9DHoFQ/+Rg6Dujqs0yvnyW4YbJCeLX1Qz/m63hCihcrhBLWQC0/08WIHa/VgLL/kW1S1grsyCUskGdqiy22h65OcFEI+3RwQOLynMWdRylw3Jb10zBkk=
+	t=1714473857; cv=none; b=BRmha2sSSZAf7tYPAYgVDwlLrRoOhdAPIzj83JtyqoZ18k6RHLFTe2YG+U0+zXVdu7Qy5PtGz3eD5vLcK5+aL7MGBhwuG+VYzYd3LDAsJHasD9es+njKbR0pdCHZ9cGMOsIszCvvw+cb8S3z65seJJB/Ov0CHYrZQgFlBkYwjLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474463; c=relaxed/simple;
-	bh=APU8sp3IpD5t97Uoo7KNQr7h+b2NhYbAvd0D8nN8wdI=;
+	s=arc-20240116; t=1714473857; c=relaxed/simple;
+	bh=DPEftJRIg63tMEQTnCQc8pceKBGQfU8QHEXguMyphTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYby6wJd5vhrBgbliiSoG0u1TivTgL1H666iqwIWpiONKTNv8lSiQuhinszMdVmoxl/8ZQ1VdlN5fwQUOUUCCG5HFJ7JVp96nMsrpvBM12x/a0+wKhPAHGswd2+Vs0XSA8EKhh6f9VqtYlaUW79tWrBcMzrHmmQqVRUH2y4/1Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uO2OnjJ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BA1C2BBFC;
-	Tue, 30 Apr 2024 10:54:22 +0000 (UTC)
+	 MIME-Version; b=j4ad3nnAB6z7DSyFD1nk/Bf0b5SP30pwWJ6olA2GiK6v6T/bYVQV+IPUFbNIjD2POAkmD94mHRsY7K1hDPK/6sBk048b/YjY+Ln1rCcuLHec6/F90qNHlC3WGi6Bg4fqCF/QQ7sW0I9ijKlgAAGR9SW3AfkpBuaNfrFNZg0ATsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wba3kC0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40247C4AF1B;
+	Tue, 30 Apr 2024 10:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474462;
-	bh=APU8sp3IpD5t97Uoo7KNQr7h+b2NhYbAvd0D8nN8wdI=;
+	s=korg; t=1714473856;
+	bh=DPEftJRIg63tMEQTnCQc8pceKBGQfU8QHEXguMyphTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uO2OnjJ4uTorcwQXBnG2oE5gKfaWkvrsBZJunzFCaU0gIB1joUkVF8SES/PLcR6P+
-	 oqUO9Qxuv4bPIp0HOlK9vMf2BvAvs60VzAC7tn68l2EPF7LniAfNz+qFJl5g/D+Mux
-	 qUvYLUWdNHVD/DDqxXH93qqgUpJJ+bPiEBKub3l8=
+	b=wba3kC0AEWho17nZCloKWii4FWoBt6LDawXF4ZkV+xtyr1/VaIwbLUWLLiXzfE2mI
+	 DiAkpH2aLpBpdRRO+G2bPDkrtjhL2gjkw8ApAuyFp+h4YBttp7DahR5GUfbV/a0SKY
+	 J12uaUrWD6MqmesRa0Gw4M6z8q2KFbBlw0l/oGhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Okazaki <dtokazaki@google.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.8 164/228] eeprom: at24: fix memory corruption race condition
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	stable@kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH 4.19 23/77] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
 Date: Tue, 30 Apr 2024 12:39:02 +0200
-Message-ID: <20240430103108.539492167@linuxfoundation.org>
+Message-ID: <20240430103041.812993586@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +69,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Okazaki <dtokazaki@google.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit f42c97027fb75776e2e9358d16bf4a99aeb04cf2 upstream.
+commit 1be3226445362bfbf461c92a5bcdb1723f2e4907 upstream.
 
-If the eeprom is not accessible, an nvmem device will be registered, the
-read will fail, and the device will be torn down. If another driver
-accesses the nvmem device after the teardown, it will reference
-invalid memory.
+The mitigation was intended to stop the irq completely. That may be
+better than a hard lock-up but it turns out that you get a crash anyway
+if you're using pmac_zilog as a serial console:
 
-Move the failure point before registering the nvmem device.
+ttyPZ0: pmz: rx irq flood !
+BUG: spinlock recursion on CPU#0, swapper/0
 
-Signed-off-by: Daniel Okazaki <dtokazaki@google.com>
-Fixes: b20eb4c1f026 ("eeprom: at24: drop unnecessary label")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240422174337.2487142-1-dtokazaki@google.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+That's because the pr_err() call in pmz_receive_chars() results in
+pmz_console_write() attempting to lock a spinlock already locked in
+pmz_interrupt(). With CONFIG_DEBUG_SPINLOCK=y, this produces a fatal
+BUG splat. The spinlock in question is the one in struct uart_port.
+
+Even when it's not fatal, the serial port rx function ceases to work.
+Also, the iteration limit doesn't play nicely with QEMU, as can be
+seen in the bug report linked below.
+
+A web search for other reports of the error message "pmz: rx irq flood"
+didn't produce anything. So I don't think this code is needed any more.
+Remove it.
+
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: stable@kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Link: https://github.com/vivier/qemu-m68k/issues/44
+Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/e853cf2c762f23101cd2ddec0cc0c2be0e72685f.1712568223.git.fthain@linux-m68k.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/eeprom/at24.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/tty/serial/pmac_zilog.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/misc/eeprom/at24.c
-@@ -758,15 +758,6 @@ static int at24_probe(struct i2c_client
- 	}
- 	pm_runtime_enable(dev);
+--- a/drivers/tty/serial/pmac_zilog.c
++++ b/drivers/tty/serial/pmac_zilog.c
+@@ -220,7 +220,6 @@ static bool pmz_receive_chars(struct uar
+ {
+ 	struct tty_port *port;
+ 	unsigned char ch, r1, drop, error, flag;
+-	int loops = 0;
  
--	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
--	if (IS_ERR(at24->nvmem)) {
--		pm_runtime_disable(dev);
--		if (!pm_runtime_status_suspended(dev))
--			regulator_disable(at24->vcc_reg);
--		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
--				     "failed to register nvmem\n");
--	}
--
- 	/*
- 	 * Perform a one-byte test read to verify that the chip is functional,
- 	 * unless powering on the device is to be avoided during probe (i.e.
-@@ -782,6 +773,15 @@ static int at24_probe(struct i2c_client
- 		}
+ 	/* Sanity check, make sure the old bug is no longer happening */
+ 	if (uap->port.state == NULL) {
+@@ -303,25 +302,12 @@ static bool pmz_receive_chars(struct uar
+ 		if (r1 & Rx_OVR)
+ 			tty_insert_flip_char(port, 0, TTY_OVERRUN);
+ 	next_char:
+-		/* We can get stuck in an infinite loop getting char 0 when the
+-		 * line is in a wrong HW state, we break that here.
+-		 * When that happens, I disable the receive side of the driver.
+-		 * Note that what I've been experiencing is a real irq loop where
+-		 * I'm getting flooded regardless of the actual port speed.
+-		 * Something strange is going on with the HW
+-		 */
+-		if ((++loops) > 1000)
+-			goto flood;
+ 		ch = read_zsreg(uap, R0);
+ 		if (!(ch & Rx_CH_AV))
+ 			break;
  	}
  
-+	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
-+	if (IS_ERR(at24->nvmem)) {
-+		pm_runtime_disable(dev);
-+		if (!pm_runtime_status_suspended(dev))
-+			regulator_disable(at24->vcc_reg);
-+		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
-+				     "failed to register nvmem\n");
-+	}
-+
- 	/* If this a SPD EEPROM, probe for DDR3 thermal sensor */
- 	if (cdata == &at24_data_spd)
- 		at24_probe_temp_sensor(client);
+ 	return true;
+- flood:
+-	pmz_interrupt_control(uap, 0);
+-	pmz_error("pmz: rx irq flood !\n");
+-	return true;
+ }
+ 
+ static void pmz_status_handle(struct uart_pmac_port *uap)
 
 
 
