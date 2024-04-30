@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-42555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F868B7391
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2A48B7306
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E1A1C23272
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CC1C1C22891
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E112A12D1EA;
-	Tue, 30 Apr 2024 11:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB51312EBF0;
+	Tue, 30 Apr 2024 11:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxxauwkJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ysdw0rM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D478801;
-	Tue, 30 Apr 2024 11:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6731412EBE8;
+	Tue, 30 Apr 2024 11:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476040; cv=none; b=dxiLfHpsb8plpfC8mGec1t+nj+nhhcuSBQTsT7Vui95v/mb+3ikMSZf9jp6d6A8dadCjjBpIVXa2okRsZmKLNd8eLnoqpob0+KLoKOgAEuaciB/Bu4yG6qdx0IpLVe0sDswQQrroYymYlr9nKfH0COq2kT/MWwOjOIE+Sk28M4o=
+	t=1714475655; cv=none; b=nfF2sXvd8ZkY2kDep4Eit6oEl7pmOr13ylMMswuhvXonnNOfWpWWq1OYlux/3YDkCSGHhu11ySvDvNa81/5gQNrTBAF1S80ckv+c/+OIR9bgsZ5jow2r41OchxsrnHeKAMYt/Cwkjdn01wppCS/px1cuqq13T00S+S7HFY/3nw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476040; c=relaxed/simple;
-	bh=/xkmk5gAmw+/6+tyk97r/JPKjA9dkZ0vf5UJ0wvx/VI=;
+	s=arc-20240116; t=1714475655; c=relaxed/simple;
+	bh=dJEbUlXroSbfTZwJizSqMqyfwvKwjtK2slvIWPWd0pQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPGVLM1r9PW8t1URi1XqOZQothRzwxYaR7mhau9ioC/awxIsFP0zSJJRmFBCfLU6LokYNlME9Hmkqg2oDtEUm39EaZmjgz9qu2ZFWQ8oONIRdXsmublTxemnh1+/HrabMEOp6pePrZ+SN5XYuWpl/YtyG1P4XQqDc6r0FHhjpJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxxauwkJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDBBC2BBFC;
-	Tue, 30 Apr 2024 11:20:39 +0000 (UTC)
+	 MIME-Version; b=qQhGB3t8XBB3ESh2kAGA3greFhwidzpcXfAO/9dhCEpKpq4OHbNojiroLWx52Vxuh/aZZGtk1+l0bmQYCAZ4yx6jQqvM9Il5wdKAScHToFG2j4HIrwfz5sRpqhcn4pG2nvbFc/Zcz7FZQf2hVhJX/d6DfMJrkE1OrM2srmKhpak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ysdw0rM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E5CC4AF1C;
+	Tue, 30 Apr 2024 11:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476040;
-	bh=/xkmk5gAmw+/6+tyk97r/JPKjA9dkZ0vf5UJ0wvx/VI=;
+	s=korg; t=1714475655;
+	bh=dJEbUlXroSbfTZwJizSqMqyfwvKwjtK2slvIWPWd0pQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZxxauwkJe3PHXNIvHWqCuBTVVOU7AnnBeHfXMS6jwI8u3bxOzw+gfFex5hU/Q0MEY
-	 yOHNTsvx/druaxlZJ57ByBCEdC6rWZB5XVB8FXSfD6RbDDycZT7nbPGj1M44HvBM5N
-	 dr6FYugZXkOkosdA/0lPzMKXl74VDuce0YBq6WgQ=
+	b=2Ysdw0rMDHG5BJEDCGVdDwOekZHxP9t1IjT9ZAXvTOtMpjeS/lMH/8NQO0MvcejFd
+	 8aAKcA8gfEVtdQwwK8x/wXF3Eg3h4lOI6TN4pRds7bsFJ35M5AhhX7dML/ZaH03IXi
+	 pnHvK+dvZzNkIbzTv4yiYzcIiBApqLw1I7x/fYkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihuang Yu <yihyu@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Gavin Shan <gshan@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	stable@kernel.org
-Subject: [PATCH 5.4 016/107] vhost: Add smp_rmb() in vhost_vq_avail_empty()
+	Mantas Pucka <mantas@8devices.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 124/186] mmc: sdhci-msm: pervent access to suspended controller
 Date: Tue, 30 Apr 2024 12:39:36 +0200
-Message-ID: <20240430103045.141349734@linuxfoundation.org>
+Message-ID: <20240430103101.632586770@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Shan <gshan@redhat.com>
+From: Mantas Pucka <mantas@8devices.com>
 
-commit 22e1992cf7b034db5325660e98c41ca5afa5f519 upstream.
+commit f8def10f73a516b771051a2f70f2f0446902cb4f upstream.
 
-A smp_rmb() has been missed in vhost_vq_avail_empty(), spotted by
-Will. Otherwise, it's not ensured the available ring entries pushed
-by guest can be observed by vhost in time, leading to stale available
-ring entries fetched by vhost in vhost_get_vq_desc(), as reported by
-Yihuang Yu on NVidia's grace-hopper (ARM64) platform.
+Generic sdhci code registers LED device and uses host->runtime_suspended
+flag to protect access to it. The sdhci-msm driver doesn't set this flag,
+which causes a crash when LED is accessed while controller is runtime
+suspended. Fix this by setting the flag correctly.
 
-  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
-  -accel kvm -machine virt,gic-version=host -cpu host          \
-  -smp maxcpus=1,cpus=1,sockets=1,clusters=1,cores=1,threads=1 \
-  -m 4096M,slots=16,maxmem=64G                                 \
-  -object memory-backend-ram,id=mem0,size=4096M                \
-   :                                                           \
-  -netdev tap,id=vnet0,vhost=true                              \
-  -device virtio-net-pci,bus=pcie.8,netdev=vnet0,mac=52:54:00:f1:26:b0
-   :
-  guest# netperf -H 10.26.1.81 -l 60 -C -c -t UDP_STREAM
-  virtio_net virtio0: output.0:id 100 is not a head!
-
-Add the missed smp_rmb() in vhost_vq_avail_empty(). When tx_can_batch()
-returns true, it means there's still pending tx buffers. Since it might
-read indices, so it still can bypass the smp_rmb() in vhost_get_vq_desc().
-Note that it should be safe until vq->avail_idx is changed by commit
-275bf960ac697 ("vhost: better detection of available buffers").
-
-Fixes: 275bf960ac69 ("vhost: better detection of available buffers")
-Cc: <stable@kernel.org> # v4.11+
-Reported-by: Yihuang Yu <yihyu@redhat.com>
-Suggested-by: Will Deacon <will@kernel.org>
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20240328002149.1141302-2-gshan@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
+Signed-off-by: Mantas Pucka <mantas@8devices.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/vhost.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-msm.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2519,9 +2519,19 @@ bool vhost_vq_avail_empty(struct vhost_d
- 	r = vhost_get_avail_idx(vq, &avail_idx);
- 	if (unlikely(r))
- 		return false;
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -2694,6 +2694,11 @@ static __maybe_unused int sdhci_msm_runt
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	unsigned long flags;
 +
- 	vq->avail_idx = vhost16_to_cpu(vq, avail_idx);
-+	if (vq->avail_idx != vq->last_avail_idx) {
-+		/* Since we have updated avail_idx, the following
-+		 * call to vhost_get_vq_desc() will read available
-+		 * ring entries. Make sure that read happens after
-+		 * the avail_idx read.
-+		 */
-+		smp_rmb();
-+		return false;
-+	}
++	spin_lock_irqsave(&host->lock, flags);
++	host->runtime_suspended = true;
++	spin_unlock_irqrestore(&host->lock, flags);
  
--	return vq->avail_idx == vq->last_avail_idx;
-+	return true;
+ 	/* Drop the performance vote */
+ 	dev_pm_opp_set_rate(dev, 0);
+@@ -2708,6 +2713,7 @@ static __maybe_unused int sdhci_msm_runt
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	unsigned long flags;
+ 	int ret;
+ 
+ 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
+@@ -2726,7 +2732,15 @@ static __maybe_unused int sdhci_msm_runt
+ 
+ 	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
+ 
+-	return sdhci_msm_ice_resume(msm_host);
++	ret = sdhci_msm_ice_resume(msm_host);
++	if (ret)
++		return ret;
++
++	spin_lock_irqsave(&host->lock, flags);
++	host->runtime_suspended = false;
++	spin_unlock_irqrestore(&host->lock, flags);
++
++	return ret;
  }
- EXPORT_SYMBOL_GPL(vhost_vq_avail_empty);
  
+ static const struct dev_pm_ops sdhci_msm_pm_ops = {
 
 
 
