@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9D78B7254
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:07:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C113C8B7123
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93B3CB21EA4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:07:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F23941C22369
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E5612C54B;
-	Tue, 30 Apr 2024 11:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F5312C47A;
+	Tue, 30 Apr 2024 10:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXIPzQAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mQO3/sG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DBD1E50A;
-	Tue, 30 Apr 2024 11:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571D512DDAF;
+	Tue, 30 Apr 2024 10:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475222; cv=none; b=AAkDCF7MEqJfj0Mzb6+IA0ubDYkbHf3a0vwSVY0sdjbgMUBGO83bUcAt5k/xhYzjfY0t4HCiOoiGIUq5eJ2zAr+fpxf17Fxxj3NbV+Qd2Lady0pA92KJuU+PMM0NCmuuow9m/NeS8b1/DKP+sXrcWEjlqL+ImtY2NXg9JUoKp44=
+	t=1714474394; cv=none; b=WeQ2rbrcrikTVxyIBH54fbaQs6/QtsEwBsee1GIPdvGL09UhJvDV8eEKSBwBTDLO2zuW+OX8KVl8jXJRSxi8ZGttDbBLxU/jDrSTHz3YvPFSPyhVPBKF00gA9TOKwQBRtIE8yfakWXBMjapppM0Flv8+MsnKiNGGl2TXt3SHDfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475222; c=relaxed/simple;
-	bh=JWL+zLCFShKRtN2Te10MlFcXsRdR+BRR+FPd7VFxXwo=;
+	s=arc-20240116; t=1714474394; c=relaxed/simple;
+	bh=qmwWlpgpYJ+3BgM02E0MvgRyR5NPfWSnr4qou+Dxj/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VklvQ0nMLvFQ6c1Xv/ZWKZa8SwMYUfUeWkyGeiY4QZkYg2BW2hRO5sKFCErRaO/ygI4rNolGox53WK2GrASY2h+C8C8e3ly0WFzCgyyocvrgpmSOfYBFTrYI8OGNNqPMSe/hFA2uH6CuD3szIJts4gsf9f8vO/0+DqblywvCIP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXIPzQAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF043C2BBFC;
-	Tue, 30 Apr 2024 11:07:01 +0000 (UTC)
+	 MIME-Version; b=iNZwthmXZfIv8pguHCTnCZRd6pQGmRp1icV+ijKuxJBwaWIyNNe66lH+iW/di4RNHn7rzGAqoMOzwKQs0NP+dErx66VNshdYBE25/Hwqh5S6m3mgDYs1PhGUA5LiTytFnYymIb3usfBKDpJyqlJNcXxSrTSDZsID++X2iNKkjtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mQO3/sG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33B0C2BBFC;
+	Tue, 30 Apr 2024 10:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475222;
-	bh=JWL+zLCFShKRtN2Te10MlFcXsRdR+BRR+FPd7VFxXwo=;
+	s=korg; t=1714474394;
+	bh=qmwWlpgpYJ+3BgM02E0MvgRyR5NPfWSnr4qou+Dxj/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXIPzQAzLGHRxe/tqy6/q2dTN72l13hIYfy8C6BvZblErjN/9YqbPooEaoimUjbD7
-	 BZp8hILsegzjk9mozM+QFufRj9D73xIvf0Bi/3HxlTfoUVeQAni1hOLkcPlyGwU6G+
-	 dMxgV0Jt8Va93XvxVnrrYOqilduMVOoblDYkQRuQ=
+	b=1mQO3/sGXiS3z02hotfTSe6Zegx2u25HvuOrYjfpOMfH3tCj/jTAxlptFVCpDHp8z
+	 ysQTJ9nxyztro4ozZ7oL+g5T+W/OFchsI5kz1WB0HidrsNSHaRYE3EpEMj4LamiJ/p
+	 +KjzO0wVb0hr1Q6c3ch5xmDMhi4f2qdBzo2NWbqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/186] arm64: dts: mediatek: mt7986: prefix BPI-R3 cooling maps with "map-"
+Subject: [PATCH 6.8 104/228] eth: bnxt: fix counting packets discarded due to OOM and netpoll
 Date: Tue, 30 Apr 2024 12:38:02 +0200
-Message-ID: <20240430103058.905186642@linuxfoundation.org>
+Message-ID: <20240430103106.798855931@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,154 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit f8c65a5e4560781f2ea175d8f26cd75ac98e8d78 ]
+[ Upstream commit 730117730709992c9f6535dd7b47638ee561ec45 ]
 
-This fixes:
-arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dtb: thermal-zones: cpu-thermal:cooling-maps: 'cpu-active-high', 'cpu-active-low', 'cpu-active-med' do not match any of the regexes: '^map[-a-zA-Z0-9]*$', 'pinctrl-[0-9]+'
-        from schema $id: http://devicetree.org/schemas/thermal/thermal-zones.yaml#
+I added OOM and netpoll discard counters, naively assuming that
+the cpr pointer is pointing to a common completion ring.
+Turns out that is usually *a* completion ring but not *the*
+completion ring which bnapi->cp_ring points to. bnapi->cp_ring
+is where the stats are read from, so we end up reporting 0
+thru ethtool -S and qstat even though the drop events have happened.
+Make 100% sure we're recording statistics in the correct structure.
 
-Fixes: c26f779a2295 ("arm64: dts: mt7986: add pwm-fan and cooling-maps to BPI-R3 dts")
-Cc: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240213061459.17917-1-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 907fd4a294db ("bnxt: count discards due to memory allocation errors")
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20240424002148.3937059-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 44 ++++++++++-------------
+ 1 file changed, 18 insertions(+), 26 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
-index e1ec2cccf4444..aba6686eb34a3 100644
---- a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
-@@ -146,19 +146,19 @@
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 5b4d810748f2a..e133a412a13fc 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -1735,7 +1735,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
+ 		skb = bnxt_copy_skb(bnapi, data_ptr, len, mapping);
+ 		if (!skb) {
+ 			bnxt_abort_tpa(cpr, idx, agg_bufs);
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
++			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
+ 			return NULL;
+ 		}
+ 	} else {
+@@ -1745,7 +1745,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
+ 		new_data = __bnxt_alloc_rx_frag(bp, &new_mapping, GFP_ATOMIC);
+ 		if (!new_data) {
+ 			bnxt_abort_tpa(cpr, idx, agg_bufs);
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
++			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
+ 			return NULL;
+ 		}
  
- &cpu_thermal {
- 	cooling-maps {
--		cpu-active-high {
-+		map-cpu-active-high {
- 			/* active: set fan to cooling level 2 */
- 			cooling-device = <&fan 2 2>;
- 			trip = <&cpu_trip_active_high>;
- 		};
+@@ -1761,7 +1761,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
+ 		if (!skb) {
+ 			skb_free_frag(data);
+ 			bnxt_abort_tpa(cpr, idx, agg_bufs);
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
++			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
+ 			return NULL;
+ 		}
+ 		skb_reserve(skb, bp->rx_offset);
+@@ -1772,7 +1772,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
+ 		skb = bnxt_rx_agg_pages_skb(bp, cpr, skb, idx, agg_bufs, true);
+ 		if (!skb) {
+ 			/* Page reuse already handled by bnxt_rx_pages(). */
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
++			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
+ 			return NULL;
+ 		}
+ 	}
+@@ -2051,11 +2051,8 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 			u32 frag_len = bnxt_rx_agg_pages_xdp(bp, cpr, &xdp,
+ 							     cp_cons, agg_bufs,
+ 							     false);
+-			if (!frag_len) {
+-				cpr->sw_stats.rx.rx_oom_discards += 1;
+-				rc = -ENOMEM;
+-				goto next_rx;
+-			}
++			if (!frag_len)
++				goto oom_next_rx;
+ 		}
+ 		xdp_active = true;
+ 	}
+@@ -2078,9 +2075,7 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 				else
+ 					bnxt_xdp_buff_frags_free(rxr, &xdp);
+ 			}
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
+-			rc = -ENOMEM;
+-			goto next_rx;
++			goto oom_next_rx;
+ 		}
+ 	} else {
+ 		u32 payload;
+@@ -2091,29 +2086,21 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 			payload = 0;
+ 		skb = bp->rx_skb_func(bp, rxr, cons, data, data_ptr, dma_addr,
+ 				      payload | len);
+-		if (!skb) {
+-			cpr->sw_stats.rx.rx_oom_discards += 1;
+-			rc = -ENOMEM;
+-			goto next_rx;
+-		}
++		if (!skb)
++			goto oom_next_rx;
+ 	}
  
--		cpu-active-med {
-+		map-cpu-active-med {
- 			/* active: set fan to cooling level 1 */
- 			cooling-device = <&fan 1 1>;
- 			trip = <&cpu_trip_active_med>;
- 		};
+ 	if (agg_bufs) {
+ 		if (!xdp_active) {
+ 			skb = bnxt_rx_agg_pages_skb(bp, cpr, skb, cp_cons, agg_bufs, false);
+-			if (!skb) {
+-				cpr->sw_stats.rx.rx_oom_discards += 1;
+-				rc = -ENOMEM;
+-				goto next_rx;
+-			}
++			if (!skb)
++				goto oom_next_rx;
+ 		} else {
+ 			skb = bnxt_xdp_build_skb(bp, skb, agg_bufs, rxr->page_pool, &xdp, rxcmp1);
+ 			if (!skb) {
+ 				/* we should be able to free the old skb here */
+ 				bnxt_xdp_buff_frags_free(rxr, &xdp);
+-				cpr->sw_stats.rx.rx_oom_discards += 1;
+-				rc = -ENOMEM;
+-				goto next_rx;
++				goto oom_next_rx;
+ 			}
+ 		}
+ 	}
+@@ -2191,6 +2178,11 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 	*raw_cons = tmp_raw_cons;
  
--		cpu-active-low {
-+		map-cpu-active-low {
- 			/* active: set fan to cooling level 0 */
- 			cooling-device = <&fan 0 0>;
- 			trip = <&cpu_trip_active_low>;
+ 	return rc;
++
++oom_next_rx:
++	cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
++	rc = -ENOMEM;
++	goto next_rx;
+ }
+ 
+ /* In netpoll mode, if we are using a combined completion ring, we need to
+@@ -2237,7 +2229,7 @@ static int bnxt_force_rx_discard(struct bnxt *bp,
+ 	}
+ 	rc = bnxt_rx_pkt(bp, cpr, raw_cons, event);
+ 	if (rc && rc != -EBUSY)
+-		cpr->sw_stats.rx.rx_netpoll_discards += 1;
++		cpr->bnapi->cp_ring.sw_stats.rx.rx_netpoll_discards += 1;
+ 	return rc;
+ }
+ 
 -- 
 2.43.0
 
