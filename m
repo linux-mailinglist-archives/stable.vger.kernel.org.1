@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0849F8B728B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:09:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4AA8B71C2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A0071C2303E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:09:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47D1BB209B2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852DB12D1FA;
-	Tue, 30 Apr 2024 11:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297B012CD99;
+	Tue, 30 Apr 2024 11:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REKGNyJP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xix+VeUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD9512CD90;
-	Tue, 30 Apr 2024 11:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC03712CD89;
+	Tue, 30 Apr 2024 11:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475365; cv=none; b=d3RqEK5weUC26GeNHKzN3D0S1zLUk+AWkEmlGVD5nxrQOKde/c1ybn82wHxotfEaVv6F7dKM6oGE1pqmNH1HXcLXpxovsgoW+U658Fd7goqKio3QkGn0XGKyM+2trA2ziYRN2HXLiXjhlFN/oJnwLK1BQD+YJ7lnRPHdCFNFt4s=
+	t=1714474826; cv=none; b=DrGzvfH8QT4P1KIBdJe5xQ2zqkyj3xylgUdphDFi4rci13dAOYTMzfr8j2sFCxX+2n7VjVkbR+yIPIdybn/2VWBO9LOEMeDz1SVmysoE3gflxKj/VAG8qjld2m8qUNDPgMLMGUoO5Wvxx8DD94zMda4dk/tePuVJdEdVaCfPfFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475365; c=relaxed/simple;
-	bh=961r8gkZMsdGWHPT8L2iYSCckXvDoBJZoQuEz3PEgIk=;
+	s=arc-20240116; t=1714474826; c=relaxed/simple;
+	bh=c2iM7UdawElzJOWTItRUsiRmE2cpXgcJUl6pkyyHAvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llNZ/YVOaBcrPr/0cDAPzc9wdFrxwK7jJd3daJu429BGnhHcPSQAeEfUu2Ui066ApJE9fOcGKK6Aa10xC/MFlap7BOVxAiK2uYGoBBUJ+B1lJwmgDU6kBgJg4Gil7JGmwih0vpy9AsmSoQhvG9tdtjSrv1Kr+xK3Hx73wC09LA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REKGNyJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE892C2BBFC;
-	Tue, 30 Apr 2024 11:09:24 +0000 (UTC)
+	 MIME-Version; b=WVVrdzO1wcvFWekMnll7lFgpLP7NuMyG2YhdQ/xZmxAZwtQf+H1fb2KH5KPpZxgJ9gKOHsZhHRb3fQ8BNW0WIyH2k37QemhibVypMBSOs6Vu96hhO9lLuQ2DRFAjsaAzIssslIHjBwf9kMh9Z4JYeFffLVmVjcsCC3aXaKcvm0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xix+VeUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0E7C4AF18;
+	Tue, 30 Apr 2024 11:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475365;
-	bh=961r8gkZMsdGWHPT8L2iYSCckXvDoBJZoQuEz3PEgIk=;
+	s=korg; t=1714474826;
+	bh=c2iM7UdawElzJOWTItRUsiRmE2cpXgcJUl6pkyyHAvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=REKGNyJPlX35puFWuli+66TaQCzXzYIDkI/K9eFz2JCs4t3X/Gur8Tt+zmcwpEf8V
-	 1AkxJG0Ivhl6L3nPL8+LaXa1O2yXeIk6WDeOHjYJ2RL+tp6RRH0r+kW8tIxK0X+Etu
-	 emtoaRYCqjzey2hqxAQRu7P4UzxxV7OdVIEO6v+o=
+	b=Xix+VeUKD3SUT4Rt3afxQVK+Gw7IA/wAuJ/HjFs83AJxcLqR00G4PfTGn/uzSZ3EH
+	 2LBO2zbtQBiAVpmSCXHh7JcHsdk92eOaXOWZcGUM0j5Xkqw5lfpCqgxPF65Ccbdwmm
+	 hiZ16k8tyxYdQd5jr1H742fOc36lFLJJ9iQVdQfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Eric Dumazet <edumazet@google.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/186] net: openvswitch: Fix Use-After-Free in ovs_ct_exit
+Subject: [PATCH 5.10 040/138] RDMA/cm: Print the old state when cm_destroy_id gets timeout
 Date: Tue, 30 Apr 2024 12:38:45 +0200
-Message-ID: <20240430103100.158108462@linuxfoundation.org>
+Message-ID: <20240430103050.612898742@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit 5ea7b72d4fac2fdbc0425cd8f2ea33abe95235b2 ]
+[ Upstream commit b68e1acb5834ed1a2ad42d9d002815a8bae7c0b6 ]
 
-Since kfree_rcu, which is called in the hlist_for_each_entry_rcu traversal
-of ovs_ct_limit_exit, is not part of the RCU read critical section, it
-is possible that the RCU grace period will pass during the traversal and
-the key will be free.
+The old state is helpful for debugging, as the current state is always
+IB_CM_IDLE when timeout happens.
 
-To prevent this, it should be changed to hlist_for_each_entry_safe.
-
-Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://lore.kernel.org/r/ZiYvzQN/Ry5oeFQW@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 96d9cbe2f2ff ("RDMA/cm: add timeout to cm_destroy_id wait")
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/20240322112049.2022994-1-markzhang@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/conntrack.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/core/cm.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index 74b63cdb59923..2928c142a2ddb 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -1593,9 +1593,9 @@ static void ovs_ct_limit_exit(struct net *net, struct ovs_net *ovs_net)
- 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
- 		struct hlist_head *head = &info->limits[i];
- 		struct ovs_ct_limit *ct_limit;
-+		struct hlist_node *next;
- 
--		hlist_for_each_entry_rcu(ct_limit, head, hlist_node,
--					 lockdep_ovsl_is_held())
-+		hlist_for_each_entry_safe(ct_limit, next, head, hlist_node)
- 			kfree_rcu(ct_limit, rcu);
+diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
+index 2a30b25c5e7e5..26c66685a43dd 100644
+--- a/drivers/infiniband/core/cm.c
++++ b/drivers/infiniband/core/cm.c
+@@ -1057,23 +1057,26 @@ static void cm_reset_to_idle(struct cm_id_private *cm_id_priv)
  	}
- 	kfree(info->limits);
+ }
+ 
+-static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id)
++static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id,
++						enum ib_cm_state old_state)
+ {
+ 	struct cm_id_private *cm_id_priv;
+ 
+ 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
+-	pr_err("%s: cm_id=%p timed out. state=%d refcnt=%d\n", __func__,
+-	       cm_id, cm_id->state, refcount_read(&cm_id_priv->refcount));
++	pr_err("%s: cm_id=%p timed out. state %d -> %d, refcnt=%d\n", __func__,
++	       cm_id, old_state, cm_id->state, refcount_read(&cm_id_priv->refcount));
+ }
+ 
+ static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
+ {
+ 	struct cm_id_private *cm_id_priv;
++	enum ib_cm_state old_state;
+ 	struct cm_work *work;
+ 	int ret;
+ 
+ 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
+ 	spin_lock_irq(&cm_id_priv->lock);
++	old_state = cm_id->state;
+ retest:
+ 	switch (cm_id->state) {
+ 	case IB_CM_LISTEN:
+@@ -1187,7 +1190,7 @@ static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
+ 						  msecs_to_jiffies(
+ 						  CM_DESTROY_ID_WAIT_TIMEOUT));
+ 		if (!ret) /* timeout happened */
+-			cm_destroy_id_wait_timeout(cm_id);
++			cm_destroy_id_wait_timeout(cm_id, old_state);
+ 	} while (!ret);
+ 
+ 	while ((work = cm_dequeue_work(cm_id_priv)) != NULL)
 -- 
 2.43.0
 
