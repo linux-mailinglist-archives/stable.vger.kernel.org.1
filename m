@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-42261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DBD8B7223
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 708D78B7339
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7867F1C22675
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A15DA1C23223
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADB312C530;
-	Tue, 30 Apr 2024 11:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75951E50A;
+	Tue, 30 Apr 2024 11:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnbfzMuy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCGAzng7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A38812C462;
-	Tue, 30 Apr 2024 11:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930728801;
+	Tue, 30 Apr 2024 11:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475088; cv=none; b=WI4uZCJjPXp+8Hw4oEd4KdJP/Rzr/Kr9Oydcw3QySod3fsfsDRWlpL5/RyWIt4q641D+cKCfVSfIKrjE9/GysMfdmxUPSuw+K+MxO69aElCRJoBrWwcRRDJgjVikWq4IFMXHB5c/MLEOUQT5rHceKwsLZ6whfWOdFMZrc/tbtC8=
+	t=1714475793; cv=none; b=fYk6o5P1LWB9iSqIni1OsWK6cQxWv2jYlSsSNvH+Cm65p153PkTbUkvo0sREpVvvOoBkWtcCaW9AocUgAG3kPWdEOgLzpc6t8GzC2AZM9mewlFbqeDEE6nGXZ320fFI5nGKfQC4sAnv1MxQtpikRzmJlVzEWRHedhO0q9joOE9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475088; c=relaxed/simple;
-	bh=Zf5F954FSU7NTybDY6wbVyBtX86yo6MBrWpv7C2clds=;
+	s=arc-20240116; t=1714475793; c=relaxed/simple;
+	bh=xIG2xB27LslhjcbnFoBJBiqjaxGyQcuh3q27YgV2rZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTVdFsr2aaib5mjlbyFFzu3Cq4EF8cMNcVJ6OvjHq6uU1NH5dGgn1EG/6PfUbSuG5bUhtTOlPtwNy+PxyBqN2KwA+V3UDbBe8XTwf8fNuDUEUNiVndaaf4O/YPEBdrkyU9m0FgIO+/XDhbtfzrpqhbw4omCWD4567nkRNdnj9Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnbfzMuy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EE6C2BBFC;
-	Tue, 30 Apr 2024 11:04:47 +0000 (UTC)
+	 MIME-Version; b=BWy1lP8SC05sVrWBJ88bO7xXZPn1wp19wD0RkdVIeVos9EdDQ6Ub5rhtVIXXZ3zL0vPnUDGxV/V1ynwXHvkn8ynV+ev/WbKR9i6gXQwKUlvXh3/uHj5noVZfhDmOF21q62ddl5asVgpSblEh344pEkTfNvPwCkHx2ZWbtKnF3fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCGAzng7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B362C2BBFC;
+	Tue, 30 Apr 2024 11:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475088;
-	bh=Zf5F954FSU7NTybDY6wbVyBtX86yo6MBrWpv7C2clds=;
+	s=korg; t=1714475793;
+	bh=xIG2xB27LslhjcbnFoBJBiqjaxGyQcuh3q27YgV2rZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnbfzMuyzw6/6j+mbK8ARfOkTE41NfPvONju2aM3Spepq5JF+iOC5lF6P+hrFyEcK
-	 VPdaayH0gmEYTQA+ugAgasv5Dk+Tj6qYRXe0nkWX6Mc14cE06mKs+Omb+ODEAikfIe
-	 PXSSCaWq5coJDi7ixgjEqsjm7X7LSiCAS8Y2aQPI=
+	b=nCGAzng7rpCkQyDuTkEiqCKkBpu1ojB1/afwo5gRO9ldNU+jMQkBIDwkgggyot/Eq
+	 WaHjSetk+0pamxJx/G087iaHukAEJyIhSCiiZFsZLfZbGL0l8pnvVF2w4AF5Hn4h9e
+	 vMQAcwkC9FOKg+XU0RVdn4JzbsBPnopUYxaSrba8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	shironeko <shironeko@tesaguri.club>,
-	Eric Dumazet <edumazet@google.com>,
-	Jose Alonso <joalonsof@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takayuki Nagata <tnagata@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Tom Talpey <tom@talpey.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/138] net: usb: ax88179_178a: stop lying about skb->truesize
+Subject: [PATCH 5.15 02/80] cifs: reinstate original behavior again for forceuid/forcegid
 Date: Tue, 30 Apr 2024 12:39:34 +0200
-Message-ID: <20240430103052.040961091@linuxfoundation.org>
+Message-ID: <20240430103043.473550585@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Takayuki Nagata <tnagata@redhat.com>
 
-[ Upstream commit 4ce62d5b2f7aecd4900e7d6115588ad7f9acccca ]
+[ Upstream commit 77d8aa79ecfb209308e0644c02f655122b31def7 ]
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+forceuid/forcegid should be enabled by default when uid=/gid= options are
+specified, but commit 24e0a1eff9e2 ("cifs: switch to new mount api")
+changed the behavior. Due to the change, a mounted share does not show
+intentional uid/gid for files and directories even though uid=/gid=
+options are specified since forceuid/forcegid are not enabled.
 
-In this patch, I removed one of the skb->truesize overide.
+This patch reinstates original behavior that overrides uid/gid with
+specified uid/gid by the options.
 
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path")
-
-Fixes: f8ebb3ac881b ("net: usb: ax88179_178a: Fix packet receiving")
-Reported-by: shironeko <shironeko@tesaguri.club>
-Closes: https://lore.kernel.org/netdev/c110f41a0d2776b525930f213ca9715c@tesaguri.club/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jose Alonso <joalonsof@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240421193828.1966195-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 24e0a1eff9e2 ("cifs: switch to new mount api")
+Signed-off-by: Takayuki Nagata <tnagata@redhat.com>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Acked-by: Ronnie Sahlberg <lsahlber@redhat.com>
+Acked-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ fs/cifs/fs_context.c | 12 ++++++++++++
+ fs/cifs/fs_context.h |  2 ++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 38cb863ccb911..da4a2427b005f 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1558,21 +1558,16 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			/* Skip IP alignment pseudo header */
- 			skb_pull(skb, 2);
+diff --git a/fs/cifs/fs_context.c b/fs/cifs/fs_context.c
+index 6347e759b5ccf..fb3651513f83a 100644
+--- a/fs/cifs/fs_context.c
++++ b/fs/cifs/fs_context.c
+@@ -672,6 +672,16 @@ static int smb3_fs_context_validate(struct fs_context *fc)
+ 	/* set the port that we got earlier */
+ 	cifs_set_port((struct sockaddr *)&ctx->dstaddr, ctx->port);
  
--			skb->truesize = SKB_TRUESIZE(pkt_len_plus_padd);
- 			ax88179_rx_checksum(skb, pkt_hdr);
- 			return 1;
- 		}
++	if (ctx->uid_specified && !ctx->forceuid_specified) {
++		ctx->override_uid = 1;
++		pr_notice("enabling forceuid mount option implicitly because uid= option is specified\n");
++	}
++
++	if (ctx->gid_specified && !ctx->forcegid_specified) {
++		ctx->override_gid = 1;
++		pr_notice("enabling forcegid mount option implicitly because gid= option is specified\n");
++	}
++
+ 	if (ctx->override_uid && !ctx->uid_specified) {
+ 		ctx->override_uid = 0;
+ 		pr_notice("ignoring forceuid mount option specified with no uid= option\n");
+@@ -903,12 +913,14 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 			ctx->override_uid = 0;
+ 		else
+ 			ctx->override_uid = 1;
++		ctx->forceuid_specified = true;
+ 		break;
+ 	case Opt_forcegid:
+ 		if (result.negated)
+ 			ctx->override_gid = 0;
+ 		else
+ 			ctx->override_gid = 1;
++		ctx->forcegid_specified = true;
+ 		break;
+ 	case Opt_perm:
+ 		if (result.negated)
+diff --git a/fs/cifs/fs_context.h b/fs/cifs/fs_context.h
+index 3cf8d6235162d..74bb19ec7c839 100644
+--- a/fs/cifs/fs_context.h
++++ b/fs/cifs/fs_context.h
+@@ -152,6 +152,8 @@ enum cifs_param {
+ };
  
--		ax_skb = skb_clone(skb, GFP_ATOMIC);
-+		ax_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
- 		if (!ax_skb)
- 			return 0;
--		skb_trim(ax_skb, pkt_len);
-+		skb_put(ax_skb, pkt_len);
-+		memcpy(ax_skb->data, skb->data + 2, pkt_len);
- 
--		/* Skip IP alignment pseudo header */
--		skb_pull(ax_skb, 2);
--
--		skb->truesize = pkt_len_plus_padd +
--				SKB_DATA_ALIGN(sizeof(struct sk_buff));
- 		ax88179_rx_checksum(ax_skb, pkt_hdr);
- 		usbnet_skb_return(dev, ax_skb);
- 
+ struct smb3_fs_context {
++	bool forceuid_specified;
++	bool forcegid_specified;
+ 	bool uid_specified;
+ 	bool cruid_specified;
+ 	bool gid_specified;
 -- 
 2.43.0
 
