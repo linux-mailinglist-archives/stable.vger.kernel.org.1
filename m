@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-42591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8514E8B73BA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 602ED8B7352
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 108971F21DE2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99BE6B22885
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F178712D74E;
-	Tue, 30 Apr 2024 11:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAE612D74F;
+	Tue, 30 Apr 2024 11:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmGCQ2dg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xk4n227b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFC312D1F1;
-	Tue, 30 Apr 2024 11:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E51012D743;
+	Tue, 30 Apr 2024 11:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476156; cv=none; b=ss17lDWwzUGBw0a2K0HPGTmbK4NvVRDyvEQ890zkzbN3W5VM1WcXNAiheQnlR8nK6YRg3lz4GhDu8yyzPKn9C8uvEaoQDVRbRHl4rgVYLu/EBXyGAPWn02hsVcl04WJkXj+9qa91IphUSMbCppZGziMzw66RPplta7woop5V2ic=
+	t=1714475858; cv=none; b=hy+kNtWST+n7Zn8FI2b6/BPGw17Jcv/A3RD2oEXRY44i0SX4u9IvlhrOgJ11zKHzyCMVBDpCstkliJUOi0vjzKrq4y9WAkmJhN54tQVA+MMG3V2L0NaRU0hHRb8Yj1pSmxggO9ZDJm8vU1Z4MMn/gZSnRS6TnyagAE9hJvMF4as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476156; c=relaxed/simple;
-	bh=i/yR1hRtB94Pc+m5rqVYOUAnMsoPfOP5loAGqEMeLgE=;
+	s=arc-20240116; t=1714475858; c=relaxed/simple;
+	bh=VthXWGqAom68s6wklPJqDJEN5rQZoqWkh9yLZX4Xb70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqOwovMAj1PXdnm2sHCvA9pdxKNM5xIwsMvHc0vPRi61JeFcvrlYKxmMuzJoC8/IPrZq2T4YIfaYQEjD0rN53fS//cdtbdZ/850Rv+kXEUJQi0pau5h/uFrmj67TfAEWxoo+xhahBffZQOhkcSFKWBwY6ucDYEOMcvVQwX8n53I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmGCQ2dg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFB8C2BBFC;
-	Tue, 30 Apr 2024 11:22:35 +0000 (UTC)
+	 MIME-Version; b=buZuOLLYgLeEJrrIYMv3JjALqg/azh31iJyOHMoDlX9knMApD/NI1AWwZSJjfdMbqABxVCCuHnWlHhJX7LdsUz7tn/rl6MmhBOk4ZEiuPHh/2Yaim+4fTGCejAF16F8J8/jCFjLmHALNMWSTlQj8K7qX3YH7fCDxFCdZjSojrMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xk4n227b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A72C4AF19;
+	Tue, 30 Apr 2024 11:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476156;
-	bh=i/yR1hRtB94Pc+m5rqVYOUAnMsoPfOP5loAGqEMeLgE=;
+	s=korg; t=1714475858;
+	bh=VthXWGqAom68s6wklPJqDJEN5rQZoqWkh9yLZX4Xb70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmGCQ2dgq++B54nt2ldtqRsemXx2iCOQbwyU4gpGn5UPsqm4t3VdtqBMft5yzAitT
-	 OgqLDftiglvhnux3Wj7GcTgUwdk/stdeK01XLWK0uziEYi1N7k6WiepNcZbogXGv0n
-	 zcYw+07jMB2VRxdEOKHJmA39EYFTKWEgGKKd4a4Y=
+	b=xk4n227bQ+5L0bTsfYLoJTC5SnoGi1vPpu2Nn2I9QVrtFZqKTX+lplyx6+govYHpC
+	 BDHg5mgCo3RnX66oyGb0Y83UpxyIPzGPHTZ/V6HFTqDqpJVSHFomThQA/z99cCTkQF
+	 CpeAAJhFPcIjGOn0d8LxDtfVBTORLY0sHMog+Q6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskander Amara <iskander.amara@theobroma-systems.com>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Erwan Velu <e.velu@criteo.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Brelinski <tony.brelinski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 052/107] arm64: dts: rockchip: fix alphabetical ordering RK3399 puma
+Subject: [PATCH 5.15 40/80] i40e: Report MFS in decimal base instead of hex
 Date: Tue, 30 Apr 2024 12:40:12 +0200
-Message-ID: <20240430103046.193748002@linuxfoundation.org>
+Message-ID: <20240430103044.602530283@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iskander Amara <iskander.amara@theobroma-systems.com>
+From: Erwan Velu <e.velu@criteo.com>
 
-[ Upstream commit f0abb4b2c7acf3c3e4130dc3f54cd90cf2ae62bc ]
+[ Upstream commit ef3c313119ea448c22da10366faa26b5b4b1a18e ]
 
-Nodes overridden by their reference should be ordered alphabetically to
-make it easier to read the DTS. pinctrl node is defined in the wrong
-location so let's reorder it.
+If the MFS is set below the default (0x2600), a warning message is
+reported like the following :
 
-Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308085243.69903-2-iskander.amara@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Stable-dep-of: 945a7c857091 ("arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma")
+	MFS for port 1 has been set below the default: 600
+
+This message is a bit confusing as the number shown here (600) is in
+fact an hexa number: 0x600 = 1536
+
+Without any explicit "0x" prefix, this message is read like the MFS is
+set to 600 bytes.
+
+MFS, as per MTUs, are usually expressed in decimal base.
+
+This commit reports both current and default MFS values in decimal
+so it's less confusing for end-users.
+
+A typical warning message looks like the following :
+
+	MFS for port 1 (1536) has been set below the default (9728)
+
+Signed-off-by: Erwan Velu <e.velu@criteo.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Tony Brelinski <tony.brelinski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 3a2c6ced90e1 ("i40e: Add a check to see if MFS is set")
+Link: https://lore.kernel.org/r/20240423182723.740401-3-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index 365fa9a3c5bfb..ecef3d9b0b93e 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -425,15 +425,6 @@
- 	gpio1830-supply = <&vcc_1v8>;
- };
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 000c1d59ea062..991321b04084a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -16147,8 +16147,8 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	val = (rd32(&pf->hw, I40E_PRTGL_SAH) &
+ 	       I40E_PRTGL_SAH_MFS_MASK) >> I40E_PRTGL_SAH_MFS_SHIFT;
+ 	if (val < MAX_FRAME_SIZE_DEFAULT)
+-		dev_warn(&pdev->dev, "MFS for port %x has been set below the default: %x\n",
+-			 pf->hw.port, val);
++		dev_warn(&pdev->dev, "MFS for port %x (%d) has been set below the default (%d)\n",
++			 pf->hw.port, val, MAX_FRAME_SIZE_DEFAULT);
  
--&pmu_io_domains {
--	status = "okay";
--	pmu1830-supply = <&vcc_1v8>;
--};
--
--&pwm2 {
--	status = "okay";
--};
--
- &pinctrl {
- 	i2c8 {
- 		i2c8_xfer_a: i2c8-xfer {
-@@ -465,6 +456,15 @@
- 	};
- };
- 
-+&pmu_io_domains {
-+	status = "okay";
-+	pmu1830-supply = <&vcc_1v8>;
-+};
-+
-+&pwm2 {
-+	status = "okay";
-+};
-+
- &sdhci {
- 	/*
- 	 * Signal integrity isn't great at 200MHz but 100MHz has proven stable
+ 	/* Add a filter to drop all Flow control frames from any VSI from being
+ 	 * transmitted. By doing so we stop a malicious VF from sending out
 -- 
 2.43.0
 
