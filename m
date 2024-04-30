@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-41781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384618B66FC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 02:45:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B85698B66FD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 02:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C9F11C2232F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 00:45:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73381283955
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 00:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F1F17F5;
-	Tue, 30 Apr 2024 00:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125DD10E4;
+	Tue, 30 Apr 2024 00:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TJUxBfwa"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Z+4WtZ6Q"
 X-Original-To: stable@vger.kernel.org
 Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2069.outbound.protection.outlook.com [40.107.223.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0617810E4
-	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 00:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BD4205E23
+	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 00:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714437903; cv=fail; b=gbrng6cqfeM2WPxdsm+0am6fS8Z6XHYagPqb6Zt+N6+0eXcJtFdaav+Ll/9SkU6SmbOiqkURPaJmt9+u5z8y4L3K99Kj6W2sopR/3MzCv8apVlX+MFDOscu0GuQrNmXl5py+iZkvwvRsPhzHolOFzKBljCLIaqL05h/P+FmqM9c=
+	t=1714437904; cv=fail; b=uhM84yuMUZtNv/wBRhXdPpzbWU4k04HQg3dgcb9JAy2v9sg2X03XkoROYaV5Qkgd9wkIMmCWOk+nQUSN9c7WIhY7a8fVXp1/MMFa5X8tt11svJReF/+35sxx6QzkrQ9iv0zfKPNdFExvTfL1Dhc+Qqai2a9eG4pUhco9E38vBRg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714437903; c=relaxed/simple;
-	bh=wZ4qNDI0R59QvI8wGPZ2nQ5FzC5yPSH2lhV2I8Kmmd0=;
+	s=arc-20240116; t=1714437904; c=relaxed/simple;
+	bh=tlUeoKhvlaahcpZP4MJZYBhxCkVnpMl2UeqSAza7nmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ubGrHrY9Z1zBHkL5oxamyaH1a4RnFrg2ERb2q1oRuf7Nx5Be6AgPM4x+eezBLYibtx1mRPdbKIYOcIldmDsmcoAnDa6QoAswjBCIOYzTvEaS7y31pQ2ss1sqNb/8LiMmAxJnoeHBhP2XqOOgWgYExHK2hKp1jBnQJ4OkVs1mOOw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TJUxBfwa; arc=fail smtp.client-ip=40.107.223.69
+	 Content-Type:MIME-Version; b=ErejOb9Qar+MM5mvNjOlW3Demd/jMDppgyo9Bs8faaUkSnyn5bo1E2tqxZ+esd4P6/fe6lZM/yJ+Cgck2xjlCEcyCM1/scZOLLOAWs+cQktt/XpJxnJ38StpqrH7FrLOi4WACsKSi7ISezE/gNCyAGMuvTi0s0SGOmNaHxG6I4Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Z+4WtZ6Q; arc=fail smtp.client-ip=40.107.223.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oGADSXVBU4XaCNfa+n0Ink2HWfiP+bHVY5OmITK88McrQMH49WG2FygSJWTOTLFTBulQaqq0Wqwo0OJMRruKVlYVME+rtOdnK2CCS8lGdqUchzYNw3GaGQMTZlmB9MLIxr08tcaVkq4yJZaLOgzlbD/9I/wByvL8nfd2SqCWETQP1TBtYtlbTeoxAtJxN97YysZCIck4DdyS+cSOzv1b9ifWo3+RoAIJ9UUsF2GC7UsCBinFgOylQHEiLMhbcF8GweJWh9n/s7SbkgPF0Gfm00NkkjI62lmw2mKh7brTdH8Hzv5bUUAs2HmSgFuILqzkH0cSUCTciu2gziw+P0pQiA==
+ b=S6P3A+u9palnkpV3kC64ybdcKZRwzsKCc3VjE3ld0VScm1I8AecknFvjkPwhiCtQs11osmOqlNW0Xsl+QHf5uC0ZmCTIAEzmGThHeGoRUaKK5awonqnPuJmmLjszrs0LttlXLpw4SbWMkCHK4IFknpzopWq9ecdsf6YX/BFypqUBG6uyzhXP4Rzzdf1qHJXZ7rzWDZS/PXFsyHmcLFMaXqpEvPh5JGPYz5K82my9XM2JuLDLzxCe0VLAqi2LuDJzpvO1/EGejsSQQGYMH9Z2vvSEj66JgGoqwFS+jtwNEGYsEWAOYj4iJWY7wFvszDUxKE+3nkpqItOmzD67WaLHzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OFNELBthwRrEyPRFdXVe6mR5kG9bWLpyozQ6gAKo2pI=;
- b=gtl9+rjq3IzogGLbemlah3haQSFl8eNBOfi71IGpcaCaiNoPo0IrOLAA+WVoglkH69fGjhseNp+RH8JOhH2deGBBcVJDAMIaiJ+SDE4WToLs5FpcxgPFBGGSmsYdkGzvXfazgd4n8h6Cxje0t0T/JnndY7cpDUejMLL9hAnXH2r4UY224zRGaxZMHEuf4758TIPpcKAXdh43HltpoGRDO2M23zaJpezFYiQvzrxfa4TBHYVSPJng9bmKBRQegQJi4cfKETw/lwHRPLlGtqNaA20e6GWeIsDxaRT8wz5DOQ7cLCmAw+U6kGIS8qGKdj1CfaKVx1PBwiDPYNa/Pf/S3Q==
+ bh=XJVMftZ7+n6cSoGf9683SjPnEemQGiYDZ3u/y3M85QM=;
+ b=RrpZwiaOsUe9SUHo67/qK5eHVCQTG93hYYCiOgeKiZHKjgApBsGh7BDn93vbkLh6u6eK13SM28KaaPAGCJ6AogX6Bs1EA+IbkvPmPHgukRXqptQMgjHQWQI74h6iAyFgXmYGE1sbdCVGSQwNsBgy0PpUKrlaHfod+Xo9uiKHWdSQjsJbh7cy5NBWVJZi8PYiiXxDe/6hBuewpWM3hOHQNIicB0oBUXTkX4avYbKhmb3gEZ5Dgjb7LnjKE4JufPS5ciz3QtZ+KZc+pYtOca274UfEcRxz5e9Q93PDTadnQuW+2vx8mXFFkrEy3fstznO6Es5GDtcBb9BeRw9+53pP3Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OFNELBthwRrEyPRFdXVe6mR5kG9bWLpyozQ6gAKo2pI=;
- b=TJUxBfwalQLcIrlQdhVKDCQXvoWlyrXPdIpIZ1rdXb5LQQPBp/eL6PolMgx5+teXNZXQQHrh3tMrCRyLXYpoDKemNW19cppDD9jAmechybwI1n0XjlzHBC4pMqCvx4WJXbpA5+D6tpTsoXDw3I4sBIafVkzcmZ1UY/eA+cWYQNWIWSujcF0TLA+rL0WquCVZ3nVuKeQFX4RPVEy89Ea/OmoUWOpaxn1EUgm0+4/5xcDpU/wufaIKWp9gVWhu7aGrLj4kUBJK+umvN9+LUAFIh+Rv46dgCKkTOz+ftEddznXw2KXJ44Vw2QKpelbFuBaxeqtMK1lTU3I9SupUWFnqjA==
+ bh=XJVMftZ7+n6cSoGf9683SjPnEemQGiYDZ3u/y3M85QM=;
+ b=Z+4WtZ6QjTEITFMNpwACVi09771vg4Y3HYI6uxR9lLDZQSRbz4NUGbMaw/gczilkK1sSGMef1ttLja5hdUWWl6BLpDF45Y8vMJDFG4NEptQ1DMfoOLShs7d/1URq1SzyL26lGvZ2e7fPblIvFuhmZuk5O++4Br5LRQulBmQUyTD5jWGJsOSW4xOrTSdFGgiYraAqkw9L8QMQFsTwx/tK0QnyKtE8aj6iRcv9AynusiJjpiNnXiohGvzWduqD/yUmDlMQUtyGrpepFxIF+raF9uHkK36fonKQGHbJfpNPvhCCisoxHjqQZmfidKgfvk/h8MMjIkUfVM7rG3WfN4nglw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from BYAPR12MB2743.namprd12.prod.outlook.com (2603:10b6:a03:61::28)
  by DM6PR12MB4468.namprd12.prod.outlook.com (2603:10b6:5:2ac::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.34; Tue, 30 Apr
- 2024 00:44:55 +0000
+ 2024 00:44:56 +0000
 Received: from BYAPR12MB2743.namprd12.prod.outlook.com
  ([fe80::3ec0:1215:f4ed:9535]) by BYAPR12MB2743.namprd12.prod.outlook.com
  ([fe80::3ec0:1215:f4ed:9535%4]) with mapi id 15.20.7519.031; Tue, 30 Apr 2024
- 00:44:55 +0000
+ 00:44:56 +0000
 From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 To: stable@vger.kernel.org
 Cc: gregkh@linuxfoundation.org,
@@ -65,16 +65,16 @@ Cc: gregkh@linuxfoundation.org,
 	kuba@kernel.org,
 	sd@queasysnail.net,
 	Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Subject: [PATCH 6.1.y 2/4] ethernet: Add helper for assigning packet type when dest address does not match device address
-Date: Mon, 29 Apr 2024 17:44:22 -0700
-Message-ID: <20240430004439.299386-2-rrameshbabu@nvidia.com>
+Subject: [PATCH 6.1.y 3/4] macsec: Detect if Rx skb is macsec-related for offloading devices that update md_dst
+Date: Mon, 29 Apr 2024 17:44:23 -0700
+Message-ID: <20240430004439.299386-3-rrameshbabu@nvidia.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240430004439.299386-1-rrameshbabu@nvidia.com>
 References: <20240430004439.299386-1-rrameshbabu@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0249.namprd03.prod.outlook.com
- (2603:10b6:a03:3a0::14) To BYAPR12MB2743.namprd12.prod.outlook.com
+X-ClientProxiedBy: SJ0PR03CA0016.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::21) To BYAPR12MB2743.namprd12.prod.outlook.com
  (2603:10b6:a03:61::28)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -84,151 +84,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BYAPR12MB2743:EE_|DM6PR12MB4468:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1f16be88-febe-4a61-b640-08dc68aebcf6
+X-MS-Office365-Filtering-Correlation-Id: f9b4f2eb-6c68-4063-e445-08dc68aebd9c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wom96v//baEYPpp4ww8fAg2CNp0iWySGrPYNfHBv7nceha7X2oyyiGdasdbI?=
- =?us-ascii?Q?YZPPBh7OjLWmtp0oaPKYIm4EAzF7QHSa0osHa34CxjoV9CBqyEow0pbmpoKq?=
- =?us-ascii?Q?YSEN4SfQtk3VnKWTPBOzmeRburXbduW/dMVkt+oZn7+sWT6/ll5fWSSmhwPI?=
- =?us-ascii?Q?Fvkt/th5S+q9hyWRhzCiGHHqqZcOqb7aiJac9d2v1RK4S0KZK4a5fojU4WT/?=
- =?us-ascii?Q?uGz2AfJq2rTuH04uHFKdotPEMcz5rlUHXzeKndmH9R+4oXNpaesC5LZnhq51?=
- =?us-ascii?Q?50kdA5BXty2SyNAA91lFBs3BhRCFF9OQm9Q8Dbn3+Dii70nHds+uHCSBhwT1?=
- =?us-ascii?Q?c3ccvxuUjcAZL9YMX7arDdLzLu2BNeCEYhEqNysWMaChL2+bLM5k3QemcmQu?=
- =?us-ascii?Q?yZXxk9IR7DR8DuorC8ZsBA85UDeIiEEXbmF0uOci8h0DBAuPxTNdi4dIi7Th?=
- =?us-ascii?Q?19fYqAvLI8zvzPUSBG2elGCy1aiv9L737UGXZLVd/JA5fqKzH8j2p9Cj+lOX?=
- =?us-ascii?Q?/9TuI+9ooT4StodXsVle4ANcbeKfzMwU4PYN78GLTiHi353tJ0X5hFSIqBFB?=
- =?us-ascii?Q?d9IUSnTHERpIpvjsJaAwgclvavVcopdmOleLlsXyOxr8a4ncgG+0MeWM2qRP?=
- =?us-ascii?Q?O8O8BPYz5aB2Sqv2w9dWcZGgCCrgqlWggm2W5n5zl+b9I6d4Jg4IsV86Gvr4?=
- =?us-ascii?Q?xEhi5v5RlmGDWqZPYuEpXQ8HCEJE/hFBICuc/n/yx6nmw5/nGzvUnIiP5dRZ?=
- =?us-ascii?Q?vqfq4DgC9Bp16Y2yzil1W2ooWVLooKNgVIhvwmjkJIdHcjhXBaJnbymQLlbn?=
- =?us-ascii?Q?rd1+v7VJCIfbcfiUKNKDT9OwVDktp5D9LXJNT+7JYpcZDLqhxnRCs8aBdV15?=
- =?us-ascii?Q?keb2nAaS6VIe0KUcAjNiL8tcyu+1pO2vA5rmWzmCU5pNGtHd5GCZpXNK99oe?=
- =?us-ascii?Q?ZlIOYhjXjmXHdcs5FZ1gCRAGra6g1sRTApx5WadvybCVpZrU208P/AzAoI7V?=
- =?us-ascii?Q?OUXN9Jvnt2V7kHrf0woPqx7z+JNlc7i325iHEZTxmQaKym5D1Q5qRzBhyr8V?=
- =?us-ascii?Q?+ggC1MBbjnrcOq1Ecp851FeU0CBDOETZxvf/eZvHHhbTgPlICzA6N8lxrlfu?=
- =?us-ascii?Q?1xwD4qCtm+RyzJVp7GrPLaS5VCuvTJW5ZCXD3x0LPd4uGhkQJ3T0xYsfCL9Q?=
- =?us-ascii?Q?plvTauUPTDBFEqYCSnfe89nDSy13QvNnhjf84/atNb2qyO4b1G+B/ne12age?=
- =?us-ascii?Q?qVOMKx8xxZGtcZlamQCH948SFktCwTwTYe825p2knQ=3D=3D?=
+	=?us-ascii?Q?blclOc2WTIeSntgylNTfcIUjPNT80yj/xeEtd+59sgkuXHl5p3xGK6LJawdh?=
+ =?us-ascii?Q?1bXt+cEoa8lP+k0CgYxfWvgGxvp/S97Gszl1xzy/iwaFtBkjVUK0MU0AMlpX?=
+ =?us-ascii?Q?7xBGsiymr1llrZ2gbpF8oAZvp31jQm2XTrExPo/zcJy5VrutrNSikWsI9H4e?=
+ =?us-ascii?Q?oSzcCiv9Q1znJiAvCPLG0GjVwpICT4Aqm/qKNhR+dKAcHPo1MDAvrmsnPwY5?=
+ =?us-ascii?Q?B+2e1levzLi1CNLbkN08qYNP4D2TYOsugtPDG4VTwmEhwiJMYEBuUgK35aX3?=
+ =?us-ascii?Q?lt/LyezkiafdfVcsvvNMK/53R855GN7/1EZmj/gsiHcSi/orAVF/dZIDPLz4?=
+ =?us-ascii?Q?wjKxRQHWCP/QvGG1JHrvL0qYYu0L2uHKltdcirQVury5eV64KcYYXl5/RjqH?=
+ =?us-ascii?Q?CIWKNiMy0ggANE9wf/7izJ0zxp268M3EBzhtXkSTQDsFX7JgA0gnJY7oh66S?=
+ =?us-ascii?Q?eVZ5/wpy6qHKFRDtziyIpOhEX5X4db3HCRFoP3/pn1k0MAv1eh1jKhKRgl3w?=
+ =?us-ascii?Q?THW1Kj7ReEZIKvHP86M+LTShqhlpqGCTI+mEvsBZ7myPc1hc/mG5v/M8FxZ9?=
+ =?us-ascii?Q?gIKYaox+leLbyJwAHEcc5hOGc98osSbqVuq6T+05FBS27KC10HMv2r70yXPj?=
+ =?us-ascii?Q?C+FQDYBCMB2Zgd4pFyxPYrAQ1fc8VDJHV/ot+7kc1vRn/LkGj60LWiYj3WzN?=
+ =?us-ascii?Q?+we3q9X/s/5wZqiIwqTpStSxjTUv3pPZZWfdRAx8UTEQ0wYkymIfAytXB8W0?=
+ =?us-ascii?Q?rWu10/BWS89VfNe8ZvqHfwfwvR0EtZd+YIuyQUEtu8cwMU14tJ4oyCPXCI4c?=
+ =?us-ascii?Q?Ziq8QVoy3kkDc1V8ShYFNGp7QY8rJid4iX0c2LwLw39WmXgk6LOZIwcNptk3?=
+ =?us-ascii?Q?DQzuDND1orcd+ecSqgOvafYx0Jl6KE0CljNRXeuBzBKaz2/5gpoYU9hjbOi+?=
+ =?us-ascii?Q?6Nw8ku70dG5MkFXuowXmdtmCmLNQXpotHKTnRbkGvVfzlZzBzX6IeA8ldJxx?=
+ =?us-ascii?Q?kc7WsCI2q4VAz9zJXLRCJcDc0NUXOUBQ2CCkMNx6WGRyaTVuKPbPpqOzqyle?=
+ =?us-ascii?Q?JCVUl7ewLuZnTMi7IQSiXw5D/VKXLNMx4agoCmMa0vX4ZlUqOcZ7DMXb2gdn?=
+ =?us-ascii?Q?+Kt+K3BR54Eeuh4PT/2ebiOYgo9y3BLYaq1ujKbIklUGPhEuoVBT2ot9ujW1?=
+ =?us-ascii?Q?3W6Teo9OJXq1qirn6OP2GtI3Pdy4UDjWAKjRJbIMEhVZB60B2zC6O6C9rpAx?=
+ =?us-ascii?Q?7y+aDcuFxSpYogU6LqrHJmVu3fm+zI8XSt94d0VGXA=3D=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2743.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zGzQR0HIQ+noWR2fWQTk4GrNcU5Lv+b9hSXvETVhPq1O7tNzljBppbYp0aQl?=
- =?us-ascii?Q?BAXcZaEQSLV54j21H6iDv6ulaBjUnWCSMjWPd6jkRHH9lWI2cpJV/jURuQbW?=
- =?us-ascii?Q?Dx4uV71aY/Hw/OoAT2pxjP6+gigauPqf0yjhRFMEliwePSjMLdIcFHiD6vrg?=
- =?us-ascii?Q?6lfgpRWmuB/MQEurCBUT9CQgW2h1zQAjozNOZ2WCs2PiqT/4jfvv8VUnxJq7?=
- =?us-ascii?Q?bRQrFl33OtZETVKj26e/P7rF09PCtambB4260WE6mMk1TL9jOe1BU92bYlc2?=
- =?us-ascii?Q?OeKankwuMlMufqj2Jt60Em/3Q7/otneZDfH3SFgixkmb1gmTSQpoKwkmXov/?=
- =?us-ascii?Q?uM4IGoDah7bdrJUsz+LNl8K2vVgdFBvK7Y04KtZ/gQFwzpaVaK9zvKPcVpAK?=
- =?us-ascii?Q?TVC3WP0M4LbS/pl2woQe6bLoZSwa9pdn307ronKTqMHWQfKa4G1cxPuNM4jA?=
- =?us-ascii?Q?dFx+JjahV0uj6ISVFUfcpk5NnwRIAv55obt9v9kaXHBol0xqBLEIRDPDpKGF?=
- =?us-ascii?Q?tebRccbXLqbiIbdklf2g/IXXNgDjZT4e8+XsjC88FSOvpOLFaBYD5yNhCieV?=
- =?us-ascii?Q?acCrRisl5nKBt3HYIMcfdX9CHjQVxB43YC31gQdEVQHHkDLY/UTrPqIgW8+k?=
- =?us-ascii?Q?okf4w0a1u5CardLjOUvHDMEwdbOCL2+/mu2jd21KWGcYZy+Q5skE9FfpJTwp?=
- =?us-ascii?Q?m9cZ+0D32Mhj0RdzpVgacIMmkYCV5wRHZl1As4JRK1CCkC+7H3yEZdVJDqUA?=
- =?us-ascii?Q?YbKf5FwPVzdYO5D/yUxW9Od27c4wxfU2hwK1tWSkp2OadqCC8dlE7GJnqssa?=
- =?us-ascii?Q?tDbWORDE0B8zhx2DHwh/EDKiXis0PS3HTvb4zZf4kIPrg9l2mm+MonFFxxul?=
- =?us-ascii?Q?ScBkX+hV9LtnCVly9zFNxR3+MWBsscwxYE/D9ub/xmqdA1dSq+TIewxZIzZ5?=
- =?us-ascii?Q?KfEfBoKgg+iIxgsTC8a5f1LV25f6PXnbwhwwI96c44cIlIJxvGLwiApFdnp2?=
- =?us-ascii?Q?N7xOuSQcXBg7SLOkddQQufXLzu+5nW+68ZPJ8x9GQT6VXWKMZDFl+lf8JvX5?=
- =?us-ascii?Q?ck7HaK6jFoeJ37mYdJSoBlaf8DjHPSkoP/DJ3NGv+rj8aw1xwBcOXBJ0Abml?=
- =?us-ascii?Q?omKArvim5T3nyVecgG7EQyvQ3/AHGsamJ79WytPABkcvvckhlJu54xkzec5G?=
- =?us-ascii?Q?E50etoD6+otTpXU7/BH9sSraKakRHXrUm/lVv1lw+HPoOiMqqk+g4vDSgdM2?=
- =?us-ascii?Q?5btcYQSN2rtMeyciO1iDcrxwC4fvcoTmbtSdltLrIZxM7QbPBM3ZPWgpMCWx?=
- =?us-ascii?Q?kfrsIB/0o0ivKpHLkIM1lXb4NfAbhdlSFLeJxRa5trnJIJ5NL1NC4HXM7QJ+?=
- =?us-ascii?Q?a95Xv3iFukV6lj2tdreHfNdTq9NaglyxaGBh5/XoTZG9HgCdrNLmd0qZYL9R?=
- =?us-ascii?Q?bX3NOMhf+BM2M3DahRnbKMZLkJJKx+XhIuMEnm20+9YuMnuMynQO1xQnXZUH?=
- =?us-ascii?Q?T99Uuvs7dLCHU8/nAxmNBmQUTm3afOZPLp/wuz930m9uxv/qFTZydW4j/mCc?=
- =?us-ascii?Q?NIAatf1v+qNLdOSgg8vM7fufenGbU6lS1dw1YlZRiOXVrl0TeQTq/pWelOtg?=
- =?us-ascii?Q?cA=3D=3D?=
+	=?us-ascii?Q?BZwf04PmxNzjr7ErO9t8V33xOsurmBMsblBMYQkNrF+zWk3/6gJXfNxgmI89?=
+ =?us-ascii?Q?FF9YAc5ddcYy7q4GzKyw6/SijYlXDJTPfJ2EOShaquRjjPfhfme0hytlpiLg?=
+ =?us-ascii?Q?hf+YKtYOULI2Nvk+jPHIdxR07zIbHks1+aG8CekEZgwkJZhIO7e6iWRpGSTt?=
+ =?us-ascii?Q?ZrcZ1HHbhQQHKR402qFhkuDoEUVbZGTlVenDXztZeGAZLTKeuIA15dwt98k4?=
+ =?us-ascii?Q?V+6Nqddy2xG6DQQZ4o2YcxO2wObOOCl03vzBicFk2YnPJBt2QuhLweDE/Y6z?=
+ =?us-ascii?Q?Mz1D26zekNsM36sWBUcMbD4Eww6SoLrngl9wMjYpfqbbguRhcW08fwHpo6oj?=
+ =?us-ascii?Q?WfFQCDKd9pXvro7oOcGunYtaipm9gdOlzFl1vAorFG2519z6j6EZV8e1cejp?=
+ =?us-ascii?Q?BI+jqG11LZ1ESEeq/498Y0ElpCcQnyeKtR7UoXY3NpU6EEQm+xiQT3k6qTXU?=
+ =?us-ascii?Q?YYXxr4wLWXU298PRRaIV2OfwR6MMpHZL1y5AG+L46YhVwUOmsiDYScaPAry3?=
+ =?us-ascii?Q?+y4PXMsc+Ep67kWjzmisIiT0SQBlfmuxC6Md3oO2Kipcppj9n1DJLUqJ34s+?=
+ =?us-ascii?Q?XroHBiCQyiNFSctmmcUO9UEwQeGZGxoQoLRYJc4Uuhg5ZvU/qVW9XcTrm+js?=
+ =?us-ascii?Q?/Oii3SbvWTe7FpldVOfjG5Au/vD7gRrCg55hes38AIWvHkq6VeBGbi4DVPy/?=
+ =?us-ascii?Q?uSJS4murjxH7VpxzLBUGe77ti1YshrqfK9jPTuFFG77hA9ojce41ICGnaFNV?=
+ =?us-ascii?Q?GSriJeDzmXBjXFFoMVPItxTB+lUJ/+NWonXEM7Vq6s/40k32BLDenEBfrQLX?=
+ =?us-ascii?Q?Rr4FRlrl8E8oq2fo2t57NCz4auTZXZgZhxUAbvjAR9HV2VFU7cFuM5g48mEF?=
+ =?us-ascii?Q?HW1jnw1ELUYwwWh4uB61K7IvUWLXixijJzrVRzt5l7q4rMdecJpPXKtGHr61?=
+ =?us-ascii?Q?0hC8T+nHfVRgPdM/pb0G9yiGDf/s0/UsJRH6+Zy+qz7w/OrKN+G9y+dfdQbW?=
+ =?us-ascii?Q?wFQuFWVVU9S7CUaGZwJrPOuFX0r5cwq+jNC6IfeosbkcLSQhYZ16kY0y4gno?=
+ =?us-ascii?Q?pSqiRPgKUB3WH7/ulgjEC03VUaslUe3GQWW4QJpi2tuEpW6y8StzS6hSUuaS?=
+ =?us-ascii?Q?NZCMs8anoextM6WCJ8f+DyF09+fkGAu9mBrzKeRwDxYmKn+aAjp4sYIfBDxM?=
+ =?us-ascii?Q?EIywlwkb0vaxHntAYECvz9tiQ6Yci7Fb8qUg/+Qa9uFbWUZlu41AXl7yy5+m?=
+ =?us-ascii?Q?KX3IV6Bdxf8386eiP3PQe8ykQd1+EOijvVyoIaft+L1qTTVF0vrOM5LXinfH?=
+ =?us-ascii?Q?FFJPbF4faIPs1b0fjjvqCrtht2H3F+FdsikYzA+pBCr38WieyUiYYhXNKGJ9?=
+ =?us-ascii?Q?BRWC4L6zj70AkG6cu7mWIv7QbdllftcPZ7syqvCs+WyXk123hh/7wdHCKBeG?=
+ =?us-ascii?Q?5s/Q4BYc/TWIPEysjppciiJhgBggoeCOojmfUhlDnHKIsVAT4hVwCoaGHZOr?=
+ =?us-ascii?Q?wtPHhpElw/8vrjTsMspOddUgbJ5AKwJnjVIWzebMEA8EaD+0brJ1VP37650e?=
+ =?us-ascii?Q?IKdYhg+FqTcoIRTrvaCA9WhoD7VtIBojndpwz2rf1Oi9YVn8YoNyj5kl+VdO?=
+ =?us-ascii?Q?gQ=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f16be88-febe-4a61-b640-08dc68aebcf6
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9b4f2eb-6c68-4063-e445-08dc68aebd9c
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2743.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2024 00:44:48.4682
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2024 00:44:49.5748
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SdsQZ78OuJAsvfH3BF210AmOQHAc/8iv/c9MrSxierdiGuscmXsxOuUcTeLKCuMkbf3uQ5k7MDI9XzeOU4ArJw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: n48pvq1sUP1FvsSJd3ptvssH54qjurMXLhx70hi4S1opexJryBHZEleu5vFuESoVLc6EtROkU6/Ys9KkTOtHUw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4468
 
-commit 6e159fd653d7ebf6290358e0330a0cb8a75cf73b upstream.
+commit 642c984dd0e37dbaec9f87bd1211e5fac1f142bf upstream.
 
-Enable reuse of logic in eth_type_trans for determining packet type.
+Can now correctly identify where the packets should be delivered by using
+md_dst or its absence on devices that provide it.
 
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
+This detection is not possible without device drivers that update md_dst. A
+fallback pattern should be used for supporting such device drivers. This
+fallback mode causes multicast messages to be cloned to both the non-macsec
+and macsec ports, independent of whether the multicast message received was
+encrypted over MACsec or not. Other non-macsec traffic may also fail to be
+handled correctly for devices in promiscuous mode.
+
+Link: https://lore.kernel.org/netdev/ZULRxX9eIbFiVi7v@hog/
+Cc: Sabrina Dubroca <sd@queasysnail.net>
 Cc: stable@vger.kernel.org
+Fixes: 860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path support")
 Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
 Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240423181319.115860-3-rrameshbabu@nvidia.com
+Link: https://lore.kernel.org/r/20240423181319.115860-4-rrameshbabu@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- include/linux/etherdevice.h | 25 +++++++++++++++++++++++++
- net/ethernet/eth.c          | 12 +-----------
- 2 files changed, 26 insertions(+), 11 deletions(-)
+ drivers/net/macsec.c | 44 +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 37 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/etherdevice.h b/include/linux/etherdevice.h
-index a541f0c4f146..d7eef2158667 100644
---- a/include/linux/etherdevice.h
-+++ b/include/linux/etherdevice.h
-@@ -593,6 +593,31 @@ static inline void eth_hw_addr_gen(struct net_device *dev, const u8 *base_addr,
- 	eth_hw_addr_set(dev, addr);
- }
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 209ee9f35275..8a8fd74110e2 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -1007,10 +1007,12 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
+ 	struct metadata_dst *md_dst;
+ 	struct macsec_rxh_data *rxd;
+ 	struct macsec_dev *macsec;
++	bool is_macsec_md_dst;
  
-+/**
-+ * eth_skb_pkt_type - Assign packet type if destination address does not match
-+ * @skb: Assigned a packet type if address does not match @dev address
-+ * @dev: Network device used to compare packet address against
-+ *
-+ * If the destination MAC address of the packet does not match the network
-+ * device address, assign an appropriate packet type.
-+ */
-+static inline void eth_skb_pkt_type(struct sk_buff *skb,
-+				    const struct net_device *dev)
-+{
-+	const struct ethhdr *eth = eth_hdr(skb);
+ 	rcu_read_lock();
+ 	rxd = macsec_data_rcu(skb->dev);
+ 	md_dst = skb_metadata_dst(skb);
++	is_macsec_md_dst = md_dst && md_dst->type == METADATA_MACSEC;
+ 
+ 	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
+ 		struct sk_buff *nskb;
+@@ -1021,10 +1023,42 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
+ 		 * the SecTAG, so we have to deduce which port to deliver to.
+ 		 */
+ 		if (macsec_is_offloaded(macsec) && netif_running(ndev)) {
+-			if (md_dst && md_dst->type == METADATA_MACSEC &&
+-			    (!find_rx_sc(&macsec->secy, md_dst->u.macsec_info.sci)))
++			const struct macsec_ops *ops;
 +
-+	if (unlikely(!ether_addr_equal_64bits(eth->h_dest, dev->dev_addr))) {
-+		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
-+			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
-+				skb->pkt_type = PACKET_BROADCAST;
-+			else
-+				skb->pkt_type = PACKET_MULTICAST;
-+		} else {
-+			skb->pkt_type = PACKET_OTHERHOST;
-+		}
-+	}
-+}
++			ops = macsec_get_ops(macsec, NULL);
 +
- /**
-  * eth_skb_pad - Pad buffer to mininum number of octets for Ethernet frame
-  * @skb: Buffer to pad
-diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
-index e02daa74e833..5ba7b460cbf7 100644
---- a/net/ethernet/eth.c
-+++ b/net/ethernet/eth.c
-@@ -164,17 +164,7 @@ __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev)
- 	eth = (struct ethhdr *)skb->data;
- 	skb_pull_inline(skb, ETH_HLEN);
++			if (ops->rx_uses_md_dst && !is_macsec_md_dst)
+ 				continue;
  
--	if (unlikely(!ether_addr_equal_64bits(eth->h_dest,
--					      dev->dev_addr))) {
--		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
--			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
--				skb->pkt_type = PACKET_BROADCAST;
--			else
--				skb->pkt_type = PACKET_MULTICAST;
--		} else {
--			skb->pkt_type = PACKET_OTHERHOST;
--		}
--	}
-+	eth_skb_pkt_type(skb, dev);
++			if (is_macsec_md_dst) {
++				struct macsec_rx_sc *rx_sc;
++
++				/* All drivers that implement MACsec offload
++				 * support using skb metadata destinations must
++				 * indicate that they do so.
++				 */
++				DEBUG_NET_WARN_ON_ONCE(!ops->rx_uses_md_dst);
++				rx_sc = find_rx_sc(&macsec->secy,
++						   md_dst->u.macsec_info.sci);
++				if (!rx_sc)
++					continue;
++				/* device indicated macsec offload occurred */
++				skb->dev = ndev;
++				skb->pkt_type = PACKET_HOST;
++				eth_skb_pkt_type(skb, ndev);
++				ret = RX_HANDLER_ANOTHER;
++				goto out;
++			}
++
++			/* This datapath is insecure because it is unable to
++			 * enforce isolation of broadcast/multicast traffic and
++			 * unicast traffic with promiscuous mode on the macsec
++			 * netdev. Since the core stack has no mechanism to
++			 * check that the hardware did indeed receive MACsec
++			 * traffic, it is possible that the response handling
++			 * done by the MACsec port was to a plaintext packet.
++			 * This violates the MACsec protocol standard.
++			 */
+ 			if (ether_addr_equal_64bits(hdr->h_dest,
+ 						    ndev->dev_addr)) {
+ 				/* exact match, divert skb to this port */
+@@ -1040,11 +1074,7 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
+ 					break;
  
- 	/*
- 	 * Some variants of DSA tagging don't have an ethertype field
+ 				nskb->dev = ndev;
+-				if (ether_addr_equal_64bits(hdr->h_dest,
+-							    ndev->broadcast))
+-					nskb->pkt_type = PACKET_BROADCAST;
+-				else
+-					nskb->pkt_type = PACKET_MULTICAST;
++				eth_skb_pkt_type(nskb, ndev);
+ 
+ 				__netif_rx(nskb);
+ 			}
 -- 
 2.42.0
 
