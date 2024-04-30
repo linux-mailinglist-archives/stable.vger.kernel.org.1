@@ -1,58 +1,69 @@
-Return-Path: <stable+bounces-42143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4EA8B719C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B078B7100
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FE451C20318
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FEF5B227E7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567E912C490;
-	Tue, 30 Apr 2024 10:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6745C12CD9C;
+	Tue, 30 Apr 2024 10:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOsLjy/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTgqEuHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158F812B176;
-	Tue, 30 Apr 2024 10:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1491D12C487;
+	Tue, 30 Apr 2024 10:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474707; cv=none; b=oFGyxtFn33mLsXbSOJ5EgVrr8gUxQ2Ml5WpLPVIgDSisfTboatcgj1qpLFd06By+NAbxVfdEeELF1+wD7mB0x5GA7bh8z47puxh8+dBWASlaV0u9bIJzK96TfyrFxXZBpdLZs0//Cppo/EvVF32evw6/gOQouPbDMRUQXQTGio8=
+	t=1714474310; cv=none; b=Q9aubPVc4m9Ka/q82CAwJrb86rdcpB4VGDZC5E7hWyGQKtlnRzO6YQw8Zv8rWUXH8jpKYK0hnAzkQ3YzuPUSr7DnmPc6/b3MU7Lbn/CFQhSe4aZ4lIuZRDtwvar3ABHH80dpqprl1ymlqQFq4rPWlllF1CtTNrN4PgGtWHDHqIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474707; c=relaxed/simple;
-	bh=Lka3uClTZnsxW2gccXUJgPmIvxsTq4HE4NGrpSFh1xI=;
+	s=arc-20240116; t=1714474310; c=relaxed/simple;
+	bh=EqxWaXJkaKi6EmeJ/uq2stp+6OiNQwCUC8ehr0Ve1Ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oX4RWy4Z6gRNIKfVmCvfwRe4cY/mPLEoQ7ROTSbFgXLocWSjGHuaog1g/wXoW8H65+N4ijUhIIyYchyWZDnAxJdAVzLW4qHurut8PhX9yPIZvZI5rZ0ZQxk/v3FI50I5rZ/9DGoUWKSLIQKxkK5/M5NStJI1TpX+F1Pgdv+U8Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOsLjy/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D19C2BBFC;
-	Tue, 30 Apr 2024 10:58:26 +0000 (UTC)
+	 MIME-Version; b=WAQXgjuOKCZq3Ay/N2oodpK1zKQwvHINYo8VNmcBJvEYrVDC8WYIkUTqT8sSymkVcSIV3C9cjFm7WAYpIXdNR17YfhK/teN+ZvxMjNFKhLUopXYfH61hNDvfSq+L30gzI6gybSESrX9lH5/c3WgPI4wg1n0tdoRU4W+fkzjhok8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTgqEuHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5788EC4AF18;
+	Tue, 30 Apr 2024 10:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474707;
-	bh=Lka3uClTZnsxW2gccXUJgPmIvxsTq4HE4NGrpSFh1xI=;
+	s=korg; t=1714474309;
+	bh=EqxWaXJkaKi6EmeJ/uq2stp+6OiNQwCUC8ehr0Ve1Ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fOsLjy/AAfTbcJ9XlTSa9N8Arz7TMY0bYZCSy9PFn5gtVnfyPGfOID+G8jIzpJRLv
-	 ulhYiMyIWQ69S/ox0m6UippYU5qSxB2QjbRpCYvmsNLV2jfZhGsKaDGQjdr5aaoycn
-	 DACrKydC1xVrDlS9p3Fs6fIqf2iuN4oGucmV5hAw=
+	b=oTgqEuHgqQKdUci1Z3du65415M3GJ2TVlGxYZfvpPUKLshBl6qKVOcxYk5o3+hZEe
+	 mWLr+NFj5WD7vWLX3sIjMxcZyd3TmFgb5xbQWVGrpuiABOigLaqyH3dO05hIAki7/a
+	 b0/2sOxS15AAryy15gc/F9THApVMUTySCFlDObTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Layton <jlayton@kernel.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	v9fs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 011/138] ipv4/route: avoid unused-but-set-variable warning
-Date: Tue, 30 Apr 2024 12:38:16 +0200
-Message-ID: <20240430103049.758296235@linuxfoundation.org>
+Subject: [PATCH 6.8 119/228] netfs: Fix the pre-flush when appending to a file in writethrough mode
+Date: Tue, 30 Apr 2024 12:38:17 +0200
+Message-ID: <20240430103107.242045835@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +75,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit cf1b7201df59fb936f40f4a807433fe3f2ce310a ]
+[ Upstream commit c97f59e276d4e93480f29a70accbd0d7273cf3f5 ]
 
-The log_martians variable is only used in an #ifdef, causing a 'make W=1'
-warning with gcc:
+In netfs_perform_write(), when the file is marked NETFS_ICTX_WRITETHROUGH
+or O_*SYNC or RWF_*SYNC was specified, write-through caching is performed
+on a buffered file.  When setting up for write-through, we flush any
+conflicting writes in the region and wait for the write to complete,
+failing if there's a write error to return.
 
-net/ipv4/route.c: In function 'ip_rt_send_redirect':
-net/ipv4/route.c:880:13: error: variable 'log_martians' set but not used [-Werror=unused-but-set-variable]
+The issue arises if we're writing at or above the EOF position because we
+skip the flush and - more importantly - the wait.  This becomes a problem
+if there's a partial folio at the end of the file that is being written out
+and we want to make a write to it too.  Both the already-running write and
+the write we start both want to clear the writeback mark, but whoever is
+second causes a warning looking something like:
 
-Change the #ifdef to an equivalent IS_ENABLED() to let the compiler
-see where the variable is used.
+    ------------[ cut here ]------------
+    R=00000012: folio 11 is not under writeback
+    WARNING: CPU: 34 PID: 654 at fs/netfs/write_collect.c:105
+    ...
+    CPU: 34 PID: 654 Comm: kworker/u386:27 Tainted: G S ...
+    ...
+    Workqueue: events_unbound netfs_write_collection_worker
+    ...
+    RIP: 0010:netfs_writeback_lookup_folio
 
-Fixes: 30038fc61adf ("net: ip_rt_send_redirect() optimization")
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240408074219.3030256-2-arnd@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix this by making the flush-and-wait unconditional.  It will do nothing if
+there are no folios in the pagecache and will return quickly if there are
+no folios in the region specified.
+
+Further, move the WBC attachment above the flush call as the flush is going
+to attach a WBC and detach it again if it is not present - and since we
+need one anyway we might as well share it.
+
+Fixes: 41d8e7673a77 ("netfs: Implement a write-through caching option")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202404161031.468b84f-oliver.sang@intel.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/2150448.1714130115@warthog.procyon.org.uk
+Reviewed-by: Jeffrey Layton <jlayton@kernel.org>
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+cc: linux-mm@kvack.org
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/netfs/buffered_write.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index d360c7d70e8a2..b7cba4bdc5786 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -955,13 +955,11 @@ void ip_rt_send_redirect(struct sk_buff *skb)
- 		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST, gw);
- 		peer->rate_last = jiffies;
- 		++peer->n_redirects;
--#ifdef CONFIG_IP_ROUTE_VERBOSE
--		if (log_martians &&
-+		if (IS_ENABLED(CONFIG_IP_ROUTE_VERBOSE) && log_martians &&
- 		    peer->n_redirects == ip_rt_redirect_number)
- 			net_warn_ratelimited("host %pI4/if%d ignores redirects for %pI4 to %pI4\n",
- 					     &ip_hdr(skb)->saddr, inet_iif(skb),
- 					     &ip_hdr(skb)->daddr, &gw);
--#endif
- 	}
- out_put_peer:
- 	inet_putpeer(peer);
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 8f13ca8fbc74d..267b622d923b1 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -172,15 +172,14 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 	if (unlikely(test_bit(NETFS_ICTX_WRITETHROUGH, &ctx->flags) ||
+ 		     iocb->ki_flags & (IOCB_DSYNC | IOCB_SYNC))
+ 	    ) {
+-		if (pos < i_size_read(inode)) {
+-			ret = filemap_write_and_wait_range(mapping, pos, pos + iter->count);
+-			if (ret < 0) {
+-				goto out;
+-			}
+-		}
+-
+ 		wbc_attach_fdatawrite_inode(&wbc, mapping->host);
+ 
++		ret = filemap_write_and_wait_range(mapping, pos, pos + iter->count);
++		if (ret < 0) {
++			wbc_detach_inode(&wbc);
++			goto out;
++		}
++
+ 		wreq = netfs_begin_writethrough(iocb, iter->count);
+ 		if (IS_ERR(wreq)) {
+ 			wbc_detach_inode(&wbc);
 -- 
 2.43.0
 
