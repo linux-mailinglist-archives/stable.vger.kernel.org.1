@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B54198B72D7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 640258B716F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D898A1C2281C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EFBC2853C4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D382B12DD88;
-	Tue, 30 Apr 2024 11:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C542129E89;
+	Tue, 30 Apr 2024 10:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7oRKV4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxVM1cf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C51512D210;
-	Tue, 30 Apr 2024 11:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD45112D74F;
+	Tue, 30 Apr 2024 10:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475538; cv=none; b=AKjJHs03z4LbJWgnlpOINC/HmhJLhJBlAuzt2sD9oaYMhuIys+aU8KXswDHACYxGRqeZ8An3wHCGK44USIRwjE8TuXBKgzB6gclWiLhls5Voh/KK4sCfbLsKaTfdjiwo0QnSgZe9iMbN4mKN9NvguzlRkpM3Jjs4h7hUxSKu034=
+	t=1714474586; cv=none; b=ptxBbR6MyWA8/jpmp2VYrUcUETCWMkjADNus/wnh8j+EMpnbpKZ0yOejzEUWDKR6EosyL7kg3hsR3j6x/GYtc6ZFv3+Y3SGf6EW9pOP27LLhadUoiTO8oIwYqp0jBk/D3UaC8ml/3yPngP8pKB5ncy6OvxK+RmdowtXzjzJO6ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475538; c=relaxed/simple;
-	bh=ubV9LSDRQXA+31T55HQ9yFHYqzmH55WGaJVzOjgCrm4=;
+	s=arc-20240116; t=1714474586; c=relaxed/simple;
+	bh=K/F5oMqMGPYPHqmB0XluH2p+MTt0rET2AbTKz9QIf88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpsxrLj4LV6TbLgoZ8NNs9ZiYFcuJnigBkLjufkOdi/AAK4lVvyH6W2vUECT7NFWi2cTKw4aXon5j8jAyjku8ZrydPsAnis5/auQhz7+vlkrjpIzj9AltfOBTj3ABq8Aj3AMz/VGyxoQxqP8KR4kteGYImb4gexSiOzU+aDwGuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7oRKV4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166DFC2BBFC;
-	Tue, 30 Apr 2024 11:12:17 +0000 (UTC)
+	 MIME-Version; b=vCzCrL+qPTTAqyW2syCjlRw4X0ra5QcmIyBZc1iqfWHYdmK86S9Br3K81dtlQdCr+zOTKXS38Yrm8Qso/Lgi6pt5m7GqGo3IFFzVh1lyx2Afc2wMWwcer3olaHPjHgbXDBOaZ5fyss3cc/siMVeKkWh/OIugGJnLEh11k2ggH4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxVM1cf4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C0AC4AF19;
+	Tue, 30 Apr 2024 10:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475538;
-	bh=ubV9LSDRQXA+31T55HQ9yFHYqzmH55WGaJVzOjgCrm4=;
+	s=korg; t=1714474586;
+	bh=K/F5oMqMGPYPHqmB0XluH2p+MTt0rET2AbTKz9QIf88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7oRKV4pb/FBsVK57SFEZoNkdEnvrYPNpfqldCcdhCNm/5SmaS4ROceLBNi7t4BDf
-	 RVp1Dp7yD3p1oQwFWciy7TFMl1xdZs53Tl9+96AT9jWIJUy66n6SnaoXDyM2VfXDnX
-	 KXlfEcNEsUu9BTwlHKXOv0XhkD2SOYsjS+UVu4Ro=
+	b=nxVM1cf4n2DWFP3M3or/xPdGL+2YaM2zREuJb+FyhmyAeCXCQPoGEwmAdQRIcfT9k
+	 6z8HL5AIbOmzV821zgqXlemPgkcAMVbBhm1ZTx7B/gc8gyA0v2cBVGaJ9bjJ5qHC6B
+	 /f/8EgT70rq6spIEa2RJzRVA8CsSylYzhSP43sTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 127/186] smb: client: Fix struct_group() usage in __packed structs
+	Akhil R <akhilrajeev@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 201/228] dmaengine: tegra186: Fix residual calculation
 Date: Tue, 30 Apr 2024 12:39:39 +0200
-Message-ID: <20240430103101.719053951@linuxfoundation.org>
+Message-ID: <20240430103109.603167027@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,224 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-commit 9a1f1d04f63c59550a5364858b46eeffdf03e8d6 upstream.
+[ Upstream commit 30f0ced9971b2d8c8c24ae75786f9079489a012d ]
 
-Use struct_group_attr() in __packed structs, instead of struct_group().
+The existing residual calculation returns an incorrect value when
+bytes_xfer == bytes_req. This scenario occurs particularly with drivers
+like UART where DMA is scheduled for maximum number of bytes and is
+terminated when the bytes inflow stops. At higher baud rates, it could
+request the tx_status while there is no bytes left to transfer. This will
+lead to incorrect residual being set. Hence return residual as '0' when
+bytes transferred equals to the bytes requested.
 
-Below you can see the pahole output before/after changes:
-
-pahole -C smb2_file_network_open_info fs/smb/client/smb2ops.o
-struct smb2_file_network_open_info {
-	union {
-		struct {
-			__le64     CreationTime;         /*     0     8 */
-			__le64     LastAccessTime;       /*     8     8 */
-			__le64     LastWriteTime;        /*    16     8 */
-			__le64     ChangeTime;           /*    24     8 */
-			__le64     AllocationSize;       /*    32     8 */
-			__le64     EndOfFile;            /*    40     8 */
-			__le32     Attributes;           /*    48     4 */
-		};                                       /*     0    56 */
-		struct {
-			__le64     CreationTime;         /*     0     8 */
-			__le64     LastAccessTime;       /*     8     8 */
-			__le64     LastWriteTime;        /*    16     8 */
-			__le64     ChangeTime;           /*    24     8 */
-			__le64     AllocationSize;       /*    32     8 */
-			__le64     EndOfFile;            /*    40     8 */
-			__le32     Attributes;           /*    48     4 */
-		} network_open_info;                     /*     0    56 */
-	};                                               /*     0    56 */
-	__le32                     Reserved;             /*    56     4 */
-
-	/* size: 60, cachelines: 1, members: 2 */
-	/* last cacheline: 60 bytes */
-} __attribute__((__packed__));
-
-pahole -C smb2_file_network_open_info fs/smb/client/smb2ops.o
-struct smb2_file_network_open_info {
-	union {
-		struct {
-			__le64     CreationTime;         /*     0     8 */
-			__le64     LastAccessTime;       /*     8     8 */
-			__le64     LastWriteTime;        /*    16     8 */
-			__le64     ChangeTime;           /*    24     8 */
-			__le64     AllocationSize;       /*    32     8 */
-			__le64     EndOfFile;            /*    40     8 */
-			__le32     Attributes;           /*    48     4 */
-		} __attribute__((__packed__));           /*     0    52 */
-		struct {
-			__le64     CreationTime;         /*     0     8 */
-			__le64     LastAccessTime;       /*     8     8 */
-			__le64     LastWriteTime;        /*    16     8 */
-			__le64     ChangeTime;           /*    24     8 */
-			__le64     AllocationSize;       /*    32     8 */
-			__le64     EndOfFile;            /*    40     8 */
-			__le32     Attributes;           /*    48     4 */
-		} __attribute__((__packed__)) network_open_info;       /*     0    52 */
-	};                                               /*     0    52 */
-	__le32                     Reserved;             /*    52     4 */
-
-	/* size: 56, cachelines: 1, members: 2 */
-	/* last cacheline: 56 bytes */
-};
-
-pahole -C smb_com_open_rsp fs/smb/client/cifssmb.o
-struct smb_com_open_rsp {
-	...
-
-	union {
-		struct {
-			__le64     CreationTime;         /*    48     8 */
-			__le64     LastAccessTime;       /*    56     8 */
-			/* --- cacheline 1 boundary (64 bytes) --- */
-			__le64     LastWriteTime;        /*    64     8 */
-			__le64     ChangeTime;           /*    72     8 */
-			__le32     FileAttributes;       /*    80     4 */
-		};                                       /*    48    40 */
-		struct {
-			__le64     CreationTime;         /*    48     8 */
-			__le64     LastAccessTime;       /*    56     8 */
-			/* --- cacheline 1 boundary (64 bytes) --- */
-			__le64     LastWriteTime;        /*    64     8 */
-			__le64     ChangeTime;           /*    72     8 */
-			__le32     FileAttributes;       /*    80     4 */
-		} common_attributes;                     /*    48    40 */
-	};                                               /*    48    40 */
-
-	...
-
-	/* size: 111, cachelines: 2, members: 14 */
-	/* last cacheline: 47 bytes */
-} __attribute__((__packed__));
-
-pahole -C smb_com_open_rsp fs/smb/client/cifssmb.o
-struct smb_com_open_rsp {
-	...
-
-	union {
-		struct {
-			__le64     CreationTime;         /*    48     8 */
-			__le64     LastAccessTime;       /*    56     8 */
-			/* --- cacheline 1 boundary (64 bytes) --- */
-			__le64     LastWriteTime;        /*    64     8 */
-			__le64     ChangeTime;           /*    72     8 */
-			__le32     FileAttributes;       /*    80     4 */
-		} __attribute__((__packed__));           /*    48    36 */
-		struct {
-			__le64     CreationTime;         /*    48     8 */
-			__le64     LastAccessTime;       /*    56     8 */
-			/* --- cacheline 1 boundary (64 bytes) --- */
-			__le64     LastWriteTime;        /*    64     8 */
-			__le64     ChangeTime;           /*    72     8 */
-			__le32     FileAttributes;       /*    80     4 */
-		} __attribute__((__packed__)) common_attributes;       /*    48    36 */
-	};                                               /*    48    36 */
-
-	...
-
-	/* size: 107, cachelines: 2, members: 14 */
-	/* last cacheline: 43 bytes */
-} __attribute__((__packed__));
-
-pahole -C FILE_ALL_INFO fs/smb/client/cifssmb.o
-typedef struct {
-	union {
-		struct {
-			__le64     CreationTime;         /*     0     8 */
-			__le64     LastAccessTime;       /*     8     8 */
-			__le64     LastWriteTime;        /*    16     8 */
-			__le64     ChangeTime;           /*    24     8 */
-			__le32     Attributes;           /*    32     4 */
-		};                                       /*     0    40 */
-		struct {
-			__le64     CreationTime;         /*     0     8 */
-			__le64     LastAccessTime;       /*     8     8 */
-			__le64     LastWriteTime;        /*    16     8 */
-			__le64     ChangeTime;           /*    24     8 */
-			__le32     Attributes;           /*    32     4 */
-		} common_attributes;                     /*     0    40 */
-	};                                               /*     0    40 */
-
-	...
-
-	/* size: 113, cachelines: 2, members: 17 */
-	/* last cacheline: 49 bytes */
-} __attribute__((__packed__)) FILE_ALL_INFO;
-
-pahole -C FILE_ALL_INFO fs/smb/client/cifssmb.o
-typedef struct {
-	union {
-		struct {
-			__le64     CreationTime;         /*     0     8 */
-			__le64     LastAccessTime;       /*     8     8 */
-			__le64     LastWriteTime;        /*    16     8 */
-			__le64     ChangeTime;           /*    24     8 */
-			__le32     Attributes;           /*    32     4 */
-		} __attribute__((__packed__));           /*     0    36 */
-		struct {
-			__le64     CreationTime;         /*     0     8 */
-			__le64     LastAccessTime;       /*     8     8 */
-			__le64     LastWriteTime;        /*    16     8 */
-			__le64     ChangeTime;           /*    24     8 */
-			__le32     Attributes;           /*    32     4 */
-		} __attribute__((__packed__)) common_attributes;       /*     0    36 */
-	};                                               /*     0    36 */
-
-	...
-
-	/* size: 109, cachelines: 2, members: 17 */
-	/* last cacheline: 45 bytes */
-} __attribute__((__packed__)) FILE_ALL_INFO;
-
-Fixes: 0015eb6e1238 ("smb: client, common: fix fortify warnings")
-Cc: stable@vger.kernel.org
-Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ee17028009d4 ("dmaengine: tegra: Add tegra gpcdma driver")
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20240315124411.17582-1-akhilrajeev@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifspdu.h |    4 ++--
- fs/smb/client/smb2pdu.h |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/dma/tegra186-gpc-dma.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/client/cifspdu.h
-+++ b/fs/smb/client/cifspdu.h
-@@ -882,7 +882,7 @@ typedef struct smb_com_open_rsp {
- 	__u8 OplockLevel;
- 	__u16 Fid;
- 	__le32 CreateAction;
--	struct_group(common_attributes,
-+	struct_group_attr(common_attributes, __packed,
- 		__le64 CreationTime;
- 		__le64 LastAccessTime;
- 		__le64 LastWriteTime;
-@@ -2266,7 +2266,7 @@ typedef struct {
- /* QueryFileInfo/QueryPathinfo (also for SetPath/SetFile) data buffer formats */
- /******************************************************************************/
- typedef struct { /* data block encoding of response to level 263 QPathInfo */
--	struct_group(common_attributes,
-+	struct_group_attr(common_attributes, __packed,
- 		__le64 CreationTime;
- 		__le64 LastAccessTime;
- 		__le64 LastWriteTime;
---- a/fs/smb/client/smb2pdu.h
-+++ b/fs/smb/client/smb2pdu.h
-@@ -319,7 +319,7 @@ struct smb2_file_reparse_point_info {
- } __packed;
+diff --git a/drivers/dma/tegra186-gpc-dma.c b/drivers/dma/tegra186-gpc-dma.c
+index 88547a23825b1..3642508e88bb2 100644
+--- a/drivers/dma/tegra186-gpc-dma.c
++++ b/drivers/dma/tegra186-gpc-dma.c
+@@ -746,6 +746,9 @@ static int tegra_dma_get_residual(struct tegra_dma_channel *tdc)
+ 	bytes_xfer = dma_desc->bytes_xfer +
+ 		     sg_req[dma_desc->sg_idx].len - (wcount * 4);
  
- struct smb2_file_network_open_info {
--	struct_group(network_open_info,
-+	struct_group_attr(network_open_info, __packed,
- 		__le64 CreationTime;
- 		__le64 LastAccessTime;
- 		__le64 LastWriteTime;
++	if (dma_desc->bytes_req == bytes_xfer)
++		return 0;
++
+ 	residual = dma_desc->bytes_req - (bytes_xfer % dma_desc->bytes_req);
+ 
+ 	return residual;
+-- 
+2.43.0
+
 
 
 
