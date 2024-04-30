@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-42501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336CF8B7353
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEBE8B7233
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E39002882C3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 780151F23A60
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB0512D1E8;
-	Tue, 30 Apr 2024 11:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3527012CD9C;
+	Tue, 30 Apr 2024 11:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkgX8oJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXRP8Byh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0118801;
-	Tue, 30 Apr 2024 11:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E0212C54B;
+	Tue, 30 Apr 2024 11:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475867; cv=none; b=oBVG9y4/DO4I9sbXOMgH6V7zZmiSAyDi6SwPhPX9pLrZ5voZygdpD5xSGH+U3ySig0Jrpe3YR0p6PdXHLUud0XsGOKKs5pMsAAoD/T2PVcHO7uToMDW5lrG0q9Dc7zP6+YBuiNfyEaG3aeuScDtsUHa3cjIocN0mtypSo6CZ4S4=
+	t=1714475137; cv=none; b=m75bDb2z589K94wkIgFuKtyyZC5pDgEzZQ4NwSHTam25v+KJ7oMUOCN4mYapggbLTnA4gj8ZPeQ7reNZdG4ub2Ck9EfB4BaXdBZ6KsjUu1f1P8jXxEeL4qiEUR2SHq6pD91kyJaby43Fash5d2rIp54RAWNEmFhCwbYXlVp3RPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475867; c=relaxed/simple;
-	bh=Fl4kNqK5C02LRmihOmOE5u/W/Rp0c/BWMF3Z8PRzVrY=;
+	s=arc-20240116; t=1714475137; c=relaxed/simple;
+	bh=cYz/OvFGLr+cqcpfhQBc657qr0KmEt4WUjY+5jtTEnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PnzZ3vjMDoe2v9Ks6vZunJT0wJK4qTV6Q4mTPElqYHWgJhzYZQOdJAZFRYoUls5yazVTlCG9++VPKdNI1QluttPAqRt/NjkGnYIXVzIXrO/O2RRvM72keLPpAfYiycrYIdmZtCzi6/Pfuw9eMc7Tei8rgt7AuOSzXrKcFHz+d2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkgX8oJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A8EC2BBFC;
-	Tue, 30 Apr 2024 11:17:46 +0000 (UTC)
+	 MIME-Version; b=AIU6DAcsN/el8zTiXlRwaP4SsCm/9LuSYrBooU79y9sObfoP92IGYp5ZT/fj3lUQlV402T7yv++EHxYaEchSkWNulViE1Tra5TfYYkKB9JLA0p5mCnwI6iG62PewptVitpw6hVd5E8fehcVXqjhWhPT8649/wo0jjtI+ec2C75Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXRP8Byh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC3CC2BBFC;
+	Tue, 30 Apr 2024 11:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475867;
-	bh=Fl4kNqK5C02LRmihOmOE5u/W/Rp0c/BWMF3Z8PRzVrY=;
+	s=korg; t=1714475136;
+	bh=cYz/OvFGLr+cqcpfhQBc657qr0KmEt4WUjY+5jtTEnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkgX8oJAhs4fwYo+qiSunWpfV80swvAH9Cl+V3zVQCbkqn3VXE+l068A8gojdL3Ja
-	 rhXsnnFuY9TR5UiJ44QCRmwJ6PtEJnOiEk5+uEb54a2JniCuNAecQP5FupM2ojviMd
-	 NqdOe7od4NHZ0zkAI+1bzW2OFL5DlwuXo815hS2A=
+	b=iXRP8Byhh4MF0EE64b+nsjGmrhYSggyMXRaKL2CV/fqvWJec/vjKDFPKbEfCAADTV
+	 IWlmAoqL5ohoVvSzbg4tK2Xkfx0OIuQFUYsUKrMzvHBSHF5TvEtDtVtHXeZVni5X5l
+	 Aoyv7huBmNDF7AJHkzeRJ0jT+mcpCoCVIjSRem6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+fa379358c28cc87cc307@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 43/80] af_unix: Suppress false-positive lockdep splat for spin_lock() in __unix_gc().
+	Sean Anderson <sean.anderson@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 130/138] dma: xilinx_dpdma: Fix locking
 Date: Tue, 30 Apr 2024 12:40:15 +0200
-Message-ID: <20240430103044.691772716@linuxfoundation.org>
+Message-ID: <20240430103053.229459446@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,172 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 1971d13ffa84a551d29a81fdf5b5ec5be166ac83 ]
+[ Upstream commit 244296cc3a155199a8b080d19e645d7d49081a38 ]
 
-syzbot reported a lockdep splat regarding unix_gc_lock and
-unix_state_lock().
+There are several places where either chan->lock or chan->vchan.lock was
+not held. Add appropriate locking. This fixes lockdep warnings like
 
-One is called from recvmsg() for a connected socket, and another
-is called from GC for TCP_LISTEN socket.
+[   31.077578] ------------[ cut here ]------------
+[   31.077831] WARNING: CPU: 2 PID: 40 at drivers/dma/xilinx/xilinx_dpdma.c:834 xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
+[   31.077953] Modules linked in:
+[   31.078019] CPU: 2 PID: 40 Comm: kworker/u12:1 Not tainted 6.6.20+ #98
+[   31.078102] Hardware name: xlnx,zynqmp (DT)
+[   31.078169] Workqueue: events_unbound deferred_probe_work_func
+[   31.078272] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   31.078377] pc : xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
+[   31.078473] lr : xilinx_dpdma_chan_queue_transfer+0x270/0x5e0
+[   31.078550] sp : ffffffc083bb2e10
+[   31.078590] x29: ffffffc083bb2e10 x28: 0000000000000000 x27: ffffff880165a168
+[   31.078754] x26: ffffff880164e920 x25: ffffff880164eab8 x24: ffffff880164d480
+[   31.078920] x23: ffffff880165a148 x22: ffffff880164e988 x21: 0000000000000000
+[   31.079132] x20: ffffffc082aa3000 x19: ffffff880164e880 x18: 0000000000000000
+[   31.079295] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[   31.079453] x14: 0000000000000000 x13: ffffff8802263dc0 x12: 0000000000000001
+[   31.079613] x11: 0001ffc083bb2e34 x10: 0001ff880164e98f x9 : 0001ffc082aa3def
+[   31.079824] x8 : 0001ffc082aa3dec x7 : 0000000000000000 x6 : 0000000000000516
+[   31.079982] x5 : ffffffc7f8d43000 x4 : ffffff88003c9c40 x3 : ffffffffffffffff
+[   31.080147] x2 : ffffffc7f8d43000 x1 : 00000000000000c0 x0 : 0000000000000000
+[   31.080307] Call trace:
+[   31.080340]  xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
+[   31.080518]  xilinx_dpdma_issue_pending+0x11c/0x120
+[   31.080595]  zynqmp_disp_layer_update+0x180/0x3ac
+[   31.080712]  zynqmp_dpsub_plane_atomic_update+0x11c/0x21c
+[   31.080825]  drm_atomic_helper_commit_planes+0x20c/0x684
+[   31.080951]  drm_atomic_helper_commit_tail+0x5c/0xb0
+[   31.081139]  commit_tail+0x234/0x294
+[   31.081246]  drm_atomic_helper_commit+0x1f8/0x210
+[   31.081363]  drm_atomic_commit+0x100/0x140
+[   31.081477]  drm_client_modeset_commit_atomic+0x318/0x384
+[   31.081634]  drm_client_modeset_commit_locked+0x8c/0x24c
+[   31.081725]  drm_client_modeset_commit+0x34/0x5c
+[   31.081812]  __drm_fb_helper_restore_fbdev_mode_unlocked+0x104/0x168
+[   31.081899]  drm_fb_helper_set_par+0x50/0x70
+[   31.081971]  fbcon_init+0x538/0xc48
+[   31.082047]  visual_init+0x16c/0x23c
+[   31.082207]  do_bind_con_driver.isra.0+0x2d0/0x634
+[   31.082320]  do_take_over_console+0x24c/0x33c
+[   31.082429]  do_fbcon_takeover+0xbc/0x1b0
+[   31.082503]  fbcon_fb_registered+0x2d0/0x34c
+[   31.082663]  register_framebuffer+0x27c/0x38c
+[   31.082767]  __drm_fb_helper_initial_config_and_unlock+0x5c0/0x91c
+[   31.082939]  drm_fb_helper_initial_config+0x50/0x74
+[   31.083012]  drm_fbdev_dma_client_hotplug+0xb8/0x108
+[   31.083115]  drm_client_register+0xa0/0xf4
+[   31.083195]  drm_fbdev_dma_setup+0xb0/0x1cc
+[   31.083293]  zynqmp_dpsub_drm_init+0x45c/0x4e0
+[   31.083431]  zynqmp_dpsub_probe+0x444/0x5e0
+[   31.083616]  platform_probe+0x8c/0x13c
+[   31.083713]  really_probe+0x258/0x59c
+[   31.083793]  __driver_probe_device+0xc4/0x224
+[   31.083878]  driver_probe_device+0x70/0x1c0
+[   31.083961]  __device_attach_driver+0x108/0x1e0
+[   31.084052]  bus_for_each_drv+0x9c/0x100
+[   31.084125]  __device_attach+0x100/0x298
+[   31.084207]  device_initial_probe+0x14/0x20
+[   31.084292]  bus_probe_device+0xd8/0xdc
+[   31.084368]  deferred_probe_work_func+0x11c/0x180
+[   31.084451]  process_one_work+0x3ac/0x988
+[   31.084643]  worker_thread+0x398/0x694
+[   31.084752]  kthread+0x1bc/0x1c0
+[   31.084848]  ret_from_fork+0x10/0x20
+[   31.084932] irq event stamp: 64549
+[   31.084970] hardirqs last  enabled at (64548): [<ffffffc081adf35c>] _raw_spin_unlock_irqrestore+0x80/0x90
+[   31.085157] hardirqs last disabled at (64549): [<ffffffc081adf010>] _raw_spin_lock_irqsave+0xc0/0xdc
+[   31.085277] softirqs last  enabled at (64503): [<ffffffc08001071c>] __do_softirq+0x47c/0x500
+[   31.085390] softirqs last disabled at (64498): [<ffffffc080017134>] ____do_softirq+0x10/0x1c
+[   31.085501] ---[ end trace 0000000000000000 ]---
 
-So, the splat is false-positive.
-
-Let's add a dedicated lock class for the latter to suppress the splat.
-
-Note that this change is not necessary for net-next.git as the issue
-is only applied to the old GC impl.
-
-[0]:
-WARNING: possible circular locking dependency detected
-6.9.0-rc5-syzkaller-00007-g4d2008430ce8 #0 Not tainted
- -----------------------------------------------------
-kworker/u8:1/11 is trying to acquire lock:
-ffff88807cea4e70 (&u->lock){+.+.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
-ffff88807cea4e70 (&u->lock){+.+.}-{2:2}, at: __unix_gc+0x40e/0xf70 net/unix/garbage.c:302
-
-but task is already holding lock:
-ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
-ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: __unix_gc+0x117/0xf70 net/unix/garbage.c:261
-
-which lock already depends on the new lock.
-
-the existing dependency chain (in reverse order) is:
-
- -> #1 (unix_gc_lock){+.+.}-{2:2}:
-       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
-       __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
-       _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
-       spin_lock include/linux/spinlock.h:351 [inline]
-       unix_notinflight+0x13d/0x390 net/unix/garbage.c:140
-       unix_detach_fds net/unix/af_unix.c:1819 [inline]
-       unix_destruct_scm+0x221/0x350 net/unix/af_unix.c:1876
-       skb_release_head_state+0x100/0x250 net/core/skbuff.c:1188
-       skb_release_all net/core/skbuff.c:1200 [inline]
-       __kfree_skb net/core/skbuff.c:1216 [inline]
-       kfree_skb_reason+0x16d/0x3b0 net/core/skbuff.c:1252
-       kfree_skb include/linux/skbuff.h:1262 [inline]
-       manage_oob net/unix/af_unix.c:2672 [inline]
-       unix_stream_read_generic+0x1125/0x2700 net/unix/af_unix.c:2749
-       unix_stream_splice_read+0x239/0x320 net/unix/af_unix.c:2981
-       do_splice_read fs/splice.c:985 [inline]
-       splice_file_to_pipe+0x299/0x500 fs/splice.c:1295
-       do_splice+0xf2d/0x1880 fs/splice.c:1379
-       __do_splice fs/splice.c:1436 [inline]
-       __do_sys_splice fs/splice.c:1652 [inline]
-       __se_sys_splice+0x331/0x4a0 fs/splice.c:1634
-       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-       do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
- -> #0 (&u->lock){+.+.}-{2:2}:
-       check_prev_add kernel/locking/lockdep.c:3134 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3253 [inline]
-       validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
-       __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
-       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
-       __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
-       _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
-       spin_lock include/linux/spinlock.h:351 [inline]
-       __unix_gc+0x40e/0xf70 net/unix/garbage.c:302
-       process_one_work kernel/workqueue.c:3254 [inline]
-       process_scheduled_works+0xa10/0x17c0 kernel/workqueue.c:3335
-       worker_thread+0x86d/0xd70 kernel/workqueue.c:3416
-       kthread+0x2f0/0x390 kernel/kthread.c:388
-       ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(unix_gc_lock);
-                               lock(&u->lock);
-                               lock(unix_gc_lock);
-  lock(&u->lock);
-
- *** DEADLOCK ***
-
-3 locks held by kworker/u8:1/11:
- #0: ffff888015089148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3229 [inline]
- #0: ffff888015089148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_scheduled_works+0x8e0/0x17c0 kernel/workqueue.c:3335
- #1: ffffc90000107d00 (unix_gc_work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3230 [inline]
- #1: ffffc90000107d00 (unix_gc_work){+.+.}-{0:0}, at: process_scheduled_works+0x91b/0x17c0 kernel/workqueue.c:3335
- #2: ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
- #2: ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: __unix_gc+0x117/0xf70 net/unix/garbage.c:261
-
-stack backtrace:
-CPU: 0 PID: 11 Comm: kworker/u8:1 Not tainted 6.9.0-rc5-syzkaller-00007-g4d2008430ce8 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Workqueue: events_unbound __unix_gc
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
- check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2187
- check_prev_add kernel/locking/lockdep.c:3134 [inline]
- check_prevs_add kernel/locking/lockdep.c:3253 [inline]
- validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
- __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
- lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
- __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
- _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
- spin_lock include/linux/spinlock.h:351 [inline]
- __unix_gc+0x40e/0xf70 net/unix/garbage.c:302
- process_one_work kernel/workqueue.c:3254 [inline]
- process_scheduled_works+0xa10/0x17c0 kernel/workqueue.c:3335
- worker_thread+0x86d/0xd70 kernel/workqueue.c:3416
- kthread+0x2f0/0x390 kernel/kthread.c:388
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-Fixes: 47d8ac011fe1 ("af_unix: Fix garbage collector racing against connect()")
-Reported-and-tested-by: syzbot+fa379358c28cc87cc307@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=fa379358c28cc87cc307
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240424170443.9832-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7cbb0c63de3f ("dmaengine: xilinx: dpdma: Add the Xilinx DisplayPort DMA engine driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240308210034.3634938-2-sean.anderson@linux.dev
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_unix.h | 3 +++
- net/unix/garbage.c    | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/dma/xilinx/xilinx_dpdma.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index 094afdf7dea10..b2c79f18f6837 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -80,6 +80,9 @@ enum unix_socket_lock_class {
- 	U_LOCK_NORMAL,
- 	U_LOCK_SECOND,	/* for double locking, see unix_state_double_lock(). */
- 	U_LOCK_DIAG, /* used while dumping icons, see sk_diag_dump_icons(). */
-+	U_LOCK_GC_LISTENER, /* used for listening socket while determining gc
-+			     * candidates to close a small race window.
-+			     */
- };
+diff --git a/drivers/dma/xilinx/xilinx_dpdma.c b/drivers/dma/xilinx/xilinx_dpdma.c
+index 6c709803203ad..058c3a6ed6bbf 100644
+--- a/drivers/dma/xilinx/xilinx_dpdma.c
++++ b/drivers/dma/xilinx/xilinx_dpdma.c
+@@ -213,7 +213,8 @@ struct xilinx_dpdma_tx_desc {
+  * @running: true if the channel is running
+  * @first_frame: flag for the first frame of stream
+  * @video_group: flag if multi-channel operation is needed for video channels
+- * @lock: lock to access struct xilinx_dpdma_chan
++ * @lock: lock to access struct xilinx_dpdma_chan. Must be taken before
++ *        @vchan.lock, if both are to be held.
+  * @desc_pool: descriptor allocation pool
+  * @err_task: error IRQ bottom half handler
+  * @desc: References to descriptors being processed
+@@ -1101,12 +1102,14 @@ static void xilinx_dpdma_chan_vsync_irq(struct  xilinx_dpdma_chan *chan)
+ 	 * Complete the active descriptor, if any, promote the pending
+ 	 * descriptor to active, and queue the next transfer, if any.
+ 	 */
++	spin_lock(&chan->vchan.lock);
+ 	if (chan->desc.active)
+ 		vchan_cookie_complete(&chan->desc.active->vdesc);
+ 	chan->desc.active = pending;
+ 	chan->desc.pending = NULL;
  
- static inline void unix_state_lock_nested(struct sock *sk,
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 85c6f05c0fa3c..d2fc795394a52 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -260,7 +260,7 @@ void unix_gc(void)
- 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
+ 	xilinx_dpdma_chan_queue_transfer(chan);
++	spin_unlock(&chan->vchan.lock);
  
- 			if (sk->sk_state == TCP_LISTEN) {
--				unix_state_lock(sk);
-+				unix_state_lock_nested(sk, U_LOCK_GC_LISTENER);
- 				unix_state_unlock(sk);
- 			}
- 		}
+ out:
+ 	spin_unlock_irqrestore(&chan->lock, flags);
+@@ -1264,10 +1267,12 @@ static void xilinx_dpdma_issue_pending(struct dma_chan *dchan)
+ 	struct xilinx_dpdma_chan *chan = to_xilinx_chan(dchan);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&chan->vchan.lock, flags);
++	spin_lock_irqsave(&chan->lock, flags);
++	spin_lock(&chan->vchan.lock);
+ 	if (vchan_issue_pending(&chan->vchan))
+ 		xilinx_dpdma_chan_queue_transfer(chan);
+-	spin_unlock_irqrestore(&chan->vchan.lock, flags);
++	spin_unlock(&chan->vchan.lock);
++	spin_unlock_irqrestore(&chan->lock, flags);
+ }
+ 
+ static int xilinx_dpdma_config(struct dma_chan *dchan,
+@@ -1491,7 +1496,9 @@ static void xilinx_dpdma_chan_err_task(struct tasklet_struct *t)
+ 		    XILINX_DPDMA_EINTR_CHAN_ERR_MASK << chan->id);
+ 
+ 	spin_lock_irqsave(&chan->lock, flags);
++	spin_lock(&chan->vchan.lock);
+ 	xilinx_dpdma_chan_queue_transfer(chan);
++	spin_unlock(&chan->vchan.lock);
+ 	spin_unlock_irqrestore(&chan->lock, flags);
+ }
+ 
 -- 
 2.43.0
 
