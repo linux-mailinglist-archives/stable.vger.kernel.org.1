@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-42247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ACE38B7213
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B968B7340
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E7351C225A1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34D891C23148
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D18C12C47A;
-	Tue, 30 Apr 2024 11:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3534F12CDAE;
+	Tue, 30 Apr 2024 11:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uGuW5ia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/gph0sw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460DE12C819;
-	Tue, 30 Apr 2024 11:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E595D8801;
+	Tue, 30 Apr 2024 11:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475043; cv=none; b=B+/YuefmTOBl1DL5b6o0kK+VuDXwvbpfHWcWtaQRNAaOgW6K88DlXmGq0L/+sl2HfGq5W2t1fC3/zavnY4UUAiC8kFAN83D837/oHLQvDs3RJLoNqzAIYw1MN7KSN8Rse0KZ29QuP4KhzmSJo/EIWuVQdL47P3VYkITqazL5+NU=
+	t=1714475817; cv=none; b=U/VHkP7RPuRFDNKAJ4ngB3DWIpXyet5mBzeMgVpJaxq5LWymf4z0cENzkh3F/0OO37CJqrqAyBWNKW2FTrnXsJv3KfTv+GZDle+xz6xa2A+0xoWmoi376rEhtKsF5JDrDiVe47hwgZBAF9F+mq3puUYr3Z8uDKTZCjVUUxwSrpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475043; c=relaxed/simple;
-	bh=abahO/hpGUTbJIWXXLv07zWkXgthX6KLUBwsWL0GEno=;
+	s=arc-20240116; t=1714475817; c=relaxed/simple;
+	bh=Oamz2ng+i9a3aGidEiyeGF6Hv4gxp76k5xLW4b7yliw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0L/d9G4eyc8n22vswwTF05ro3fGwR+GkJF8UrFs4A1AVeFn6gzpfofTsCG82yAGaEcI/YjNS1BdLIpk8DnZGihDRmOooxVdnR7AeQFPwzplSPKEI4XMl/WopsEMLtXyu2gUC2IQb75C6xgGdxFScMNF2UR+C0cwB21IyNjgAyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uGuW5ia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF001C2BBFC;
-	Tue, 30 Apr 2024 11:04:02 +0000 (UTC)
+	 MIME-Version; b=ok7d8QvtAfNVzYaZGaHq1e5ULT+uQ6wx8feMn+GEIxnCSTOMP13PSv0moNtaxgOiXU/DqCGXiGGA5cM3mb/Ub1zVf3Lkn9Y7+9ecQI4rO7A0jE6+L1t7VQ5GnZifvF73oE+u4aoa/yLT+fBcWsJmESMq+BgeJxFdRi15lhLuMek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/gph0sw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E26EC2BBFC;
+	Tue, 30 Apr 2024 11:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475043;
-	bh=abahO/hpGUTbJIWXXLv07zWkXgthX6KLUBwsWL0GEno=;
+	s=korg; t=1714475816;
+	bh=Oamz2ng+i9a3aGidEiyeGF6Hv4gxp76k5xLW4b7yliw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2uGuW5ia4Hq2sBoftrqcn5Jz1q86+9Hzg/BoUpIBYKrdc/miT7Zif4CEuIpDaFI3d
-	 xpQwCAd/oeUkxZbYwCmndPjTlNswk2Tp8T/NFJPS4ivGn8szIaf3Dd2jJErHZk/WPI
-	 uLMAq5kV4gU2WBxrIFMZMNZmUY864XLNZH3ERqPk=
+	b=o/gph0swVWG6JsETfAqIQ7g5qDRpGg3if9UhgEwr9NGn1I76A8Z8KQPTGYmf4YyZI
+	 CfdxZ8XO0H43Eta4xNyuzRmpqVq+OwoFmkOh225DQQcOqKxqR8XhIZWYrZ35m/nsmY
+	 oFC6RNq8T7f6dyfwbjDfLkxIaQ910PnyXT5Zuz+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Jan Kiszka <jan.kiszka@siemens.com>
-Subject: [PATCH 5.10 113/138] PM / devfreq: Fix buffer overflow in trans_stat_show
+	shironeko <shironeko@tesaguri.club>,
+	Eric Dumazet <edumazet@google.com>,
+	Jose Alonso <joalonsof@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 26/80] net: usb: ax88179_178a: stop lying about skb->truesize
 Date: Tue, 30 Apr 2024 12:39:58 +0200
-Message-ID: <20240430103052.735598444@linuxfoundation.org>
+Message-ID: <20240430103044.189037435@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 08e23d05fa6dc4fc13da0ccf09defdd4bbc92ff4 upstream.
+[ Upstream commit 4ce62d5b2f7aecd4900e7d6115588ad7f9acccca ]
 
-Fix buffer overflow in trans_stat_show().
+Some usb drivers try to set small skb->truesize and break
+core networking stacks.
 
-Convert simple snprintf to the more secure scnprintf with size of
-PAGE_SIZE.
+In this patch, I removed one of the skb->truesize overide.
 
-Add condition checking if we are exceeding PAGE_SIZE and exit early from
-loop. Also add at the end a warning that we exceeded PAGE_SIZE and that
-stats is disabled.
+I also replaced one skb_clone() by an allocation of a fresh
+and small skb, to get minimally sized skbs, like we did
+in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
+in rx path")
 
-Return -EFBIG in the case where we don't have enough space to write the
-full transition table.
-
-Also document in the ABI that this function can return -EFBIG error.
-
-Link: https://lore.kernel.org/all/20231024183016.14648-2-ansuelsmth@gmail.com/
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218041
-Fixes: e552bbaf5b98 ("PM / devfreq: Add sysfs node for representing frequency transition information.")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Fixes: f8ebb3ac881b ("net: usb: ax88179_178a: Fix packet receiving")
+Reported-by: shironeko <shironeko@tesaguri.club>
+Closes: https://lore.kernel.org/netdev/c110f41a0d2776b525930f213ca9715c@tesaguri.club/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jose Alonso <joalonsof@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240421193828.1966195-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-class-devfreq |    3 +
- drivers/devfreq/devfreq.c                     |   59 +++++++++++++++++---------
- 2 files changed, 43 insertions(+), 19 deletions(-)
+ drivers/net/usb/ax88179_178a.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/Documentation/ABI/testing/sysfs-class-devfreq
-+++ b/Documentation/ABI/testing/sysfs-class-devfreq
-@@ -66,6 +66,9 @@ Description:
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index f11748cc5b228..868fad2f8c78a 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1478,21 +1478,16 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			/* Skip IP alignment pseudo header */
+ 			skb_pull(skb, 2);
  
- 			echo 0 > /sys/class/devfreq/.../trans_stat
- 
-+		If the transition table is bigger than PAGE_SIZE, reading
-+		this will return an -EFBIG error.
-+
- What:		/sys/class/devfreq/.../userspace/set_freq
- Date:		September 2011
- Contact:	MyungJoo Ham <myungjoo.ham@samsung.com>
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -1639,7 +1639,7 @@ static ssize_t trans_stat_show(struct de
- 			       struct device_attribute *attr, char *buf)
- {
- 	struct devfreq *df = to_devfreq(dev);
--	ssize_t len;
-+	ssize_t len = 0;
- 	int i, j;
- 	unsigned int max_state;
- 
-@@ -1648,7 +1648,7 @@ static ssize_t trans_stat_show(struct de
- 	max_state = df->profile->max_state;
- 
- 	if (max_state == 0)
--		return sprintf(buf, "Not Supported.\n");
-+		return scnprintf(buf, PAGE_SIZE, "Not Supported.\n");
- 
- 	mutex_lock(&df->lock);
- 	if (!df->stop_polling &&
-@@ -1658,33 +1658,54 @@ static ssize_t trans_stat_show(struct de
- 	}
- 	mutex_unlock(&df->lock);
- 
--	len = sprintf(buf, "     From  :   To\n");
--	len += sprintf(buf + len, "           :");
--	for (i = 0; i < max_state; i++)
--		len += sprintf(buf + len, "%10lu",
--				df->profile->freq_table[i]);
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "     From  :   To\n");
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "           :");
-+	for (i = 0; i < max_state; i++) {
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu",
-+				 df->profile->freq_table[i]);
-+	}
-+	if (len >= PAGE_SIZE - 1)
-+		return PAGE_SIZE - 1;
- 
--	len += sprintf(buf + len, "   time(ms)\n");
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "   time(ms)\n");
- 
- 	for (i = 0; i < max_state; i++) {
-+		if (len >= PAGE_SIZE - 1)
-+			break;
- 		if (df->profile->freq_table[i]
- 					== df->previous_freq) {
--			len += sprintf(buf + len, "*");
-+			len += scnprintf(buf + len, PAGE_SIZE - len, "*");
- 		} else {
--			len += sprintf(buf + len, " ");
-+			len += scnprintf(buf + len, PAGE_SIZE - len, " ");
+-			skb->truesize = SKB_TRUESIZE(pkt_len_plus_padd);
+ 			ax88179_rx_checksum(skb, pkt_hdr);
+ 			return 1;
  		}
--		len += sprintf(buf + len, "%10lu:",
--				df->profile->freq_table[i]);
--		for (j = 0; j < max_state; j++)
--			len += sprintf(buf + len, "%10u",
--				df->stats.trans_table[(i * max_state) + j]);
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu:",
-+				 df->profile->freq_table[i]);
-+		for (j = 0; j < max_state; j++) {
-+			if (len >= PAGE_SIZE - 1)
-+				break;
-+			len += scnprintf(buf + len, PAGE_SIZE - len, "%10u",
-+					 df->stats.trans_table[(i * max_state) + j]);
-+		}
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10llu\n", (u64)
-+				 jiffies64_to_msecs(df->stats.time_in_state[i]));
-+	}
  
--		len += sprintf(buf + len, "%10llu\n", (u64)
--			jiffies64_to_msecs(df->stats.time_in_state[i]));
-+	if (len < PAGE_SIZE - 1)
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "Total transition : %u\n",
-+				 df->stats.total_trans);
-+
-+	if (len >= PAGE_SIZE - 1) {
-+		pr_warn_once("devfreq transition table exceeds PAGE_SIZE. Disabling\n");
-+		return -EFBIG;
- 	}
+-		ax_skb = skb_clone(skb, GFP_ATOMIC);
++		ax_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
+ 		if (!ax_skb)
+ 			return 0;
+-		skb_trim(ax_skb, pkt_len);
++		skb_put(ax_skb, pkt_len);
++		memcpy(ax_skb->data, skb->data + 2, pkt_len);
  
--	len += sprintf(buf + len, "Total transition : %u\n",
--					df->stats.total_trans);
- 	return len;
- }
+-		/* Skip IP alignment pseudo header */
+-		skb_pull(ax_skb, 2);
+-
+-		skb->truesize = pkt_len_plus_padd +
+-				SKB_DATA_ALIGN(sizeof(struct sk_buff));
+ 		ax88179_rx_checksum(ax_skb, pkt_hdr);
+ 		usbnet_skb_return(dev, ax_skb);
  
+-- 
+2.43.0
+
 
 
 
