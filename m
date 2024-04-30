@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69E48B7156
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43D48B6FF9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7E4C1C223EE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44D031F24221
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D5012C550;
-	Tue, 30 Apr 2024 10:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAB612C461;
+	Tue, 30 Apr 2024 10:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpAES3kE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRaqBN49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D3D12C462;
-	Tue, 30 Apr 2024 10:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BE5127B70;
+	Tue, 30 Apr 2024 10:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474526; cv=none; b=Z7jDpbAzX4tnq1LrdhbiWNa5M4k2uuHgQIX5jY7XKhoLCTh92a8aNRbpuIwtXw0nNBZu5xgHcQkiqRhqiZl45C7QuVt86CsQyDG/eS0rQfiISWXxPcEDKFn8pO0EWsyn9FPWsO9ipUqgar2i3EJNm/gjmBTpwuTwpQjOFKiaUeM=
+	t=1714473723; cv=none; b=AogHp6vCPzVrOnI+zPvQJshSMBy2zRQGeFImQa8QXV/WRTxZqnV8ByKs18ifqTrrnqXlwkUe2BCvC4ZCGqa9eb8ScoMitQAxoikV68rTWIPuj5PGUjampZaodjd9GSwKQgVsoC08V6EAyi6WIJrr6OSDRQ2BJ5B/zssqTdvlCZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474526; c=relaxed/simple;
-	bh=ccxykEZmSWeVMumi4I37R+0OcieXeser6G/C2bpKr4g=;
+	s=arc-20240116; t=1714473723; c=relaxed/simple;
+	bh=WPOt4jvOjGtGbyrLuU2d1F2V1ai0lr6lWF33pL4trKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THbtWwErqU/0T84iKhF6yV2jtvuo2JuJvO2cDYzdx9IorSPA2/xq0QDyWjNBl+Yzh8ec5jZF72FBBi0GN3LwrFzrmPJm4LX9lkUzc1aZPCWnwoQ3D02Xu9owQL5dyFx+Bu39eqC2IXSsmiCJLTAqXtjBaqfZV1SPmJuRdpSS480=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpAES3kE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FF7C2BBFC;
-	Tue, 30 Apr 2024 10:55:25 +0000 (UTC)
+	 MIME-Version; b=iDw5UY1fVmFUsLF+5+aSg4rZNCAzKMy81ep0o9euTUXaFvIGJx7E0Jo5xdSqEQadl4mgHBYKjnsk2GkSt3fynctW+QPg4kRu4tvAPiv46Lb/77nKXxqpJp1/jBTaLAeOK+JMyLW3pbH6bi+lT8y35TBkvZd0L0abtNkaOrRUBsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRaqBN49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C281C2BBFC;
+	Tue, 30 Apr 2024 10:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474526;
-	bh=ccxykEZmSWeVMumi4I37R+0OcieXeser6G/C2bpKr4g=;
+	s=korg; t=1714473722;
+	bh=WPOt4jvOjGtGbyrLuU2d1F2V1ai0lr6lWF33pL4trKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpAES3kEUxiACXWxSSsaXJU2mpBz/2fPgx+r3GCQN9c0qGGerHJtyI3Cn/5Ir/Yld
-	 wIfaht8v5sMMGaovVtCisI982ZUHnKufWu621RbM9AkbS/Ez4rtSjOSSu1Mc7MuERN
-	 Frodoyek3TmSIlHyPaaO20i3o6NcmZbz9SMl0hjI=
+	b=JRaqBN49XO7YTa2ng0CW1yXFJb69RYFP5s3zRow/fnhoDcsuAfb1iEm7sQvUBN4Uo
+	 YJv8tmveujFHBjC0bTsYdcZ2eE/LPGheG1pVwxCWANURcGWAQ6GyG+rAg+wgczrjWV
+	 0z6mPsFBmYuHIyzxHYIvWjKB2ZWMoojs2m31/lr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.8 146/228] mtd: rawnand: qcom: Fix broken OP_RESET_DEVICE command in qcom_misc_cmd_type_exec()
+	David Ahern <dsahern@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 05/77] ipv6: fib: hide unused pn variable
 Date: Tue, 30 Apr 2024 12:38:44 +0200
-Message-ID: <20240430103108.021601111@linuxfoundation.org>
+Message-ID: <20240430103041.277892630@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit b61bb5bc2c1cd00bb53db42f705735db6e8700f0 upstream.
+[ Upstream commit 74043489fcb5e5ca4074133582b5b8011b67f9e7 ]
 
-While migrating to exec_ops in commit a82990c8a409 ("mtd: rawnand: qcom:
-Add read/read_start ops in exec_op path"), OP_RESET_DEVICE command handling
-got broken unintentionally. Right now for the OP_RESET_DEVICE command,
-qcom_misc_cmd_type_exec() will simply return 0 without handling it. Even,
-if that gets fixed, an unnecessary FLASH_STATUS read descriptor command is
-being added in the middle and that seems to be causing the command to fail
-on IPQ806x devices.
+When CONFIG_IPV6_SUBTREES is disabled, the only user is hidden, causing
+a 'make W=1' warning:
 
-So let's fix the above two issues to make OP_RESET_DEVICE command working
-again.
+net/ipv6/ip6_fib.c: In function 'fib6_add':
+net/ipv6/ip6_fib.c:1388:32: error: variable 'pn' set but not used [-Werror=unused-but-set-variable]
 
-Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
-Cc: stable@vger.kernel.org
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240404083157.940-1-ansuelsmth@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add another #ifdef around the variable declaration, matching the other
+uses in this file.
+
+Fixes: 66729e18df08 ("[IPV6] ROUTE: Make sure we have fn->leaf when adding a node on subtree.")
+Link: https://lore.kernel.org/netdev/20240322131746.904943-1-arnd@kernel.org/
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240408074219.3030256-1-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/ipv6/ip6_fib.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2815,7 +2815,7 @@ static int qcom_misc_cmd_type_exec(struc
- 			      host->cfg0_raw & ~(7 << CW_PER_PAGE));
- 		nandc_set_reg(chip, NAND_DEV0_CFG1, host->cfg1_raw);
- 		instrs = 3;
--	} else {
-+	} else if (q_op.cmd_reg != OP_RESET_DEVICE) {
- 		return 0;
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index 63fb9e01eb4e1..844a5ee7f76f2 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1226,7 +1226,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 	     struct nl_info *info, struct netlink_ext_ack *extack)
+ {
+ 	struct fib6_table *table = rt->fib6_table;
+-	struct fib6_node *fn, *pn = NULL;
++	struct fib6_node *fn;
++#ifdef CONFIG_IPV6_SUBTREES
++	struct fib6_node *pn = NULL;
++#endif
+ 	int err = -ENOMEM;
+ 	int allow_create = 1;
+ 	int replace_required = 0;
+@@ -1251,9 +1254,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 		goto out;
  	}
  
-@@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struc
- 	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
++#ifdef CONFIG_IPV6_SUBTREES
+ 	pn = fn;
  
- 	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
--	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
--	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
--	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
-+	if (q_op.cmd_reg == OP_BLOCK_ERASE)
-+		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
+-#ifdef CONFIG_IPV6_SUBTREES
+ 	if (rt->fib6_src.plen) {
+ 		struct fib6_node *sn;
  
- 	write_reg_dma(nandc, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
- 	read_reg_dma(nandc, NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
+-- 
+2.43.0
+
 
 
 
