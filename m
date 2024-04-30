@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-42333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBEE8B727C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BA48B71AF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6320280E92
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57C721C2217C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A2112C805;
-	Tue, 30 Apr 2024 11:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB0D12C487;
+	Tue, 30 Apr 2024 10:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/Q72OwE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXD1gNlF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041A51E50A;
-	Tue, 30 Apr 2024 11:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6357464;
+	Tue, 30 Apr 2024 10:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475320; cv=none; b=GazODsw3sP3f0omuq1xRaVXdhjGdm/u8rC/ANGS1qp9Xc+qgFYfVZaOzkYg1ySSUySR0JORxpF8xc3aeGybiYjCdL97Vtnp8TLtZVOQIxewDe3PRmW63DKXELqkMK7GB55FmhVN8lqibWLZGD48nBybTF+kWkFVtTv3/NI1hHvM=
+	t=1714474767; cv=none; b=ZduCMoB9vZ2FmMAf7zpXrpBrT/bYKkGFfHedxaW3/Ljz3sZ1Wzz2Pbz828VTAmh7hgLNWeHr+/1FBmcS71cfYexwDOLkgLEcRGOwkvKh9zHBaNLtlcIm0eCxfMyOW5+t20onb/scAzFaUOGB4rCk7Pc2aVPGXYt2WWnVxELEM4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475320; c=relaxed/simple;
-	bh=qpEj6QU0WqhRNBu5KvDwlujLpPrq67EB9ZKAJ86PrI4=;
+	s=arc-20240116; t=1714474767; c=relaxed/simple;
+	bh=sYRzUwvaCiVL+qfZJTHVInPFLt1Za6h7upf6ujLwnp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjTjxxWsFzQ2HgtkvNfu3aoUbAhgDRjw5DEKYE1eZWqEmhskdWFGFW1wKoI9HsbCzX1mea8kFdSQdBtgYkgRcGryxRaGC43CbtC5nZQqWsoswQ6ZRPbUoe1kUfFbGRtzI+vHclvhYu9MH1Q0PxdQXnOjNS2U5sT1QISttUw6KaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/Q72OwE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEA4C2BBFC;
-	Tue, 30 Apr 2024 11:08:39 +0000 (UTC)
+	 MIME-Version; b=Ss6MUuKMPaKV3roQYVSuKq8uamBKf8vBWtLYcT5KwjIjdT468XWrYmALM/pKEqdWfDjEN9UC7ww0CJ8PXGMUKBec9qzhYl0XSqC2TyLVLtTAMmczKKtmVpecBL+T+9Kf97m2GD7jrKCcuqjE3/25PJLYmeGdjaiDOJfdUVDIDZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXD1gNlF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9487C2BBFC;
+	Tue, 30 Apr 2024 10:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475319;
-	bh=qpEj6QU0WqhRNBu5KvDwlujLpPrq67EB9ZKAJ86PrI4=;
+	s=korg; t=1714474767;
+	bh=sYRzUwvaCiVL+qfZJTHVInPFLt1Za6h7upf6ujLwnp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/Q72OwEr4I2TIfaOcpZcGyKarZuohlT80cjqxLWeb7jTM2E6b59krs+GHq2moYlV
-	 RPRdiX4LzP/rV3T1CqeQicqOq/8HX8YeNniY4CSb724XOSP+QgUmZjlbDmcmNCJSv3
-	 UIzOK2AvsKjKqxM/kc5k/ncluIV4G5HQEjghO9Pk=
+	b=XXD1gNlFUpQYqEBtblg6gsqGlPXPGgfmsfQXnsY3bMvJ16qwK2fWD0AsHQELowWRD
+	 E8nza3s/SD3vgc/JHScn0IThaHH8kEr0ure8SEP5do8tvwQlFSGbgjzWp/acfmi8cF
+	 IBaCrgg2yVKatFYSVGYqlEl/HYeOrcn80KHxKeXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/186] ipv4: check for NULL idev in ip_route_use_hint()
-Date: Tue, 30 Apr 2024 12:38:33 +0200
-Message-ID: <20240430103059.810565707@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 5.10 029/138] irqflags: Explicitly ignore lockdep_hrtimer_exit() argument
+Date: Tue, 30 Apr 2024 12:38:34 +0200
+Message-ID: <20240430103050.287574503@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 58a4c9b1e5a3e53c9148e80b90e1e43897ce77d1 ]
+commit c1d11fc2c8320871b40730991071dd0a0b405bc8 upstream.
 
-syzbot was able to trigger a NULL deref in fib_validate_source()
-in an old tree [1].
+When building with 'make W=1' but CONFIG_TRACE_IRQFLAGS=n, the
+unused argument to lockdep_hrtimer_exit() causes a warning:
 
-It appears the bug exists in latest trees.
+kernel/time/hrtimer.c:1655:14: error: variable 'expires_in_hardirq' set but not used [-Werror=unused-but-set-variable]
 
-All calls to __in_dev_get_rcu() must be checked for a NULL result.
+This is intentional behavior, so add a cast to void to shut up the warning.
 
-[1]
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 2 PID: 3257 Comm: syz-executor.3 Not tainted 5.10.0-syzkaller #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
- RIP: 0010:fib_validate_source+0xbf/0x15a0 net/ipv4/fib_frontend.c:425
-Code: 18 f2 f2 f2 f2 42 c7 44 20 23 f3 f3 f3 f3 48 89 44 24 78 42 c6 44 20 27 f3 e8 5d 88 48 fc 4c 89 e8 48 c1 e8 03 48 89 44 24 18 <42> 80 3c 20 00 74 08 4c 89 ef e8 d2 15 98 fc 48 89 5c 24 10 41 bf
-RSP: 0018:ffffc900015fee40 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88800f7a4000 RCX: ffff88800f4f90c0
-RDX: 0000000000000000 RSI: 0000000004001eac RDI: ffff8880160c64c0
-RBP: ffffc900015ff060 R08: 0000000000000000 R09: ffff88800f7a4000
-R10: 0000000000000002 R11: ffff88800f4f90c0 R12: dffffc0000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: ffff88800f7a4000
-FS:  00007f938acfe6c0(0000) GS:ffff888058c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f938acddd58 CR3: 000000001248e000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  ip_route_use_hint+0x410/0x9b0 net/ipv4/route.c:2231
-  ip_rcv_finish_core+0x2c4/0x1a30 net/ipv4/ip_input.c:327
-  ip_list_rcv_finish net/ipv4/ip_input.c:612 [inline]
-  ip_sublist_rcv+0x3ed/0xe50 net/ipv4/ip_input.c:638
-  ip_list_rcv+0x422/0x470 net/ipv4/ip_input.c:673
-  __netif_receive_skb_list_ptype net/core/dev.c:5572 [inline]
-  __netif_receive_skb_list_core+0x6b1/0x890 net/core/dev.c:5620
-  __netif_receive_skb_list net/core/dev.c:5672 [inline]
-  netif_receive_skb_list_internal+0x9f9/0xdc0 net/core/dev.c:5764
-  netif_receive_skb_list+0x55/0x3e0 net/core/dev.c:5816
-  xdp_recv_frames net/bpf/test_run.c:257 [inline]
-  xdp_test_run_batch net/bpf/test_run.c:335 [inline]
-  bpf_test_run_xdp_live+0x1818/0x1d00 net/bpf/test_run.c:363
-  bpf_prog_test_run_xdp+0x81f/0x1170 net/bpf/test_run.c:1376
-  bpf_prog_test_run+0x349/0x3c0 kernel/bpf/syscall.c:3736
-  __sys_bpf+0x45c/0x710 kernel/bpf/syscall.c:5115
-  __do_sys_bpf kernel/bpf/syscall.c:5201 [inline]
-  __se_sys_bpf kernel/bpf/syscall.c:5199 [inline]
-  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5199
-
-Fixes: 02b24941619f ("ipv4: use dst hint for ipv4 list receive")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240421184326.1704930-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 73d20564e0dc ("hrtimer: Don't dereference the hrtimer pointer after the callback")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240408074609.3170807-1-arnd@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202311191229.55QXHVc6-lkp@intel.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/irqflags.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index e1e30c09a1753..7c05cbcd39d33 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2166,6 +2166,9 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 daddr, __be32 saddr,
- 	int err = -EINVAL;
- 	u32 tag = 0;
- 
-+	if (!in_dev)
-+		return -EINVAL;
-+
- 	if (ipv4_is_multicast(saddr) || ipv4_is_lbcast(saddr))
- 		goto martian_source;
- 
--- 
-2.43.0
-
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -133,7 +133,7 @@ do {						\
+ # define lockdep_softirq_enter()		do { } while (0)
+ # define lockdep_softirq_exit()			do { } while (0)
+ # define lockdep_hrtimer_enter(__hrtimer)	false
+-# define lockdep_hrtimer_exit(__context)	do { } while (0)
++# define lockdep_hrtimer_exit(__context)	do { (void)(__context); } while (0)
+ # define lockdep_posixtimer_enter()		do { } while (0)
+ # define lockdep_posixtimer_exit()		do { } while (0)
+ # define lockdep_irq_work_enter(__work)		do { } while (0)
 
 
 
