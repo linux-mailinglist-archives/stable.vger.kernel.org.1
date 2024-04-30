@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D028B7485
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:31:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B95E08B73F6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7B241C233DC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:31:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D90DBB20B5F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B33C12D761;
-	Tue, 30 Apr 2024 11:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545F312D1F1;
+	Tue, 30 Apr 2024 11:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOzBrGJa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMAiWDLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC9E12D745;
-	Tue, 30 Apr 2024 11:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C9D17592;
+	Tue, 30 Apr 2024 11:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476698; cv=none; b=vC6pZ4mDDVoijaE32Y9z46RInX7KfCW3b2tlgEq+yVIK9QGFSV3XtOGDp5CrkPQHyr9zWqrV+3Hub9303hYrLkB6wTMgvq9sh5f3pkO/gdKeBDArywZTkO8HRGYFcWyRYAjyRpUHbaffXW7z/EFnLf4kokI+xPb5hkLF5zmu4jM=
+	t=1714476327; cv=none; b=amQS6/m08o+BAB+8MRjI2+ZHze2m92vt/tLp7LnwmeQBitDQkpVumd/NJGLqa3oGcaVZ0f0rgSCosV9o+xllvyRlKQIWw+zT5uh+x4WfX+RplVYyKQ/wJceDTBrCh2TJIBdIezq1WLZWfWMvCBG5M2zx0CxFL3MUlXx/JtIUK3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476698; c=relaxed/simple;
-	bh=DfMsGM0XCF8LhtcD8QYCMs50yhreSuSaLqtcLoC8Fks=;
+	s=arc-20240116; t=1714476327; c=relaxed/simple;
+	bh=ghxOQxqgBBREFQj0o1DwNFpGx/4relanajtpITxGlW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LaovRho6HXoiGjdX/QpKqVkA0NAQDgrqoz21Cxoc9I+t/AzehtrXC3EItPbVEeQbwu/edsZahxez+IEkvUQObhQ8hwaIBircDJBRH47ywYo8SOP4n0nplFTMTBkBkMpPawFd4z4etaw4JiE2OKt1Cs6xCeNwClXM+Qp5QwrOA/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOzBrGJa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D953EC2BBFC;
-	Tue, 30 Apr 2024 11:31:37 +0000 (UTC)
+	 MIME-Version; b=QjzLdrfpfJGg919xNPvRYnmVMwox5XlkPpi1K6mHafzTEzvH75Vix2vWw27uYR7Ht9LRAO8Dqs6iuxf//zJMKWccr1tFPapYUkh0BuEcpl1q7tChM1Qp2uVbknFvfn9LAyI003D/QrLCRc+6V1gISORU6t/yUAf6jGFG3WOYfk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMAiWDLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E115C2BBFC;
+	Tue, 30 Apr 2024 11:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476698;
-	bh=DfMsGM0XCF8LhtcD8QYCMs50yhreSuSaLqtcLoC8Fks=;
+	s=korg; t=1714476326;
+	bh=ghxOQxqgBBREFQj0o1DwNFpGx/4relanajtpITxGlW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOzBrGJa8+AkIt3Rle+5mov29rb4w9gnv/YfwWix2T60ob5bNsyOSWlhmL0tNlra3
-	 asXTYpOzNwS9POFqd6Nr2Djf6WkxE44IDBL2KwRxqNa9AjNgJ4U2TM8cnNOIESxWPA
-	 irPZvjW8ir/RPO2ISTw43u4PSvyx5oA6qYt37jWs=
+	b=bMAiWDLEbUtbwUoLIuwQ7SaI0aqjuvDDjAcYBZ2m6DrvbgDXM+th/qVneMIlzKpL+
+	 N4CsTr8I7RhQMs3PuzERZHWIWOFg93jxWPpE1Og/H/+HULKExFI3t3gm5kOCe302kH
+	 xH74HiJBoCcVk1snjaCoNB57IYsJjdy2xH3J5Vuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/110] phy: marvell: a3700-comphy: Fix hardcoded array size
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Srish Srinivasan <srish.srinivasan@broadcom.com>
+Subject: [PATCH 5.4 105/107] dm: limit the number of targets and parameter size area
 Date: Tue, 30 Apr 2024 12:41:05 +0200
-Message-ID: <20240430103050.407253355@linuxfoundation.org>
+Message-ID: <20240430103047.757379292@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kobuk <m.kobuk@ispras.ru>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 627207703b73615653eea5ab7a841d5b478d961e ]
+commit bd504bcfec41a503b32054da5472904b404341a4 upstream.
 
-Replace hardcoded 'gbe_phy_init' array size by explicit one.
+The kvmalloc function fails with a warning if the size is larger than
+INT_MAX. The warning was triggered by a syscall testing robot.
 
-Fixes: 934337080c6c ("phy: marvell: phy-mvebu-a3700-comphy: Add native kernel implementation")
-Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Link: https://lore.kernel.org/r/20240321164734.49273-2-m.kobuk@ispras.ru
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In order to avoid the warning, this commit limits the number of targets to
+1048576 and the size of the parameter area to 1073741824.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+[srish: Apply to stable branch linux-5.4.y]
+Signed-off-by: Srish Srinivasan <srish.srinivasan@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/marvell/phy-mvebu-a3700-comphy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-core.h  |    2 ++
+ drivers/md/dm-ioctl.c |    3 ++-
+ drivers/md/dm-table.c |    9 +++++++--
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/marvell/phy-mvebu-a3700-comphy.c b/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
-index 392a8ae1bc667..251e1aedd4a6e 100644
---- a/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
-+++ b/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
-@@ -602,7 +602,7 @@ static void comphy_gbe_phy_init(struct mvebu_a3700_comphy_lane *lane,
- 	u16 val;
+--- a/drivers/md/dm-core.h
++++ b/drivers/md/dm-core.h
+@@ -18,6 +18,8 @@
+ #include "dm.h"
  
- 	fix_idx = 0;
--	for (addr = 0; addr < 512; addr++) {
-+	for (addr = 0; addr < ARRAY_SIZE(gbe_phy_init); addr++) {
- 		/*
- 		 * All PHY register values are defined in full for 3.125Gbps
- 		 * SERDES speed. The values required for 1.25 Gbps are almost
--- 
-2.43.0
-
+ #define DM_RESERVED_MAX_IOS		1024
++#define DM_MAX_TARGETS			1048576
++#define DM_MAX_TARGET_PARAMS		1024
+ 
+ struct dm_kobject_holder {
+ 	struct kobject kobj;
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1760,7 +1760,8 @@ static int copy_params(struct dm_ioctl _
+ 	if (copy_from_user(param_kernel, user, minimum_data_size))
+ 		return -EFAULT;
+ 
+-	if (param_kernel->data_size < minimum_data_size)
++	if (unlikely(param_kernel->data_size < minimum_data_size) ||
++	    unlikely(param_kernel->data_size > DM_MAX_TARGETS * DM_MAX_TARGET_PARAMS))
+ 		return -EINVAL;
+ 
+ 	secure_data = param_kernel->flags & DM_SECURE_DATA_FLAG;
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -184,7 +184,12 @@ static int alloc_targets(struct dm_table
+ int dm_table_create(struct dm_table **result, fmode_t mode,
+ 		    unsigned num_targets, struct mapped_device *md)
+ {
+-	struct dm_table *t = kzalloc(sizeof(*t), GFP_KERNEL);
++	struct dm_table *t;
++
++	if (num_targets > DM_MAX_TARGETS)
++		return -EOVERFLOW;
++
++	t = kzalloc(sizeof(*t), GFP_KERNEL);
+ 
+ 	if (!t)
+ 		return -ENOMEM;
+@@ -199,7 +204,7 @@ int dm_table_create(struct dm_table **re
+ 
+ 	if (!num_targets) {
+ 		kfree(t);
+-		return -ENOMEM;
++		return -EOVERFLOW;
+ 	}
+ 
+ 	if (alloc_targets(t, num_targets)) {
 
 
 
