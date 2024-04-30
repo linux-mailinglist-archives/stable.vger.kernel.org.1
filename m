@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-41842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F308B6FFA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0849F8B728B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 021421C218C3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A0071C2303E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C6412C46D;
-	Tue, 30 Apr 2024 10:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852DB12D1FA;
+	Tue, 30 Apr 2024 11:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pNs/Q/6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REKGNyJP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3655129E81;
-	Tue, 30 Apr 2024 10:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD9512CD90;
+	Tue, 30 Apr 2024 11:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473726; cv=none; b=t0rs1TfOOb8i4Np6joy+pZP7Q1kf+Louz13SUWwUEM6h/irrsMiZFI2XED4M/oMJwu4yVOQ23dfCySqCp5ptM9mU39nIIVztJrO6xieLfoxygnsGIen453X4RG/nUbFVX2yq6DEkq/odJN9j9mQcWu923cCqLoqUMXZzGVNerP0=
+	t=1714475365; cv=none; b=d3RqEK5weUC26GeNHKzN3D0S1zLUk+AWkEmlGVD5nxrQOKde/c1ybn82wHxotfEaVv6F7dKM6oGE1pqmNH1HXcLXpxovsgoW+U658Fd7goqKio3QkGn0XGKyM+2trA2ziYRN2HXLiXjhlFN/oJnwLK1BQD+YJ7lnRPHdCFNFt4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473726; c=relaxed/simple;
-	bh=5FnRqBDJdO8AaMfCVO0REKDgCVYZy1gDTS7WouthhQw=;
+	s=arc-20240116; t=1714475365; c=relaxed/simple;
+	bh=961r8gkZMsdGWHPT8L2iYSCckXvDoBJZoQuEz3PEgIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHFUfrqi91JtXiJRCMhHkIzN8NMVP26CIP6dkrZLFGPjuHqYt+is1gJ81Cmhc1wveSAnF4Y4nr8/oBIyZLsU854WIPpM7Aa6UN76ghzidYG5pmZylJTKGvqEzvWAXOTiPYOo0mhj3gkMLh+vN2tHRYOJyV36TkJNsgtWZxGwW7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pNs/Q/6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D6FC2BBFC;
-	Tue, 30 Apr 2024 10:42:04 +0000 (UTC)
+	 MIME-Version; b=llNZ/YVOaBcrPr/0cDAPzc9wdFrxwK7jJd3daJu429BGnhHcPSQAeEfUu2Ui066ApJE9fOcGKK6Aa10xC/MFlap7BOVxAiK2uYGoBBUJ+B1lJwmgDU6kBgJg4Gil7JGmwih0vpy9AsmSoQhvG9tdtjSrv1Kr+xK3Hx73wC09LA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REKGNyJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE892C2BBFC;
+	Tue, 30 Apr 2024 11:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473725;
-	bh=5FnRqBDJdO8AaMfCVO0REKDgCVYZy1gDTS7WouthhQw=;
+	s=korg; t=1714475365;
+	bh=961r8gkZMsdGWHPT8L2iYSCckXvDoBJZoQuEz3PEgIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1pNs/Q/6acJR3JZ0sr4opgrX899rKbe0FfdLjk28yKsugId2iiQ7cOtY8tlD5a2ZL
-	 7ATHDCuMoMRbyR1PniZb5QS+ZHiF0SnBHe51hyllEAP4bNqHfYgHQzKeTvoc7NSPr4
-	 YxyyQj7HULsIfQYOTvxxBOwPw+Z7ADPG1LM6X5Dc=
+	b=REKGNyJPlX35puFWuli+66TaQCzXzYIDkI/K9eFz2JCs4t3X/Gur8Tt+zmcwpEf8V
+	 1AkxJG0Ivhl6L3nPL8+LaXa1O2yXeIk6WDeOHjYJ2RL+tp6RRH0r+kW8tIxK0X+Etu
+	 emtoaRYCqjzey2hqxAQRu7P4UzxxV7OdVIEO6v+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Hyunwoo Kim <v4bel@theori.io>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 06/77] ipv4/route: avoid unused-but-set-variable warning
+Subject: [PATCH 6.6 073/186] net: openvswitch: Fix Use-After-Free in ovs_ct_exit
 Date: Tue, 30 Apr 2024 12:38:45 +0200
-Message-ID: <20240430103041.306690929@linuxfoundation.org>
+Message-ID: <20240430103100.158108462@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit cf1b7201df59fb936f40f4a807433fe3f2ce310a ]
+[ Upstream commit 5ea7b72d4fac2fdbc0425cd8f2ea33abe95235b2 ]
 
-The log_martians variable is only used in an #ifdef, causing a 'make W=1'
-warning with gcc:
+Since kfree_rcu, which is called in the hlist_for_each_entry_rcu traversal
+of ovs_ct_limit_exit, is not part of the RCU read critical section, it
+is possible that the RCU grace period will pass during the traversal and
+the key will be free.
 
-net/ipv4/route.c: In function 'ip_rt_send_redirect':
-net/ipv4/route.c:880:13: error: variable 'log_martians' set but not used [-Werror=unused-but-set-variable]
+To prevent this, it should be changed to hlist_for_each_entry_safe.
 
-Change the #ifdef to an equivalent IS_ENABLED() to let the compiler
-see where the variable is used.
-
-Fixes: 30038fc61adf ("net: ip_rt_send_redirect() optimization")
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240408074219.3030256-2-arnd@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://lore.kernel.org/r/ZiYvzQN/Ry5oeFQW@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/openvswitch/conntrack.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index f4d41ceef9466..3014605105350 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -937,13 +937,11 @@ void ip_rt_send_redirect(struct sk_buff *skb)
- 		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST, gw);
- 		peer->rate_last = jiffies;
- 		++peer->n_redirects;
--#ifdef CONFIG_IP_ROUTE_VERBOSE
--		if (log_martians &&
-+		if (IS_ENABLED(CONFIG_IP_ROUTE_VERBOSE) && log_martians &&
- 		    peer->n_redirects == ip_rt_redirect_number)
- 			net_warn_ratelimited("host %pI4/if%d ignores redirects for %pI4 to %pI4\n",
- 					     &ip_hdr(skb)->saddr, inet_iif(skb),
- 					     &ip_hdr(skb)->daddr, &gw);
--#endif
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 74b63cdb59923..2928c142a2ddb 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -1593,9 +1593,9 @@ static void ovs_ct_limit_exit(struct net *net, struct ovs_net *ovs_net)
+ 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
+ 		struct hlist_head *head = &info->limits[i];
+ 		struct ovs_ct_limit *ct_limit;
++		struct hlist_node *next;
+ 
+-		hlist_for_each_entry_rcu(ct_limit, head, hlist_node,
+-					 lockdep_ovsl_is_held())
++		hlist_for_each_entry_safe(ct_limit, next, head, hlist_node)
+ 			kfree_rcu(ct_limit, rcu);
  	}
- out_put_peer:
- 	inet_putpeer(peer);
+ 	kfree(info->limits);
 -- 
 2.43.0
 
