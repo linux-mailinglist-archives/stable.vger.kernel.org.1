@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB318B7014
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:43:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4456A8B71E4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A27941F22950
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:43:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F20282EC5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512DE12C46D;
-	Tue, 30 Apr 2024 10:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024FD12D1F4;
+	Tue, 30 Apr 2024 11:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDbZx+s3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jr0nhRdC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F097127B70;
-	Tue, 30 Apr 2024 10:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09C412D1ED;
+	Tue, 30 Apr 2024 11:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473794; cv=none; b=HAO8+G5JXg8nUtIrl6l7rHmv7SjOYGuMXPJnWTAQlHk3K+W1EHiAHzzmhm0pqz4Tf66nT02VzGwiVvTMbFFiGWOeX+dGV/OwzQuVwSiMuZxGDWFTRJVlam2TrJ1ABBugymr1XVTEVOmSd1TrA7z7Y6aKwkyVEyqzsGrFCuS7HM8=
+	t=1714474917; cv=none; b=ItAlUy5jiF5q8ovglSSkYZdt4llo9bxnavSJMO/Wapl1Tv2mqUXWPrkaqoVt7gFs1hNvlqdj+OipPYrd8uwcyRVEhQCJEjL1Z9bTKkdfqOl1VBSN+sOwjBF8UAG9cmbI15vw9KBjgcAM5qCwHOe6Nflpq2Z1Oquf5QOXSDctxLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473794; c=relaxed/simple;
-	bh=pa+TUf11CP1cElIu4U3vryrElD3eh3CuuC+OSi2fpWw=;
+	s=arc-20240116; t=1714474917; c=relaxed/simple;
+	bh=Ar8mJY47nyED/rizPinG/VRf7xWfYaiLzEmeGKqBZ2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YVp9sPJvOCE8Rbd5z4bZHkIJLbq4audsaLzjg5u8bngNHiQL6Ph1Ku5Wb7StUlMbS09o0Dvr5gWwwGZ0IChhPnRyZroCrgKJvA27p5aRy6ZZcF/GdEC6ZIyAV7PuvHzDWUgC1zfRPnOwBmbBT5CTDSGAm2XY7ekQ1BoUXLVfS7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDbZx+s3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAAFC2BBFC;
-	Tue, 30 Apr 2024 10:43:13 +0000 (UTC)
+	 MIME-Version; b=JlF8rw0Eyc/eeWO5Oc5srwApNJw9o+cmMH2T2DPGUHAI28tIu6f5TFOaCzxMjM537nG/u1QBiXFsiKL604z9p48QOdN2mE8MTjxpy+2nsrAdl8q8gUhvG7iXaTyFZINkxxESpy+Wrl2JR6d1420KmXE5wdVuh2q3+/R1ytUcNkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jr0nhRdC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21726C4AF18;
+	Tue, 30 Apr 2024 11:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473793;
-	bh=pa+TUf11CP1cElIu4U3vryrElD3eh3CuuC+OSi2fpWw=;
+	s=korg; t=1714474917;
+	bh=Ar8mJY47nyED/rizPinG/VRf7xWfYaiLzEmeGKqBZ2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDbZx+s35xwtNZk/qIPgMbcAUzOel+UffpPBRd6+Vq95P5OWPU5XJErPEREO5Jkk6
-	 fesFevCZTwVnL9IIvxvjr7g5wV6uBer8LlqQJ1SYmulrZv7J4RmuttMrzxprmvf5Ym
-	 fsYQne6RdmErWUOp5c6GrmSLrgsNfLpVYNh3taQ4=
+	b=jr0nhRdCxGjBtpj9/BABmNlyZylsFLm0Ibn2MEV7FUcsebsp8gIOJxTsI15K1vFxz
+	 9T2nxoxAAq/OCxfU7S71eAisb2bUkD1h6I0bV2Xe/wwMlcm0eHshp2o0cDyDUlf0ov
+	 dpbK9CL+Bhmim8l+O4jWk0sl6O1YUsQrn94tGewg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 40/77] arm64: dts: mediatek: mt7622: fix IR nodename
+Subject: [PATCH 5.10 074/138] arm64: dts: rockchip: Remove unsupported node from the Pinebook Pro dts
 Date: Tue, 30 Apr 2024 12:39:19 +0200
-Message-ID: <20240430103042.316920509@linuxfoundation.org>
+Message-ID: <20240430103051.606700725@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit 800dc93c3941e372c94278bf4059e6e82f60bd66 ]
+[ Upstream commit 43853e843aa6c3d47ff2b0cce898318839483d05 ]
 
-Fix following validation error:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: cir@10009000: $nodename:0: 'cir@10009000' does not match '^ir(-receiver)?(@[a-f0-9]+)?$'
-        from schema $id: http://devicetree.org/schemas/media/mediatek,mt7622-cir.yaml#
+Remove a redundant node from the Pine64 Pinebook Pro dts, which is intended
+to provide a value for the delay in PCI Express enumeration, but that isn't
+supported without additional out-of-tree kernel patches.
 
-Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related device nodes")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240317221050.18595-3-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+There were already efforts to upstream those kernel patches, because they
+reportedly make some PCI Express cards (such as LSI SAS HBAs) usable in
+Pine64 RockPro64 (which is also based on the RK3399);  otherwise, those PCI
+Express cards fail to enumerate.  However, providing the required background
+and explanations proved to be a tough nut to crack, which is the reason why
+those patches remain outside of the kernel mainline for now.
+
+If those out-of-tree patches eventually become upstreamed, the resulting
+device-tree changes will almost surely belong to the RK3399 SoC dtsi.  Also,
+the above-mentioned unusable-without-out-of-tree-patches PCI Express devices
+are in all fairness not usable in a Pinebook Pro without some extensive
+hardware modifications, which is another reason to delete this redundant
+node.  When it comes to the Pinebook Pro, only M.2 NVMe SSDs can be installed
+out of the box (using an additional passive adapter PCB sold separately by
+Pine64), which reportedly works fine with no additional patches.
+
+Fixes: 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/0f82c3f97cb798d012270d13b34d8d15305ef293.1711923520.git.dsimic@manjaro.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index 5cb0470ede723..5c12e9dad9167 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -232,7 +232,7 @@
- 		clock-names = "hif_sel";
- 	};
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 4297c1db5a413..913ba25ea72f6 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -784,7 +784,6 @@
+ };
  
--	cir: cir@10009000 {
-+	cir: ir-receiver@10009000 {
- 		compatible = "mediatek,mt7622-cir";
- 		reg = <0 0x10009000 0 0x1000>;
- 		interrupts = <GIC_SPI 175 IRQ_TYPE_LEVEL_LOW>;
+ &pcie0 {
+-	bus-scan-delay-ms = <1000>;
+ 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
+ 	num-lanes = <4>;
+ 	pinctrl-names = "default";
 -- 
 2.43.0
 
