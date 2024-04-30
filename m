@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-41836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360D68B6FF4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:41:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A35D8B7133
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:54:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1A2D1F231E1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:41:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9314A1F2190D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADB812C482;
-	Tue, 30 Apr 2024 10:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86EB612D748;
+	Tue, 30 Apr 2024 10:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCYMuMTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e65GGZup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56989127B70;
-	Tue, 30 Apr 2024 10:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B8012C499;
+	Tue, 30 Apr 2024 10:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473707; cv=none; b=qrjRJrxcOjjlGggDgqZL7fjCzJWLD6KP2FZI21qDpaQvggCqmE4Fg8tzMXf4OP5wtMFC5fPaqTGF7R1J+P8tCwstWV1n96aHKL70y6ExVBIRdjyBJmu/livQvnCAswqhdFsrBzzGBD/pCYyJ2rwz564QNIUwoI+VTPRKP/+oobE=
+	t=1714474424; cv=none; b=ZEOKeNCyp5/M/jrj99M4JKY8BOniRxxouJeDvtgDsJNbopZuUBzGdaZq22ceL/nbH97qQ+ILQlIGR0tEdUx47R/BkUFjcYRjJR0jV06d0a74+pAwMqa9Qt/VOxSBsIaK8NSjDiJ5t6jjMJpTcpTf06PipmcaXM2CYp+uQtVl2LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473707; c=relaxed/simple;
-	bh=GTqcUG1yt4g716vPn8LVNbEzcEfNGvcDQqJKLGM+Txk=;
+	s=arc-20240116; t=1714474424; c=relaxed/simple;
+	bh=PNRIhRX6fNbM4TLUcErpZ1RmkG+furojVYgGpZ3rrw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tjwbletg4P4jQU7X0D/8Zo2LG6+qANxkmUPZ/vd1BzhD+AlE7+Xh/r9RAYPXpKuB7WBHh6uHTlKx6L+T9lwPAzjC6r4MEhUgWIadZVilPhZFLBqJV+1P2hK4YYJ/Cwjl/Uc7FmIfwkqCVjNVD78ACk33L3apnPvq5zscZkujDJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCYMuMTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4B0C4AF19;
-	Tue, 30 Apr 2024 10:41:46 +0000 (UTC)
+	 MIME-Version; b=hXL+AJKj5V24JeGI0o7qGwiR5o1fcODGjIr5rOUHGAqzdDua6bpOqJyUXbCYGTz9RKwkyUSZ0Blg1Y2mnW+eYcGywIynG7k38QdFYiD5ruyuBT7xdPXAz80y1xPXPWbdraPIljhXti+UnV4cqxEyhWXz2q2vC/7liR1FwpJkBKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e65GGZup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A63C2BBFC;
+	Tue, 30 Apr 2024 10:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473706;
-	bh=GTqcUG1yt4g716vPn8LVNbEzcEfNGvcDQqJKLGM+Txk=;
+	s=korg; t=1714474424;
+	bh=PNRIhRX6fNbM4TLUcErpZ1RmkG+furojVYgGpZ3rrw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCYMuMTMvxqp+sD8khRzquvk1TRgxjl+HobsGoN6vIr3kq29Q1SepREzp5SCGdIqv
-	 5cADVKK83lT7rGezeqJcVOA2lHl+gIOFC/ZijMDXw3M8yzvus+kPIJWfWRb1Mqbr32
-	 JSAcWGb2eOS2sOAY4vxDsQkjHHmRI3BoL8gbsCMM=
+	b=e65GGZupm5dN3vi3yfxtO7fXEaaTykyIgppuUlXYOYOyvnePSWjMlSZUDEgowD3kx
+	 0ifvrTtwpl+BD8lOQc1LhNBx1Re+zcGd1DKXw3mho5n4FMTOdqzzT5iuxoSl9aZRET
+	 v4eJFdQybyLu7KdDrXuS0FaE1MEmqC/2ZVlU9Uso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Dunlap <acdunlap@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kevin Loughlin <kevinloughlin@google.com>
-Subject: [PATCH 4.19 12/77] x86/apic: Force native_apic_mem_read() to use the MOV instruction
+	Namjae Jeon <linkinjeon@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.8 153/228] smb: client: Fix struct_group() usage in __packed structs
 Date: Tue, 30 Apr 2024 12:38:51 +0200
-Message-ID: <20240430103041.485191195@linuxfoundation.org>
+Message-ID: <20240430103108.221521287@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,224 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Dunlap <acdunlap@google.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-commit 5ce344beaca688f4cdea07045e0b8f03dc537e74 upstream.
+commit 9a1f1d04f63c59550a5364858b46eeffdf03e8d6 upstream.
 
-When done from a virtual machine, instructions that touch APIC memory
-must be emulated. By convention, MMIO accesses are typically performed
-via io.h helpers such as readl() or writeq() to simplify instruction
-emulation/decoding (ex: in KVM hosts and SEV guests) [0].
+Use struct_group_attr() in __packed structs, instead of struct_group().
 
-Currently, native_apic_mem_read() does not follow this convention,
-allowing the compiler to emit instructions other than the MOV
-instruction generated by readl(). In particular, when the kernel is
-compiled with clang and run as a SEV-ES or SEV-SNP guest, the compiler
-would emit a TESTL instruction which is not supported by the SEV-ES
-emulator, causing a boot failure in that environment. It is likely the
-same problem would happen in a TDX guest as that uses the same
-instruction emulator as SEV-ES.
+Below you can see the pahole output before/after changes:
 
-To make sure all emulators can emulate APIC memory reads via MOV, use
-the readl() function in native_apic_mem_read(). It is expected that any
-emulator would support MOV in any addressing mode as it is the most
-generic and is what is usually emitted currently.
+pahole -C smb2_file_network_open_info fs/smb/client/smb2ops.o
+struct smb2_file_network_open_info {
+	union {
+		struct {
+			__le64     CreationTime;         /*     0     8 */
+			__le64     LastAccessTime;       /*     8     8 */
+			__le64     LastWriteTime;        /*    16     8 */
+			__le64     ChangeTime;           /*    24     8 */
+			__le64     AllocationSize;       /*    32     8 */
+			__le64     EndOfFile;            /*    40     8 */
+			__le32     Attributes;           /*    48     4 */
+		};                                       /*     0    56 */
+		struct {
+			__le64     CreationTime;         /*     0     8 */
+			__le64     LastAccessTime;       /*     8     8 */
+			__le64     LastWriteTime;        /*    16     8 */
+			__le64     ChangeTime;           /*    24     8 */
+			__le64     AllocationSize;       /*    32     8 */
+			__le64     EndOfFile;            /*    40     8 */
+			__le32     Attributes;           /*    48     4 */
+		} network_open_info;                     /*     0    56 */
+	};                                               /*     0    56 */
+	__le32                     Reserved;             /*    56     4 */
 
-The TESTL instruction is emitted when native_apic_mem_read() is inlined
-into apic_mem_wait_icr_idle(). The emulator comes from
-insn_decode_mmio() in arch/x86/lib/insn-eval.c. It's not worth it to
-extend insn_decode_mmio() to support more instructions since, in theory,
-the compiler could choose to output nearly any instruction for such
-reads which would bloat the emulator beyond reason.
+	/* size: 60, cachelines: 1, members: 2 */
+	/* last cacheline: 60 bytes */
+} __attribute__((__packed__));
 
-  [0] https://lore.kernel.org/all/20220405232939.73860-12-kirill.shutemov@linux.intel.com/
+pahole -C smb2_file_network_open_info fs/smb/client/smb2ops.o
+struct smb2_file_network_open_info {
+	union {
+		struct {
+			__le64     CreationTime;         /*     0     8 */
+			__le64     LastAccessTime;       /*     8     8 */
+			__le64     LastWriteTime;        /*    16     8 */
+			__le64     ChangeTime;           /*    24     8 */
+			__le64     AllocationSize;       /*    32     8 */
+			__le64     EndOfFile;            /*    40     8 */
+			__le32     Attributes;           /*    48     4 */
+		} __attribute__((__packed__));           /*     0    52 */
+		struct {
+			__le64     CreationTime;         /*     0     8 */
+			__le64     LastAccessTime;       /*     8     8 */
+			__le64     LastWriteTime;        /*    16     8 */
+			__le64     ChangeTime;           /*    24     8 */
+			__le64     AllocationSize;       /*    32     8 */
+			__le64     EndOfFile;            /*    40     8 */
+			__le32     Attributes;           /*    48     4 */
+		} __attribute__((__packed__)) network_open_info;       /*     0    52 */
+	};                                               /*     0    52 */
+	__le32                     Reserved;             /*    52     4 */
 
-  [ bp: Massage commit message, fix typos. ]
+	/* size: 56, cachelines: 1, members: 2 */
+	/* last cacheline: 56 bytes */
+};
 
-Signed-off-by: Adam Dunlap <acdunlap@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Tested-by: Kevin Loughlin <kevinloughlin@google.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240318230927.2191933-1-acdunlap@google.com
+pahole -C smb_com_open_rsp fs/smb/client/cifssmb.o
+struct smb_com_open_rsp {
+	...
+
+	union {
+		struct {
+			__le64     CreationTime;         /*    48     8 */
+			__le64     LastAccessTime;       /*    56     8 */
+			/* --- cacheline 1 boundary (64 bytes) --- */
+			__le64     LastWriteTime;        /*    64     8 */
+			__le64     ChangeTime;           /*    72     8 */
+			__le32     FileAttributes;       /*    80     4 */
+		};                                       /*    48    40 */
+		struct {
+			__le64     CreationTime;         /*    48     8 */
+			__le64     LastAccessTime;       /*    56     8 */
+			/* --- cacheline 1 boundary (64 bytes) --- */
+			__le64     LastWriteTime;        /*    64     8 */
+			__le64     ChangeTime;           /*    72     8 */
+			__le32     FileAttributes;       /*    80     4 */
+		} common_attributes;                     /*    48    40 */
+	};                                               /*    48    40 */
+
+	...
+
+	/* size: 111, cachelines: 2, members: 14 */
+	/* last cacheline: 47 bytes */
+} __attribute__((__packed__));
+
+pahole -C smb_com_open_rsp fs/smb/client/cifssmb.o
+struct smb_com_open_rsp {
+	...
+
+	union {
+		struct {
+			__le64     CreationTime;         /*    48     8 */
+			__le64     LastAccessTime;       /*    56     8 */
+			/* --- cacheline 1 boundary (64 bytes) --- */
+			__le64     LastWriteTime;        /*    64     8 */
+			__le64     ChangeTime;           /*    72     8 */
+			__le32     FileAttributes;       /*    80     4 */
+		} __attribute__((__packed__));           /*    48    36 */
+		struct {
+			__le64     CreationTime;         /*    48     8 */
+			__le64     LastAccessTime;       /*    56     8 */
+			/* --- cacheline 1 boundary (64 bytes) --- */
+			__le64     LastWriteTime;        /*    64     8 */
+			__le64     ChangeTime;           /*    72     8 */
+			__le32     FileAttributes;       /*    80     4 */
+		} __attribute__((__packed__)) common_attributes;       /*    48    36 */
+	};                                               /*    48    36 */
+
+	...
+
+	/* size: 107, cachelines: 2, members: 14 */
+	/* last cacheline: 43 bytes */
+} __attribute__((__packed__));
+
+pahole -C FILE_ALL_INFO fs/smb/client/cifssmb.o
+typedef struct {
+	union {
+		struct {
+			__le64     CreationTime;         /*     0     8 */
+			__le64     LastAccessTime;       /*     8     8 */
+			__le64     LastWriteTime;        /*    16     8 */
+			__le64     ChangeTime;           /*    24     8 */
+			__le32     Attributes;           /*    32     4 */
+		};                                       /*     0    40 */
+		struct {
+			__le64     CreationTime;         /*     0     8 */
+			__le64     LastAccessTime;       /*     8     8 */
+			__le64     LastWriteTime;        /*    16     8 */
+			__le64     ChangeTime;           /*    24     8 */
+			__le32     Attributes;           /*    32     4 */
+		} common_attributes;                     /*     0    40 */
+	};                                               /*     0    40 */
+
+	...
+
+	/* size: 113, cachelines: 2, members: 17 */
+	/* last cacheline: 49 bytes */
+} __attribute__((__packed__)) FILE_ALL_INFO;
+
+pahole -C FILE_ALL_INFO fs/smb/client/cifssmb.o
+typedef struct {
+	union {
+		struct {
+			__le64     CreationTime;         /*     0     8 */
+			__le64     LastAccessTime;       /*     8     8 */
+			__le64     LastWriteTime;        /*    16     8 */
+			__le64     ChangeTime;           /*    24     8 */
+			__le32     Attributes;           /*    32     4 */
+		} __attribute__((__packed__));           /*     0    36 */
+		struct {
+			__le64     CreationTime;         /*     0     8 */
+			__le64     LastAccessTime;       /*     8     8 */
+			__le64     LastWriteTime;        /*    16     8 */
+			__le64     ChangeTime;           /*    24     8 */
+			__le32     Attributes;           /*    32     4 */
+		} __attribute__((__packed__)) common_attributes;       /*     0    36 */
+	};                                               /*     0    36 */
+
+	...
+
+	/* size: 109, cachelines: 2, members: 17 */
+	/* last cacheline: 45 bytes */
+} __attribute__((__packed__)) FILE_ALL_INFO;
+
+Fixes: 0015eb6e1238 ("smb: client, common: fix fortify warnings")
+Cc: stable@vger.kernel.org
+Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/apic.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/cifspdu.h |    4 ++--
+ fs/smb/client/smb2pdu.h |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -11,6 +11,7 @@
- #include <asm/mpspec.h>
- #include <asm/msr.h>
- #include <asm/hardirq.h>
-+#include <asm/io.h>
+--- a/fs/smb/client/cifspdu.h
++++ b/fs/smb/client/cifspdu.h
+@@ -882,7 +882,7 @@ typedef struct smb_com_open_rsp {
+ 	__u8 OplockLevel;
+ 	__u16 Fid;
+ 	__le32 CreateAction;
+-	struct_group(common_attributes,
++	struct_group_attr(common_attributes, __packed,
+ 		__le64 CreationTime;
+ 		__le64 LastAccessTime;
+ 		__le64 LastWriteTime;
+@@ -2266,7 +2266,7 @@ typedef struct {
+ /* QueryFileInfo/QueryPathinfo (also for SetPath/SetFile) data buffer formats */
+ /******************************************************************************/
+ typedef struct { /* data block encoding of response to level 263 QPathInfo */
+-	struct_group(common_attributes,
++	struct_group_attr(common_attributes, __packed,
+ 		__le64 CreationTime;
+ 		__le64 LastAccessTime;
+ 		__le64 LastWriteTime;
+--- a/fs/smb/client/smb2pdu.h
++++ b/fs/smb/client/smb2pdu.h
+@@ -319,7 +319,7 @@ struct smb2_file_reparse_point_info {
+ } __packed;
  
- #define ARCH_APICTIMER_STOPS_ON_C3	1
- 
-@@ -110,7 +111,7 @@ static inline void native_apic_mem_write
- 
- static inline u32 native_apic_mem_read(u32 reg)
- {
--	return *((volatile u32 *)(APIC_BASE + reg));
-+	return readl((void __iomem *)(APIC_BASE + reg));
- }
- 
- extern void native_apic_wait_icr_idle(void);
+ struct smb2_file_network_open_info {
+-	struct_group(network_open_info,
++	struct_group_attr(network_open_info, __packed,
+ 		__le64 CreationTime;
+ 		__le64 LastAccessTime;
+ 		__le64 LastWriteTime;
 
 
 
