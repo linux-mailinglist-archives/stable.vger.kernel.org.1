@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-42241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784648B720E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208D48B705A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33DF22845C6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB4E1F21E6B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C0712C487;
-	Tue, 30 Apr 2024 11:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFA312C54B;
+	Tue, 30 Apr 2024 10:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhwpx/ok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXgc0Giw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E76912C462;
-	Tue, 30 Apr 2024 11:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D064A12BF3E;
+	Tue, 30 Apr 2024 10:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475023; cv=none; b=PJKhZxyxGddTF7R0Kz7AWDusKN2Pk7QYTxJvZoWPoXYkrmxvvoFZrU5YjBWmcQBZhPKSFlNLgFJr5+a+j38UOM+6af0WBd0xH485H21Z9lt/yYDnG+ICrKoEYsoK4sXBAGquHt0rcgU4Lf32CbpvQPPT3o7nNj/VkC3yapHyCXQ=
+	t=1714473892; cv=none; b=a4oDzO2aMilZh09xYsM76FavnMPoEGVEb5IS4f7x6DQYzoBig2M1CeCapczDD3zP+MjEDyNk6GNyDjvly4FWaX35KymlBDvnaSV1V9P/rNeg6n8MIOtTQCvBRARxpgbwqgoVpThuZ6ugsE6AJhJORhEj3RiZ8qA3bpti+uDerMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475023; c=relaxed/simple;
-	bh=ygfQbFuxYCQQozINux669HjvKBx00Npdgef9xdRnOMk=;
+	s=arc-20240116; t=1714473892; c=relaxed/simple;
+	bh=opuDb0nt3FKq+On+6dhJXOYqo17MejKvNtsvV1hzJjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mx4PFgfSTzExK1x8V5K005E6z8NEdqgtWHpXYJy5yNLIFVvtwOModeHiQFX+VkcQX2D4Pn4tzE8s4spiSN/5unwdwPsnEhNPhl/JLs8JakbektM3KfT1+JXxyzYoUa81HI/HHJLZwhWT5PBkUVUOR8u3ohhKW5VuVlooGtQd57w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhwpx/ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB126C4AF19;
-	Tue, 30 Apr 2024 11:03:42 +0000 (UTC)
+	 MIME-Version; b=l/Q2t2Yeg64DFqEBA8SVFCY+DPdC9y2gKlbr2Oupp82/dAxgmM0okqyuzecxEUdg2v55tIKfhw70xXwJN9RJZ+FHSuR4jW4Qk/a33iHrLOo6IejJxIiueDiRNQKr/qj6IUnmYO078Oeo26p8xk7jM5XHedyArPjD7eGrjqSEa10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXgc0Giw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABFBC2BBFC;
+	Tue, 30 Apr 2024 10:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475023;
-	bh=ygfQbFuxYCQQozINux669HjvKBx00Npdgef9xdRnOMk=;
+	s=korg; t=1714473892;
+	bh=opuDb0nt3FKq+On+6dhJXOYqo17MejKvNtsvV1hzJjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhwpx/oklBFfomP8K5gFq8jQWWfXwP2g/i4+/kl8MNmBsehhP1+9MT9n3fSsr33Kr
-	 BWnT2kh1RndORDifRUBkdY3IAw1nqCsJyBt3w+sjvelV2rGWUxC/CGW9aFT9jbdnIu
-	 caeiRYBnHvsUtlK4JLSyUw5ZDfCGiaDApNNCRjps=
+	b=zXgc0GiwLnqlwoK7rw3bVd9O4bZ2KJg4C33HgFSuQAOF1Q7ya1GL+EKM99mb6Kedz
+	 3SjwHeEDsp4ZUejlP4E462QVIxU+MZCKXvEQdjezRKVsGji/u2GIZtpnXc0kwtJPfo
+	 DRjQks+TN0cduG+tqBQPWJRH2GRXMGzYOdwe8tHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Emil Kronborg <emil.kronborg@protonmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 108/138] serial: mxs-auart: add spinlock around changing cts state
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: [PATCH 4.19 74/77] Revert "loop: Remove sector_t truncation checks"
 Date: Tue, 30 Apr 2024 12:39:53 +0200
-Message-ID: <20240430103052.591152003@linuxfoundation.org>
+Message-ID: <20240430103043.324611036@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Kronborg <emil.kronborg@protonmail.com>
+From: Ben Hutchings <ben@decadent.org.uk>
 
-[ Upstream commit 54c4ec5f8c471b7c1137a1f769648549c423c026 ]
+This reverts commit f92a3b0d003b9f7eb1f452598966a08802183f47, which
+was commit 083a6a50783ef54256eec3499e6575237e0e3d53 upstream.  In 4.19
+there is still an option to use 32-bit sector_t on 32-bit
+architectures, so we need to keep checking for truncation.
 
-The uart_handle_cts_change() function in serial_core expects the caller
-to hold uport->lock. For example, I have seen the below kernel splat,
-when the Bluetooth driver is loaded on an i.MX28 board.
+Since loop_set_status() was refactored by subsequent patches, this
+reintroduces its truncation check in loop_set_status_from_info()
+instead.
 
-    [   85.119255] ------------[ cut here ]------------
-    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_core.c:3453 uart_handle_cts_change+0xb4/0xec
-    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc wlcore_sdio configfs
-    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-00021-gd62a2f068f92 #1
-    [   85.151396] Hardware name: Freescale MXS (Device Tree)
-    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
-    (...)
-    [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/0x3f4
-    [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x88/0x210
-    (...)
+I tested that the loop ioctl operations have the expected behaviour on
+x86_64, x86_32 with CONFIG_LBDAF=y, and (the special case) x86_32 with
+CONFIG_LBDAF=n.
 
-Cc: stable@vger.kernel.org
-Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements for irq helpers")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
-Link: https://lore.kernel.org/r/20240320121530.11348-1-emil.kronborg@protonmail.com
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/mxs-auart.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/block/loop.c |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
-index b784323a6a7b0..be6c8b9f1606e 100644
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -1122,11 +1122,13 @@ static void mxs_auart_set_ldisc(struct uart_port *port,
- 
- static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
- {
--	u32 istat;
-+	u32 istat, stat;
- 	struct mxs_auart_port *s = context;
- 	u32 mctrl_temp = s->mctrl_prev;
--	u32 stat = mxs_read(s, REG_STAT);
- 
-+	uart_port_lock(&s->port);
-+
-+	stat = mxs_read(s, REG_STAT);
- 	istat = mxs_read(s, REG_INTR);
- 
- 	/* ack irq */
-@@ -1162,6 +1164,8 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
- 		istat &= ~AUART_INTR_TXIS;
- 	}
- 
-+	uart_port_unlock(&s->port);
-+
- 	return IRQ_HANDLED;
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -243,12 +243,16 @@ static void loop_set_size(struct loop_de
+ 	kobject_uevent(&disk_to_dev(bdev->bd_disk)->kobj, KOBJ_CHANGE);
  }
  
--- 
-2.43.0
-
+-static void
++static int
+ figure_loop_size(struct loop_device *lo, loff_t offset, loff_t sizelimit)
+ {
+ 	loff_t size = get_size(offset, sizelimit, lo->lo_backing_file);
++	sector_t x = (sector_t)size;
+ 
++	if (unlikely((loff_t)x != size))
++		return -EFBIG;
+ 	loop_set_size(lo, size);
++	return 0;
+ }
+ 
+ static inline int
+@@ -996,7 +1000,10 @@ static int loop_set_fd(struct loop_devic
+ 	    !file->f_op->write_iter)
+ 		lo_flags |= LO_FLAGS_READ_ONLY;
+ 
++	error = -EFBIG;
+ 	size = get_loop_size(lo, file);
++	if ((loff_t)(sector_t)size != size)
++		goto out_unlock;
+ 
+ 	error = loop_prepare_queue(lo);
+ 	if (error)
+@@ -1246,6 +1253,7 @@ loop_set_status_from_info(struct loop_de
+ 	int err;
+ 	struct loop_func_table *xfer;
+ 	kuid_t uid = current_uid();
++	loff_t new_size;
+ 
+ 	if ((unsigned int) info->lo_encrypt_key_size > LO_KEY_SIZE)
+ 		return -EINVAL;
+@@ -1273,6 +1281,11 @@ loop_set_status_from_info(struct loop_de
+ 	if (info->lo_offset > LLONG_MAX || info->lo_sizelimit > LLONG_MAX)
+ 		return -EOVERFLOW;
+ 
++	new_size = get_size(info->lo_offset, info->lo_sizelimit,
++			    lo->lo_backing_file);
++	if ((loff_t)(sector_t)new_size != new_size)
++		return -EFBIG;
++
+ 	lo->lo_offset = info->lo_offset;
+ 	lo->lo_sizelimit = info->lo_sizelimit;
+ 
+@@ -1531,9 +1544,7 @@ static int loop_set_capacity(struct loop
+ 	if (unlikely(lo->lo_state != Lo_bound))
+ 		return -ENXIO;
+ 
+-	figure_loop_size(lo, lo->lo_offset, lo->lo_sizelimit);
+-
+-	return 0;
++	return figure_loop_size(lo, lo->lo_offset, lo->lo_sizelimit);
+ }
+ 
+ static int loop_set_dio(struct loop_device *lo, unsigned long arg)
 
 
 
