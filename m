@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1208B713B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8F08B7038
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:44:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48DDBB207EB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:54:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23338B204A2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA3B12C487;
-	Tue, 30 Apr 2024 10:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2B112C534;
+	Tue, 30 Apr 2024 10:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06qxiD53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQWTCHLu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D87C12C54B;
-	Tue, 30 Apr 2024 10:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C76D12C49D;
+	Tue, 30 Apr 2024 10:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474447; cv=none; b=SPJqUfX3du9BhSTQVPVj11OEowk463+CwXN2yVCAV+NvTf/MfjpxenXCiNvfgPGvFOxcVKB9jKqnOgF0IhUCnZCtTYvfaCLMvtlLc0U1cmq3yYpdopyLbTxMP3oItIDHLVRFJlDWUldXgb0tB37IDSXO6Hne7xx/JP15Ne9Wnnw=
+	t=1714473839; cv=none; b=DlohdbiijmKr0Ixk4asdN8KW1yEYf6Rwdi2tHBjlY02+kvckUaWrKKdqdECMevpYA0/SWBrCTywW4VOp9h1AGoAmOQTalmxoigK+AuA2VdLgg6ySScddEPWgAOS5Is6r3NvsmIxnVC/InM8KIpBEEOshyVCb3yqDbaOhze8IbRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474447; c=relaxed/simple;
-	bh=2cPD6GRFh0DWQ7+V0kzlp7IPtwHfOjhWantctrmrfq4=;
+	s=arc-20240116; t=1714473839; c=relaxed/simple;
+	bh=sYOLsmVOqkl3BMtqzOJc+ZMTjbFJsNU7XQtDlu0RvOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0kSWnr6LYEbet2snF80NJTMgTdDD1RlESJbtmEReTgDEAAsU4HdYPGqsf/7sho41sqrIHsnNzOQW0MYw6yH1lE4leyYEdYelkLOtFoeS7yyeTP5WeHvdbYpbCnj7ZUkHV+1IdlTNXGbg2G4v3xGPwvzo3fuGc6S0gbxNS9vNTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06qxiD53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC869C4AF19;
-	Tue, 30 Apr 2024 10:54:06 +0000 (UTC)
+	 MIME-Version; b=VWX8Ukqg61BsDXBQZ92d6dH3LVgPliTagIeTRz7IT8c6M+62tPQJ2tdQ6DeyG3ixrjzRGfQRAWLa+2wc279DpJtmvVhVciS9dGez9470eLbPg7VNZtrw6XOE8V1WXOYbIpaQDaobg+vx8ILPg+pFI6+c1Qp4GOFUxdpW/ZIji64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQWTCHLu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9345DC2BBFC;
+	Tue, 30 Apr 2024 10:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474447;
-	bh=2cPD6GRFh0DWQ7+V0kzlp7IPtwHfOjhWantctrmrfq4=;
+	s=korg; t=1714473839;
+	bh=sYOLsmVOqkl3BMtqzOJc+ZMTjbFJsNU7XQtDlu0RvOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=06qxiD53BcerE+qvPuzSa5qU7KTlHLTsrWbBviKsNMc6kuai7Yf8WVygFHLFBjP5k
-	 UX6uDfgc/zmN3TqnAtLXk9vUz4uhb6CC3vZ39+gRFbkr5yiBeuE0qbqKd3HLErOfas
-	 NATtLdKlYRc0QN4rxm7f3xqO+SKQAPZ8mEbdfztY=
+	b=sQWTCHLujWaByYtQSxlsEI1JWCgnDNGp4k1ctcACLP/kFgG78FzFwNRZEa6dqlVJA
+	 rjoQ9de/bDmEz/218pLCs6bJzKGHo5dPZ+SZkGdWV6cWwyy79dBegXk1JMgnvBlY1H
+	 aBCMJ1u60YdlgTab/Odp+fLLR9DKMMIYYUO4IBsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 159/228] btrfs: fix wrong block_start calculation for btrfs_drop_extent_map_range()
+	Ziyang Xuan <william.xuanziyang@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 18/77] netfilter: nf_tables: Fix potential data-race in __nft_expr_type_get()
 Date: Tue, 30 Apr 2024 12:38:57 +0200
-Message-ID: <20240430103108.394495600@linuxfoundation.org>
+Message-ID: <20240430103041.665346458@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-commit fe1c6c7acce10baf9521d6dccc17268d91ee2305 upstream.
+[ Upstream commit f969eb84ce482331a991079ab7a5c4dc3b7f89bf ]
 
-[BUG]
-During my extent_map cleanup/refactor, with extra sanity checks,
-extent-map-tests::test_case_7() would not pass the checks.
+nft_unregister_expr() can concurrent with __nft_expr_type_get(),
+and there is not any protection when iterate over nf_tables_expressions
+list in __nft_expr_type_get(). Therefore, there is potential data-race
+of nf_tables_expressions list entry.
 
-The problem is, after btrfs_drop_extent_map_range(), the resulted
-extent_map has a @block_start way too large.
-Meanwhile my btrfs_file_extent_item based members are returning a
-correct @disk_bytenr/@offset combination.
+Use list_for_each_entry_rcu() to iterate over nf_tables_expressions
+list in __nft_expr_type_get(), and use rcu_read_lock() in the caller
+nft_expr_type_get() to protect the entire type query process.
 
-The extent map layout looks like this:
-
-     0        16K    32K       48K
-     | PINNED |      | Regular |
-
-The regular em at [32K, 48K) also has 32K @block_start.
-
-Then drop range [0, 36K), which should shrink the regular one to be
-[36K, 48K).
-However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
-
-[CAUSE]
-Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
-that covers the target range but is still beyond it, we need to split
-that extent map into half:
-
-	|<-- drop range -->|
-		 |<----- existing extent_map --->|
-
-And if the extent map is not compressed, we need to forward
-extent_map::block_start by the difference between the end of drop range
-and the extent map start.
-
-However in that particular case, the difference is calculated using
-(start + len - em->start).
-
-The problem is @start can be modified if the drop range covers any
-pinned extent.
-
-This leads to wrong calculation, and would be caught by my later
-extent_map sanity checks, which checks the em::block_start against
-btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
-
-This is a regression caused by commit c962098ca4af ("btrfs: fix
-incorrect splitting in btrfs_drop_extent_map_range"), which removed the
-@len update for pinned extents.
-
-[FIX]
-Fix it by avoiding using @start completely, and use @end - em->start
-instead, which @end is exclusive bytenr number.
-
-And update the test case to verify the @block_start to prevent such
-problem from happening.
-
-Thankfully this is not going to lead to any data corruption, as IO path
-does not utilize btrfs_drop_extent_map_range() with @skip_pinned set.
-
-So this fix is only here for the sake of consistency/correctness.
-
-CC: stable@vger.kernel.org # 6.5+
-Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ef1f7df9170d ("netfilter: nf_tables: expression ops overloading")
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_map.c             |    2 +-
- fs/btrfs/tests/extent-map-tests.c |    5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -818,7 +818,7 @@ void btrfs_drop_extent_map_range(struct
- 					split->block_len = em->block_len;
- 					split->orig_start = em->orig_start;
- 				} else {
--					const u64 diff = start + len - em->start;
-+					const u64 diff = end - em->start;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 79d0545badcab..db453d19f2a0f 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2083,7 +2083,7 @@ static const struct nft_expr_type *__nft_expr_type_get(u8 family,
+ {
+ 	const struct nft_expr_type *type, *candidate = NULL;
  
- 					split->block_len = split->len;
- 					split->block_start += diff;
---- a/fs/btrfs/tests/extent-map-tests.c
-+++ b/fs/btrfs/tests/extent-map-tests.c
-@@ -847,6 +847,11 @@ static int test_case_7(struct btrfs_fs_i
- 		goto out;
- 	}
+-	list_for_each_entry(type, &nf_tables_expressions, list) {
++	list_for_each_entry_rcu(type, &nf_tables_expressions, list) {
+ 		if (!nla_strcmp(nla, type->name)) {
+ 			if (!type->family && !candidate)
+ 				candidate = type;
+@@ -2103,9 +2103,13 @@ static const struct nft_expr_type *nft_expr_type_get(struct net *net,
+ 	if (nla == NULL)
+ 		return ERR_PTR(-EINVAL);
  
-+	if (em->block_start != SZ_32K + SZ_4K) {
-+		test_err("em->block_start is %llu, expected 36K", em->block_start);
-+		goto out;
++	rcu_read_lock();
+ 	type = __nft_expr_type_get(family, nla);
+-	if (type != NULL && try_module_get(type->owner))
++	if (type != NULL && try_module_get(type->owner)) {
++		rcu_read_unlock();
+ 		return type;
 +	}
-+
- 	free_extent_map(em);
++	rcu_read_unlock();
  
- 	read_lock(&em_tree->lock);
+ 	lockdep_nfnl_nft_mutex_not_held();
+ #ifdef CONFIG_MODULES
+-- 
+2.43.0
+
 
 
 
