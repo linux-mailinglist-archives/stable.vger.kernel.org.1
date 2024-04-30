@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-42349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6D58B7291
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:09:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A118B71BA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95D9DB21A01
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 173181C22525
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9361E50A;
-	Tue, 30 Apr 2024 11:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6948D12C490;
+	Tue, 30 Apr 2024 11:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzRvsNFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaV3Rf6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF0412C46E;
-	Tue, 30 Apr 2024 11:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A3C7464;
+	Tue, 30 Apr 2024 11:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475377; cv=none; b=rRPz6w7k5rTqb6T3VJAh5Yx70fXCWYSZrCsQ8wcdlOeOJgqhEYl3V6rqIG1LTZtT6P+0QgtrVY/e+IjTEpVU27mUyQ1aWRMNAorfTotV+MW80rUsbtNt8mRTTWdRZxntV1C9CKDJAcxmP/D1e0vD1uU1BneLyh8PkQheyFkdy/E=
+	t=1714474808; cv=none; b=mB2kk0Bdu7/eC+OHwgAaMEch/OG2LOyWzJEgvSbeOa0o3INT9krcurj7xJmRHYDRapwkj8rbsj5tzaCizDzvi3afjH1ouTQQhrtINShLae/qYzL23+TaNeqyrygr5TkgM58k25XjLoh6JQsFty7XAqWMa+V+afKE57LraBGkHk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475377; c=relaxed/simple;
-	bh=lrzyqbwuRLcIlLxaqODWqG8CK6QHjl142DqTYlD50Gg=;
+	s=arc-20240116; t=1714474808; c=relaxed/simple;
+	bh=II+N1u6SlLiy14KXyVGv+yZJwc2L2ZP71EDQzQ8tgZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwBjF+60bkvY4HS0+WlEvGXQiC4C/KmPGFvEBi7Z7LC346gNa+T7YbobNmzyCGubx5aC+63kCdhE0Td+HF2yrMzazJj+QIy9qPp5UD9vXh5Edlxvk+ASdTAuUNwcdXzegSAVXNKJFZGtcz+2C3H+WYE2Nm90HNpTsMp9uMK4gT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzRvsNFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008ECC4AF18;
-	Tue, 30 Apr 2024 11:09:35 +0000 (UTC)
+	 MIME-Version; b=KZQ7dpfOO0gXoCiF/VKV9XTM5SIJAUi6qwXS9GpLjsvZo7U9yffyZEg8K4uDkOFAc3zR/vyQZ4I0U2o5fCztp9U39Wz7FcBJpu8Q83ThkyOEQpW4OtdeKIouT8abA+DSdGNAwVYzOgoNvio/p3+ye+DdUVQb2wKmVWcazZG3Ljs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaV3Rf6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B3DC2BBFC;
+	Tue, 30 Apr 2024 11:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475376;
-	bh=lrzyqbwuRLcIlLxaqODWqG8CK6QHjl142DqTYlD50Gg=;
+	s=korg; t=1714474808;
+	bh=II+N1u6SlLiy14KXyVGv+yZJwc2L2ZP71EDQzQ8tgZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TzRvsNFOVO4kbO3Gd9Q8ym2dfeeRj/tH+Hxxzyh72B4Z8vCi9OhBScayYGP8pt/rB
-	 mLYCPMZeQkpKv/kQ+QpdbNVe8wUfQtDk54qBtynsjQ54GIHV6Qy/VMAnYpyAHYg5qi
-	 d34lSCpz870bwQYphfz8PGFq2+GFoEGzTnS9y/10=
+	b=HaV3Rf6BXdaiF+Q8/7b+DOBx+ZoTZmxjCJxsEWbzpCb9fIJWVFDqmkUTbb3Fv7WQy
+	 wonIhZieGZO5oRKTl5W4U6fTgyWxQJm82nYfTwZqgqtaDDYIor35pKTJRl/4QuBPbH
+	 fNACIY5su8fkNylcXmcA9885Eq9V/aRhWU5QUdMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avraham Stern <avraham.stern@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/186] wifi: iwlwifi: mvm: remove old PASN station when adding a new one
+Subject: [PATCH 5.10 005/138] net: openvswitch: fix unwanted error log on timeout policy probing
 Date: Tue, 30 Apr 2024 12:38:10 +0200
-Message-ID: <20240430103059.136911989@linuxfoundation.org>
+Message-ID: <20240430103049.583910862@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit dbfff5bf9292714f02ace002fea8ce6599ea1145 ]
+[ Upstream commit 4539f91f2a801c0c028c252bffae56030cfb2cae ]
 
-If a PASN station is added, and an old PASN station already exists
-for the same mac address, remove the old station before adding the
-new one. Keeping the old station caueses old security context to
-be used in measurements.
+On startup, ovs-vswitchd probes different datapath features including
+support for timeout policies.  While probing, it tries to execute
+certain operations with OVS_PACKET_ATTR_PROBE or OVS_FLOW_ATTR_PROBE
+attributes set.  These attributes tell the openvswitch module to not
+log any errors when they occur as it is expected that some of the
+probes will fail.
 
-Fixes: 0739a7d70e00 ("iwlwifi: mvm: initiator: add option for adding a PASN responder")
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240415114847.ef3544a416f2.I4e8c7c8ca22737f4f908ae5cd4fc0b920c703dd3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+For some reason, setting the timeout policy ignores the PROBE attribute
+and logs a failure anyway.  This is causing the following kernel log
+on each re-start of ovs-vswitchd:
+
+  kernel: Failed to associated timeout policy `ovs_test_tp'
+
+Fix that by using the same logging macro that all other messages are
+using.  The message will still be printed at info level when needed
+and will be rate limited, but with a net rate limiter instead of
+generic printk one.
+
+The nf_ct_set_timeout() itself will still print some info messages,
+but at least this change makes logging in openvswitch module more
+consistent.
+
+Fixes: 06bd2bdf19d2 ("openvswitch: Add timeout support to ct action")
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Link: https://lore.kernel.org/r/20240403203803.2137962-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/openvswitch/conntrack.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-index 233ae81884a0e..ae0eb585b61ee 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-@@ -53,6 +53,8 @@ int iwl_mvm_ftm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	if (!pasn)
- 		return -ENOBUFS;
- 
-+	iwl_mvm_ftm_remove_pasn_sta(mvm, addr);
-+
- 	pasn->cipher = iwl_mvm_cipher_to_location_cipher(cipher);
- 
- 	switch (pasn->cipher) {
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 0f0f380e81a40..d452a63d2f4b0 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -1692,8 +1692,9 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
+ 	if (ct_info.timeout[0]) {
+ 		if (nf_ct_set_timeout(net, ct_info.ct, family, key->ip.proto,
+ 				      ct_info.timeout))
+-			pr_info_ratelimited("Failed to associated timeout "
+-					    "policy `%s'\n", ct_info.timeout);
++			OVS_NLERR(log,
++				  "Failed to associated timeout policy '%s'",
++				  ct_info.timeout);
+ 		else
+ 			ct_info.nf_ct_timeout = rcu_dereference(
+ 				nf_ct_timeout_find(ct_info.ct)->timeout);
 -- 
 2.43.0
 
