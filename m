@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2988B7225
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3A78B7190
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 883432825AA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D61F41F2209A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C34612C490;
-	Tue, 30 Apr 2024 11:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B63D12D74D;
+	Tue, 30 Apr 2024 10:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZKQhAuc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DP4RZ1yy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F007112C462;
-	Tue, 30 Apr 2024 11:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D5612C48A;
+	Tue, 30 Apr 2024 10:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475095; cv=none; b=GRI3VEbf1xfZ3ncYRF7j7cgvOjfkkN5oq9m/n6y/YmVP6osLXJv1K5afGmThRywcBTGt0U3sKPMUlJxQ9rRURgcbUX+TH+hgpBbsqOeWFsefHChVwoVOWr/LYi0p24urS2Ps2LzMTtXF85K/F/ZM6OO9gTwYZ/CsvK84ORA6bKw=
+	t=1714474669; cv=none; b=fYAB+5KqZpQJ0QN9+2Vi0LubstYTW4GKjUAbzhLCk7MXXmjW9m21CwIT0OE7K9PIph5BYORnmuo60v2N+FuSdTjmRICgThw5B4rMYqbo13JWXT+ZdR35qk/1KkD7gWQYYjcMyuPxct9AdenZFPM6BOx2JM+QPxmImqQA/KZABr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475095; c=relaxed/simple;
-	bh=Q0YCzPw0DU8sVweO5NMjfsM0F17v8NQ8Fsjfv87XYuw=;
+	s=arc-20240116; t=1714474669; c=relaxed/simple;
+	bh=4vCvhb0i88ZZpiVWuIzNTQehxlW+LSB0ZGdK/mSKmAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=om5b/2nwkbxdagDGNPmiI1wEGT/um+ff6cvZJDhlorWXgFV4HAffSBLkWnMKjWCkcLnqgs/x2+EiR7TwdM+qlfOPxjibu0/XFBusTbf18KqiMUzFQbBYmdRa21AmObLP9EkhtGp9im2nRyek9mkpvukxfkKaLuFF+UpOXM/WvAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZKQhAuc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E77BC2BBFC;
-	Tue, 30 Apr 2024 11:04:54 +0000 (UTC)
+	 MIME-Version; b=iG0xpuFeR1miSpX9UOZkymcl8bf5LZLvy1Qa6WKLBbXT9fMUod5+7Enyynh9p2LHGTxJr7gd7rqMEFbT/+MCZ2M4qazxwiiphdo86eJ2frDYXMRMMFGzmcdF3qSq6XrMXUpaMHIfvC0pQjzGSX5Wg4S4oAMnM9tI7tvSwK5ZS6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DP4RZ1yy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D3DC4AF18;
+	Tue, 30 Apr 2024 10:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475094;
-	bh=Q0YCzPw0DU8sVweO5NMjfsM0F17v8NQ8Fsjfv87XYuw=;
+	s=korg; t=1714474668;
+	bh=4vCvhb0i88ZZpiVWuIzNTQehxlW+LSB0ZGdK/mSKmAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZKQhAucZCOmLWm61Xe8o/nvyKSgmI9tExQkDgfgdIOFFbDgWX4qs/hh0ya75PHG+
-	 gFHxogkr2+wXgKp4poFUdmnYvq4zd1pHEtkAVJygMTsZemgdIBCMkx4qCVIWGC1bF9
-	 6HXJ8BAtdL8Ns2UIEDQVkbyCLwNqOYMsBJNi40xg=
+	b=DP4RZ1yycCygVP/CyhDVNyKUM0SX5/U7ig9GehwTdy9bTP6BlwSujbL8TakgGb2xb
+	 SFebSzhktvaRwjn6Q2oDD3Q7PKniK3nnH583hP0hiVcc/VPIJmmWTSjFC3J2t0uqxr
+	 7jpLyNVikZrUne2HSXgqBgI6QrnOD/BjSOx60pmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 081/138] arm64: dts: mediatek: mt7622: drop "reset-names" from thermal block
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 188/228] macsec: Enable devices to advertise whether they update sk_buff md_dst during offloads
 Date: Tue, 30 Apr 2024 12:39:26 +0200
-Message-ID: <20240430103051.807157318@linuxfoundation.org>
+Message-ID: <20240430103109.226320154@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit ecb5b0034f5bcc35003b4b965cf50c6e98316e79 ]
+commit 475747a19316b08e856c666a20503e73d7ed67ed upstream.
 
-Binding doesn't specify "reset-names" property and Linux driver also
-doesn't use it.
+Cannot know whether a Rx skb missing md_dst is intended for MACsec or not
+without knowing whether the device is able to update this field during an
+offload. Assume that an offload to a MACsec device cannot support updating
+md_dst by default. Capable devices can advertise that they do indicate that
+an skb is related to a MACsec offloaded packet using the md_dst.
 
-Fix following validation error:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: thermal@1100b000: Unevaluated properties are not allowed ('reset-names' was unexpected)
-        from schema $id: http://devicetree.org/schemas/thermal/mediatek,thermal.yaml#
-
-Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related device nodes")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240317221050.18595-5-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Sabrina Dubroca <sd@queasysnail.net>
+Cc: stable@vger.kernel.org
+Fixes: 860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path support")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240423181319.115860-2-rrameshbabu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ include/net/macsec.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index 974520bd3d8fb..4454115ad8a0d 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -505,7 +505,6 @@
- 			 <&pericfg CLK_PERI_AUXADC_PD>;
- 		clock-names = "therm", "auxadc";
- 		resets = <&pericfg MT7622_PERI_THERM_SW_RST>;
--		reset-names = "therm";
- 		mediatek,auxadc = <&auxadc>;
- 		mediatek,apmixedsys = <&apmixedsys>;
- 		nvmem-cells = <&thermal_calibration>;
--- 
-2.43.0
-
+--- a/include/net/macsec.h
++++ b/include/net/macsec.h
+@@ -321,6 +321,7 @@ struct macsec_context {
+  *	for the TX tag
+  * @needed_tailroom: number of bytes reserved at the end of the sk_buff for the
+  *	TX tag
++ * @rx_uses_md_dst: whether MACsec device offload supports sk_buff md_dst
+  */
+ struct macsec_ops {
+ 	/* Device wide */
+@@ -352,6 +353,7 @@ struct macsec_ops {
+ 				 struct sk_buff *skb);
+ 	unsigned int needed_headroom;
+ 	unsigned int needed_tailroom;
++	bool rx_uses_md_dst;
+ };
+ 
+ void macsec_pn_wrapped(struct macsec_secy *secy, struct macsec_tx_sa *tx_sa);
 
 
 
