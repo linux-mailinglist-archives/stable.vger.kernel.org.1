@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-42030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983EA8B7106
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E698B71A6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55493288D69
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D42881C21328
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5255D12C49E;
-	Tue, 30 Apr 2024 10:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E9912C487;
+	Tue, 30 Apr 2024 10:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYig0/bV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrpHidgP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD6A12C487;
-	Tue, 30 Apr 2024 10:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F5112B176;
+	Tue, 30 Apr 2024 10:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474333; cv=none; b=Lr0vjdflfXoaxf00GuYdSQZuRaGfDvFk1k/eq3vjsJ/0pzFsHy3F0dtNrDPUftqNIeVJhWW08JgGt5N9HFCMJyFQJ3c0QiVQsqw42IJ7O9xCxko0dEl84JXoersxH0Wm4fF/MdNNqBrdmY6l0gylzMvG3EWpRx9g6wFlV2yZ8bY=
+	t=1714474738; cv=none; b=q04YlcPBJMolDoSNKpHErseEojVN/hQcX9Kv7rF/yCJHQKYptRHWA7qvUEdOCdyKdDoSt7HPkc2TX8x+hY1sEa6Omg07mwfh26ruMC/hac8n+xUTzMJgsVpupFAFJQWz4Vk+TNiBEIVAiQ0t1UfBKHI5MU4bVMA27z2XghKL328=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474333; c=relaxed/simple;
-	bh=5AN3uE5hrB5Z3q1tDWVKXPqET8e3T0glW5RMJRo7wdk=;
+	s=arc-20240116; t=1714474738; c=relaxed/simple;
+	bh=88K6vLAHWimZBZVJ9BRZ3Y08l8vE3sBKGUL5vnQeoxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q+K3TCTMMwJCocichx34vWMYoi5lNGylG9RCyNjy4hcVo2HszT7FsIXSq0TVzcDv5d9RmfpG2cvLyDVREYuVizSgHRWLoD2DBc/50EUluYRD611oN0Pr9FHp9d6zNp+jugS7y6Yc7GfcFckS5omOOf+fGjJPUqEhu6yyxdoXP2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYig0/bV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDC9C2BBFC;
-	Tue, 30 Apr 2024 10:52:12 +0000 (UTC)
+	 MIME-Version; b=CA7OUG18bVBdjt9RJ4gBsAY+iKZoAIUE9w8YFMWrb98o/XvMlII4MIV4co9al0ws03iedwfE/q4VgkqnNh4m6aOn9CM1vO86FNuXkwmzlEmQVHL9WmkbzYB3XISJb320f8fxTHjctj+JaXJRKjHT1nMO2GhsvX6DHLA/wuEw/6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrpHidgP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1593AC2BBFC;
+	Tue, 30 Apr 2024 10:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474332;
-	bh=5AN3uE5hrB5Z3q1tDWVKXPqET8e3T0glW5RMJRo7wdk=;
+	s=korg; t=1714474738;
+	bh=88K6vLAHWimZBZVJ9BRZ3Y08l8vE3sBKGUL5vnQeoxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYig0/bVU2VF7HxgNxBPJKxQukDIEtaBJhszPQKqdHz2My9wSA8GtdMAHD5ZG/INo
-	 VZLN8QjhUKggusteSgLmVeyo/0M3v/ycpwmK3vas90SdwpWrLwrVyEwqQ56HjWLTnJ
-	 JouSoWvVJnGpoix1t+4lLzXuSCZiCd/01tGrDhoc=
+	b=KrpHidgP1g7w5h05igdumfO1Y0ywZLnGHiUUQtBKdaV2IYVJG0c5+EmzEc9WJsDcx
+	 OTWm2gPP2b98qF/G/P9T2cpJwM1Z7WR+LcQFQk7/90SCHmFoDWyrFfsm+DrAvrV864
+	 HquH5GaSm5lO5RfM5tHvFbqT9Ce0013H/hNl6s74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.keonig@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Subject: [PATCH 6.8 126/228] drm: add drm_gem_object_is_shared_for_memory_stats() helper
-Date: Tue, 30 Apr 2024 12:38:24 +0200
-Message-ID: <20240430103107.442520638@linuxfoundation.org>
+	Shay Agroskin <shayagr@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 020/138] net: ena: Fix incorrect descriptor free behavior
+Date: Tue, 30 Apr 2024 12:38:25 +0200
+Message-ID: <20240430103050.021609374@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: David Arinzon <darinzon@amazon.com>
 
-[ Upstream commit b31f5eba32ae8cc28e7cfa5a55ec8670d8c718e2 ]
+[ Upstream commit bf02d9fe00632d22fa91d34749c7aacf397b6cde ]
 
-Add a helper so that drm drivers can consistently report
-shared status via the fdinfo shared memory stats interface.
+ENA has two types of TX queues:
+- queues which only process TX packets arriving from the network stack
+- queues which only process TX packets forwarded to it by XDP_REDIRECT
+  or XDP_TX instructions
 
-In addition to handle count, show buffers as shared if they
-are shared via dma-buf as well (e.g., shared with v4l or some
-other subsystem).
+The ena_free_tx_bufs() cycles through all descriptors in a TX queue
+and unmaps + frees every descriptor that hasn't been acknowledged yet
+by the device (uncompleted TX transactions).
+The function assumes that the processed TX queue is necessarily from
+the first category listed above and ends up using napi_consume_skb()
+for descriptors belonging to an XDP specific queue.
 
-v2: switch to inline function
+This patch solves a bug in which, in case of a VF reset, the
+descriptors aren't freed correctly, leading to crashes.
 
-Link: https://lore.kernel.org/all/20231207180225.439482-1-alexander.deucher@amd.com/
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com> (v1)
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Christian König <christian.keonig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Stable-dep-of: a6ff969fe9cb ("drm/amdgpu: fix visible VRAM handling during faults")
+Fixes: 548c4940b9f1 ("net: ena: Implement XDP_TX action")
+Signed-off-by: Shay Agroskin <shayagr@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_gem.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
-index 369505447acd8..2ebec3984cd44 100644
---- a/include/drm/drm_gem.h
-+++ b/include/drm/drm_gem.h
-@@ -553,6 +553,19 @@ unsigned long drm_gem_lru_scan(struct drm_gem_lru *lru,
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index f403a5acda5b0..9149c82c0a564 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -1105,8 +1105,11 @@ static void ena_unmap_tx_buff(struct ena_ring *tx_ring,
+ static void ena_free_tx_bufs(struct ena_ring *tx_ring)
+ {
+ 	bool print_once = true;
++	bool is_xdp_ring;
+ 	u32 i;
  
- int drm_gem_evict(struct drm_gem_object *obj);
- 
-+/**
-+ * drm_gem_object_is_shared_for_memory_stats - helper for shared memory stats
-+ *
-+ * This helper should only be used for fdinfo shared memory stats to determine
-+ * if a GEM object is shared.
-+ *
-+ * @obj: obj in question
-+ */
-+static inline bool drm_gem_object_is_shared_for_memory_stats(struct drm_gem_object *obj)
-+{
-+	return (obj->handle_count > 1) || obj->dma_buf;
-+}
++	is_xdp_ring = ENA_IS_XDP_INDEX(tx_ring->adapter, tx_ring->qid);
 +
- #ifdef CONFIG_LOCKDEP
- /**
-  * drm_gem_gpuva_set_lock() - Set the lock protecting accesses to the gpuva list.
+ 	for (i = 0; i < tx_ring->ring_size; i++) {
+ 		struct ena_tx_buffer *tx_info = &tx_ring->tx_buffer_info[i];
+ 
+@@ -1126,10 +1129,15 @@ static void ena_free_tx_bufs(struct ena_ring *tx_ring)
+ 
+ 		ena_unmap_tx_buff(tx_ring, tx_info);
+ 
+-		dev_kfree_skb_any(tx_info->skb);
++		if (is_xdp_ring)
++			xdp_return_frame(tx_info->xdpf);
++		else
++			dev_kfree_skb_any(tx_info->skb);
+ 	}
+-	netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
+-						  tx_ring->qid));
++
++	if (!is_xdp_ring)
++		netdev_tx_reset_queue(netdev_get_tx_queue(tx_ring->netdev,
++							  tx_ring->qid));
+ }
+ 
+ static void ena_free_all_tx_bufs(struct ena_adapter *adapter)
 -- 
 2.43.0
 
