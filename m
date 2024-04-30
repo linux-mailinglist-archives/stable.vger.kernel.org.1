@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-41994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299FB8B70D1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F62C8B7241
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AD251C20AA1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:50:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40E311C20F47
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C619D12C49F;
-	Tue, 30 Apr 2024 10:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A933212C801;
+	Tue, 30 Apr 2024 11:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP3sVO2L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwY4DMII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839D212C46B;
-	Tue, 30 Apr 2024 10:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688AF12C462;
+	Tue, 30 Apr 2024 11:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474214; cv=none; b=g+X72XIjKJt3BxW6xKkt0ob5y/ZapEV4V4AdsooChY8Kq1+220gDqCx78gY0lc7Fpe5FKFY7+0qnnJlHZH000ajCkMmEZtPjH05n9XLbILDMQ4k2ObvA4D7CyOM9K5v545yYqtOCbckHPuQB21xOc/BnNRvDjTRPeRzUDIiR4Yw=
+	t=1714475171; cv=none; b=HJdPWM9krAbfQPC1flZ3S8kbmDc/2Rn2ZKZjI7C4UEY8o1nIhoOguwMEttOmTtbdvhAdl39/fVaJ2+iE634fWHFpWH0eo7bsqPBmy1ud3FdkiyLg5GNBnC1C1y6bXhso1BLhiO/tuAofBip/MH7boy4rg+PU45dN0x3TZF00e+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474214; c=relaxed/simple;
-	bh=gbALSvvARqq52ywOsyP/8NLCCAopAhgYLdwXBd6BN7w=;
+	s=arc-20240116; t=1714475171; c=relaxed/simple;
+	bh=7w6ONEjZQTbAqWSLmluxYTirRdlfjaZDoKJScZO+oe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nx7lTY7fSMSEYmM4Sq3uTzaoqvFVv4nEVrN92y2wx1rD87u8dkoE2jnQLyHyrfxis2Xkit7AK9eb9IOmLr8Y5Z6SlyaOceJ/4Om48fVDQzHoqFAo2AJngNkaJ0/KMLWaCm3CnpzmKZmIPML/qWjckytUGwdg6ZMNcDfmSAJDC5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP3sVO2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E690FC2BBFC;
-	Tue, 30 Apr 2024 10:50:13 +0000 (UTC)
+	 MIME-Version; b=E8Qg1x46BOUpwOoJbp/iuoI8NDNYnL8x0beINKJEdvO52eXVsrmjPZKjVcIZ/0dbGG5gLIFVqbGVr70ghHR5rt8vg2Q6jPXtL7AEVoWW+znvkqKIBKjrMgGmaGVuR1F0s00G1nL0O3B/BSUPfBCjngawZtma4kdfpWD3s680zhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wwY4DMII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55F1C2BBFC;
+	Tue, 30 Apr 2024 11:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474214;
-	bh=gbALSvvARqq52ywOsyP/8NLCCAopAhgYLdwXBd6BN7w=;
+	s=korg; t=1714475171;
+	bh=7w6ONEjZQTbAqWSLmluxYTirRdlfjaZDoKJScZO+oe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CP3sVO2L9vdSvXKZTuiHRVWixVYighYTotf2xge1yaf5BYwyx2Iv1Jjb5BTz2AFlt
-	 U4RNamXL2VqBWFHSL7pcAeMELmarF11Ppexljy3b8wY1k28wT6T7DdsCqogDALg11w
-	 3KO2lrKC60zqmQrOrsmLn6RLG+pN/Rw9LOtybkOk=
+	b=wwY4DMIIUeNddMYa78HsqVP0qFmkVmtdwaarn2GdjerJFUbG3Zp4gCs7vurEGC91V
+	 u/+VdO287PIozk9XBOp01dqUpiara1yLu1898sWuacksy+bP5tCfz5SrZPW0qxkQc8
+	 hYA5PmCcSrNTQiAAZy4obJqByRS1I82OrjdSeLgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Manish Mandlik <mmandlik@google.com>,
-	Archie Pusaka <apusaka@chromium.org>,
-	Miao-chen Chou <mcchou@chromium.org>,
-	Chun-Yi Lee <jlee@suse.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 090/228] Bluetooth: hci_sync: Using hci_cmd_sync_submit when removing Adv Monitor
+Subject: [PATCH 6.6 016/186] arm64: dts: mediatek: cherry: Add platform thermal configuration
 Date: Tue, 30 Apr 2024 12:37:48 +0200
-Message-ID: <20240430103106.401118883@linuxfoundation.org>
+Message-ID: <20240430103058.492161590@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +63,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Yi Lee <jlee@suse.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 88cd6e6b2d327faa13e4505b07f1e380e51b21ff ]
+[ Upstream commit 729f30eac8bce6783f889cf8390ea869d03407e6 ]
 
-Since the d883a4669a1de be introduced in v6.4, bluetooth daemon
-got the following failed message of MGMT_OP_REMOVE_ADV_MONITOR
-command when controller is power-off:
+This platform has three auxiliary NTC thermistors, connected to the
+SoC's ADC pins. Enable the auxadc in order to be able to read the
+ADC values, add a generic-adc-thermal LUT for each and finally assign
+them to the SoC's thermal zones.
 
-bluetoothd[20976]:
-src/adapter.c:reset_adv_monitors_complete() Failed to reset Adv
-Monitors: Failed>
-
-Normally this situation is happened when the bluetoothd deamon
-be started manually after system booting. Which means that
-bluetoothd received MGMT_EV_INDEX_ADDED event after kernel
-runs hci_power_off().
-
-Base on doc/mgmt-api.txt, the MGMT_OP_REMOVE_ADV_MONITOR command
-can be used when the controller is not powered. This patch changes
-the code in remove_adv_monitor() to use hci_cmd_sync_submit()
-instead of hci_cmd_sync_queue().
-
-Fixes: d883a4669a1de ("Bluetooth: hci_sync: Only allow hci_cmd_sync_queue if running")
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Manish Mandlik <mmandlik@google.com>
-Cc: Archie Pusaka <apusaka@chromium.org>
-Cc: Miao-chen Chou <mcchou@chromium.org>
-Signed-off-by: Chun-Yi Lee <jlee@suse.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230424112523.1436926-2-angelogioacchino.delregno@collabora.com
+Stable-dep-of: 17b33dd9e4a3 ("arm64: dts: mediatek: cherry: Describe CPU supplies")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../boot/dts/mediatek/mt8195-cherry.dtsi      | 105 ++++++++++++++++++
+ 1 file changed, 105 insertions(+)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 7e56cb3d377a1..b8e05ddeedba9 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -5478,8 +5478,8 @@ static int remove_adv_monitor(struct sock *sk, struct hci_dev *hdev,
- 		goto unlock;
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+index 3f508e5c18434..d721ddb230747 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+@@ -114,6 +114,77 @@
+ 		regulator-boot-on;
+ 	};
  
--	err = hci_cmd_sync_queue(hdev, mgmt_remove_adv_monitor_sync, cmd,
--				 mgmt_remove_adv_monitor_complete);
-+	err = hci_cmd_sync_submit(hdev, mgmt_remove_adv_monitor_sync, cmd,
-+				  mgmt_remove_adv_monitor_complete);
++	/* Murata NCP03WF104F05RL */
++	tboard_thermistor1: thermal-sensor-t1 {
++		compatible = "generic-adc-thermal";
++		#thermal-sensor-cells = <0>;
++		io-channels = <&auxadc 0>;
++		io-channel-names = "sensor-channel";
++		temperature-lookup-table = <	(-10000) 1553
++						(-5000) 1485
++						0 1406
++						5000 1317
++						10000 1219
++						15000 1115
++						20000 1007
++						25000 900
++						30000 796
++						35000 697
++						40000 605
++						45000 523
++						50000 449
++						55000 384
++						60000 327
++						65000 279
++						70000 237
++						75000 202
++						80000 172
++						85000 147
++						90000 125
++						95000 107
++						100000 92
++						105000 79
++						110000 68
++						115000 59
++						120000 51
++						125000 44>;
++	};
++
++	tboard_thermistor2: thermal-sensor-t2 {
++		compatible = "generic-adc-thermal";
++		#thermal-sensor-cells = <0>;
++		io-channels = <&auxadc 1>;
++		io-channel-names = "sensor-channel";
++		temperature-lookup-table = <	(-10000) 1553
++						(-5000) 1485
++						0 1406
++						5000 1317
++						10000 1219
++						15000 1115
++						20000 1007
++						25000 900
++						30000 796
++						35000 697
++						40000 605
++						45000 523
++						50000 449
++						55000 384
++						60000 327
++						65000 279
++						70000 237
++						75000 202
++						80000 172
++						85000 147
++						90000 125
++						95000 107
++						100000 92
++						105000 79
++						110000 68
++						115000 59
++						120000 51
++						125000 44>;
++	};
++
+ 	usb_vbus: regulator-5v0-usb-vbus {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "usb-vbus";
+@@ -176,6 +247,10 @@
+ 	memory-region = <&afe_mem>;
+ };
  
- 	if (err) {
- 		mgmt_pending_remove(cmd);
++&auxadc {
++	status = "okay";
++};
++
+ &dp_intf0 {
+ 	status = "okay";
+ 
+@@ -1127,6 +1202,36 @@
+ 	};
+ };
+ 
++&thermal_zones {
++	soc-area-thermal {
++		polling-delay = <1000>;
++		polling-delay-passive = <250>;
++		thermal-sensors = <&tboard_thermistor1>;
++
++		trips {
++			trip-crit {
++				temperature = <84000>;
++				hysteresis = <1000>;
++				type = "critical";
++			};
++		};
++	};
++
++	pmic-area-thermal {
++		polling-delay = <1000>;
++		polling-delay-passive = <0>;
++		thermal-sensors = <&tboard_thermistor2>;
++
++		trips {
++			trip-crit {
++				temperature = <84000>;
++				hysteresis = <1000>;
++				type = "critical";
++			};
++		};
++	};
++};
++
+ &u3phy0 {
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
