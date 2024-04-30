@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-42721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2247F8B7451
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D988B73E6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D20A2286CC4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E438A283512
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DA912D745;
-	Tue, 30 Apr 2024 11:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DB212CDAE;
+	Tue, 30 Apr 2024 11:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpOzaxPS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+5ai4rd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4159212BF32;
-	Tue, 30 Apr 2024 11:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BF617592;
+	Tue, 30 Apr 2024 11:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476570; cv=none; b=ADQaftnAyAVFdAlxrhhtDfz3/RANypoBoko5vG51GRg1RvfCf6KczTHO8IiVBWwlmnYS7TOC/W/S3ALZMvBJ3QYHbuHmft2EUG96OH1CA193wP+N9ASZy8uOrP6FwDnHTbcbBb5Z2UR24Z55TeVU5DaoCSuhHpExT8+hxMZm57c=
+	t=1714476276; cv=none; b=BvYt2vpMcTsjUKGRQ6jLc8Aq48Qb0S/KHVVmsM4yo9R9tnb4QdMkdm78WCdenoXKIKJ5veqSLquSIsM8Dky9KmlbEZ6WR8MEK8dkCR9FGYiHpmIf5nWn+auU58TvGtDyQ0GAHSAhCdmr+IKcwSHogTtMB0Eve6FHMv+/0fvduEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476570; c=relaxed/simple;
-	bh=h1dxi7Q/RQbWeIUWsMbDtLxeGb7RwUM0SxPyCYIifg4=;
+	s=arc-20240116; t=1714476276; c=relaxed/simple;
+	bh=vCDxj6RLG+Ob7In9CB3ZYCeEmIhfqCJ0ArfOgQb5ZvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHemCYl9nAID3bD/NoPBMzu9jJKZy2yyHkq01mpm+EnTl1dSj3Xkbb9bvPENDGpFRVO+Nd53+qkX4cRzL29nHt12MtmK1SYl3vutg9IhbAztcuR/s3qYhOIhlF8oU6Eu0RzLL8F+N6sIGnDV1imqQ0zk9l35AB+ix2wPeSmLT3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpOzaxPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF77CC2BBFC;
-	Tue, 30 Apr 2024 11:29:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YseILeZBBgd9nIScjPR+h3gF715BNq1NGQubCET28uL/7adnF5LFUb5lmmEBlWxoNJO/30NTj/wckXF0jAE9+1AlJaPmiHK476/DKpj5xscjXTNNEMql/ExdC/jsmJBcwlazzhxT4WqNevyqgu1jYeaNAEPwkxennbXKiivSYUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+5ai4rd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC400C2BBFC;
+	Tue, 30 Apr 2024 11:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476570;
-	bh=h1dxi7Q/RQbWeIUWsMbDtLxeGb7RwUM0SxPyCYIifg4=;
+	s=korg; t=1714476276;
+	bh=vCDxj6RLG+Ob7In9CB3ZYCeEmIhfqCJ0ArfOgQb5ZvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YpOzaxPS/X23vjrxTX95E9pP4U850nB6wBKIP10Pt8spxj0nYCQWXcFfAN5RJxc8s
-	 jvqnbvFB24h/2AlVdJCmeybY19syiNobQ/7EmhSis2dEOI3m2Q4duv+VBVzuGLgMaw
-	 /oqcDsz5BK/tYOSAyCEFqQNgVz6Qd0HmAE8h8DdM=
+	b=z+5ai4rdwI+lsRLnbyJq7YGtqn4TixY0m9O52ApXGRNCnwXeKfH9BQD77UeKfMfAr
+	 AodcZl99id8i3Sso5fgo1o2AUdW2oFV3qfcy+yJ0t1PrcecBpqYPtmrFIPw5aWsew+
+	 NcfaS4u8uaJx55R4sx+CMlptQDdqFAD+xtrWsgOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+510a1abbb8116eeb341d@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <Johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 073/110] btrfs: fix information leak in btrfs_ioctl_logical_to_ino()
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 082/107] amdgpu: validate offset_in_bo of drm_amdgpu_gem_va
 Date: Tue, 30 Apr 2024 12:40:42 +0200
-Message-ID: <20240430103049.720552097@linuxfoundation.org>
+Message-ID: <20240430103047.078992846@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Chia-I Wu <olvaffe@gmail.com>
 
-commit 2f7ef5bb4a2f3e481ef05fab946edb97c84f67cf upstream.
+[ Upstream commit 9f0bcf49e9895cb005d78b33a5eebfa11711b425 ]
 
-Syzbot reported the following information leak for in
-btrfs_ioctl_logical_to_ino():
+This is motivated by OOB access in amdgpu_vm_update_range when
+offset_in_bo+map_size overflows.
 
-  BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-  BUG: KMSAN: kernel-infoleak in _copy_to_user+0xbc/0x110 lib/usercopy.c:40
-   instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-   _copy_to_user+0xbc/0x110 lib/usercopy.c:40
-   copy_to_user include/linux/uaccess.h:191 [inline]
-   btrfs_ioctl_logical_to_ino+0x440/0x750 fs/btrfs/ioctl.c:3499
-   btrfs_ioctl+0x714/0x1260
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:904 [inline]
-   __se_sys_ioctl+0x261/0x450 fs/ioctl.c:890
-   __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:890
-   x64_sys_call+0x1883/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:17
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+v2: keep the validations in amdgpu_vm_bo_map
+v3: add the validations to amdgpu_vm_bo_map/amdgpu_vm_bo_replace_map
+    rather than to amdgpu_gem_va_ioctl
 
-  Uninit was created at:
-   __kmalloc_large_node+0x231/0x370 mm/slub.c:3921
-   __do_kmalloc_node mm/slub.c:3954 [inline]
-   __kmalloc_node+0xb07/0x1060 mm/slub.c:3973
-   kmalloc_node include/linux/slab.h:648 [inline]
-   kvmalloc_node+0xc0/0x2d0 mm/util.c:634
-   kvmalloc include/linux/slab.h:766 [inline]
-   init_data_container+0x49/0x1e0 fs/btrfs/backref.c:2779
-   btrfs_ioctl_logical_to_ino+0x17c/0x750 fs/btrfs/ioctl.c:3480
-   btrfs_ioctl+0x714/0x1260
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:904 [inline]
-   __se_sys_ioctl+0x261/0x450 fs/ioctl.c:890
-   __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:890
-   x64_sys_call+0x1883/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:17
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-  Bytes 40-65535 of 65536 are uninitialized
-  Memory access of size 65536 starts at ffff888045a40000
-
-This happens, because we're copying a 'struct btrfs_data_container' back
-to user-space. This btrfs_data_container is allocated in
-'init_data_container()' via kvmalloc(), which does not zero-fill the
-memory.
-
-Fix this by using kvzalloc() which zeroes out the memory on allocation.
-
-CC: stable@vger.kernel.org # 4.14+
-Reported-by:  <syzbot+510a1abbb8116eeb341d@syzkaller.appspotmail.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Johannes Thumshirn <Johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f7eb5367d00 ("drm/amdgpu: actually use the VM map parameters")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 6fef2d4c00b5 ("drm/amdgpu: validate the parameters of bo mapping operations more clearly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/backref.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/fs/btrfs/backref.c
-+++ b/fs/btrfs/backref.c
-@@ -2475,20 +2475,14 @@ struct btrfs_data_container *init_data_c
- 	size_t alloc_bytes;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index 88f2707c69ce7..dfec651ec0b45 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2123,14 +2123,14 @@ int amdgpu_vm_bo_map(struct amdgpu_device *adev,
+ 	uint64_t eaddr;
  
- 	alloc_bytes = max_t(size_t, total_bytes, sizeof(*data));
--	data = kvmalloc(alloc_bytes, GFP_KERNEL);
-+	data = kvzalloc(alloc_bytes, GFP_KERNEL);
- 	if (!data)
- 		return ERR_PTR(-ENOMEM);
+ 	/* validate the parameters */
+-	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK ||
+-	    size == 0 || size & ~PAGE_MASK)
++	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
++		return -EINVAL;
++	if (saddr + size <= saddr || offset + size <= offset)
+ 		return -EINVAL;
  
--	if (total_bytes >= sizeof(*data)) {
-+	if (total_bytes >= sizeof(*data))
- 		data->bytes_left = total_bytes - sizeof(*data);
--		data->bytes_missing = 0;
--	} else {
-+	else
- 		data->bytes_missing = sizeof(*data) - total_bytes;
--		data->bytes_left = 0;
--	}
--
--	data->elem_cnt = 0;
--	data->elem_missed = 0;
+ 	/* make sure object fit at this offset */
+ 	eaddr = saddr + size - 1;
+-	if (saddr >= eaddr ||
+-	    (bo && offset + size > amdgpu_bo_size(bo)) ||
++	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
+ 	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+ 		return -EINVAL;
  
- 	return data;
- }
+@@ -2189,14 +2189,14 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
+ 	int r;
+ 
+ 	/* validate the parameters */
+-	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK ||
+-	    size == 0 || size & ~PAGE_MASK)
++	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
++		return -EINVAL;
++	if (saddr + size <= saddr || offset + size <= offset)
+ 		return -EINVAL;
+ 
+ 	/* make sure object fit at this offset */
+ 	eaddr = saddr + size - 1;
+-	if (saddr >= eaddr ||
+-	    (bo && offset + size > amdgpu_bo_size(bo)) ||
++	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
+ 	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+ 		return -EINVAL;
+ 
+-- 
+2.43.0
+
 
 
 
