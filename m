@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBA68B7383
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D5F8B7458
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2359A1F241B6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5BAE286E41
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DC912D1E8;
-	Tue, 30 Apr 2024 11:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D72B12C805;
+	Tue, 30 Apr 2024 11:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leQ1sM0o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsKvp/KK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C4A8801;
-	Tue, 30 Apr 2024 11:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF3612D215;
+	Tue, 30 Apr 2024 11:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475999; cv=none; b=PK0A8x8o56qmZ/vNQPIJwyHwIuZnaDslKdNoeEcOfXEydRigPLgLmq9fZRk+R3Db7LhXjOiZZel7dh6y5qhz6sH9maexqTrLjH7GuZDhA/y+sOKYQ7/e78LImv4FxmOcgu1CHzORsnlqwAUFudxG7FN5zH/Osn9zvaskNGD5akQ=
+	t=1714476583; cv=none; b=oDR9n3iSMEtgGiwAPjwrxWXB3bKC3SyiYjkH1A0mkutoPveuEiMd/BbzjhB5cZOOo6Q8RegwL2FtZp2ls5YSuKbyVsIIKgKQKiE+oovb4LB2LSlHde9rvn/R+7l8ht8orNAZIkRR1qauuRchzltvyEcoYbLkcs2eEDgw8HtiDEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475999; c=relaxed/simple;
-	bh=dmkHSwigI71YiAkUsRE6+hCkF8pbtD49c7Upj+kDe8I=;
+	s=arc-20240116; t=1714476583; c=relaxed/simple;
+	bh=0EBbTiax7rbDvjx7g/G0DLfCI9VtX55Ir/HBSFouzEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Agph7uDRs8ZIMw2w4a/uYHAqbUnp79vbp+QzrNkQG7NP1N+kZ44x5nvL+ZbwER3st64fdEJj91Johi+XCSXPEs+NgUmUuKas+6UzdOpBjskJxRzYUjL4dGOeH0pqFmsXQ9NMFahIiGDiYkBPM724+bLwRcxddGNE3mppZpZx/tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leQ1sM0o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EAEC2BBFC;
-	Tue, 30 Apr 2024 11:19:58 +0000 (UTC)
+	 MIME-Version; b=lllmh0JxnVlKW36S/cEb2qp6JBWfQCyTjb1W8lzrvXO0j9KxDW3yCvNORAMNVG7mPeMDAezlJjJ+gKkfmB2P2AJ7nvJHlgy1nNsfviGWKkpe2KSBK/D2mhWGBLU8CXz8LqDuiSRZRA5oKZv42WW3f+M2+DD7IFOy6H0HUQIaM0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsKvp/KK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EB0C2BBFC;
+	Tue, 30 Apr 2024 11:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475999;
-	bh=dmkHSwigI71YiAkUsRE6+hCkF8pbtD49c7Upj+kDe8I=;
+	s=korg; t=1714476583;
+	bh=0EBbTiax7rbDvjx7g/G0DLfCI9VtX55Ir/HBSFouzEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=leQ1sM0oNEbgMeiwSY/11jy54Qv+84iGSp+AZCA/8i3/nEx3xTZA8eA8LXEuZqRX1
-	 t/nl8gNvW/CD+NpvBXK8pryWS2YC0aJ0CVNwapYoLrICDBAi3CbKEKVxAvZuK8iR9p
-	 hTwJ4YZ2w9h6UxmqAmcQITMBIc+HkUTLj8uSmh9I=
+	b=IsKvp/KKEMB1cbktSvmMESeIm6vBRNJuFYZuF7xyvrXZuxb4HP4VlORKNW5eHKZen
+	 7pmfeqs3iOq33V6LrmQXQg9Ud69KvzbbY8reqELNAUZ/7Ois6cV5wAlw7Hrz8O2/CM
+	 tufCi/DKKADqsLzvYTFmIwxoFt0a6dOrEkFipUWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Bo Gan <ganboing@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 74/80] riscv: Fix TASK_SIZE on 64-bit NOMMU
+	Iskander Amara <iskander.amara@theobroma-systems.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.1 077/110] arm64: dts: rockchip: enable internal pull-up for Q7_THRM# on RK3399 Puma
 Date: Tue, 30 Apr 2024 12:40:46 +0200
-Message-ID: <20240430103045.597968654@linuxfoundation.org>
+Message-ID: <20240430103049.839664452@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Iskander Amara <iskander.amara@theobroma-systems.com>
 
-[ Upstream commit 6065e736f82c817c9a597a31ee67f0ce4628e948 ]
+commit 0ac417b8f124427c90ec8c2ef4f632b821d924cc upstream.
 
-On NOMMU, userspace memory can come from anywhere in physical RAM. The
-current definition of TASK_SIZE is wrong if any RAM exists above 4G,
-causing spurious failures in the userspace access routines.
+Q7_THRM# pin is connected to a diode on the module which is used
+as a level shifter, and the pin have a pull-down enabled by
+default. We need to configure it to internal pull-up, other-
+wise whenever the pin is configured as INPUT and we try to
+control it externally the value will always remain zero.
 
-Fixes: 6bd33e1ece52 ("riscv: add nommu support")
-Fixes: c3f896dcf1e4 ("mm: switch the test_vmalloc module to use __vmalloc_node")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
-Reviewed-by: Bo Gan <ganboing@gmail.com>
-Link: https://lore.kernel.org/r/20240227003630.3634533-2-samuel.holland@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240308085243.69903-1-iskander.amara@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 17e22eb76a815..776528fd64050 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -675,7 +675,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
- #define PAGE_SHARED		__pgprot(0)
- #define PAGE_KERNEL		__pgprot(0)
- #define swapper_pg_dir		NULL
--#define TASK_SIZE		0xffffffffUL
-+#define TASK_SIZE		_AC(-1, UL)
- #define VMALLOC_START		_AC(0, UL)
- #define VMALLOC_END		TASK_SIZE
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -407,6 +407,16 @@
+ };
  
--- 
-2.43.0
-
+ &pinctrl {
++	pinctrl-names = "default";
++	pinctrl-0 = <&q7_thermal_pin>;
++
++	gpios {
++		q7_thermal_pin: q7-thermal-pin {
++			rockchip,pins =
++				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
++	};
++
+ 	i2c8 {
+ 		i2c8_xfer_a: i2c8-xfer {
+ 			rockchip,pins =
 
 
 
