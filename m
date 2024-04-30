@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-42677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA098B741B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ACE38B7213
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE7AE1F21618
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E7351C225A1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D2812CDAE;
-	Tue, 30 Apr 2024 11:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D18C12C47A;
+	Tue, 30 Apr 2024 11:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NS2dTeAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uGuW5ia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E387217592;
-	Tue, 30 Apr 2024 11:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460DE12C819;
+	Tue, 30 Apr 2024 11:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476429; cv=none; b=RPEGRSmTDS+6HoRuhOvynNQD3vPEKdwoDQHxt3tHp1gAFWlf91bJPhvrXA0uvq6McJfnRqL9YYdNkw8yxvYSt3NvnPzkNOGwBbiFupzyVJgh+GrtAQg7IlisEss25PyVpM0xNJTOHj68f4IACqa1v5nEOFEx2FBO0eg5Xow6YEA=
+	t=1714475043; cv=none; b=B+/YuefmTOBl1DL5b6o0kK+VuDXwvbpfHWcWtaQRNAaOgW6K88DlXmGq0L/+sl2HfGq5W2t1fC3/zavnY4UUAiC8kFAN83D837/oHLQvDs3RJLoNqzAIYw1MN7KSN8Rse0KZ29QuP4KhzmSJo/EIWuVQdL47P3VYkITqazL5+NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476429; c=relaxed/simple;
-	bh=VEwVqhdG8zplwv9hgvQQiIza+yj/i4evhYY6SypqrxM=;
+	s=arc-20240116; t=1714475043; c=relaxed/simple;
+	bh=abahO/hpGUTbJIWXXLv07zWkXgthX6KLUBwsWL0GEno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoNj4q4OLhEQj9ZK3vSGG7M6npBQnNDbiHqLqU+lGZIVWBzETE2RvNpe6Zje+k/X2QTeKhjXuS8yMssE20+5vGvHvUFdO1prOeKMAioE2NWsJ0KZ5hJ7ZeBbpkbHxk6/pnfN9by0yV8cfk9rTLceLRyHz35EaMkqeVMbH/6JBQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NS2dTeAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A440C2BBFC;
-	Tue, 30 Apr 2024 11:27:08 +0000 (UTC)
+	 MIME-Version; b=R0L/d9G4eyc8n22vswwTF05ro3fGwR+GkJF8UrFs4A1AVeFn6gzpfofTsCG82yAGaEcI/YjNS1BdLIpk8DnZGihDRmOooxVdnR7AeQFPwzplSPKEI4XMl/WopsEMLtXyu2gUC2IQb75C6xgGdxFScMNF2UR+C0cwB21IyNjgAyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uGuW5ia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF001C2BBFC;
+	Tue, 30 Apr 2024 11:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476428;
-	bh=VEwVqhdG8zplwv9hgvQQiIza+yj/i4evhYY6SypqrxM=;
+	s=korg; t=1714475043;
+	bh=abahO/hpGUTbJIWXXLv07zWkXgthX6KLUBwsWL0GEno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NS2dTeAPv8w4oRbRhGbzyN/eNjkkepRX6UvlPs6TwveuSmbCO0PzgOUhXPYV2a9M8
-	 RXER1o/9rpQYiFBoD+IqI2tgMSk7nmuTNGh5n+FaTWWdj2Nc2rF2141cOvWvRLAQtT
-	 29YCg9AywYl3q3uRdLJuz2JuaNCWawsPw4G/Q1OA=
+	b=2uGuW5ia4Hq2sBoftrqcn5Jz1q86+9Hzg/BoUpIBYKrdc/miT7Zif4CEuIpDaFI3d
+	 xpQwCAd/oeUkxZbYwCmndPjTlNswk2Tp8T/NFJPS4ivGn8szIaf3Dd2jJErHZk/WPI
+	 uLMAq5kV4gU2WBxrIFMZMNZmUY864XLNZH3ERqPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/110] bridge/br_netlink.c: no need to return void function
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>
+Subject: [PATCH 5.10 113/138] PM / devfreq: Fix buffer overflow in trans_stat_show
 Date: Tue, 30 Apr 2024 12:39:58 +0200
-Message-ID: <20240430103048.429387202@linuxfoundation.org>
+Message-ID: <20240430103052.735598444@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 4fd1edcdf13c0d234543ecf502092be65c5177db ]
+commit 08e23d05fa6dc4fc13da0ccf09defdd4bbc92ff4 upstream.
 
-br_info_notify is a void function. There is no need to return.
+Fix buffer overflow in trans_stat_show().
 
-Fixes: b6d0425b816e ("bridge: cfm: Netlink Notifications.")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Convert simple snprintf to the more secure scnprintf with size of
+PAGE_SIZE.
+
+Add condition checking if we are exceeding PAGE_SIZE and exit early from
+loop. Also add at the end a warning that we exceeded PAGE_SIZE and that
+stats is disabled.
+
+Return -EFBIG in the case where we don't have enough space to write the
+full transition table.
+
+Also document in the ABI that this function can return -EFBIG error.
+
+Link: https://lore.kernel.org/all/20231024183016.14648-2-ansuelsmth@gmail.com/
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218041
+Fixes: e552bbaf5b98 ("PM / devfreq: Add sysfs node for representing frequency transition information.")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/ABI/testing/sysfs-class-devfreq |    3 +
+ drivers/devfreq/devfreq.c                     |   59 +++++++++++++++++---------
+ 2 files changed, 43 insertions(+), 19 deletions(-)
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index d087fd4c784ac..d38eff27767dc 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -650,7 +650,7 @@ void br_ifinfo_notify(int event, const struct net_bridge *br,
- {
- 	u32 filter = RTEXT_FILTER_BRVLAN_COMPRESSED;
+--- a/Documentation/ABI/testing/sysfs-class-devfreq
++++ b/Documentation/ABI/testing/sysfs-class-devfreq
+@@ -66,6 +66,9 @@ Description:
  
--	return br_info_notify(event, br, port, filter);
-+	br_info_notify(event, br, port, filter);
+ 			echo 0 > /sys/class/devfreq/.../trans_stat
+ 
++		If the transition table is bigger than PAGE_SIZE, reading
++		this will return an -EFBIG error.
++
+ What:		/sys/class/devfreq/.../userspace/set_freq
+ Date:		September 2011
+ Contact:	MyungJoo Ham <myungjoo.ham@samsung.com>
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -1639,7 +1639,7 @@ static ssize_t trans_stat_show(struct de
+ 			       struct device_attribute *attr, char *buf)
+ {
+ 	struct devfreq *df = to_devfreq(dev);
+-	ssize_t len;
++	ssize_t len = 0;
+ 	int i, j;
+ 	unsigned int max_state;
+ 
+@@ -1648,7 +1648,7 @@ static ssize_t trans_stat_show(struct de
+ 	max_state = df->profile->max_state;
+ 
+ 	if (max_state == 0)
+-		return sprintf(buf, "Not Supported.\n");
++		return scnprintf(buf, PAGE_SIZE, "Not Supported.\n");
+ 
+ 	mutex_lock(&df->lock);
+ 	if (!df->stop_polling &&
+@@ -1658,33 +1658,54 @@ static ssize_t trans_stat_show(struct de
+ 	}
+ 	mutex_unlock(&df->lock);
+ 
+-	len = sprintf(buf, "     From  :   To\n");
+-	len += sprintf(buf + len, "           :");
+-	for (i = 0; i < max_state; i++)
+-		len += sprintf(buf + len, "%10lu",
+-				df->profile->freq_table[i]);
++	len += scnprintf(buf + len, PAGE_SIZE - len, "     From  :   To\n");
++	len += scnprintf(buf + len, PAGE_SIZE - len, "           :");
++	for (i = 0; i < max_state; i++) {
++		if (len >= PAGE_SIZE - 1)
++			break;
++		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu",
++				 df->profile->freq_table[i]);
++	}
++	if (len >= PAGE_SIZE - 1)
++		return PAGE_SIZE - 1;
+ 
+-	len += sprintf(buf + len, "   time(ms)\n");
++	len += scnprintf(buf + len, PAGE_SIZE - len, "   time(ms)\n");
+ 
+ 	for (i = 0; i < max_state; i++) {
++		if (len >= PAGE_SIZE - 1)
++			break;
+ 		if (df->profile->freq_table[i]
+ 					== df->previous_freq) {
+-			len += sprintf(buf + len, "*");
++			len += scnprintf(buf + len, PAGE_SIZE - len, "*");
+ 		} else {
+-			len += sprintf(buf + len, " ");
++			len += scnprintf(buf + len, PAGE_SIZE - len, " ");
+ 		}
+-		len += sprintf(buf + len, "%10lu:",
+-				df->profile->freq_table[i]);
+-		for (j = 0; j < max_state; j++)
+-			len += sprintf(buf + len, "%10u",
+-				df->stats.trans_table[(i * max_state) + j]);
++		if (len >= PAGE_SIZE - 1)
++			break;
++
++		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu:",
++				 df->profile->freq_table[i]);
++		for (j = 0; j < max_state; j++) {
++			if (len >= PAGE_SIZE - 1)
++				break;
++			len += scnprintf(buf + len, PAGE_SIZE - len, "%10u",
++					 df->stats.trans_table[(i * max_state) + j]);
++		}
++		if (len >= PAGE_SIZE - 1)
++			break;
++		len += scnprintf(buf + len, PAGE_SIZE - len, "%10llu\n", (u64)
++				 jiffies64_to_msecs(df->stats.time_in_state[i]));
++	}
+ 
+-		len += sprintf(buf + len, "%10llu\n", (u64)
+-			jiffies64_to_msecs(df->stats.time_in_state[i]));
++	if (len < PAGE_SIZE - 1)
++		len += scnprintf(buf + len, PAGE_SIZE - len, "Total transition : %u\n",
++				 df->stats.total_trans);
++
++	if (len >= PAGE_SIZE - 1) {
++		pr_warn_once("devfreq transition table exceeds PAGE_SIZE. Disabling\n");
++		return -EFBIG;
+ 	}
+ 
+-	len += sprintf(buf + len, "Total transition : %u\n",
+-					df->stats.total_trans);
+ 	return len;
  }
  
- /*
--- 
-2.43.0
-
 
 
 
