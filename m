@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-42151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC168B71A4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 983EA8B7106
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57CF22831DF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55493288D69
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF6512C487;
-	Tue, 30 Apr 2024 10:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5255D12C49E;
+	Tue, 30 Apr 2024 10:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfnjDPLD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYig0/bV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2187464;
-	Tue, 30 Apr 2024 10:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD6A12C487;
+	Tue, 30 Apr 2024 10:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474732; cv=none; b=Nm6jq2gJqKYsbbe2M1JLjLXjAMfDjU+F4VrXOkQ2WvAswRbjfa25MZQssuFRULSXzpUBPIKQHA0SablflckMM76cN7vvN41reFUCXYja5EgpJdGXnu1iJO4A7bRy7hkjTxVdV6XJSr9XX8E4qENs4WvtGxODHZAmnVSG3wCKio8=
+	t=1714474333; cv=none; b=Lr0vjdflfXoaxf00GuYdSQZuRaGfDvFk1k/eq3vjsJ/0pzFsHy3F0dtNrDPUftqNIeVJhWW08JgGt5N9HFCMJyFQJ3c0QiVQsqw42IJ7O9xCxko0dEl84JXoersxH0Wm4fF/MdNNqBrdmY6l0gylzMvG3EWpRx9g6wFlV2yZ8bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474732; c=relaxed/simple;
-	bh=qF9lAL4PlTprYXFFKUGx8Db6pN7mw4igV4I/3WAf+kk=;
+	s=arc-20240116; t=1714474333; c=relaxed/simple;
+	bh=5AN3uE5hrB5Z3q1tDWVKXPqET8e3T0glW5RMJRo7wdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXSsCLHM5V45PsRvfAC7qbiGXTFiOkXT8II2G1wNwIldhyt+zqp+AW9ARyCz7WGAsvjVaJrsYRVK07uVY31V8OmipsOu2Z53zdzaBddP58GNpdOXIgr19l+OtnvspAvqJBHA+Rfq4B+La5+v2AYYf3MqeVINo3bu6VmEbRet2Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfnjDPLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F77C2BBFC;
-	Tue, 30 Apr 2024 10:58:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q+K3TCTMMwJCocichx34vWMYoi5lNGylG9RCyNjy4hcVo2HszT7FsIXSq0TVzcDv5d9RmfpG2cvLyDVREYuVizSgHRWLoD2DBc/50EUluYRD611oN0Pr9FHp9d6zNp+jugS7y6Yc7GfcFckS5omOOf+fGjJPUqEhu6yyxdoXP2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYig0/bV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDC9C2BBFC;
+	Tue, 30 Apr 2024 10:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474732;
-	bh=qF9lAL4PlTprYXFFKUGx8Db6pN7mw4igV4I/3WAf+kk=;
+	s=korg; t=1714474332;
+	bh=5AN3uE5hrB5Z3q1tDWVKXPqET8e3T0glW5RMJRo7wdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EfnjDPLDt/lK6uUH60vyJ6p+atlP6sJ0emtYQHsMMxEeZ2uKS+8inod42fFExoU7D
-	 XKwPxjDGWILzeC94Aui/h/xulbP5ZUsaaqEavlPj3ENEi79ABBj/N51qVHkLyWKn1Y
-	 CLFmxLMtlwuoKuqTFFI0rGgcc/SRUpA9Wl5tuHdk=
+	b=uYig0/bVU2VF7HxgNxBPJKxQukDIEtaBJhszPQKqdHz2My9wSA8GtdMAHD5ZG/INo
+	 VZLN8QjhUKggusteSgLmVeyo/0M3v/ycpwmK3vas90SdwpWrLwrVyEwqQ56HjWLTnJ
+	 JouSoWvVJnGpoix1t+4lLzXuSCZiCd/01tGrDhoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Bernstein <amitbern@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/138] net: ena: Wrong missing IO completions check order
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.keonig@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Subject: [PATCH 6.8 126/228] drm: add drm_gem_object_is_shared_for_memory_stats() helper
 Date: Tue, 30 Apr 2024 12:38:24 +0200
-Message-ID: <20240430103049.992471126@linuxfoundation.org>
+Message-ID: <20240430103107.442520638@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arinzon <darinzon@amazon.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f7e417180665234fdb7af2ebe33d89aaa434d16f ]
+[ Upstream commit b31f5eba32ae8cc28e7cfa5a55ec8670d8c718e2 ]
 
-Missing IO completions check is called every second (HZ jiffies).
-This commit fixes several issues with this check:
+Add a helper so that drm drivers can consistently report
+shared status via the fdinfo shared memory stats interface.
 
-1. Duplicate queues check:
-   Max of 4 queues are scanned on each check due to monitor budget.
-   Once reaching the budget, this check exits under the assumption that
-   the next check will continue to scan the remainder of the queues,
-   but in practice, next check will first scan the last already scanned
-   queue which is not necessary and may cause the full queue scan to
-   last a couple of seconds longer.
-   The fix is to start every check with the next queue to scan.
-   For example, on 8 IO queues:
-   Bug: [0,1,2,3], [3,4,5,6], [6,7]
-   Fix: [0,1,2,3], [4,5,6,7]
+In addition to handle count, show buffers as shared if they
+are shared via dma-buf as well (e.g., shared with v4l or some
+other subsystem).
 
-2. Unbalanced queues check:
-   In case the number of active IO queues is not a multiple of budget,
-   there will be checks which don't utilize the full budget
-   because the full scan exits when reaching the last queue id.
-   The fix is to run every TX completion check with exact queue budget
-   regardless of the queue id.
-   For example, on 7 IO queues:
-   Bug: [0,1,2,3], [4,5,6], [0,1,2,3]
-   Fix: [0,1,2,3], [4,5,6,0], [1,2,3,4]
-   The budget may be lowered in case the number of IO queues is less
-   than the budget (4) to make sure there are no duplicate queues on
-   the same check.
-   For example, on 3 IO queues:
-   Bug: [0,1,2,0], [1,2,0,1]
-   Fix: [0,1,2], [0,1,2]
+v2: switch to inline function
 
-Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
-Signed-off-by: Amit Bernstein <amitbern@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/all/20231207180225.439482-1-alexander.deucher@amd.com/
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com> (v1)
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.keonig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Stable-dep-of: a6ff969fe9cb ("drm/amdgpu: fix visible VRAM handling during faults")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_netdev.c | 21 +++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ include/drm/drm_gem.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-index fa65971949fce..f403a5acda5b0 100644
---- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-@@ -3672,10 +3672,11 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
- {
- 	struct ena_ring *tx_ring;
- 	struct ena_ring *rx_ring;
--	int i, budget, rc;
-+	int qid, budget, rc;
- 	int io_queue_count;
+diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
+index 369505447acd8..2ebec3984cd44 100644
+--- a/include/drm/drm_gem.h
++++ b/include/drm/drm_gem.h
+@@ -553,6 +553,19 @@ unsigned long drm_gem_lru_scan(struct drm_gem_lru *lru,
  
- 	io_queue_count = adapter->xdp_num_queues + adapter->num_io_queues;
+ int drm_gem_evict(struct drm_gem_object *obj);
+ 
++/**
++ * drm_gem_object_is_shared_for_memory_stats - helper for shared memory stats
++ *
++ * This helper should only be used for fdinfo shared memory stats to determine
++ * if a GEM object is shared.
++ *
++ * @obj: obj in question
++ */
++static inline bool drm_gem_object_is_shared_for_memory_stats(struct drm_gem_object *obj)
++{
++	return (obj->handle_count > 1) || obj->dma_buf;
++}
 +
- 	/* Make sure the driver doesn't turn the device in other process */
- 	smp_rmb();
- 
-@@ -3688,27 +3689,29 @@ static void check_for_missing_completions(struct ena_adapter *adapter)
- 	if (adapter->missing_tx_completion_to == ENA_HW_HINTS_NO_TIMEOUT)
- 		return;
- 
--	budget = ENA_MONITORED_TX_QUEUES;
-+	budget = min_t(u32, io_queue_count, ENA_MONITORED_TX_QUEUES);
- 
--	for (i = adapter->last_monitored_tx_qid; i < io_queue_count; i++) {
--		tx_ring = &adapter->tx_ring[i];
--		rx_ring = &adapter->rx_ring[i];
-+	qid = adapter->last_monitored_tx_qid;
-+
-+	while (budget) {
-+		qid = (qid + 1) % io_queue_count;
-+
-+		tx_ring = &adapter->tx_ring[qid];
-+		rx_ring = &adapter->rx_ring[qid];
- 
- 		rc = check_missing_comp_in_tx_queue(adapter, tx_ring);
- 		if (unlikely(rc))
- 			return;
- 
--		rc =  !ENA_IS_XDP_INDEX(adapter, i) ?
-+		rc =  !ENA_IS_XDP_INDEX(adapter, qid) ?
- 			check_for_rx_interrupt_queue(adapter, rx_ring) : 0;
- 		if (unlikely(rc))
- 			return;
- 
- 		budget--;
--		if (!budget)
--			break;
- 	}
- 
--	adapter->last_monitored_tx_qid = i % io_queue_count;
-+	adapter->last_monitored_tx_qid = qid;
- }
- 
- /* trigger napi schedule after 2 consecutive detections */
+ #ifdef CONFIG_LOCKDEP
+ /**
+  * drm_gem_gpuva_set_lock() - Set the lock protecting accesses to the gpuva list.
 -- 
 2.43.0
 
