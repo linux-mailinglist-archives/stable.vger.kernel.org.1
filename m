@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356158B736E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5CF8B7444
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE4481F22A47
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02881B21470
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08C312CDAE;
-	Tue, 30 Apr 2024 11:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD14D12D215;
+	Tue, 30 Apr 2024 11:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnPg8Lic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgYoki9S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEADA8801;
-	Tue, 30 Apr 2024 11:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B22512BF32;
+	Tue, 30 Apr 2024 11:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475934; cv=none; b=lr0P4CsJJql0DEuuIa9q4KddbJqJFoRJ7nAn1ddPrQbHmoH4yRSXSlM46ZgKd96LyPu/LcIyoGJq2wGqPqwX+b1Yp/2wpz+b+EPRqpLohfNGMMzOldQVNaMJnBUDGgJcnWps6YPh/vkVmYOJw8uws/IkVbR/1vhfi1BcicbPXlI=
+	t=1714476541; cv=none; b=gGa7QAgh+FIfrh1es6WZ28U2TAG0oRgk48jkNycAzbpjBF7BfBqOFagYYs+3CnKjO6t+JeNwi9EhL/1bwDKnHZRIi3tT14Ok8hZ+OphJZ0jvKvdq/3H4h7eNIjuGMPe3rOauzTK4N/rlgetQaFcPc9ZARKMxfnMUmPiVmxwPcAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475934; c=relaxed/simple;
-	bh=NIqZxR8ZOaBhayCbv3d7qAkgboYTnGJRQG8ew38XzWk=;
+	s=arc-20240116; t=1714476541; c=relaxed/simple;
+	bh=EfSVsNzxufNg9VlFw2ehxQKZFHRRwDLlIQdL6ZcDlHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5bdELrITDQEdqdzKQMSxk+3U9jzJNk9+S0qfr5VG7obuDOyvpsIIs9OerrbrWyI1WszlnHE168zl3einLhvMZ3Awm/Q8kckFkDIg+AVF8o3aC2LvVJBP3aWB8Yj4UTwCtGqPqmpa1IsF7rrr0/v0x/Aw2socx+mEgBKBl6Bh24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnPg8Lic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A88C2BBFC;
-	Tue, 30 Apr 2024 11:18:53 +0000 (UTC)
+	 MIME-Version; b=Sqz8gDOaL8sCnKoekmHpokhLRo2sNMP/rHNApEi2FK16K/mFpdfLg6+BoWCt1FZzFBm6/DVNZ+/qaP/aQyvPHr/2W1nxYjgmLcFewzBVDJGG5CX4hP/Vy1aLckwAp8Tyz8YaQxWk2KRiZytaJlYqMLaiqf/WUaXHJIIT3s6QbrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgYoki9S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE02C4AF48;
+	Tue, 30 Apr 2024 11:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475934;
-	bh=NIqZxR8ZOaBhayCbv3d7qAkgboYTnGJRQG8ew38XzWk=;
+	s=korg; t=1714476541;
+	bh=EfSVsNzxufNg9VlFw2ehxQKZFHRRwDLlIQdL6ZcDlHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnPg8LicofH9bxRTR7wPFUI7dVfveBqPLaUIc/061+jUTiC9VRSQMwBfF/jDXa2H8
-	 xbR/XonpxCIkDLhwnDTgfZOxv9XrTuRltzrxxZ+1tdqEFepbnd7VLHXEGk7DMhLOBD
-	 C5LWfGTbUQe1+5t7MP3mFzLkbG9+eVBZnVIItvlQ=
+	b=ZgYoki9SyZaHNuk+M4OIXnGTuS9CjpH/amIFO8FKErtcKJPyPGhDt8sRcJK91alK0
+	 CiGNYSHGg2POwTN6d0DBJSrTGFEg8D9GuF6KRS+nQoqRkEWAw4Iuuckp+InXyXxX2r
+	 Le0dY3sXzNfsOjfi1T6avbMKOcm9n1ix/S9pMm50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 5.15 62/80] irqchip/gic-v3-its: Prevent double free on error
+	Conor Dooley <conor.dooley@microchip.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.1 065/110] rust: make mutually exclusive with CFI_CLANG
 Date: Tue, 30 Apr 2024 12:40:34 +0200
-Message-ID: <20240430103045.249712614@linuxfoundation.org>
+Message-ID: <20240430103049.488005996@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-commit c26591afd33adce296c022e3480dea4282b7ef91 upstream.
+commit 8933cf4651e02853ca679be7b2d978dfcdcc5e0c upstream.
 
-The error handling path in its_vpe_irq_domain_alloc() causes a double free
-when its_vpe_init() fails after successfully allocating at least one
-interrupt. This happens because its_vpe_irq_domain_free() frees the
-interrupts along with the area bitmap and the vprop_page and
-its_vpe_irq_domain_alloc() subsequently frees the area bitmap and the
-vprop_page again.
+On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
+loading a rust module will trigger a kernel panic. Support for
+sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
+they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
+to prevent configuring a kernel without symmetrical support for kfi.
 
-Fix this by unconditionally invoking its_vpe_irq_domain_free() which
-handles all cases correctly and by removing the bitmap/vprop_page freeing
-from its_vpe_irq_domain_alloc().
+[ Matthew Maurer writes [1]:
 
-[ tglx: Massaged change log ]
+    This patch is fine by me - the last patch needed for KCFI to be
+    functional in Rust just landed upstream last night, so we should
+    revisit this (in the form of enabling it) once we move to
+    `rustc-1.79.0` or later.
 
-Fixes: 7d75bbb4bc1a ("irqchip/gic-v3-its: Add VPE irq domain allocation/teardown")
-Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+  Ramon de C Valle also gave feedback [2] on the status of KCFI for
+  Rust and created a tracking issue [3] in upstream Rust.   - Miguel ]
+
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240418061053.96803-2-guanrui.huang@linux.alibaba.com
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/rust-for-linux/CAGSQo024u1gHJgzsO38Xg3c4or+JupoPABQx_+0BLEpPg0cOEA@mail.gmail.com/ [1]
+Link: https://lore.kernel.org/rust-for-linux/CAOcBZOS2kPyH0Dm7Fuh4GC3=v7nZhyzBj_-dKu3PfAnrHZvaxg@mail.gmail.com/ [2]
+Link: https://github.com/rust-lang/rust/issues/123479 [3]
+Link: https://lore.kernel.org/r/20240404-providing-emporium-e652e359c711@spud
+[ Added feedback from the list, links, and used Cc for the tag. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ init/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -4530,13 +4530,8 @@ static int its_vpe_irq_domain_alloc(stru
- 		set_bit(i, bitmap);
- 	}
- 
--	if (err) {
--		if (i > 0)
--			its_vpe_irq_domain_free(domain, virq, i);
--
--		its_lpi_free(bitmap, base, nr_ids);
--		its_free_prop_table(vprop_page);
--	}
-+	if (err)
-+		its_vpe_irq_domain_free(domain, virq, i);
- 
- 	return err;
- }
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1920,6 +1920,7 @@ config RUST
+ 	bool "Rust support"
+ 	depends on HAVE_RUST
+ 	depends on RUST_IS_AVAILABLE
++	depends on !CFI_CLANG
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
 
 
 
