@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-42159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF878B71AC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B8F8B7279
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F17DB20D0A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7A5C1C2280E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CB412C487;
-	Tue, 30 Apr 2024 10:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC87212D1EA;
+	Tue, 30 Apr 2024 11:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJDTZLsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tih9ixqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DA47464;
-	Tue, 30 Apr 2024 10:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CB812C490;
+	Tue, 30 Apr 2024 11:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474757; cv=none; b=ODOhEKOj1SZL/O+UFC8T33Ywy8RPdHF+RZsCXiSr44hzWHp9AVUdajTjMJ/ZLp0xrZ+FWVEQImqYqAmMgpgEYBMege8yd9odQCkl8Muaf164fQULiis5/IeyZ2Ewnha/aYd6EeLzwGRI/cz8r/CgnpsQJqpt5Rg8zgrawPEg+uY=
+	t=1714475312; cv=none; b=KEsHa5fUBUWBUJDM929+/hfKV1lhTisl3TSKoLKya4QBU4CAi8FrqcQ+8hHvAeKKqlewhiEeyU3ah3Wv+DlyAIAeYfxI9Htr2dFOtlvKYbJApGG3hOjc8OQtnJgd57KRTjCo7KxhqzM7rPYCPpvwd9Vy5kAtdG01smdsSahujlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474757; c=relaxed/simple;
-	bh=fwgGE+9iYvnFOPi2uc5EZptV7u1ZxlNjNHBmJ1R8abs=;
+	s=arc-20240116; t=1714475312; c=relaxed/simple;
+	bh=PhlvErSh1cf2mczWiTAyR+zyObQ4439+p77JLOfAOFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R03KveOaVf/S1qfhbwlgj8Y3FpSl5jRXoTWVnzzFFMcFXZGJSpHQNhGrnyv1MBEtjzPEdHkQYnKns8Awi4030DAI6YvuK6LIhDDUFrLGrMaMTgYVxMu4Ap0WhX/0Xnj9n52RY2pTm6wlJsMmv0g9ibRQfZWDPOXwm4a3QS7DIzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJDTZLsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4522BC2BBFC;
-	Tue, 30 Apr 2024 10:59:17 +0000 (UTC)
+	 MIME-Version; b=L0knsUpXTJqAfrIS7IMYXMTj2Zwx3Coq78lsqvtnReWutssZbPZSSTx7xsLT2pM9FxDy6sj9HGiPCPaknwlY2HOEZf6V3KdpVxwGDhET60E5LEOtNyZSSwZoCnS5au4INpv9C+5+6vryFdwDRaAnna66t83xCghQiIgsMrUydAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tih9ixqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F814C2BBFC;
+	Tue, 30 Apr 2024 11:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474757;
-	bh=fwgGE+9iYvnFOPi2uc5EZptV7u1ZxlNjNHBmJ1R8abs=;
+	s=korg; t=1714475312;
+	bh=PhlvErSh1cf2mczWiTAyR+zyObQ4439+p77JLOfAOFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJDTZLsvBeqW4B9A2kLM+jCEmF1QlkpQHKrLxmmV5wgD+guL0FJ1yMAo6nnbLV92D
-	 J/wI5y4yxfx5WDWOo/dNK6XNpXcSfqIz3r0bUu/Ef+rbjdCG+6+fWk0kHhHrNOkABa
-	 LqkvDqJN79gbld1LAXdi8lCOzse7tFga3C/ofO/4=
+	b=tih9ixqa5Erdoyk1ZJM+D7pp9JY7jOQPzJBVNB2ZJIWPohqETR+sMSEJCIkDVqsrS
+	 9802xpVUUKG962jVQgRAMqMpGs+ZxIfzt9U0C2HX9e52VrYGIlxSDaq08INaNSJFrV
+	 fjCOQSBAv8kh2F7fLezVJGq0344jLmPFCQ58CJaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 026/138] x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n
+	Adam Li <adamli@os.amperecomputing.com>,
+	"Christoph Lameter (Ampere)" <cl@linux.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 059/186] net: make SK_MEMORY_PCPU_RESERV tunable
 Date: Tue, 30 Apr 2024 12:38:31 +0200
-Message-ID: <20240430103050.199989620@linuxfoundation.org>
+Message-ID: <20240430103059.752866566@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Adam Li <adamli@os.amperecomputing.com>
 
-commit f337a6a21e2fd67eadea471e93d05dd37baaa9be upstream.
+[ Upstream commit 12a686c2e761f1f1f6e6e2117a9ab9c6de2ac8a7 ]
 
-Initialize cpu_mitigations to CPU_MITIGATIONS_OFF if the kernel is built
-with CONFIG_SPECULATION_MITIGATIONS=n, as the help text quite clearly
-states that disabling SPECULATION_MITIGATIONS is supposed to turn off all
-mitigations by default.
+This patch adds /proc/sys/net/core/mem_pcpu_rsv sysctl file,
+to make SK_MEMORY_PCPU_RESERV tunable.
 
-  │ If you say N, all mitigations will be disabled. You really
-  │ should know what you are doing to say so.
+Commit 3cd3399dd7a8 ("net: implement per-cpu reserves for
+memory_allocated") introduced per-cpu forward alloc cache:
 
-As is, the kernel still defaults to CPU_MITIGATIONS_AUTO, which results in
-some mitigations being enabled in spite of SPECULATION_MITIGATIONS=n.
+"Implement a per-cpu cache of +1/-1 MB, to reduce number
+of changes to sk->sk_prot->memory_allocated, which
+would otherwise be cause of false sharing."
 
-Fixes: f43b9876e857 ("x86/retbleed: Add fine grained Kconfig knobs")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240409175108.1512861-2-seanjc@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+sk_prot->memory_allocated points to global atomic variable:
+atomic_long_t tcp_memory_allocated ____cacheline_aligned_in_smp;
+
+If increasing the per-cpu cache size from 1MB to e.g. 16MB,
+changes to sk->sk_prot->memory_allocated can be further reduced.
+Performance may be improved on system with many cores.
+
+Signed-off-by: Adam Li <adamli@os.amperecomputing.com>
+Reviewed-by: Christoph Lameter (Ampere) <cl@linux.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 3584718cf2ec ("net: fix sk_memory_allocated_{add|sub} vs softirqs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cpu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/sysctl/net.rst | 5 +++++
+ include/net/sock.h                       | 5 +++--
+ net/core/sock.c                          | 1 +
+ net/core/sysctl_net_core.c               | 9 +++++++++
+ 4 files changed, 18 insertions(+), 2 deletions(-)
 
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2600,7 +2600,8 @@ enum cpu_mitigations {
- };
+diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+index 4877563241f3b..5f1748f33d9a2 100644
+--- a/Documentation/admin-guide/sysctl/net.rst
++++ b/Documentation/admin-guide/sysctl/net.rst
+@@ -205,6 +205,11 @@ Will increase power usage.
  
- static enum cpu_mitigations cpu_mitigations __ro_after_init =
--	CPU_MITIGATIONS_AUTO;
-+	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
-+						     CPU_MITIGATIONS_OFF;
+ Default: 0 (off)
  
- static int __init mitigations_parse_cmdline(char *arg)
- {
++mem_pcpu_rsv
++------------
++
++Per-cpu reserved forward alloc cache size in page units. Default 1MB per CPU.
++
+ rmem_default
+ ------------
+ 
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 25780942ec8bf..4372a7225ae6a 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1458,6 +1458,7 @@ sk_memory_allocated(const struct sock *sk)
+ 
+ /* 1 MB per cpu, in page units */
+ #define SK_MEMORY_PCPU_RESERVE (1 << (20 - PAGE_SHIFT))
++extern int sysctl_mem_pcpu_rsv;
+ 
+ static inline void
+ sk_memory_allocated_add(struct sock *sk, int amt)
+@@ -1466,7 +1467,7 @@ sk_memory_allocated_add(struct sock *sk, int amt)
+ 
+ 	preempt_disable();
+ 	local_reserve = __this_cpu_add_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
+-	if (local_reserve >= SK_MEMORY_PCPU_RESERVE) {
++	if (local_reserve >= READ_ONCE(sysctl_mem_pcpu_rsv)) {
+ 		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
+ 		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
+ 	}
+@@ -1480,7 +1481,7 @@ sk_memory_allocated_sub(struct sock *sk, int amt)
+ 
+ 	preempt_disable();
+ 	local_reserve = __this_cpu_sub_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
+-	if (local_reserve <= -SK_MEMORY_PCPU_RESERVE) {
++	if (local_reserve <= -READ_ONCE(sysctl_mem_pcpu_rsv)) {
+ 		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
+ 		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
+ 	}
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 383e30fe79f41..1471c0a862b36 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -283,6 +283,7 @@ __u32 sysctl_rmem_max __read_mostly = SK_RMEM_MAX;
+ EXPORT_SYMBOL(sysctl_rmem_max);
+ __u32 sysctl_wmem_default __read_mostly = SK_WMEM_MAX;
+ __u32 sysctl_rmem_default __read_mostly = SK_RMEM_MAX;
++int sysctl_mem_pcpu_rsv __read_mostly = SK_MEMORY_PCPU_RESERVE;
+ 
+ /* Maximal space eaten by iovec or ancillary data plus some space */
+ int sysctl_optmem_max __read_mostly = sizeof(unsigned long)*(2*UIO_MAXIOV+512);
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 03f1edb948d7d..373b5b2231c49 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -30,6 +30,7 @@ static int int_3600 = 3600;
+ static int min_sndbuf = SOCK_MIN_SNDBUF;
+ static int min_rcvbuf = SOCK_MIN_RCVBUF;
+ static int max_skb_frags = MAX_SKB_FRAGS;
++static int min_mem_pcpu_rsv = SK_MEMORY_PCPU_RESERVE;
+ 
+ static int net_msg_warn;	/* Unused, but still a sysctl */
+ 
+@@ -407,6 +408,14 @@ static struct ctl_table net_core_table[] = {
+ 		.proc_handler	= proc_dointvec_minmax,
+ 		.extra1		= &min_rcvbuf,
+ 	},
++	{
++		.procname	= "mem_pcpu_rsv",
++		.data		= &sysctl_mem_pcpu_rsv,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= &min_mem_pcpu_rsv,
++	},
+ 	{
+ 		.procname	= "dev_weight",
+ 		.data		= &weight_p,
+-- 
+2.43.0
+
 
 
 
