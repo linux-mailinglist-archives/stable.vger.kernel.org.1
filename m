@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133FB8B7119
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:53:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CCF8B724E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444651C22286
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:53:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C812F1F225FF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96C512C476;
-	Tue, 30 Apr 2024 10:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B6E12C819;
+	Tue, 30 Apr 2024 11:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2e3t5+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDrRAkM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A4F12C46B;
-	Tue, 30 Apr 2024 10:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217D21E50A;
+	Tue, 30 Apr 2024 11:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474382; cv=none; b=ib9FRMag47VheTONjABFvJRgsUDhTItlFfKqa2zrw5A9LVoHzCrSZHMRcoqZdfNsGaS28yVqJ7SnCTDoJXaS5tGdB9w0kBsgIt+CHFluTxfI+A+3iPxKiDNTtPLCSM8pDXSiEw+hEkbG5Ipd3GfMm/DotH4DQB7mBonFlHbCqIQ=
+	t=1714475213; cv=none; b=ZlTUzz1DLEIe4eIdfdhfbPx6UfnQ44sNv8E16Rtv99BFqQyv/TMWAWfwjYt/VrCEsO6oAFvXb11RFAFWYM5zAyEFI2Hdy8huqOkLgW5G4uao7kPBts7Z7cKOe7MBJ9Hsn4ecgo3GhRNi/aUMArBPxRiD/3xyFMIZRAtTBnJwyLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474382; c=relaxed/simple;
-	bh=T3QSzlxnRHoivjX8rBxS78iIgJAN9VC/HCLdbi+F/OQ=;
+	s=arc-20240116; t=1714475213; c=relaxed/simple;
+	bh=KAInyPSVf0W/7NnHkwFmRHLZmt9UfHSpXbmUoX70dLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4qbEO491FtAnChM24t/NWkiPeuuuu1rmHt28HgOO9B9QIvem+h2jj4ryGWZQAqzBmBVbbGxhusE24AGZsUWV0Vyb0O1Y50XnGo5985RRJhZTMABV8zvf8JDtB6sSEiDMb62Z9/YDXaScUl5bl43oAT3T1E5YWvbQ4f32533mQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2e3t5+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDCDC4AF18;
-	Tue, 30 Apr 2024 10:53:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bLGp+kkV2p51eM0QLIJfNb0bb86rU7Jskm0mTH2iVCXE+c9ANwKA5vtUZYoTbiY26XXbQQv9ptFm6oazKkr2EuGVnnj0061Xdqi6yycJMwPJiIO9ExGgH6r7lCzZWHtkHawGKE8/eAQotNaRlkrwxpzH+y/59+L4yUSC+xFpSD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDrRAkM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CD9C2BBFC;
+	Tue, 30 Apr 2024 11:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474382;
-	bh=T3QSzlxnRHoivjX8rBxS78iIgJAN9VC/HCLdbi+F/OQ=;
+	s=korg; t=1714475212;
+	bh=KAInyPSVf0W/7NnHkwFmRHLZmt9UfHSpXbmUoX70dLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2e3t5+0Zux985RE33d0yYxmbNxAeVKkRGTAB+ur1IUdA+U/c4ye+QLGTrc5wTMiZ
-	 FpJ0IOZeLLeJGb3+dMBvVqcCcTD43NapCWbPWlwVex2U7lXS6tfKM0xSdhIk8APbYP
-	 CjlhHur1jqkjcRBudGOrLro+H1cjPk0Syqm9Mj+c=
+	b=LDrRAkM9ZflEqNELyQtn2Fw6qTjdBpfsSFap63c7hmhap4L/rrw6TEHHxqQDsOo6K
+	 3MHIU+OArbVZadHhomaZGs12uYWUrK2JX4zPH/6f3z+1n9yOaJkQCNnXz9N/Ol8XFO
+	 G6KyqOMrEwcU7WXfNUhOT8FzyfemJHCRloam7c1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 102/228] mlxsw: spectrum_acl_tcam: Fix incorrect list API usage
+Subject: [PATCH 6.6 028/186] arm64: dts: mediatek: mt7986: reorder nodes
 Date: Tue, 30 Apr 2024 12:38:00 +0200
-Message-ID: <20240430103106.742283383@linuxfoundation.org>
+Message-ID: <20240430103058.845539444@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +60,218 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit b377add0f0117409c418ddd6504bd682ebe0bf79 ]
+[ Upstream commit 3f79e8f3364499750d7442767b101b7bc5864ddf ]
 
-Both the function that migrates all the chunks within a region and the
-function that migrates all the entries within a chunk call
-list_first_entry() on the respective lists without checking that the
-lists are not empty. This is incorrect usage of the API, which leads to
-the following warning [1].
+Use order described as preferred in DTS Coding Style:
+1. Sort bus nodes by unit address
+2. Use alpha-numerical order for the rest
 
-Fix by returning if the lists are empty as there is nothing to migrate
-in this case.
-
-[1]
-WARNING: CPU: 0 PID: 6437 at drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c:1266 mlxsw_sp_acl_tcam_vchunk_migrate_all+0x1f1/0>
-Modules linked in:
-CPU: 0 PID: 6437 Comm: kworker/0:37 Not tainted 6.9.0-rc3-custom-00883-g94a65f079ef6 #39
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-RIP: 0010:mlxsw_sp_acl_tcam_vchunk_migrate_all+0x1f1/0x2c0
-[...]
-Call Trace:
- <TASK>
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x6c/0x4a0
- process_one_work+0x151/0x370
- worker_thread+0x2cb/0x3e0
- kthread+0xd0/0x100
- ret_from_fork+0x34/0x50
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Fixes: 6f9579d4e302 ("mlxsw: spectrum_acl: Remember where to continue rehash migration")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/4628e9a22d1d84818e28310abbbc498e7bc31bc9.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20240212121620.15035-2-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Stable-dep-of: 970f8b01bd77 ("arm64: dts: mediatek: mt7986: drop invalid thermal block clock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt7986a.dtsi | 116 +++++++++++-----------
+ 1 file changed, 58 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index e8c6078866213..89a5ebc3463ff 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1254,6 +1254,9 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
- 		return 0;
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
+index 5c2fe2f43a142..f3a2a89fada41 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
+@@ -16,13 +16,6 @@
+ 	#address-cells = <2>;
+ 	#size-cells = <2>;
  
-+	if (list_empty(&vchunk->ventry_list))
-+		goto out;
+-	clk40m: oscillator-40m {
+-		compatible = "fixed-clock";
+-		clock-frequency = <40000000>;
+-		#clock-cells = <0>;
+-		clock-output-names = "clkxtal";
+-	};
+-
+ 	cpus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+@@ -59,6 +52,13 @@
+ 		};
+ 	};
+ 
++	clk40m: oscillator-40m {
++		compatible = "fixed-clock";
++		clock-frequency = <40000000>;
++		#clock-cells = <0>;
++		clock-output-names = "clkxtal";
++	};
 +
- 	/* If the migration got interrupted, we have the ventry to start from
- 	 * stored in context.
- 	 */
-@@ -1305,6 +1308,7 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
- 		}
- 	}
+ 	psci {
+ 		compatible = "arm,psci-0.2";
+ 		method = "smc";
+@@ -121,15 +121,6 @@
  
-+out:
- 	mlxsw_sp_acl_tcam_vchunk_migrate_end(mlxsw_sp, vchunk, ctx);
- 	return 0;
- }
-@@ -1318,6 +1322,9 @@ mlxsw_sp_acl_tcam_vchunk_migrate_all(struct mlxsw_sp *mlxsw_sp,
- 	struct mlxsw_sp_acl_tcam_vchunk *vchunk;
- 	int err;
+ 	};
  
-+	if (list_empty(&vregion->vchunk_list))
-+		return 0;
+-	timer {
+-		compatible = "arm,armv8-timer";
+-		interrupt-parent = <&gic>;
+-		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
+-			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
+-			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
+-			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
+-	};
+-
+ 	soc {
+ 		compatible = "simple-bus";
+ 		ranges;
+@@ -203,6 +194,19 @@
+ 			#interrupt-cells = <2>;
+ 		};
+ 
++		pwm: pwm@10048000 {
++			compatible = "mediatek,mt7986-pwm";
++			reg = <0 0x10048000 0 0x1000>;
++			#pwm-cells = <2>;
++			interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&topckgen CLK_TOP_PWM_SEL>,
++				 <&infracfg CLK_INFRA_PWM_STA>,
++				 <&infracfg CLK_INFRA_PWM1_CK>,
++				 <&infracfg CLK_INFRA_PWM2_CK>;
++			clock-names = "top", "main", "pwm1", "pwm2";
++			status = "disabled";
++		};
 +
- 	/* If the migration got interrupted, we have the vchunk
- 	 * we are working on stored in context.
- 	 */
+ 		sgmiisys0: syscon@10060000 {
+ 			compatible = "mediatek,mt7986-sgmiisys_0",
+ 				     "syscon";
+@@ -240,19 +244,6 @@
+ 			status = "disabled";
+ 		};
+ 
+-		pwm: pwm@10048000 {
+-			compatible = "mediatek,mt7986-pwm";
+-			reg = <0 0x10048000 0 0x1000>;
+-			#pwm-cells = <2>;
+-			interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
+-			clocks = <&topckgen CLK_TOP_PWM_SEL>,
+-				 <&infracfg CLK_INFRA_PWM_STA>,
+-				 <&infracfg CLK_INFRA_PWM1_CK>,
+-				 <&infracfg CLK_INFRA_PWM2_CK>;
+-			clock-names = "top", "main", "pwm1", "pwm2";
+-			status = "disabled";
+-		};
+-
+ 		uart0: serial@11002000 {
+ 			compatible = "mediatek,mt7986-uart",
+ 				     "mediatek,mt6577-uart";
+@@ -336,6 +327,21 @@
+ 			status = "disabled";
+ 		};
+ 
++		thermal: thermal@1100c800 {
++			compatible = "mediatek,mt7986-thermal";
++			reg = <0 0x1100c800 0 0x800>;
++			interrupts = <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&infracfg CLK_INFRA_THERM_CK>,
++				 <&infracfg CLK_INFRA_ADC_26M_CK>,
++				 <&infracfg CLK_INFRA_ADC_FRC_CK>;
++			clock-names = "therm", "auxadc", "adc_32k";
++			nvmem-cells = <&thermal_calibration>;
++			nvmem-cell-names = "calibration-data";
++			#thermal-sensor-cells = <1>;
++			mediatek,auxadc = <&auxadc>;
++			mediatek,apmixedsys = <&apmixedsys>;
++		};
++
+ 		auxadc: adc@1100d000 {
+ 			compatible = "mediatek,mt7986-auxadc";
+ 			reg = <0 0x1100d000 0 0x1000>;
+@@ -387,21 +393,6 @@
+ 			status = "disabled";
+ 		};
+ 
+-		thermal: thermal@1100c800 {
+-			compatible = "mediatek,mt7986-thermal";
+-			reg = <0 0x1100c800 0 0x800>;
+-			interrupts = <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>;
+-			clocks = <&infracfg CLK_INFRA_THERM_CK>,
+-				 <&infracfg CLK_INFRA_ADC_26M_CK>,
+-				 <&infracfg CLK_INFRA_ADC_FRC_CK>;
+-			clock-names = "therm", "auxadc", "adc_32k";
+-			nvmem-cells = <&thermal_calibration>;
+-			nvmem-cell-names = "calibration-data";
+-			#thermal-sensor-cells = <1>;
+-			mediatek,auxadc = <&auxadc>;
+-			mediatek,apmixedsys = <&apmixedsys>;
+-		};
+-
+ 		pcie: pcie@11280000 {
+ 			compatible = "mediatek,mt7986-pcie",
+ 				     "mediatek,mt8192-pcie";
+@@ -531,20 +522,6 @@
+ 			mediatek,wo-ccif = <&wo_ccif1>;
+ 		};
+ 
+-		wo_ccif0: syscon@151a5000 {
+-			compatible = "mediatek,mt7986-wo-ccif", "syscon";
+-			reg = <0 0x151a5000 0 0x1000>;
+-			interrupt-parent = <&gic>;
+-			interrupts = <GIC_SPI 211 IRQ_TYPE_LEVEL_HIGH>;
+-		};
+-
+-		wo_ccif1: syscon@151ad000 {
+-			compatible = "mediatek,mt7986-wo-ccif", "syscon";
+-			reg = <0 0x151ad000 0 0x1000>;
+-			interrupt-parent = <&gic>;
+-			interrupts = <GIC_SPI 212 IRQ_TYPE_LEVEL_HIGH>;
+-		};
+-
+ 		eth: ethernet@15100000 {
+ 			compatible = "mediatek,mt7986-eth";
+ 			reg = <0 0x15100000 0 0x80000>;
+@@ -586,6 +563,20 @@
+ 			status = "disabled";
+ 		};
+ 
++		wo_ccif0: syscon@151a5000 {
++			compatible = "mediatek,mt7986-wo-ccif", "syscon";
++			reg = <0 0x151a5000 0 0x1000>;
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SPI 211 IRQ_TYPE_LEVEL_HIGH>;
++		};
++
++		wo_ccif1: syscon@151ad000 {
++			compatible = "mediatek,mt7986-wo-ccif", "syscon";
++			reg = <0 0x151ad000 0 0x1000>;
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SPI 212 IRQ_TYPE_LEVEL_HIGH>;
++		};
++
+ 		wifi: wifi@18000000 {
+ 			compatible = "mediatek,mt7986-wmac";
+ 			reg = <0 0x18000000 0 0x1000000>,
+@@ -643,4 +634,13 @@
+ 			};
+ 		};
+ 	};
++
++	timer {
++		compatible = "arm,armv8-timer";
++		interrupt-parent = <&gic>;
++		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
++			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
++			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
++			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
++	};
+ };
 -- 
 2.43.0
 
