@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-42338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD1B8B7281
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489C08B7158
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35ABEB20849
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2B171F23341
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3D212CD90;
-	Tue, 30 Apr 2024 11:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C3A12C817;
+	Tue, 30 Apr 2024 10:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xipHmtt8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjVGwM17"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D23A1E50A;
-	Tue, 30 Apr 2024 11:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D618312C476;
+	Tue, 30 Apr 2024 10:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475335; cv=none; b=b6x3fR9XnpjFWhxjcz9rX3xQtnRPVrm1NUBFIiaVWhFu0P5Fa7EWg8Nbogj+nMEtUQxuYj2yDFMhMQ+LL30sgBVvvWL+xUjYeFGlRdlSyn8FSo27iZQsm3FeZORJGxZ6YLhXPF5Bi7ugZRgcRAtKcFeQnGYdUE+KOLxKgntEUQ8=
+	t=1714474535; cv=none; b=C9kOZO3Zcx25mv4ra8RH+8RxZg83gUdBB68lwnBHqxUyJQ4Qscs8Gd0tBj0viFHeAyVV0aGkihvy53PXAJgXEQZcD//JJCBGPJG8x/X1QsG/h3h0hcvm7cyUdnEJRa4jxjxwHkpeuH7+guYUv3mioj7OvXw25KqgQSKk12waPEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475335; c=relaxed/simple;
-	bh=jrudaymR2ZCXgg/5bCEB0HdBsJDzYzgovRMG3Y47WAk=;
+	s=arc-20240116; t=1714474535; c=relaxed/simple;
+	bh=9XNgg5wwkW19YbfRGKtFpxZo8Qt9xkRoEvWYzxwvQck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3mQpGU2raMmP9VWisImm3DFmFH105TDhlHFgaIwRWesW+xOtUMeY3fG9YPvx71ti/XqtGw8sXeH8jILKWulnMIuYfxzqke2tWBvQ8hKqvZJT9Ore5OnxqX1EG+eneFHJH5yz++Iobx8iAnLFSnUMYvexitmqEXeMtODtzD7J/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xipHmtt8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDF4C2BBFC;
-	Tue, 30 Apr 2024 11:08:54 +0000 (UTC)
+	 MIME-Version; b=O9cfIoIgR6TupIbnKpUBWqiW0b6Vp+Bmuwnjekr6u0fzvYmgCwcE3+zqhnigzGdnry4/OnzrcIXb/U0Hg8iOD5791aY+nEPoyntXnlbWBKf/JJkxUN5RdjK474kSieORYBlDPfMdWtt8pbSMi65nvmT8AT7Io59IAnQbzv9kS7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjVGwM17; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF8EC4AF18;
+	Tue, 30 Apr 2024 10:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475335;
-	bh=jrudaymR2ZCXgg/5bCEB0HdBsJDzYzgovRMG3Y47WAk=;
+	s=korg; t=1714474535;
+	bh=9XNgg5wwkW19YbfRGKtFpxZo8Qt9xkRoEvWYzxwvQck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xipHmtt8wwIN78nIau/A15fp67RXtgHcYz4qJlFEngGdHaVGelltkTLXDgVCS4LkU
-	 eq0+NVIvvBz5scvDX8GXOBAnNIldmoM3yD+6UonA4bg2CiKFGASjbAzBKXtwLTr9EN
-	 +iZ7NwCpqNL+zDEJlM4eA9ydUUerLx/blxveP3a0=
+	b=NjVGwM17jDf1oj86ZFfAt+KtbGgvbWmh/JpT8B852SSL1OCbsjH5p8CQcTPzIys4l
+	 Ckk61JdxWPQtKzvaGOyABVuRe+TTTHeIcAnzKAY52CfbiSkMvTnCcAVxVkC0gnSXvB
+	 5czVyTW6EJSMBdRPQRuPE4wNfDQuu4KWAlZrUwA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prathamesh Shete <pshete@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/186] gpio: tegra186: Fix tegra186_gpio_is_accessible() check
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.8 139/228] kbuild: rust: remove unneeded `@rustc_cfg` to avoid ICE
 Date: Tue, 30 Apr 2024 12:38:37 +0200
-Message-ID: <20240430103059.925276313@linuxfoundation.org>
+Message-ID: <20240430103107.811616753@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prathamesh Shete <pshete@nvidia.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit d806f474a9a7993648a2c70642ee129316d8deff ]
+commit 50cfe93b01475ba36878b65d35d812e1bb48ac71 upstream.
 
-The controller has several register bits describing access control
-information for a given GPIO pin. When SCR_SEC_[R|W]EN is unset, it
-means we have full read/write access to all the registers for given GPIO
-pin. When SCR_SEC[R|W]EN is set, it means we need to further check the
-accompanying SCR_SEC_G1[R|W] bit to determine read/write access to all
-the registers for given GPIO pin.
+When KUnit tests are enabled, under very big kernel configurations
+(e.g. `allyesconfig`), we can trigger a `rustdoc` ICE [1]:
 
-This check was previously declaring that a GPIO pin was accessible
-only if either of the following conditions were met:
+      RUSTDOC TK rust/kernel/lib.rs
+    error: the compiler unexpectedly panicked. this is a bug.
 
-  - SCR_SEC_REN + SCR_SEC_WEN both set
+The reason is that this build step has a duplicated `@rustc_cfg` argument,
+which contains the kernel configuration, and thus a lot of arguments. The
+factor 2 happens to be enough to reach the ICE.
 
-    or
+Thus remove the unneeded `@rustc_cfg`. By doing so, we clean up the
+command and workaround the ICE.
 
-  - SCR_SEC_REN + SCR_SEC_WEN both set and
-    SCR_SEC_G1R + SCR_SEC_G1W both set
+The ICE has been fixed in the upcoming Rust 1.79 [2].
 
-Update the check to properly handle cases where only one of
-SCR_SEC_REN or SCR_SEC_WEN is set.
-
-Fixes: b2b56a163230 ("gpio: tegra186: Check GPIO pin permission before access.")
-Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20240424095514.24397-1-pshete@nvidia.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a66d733da801 ("rust: support running Rust documentation tests as KUnit ones")
+Link: https://github.com/rust-lang/rust/issues/122722 [1]
+Link: https://github.com/rust-lang/rust/pull/122840 [2]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20240422091215.526688-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-tegra186.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ rust/Makefile |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
-index d87dd06db40d0..9130c691a2dd3 100644
---- a/drivers/gpio/gpio-tegra186.c
-+++ b/drivers/gpio/gpio-tegra186.c
-@@ -36,12 +36,6 @@
- #define  TEGRA186_GPIO_SCR_SEC_REN		BIT(27)
- #define  TEGRA186_GPIO_SCR_SEC_G1W		BIT(9)
- #define  TEGRA186_GPIO_SCR_SEC_G1R		BIT(1)
--#define  TEGRA186_GPIO_FULL_ACCESS		(TEGRA186_GPIO_SCR_SEC_WEN | \
--						 TEGRA186_GPIO_SCR_SEC_REN | \
--						 TEGRA186_GPIO_SCR_SEC_G1R | \
--						 TEGRA186_GPIO_SCR_SEC_G1W)
--#define  TEGRA186_GPIO_SCR_SEC_ENABLE		(TEGRA186_GPIO_SCR_SEC_WEN | \
--						 TEGRA186_GPIO_SCR_SEC_REN)
- 
- /* control registers */
- #define TEGRA186_GPIO_ENABLE_CONFIG 0x00
-@@ -177,10 +171,18 @@ static inline bool tegra186_gpio_is_accessible(struct tegra_gpio *gpio, unsigned
- 
- 	value = __raw_readl(secure + TEGRA186_GPIO_SCR);
- 
--	if ((value & TEGRA186_GPIO_SCR_SEC_ENABLE) == 0)
--		return true;
-+	/*
-+	 * When SCR_SEC_[R|W]EN is unset, then we have full read/write access to all the
-+	 * registers for given GPIO pin.
-+	 * When SCR_SEC[R|W]EN is set, then there is need to further check the accompanying
-+	 * SCR_SEC_G1[R|W] bit to determine read/write access to all the registers for given
-+	 * GPIO pin.
-+	 */
- 
--	if ((value & TEGRA186_GPIO_FULL_ACCESS) == TEGRA186_GPIO_FULL_ACCESS)
-+	if (((value & TEGRA186_GPIO_SCR_SEC_REN) == 0 ||
-+	     ((value & TEGRA186_GPIO_SCR_SEC_REN) && (value & TEGRA186_GPIO_SCR_SEC_G1R))) &&
-+	     ((value & TEGRA186_GPIO_SCR_SEC_WEN) == 0 ||
-+	     ((value & TEGRA186_GPIO_SCR_SEC_WEN) && (value & TEGRA186_GPIO_SCR_SEC_G1W))))
- 		return true;
- 
- 	return false;
--- 
-2.43.0
-
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -175,7 +175,6 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC
+ 	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
+ 	OBJTREE=$(abspath $(objtree)) \
+ 	$(RUSTDOC) --test $(rust_flags) \
+-		@$(objtree)/include/generated/rustc_cfg \
+ 		-L$(objtree)/$(obj) --extern alloc --extern kernel \
+ 		--extern build_error --extern macros \
+ 		--extern bindings --extern uapi \
 
 
 
