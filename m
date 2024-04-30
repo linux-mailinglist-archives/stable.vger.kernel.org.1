@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-42274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC908B7231
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9988B742B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE865B20549
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0D3B1C22C8C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5FC12CDB2;
-	Tue, 30 Apr 2024 11:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F86B12D214;
+	Tue, 30 Apr 2024 11:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/OD/j5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NT5OdwmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2BB12C801;
-	Tue, 30 Apr 2024 11:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D231017592;
+	Tue, 30 Apr 2024 11:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475130; cv=none; b=V0BEo2SMim7y2wZrqwJEJUCrtynhzeY76KxxSt5TTIzG/TdsbUGgkiv2lvOAYFm6IIn6P9TUfhSIu6qtBk8NT42dEZcxVz2ie/zp/LCZZ2EdgJMGDTskYLzm61vaYNG7OuOZXaSX0asqcmsbq/whGWMsajWyj21ukvPFo4VJqGk=
+	t=1714476479; cv=none; b=LchFvtrWlqvZzdtSLLLF1GMUjZAAbVP1yzBD4S9sViedLRAS8MUk4A3lOcL9ESuFuL3zZWxFp4xjKkjqVwLz0Ij+uE9LNnN09JaYPQg//RfoiSwgq2nZ+0z6mDdT0hFcks1RU0qHJmb31rsog2sQXHtQW+s85NZwHlUdfVREEZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475130; c=relaxed/simple;
-	bh=iB59wscB3ghAW2/pvLhZC229GDMrFl0RROsb7iBwKT4=;
+	s=arc-20240116; t=1714476479; c=relaxed/simple;
+	bh=6cQnw30DmOAlT3cICvUi5vd+ekMYYB0Pwjlz7c/YsAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KL9CZZX0XwyhdDJN3VS4sN819dIjm8n3UK6fqVhDq0+VAu9H1tAKeYf4KvdfAdHXi8bnNSAPcd9VUp93X7IQK8GySjX5EO0WaTGgqWVQsiQvDF2sfFHcg/kmPhWah6ZPa2sr5s59iFkF5bRnzb4q4QxgzwS8nUbjhj2YGrw4X8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/OD/j5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733F1C2BBFC;
-	Tue, 30 Apr 2024 11:05:29 +0000 (UTC)
+	 MIME-Version; b=N93QA+8C9Ofs9ep2PS8kdEHTbWOnZ14U+QncC1ysWdsI9HJnZkrY4uFuQTYEIxRrFWkT0o+KVhu+uiGKq4VzfSyY0uTeHMXHCfZyIq8uIvVdiw4giNSI0QzXgxzYKRK1bhBZGJ0I9GKziVIvzt+jucE0gmtbqYgN/JDBdX4qfKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NT5OdwmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522F9C2BBFC;
+	Tue, 30 Apr 2024 11:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475129;
-	bh=iB59wscB3ghAW2/pvLhZC229GDMrFl0RROsb7iBwKT4=;
+	s=korg; t=1714476479;
+	bh=6cQnw30DmOAlT3cICvUi5vd+ekMYYB0Pwjlz7c/YsAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/OD/j5cmbid4XTWGcH4HT5GCGbor0QplCjrh1f5yO5Le7OHGQI6oC0KTAe/PBYpg
-	 dmFg1W0KfYml2yYaFmia8r/NncOuodsarO+wd0//trzwnbgC1zNgdUPLjkV7Vmsw2s
-	 Px6z1FInkoGDc0XyvWxictHqmZdOO3sn7H/EyrlY=
+	b=NT5OdwmFa2CeRFgwMQD8z1xLpFVQ2UcROZAFnb3J1J1xloYDpuhnKyDOsU7VCKRuK
+	 8MIqZf05RiE82WA7uCNsIsF3mdFfoBMW4vyBAqa2kUw9rqWagKEqzY4YPGMoCjZ0Jb
+	 jtMbjsXocFhkeaVXTzeBykD52YzTwoOIb7/7n+44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/138] dmaengine: owl: fix register access functions
+Subject: [PATCH 6.1 044/110] mlxsw: spectrum_acl_tcam: Fix race during rehash delayed work
 Date: Tue, 30 Apr 2024 12:40:13 +0200
-Message-ID: <20240430103053.170724812@linuxfoundation.org>
+Message-ID: <20240430103048.868518163@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 43c633ef93a5d293c96ebcedb40130df13128428 ]
+[ Upstream commit d90cfe20562407d9f080d24123078d666d730707 ]
 
-When building with 'make W=1', clang notices that the computed register
-values are never actually written back but instead the wrong variable
-is set:
+The purpose of the rehash delayed work is to reduce the number of masks
+(eRPs) used by an ACL region as the eRP bank is a global and limited
+resource.
 
-drivers/dma/owl-dma.c:244:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  244 |         u32 regval;
-      |             ^
-drivers/dma/owl-dma.c:268:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  268 |         u32 regval;
-      |             ^
+This is done in three steps:
 
-Change these to what was most likely intended.
+1. Creating a new set of masks and a new ACL region which will use the
+   new masks and to which the existing filters will be migrated to. The
+   new region is assigned to 'vregion->region' and the region from which
+   the filters are migrated from is assigned to 'vregion->region2'.
 
-Fixes: 47e20577c24d ("dmaengine: Add Actions Semi Owl family S900 DMA driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240322132116.906475-1-arnd@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+2. Migrating all the filters from the old region to the new region.
+
+3. Destroying the old region and setting 'vregion->region2' to NULL.
+
+Only the second steps is performed under the 'vregion->lock' mutex
+although its comments says that among other things it "Protects
+consistency of region, region2 pointers".
+
+This is problematic as the first step can race with filter insertion
+from user space that uses 'vregion->region', but under the mutex.
+
+Fix by holding the mutex across the entirety of the delayed work and not
+only during the second step.
+
+Fixes: 2bffc5322fd8 ("mlxsw: spectrum_acl: Don't take mutex in mlxsw_sp_acl_tcam_vregion_rehash_work()")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/1ec1d54edf2bad0a369e6b4fa030aba64e1f124b.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/owl-dma.c | 4 ++--
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/owl-dma.c b/drivers/dma/owl-dma.c
-index 04202d75f4eed..695feb3443d80 100644
---- a/drivers/dma/owl-dma.c
-+++ b/drivers/dma/owl-dma.c
-@@ -249,7 +249,7 @@ static void pchan_update(struct owl_dma_pchan *pchan, u32 reg,
- 	else
- 		regval &= ~val;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 41eac7dfb67e7..508c0b1b80fd9 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -780,7 +780,9 @@ static void mlxsw_sp_acl_tcam_vregion_rehash_work(struct work_struct *work)
+ 			     rehash.dw.work);
+ 	int credits = MLXSW_SP_ACL_TCAM_VREGION_REHASH_CREDITS;
  
--	writel(val, pchan->base + reg);
-+	writel(regval, pchan->base + reg);
++	mutex_lock(&vregion->lock);
+ 	mlxsw_sp_acl_tcam_vregion_rehash(vregion->mlxsw_sp, vregion, &credits);
++	mutex_unlock(&vregion->lock);
+ 	if (credits < 0)
+ 		/* Rehash gone out of credits so it was interrupted.
+ 		 * Schedule the work as soon as possible to continue.
+@@ -1420,7 +1422,6 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
+ 	int err, err2;
+ 
+ 	trace_mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion);
+-	mutex_lock(&vregion->lock);
+ 	err = mlxsw_sp_acl_tcam_vchunk_migrate_all(mlxsw_sp, vregion,
+ 						   ctx, credits);
+ 	if (err) {
+@@ -1440,7 +1441,6 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
+ 			/* Let the rollback to be continued later on. */
+ 		}
+ 	}
+-	mutex_unlock(&vregion->lock);
+ 	trace_mlxsw_sp_acl_tcam_vregion_migrate_end(mlxsw_sp, vregion);
+ 	return err;
  }
- 
- static void pchan_writel(struct owl_dma_pchan *pchan, u32 reg, u32 data)
-@@ -273,7 +273,7 @@ static void dma_update(struct owl_dma *od, u32 reg, u32 val, bool state)
- 	else
- 		regval &= ~val;
- 
--	writel(val, od->base + reg);
-+	writel(regval, od->base + reg);
- }
- 
- static void dma_writel(struct owl_dma *od, u32 reg, u32 data)
 -- 
 2.43.0
 
