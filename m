@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA8A8B70C7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:49:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 783EF8B7261
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9175D287FB5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:49:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33BFD282A75
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFA812C49E;
-	Tue, 30 Apr 2024 10:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3A912CDB2;
+	Tue, 30 Apr 2024 11:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYQjQRtr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2CIWTCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAE212C47A;
-	Tue, 30 Apr 2024 10:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5A612C805;
+	Tue, 30 Apr 2024 11:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474183; cv=none; b=NQPqv/gtOj40N8X8SQ3DXlwAc0Pek/69bAeSDciX+MHioqoL84QJ+pt4YghrQGTRm5npU9fPxtBRTBbwG57y44v2H/HRuVDuj0VNuX/8IAALoeSW93jF+B7gEKJKfyfMtf98gVXs6arhqBCF6VRoR1clV37jcPsBi69Dhb3TG7c=
+	t=1714475245; cv=none; b=FEgQ/Pgaf04D2IprExmG1Dip0e9YYF9LP7vvc5U2xiME5rdGSIh4BJG55YlGDOCyALHG93d4uPSU01nH2kAiLk5/BSSm7i8NPu00FS5G6pXrJilJoqgID1B1ctS+Vw4iHN6kcdvXduMHp4RshmPgZGcWgjwsaqYgtYYaqp2S3qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474183; c=relaxed/simple;
-	bh=ECGiJoNxb881FLZlk4yqtrhw/kntk1FFX2MC42aZYi0=;
+	s=arc-20240116; t=1714475245; c=relaxed/simple;
+	bh=S1tArmvi2Xu+7D3Lrh7MrDHu0MDKttTpEwEljJPPrY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNMu1klRqg3tQ4acrFqipBTsxaylz9qgYIaez/BI8UNRcTj7AQQHcyG5NYPRZdA9AELIkb/XInbB7w5xvOcpV/gh+WZsmkf/ePc+778l0r/xe6B5LXjvoNs1dxww104YHL/EWDY13IeVgewkSpl07YDKZQQt1Y+QqaQQ0FXYMcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYQjQRtr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD5CC2BBFC;
-	Tue, 30 Apr 2024 10:49:42 +0000 (UTC)
+	 MIME-Version; b=tteqWeFRIlOvJHZ083VisYh24f+icPkQ1ilsPC8BaQPfksrmzX/SYbZgDaTE7Bj7k4fU1ZZ4InJad/swyDG9ouhMmHyhnEN6kh61hY68heYP26AXApJJYBOXvIvh2M42CkS+lBcsp7/Kl5p7PxBEFOctB/QqRCabG+2F9a7hefY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2CIWTCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8E2C4AF18;
+	Tue, 30 Apr 2024 11:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474183;
-	bh=ECGiJoNxb881FLZlk4yqtrhw/kntk1FFX2MC42aZYi0=;
+	s=korg; t=1714475245;
+	bh=S1tArmvi2Xu+7D3Lrh7MrDHu0MDKttTpEwEljJPPrY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYQjQRtrtOiS2VD/RXd+JO03WqstbI88QgP30qHFOc/KoldtvPF6RC1E3uWHmyYOL
-	 5OxrpEk4vYei/VAVpVWCigNwwPV3g/fdYen8SgzE/wkjHVvtodNJSaEr+CksfBVNrQ
-	 U7VsPFyejRz8ivT0Z6aYohUa8A7qMTEVYqpwtwVU=
+	b=h2CIWTCjxUDosZJDxi20two7VAuRfgW9MvpBxPzAsA0dfczImMiK9E0uBPrZqMiXa
+	 qXho2mLheOlP80J5E7JdT2mlVEZre7tMqlEuBIfYDsF1wWT6N1lyTBMmoO50hYNVyg
+	 5/f1luPXIEnx5vHm96P+jbuDNEpPSwyWZw5bbyCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f0a39be7a2035700868@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Iskander Amara <iskander.amara@theobroma-systems.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 081/228] Bluetooth: hci_conn: Fix UAF Write in __hci_acl_create_connection_sync
-Date: Tue, 30 Apr 2024 12:37:39 +0200
-Message-ID: <20240430103106.141449520@linuxfoundation.org>
+Subject: [PATCH 6.6 008/186] arm64: dts: rockchip: fix alphabetical ordering RK3399 puma
+Date: Tue, 30 Apr 2024 12:37:40 +0200
+Message-ID: <20240430103058.260163775@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Iskander Amara <iskander.amara@theobroma-systems.com>
 
-[ Upstream commit 5f641f03abccddd1a37233ff1b8e774b9ff1f4e8 ]
+[ Upstream commit f0abb4b2c7acf3c3e4130dc3f54cd90cf2ae62bc ]
 
-This fixes the UAF on __hci_acl_create_connection_sync caused by
-connection abortion, it uses the same logic as to LE_LINK which uses
-hci_cmd_sync_cancel to prevent the callback to run if the connection is
-abort prematurely.
+Nodes overridden by their reference should be ordered alphabetically to
+make it easier to read the DTS. pinctrl node is defined in the wrong
+location so let's reorder it.
 
-Reported-by: syzbot+3f0a39be7a2035700868@syzkaller.appspotmail.com
-Fixes: 45340097ce6e ("Bluetooth: hci_conn: Only do ACL connections sequentially")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 2e7ed5f5e69b ("Bluetooth: hci_sync: Use advertised PHYs on hci_le_ext_create_conn_sync")
+Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240308085243.69903-2-iskander.amara@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Stable-dep-of: 945a7c857091 ("arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_sync.h |  3 +--
- net/bluetooth/hci_conn.c         |  3 ++-
- net/bluetooth/hci_sync.c         | 16 ++++++++++------
- 3 files changed, 13 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index 824660f8f30da..ed334c253ebcd 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -139,5 +139,4 @@ int hci_le_big_terminate_sync(struct hci_dev *hdev, u8 handle);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+index 9b9d70bf7f0ca..2979e6f4f96ce 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -401,15 +401,6 @@
+ 	gpio1830-supply = <&vcc_1v8>;
+ };
  
- int hci_le_pa_terminate_sync(struct hci_dev *hdev, u16 handle);
+-&pmu_io_domains {
+-	status = "okay";
+-	pmu1830-supply = <&vcc_1v8>;
+-};
+-
+-&pwm2 {
+-	status = "okay";
+-};
+-
+ &pinctrl {
+ 	i2c8 {
+ 		i2c8_xfer_a: i2c8-xfer {
+@@ -448,6 +439,15 @@
+ 	};
+ };
  
--int hci_acl_create_connection_sync(struct hci_dev *hdev,
--				   struct hci_conn *conn);
-+int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn);
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 47f117874479d..3475ea55c2534 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1645,7 +1645,7 @@ struct hci_conn *hci_connect_acl(struct hci_dev *hdev, bdaddr_t *dst,
- 		acl->auth_type = auth_type;
- 		acl->conn_timeout = timeout;
- 
--		err = hci_acl_create_connection_sync(hdev, acl);
-+		err = hci_connect_acl_sync(hdev, acl);
- 		if (err) {
- 			hci_conn_del(acl);
- 			return ERR_PTR(err);
-@@ -2942,6 +2942,7 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
- 	 */
- 	if (conn->state == BT_CONNECT && hdev->req_status == HCI_REQ_PEND) {
- 		switch (hci_skb_event(hdev->sent_cmd)) {
-+		case HCI_EV_CONN_COMPLETE:
- 		case HCI_EV_LE_CONN_COMPLETE:
- 		case HCI_EV_LE_ENHANCED_CONN_COMPLETE:
- 		case HCI_EVT_LE_CIS_ESTABLISHED:
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 816fd9c38ae04..cffa61ecf234f 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6552,13 +6552,18 @@ int hci_update_adv_data(struct hci_dev *hdev, u8 instance)
- 				  UINT_PTR(instance), NULL);
- }
- 
--static int __hci_acl_create_connection_sync(struct hci_dev *hdev, void *data)
-+static int hci_acl_create_conn_sync(struct hci_dev *hdev, void *data)
- {
--	struct hci_conn *conn = data;
-+	struct hci_conn *conn;
-+	u16 handle = PTR_UINT(data);
- 	struct inquiry_entry *ie;
- 	struct hci_cp_create_conn cp;
- 	int err;
- 
-+	conn = hci_conn_hash_lookup_handle(hdev, handle);
-+	if (!conn)
-+		return 0;
++&pmu_io_domains {
++	status = "okay";
++	pmu1830-supply = <&vcc_1v8>;
++};
 +
- 	/* Many controllers disallow HCI Create Connection while it is doing
- 	 * HCI Inquiry. So we cancel the Inquiry first before issuing HCI Create
- 	 * Connection. This may cause the MGMT discovering state to become false
-@@ -6615,9 +6620,8 @@ static int __hci_acl_create_connection_sync(struct hci_dev *hdev, void *data)
- 	return err;
- }
- 
--int hci_acl_create_connection_sync(struct hci_dev *hdev,
--				   struct hci_conn *conn)
-+int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn)
- {
--	return hci_cmd_sync_queue(hdev, __hci_acl_create_connection_sync,
--				  conn, NULL);
-+	return hci_cmd_sync_queue(hdev, hci_acl_create_conn_sync,
-+				  UINT_PTR(conn->handle), NULL);
- }
++&pwm2 {
++	status = "okay";
++};
++
+ &sdhci {
+ 	/*
+ 	 * Signal integrity isn't great at 200MHz but 100MHz has proven stable
 -- 
 2.43.0
 
