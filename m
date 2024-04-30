@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA2A8B72EE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A97378B7217
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 504E11F215A9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F5A51F238BF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD75E12C47A;
-	Tue, 30 Apr 2024 11:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7D212C462;
+	Tue, 30 Apr 2024 11:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VD6OvBKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PayOuH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2EF8801;
-	Tue, 30 Apr 2024 11:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A2412CD90;
+	Tue, 30 Apr 2024 11:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475610; cv=none; b=BUlS5sI1vw360iGu4g7P0yThOkRb8Ijpp1wsT+peOWyTforOVJNzw8lmJsXJBFri04/8/ng4bGDjnOg9Qd/8dShRJy41U6/DQTYkOTcmQBujrLS3rdqR/HhOWRU9bdZ9xkwBheZ4bAMho3GNX5KKnkDdLcZvIdcM6A5pp/iuXVg=
+	t=1714475050; cv=none; b=A6NP9Dw8kXJJ6fXY7vBajcYzocUygrwBPNCBedfNp/b5iCFpRfGfKgzpqW1i0VJg8nr85gcKaz3BDn4yOuP58VvJtmqPGZmNPxbcxzJT/J82aIPfsO8DJU0ZoHiLW2iRX6U81o3u7gL2zhHtCNH02Xk3A4PlqvYEs/NRiCYsNSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475610; c=relaxed/simple;
-	bh=+cGhsZNLBaGvAYeTP7Ou1qNpOdyLBjh12Z4lZzq9YUk=;
+	s=arc-20240116; t=1714475050; c=relaxed/simple;
+	bh=OOmXKWuTJdfuCYfYiMx11ORnMF8fZE/Vp39Y5UjdAfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUYFUq0gemiVFkP/MtW5RNWXQGNSwdVYVj7IRiaa0//TA1rPel7Bsv65PAhMOCkYLKzAzPUKOGQiZnyQxr+RZsO4KdyfydCPCSOT4oPY4OANZYZ/Nyjmc1WuGa7mtEyDNDdx5bisU4WNb52wFWOIrctaZbmr621lV78/4iawtao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VD6OvBKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF4CC2BBFC;
-	Tue, 30 Apr 2024 11:13:29 +0000 (UTC)
+	 MIME-Version; b=H5EkJ5VkYJMFKQAzuTDMGPOHXfhjw2mxfeDHWtfI7e4VKrHtn+iXqt9mnH0j+zoZWfZLgo6IKKmzDu60uTCMf0hlhgc+ObblG95xB8rINYqqteF12IIbGzq8JoRVCurZD5sdIDXwECI0fHcB4E9U8mh46y6LOBmHVxZdGZ7s2yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PayOuH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4A5C2BBFC;
+	Tue, 30 Apr 2024 11:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475610;
-	bh=+cGhsZNLBaGvAYeTP7Ou1qNpOdyLBjh12Z4lZzq9YUk=;
+	s=korg; t=1714475049;
+	bh=OOmXKWuTJdfuCYfYiMx11ORnMF8fZE/Vp39Y5UjdAfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VD6OvBKvPoNM0Ux3COHhet7DHdAR9ezP71FI8PfZ54A9NErk1Gxq5ZD1HCs/G4P/H
-	 hPsPqS9ZGiUdwsztV5RoBctgAHRixuUUgpVUb/DitL7l1uB6LeMs2uqbLPUeAbWOY1
-	 F1FWWCmm9QcL03E2rwZZHekXUa9iDr8IkeFd9hRY=
+	b=2PayOuH8VoyYyJyBpP6mexqSWy3llwBMR8I4tMVpB1OVXO7eKiochINpSyfVJ002+
+	 nrV8PTRfNRwRBQmbaYdeYTpGjtygKVLCn2+QKVVwGkr/xrsYes/vr3zWBGRMAK+mig
+	 3vrzYGTkxRZAT+CqmE0MPWaq0t6Woq0m+KWFdQR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 148/186] ethernet: Add helper for assigning packet type when dest address does not match device address
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	WangYuli <wangyuli@uniontech.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10 115/138] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x0bda:0x4853
 Date: Tue, 30 Apr 2024 12:40:00 +0200
-Message-ID: <20240430103102.330279041@linuxfoundation.org>
+Message-ID: <20240430103052.793020446@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 6e159fd653d7ebf6290358e0330a0cb8a75cf73b upstream.
+commit d1a5a7eede2977da3d2002d5ea3b519019cc1a98 upstream.
 
-Enable reuse of logic in eth_type_trans for determining packet type.
+Add the support ID(0x0bda, 0x4853) to usb_device_id table for
+Realtek RTL8852BE.
 
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
+Without this change the device utilizes an obsolete version of
+the firmware that is encoded in it rather than the updated Realtek
+firmware and config files from the firmware directory. The latter
+files implement many new features.
+
+The device table is as follows:
+
+T: Bus=03 Lev=01 Prnt=01 Port=09 Cnt=03 Dev#= 4 Spd=12 MxCh= 0
+D: Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs= 1
+P: Vendor=0bda ProdID=4853 Rev= 0.00
+S: Manufacturer=Realtek
+S: Product=Bluetooth Radio
+S: SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
+E: Ad=02(O) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240423181319.115860-3-rrameshbabu@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/etherdevice.h |   25 +++++++++++++++++++++++++
- net/ethernet/eth.c          |   12 +-----------
- 2 files changed, 26 insertions(+), 11 deletions(-)
+ drivers/bluetooth/btusb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/linux/etherdevice.h
-+++ b/include/linux/etherdevice.h
-@@ -608,6 +608,31 @@ static inline void eth_hw_addr_gen(struc
- }
- 
- /**
-+ * eth_skb_pkt_type - Assign packet type if destination address does not match
-+ * @skb: Assigned a packet type if address does not match @dev address
-+ * @dev: Network device used to compare packet address against
-+ *
-+ * If the destination MAC address of the packet does not match the network
-+ * device address, assign an appropriate packet type.
-+ */
-+static inline void eth_skb_pkt_type(struct sk_buff *skb,
-+				    const struct net_device *dev)
-+{
-+	const struct ethhdr *eth = eth_hdr(skb);
-+
-+	if (unlikely(!ether_addr_equal_64bits(eth->h_dest, dev->dev_addr))) {
-+		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
-+			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
-+				skb->pkt_type = PACKET_BROADCAST;
-+			else
-+				skb->pkt_type = PACKET_MULTICAST;
-+		} else {
-+			skb->pkt_type = PACKET_OTHERHOST;
-+		}
-+	}
-+}
-+
-+/**
-  * eth_skb_pad - Pad buffer to mininum number of octets for Ethernet frame
-  * @skb: Buffer to pad
-  *
---- a/net/ethernet/eth.c
-+++ b/net/ethernet/eth.c
-@@ -164,17 +164,7 @@ __be16 eth_type_trans(struct sk_buff *sk
- 	eth = (struct ethhdr *)skb->data;
- 	skb_pull_inline(skb, ETH_HLEN);
- 
--	if (unlikely(!ether_addr_equal_64bits(eth->h_dest,
--					      dev->dev_addr))) {
--		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
--			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
--				skb->pkt_type = PACKET_BROADCAST;
--			else
--				skb->pkt_type = PACKET_MULTICAST;
--		} else {
--			skb->pkt_type = PACKET_OTHERHOST;
--		}
--	}
-+	eth_skb_pkt_type(skb, dev);
- 
- 	/*
- 	 * Some variants of DSA tagging don't have an ethertype field
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -418,6 +418,8 @@ static const struct usb_device_id blackl
+ 	/* Realtek 8852BE Bluetooth devices */
+ 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0bda, 0x4853), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
 
 
 
