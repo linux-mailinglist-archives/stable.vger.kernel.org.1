@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB87D8B72D3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3288B71C6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AB481F232C1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA3431F228EC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C513E12D743;
-	Tue, 30 Apr 2024 11:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7ED12C7F9;
+	Tue, 30 Apr 2024 11:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoJIEYyR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OENdXoKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842698801;
-	Tue, 30 Apr 2024 11:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C31712C530;
+	Tue, 30 Apr 2024 11:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475526; cv=none; b=PBQzqcUlENkseiA+U0UX9sP4Yfzr3MgsMtVTIjG6jflvrFwGAqI8gTRfyxWMwtvuoKoi9K3q7fkEf3B3lP5zN3X969P4tUxeniUBGS1RQEjv7sh8cjhsvVPbK1IPwg8oAeBkRJaQsjJhh1KjZQtu4h8oTG3jIRTzkNyrYKniFK0=
+	t=1714474840; cv=none; b=m80AdORFnaG0Tq+vptKfYNIgFFz5+pateqbjZdDq8v8WrE0+DYlzhrGIHbuRKs2MqRUM1zx+KuCv+HdvkYgcvURnCAEnqBxl1ujPVBIXVw6PoEmFC8RBixCKHVjTRctEuLFdUS90E/oHYuduB5Ok8njdT6xSYRaq/3Nm+R8wsYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475526; c=relaxed/simple;
-	bh=jl0AijJ13jrKP1bx/zvY0vfKpkagkC6M3447JNw6PjY=;
+	s=arc-20240116; t=1714474840; c=relaxed/simple;
+	bh=EIAa7nB6xrwN08aD8LybNFkDSKPAO3+kcu4RsTH0yGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uyph/pGCMFK7TTS8pxW08DmjfGwszewMjIaovDAhLc+TExeShd07TwrGqzb4u0ukFKNQtACF0+2+3U1bmuZIpxpy99i9nyChBP5a54oXxMp7WTd347tKeF3yaBm+A45BNhHWLf7xBCg8jIYSzyEiuHhA564vTUh0nRCHmCYR5yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoJIEYyR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAC6C2BBFC;
-	Tue, 30 Apr 2024 11:12:05 +0000 (UTC)
+	 MIME-Version; b=EW7lbEUTL0S97b2au8G7V8xomj3nIqe4Wm5PhmigwyL3PgxJGd5rSvFvWWpgn+FwBO6y1W/ZCt5E83AC+nGryfCp+/4FcyGJoGp709jsGXxr0B5Plq/KdAwUw0zmeDCb50Yagyue1HR9l0Q1/j4uVF0Pwbp3sD4/L46ZUAvjg2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OENdXoKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631BEC4AF1A;
+	Tue, 30 Apr 2024 11:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475526;
-	bh=jl0AijJ13jrKP1bx/zvY0vfKpkagkC6M3447JNw6PjY=;
+	s=korg; t=1714474839;
+	bh=EIAa7nB6xrwN08aD8LybNFkDSKPAO3+kcu4RsTH0yGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yoJIEYyR+b/Ju/OMgi18H4kxGFValqnEbF0Th3/2yaeYSo5FnsKY7gSHDsOSRWzfp
-	 nJ6oExuxe7mTgCiAGB8i/EnmWopysDeJHC8IBMh+u1Iss8dvI4EMxMeZMcHB1vsEr3
-	 nwXRS54IGm5vyPNlDeHXxid3nZ7xPc0R0ZYZG6q4=
+	b=OENdXoKz8CdMXDC3Pme/EVtWYkQzI904ezxKbLX/TlkBP6EyAw0YK8ZScr28LMkuk
+	 Cw4zpLKqQpVEoMQER3zveyze9PDAW/z8Fztv9wtElTn0S7eKz1oVUld+bXBxL/HEhY
+	 0W1KKQ9dAVdWVYtjdlekJLAP8qXelXnrnk9d7WHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/186] eth: bnxt: fix counting packets discarded due to OOM and netpoll
-Date: Tue, 30 Apr 2024 12:38:56 +0200
-Message-ID: <20240430103100.473375371@linuxfoundation.org>
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.10 052/138] thunderbolt: Avoid notify PM core about runtime PM resume
+Date: Tue, 30 Apr 2024 12:38:57 +0200
+Message-ID: <20240430103050.959735892@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +61,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Gil Fine <gil.fine@linux.intel.com>
 
-[ Upstream commit 730117730709992c9f6535dd7b47638ee561ec45 ]
+commit dcd12acaf384c30437fa5a9a1f71df06fc9835fd upstream.
 
-I added OOM and netpoll discard counters, naively assuming that
-the cpr pointer is pointing to a common completion ring.
-Turns out that is usually *a* completion ring but not *the*
-completion ring which bnapi->cp_ring points to. bnapi->cp_ring
-is where the stats are read from, so we end up reporting 0
-thru ethtool -S and qstat even though the drop events have happened.
-Make 100% sure we're recording statistics in the correct structure.
+Currently we notify PM core about occurred wakes after any resume. This
+is not actually needed after resume from runtime suspend. Hence, notify
+PM core about occurred wakes only after resume from system sleep. Also,
+if the wake occurred in USB4 router upstream port, we don't notify the
+PM core about it since it is not actually needed and can cause
+unexpected autowake (e.g. if /sys/power/wakeup_count is used).
 
-Fixes: 907fd4a294db ("bnxt: count discards due to memory allocation errors")
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20240424002148.3937059-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While there add the missing kernel-doc for tb_switch_resume().
+
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 44 ++++++++++-------------
- 1 file changed, 18 insertions(+), 26 deletions(-)
+ drivers/thunderbolt/switch.c |   27 +++++++++++++++++++++++++--
+ drivers/thunderbolt/tb.c     |    4 ++--
+ drivers/thunderbolt/tb.h     |    3 ++-
+ drivers/thunderbolt/usb4.c   |   13 +++++++------
+ 4 files changed, 36 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d40b91719b79b..724624737d095 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -1659,7 +1659,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
- 		skb = bnxt_copy_skb(bnapi, data_ptr, len, mapping);
- 		if (!skb) {
- 			bnxt_abort_tpa(cpr, idx, agg_bufs);
--			cpr->sw_stats.rx.rx_oom_discards += 1;
-+			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
- 			return NULL;
- 		}
- 	} else {
-@@ -1669,7 +1669,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
- 		new_data = __bnxt_alloc_rx_frag(bp, &new_mapping, GFP_ATOMIC);
- 		if (!new_data) {
- 			bnxt_abort_tpa(cpr, idx, agg_bufs);
--			cpr->sw_stats.rx.rx_oom_discards += 1;
-+			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
- 			return NULL;
- 		}
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -2631,7 +2631,26 @@ static int tb_switch_set_wake(struct tb_
+ 	return tb_lc_set_wake(sw, flags);
+ }
  
-@@ -1685,7 +1685,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
- 		if (!skb) {
- 			skb_free_frag(data);
- 			bnxt_abort_tpa(cpr, idx, agg_bufs);
--			cpr->sw_stats.rx.rx_oom_discards += 1;
-+			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
- 			return NULL;
- 		}
- 		skb_reserve(skb, bp->rx_offset);
-@@ -1696,7 +1696,7 @@ static inline struct sk_buff *bnxt_tpa_end(struct bnxt *bp,
- 		skb = bnxt_rx_agg_pages_skb(bp, cpr, skb, idx, agg_bufs, true);
- 		if (!skb) {
- 			/* Page reuse already handled by bnxt_rx_pages(). */
--			cpr->sw_stats.rx.rx_oom_discards += 1;
-+			cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
- 			return NULL;
- 		}
- 	}
-@@ -1914,11 +1914,8 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 			u32 frag_len = bnxt_rx_agg_pages_xdp(bp, cpr, &xdp,
- 							     cp_cons, agg_bufs,
- 							     false);
--			if (!frag_len) {
--				cpr->sw_stats.rx.rx_oom_discards += 1;
--				rc = -ENOMEM;
--				goto next_rx;
--			}
-+			if (!frag_len)
-+				goto oom_next_rx;
- 		}
- 		xdp_active = true;
- 	}
-@@ -1941,9 +1938,7 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 				else
- 					bnxt_xdp_buff_frags_free(rxr, &xdp);
- 			}
--			cpr->sw_stats.rx.rx_oom_discards += 1;
--			rc = -ENOMEM;
--			goto next_rx;
-+			goto oom_next_rx;
- 		}
- 	} else {
- 		u32 payload;
-@@ -1954,29 +1949,21 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 			payload = 0;
- 		skb = bp->rx_skb_func(bp, rxr, cons, data, data_ptr, dma_addr,
- 				      payload | len);
--		if (!skb) {
--			cpr->sw_stats.rx.rx_oom_discards += 1;
--			rc = -ENOMEM;
--			goto next_rx;
--		}
-+		if (!skb)
-+			goto oom_next_rx;
- 	}
- 
- 	if (agg_bufs) {
- 		if (!xdp_active) {
- 			skb = bnxt_rx_agg_pages_skb(bp, cpr, skb, cp_cons, agg_bufs, false);
--			if (!skb) {
--				cpr->sw_stats.rx.rx_oom_discards += 1;
--				rc = -ENOMEM;
--				goto next_rx;
--			}
-+			if (!skb)
-+				goto oom_next_rx;
- 		} else {
- 			skb = bnxt_xdp_build_skb(bp, skb, agg_bufs, rxr->page_pool, &xdp, rxcmp1);
- 			if (!skb) {
- 				/* we should be able to free the old skb here */
- 				bnxt_xdp_buff_frags_free(rxr, &xdp);
--				cpr->sw_stats.rx.rx_oom_discards += 1;
--				rc = -ENOMEM;
--				goto next_rx;
-+				goto oom_next_rx;
- 			}
- 		}
- 	}
-@@ -2054,6 +2041,11 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 	*raw_cons = tmp_raw_cons;
- 
- 	return rc;
+-int tb_switch_resume(struct tb_switch *sw)
++static void tb_switch_check_wakes(struct tb_switch *sw)
++{
++	if (device_may_wakeup(&sw->dev)) {
++		if (tb_switch_is_usb4(sw))
++			usb4_switch_check_wakes(sw);
++	}
++}
 +
-+oom_next_rx:
-+	cpr->bnapi->cp_ring.sw_stats.rx.rx_oom_discards += 1;
-+	rc = -ENOMEM;
-+	goto next_rx;
++/**
++ * tb_switch_resume() - Resume a switch after sleep
++ * @sw: Switch to resume
++ * @runtime: Is this resume from runtime suspend or system sleep
++ *
++ * Resumes and re-enumerates router (and all its children), if still plugged
++ * after suspend. Don't enumerate device router whose UID was changed during
++ * suspend. If this is resume from system sleep, notifies PM core about the
++ * wakes occurred during suspend. Disables all wakes, except USB4 wake of
++ * upstream port for USB4 routers that shall be always enabled.
++ */
++int tb_switch_resume(struct tb_switch *sw, bool runtime)
+ {
+ 	struct tb_port *port;
+ 	int err;
+@@ -2676,6 +2695,9 @@ int tb_switch_resume(struct tb_switch *s
+ 	if (err)
+ 		return err;
+ 
++	if (!runtime)
++		tb_switch_check_wakes(sw);
++
+ 	/* Disable wakes */
+ 	tb_switch_set_wake(sw, 0);
+ 
+@@ -2702,7 +2724,8 @@ int tb_switch_resume(struct tb_switch *s
+ 			 */
+ 			if (tb_port_unlock(port))
+ 				tb_port_warn(port, "failed to unlock port\n");
+-			if (port->remote && tb_switch_resume(port->remote->sw)) {
++			if (port->remote &&
++			    tb_switch_resume(port->remote->sw, runtime)) {
+ 				tb_port_warn(port,
+ 					     "lost during suspend, disconnecting\n");
+ 				tb_sw_set_unplugged(port->remote->sw);
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -1385,7 +1385,7 @@ static int tb_resume_noirq(struct tb *tb
+ 	/* remove any pci devices the firmware might have setup */
+ 	tb_switch_reset(tb->root_switch);
+ 
+-	tb_switch_resume(tb->root_switch);
++	tb_switch_resume(tb->root_switch, false);
+ 	tb_free_invalid_tunnels(tb);
+ 	tb_free_unplugged_children(tb->root_switch);
+ 	tb_restore_children(tb->root_switch);
+@@ -1488,7 +1488,7 @@ static int tb_runtime_resume(struct tb *
+ 	struct tb_tunnel *tunnel, *n;
+ 
+ 	mutex_lock(&tb->lock);
+-	tb_switch_resume(tb->root_switch);
++	tb_switch_resume(tb->root_switch, true);
+ 	tb_free_invalid_tunnels(tb);
+ 	tb_restore_children(tb->root_switch);
+ 	list_for_each_entry_safe(tunnel, n, &tcm->tunnel_list, list)
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -653,7 +653,7 @@ int tb_switch_configure(struct tb_switch
+ int tb_switch_add(struct tb_switch *sw);
+ void tb_switch_remove(struct tb_switch *sw);
+ void tb_switch_suspend(struct tb_switch *sw, bool runtime);
+-int tb_switch_resume(struct tb_switch *sw);
++int tb_switch_resume(struct tb_switch *sw, bool runtime);
+ int tb_switch_reset(struct tb_switch *sw);
+ void tb_sw_set_unplugged(struct tb_switch *sw);
+ struct tb_port *tb_switch_find_port(struct tb_switch *sw,
+@@ -957,6 +957,7 @@ static inline struct tb_retimer *tb_to_r
+ 	return NULL;
  }
  
- /* In netpoll mode, if we are using a combined completion ring, we need to
-@@ -2099,7 +2091,7 @@ static int bnxt_force_rx_discard(struct bnxt *bp,
- 	}
- 	rc = bnxt_rx_pkt(bp, cpr, raw_cons, event);
- 	if (rc && rc != -EBUSY)
--		cpr->sw_stats.rx.rx_netpoll_discards += 1;
-+		cpr->bnapi->cp_ring.sw_stats.rx.rx_netpoll_discards += 1;
- 	return rc;
++void usb4_switch_check_wakes(struct tb_switch *sw);
+ int usb4_switch_setup(struct tb_switch *sw);
+ int usb4_switch_read_uid(struct tb_switch *sw, u64 *uid);
+ int usb4_switch_drom_read(struct tb_switch *sw, unsigned int address, void *buf,
+--- a/drivers/thunderbolt/usb4.c
++++ b/drivers/thunderbolt/usb4.c
+@@ -197,15 +197,18 @@ static int usb4_switch_op(struct tb_swit
+ 	return 0;
  }
  
--- 
-2.43.0
-
+-static void usb4_switch_check_wakes(struct tb_switch *sw)
++/**
++ * usb4_switch_check_wakes() - Check for wakes and notify PM core about them
++ * @sw: Router whose wakes to check
++ *
++ * Checks wakes occurred during suspend and notify the PM core about them.
++ */
++void usb4_switch_check_wakes(struct tb_switch *sw)
+ {
+ 	struct tb_port *port;
+ 	bool wakeup = false;
+ 	u32 val;
+ 
+-	if (!device_may_wakeup(&sw->dev))
+-		return;
+-
+ 	if (tb_route(sw)) {
+ 		if (tb_sw_read(sw, &val, TB_CFG_SWITCH, ROUTER_CS_6, 1))
+ 			return;
+@@ -270,8 +273,6 @@ int usb4_switch_setup(struct tb_switch *
+ 	u32 val = 0;
+ 	int ret;
+ 
+-	usb4_switch_check_wakes(sw);
+-
+ 	if (!tb_route(sw))
+ 		return 0;
+ 
 
 
 
