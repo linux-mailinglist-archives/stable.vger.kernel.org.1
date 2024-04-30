@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4456A8B71E4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0738B72B9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F20282EC5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92B701C2312F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024FD12D1F4;
-	Tue, 30 Apr 2024 11:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF8E12D768;
+	Tue, 30 Apr 2024 11:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jr0nhRdC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="on+KuYVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09C412D1ED;
-	Tue, 30 Apr 2024 11:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4B512CDB2;
+	Tue, 30 Apr 2024 11:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474917; cv=none; b=ItAlUy5jiF5q8ovglSSkYZdt4llo9bxnavSJMO/Wapl1Tv2mqUXWPrkaqoVt7gFs1hNvlqdj+OipPYrd8uwcyRVEhQCJEjL1Z9bTKkdfqOl1VBSN+sOwjBF8UAG9cmbI15vw9KBjgcAM5qCwHOe6Nflpq2Z1Oquf5QOXSDctxLU=
+	t=1714475481; cv=none; b=ZJ2ylyiiz3XGFWR20OGU8a3ZIIztwqNIk98xCJ8Gv/n5aTvtUQhPyCNUAqhSeAiZ8MW7zIaarOld/yGTMqQgmzW4uXuyIT8jBG7FaL7j3iXRlz+DVpiz+jsuCx7vURwA7a3JntzEmXVb6gQuDNKyRSfWIBEDq5eekTgmEx/nut8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474917; c=relaxed/simple;
-	bh=Ar8mJY47nyED/rizPinG/VRf7xWfYaiLzEmeGKqBZ2s=;
+	s=arc-20240116; t=1714475481; c=relaxed/simple;
+	bh=Ah8gJxa2iAmcCQo97gLTl/YlUq+swOfgh0rnVqxPmBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlF8rw0Eyc/eeWO5Oc5srwApNJw9o+cmMH2T2DPGUHAI28tIu6f5TFOaCzxMjM537nG/u1QBiXFsiKL604z9p48QOdN2mE8MTjxpy+2nsrAdl8q8gUhvG7iXaTyFZINkxxESpy+Wrl2JR6d1420KmXE5wdVuh2q3+/R1ytUcNkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jr0nhRdC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21726C4AF18;
-	Tue, 30 Apr 2024 11:01:56 +0000 (UTC)
+	 MIME-Version; b=rdYTIOyWiCyIGfIf2wvFsUVgpIho8rC6itwKmx+Kkvh0MGvB9AsuEaUcy+acJrBmoL0hlmB9cB+iCavZbrKutAXWonAtS/+BpoktOF5tNtZ4jd970hoEQMuzDHO9V2t3swiwEyFGawiPMHfcektRptoh2Ajw2CRxhgv088TxVUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=on+KuYVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA65C2BBFC;
+	Tue, 30 Apr 2024 11:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474917;
-	bh=Ar8mJY47nyED/rizPinG/VRf7xWfYaiLzEmeGKqBZ2s=;
+	s=korg; t=1714475480;
+	bh=Ah8gJxa2iAmcCQo97gLTl/YlUq+swOfgh0rnVqxPmBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jr0nhRdCxGjBtpj9/BABmNlyZylsFLm0Ibn2MEV7FUcsebsp8gIOJxTsI15K1vFxz
-	 9T2nxoxAAq/OCxfU7S71eAisb2bUkD1h6I0bV2Xe/wwMlcm0eHshp2o0cDyDUlf0ov
-	 dpbK9CL+Bhmim8l+O4jWk0sl6O1YUsQrn94tGewg=
+	b=on+KuYVwg6g26VOk1qkbP4HhPMPyDbMxLFhF6syd8Yuf4PcFucfYaP1BBPnAx0/8m
+	 CvTu3MFMUHGZYBpHJbrjK9tVditJ2zUjs/XE/aI6MyP7x+l/bljVsE2edSKkTlQZGu
+	 fvQzNh6UZKoOCFMyCcZ7nGBIQa+OuYfDoXmxAQFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 074/138] arm64: dts: rockchip: Remove unsupported node from the Pinebook Pro dts
+	Terry Tritton <terry.tritton@linaro.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.6 107/186] selftests/seccomp: user_notification_addfd check nextfd is available
 Date: Tue, 30 Apr 2024 12:39:19 +0200
-Message-ID: <20240430103051.606700725@linuxfoundation.org>
+Message-ID: <20240430103101.140621733@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Terry Tritton <terry.tritton@linaro.org>
 
-[ Upstream commit 43853e843aa6c3d47ff2b0cce898318839483d05 ]
+commit 8e3c9f9f3a0742cd12b682a1766674253b33fcf0 upstream.
 
-Remove a redundant node from the Pine64 Pinebook Pro dts, which is intended
-to provide a value for the delay in PCI Express enumeration, but that isn't
-supported without additional out-of-tree kernel patches.
+Currently the user_notification_addfd test checks what the next expected
+file descriptor will be by incrementing a variable nextfd. This does not
+account for file descriptors that may already be open before the test is
+started and will cause the test to fail if any exist.
 
-There were already efforts to upstream those kernel patches, because they
-reportedly make some PCI Express cards (such as LSI SAS HBAs) usable in
-Pine64 RockPro64 (which is also based on the RK3399);  otherwise, those PCI
-Express cards fail to enumerate.  However, providing the required background
-and explanations proved to be a tough nut to crack, which is the reason why
-those patches remain outside of the kernel mainline for now.
+Replace nextfd++ with a function get_next_fd which will check and return
+the next available file descriptor.
 
-If those out-of-tree patches eventually become upstreamed, the resulting
-device-tree changes will almost surely belong to the RK3399 SoC dtsi.  Also,
-the above-mentioned unusable-without-out-of-tree-patches PCI Express devices
-are in all fairness not usable in a Pinebook Pro without some extensive
-hardware modifications, which is another reason to delete this redundant
-node.  When it comes to the Pinebook Pro, only M.2 NVMe SSDs can be installed
-out of the box (using an additional passive adapter PCB sold separately by
-Pine64), which reportedly works fine with no additional patches.
-
-Fixes: 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/0f82c3f97cb798d012270d13b34d8d15305ef293.1711923520.git.dsimic@manjaro.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
+Link: https://lore.kernel.org/r/20240124141357.1243457-4-terry.tritton@linaro.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 -
- 1 file changed, 1 deletion(-)
+ tools/testing/selftests/seccomp/seccomp_bpf.c |   24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index 4297c1db5a413..913ba25ea72f6 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-@@ -784,7 +784,6 @@
- };
+--- a/tools/testing/selftests/seccomp/seccomp_bpf.c
++++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+@@ -4037,6 +4037,16 @@ TEST(user_notification_filter_empty_thre
+ 	EXPECT_GT((pollfd.revents & POLLHUP) ?: 0, 0);
+ }
  
- &pcie0 {
--	bus-scan-delay-ms = <1000>;
- 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
- 	num-lanes = <4>;
- 	pinctrl-names = "default";
--- 
-2.43.0
-
++
++int get_next_fd(int prev_fd)
++{
++	for (int i = prev_fd + 1; i < FD_SETSIZE; ++i) {
++		if (fcntl(i, F_GETFD) == -1)
++			return i;
++	}
++	_exit(EXIT_FAILURE);
++}
++
+ TEST(user_notification_addfd)
+ {
+ 	pid_t pid;
+@@ -4053,7 +4063,7 @@ TEST(user_notification_addfd)
+ 	/* There may be arbitrary already-open fds at test start. */
+ 	memfd = memfd_create("test", 0);
+ 	ASSERT_GE(memfd, 0);
+-	nextfd = memfd + 1;
++	nextfd = get_next_fd(memfd);
+ 
+ 	ret = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
+ 	ASSERT_EQ(0, ret) {
+@@ -4064,7 +4074,8 @@ TEST(user_notification_addfd)
+ 	/* Check that the basic notification machinery works */
+ 	listener = user_notif_syscall(__NR_getppid,
+ 				      SECCOMP_FILTER_FLAG_NEW_LISTENER);
+-	ASSERT_EQ(listener, nextfd++);
++	ASSERT_EQ(listener, nextfd);
++	nextfd = get_next_fd(nextfd);
+ 
+ 	pid = fork();
+ 	ASSERT_GE(pid, 0);
+@@ -4119,14 +4130,16 @@ TEST(user_notification_addfd)
+ 
+ 	/* Verify we can set an arbitrary remote fd */
+ 	fd = ioctl(listener, SECCOMP_IOCTL_NOTIF_ADDFD, &addfd);
+-	EXPECT_EQ(fd, nextfd++);
++	EXPECT_EQ(fd, nextfd);
++	nextfd = get_next_fd(nextfd);
+ 	EXPECT_EQ(filecmp(getpid(), pid, memfd, fd), 0);
+ 
+ 	/* Verify we can set an arbitrary remote fd with large size */
+ 	memset(&big, 0x0, sizeof(big));
+ 	big.addfd = addfd;
+ 	fd = ioctl(listener, SECCOMP_IOCTL_NOTIF_ADDFD_BIG, &big);
+-	EXPECT_EQ(fd, nextfd++);
++	EXPECT_EQ(fd, nextfd);
++	nextfd = get_next_fd(nextfd);
+ 
+ 	/* Verify we can set a specific remote fd */
+ 	addfd.newfd = 42;
+@@ -4164,7 +4177,8 @@ TEST(user_notification_addfd)
+ 	 * Child has earlier "low" fds and now 42, so we expect the next
+ 	 * lowest available fd to be assigned here.
+ 	 */
+-	EXPECT_EQ(fd, nextfd++);
++	EXPECT_EQ(fd, nextfd);
++	nextfd = get_next_fd(nextfd);
+ 	ASSERT_EQ(filecmp(getpid(), pid, memfd, fd), 0);
+ 
+ 	/*
 
 
 
