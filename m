@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B558B715E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B288B7404
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74849285AFA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81CB8285805
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A76612C530;
-	Tue, 30 Apr 2024 10:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85BD12D210;
+	Tue, 30 Apr 2024 11:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ch+V0mIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zF5bfK99"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DDC12C462;
-	Tue, 30 Apr 2024 10:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772C712C47A;
+	Tue, 30 Apr 2024 11:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474549; cv=none; b=d6wnqvG/QWLp4ayQsC+c0fhwOdz9QdtfpHfzowGzRPlId3FMrrdJt8QG1Bxzp+czdQyf5unCIWo6D4OiYReRv/VHb+B1WOowVRzXgdXnr7QsuWk9+JLe6sjkCovtd/WGQJm6y5fIoef9uvoe230V5iO3L26QHRcRtAi975dGL18=
+	t=1714476362; cv=none; b=UjB92ftYY1DBkZYAD6wC//1wjE/rrHzjARcHB8rqOe+LX/Qn+HZXHdSEF6M74fo8GRykMAdMRDHkBoM/5FjGDhnbbprX+2uvuLLtvxkjbpLKXyXqKgs+z3SAmDoD3RxIMLY179cd5BbDsi9ZZlU5oGtXmbSWHOUE+/hKojmygC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474549; c=relaxed/simple;
-	bh=I57b3cwvCNdi5XKb/ysa6mULLbFU61OS+W6uiMS1COI=;
+	s=arc-20240116; t=1714476362; c=relaxed/simple;
+	bh=VLkcYWo3+IafxTh4CLWWMEuuODbxofv6/hBKNxhr3QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i6utRnbWBjvBK3odQPnKQDPZ9jXip7U0dl2jHTAD4t77WQ7gMpeeok05vnAg9xkdo82iOJ5vS7u2JyCwIyks0IAsT0IEtUfTwo+zppFcWnqFk+Fe1imd9KYL/J15CoAePd+cu+S+Axi12I1g6eGD09xKGD0lbJzG9ff7/kbo5VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch+V0mIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E59BC2BBFC;
-	Tue, 30 Apr 2024 10:55:47 +0000 (UTC)
+	 MIME-Version; b=LWQLDrBCtb41btHcLQTUgtFcWHCv7Oy1gNg9L1j4MJiOptPGUhPNph2ulXfkTlyjQCHe+t8ShSN3aW0vZu0fJQMwUAwaLGvfojkQNaZ3mHILgU2T+mvWgyr5pSA1oqLtRSHnfFBjBwaKL09uO2c7fUgElL3oEdpdnYhIAT+ROqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zF5bfK99; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CAFC4AF18;
+	Tue, 30 Apr 2024 11:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474549;
-	bh=I57b3cwvCNdi5XKb/ysa6mULLbFU61OS+W6uiMS1COI=;
+	s=korg; t=1714476362;
+	bh=VLkcYWo3+IafxTh4CLWWMEuuODbxofv6/hBKNxhr3QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ch+V0mIcy4ZB2z1kPrCdpZ903wfAsiiZhLkTHflBirGII0ow6RXiHbO15qbsfsINF
-	 Zq0+qY8cUpifSRSk7XUX2sXl1BFaDk4xHfKJDMGY0wxYW6bflJ5gxoPLDRlYqIzz5n
-	 QGvjZLwH0gRXHJFoeWTe3MmSOZTB++KGyzy4S9AI=
+	b=zF5bfK99d0zPzQjuQ5oSm/330JCO+ck3EF6e6W9+ug0SC1AXHk0y1UBxvlpB2urWS
+	 aP9TYDjlIDuj7DqOepWIucPtHjjaQOeeLP+0MV5bUWczyuqzjSLa6MbE7HOu9gslBZ
+	 AdhEWzfT3v7ysIy9pFdrg1VGG6k9tNOPrtFPAgAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yick Xie <yick.xie@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 192/228] udp: preserve the connected status if only UDP cmsg
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 001/110] smb: client: fix rename(2) regression against samba
 Date: Tue, 30 Apr 2024 12:39:30 +0200
-Message-ID: <20240430103109.339867059@linuxfoundation.org>
+Message-ID: <20240430103047.609179828@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yick Xie <yick.xie@gmail.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
+[ Upstream commit 18d86965e31f9be4d477da0744a7cdc9815858de ]
 
-If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-"connected" should not be set to 0. Otherwise it stops
-the connected socket from using the cached route.
+After commit 2c7d399e551c ("smb: client: reuse file lease key in
+compound operations") the client started reusing lease keys for
+rename, unlink and set path size operations to prevent it from
+breaking its own leases and thus causing unnecessary lease breaks to
+same connection.
 
-Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The implementation relies on positive dentries and
+cifsInodeInfo::lease_granted to decide whether reusing lease keys for
+the compound requests.  cifsInodeInfo::lease_granted was introduced by
+commit 0ab95c2510b6 ("Defer close only when lease is enabled.") to
+indicate whether lease caching is granted for a specific file, but
+that can only happen until file is open, so
+cifsInodeInfo::lease_granted was left uninitialised in ->alloc_inode
+and then client started sending random lease keys for files that
+hadn't any leases.
+
+This fixes the following test case against samba:
+
+mount.cifs //srv/share /mnt/1 -o ...,nosharesock
+mount.cifs //srv/share /mnt/2 -o ...,nosharesock
+touch /mnt/1/foo; tail -f /mnt/1/foo & pid=$!
+mv /mnt/2/foo /mnt/2/bar # fails with -EIO
+kill $pid
+
+Fixes: 0ab95c2510b6 ("Defer close only when lease is enabled.")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c |    5 +++--
- net/ipv6/udp.c |    5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ fs/smb/client/cifsfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1125,16 +1125,17 @@ int udp_sendmsg(struct sock *sk, struct
- 
- 	if (msg->msg_controllen) {
- 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip_cmsg_send(sk, msg, &ipc,
- 					   sk->sk_family == AF_INET6);
-+			connected = 0;
-+		}
- 		if (unlikely(err < 0)) {
- 			kfree(ipc.opt);
- 			return err;
- 		}
- 		if (ipc.opt)
- 			free = 1;
--		connected = 0;
- 	}
- 	if (!ipc.opt) {
- 		struct ip_options_rcu *inet_opt;
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1476,9 +1476,11 @@ do_udp_sendmsg:
- 		ipc6.opt = opt;
- 
- 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, fl6,
- 						    &ipc6);
-+			connected = false;
-+		}
- 		if (err < 0) {
- 			fl6_sock_release(flowlabel);
- 			return err;
-@@ -1490,7 +1492,6 @@ do_udp_sendmsg:
- 		}
- 		if (!(opt->opt_nflen|opt->opt_flen))
- 			opt = NULL;
--		connected = false;
- 	}
- 	if (!opt) {
- 		opt = txopt_get(np);
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 0a79771c8f33b..f0a3336ffb6c8 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -387,6 +387,7 @@ cifs_alloc_inode(struct super_block *sb)
+ 	 * server, can not assume caching of file data or metadata.
+ 	 */
+ 	cifs_set_oplock_level(cifs_inode, 0);
++	cifs_inode->lease_granted = false;
+ 	cifs_inode->flags = 0;
+ 	spin_lock_init(&cifs_inode->writers_lock);
+ 	cifs_inode->writers = 0;
+-- 
+2.43.0
+
 
 
 
