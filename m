@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2248B717C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0408B72BB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A54DB22D42
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94E481F23DE2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB1612C48A;
-	Tue, 30 Apr 2024 10:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CED812CDAE;
+	Tue, 30 Apr 2024 11:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtGqBUjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcYXXi9V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D00812C499;
-	Tue, 30 Apr 2024 10:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1CF211C;
+	Tue, 30 Apr 2024 11:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474616; cv=none; b=dOCBly6RgvSnjphcaKwiVNpNBJT0oS+6eoolPnBlkBer4kWrbEuTHlSVZFeBfW7ouQjgCAN7jFnle6KMAMYlSF6WAVtArmoxBuWi1aAbK2Jj4/H3kcvuqWWGBPovZSJhA9P0qkL2kf6OWPFSPDRfF/FgQRSrzfe2UXbcH/NkWbU=
+	t=1714475487; cv=none; b=KV7Uu+xjPiFE7r3vtDok68pvA77jr2qXZ3mSfPgTtAAfhlFFxTwl31xk6G9NKkEqQcRyG8A6FwYTXjTolr82jlWBLKmI11GWbBPoe5dVs8o/xieNXxOfV81jjvqQv6jTyuSb+Mm96QlnxcDDBHmlWe/AtCvf7r81nCPHi/0lfP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474616; c=relaxed/simple;
-	bh=3LmBwj1A00Us3JgxM3GPDLNrywKJw5PHzpP/zuwTq8Y=;
+	s=arc-20240116; t=1714475487; c=relaxed/simple;
+	bh=sSBpdqNHnsW8KsoKYI0yl12W2l1SfqkpVEWxXtmK5sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AciuZi1VKv6r+WtLh+l6TJm87i/uB08IH1iXeA9lqIllkj0tdqvZCHUXVid+pprdjiGG8juxLZoH/Ck3iZ3QhZvpPV0jR7tm2XorwVlZY6q8Dba2UxBl4dXd03I6pIKAbWEXMgQlCDkt2y/1gkrq99o6FcQjva2+9X+uXovLAuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtGqBUjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B8EC2BBFC;
-	Tue, 30 Apr 2024 10:56:55 +0000 (UTC)
+	 MIME-Version; b=ZsyZoIWCEJg8vuaYuHurXVFwjH3qAe6C0jliOasXdxugo6ObmLgrs8Hfvk5/EBMmcIiqo++xRKgjloHLpwdcwBqOJjPJBQLdJYp8mVDAMQiHSZ3ffAyv2VX5QMHk1AqO0kV2mYs4JXr23nHpIezmc8pEbtVkrtqiuhAgnRg1GXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcYXXi9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECD5C2BBFC;
+	Tue, 30 Apr 2024 11:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474615;
-	bh=3LmBwj1A00Us3JgxM3GPDLNrywKJw5PHzpP/zuwTq8Y=;
+	s=korg; t=1714475487;
+	bh=sSBpdqNHnsW8KsoKYI0yl12W2l1SfqkpVEWxXtmK5sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtGqBUjH67cBzyKNEIXNg3NAXdWLzEejANzGU54+b8psbjy4ZO6acfidlOLpLDt85
-	 Pr8DOLm5ToWzBdAXghX1t4fpldGUQN9c+xCiy+GqwW1fI3iSS9Zw1WNwEmSZ0vQ5vQ
-	 PclXOLdeHHZkOfy5ZNkhmPJDRlqh/7w9v8EiWwQo=
+	b=qcYXXi9VE7/uXQ2IeEzhmUsseQx3Gs09rpMbktbP6l01yGTtrsyTD8IPTLIXfeM28
+	 C+/2QDTeBq5VTK0BuwqwA7PpUmZPz1KoDrh5DNcuH9WG8+My9Dat3VhhP2i8w6BZxL
+	 HmYnWD5Y7wn/rz77PjqS6mnjEv91gDl5ymv8PvYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarred White <jarredwhite@linux.microsoft.com>,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.8 183/228] ACPI: CPPC: Fix bit_offset shift in MASK_VAL() macro
+	Terry Tritton <terry.tritton@linaro.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.6 109/186] selftests/seccomp: Handle EINVAL on unshare(CLONE_NEWPID)
 Date: Tue, 30 Apr 2024 12:39:21 +0200
-Message-ID: <20240430103109.083890570@linuxfoundation.org>
+Message-ID: <20240430103101.197772428@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarred White <jarredwhite@linux.microsoft.com>
+From: Terry Tritton <terry.tritton@linaro.org>
 
-commit 05d92ee782eeb7b939bdd0189e6efcab9195bf95 upstream.
+commit ecaaa55c9fa5e8058445a8b891070b12208cdb6d upstream.
 
-Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
-system memory accesses") neglected to properly wrap the bit_offset shift
-when it comes to applying the mask. This may cause incorrect values to be
-read and may cause the cpufreq module not be loaded.
+unshare(CLONE_NEWPID) can return EINVAL if the kernel does not have the
+CONFIG_PID_NS option enabled.
 
-[   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
-[   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
+Add a check on these calls to skip the test if we receive EINVAL.
 
-Also, corrected the bitmask generation in GENMASK (extra bit being added).
-
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
-Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
-Reviewed-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
+Link: https://lore.kernel.org/r/20240124141357.1243457-2-terry.tritton@linaro.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/seccomp/seccomp_bpf.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -170,8 +170,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_
- #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
+--- a/tools/testing/selftests/seccomp/seccomp_bpf.c
++++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+@@ -3709,7 +3709,12 @@ TEST(user_notification_sibling_pid_ns)
+ 	ASSERT_GE(pid, 0);
  
- /* Shift and apply the mask for CPC reads/writes */
--#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
--					GENMASK(((reg)->bit_width), 0)))
-+#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
-+					GENMASK(((reg)->bit_width) - 1, 0))
+ 	if (pid == 0) {
+-		ASSERT_EQ(unshare(CLONE_NEWPID), 0);
++		ASSERT_EQ(unshare(CLONE_NEWPID), 0) {
++			if (errno == EPERM)
++				SKIP(return, "CLONE_NEWPID requires CAP_SYS_ADMIN");
++			else if (errno == EINVAL)
++				SKIP(return, "CLONE_NEWPID is invalid (missing CONFIG_PID_NS?)");
++		}
  
- static ssize_t show_feedback_ctrs(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
+ 		pid2 = fork();
+ 		ASSERT_GE(pid2, 0);
+@@ -3727,6 +3732,8 @@ TEST(user_notification_sibling_pid_ns)
+ 	ASSERT_EQ(unshare(CLONE_NEWPID), 0) {
+ 		if (errno == EPERM)
+ 			SKIP(return, "CLONE_NEWPID requires CAP_SYS_ADMIN");
++		else if (errno == EINVAL)
++			SKIP(return, "CLONE_NEWPID is invalid (missing CONFIG_PID_NS?)");
+ 	}
+ 	ASSERT_EQ(errno, 0);
+ 
 
 
 
