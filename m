@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-42456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFF08B731F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060AA8B73D6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BABB1F22555
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71E621F22444
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0B112E1C2;
-	Tue, 30 Apr 2024 11:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128A912D1E8;
+	Tue, 30 Apr 2024 11:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFCm21d+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5cUGo8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA3512D76B;
-	Tue, 30 Apr 2024 11:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31F912C805;
+	Tue, 30 Apr 2024 11:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475723; cv=none; b=KeRuo4CmOBHapHFm8OF6XfhZgfslJQiZHUtvd7/GTzqJsS85ZY0Hu2l6OIoOzP1AQk29DzkdvOByb3e+l2AAL6q8PbcWSRUDm2FY8HbgIi0WIm+3VVPXnan5wJXSOUmK0McgAWvzXXBZXQQBU7vDRRBuLUlZlMKvkR3eVPc0+t4=
+	t=1714476238; cv=none; b=HYeLK+h1KF79lm+y0g7fN/3HMOcJ06P8QJUCgn885/UXzI240JYorJhKCdic2f4ZqeJAL+ba+f0kSg1s+VqwJNovoRcEr4FRhhqzqCw63H9kVMtL/zlnWC6cDgJK9S+IAaUj9h+UT+UjqEctj3S0VTTjS/TJUVoX+iUNR5UTuQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475723; c=relaxed/simple;
-	bh=h5DDdYnpJNzwlPXrx87DpLG6N70fzMJUvJqAXuosqX0=;
+	s=arc-20240116; t=1714476238; c=relaxed/simple;
+	bh=MdsF9BZV+3ciiUJOijxj9OyFyKVtETDz4uhJpgsdvpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tw+DjVtsbVk+r/JmzIDbco/D4D8tOz3E6YXtV1H58IBYwOaLVCGcMFfSpSQhXjP0g/eKbVqG4Gzu+kmVdyz6iQ6mqGUdiYxe/pga2CpoZg/F5MvPA1VycHClBYPsPFgUT5i6h7LGhf/f3ARxXloVo99/RUBjAhxW9yMZAAUhW2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFCm21d+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52552C2BBFC;
-	Tue, 30 Apr 2024 11:15:23 +0000 (UTC)
+	 MIME-Version; b=iaZY5X6emruM6Ao86LRJTiKm8oWuE3uME0z3Z2GUVHYtrLoeP0q60GigJyW9tz7fAham2omj+GQxg102Lm3j0G5tkkjIdUayEDU6Ug+MrIZHKNnAj4xlX/p9rEX7pniPKObyqo+c87C4ZwpuI4EeZ6TqQUV5D+4AUujJjmmu9HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5cUGo8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1CCC2BBFC;
+	Tue, 30 Apr 2024 11:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475723;
-	bh=h5DDdYnpJNzwlPXrx87DpLG6N70fzMJUvJqAXuosqX0=;
+	s=korg; t=1714476238;
+	bh=MdsF9BZV+3ciiUJOijxj9OyFyKVtETDz4uhJpgsdvpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFCm21d+kBoeHoB9wS2MyEHYQKhRkcwvXknC7c/I0atFbIOl4ts4nMJfmAGBp4Rrp
-	 E1Xn/DyeqRT4yLChiIARmuTsxdoJcFzom4IIkyXUiy0LbCKUUb9rL4xEc0gc5CW8Ch
-	 Zh6Hpo1FIokRsHc9GTii4qL1o7QiVaTOv4m0mMNY=
+	b=y5cUGo8D9Op+mZ+km2h8lbxd4uHDN37ProhW2JdxM1IB4t2FdV1OR/n0msmmS0n2A
+	 ZO0UWTQuvFcyseo3mXQmtGRs/ZaNNlSR0JPgYaFzjSAsPhoPdGcHOd2Szoi0JVBjm7
+	 fhHKWPfs8EA2VakB6efbGIwZ2MbcnKSoxFmceg28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 184/186] macsec: Detect if Rx skb is macsec-related for offloading devices that update md_dst
+	Sindhu Devale <sindhu.devale@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Robert Ganzynkowicz <robert.ganzynkowicz@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 076/107] i40e: Do not use WQ_MEM_RECLAIM flag for workqueue
 Date: Tue, 30 Apr 2024 12:40:36 +0200
-Message-ID: <20240430103103.373078586@linuxfoundation.org>
+Message-ID: <20240430103046.898968352@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +67,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Sindhu Devale <sindhu.devale@intel.com>
 
-commit 642c984dd0e37dbaec9f87bd1211e5fac1f142bf upstream.
+[ Upstream commit 2cc7d150550cc981aceedf008f5459193282425c ]
 
-Can now correctly identify where the packets should be delivered by using
-md_dst or its absence on devices that provide it.
+Issue reported by customer during SRIOV testing, call trace:
+When both i40e and the i40iw driver are loaded, a warning
+in check_flush_dependency is being triggered. This seems
+to be because of the i40e driver workqueue is allocated with
+the WQ_MEM_RECLAIM flag, and the i40iw one is not.
 
-This detection is not possible without device drivers that update md_dst. A
-fallback pattern should be used for supporting such device drivers. This
-fallback mode causes multicast messages to be cloned to both the non-macsec
-and macsec ports, independent of whether the multicast message received was
-encrypted over MACsec or not. Other non-macsec traffic may also fail to be
-handled correctly for devices in promiscuous mode.
+Similar error was encountered on ice too and it was fixed by
+removing the flag. Do the same for i40e too.
 
-Link: https://lore.kernel.org/netdev/ZULRxX9eIbFiVi7v@hog/
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Cc: stable@vger.kernel.org
-Fixes: 860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path support")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240423181319.115860-4-rrameshbabu@nvidia.com
+[Feb 9 09:08] ------------[ cut here ]------------
+[  +0.000004] workqueue: WQ_MEM_RECLAIM i40e:i40e_service_task [i40e] is
+flushing !WQ_MEM_RECLAIM infiniband:0x0
+[  +0.000060] WARNING: CPU: 0 PID: 937 at kernel/workqueue.c:2966
+check_flush_dependency+0x10b/0x120
+[  +0.000007] Modules linked in: snd_seq_dummy snd_hrtimer snd_seq
+snd_timer snd_seq_device snd soundcore nls_utf8 cifs cifs_arc4
+nls_ucs2_utils rdma_cm iw_cm ib_cm cifs_md4 dns_resolver netfs qrtr
+rfkill sunrpc vfat fat intel_rapl_msr intel_rapl_common irdma
+intel_uncore_frequency intel_uncore_frequency_common ice ipmi_ssif
+isst_if_common skx_edac nfit libnvdimm x86_pkg_temp_thermal
+intel_powerclamp gnss coretemp ib_uverbs rapl intel_cstate ib_core
+iTCO_wdt iTCO_vendor_support acpi_ipmi mei_me ipmi_si intel_uncore
+ioatdma i2c_i801 joydev pcspkr mei ipmi_devintf lpc_ich
+intel_pch_thermal i2c_smbus ipmi_msghandler acpi_power_meter acpi_pad
+xfs libcrc32c ast sd_mod drm_shmem_helper t10_pi drm_kms_helper sg ixgbe
+drm i40e ahci crct10dif_pclmul libahci crc32_pclmul igb crc32c_intel
+libata ghash_clmulni_intel i2c_algo_bit mdio dca wmi dm_mirror
+dm_region_hash dm_log dm_mod fuse
+[  +0.000050] CPU: 0 PID: 937 Comm: kworker/0:3 Kdump: loaded Not
+tainted 6.8.0-rc2-Feb-net_dev-Qiueue-00279-gbd43c5687e05 #1
+[  +0.000003] Hardware name: Intel Corporation S2600BPB/S2600BPB, BIOS
+SE5C620.86B.02.01.0013.121520200651 12/15/2020
+[  +0.000001] Workqueue: i40e i40e_service_task [i40e]
+[  +0.000024] RIP: 0010:check_flush_dependency+0x10b/0x120
+[  +0.000003] Code: ff 49 8b 54 24 18 48 8d 8b b0 00 00 00 49 89 e8 48
+81 c6 b0 00 00 00 48 c7 c7 b0 97 fa 9f c6 05 8a cc 1f 02 01 e8 35 b3 fd
+ff <0f> 0b e9 10 ff ff ff 80 3d 78 cc 1f 02 00 75 94 e9 46 ff ff ff 90
+[  +0.000002] RSP: 0018:ffffbd294976bcf8 EFLAGS: 00010282
+[  +0.000002] RAX: 0000000000000000 RBX: ffff94d4c483c000 RCX:
+0000000000000027
+[  +0.000001] RDX: ffff94d47f620bc8 RSI: 0000000000000001 RDI:
+ffff94d47f620bc0
+[  +0.000001] RBP: 0000000000000000 R08: 0000000000000000 R09:
+00000000ffff7fff
+[  +0.000001] R10: ffffbd294976bb98 R11: ffffffffa0be65e8 R12:
+ffff94c5451ea180
+[  +0.000001] R13: ffff94c5ab5e8000 R14: ffff94c5c20b6e05 R15:
+ffff94c5f1330ab0
+[  +0.000001] FS:  0000000000000000(0000) GS:ffff94d47f600000(0000)
+knlGS:0000000000000000
+[  +0.000002] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  +0.000001] CR2: 00007f9e6f1fca70 CR3: 0000000038e20004 CR4:
+00000000007706f0
+[  +0.000000] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
+0000000000000000
+[  +0.000001] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:
+0000000000000400
+[  +0.000001] PKRU: 55555554
+[  +0.000001] Call Trace:
+[  +0.000001]  <TASK>
+[  +0.000002]  ? __warn+0x80/0x130
+[  +0.000003]  ? check_flush_dependency+0x10b/0x120
+[  +0.000002]  ? report_bug+0x195/0x1a0
+[  +0.000005]  ? handle_bug+0x3c/0x70
+[  +0.000003]  ? exc_invalid_op+0x14/0x70
+[  +0.000002]  ? asm_exc_invalid_op+0x16/0x20
+[  +0.000006]  ? check_flush_dependency+0x10b/0x120
+[  +0.000002]  ? check_flush_dependency+0x10b/0x120
+[  +0.000002]  __flush_workqueue+0x126/0x3f0
+[  +0.000015]  ib_cache_cleanup_one+0x1c/0xe0 [ib_core]
+[  +0.000056]  __ib_unregister_device+0x6a/0xb0 [ib_core]
+[  +0.000023]  ib_unregister_device_and_put+0x34/0x50 [ib_core]
+[  +0.000020]  i40iw_close+0x4b/0x90 [irdma]
+[  +0.000022]  i40e_notify_client_of_netdev_close+0x54/0xc0 [i40e]
+[  +0.000035]  i40e_service_task+0x126/0x190 [i40e]
+[  +0.000024]  process_one_work+0x174/0x340
+[  +0.000003]  worker_thread+0x27e/0x390
+[  +0.000001]  ? __pfx_worker_thread+0x10/0x10
+[  +0.000002]  kthread+0xdf/0x110
+[  +0.000002]  ? __pfx_kthread+0x10/0x10
+[  +0.000002]  ret_from_fork+0x2d/0x50
+[  +0.000003]  ? __pfx_kthread+0x10/0x10
+[  +0.000001]  ret_from_fork_asm+0x1b/0x30
+[  +0.000004]  </TASK>
+[  +0.000001] ---[ end trace 0000000000000000 ]---
+
+Fixes: 4d5957cbdecd ("i40e: remove WQ_UNBOUND and the task limit of our workqueue")
+Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Robert Ganzynkowicz <robert.ganzynkowicz@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240423182723.740401-2-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c |   46 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -996,10 +996,12 @@ static enum rx_handler_result handle_not
- 	struct metadata_dst *md_dst;
- 	struct macsec_rxh_data *rxd;
- 	struct macsec_dev *macsec;
-+	bool is_macsec_md_dst;
- 
- 	rcu_read_lock();
- 	rxd = macsec_data_rcu(skb->dev);
- 	md_dst = skb_metadata_dst(skb);
-+	is_macsec_md_dst = md_dst && md_dst->type == METADATA_MACSEC;
- 
- 	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
- 		struct sk_buff *nskb;
-@@ -1010,14 +1012,42 @@ static enum rx_handler_result handle_not
- 		 * the SecTAG, so we have to deduce which port to deliver to.
- 		 */
- 		if (macsec_is_offloaded(macsec) && netif_running(ndev)) {
--			struct macsec_rx_sc *rx_sc = NULL;
-+			const struct macsec_ops *ops;
- 
--			if (md_dst && md_dst->type == METADATA_MACSEC)
--				rx_sc = find_rx_sc(&macsec->secy, md_dst->u.macsec_info.sci);
-+			ops = macsec_get_ops(macsec, NULL);
- 
--			if (md_dst && md_dst->type == METADATA_MACSEC && !rx_sc)
-+			if (ops->rx_uses_md_dst && !is_macsec_md_dst)
- 				continue;
- 
-+			if (is_macsec_md_dst) {
-+				struct macsec_rx_sc *rx_sc;
-+
-+				/* All drivers that implement MACsec offload
-+				 * support using skb metadata destinations must
-+				 * indicate that they do so.
-+				 */
-+				DEBUG_NET_WARN_ON_ONCE(!ops->rx_uses_md_dst);
-+				rx_sc = find_rx_sc(&macsec->secy,
-+						   md_dst->u.macsec_info.sci);
-+				if (!rx_sc)
-+					continue;
-+				/* device indicated macsec offload occurred */
-+				skb->dev = ndev;
-+				skb->pkt_type = PACKET_HOST;
-+				eth_skb_pkt_type(skb, ndev);
-+				ret = RX_HANDLER_ANOTHER;
-+				goto out;
-+			}
-+
-+			/* This datapath is insecure because it is unable to
-+			 * enforce isolation of broadcast/multicast traffic and
-+			 * unicast traffic with promiscuous mode on the macsec
-+			 * netdev. Since the core stack has no mechanism to
-+			 * check that the hardware did indeed receive MACsec
-+			 * traffic, it is possible that the response handling
-+			 * done by the MACsec port was to a plaintext packet.
-+			 * This violates the MACsec protocol standard.
-+			 */
- 			if (ether_addr_equal_64bits(hdr->h_dest,
- 						    ndev->dev_addr)) {
- 				/* exact match, divert skb to this port */
-@@ -1033,14 +1063,10 @@ static enum rx_handler_result handle_not
- 					break;
- 
- 				nskb->dev = ndev;
--				if (ether_addr_equal_64bits(hdr->h_dest,
--							    ndev->broadcast))
--					nskb->pkt_type = PACKET_BROADCAST;
--				else
--					nskb->pkt_type = PACKET_MULTICAST;
-+				eth_skb_pkt_type(nskb, ndev);
- 
- 				__netif_rx(nskb);
--			} else if (rx_sc || ndev->flags & IFF_PROMISC) {
-+			} else if (ndev->flags & IFF_PROMISC) {
- 				skb->dev = ndev;
- 				skb->pkt_type = PACKET_HOST;
- 				ret = RX_HANDLER_ANOTHER;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index f7d41ba110a7f..dfa06737ff05e 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -15971,7 +15971,7 @@ static int __init i40e_init_module(void)
+ 	 * since we need to be able to guarantee forward progress even under
+ 	 * memory pressure.
+ 	 */
+-	i40e_wq = alloc_workqueue("%s", WQ_MEM_RECLAIM, 0, i40e_driver_name);
++	i40e_wq = alloc_workqueue("%s", 0, 0, i40e_driver_name);
+ 	if (!i40e_wq) {
+ 		pr_err("%s: Failed to create workqueue\n", i40e_driver_name);
+ 		return -ENOMEM;
+-- 
+2.43.0
+
 
 
 
