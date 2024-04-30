@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05368B735D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A788B722A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D592883A0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 358071C21957
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1884212CD9B;
-	Tue, 30 Apr 2024 11:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B5312C530;
+	Tue, 30 Apr 2024 11:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIMO7KVB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3Vh+x7K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94A38801;
-	Tue, 30 Apr 2024 11:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2786112C462;
+	Tue, 30 Apr 2024 11:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475889; cv=none; b=utC1Uq7z7dOmS/xsaoGEiSqlYUswm07cyLzw/St+jLJyTS5kBGpDbuykualoOONXj8IWiLCHlJvKNCpeCvC6pp6MvXudAkAzYnnOdA2SSHMRVugfS0LihiXsoIk3SEucsZ12ZjuWI/9c+JNp5zUIY4Xfyx9FuNtJczJvmPd9p6w=
+	t=1714475111; cv=none; b=lpXVzkHuD5+GEYdpWKVrJzqs9qlG73+appfO9AmM0uyjaN06sD/ifV3DadK03P0IXy5Pa2pxK3Y4Inpr5m2CefgcotgYDq4xp/9ZS/2aaUnA4F1iNZ/ivvNrIvQPA7FrRc+nW2CLbEOZSgWXT03CtLDip4SERitqdXBYcJgYYWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475889; c=relaxed/simple;
-	bh=qYNejDpzSjT6N3YmcfCPI6PDRU6RY9XgUIcNzQ9m+iQ=;
+	s=arc-20240116; t=1714475111; c=relaxed/simple;
+	bh=1kw9PEiirhz+smld03BUARW/SHt7NYTZLhLTqIh7qYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rexl4a4wZKQIwJLmVaRZo/Xr3CuOjV9vfPsU+nwfzHQ1goJYJIcD8uOkOEaJ28t5y5OZ5ZSHYYGIV04ckI46+l3YO4mcrX2PZt0WSVdkKYWQN8P+r2D5nFuSOXgOHKxiXTZZAXuW68LyELSGF4E6Utfbi5rQR+XyJoIp9rY0tv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIMO7KVB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDDFC2BBFC;
-	Tue, 30 Apr 2024 11:18:09 +0000 (UTC)
+	 MIME-Version; b=tBULalBhXbnoGu+gHwFrwqjAtT3I3WjCkUoVqc7Q1NiMAvCTxKLsBdVopMl990i8c8rlTSCQ8NNYx5sZJwMtWj3R/h4qD57OTnJ9wQJGCYVzh5g/OP54WGVX8LXMFs/Qk2vwIkDO6k6mJ1rjB1nRvHQVqEStCYLM1MfZNuN794s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3Vh+x7K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D605C2BBFC;
+	Tue, 30 Apr 2024 11:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475889;
-	bh=qYNejDpzSjT6N3YmcfCPI6PDRU6RY9XgUIcNzQ9m+iQ=;
+	s=korg; t=1714475111;
+	bh=1kw9PEiirhz+smld03BUARW/SHt7NYTZLhLTqIh7qYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIMO7KVB4nK6aLhj3wiQ6dnDeRbMZiMXe+/wirDrltP4FYH/qc6acAEX4W42MUBSL
-	 633k44WvoohF0yBuLLCt6hN87C7dmY7VM2FTpXonu8aFwhmo4STyOZbl//xg8e9Mw0
-	 lEkdqoRgfX2kwGn3X6cWAno7Hjk4zZcOkFg4dF4w=
+	b=P3Vh+x7KSEPss0BftE68ityE8nfaueRsdrgG17pBS4AKTp/RZ08yTKjAkZgJnMkKu
+	 CiPBxZAGKHlhSahra/h05yy1q94A9EDlErFFbvXezAvmPbLSZ16CHy1lZo0WfznilV
+	 X7yHSqa/F3XSItvVAzGscB01Pmp5T6v0thLKgGx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Shifeng Li <lishifeng@sangfor.com.cn>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Subject: [PATCH 5.15 49/80] net/mlx5e: Fix a race in command alloc flow
+	Yick Xie <yick.xie@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 136/138] udp: preserve the connected status if only UDP cmsg
 Date: Tue, 30 Apr 2024 12:40:21 +0200
-Message-ID: <20240430103044.866859144@linuxfoundation.org>
+Message-ID: <20240430103053.405662987@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shifeng Li <lishifeng@sangfor.com.cn>
+From: Yick Xie <yick.xie@gmail.com>
 
-commit 8f5100da56b3980276234e812ce98d8f075194cd upstream.
+commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
 
-Fix a cmd->ent use after free due to a race on command entry.
-Such race occurs when one of the commands releases its last refcount and
-frees its index and entry while another process running command flush
-flow takes refcount to this command entry. The process which handles
-commands flush may see this command as needed to be flushed if the other
-process allocated a ent->idx but didn't set ent to cmd->ent_arr in
-cmd_work_handler(). Fix it by moving the assignment of cmd->ent_arr into
-the spin lock.
+If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+"connected" should not be set to 0. Otherwise it stops
+the connected socket from using the cached route.
 
-[70013.081955] BUG: KASAN: use-after-free in mlx5_cmd_trigger_completions+0x1e2/0x4c0 [mlx5_core]
-[70013.081967] Write of size 4 at addr ffff88880b1510b4 by task kworker/26:1/1433361
-[70013.081968]
-[70013.082028] Workqueue: events aer_isr
-[70013.082053] Call Trace:
-[70013.082067]  dump_stack+0x8b/0xbb
-[70013.082086]  print_address_description+0x6a/0x270
-[70013.082102]  kasan_report+0x179/0x2c0
-[70013.082173]  mlx5_cmd_trigger_completions+0x1e2/0x4c0 [mlx5_core]
-[70013.082267]  mlx5_cmd_flush+0x80/0x180 [mlx5_core]
-[70013.082304]  mlx5_enter_error_state+0x106/0x1d0 [mlx5_core]
-[70013.082338]  mlx5_try_fast_unload+0x2ea/0x4d0 [mlx5_core]
-[70013.082377]  remove_one+0x200/0x2b0 [mlx5_core]
-[70013.082409]  pci_device_remove+0xf3/0x280
-[70013.082439]  device_release_driver_internal+0x1c3/0x470
-[70013.082453]  pci_stop_bus_device+0x109/0x160
-[70013.082468]  pci_stop_and_remove_bus_device+0xe/0x20
-[70013.082485]  pcie_do_fatal_recovery+0x167/0x550
-[70013.082493]  aer_isr+0x7d2/0x960
-[70013.082543]  process_one_work+0x65f/0x12d0
-[70013.082556]  worker_thread+0x87/0xb50
-[70013.082571]  kthread+0x2e9/0x3a0
-[70013.082592]  ret_from_fork+0x1f/0x40
-
-The logical relationship of this error is as follows:
-
-             aer_recover_work              |          ent->work
--------------------------------------------+------------------------------
-aer_recover_work_func                      |
-|- pcie_do_recovery                        |
-  |- report_error_detected                 |
-    |- mlx5_pci_err_detected               |cmd_work_handler
-      |- mlx5_enter_error_state            |  |- cmd_alloc_index
-        |- enter_error_state               |    |- lock cmd->alloc_lock
-          |- mlx5_cmd_flush                |    |- clear_bit
-            |- mlx5_cmd_trigger_completions|    |- unlock cmd->alloc_lock
-              |- lock cmd->alloc_lock      |
-              |- vector = ~dev->cmd.vars.bitmask
-              |- for_each_set_bit          |
-                |- cmd_ent_get(cmd->ent_arr[i]) (UAF)
-              |- unlock cmd->alloc_lock    |  |- cmd->ent_arr[ent->idx]=ent
-
-The cmd->ent_arr[ent->idx] assignment and the bit clearing are not
-protected by the cmd->alloc_lock in cmd_work_handler().
-
-Fixes: 50b2412b7e78 ("net/mlx5: Avoid possible free of command entry while timeout comp handler")
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Shifeng Li <lishifeng@sangfor.com.cn>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/ipv4/udp.c |    5 +++--
+ net/ipv6/udp.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -114,15 +114,18 @@ static u8 alloc_token(struct mlx5_cmd *c
- 	return token;
- }
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1125,16 +1125,17 @@ int udp_sendmsg(struct sock *sk, struct
  
--static int cmd_alloc_index(struct mlx5_cmd *cmd)
-+static int cmd_alloc_index(struct mlx5_cmd *cmd, struct mlx5_cmd_work_ent *ent)
- {
- 	unsigned long flags;
- 	int ret;
- 
- 	spin_lock_irqsave(&cmd->alloc_lock, flags);
- 	ret = find_first_bit(&cmd->bitmask, cmd->max_reg_cmds);
--	if (ret < cmd->max_reg_cmds)
-+	if (ret < cmd->max_reg_cmds) {
- 		clear_bit(ret, &cmd->bitmask);
-+		ent->idx = ret;
-+		cmd->ent_arr[ent->idx] = ent;
-+	}
- 	spin_unlock_irqrestore(&cmd->alloc_lock, flags);
- 
- 	return ret < cmd->max_reg_cmds ? ret : -ENOMEM;
-@@ -924,7 +927,7 @@ static void cmd_work_handler(struct work
- 	sem = ent->page_queue ? &cmd->pages_sem : &cmd->sem;
- 	down(sem);
- 	if (!ent->page_queue) {
--		alloc_ret = cmd_alloc_index(cmd);
-+		alloc_ret = cmd_alloc_index(cmd, ent);
- 		if (alloc_ret < 0) {
- 			mlx5_core_err_rl(dev, "failed to allocate command entry\n");
- 			if (ent->callback) {
-@@ -939,15 +942,14 @@ static void cmd_work_handler(struct work
- 			up(sem);
- 			return;
+ 	if (msg->msg_controllen) {
+ 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip_cmsg_send(sk, msg, &ipc,
+ 					   sk->sk_family == AF_INET6);
++			connected = 0;
++		}
+ 		if (unlikely(err < 0)) {
+ 			kfree(ipc.opt);
+ 			return err;
  		}
--		ent->idx = alloc_ret;
- 	} else {
- 		ent->idx = cmd->max_reg_cmds;
- 		spin_lock_irqsave(&cmd->alloc_lock, flags);
- 		clear_bit(ent->idx, &cmd->bitmask);
-+		cmd->ent_arr[ent->idx] = ent;
- 		spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+ 		if (ipc.opt)
+ 			free = 1;
+-		connected = 0;
  	}
+ 	if (!ipc.opt) {
+ 		struct ip_options_rcu *inet_opt;
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1453,9 +1453,11 @@ do_udp_sendmsg:
+ 		ipc6.opt = opt;
  
--	cmd->ent_arr[ent->idx] = ent;
- 	lay = get_inst(cmd, ent->idx);
- 	ent->lay = lay;
- 	memset(lay, 0, sizeof(*lay));
+ 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, &fl6,
+ 						    &ipc6);
++			connected = false;
++		}
+ 		if (err < 0) {
+ 			fl6_sock_release(flowlabel);
+ 			return err;
+@@ -1467,7 +1469,6 @@ do_udp_sendmsg:
+ 		}
+ 		if (!(opt->opt_nflen|opt->opt_flen))
+ 			opt = NULL;
+-		connected = false;
+ 	}
+ 	if (!opt) {
+ 		opt = txopt_get(np);
 
 
 
