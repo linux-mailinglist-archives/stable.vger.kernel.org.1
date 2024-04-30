@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-41877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55FA98B7034
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:44:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38308B715F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1243828566C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:44:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9423E1F23341
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496F712C550;
-	Tue, 30 Apr 2024 10:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E429B12C476;
+	Tue, 30 Apr 2024 10:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryMPGtEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oFnXUNt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0519512C54B;
-	Tue, 30 Apr 2024 10:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A237912C462;
+	Tue, 30 Apr 2024 10:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473830; cv=none; b=SrvKd1NDFX/FaiOJziMAPzsG5xly+nXPwUD4Veh1R7rFygqjcr+4GTV5MsG7K9I7y52mmRWzw1nWVIo8I3WWuZxuYdZc1XorH1GnVEFIh/7eGMe5ppzRHS5QM7y6erLnfl80eOpsRGrs+jnHvkFE+AXVa8KEToFVwAIO7X/efqI=
+	t=1714474552; cv=none; b=FD/njwn9mz0hgxqBXpmUjVKiGxSdfRMqvDjgtUNdDBcMKBLyXHiyyleXXXBRWvkKbIPGMSWYT+aVdY1BR3iOpwNhnHJ87hPja7ztsgt2RXXVv5x8QJOQsqIsLGFHc/6FYAylk5uLDjw85mhGkfPoUt4+LWv4iwVHG2/vG6JHncc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473830; c=relaxed/simple;
-	bh=xCt7f1sQ1ukGpbbVUJhD76nIcRisWl4fNWnPPW1/OZk=;
+	s=arc-20240116; t=1714474552; c=relaxed/simple;
+	bh=CnPL1QINPj4EANswjwcDm1Z9IhPMqHexVW1UlPrCgWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWKzTDPnQwIC0OkC3eEFN2iGfsmZTyZLEx1eF7y/pC17d600lI+FcqvYIy0mb5yAAY3jxnj5JCUHzRPFaRXX2nConstmDC2utYPiHkPgyVueiF0nWqX6YqVIQMM/OZNsGZm6HE8JLWQ+zlNsyeHbzm11jQzrYUlltg/8xtvuw9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryMPGtEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B9CC2BBFC;
-	Tue, 30 Apr 2024 10:43:49 +0000 (UTC)
+	 MIME-Version; b=Uo2gv86d+dJYA8aPpRSXC5ayaRUbYIJfmZjmrk3M3Q0XWBuZ3eXNY53dzyfybDJ8DDL0SQtxWUHCcFYpFMjDqJZWw5z8szLPEWP2/P4oT2UtE3eeaN2eszRZ9WFlhEoODLHyATMy2FvfKJBv5GrH7VLVall4NS0fM3qa8uHQL6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oFnXUNt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D10C4AF19;
+	Tue, 30 Apr 2024 10:55:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473829;
-	bh=xCt7f1sQ1ukGpbbVUJhD76nIcRisWl4fNWnPPW1/OZk=;
+	s=korg; t=1714474552;
+	bh=CnPL1QINPj4EANswjwcDm1Z9IhPMqHexVW1UlPrCgWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryMPGtEhJ0M2x2Oa3PXghBfoMsAn0CLKKOs7rQCeyxpb7ZRG4IK7yVZ7EvkcnJFV6
-	 9KSRgYK8EfJEdPGTWbI+F7aD0qXK6FqcL+b0UoJSsAEKl0MsLfxhHTz3QmJoppJztP
-	 1Rg2SFcrWK91TKSAYMit02mkYvfn1qukqLd+xk7A=
+	b=0oFnXUNtQ6zmOh1fw9aNc/6RbfNvxPmxTpdQ+jFP6pPXpQ2DK6+9D1DXbUqdd8wZs
+	 B0wg9XOhVu55eWTtSMDXQeDx5wXyW2trtOC07uq17gikQswmMdGLL2EF0SY3Hp9tR9
+	 lhAZEhF/hJGnIepDc3aRSnvSFWLKYA6sFjLNlf8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Eric Dumazet <edumazet@google.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 51/77] net: openvswitch: Fix Use-After-Free in ovs_ct_exit
-Date: Tue, 30 Apr 2024 12:39:30 +0200
-Message-ID: <20240430103042.643880996@linuxfoundation.org>
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.8 193/228] mtd: limit OTP NVMEM cell parse to non-NAND devices
+Date: Tue, 30 Apr 2024 12:39:31 +0200
+Message-ID: <20240430103109.368580430@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 5ea7b72d4fac2fdbc0425cd8f2ea33abe95235b2 ]
+commit d2d73a6dd17365c43e109263841f7c26da55cfb0 upstream.
 
-Since kfree_rcu, which is called in the hlist_for_each_entry_rcu traversal
-of ovs_ct_limit_exit, is not part of the RCU read critical section, it
-is possible that the RCU grace period will pass during the traversal and
-the key will be free.
+MTD OTP logic is very fragile on parsing NVMEM cell and can be
+problematic with some specific kind of devices.
 
-To prevent this, it should be changed to hlist_for_each_entry_safe.
+The problem was discovered by e87161321a40 ("mtd: rawnand: macronix:
+OTP access for MX30LFxG18AC") where OTP support was added to a NAND
+device. With the case of NAND devices, it does require a node where ECC
+info are declared and all the fixed partitions, and this cause the OTP
+codepath to parse this node as OTP NVMEM cells, making probe fail and
+the NAND device registration fail.
 
-Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://lore.kernel.org/r/ZiYvzQN/Ry5oeFQW@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+MTD OTP parsing should have been limited to always using compatible to
+prevent this error by using node with compatible "otp-user" or
+"otp-factory".
+
+NVMEM across the years had various iteration on how cells could be
+declared in DT, in some old implementation, no_of_node should have been
+enabled but now add_legacy_fixed_of_cells should be used to disable
+NVMEM to parse child node as NVMEM cell.
+
+To fix this and limit any regression with other MTD that makes use of
+declaring OTP as direct child of the dev node, disable
+add_legacy_fixed_of_cells if we detect the MTD type is Nand.
+
+With the following logic, the OTP NVMEM entry is correctly created with
+no cells and the MTD Nand is correctly probed and partitions are
+correctly exposed.
+
+Fixes: 4b361cfa8624 ("mtd: core: add OTP nvmem provider support")
+Cc: <stable@vger.kernel.org> # v6.7+
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240412105030.1598-1-ansuelsmth@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/conntrack.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/mtdcore.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index 352e80e6cd75c..3ea1e5ffaf80d 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -1836,9 +1836,9 @@ static void ovs_ct_limit_exit(struct net *net, struct ovs_net *ovs_net)
- 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
- 		struct hlist_head *head = &info->limits[i];
- 		struct ovs_ct_limit *ct_limit;
-+		struct hlist_node *next;
- 
--		hlist_for_each_entry_rcu(ct_limit, head, hlist_node,
--					 lockdep_ovsl_is_held())
-+		hlist_for_each_entry_safe(ct_limit, next, head, hlist_node)
- 			kfree_rcu(ct_limit, rcu);
- 	}
- 	kfree(ovs_net->ct_limit_info->limits);
--- 
-2.43.0
-
+--- a/drivers/mtd/mtdcore.c
++++ b/drivers/mtd/mtdcore.c
+@@ -900,7 +900,7 @@ static struct nvmem_device *mtd_otp_nvme
+ 	config.name = compatible;
+ 	config.id = NVMEM_DEVID_AUTO;
+ 	config.owner = THIS_MODULE;
+-	config.add_legacy_fixed_of_cells = true;
++	config.add_legacy_fixed_of_cells = !mtd_type_is_nand(mtd);
+ 	config.type = NVMEM_TYPE_OTP;
+ 	config.root_only = true;
+ 	config.ignore_wp = true;
 
 
 
