@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25BA48B71AF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3978B7117
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57C721C2217C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFADBB22A76
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB0D12C487;
-	Tue, 30 Apr 2024 10:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E5912C499;
+	Tue, 30 Apr 2024 10:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXD1gNlF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuCif9Jm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6357464;
-	Tue, 30 Apr 2024 10:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E2A12C487;
+	Tue, 30 Apr 2024 10:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474767; cv=none; b=ZduCMoB9vZ2FmMAf7zpXrpBrT/bYKkGFfHedxaW3/Ljz3sZ1Wzz2Pbz828VTAmh7hgLNWeHr+/1FBmcS71cfYexwDOLkgLEcRGOwkvKh9zHBaNLtlcIm0eCxfMyOW5+t20onb/scAzFaUOGB4rCk7Pc2aVPGXYt2WWnVxELEM4I=
+	t=1714474369; cv=none; b=ETKtm2zirMHtK6zLSwUAH20mh5p+uwUYYPPksJurc8F8QBNhZHzC252JL03QgIORq2GgHT6Dc5NdM2OaED7yx6ry5bu8NdVwLGZ5ZSAxTOxX3hFLLTnjTfk8vgf05fEwarQLlP+uqBUomdwE5VaNC5uifkgj1P7TvqATgvvaunk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474767; c=relaxed/simple;
-	bh=sYRzUwvaCiVL+qfZJTHVInPFLt1Za6h7upf6ujLwnp8=;
+	s=arc-20240116; t=1714474369; c=relaxed/simple;
+	bh=SWcoPSLxCXskqVVJwNefBCmsM8mmi2ZGqxRrrm7wX4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ss6MUuKMPaKV3roQYVSuKq8uamBKf8vBWtLYcT5KwjIjdT468XWrYmALM/pKEqdWfDjEN9UC7ww0CJ8PXGMUKBec9qzhYl0XSqC2TyLVLtTAMmczKKtmVpecBL+T+9Kf97m2GD7jrKCcuqjE3/25PJLYmeGdjaiDOJfdUVDIDZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXD1gNlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9487C2BBFC;
-	Tue, 30 Apr 2024 10:59:26 +0000 (UTC)
+	 MIME-Version; b=CLPY0gUR7gInH4Ob94R4oMfjarwVJTpiyNiANnYWynuJEA/qyZgcEWqFTUmiP0CMiqUJeyzjfqe2FuRL0UqQztdOiJMKWsRolFklRt5+cO1ySfcum8tPW8emGVvsLomwsiqPNujRCJhrpxy/PkDO8wyqOqktfI8H/eS4pikxgXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuCif9Jm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3658CC2BBFC;
+	Tue, 30 Apr 2024 10:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474767;
-	bh=sYRzUwvaCiVL+qfZJTHVInPFLt1Za6h7upf6ujLwnp8=;
+	s=korg; t=1714474369;
+	bh=SWcoPSLxCXskqVVJwNefBCmsM8mmi2ZGqxRrrm7wX4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XXD1gNlFUpQYqEBtblg6gsqGlPXPGgfmsfQXnsY3bMvJ16qwK2fWD0AsHQELowWRD
-	 E8nza3s/SD3vgc/JHScn0IThaHH8kEr0ure8SEP5do8tvwQlFSGbgjzWp/acfmi8cF
-	 IBaCrgg2yVKatFYSVGYqlEl/HYeOrcn80KHxKeXg=
+	b=tuCif9Jmu7k4vaml3uak6BgErhvAE6yL1Pz6zolQwGFJTz4PxwgGlD5hg2Ltp7Xum
+	 3XDPvxVonZLL0kOQLq3Y0Gdwn9daRhAN7j7Rw+HtOYeZvGlU+TFVQxyoYpB9Vgc/4q
+	 E3/ESe3nPdrY1do2J1jppQZtq+qlX3J8O9fcaT1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 5.10 029/138] irqflags: Explicitly ignore lockdep_hrtimer_exit() argument
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.8 136/228] rust: dont select CONSTRUCTORS
 Date: Tue, 30 Apr 2024 12:38:34 +0200
-Message-ID: <20240430103050.287574503@linuxfoundation.org>
+Message-ID: <20240430103107.726554402@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alice Ryhl <aliceryhl@google.com>
 
-commit c1d11fc2c8320871b40730991071dd0a0b405bc8 upstream.
+commit 7d49f53af4b988b188d3932deac2c9c80fd7d9ce upstream.
 
-When building with 'make W=1' but CONFIG_TRACE_IRQFLAGS=n, the
-unused argument to lockdep_hrtimer_exit() causes a warning:
+This was originally part of commit 4b9a68f2e59a0 ("rust: add support for
+static synchronisation primitives") from the old Rust branch, which used
+module constructors to initialize globals containing various
+synchronisation primitives with pin-init. That commit has never been
+upstreamed, but the `select CONSTRUCTORS` statement ended up being
+included in the patch that initially added Rust support to the Linux
+Kernel.
 
-kernel/time/hrtimer.c:1655:14: error: variable 'expires_in_hardirq' set but not used [-Werror=unused-but-set-variable]
+We are not using module constructors, so let's remove the select.
 
-This is intentional behavior, so add a cast to void to shut up the warning.
-
-Fixes: 73d20564e0dc ("hrtimer: Don't dereference the hrtimer pointer after the callback")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240408074609.3170807-1-arnd@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202311191229.55QXHVc6-lkp@intel.com/
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Link: https://lore.kernel.org/r/20240308-constructors-v1-1-4c811342391c@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/irqflags.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ init/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -133,7 +133,7 @@ do {						\
- # define lockdep_softirq_enter()		do { } while (0)
- # define lockdep_softirq_exit()			do { } while (0)
- # define lockdep_hrtimer_enter(__hrtimer)	false
--# define lockdep_hrtimer_exit(__context)	do { } while (0)
-+# define lockdep_hrtimer_exit(__context)	do { (void)(__context); } while (0)
- # define lockdep_posixtimer_enter()		do { } while (0)
- # define lockdep_posixtimer_exit()		do { } while (0)
- # define lockdep_irq_work_enter(__work)		do { } while (0)
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1908,7 +1908,6 @@ config RUST
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+-	select CONSTRUCTORS
+ 	help
+ 	  Enables Rust support in the kernel.
+ 
 
 
 
