@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559FC8B7215
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 107858B7188
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79DAB1C22736
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41ED91C22300
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E8412D1FC;
-	Tue, 30 Apr 2024 11:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C96712C490;
+	Tue, 30 Apr 2024 10:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCuipd8g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShwTEWRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F45912C54B;
-	Tue, 30 Apr 2024 11:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8A4128816;
+	Tue, 30 Apr 2024 10:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475046; cv=none; b=YdxD87uPu5Ilgn2ehejmWXKyc4TCuY6OV9+bK9vyzxIisVd1lRyLbLSfUtCwEY9XunLZJ46FChTduA+UL0445FHerfrWrjyEmFY+FFO4KBj/CQy2NjlyMHDgKXdfC+Q3ZrP23Lk7Yj7sh2jg6MSr+rGrRr/9xEz1gIbvcqe0Io4=
+	t=1714474656; cv=none; b=qf2M9+cwSLYPZCcW27WkuMpdVpvrUotnVyLN4t1pkgWWAQ+wqdWXsQZk1gilVjARwMTUz8CCu4kaqLs3wuY9O/h6+TA/wFLBorDPlXj1N8kynlRZteGcRN7+Bp/n8L9MmfzFo6OAO8rebi95wTbX62Q+96qJPUYraNLA/VQKU/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475046; c=relaxed/simple;
-	bh=9CeyV6i1NsBti6jv/40xkMM+vTjK0aRjBFbwrN1BGnU=;
+	s=arc-20240116; t=1714474656; c=relaxed/simple;
+	bh=WMfvIpjnDsdbCIEZvwI410ILxwMxzDo+VbOFQo2H7jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBIpxO+P+hxhTCTcVG9ZM6Rgz6ukcxXiTKjVTm14CjVXiNRUpJUgRjqd9qu5saJJs4Ka92hW8HPfoEDQa+1MpO9A26ckUdcT9O6EW4e1t6MmN+5qDCJSYFHG0SuTvSIZ/+jXTStkHJG/3toviiq0dOxpyOrbSKTDo42j+m+/tjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCuipd8g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D563C2BBFC;
-	Tue, 30 Apr 2024 11:04:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q7IDaYQ5bnD6DAYrily9rHxEFE3QzdUcZFvPsRMQNSOOz7GXsjMfD/mKYEwnbJFgWFbYai4/tTTXzInAoXSZMq5BfolRNZ5UO+kJ1uaucNha1+r7BdaRDaDF7nEY3K0uDiYFt1g7Pb0VNV9fCHwXRX52EhAGC7ptVU1BClWl4J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShwTEWRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591D7C4AF19;
+	Tue, 30 Apr 2024 10:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475046;
-	bh=9CeyV6i1NsBti6jv/40xkMM+vTjK0aRjBFbwrN1BGnU=;
+	s=korg; t=1714474656;
+	bh=WMfvIpjnDsdbCIEZvwI410ILxwMxzDo+VbOFQo2H7jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCuipd8gfDmdyp+vESBkfLYkwwrgUgVBd/p/yshEaOfRqSxb2HSadLC6EunsoDawz
-	 UePYcxlqjloi6Ln+Pcq9k2LIjPTeUzaPzjDGcb0dCNMDl1nuOVYxgxHc1m3r7sBYic
-	 yWihhH5kD48YpN7MPlzPELKiaaSc5RCyqXgWXBmY=
+	b=ShwTEWRWa/XdCK+re/8oyh0vCuyn/gjqKfGG9dfWqt15W6YSSRcDuSWpQ4ZHBsxTJ
+	 jab0E1kFityo0pghpGDdexKshnsYDQVaATfiIROnadsOx14p/Yg14F5mFROlcZ6uxu
+	 /5gARfpRKAyJKjGqGjoqqF9aMp4MpdCOIi/LOcxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10 114/138] Bluetooth: Fix type of len in {l2cap,sco}_sock_getsockopt_old()
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 221/228] riscv: hwprobe: fix invalid sign extension for RISCV_HWPROBE_EXT_ZVFHMIN
 Date: Tue, 30 Apr 2024 12:39:59 +0200
-Message-ID: <20240430103052.764533724@linuxfoundation.org>
+Message-ID: <20240430103110.180657241@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,135 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Clément Léger <cleger@rivosinc.com>
 
-commit 9bf4e919ccad613b3596eebf1ff37b05b6405307 upstream.
+[ Upstream commit 5ea6764d9095e234b024054f75ebbccc4f0eb146 ]
 
-After an innocuous optimization change in LLVM main (19.0.0), x86_64
-allmodconfig (which enables CONFIG_KCSAN / -fsanitize=thread) fails to
-build due to the checks in check_copy_size():
+The current definition yields a negative 32bits signed value which
+result in a mask with is obviously incorrect. Replace it by using a
+1ULL bit shift value to obtain a single set bit mask.
 
-  In file included from net/bluetooth/sco.c:27:
-  In file included from include/linux/module.h:13:
-  In file included from include/linux/stat.h:19:
-  In file included from include/linux/time.h:60:
-  In file included from include/linux/time32.h:13:
-  In file included from include/linux/timex.h:67:
-  In file included from arch/x86/include/asm/timex.h:6:
-  In file included from arch/x86/include/asm/tsc.h:10:
-  In file included from arch/x86/include/asm/msr.h:15:
-  In file included from include/linux/percpu.h:7:
-  In file included from include/linux/smp.h:118:
-  include/linux/thread_info.h:244:4: error: call to '__bad_copy_from'
-  declared with 'error' attribute: copy source size is too small
-    244 |                         __bad_copy_from();
-        |                         ^
-
-The same exact error occurs in l2cap_sock.c. The copy_to_user()
-statements that are failing come from l2cap_sock_getsockopt_old() and
-sco_sock_getsockopt_old(). This does not occur with GCC with or without
-KCSAN or Clang without KCSAN enabled.
-
-len is defined as an 'int' because it is assigned from
-'__user int *optlen'. However, it is clamped against the result of
-sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
-platforms). This is done with min_t() because min() requires compatible
-types, which results in both len and the result of sizeof() being casted
-to 'unsigned int', meaning len changes signs and the result of sizeof()
-is truncated. From there, len is passed to copy_to_user(), which has a
-third parameter type of 'unsigned long', so it is widened and changes
-signs again. This excessive casting in combination with the KCSAN
-instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
-call, failing the build.
-
-The official recommendation from LLVM developers is to consistently use
-long types for all size variables to avoid the unnecessary casting in
-the first place. Change the type of len to size_t in both
-l2cap_sock_getsockopt_old() and sco_sock_getsockopt_old(). This clears
-up the error while allowing min_t() to be replaced with min(), resulting
-in simpler code with no casts and fewer implicit conversions. While len
-is a different type than optlen now, it should result in no functional
-change because the result of sizeof() will clamp all values of optlen in
-the same manner as before.
-
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2007
-Link: https://github.com/llvm/llvm-project/issues/85647
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5dadda5e6a59 ("riscv: hwprobe: export Zvfh[min] ISA extensions")
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240409143839.558784-1-cleger@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c |    7 ++++---
- net/bluetooth/sco.c        |    7 ++++---
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ arch/riscv/include/uapi/asm/hwprobe.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -456,7 +456,8 @@ static int l2cap_sock_getsockopt_old(str
- 	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
- 	struct l2cap_options opts;
- 	struct l2cap_conninfo cinfo;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 	u32 opt;
- 
- 	BT_DBG("sk %p", sk);
-@@ -503,7 +504,7 @@ static int l2cap_sock_getsockopt_old(str
- 
- 		BT_DBG("mode 0x%2.2x", chan->mode);
- 
--		len = min_t(unsigned int, len, sizeof(opts));
-+		len = min(len, sizeof(opts));
- 		if (copy_to_user(optval, (char *) &opts, len))
- 			err = -EFAULT;
- 
-@@ -553,7 +554,7 @@ static int l2cap_sock_getsockopt_old(str
- 		cinfo.hci_handle = chan->conn->hcon->handle;
- 		memcpy(cinfo.dev_class, chan->conn->hcon->dev_class, 3);
- 
--		len = min_t(unsigned int, len, sizeof(cinfo));
-+		len = min(len, sizeof(cinfo));
- 		if (copy_to_user(optval, (char *) &cinfo, len))
- 			err = -EFAULT;
- 
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -901,7 +901,8 @@ static int sco_sock_getsockopt_old(struc
- 	struct sock *sk = sock->sk;
- 	struct sco_options opts;
- 	struct sco_conninfo cinfo;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 
- 	BT_DBG("sk %p", sk);
- 
-@@ -923,7 +924,7 @@ static int sco_sock_getsockopt_old(struc
- 
- 		BT_DBG("mtu %d", opts.mtu);
- 
--		len = min_t(unsigned int, len, sizeof(opts));
-+		len = min(len, sizeof(opts));
- 		if (copy_to_user(optval, (char *)&opts, len))
- 			err = -EFAULT;
- 
-@@ -941,7 +942,7 @@ static int sco_sock_getsockopt_old(struc
- 		cinfo.hci_handle = sco_pi(sk)->conn->hcon->handle;
- 		memcpy(cinfo.dev_class, sco_pi(sk)->conn->hcon->dev_class, 3);
- 
--		len = min_t(unsigned int, len, sizeof(cinfo));
-+		len = min(len, sizeof(cinfo));
- 		if (copy_to_user(optval, (char *)&cinfo, len))
- 			err = -EFAULT;
- 
+diff --git a/arch/riscv/include/uapi/asm/hwprobe.h b/arch/riscv/include/uapi/asm/hwprobe.h
+index 9f2a8e3ff2048..2902f68dc913a 100644
+--- a/arch/riscv/include/uapi/asm/hwprobe.h
++++ b/arch/riscv/include/uapi/asm/hwprobe.h
+@@ -54,7 +54,7 @@ struct riscv_hwprobe {
+ #define		RISCV_HWPROBE_EXT_ZFHMIN	(1 << 28)
+ #define		RISCV_HWPROBE_EXT_ZIHINTNTL	(1 << 29)
+ #define		RISCV_HWPROBE_EXT_ZVFH		(1 << 30)
+-#define		RISCV_HWPROBE_EXT_ZVFHMIN	(1 << 31)
++#define		RISCV_HWPROBE_EXT_ZVFHMIN	(1ULL << 31)
+ #define		RISCV_HWPROBE_EXT_ZFA		(1ULL << 32)
+ #define		RISCV_HWPROBE_EXT_ZTSO		(1ULL << 33)
+ #define		RISCV_HWPROBE_EXT_ZACAS		(1ULL << 34)
+-- 
+2.43.0
+
 
 
 
