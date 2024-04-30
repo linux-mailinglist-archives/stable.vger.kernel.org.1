@@ -1,165 +1,120 @@
-Return-Path: <stable+bounces-42773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DA58B7686
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 15:00:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E12F8B7695
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 15:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47EB01C22272
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F176C1F229A8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CC3171658;
-	Tue, 30 Apr 2024 13:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DD6171650;
+	Tue, 30 Apr 2024 13:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="d65giP2e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UBJeq0bb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15C217106E;
-	Tue, 30 Apr 2024 13:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E811242AA5;
+	Tue, 30 Apr 2024 13:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714482003; cv=none; b=TAKNOgjaEERYmmhhDwurqsd9xJj7pd+3U30kl0VZq50eC4v1e/TMtCW7UGFOYEbr+Brr0j45D5vtlbM5TQKSr6zE3AeZJ7XfKiMSsTJSePmSrcU4pSIA2UDfbN1fXmvt0oIti2NN5EAP/pX94kQmbPFJADhAiTVOT0qgU9arbIo=
+	t=1714482446; cv=none; b=QJrXMxJK2dzyrJThXq6b/wjq3iqj0ISTKDPYT8IlP5qLDIdqG+d9I+tacWhHMpo8cy6B5uwSIyVnrIJlqxwnwOQwsFZf1DA/lippVoI/gaLdneBdO3WyMLw/dzfX7qh7+tqTZUOE9sVuBTPrgQqi3mTwspmW90abfIDVLDcq1OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714482003; c=relaxed/simple;
-	bh=UMZaNGe7QnAugACQXwrO9a+rEKCYn71GJR5PuFqiQdg=;
-	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
-	 Content-Type:Subject; b=BK9MuBseGKb/1DN+VxWE34p6x6icJIRf/xpjMLjaozlItFG2zUm6zETJuwRhl+mPwk5U722LzCJ0xXnqwooRRkAVq25g28GKQNFn5jYHFEFMkbyvp75dvd+JlHyYKtDnnYd4jtJeOuZ4uks1cJZLOPD6WeQP6lY4Jco6Bsc5y/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=d65giP2e; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
-	:Date:subject:date:message-id:reply-to;
-	bh=M/QoApjdCuoD3z41eYPaP9f9N+N5yYGGcDa+/3o9sWU=; b=d65giP2esg8toD56CmvT0uTjbv
-	m36EyH9rtwY/ivUSbLbcLqQC5qKri6fJNKOix9G3HkHgHxFsSkYaTcDa+KNKSGKcNLW+d078SAAP0
-	5btBeS9yQ6r8pLX+TdzRGKDu+zdSi7u+CcOrA+c+0vETqX6UKPUMjjiHLsyz9+CSh4Fo=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:54324 helo=pettiford)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1s1n5P-00038o-6Y; Tue, 30 Apr 2024 08:59:55 -0400
-Date: Tue, 30 Apr 2024 08:59:54 -0400
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jon Ringle
- <jringle@gridpoint.com>, ria.freelander@gmail.com, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Message-Id: <20240430085954.1ac828e0d2c64cccdf47bdfc@hugovil.com>
-In-Reply-To: <af116cb5-41d8-4a33-97ba-0c7cc821add1@kernel.org>
-References: <20240426135937.3810959-1-hugo@hugovil.com>
-	<17d2cc58-cf68-430d-9248-25abe4c5b0f0@kernel.org>
-	<20240429094717.de45ad35814e3c618e08c36b@hugovil.com>
-	<af116cb5-41d8-4a33-97ba-0c7cc821add1@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1714482446; c=relaxed/simple;
+	bh=qiB8b8aLGWUB+eW++cRid6E+04uq3CftdA6/Q44apIo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MbbfRYT6A986sTUlDX/L8xuQgRDpUVSEgylVxeCVJQOGFS+w4Q+M2xozDFI3apvvuPscYspkyze8gTOYb2H9E1vpcx7C7gvi7QGwOnPGJ3Ac5XuRD8DV89j8uxQE4KuOF5bPdak5LoY3S8+4oEtO5XvT2AKBjso4VD/BcCyN01s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UBJeq0bb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751C5C2BBFC;
+	Tue, 30 Apr 2024 13:07:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714482445;
+	bh=qiB8b8aLGWUB+eW++cRid6E+04uq3CftdA6/Q44apIo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UBJeq0bbPN317U9uxx2fIaIucH6xI2Fc7aKbxOwOVV6pLDIovvHFJjiwY9CiiKt0k
+	 cMFeGHF/xDFlqhnZISR8MnYp74hPGMrvGK1f67KZC4iCpAtkDYR2QQSvREBPtFphs0
+	 RKeM8Qr85mIh2L33tfOFplIUlzyWOi5TWdJXeU/wCJX9Nr/HM/0viGOTQ7Ohj1VMVL
+	 pBbKyNxXASVF42DCSYtwuhTieLO2zyBAwgbzdGCjx5s+EFT1ME4VoUf6M9bEB/9xdE
+	 N5Ke11VPDfWk6rUgWK7H0DUmuV/2BNe7QcbuPGY52qi3qCR12fmruRszx9fWUqILfP
+	 gGMkL0VEqKaBA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1s1nCf-000000007Ur-3g1n;
+	Tue, 30 Apr 2024 15:07:26 +0200
+Date: Tue, 30 Apr 2024 15:07:25 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Doug Anderson <dianders@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, quic_mohamull@quicinc.com,
+	quic_hbandi@quicinc.com, quic_anubhavg@quicinc.com
+Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
+Message-ID: <ZjDtDRCHT3z-3nHh@hovoldconsulting.com>
+References: <20240426155801.25277-1-johan+linaro@kernel.org>
+ <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
+ <ZizKmtcUIYAMpvOQ@hovoldconsulting.com>
+ <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
+ <Zi-ohCWv58d2h5VM@hovoldconsulting.com>
+ <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
+ <CABBYNZJyRR9FA7TYN4+aWMtG9FPUBWMvCtMNUfvaEzxVcYOt-g@mail.gmail.com>
+ <ZjCYu2pc8376rjXk@hovoldconsulting.com>
+ <9eebd77b-c070-4260-a979-9b97f14eb5b1@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -1.1 NICE_REPLY_A Looks like a legit reply (A)
-Subject: Re: [PATCH] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when
- using prescaler
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9eebd77b-c070-4260-a979-9b97f14eb5b1@quicinc.com>
 
-On Tue, 30 Apr 2024 07:22:54 +0200
-Jiri Slaby <jirislaby@kernel.org> wrote:
+On Tue, Apr 30, 2024 at 06:22:26PM +0530, Janaki Ramaiah Thota wrote:
+> On 4/30/2024 12:37 PM, Johan Hovold wrote:
+> > On Mon, Apr 29, 2024 at 01:31:53PM -0400, Luiz Augusto von Dentz wrote:
 
-> On 29. 04. 24, 15:47, Hugo Villeneuve wrote:
-> > On Mon, 29 Apr 2024 08:39:22 +0200
-> > Jiri Slaby <jirislaby@kernel.org> wrote:
-> > 
-> >> On 26. 04. 24, 15:59, Hugo Villeneuve wrote:
-> >>> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> >>>
-> >>> When using a high speed clock with a low baud rate, the 4x prescaler is
-> >>> automatically selected if required. In that case, sc16is7xx_set_baud()
-> >>> properly configures the chip registers, but returns an incorrect baud
-> >>> rate by not taking into account the prescaler value. This incorrect baud
-> >>> rate is then fed to uart_update_timeout().
-> >>>
-> >>> For example, with an input clock of 80MHz, and a selected baud rate of 50,
-> >>> sc16is7xx_set_baud() will return 200 instead of 50.
-> >>>
-> >>> Fix this by first changing the prescaler variable to hold the selected
-> >>> prescaler value instead of the MCR bitfield. Then properly take into
-> >>> account the selected prescaler value in the return value computation.
-> >>>
-> >>> Also add better documentation about the divisor value computation.
-> >>>
-> >>> Fixes: dfeae619d781 ("serial: sc16is7xx")
-> >>> Cc: stable@vger.kernel.org
-> >>> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> >>> ---
-> >>>    drivers/tty/serial/sc16is7xx.c | 23 ++++++++++++++++++-----
-> >>>    1 file changed, 18 insertions(+), 5 deletions(-)
-> >>>
-> >>> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-> >>> index 03cf30e20b75..dcd6c5615401 100644
-> >>> --- a/drivers/tty/serial/sc16is7xx.c
-> >>> +++ b/drivers/tty/serial/sc16is7xx.c
-> >>> @@ -555,16 +555,28 @@ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
-> >>>    	return reg == SC16IS7XX_RHR_REG;
-> >>>    }
-> >>>    
-> >>> +/*
-> >>> + * Configure programmable baud rate generator (divisor) according to the
-> >>> + * desired baud rate.
-> >>> + *
-> >>> + * From the datasheet, the divisor is computed according to:
-> >>> + *
-> >>> + *              XTAL1 input frequency
-> >>> + *             -----------------------
-> >>> + *                    prescaler
-> >>> + * divisor = ---------------------------
-> >>> + *            baud-rate x sampling-rate
-> >>> + */
-> >>>    static int sc16is7xx_set_baud(struct uart_port *port, int baud)
-> >>>    {
-> >>>    	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
-> >>>    	u8 lcr;
-> >>> -	u8 prescaler = 0;
-> >>> +	int prescaler = 1;
+> >> Anyway the fact that firmware loading itself is programming a
+> >> potentially duplicated address already seems wrong enough to me,
+> >> either it shall leave it as 00... or set a valid address otherwise we
+> >> always risk missing yet another duplicate address being introduced and
+> >> then used over the air causing all sorts of problems for users.
 > >>
-> >> Ugh, why do you move to signed arithmetics?
+> >> So to be clear, QCA firmware shall never attempt to flash anything
+> >> other than 00:00:00:00:00:00 if you don't have a valid and unique
+> >> identity address, so we can get rid of this table altogether.
 > > 
-> > Hi Jiri,
-> > before this patch, the variable prescaler was used to store an 8 bit
-> > bitfield. Now the variable meaning is changed to be used as the
-> > prescaler value, which can be 1 or 4 in this case. Leaving
-> > it as u8 would still be ok, or making it "unsigned int" maybe?
 > 
-> Both :). What you prefer -- uint matches more IMO, given it's now a 
-> value and not a register...
+> Yes agree with this point.
+> BD address should be treated as invalid if it is 00:00:00:00:00:00.
 
-Hi Jiri,
-I will go with uint.
+We all agree on that.
 
-Thank you,
-Hugo.
+> NVM Tag 2: bd address is default BD address (other than 0), should be
+> configured as valid address and as its not unique address and it will
+> be same for all devices so mark it is configured but still allow
+> user-space to change the address.
 
+But here we disagree. A non-unique address is not a valid one as it will
+cause collisions if you have more than one such controller.
 
-> 
-> thanks,
-> -- 
-> js
-> suse labs
-> 
-> 
+I understand that this may be convenient/good enough for developers in
+some cases, but this can hurt end users that do not realise why things
+break.
 
+And a developer can always configure an address manually or patch the
+driver as needed for internal use.
 
--- 
-Hugo Villeneuve
+Are there any other reasons that makes you want to keep the option to
+configure the device address through NVM files? I'm assuming you're not
+relying on patching NVM files to provision device-specific addresses
+after installation on target?
+
+Johan
 
