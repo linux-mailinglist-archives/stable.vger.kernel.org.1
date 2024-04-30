@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087B88B738A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17EED8B721D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3999F1C231A6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A91971F21A6A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A025B12D1E8;
-	Tue, 30 Apr 2024 11:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14D312C490;
+	Tue, 30 Apr 2024 11:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cf/m7VPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijs/JrVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF798801;
-	Tue, 30 Apr 2024 11:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DE212C462;
+	Tue, 30 Apr 2024 11:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476021; cv=none; b=q8+Y/h1ps1aG30MbeuvnVQk6RgUZgX/4oFCfW/CgpnbtqLCmTYaWPDlAF8fNSPAv4H8F7NEOwXsnP5W5juKj1/8LToi8Gdqda9skorFdLEzEjdUuZp472f32GCPhKmPJfkJyDZ+uKwTl7wZOGuCnljN0CTCb5bx1LQB7VDGYhnY=
+	t=1714475069; cv=none; b=i/d9S88Qvs9hNi6frb1IZcqHbPQ+1JcLAbjAWCP8Bqy2iK0CKBJF/w6tuM5H0jOIRo5GY8WvSPA6xxA3ZON6J1SR51rE9bpwbTBLf06JYP+d+Uh3c2NlcqE8rp2o7Wn0tWpRiTs8+B5QeLUs4TqmTMMpg5014s2lPzjeP/B4kxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476021; c=relaxed/simple;
-	bh=wPOM22wbUwxeAPSJW/etpuFvZVXWhk4p6V6+4drYpfM=;
+	s=arc-20240116; t=1714475069; c=relaxed/simple;
+	bh=yYeHXK5+DjZADydlmiK0NGtbiuFwPmr6ZLzwyEqLuo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vkkfa10096i3OXR4Bi7xFtXijSXp1PSNgnKNGitZfMCRfezKE/09ZyNTrr+ftoT+dg7Dp0JWqvfIkBIuFWsnREOaVesprv5Lq3/rFaScfAZa3HhwcSWzixcnj3i2F9CKs5N3W+yg7asbofJcH2vdwAIEsRh6wWV0wK6Z9bDEfEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cf/m7VPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D403CC2BBFC;
-	Tue, 30 Apr 2024 11:20:20 +0000 (UTC)
+	 MIME-Version; b=YQDLr/84eTqJu9SxUSY4HxBDzIIT5iH/rd0QQpOjaWdAE9U8c+hXDXk8nRcGzNyQAf9y/urJnO3XcquozIxZFIm0i+4KSXeYBdgvWZDKHeaH2lyY/lTUDjkOcQ3HFZjjOhc0zQWk80QthpfQI51VQDWlmLyJlbV4GmrXFtnX5Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijs/JrVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73FFC2BBFC;
+	Tue, 30 Apr 2024 11:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476021;
-	bh=wPOM22wbUwxeAPSJW/etpuFvZVXWhk4p6V6+4drYpfM=;
+	s=korg; t=1714475069;
+	bh=yYeHXK5+DjZADydlmiK0NGtbiuFwPmr6ZLzwyEqLuo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cf/m7VPKdIs6vPVGm7xOj4UBrOGiDavh6X75KDi/3ZYMaM3/GpsfK4by5ecN+4iXF
-	 FixLVOS0K0QfmyYp0G7oiObras3CLtBmVMrRItsrKYchZMtG/1+2oK6Ytg8YSDUeyj
-	 ts+da34dbzHBfdR69/olT8vSPQH+zoSx11x/aYik=
+	b=ijs/JrVDFKu8Z61g30n5SUsOEo0pJxFAKFTLy+mdZ5G1JCpP+VefSYxt119eU2ApJ
+	 15n3LDGSZf+iw5NKS3MkQDjMQxU9HHrUH3mGRz2ExW+vF3Ob1gcET57vFqVQD9wbBU
+	 gyMfYvHFzjh7l72/jvmaf8BZjrtIujGR610PmYds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Bauer <mail@david-bauer.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 010/107] net/mlx5: Properly link new fs rules into the tree
+Subject: [PATCH 5.10 085/138] vxlan: drop packets from invalid src-address
 Date: Tue, 30 Apr 2024 12:39:30 +0200
-Message-ID: <20240430103044.964785376@linuxfoundation.org>
+Message-ID: <20240430103051.923014156@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: David Bauer <mail@david-bauer.net>
 
-[ Upstream commit 7c6782ad4911cbee874e85630226ed389ff2e453 ]
+[ Upstream commit f58f45c1e5b92975e91754f5407250085a6ae7cf ]
 
-Previously, add_rule_fg would only add newly created rules from the
-handle into the tree when they had a refcount of 1. On the other hand,
-create_flow_handle tries hard to find and reference already existing
-identical rules instead of creating new ones.
+The VXLAN driver currently does not check if the inner layer2
+source-address is valid.
 
-These two behaviors can result in a situation where create_flow_handle
-1) creates a new rule and references it, then
-2) in a subsequent step during the same handle creation references it
-   again,
-resulting in a rule with a refcount of 2 that is not linked into the
-tree, will have a NULL parent and root and will result in a crash when
-the flow group is deleted because del_sw_hw_rule, invoked on rule
-deletion, assumes node->parent is != NULL.
+In case source-address snooping/learning is enabled, a entry in the FDB
+for the invalid address is created with the layer3 address of the tunnel
+endpoint.
 
-This happened in the wild, due to another bug related to incorrect
-handling of duplicate pkt_reformat ids, which lead to the code in
-create_flow_handle incorrectly referencing a just-added rule in the same
-flow handle, resulting in the problem described above. Full details are
-at [1].
+If the frame happens to have a non-unicast address set, all this
+non-unicast traffic is subsequently not flooded to the tunnel network
+but sent to the learnt host in the FDB. To make matters worse, this FDB
+entry does not expire.
 
-This patch changes add_rule_fg to add new rules without parents into
-the tree, properly initializing them and avoiding the crash. This makes
-it more consistent with how rules are added to an FTE in
-create_flow_handle.
+Apply the same filtering for packets as it is done for bridges. This not
+only drops these invalid packets but avoids them from being learnt into
+the FDB.
 
-Fixes: 74491de93712 ("net/mlx5: Add multi dest support")
-Link: https://lore.kernel.org/netdev/ea5264d6-6b55-4449-a602-214c6f509c1e@163.com/T/#u [1]
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d342894c5d2f ("vxlan: virtual extensible lan")
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 41087c0618c11..93fcde150a42f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -1549,8 +1549,9 @@ static struct mlx5_flow_handle *add_rule_fg(struct mlx5_flow_group *fg,
- 	}
- 	trace_mlx5_fs_set_fte(fte, false);
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 3096769e718ed..b173497a3e0ca 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1778,6 +1778,10 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
+ 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
+ 		return false;
  
-+	/* Link newly added rules into the tree. */
- 	for (i = 0; i < handle->num_rules; i++) {
--		if (refcount_read(&handle->rule[i]->node.refcount) == 1) {
-+		if (!handle->rule[i]->node.parent) {
- 			tree_add_node(&handle->rule[i]->node, &fte->node);
- 			trace_mlx5_fs_add_rule(handle->rule[i]);
- 		}
++	/* Ignore packets from invalid src-address */
++	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
++		return false;
++
+ 	/* Get address from the outer IP header */
+ 	if (vxlan_get_sk_family(vs) == AF_INET) {
+ 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
 -- 
 2.43.0
 
