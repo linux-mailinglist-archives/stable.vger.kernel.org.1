@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-41874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF16D8B7025
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:44:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD908B73B2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AF83282CDA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:44:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 228CD1F21362
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8787412D209;
-	Tue, 30 Apr 2024 10:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A033412D20F;
+	Tue, 30 Apr 2024 11:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FwDW1Vh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwHNXqq1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4614312D1FA;
-	Tue, 30 Apr 2024 10:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3A717592;
+	Tue, 30 Apr 2024 11:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473821; cv=none; b=GijeOAjHk7JEyOyT/FwbZLbyT1QYmR9wCHBsgE2jxlBwk71pYRw7wXOA45Yt4YvrEfDoVrdEGH3O4Ckw/B47hLD3615MPIJFiOjHuzjeEa0DheBWHDWT3C3Fy6MzsOxTqervh9kqw+l7Y+OE0CjGec6Y6HpuZc9lkP0gwh/ZY+o=
+	t=1714476136; cv=none; b=Y3UjLTYxAx3ubi5/1KxEz+U9DuGX/ETWabx2DXvYHAmG8a0bZ2JZhKNLK8ItmHY0oKdLs3LpCzEuLA4lHYKdyF+snHT2W+FaZkZ69PDvHY8la+6tFLCmaqJx6zPGcJmwNQ6JM44bAD6GsrN/BzOhgeI3iWWTMfxnd1gePOuIwMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473821; c=relaxed/simple;
-	bh=JJ2vZVqSsrt7qBTrfObPyOyugrLLK4xKJTcKds0i1vE=;
+	s=arc-20240116; t=1714476136; c=relaxed/simple;
+	bh=SdKUnH21HoQ3pycF4VoZLScAdJXYRzXzorQpVroB2Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eyk+2BqSbiXul4DjlLiiff5TjVm3BtcLUF5rsajJLna4Xpz6FNoVZZXQnRK/mGPHGbN3TM6SWgVG/tOWsgLR/uQy8txm1HRsUQ1MjPoAjYlt6sbCGCL4d3g/N6ZLeyuboFJ9Op9Y0caneGDX8SVMczR/aKxGNIUWyiK033tQKxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FwDW1Vh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DADC4AF19;
-	Tue, 30 Apr 2024 10:43:40 +0000 (UTC)
+	 MIME-Version; b=VA/IFh5dNliv3nLV4MQm4cgcGjG0iMJuz5CpJPQLmJVqMW+J4f8Q+ZyB7zx7Nu/ZFEd06cPzs8eTjerlnkRWJD25pIksirtrdtCEkTu/GWqfTg/e3Xxg8BbHQoRkBAjHXyP1Uz9D5Zq0d2KWpxizh8S76mMidENb7tjKlbsIko4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwHNXqq1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C690AC4AF49;
+	Tue, 30 Apr 2024 11:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473820;
-	bh=JJ2vZVqSsrt7qBTrfObPyOyugrLLK4xKJTcKds0i1vE=;
+	s=korg; t=1714476136;
+	bh=SdKUnH21HoQ3pycF4VoZLScAdJXYRzXzorQpVroB2Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FwDW1VhQ13d2d5mii0uPxnmhCcK8roDRMKi05bcd/sHjmxMCcmXmfqnBSi/aLpxF
-	 RvyPrOcq4xA/6ooUa9I7Nmhnq6Z0C7uD5WCTXqW5KVTXvFznZJOkxOCcqwugoEGS/E
-	 BwWshGKbDWF8ph3CkeE6+NObir5+ntb5YMCYBs7Y=
+	b=XwHNXqq1kOhXkOpOrCm++b8LsdFLKZDQOP0tIxRPpkJg5PEOUqBo1zAyJATgtkvFZ
+	 ptp9ezwy6FigCA9EW1PKrZplgtfiQlvrUziL9Q06JRjjVasxrBeYYqB7dgU2aZkB/j
+	 DH8E+ao9FehACyDQsgi6AyJJuM1cP7n4dmIrTpek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
+	David Ahern <dsahern@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 48/77] net: gtp: Fix Use-After-Free in gtp_dellink
-Date: Tue, 30 Apr 2024 12:39:27 +0200
-Message-ID: <20240430103042.554025478@linuxfoundation.org>
+Subject: [PATCH 5.4 008/107] ipv4/route: avoid unused-but-set-variable warning
+Date: Tue, 30 Apr 2024 12:39:28 +0200
+Message-ID: <20240430103044.904563692@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f2a904107ee2b647bb7794a1a82b67740d7c8a64 ]
+[ Upstream commit cf1b7201df59fb936f40f4a807433fe3f2ce310a ]
 
-Since call_rcu, which is called in the hlist_for_each_entry_rcu traversal
-of gtp_dellink, is not part of the RCU read critical section, it
-is possible that the RCU grace period will pass during the traversal and
-the key will be free.
+The log_martians variable is only used in an #ifdef, causing a 'make W=1'
+warning with gcc:
 
-To prevent this, it should be changed to hlist_for_each_entry_safe.
+net/ipv4/route.c: In function 'ip_rt_send_redirect':
+net/ipv4/route.c:880:13: error: variable 'log_martians' set but not used [-Werror=unused-but-set-variable]
 
-Fixes: 94dc550a5062 ("gtp: fix an use-after-free in ipv4_pdp_find()")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Change the #ifdef to an equivalent IS_ENABLED() to let the compiler
+see where the variable is used.
+
+Fixes: 30038fc61adf ("net: ip_rt_send_redirect() optimization")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/r/20240408074219.3030256-2-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/route.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 3f4e20a9ce9a1..db97f2fa203cf 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -710,11 +710,12 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
- static void gtp_dellink(struct net_device *dev, struct list_head *head)
- {
- 	struct gtp_dev *gtp = netdev_priv(dev);
-+	struct hlist_node *next;
- 	struct pdp_ctx *pctx;
- 	int i;
- 
- 	for (i = 0; i < gtp->hash_size; i++)
--		hlist_for_each_entry_rcu(pctx, &gtp->tid_hash[i], hlist_tid)
-+		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
- 			pdp_context_delete(pctx);
- 
- 	gtp_encap_disable(gtp);
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 902296ef3e5aa..5b008d838e2b9 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -945,13 +945,11 @@ void ip_rt_send_redirect(struct sk_buff *skb)
+ 		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST, gw);
+ 		peer->rate_last = jiffies;
+ 		++peer->n_redirects;
+-#ifdef CONFIG_IP_ROUTE_VERBOSE
+-		if (log_martians &&
++		if (IS_ENABLED(CONFIG_IP_ROUTE_VERBOSE) && log_martians &&
+ 		    peer->n_redirects == ip_rt_redirect_number)
+ 			net_warn_ratelimited("host %pI4/if%d ignores redirects for %pI4 to %pI4\n",
+ 					     &ip_hdr(skb)->saddr, inet_iif(skb),
+ 					     &ip_hdr(skb)->daddr, &gw);
+-#endif
+ 	}
+ out_put_peer:
+ 	inet_putpeer(peer);
 -- 
 2.43.0
 
