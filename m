@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1658B735E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDA08B745B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C23FE1F2263F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29B0E1C233F2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583D112CDAE;
-	Tue, 30 Apr 2024 11:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B03112D755;
+	Tue, 30 Apr 2024 11:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iQoGS29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNpAf06A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FF41E50A;
-	Tue, 30 Apr 2024 11:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0800512BF32;
+	Tue, 30 Apr 2024 11:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475893; cv=none; b=eLwLhDzGw9z7rntr3p5prjXnSx2iC9C2ANwVowhCTgQxUIVVNtge+kYOAOwVJXyTtgyCgOJdTpb+ifWsbu6xSEU4h3jUR29rWtdmWcbmOqFrIR1366Nx05pQy8af2v3fUi/p+lWC5EUK9HrvYjDUQcjbcM3EPuO+2+fi9vj+hOc=
+	t=1714476593; cv=none; b=YmusXJyd5tMbV8JVac7ede66lYsZMW7+I94moLyrZtBUYLLUA6M5Np0uuLFaZjiTNImerINCsTbnnEC5ITO5w+4LVBaV5BkAK9gTQN+nyc179iIIeUeYMwww2tcG3HQ087PugJQk5siEfUQAimcHwFH3ikpLz/m6NyjbVUYLr4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475893; c=relaxed/simple;
-	bh=QJzPOpjf9BN5DLIdBHHfkBVuqYwH7GkWVA5dgIc1wjA=;
+	s=arc-20240116; t=1714476593; c=relaxed/simple;
+	bh=8T4+Q6C+cwZVgnBDEd+NCkTBLIjWR+c8rA0sdnVxUkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKleNL87IG2Ve0KpjlIxzgOeI/7jdYa53Gc+CluwrSjVI/gon4whbOOaKLMApaU4qMyXIcrVV8erRR8upnfABHx0tE9cu+eBIoVe14kZ3ZjG31n2//ivfpGIUzRlFspn3uSWHLm9MF9VSf5ZJTN5h4qn4BoJSREpZvH6VUjq0hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iQoGS29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B96C4AF48;
-	Tue, 30 Apr 2024 11:18:12 +0000 (UTC)
+	 MIME-Version; b=tSpTWrdMvMu0a66X9YMpZmUSNVfRXfHku7/D3Ym+wEE8UYNHr1RcB4wIBp4+CvpvDU3i46L6t9DhIPxB9InQWw8UKr4MnRp1yd+QpIkNa330nMwiS29d7dM33Lotc/xua2ugsl9cYYqAjNhWydHTdo3PSy983w3/S9O0RWMSYJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNpAf06A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FD9C2BBFC;
+	Tue, 30 Apr 2024 11:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475893;
-	bh=QJzPOpjf9BN5DLIdBHHfkBVuqYwH7GkWVA5dgIc1wjA=;
+	s=korg; t=1714476592;
+	bh=8T4+Q6C+cwZVgnBDEd+NCkTBLIjWR+c8rA0sdnVxUkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iQoGS29uXASxsOMnk62RdMxCClvx7pRVv+7kZ3ML+TOtDAIwgcf0uagymIPE+f9A
-	 C+tMEp4aHAgXsEDi8DKTIs36vMQ86uMT72Fyh6H6kaSRFcOlgk7ZLPujdWGntiq9fv
-	 VxV8MdHYHKXvDndrLJATR0K3o0bVjDX0MeOEUNzs=
+	b=eNpAf06AhyyEayB81zH3YlcUzadYgpFPhyOCiQi3ozirfxZx9dixrFWHSjt51++1u
+	 FwJfpj4748MWBa5d8Xsj+HRmOh9MwNz6+CeI/jKj77/q2kG4G8P4CkWxiFX1RF5Fqm
+	 Ki2DAbjJHF+Pa+egVcXT1Gpp4yo+7FxM8TklFxX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Robin H. Johnson" <robbat2@gentoo.org>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 50/80] tracing: Show size of requested perf buffer
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 053/110] netfilter: nf_tables: honor table dormant flag from netdev release event path
 Date: Tue, 30 Apr 2024 12:40:22 +0200
-Message-ID: <20240430103044.896215500@linuxfoundation.org>
+Message-ID: <20240430103049.131748732@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin H. Johnson <robbat2@gentoo.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit a90afe8d020da9298c98fddb19b7a6372e2feb45 upstream.
+[ Upstream commit 8e30abc9ace4f0add4cd761dfdbfaebae5632dd2 ]
 
-If the perf buffer isn't large enough, provide a hint about how large it
-needs to be for whatever is running.
+Check for table dormant flag otherwise netdev release event path tries
+to unregister an already unregistered hook.
 
-Link: https://lkml.kernel.org/r/20210831043723.13481-1-robbat2@gentoo.org
+[524854.857999] ------------[ cut here ]------------
+[524854.858010] WARNING: CPU: 0 PID: 3386599 at net/netfilter/core.c:501 __nf_unregister_net_hook+0x21a/0x260
+[...]
+[524854.858848] CPU: 0 PID: 3386599 Comm: kworker/u32:2 Not tainted 6.9.0-rc3+ #365
+[524854.858869] Workqueue: netns cleanup_net
+[524854.858886] RIP: 0010:__nf_unregister_net_hook+0x21a/0x260
+[524854.858903] Code: 24 e8 aa 73 83 ff 48 63 43 1c 83 f8 01 0f 85 3d ff ff ff e8 98 d1 f0 ff 48 8b 3c 24 e8 8f 73 83 ff 48 63 43 1c e9 26 ff ff ff <0f> 0b 48 83 c4 18 48 c7 c7 00 68 e9 82 5b 5d 41 5c 41 5d 41 5e 41
+[524854.858914] RSP: 0018:ffff8881e36d79e0 EFLAGS: 00010246
+[524854.858926] RAX: 0000000000000000 RBX: ffff8881339ae790 RCX: ffffffff81ba524a
+[524854.858936] RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff8881c8a16438
+[524854.858945] RBP: ffff8881c8a16438 R08: 0000000000000001 R09: ffffed103c6daf34
+[524854.858954] R10: ffff8881e36d79a7 R11: 0000000000000000 R12: 0000000000000005
+[524854.858962] R13: ffff8881c8a16000 R14: 0000000000000000 R15: ffff8881351b5a00
+[524854.858971] FS:  0000000000000000(0000) GS:ffff888390800000(0000) knlGS:0000000000000000
+[524854.858982] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[524854.858991] CR2: 00007fc9be0f16f4 CR3: 00000001437cc004 CR4: 00000000001706f0
+[524854.859000] Call Trace:
+[524854.859006]  <TASK>
+[524854.859013]  ? __warn+0x9f/0x1a0
+[524854.859027]  ? __nf_unregister_net_hook+0x21a/0x260
+[524854.859044]  ? report_bug+0x1b1/0x1e0
+[524854.859060]  ? handle_bug+0x3c/0x70
+[524854.859071]  ? exc_invalid_op+0x17/0x40
+[524854.859083]  ? asm_exc_invalid_op+0x1a/0x20
+[524854.859100]  ? __nf_unregister_net_hook+0x6a/0x260
+[524854.859116]  ? __nf_unregister_net_hook+0x21a/0x260
+[524854.859135]  nf_tables_netdev_event+0x337/0x390 [nf_tables]
+[524854.859304]  ? __pfx_nf_tables_netdev_event+0x10/0x10 [nf_tables]
+[524854.859461]  ? packet_notifier+0xb3/0x360
+[524854.859476]  ? _raw_spin_unlock_irqrestore+0x11/0x40
+[524854.859489]  ? dcbnl_netdevice_event+0x35/0x140
+[524854.859507]  ? __pfx_nf_tables_netdev_event+0x10/0x10 [nf_tables]
+[524854.859661]  notifier_call_chain+0x7d/0x140
+[524854.859677]  unregister_netdevice_many_notify+0x5e1/0xae0
 
-Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: d54725cd11a5 ("netfilter: nf_tables: support for multiple devices per netdev hook")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_event_perf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/nft_chain_filter.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace_event_perf.c
-+++ b/kernel/trace/trace_event_perf.c
-@@ -401,7 +401,8 @@ void *perf_trace_buf_alloc(int size, str
- 	BUILD_BUG_ON(PERF_MAX_TRACE_SIZE % sizeof(unsigned long));
+diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
+index 274b6f7e6bb57..d170758a1eb5d 100644
+--- a/net/netfilter/nft_chain_filter.c
++++ b/net/netfilter/nft_chain_filter.c
+@@ -338,7 +338,9 @@ static void nft_netdev_event(unsigned long event, struct net_device *dev,
+ 		return;
  
- 	if (WARN_ONCE(size > PERF_MAX_TRACE_SIZE,
--		      "perf buffer not large enough"))
-+		      "perf buffer not large enough, wanted %d, have %d",
-+		      size, PERF_MAX_TRACE_SIZE))
- 		return NULL;
- 
- 	*rctxp = rctx = perf_swevent_get_recursion_context();
+ 	if (n > 1) {
+-		nf_unregister_net_hook(ctx->net, &found->ops);
++		if (!(ctx->chain->table->flags & NFT_TABLE_F_DORMANT))
++			nf_unregister_net_hook(ctx->net, &found->ops);
++
+ 		list_del_rcu(&found->list);
+ 		kfree_rcu(found, rcu);
+ 		return;
+-- 
+2.43.0
+
 
 
 
