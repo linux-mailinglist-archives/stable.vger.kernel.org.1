@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDC78B7037
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:44:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E668B732E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23C341F2174C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:44:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BE10B22C3F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441C112C817;
-	Tue, 30 Apr 2024 10:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4C812D1FD;
+	Tue, 30 Apr 2024 11:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJMHJG5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjEeu4Ix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019B412C49E;
-	Tue, 30 Apr 2024 10:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB63211C;
+	Tue, 30 Apr 2024 11:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473842; cv=none; b=E4YWxb9azUdw6x+ERmiP+B4hSTpaM4vZiaf7vhRhC1QSopH6z15J20qtha7bBDEhRwy1WAteriq8CNlGK6JOO0KROlrUk3xUy31pfH48xA28CWuk6Ah7rvywoUI5Dj5E5WHy3kYduQIbXBtqbX+Bmlut9De5WINamsLiDm+rKQ4=
+	t=1714475759; cv=none; b=FLJjKbuFSOJCBY/oVLu6groDMSfbi/gs2ZiAzDlrtuVHjcs3QQJBGPyNljU1rNtRAHnirD6+yONzdEEVZIUzkkoGlv/IWrmKs09aOQlrSEKYstIwwrGblAgGN+r7D4PpkJyQLHbAWj8Myk64pBRy+p4o12FGqBjTUKvoHJurARs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473842; c=relaxed/simple;
-	bh=7bDadnZU89zv16zi0xSwLJzP6Xu9xu2O3gyIwbt3NwQ=;
+	s=arc-20240116; t=1714475759; c=relaxed/simple;
+	bh=BEWgrd1dVAYkHvB7mbEj2gdqsFOHavQwMyZ57lKqWfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUPLEKk36W6VmmIe41p11SiXuy00TyA1W/QuxqA3H0lBjchle9FG86TxloLgZtmQfqhF1Btir6X1s5qaVyiDoAcm1PXqwGtnZ0mWZvH/xQYpqARK0BqoS2eIjBbKXkG+butoi3QBLlCfXeL1XJ+Os9MF8Vj33aWE38I/uQPHUiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJMHJG5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BD2C2BBFC;
-	Tue, 30 Apr 2024 10:44:01 +0000 (UTC)
+	 MIME-Version; b=QWjHgbVqccvXmUtDvmSRtEeQ6/PymZ2bD27y3R/G9s018D4wmCcCkXYYQMMFmS48IqCZKwu0ZyNodH9ajbAWijzFDX8+qjEJ55F6mr9hcwKFc4MBo0TgCxd9az3HzT10LKK2wL9ff0sIkqZWo/QijnIdBQJNrCSTWa6eV83AAYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjEeu4Ix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524CFC2BBFC;
+	Tue, 30 Apr 2024 11:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473841;
-	bh=7bDadnZU89zv16zi0xSwLJzP6Xu9xu2O3gyIwbt3NwQ=;
+	s=korg; t=1714475758;
+	bh=BEWgrd1dVAYkHvB7mbEj2gdqsFOHavQwMyZ57lKqWfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJMHJG5DcFOl3oZYhdNZY4m7qm0UUUCzpJUgkz9O0CJCeSb9mLaxH9qAlqqqnjZEN
-	 dErTBil7Y/umR+0cxS29RQLAYuZLkVDG5P2ro98THUpN+dZXAnfD5HQhFEioJI2PrK
-	 K157GUQ73mbQbS4kNfG3+A2OKEuzNY69E6xLT138=
+	b=vjEeu4IxQ0XOZvXBY610iavMnjZ3EliE6TRzBXoijZe92zXDChqUGG0X6R1O40f4F
+	 b1AlaHn83EfiJTsPEFI1HD0NcEeKgNhLQltU2eMtE7R3soAPjOain1++vJ5X6+Y13V
+	 OD85QXSm6x48IwkeEY+6MfnIilkvEtov38KZoT/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Emil Kronborg <emil.kronborg@protonmail.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 54/77] serial: mxs-auart: add spinlock around changing cts state
+Subject: [PATCH 5.15 01/80] smb: client: fix rename(2) regression against samba
 Date: Tue, 30 Apr 2024 12:39:33 +0200
-Message-ID: <20240430103042.732668552@linuxfoundation.org>
+Message-ID: <20240430103043.444334807@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Kronborg <emil.kronborg@protonmail.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 54c4ec5f8c471b7c1137a1f769648549c423c026 ]
+[ Upstream commit 18d86965e31f9be4d477da0744a7cdc9815858de ]
 
-The uart_handle_cts_change() function in serial_core expects the caller
-to hold uport->lock. For example, I have seen the below kernel splat,
-when the Bluetooth driver is loaded on an i.MX28 board.
+After commit 2c7d399e551c ("smb: client: reuse file lease key in
+compound operations") the client started reusing lease keys for
+rename, unlink and set path size operations to prevent it from
+breaking its own leases and thus causing unnecessary lease breaks to
+same connection.
 
-    [   85.119255] ------------[ cut here ]------------
-    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_core.c:3453 uart_handle_cts_change+0xb4/0xec
-    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc wlcore_sdio configfs
-    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-00021-gd62a2f068f92 #1
-    [   85.151396] Hardware name: Freescale MXS (Device Tree)
-    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
-    (...)
-    [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/0x3f4
-    [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x88/0x210
-    (...)
+The implementation relies on positive dentries and
+cifsInodeInfo::lease_granted to decide whether reusing lease keys for
+the compound requests.  cifsInodeInfo::lease_granted was introduced by
+commit 0ab95c2510b6 ("Defer close only when lease is enabled.") to
+indicate whether lease caching is granted for a specific file, but
+that can only happen until file is open, so
+cifsInodeInfo::lease_granted was left uninitialised in ->alloc_inode
+and then client started sending random lease keys for files that
+hadn't any leases.
 
-Cc: stable@vger.kernel.org
-Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements for irq helpers")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
-Link: https://lore.kernel.org/r/20240320121530.11348-1-emil.kronborg@protonmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes the following test case against samba:
+
+mount.cifs //srv/share /mnt/1 -o ...,nosharesock
+mount.cifs //srv/share /mnt/2 -o ...,nosharesock
+touch /mnt/1/foo; tail -f /mnt/1/foo & pid=$!
+mv /mnt/2/foo /mnt/2/bar # fails with -EIO
+kill $pid
+
+Fixes: 0ab95c2510b6 ("Defer close only when lease is enabled.")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/mxs-auart.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/cifs/cifsfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
-index 63810eefa44b8..9ac2f21be8d72 100644
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -1128,11 +1128,13 @@ static void mxs_auart_set_ldisc(struct uart_port *port,
- 
- static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
- {
--	u32 istat;
-+	u32 istat, stat;
- 	struct mxs_auart_port *s = context;
- 	u32 mctrl_temp = s->mctrl_prev;
--	u32 stat = mxs_read(s, REG_STAT);
- 
-+	uart_port_lock(&s->port);
-+
-+	stat = mxs_read(s, REG_STAT);
- 	istat = mxs_read(s, REG_INTR);
- 
- 	/* ack irq */
-@@ -1168,6 +1170,8 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
- 		istat &= ~AUART_INTR_TXIS;
- 	}
- 
-+	uart_port_unlock(&s->port);
-+
- 	return IRQ_HANDLED;
- }
- 
+diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
+index 9bbead15a0287..d3adcb9e70a66 100644
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -374,6 +374,7 @@ cifs_alloc_inode(struct super_block *sb)
+ 	 * server, can not assume caching of file data or metadata.
+ 	 */
+ 	cifs_set_oplock_level(cifs_inode, 0);
++	cifs_inode->lease_granted = false;
+ 	cifs_inode->flags = 0;
+ 	spin_lock_init(&cifs_inode->writers_lock);
+ 	cifs_inode->writers = 0;
 -- 
 2.43.0
 
