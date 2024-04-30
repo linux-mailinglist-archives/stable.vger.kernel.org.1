@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-42079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29648B714E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 182AF8B72AE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41830B21BB7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4980F1C23161
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D287C12C487;
-	Tue, 30 Apr 2024 10:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC9112CDB2;
+	Tue, 30 Apr 2024 11:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erINjGZJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ieTmiARh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4FB12C534;
-	Tue, 30 Apr 2024 10:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0961E50A;
+	Tue, 30 Apr 2024 11:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474497; cv=none; b=d8Ot4+Lzaip5kzpetTNq1q+e7Xj3P+SX9N/EmoCzlbsh53GrKjT7up7NWIYVCf/afSdrB1sIwMH8SKHVdr7C4XTWZZIT/6kTAANl3mZIbTmu2Ca+MrnZMVC+mLptpZGmK1ZuW8F2ceuJB/B78GjAiM4+saU/kI9zxLw5enG9n6c=
+	t=1714475455; cv=none; b=Qo9BSnVxnqcyJc7aXbWTMOXFEAiiPvY12h8fNBMMhHyH8Qx7bXICmUieFhNEqnZd7f/eJTQ7P8CXwJG6vcRGgapH0keLPIuEW+ZCklmYzLjFCMZzHXjRIISt+HmzykfxKtVmNvoxuTVb3k4hpOjJixcVxZatBW/ToSNv2w2yhPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474497; c=relaxed/simple;
-	bh=uTJifPHfV058eN2oAFaprSp7y4DQM7N8tkUZW0C1AEI=;
+	s=arc-20240116; t=1714475455; c=relaxed/simple;
+	bh=LkKlqpAy5c58GNlo1hbrGFwzx0XyCgHv5wyBPemNBuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2DAiQK+Hw7dR5ib1Ks8y2/s97jvsUlGfNqGKDjbIvSu6l1H0mY8FES7Wz2XEyeZ8CzgQCCAP9id8TTI/GOfKbDZMawsR2LLQ0UxWPELUk97ebenTl4SKzevc5I2D9dZMJYsPVOiQO7FKF+IkfV5B4Arxx+H29J/HdgAr+VwL3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erINjGZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BC8C2BBFC;
-	Tue, 30 Apr 2024 10:54:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MN+XAqZCKKRpXSz8FkvA4tdlRiz0WlG8HsBz9XseppK42IcPDXTV1xl5IxBAaMRn7WS/YVpzfKpfOPkP0zTmVtOTRD/xRVDXcNtWHy9Bylptt6cCx7myORoeRDYIIxH+XAquQxPPDj4OqVSyWB/Hw8tWbPgFUuAWVbjfVc05fJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ieTmiARh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD928C2BBFC;
+	Tue, 30 Apr 2024 11:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474497;
-	bh=uTJifPHfV058eN2oAFaprSp7y4DQM7N8tkUZW0C1AEI=;
+	s=korg; t=1714475455;
+	bh=LkKlqpAy5c58GNlo1hbrGFwzx0XyCgHv5wyBPemNBuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=erINjGZJioL2+KZ9JWG5OhFGkB3+vtokUOmlMvYI9PLiEEN43/pbQJK3Dk4YzUs9f
-	 cgSqq6HCP8kpIQ+cq8GZZdjKqDB7Wo0v0bJyMTUITOJiIJqNtCjJxEI5pGwBMcObB4
-	 kBkB/X1Tr4dT/5BW9XIB/lNJ+yxaNtKjHx3GIlaQ=
+	b=ieTmiARhEa4llZbSEdvi5VPB/0X7ikWmMwmez0t2q5EXxqjbGz8Qi3CZ/C/7FBS8n
+	 9gD4m8q5AXlNLApRVJQeNXnBmJImRNb5BTWNkiZe2FJE+KsTakUn/EBi7KXjW8IUuL
+	 Flw7sZBIQOKhIBzqD/LQsRVqXe1WT9puX1l3uWsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.8 174/228] drm/amdgpu: Assign correct bits for SDMA HDP flush
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.keonig@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Subject: [PATCH 6.6 100/186] drm: add drm_gem_object_is_shared_for_memory_stats() helper
 Date: Tue, 30 Apr 2024 12:39:12 +0200
-Message-ID: <20240430103108.823622771@linuxfoundation.org>
+Message-ID: <20240430103100.937717138@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit aebd3eb9d3ae017e6260043f6bcace2f5ef60694 upstream.
+[ Upstream commit b31f5eba32ae8cc28e7cfa5a55ec8670d8c718e2 ]
 
-HDP Flush request bit can be kept unique per AID, and doesn't need to be
-unique SOC-wide. Assign only bits 10-13 for SDMA v4.4.2.
+Add a helper so that drm drivers can consistently report
+shared status via the fdinfo shared memory stats interface.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+In addition to handle count, show buffers as shared if they
+are shared via dma-buf as well (e.g., shared with v4l or some
+other subsystem).
+
+v2: switch to inline function
+
+Link: https://lore.kernel.org/all/20231207180225.439482-1-alexander.deucher@amd.com/
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com> (v1)
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Christian König <christian.keonig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Stable-dep-of: a6ff969fe9cb ("drm/amdgpu: fix visible VRAM handling during faults")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/drm/drm_gem.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-@@ -366,7 +366,8 @@ static void sdma_v4_4_2_ring_emit_hdp_fl
- 	u32 ref_and_mask = 0;
- 	const struct nbio_hdp_flush_reg *nbio_hf_reg = adev->nbio.hdp_flush_reg;
+diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
+index bc9f6aa2f3fec..7c2ec139c464a 100644
+--- a/include/drm/drm_gem.h
++++ b/include/drm/drm_gem.h
+@@ -544,6 +544,19 @@ unsigned long drm_gem_lru_scan(struct drm_gem_lru *lru,
  
--	ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
-+	ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0
-+		       << (ring->me % adev->sdma.num_inst_per_aid);
+ int drm_gem_evict(struct drm_gem_object *obj);
  
- 	sdma_v4_4_2_wait_reg_mem(ring, 0, 1,
- 			       adev->nbio.funcs->get_hdp_flush_done_offset(adev),
++/**
++ * drm_gem_object_is_shared_for_memory_stats - helper for shared memory stats
++ *
++ * This helper should only be used for fdinfo shared memory stats to determine
++ * if a GEM object is shared.
++ *
++ * @obj: obj in question
++ */
++static inline bool drm_gem_object_is_shared_for_memory_stats(struct drm_gem_object *obj)
++{
++	return (obj->handle_count > 1) || obj->dma_buf;
++}
++
+ #ifdef CONFIG_LOCKDEP
+ /**
+  * drm_gem_gpuva_set_lock() - Set the lock protecting accesses to the gpuva list.
+-- 
+2.43.0
+
 
 
 
