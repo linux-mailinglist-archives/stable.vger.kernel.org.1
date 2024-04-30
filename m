@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-42260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F5948B7222
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EF78B738D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 918FB1C21377
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C88791F21395
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A5C12C819;
-	Tue, 30 Apr 2024 11:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330A712D1E8;
+	Tue, 30 Apr 2024 11:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQXzcwEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbeZ0gZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D8312C462;
-	Tue, 30 Apr 2024 11:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E513D12CD9B;
+	Tue, 30 Apr 2024 11:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475085; cv=none; b=YDY+GJfFdmL142RfFcUHXUpNMNHuDsZ1CGSIqvHW6WDjJixurJNxvqfTw5R7zu3tgGvaT2zd9ydhyRKIbeQYj5AKvu4QHTGVMBIUaCOBnifV8XoJbMT2gbXIv9Q5XKiQokHZKaNV+0iWYhwLssTBDxwGAqTct2AORVuaVvRclnI=
+	t=1714476031; cv=none; b=XnDZAbvkcAcHZGzG80lwMHoiK2IDgOBO3e+WtlyLrf03JOkFp7owpMZ2P3vLuId2u3n1gg4kC0kKqlkanUEYFV6Za/oHd9R4mFeKDCnWBqJl0OPz3aS2031bBNQd2ZiSb/j9jYsM45fS04KRB4uvJcCC45bnyrpldQ5s9xpK7QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475085; c=relaxed/simple;
-	bh=VbsZ9jOMhUoGUDEQgrprzQOZN3KJBfTmIzLkJhQ8D5Q=;
+	s=arc-20240116; t=1714476031; c=relaxed/simple;
+	bh=4UMNnpA0NQjNhmkfhC9eopfMuoeUzdP+4urZn8yR+WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9rlT0nEfalK8/ZPuoMYuZZqi91SxJJL59crF68K8nE+v83UKu4N8XuXj+tW6Jl2hthE+l+IYHYV0kxYVY59TnrKVj+benEnd+FD9wW09XTALLE1Uktz3X4O7dygUHJZKqhvnXBhIwYmYgpNkxJC2/f6E96hH1jwPhpZPfu1JFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQXzcwEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2576C2BBFC;
-	Tue, 30 Apr 2024 11:04:44 +0000 (UTC)
+	 MIME-Version; b=SE8el207oc3DUn0SetMl9TCjD2i/BHEym0jvpr7CnUU1hP4uVwhiuztWfmCkT59gs0tmV3tGXdvHsYkxiCoA4FzrrR+CNch5x0UwJiUhMfK6aVLtwstT6aSLk8AUdog011KAI5+FTLAEHv2fNL3QyEzhc37+uTQEpQ0Damjz2lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbeZ0gZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6C3C2BBFC;
+	Tue, 30 Apr 2024 11:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475085;
-	bh=VbsZ9jOMhUoGUDEQgrprzQOZN3KJBfTmIzLkJhQ8D5Q=;
+	s=korg; t=1714476030;
+	bh=4UMNnpA0NQjNhmkfhC9eopfMuoeUzdP+4urZn8yR+WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQXzcwEV2GCHSbZ81jsLzOCxotyH35WQDEs3PqXo3fptq2D3IL2IAGJsZYC7aA8OI
-	 bYlHQLMgootGEbkmt10Kw6CMB4QQllvQ3g75pSaPeO0LdgJScumMZEnt9R8gjtu77s
-	 Ydk78w+oK8ebhhtJ0uFy+X8YWgOsD00nsG9B4TWg=
+	b=fbeZ0gZQ/CDZVYeVXhET179N1JWIiBX+lK97waxNOZ3edeLpkxTEQExh5r9TFgq78
+	 v6sOnPCHjZA+B2v/NDkahUxoPM+C7dcLOQpvO1gjVh4jehB3m1xG/LJRSUT9Qwr8Gz
+	 F3Ouz/Q3fAW5Ep9/L6EnHG18oZMJrEcUNhUKTBq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Arthur Kiyanovski <akiyano@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/138] ipv4: check for NULL idev in ip_route_use_hint()
+Subject: [PATCH 5.4 013/107] net: ena: Fix potential sign extension issue
 Date: Tue, 30 Apr 2024 12:39:33 +0200
-Message-ID: <20240430103052.011314896@linuxfoundation.org>
+Message-ID: <20240430103045.052308571@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: David Arinzon <darinzon@amazon.com>
 
-[ Upstream commit 58a4c9b1e5a3e53c9148e80b90e1e43897ce77d1 ]
+[ Upstream commit 713a85195aad25d8a26786a37b674e3e5ec09e3c ]
 
-syzbot was able to trigger a NULL deref in fib_validate_source()
-in an old tree [1].
+Small unsigned types are promoted to larger signed types in
+the case of multiplication, the result of which may overflow.
+In case the result of such a multiplication has its MSB
+turned on, it will be sign extended with '1's.
+This changes the multiplication result.
 
-It appears the bug exists in latest trees.
+Code example of the phenomenon:
+-------------------------------
+u16 x, y;
+size_t z1, z2;
 
-All calls to __in_dev_get_rcu() must be checked for a NULL result.
+x = y = 0xffff;
+printk("x=%x y=%x\n",x,y);
 
-[1]
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 2 PID: 3257 Comm: syz-executor.3 Not tainted 5.10.0-syzkaller #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
- RIP: 0010:fib_validate_source+0xbf/0x15a0 net/ipv4/fib_frontend.c:425
-Code: 18 f2 f2 f2 f2 42 c7 44 20 23 f3 f3 f3 f3 48 89 44 24 78 42 c6 44 20 27 f3 e8 5d 88 48 fc 4c 89 e8 48 c1 e8 03 48 89 44 24 18 <42> 80 3c 20 00 74 08 4c 89 ef e8 d2 15 98 fc 48 89 5c 24 10 41 bf
-RSP: 0018:ffffc900015fee40 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88800f7a4000 RCX: ffff88800f4f90c0
-RDX: 0000000000000000 RSI: 0000000004001eac RDI: ffff8880160c64c0
-RBP: ffffc900015ff060 R08: 0000000000000000 R09: ffff88800f7a4000
-R10: 0000000000000002 R11: ffff88800f4f90c0 R12: dffffc0000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: ffff88800f7a4000
-FS:  00007f938acfe6c0(0000) GS:ffff888058c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f938acddd58 CR3: 000000001248e000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  ip_route_use_hint+0x410/0x9b0 net/ipv4/route.c:2231
-  ip_rcv_finish_core+0x2c4/0x1a30 net/ipv4/ip_input.c:327
-  ip_list_rcv_finish net/ipv4/ip_input.c:612 [inline]
-  ip_sublist_rcv+0x3ed/0xe50 net/ipv4/ip_input.c:638
-  ip_list_rcv+0x422/0x470 net/ipv4/ip_input.c:673
-  __netif_receive_skb_list_ptype net/core/dev.c:5572 [inline]
-  __netif_receive_skb_list_core+0x6b1/0x890 net/core/dev.c:5620
-  __netif_receive_skb_list net/core/dev.c:5672 [inline]
-  netif_receive_skb_list_internal+0x9f9/0xdc0 net/core/dev.c:5764
-  netif_receive_skb_list+0x55/0x3e0 net/core/dev.c:5816
-  xdp_recv_frames net/bpf/test_run.c:257 [inline]
-  xdp_test_run_batch net/bpf/test_run.c:335 [inline]
-  bpf_test_run_xdp_live+0x1818/0x1d00 net/bpf/test_run.c:363
-  bpf_prog_test_run_xdp+0x81f/0x1170 net/bpf/test_run.c:1376
-  bpf_prog_test_run+0x349/0x3c0 kernel/bpf/syscall.c:3736
-  __sys_bpf+0x45c/0x710 kernel/bpf/syscall.c:5115
-  __do_sys_bpf kernel/bpf/syscall.c:5201 [inline]
-  __se_sys_bpf kernel/bpf/syscall.c:5199 [inline]
-  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5199
+z1 = x*y;
+z2 = (size_t)x*y;
 
-Fixes: 02b24941619f ("ipv4: use dst hint for ipv4 list receive")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240421184326.1704930-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+printk("z1=%lx z2=%lx\n", z1, z2);
+
+Output:
+-------
+x=ffff y=ffff
+z1=fffffffffffe0001 z2=fffe0001
+
+The expected result of ffff*ffff is fffe0001, and without the
+explicit casting to avoid the unwanted sign extension we got
+fffffffffffe0001.
+
+This commit adds an explicit casting to avoid the sign extension
+issue.
+
+Fixes: 689b2bdaaa14 ("net: ena: add functions for handling Low Latency Queues in ena_com")
+Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/amazon/ena/ena_com.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index b7cba4bdc5786..cc409cc0789c8 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2088,6 +2088,9 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 daddr, __be32 saddr,
- 	int err = -EINVAL;
- 	u32 tag = 0;
+diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
+index 29700fee42e9d..46a796576f6b6 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_com.c
++++ b/drivers/net/ethernet/amazon/ena/ena_com.c
+@@ -374,7 +374,7 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
+ 			ENA_COM_BOUNCE_BUFFER_CNTRL_CNT;
+ 		io_sq->bounce_buf_ctrl.next_to_use = 0;
  
-+	if (!in_dev)
-+		return -EINVAL;
-+
- 	if (ipv4_is_multicast(saddr) || ipv4_is_lbcast(saddr))
- 		goto martian_source;
+-		size = io_sq->bounce_buf_ctrl.buffer_size *
++		size = (size_t)io_sq->bounce_buf_ctrl.buffer_size *
+ 			io_sq->bounce_buf_ctrl.buffers_num;
  
+ 		dev_node = dev_to_node(ena_dev->dmadev);
 -- 
 2.43.0
 
