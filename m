@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-42039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFF68B7113
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A0B8B71AD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE17F288E36
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B736E283BEA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA14112C54B;
-	Tue, 30 Apr 2024 10:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565BC12B176;
+	Tue, 30 Apr 2024 10:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4cYw7rb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpLFOTvm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7337512C462;
-	Tue, 30 Apr 2024 10:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1494E7464;
+	Tue, 30 Apr 2024 10:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474361; cv=none; b=BMZQkEQY6wjamosKe/5FVlFkK4jMMW32AzsDNpwZDL4Xw0yzZR5Hxtbv1lNMC0rvUvhtkjug2KKuoNhgJYiIHeJXi8Sz0lvgJE9YKqCYpodOhcmEFsqbxH/Azt68WZg4jYV3Am6lAhnIRYE+RjzBLfIQWn0kaGWTvnu843PYvhc=
+	t=1714474761; cv=none; b=cFOWCVHhtFC6WuN3W++ul1td8k6+qHhoat0zTByuhlD2WVGrkubmF8F5Dg0Cr+dUtAHIRHdSszrvicCFd8IRyajRuhE88fB6Bx4qvCTkeqa/mXvSz7PwFFX+VqiB1AW9jYpdjiA1TBaj+edHX9OilcQ5uO7mXsVSmvbUiHcxd0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474361; c=relaxed/simple;
-	bh=z5E1Qe0r1JPXHxogUTE9REMIZ7g0izBa04rQ9E7vaZw=;
+	s=arc-20240116; t=1714474761; c=relaxed/simple;
+	bh=ckUMgd4n1R3MUFAunHLxQURgk3l76KQJPADHGkEqbUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFjMpUnvYYepGAxhcVO793ohT5TmeboCjh/VpFqvmybnDwDIRhZz2hEADkOgpz9MPkGFU3KkQaUg2U+CbPSPeNZdLsPwZBEi2VA0zXYHxCjjaYdeVezkLnTHoNqZRI7QBByMO2tfpJOmh6NAJtRlY17+vMOtszt9EfvpU3r9giQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4cYw7rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C0EC2BBFC;
-	Tue, 30 Apr 2024 10:52:40 +0000 (UTC)
+	 MIME-Version; b=d1EjUrp6CTOBQwwFXcq7o9V+jhH3/C8F6ccARRuO6R7IpcBaw3nitUemoJd+4BXNe1XD6K+LpvB2lmJFFgVl+0ojl0e7MVyr8le7Bm+315KBiWdS+oRQT43/MX3mC/K/0mzkj9HTGgTRpUbE7qaacf9yk98ombSsvIOyYRtKlSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpLFOTvm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71387C2BBFC;
+	Tue, 30 Apr 2024 10:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474361;
-	bh=z5E1Qe0r1JPXHxogUTE9REMIZ7g0izBa04rQ9E7vaZw=;
+	s=korg; t=1714474760;
+	bh=ckUMgd4n1R3MUFAunHLxQURgk3l76KQJPADHGkEqbUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4cYw7rbxJw1OpyQY1Nyd8EG0V//pjE6d8qK4s3JlvhlXuNaEVuEWqW8xg+AqeS2z
-	 XcCNP7xATefpdMk+CJoN/Ao7aqnyzotCLqz5N4fkMayOPKeqenIBRZaqm2jE1zEbFp
-	 pRg/hSh6qrMM4wUij+ocq9CinvgFJdpIILwNoh0Y=
+	b=RpLFOTvm5xx+tEZ4R9VbgtWXH35Y+fT8BVcUo0BRadpTR7kIcCkLHf/O7ndhzU01h
+	 DGodzcN5CGaaBR1XwkogXbdh9kuHCtybUz/Upcpx9HZgluM8++MQzY5aYIghchUdzk
+	 gR6bch6QiGtZRLsi13GiRSsbzYnEwDLcMHPoZKLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	netdev@vger.kernel.org,
-	Wedson Almeida Filho <walmeida@microsoft.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.8 134/228] rust: phy: implement `Send` for `Registration`
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.10 027/138] selftests: timers: Fix abs() warning in posix_timers test
 Date: Tue, 30 Apr 2024 12:38:32 +0200
-Message-ID: <20240430103107.669490717@linuxfoundation.org>
+Message-ID: <20240430103050.229200757@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wedson Almeida Filho <walmeida@microsoft.com>
+From: John Stultz <jstultz@google.com>
 
-commit df70d04d56975f527b9c965322cf56e245909071 upstream.
+commit ed366de8ec89d4f960d66c85fc37d9de22f7bf6d upstream.
 
-In preparation for requiring `Send` for `Module` implementations in the
-next patch.
+Building with clang results in the following warning:
 
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: Trevor Gross <tmgross@umich.edu>
-Cc: netdev@vger.kernel.org
-Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240328195457.225001-2-wedsonaf@gmail.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+  posix_timers.c:69:6: warning: absolute value function 'abs' given an
+      argument of type 'long long' but has parameter of type 'int' which may
+      cause truncation of value [-Wabsolute-value]
+        if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+            ^
+So switch to using llabs() instead.
+
+Fixes: 0bc4b0cf1570 ("selftests: add basic posix timers selftests")
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410232637.4135564-3-jstultz@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/net/phy.rs |    4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/timers/posix_timers.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -640,6 +640,10 @@ pub struct Registration {
-     drivers: Pin<&'static mut [DriverVTable]>,
- }
+--- a/tools/testing/selftests/timers/posix_timers.c
++++ b/tools/testing/selftests/timers/posix_timers.c
+@@ -66,7 +66,7 @@ static int check_diff(struct timeval sta
+ 	diff = end.tv_usec - start.tv_usec;
+ 	diff += (end.tv_sec - start.tv_sec) * USECS_PER_SEC;
  
-+// SAFETY: The only action allowed in a `Registration` instance is dropping it, which is safe to do
-+// from any thread because `phy_drivers_unregister` can be called from any thread context.
-+unsafe impl Send for Registration {}
-+
- impl Registration {
-     /// Registers a PHY driver.
-     pub fn register(
+-	if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
++	if (llabs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+ 		printf("Diff too high: %lld..", diff);
+ 		return -1;
+ 	}
 
 
 
