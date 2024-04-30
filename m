@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-42465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3628B732B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC0E8B735A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E71F1F23A71
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819BA1C2288F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16F212D743;
-	Tue, 30 Apr 2024 11:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E555412CD9B;
+	Tue, 30 Apr 2024 11:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVwIlud7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cm4SrOEe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F67B12D210;
-	Tue, 30 Apr 2024 11:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A461A8801;
+	Tue, 30 Apr 2024 11:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475752; cv=none; b=m+gslXdK7jOt+Ey95tE2lS3IDtM8OQa+AlRY6O6Ui8cdk3JdT0G7MmLjWTDkMvhAPQs8+8d5nQ2Kc7vCPs1Vh6HCbT48b6yVutNw4BtEShB46KG7SoZSobPeeCyQotrDQzc9Idh65YOzVc2dp9fnNkG8aLaaG4tuQwvOMm/DEJQ=
+	t=1714475883; cv=none; b=auT0VZjWLte7qrFNEsddLC6FbXsx35ok0qifdXC08TOs+ouGGm8PSfjstkN+H+09V7tuCJRZELZZJu5Li/Gea/7idXaYh+m7iP3gYLaAIpzI1yQ2/qmRdXr+cttxPGTbQwv+woxVM6G5fMajSTisiRTTpBf3w5JoN4ZQPv79zT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475752; c=relaxed/simple;
-	bh=yp54RYhoryWo2nHsg/MPU7jS8VujuZRoIPa2NWMy/8U=;
+	s=arc-20240116; t=1714475883; c=relaxed/simple;
+	bh=sjbm3782hDJ8Ev7/7zZObWWqMWFFnmWWxRj+VRG3umw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFbE+AR3b8TIQ6hwNZPq5JYa4pIkrsyepqcK+pu5TeUbqXPb5gwHKIGMxnf1EiwBsO3WaLMUDWTVxld0jfbeyCY/faaRj6ZIg5/fvZc9snEJ68V/dpKdMzq1cWH5siNYv8DiA4pfKGKDx8xIMTqylH57rOt99QfIC2yJ2qxCjF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVwIlud7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C98C2BBFC;
-	Tue, 30 Apr 2024 11:15:51 +0000 (UTC)
+	 MIME-Version; b=Q5q5nVcgpkZdK9Pf3gwmQHzNXXh4PG/GxG2L6UtRLDBNivvJRR3QqByIlom0WoU22/aafzbXQbbqRiPRTFX8FT2sczrYOZ27n5NaMwTb5c0wRudeYJC4CDP9VQ9eO8727IXB6WbGlXxsPERFZ4Kb5AwLhYvlm1BGIJiIzrX6u2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cm4SrOEe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2274BC2BBFC;
+	Tue, 30 Apr 2024 11:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475752;
-	bh=yp54RYhoryWo2nHsg/MPU7jS8VujuZRoIPa2NWMy/8U=;
+	s=korg; t=1714475883;
+	bh=sjbm3782hDJ8Ev7/7zZObWWqMWFFnmWWxRj+VRG3umw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVwIlud77FEFFB7Aw2gIYDx181EplrOgZTCNViw2MQLCpPLZxpYGUq87pdoJgVfdL
-	 umZQoX2Vxgc5pRRN54LgoojU1LFTg0fGvEczSJWv+rvI5t2bCD7ewEbBgcwrFxmbeE
-	 nogA4aBZZhnKyibIARGMpIB1CDJZ30UUlXmcRpnc=
+	b=Cm4SrOEel3jt9qEpP4/nCMnyT7Ynn1d3fp8kofD5Z/tiBSlj655/eyRPQruV0SR8N
+	 NcEI2cTJDxX/KK5OeknxqVQg868oxJPmk0VVXB9/EUivfc/NzBICsP1IyX4D8Y9ywb
+	 Zm2ghYo7zdfHJ+Q3y61E+k7O5SU2Q2xWAftNnwcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Tomek <mtdev79b@gmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/186] phy: rockchip: naneng-combphy: Fix mux on rk3588
+Subject: [PATCH 5.15 47/80] drm/vmwgfx: Fix crtcs atomic check conditional
 Date: Tue, 30 Apr 2024 12:40:19 +0200
-Message-ID: <20240430103102.879764510@linuxfoundation.org>
+Message-ID: <20240430103044.808613827@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit d16d4002fea69b6609b852dd8db1f5844c02fbe4 ]
+[ Upstream commit a60ccade88f926e871a57176e86a34bbf0db0098 ]
 
-The pcie1l0_sel and pcie1l1_sel bits in PCIESEL_CON configure the
-mux for PCIe1L0 and PCIe1L1 to either the PIPE Combo PHYs or the
-PCIe3 PHY. Thus this configuration interfers with the data-lanes
-configuration done by the PCIe3 PHY.
+The conditional was supposed to prevent enabling of a crtc state
+without a set primary plane. Accidently it also prevented disabling
+crtc state with a set primary plane. Neither is correct.
 
-RK3588 has three Combo PHYs. The first one has a dedicated PCIe
-controller and is not affected by this. For the other two Combo
-PHYs, there is one mux for each of them.
+Fix the conditional and just driver-warn when a crtc state has been
+enabled without a primary plane which will help debug broken userspace.
 
-pcie1l0_sel selects if PCIe 1L0 is muxed to Combo PHY 1 when
-bit is set to 0 or to the PCIe3 PHY when bit is set to 1.
+Fixes IGT's kms_atomic_interruptible and kms_atomic_transition tests.
 
-pcie1l1_sel selects if PCIe 1L1 is muxed to Combo PHY 2 when
-bit is set to 0 or to the PCIe3 PHY when bit is set to 1.
-
-Currently the code always muxes 1L0 and 1L1 to the Combi PHYs
-once one of them is being used in PCIe mode. This is obviously
-wrong when at least one of the ports should be muxed to the
-PCIe3 PHY.
-
-Fix this by introducing Combo PHY identification and then only
-setting up the required bit.
-
-Fixes: a03c44277253 ("phy: rockchip: Add naneng combo phy support for RK3588")
-Reported-by: Michal Tomek <mtdev79b@gmail.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20240404-rk3588-pcie-bifurcation-fixes-v1-3-9907136eeafd@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 06ec41909e31 ("drm/vmwgfx: Add and connect CRTC helper functions")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v4.12+
+Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240412025511.78553-5-zack.rusin@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../rockchip/phy-rockchip-naneng-combphy.c    | 36 +++++++++++++++++--
- 1 file changed, 33 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-index 5de5e2e97ffa0..26b157f53f3da 100644
---- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-@@ -125,12 +125,15 @@ struct rockchip_combphy_grfcfg {
- };
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 01d5a01af2594..e2a52b5de1733 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -537,6 +537,7 @@ int vmw_du_cursor_plane_atomic_check(struct drm_plane *plane,
+ int vmw_du_crtc_atomic_check(struct drm_crtc *crtc,
+ 			     struct drm_atomic_state *state)
+ {
++	struct vmw_private *vmw = vmw_priv(crtc->dev);
+ 	struct drm_crtc_state *new_state = drm_atomic_get_new_crtc_state(state,
+ 									 crtc);
+ 	struct vmw_display_unit *du = vmw_crtc_to_du(new_state->crtc);
+@@ -544,9 +545,13 @@ int vmw_du_crtc_atomic_check(struct drm_crtc *crtc,
+ 	bool has_primary = new_state->plane_mask &
+ 			   drm_plane_mask(crtc->primary);
  
- struct rockchip_combphy_cfg {
-+	unsigned int num_phys;
-+	unsigned int phy_ids[3];
- 	const struct rockchip_combphy_grfcfg *grfcfg;
- 	int (*combphy_cfg)(struct rockchip_combphy_priv *priv);
- };
+-	/* We always want to have an active plane with an active CRTC */
+-	if (has_primary != new_state->enable)
+-		return -EINVAL;
++	/*
++	 * This is fine in general, but broken userspace might expect
++	 * some actual rendering so give a clue as why it's blank.
++	 */
++	if (new_state->enable && !has_primary)
++		drm_dbg_driver(&vmw->drm,
++			       "CRTC without a primary plane will be blank.\n");
  
- struct rockchip_combphy_priv {
- 	u8 type;
-+	int id;
- 	void __iomem *mmio;
- 	int num_clks;
- 	struct clk_bulk_data *clks;
-@@ -320,7 +323,7 @@ static int rockchip_combphy_probe(struct platform_device *pdev)
- 	struct rockchip_combphy_priv *priv;
- 	const struct rockchip_combphy_cfg *phy_cfg;
- 	struct resource *res;
--	int ret;
-+	int ret, id;
  
- 	phy_cfg = of_device_get_match_data(dev);
- 	if (!phy_cfg) {
-@@ -338,6 +341,15 @@ static int rockchip_combphy_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	/* find the phy-id from the io address */
-+	priv->id = -ENODEV;
-+	for (id = 0; id < phy_cfg->num_phys; id++) {
-+		if (res->start == phy_cfg->phy_ids[id]) {
-+			priv->id = id;
-+			break;
-+		}
-+	}
-+
- 	priv->dev = dev;
- 	priv->type = PHY_NONE;
- 	priv->cfg = phy_cfg;
-@@ -562,6 +574,12 @@ static const struct rockchip_combphy_grfcfg rk3568_combphy_grfcfgs = {
- };
- 
- static const struct rockchip_combphy_cfg rk3568_combphy_cfgs = {
-+	.num_phys = 3,
-+	.phy_ids = {
-+		0xfe820000,
-+		0xfe830000,
-+		0xfe840000,
-+	},
- 	.grfcfg		= &rk3568_combphy_grfcfgs,
- 	.combphy_cfg	= rk3568_combphy_cfg,
- };
-@@ -578,8 +596,14 @@ static int rk3588_combphy_cfg(struct rockchip_combphy_priv *priv)
- 		rockchip_combphy_param_write(priv->phy_grf, &cfg->con1_for_pcie, true);
- 		rockchip_combphy_param_write(priv->phy_grf, &cfg->con2_for_pcie, true);
- 		rockchip_combphy_param_write(priv->phy_grf, &cfg->con3_for_pcie, true);
--		rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_pcie1l0_sel, true);
--		rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_pcie1l1_sel, true);
-+		switch (priv->id) {
-+		case 1:
-+			rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_pcie1l0_sel, true);
-+			break;
-+		case 2:
-+			rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_pcie1l1_sel, true);
-+			break;
-+		}
- 		break;
- 	case PHY_TYPE_USB3:
- 		/* Set SSC downward spread spectrum */
-@@ -736,6 +760,12 @@ static const struct rockchip_combphy_grfcfg rk3588_combphy_grfcfgs = {
- };
- 
- static const struct rockchip_combphy_cfg rk3588_combphy_cfgs = {
-+	.num_phys = 3,
-+	.phy_ids = {
-+		0xfee00000,
-+		0xfee10000,
-+		0xfee20000,
-+	},
- 	.grfcfg		= &rk3588_combphy_grfcfgs,
- 	.combphy_cfg	= rk3588_combphy_cfg,
- };
+ 	if (new_state->connector_mask != connector_mask &&
 -- 
 2.43.0
 
