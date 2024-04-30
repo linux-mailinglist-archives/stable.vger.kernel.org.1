@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-42431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4598B72FC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D13FC8B734C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 719B11C22D5B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:14:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC081C230DF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B5512D20F;
-	Tue, 30 Apr 2024 11:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BAC12D76B;
+	Tue, 30 Apr 2024 11:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cD6rZE/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAAX4DwQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A027612D1F4;
-	Tue, 30 Apr 2024 11:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A3017592;
+	Tue, 30 Apr 2024 11:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475642; cv=none; b=ajMGmQqC+/sHsqae11+WCauU6lkWgXl1UUXVKElzGR9r15lGCDsj+Q5f+vuC3NlIYW4HFkw1je5RT2ead9oEnpZgBHwyGhOzXpBQIeukCciW0p/kCgi4MsJXPPvqWa9OkRHrHxYCr7MO/mI0h6UULkNnX8/z4TIEWC720vjvTZQ=
+	t=1714475848; cv=none; b=Lh6VL7DVALrotwPzuRFQ9MnzWmb/9bHbBi+KAFzixzhgOafREtR1NL9pKiC+GWODDtUGdeIGrOk4PU7xYwASKSKY8lFcrZ7ZvSuoYPPraaoyZWyg6bO61JHzT/diMTnHpvN9eWW3xihdCDS3RDSOKBMm3sBApWRBzEf6kwwrhcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475642; c=relaxed/simple;
-	bh=N/HFuMj3Lv+2gQd54TXhbQ7bn5PSEuFigrXcnP0xAZA=;
+	s=arc-20240116; t=1714475848; c=relaxed/simple;
+	bh=+fiB6kwVRCS/cXHLcmJKX4kK0NO4hp8AXpw53e4R8L4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ex8ymfWHYbTutKypG99LLsCKQvQ+gk+j+6uYhxuNNUMJbba2IRlmC2E/U1xZOwfAqmqQ2Xco1IFjAOrEl1j1fmV+cnuR9G5SKwFoiJoLcYD/smOrZmEgDGzzoowl/crDfR4GkbtCIKN6dyc9dpFPno73Dlo3iswSaGYvD/MgF3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cD6rZE/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074CDC4AF19;
-	Tue, 30 Apr 2024 11:14:01 +0000 (UTC)
+	 MIME-Version; b=P4N79suAkcgPiKKYqtlBRqkF1O6lnVv8Hrg+L2RmJFgg0hLqTo1VeaEdG0gYuzUsz2U3aNwiZWyCmXOYfk3zTHdVTtCSEHbkEXkML8dBLzcGFkk8n3rJuZM81+8VS6m6+5vf3AAAYk6PuYnMUBxruKtYUtm7DeD71VflG5wpNVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAAX4DwQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B874BC2BBFC;
+	Tue, 30 Apr 2024 11:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475642;
-	bh=N/HFuMj3Lv+2gQd54TXhbQ7bn5PSEuFigrXcnP0xAZA=;
+	s=korg; t=1714475848;
+	bh=+fiB6kwVRCS/cXHLcmJKX4kK0NO4hp8AXpw53e4R8L4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cD6rZE/RTIlgZng80h7n2EabAkIy7KOOfGn/7GFKtAXR20fMwN9ByMaba0zWIjh6g
-	 Li5Rg6Iq3XQHPzUSBkAPMg6dOIRmKduG441Au1ERud2XPJ9WKNVwCasrI1aSfuiTDo
-	 rp39mcPFy1Yyss+Xrje/Ax2h7+OyCApstsiZ+xn0=
+	b=nAAX4DwQxk01oQ8ug0cdAcKEQB7IvFcs2adY/vZRYXx1TyzmvshjMThyjvAFJNuP7
+	 gXLC/zwLwDDMZVXCH7ixXsSo2z7t05yQMqrh1CisDnuNpV2iOosfRkb2/3aY1hNNrl
+	 A+JgTeSD6lGFXabqtGfkUez2+nPt2PL2ci3bb6q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 157/186] mm: turn folio_test_hugetlb into a PageType
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 37/80] mlxsw: spectrum_acl_tcam: Fix memory leak when canceling rehash work
 Date: Tue, 30 Apr 2024 12:40:09 +0200
-Message-ID: <20240430103102.591425065@linuxfoundation.org>
+Message-ID: <20240430103044.513299810@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,244 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit d99e3140a4d33e26066183ff727d8f02f56bec64 upstream.
+[ Upstream commit fb4e2b70a7194b209fc7320bbf33b375f7114bd5 ]
 
-The current folio_test_hugetlb() can be fooled by a concurrent folio split
-into returning true for a folio which has never belonged to hugetlbfs.
-This can't happen if the caller holds a refcount on it, but we have a few
-places (memory-failure, compaction, procfs) which do not and should not
-take a speculative reference.
+The rehash delayed work is rescheduled with a delay if the number of
+credits at end of the work is not negative as supposedly it means that
+the migration ended. Otherwise, it is rescheduled immediately.
 
-Since hugetlb pages do not use individual page mapcounts (they are always
-fully mapped and use the entire_mapcount field to record the number of
-mappings), the PageType field is available now that page_mapcount()
-ignores the value in this field.
+After "mlxsw: spectrum_acl_tcam: Fix possible use-after-free during
+rehash" the above is no longer accurate as a non-negative number of
+credits is no longer indicative of the migration being done. It can also
+happen if the work encountered an error in which case the migration will
+resume the next time the work is scheduled.
 
-In compaction and with CONFIG_DEBUG_VM enabled, the current implementation
-can result in an oops, as reported by Luis. This happens since 9c5ccf2db04b
-("mm: remove HUGETLB_PAGE_DTOR") effectively added some VM_BUG_ON() checks
-in the PageHuge() testing path.
+The significance of the above is that it is possible for the work to be
+pending and associated with hints that were allocated when the migration
+started. This leads to the hints being leaked [1] when the work is
+canceled while pending as part of ACL region dismantle.
 
-[willy@infradead.org: update vmcoreinfo]
-  Link: https://lkml.kernel.org/r/ZgGZUvsdhaT1Va-T@casper.infradead.org
-Link: https://lkml.kernel.org/r/20240321142448.1645400-6-willy@infradead.org
-Fixes: 9c5ccf2db04b ("mm: remove HUGETLB_PAGE_DTOR")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Reported-by: Luis Chamberlain <mcgrof@kernel.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218227
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by freeing the hints if hints are associated with a work that was
+canceled while pending.
+
+Blame the original commit since the reliance on not having a pending
+work associated with hints is fragile.
+
+[1]
+unreferenced object 0xffff88810e7c3000 (size 256):
+  comm "kworker/0:16", pid 176, jiffies 4295460353
+  hex dump (first 32 bytes):
+    00 30 95 11 81 88 ff ff 61 00 00 00 00 00 00 80  .0......a.......
+    00 00 61 00 40 00 00 00 00 00 00 00 04 00 00 00  ..a.@...........
+  backtrace (crc 2544ddb9):
+    [<00000000cf8cfab3>] kmalloc_trace+0x23f/0x2a0
+    [<000000004d9a1ad9>] objagg_hints_get+0x42/0x390
+    [<000000000b143cf3>] mlxsw_sp_acl_erp_rehash_hints_get+0xca/0x400
+    [<0000000059bdb60a>] mlxsw_sp_acl_tcam_vregion_rehash_work+0x868/0x1160
+    [<00000000e81fd734>] process_one_work+0x59c/0xf20
+    [<00000000ceee9e81>] worker_thread+0x799/0x12c0
+    [<00000000bda6fe39>] kthread+0x246/0x300
+    [<0000000070056d23>] ret_from_fork+0x34/0x70
+    [<00000000dea2b93e>] ret_from_fork_asm+0x1a/0x30
+
+Fixes: c9c9af91f1d9 ("mlxsw: spectrum_acl: Allow to interrupt/continue rehash work")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/0cc12ebb07c4d4c41a1265ee2c28b392ff997a86.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/page-flags.h     |   70 +++++++++++++++++++----------------------
- include/trace/events/mmflags.h |    1 
- kernel/crash_core.c            |    5 +-
- mm/hugetlb.c                   |   22 +-----------
- 4 files changed, 39 insertions(+), 59 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -190,7 +190,6 @@ enum pageflags {
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index e0e7f630801a9..46b1120a8151e 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -831,10 +831,14 @@ mlxsw_sp_acl_tcam_vregion_destroy(struct mlxsw_sp *mlxsw_sp,
+ 	struct mlxsw_sp_acl_tcam *tcam = vregion->tcam;
  
- 	/* At least one page in this folio has the hwpoison flag set */
- 	PG_has_hwpoisoned = PG_error,
--	PG_hugetlb = PG_active,
- 	PG_large_rmappable = PG_workingset, /* anon or file-backed */
- };
- 
-@@ -836,29 +835,6 @@ TESTPAGEFLAG_FALSE(LargeRmappable, large
- 
- #define PG_head_mask ((1UL << PG_head))
- 
--#ifdef CONFIG_HUGETLB_PAGE
--int PageHuge(struct page *page);
--SETPAGEFLAG(HugeTLB, hugetlb, PF_SECOND)
--CLEARPAGEFLAG(HugeTLB, hugetlb, PF_SECOND)
--
--/**
-- * folio_test_hugetlb - Determine if the folio belongs to hugetlbfs
-- * @folio: The folio to test.
-- *
-- * Context: Any context.  Caller should have a reference on the folio to
-- * prevent it from being turned into a tail page.
-- * Return: True for hugetlbfs folios, false for anon folios or folios
-- * belonging to other filesystems.
-- */
--static inline bool folio_test_hugetlb(struct folio *folio)
--{
--	return folio_test_large(folio) &&
--		test_bit(PG_hugetlb, folio_flags(folio, 1));
--}
--#else
--TESTPAGEFLAG_FALSE(Huge, hugetlb)
--#endif
--
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- /*
-  * PageHuge() only returns true for hugetlbfs pages, but not for
-@@ -915,18 +891,6 @@ PAGEFLAG_FALSE(HasHWPoisoned, has_hwpois
- #endif
- 
- /*
-- * Check if a page is currently marked HWPoisoned. Note that this check is
-- * best effort only and inherently racy: there is no way to synchronize with
-- * failing hardware.
-- */
--static inline bool is_page_hwpoison(struct page *page)
--{
--	if (PageHWPoison(page))
--		return true;
--	return PageHuge(page) && PageHWPoison(compound_head(page));
--}
--
--/*
-  * For pages that are never mapped to userspace (and aren't PageSlab),
-  * page_type may be used.  Because it is initialised to -1, we invert the
-  * sense of the bit, so __SetPageFoo *clears* the bit used for PageFoo, and
-@@ -942,6 +906,7 @@ static inline bool is_page_hwpoison(stru
- #define PG_offline	0x00000100
- #define PG_table	0x00000200
- #define PG_guard	0x00000400
-+#define PG_hugetlb	0x00000800
- 
- #define PageType(page, flag)						\
- 	((page->page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
-@@ -1036,6 +1001,37 @@ PAGE_TYPE_OPS(Table, table, pgtable)
-  */
- PAGE_TYPE_OPS(Guard, guard, guard)
- 
-+#ifdef CONFIG_HUGETLB_PAGE
-+FOLIO_TYPE_OPS(hugetlb, hugetlb)
-+#else
-+FOLIO_TEST_FLAG_FALSE(hugetlb)
-+#endif
+ 	if (vgroup->vregion_rehash_enabled && ops->region_rehash_hints_get) {
++		struct mlxsw_sp_acl_tcam_rehash_ctx *ctx = &vregion->rehash.ctx;
 +
-+/**
-+ * PageHuge - Determine if the page belongs to hugetlbfs
-+ * @page: The page to test.
-+ *
-+ * Context: Any context.
-+ * Return: True for hugetlbfs pages, false for anon pages or pages
-+ * belonging to other filesystems.
-+ */
-+static inline bool PageHuge(const struct page *page)
-+{
-+	return folio_test_hugetlb(page_folio(page));
-+}
-+
-+/*
-+ * Check if a page is currently marked HWPoisoned. Note that this check is
-+ * best effort only and inherently racy: there is no way to synchronize with
-+ * failing hardware.
-+ */
-+static inline bool is_page_hwpoison(struct page *page)
-+{
-+	if (PageHWPoison(page))
-+		return true;
-+	return PageHuge(page) && PageHWPoison(compound_head(page));
-+}
-+
- extern bool is_free_buddy_page(struct page *page);
- 
- PAGEFLAG(Isolated, isolated, PF_ANY);
-@@ -1102,7 +1098,7 @@ static __always_inline void __ClearPageA
-  */
- #define PAGE_FLAGS_SECOND						\
- 	(0xffUL /* order */		| 1UL << PG_has_hwpoisoned |	\
--	 1UL << PG_hugetlb		| 1UL << PG_large_rmappable)
-+	 1UL << PG_large_rmappable)
- 
- #define PAGE_FLAGS_PRIVATE				\
- 	(1UL << PG_private | 1UL << PG_private_2)
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -135,6 +135,7 @@ IF_HAVE_PG_ARCH_X(arch_3)
- #define DEF_PAGETYPE_NAME(_name) { PG_##_name, __stringify(_name) }
- 
- #define __def_pagetype_names						\
-+	DEF_PAGETYPE_NAME(hugetlb),					\
- 	DEF_PAGETYPE_NAME(offline),					\
- 	DEF_PAGETYPE_NAME(guard),					\
- 	DEF_PAGETYPE_NAME(table),					\
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -675,11 +675,10 @@ static int __init crash_save_vmcoreinfo_
- 	VMCOREINFO_NUMBER(PG_head_mask);
- #define PAGE_BUDDY_MAPCOUNT_VALUE	(~PG_buddy)
- 	VMCOREINFO_NUMBER(PAGE_BUDDY_MAPCOUNT_VALUE);
--#ifdef CONFIG_HUGETLB_PAGE
--	VMCOREINFO_NUMBER(PG_hugetlb);
-+#define PAGE_HUGETLB_MAPCOUNT_VALUE	(~PG_hugetlb)
-+	VMCOREINFO_NUMBER(PAGE_HUGETLB_MAPCOUNT_VALUE);
- #define PAGE_OFFLINE_MAPCOUNT_VALUE	(~PG_offline)
- 	VMCOREINFO_NUMBER(PAGE_OFFLINE_MAPCOUNT_VALUE);
--#endif
- 
- #ifdef CONFIG_KALLSYMS
- 	VMCOREINFO_SYMBOL(kallsyms_names);
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1630,7 +1630,7 @@ static inline void __clear_hugetlb_destr
- {
- 	lockdep_assert_held(&hugetlb_lock);
- 
--	folio_clear_hugetlb(folio);
-+	__folio_clear_hugetlb(folio);
- }
- 
- /*
-@@ -1717,7 +1717,7 @@ static void add_hugetlb_folio(struct hst
- 		h->surplus_huge_pages_node[nid]++;
+ 		mutex_lock(&tcam->lock);
+ 		list_del(&vregion->tlist);
+ 		mutex_unlock(&tcam->lock);
+-		cancel_delayed_work_sync(&vregion->rehash.dw);
++		if (cancel_delayed_work_sync(&vregion->rehash.dw) &&
++		    ctx->hints_priv)
++			ops->region_rehash_hints_put(ctx->hints_priv);
  	}
- 
--	folio_set_hugetlb(folio);
-+	__folio_set_hugetlb(folio);
- 	folio_change_private(folio, NULL);
- 	/*
- 	 * We have to set hugetlb_vmemmap_optimized again as above
-@@ -1971,7 +1971,7 @@ static void __prep_new_hugetlb_folio(str
- {
- 	hugetlb_vmemmap_optimize(h, &folio->page);
- 	INIT_LIST_HEAD(&folio->lru);
--	folio_set_hugetlb(folio);
-+	__folio_set_hugetlb(folio);
- 	hugetlb_set_folio_subpool(folio, NULL);
- 	set_hugetlb_cgroup(folio, NULL);
- 	set_hugetlb_cgroup_rsvd(folio, NULL);
-@@ -2075,22 +2075,6 @@ static bool prep_compound_gigantic_folio
- }
- 
- /*
-- * PageHuge() only returns true for hugetlbfs pages, but not for normal or
-- * transparent huge pages.  See the PageTransHuge() documentation for more
-- * details.
-- */
--int PageHuge(struct page *page)
--{
--	struct folio *folio;
--
--	if (!PageCompound(page))
--		return 0;
--	folio = page_folio(page);
--	return folio_test_hugetlb(folio);
--}
--EXPORT_SYMBOL_GPL(PageHuge);
--
--/*
-  * Find and lock address space (mapping) in write mode.
-  *
-  * Upon entry, the page is locked which means that page_mapping() is
+ 	mlxsw_sp_acl_tcam_vgroup_vregion_detach(mlxsw_sp, vregion);
+ 	if (vregion->region2)
+-- 
+2.43.0
+
 
 
 
