@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDBA48B73EA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B118B7462
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B34D1C22EE4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FF3C287090
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D58912D210;
-	Tue, 30 Apr 2024 11:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B224B12D745;
+	Tue, 30 Apr 2024 11:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py6zVVzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoFWTXwd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB7E12C47A;
-	Tue, 30 Apr 2024 11:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C7A12BF32;
+	Tue, 30 Apr 2024 11:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476289; cv=none; b=QbHDAMuBlD8SdxtlrJyFvTT1Tg7IGP0i1d4DXi7ydPCIun7H3TD4JUuv55D8TjXgk1WDjSw/VU4EVXsJzOSAupgF/4u6ZrXwc29Ze6bsPx0KfxJxWMsprUNkcVsEzhH9Nf4Bz+XcQWhfLTo9jWt6aAVaKZEOcCGzO7jTU6Cd7tc=
+	t=1714476612; cv=none; b=KRWY7jh0288f1+Pqy91WRkrJza+lCdcX/h5TOYE+JFgoQnJ/VG6TJRap3gLgCkroWdTnrrNKjiYrYSMGNBaL1/LmcUjBwCBxqydrbl2F7rb/MczER8O4IP4lhpZAvbW0xPKoD4XeFa/wUu1HB097jMoSQrPn+bAUBMlKyMRTcIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476289; c=relaxed/simple;
-	bh=5u5amtbsZmtUSotF/5X8qlmYceNx23czu+Wlvf86g/Y=;
+	s=arc-20240116; t=1714476612; c=relaxed/simple;
+	bh=mEUPtTFYzSZcaB1kRWWSX+BiuFJktZyjaKWkt57bLic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwC0Oojisv4YBwjBEK9bVNX01is35GCyfb0ADAaL+rn886ISSqtQdbifmBBOjehdCMdXQ10QuiGMJRuc/SBY7PHrKfIc15vG9967sMHiekau+darlEUwd3XtlqTg3a91MmcyWrNiVUWccRM2qLo/9MEtXdfKxxNieyt/PwjvMuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py6zVVzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFF4C2BBFC;
-	Tue, 30 Apr 2024 11:24:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=elmdswNL4Gt9ZJzXhLk/oDVf/7TYpOozXNQEJQ9G6a0tUDaw81fATRliPLIVXiu+gR6gyHMknbnQEx5ceyZK/GgddTAwCZVA0zjWWonfrT9mqGuwSodiJ3xE6TvA4oTYA7KJBp7BrmqetDluzRH6xaM/wHvKjRBdGit86xc6wHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoFWTXwd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF3DC4AF1B;
+	Tue, 30 Apr 2024 11:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476288;
-	bh=5u5amtbsZmtUSotF/5X8qlmYceNx23czu+Wlvf86g/Y=;
+	s=korg; t=1714476612;
+	bh=mEUPtTFYzSZcaB1kRWWSX+BiuFJktZyjaKWkt57bLic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Py6zVVzXphTZuCoH6AWKvR6kCDVnBTsQ1LRZw5bKdILcVJrR8W+rySI6wSz9WN+Og
-	 XYdEKJKf0RFhC6RHXhduVWJ86hFBM4mxd3BXI1lDlywcfulgm60H2/mkE5fUI6c+Cu
-	 hTYbFhbPnaV2cfs/heIYa8OxSwBXy3gEO+8ofgCE=
+	b=RoFWTXwdqSXvKS4EtAPCg3inR0syECjReqPvHrWqdtXGqcHcZLRrnzZw62r1WiD/o
+	 Vt8L1Cw+A2FUT/SDEAeNJ5cOSpUNgs/1iDa73O5MQ+ipSr06UMlXNBNnCAm16An3dn
+	 Dt2/qCaz23DAifq55vgH4urlQ0ILeoFr5p/pg9fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	=?UTF-8?q?Peter=20M=C3=BCnster?= <pm@a16n.net>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Vaclav Svoboda <svoboda@neng.cz>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 094/107] ethernet: Add helper for assigning packet type when dest address does not match device address
+Subject: [PATCH 6.1 085/110] net: b44: set pause params only when interface is up
 Date: Tue, 30 Apr 2024 12:40:54 +0200
-Message-ID: <20240430103047.432051153@linuxfoundation.org>
+Message-ID: <20240430103050.076243545@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +63,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Peter Münster <pm@a16n.net>
 
-commit 6e159fd653d7ebf6290358e0330a0cb8a75cf73b upstream.
+commit e3eb7dd47bd4806f00e104eb6da092c435f9fb21 upstream.
 
-Enable reuse of logic in eth_type_trans for determining packet type.
+b44_free_rings() accesses b44::rx_buffers (and ::tx_buffers)
+unconditionally, but b44::rx_buffers is only valid when the
+device is up (they get allocated in b44_open(), and deallocated
+again in b44_close()), any other time these are just a NULL pointers.
 
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
+So if you try to change the pause params while the network interface
+is disabled/administratively down, everything explodes (which likely
+netifd tries to do).
+
+Link: https://github.com/openwrt/openwrt/issues/13789
+Fixes: 1da177e4c3f4 (Linux-2.6.12-rc2)
 Cc: stable@vger.kernel.org
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240423181319.115860-3-rrameshbabu@nvidia.com
+Reported-by: Peter Münster <pm@a16n.net>
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Vaclav Svoboda <svoboda@neng.cz>
+Tested-by: Peter Münster <pm@a16n.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Peter Münster <pm@a16n.net>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/87y192oolj.fsf@a16n.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/etherdevice.h |   25 +++++++++++++++++++++++++
- net/ethernet/eth.c          |   12 +-----------
- 2 files changed, 26 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/broadcom/b44.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/include/linux/etherdevice.h
-+++ b/include/linux/etherdevice.h
-@@ -532,6 +532,31 @@ static inline unsigned long compare_ethe
- }
- 
- /**
-+ * eth_skb_pkt_type - Assign packet type if destination address does not match
-+ * @skb: Assigned a packet type if address does not match @dev address
-+ * @dev: Network device used to compare packet address against
-+ *
-+ * If the destination MAC address of the packet does not match the network
-+ * device address, assign an appropriate packet type.
-+ */
-+static inline void eth_skb_pkt_type(struct sk_buff *skb,
-+				    const struct net_device *dev)
-+{
-+	const struct ethhdr *eth = eth_hdr(skb);
-+
-+	if (unlikely(!ether_addr_equal_64bits(eth->h_dest, dev->dev_addr))) {
-+		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
-+			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
-+				skb->pkt_type = PACKET_BROADCAST;
-+			else
-+				skb->pkt_type = PACKET_MULTICAST;
+--- a/drivers/net/ethernet/broadcom/b44.c
++++ b/drivers/net/ethernet/broadcom/b44.c
+@@ -2033,12 +2033,14 @@ static int b44_set_pauseparam(struct net
+ 		bp->flags |= B44_FLAG_TX_PAUSE;
+ 	else
+ 		bp->flags &= ~B44_FLAG_TX_PAUSE;
+-	if (bp->flags & B44_FLAG_PAUSE_AUTO) {
+-		b44_halt(bp);
+-		b44_init_rings(bp);
+-		b44_init_hw(bp, B44_FULL_RESET);
+-	} else {
+-		__b44_set_flow_ctrl(bp, bp->flags);
++	if (netif_running(dev)) {
++		if (bp->flags & B44_FLAG_PAUSE_AUTO) {
++			b44_halt(bp);
++			b44_init_rings(bp);
++			b44_init_hw(bp, B44_FULL_RESET);
 +		} else {
-+			skb->pkt_type = PACKET_OTHERHOST;
++			__b44_set_flow_ctrl(bp, bp->flags);
 +		}
-+	}
-+}
-+
-+/**
-  * eth_skb_pad - Pad buffer to mininum number of octets for Ethernet frame
-  * @skb: Buffer to pad
-  *
---- a/net/ethernet/eth.c
-+++ b/net/ethernet/eth.c
-@@ -164,17 +164,7 @@ __be16 eth_type_trans(struct sk_buff *sk
- 	eth = (struct ethhdr *)skb->data;
- 	skb_pull_inline(skb, ETH_HLEN);
+ 	}
+ 	spin_unlock_irq(&bp->lock);
  
--	if (unlikely(!ether_addr_equal_64bits(eth->h_dest,
--					      dev->dev_addr))) {
--		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
--			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
--				skb->pkt_type = PACKET_BROADCAST;
--			else
--				skb->pkt_type = PACKET_MULTICAST;
--		} else {
--			skb->pkt_type = PACKET_OTHERHOST;
--		}
--	}
-+	eth_skb_pkt_type(skb, dev);
- 
- 	/*
- 	 * Some variants of DSA tagging don't have an ethertype field
 
 
 
