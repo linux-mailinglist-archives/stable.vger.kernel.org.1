@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620348B7275
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A208B71A8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18495283291
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 006731C223F1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62711E50A;
-	Tue, 30 Apr 2024 11:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5255512C487;
+	Tue, 30 Apr 2024 10:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocMgRiP+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiydRy7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631D012C490;
-	Tue, 30 Apr 2024 11:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1163B12C476;
+	Tue, 30 Apr 2024 10:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475300; cv=none; b=hNIq/dox0Rr2x1QlfTZU45VKO/3eB4VbHDqBf9NZoLzu1ldm1kjGm4uGc+K5912nC65tqVOj3IG1jzZ3h82Qs/tsP1E8My4Eb9/nzJO4rZjSnuc1VlKrKb68/SSQ5i9/6URTZTrGLz3UeahTqdCW+C5iCWiIkBCxjZtwsWIPc8c=
+	t=1714474745; cv=none; b=Qzx48UAs9EaJxStv1KpUZwAfN+jvLbXaB8S4/Bw5K0PO2xarktDxn67RIxkiqs/gv/dgAJdSKZ3ltpdcHdVOh+y2hG3yVVtot4sBNPNhEQaQv8Ub4EiF/mSOyUGwWNMvFlEHmo6qXXasPofwkx2WRICeeXvVfDm14ZA6z05Js6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475300; c=relaxed/simple;
-	bh=lS7jRbLCWGirW7s/7qvOmQq7eCYl7T6ZyUQ18yx6Eqc=;
+	s=arc-20240116; t=1714474745; c=relaxed/simple;
+	bh=06phHfyLc1xEoQ4L2Gcf/Otiwq8fl8RlQZcXpPLPWiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCkMhRjM1kVE6ttdlzWHCEh2Mi+fcUEqwEUcMVW9BdmKSUbfO6dh0pLn865o7mTrufe7jKAz8POIHvhAp80zGzykCKZabFSIm4x++L+FN9eJEB9t81eWtt4ADseQBmr5QUMZmLrIQmcVfyYqTlnC8WX9cShqC5AQ7bE5+0d4q8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocMgRiP+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D945FC2BBFC;
-	Tue, 30 Apr 2024 11:08:19 +0000 (UTC)
+	 MIME-Version; b=GvC/d9D0adQpDZfxXmXVAs9zsQPZc1RAZkr9Aw1Td8rkij/AgMCc9yzD8R0grcv2qWurjn+Ta0wrOFDcDU35ERPbTcL/VEg6f2PUnpdw3HGXSoVlstYNVFkgVOD6zgRy1771+KGnRF4Q8LylkvdLXfqlpuVgz1YDm66vIbe/RvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiydRy7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775CFC4AF19;
+	Tue, 30 Apr 2024 10:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475300;
-	bh=lS7jRbLCWGirW7s/7qvOmQq7eCYl7T6ZyUQ18yx6Eqc=;
+	s=korg; t=1714474744;
+	bh=06phHfyLc1xEoQ4L2Gcf/Otiwq8fl8RlQZcXpPLPWiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ocMgRiP+yisq94BbYJ/toZmNsjI3N3oc9d4tRroGQmGD6/UwAa8wLPeVlzK+L47mD
-	 F4fIXv7r5ubHPJ8vsbh+/cD5xg0eM0O7Eq3zGgrIwKcocrrTf215vtApNe6dnDPq3s
-	 3E8GuuWiW1o1Ao4Fm2ejArPVUK1qIqWZmxPb59i8=
+	b=XiydRy7WgFbf6FsW/iZgN/idfDxPash0SJ85fg0BHK/7jM9LB5sKvpttRU0T3h0RV
+	 XpMOUWediyJNDExtsQ51YI2nu9+JIdwkCM92j9j2So+nqsBcMnOl4B0/F8K//a5Cf7
+	 9j17EFaZdVY3j8tX0C3VhBHY2ZhktcRdgwzveAnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/186] net: dsa: mv88e6xx: fix supported_interfaces setup in mv88e6250_phylink_get_caps()
+	Daisuke Mizobuchi <mizo@atmark-techno.com>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH 5.10 022/138] mailbox: imx: fix suspend failue
 Date: Tue, 30 Apr 2024 12:38:27 +0200
-Message-ID: <20240430103059.628958934@linuxfoundation.org>
+Message-ID: <20240430103050.080946563@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Daisuke Mizobuchi <mizo@atmark-techno.com>
 
-[ Upstream commit a4e3899065ffa87d49dc20e8c17501edbc189692 ]
+imx_mu_isr() always calls pm_system_wakeup() even when it should not,
+making the system unable to enter sleep.
 
-With the recent PHYLINK changes requiring supported_interfaces to be set,
-MV88E6250 family switches like the 88E6020 fail to probe - cmode is
-never initialized on these devices, so mv88e6250_phylink_get_caps() does
-not set any supported_interfaces flags.
+Suspend fails as follows:
+ armadillo:~# echo mem > /sys/power/state
+ [ 2614.602432] PM: suspend entry (deep)
+ [ 2614.610640] Filesystems sync: 0.004 seconds
+ [ 2614.618016] Freezing user space processes ... (elapsed 0.001 seconds) done.
+ [ 2614.626555] OOM killer disabled.
+ [ 2614.629792] Freezing remaining freezable tasks ... (elapsed 0.001 seconds) done.
+ [ 2614.638456] printk: Suspending console(s) (use no_console_suspend to debug)
+ [ 2614.649504] PM: Some devices failed to suspend, or early wake event detected
+ [ 2614.730103] PM: resume devices took 0.080 seconds
+ [ 2614.741924] OOM killer enabled.
+ [ 2614.745073] Restarting tasks ... done.
+ [ 2614.754532] PM: suspend exit
+ ash: write error: Resource busy
+ armadillo:~#
 
-Instead of a cmode, on 88E6250 we have a read-only port mode value that
-encodes similar information. There is no reason to bother mapping port
-mode to the cmodes of other switch models; instead we introduce a
-mv88e6250_setup_supported_interfaces() that is called directly from
-mv88e6250_phylink_get_caps().
+Upstream commit 892cb524ae8a is correct, so this seems to be a
+mistake during cherry-pick.
 
-Fixes: de5c9bf40c45 ("net: phylink: require supported_interfaces to be filled")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20240417103737.166651-1-matthias.schiffer@ew.tq-group.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: a16f5ae8ade1 ("mailbox: imx: fix wakeup failure from freeze mode")
+Signed-off-by: Daisuke Mizobuchi <mizo@atmark-techno.com>
+Reviewed-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 56 +++++++++++++++++++++++++++++---
- drivers/net/dsa/mv88e6xxx/port.h | 23 ++++++++++---
- 2 files changed, 71 insertions(+), 8 deletions(-)
+ drivers/mailbox/imx-mailbox.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index b8fde22aebf93..8556502f06721 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -566,13 +566,61 @@ static void mv88e6xxx_translate_cmode(u8 cmode, unsigned long *supported)
- 		phy_interface_set_rgmii(supported);
+--- a/drivers/mailbox/imx-mailbox.c
++++ b/drivers/mailbox/imx-mailbox.c
+@@ -331,8 +331,6 @@ static int imx_mu_startup(struct mbox_ch
+ 		break;
+ 	}
+ 
+-	priv->suspend = true;
+-
+ 	return 0;
  }
  
--static void mv88e6250_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
--				       struct phylink_config *config)
-+static void
-+mv88e6250_setup_supported_interfaces(struct mv88e6xxx_chip *chip, int port,
-+				     struct phylink_config *config)
- {
- 	unsigned long *supported = config->supported_interfaces;
-+	int err;
-+	u16 reg;
+@@ -550,8 +548,6 @@ static int imx_mu_probe(struct platform_
  
--	/* Translate the default cmode */
--	mv88e6xxx_translate_cmode(chip->ports[port].cmode, supported);
-+	err = mv88e6xxx_port_read(chip, port, MV88E6XXX_PORT_STS, &reg);
-+	if (err) {
-+		dev_err(chip->dev, "p%d: failed to read port status\n", port);
-+		return;
-+	}
-+
-+	switch (reg & MV88E6250_PORT_STS_PORTMODE_MASK) {
-+	case MV88E6250_PORT_STS_PORTMODE_MII_10_HALF_PHY:
-+	case MV88E6250_PORT_STS_PORTMODE_MII_100_HALF_PHY:
-+	case MV88E6250_PORT_STS_PORTMODE_MII_10_FULL_PHY:
-+	case MV88E6250_PORT_STS_PORTMODE_MII_100_FULL_PHY:
-+		__set_bit(PHY_INTERFACE_MODE_REVMII, supported);
-+		break;
-+
-+	case MV88E6250_PORT_STS_PORTMODE_MII_HALF:
-+	case MV88E6250_PORT_STS_PORTMODE_MII_FULL:
-+		__set_bit(PHY_INTERFACE_MODE_MII, supported);
-+		break;
-+
-+	case MV88E6250_PORT_STS_PORTMODE_MII_DUAL_100_RMII_FULL_PHY:
-+	case MV88E6250_PORT_STS_PORTMODE_MII_200_RMII_FULL_PHY:
-+	case MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_HALF_PHY:
-+	case MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_FULL_PHY:
-+		__set_bit(PHY_INTERFACE_MODE_REVRMII, supported);
-+		break;
-+
-+	case MV88E6250_PORT_STS_PORTMODE_MII_DUAL_100_RMII_FULL:
-+	case MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_FULL:
-+		__set_bit(PHY_INTERFACE_MODE_RMII, supported);
-+		break;
-+
-+	case MV88E6250_PORT_STS_PORTMODE_MII_100_RGMII:
-+		__set_bit(PHY_INTERFACE_MODE_RGMII, supported);
-+		break;
-+
-+	default:
-+		dev_err(chip->dev,
-+			"p%d: invalid port mode in status register: %04x\n",
-+			port, reg);
-+	}
-+}
-+
-+static void mv88e6250_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
-+				       struct phylink_config *config)
-+{
-+	if (!mv88e6xxx_phy_is_internal(chip, port))
-+		mv88e6250_setup_supported_interfaces(chip, port, config);
+ 	clk_disable_unprepare(priv->clk);
  
- 	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100;
+-	priv->suspend = false;
+-
+ 	return 0;
+ 
+ disable_runtime_pm:
+@@ -614,6 +610,8 @@ static int __maybe_unused imx_mu_suspend
+ 	if (!priv->clk)
+ 		priv->xcr = imx_mu_read(priv, priv->dcfg->xCR);
+ 
++	priv->suspend = true;
++
+ 	return 0;
  }
-diff --git a/drivers/net/dsa/mv88e6xxx/port.h b/drivers/net/dsa/mv88e6xxx/port.h
-index 86deeb347cbc1..ddadeb9bfdaee 100644
---- a/drivers/net/dsa/mv88e6xxx/port.h
-+++ b/drivers/net/dsa/mv88e6xxx/port.h
-@@ -25,10 +25,25 @@
- #define MV88E6250_PORT_STS_PORTMODE_PHY_100_HALF	0x0900
- #define MV88E6250_PORT_STS_PORTMODE_PHY_10_FULL		0x0a00
- #define MV88E6250_PORT_STS_PORTMODE_PHY_100_FULL	0x0b00
--#define MV88E6250_PORT_STS_PORTMODE_MII_10_HALF		0x0c00
--#define MV88E6250_PORT_STS_PORTMODE_MII_100_HALF	0x0d00
--#define MV88E6250_PORT_STS_PORTMODE_MII_10_FULL		0x0e00
--#define MV88E6250_PORT_STS_PORTMODE_MII_100_FULL	0x0f00
-+/* - Modes with PHY suffix use output instead of input clock
-+ * - Modes without RMII or RGMII use MII
-+ * - Modes without speed do not have a fixed speed specified in the manual
-+ *   ("DC to x MHz" - variable clock support?)
-+ */
-+#define MV88E6250_PORT_STS_PORTMODE_MII_DISABLED		0x0000
-+#define MV88E6250_PORT_STS_PORTMODE_MII_100_RGMII		0x0100
-+#define MV88E6250_PORT_STS_PORTMODE_MII_DUAL_100_RMII_FULL_PHY	0x0200
-+#define MV88E6250_PORT_STS_PORTMODE_MII_200_RMII_FULL_PHY	0x0400
-+#define MV88E6250_PORT_STS_PORTMODE_MII_DUAL_100_RMII_FULL	0x0600
-+#define MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_FULL	0x0700
-+#define MV88E6250_PORT_STS_PORTMODE_MII_HALF			0x0800
-+#define MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_HALF_PHY	0x0900
-+#define MV88E6250_PORT_STS_PORTMODE_MII_FULL			0x0a00
-+#define MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_FULL_PHY	0x0b00
-+#define MV88E6250_PORT_STS_PORTMODE_MII_10_HALF_PHY		0x0c00
-+#define MV88E6250_PORT_STS_PORTMODE_MII_100_HALF_PHY		0x0d00
-+#define MV88E6250_PORT_STS_PORTMODE_MII_10_FULL_PHY		0x0e00
-+#define MV88E6250_PORT_STS_PORTMODE_MII_100_FULL_PHY		0x0f00
- #define MV88E6XXX_PORT_STS_LINK			0x0800
- #define MV88E6XXX_PORT_STS_DUPLEX		0x0400
- #define MV88E6XXX_PORT_STS_SPEED_MASK		0x0300
--- 
-2.43.0
-
+ 
+@@ -632,6 +630,8 @@ static int __maybe_unused imx_mu_resume_
+ 	if (!imx_mu_read(priv, priv->dcfg->xCR) && !priv->clk)
+ 		imx_mu_write(priv, priv->xcr, priv->dcfg->xCR);
+ 
++	priv->suspend = false;
++
+ 	return 0;
+ }
+ 
 
 
 
