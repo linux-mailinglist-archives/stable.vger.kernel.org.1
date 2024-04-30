@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97ED8B73A1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CA08B717D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D17EB210DB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C25B1F21653
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFD612CDAE;
-	Tue, 30 Apr 2024 11:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6CE12C817;
+	Tue, 30 Apr 2024 10:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGfnyRkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUC2ghi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFE112C805;
-	Tue, 30 Apr 2024 11:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75485129E89;
+	Tue, 30 Apr 2024 10:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476091; cv=none; b=bgnOc4Sn2pOt0RB7XvjztMGpBrZit/RIMnd19T2oXyVYJfkRLWl0dfgeTLSSX+RT9fXGLRDeFCyVmH7STN/sOe0WNDk1ruwBQJHrjJ3kV2u4yxKji2T4kldH7FgP77itI7Gj9PuLhMKPbjhlsyVCasjgAYqAKfCGHcED9lKPrWg=
+	t=1714474625; cv=none; b=V+2azbIXdEKXJDolqkaXK6Ov2hPY+5tKFKGfqwHiur+fuhzRkS8DNqh6NqnuJtvG6kSqUx7KwzeuXADXoIAe5qY1BJM0rlY4k+xz9hHntV/9jfUELg8XSKRJXoiCriB1BP+6+46RYOJKR0NYRez6Z4TU3b8Bs2OxeePsNIBsepg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476091; c=relaxed/simple;
-	bh=U7YtRZtBioJtm9rI4wi/Qzd1baIK5F6lWsJegfQnD6I=;
+	s=arc-20240116; t=1714474625; c=relaxed/simple;
+	bh=zRcs6NP5AWs1kHo4Uy7r/CZ9DxjbyE+vEbUI6CZaCdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpvkJPAv0mLcMA+13cz35wc5jFqrKpgi0TgWWKhESLYoKKc4mgdSwbBj/3T6e5rR1bqdNxmgNvFQDuO0VbDFyE+Fw7eS84ZGH6RR2GwcoU2O1G1mHCOpbLywC8IZwIH+GKiAJA7MxTReR4QEm+hVqarPXw+gHma3bGGRY18mOGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGfnyRkd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E3BC2BBFC;
-	Tue, 30 Apr 2024 11:21:30 +0000 (UTC)
+	 MIME-Version; b=d3uLl6j60DWbay4j7c47mbGHWL3dit/u1ek5E26NL7EvFoWLoo94pSI9KLWIANcrPoq5iEflHXC5PwpwkHzJoLbKEBHrlgvACFC74aOzM2QNJgN7TKeeIep782jlA5ThCpcrQ4l8k7kSrnsj26CbxNqPIlBlkCmPmfOcrMKEtEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUC2ghi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E15C2BBFC;
+	Tue, 30 Apr 2024 10:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476091;
-	bh=U7YtRZtBioJtm9rI4wi/Qzd1baIK5F6lWsJegfQnD6I=;
+	s=korg; t=1714474625;
+	bh=zRcs6NP5AWs1kHo4Uy7r/CZ9DxjbyE+vEbUI6CZaCdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NGfnyRkd4rH+mFhv5TS7sRuoC2C6nBWPFr5KSr8kUB6szr+qxpd0OIecpzkZPoyLm
-	 V3UGgURR7EF0TAYWr8MTH0a8u1XQIF7pJMFVQVWD8ttZYekum3mhlnUYgG4meyrF3u
-	 WrfUfnZmxSWKZ5scSMpJ6EAb3aGyU2sbCI8K5uPE=
+	b=VUC2ghi6Q5RZKQ03EhXzA4xdvpp/ywO73rrGPHAf/rJhqmyegv87Zve4phdmrNmcT
+	 7BoGaB1Ir7Jx9hjOx63R+a0N23N5Jhkilxmrik89cf2D1/xJTl33U/zKsuciaZ/7Dd
+	 NquJMmpoiLfgFo4+z/IBif0jogBAigIeaAIjLB8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea@microchip.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 030/107] clk: remove extra empty line
+Subject: [PATCH 6.8 212/228] dma: xilinx_dpdma: Fix locking
 Date: Tue, 30 Apr 2024 12:39:50 +0200
-Message-ID: <20240430103045.550888780@linuxfoundation.org>
+Message-ID: <20240430103109.923998847@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 79806d338829b2bf903480428d8ce5aab8e2d24b ]
+[ Upstream commit 244296cc3a155199a8b080d19e645d7d49081a38 ]
 
-Remove extra empty line.
+There are several places where either chan->lock or chan->vchan.lock was
+not held. Add appropriate locking. This fixes lockdep warnings like
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20220630151205.3935560-1-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
+[   31.077578] ------------[ cut here ]------------
+[   31.077831] WARNING: CPU: 2 PID: 40 at drivers/dma/xilinx/xilinx_dpdma.c:834 xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
+[   31.077953] Modules linked in:
+[   31.078019] CPU: 2 PID: 40 Comm: kworker/u12:1 Not tainted 6.6.20+ #98
+[   31.078102] Hardware name: xlnx,zynqmp (DT)
+[   31.078169] Workqueue: events_unbound deferred_probe_work_func
+[   31.078272] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   31.078377] pc : xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
+[   31.078473] lr : xilinx_dpdma_chan_queue_transfer+0x270/0x5e0
+[   31.078550] sp : ffffffc083bb2e10
+[   31.078590] x29: ffffffc083bb2e10 x28: 0000000000000000 x27: ffffff880165a168
+[   31.078754] x26: ffffff880164e920 x25: ffffff880164eab8 x24: ffffff880164d480
+[   31.078920] x23: ffffff880165a148 x22: ffffff880164e988 x21: 0000000000000000
+[   31.079132] x20: ffffffc082aa3000 x19: ffffff880164e880 x18: 0000000000000000
+[   31.079295] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[   31.079453] x14: 0000000000000000 x13: ffffff8802263dc0 x12: 0000000000000001
+[   31.079613] x11: 0001ffc083bb2e34 x10: 0001ff880164e98f x9 : 0001ffc082aa3def
+[   31.079824] x8 : 0001ffc082aa3dec x7 : 0000000000000000 x6 : 0000000000000516
+[   31.079982] x5 : ffffffc7f8d43000 x4 : ffffff88003c9c40 x3 : ffffffffffffffff
+[   31.080147] x2 : ffffffc7f8d43000 x1 : 00000000000000c0 x0 : 0000000000000000
+[   31.080307] Call trace:
+[   31.080340]  xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
+[   31.080518]  xilinx_dpdma_issue_pending+0x11c/0x120
+[   31.080595]  zynqmp_disp_layer_update+0x180/0x3ac
+[   31.080712]  zynqmp_dpsub_plane_atomic_update+0x11c/0x21c
+[   31.080825]  drm_atomic_helper_commit_planes+0x20c/0x684
+[   31.080951]  drm_atomic_helper_commit_tail+0x5c/0xb0
+[   31.081139]  commit_tail+0x234/0x294
+[   31.081246]  drm_atomic_helper_commit+0x1f8/0x210
+[   31.081363]  drm_atomic_commit+0x100/0x140
+[   31.081477]  drm_client_modeset_commit_atomic+0x318/0x384
+[   31.081634]  drm_client_modeset_commit_locked+0x8c/0x24c
+[   31.081725]  drm_client_modeset_commit+0x34/0x5c
+[   31.081812]  __drm_fb_helper_restore_fbdev_mode_unlocked+0x104/0x168
+[   31.081899]  drm_fb_helper_set_par+0x50/0x70
+[   31.081971]  fbcon_init+0x538/0xc48
+[   31.082047]  visual_init+0x16c/0x23c
+[   31.082207]  do_bind_con_driver.isra.0+0x2d0/0x634
+[   31.082320]  do_take_over_console+0x24c/0x33c
+[   31.082429]  do_fbcon_takeover+0xbc/0x1b0
+[   31.082503]  fbcon_fb_registered+0x2d0/0x34c
+[   31.082663]  register_framebuffer+0x27c/0x38c
+[   31.082767]  __drm_fb_helper_initial_config_and_unlock+0x5c0/0x91c
+[   31.082939]  drm_fb_helper_initial_config+0x50/0x74
+[   31.083012]  drm_fbdev_dma_client_hotplug+0xb8/0x108
+[   31.083115]  drm_client_register+0xa0/0xf4
+[   31.083195]  drm_fbdev_dma_setup+0xb0/0x1cc
+[   31.083293]  zynqmp_dpsub_drm_init+0x45c/0x4e0
+[   31.083431]  zynqmp_dpsub_probe+0x444/0x5e0
+[   31.083616]  platform_probe+0x8c/0x13c
+[   31.083713]  really_probe+0x258/0x59c
+[   31.083793]  __driver_probe_device+0xc4/0x224
+[   31.083878]  driver_probe_device+0x70/0x1c0
+[   31.083961]  __device_attach_driver+0x108/0x1e0
+[   31.084052]  bus_for_each_drv+0x9c/0x100
+[   31.084125]  __device_attach+0x100/0x298
+[   31.084207]  device_initial_probe+0x14/0x20
+[   31.084292]  bus_probe_device+0xd8/0xdc
+[   31.084368]  deferred_probe_work_func+0x11c/0x180
+[   31.084451]  process_one_work+0x3ac/0x988
+[   31.084643]  worker_thread+0x398/0x694
+[   31.084752]  kthread+0x1bc/0x1c0
+[   31.084848]  ret_from_fork+0x10/0x20
+[   31.084932] irq event stamp: 64549
+[   31.084970] hardirqs last  enabled at (64548): [<ffffffc081adf35c>] _raw_spin_unlock_irqrestore+0x80/0x90
+[   31.085157] hardirqs last disabled at (64549): [<ffffffc081adf010>] _raw_spin_lock_irqsave+0xc0/0xdc
+[   31.085277] softirqs last  enabled at (64503): [<ffffffc08001071c>] __do_softirq+0x47c/0x500
+[   31.085390] softirqs last disabled at (64498): [<ffffffc080017134>] ____do_softirq+0x10/0x1c
+[   31.085501] ---[ end trace 0000000000000000 ]---
+
+Fixes: 7cbb0c63de3f ("dmaengine: xilinx: dpdma: Add the Xilinx DisplayPort DMA engine driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240308210034.3634938-2-sean.anderson@linux.dev
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/dma/xilinx/xilinx_dpdma.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index f9d89b42b8f9d..276b8a1f3c3f3 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -3508,7 +3508,6 @@ static int __clk_core_init(struct clk_core *core)
+diff --git a/drivers/dma/xilinx/xilinx_dpdma.c b/drivers/dma/xilinx/xilinx_dpdma.c
+index b82815e64d24e..eb0637d90342a 100644
+--- a/drivers/dma/xilinx/xilinx_dpdma.c
++++ b/drivers/dma/xilinx/xilinx_dpdma.c
+@@ -214,7 +214,8 @@ struct xilinx_dpdma_tx_desc {
+  * @running: true if the channel is running
+  * @first_frame: flag for the first frame of stream
+  * @video_group: flag if multi-channel operation is needed for video channels
+- * @lock: lock to access struct xilinx_dpdma_chan
++ * @lock: lock to access struct xilinx_dpdma_chan. Must be taken before
++ *        @vchan.lock, if both are to be held.
+  * @desc_pool: descriptor allocation pool
+  * @err_task: error IRQ bottom half handler
+  * @desc: References to descriptors being processed
+@@ -1097,12 +1098,14 @@ static void xilinx_dpdma_chan_vsync_irq(struct  xilinx_dpdma_chan *chan)
+ 	 * Complete the active descriptor, if any, promote the pending
+ 	 * descriptor to active, and queue the next transfer, if any.
+ 	 */
++	spin_lock(&chan->vchan.lock);
+ 	if (chan->desc.active)
+ 		vchan_cookie_complete(&chan->desc.active->vdesc);
+ 	chan->desc.active = pending;
+ 	chan->desc.pending = NULL;
  
- 	clk_core_reparent_orphans_nolock();
+ 	xilinx_dpdma_chan_queue_transfer(chan);
++	spin_unlock(&chan->vchan.lock);
  
--
- 	kref_init(&core->ref);
  out:
- 	clk_pm_runtime_put(core);
+ 	spin_unlock_irqrestore(&chan->lock, flags);
+@@ -1264,10 +1267,12 @@ static void xilinx_dpdma_issue_pending(struct dma_chan *dchan)
+ 	struct xilinx_dpdma_chan *chan = to_xilinx_chan(dchan);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&chan->vchan.lock, flags);
++	spin_lock_irqsave(&chan->lock, flags);
++	spin_lock(&chan->vchan.lock);
+ 	if (vchan_issue_pending(&chan->vchan))
+ 		xilinx_dpdma_chan_queue_transfer(chan);
+-	spin_unlock_irqrestore(&chan->vchan.lock, flags);
++	spin_unlock(&chan->vchan.lock);
++	spin_unlock_irqrestore(&chan->lock, flags);
+ }
+ 
+ static int xilinx_dpdma_config(struct dma_chan *dchan,
+@@ -1495,7 +1500,9 @@ static void xilinx_dpdma_chan_err_task(struct tasklet_struct *t)
+ 		    XILINX_DPDMA_EINTR_CHAN_ERR_MASK << chan->id);
+ 
+ 	spin_lock_irqsave(&chan->lock, flags);
++	spin_lock(&chan->vchan.lock);
+ 	xilinx_dpdma_chan_queue_transfer(chan);
++	spin_unlock(&chan->vchan.lock);
+ 	spin_unlock_irqrestore(&chan->lock, flags);
+ }
+ 
 -- 
 2.43.0
 
