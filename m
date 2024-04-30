@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-42624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38CE8B73E1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8C08B7378
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A86D285D4E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E94C1F226D0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E5312D746;
-	Tue, 30 Apr 2024 11:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF7112CDA5;
+	Tue, 30 Apr 2024 11:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWLCUh4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIQBpaix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9544817592;
-	Tue, 30 Apr 2024 11:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14AB8801;
+	Tue, 30 Apr 2024 11:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476260; cv=none; b=ow1P6kw73GQxsqSQqaHE7ZFub71R16jkOzk8AV51r9OpNGa5ZSMQB5Ur6W9cCMJbD8gDP/yjEYJB78i8T5gBwmQV/uenO0WWQFWOL0RK08dqS86f6rDqGomUZ/BVnTwhS0zyky9RMLZn9RHqEQOcuAXAzzcCY2ZZt3Tmd3BwniA=
+	t=1714475967; cv=none; b=jWtcLeOfpwX9axVLJQzBl3SIghCH8dIWpmV2/N5QTW4gPRorwM3s+NnPdzPRRIcnERkdUym+vNBvSr6S1xPArRi9wwPX31hg/TxaxVy331Cq1gKxb4olDpmpeLCj+FKYIVbf62bTi4eiQYu94zF0I34TUkl+KRC1NpALkpwy7bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476260; c=relaxed/simple;
-	bh=zHScCoHzYS2DBnNkbUKIPIFeTJm591isNJchbz11qwM=;
+	s=arc-20240116; t=1714475967; c=relaxed/simple;
+	bh=7YUm7BA4MD6sF+34rjzNxUGiwmK5ZHSwPnnVoHIFxGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTVoWO06x37CbxtXKNNVmVmsZ55R6XBiPxS+2bvW7sEAnE0B32UAeDGUQbDMOLiSmT5W4ye7OQseLyWZkPgrCtfJEJxW/HlFgpUFRboDQFi15oj6iMhIStPNi51KZT/PyvPOFakJ/3GWa7LyXNSitk8Nu9+1HGWIL8HFCnw+vuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWLCUh4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FED9C4AF1A;
-	Tue, 30 Apr 2024 11:24:19 +0000 (UTC)
+	 MIME-Version; b=FeLqJgWY/XYwusAgxXWtqRi3YgIqv+mugLD0sepzVCvq87X4nI9T+cXT4rZWueYf6cGC1FIww0qEX3i+8Y7x9AI7ncMxmnH/xHKfIHMXeqUt0093nSQ59HqYGQ5x4Ao8OzklwrrMUUQc8iTKWSn1wm6pC/B/wLV9SXSZLeGfHpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIQBpaix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D1FC2BBFC;
+	Tue, 30 Apr 2024 11:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476260;
-	bh=zHScCoHzYS2DBnNkbUKIPIFeTJm591isNJchbz11qwM=;
+	s=korg; t=1714475966;
+	bh=7YUm7BA4MD6sF+34rjzNxUGiwmK5ZHSwPnnVoHIFxGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWLCUh4HUD8BV6T0A0zBsunGUvBhlbPqP1VW4oSXyYZ6cXjj4WRWbF3Xk9FFsDYA9
-	 gbDMI8NpTEiOgKEMpt3uaIsV9+rFdZw/wk/X7rwm2UU1ZOeH456000ga2lxdcaGxaY
-	 VbgHuElvjgvLC+S2B525fd7RxTp9OUP3TFYRI1mA=
+	b=UIQBpaixJ5kVJOitkrt7oeZV8Etqnf1Jxi44ix7/YTVT8ItcK/+6P7UCvSGb7S0jw
+	 QNIwQchTatjl7nlgBnk7epDgfBEheRaEN2C01++6PGlcSpRZ0i1iREegQCvm4sNBcT
+	 refpAIOsFiRPMDCrggWI8NG6Srf86Mprsag5De9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.4 046/107] usb: Disable USB3 LPM at shutdown
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 34/80] mlxsw: spectrum_acl_tcam: Fix memory leak during rehash
 Date: Tue, 30 Apr 2024 12:40:06 +0200
-Message-ID: <20240430103046.018698593@linuxfoundation.org>
+Message-ID: <20240430103044.424100788@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +65,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit d920a2ed8620be04a3301e1a9c2b7cc1de65f19d upstream.
+[ Upstream commit 8ca3f7a7b61393804c46f170743c3b839df13977 ]
 
-SanDisks USB3 storage may disapper after system reboot:
+The rehash delayed work migrates filters from one region to another.
+This is done by iterating over all chunks (all the filters with the same
+priority) in the region and in each chunk iterating over all the
+filters.
 
-usb usb2-port3: link state change
-xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
-usb usb2-port3: do warm reset, port only
-xhci_hcd 0000:00:14.0: xhci_hub_status_data: stopping usb2 port polling
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2b0, return 0x2b0
-usb usb2-port3: not warm reset yet, waiting 50ms
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2f0, return 0x2f0
-usb usb2-port3: not warm reset yet, waiting 200ms
-...
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x6802c0, return 0x7002c0
-usb usb2-port3: not warm reset yet, waiting 200ms
-xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x4802c0
-xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x4002c0
-xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2c0, return 0x2c0
-usb usb2-port3: not enabled, trying warm reset again...
+If the migration fails, the code tries to migrate the filters back to
+the old region. However, the rollback itself can also fail in which case
+another migration will be erroneously performed. Besides the fact that
+this ping pong is not a very good idea, it also creates a problem.
 
-This is due to the USB device still cause port change event after xHCI is
-shuted down:
+Each virtual chunk references two chunks: The currently used one
+('vchunk->chunk') and a backup ('vchunk->chunk2'). During migration the
+first holds the chunk we want to migrate filters to and the second holds
+the chunk we are migrating filters from.
 
-xhci_hcd 0000:38:00.0: // Setting command ring address to 0xffffe001
-xhci_hcd 0000:38:00.0: xhci_resume: starting usb3 port polling.
-xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb4 port polling
-xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb3 port polling
-xhci_hcd 0000:38:00.0: hcd_pci_runtime_resume: 0
-xhci_hcd 0000:38:00.0: xhci_shutdown: stopping usb3 port polling.
-xhci_hcd 0000:38:00.0: // Halt the HC
-xhci_hcd 0000:38:00.0: xhci_shutdown completed - status = 1
-xhci_hcd 0000:00:14.0: xhci_shutdown: stopping usb1 port polling.
-xhci_hcd 0000:00:14.0: // Halt the HC
-xhci_hcd 0000:00:14.0: xhci_shutdown completed - status = 1
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
-xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1311
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x201203, return 0x100203
-xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: clear port3 connect change, portsc: 0x1203
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
-usb 2-3: device not accepting address 2, error -108
-xhci_hcd 0000:00:14.0: xHCI dying or halted, can't queue_command
-xhci_hcd 0000:00:14.0: Set port 2-3 link state, portsc: 0x1203, write 0x11261
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1263, return 0x263
-xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1271
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12b1, return 0x2b1
-usb usb2-port3: not reset yet, waiting 60ms
-ACPI: PM: Preparing to enter system sleep state S5
-xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12f1, return 0x2f1
-usb usb2-port3: not reset yet, waiting 200ms
-reboot: Restarting system
+The code currently assumes - but does not verify - that the backup chunk
+does not exist (NULL) if the currently used chunk does not reference the
+target region. This assumption breaks when we are trying to rollback a
+rollback, resulting in the backup chunk being overwritten and leaked
+[1].
 
-The port change event is caused by LPM transition, so disabling LPM at shutdown
-to make sure the device is in U0 for warmboot.
+Fix by not rolling back a failed rollback and add a warning to avoid
+future cases.
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240305065140.66801-1-kai.heng.feng@canonical.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]
+WARNING: CPU: 5 PID: 1063 at lib/parman.c:291 parman_destroy+0x17/0x20
+Modules linked in:
+CPU: 5 PID: 1063 Comm: kworker/5:11 Tainted: G        W          6.9.0-rc2-custom-00784-gc6a05c468a0b #14
+Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
+Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
+RIP: 0010:parman_destroy+0x17/0x20
+[...]
+Call Trace:
+ <TASK>
+ mlxsw_sp_acl_atcam_region_fini+0x19/0x60
+ mlxsw_sp_acl_tcam_region_destroy+0x49/0xf0
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0x1f1/0x470
+ process_one_work+0x151/0x370
+ worker_thread+0x2cb/0x3e0
+ kthread+0xd0/0x100
+ ret_from_fork+0x34/0x50
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Fixes: 843500518509 ("mlxsw: spectrum_acl: Do rollback as another call to mlxsw_sp_acl_tcam_vchunk_migrate_all()")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/d5edd4f4503934186ae5cfe268503b16345b4e0f.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/port.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -295,8 +295,10 @@ static void usb_port_shutdown(struct dev
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index cdad4772b60a0..b63b4a3ee7c42 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -1230,6 +1230,8 @@ mlxsw_sp_acl_tcam_vchunk_migrate_start(struct mlxsw_sp *mlxsw_sp,
  {
- 	struct usb_port *port_dev = to_usb_port(dev);
+ 	struct mlxsw_sp_acl_tcam_chunk *new_chunk;
  
--	if (port_dev->child)
-+	if (port_dev->child) {
- 		usb_disable_usb2_hardware_lpm(port_dev->child);
-+		usb_unlocked_disable_lpm(port_dev->child);
-+	}
- }
- 
- static const struct dev_pm_ops usb_port_pm_ops = {
++	WARN_ON(vchunk->chunk2);
++
+ 	new_chunk = mlxsw_sp_acl_tcam_chunk_create(mlxsw_sp, vchunk, region);
+ 	if (IS_ERR(new_chunk))
+ 		return PTR_ERR(new_chunk);
+@@ -1364,6 +1366,8 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
+ 	err = mlxsw_sp_acl_tcam_vchunk_migrate_all(mlxsw_sp, vregion,
+ 						   ctx, credits);
+ 	if (err) {
++		if (ctx->this_is_rollback)
++			return err;
+ 		/* In case migration was not successful, we need to swap
+ 		 * so the original region pointer is assigned again
+ 		 * to vregion->region.
+-- 
+2.43.0
+
 
 
 
