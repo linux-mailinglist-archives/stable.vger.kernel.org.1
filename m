@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974E38B7332
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D468B739D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541D42879BE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2E771C23291
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E8812D755;
-	Tue, 30 Apr 2024 11:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4198812D1E8;
+	Tue, 30 Apr 2024 11:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wm4wvyd1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZM70Cp08"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979488801;
-	Tue, 30 Apr 2024 11:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EEE12C805;
+	Tue, 30 Apr 2024 11:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475774; cv=none; b=Q3P4iEGUivmISBAZIYFG0zaG8Ix078X1ICMfEvYop+aoAbW126AbfSD2usta4Qvx8q1inPPH2tmtLrgEWk7cC/+o6AyBM9knra+Onvt6AUbTfqbd+vwXOESU4jn7nYSd2YLvgH5Ggq9jgjM4vy0nDo/Bpc/E1b5/Lbs8cDPjAR8=
+	t=1714476079; cv=none; b=Cm9Be3bZXuVKkDKEWNc+nJN7LspMW4yr24CP1gLntqi5Xnq7VjBkEqFeIgN4TVkvMNaNXj1J5RKI14FiynqSWJs/avvDw/tBttJBzidN7WCpZTj9ls6x+JElBATWLcj2upLHZi+LbWa7RzlvLibSRxmNtwgP8fDS9fww7dcgYak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475774; c=relaxed/simple;
-	bh=J3eA7GYb1BH6z60Ou6DRaGHpmCK1+JFscjhNZo+9r8E=;
+	s=arc-20240116; t=1714476079; c=relaxed/simple;
+	bh=Hn7U/fLLqEEW8OTEm25vjMLbc8eeBq1ISRQ48U8Ae9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l61jqKbq0v5nfH8QOrLYozUIBvZZOThlMVpuVWRe0Ud7C/DlQvUppkLT0iZXEXtw3r0Dnf/9hl5WqJqzAsj8Qdxvu4QfFB7EUByNhOTULv6pgsygb1rJrIbX1Zy6kVaH7NxHDwn5pBEvkpeGxaAtComatZbIhcDBZxrg5NUZcRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wm4wvyd1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3212C2BBFC;
-	Tue, 30 Apr 2024 11:16:13 +0000 (UTC)
+	 MIME-Version; b=aegoS3Nm9/AYLb936YSW7ZAO0mzEmt4evDLjbCE9NYYCp/n4+jQFaG4bMvqnY63pUMfzs+82ixQmqVLjX6BtIlyUPYLjkJr0GoTpucp5sflcXXT9EFYeqNQJPeOTZSawHSy8aBs594CUxIkl80+BPBzEMo/pPTz0Am9anlvsbhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZM70Cp08; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B60AC4AF1A;
+	Tue, 30 Apr 2024 11:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475774;
-	bh=J3eA7GYb1BH6z60Ou6DRaGHpmCK1+JFscjhNZo+9r8E=;
+	s=korg; t=1714476078;
+	bh=Hn7U/fLLqEEW8OTEm25vjMLbc8eeBq1ISRQ48U8Ae9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wm4wvyd1wRKLmX4R/uQKMCC3vN/dd2KTDiIvMftfmInNL43V53u/bJqzk7yB+Vau6
-	 XJs3sDqvChXVBPWB6LYrmJ6+wz9RrsE/C1Vq1U75/9fl6FurMl+NdtTrXp+LJc4w1a
-	 C96jCOpZsoSEnyyD0YJQvUoV6NhOgShmR3HSNrcA=
+	b=ZM70Cp08ZtzCR+Xon7EbazkrKp3insmVPIPn0yGvxhOL0hJuYeKFMtSMAHHqFVqx3
+	 x5RKrLZE4q58Z2nkK+luooPmC2l2/khxJIURE48SwqXVJXNW1sntWLxUEosYTlFdG8
+	 dl2l1yXamvGp7NLokNxa6f5DGk+ecQtcf3B4vIkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mikhail Kobuk <m.kobuk@ispras.ru>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 14/80] arm64: dts: mediatek: mt7622: fix ethernet controller "compatible"
-Date: Tue, 30 Apr 2024 12:39:46 +0200
-Message-ID: <20240430103043.833345106@linuxfoundation.org>
+Subject: [PATCH 5.4 027/107] drm: nv04: Fix out of bounds access
+Date: Tue, 30 Apr 2024 12:39:47 +0200
+Message-ID: <20240430103045.464531298@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-[ Upstream commit 208add29ce5b7291f6c466e4dfd9cbf61c72888e ]
+[ Upstream commit cf92bb778eda7830e79452c6917efa8474a30c1e ]
 
-Fix following validation error:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: ethernet@1b100000: compatible: ['mediatek,mt7622-eth', 'mediatek,mt2701-eth', 'syscon'] is too long
-        from schema $id: http://devicetree.org/schemas/net/mediatek,net.yaml#
-(and other complains about wrong clocks).
+When Output Resource (dcb->or) value is assigned in
+fabricate_dcb_output(), there may be out of bounds access to
+dac_users array in case dcb->or is zero because ffs(dcb->or) is
+used as index there.
+The 'or' argument of fabricate_dcb_output() must be interpreted as a
+number of bit to set, not value.
 
-Fixes: 5f599b3a0bb8 ("arm64: dts: mt7622: add ethernet device nodes")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240317221050.18595-4-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Utilize macros from 'enum nouveau_or' in calls instead of hardcoding.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2e5702aff395 ("drm/nouveau: fabricate DCB encoder table for iMac G4")
+Fixes: 670820c0e6a9 ("drm/nouveau: Workaround incorrect DCB entry on a GeForce3 Ti 200.")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240411110854.16701-1-m.kobuk@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_bios.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index f3bc89ac0bef4..7a54af96e1d90 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -935,9 +935,7 @@
- 	};
+diff --git a/drivers/gpu/drm/nouveau/nouveau_bios.c b/drivers/gpu/drm/nouveau/nouveau_bios.c
+index d204ea8a5618e..5cdf0d8d4bc18 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_bios.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
+@@ -23,6 +23,7 @@
+  */
  
- 	eth: ethernet@1b100000 {
--		compatible = "mediatek,mt7622-eth",
--			     "mediatek,mt2701-eth",
--			     "syscon";
-+		compatible = "mediatek,mt7622-eth";
- 		reg = <0 0x1b100000 0 0x20000>;
- 		interrupts = <GIC_SPI 223 IRQ_TYPE_LEVEL_LOW>,
- 			     <GIC_SPI 224 IRQ_TYPE_LEVEL_LOW>,
+ #include "nouveau_drv.h"
++#include "nouveau_bios.h"
+ #include "nouveau_reg.h"
+ #include "dispnv04/hw.h"
+ #include "nouveau_encoder.h"
+@@ -1672,7 +1673,7 @@ apply_dcb_encoder_quirks(struct drm_device *dev, int idx, u32 *conn, u32 *conf)
+ 	 */
+ 	if (nv_match_device(dev, 0x0201, 0x1462, 0x8851)) {
+ 		if (*conn == 0xf2005014 && *conf == 0xffffffff) {
+-			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, 1);
++			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, DCB_OUTPUT_B);
+ 			return false;
+ 		}
+ 	}
+@@ -1758,26 +1759,26 @@ fabricate_dcb_encoder_table(struct drm_device *dev, struct nvbios *bios)
+ #ifdef __powerpc__
+ 	/* Apple iMac G4 NV17 */
+ 	if (of_machine_is_compatible("PowerMac4,5")) {
+-		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, 1);
+-		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, 2);
++		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, DCB_OUTPUT_B);
++		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, DCB_OUTPUT_C);
+ 		return;
+ 	}
+ #endif
+ 
+ 	/* Make up some sane defaults */
+ 	fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG,
+-			     bios->legacy.i2c_indices.crt, 1, 1);
++			     bios->legacy.i2c_indices.crt, 1, DCB_OUTPUT_B);
+ 
+ 	if (nv04_tv_identify(dev, bios->legacy.i2c_indices.tv) >= 0)
+ 		fabricate_dcb_output(dcb, DCB_OUTPUT_TV,
+ 				     bios->legacy.i2c_indices.tv,
+-				     all_heads, 0);
++				     all_heads, DCB_OUTPUT_A);
+ 
+ 	else if (bios->tmds.output0_script_ptr ||
+ 		 bios->tmds.output1_script_ptr)
+ 		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS,
+ 				     bios->legacy.i2c_indices.panel,
+-				     all_heads, 1);
++				     all_heads, DCB_OUTPUT_B);
+ }
+ 
+ static int
 -- 
 2.43.0
 
