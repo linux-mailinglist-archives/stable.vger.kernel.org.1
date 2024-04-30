@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-41844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D4B8B6FFC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C6E8B71DE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 756E61F2429A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 068FF1F238EC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03CD12C46E;
-	Tue, 30 Apr 2024 10:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8795B12CD90;
+	Tue, 30 Apr 2024 11:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTt+IQH6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfkS1k+H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88535127B70;
-	Tue, 30 Apr 2024 10:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4686612B176;
+	Tue, 30 Apr 2024 11:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473731; cv=none; b=dtszliZZVf9oPjL9qeXpGB8UDFd6R9PzV9Bktp4tiAUmOclFKCWSXEl3U8M1A1DBrJqE4uderk5xqyO09mVSftJCuzW+hHL1DJnvOJOQaIT2p6/ERc2O/74v9z9RXLTOIwbAdxCpwVP9aUVMzT4Tx84jh3OG/0BPTmWC+GxHQf4=
+	t=1714474898; cv=none; b=P3Hg8N4tUMIIBZYtwMXzjpal7UpuQQlgOOt0iXm7pRYWZVCNKLutCEBgWHEqkfuJktg2YpkCpmdoD55rgRPNiUYtFzgACFaXgaymLVKPYILQ8ZvEnUQY7UnhmgJ00KiNWL83t9PFbgcHBRE9sZCdO8SYf3DM5uJZ0FDnDvwHEgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473731; c=relaxed/simple;
-	bh=MXtu1OhLTto9ZJynNeX5d31OwnMTQBN4FcWGT2KvWY0=;
+	s=arc-20240116; t=1714474898; c=relaxed/simple;
+	bh=ysiiPAARKVaEcrrCtvDORgi838mxQJBzZr5gYqxW81o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDYI8gRj4r2I7GKsstJ+oE6PC4lg9g1ZN1+nKeX3fVa84M76egcxv6CEmaddKa4o+qK3eNv/y4KUbcjn8OxwiGi09+dNyOV9UpvYW0zntlZdsVdkn2y/2nhGGphffQm229k22U5J3c49UPsUs0Yy53MmN4lX9LQj2veZSDUufU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTt+IQH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104D8C2BBFC;
-	Tue, 30 Apr 2024 10:42:10 +0000 (UTC)
+	 MIME-Version; b=Dves7lSINVuwOn+olH2yUM+1Q3Sj51pFO6lMJfb/Etlwljp0En4ULXdY2F5f6qs6NoG6ZoOVZsugqZaZomIo/fqWZ1tsNd0rX5frUxEtYJnAehfyr16hRRwncMLBi3YNQSQ78yRZfZGpsQFlt/W4KZ3qbqZLToz6UmYTGJ6nabA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfkS1k+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C536CC2BBFC;
+	Tue, 30 Apr 2024 11:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473731;
-	bh=MXtu1OhLTto9ZJynNeX5d31OwnMTQBN4FcWGT2KvWY0=;
+	s=korg; t=1714474898;
+	bh=ysiiPAARKVaEcrrCtvDORgi838mxQJBzZr5gYqxW81o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTt+IQH6hv2Cm8b9T7MhpLanDcObTiHh+dpNlZndz2xQvggvYN26geobv4YRnWkzw
-	 GMWnkil9krml6KiN1mr0KJTV4oti8pyfvPTvNMIjXfsDrDCpB6Gbxl7452DmpEdstl
-	 vZm6dmi+HKLTph6L6hmsWc/rrID1+7FUNk2MZrnY=
+	b=kfkS1k+HNHTCUkYn6uTQdP0BQDY9TGQU0mqVTrdaVezr/l8ExznoA3QAR2k715aNf
+	 pQZd+NTwCGGrnHwKx3YRYB0laI4okJKiKTpqPphKQBmzt6gEDrz8bXKkg9YHiWEbO7
+	 NtukQLICP2LcaHuDF2T/jG/k/QYKjh+SuYRWqNc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mikhail Kobuk <m.kobuk@ispras.ru>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 08/77] net/mlx5: Properly link new fs rules into the tree
+Subject: [PATCH 5.10 042/138] drm: nv04: Fix out of bounds access
 Date: Tue, 30 Apr 2024 12:38:47 +0200
-Message-ID: <20240430103041.366183008@linuxfoundation.org>
+Message-ID: <20240430103050.670747331@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-[ Upstream commit 7c6782ad4911cbee874e85630226ed389ff2e453 ]
+[ Upstream commit cf92bb778eda7830e79452c6917efa8474a30c1e ]
 
-Previously, add_rule_fg would only add newly created rules from the
-handle into the tree when they had a refcount of 1. On the other hand,
-create_flow_handle tries hard to find and reference already existing
-identical rules instead of creating new ones.
+When Output Resource (dcb->or) value is assigned in
+fabricate_dcb_output(), there may be out of bounds access to
+dac_users array in case dcb->or is zero because ffs(dcb->or) is
+used as index there.
+The 'or' argument of fabricate_dcb_output() must be interpreted as a
+number of bit to set, not value.
 
-These two behaviors can result in a situation where create_flow_handle
-1) creates a new rule and references it, then
-2) in a subsequent step during the same handle creation references it
-   again,
-resulting in a rule with a refcount of 2 that is not linked into the
-tree, will have a NULL parent and root and will result in a crash when
-the flow group is deleted because del_sw_hw_rule, invoked on rule
-deletion, assumes node->parent is != NULL.
+Utilize macros from 'enum nouveau_or' in calls instead of hardcoding.
 
-This happened in the wild, due to another bug related to incorrect
-handling of duplicate pkt_reformat ids, which lead to the code in
-create_flow_handle incorrectly referencing a just-added rule in the same
-flow handle, resulting in the problem described above. Full details are
-at [1].
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-This patch changes add_rule_fg to add new rules without parents into
-the tree, properly initializing them and avoiding the crash. This makes
-it more consistent with how rules are added to an FTE in
-create_flow_handle.
-
-Fixes: 74491de93712 ("net/mlx5: Add multi dest support")
-Link: https://lore.kernel.org/netdev/ea5264d6-6b55-4449-a602-214c6f509c1e@163.com/T/#u [1]
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2e5702aff395 ("drm/nouveau: fabricate DCB encoder table for iMac G4")
+Fixes: 670820c0e6a9 ("drm/nouveau: Workaround incorrect DCB entry on a GeForce3 Ti 200.")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240411110854.16701-1-m.kobuk@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_bios.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index f0aa7f0e54803..d2b8d284b1995 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -1452,8 +1452,9 @@ static struct mlx5_flow_handle *add_rule_fg(struct mlx5_flow_group *fg,
- 	}
- 	trace_mlx5_fs_set_fte(fte, false);
+diff --git a/drivers/gpu/drm/nouveau/nouveau_bios.c b/drivers/gpu/drm/nouveau/nouveau_bios.c
+index d204ea8a5618e..5cdf0d8d4bc18 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_bios.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
+@@ -23,6 +23,7 @@
+  */
  
-+	/* Link newly added rules into the tree. */
- 	for (i = 0; i < handle->num_rules; i++) {
--		if (refcount_read(&handle->rule[i]->node.refcount) == 1) {
-+		if (!handle->rule[i]->node.parent) {
- 			tree_add_node(&handle->rule[i]->node, &fte->node);
- 			trace_mlx5_fs_add_rule(handle->rule[i]);
+ #include "nouveau_drv.h"
++#include "nouveau_bios.h"
+ #include "nouveau_reg.h"
+ #include "dispnv04/hw.h"
+ #include "nouveau_encoder.h"
+@@ -1672,7 +1673,7 @@ apply_dcb_encoder_quirks(struct drm_device *dev, int idx, u32 *conn, u32 *conf)
+ 	 */
+ 	if (nv_match_device(dev, 0x0201, 0x1462, 0x8851)) {
+ 		if (*conn == 0xf2005014 && *conf == 0xffffffff) {
+-			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, 1);
++			fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 1, 1, DCB_OUTPUT_B);
+ 			return false;
  		}
+ 	}
+@@ -1758,26 +1759,26 @@ fabricate_dcb_encoder_table(struct drm_device *dev, struct nvbios *bios)
+ #ifdef __powerpc__
+ 	/* Apple iMac G4 NV17 */
+ 	if (of_machine_is_compatible("PowerMac4,5")) {
+-		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, 1);
+-		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, 2);
++		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS, 0, all_heads, DCB_OUTPUT_B);
++		fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG, 1, all_heads, DCB_OUTPUT_C);
+ 		return;
+ 	}
+ #endif
+ 
+ 	/* Make up some sane defaults */
+ 	fabricate_dcb_output(dcb, DCB_OUTPUT_ANALOG,
+-			     bios->legacy.i2c_indices.crt, 1, 1);
++			     bios->legacy.i2c_indices.crt, 1, DCB_OUTPUT_B);
+ 
+ 	if (nv04_tv_identify(dev, bios->legacy.i2c_indices.tv) >= 0)
+ 		fabricate_dcb_output(dcb, DCB_OUTPUT_TV,
+ 				     bios->legacy.i2c_indices.tv,
+-				     all_heads, 0);
++				     all_heads, DCB_OUTPUT_A);
+ 
+ 	else if (bios->tmds.output0_script_ptr ||
+ 		 bios->tmds.output1_script_ptr)
+ 		fabricate_dcb_output(dcb, DCB_OUTPUT_TMDS,
+ 				     bios->legacy.i2c_indices.panel,
+-				     all_heads, 1);
++				     all_heads, DCB_OUTPUT_B);
+ }
+ 
+ static int
 -- 
 2.43.0
 
