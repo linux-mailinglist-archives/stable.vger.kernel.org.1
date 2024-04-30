@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C129F8B7065
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1168B7172
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60D651F2210A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC0351C22736
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E0212CD98;
-	Tue, 30 Apr 2024 10:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A2E12C47A;
+	Tue, 30 Apr 2024 10:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIwU5XAR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PkTMCUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3936B12C461;
-	Tue, 30 Apr 2024 10:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EC0128816;
+	Tue, 30 Apr 2024 10:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473922; cv=none; b=T7xuNmHsMZY7BLWAC/NAL8exVwq/Y0RNI5lvJ07dYB/zgnu4cGcwdqVjN59utSasyiEf5bD2j6mGphAUlt3u7UBBrXyqWBdKNCJLx7zC4OOnUWwC4CLiUx96NPrZN3CkscN3N+hYwGBrtuSELSY0wiVixXVbkh8+WniMi60v/Qc=
+	t=1714474596; cv=none; b=cNoBG37obxVq2dNvtvodLiWR7nbHlaV78iH8HICBK5C+1d27sFkEqj8AB07s2fVlm9mRx6UkbIz9Hr81SJuamMcS9DTXG0HpF4QsTAfG5taaBXsFDJX8dz6hSr+Q7qku4SyHBhG4Suwa71tClNJm5IZxFGhUgT0l+OFa0QoxSho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473922; c=relaxed/simple;
-	bh=EHCuvdOpnLWkIyn4CbtMVFYnQXrS5Nlol9131yErSF4=;
+	s=arc-20240116; t=1714474596; c=relaxed/simple;
+	bh=iLX3bUriJMKJDHFA+0ZoSM8J0Aeac1mlRsNAOWDbUqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbp8rycj/IZOwRSrEigs5/IQTgAVewdcSCXPyU0hpnjNfE7UA8CGECN9JD+GNw0Ot8V49lnfhE20XtU3/3InNwne+x1F2zfFTjT4MCXYPEGLWM/OGjzGq7cbFU7wOW/e28LeW9mETnOjw6V1jxkhe6DVSgRXxTxfeJXctrt/IUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIwU5XAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1F3C2BBFC;
-	Tue, 30 Apr 2024 10:45:21 +0000 (UTC)
+	 MIME-Version; b=HBZO3ZwXF9JLuWd4Pkcypdgf5VqxWuKna1fDpnpCWy1t+rlQB0esc1HdfEvn1uwaovDC/XkIffv1HkZnkcePN3oSYId1oQ7vij1Ugp8uEcwu5KtVj57P9MgpGd0IrgMqppT4MELWOUmdn3/EUBDT5nc/IPGgwDzmHYelTfCcD7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PkTMCUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E638BC2BBFC;
+	Tue, 30 Apr 2024 10:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473922;
-	bh=EHCuvdOpnLWkIyn4CbtMVFYnQXrS5Nlol9131yErSF4=;
+	s=korg; t=1714474596;
+	bh=iLX3bUriJMKJDHFA+0ZoSM8J0Aeac1mlRsNAOWDbUqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIwU5XARWAx6xM07oSe8udkYH27YGFLdC2FewnBtZSgJ8aDXzXGb07pBFzOn0JTDr
-	 gRMt2OSBKpqtHh/t51pycnPXQQ6HQM9mDwIyGfv0761PiF3lv16p39qY7Hl5L+G9Xt
-	 q3FRF5A7x/ZgWjCcVwUA3GiZnKNghyPurkMVgCKw=
+	b=0PkTMCUGVJVY9HY/0nRibn10KRsFdXqTVOR6wVTGi932hh+obBmhpl8Z2s2mVbM0s
+	 w7clLPMfKTw0dhGU1BdkiSCKPwAHtyhAm039YOosVNpFO1brSmC6DKCub5cPrC5pON
+	 /b7b7NVSTREtVwQpQbRUfhSN8Ry/IXzTFi3AeaDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskander Amara <iskander.amara@theobroma-systems.com>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 4.19 63/77] arm64: dts: rockchip: enable internal pull-up for Q7_THRM# on RK3399 Puma
+	Mikhail Kobuk <m.kobuk@ispras.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 204/228] phy: marvell: a3700-comphy: Fix out of bounds read
 Date: Tue, 30 Apr 2024 12:39:42 +0200
-Message-ID: <20240430103042.998345183@linuxfoundation.org>
+Message-ID: <20240430103109.687910921@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iskander Amara <iskander.amara@theobroma-systems.com>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-commit 0ac417b8f124427c90ec8c2ef4f632b821d924cc upstream.
+[ Upstream commit e4308bc22b9d46cf33165c9dfaeebcf29cd56f04 ]
 
-Q7_THRM# pin is connected to a diode on the module which is used
-as a level shifter, and the pin have a pull-down enabled by
-default. We need to configure it to internal pull-up, other-
-wise whenever the pin is configured as INPUT and we try to
-control it externally the value will always remain zero.
+There is an out of bounds read access of 'gbe_phy_init_fix[fix_idx].addr'
+every iteration after 'fix_idx' reaches 'ARRAY_SIZE(gbe_phy_init_fix)'.
 
-Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240308085243.69903-1-iskander.amara@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make sure 'gbe_phy_init[addr]' is used when all elements of
+'gbe_phy_init_fix' array are handled.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 934337080c6c ("phy: marvell: phy-mvebu-a3700-comphy: Add native kernel implementation")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20240321164734.49273-1-m.kobuk@ispras.ru
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/phy/marvell/phy-mvebu-a3700-comphy.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -432,6 +432,16 @@
- };
- 
- &pinctrl {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&q7_thermal_pin>;
-+
-+	gpios {
-+		q7_thermal_pin: q7-thermal-pin {
-+			rockchip,pins =
-+				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
-+		};
-+	};
-+
- 	i2c8 {
- 		i2c8_xfer_a: i2c8-xfer {
- 			rockchip,pins =
+diff --git a/drivers/phy/marvell/phy-mvebu-a3700-comphy.c b/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
+index 24c3371e2bb29..e2d0bf92a9ada 100644
+--- a/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
++++ b/drivers/phy/marvell/phy-mvebu-a3700-comphy.c
+@@ -611,11 +611,12 @@ static void comphy_gbe_phy_init(struct mvebu_a3700_comphy_lane *lane,
+ 		 * comparison to 3.125 Gbps values. These register values are
+ 		 * stored in "gbe_phy_init_fix" array.
+ 		 */
+-		if (!is_1gbps && gbe_phy_init_fix[fix_idx].addr == addr) {
++		if (!is_1gbps &&
++		    fix_idx < ARRAY_SIZE(gbe_phy_init_fix) &&
++		    gbe_phy_init_fix[fix_idx].addr == addr) {
+ 			/* Use new value */
+ 			val = gbe_phy_init_fix[fix_idx].value;
+-			if (fix_idx < ARRAY_SIZE(gbe_phy_init_fix))
+-				fix_idx++;
++			fix_idx++;
+ 		} else {
+ 			val = gbe_phy_init[addr];
+ 		}
+-- 
+2.43.0
+
 
 
 
