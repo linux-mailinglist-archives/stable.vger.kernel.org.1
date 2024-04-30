@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-42253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C542F8B721A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 129938B7377
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81983285A45
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C24B528858E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CAE12C54B;
-	Tue, 30 Apr 2024 11:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A3E12CD9B;
+	Tue, 30 Apr 2024 11:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0L901tf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7/81Szk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D7912C487;
-	Tue, 30 Apr 2024 11:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86318801;
+	Tue, 30 Apr 2024 11:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475062; cv=none; b=uQGTVEuJRvpdy2bPRSCWbP5BDTA40DNsHPsCzx2poDXEVFjXnh53aUBqBIqYdtVTAREA761PC2K/X7DZZz58nTkdcriDkPtnsNU5tD+eGua4sAazgKhdd6fknh4ReZ6OxVErOuoEalUhyDtpr0rsy29Wm+TXSmlemnLM+OuVhTY=
+	t=1714475963; cv=none; b=cN3rm7bP4EAEo2fKsK//Yl1P9xbDRVgSe47rMhd7MI9UiwonSPvS1K4N6bEVmjSa1QWq1F55YGqF1o7lZOZ6Nd9TbZClcOSRpLXzQekbdMiJqUyNqf9mRi/EF6KlcYPt3LOtKcdBGEAAwnmvD+l7wNGtbUv7cgdSL3XLxaVM0t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475062; c=relaxed/simple;
-	bh=y2crCXY3shkGq8Jmgoj7CvUEmTgZtTSZYUsNyyqmJZs=;
+	s=arc-20240116; t=1714475963; c=relaxed/simple;
+	bh=ZUrSv+8niwVcUG1YydACgILfw/tmxmCxMWCLLke6qpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E83x7JuPdEC3lP+B+NrLEw7hAxNQeF5MJvnvU9V4nPkAXjzSFD9FvO6DWgdK7mJPTtrch8ZnDNCqTiAHQZq9IqD0W6s/kOp/Bd+PJa+jnJfYHv976Vpk7looHS/lfsR+2VFGzVpgZczrGzUNzVZ5cF45OADD7ym3jdVZYFVDIFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0L901tf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5293DC2BBFC;
-	Tue, 30 Apr 2024 11:04:22 +0000 (UTC)
+	 MIME-Version; b=HlkRJ1CObxCdAmpg645Z3BkqD488LP+kdF+79Rsf0yKiJgBHDwjD1s6RI2muhzm209tESwakgkmy954Dn8O72u1yLGhbzeymxJcb8v+Ed+I665HXKQYX8VewRqQwjjeJtt6rJ8CffxbAsvzs+AITEYhSkySyTGp7JAPDhruJK9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7/81Szk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D5EC2BBFC;
+	Tue, 30 Apr 2024 11:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475062;
-	bh=y2crCXY3shkGq8Jmgoj7CvUEmTgZtTSZYUsNyyqmJZs=;
+	s=korg; t=1714475963;
+	bh=ZUrSv+8niwVcUG1YydACgILfw/tmxmCxMWCLLke6qpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0L901tfKu23nCAXd2OzCPYCRfjuVpT1r2baXeqr0mtWw7zCDLAt3J6cNL1HNN3SG
-	 0ygM/N80R2G85R7SqMhwYnKN7ywz5/wiTTPAOyO2sG8eXWAeCWMsXskXl+swYH7WQV
-	 LmTWrMIWLzdrjXIAtPz3AlPJiYXaOcAPBRwJUsOU=
+	b=V7/81SzkwwgFW1XX1FTHMLyPqAsuhdvdQVLUleROoaiPRVYhpIbxPQaP2BnWrzGkO
+	 ZZ0fG7xU1E8L93M6bEehIE5whJHxNqeKW1wTs6LsYq3VRxRJFPaRtM4M/ZeS+okgtC
+	 Q6JLSlPHzv0SicEqlVcBJSf8M0Wl//jonG5PNAFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 119/138] drm/amdgpu/sdma5.2: use legacy HDP flush for SDMA2/3
-Date: Tue, 30 Apr 2024 12:40:04 +0200
-Message-ID: <20240430103052.910342635@linuxfoundation.org>
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 33/80] mlxsw: spectrum_acl_tcam: Rate limit error message
+Date: Tue, 30 Apr 2024 12:40:05 +0200
+Message-ID: <20240430103044.393937196@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 9792b7cc18aaa0c2acae6af5d0acf249bcb1ab0d upstream.
+[ Upstream commit 5bcf925587e9b5d36420d572a0b4d131c90fb306 ]
 
-This avoids a potential conflict with firmwares with the newer
-HDP flush mechanism.
+In the rare cases when the device resources are exhausted it is likely
+that the rehash delayed work will fail. An error message will be printed
+whenever this happens which can be overwhelming considering the fact
+that the work is per-region and that there can be hundreds of regions.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by rate limiting the error message.
+
+Fixes: e5e7962ee5c2 ("mlxsw: spectrum_acl: Implement region migration according to hints")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/c510763b2ebd25e7990d80183feff91cde593145.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-@@ -390,17 +390,21 @@ static void sdma_v5_2_ring_emit_hdp_flus
- 	u32 ref_and_mask = 0;
- 	const struct nbio_hdp_flush_reg *nbio_hf_reg = adev->nbio.hdp_flush_reg;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index a60d511f00eaa..cdad4772b60a0 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -1480,7 +1480,7 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
+ 	err = mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion,
+ 						ctx, credits);
+ 	if (err) {
+-		dev_err(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
++		dev_err_ratelimited(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
+ 		return;
+ 	}
  
--	ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
-+	if (ring->me > 1) {
-+		amdgpu_asic_flush_hdp(adev, ring);
-+	} else {
-+		ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
- 
--	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
--			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
--			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
--	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
--	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
--	amdgpu_ring_write(ring, ref_and_mask); /* reference */
--	amdgpu_ring_write(ring, ref_and_mask); /* mask */
--	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
--			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
-+		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
-+				  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
-+				  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
-+		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
-+		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
-+		amdgpu_ring_write(ring, ref_and_mask); /* reference */
-+		amdgpu_ring_write(ring, ref_and_mask); /* mask */
-+		amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
-+				  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
-+	}
- }
- 
- /**
+-- 
+2.43.0
+
 
 
 
