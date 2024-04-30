@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-42635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC758B73EC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1648B7464
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3365A1F21C9C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDBFA28712E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6AD12D1E8;
-	Tue, 30 Apr 2024 11:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5642212D757;
+	Tue, 30 Apr 2024 11:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lps/CG3x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yes/KLC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF5517592;
-	Tue, 30 Apr 2024 11:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142FB12BF32;
+	Tue, 30 Apr 2024 11:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476295; cv=none; b=jwMTLjnaW5zRZyM4IelTphHFioz0SAzvC5DAMF8vvevPFLgDNmnT0V/uj1holYMZdm3TYkxsmKhDEDhriOx2RG/nHTOdbyTCX8/kNCMmO6hBkhmrJXNiyzTics7ELqYE2VWd+jVqm23sG3/xXT14oT45tLrxp16sghhVj7EjR3I=
+	t=1714476622; cv=none; b=Eo0BUDquvyVTwEsg8+CcNDuw7YE3lmTPbZsLtf47PWlD2YieqtEdwz6yIoBsszAmJcWpXBAbq7Qx3xsBJgDHYpZ57jZXS1KDHolQYK7l38Ut+ME5mU0JMOrobwqW4r1h6CpAs3ASimCcHEcl6nUiEUkEN9gxTfxx+FdP7od7Vx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476295; c=relaxed/simple;
-	bh=KVeitexQadPrLaS8Y9bnWaXIta/o6EOH5DAT2Y9hd30=;
+	s=arc-20240116; t=1714476622; c=relaxed/simple;
+	bh=1LNpDgTzC1o9HtqDs8SL2SM8rJNS9PLMVTVl9E0Zids=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfTtwtMYRj4lJtVTMsDbDyEnyxdoAA/5J1jbA7snwJD9YCe8vb17fMkEmIaDvJF+yji1efAxuGneUs4RLv1TX85mdPjHszWZQKN2ktN/dAErNtLqw5Dtb6BH3RJ5I3enxQp933rLqfTHCg+bO3EAuUwIrsY4D+HS5dgI0xJLA6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lps/CG3x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2ED9C2BBFC;
-	Tue, 30 Apr 2024 11:24:54 +0000 (UTC)
+	 MIME-Version; b=qQswiOXScOZ49gkuvXbb2AWn0D8ce3TjS3ABMhTaac/URhDcddjpT5PiCj2Ittvm7jaWG6BUQws4mkIlCFsNyO500iAdfgk8biuEmQ4fKUPp+sqkPr4WxK64CM4zdq4YTc27IIK8TEJF1ya5Ad30Bf4gIFo9WgKobawrUgbbmEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yes/KLC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC37C2BBFC;
+	Tue, 30 Apr 2024 11:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476295;
-	bh=KVeitexQadPrLaS8Y9bnWaXIta/o6EOH5DAT2Y9hd30=;
+	s=korg; t=1714476621;
+	bh=1LNpDgTzC1o9HtqDs8SL2SM8rJNS9PLMVTVl9E0Zids=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lps/CG3xUChK6tj07a/4GJ+GJNbc7aaNq68QoRlgwmJ97QwFEUPh376KSgg79ov+U
-	 TUKFyUhPO/VlJ5JyhLaecK5HEEmJoKNM+2Qj7jRsntkeZjNHpXWhOu9oow6aNP2mvX
-	 jj6973JqaJKJv1N9L+Icm0KoCvGmLa2oxOdSZxHE=
+	b=Yes/KLC3KufqDkDJyti78cJdRsG4YNFz213Qtut/rgrYg0vnb72JLm3UhowdHWDQE
+	 RYQec8W0zoEIC/b6GZQzJuq9Ilp679csbrQSUqAYz0u88Rt55Tk19E1v6+LCisZ4b5
+	 1J5dWspgKI7kFw0p6+STTwPSj3x8u57cE+isCC3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-	Dave Chinner <david@fromorbit.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 096/107] stackdepot: respect __GFP_NOLOCKDEP allocation flag
-Date: Tue, 30 Apr 2024 12:40:56 +0200
-Message-ID: <20240430103047.491594051@linuxfoundation.org>
+	Yick Xie <yick.xie@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 088/110] udp: preserve the connected status if only UDP cmsg
+Date: Tue, 30 Apr 2024 12:40:57 +0200
+Message-ID: <20240430103050.168666956@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+From: Yick Xie <yick.xie@gmail.com>
 
-commit 6fe60465e1d53ea321ee909be26d97529e8f746c upstream.
+commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
 
-If stack_depot_save_flags() allocates memory it always drops
-__GFP_NOLOCKDEP flag.  So when KASAN tries to track __GFP_NOLOCKDEP
-allocation we may end up with lockdep splat like bellow:
+If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+"connected" should not be set to 0. Otherwise it stops
+the connected socket from using the cached route.
 
-======================================================
- WARNING: possible circular locking dependency detected
- 6.9.0-rc3+ #49 Not tainted
- ------------------------------------------------------
- kswapd0/149 is trying to acquire lock:
- ffff88811346a920
-(&xfs_nondir_ilock_class){++++}-{4:4}, at: xfs_reclaim_inode+0x3ac/0x590
-[xfs]
-
- but task is already holding lock:
- ffffffff8bb33100 (fs_reclaim){+.+.}-{0:0}, at:
-balance_pgdat+0x5d9/0xad0
-
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
- -> #1 (fs_reclaim){+.+.}-{0:0}:
-        __lock_acquire+0x7da/0x1030
-        lock_acquire+0x15d/0x400
-        fs_reclaim_acquire+0xb5/0x100
- prepare_alloc_pages.constprop.0+0xc5/0x230
-        __alloc_pages+0x12a/0x3f0
-        alloc_pages_mpol+0x175/0x340
-        stack_depot_save_flags+0x4c5/0x510
-        kasan_save_stack+0x30/0x40
-        kasan_save_track+0x10/0x30
-        __kasan_slab_alloc+0x83/0x90
-        kmem_cache_alloc+0x15e/0x4a0
-        __alloc_object+0x35/0x370
-        __create_object+0x22/0x90
- __kmalloc_node_track_caller+0x477/0x5b0
-        krealloc+0x5f/0x110
-        xfs_iext_insert_raw+0x4b2/0x6e0 [xfs]
-        xfs_iext_insert+0x2e/0x130 [xfs]
-        xfs_iread_bmbt_block+0x1a9/0x4d0 [xfs]
-        xfs_btree_visit_block+0xfb/0x290 [xfs]
-        xfs_btree_visit_blocks+0x215/0x2c0 [xfs]
-        xfs_iread_extents+0x1a2/0x2e0 [xfs]
- xfs_buffered_write_iomap_begin+0x376/0x10a0 [xfs]
-        iomap_iter+0x1d1/0x2d0
- iomap_file_buffered_write+0x120/0x1a0
-        xfs_file_buffered_write+0x128/0x4b0 [xfs]
-        vfs_write+0x675/0x890
-        ksys_write+0xc3/0x160
-        do_syscall_64+0x94/0x170
- entry_SYSCALL_64_after_hwframe+0x71/0x79
-
-Always preserve __GFP_NOLOCKDEP to fix this.
-
-Link: https://lkml.kernel.org/r/20240418141133.22950-1-ryabinin.a.a@gmail.com
-Fixes: cd11016e5f52 ("mm, kasan: stackdepot implementation. Enable stackdepot for SLAB")
-Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Reported-by: Xiubo Li <xiubli@redhat.com>
-Closes: https://lore.kernel.org/all/a0caa289-ca02-48eb-9bf2-d86fd47b71f4@redhat.com/
-Reported-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Closes: https://lore.kernel.org/all/f9ff999a-e170-b66b-7caf-293f2b147ac2@opensource.wdc.com/
-Suggested-by: Dave Chinner <david@fromorbit.com>
-Tested-by: Xiubo Li <xiubli@redhat.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/stackdepot.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/udp.c |    5 +++--
+ net/ipv6/udp.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/lib/stackdepot.c
-+++ b/lib/stackdepot.c
-@@ -259,10 +259,10 @@ depot_stack_handle_t stack_depot_save(un
- 		/*
- 		 * Zero out zone modifiers, as we don't have specific zone
- 		 * requirements. Keep the flags related to allocation in atomic
--		 * contexts and I/O.
-+		 * contexts, I/O, nolockdep.
- 		 */
- 		alloc_flags &= ~GFP_ZONEMASK;
--		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL);
-+		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL | __GFP_NOLOCKDEP);
- 		alloc_flags |= __GFP_NOWARN;
- 		page = alloc_pages(alloc_flags, STACK_ALLOC_ORDER);
- 		if (page)
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1141,16 +1141,17 @@ int udp_sendmsg(struct sock *sk, struct
+ 
+ 	if (msg->msg_controllen) {
+ 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip_cmsg_send(sk, msg, &ipc,
+ 					   sk->sk_family == AF_INET6);
++			connected = 0;
++		}
+ 		if (unlikely(err < 0)) {
+ 			kfree(ipc.opt);
+ 			return err;
+ 		}
+ 		if (ipc.opt)
+ 			free = 1;
+-		connected = 0;
+ 	}
+ 	if (!ipc.opt) {
+ 		struct ip_options_rcu *inet_opt;
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1493,9 +1493,11 @@ do_udp_sendmsg:
+ 		ipc6.opt = opt;
+ 
+ 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, fl6,
+ 						    &ipc6);
++			connected = false;
++		}
+ 		if (err < 0) {
+ 			fl6_sock_release(flowlabel);
+ 			return err;
+@@ -1507,7 +1509,6 @@ do_udp_sendmsg:
+ 		}
+ 		if (!(opt->opt_nflen|opt->opt_flen))
+ 			opt = NULL;
+-		connected = false;
+ 	}
+ 	if (!opt) {
+ 		opt = txopt_get(np);
 
 
 
