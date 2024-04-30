@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73B98B723D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD77F8B70CC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E85DE1C2258A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:06:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF7591C21FFB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069F912CDA5;
-	Tue, 30 Apr 2024 11:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F23512C530;
+	Tue, 30 Apr 2024 10:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByDvRHI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1kEhk8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA65712C54B;
-	Tue, 30 Apr 2024 11:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BA612C49E;
+	Tue, 30 Apr 2024 10:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475158; cv=none; b=s5peMAF6ZbiQTx+/EN3rz2AYk76ASi7mmMFnGaKthPl8ysXn86J9DrmH+OVczopQZ0Xayy5s7QsnMd9teE1mCb7nk6V9j+DzEpR/tVSKpm/MhFewr34s/kruN+GRY7jaqtPQN6GxtAw7oMIzI3H9LiYsawPixZHyafeomDndRGU=
+	t=1714474202; cv=none; b=iQjljQrUgdWnJulXtOrEQeBDal2IRZ5PFBUtgzxnARCa8Mbx+DJ6m7jhhnd07Xq1RK3D3EdN+87NnaOgYk1iOVVA3+awmr9huSRW7fwYhxH3Bt/TKFvsiW1MLlVl09EwKT4byTo23h8wg9ImfLLAEmWgmN9B3n8NDSlfqyfKwQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475158; c=relaxed/simple;
-	bh=gOEQFUX8Y9QlZSS9gbo6GFwz/oiLzDGOaWC4woxRRa0=;
+	s=arc-20240116; t=1714474202; c=relaxed/simple;
+	bh=XEjVfg+Vw2DiYZg/SBqVwQlY7bd+Y8uH3NBhPmzUmwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HPY3MLZ8d7vlWWwRlKUgbOtz8RZcAh7+yeD+ozHHf0LQ+dhn+DKyrN5tjbgPxwNb0jWJSP+dbJffuFWEWlEzm8jLAxTk9Wwug2bbZUgm2t+K3HqBZnkgOEOU8XDjnaDeg2nNAnxeqXIBYI/J2Mh3mpAPCrxbxPNqTVE/On3DZE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByDvRHI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC39C2BBFC;
-	Tue, 30 Apr 2024 11:05:58 +0000 (UTC)
+	 MIME-Version; b=szRtVqZodZK1qNs9CW9wcKten8CummMUh7R3OdP/6npWJzDOpNtgdqh6DeHukgIQrsKUF7+WWFbmxM7bo/kGLCM6IQ602P3Ap2K/ZXpVdBc7nLJwTtodo+0FLMOOtLv41qydDK2bBzxTxGJm58WW9dLDPzfLdh8htGqFPX1tu94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1kEhk8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85022C2BBFC;
+	Tue, 30 Apr 2024 10:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475158;
-	bh=gOEQFUX8Y9QlZSS9gbo6GFwz/oiLzDGOaWC4woxRRa0=;
+	s=korg; t=1714474201;
+	bh=XEjVfg+Vw2DiYZg/SBqVwQlY7bd+Y8uH3NBhPmzUmwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByDvRHI8Kq/Eib40qM8jQ7HVnnRx+bh/1qcRdNSEUDh+9I3/FWCjb0GACwjI/Hfte
-	 PQ+YRkdWxHygnJpgkI/LjCkI6OXtY+zgPUcq4odgbfbE1E9Z4IX/hj9u6AbXODsM69
-	 mJlTnb53CjgMMKL77+QPxvaHU0MDDHWnmeKwyRx4=
+	b=p1kEhk8MqEkA2jjgXK0cmrH+Zvrfm7261rXVf+Aj2zP7kOW6aWqKGGF25s2L9+1M2
+	 Z4Ka3NQAnbxp0I+2+MFv0tTbb2GkzTUVyluQyK+FVY547O852G6Wu/oHr89+UrmqY4
+	 6TuwSB1HI/d2ptZRXwaDOe8hVmekyyzygMYB5oV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/186] arm64: dts: mediatek: mt8192: Add missing gce-client-reg to mutex
+Subject: [PATCH 6.8 086/228] Bluetooth: btusb: Fix triggering coredump implementation for QCA
 Date: Tue, 30 Apr 2024 12:37:44 +0200
-Message-ID: <20240430103058.376950966@linuxfoundation.org>
+Message-ID: <20240430103106.284111763@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 00bcc8810d9dd69d3899a4189e2f3964f263a600 ]
+[ Upstream commit b23d98d46d2858dcc0fd016caff165cbdc24e70a ]
 
-Add the missing mediatek,gce-client-reg property to the mutex node to
-allow it to use the GCE. This prevents the "can't parse gce-client-reg
-property" error from being printed and should result in better
-performance.
+btusb_coredump_qca() uses __hci_cmd_sync() to send a vendor-specific
+command to trigger firmware coredump, but the command does not
+have any event as its sync response, so it is not suitable to use
+__hci_cmd_sync(), fixed by using __hci_cmd_send().
 
-Fixes: b4b75bac952b ("arm64: dts: mt8192: Add display nodes")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240229-gce-client-reg-add-missing-mt8192-95-v1-1-b12c233a8a33@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 20981ce2d5a5 ("Bluetooth: btusb: Add WCN6855 devcoredump support")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8192.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/btusb.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8192.dtsi b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-index f1fc14e53f8c7..b1443adc55aab 100644
---- a/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-@@ -1412,6 +1412,7 @@
- 			reg = <0 0x14001000 0 0x1000>;
- 			interrupts = <GIC_SPI 252 IRQ_TYPE_LEVEL_HIGH 0>;
- 			clocks = <&mmsys CLK_MM_DISP_MUTEX0>;
-+			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
- 			mediatek,gce-events = <CMDQ_EVENT_DISP_STREAM_DONE_ENG_EVENT_0>,
- 					      <CMDQ_EVENT_DISP_STREAM_DONE_ENG_EVENT_1>;
- 			power-domains = <&spm MT8192_POWER_DOMAIN_DISP>;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index f684108dc2f1c..58faada874f5c 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3463,13 +3463,12 @@ static void btusb_dump_hdr_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 
+ static void btusb_coredump_qca(struct hci_dev *hdev)
+ {
++	int err;
+ 	static const u8 param[] = { 0x26 };
+-	struct sk_buff *skb;
+ 
+-	skb = __hci_cmd_sync(hdev, 0xfc0c, 1, param, HCI_CMD_TIMEOUT);
+-	if (IS_ERR(skb))
+-		bt_dev_err(hdev, "%s: triggle crash failed (%ld)", __func__, PTR_ERR(skb));
+-	kfree_skb(skb);
++	err = __hci_cmd_send(hdev, 0xfc0c, 1, param);
++	if (err < 0)
++		bt_dev_err(hdev, "%s: triggle crash failed (%d)", __func__, err);
+ }
+ 
+ /*
 -- 
 2.43.0
 
