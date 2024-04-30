@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B788B7441
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FDF8B736D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C11EA286895
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2D282886C8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D3312D761;
-	Tue, 30 Apr 2024 11:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A593212CD9B;
+	Tue, 30 Apr 2024 11:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlWQm0t8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKke6I8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EBF12D753;
-	Tue, 30 Apr 2024 11:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633B217592;
+	Tue, 30 Apr 2024 11:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476538; cv=none; b=XdnFuxGdazHbBHkPhbBNHoLlqwyvTGvZeI1p7928/6pJjJB11Plm5aIEfz//RXLnp/R996qmqOzG+jM1yB0ZOu2W9FVrR3F9E9T+PQsBCVbSfr8Ra5JzR1mTHEVfZL+AC60EhuswcSOGUj5B/tx/mOX5/GMLS+67cf4Zuq+8t7g=
+	t=1714475931; cv=none; b=qU90SE/KIKW60LDyfTabTjWnxqy7jOoL6C1E3ugKAGFG40IUgIO0hjNvPV+qB1ga9GGZHXVxm2m14Vr1QR3mgt0iOtpUWXZ+V/T3XM+Wd8/KArTCI9srw8JO2qWJbCTzKmZZ+DBL2cdChr2+xAT/xKejanXysAsNn07lpSz8feg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476538; c=relaxed/simple;
-	bh=uEF5edBPjjsWOM5cUwMRuPNg6m1kW8Yu6BMXcEPInh0=;
+	s=arc-20240116; t=1714475931; c=relaxed/simple;
+	bh=Hzz5iBI/lnSqJzghNsZmxecc7Cd7DBwthdcGzN8N7NY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbo0Bka1auCmn6t5N5o4XxoJ2EK59z14zcpdtdoz4nZ+SRTElNlwNEqJ3Zr0egFjKr9IWj0fsQ6V4q4QrLa2gGCLgTRb1GhOqx/uXb/SISR0WiZ150eYPBP64ChfIUH7D6VOGCf+zv41ahtM7U2ttsrAMu14pJNjK8+wNf5YxfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlWQm0t8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C665C4AF19;
-	Tue, 30 Apr 2024 11:28:57 +0000 (UTC)
+	 MIME-Version; b=rtBtGUOjg3eKUHKdQ8NQBdJ1D9qk/HQzEcTaNMN2HGm8XO6kQBkWMrR+b2lImBANsZTqlquAVzGKOTvpC4BANSf2fWJ6HSfD5oINZNAuTtfuEhKjfRIGYgZHK6dU8k6N+DQQ9K7QdMtUIMmZnxKgFl/rT+te5Jsi/w/BBSyDtSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKke6I8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6F3C2BBFC;
+	Tue, 30 Apr 2024 11:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476538;
-	bh=uEF5edBPjjsWOM5cUwMRuPNg6m1kW8Yu6BMXcEPInh0=;
+	s=korg; t=1714475930;
+	bh=Hzz5iBI/lnSqJzghNsZmxecc7Cd7DBwthdcGzN8N7NY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlWQm0t8rsnWzTDoj/RNy2gKeC+ThrorBCRFTkHjpfRUuPaNr8ZpyiFxAvgWArB+h
-	 P09E6M/43Sj2L8Whnp/w7tYGcqOEX896j+PqvlSHakBPQGGmjZIRVclIaVuy1l0Wco
-	 /K1l1v21bS3Un66rRY45Qqx/hsC96RK6j5bmNDTg=
+	b=PKke6I8VtFyYxo4APoz8Eu3YiK7eYnl21mnOQecF2Pawng0AvaEUpxOX3hoXqwE/q
+	 GZLf2KtIzkLbX65qTA5NuzlqyuKvb7y+ykOOCgESz87v7rWZakwYQ+o7k0dCXbVFr/
+	 cbvL2WqCUP4xZ0FAraVKCWd5GY7F009uBDuoF270=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.1 064/110] rust: dont select CONSTRUCTORS
+	Mukul Joshi <mukul.joshi@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 61/80] drm/amdgpu: Fix leak when GPU memory allocation fails
 Date: Tue, 30 Apr 2024 12:40:33 +0200
-Message-ID: <20240430103049.457708886@linuxfoundation.org>
+Message-ID: <20240430103045.220114699@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Mukul Joshi <mukul.joshi@amd.com>
 
-commit 7d49f53af4b988b188d3932deac2c9c80fd7d9ce upstream.
+commit 25e9227c6afd200bed6774c866980b8e36d033af upstream.
 
-This was originally part of commit 4b9a68f2e59a0 ("rust: add support for
-static synchronisation primitives") from the old Rust branch, which used
-module constructors to initialize globals containing various
-synchronisation primitives with pin-init. That commit has never been
-upstreamed, but the `select CONSTRUCTORS` statement ended up being
-included in the patch that initially added Rust support to the Linux
-Kernel.
+Free the sync object if the memory allocation fails for any
+reason.
 
-We are not using module constructors, so let's remove the select.
-
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Link: https://lore.kernel.org/r/20240308-constructors-v1-1-4c811342391c@google.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1924,7 +1924,6 @@ config RUST
- 	depends on !GCC_PLUGINS
- 	depends on !RANDSTRUCT
- 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
--	select CONSTRUCTORS
- 	help
- 	  Enables Rust support in the kernel.
- 
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1502,6 +1502,7 @@ err_node_allow:
+ err_bo_create:
+ 	unreserve_mem_limit(adev, size, alloc_domain, !!sg);
+ err_reserve_limit:
++	amdgpu_sync_free(&(*mem)->sync);
+ 	mutex_destroy(&(*mem)->lock);
+ 	if (gobj)
+ 		drm_gem_object_put(gobj);
 
 
 
