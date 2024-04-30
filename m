@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708D78B7339
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1718B738E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A15DA1C23223
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC0CF288827
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75951E50A;
-	Tue, 30 Apr 2024 11:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6A612CD9B;
+	Tue, 30 Apr 2024 11:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCGAzng7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTCa3wee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930728801;
-	Tue, 30 Apr 2024 11:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC2D8801;
+	Tue, 30 Apr 2024 11:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475793; cv=none; b=fYk6o5P1LWB9iSqIni1OsWK6cQxWv2jYlSsSNvH+Cm65p153PkTbUkvo0sREpVvvOoBkWtcCaW9AocUgAG3kPWdEOgLzpc6t8GzC2AZM9mewlFbqeDEE6nGXZ320fFI5nGKfQC4sAnv1MxQtpikRzmJlVzEWRHedhO0q9joOE9s=
+	t=1714476034; cv=none; b=fFAdtwC89jWMNUMbd0SreSQSnfbpgzITh6HwENPVoYxc3Uw6uXPBp4xZhR86ANcOe9TmeHyH4H6jVwnwhUQbr22lqrEdePZKeOfrcRAn2DS7zneHchsEbNAKeNGiY9UkvlCT/O5B1FTj/zebWbqsjYlkF+YYXovEZMCq0ElYd1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475793; c=relaxed/simple;
-	bh=xIG2xB27LslhjcbnFoBJBiqjaxGyQcuh3q27YgV2rZk=;
+	s=arc-20240116; t=1714476034; c=relaxed/simple;
+	bh=5/7lR0q0V8NcAcWLLxlc45wc1i1G+YI7Cdt6C6xngL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWy1lP8SC05sVrWBJ88bO7xXZPn1wp19wD0RkdVIeVos9EdDQ6Ub5rhtVIXXZ3zL0vPnUDGxV/V1ynwXHvkn8ynV+ev/WbKR9i6gXQwKUlvXh3/uHj5noVZfhDmOF21q62ddl5asVgpSblEh344pEkTfNvPwCkHx2ZWbtKnF3fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCGAzng7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B362C2BBFC;
-	Tue, 30 Apr 2024 11:16:32 +0000 (UTC)
+	 MIME-Version; b=FtKEVC2AOT9ofxcS4hD7cV0/dYrBbLrU9wzwblzwyMiOU3DMIxR92beIVVp311nbKTNLjqtHvz8Xi5j95MELAGnsc4ox5HQwsr0rZbc6kQYi0KiJHUHY94nY7PV5dPyw2OX1JzjbeKQ0OtAaaJBORwZqoWnZDMdm3wTK12ZdIaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTCa3wee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA9BC2BBFC;
+	Tue, 30 Apr 2024 11:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475793;
-	bh=xIG2xB27LslhjcbnFoBJBiqjaxGyQcuh3q27YgV2rZk=;
+	s=korg; t=1714476034;
+	bh=5/7lR0q0V8NcAcWLLxlc45wc1i1G+YI7Cdt6C6xngL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nCGAzng7rpCkQyDuTkEiqCKkBpu1ojB1/afwo5gRO9ldNU+jMQkBIDwkgggyot/Eq
-	 WaHjSetk+0pamxJx/G087iaHukAEJyIhSCiiZFsZLfZbGL0l8pnvVF2w4AF5Hn4h9e
-	 vMQAcwkC9FOKg+XU0RVdn4JzbsBPnopUYxaSrba8=
+	b=MTCa3wee8x7gACqw9pLqUnHWjtg0pb0UA0kjnM1iTN65ig1W0NWjlMd/RwG8xej0A
+	 QwSFuD/oMWSt0rQBJiltrA1TjGNukOF4LSSFO3Xo7EIanD8AxAa5gKnAorBqmv6Ymg
+	 UK6lZdPsGH9i6RM3kmftPTFQ7Af7k4dM+c8aOQSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takayuki Nagata <tnagata@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Ronnie Sahlberg <lsahlber@redhat.com>,
-	Tom Talpey <tom@talpey.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 02/80] cifs: reinstate original behavior again for forceuid/forcegid
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.4 014/107] btrfs: qgroup: correctly model root qgroup rsv in convert
 Date: Tue, 30 Apr 2024 12:39:34 +0200
-Message-ID: <20240430103043.473550585@linuxfoundation.org>
+Message-ID: <20240430103045.082310293@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takayuki Nagata <tnagata@redhat.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 77d8aa79ecfb209308e0644c02f655122b31def7 ]
+commit 141fb8cd206ace23c02cd2791c6da52c1d77d42a upstream.
 
-forceuid/forcegid should be enabled by default when uid=/gid= options are
-specified, but commit 24e0a1eff9e2 ("cifs: switch to new mount api")
-changed the behavior. Due to the change, a mounted share does not show
-intentional uid/gid for files and directories even though uid=/gid=
-options are specified since forceuid/forcegid are not enabled.
+We use add_root_meta_rsv and sub_root_meta_rsv to track prealloc and
+pertrans reservations for subvolumes when quotas are enabled. The
+convert function does not properly increment pertrans after decrementing
+prealloc, so the count is not accurate.
 
-This patch reinstates original behavior that overrides uid/gid with
-specified uid/gid by the options.
+Note: we check that the fs is not read-only to mirror the logic in
+qgroup_convert_meta, which checks that before adding to the pertrans rsv.
 
-Fixes: 24e0a1eff9e2 ("cifs: switch to new mount api")
-Signed-off-by: Takayuki Nagata <tnagata@redhat.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Acked-by: Ronnie Sahlberg <lsahlber@redhat.com>
-Acked-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8287475a2055 ("btrfs: qgroup: Use root::qgroup_meta_rsv_* to record qgroup meta reserved space")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/fs_context.c | 12 ++++++++++++
- fs/cifs/fs_context.h |  2 ++
- 2 files changed, 14 insertions(+)
+ fs/btrfs/qgroup.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/cifs/fs_context.c b/fs/cifs/fs_context.c
-index 6347e759b5ccf..fb3651513f83a 100644
---- a/fs/cifs/fs_context.c
-+++ b/fs/cifs/fs_context.c
-@@ -672,6 +672,16 @@ static int smb3_fs_context_validate(struct fs_context *fc)
- 	/* set the port that we got earlier */
- 	cifs_set_port((struct sockaddr *)&ctx->dstaddr, ctx->port);
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -4061,6 +4061,8 @@ void btrfs_qgroup_convert_reserved_meta(
+ 				      BTRFS_QGROUP_RSV_META_PREALLOC);
+ 	trace_qgroup_meta_convert(root, num_bytes);
+ 	qgroup_convert_meta(fs_info, root->root_key.objectid, num_bytes);
++	if (!sb_rdonly(fs_info->sb))
++		add_root_meta_rsv(root, num_bytes, BTRFS_QGROUP_RSV_META_PERTRANS);
+ }
  
-+	if (ctx->uid_specified && !ctx->forceuid_specified) {
-+		ctx->override_uid = 1;
-+		pr_notice("enabling forceuid mount option implicitly because uid= option is specified\n");
-+	}
-+
-+	if (ctx->gid_specified && !ctx->forcegid_specified) {
-+		ctx->override_gid = 1;
-+		pr_notice("enabling forcegid mount option implicitly because gid= option is specified\n");
-+	}
-+
- 	if (ctx->override_uid && !ctx->uid_specified) {
- 		ctx->override_uid = 0;
- 		pr_notice("ignoring forceuid mount option specified with no uid= option\n");
-@@ -903,12 +913,14 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 			ctx->override_uid = 0;
- 		else
- 			ctx->override_uid = 1;
-+		ctx->forceuid_specified = true;
- 		break;
- 	case Opt_forcegid:
- 		if (result.negated)
- 			ctx->override_gid = 0;
- 		else
- 			ctx->override_gid = 1;
-+		ctx->forcegid_specified = true;
- 		break;
- 	case Opt_perm:
- 		if (result.negated)
-diff --git a/fs/cifs/fs_context.h b/fs/cifs/fs_context.h
-index 3cf8d6235162d..74bb19ec7c839 100644
---- a/fs/cifs/fs_context.h
-+++ b/fs/cifs/fs_context.h
-@@ -152,6 +152,8 @@ enum cifs_param {
- };
- 
- struct smb3_fs_context {
-+	bool forceuid_specified;
-+	bool forcegid_specified;
- 	bool uid_specified;
- 	bool cruid_specified;
- 	bool gid_specified;
--- 
-2.43.0
-
+ /*
 
 
 
