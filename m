@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-42256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE348B721E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38CE8B73E1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E44DE285C36
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A86D285D4E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F5E12C801;
-	Tue, 30 Apr 2024 11:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E5312D746;
+	Tue, 30 Apr 2024 11:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NDuARGF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWLCUh4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BF312C462;
-	Tue, 30 Apr 2024 11:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9544817592;
+	Tue, 30 Apr 2024 11:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475072; cv=none; b=Wf01eUpwFF5xlOgbnlrmQU+npdGLgRwA36g1YuNadab/zL+ZMnzo53yRdu6KnN6O9LGiO2tJlA8Gp+ZkcdozGLoQ7nzEE4VVJ4NDWfteCMECIX2Y6iQN5yAi2KF/AhhDR13JR9MvjqyDpHnMGAZYd9ZV+AhZ7neA+yTzG/qvF5U=
+	t=1714476260; cv=none; b=ow1P6kw73GQxsqSQqaHE7ZFub71R16jkOzk8AV51r9OpNGa5ZSMQB5Ur6W9cCMJbD8gDP/yjEYJB78i8T5gBwmQV/uenO0WWQFWOL0RK08dqS86f6rDqGomUZ/BVnTwhS0zyky9RMLZn9RHqEQOcuAXAzzcCY2ZZt3Tmd3BwniA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475072; c=relaxed/simple;
-	bh=UyjtlqQhd1djINb/td3UFda3xaPNluBPyWA6w1g8efs=;
+	s=arc-20240116; t=1714476260; c=relaxed/simple;
+	bh=zHScCoHzYS2DBnNkbUKIPIFeTJm591isNJchbz11qwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o0aMRccGnLPsJclktUd8dHdwR3BhN6aa939BNm6/AAeJsRpcx7cd7+BcVUniqMtwAM/FowX+wKyB26666bLf1WM7MjQxNYihuMyeEdSxt2HlqKPb2BIcDI5jPpeAr6PgmoVh6wzJlfSnzQMu//PWGn0R0TMtc3+t9V/oTPwLDPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NDuARGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB52C2BBFC;
-	Tue, 30 Apr 2024 11:04:31 +0000 (UTC)
+	 MIME-Version; b=HTVoWO06x37CbxtXKNNVmVmsZ55R6XBiPxS+2bvW7sEAnE0B32UAeDGUQbDMOLiSmT5W4ye7OQseLyWZkPgrCtfJEJxW/HlFgpUFRboDQFi15oj6iMhIStPNi51KZT/PyvPOFakJ/3GWa7LyXNSitk8Nu9+1HGWIL8HFCnw+vuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWLCUh4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FED9C4AF1A;
+	Tue, 30 Apr 2024 11:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475072;
-	bh=UyjtlqQhd1djINb/td3UFda3xaPNluBPyWA6w1g8efs=;
+	s=korg; t=1714476260;
+	bh=zHScCoHzYS2DBnNkbUKIPIFeTJm591isNJchbz11qwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NDuARGFXGJbeawp0iybDtaEXrdqQY/G13IbVb4jrIpAIrBg4QjDT2y52BbQQa6lr
-	 qVS88GxblmsseP/EbRay3wiMEgjXWIQQh+sZhF7GYO0+/ubqHEOgLXvzqosG/7MAey
-	 acUuS8xf9Pc8HDKSTTGFBxXWtIv1NQ/Bu/7d7zps=
+	b=qWLCUh4HUD8BV6T0A0zBsunGUvBhlbPqP1VW4oSXyYZ6cXjj4WRWbF3Xk9FFsDYA9
+	 gbDMI8NpTEiOgKEMpt3uaIsV9+rFdZw/wk/X7rwm2UU1ZOeH456000ga2lxdcaGxaY
+	 VbgHuElvjgvLC+S2B525fd7RxTp9OUP3TFYRI1mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 5.10 121/138] irqchip/gic-v3-its: Prevent double free on error
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.4 046/107] usb: Disable USB3 LPM at shutdown
 Date: Tue, 30 Apr 2024 12:40:06 +0200
-Message-ID: <20240430103052.967222301@linuxfoundation.org>
+Message-ID: <20240430103046.018698593@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-commit c26591afd33adce296c022e3480dea4282b7ef91 upstream.
+commit d920a2ed8620be04a3301e1a9c2b7cc1de65f19d upstream.
 
-The error handling path in its_vpe_irq_domain_alloc() causes a double free
-when its_vpe_init() fails after successfully allocating at least one
-interrupt. This happens because its_vpe_irq_domain_free() frees the
-interrupts along with the area bitmap and the vprop_page and
-its_vpe_irq_domain_alloc() subsequently frees the area bitmap and the
-vprop_page again.
+SanDisks USB3 storage may disapper after system reboot:
 
-Fix this by unconditionally invoking its_vpe_irq_domain_free() which
-handles all cases correctly and by removing the bitmap/vprop_page freeing
-from its_vpe_irq_domain_alloc().
+usb usb2-port3: link state change
+xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
+usb usb2-port3: do warm reset, port only
+xhci_hcd 0000:00:14.0: xhci_hub_status_data: stopping usb2 port polling
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2b0, return 0x2b0
+usb usb2-port3: not warm reset yet, waiting 50ms
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2f0, return 0x2f0
+usb usb2-port3: not warm reset yet, waiting 200ms
+...
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x6802c0, return 0x7002c0
+usb usb2-port3: not warm reset yet, waiting 200ms
+xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x4802c0
+xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x4002c0
+xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x2c0
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x2c0, return 0x2c0
+usb usb2-port3: not enabled, trying warm reset again...
 
-[ tglx: Massaged change log ]
+This is due to the USB device still cause port change event after xHCI is
+shuted down:
 
-Fixes: 7d75bbb4bc1a ("irqchip/gic-v3-its: Add VPE irq domain allocation/teardown")
-Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240418061053.96803-2-guanrui.huang@linux.alibaba.com
+xhci_hcd 0000:38:00.0: // Setting command ring address to 0xffffe001
+xhci_hcd 0000:38:00.0: xhci_resume: starting usb3 port polling.
+xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb4 port polling
+xhci_hcd 0000:38:00.0: xhci_hub_status_data: stopping usb3 port polling
+xhci_hcd 0000:38:00.0: hcd_pci_runtime_resume: 0
+xhci_hcd 0000:38:00.0: xhci_shutdown: stopping usb3 port polling.
+xhci_hcd 0000:38:00.0: // Halt the HC
+xhci_hcd 0000:38:00.0: xhci_shutdown completed - status = 1
+xhci_hcd 0000:00:14.0: xhci_shutdown: stopping usb1 port polling.
+xhci_hcd 0000:00:14.0: // Halt the HC
+xhci_hcd 0000:00:14.0: xhci_shutdown completed - status = 1
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
+xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1311
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x201203, return 0x100203
+xhci_hcd 0000:00:14.0: clear port3 reset change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: clear port3 warm(BH) reset change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: clear port3 link state change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: clear port3 connect change, portsc: 0x1203
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1203, return 0x203
+usb 2-3: device not accepting address 2, error -108
+xhci_hcd 0000:00:14.0: xHCI dying or halted, can't queue_command
+xhci_hcd 0000:00:14.0: Set port 2-3 link state, portsc: 0x1203, write 0x11261
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x1263, return 0x263
+xhci_hcd 0000:00:14.0: set port reset, actual port 2-3 status  = 0x1271
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12b1, return 0x2b1
+usb usb2-port3: not reset yet, waiting 60ms
+ACPI: PM: Preparing to enter system sleep state S5
+xhci_hcd 0000:00:14.0: Get port status 2-3 read: 0x12f1, return 0x2f1
+usb usb2-port3: not reset yet, waiting 200ms
+reboot: Restarting system
+
+The port change event is caused by LPM transition, so disabling LPM at shutdown
+to make sure the device is in U0 for warmboot.
+
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240305065140.66801-1-kai.heng.feng@canonical.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/usb/core/port.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -4508,13 +4508,8 @@ static int its_vpe_irq_domain_alloc(stru
- 		set_bit(i, bitmap);
- 	}
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -295,8 +295,10 @@ static void usb_port_shutdown(struct dev
+ {
+ 	struct usb_port *port_dev = to_usb_port(dev);
  
--	if (err) {
--		if (i > 0)
--			its_vpe_irq_domain_free(domain, virq, i);
--
--		its_lpi_free(bitmap, base, nr_ids);
--		its_free_prop_table(vprop_page);
--	}
-+	if (err)
-+		its_vpe_irq_domain_free(domain, virq, i);
- 
- 	return err;
+-	if (port_dev->child)
++	if (port_dev->child) {
+ 		usb_disable_usb2_hardware_lpm(port_dev->child);
++		usb_unlocked_disable_lpm(port_dev->child);
++	}
  }
+ 
+ static const struct dev_pm_ops usb_port_pm_ops = {
 
 
 
