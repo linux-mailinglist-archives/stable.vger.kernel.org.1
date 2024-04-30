@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF628B7165
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FEB8B72FE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECCAE1C2228F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5439A1C22A21
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E6112C490;
-	Tue, 30 Apr 2024 10:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06D712DD93;
+	Tue, 30 Apr 2024 11:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLMY6fPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6NjK+st"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E85129E89;
-	Tue, 30 Apr 2024 10:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E73B12D1E8;
+	Tue, 30 Apr 2024 11:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474564; cv=none; b=PwAWGXfIAaYIpxGrN7tDI+uxja/BreaWZNewbarp9ZlfSlNUqLgICBLErZQ53BzThcZMFPT/5FZF+9fGD15vL4AKA96i4231UssS0VM5bJeM1fERys3UI9cRGbpaRztX3edTZ/Gr6/y2pJonxRluy41YVEogpQfXKdn59HFQ//k=
+	t=1714475646; cv=none; b=aH90SLvJ0M2KJI5+FDG39PX+s2zL1TyBWUfsqF6p59qi2lgrcXo4wY/tTqnuBOlvLtccZc/VlUpYqpUBUCQWqunA+C2mbGcsQT7vUj0z5jqgiOKcJ/3PCSYpp2iT2aFkEK5YSAS77fCY9W+XbHdyTtJuQlS/ahZkKTwuV0QyyqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474564; c=relaxed/simple;
-	bh=DLTArA/xTtVIkkx+WK2EVDyW3H6YIuFxtJ5W1TLPaO8=;
+	s=arc-20240116; t=1714475646; c=relaxed/simple;
+	bh=/jg5mwwjla+0f2jfBWO+FyoJscoUmrKBz1vtcaqdC6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPf6TRAebHR+3yc/9MpBoxSUY2pN2sqo54MFfDE+8SkP2Mc5IeYQb+EfDjfU2HWgkqEAbzNWRrnMPOxvupipvk+kgPqxeo1fXxqwLaWfS/RUZ6mjsgkMnFE8evdc8nnDTt3Nw9Tf6OXFEYN2F9cI+bqkESk5BLlEJxFUDypFSuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLMY6fPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1D9C4AF19;
-	Tue, 30 Apr 2024 10:56:03 +0000 (UTC)
+	 MIME-Version; b=pmPdnhpVDOpURfsciyn/VU/YSnXEkDojwzh+TbQg0bNuwu7HmAT1dWiWvfjJCwK1+B3TsMHnesZVwIgmRL3wo/pii8tV+xhwk5dtCHp1ow7V92RULzmcm+92d5WO75dQru1Mu3JQI8Yz/jzFPDFl3pznuksLxuI33KsZaYDSXMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6NjK+st; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45468C4AF1A;
+	Tue, 30 Apr 2024 11:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474563;
-	bh=DLTArA/xTtVIkkx+WK2EVDyW3H6YIuFxtJ5W1TLPaO8=;
+	s=korg; t=1714475646;
+	bh=/jg5mwwjla+0f2jfBWO+FyoJscoUmrKBz1vtcaqdC6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLMY6fPUOpuEp/uu5s/GrdK/fgCHHleabXkfk7OvJr9N+ErXYDfPtE7oUQlf53+7j
-	 eF3tGvnIineKgBnh77aEUYUDpK/60E/dJi3+A5QVYfX5WDFl3xh0DGoqHLqDlKpB64
-	 cPDv6XjYjBj4yYkXn5kpyMHNBZLlxCaRzCcPVVuQ=
+	b=y6NjK+stlU05EcCPKLIr3b8tuTovwOJmzP2n2/nqZ5sWWahBgK2HhStxTq9uxo7gl
+	 ksTP3Ho1FSM707nt/Oo5faOnyc7EBqdN1Bb/+q2UnmritkQIFMC+b9vIDZM1Uw31hQ
+	 J+Pxf765ixbo7Hbk7VNB3Pn+3eUJCt9Sb6PzqtHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Zhengping Jiang <jiangzp@google.com>,
 	Johan Hovold <johan+linaro@kernel.org>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: [PATCH 6.8 195/228] firmware: qcom: uefisecapp: Fix memory related IO errors and crashes
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 121/186] Bluetooth: qca: fix NULL-deref on non-serdev setup
 Date: Tue, 30 Apr 2024 12:39:33 +0200
-Message-ID: <20240430103109.426068542@linuxfoundation.org>
+Message-ID: <20240430103101.545459012@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,527 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Luz <luzmaximilian@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit ed09f81eeaa8f9265e1787282cb283f10285c259 upstream.
+commit 7ddb9de6af0f1c71147785b12fd7c8ec3f06cc86 upstream.
 
-It turns out that while the QSEECOM APP_SEND command has specific fields
-for request and response buffers, uefisecapp expects them both to be in
-a single memory region. Failure to adhere to this has (so far) resulted
-in either no response being written to the response buffer (causing an
-EIO to be emitted down the line), the SCM call to fail with EINVAL
-(i.e., directly from TZ/firmware), or the device to be hard-reset.
+Qualcomm ROME controllers can be registered from the Bluetooth line
+discipline and in this case the HCI UART serdev pointer is NULL.
 
-While this issue can be triggered deterministically, in the current form
-it seems to happen rather sporadically (which is why it has gone
-unnoticed during earlier testing). This is likely due to the two
-kzalloc() calls (for request and response) being directly after each
-other. Which means that those likely return consecutive regions most of
-the time, especially when not much else is going on in the system.
+Add the missing sanity check to prevent a NULL-pointer dereference when
+setup() is called for a non-serdev controller.
 
-Fix this by allocating a single memory region for both request and
-response buffers, properly aligning both structs inside it. This
-unfortunately also means that the qcom_scm_qseecom_app_send() interface
-needs to be restructured, as it should no longer map the DMA regions
-separately. Therefore, move the responsibility of DMA allocation (or
-mapping) to the caller.
-
-Fixes: 759e7a2b62eb ("firmware: Add support for Qualcomm UEFI Secure Application")
-Cc: stable@vger.kernel.org  # 6.7
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # X13s
-Link: https://lore.kernel.org/r/20240406130125.1047436-1-luzmaximilian@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: e9b3e5b8c657 ("Bluetooth: hci_qca: only assign wakeup with serial port support")
+Cc: stable@vger.kernel.org      # 6.2
+Cc: Zhengping Jiang <jiangzp@google.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../firmware/qcom/qcom_qseecom_uefisecapp.c   | 137 ++++++++++++------
- drivers/firmware/qcom/qcom_scm.c              |  37 +----
- include/linux/firmware/qcom/qcom_qseecom.h    |  55 ++++++-
- include/linux/firmware/qcom/qcom_scm.h        |  10 +-
- 4 files changed, 153 insertions(+), 86 deletions(-)
+ drivers/bluetooth/hci_qca.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c b/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
-index 32188f098ef3..bc550ad0dbe0 100644
---- a/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
-+++ b/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
-@@ -221,6 +221,19 @@ struct qsee_rsp_uefi_query_variable_info {
-  * alignment of 8 bytes (64 bits) for GUIDs. Our definition of efi_guid_t,
-  * however, has an alignment of 4 byte (32 bits). So far, this seems to work
-  * fine here. See also the comment on the typedef of efi_guid_t.
-+ *
-+ * Note: It looks like uefisecapp is quite picky about how the memory passed to
-+ * it is structured and aligned. In particular the request/response setup used
-+ * for QSEE_CMD_UEFI_GET_VARIABLE. While qcom_qseecom_app_send(), in theory,
-+ * accepts separate buffers/addresses for the request and response parts, in
-+ * practice, however, it seems to expect them to be both part of a larger
-+ * contiguous block. We initially allocated separate buffers for the request
-+ * and response but this caused the QSEE_CMD_UEFI_GET_VARIABLE command to
-+ * either not write any response to the response buffer or outright crash the
-+ * device. Therefore, we now allocate a single contiguous block of DMA memory
-+ * for both and properly align the data using the macros below. In particular,
-+ * request and response structs are aligned at 8 byte (via __reqdata_offs()),
-+ * following the driver that this has been reverse-engineered from.
-  */
- #define qcuefi_buf_align_fields(fields...)					\
- 	({									\
-@@ -244,6 +257,12 @@ struct qsee_rsp_uefi_query_variable_info {
- #define __array_offs(type, count, offset)					\
- 	__field_impl(sizeof(type) * (count), __alignof__(type), offset)
- 
-+#define __array_offs_aligned(type, count, align, offset)			\
-+	__field_impl(sizeof(type) * (count), align, offset)
-+
-+#define __reqdata_offs(size, offset)						\
-+	__array_offs_aligned(u8, size, 8, offset)
-+
- #define __array(type, count)		__array_offs(type, count, NULL)
- #define __field_offs(type, offset)	__array_offs(type, 1, offset)
- #define __field(type)			__array_offs(type, 1, NULL)
-@@ -277,10 +296,15 @@ static efi_status_t qsee_uefi_get_variable(struct qcuefi_client *qcuefi, const e
- 	unsigned long buffer_size = *data_size;
- 	efi_status_t efi_status = EFI_SUCCESS;
- 	unsigned long name_length;
-+	dma_addr_t cmd_buf_dma;
-+	size_t cmd_buf_size;
-+	void *cmd_buf;
- 	size_t guid_offs;
- 	size_t name_offs;
- 	size_t req_size;
- 	size_t rsp_size;
-+	size_t req_offs;
-+	size_t rsp_offs;
- 	ssize_t status;
- 
- 	if (!name || !guid)
-@@ -304,17 +328,19 @@ static efi_status_t qsee_uefi_get_variable(struct qcuefi_client *qcuefi, const e
- 		__array(u8, buffer_size)
- 	);
- 
--	req_data = kzalloc(req_size, GFP_KERNEL);
--	if (!req_data) {
-+	cmd_buf_size = qcuefi_buf_align_fields(
-+		__reqdata_offs(req_size, &req_offs)
-+		__reqdata_offs(rsp_size, &rsp_offs)
-+	);
-+
-+	cmd_buf = qseecom_dma_alloc(qcuefi->client, cmd_buf_size, &cmd_buf_dma, GFP_KERNEL);
-+	if (!cmd_buf) {
- 		efi_status = EFI_OUT_OF_RESOURCES;
- 		goto out;
- 	}
- 
--	rsp_data = kzalloc(rsp_size, GFP_KERNEL);
--	if (!rsp_data) {
--		efi_status = EFI_OUT_OF_RESOURCES;
--		goto out_free_req;
--	}
-+	req_data = cmd_buf + req_offs;
-+	rsp_data = cmd_buf + rsp_offs;
- 
- 	req_data->command_id = QSEE_CMD_UEFI_GET_VARIABLE;
- 	req_data->data_size = buffer_size;
-@@ -332,7 +358,9 @@ static efi_status_t qsee_uefi_get_variable(struct qcuefi_client *qcuefi, const e
- 
- 	memcpy(((void *)req_data) + req_data->guid_offset, guid, req_data->guid_size);
- 
--	status = qcom_qseecom_app_send(qcuefi->client, req_data, req_size, rsp_data, rsp_size);
-+	status = qcom_qseecom_app_send(qcuefi->client,
-+				       cmd_buf_dma + req_offs, req_size,
-+				       cmd_buf_dma + rsp_offs, rsp_size);
- 	if (status) {
- 		efi_status = EFI_DEVICE_ERROR;
- 		goto out_free;
-@@ -407,9 +435,7 @@ static efi_status_t qsee_uefi_get_variable(struct qcuefi_client *qcuefi, const e
- 	memcpy(data, ((void *)rsp_data) + rsp_data->data_offset, rsp_data->data_size);
- 
- out_free:
--	kfree(rsp_data);
--out_free_req:
--	kfree(req_data);
-+	qseecom_dma_free(qcuefi->client, cmd_buf_size, cmd_buf, cmd_buf_dma);
- out:
- 	return efi_status;
- }
-@@ -422,10 +448,15 @@ static efi_status_t qsee_uefi_set_variable(struct qcuefi_client *qcuefi, const e
- 	struct qsee_rsp_uefi_set_variable *rsp_data;
- 	efi_status_t efi_status = EFI_SUCCESS;
- 	unsigned long name_length;
-+	dma_addr_t cmd_buf_dma;
-+	size_t cmd_buf_size;
-+	void *cmd_buf;
- 	size_t name_offs;
- 	size_t guid_offs;
- 	size_t data_offs;
- 	size_t req_size;
-+	size_t req_offs;
-+	size_t rsp_offs;
- 	ssize_t status;
- 
- 	if (!name || !guid)
-@@ -450,17 +481,19 @@ static efi_status_t qsee_uefi_set_variable(struct qcuefi_client *qcuefi, const e
- 		__array_offs(u8, data_size, &data_offs)
- 	);
- 
--	req_data = kzalloc(req_size, GFP_KERNEL);
--	if (!req_data) {
-+	cmd_buf_size = qcuefi_buf_align_fields(
-+		__reqdata_offs(req_size, &req_offs)
-+		__reqdata_offs(sizeof(*rsp_data), &rsp_offs)
-+	);
-+
-+	cmd_buf = qseecom_dma_alloc(qcuefi->client, cmd_buf_size, &cmd_buf_dma, GFP_KERNEL);
-+	if (!cmd_buf) {
- 		efi_status = EFI_OUT_OF_RESOURCES;
- 		goto out;
- 	}
- 
--	rsp_data = kzalloc(sizeof(*rsp_data), GFP_KERNEL);
--	if (!rsp_data) {
--		efi_status = EFI_OUT_OF_RESOURCES;
--		goto out_free_req;
--	}
-+	req_data = cmd_buf + req_offs;
-+	rsp_data = cmd_buf + rsp_offs;
- 
- 	req_data->command_id = QSEE_CMD_UEFI_SET_VARIABLE;
- 	req_data->attributes = attributes;
-@@ -483,8 +516,9 @@ static efi_status_t qsee_uefi_set_variable(struct qcuefi_client *qcuefi, const e
- 	if (data_size)
- 		memcpy(((void *)req_data) + req_data->data_offset, data, req_data->data_size);
- 
--	status = qcom_qseecom_app_send(qcuefi->client, req_data, req_size, rsp_data,
--				       sizeof(*rsp_data));
-+	status = qcom_qseecom_app_send(qcuefi->client,
-+				       cmd_buf_dma + req_offs, req_size,
-+				       cmd_buf_dma + rsp_offs, sizeof(*rsp_data));
- 	if (status) {
- 		efi_status = EFI_DEVICE_ERROR;
- 		goto out_free;
-@@ -507,9 +541,7 @@ static efi_status_t qsee_uefi_set_variable(struct qcuefi_client *qcuefi, const e
- 	}
- 
- out_free:
--	kfree(rsp_data);
--out_free_req:
--	kfree(req_data);
-+	qseecom_dma_free(qcuefi->client, cmd_buf_size, cmd_buf, cmd_buf_dma);
- out:
- 	return efi_status;
- }
-@@ -521,10 +553,15 @@ static efi_status_t qsee_uefi_get_next_variable(struct qcuefi_client *qcuefi,
- 	struct qsee_req_uefi_get_next_variable *req_data;
- 	struct qsee_rsp_uefi_get_next_variable *rsp_data;
- 	efi_status_t efi_status = EFI_SUCCESS;
-+	dma_addr_t cmd_buf_dma;
-+	size_t cmd_buf_size;
-+	void *cmd_buf;
- 	size_t guid_offs;
- 	size_t name_offs;
- 	size_t req_size;
- 	size_t rsp_size;
-+	size_t req_offs;
-+	size_t rsp_offs;
- 	ssize_t status;
- 
- 	if (!name_size || !name || !guid)
-@@ -545,17 +582,19 @@ static efi_status_t qsee_uefi_get_next_variable(struct qcuefi_client *qcuefi,
- 		__array(*name, *name_size / sizeof(*name))
- 	);
- 
--	req_data = kzalloc(req_size, GFP_KERNEL);
--	if (!req_data) {
-+	cmd_buf_size = qcuefi_buf_align_fields(
-+		__reqdata_offs(req_size, &req_offs)
-+		__reqdata_offs(rsp_size, &rsp_offs)
-+	);
-+
-+	cmd_buf = qseecom_dma_alloc(qcuefi->client, cmd_buf_size, &cmd_buf_dma, GFP_KERNEL);
-+	if (!cmd_buf) {
- 		efi_status = EFI_OUT_OF_RESOURCES;
- 		goto out;
- 	}
- 
--	rsp_data = kzalloc(rsp_size, GFP_KERNEL);
--	if (!rsp_data) {
--		efi_status = EFI_OUT_OF_RESOURCES;
--		goto out_free_req;
--	}
-+	req_data = cmd_buf + req_offs;
-+	rsp_data = cmd_buf + rsp_offs;
- 
- 	req_data->command_id = QSEE_CMD_UEFI_GET_NEXT_VARIABLE;
- 	req_data->guid_offset = guid_offs;
-@@ -572,7 +611,9 @@ static efi_status_t qsee_uefi_get_next_variable(struct qcuefi_client *qcuefi,
- 		goto out_free;
- 	}
- 
--	status = qcom_qseecom_app_send(qcuefi->client, req_data, req_size, rsp_data, rsp_size);
-+	status = qcom_qseecom_app_send(qcuefi->client,
-+				       cmd_buf_dma + req_offs, req_size,
-+				       cmd_buf_dma + rsp_offs, rsp_size);
- 	if (status) {
- 		efi_status = EFI_DEVICE_ERROR;
- 		goto out_free;
-@@ -645,9 +686,7 @@ static efi_status_t qsee_uefi_get_next_variable(struct qcuefi_client *qcuefi,
- 	}
- 
- out_free:
--	kfree(rsp_data);
--out_free_req:
--	kfree(req_data);
-+	qseecom_dma_free(qcuefi->client, cmd_buf_size, cmd_buf, cmd_buf_dma);
- out:
- 	return efi_status;
- }
-@@ -659,26 +698,34 @@ static efi_status_t qsee_uefi_query_variable_info(struct qcuefi_client *qcuefi,
- 	struct qsee_req_uefi_query_variable_info *req_data;
- 	struct qsee_rsp_uefi_query_variable_info *rsp_data;
- 	efi_status_t efi_status = EFI_SUCCESS;
-+	dma_addr_t cmd_buf_dma;
-+	size_t cmd_buf_size;
-+	void *cmd_buf;
-+	size_t req_offs;
-+	size_t rsp_offs;
- 	int status;
- 
--	req_data = kzalloc(sizeof(*req_data), GFP_KERNEL);
--	if (!req_data) {
-+	cmd_buf_size = qcuefi_buf_align_fields(
-+		__reqdata_offs(sizeof(*req_data), &req_offs)
-+		__reqdata_offs(sizeof(*rsp_data), &rsp_offs)
-+	);
-+
-+	cmd_buf = qseecom_dma_alloc(qcuefi->client, cmd_buf_size, &cmd_buf_dma, GFP_KERNEL);
-+	if (!cmd_buf) {
- 		efi_status = EFI_OUT_OF_RESOURCES;
- 		goto out;
- 	}
- 
--	rsp_data = kzalloc(sizeof(*rsp_data), GFP_KERNEL);
--	if (!rsp_data) {
--		efi_status = EFI_OUT_OF_RESOURCES;
--		goto out_free_req;
--	}
-+	req_data = cmd_buf + req_offs;
-+	rsp_data = cmd_buf + rsp_offs;
- 
- 	req_data->command_id = QSEE_CMD_UEFI_QUERY_VARIABLE_INFO;
- 	req_data->attributes = attr;
- 	req_data->length = sizeof(*req_data);
- 
--	status = qcom_qseecom_app_send(qcuefi->client, req_data, sizeof(*req_data), rsp_data,
--				       sizeof(*rsp_data));
-+	status = qcom_qseecom_app_send(qcuefi->client,
-+				       cmd_buf_dma + req_offs, sizeof(*req_data),
-+				       cmd_buf_dma + rsp_offs, sizeof(*rsp_data));
- 	if (status) {
- 		efi_status = EFI_DEVICE_ERROR;
- 		goto out_free;
-@@ -711,9 +758,7 @@ static efi_status_t qsee_uefi_query_variable_info(struct qcuefi_client *qcuefi,
- 		*max_variable_size = rsp_data->max_variable_size;
- 
- out_free:
--	kfree(rsp_data);
--out_free_req:
--	kfree(req_data);
-+	qseecom_dma_free(qcuefi->client, cmd_buf_size, cmd_buf, cmd_buf_dma);
- out:
- 	return efi_status;
- }
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index 520de9b5633a..90283f160a22 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -1576,9 +1576,9 @@ EXPORT_SYMBOL_GPL(qcom_scm_qseecom_app_get_id);
- /**
-  * qcom_scm_qseecom_app_send() - Send to and receive data from a given QSEE app.
-  * @app_id:   The ID of the target app.
-- * @req:      Request buffer sent to the app (must be DMA-mappable).
-+ * @req:      DMA address of the request buffer sent to the app.
-  * @req_size: Size of the request buffer.
-- * @rsp:      Response buffer, written to by the app (must be DMA-mappable).
-+ * @rsp:      DMA address of the response buffer, written to by the app.
-  * @rsp_size: Size of the response buffer.
-  *
-  * Sends a request to the QSEE app associated with the given ID and read back
-@@ -1589,33 +1589,13 @@ EXPORT_SYMBOL_GPL(qcom_scm_qseecom_app_get_id);
-  *
-  * Return: Zero on success, nonzero on failure.
-  */
--int qcom_scm_qseecom_app_send(u32 app_id, void *req, size_t req_size, void *rsp,
--			      size_t rsp_size)
-+int qcom_scm_qseecom_app_send(u32 app_id, dma_addr_t req, size_t req_size,
-+			      dma_addr_t rsp, size_t rsp_size)
- {
- 	struct qcom_scm_qseecom_resp res = {};
- 	struct qcom_scm_desc desc = {};
--	dma_addr_t req_phys;
--	dma_addr_t rsp_phys;
- 	int status;
- 
--	/* Map request buffer */
--	req_phys = dma_map_single(__scm->dev, req, req_size, DMA_TO_DEVICE);
--	status = dma_mapping_error(__scm->dev, req_phys);
--	if (status) {
--		dev_err(__scm->dev, "qseecom: failed to map request buffer\n");
--		return status;
--	}
--
--	/* Map response buffer */
--	rsp_phys = dma_map_single(__scm->dev, rsp, rsp_size, DMA_FROM_DEVICE);
--	status = dma_mapping_error(__scm->dev, rsp_phys);
--	if (status) {
--		dma_unmap_single(__scm->dev, req_phys, req_size, DMA_TO_DEVICE);
--		dev_err(__scm->dev, "qseecom: failed to map response buffer\n");
--		return status;
--	}
--
--	/* Set up SCM call data */
- 	desc.owner = QSEECOM_TZ_OWNER_TZ_APPS;
- 	desc.svc = QSEECOM_TZ_SVC_APP_ID_PLACEHOLDER;
- 	desc.cmd = QSEECOM_TZ_CMD_APP_SEND;
-@@ -1623,18 +1603,13 @@ int qcom_scm_qseecom_app_send(u32 app_id, void *req, size_t req_size, void *rsp,
- 				     QCOM_SCM_RW, QCOM_SCM_VAL,
- 				     QCOM_SCM_RW, QCOM_SCM_VAL);
- 	desc.args[0] = app_id;
--	desc.args[1] = req_phys;
-+	desc.args[1] = req;
- 	desc.args[2] = req_size;
--	desc.args[3] = rsp_phys;
-+	desc.args[3] = rsp;
- 	desc.args[4] = rsp_size;
- 
--	/* Perform call */
- 	status = qcom_scm_qseecom_call(&desc, &res);
- 
--	/* Unmap buffers */
--	dma_unmap_single(__scm->dev, rsp_phys, rsp_size, DMA_FROM_DEVICE);
--	dma_unmap_single(__scm->dev, req_phys, req_size, DMA_TO_DEVICE);
--
- 	if (status)
- 		return status;
- 
-diff --git a/include/linux/firmware/qcom/qcom_qseecom.h b/include/linux/firmware/qcom/qcom_qseecom.h
-index 5c28298a98be..366243ee9609 100644
---- a/include/linux/firmware/qcom/qcom_qseecom.h
-+++ b/include/linux/firmware/qcom/qcom_qseecom.h
-@@ -10,6 +10,7 @@
- #define __QCOM_QSEECOM_H
- 
- #include <linux/auxiliary_bus.h>
-+#include <linux/dma-mapping.h>
- #include <linux/types.h>
- 
- #include <linux/firmware/qcom/qcom_scm.h>
-@@ -24,12 +25,57 @@ struct qseecom_client {
- 	u32 app_id;
- };
- 
-+/**
-+ * qseecom_scm_dev() - Get the SCM device associated with the QSEECOM client.
-+ * @client: The QSEECOM client device.
-+ *
-+ * Returns the SCM device under which the provided QSEECOM client device
-+ * operates. This function is intended to be used for DMA allocations.
-+ */
-+static inline struct device *qseecom_scm_dev(struct qseecom_client *client)
-+{
-+	return client->aux_dev.dev.parent->parent;
-+}
-+
-+/**
-+ * qseecom_dma_alloc() - Allocate DMA memory for a QSEECOM client.
-+ * @client:     The QSEECOM client to allocate the memory for.
-+ * @size:       The number of bytes to allocate.
-+ * @dma_handle: Pointer to where the DMA address should be stored.
-+ * @gfp:        Allocation flags.
-+ *
-+ * Wrapper function for dma_alloc_coherent(), allocating DMA memory usable for
-+ * TZ/QSEECOM communication. Refer to dma_alloc_coherent() for details.
-+ */
-+static inline void *qseecom_dma_alloc(struct qseecom_client *client, size_t size,
-+				      dma_addr_t *dma_handle, gfp_t gfp)
-+{
-+	return dma_alloc_coherent(qseecom_scm_dev(client), size, dma_handle, gfp);
-+}
-+
-+/**
-+ * dma_free_coherent() - Free QSEECOM DMA memory.
-+ * @client:     The QSEECOM client for which the memory has been allocated.
-+ * @size:       The number of bytes allocated.
-+ * @cpu_addr:   Virtual memory address to free.
-+ * @dma_handle: DMA memory address to free.
-+ *
-+ * Wrapper function for dma_free_coherent(), freeing memory previously
-+ * allocated with qseecom_dma_alloc(). Refer to dma_free_coherent() for
-+ * details.
-+ */
-+static inline void qseecom_dma_free(struct qseecom_client *client, size_t size,
-+				    void *cpu_addr, dma_addr_t dma_handle)
-+{
-+	return dma_free_coherent(qseecom_scm_dev(client), size, cpu_addr, dma_handle);
-+}
-+
- /**
-  * qcom_qseecom_app_send() - Send to and receive data from a given QSEE app.
-  * @client:   The QSEECOM client associated with the target app.
-- * @req:      Request buffer sent to the app (must be DMA-mappable).
-+ * @req:      DMA address of the request buffer sent to the app.
-  * @req_size: Size of the request buffer.
-- * @rsp:      Response buffer, written to by the app (must be DMA-mappable).
-+ * @rsp:      DMA address of the response buffer, written to by the app.
-  * @rsp_size: Size of the response buffer.
-  *
-  * Sends a request to the QSEE app associated with the given client and read
-@@ -43,8 +89,9 @@ struct qseecom_client {
-  *
-  * Return: Zero on success, nonzero on failure.
-  */
--static inline int qcom_qseecom_app_send(struct qseecom_client *client, void *req, size_t req_size,
--					void *rsp, size_t rsp_size)
-+static inline int qcom_qseecom_app_send(struct qseecom_client *client,
-+					dma_addr_t req, size_t req_size,
-+					dma_addr_t rsp, size_t rsp_size)
- {
- 	return qcom_scm_qseecom_app_send(client->app_id, req, req_size, rsp, rsp_size);
- }
-diff --git a/include/linux/firmware/qcom/qcom_scm.h b/include/linux/firmware/qcom/qcom_scm.h
-index ccaf28846054..aaa19f93ac43 100644
---- a/include/linux/firmware/qcom/qcom_scm.h
-+++ b/include/linux/firmware/qcom/qcom_scm.h
-@@ -118,8 +118,8 @@ bool qcom_scm_lmh_dcvsh_available(void);
- #ifdef CONFIG_QCOM_QSEECOM
- 
- int qcom_scm_qseecom_app_get_id(const char *app_name, u32 *app_id);
--int qcom_scm_qseecom_app_send(u32 app_id, void *req, size_t req_size, void *rsp,
--			      size_t rsp_size);
-+int qcom_scm_qseecom_app_send(u32 app_id, dma_addr_t req, size_t req_size,
-+			      dma_addr_t rsp, size_t rsp_size);
- 
- #else /* CONFIG_QCOM_QSEECOM */
- 
-@@ -128,9 +128,9 @@ static inline int qcom_scm_qseecom_app_get_id(const char *app_name, u32 *app_id)
- 	return -EINVAL;
- }
- 
--static inline int qcom_scm_qseecom_app_send(u32 app_id, void *req,
--					    size_t req_size, void *rsp,
--					    size_t rsp_size)
-+static inline int qcom_scm_qseecom_app_send(u32 app_id,
-+					    dma_addr_t req, size_t req_size,
-+					    dma_addr_t rsp, size_t rsp_size)
- {
- 	return -EINVAL;
- }
--- 
-2.44.0
-
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1938,8 +1938,10 @@ retry:
+ 		qca_debugfs_init(hdev);
+ 		hu->hdev->hw_error = qca_hw_error;
+ 		hu->hdev->cmd_timeout = qca_cmd_timeout;
+-		if (device_can_wakeup(hu->serdev->ctrl->dev.parent))
+-			hu->hdev->wakeup = qca_wakeup;
++		if (hu->serdev) {
++			if (device_can_wakeup(hu->serdev->ctrl->dev.parent))
++				hu->hdev->wakeup = qca_wakeup;
++		}
+ 	} else if (ret == -ENOENT) {
+ 		/* No patch/nvm-config found, run with original fw/config */
+ 		set_bit(QCA_ROM_FW, &qca->flags);
 
 
 
