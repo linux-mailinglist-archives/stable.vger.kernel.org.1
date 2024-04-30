@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9078B714A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFA08B71D4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:01:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4E49B226BF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C11771C22478
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B8812D214;
-	Tue, 30 Apr 2024 10:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E3F12C487;
+	Tue, 30 Apr 2024 11:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7xwJ2ck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnLrXBvc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DD412D1FC;
-	Tue, 30 Apr 2024 10:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B194612B176;
+	Tue, 30 Apr 2024 11:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474491; cv=none; b=WkEYgxV/pX+XFkq6EaT+cmBcKh4Cn8CnPit1LfyTrY1DplP9S0wYRz8Cc13OqGcHo7uZTNmTDZn0V2G+MdF7d0wvnt12mw1jy+tkSa7sgWqCxZ/R5iyDyLmNxrF/4H0jeKLt3LobRNxtzqalcXqOW2HS7gk+qqDLTtA/ww9R6Go=
+	t=1714474885; cv=none; b=JkgmcO2KMQmpNDAAzj3cVKdJqUJqr3wVKJRJzsR+iTJcuSSEn6GEIHU8MmQ+5e0sx0+RdCocJtiXrgAaxTmgx1++sABIqhoLSd35CU0dXk8ysW2pMUTUnl70CB6P5c1cYIxx5gdxLBZR1mBmGHnRV19RkxEUyadBIkjqlbY7XzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474491; c=relaxed/simple;
-	bh=xJiJbCXC4RAAqEUqDQ6wrnRp+SaDemLMTkzmzdpgXyM=;
+	s=arc-20240116; t=1714474885; c=relaxed/simple;
+	bh=FJ5WJInlAGYh3sz6qFrWhDp+XrviwiBff/CNsSoJR9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nmp9rID3mPx8g+lSZ5sWUdhY0rbpHlJ6PMtcYXaPZhdC6LVh9w/jpRQPSHQwGaQmngBKh/Xksbufa8iaRhQwh2yXS7IkG90hmniFbE9PX1K3Xl73L3atuslU1GhQttdbATiO8fRqVtwBrTpAYIgcJlq4ttHxRG7aFDkIo1A8sD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7xwJ2ck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2CDC2BBFC;
-	Tue, 30 Apr 2024 10:54:50 +0000 (UTC)
+	 MIME-Version; b=SjqpnjBqTwlItWKdhNWqud41XwBhfFe5TGbBCiLRrP90WSJrXg2dzFicUaBeyLQiPXQ7EPQ2iUr8Dx7wWQvcLLYHDCT9QMwRdV8/b9Z9kQZz+Rj0Hw3Ygte4oz96vHPY2GNg5SS/dOpljBw6qpEUmac70oK8invaBqcRXr61388=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnLrXBvc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BCAC4AF18;
+	Tue, 30 Apr 2024 11:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474491;
-	bh=xJiJbCXC4RAAqEUqDQ6wrnRp+SaDemLMTkzmzdpgXyM=;
+	s=korg; t=1714474885;
+	bh=FJ5WJInlAGYh3sz6qFrWhDp+XrviwiBff/CNsSoJR9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7xwJ2ck8YWuiN7UER5QQddPf8MZV8G2uiXE+7ih2PzpobE3WrTQ2/IerPWinCjrQ
-	 npu4K2g6SjwDbcAmk28SZDD+zhGxP5tZNl2vlXDZli3GlPRRbbOduwbADo9TL8gyAZ
-	 2dbkT/pcpbW6X+f1lGO1iciDnqTXbu+k46GO+ztU=
+	b=RnLrXBvc7QCB7cbpgCL/jm3eIlCCKzHjbnjgO8xrzHbvZIHOWFicXA38WYbO2uJoh
+	 95NNtDSsQ5PkGhPSgJlDBOc3zoM9svAll2djI7IPQ0TxyRtYWFlMuxwkWovtUGWAbe
+	 RfiKvlahIm2SHH0E2HeSsSwYWZD4vhwZnL5ZhQYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.8 172/228] dmaengine: xilinx: xdma: Fix synchronization issue
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 5.10 065/138] mei: me: disable RPL-S on SPS and IGN firmwares
 Date: Tue, 30 Apr 2024 12:39:10 +0200
-Message-ID: <20240430103108.766818634@linuxfoundation.org>
+Message-ID: <20240430103051.337123111@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis Chauvet <louis.chauvet@bootlin.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit 6a40fb8245965b481b4dcce011cd63f20bf91ee0 upstream.
+commit 0dc04112bee6fdd6eb847ccb32214703022c0269 upstream.
 
-The current xdma_synchronize method does not properly wait for the last
-transfer to be done. Due to limitations of the XMDA engine, it is not
-possible to stop a transfer in the middle of a descriptor. Said
-otherwise, if a stop is requested at the end of descriptor "N" and the OS
-is fast enough, the DMA controller will effectively stop immediately.
-However, if the OS is slightly too slow to request the stop and the DMA
-engine starts descriptor "N+1", the N+1 transfer will be performed until
-its end. This means that after a terminate_all, the last descriptor must
-remain valid and the synchronization must wait for this last descriptor to
-be terminated.
+Extend the quirk to disable MEI interface on Intel PCH Ignition (IGN)
+and SPS firmwares for RPL-S devices. These firmwares do not support
+the MEI protocol.
 
-Fixes: 855c2e1d1842 ("dmaengine: xilinx: xdma: Rework xdma_terminate_all()")
-Fixes: f5c392d106e7 ("dmaengine: xilinx: xdma: Add terminate_all/synchronize callbacks")
+Fixes: 3ed8c7d39cfe ("mei: me: add raptor lake point S DID")
 Cc: stable@vger.kernel.org
-Suggested-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://lore.kernel.org/r/20240327-digigram-xdma-fixes-v1-2-45f4a52c0283@bootlin.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240312051958.118478-1-tomas.winkler@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/xilinx/xdma-regs.h |    3 +++
- drivers/dma/xilinx/xdma.c      |   26 ++++++++++++++++++--------
- 2 files changed, 21 insertions(+), 8 deletions(-)
+ drivers/misc/mei/pci-me.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/xilinx/xdma-regs.h
-+++ b/drivers/dma/xilinx/xdma-regs.h
-@@ -117,6 +117,9 @@ struct xdma_hw_desc {
- 			 CHAN_CTRL_IE_WRITE_ERROR |			\
- 			 CHAN_CTRL_IE_DESC_ERROR)
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -115,7 +115,7 @@ static const struct pci_device_id mei_me
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_P, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_N, MEI_ME_PCH15_CFG)},
  
-+/* bits of the channel status register */
-+#define XDMA_CHAN_STATUS_BUSY			BIT(0)
-+
- #define XDMA_CHAN_STATUS_MASK CHAN_CTRL_START
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
++	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_SPS_CFG)},
  
- #define XDMA_CHAN_ERROR_MASK (CHAN_CTRL_IE_DESC_ALIGN_MISMATCH |	\
---- a/drivers/dma/xilinx/xdma.c
-+++ b/drivers/dma/xilinx/xdma.c
-@@ -71,6 +71,8 @@ struct xdma_chan {
- 	enum dma_transfer_direction	dir;
- 	struct dma_slave_config		cfg;
- 	u32				irq;
-+	struct completion		last_interrupt;
-+	bool				stop_requested;
- };
- 
- /**
-@@ -376,6 +378,8 @@ static int xdma_xfer_start(struct xdma_c
- 		return ret;
- 
- 	xchan->busy = true;
-+	xchan->stop_requested = false;
-+	reinit_completion(&xchan->last_interrupt);
- 
- 	return 0;
- }
-@@ -387,7 +391,6 @@ static int xdma_xfer_start(struct xdma_c
- static int xdma_xfer_stop(struct xdma_chan *xchan)
- {
- 	int ret;
--	u32 val;
- 	struct xdma_device *xdev = xchan->xdev_hdl;
- 
- 	/* clear run stop bit to prevent any further auto-triggering */
-@@ -395,13 +398,7 @@ static int xdma_xfer_stop(struct xdma_ch
- 			   CHAN_CTRL_RUN_STOP);
- 	if (ret)
- 		return ret;
--
--	/* Clear the channel status register */
--	ret = regmap_read(xdev->rmap, xchan->base + XDMA_CHAN_STATUS_RC, &val);
--	if (ret)
--		return ret;
--
--	return 0;
-+	return ret;
- }
- 
- /**
-@@ -474,6 +471,8 @@ static int xdma_alloc_channels(struct xd
- 		xchan->xdev_hdl = xdev;
- 		xchan->base = base + i * XDMA_CHAN_STRIDE;
- 		xchan->dir = dir;
-+		xchan->stop_requested = false;
-+		init_completion(&xchan->last_interrupt);
- 
- 		ret = xdma_channel_init(xchan);
- 		if (ret)
-@@ -521,6 +520,7 @@ static int xdma_terminate_all(struct dma
- 	spin_lock_irqsave(&xdma_chan->vchan.lock, flags);
- 
- 	xdma_chan->busy = false;
-+	xdma_chan->stop_requested = true;
- 	vd = vchan_next_desc(&xdma_chan->vchan);
- 	if (vd) {
- 		list_del(&vd->node);
-@@ -542,6 +542,13 @@ static int xdma_terminate_all(struct dma
- static void xdma_synchronize(struct dma_chan *chan)
- {
- 	struct xdma_chan *xdma_chan = to_xdma_chan(chan);
-+	struct xdma_device *xdev = xdma_chan->xdev_hdl;
-+	int st = 0;
-+
-+	/* If the engine continues running, wait for the last interrupt */
-+	regmap_read(xdev->rmap, xdma_chan->base + XDMA_CHAN_STATUS, &st);
-+	if (st & XDMA_CHAN_STATUS_BUSY)
-+		wait_for_completion_timeout(&xdma_chan->last_interrupt, msecs_to_jiffies(1000));
- 
- 	vchan_synchronize(&xdma_chan->vchan);
- }
-@@ -876,6 +883,9 @@ static irqreturn_t xdma_channel_isr(int
- 	u32 st;
- 	bool repeat_tx;
- 
-+	if (xchan->stop_requested)
-+		complete(&xchan->last_interrupt);
-+
- 	spin_lock(&xchan->vchan.lock);
- 
- 	/* get submitted request */
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
 
 
 
