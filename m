@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-41794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306778B69C6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:15:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838D58B69DC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C67A1F22C7A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 05:15:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 919981C21E8A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 05:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF9F1757A;
-	Tue, 30 Apr 2024 05:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433721758C;
+	Tue, 30 Apr 2024 05:22:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3315A199D9;
-	Tue, 30 Apr 2024 05:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C9E5256;
+	Tue, 30 Apr 2024 05:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714454134; cv=none; b=A8rUA5I97ccCnyqPRp6HAnuRLA3UljQKelgRhjv0R753rmaFCgHrBrtLWb5Zh4JFbyTNwtj1zLGQ84Wcvuv/dmUqJ69v93vc2Dt6QzveFdf9IqU7RqqeT8nAFzrhyd+xuVrT+Rr1zaSnBzqZ2kLLg/ZYsutEc+z0t/S2999X5/w=
+	t=1714454579; cv=none; b=SAAXeF4wX9kHa9GEvOv02PQ57CC6ltYuluzLp/yArdXircUQJxbAYFld22ryJYOoq4nvpR2VhTIcLZ7APJD1HK07rhSVJKyhuztc5t9jLvtvN6gE8fCc90/KMJHxHc1exxsOaH5UvmVoLZVev6JLqLm75Zn7PYE62SjHCMTgO80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714454134; c=relaxed/simple;
-	bh=K/Trbl5Hys+WHbMtuQ3ZdMwcnFERxG2HBEWXhzrFVOQ=;
+	s=arc-20240116; t=1714454579; c=relaxed/simple;
+	bh=Kz8gaoGkFIuxrMaQK6fWNTWX0CdyB9VvlppbwWz6Y2s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hkEP3zbKvI4mYmn6NMphtunxgergW58Ix6qnAgPCChkwXCENs1OVJqc/UzFoutztwfrgiVKMvB5MqDXB8+8YKCzqu+ToXd6laIo+aZguwlrQOe1EOtg99yhJk9hY7DLlg5Kf6LUtOiPFWa/CMTc4WpRGul/+MGKYDL9D7j0WE0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.54
+	 In-Reply-To:Content-Type; b=DvDhJC58z8HOJMI9SAcb1MwbEHlLDDjfRhORhIgWy7XbV8DLadM2iuN9QvbanPEIZ67dEroYW5Y8ky43TECrQQ2lwwCPIGwX6Pn00fIN5tQGIMQAV1OFHVF0yZCcLnQykR6JqpeDNMKN0GyVvkZogF8YbqFUpaNRFl7e+uKm1k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5726ccca4c8so3270883a12.3;
-        Mon, 29 Apr 2024 22:15:32 -0700 (PDT)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-56e47843cc7so5195151a12.0;
+        Mon, 29 Apr 2024 22:22:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714454131; x=1715058931;
+        d=1e100.net; s=20230601; t=1714454576; x=1715059376;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aoR7iLYPrGYLCsHQuPiM+/n3J7qjHQUGOA9mseIQEqs=;
-        b=cdclYVzRy7NSAva2NWsI9PB8hgXWj55tqaJxZ8Mj+4Iv+tj+lOX/1md7/X8JNzS15a
-         mA/2WcQr5Cf5OGsCeT45UhyCVXJmxA8pe+THQuzpV5i7Ne8vovyoruRMC4vtAQ1qA4pp
-         J1ObARZwu012ecxyaZx3BI//Nb/ZmdhXy7Ew75akU7x5eQMbcVcUez70hwG1N0QhZ8VA
-         V41Yo8QjIpgzFibA7fpeqv+O6q+R1QYt9XF66n79ymADMHiGqXS3Gv0FLSBZmxxHwYz0
-         Zs9HY3UoUfp8G/Ypz06BYnTYpD2REnD7N1uYhf7cskhF/5eXFOpZCawPqV4qcFUUUwVt
-         UOOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1AqGDr50I2VyaPjPKAhou54AsJMGj0Ve7gNHxwHBCPtrTr6YGVnjoRaZuNmDfogcVGouFbZC9PfAQgyxIq6upSEmLLD3DN13vH8C/PxCUWVO2lwb4aRhORy/lAVtaDWab6NaY
-X-Gm-Message-State: AOJu0YzyeRl+aCorHdCJi349uwDBJ8bZ14r8sJIbuipaeIR231WwdhMX
-	SsGWkLNL1CPGr/r/T6V8WsH3o/lnPoKzDTr75ojPMaL+3g4eecjy
-X-Google-Smtp-Source: AGHT+IEaDlYEmS6Iv6psRELi1epqO2BGnZZCKdjWcXOvoMTJ+x8riL/Ylim/jhsvnJ6xQRD49p35/A==
-X-Received: by 2002:a50:bb6f:0:b0:56d:b687:5a45 with SMTP id y102-20020a50bb6f000000b0056db6875a45mr9111555ede.1.1714454131234;
-        Mon, 29 Apr 2024 22:15:31 -0700 (PDT)
+        bh=D5xXiqJPcQvnAdhsKYWwY5ng2w3w/qDQxjxYllnlVz8=;
+        b=GCCP3s/VbGgp9l8EWVK21nmIMDq4UCD5xrU1Ueo8+AtB00PwD1XbZTxvDI3gerUcfH
+         WCpR9ieIhhkK2fOM21aYSAGWX8njbQQRJWt+hn+B1OYIswJtlLOv45vgYg7d+2B8BbPt
+         iRO2/3Vziktwx/kR1Sr6hKAFJad2ZUZM23IaEIDV/LCmXxSV9JPfVnLJZ65zIgm6oq0X
+         vLnwbjyiHfFBljXTDUvOch51O2TK6JUuLXhQp1A+g+tFJltonKdIUjXrcHIgtXqYxke0
+         OJIH1Itq80Nja30bpYPxxEJxC9rovfb3R3ygTKJxizjmyiY1tnBFZxz6hCBRkCSyQ6il
+         PJTw==
+X-Forwarded-Encrypted: i=1; AJvYcCXVfp/XqsI8ulzlA+BywW6bOi3olTz35IfAW9qQ1DWGut++27Ao1QrozPKTy7S8U/dAbHi0LKyb2mPVkQKXYN+d8/0/AdAX6vXBZZovfEzDiJ4hhX/TvebnptKxwl7mAq9HxQa6bY94+skZ1lC18xroKdevAI2G5GwlDP9dzyGyO9SX
+X-Gm-Message-State: AOJu0YwCbPuMNdVAZPw4tQE21wfqs8Sl4tXNzBtNBNRyiegnsxG+oBg8
+	wRwxBX6YgNKojooX04OPbaA28s26z4gbzIQAQU+BAVFb0svXPGa6
+X-Google-Smtp-Source: AGHT+IEfECgT5zX5BqcJpLqgjqzM0jA2MNPef0kmlgJwM9HWop66uHyT3nLossOXgbPT+PnC7sG1qg==
+X-Received: by 2002:a17:906:7110:b0:a52:225a:2ebe with SMTP id x16-20020a170906711000b00a52225a2ebemr977474ejj.71.1714454575512;
+        Mon, 29 Apr 2024 22:22:55 -0700 (PDT)
 Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
-        by smtp.gmail.com with ESMTPSA id g1-20020a056402428100b00571bbaa1c45sm13795878edc.1.2024.04.29.22.15.30
+        by smtp.gmail.com with ESMTPSA id ak1-20020a170906888100b00a5906b4e417sm1572741ejc.98.2024.04.29.22.22.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Apr 2024 22:15:30 -0700 (PDT)
-Message-ID: <4ce6cf96-685d-4792-b2fd-949c07eff707@kernel.org>
-Date: Tue, 30 Apr 2024 07:15:29 +0200
+        Mon, 29 Apr 2024 22:22:55 -0700 (PDT)
+Message-ID: <af116cb5-41d8-4a33-97ba-0c7cc821add1@kernel.org>
+Date: Tue, 30 Apr 2024 07:22:54 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,21 +63,16 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/purgatory: Switch to the position-independent small
- code model
-To: Michael Matz <matz@suse.de>, Borislav Petkov <bp@alien8.de>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Song Liu <song@kernel.org>, Ricardo Ribalda <ribalda@kernel.org>,
- Fangrui Song <maskray@google.com>, Arthur Eubanks <aeubanks@google.com>,
- stable@vger.kernel.org
-References: <20240418201705.3673200-2-ardb+git@google.com>
- <3f23b551-4815-4a06-9217-ff5beeb80df2@kernel.org>
- <20240420131717.GAZiPAXY9EAYnHajaw@fat_crate.local>
- <836c267f-a028-acce-8b19-180162a5febc@suse.de>
+Subject: Re: [PATCH] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when
+ using prescaler
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jon Ringle <jringle@gridpoint.com>, ria.freelander@gmail.com,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+References: <20240426135937.3810959-1-hugo@hugovil.com>
+ <17d2cc58-cf68-430d-9248-25abe4c5b0f0@kernel.org>
+ <20240429094717.de45ad35814e3c618e08c36b@hugovil.com>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -122,29 +117,78 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <836c267f-a028-acce-8b19-180162a5febc@suse.de>
+In-Reply-To: <20240429094717.de45ad35814e3c618e08c36b@hugovil.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On 29. 04. 24, 14:05, Michael Matz wrote:
-> On Sat, 20 Apr 2024, Borislav Petkov wrote:
+On 29. 04. 24, 15:47, Hugo Villeneuve wrote:
+> On Mon, 29 Apr 2024 08:39:22 +0200
+> Jiri Slaby <jirislaby@kernel.org> wrote:
 > 
->> Interesting. I thought gcc doesn't have problems here yet and was
->> talking to Matz on Thu about it and it seems he's forgotten about his
->> statement too that "you should simply stop using -mcmodel=large.  Noone
->> should use it." :-)
+>> On 26. 04. 24, 15:59, Hugo Villeneuve wrote:
+>>> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+>>>
+>>> When using a high speed clock with a low baud rate, the 4x prescaler is
+>>> automatically selected if required. In that case, sc16is7xx_set_baud()
+>>> properly configures the chip registers, but returns an incorrect baud
+>>> rate by not taking into account the prescaler value. This incorrect baud
+>>> rate is then fed to uart_update_timeout().
+>>>
+>>> For example, with an input clock of 80MHz, and a selected baud rate of 50,
+>>> sc16is7xx_set_baud() will return 200 instead of 50.
+>>>
+>>> Fix this by first changing the prescaler variable to hold the selected
+>>> prescaler value instead of the MCR bitfield. Then properly take into
+>>> account the selected prescaler value in the return value computation.
+>>>
+>>> Also add better documentation about the divisor value computation.
+>>>
+>>> Fixes: dfeae619d781 ("serial: sc16is7xx")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+>>> ---
+>>>    drivers/tty/serial/sc16is7xx.c | 23 ++++++++++++++++++-----
+>>>    1 file changed, 18 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+>>> index 03cf30e20b75..dcd6c5615401 100644
+>>> --- a/drivers/tty/serial/sc16is7xx.c
+>>> +++ b/drivers/tty/serial/sc16is7xx.c
+>>> @@ -555,16 +555,28 @@ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
+>>>    	return reg == SC16IS7XX_RHR_REG;
+>>>    }
+>>>    
+>>> +/*
+>>> + * Configure programmable baud rate generator (divisor) according to the
+>>> + * desired baud rate.
+>>> + *
+>>> + * From the datasheet, the divisor is computed according to:
+>>> + *
+>>> + *              XTAL1 input frequency
+>>> + *             -----------------------
+>>> + *                    prescaler
+>>> + * divisor = ---------------------------
+>>> + *            baud-rate x sampling-rate
+>>> + */
+>>>    static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+>>>    {
+>>>    	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+>>>    	u8 lcr;
+>>> -	u8 prescaler = 0;
+>>> +	int prescaler = 1;
+>>
+>> Ugh, why do you move to signed arithmetics?
 > 
-> It may be so ingrained in my brain that I'm not _always_ saying it when
-> talking about the large code model over a beer.  And indeed I know of no
-> particular problems with it vis GCC,
+> Hi Jiri,
+> before this patch, the variable prescaler was used to store an 8 bit
+> bitfield. Now the variable meaning is changed to be used as the
+> prescaler value, which can be 1 or 4 in this case. Leaving
+> it as u8 would still be ok, or making it "unsigned int" maybe?
 
-Of course you do :). That bsc#1211853 I linked earlier. I.e. gcc-13 + 
--fstrict-flex-arrays=3 + -mcmodel=large + some asm() expecting __FILE__ 
-to be constant (not true with the large model).
+Both :). What you prefer -- uint matches more IMO, given it's now a 
+value and not a register...
 
-regards,
+thanks,
 -- 
 js
 suse labs
