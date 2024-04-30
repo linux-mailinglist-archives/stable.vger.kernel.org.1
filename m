@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC7E8B70F2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:51:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 375438B727E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B05571C21D6F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:51:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A1AD1C22450
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BD112D769;
-	Tue, 30 Apr 2024 10:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C0B12C819;
+	Tue, 30 Apr 2024 11:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9FUjj8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqGFFpDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C8F12D744;
-	Tue, 30 Apr 2024 10:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1223612C549;
+	Tue, 30 Apr 2024 11:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474277; cv=none; b=LXlV13AWeSwWJdkF2zi4P1yoAaQ7T7bhB5omCIr3wR6SjTA2tRQqsLXJ3xys3gWMMfsLLPqIMkc8mNCIfDqvagTKAPznuXMAiEJwv+aQkBDh38wBqRqg0lvauuFd65tnSfbUim+aasB20r2III4wiVLBABd56KGoeoacRXKK2N4=
+	t=1714475326; cv=none; b=DlBVfYHTD3dv5/bOd5cATJadD2MIkQstoH0KUo3JOxXSinhleHrp1ZzGfdbd8j2MGilWy49t+RoaP5HLDNSWPAZUaDlbv3UHOXsukraUDjo2z8WdnFwMYmfnBOaWf4H+OlYz6F+FfAEg9kE9hdExKg1raIP8+QpwRUvvVTRxFxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474277; c=relaxed/simple;
-	bh=Ping08uVkaQBNiQVIyAm/3Zi26P+eZSqBSGIa/nTfV0=;
+	s=arc-20240116; t=1714475326; c=relaxed/simple;
+	bh=AFsEALVEWxWUN+jVmKj60wOsgVoAcuj3IJ92pVb/3/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N/JTTGjpLvgoohv1aCa9smRxlJX3mqA0k4chdt7w/E9BS/hV3P9ZJvRArVj1l/sM9GNf8vbYR0F9hxAyMbRkUY5br4cKYXb03dPG6BGk9xS4/Fpc05Xt+2bJeOmjMvV9uLqbzpoFhVGqdwO+rLq14vDWNkM8nUZ78CsHEJVJgHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9FUjj8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6838DC4AF19;
-	Tue, 30 Apr 2024 10:51:16 +0000 (UTC)
+	 MIME-Version; b=u7DqRt4nlbqyCtlz1+WfxjaP87jAgmTxvc7+Ia2xQnjHCT/DUGXwwDAEOhQPwIPR0myoefha7+Kz8oGeXUk68MAoj3FPe4qT8OHsHSPa+Y8SiRX3wAsAc7C3nigD1WMhn3/CfavnohHKh40MMt1laNJ/3ZIaTUfcqOzsKz/v8K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqGFFpDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901ABC2BBFC;
+	Tue, 30 Apr 2024 11:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474277;
-	bh=Ping08uVkaQBNiQVIyAm/3Zi26P+eZSqBSGIa/nTfV0=;
+	s=korg; t=1714475325;
+	bh=AFsEALVEWxWUN+jVmKj60wOsgVoAcuj3IJ92pVb/3/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x9FUjj8e027PPqtPqD3dgUupl0WWw+vLyNcxOyl7qKPiSrPg43NOcXc9cN725pENo
-	 p4b4FzzzIjht+bIuiVYv1x+myPNEtTnosJ1KpClTG/RHfg3eXl1dou76tNEQ55nK7o
-	 rV8s/pUTGAuLsPjGD/Jr0tYvSth6rw4wHmigfXlo=
+	b=oqGFFpDBEFZ7p+eJdfz/J7PI0zDcOFXbjPTRxmAejqAEccFQaIPGPLwVB0vQP6VO3
+	 E3N0ZyyBKk8fX63bBaWhy7szV+McFXCwMDyqiQSd1no9IQL6HUJ7Ytt8rdCvjarTPw
+	 3/sNHIZcQfrSF3HPK6Y+ssFYEVwMD8dZS2unK0lI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erwan Velu <e.velu@criteo.com>,
+	Colin Ian King <colin.i.king@intel.com>,
 	Simon Horman <horms@kernel.org>,
-	Tony Brelinski <tony.brelinski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 110/228] i40e: Report MFS in decimal base instead of hex
+Subject: [PATCH 6.6 036/186] wifi: mac80211: clean up assignments to pointer cache.
 Date: Tue, 30 Apr 2024 12:38:08 +0200
-Message-ID: <20240430103106.980390415@linuxfoundation.org>
+Message-ID: <20240430103059.078763211@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erwan Velu <e.velu@criteo.com>
+From: Colin Ian King <colin.i.king@intel.com>
 
-[ Upstream commit ef3c313119ea448c22da10366faa26b5b4b1a18e ]
+[ Upstream commit ba4b1fa3128b2fbf14e167230315cbd9074b629b ]
 
-If the MFS is set below the default (0x2600), a warning message is
-reported like the following :
+The assignment to pointer cache in function mesh_fast_tx_gc can
+be made at the declaration time rather than a later assignment.
+There are also 3 functions where pointer cache is being initialized
+at declaration time and later re-assigned again with the same
+value, these are redundant and can be removed.
 
-	MFS for port 1 has been set below the default: 600
+Cleans up code and three clang scan build warnings:
+warning: Value stored to 'cache' during its initialization is never
+read [deadcode.DeadStores]
 
-This message is a bit confusing as the number shown here (600) is in
-fact an hexa number: 0x600 = 1536
-
-Without any explicit "0x" prefix, this message is read like the MFS is
-set to 600 bytes.
-
-MFS, as per MTUs, are usually expressed in decimal base.
-
-This commit reports both current and default MFS values in decimal
-so it's less confusing for end-users.
-
-A typical warning message looks like the following :
-
-	MFS for port 1 (1536) has been set below the default (9728)
-
-Signed-off-by: Erwan Velu <e.velu@criteo.com>
+Signed-off-by: Colin Ian King <colin.i.king@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Tony Brelinski <tony.brelinski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Fixes: 3a2c6ced90e1 ("i40e: Add a check to see if MFS is set")
-Link: https://lore.kernel.org/r/20240423182723.740401-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://msgid.link/20240215232151.2075483-1-colin.i.king@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 8c75cdcdf869 ("wifi: mac80211: split mesh fast tx cache into local/proxied/forwarded")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/mesh_pathtbl.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 4c38782d95516..f3c1df46f699c 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -16186,8 +16186,8 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	val = FIELD_GET(I40E_PRTGL_SAH_MFS_MASK,
- 			rd32(&pf->hw, I40E_PRTGL_SAH));
- 	if (val < MAX_FRAME_SIZE_DEFAULT)
--		dev_warn(&pdev->dev, "MFS for port %x has been set below the default: %x\n",
--			 pf->hw.port, val);
-+		dev_warn(&pdev->dev, "MFS for port %x (%d) has been set below the default (%d)\n",
-+			 pf->hw.port, val, MAX_FRAME_SIZE_DEFAULT);
+diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
+index 3e52aaa57b1fc..c7173190f9b93 100644
+--- a/net/mac80211/mesh_pathtbl.c
++++ b/net/mac80211/mesh_pathtbl.c
+@@ -595,11 +595,10 @@ void mesh_fast_tx_cache(struct ieee80211_sub_if_data *sdata,
+ void mesh_fast_tx_gc(struct ieee80211_sub_if_data *sdata)
+ {
+ 	unsigned long timeout = msecs_to_jiffies(MESH_FAST_TX_CACHE_TIMEOUT);
+-	struct mesh_tx_cache *cache;
++	struct mesh_tx_cache *cache = &sdata->u.mesh.tx_cache;
+ 	struct ieee80211_mesh_fast_tx *entry;
+ 	struct hlist_node *n;
  
- 	/* Add a filter to drop all Flow control frames from any VSI from being
- 	 * transmitted. By doing so we stop a malicious VF from sending out
+-	cache = &sdata->u.mesh.tx_cache;
+ 	if (atomic_read(&cache->rht.nelems) < MESH_FAST_TX_CACHE_THRESHOLD_SIZE)
+ 		return;
+ 
+@@ -617,7 +616,6 @@ void mesh_fast_tx_flush_mpath(struct mesh_path *mpath)
+ 	struct ieee80211_mesh_fast_tx *entry;
+ 	struct hlist_node *n;
+ 
+-	cache = &sdata->u.mesh.tx_cache;
+ 	spin_lock_bh(&cache->walk_lock);
+ 	hlist_for_each_entry_safe(entry, n, &cache->walk_head, walk_list)
+ 		if (entry->mpath == mpath)
+@@ -632,7 +630,6 @@ void mesh_fast_tx_flush_sta(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_mesh_fast_tx *entry;
+ 	struct hlist_node *n;
+ 
+-	cache = &sdata->u.mesh.tx_cache;
+ 	spin_lock_bh(&cache->walk_lock);
+ 	hlist_for_each_entry_safe(entry, n, &cache->walk_head, walk_list)
+ 		if (rcu_access_pointer(entry->mpath->next_hop) == sta)
+@@ -646,7 +643,6 @@ void mesh_fast_tx_flush_addr(struct ieee80211_sub_if_data *sdata,
+ 	struct mesh_tx_cache *cache = &sdata->u.mesh.tx_cache;
+ 	struct ieee80211_mesh_fast_tx *entry;
+ 
+-	cache = &sdata->u.mesh.tx_cache;
+ 	spin_lock_bh(&cache->walk_lock);
+ 	entry = rhashtable_lookup_fast(&cache->rht, addr, fast_tx_rht_params);
+ 	if (entry)
 -- 
 2.43.0
 
