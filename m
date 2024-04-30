@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-41897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04178B7059
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199228B7180
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B2A81C2208B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF78B1F213A4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153AE12C494;
-	Tue, 30 Apr 2024 10:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A0A128816;
+	Tue, 30 Apr 2024 10:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXXw8fIp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ykc0yHsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C750512BF3E;
-	Tue, 30 Apr 2024 10:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFE612C534;
+	Tue, 30 Apr 2024 10:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473889; cv=none; b=oXuevF/9DRmHs8gh0OWHLvJlTiW+g2ISAfaYzIvxgy5FYbj8AIJl+mUKu7CTo/n2K6/u0/ntO+OAvDjgXwhjutOgzGvOYPPaKrUjrIqZlvGSgF3g31EUqpW55JJQ2DC/a4IZsUNfeXFhvb1MZpg4A+3Wp/Y+HKB2emquDoJQBh4=
+	t=1714474632; cv=none; b=olIh5nz3SAHHpkjFWVhRH2eYTcwxFARqs8zCxEKA00RyZYxzjXRG27bSDVYOrsECmKLexY2P88e/YwFL2fejmAMgLWjBXeLw0Yn6xS2Jww4k21EOvPvqVjFAiD2VSBkE0znIuDx+Ti5/lfLx/i/Kymr1wpj4tWGdXf9WfHcqdH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473889; c=relaxed/simple;
-	bh=CnbwM04Z1eBImR6CVRJaUOUR+H5uKlK3KHL8Z8U32/U=;
+	s=arc-20240116; t=1714474632; c=relaxed/simple;
+	bh=4d4v2lb4jSXvlHK0koSGlIXQJGBgUoZCttNTYB6EUV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7kfkFwq5I3ViRy2OpmXtHjJSzc5bWujzdhxHX2W9cdqNGJEzvMzArdQmlrvJHUqNNyDF/ENi0lNV2oqiwqkwI39hKEu3dik/K4gZurApOBpWx0uiBE6KO2jNvzKlvQA5Dh4sG1JR+Kk3aCZWyW3j3YAtN6CZMh8r6MLUNYYJYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXXw8fIp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D4C9C2BBFC;
-	Tue, 30 Apr 2024 10:44:49 +0000 (UTC)
+	 MIME-Version; b=Oym516SuJncxogkC4wEceb4JIrjdH7C8H29Smf3TXwkC9MDxquq1JAK6cmnvytvL4MN6pA46UlXCb+I68dFVVLa60iEZn5rm+iJA72rnDuvoL/mNIiCooTmw4CSwc87xD2X0E7yiVBQzQE5Gso9+tb4MQ6QkBmsQYd1qQScwQas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ykc0yHsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD695C2BBFC;
+	Tue, 30 Apr 2024 10:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473889;
-	bh=CnbwM04Z1eBImR6CVRJaUOUR+H5uKlK3KHL8Z8U32/U=;
+	s=korg; t=1714474632;
+	bh=4d4v2lb4jSXvlHK0koSGlIXQJGBgUoZCttNTYB6EUV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXXw8fIpDDDzagT7HDbAD/RuM4KKVE/F9PgijkXJZcgMQYsq2vxj8OD35fC6Q+KxX
-	 +NQ58ysPz+6E7XgTiyGtxuEhTFhUv0un0wSqVjGWgTMW7EmPCapoI+p5vrB/7KExxP
-	 8QxZ2rann2OHqwJfjRxcCKtPEjG8zhNVmRWKfdhw=
+	b=Ykc0yHsJXf8NcjwIOsizEgb8YGRzSEEQaB1XhVk4FD8k9wQjPWGOm8LPcR5KhoUxi
+	 MUqhsIeP2TqrpvtpB0cwe1af+v+5c23gzjqW+ePRdb1SHk5znU2u2lQiWPWwbiiyrV
+	 rQURVy2y5cNALtlTNOmHhbacjNY4QaC+xEIS8P8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>,
-	Eva Kurchatova <nyandarknessgirl@gmail.com>
-Subject: [PATCH 4.19 73/77] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up
+	Samuel Holland <samuel.holland@sifive.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Bo Gan <ganboing@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 214/228] riscv: Fix TASK_SIZE on 64-bit NOMMU
 Date: Tue, 30 Apr 2024 12:39:52 +0200
-Message-ID: <20240430103043.294857512@linuxfoundation.org>
+Message-ID: <20240430103109.981056692@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e upstream.
+[ Upstream commit 6065e736f82c817c9a597a31ee67f0ce4628e948 ]
 
-The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
-However, this is not necessary, because I2C core already has its own
-locking for that.
+On NOMMU, userspace memory can come from anywhere in physical RAM. The
+current definition of TASK_SIZE is wrong if any RAM exists above 4G,
+causing spurious failures in the userspace access routines.
 
-More importantly, this flag can cause a lock-up: if the flag is set in
-i2c_hid_xfer() and an interrupt happens, the interrupt handler
-(i2c_hid_irq) will check this flag and return immediately without doing
-anything, then the interrupt handler will be invoked again in an
-infinite loop.
-
-Since interrupt handler is an RT task, it takes over the CPU and the
-flag-clearing task never gets scheduled, thus we have a lock-up.
-
-Delete this unnecessary flag.
-
-Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
-Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
-Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-[apply to v4.19 -> v5.15]
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6bd33e1ece52 ("riscv: add nommu support")
+Fixes: c3f896dcf1e4 ("mm: switch the test_vmalloc module to use __vmalloc_node")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
+Reviewed-by: Bo Gan <ganboing@gmail.com>
+Link: https://lore.kernel.org/r/20240227003630.3634533-2-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-core.c |    8 --------
- 1 file changed, 8 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -58,7 +58,6 @@
- /* flags */
- #define I2C_HID_STARTED		0
- #define I2C_HID_RESET_PENDING	1
--#define I2C_HID_READ_PENDING	2
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 3422ced8a07fd..39c6bb8254683 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -888,7 +888,7 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+ #define PAGE_SHARED		__pgprot(0)
+ #define PAGE_KERNEL		__pgprot(0)
+ #define swapper_pg_dir		NULL
+-#define TASK_SIZE		0xffffffffUL
++#define TASK_SIZE		_AC(-1, UL)
+ #define VMALLOC_START		_AC(0, UL)
+ #define VMALLOC_END		TASK_SIZE
  
- #define I2C_HID_PWR_ON		0x00
- #define I2C_HID_PWR_SLEEP	0x01
-@@ -259,7 +258,6 @@ static int __i2c_hid_command(struct i2c_
- 		msg[1].len = data_len;
- 		msg[1].buf = buf_recv;
- 		msg_num = 2;
--		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
- 	}
- 
- 	if (wait)
-@@ -267,9 +265,6 @@ static int __i2c_hid_command(struct i2c_
- 
- 	ret = i2c_transfer(client->adapter, msg, msg_num);
- 
--	if (data_len > 0)
--		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
--
- 	if (ret != msg_num)
- 		return ret < 0 ? ret : -EIO;
- 
-@@ -550,9 +545,6 @@ static irqreturn_t i2c_hid_irq(int irq,
- {
- 	struct i2c_hid *ihid = dev_id;
- 
--	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
--		return IRQ_HANDLED;
--
- 	i2c_hid_get_input(ihid);
- 
- 	return IRQ_HANDLED;
+-- 
+2.43.0
+
 
 
 
