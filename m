@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-41850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7B48B7003
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF00A8B72A1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AB921C20ACD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9631C1F239F5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FFC312C482;
-	Tue, 30 Apr 2024 10:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E74912C549;
+	Tue, 30 Apr 2024 11:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdxdPSu+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9vDhKt1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C932129E81;
-	Tue, 30 Apr 2024 10:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17768801;
+	Tue, 30 Apr 2024 11:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473749; cv=none; b=JGiXQQon88P4Zcu6YCfFI8mDFknl/dBSh94fjwZB3zDzWLBzfPzwH17QfIIzabqRtUi60QaWHKcnDSx71jiR5UXh7kJfFQAE7eXJoOwn++SjDr2uHU862UMqMNuCs6iKR5Ejxwr8b+B3GIcME6+KiSOtlK8p2V0lnTMzoX47cK0=
+	t=1714475429; cv=none; b=pA0n2JtUQRnHNDotg2wKKWSSdgIXAm5IzWgEf/rKbmO4E1KnoCTvCP6xysqtdswDYVhEgeIYX+i8XAfyLxVUb8f+QC5VvxB7CPX2Wx/yvi755hfORsJ8IAGqWoksqzUWdVUMCcdsaftW5D/GZADHfemEu58qwI+5gf/wVlqMp2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473749; c=relaxed/simple;
-	bh=RBYBg2qndguromji21YpSeI6Zh4OAq48FnOAwgqUNww=;
+	s=arc-20240116; t=1714475429; c=relaxed/simple;
+	bh=Lm/59zNQwBnmJRVfer/JyL2Tbl2LzgUyxO5kYIhn0/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUzRrbvAR5AnxwC7h0mkfhm18NaxAkBrsFTYzdFGeHWQlnFdPSdJgQD1h4twY8WZG2r+FmvqkEyIfee1Go1kyIvHb2MaXha1KmfvCOB6409xuQJqCtIjLjvjB/iFMGcBaKkScXbscGx9/wuYM+0BR77upK787m4Ho85v6+uwMG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdxdPSu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95ADC2BBFC;
-	Tue, 30 Apr 2024 10:42:28 +0000 (UTC)
+	 MIME-Version; b=rsFNWz2/Th2ptGiQEDlU7TXORd2PlGsk1g1GMZR/N0drDTSUAvo0xHhgIB5Ty0T7SMxxptTCYFI+HvjRcfpht+MmnkOnONVH83owh7Z8rS7noekv7bInvAXaUOjJ8vKLnYgkkvXFHKZvQOTsig1as0NWmWb/DhLv9eU//p/Lje0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9vDhKt1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B22AC2BBFC;
+	Tue, 30 Apr 2024 11:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473749;
-	bh=RBYBg2qndguromji21YpSeI6Zh4OAq48FnOAwgqUNww=;
+	s=korg; t=1714475429;
+	bh=Lm/59zNQwBnmJRVfer/JyL2Tbl2LzgUyxO5kYIhn0/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdxdPSu+WeAEATbaaT08gwaXhv8ps/ruPi7SRm7wrGg+5XLXP8oR9zEUYw/93VJST
-	 Sum00TqyhY2jGMZORmLq3V7Msv4MsxqL95tpEUlTSsTGeKKr1GkYJhpUbFEOUEI7nK
-	 uXboTOLG6e5a+Ljjk1EV2ez/aDcQxsYPzaYwbvG4=
+	b=v9vDhKt1xvkgu4UMisum/bk+2FQe/LNtJJ0Jrl7OTV20xnwRB1OJrqBTQ87N/b7Ti
+	 3VhbK+v0uoQSaS+ssedAA/cwwPY7XZplsmC+QlWswqt/D+V2srOGgo7oHpFe9UkVO6
+	 PNzXS5zyoBAx9ncdgrmfRVI9LYBTCwZi6QeCDGS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coia Prant <coiaprant@gmail.com>,
-	Lars Melin <larsm17@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.19 26/77] USB: serial: option: add Lonsung U8300/U9300 product
+	Jason Reeder <jreeder@ti.com>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Ed Trexel <ed.trexel@hp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 093/186] net: ethernet: ti: am65-cpts: Fix PTPv1 message type on TX packets
 Date: Tue, 30 Apr 2024 12:39:05 +0200
-Message-ID: <20240430103041.901596183@linuxfoundation.org>
+Message-ID: <20240430103100.733874517@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coia Prant <coiaprant@gmail.com>
+From: Jason Reeder <jreeder@ti.com>
 
-commit cf16ffa17c398434a77b8a373e69287c95b60de2 upstream.
+[ Upstream commit 1b9e743e923b256e353a9a644195372285e5a6c0 ]
 
-Update the USB serial option driver to support Longsung U8300/U9300.
+The CPTS, by design, captures the messageType (Sync, Delay_Req, etc.)
+field from the second nibble of the PTP header which is defined in the
+PTPv2 (1588-2008) specification. In the PTPv1 (1588-2002) specification
+the first two bytes of the PTP header are defined as the versionType
+which is always 0x0001. This means that any PTPv1 packets that are
+tagged for TX timestamping by the CPTS will have their messageType set
+to 0x0 which corresponds to a Sync message type. This causes issues
+when a PTPv1 stack is expecting a Delay_Req (messageType: 0x1)
+timestamp that never appears.
 
-For U8300
+Fix this by checking if the ptp_class of the timestamped TX packet is
+PTP_CLASS_V1 and then matching the PTP sequence ID to the stored
+sequence ID in the skb->cb data structure. If the sequence IDs match
+and the packet is of type PTPv1 then there is a chance that the
+messageType has been incorrectly stored by the CPTS so overwrite the
+messageType stored by the CPTS with the messageType from the skb->cb
+data structure. This allows the PTPv1 stack to receive TX timestamps
+for Delay_Req packets which are necessary to lock onto a PTP Leader.
 
-Interface 4 is used by for QMI interface in stock firmware of U8300, the
-router which uses U8300 modem.
-Interface 5 is used by for ADB interface in stock firmware of U8300, the
-router which uses U8300 modem.
-
-Interface mapping is:
-0: unknown (Debug), 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI, 5: ADB
-
-T:  Bus=05 Lev=01 Prnt=03 Port=02 Cnt=01 Dev#=  4 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b05 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-For U9300
-
-Interface 1 is used by for ADB interface in stock firmware of U9300, the
-router which uses U9300 modem.
-Interface 4 is used by for QMI interface in stock firmware of U9300, the
-router which uses U9300 modem.
-
-Interface mapping is:
-0: ADB, 1: AT (Modem), 2: AT, 3: PPP (NDIS / Pipe), 4: QMI
-
-Note: Interface 3 of some models of the U9300 series can send AT commands.
-
-T:  Bus=05 Lev=01 Prnt=05 Port=04 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1c9e ProdID=9b3c Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-
-Tested successfully using Modem Manager on U9300.
-Tested successfully AT commands using If=1, If=2 and If=3 on U9300.
-
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
-Reviewed-by: Lars Melin <larsm17@gmail.com>
-[ johan: drop product defines, trim commit message ]
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jason Reeder <jreeder@ti.com>
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Tested-by: Ed Trexel <ed.trexel@hp.com>
+Fixes: f6bd59526ca5 ("net: ethernet: ti: introduce am654 common platform time sync driver")
+Link: https://lore.kernel.org/r/20240424071626.32558-1-r-gunasekaran@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/ti/am65-cpts.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2052,6 +2052,10 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(LONGCHEER_VENDOR_ID, 0x9803, 0xff),
- 	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b05),	/* Longsung U8300 */
-+	  .driver_info = RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE(LONGCHEER_VENDOR_ID, 0x9b3c),	/* Longsung U9300 */
-+	  .driver_info = RSVD(0) | RSVD(4) },
- 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
- 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
- 	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
+diff --git a/drivers/net/ethernet/ti/am65-cpts.c b/drivers/net/ethernet/ti/am65-cpts.c
+index c66618d91c28f..f89716b1cfb64 100644
+--- a/drivers/net/ethernet/ti/am65-cpts.c
++++ b/drivers/net/ethernet/ti/am65-cpts.c
+@@ -784,6 +784,11 @@ static bool am65_cpts_match_tx_ts(struct am65_cpts *cpts,
+ 		struct am65_cpts_skb_cb_data *skb_cb =
+ 					(struct am65_cpts_skb_cb_data *)skb->cb;
+ 
++		if ((ptp_classify_raw(skb) & PTP_CLASS_V1) &&
++		    ((mtype_seqid & AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK) ==
++		     (skb_cb->skb_mtype_seqid & AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK)))
++			mtype_seqid = skb_cb->skb_mtype_seqid;
++
+ 		if (mtype_seqid == skb_cb->skb_mtype_seqid) {
+ 			u64 ns = event->timestamp;
+ 
+-- 
+2.43.0
+
 
 
 
