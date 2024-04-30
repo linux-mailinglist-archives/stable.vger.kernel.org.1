@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5968B7118
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:53:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0498E8B7280
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E2EA1F21DA2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:53:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 280921C20D9C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F7D12C490;
-	Tue, 30 Apr 2024 10:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0AB12C819;
+	Tue, 30 Apr 2024 11:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqF4E8zt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGXhEEiF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BEB12C487;
-	Tue, 30 Apr 2024 10:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7E11E50A;
+	Tue, 30 Apr 2024 11:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474379; cv=none; b=t3SeOH5Tw1PoHrcpi88gxgeXUnRsFsmJz2g9mEcL+qSuFhbU4EdF3UxlYOqP/3clnrtHMeEF0/fggQzp0/vCSvmYQO13Psk3RVjCtEOAykrPsZSqsgnjk62CufCqYEdJkJqfMgqFj3no9XzgSuHnlm6tnw/2fvyjQ5CDlcpBoT0=
+	t=1714475332; cv=none; b=fJ5PZH5lJuKqPwrvzvai2yJtsfkF/UW+jr1vN2UNtWn1OTszqGe8abUdW2z9ky/EwlxnOl+9IxaKOk/HEgT8yuqDlIB0VgVD9MYMlz/iKAg0zIePYQtye34eB5PDi/ANVcN41OpOT3JbrQx8tCoK2CYgeejuZPWKZJ33jrACavM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474379; c=relaxed/simple;
-	bh=Qbn3dgf3IbVCLGnfvEPncN8w10LfxyKkHOY2FQlrUno=;
+	s=arc-20240116; t=1714475332; c=relaxed/simple;
+	bh=/xr2OAPd0PJ7NxjcmgEAgy33vvMHsB6r1arZ4oshd1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZRc7hX3gnalMop4EoAC2/FcV475BDpDgkNd2f3cCMXnJbVqnipnSatHmu8OmpRtoPsmEMmiD2RXEZbi26NWcL1yXZEq/w4mV7Iw/ItEs8k1nHIuc1vBfGr+AnJZq+3Wc8TCi8l3kN8KIni1dLWBqFlELPs164Ptvs+Y759LoGL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqF4E8zt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7701C4AF18;
-	Tue, 30 Apr 2024 10:52:58 +0000 (UTC)
+	 MIME-Version; b=SWzleleGP37lxaGDM7zVKqUC1prejro4lxu5GlnnFT+NojkToYqtbOFn1aNVzJn5WOAXx00FEswBU6Cysux69rMMHVUfSJIDOsOTW/e+H5tnuqTmeETS9Y0PyxDwyhIppH6/AiYvhDsV79/b8RDEdhqtONMSFcmIVFCVEYnXaGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGXhEEiF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5511C2BBFC;
+	Tue, 30 Apr 2024 11:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474379;
-	bh=Qbn3dgf3IbVCLGnfvEPncN8w10LfxyKkHOY2FQlrUno=;
+	s=korg; t=1714475332;
+	bh=/xr2OAPd0PJ7NxjcmgEAgy33vvMHsB6r1arZ4oshd1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xqF4E8ztVaBhh7liNP1Yo9/U2cOeJGdgSZbHBdmhrVDs12ncg2lpznSUDeBEL1Vnc
-	 CzCxP9ERf7pOBUpl5U2/wTxkv8mLEdxWcBcn4N0tASLFIMjSd1EuYdSpW8lWmZXay0
-	 z4ywrwTKJb/JDw5S6Hue6MTbufWRlyF7ASqnddY4=
+	b=oGXhEEiF9U2jJWIbrrimtHmaxQVpD7pI1qRNeM+b4LQoY5elGJOcUCPop/LwZ3fWo
+	 /abjdcTYmB9isEUE4ad6MKkPB5YwmaAkAJZr1ZHk2Fqt9WNHK9Mnld172xR6SE1gXJ
+	 dwPW6FILrnqTDuO0ltGCPhXol2vXHX6RrijVkrF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.8 138/228] rust: make mutually exclusive with CFI_CLANG
+	Daniel Golle <daniel@makrotopia.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 064/186] net: phy: mediatek-ge-soc: follow netdev LED trigger semantics
 Date: Tue, 30 Apr 2024 12:38:36 +0200
-Message-ID: <20240430103107.782803623@linuxfoundation.org>
+Message-ID: <20240430103059.896400653@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit 8933cf4651e02853ca679be7b2d978dfcdcc5e0c upstream.
+[ Upstream commit 5b5f724b05c550e10693a53a81cadca901aefd16 ]
 
-On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
-loading a rust module will trigger a kernel panic. Support for
-sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
-they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
-to prevent configuring a kernel without symmetrical support for kfi.
+Only blink if the link is up on a LED which is programmed to also
+indicate link-status.
 
-[ Matthew Maurer writes [1]:
+Otherwise, if both LEDs are in use to indicate different speeds, the
+resulting blinking being inverted on LEDs which aren't switched on at
+a specific speed is quite counter-intuitive.
 
-    This patch is fine by me - the last patch needed for KCFI to be
-    functional in Rust just landed upstream last night, so we should
-    revisit this (in the form of enabling it) once we move to
-    `rustc-1.79.0` or later.
+Also make sure that state left behind by reset or the bootloader is
+recognized correctly including the half-duplex and full-duplex bits as
+well as the (unsupported by Linux netdev trigger semantics) link-down
+bit.
 
-  Ramon de C Valle also gave feedback [2] on the status of KCFI for
-  Rust and created a tracking issue [3] in upstream Rust.   - Miguel ]
-
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/rust-for-linux/CAGSQo024u1gHJgzsO38Xg3c4or+JupoPABQx_+0BLEpPg0cOEA@mail.gmail.com/ [1]
-Link: https://lore.kernel.org/rust-for-linux/CAOcBZOS2kPyH0Dm7Fuh4GC3=v7nZhyzBj_-dKu3PfAnrHZvaxg@mail.gmail.com/ [2]
-Link: https://github.com/rust-lang/rust/issues/123479 [3]
-Link: https://lore.kernel.org/r/20240404-providing-emporium-e652e359c711@spud
-[ Added feedback from the list, links, and used Cc for the tag. ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c66937b0f8db ("net: phy: mediatek-ge-soc: support PHY LEDs")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/mediatek-ge-soc.c | 43 +++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 17 deletions(-)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1904,6 +1904,7 @@ config RUST
- 	bool "Rust support"
- 	depends on HAVE_RUST
- 	depends on RUST_IS_AVAILABLE
-+	depends on !CFI_CLANG
- 	depends on !MODVERSIONS
- 	depends on !GCC_PLUGINS
- 	depends on !RANDSTRUCT
+diff --git a/drivers/net/phy/mediatek-ge-soc.c b/drivers/net/phy/mediatek-ge-soc.c
+index 0f3a1538a8b8e..f4f9412d0cd7e 100644
+--- a/drivers/net/phy/mediatek-ge-soc.c
++++ b/drivers/net/phy/mediatek-ge-soc.c
+@@ -216,6 +216,9 @@
+ #define   MTK_PHY_LED_ON_LINK1000		BIT(0)
+ #define   MTK_PHY_LED_ON_LINK100		BIT(1)
+ #define   MTK_PHY_LED_ON_LINK10			BIT(2)
++#define   MTK_PHY_LED_ON_LINK			(MTK_PHY_LED_ON_LINK10 |\
++						 MTK_PHY_LED_ON_LINK100 |\
++						 MTK_PHY_LED_ON_LINK1000)
+ #define   MTK_PHY_LED_ON_LINKDOWN		BIT(3)
+ #define   MTK_PHY_LED_ON_FDX			BIT(4) /* Full duplex */
+ #define   MTK_PHY_LED_ON_HDX			BIT(5) /* Half duplex */
+@@ -231,6 +234,12 @@
+ #define   MTK_PHY_LED_BLINK_100RX		BIT(3)
+ #define   MTK_PHY_LED_BLINK_10TX		BIT(4)
+ #define   MTK_PHY_LED_BLINK_10RX		BIT(5)
++#define   MTK_PHY_LED_BLINK_RX			(MTK_PHY_LED_BLINK_10RX |\
++						 MTK_PHY_LED_BLINK_100RX |\
++						 MTK_PHY_LED_BLINK_1000RX)
++#define   MTK_PHY_LED_BLINK_TX			(MTK_PHY_LED_BLINK_10TX |\
++						 MTK_PHY_LED_BLINK_100TX |\
++						 MTK_PHY_LED_BLINK_1000TX)
+ #define   MTK_PHY_LED_BLINK_COLLISION		BIT(6)
+ #define   MTK_PHY_LED_BLINK_RX_CRC_ERR		BIT(7)
+ #define   MTK_PHY_LED_BLINK_RX_IDLE_ERR		BIT(8)
+@@ -1247,11 +1256,9 @@ static int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
+ 	if (blink < 0)
+ 		return -EIO;
+ 
+-	if ((on & (MTK_PHY_LED_ON_LINK1000 | MTK_PHY_LED_ON_LINK100 |
+-		   MTK_PHY_LED_ON_LINK10)) ||
+-	    (blink & (MTK_PHY_LED_BLINK_1000RX | MTK_PHY_LED_BLINK_100RX |
+-		      MTK_PHY_LED_BLINK_10RX | MTK_PHY_LED_BLINK_1000TX |
+-		      MTK_PHY_LED_BLINK_100TX | MTK_PHY_LED_BLINK_10TX)))
++	if ((on & (MTK_PHY_LED_ON_LINK | MTK_PHY_LED_ON_FDX | MTK_PHY_LED_ON_HDX |
++		   MTK_PHY_LED_ON_LINKDOWN)) ||
++	    (blink & (MTK_PHY_LED_BLINK_RX | MTK_PHY_LED_BLINK_TX)))
+ 		set_bit(bit_netdev, &priv->led_state);
+ 	else
+ 		clear_bit(bit_netdev, &priv->led_state);
+@@ -1269,7 +1276,7 @@ static int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
+ 	if (!rules)
+ 		return 0;
+ 
+-	if (on & (MTK_PHY_LED_ON_LINK1000 | MTK_PHY_LED_ON_LINK100 | MTK_PHY_LED_ON_LINK10))
++	if (on & MTK_PHY_LED_ON_LINK)
+ 		*rules |= BIT(TRIGGER_NETDEV_LINK);
+ 
+ 	if (on & MTK_PHY_LED_ON_LINK10)
+@@ -1287,10 +1294,10 @@ static int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
+ 	if (on & MTK_PHY_LED_ON_HDX)
+ 		*rules |= BIT(TRIGGER_NETDEV_HALF_DUPLEX);
+ 
+-	if (blink & (MTK_PHY_LED_BLINK_1000RX | MTK_PHY_LED_BLINK_100RX | MTK_PHY_LED_BLINK_10RX))
++	if (blink & MTK_PHY_LED_BLINK_RX)
+ 		*rules |= BIT(TRIGGER_NETDEV_RX);
+ 
+-	if (blink & (MTK_PHY_LED_BLINK_1000TX | MTK_PHY_LED_BLINK_100TX | MTK_PHY_LED_BLINK_10TX))
++	if (blink & MTK_PHY_LED_BLINK_TX)
+ 		*rules |= BIT(TRIGGER_NETDEV_TX);
+ 
+ 	return 0;
+@@ -1323,15 +1330,19 @@ static int mt798x_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
+ 		on |= MTK_PHY_LED_ON_LINK1000;
+ 
+ 	if (rules & BIT(TRIGGER_NETDEV_RX)) {
+-		blink |= MTK_PHY_LED_BLINK_10RX  |
+-			 MTK_PHY_LED_BLINK_100RX |
+-			 MTK_PHY_LED_BLINK_1000RX;
++		blink |= (on & MTK_PHY_LED_ON_LINK) ?
++			  (((on & MTK_PHY_LED_ON_LINK10) ? MTK_PHY_LED_BLINK_10RX : 0) |
++			   ((on & MTK_PHY_LED_ON_LINK100) ? MTK_PHY_LED_BLINK_100RX : 0) |
++			   ((on & MTK_PHY_LED_ON_LINK1000) ? MTK_PHY_LED_BLINK_1000RX : 0)) :
++			  MTK_PHY_LED_BLINK_RX;
+ 	}
+ 
+ 	if (rules & BIT(TRIGGER_NETDEV_TX)) {
+-		blink |= MTK_PHY_LED_BLINK_10TX  |
+-			 MTK_PHY_LED_BLINK_100TX |
+-			 MTK_PHY_LED_BLINK_1000TX;
++		blink |= (on & MTK_PHY_LED_ON_LINK) ?
++			  (((on & MTK_PHY_LED_ON_LINK10) ? MTK_PHY_LED_BLINK_10TX : 0) |
++			   ((on & MTK_PHY_LED_ON_LINK100) ? MTK_PHY_LED_BLINK_100TX : 0) |
++			   ((on & MTK_PHY_LED_ON_LINK1000) ? MTK_PHY_LED_BLINK_1000TX : 0)) :
++			  MTK_PHY_LED_BLINK_TX;
+ 	}
+ 
+ 	if (blink || on)
+@@ -1344,9 +1355,7 @@ static int mt798x_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
+ 				MTK_PHY_LED0_ON_CTRL,
+ 			     MTK_PHY_LED_ON_FDX     |
+ 			     MTK_PHY_LED_ON_HDX     |
+-			     MTK_PHY_LED_ON_LINK10  |
+-			     MTK_PHY_LED_ON_LINK100 |
+-			     MTK_PHY_LED_ON_LINK1000,
++			     MTK_PHY_LED_ON_LINK,
+ 			     on);
+ 
+ 	if (ret)
+-- 
+2.43.0
+
 
 
 
