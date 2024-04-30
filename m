@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC998B711D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9D78B7254
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3D61B22448
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:53:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93B3CB21EA4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE0612CD89;
-	Tue, 30 Apr 2024 10:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E5612C54B;
+	Tue, 30 Apr 2024 11:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMBrG5hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXIPzQAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0C612C801;
-	Tue, 30 Apr 2024 10:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DBD1E50A;
+	Tue, 30 Apr 2024 11:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474386; cv=none; b=YMGrJAY2XanUbbAm7wtZcDo5wIF4bUmfZkI1M/4qKmzblsx0vJTAXbZaMlGaSxFK4FLOkRM4CGRp9ziJifl1CbxR+zx14VvwNPW2uelg2kqRunSaXoGcDhdIYcqRmu1uZ04nDOW79SxInAZpiDkkjKT/I28tw/MAFwHGcYSY/Ag=
+	t=1714475222; cv=none; b=AAkDCF7MEqJfj0Mzb6+IA0ubDYkbHf3a0vwSVY0sdjbgMUBGO83bUcAt5k/xhYzjfY0t4HCiOoiGIUq5eJ2zAr+fpxf17Fxxj3NbV+Qd2Lady0pA92KJuU+PMM0NCmuuow9m/NeS8b1/DKP+sXrcWEjlqL+ImtY2NXg9JUoKp44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474386; c=relaxed/simple;
-	bh=GIycAF5IWz24yyoIbCrrV7NpRpHI0PnXZiBV/BuSCWY=;
+	s=arc-20240116; t=1714475222; c=relaxed/simple;
+	bh=JWL+zLCFShKRtN2Te10MlFcXsRdR+BRR+FPd7VFxXwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NInrKzPoiBYkXiC73+yT/F3gTaEqnL6KEYMHrUYXD7kifmNyuOjuOKeBOvIRsbpophdGPQRR99bXrEbMbErklIxCJBL8J5FLL8F+PcGDR6A8P8Bne2TZVo5KvT4iWM+yHbK9bU22LI5mGx3CaBfglJ4YfGkPoIlJYdyI5xXw7zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMBrG5hz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9ECC2BBFC;
-	Tue, 30 Apr 2024 10:53:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VklvQ0nMLvFQ6c1Xv/ZWKZa8SwMYUfUeWkyGeiY4QZkYg2BW2hRO5sKFCErRaO/ygI4rNolGox53WK2GrASY2h+C8C8e3ly0WFzCgyyocvrgpmSOfYBFTrYI8OGNNqPMSe/hFA2uH6CuD3szIJts4gsf9f8vO/0+DqblywvCIP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXIPzQAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF043C2BBFC;
+	Tue, 30 Apr 2024 11:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474385;
-	bh=GIycAF5IWz24yyoIbCrrV7NpRpHI0PnXZiBV/BuSCWY=;
+	s=korg; t=1714475222;
+	bh=JWL+zLCFShKRtN2Te10MlFcXsRdR+BRR+FPd7VFxXwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMBrG5hzrHpOyhHrpD+LeNVv2x1NEMvmOI+fUTdM66l4yhEgabaUP0RLz0WhyDvNR
-	 d6KENIq/FXMbFc7luENCj7yboORr43B5mc3yp16Ffa0pgMNaFBz8R/7+DPEODqknEP
-	 NdmVGywIUdSFUgIrQlGdIp0hdcxI6MCZSk7e8wFI=
+	b=oXIPzQAzLGHRxe/tqy6/q2dTN72l13hIYfy8C6BvZblErjN/9YqbPooEaoimUjbD7
+	 BZp8hILsegzjk9mozM+QFufRj9D73xIvf0Bi/3HxlTfoUVeQAni1hOLkcPlyGwU6G+
+	 dMxgV0Jt8Va93XvxVnrrYOqilduMVOoblDYkQRuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 103/228] mlxsw: spectrum_acl_tcam: Fix memory leak when canceling rehash work
-Date: Tue, 30 Apr 2024 12:38:01 +0200
-Message-ID: <20240430103106.770890995@linuxfoundation.org>
+Subject: [PATCH 6.6 030/186] arm64: dts: mediatek: mt7986: prefix BPI-R3 cooling maps with "map-"
+Date: Tue, 30 Apr 2024 12:38:02 +0200
+Message-ID: <20240430103058.905186642@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit fb4e2b70a7194b209fc7320bbf33b375f7114bd5 ]
+[ Upstream commit f8c65a5e4560781f2ea175d8f26cd75ac98e8d78 ]
 
-The rehash delayed work is rescheduled with a delay if the number of
-credits at end of the work is not negative as supposedly it means that
-the migration ended. Otherwise, it is rescheduled immediately.
+This fixes:
+arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dtb: thermal-zones: cpu-thermal:cooling-maps: 'cpu-active-high', 'cpu-active-low', 'cpu-active-med' do not match any of the regexes: '^map[-a-zA-Z0-9]*$', 'pinctrl-[0-9]+'
+        from schema $id: http://devicetree.org/schemas/thermal/thermal-zones.yaml#
 
-After "mlxsw: spectrum_acl_tcam: Fix possible use-after-free during
-rehash" the above is no longer accurate as a non-negative number of
-credits is no longer indicative of the migration being done. It can also
-happen if the work encountered an error in which case the migration will
-resume the next time the work is scheduled.
-
-The significance of the above is that it is possible for the work to be
-pending and associated with hints that were allocated when the migration
-started. This leads to the hints being leaked [1] when the work is
-canceled while pending as part of ACL region dismantle.
-
-Fix by freeing the hints if hints are associated with a work that was
-canceled while pending.
-
-Blame the original commit since the reliance on not having a pending
-work associated with hints is fragile.
-
-[1]
-unreferenced object 0xffff88810e7c3000 (size 256):
-  comm "kworker/0:16", pid 176, jiffies 4295460353
-  hex dump (first 32 bytes):
-    00 30 95 11 81 88 ff ff 61 00 00 00 00 00 00 80  .0......a.......
-    00 00 61 00 40 00 00 00 00 00 00 00 04 00 00 00  ..a.@...........
-  backtrace (crc 2544ddb9):
-    [<00000000cf8cfab3>] kmalloc_trace+0x23f/0x2a0
-    [<000000004d9a1ad9>] objagg_hints_get+0x42/0x390
-    [<000000000b143cf3>] mlxsw_sp_acl_erp_rehash_hints_get+0xca/0x400
-    [<0000000059bdb60a>] mlxsw_sp_acl_tcam_vregion_rehash_work+0x868/0x1160
-    [<00000000e81fd734>] process_one_work+0x59c/0xf20
-    [<00000000ceee9e81>] worker_thread+0x799/0x12c0
-    [<00000000bda6fe39>] kthread+0x246/0x300
-    [<0000000070056d23>] ret_from_fork+0x34/0x70
-    [<00000000dea2b93e>] ret_from_fork_asm+0x1a/0x30
-
-Fixes: c9c9af91f1d9 ("mlxsw: spectrum_acl: Allow to interrupt/continue rehash work")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/0cc12ebb07c4d4c41a1265ee2c28b392ff997a86.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c26f779a2295 ("arm64: dts: mt7986: add pwm-fan and cooling-maps to BPI-R3 dts")
+Cc: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240213061459.17917-1-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 89a5ebc3463ff..92a406f02eae7 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -836,10 +836,14 @@ mlxsw_sp_acl_tcam_vregion_destroy(struct mlxsw_sp *mlxsw_sp,
- 	struct mlxsw_sp_acl_tcam *tcam = vregion->tcam;
+diff --git a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
+index e1ec2cccf4444..aba6686eb34a3 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
+@@ -146,19 +146,19 @@
  
- 	if (vgroup->vregion_rehash_enabled && ops->region_rehash_hints_get) {
-+		struct mlxsw_sp_acl_tcam_rehash_ctx *ctx = &vregion->rehash.ctx;
-+
- 		mutex_lock(&tcam->lock);
- 		list_del(&vregion->tlist);
- 		mutex_unlock(&tcam->lock);
--		cancel_delayed_work_sync(&vregion->rehash.dw);
-+		if (cancel_delayed_work_sync(&vregion->rehash.dw) &&
-+		    ctx->hints_priv)
-+			ops->region_rehash_hints_put(ctx->hints_priv);
- 	}
- 	mlxsw_sp_acl_tcam_vgroup_vregion_detach(mlxsw_sp, vregion);
- 	if (vregion->region2)
+ &cpu_thermal {
+ 	cooling-maps {
+-		cpu-active-high {
++		map-cpu-active-high {
+ 			/* active: set fan to cooling level 2 */
+ 			cooling-device = <&fan 2 2>;
+ 			trip = <&cpu_trip_active_high>;
+ 		};
+ 
+-		cpu-active-med {
++		map-cpu-active-med {
+ 			/* active: set fan to cooling level 1 */
+ 			cooling-device = <&fan 1 1>;
+ 			trip = <&cpu_trip_active_med>;
+ 		};
+ 
+-		cpu-active-low {
++		map-cpu-active-low {
+ 			/* active: set fan to cooling level 0 */
+ 			cooling-device = <&fan 0 0>;
+ 			trip = <&cpu_trip_active_low>;
 -- 
 2.43.0
 
