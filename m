@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C03A8B7227
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3628B732B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46F201F20010
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E71F1F23A71
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07CC12C534;
-	Tue, 30 Apr 2024 11:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16F212D743;
+	Tue, 30 Apr 2024 11:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nf381xHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVwIlud7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD4312C462;
-	Tue, 30 Apr 2024 11:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F67B12D210;
+	Tue, 30 Apr 2024 11:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475104; cv=none; b=RGsZkUQUUoqDte6lMd9oH4xje8SnuuCG/kuUhWt3456FErDS0BVoSAFpFUHP1eQSJRhUElIOtvSaypPSgqKvoIRiXG0csxDs1dEk3pKeETaMVWun4VYgkGTU9gUKRlVE22sJQgVuZMeNBEwuP54tRl1/DihGlXno+QZZ0U5m9b8=
+	t=1714475752; cv=none; b=m+gslXdK7jOt+Ey95tE2lS3IDtM8OQa+AlRY6O6Ui8cdk3JdT0G7MmLjWTDkMvhAPQs8+8d5nQ2Kc7vCPs1Vh6HCbT48b6yVutNw4BtEShB46KG7SoZSobPeeCyQotrDQzc9Idh65YOzVc2dp9fnNkG8aLaaG4tuQwvOMm/DEJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475104; c=relaxed/simple;
-	bh=SKWKuR5sLVLj8gGI77wXf4mZbY2sO54eNOAOVHPNYkk=;
+	s=arc-20240116; t=1714475752; c=relaxed/simple;
+	bh=yp54RYhoryWo2nHsg/MPU7jS8VujuZRoIPa2NWMy/8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFoow+y5zJGEwFvqKnJNDbODCsBlE//6yYYtp4heZykZ4B138CjaVdN4p6QKBWVnEfceNxANCEMpT8u4JLm2X84M8AzeVpEDn9Xfre7b05Y29dckJBDdaeXG/mjltlXc1IEm1oIIgIdjs+IzibhFwECU9+0pzUfN/LflRTQaX5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nf381xHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A32AC2BBFC;
-	Tue, 30 Apr 2024 11:05:03 +0000 (UTC)
+	 MIME-Version; b=HFbE+AR3b8TIQ6hwNZPq5JYa4pIkrsyepqcK+pu5TeUbqXPb5gwHKIGMxnf1EiwBsO3WaLMUDWTVxld0jfbeyCY/faaRj6ZIg5/fvZc9snEJ68V/dpKdMzq1cWH5siNYv8DiA4pfKGKDx8xIMTqylH57rOt99QfIC2yJ2qxCjF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVwIlud7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C98C2BBFC;
+	Tue, 30 Apr 2024 11:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475104;
-	bh=SKWKuR5sLVLj8gGI77wXf4mZbY2sO54eNOAOVHPNYkk=;
+	s=korg; t=1714475752;
+	bh=yp54RYhoryWo2nHsg/MPU7jS8VujuZRoIPa2NWMy/8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nf381xHWdf5soy9kslTctmv/M0KMO1RFGuQXc9u6XXGHFa7frdIkCRUlr8rF+r/zi
-	 fmrXOlCiG/aPjbZV7kz3zv0ePXbPe4ClpvbeIjJDm8jZbijDHzBs7uioOZb7FhM54a
-	 y3CnlV4Utq5HRAJz6dynORRbnsR7MwUlLbXMeiuQ=
+	b=ZVwIlud77FEFFB7Aw2gIYDx181EplrOgZTCNViw2MQLCpPLZxpYGUq87pdoJgVfdL
+	 umZQoX2Vxgc5pRRN54LgoojU1LFTg0fGvEczSJWv+rvI5t2bCD7ewEbBgcwrFxmbeE
+	 nogA4aBZZhnKyibIARGMpIB1CDJZ30UUlXmcRpnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>,
-	Eva Kurchatova <nyandarknessgirl@gmail.com>
-Subject: [PATCH 5.10 134/138] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up
+	Michal Tomek <mtdev79b@gmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 167/186] phy: rockchip: naneng-combphy: Fix mux on rk3588
 Date: Tue, 30 Apr 2024 12:40:19 +0200
-Message-ID: <20240430103053.346373367@linuxfoundation.org>
+Message-ID: <20240430103102.879764510@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e upstream.
+[ Upstream commit d16d4002fea69b6609b852dd8db1f5844c02fbe4 ]
 
-The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
-However, this is not necessary, because I2C core already has its own
-locking for that.
+The pcie1l0_sel and pcie1l1_sel bits in PCIESEL_CON configure the
+mux for PCIe1L0 and PCIe1L1 to either the PIPE Combo PHYs or the
+PCIe3 PHY. Thus this configuration interfers with the data-lanes
+configuration done by the PCIe3 PHY.
 
-More importantly, this flag can cause a lock-up: if the flag is set in
-i2c_hid_xfer() and an interrupt happens, the interrupt handler
-(i2c_hid_irq) will check this flag and return immediately without doing
-anything, then the interrupt handler will be invoked again in an
-infinite loop.
+RK3588 has three Combo PHYs. The first one has a dedicated PCIe
+controller and is not affected by this. For the other two Combo
+PHYs, there is one mux for each of them.
 
-Since interrupt handler is an RT task, it takes over the CPU and the
-flag-clearing task never gets scheduled, thus we have a lock-up.
+pcie1l0_sel selects if PCIe 1L0 is muxed to Combo PHY 1 when
+bit is set to 0 or to the PCIe3 PHY when bit is set to 1.
 
-Delete this unnecessary flag.
+pcie1l1_sel selects if PCIe 1L1 is muxed to Combo PHY 2 when
+bit is set to 0 or to the PCIe3 PHY when bit is set to 1.
 
-Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
-Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
-Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-[apply to v4.19 -> v5.15]
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently the code always muxes 1L0 and 1L1 to the Combi PHYs
+once one of them is being used in PCIe mode. This is obviously
+wrong when at least one of the ports should be muxed to the
+PCIe3 PHY.
+
+Fix this by introducing Combo PHY identification and then only
+setting up the required bit.
+
+Fixes: a03c44277253 ("phy: rockchip: Add naneng combo phy support for RK3588")
+Reported-by: Michal Tomek <mtdev79b@gmail.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20240404-rk3588-pcie-bifurcation-fixes-v1-3-9907136eeafd@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-core.c |    8 --------
- 1 file changed, 8 deletions(-)
+ .../rockchip/phy-rockchip-naneng-combphy.c    | 36 +++++++++++++++++--
+ 1 file changed, 33 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -56,7 +56,6 @@
- /* flags */
- #define I2C_HID_STARTED		0
- #define I2C_HID_RESET_PENDING	1
--#define I2C_HID_READ_PENDING	2
+diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+index 5de5e2e97ffa0..26b157f53f3da 100644
+--- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+@@ -125,12 +125,15 @@ struct rockchip_combphy_grfcfg {
+ };
  
- #define I2C_HID_PWR_ON		0x00
- #define I2C_HID_PWR_SLEEP	0x01
-@@ -256,7 +255,6 @@ static int __i2c_hid_command(struct i2c_
- 		msg[1].len = data_len;
- 		msg[1].buf = buf_recv;
- 		msg_num = 2;
--		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
+ struct rockchip_combphy_cfg {
++	unsigned int num_phys;
++	unsigned int phy_ids[3];
+ 	const struct rockchip_combphy_grfcfg *grfcfg;
+ 	int (*combphy_cfg)(struct rockchip_combphy_priv *priv);
+ };
+ 
+ struct rockchip_combphy_priv {
+ 	u8 type;
++	int id;
+ 	void __iomem *mmio;
+ 	int num_clks;
+ 	struct clk_bulk_data *clks;
+@@ -320,7 +323,7 @@ static int rockchip_combphy_probe(struct platform_device *pdev)
+ 	struct rockchip_combphy_priv *priv;
+ 	const struct rockchip_combphy_cfg *phy_cfg;
+ 	struct resource *res;
+-	int ret;
++	int ret, id;
+ 
+ 	phy_cfg = of_device_get_match_data(dev);
+ 	if (!phy_cfg) {
+@@ -338,6 +341,15 @@ static int rockchip_combphy_probe(struct platform_device *pdev)
+ 		return ret;
  	}
  
- 	if (wait)
-@@ -264,9 +262,6 @@ static int __i2c_hid_command(struct i2c_
++	/* find the phy-id from the io address */
++	priv->id = -ENODEV;
++	for (id = 0; id < phy_cfg->num_phys; id++) {
++		if (res->start == phy_cfg->phy_ids[id]) {
++			priv->id = id;
++			break;
++		}
++	}
++
+ 	priv->dev = dev;
+ 	priv->type = PHY_NONE;
+ 	priv->cfg = phy_cfg;
+@@ -562,6 +574,12 @@ static const struct rockchip_combphy_grfcfg rk3568_combphy_grfcfgs = {
+ };
  
- 	ret = i2c_transfer(client->adapter, msg, msg_num);
+ static const struct rockchip_combphy_cfg rk3568_combphy_cfgs = {
++	.num_phys = 3,
++	.phy_ids = {
++		0xfe820000,
++		0xfe830000,
++		0xfe840000,
++	},
+ 	.grfcfg		= &rk3568_combphy_grfcfgs,
+ 	.combphy_cfg	= rk3568_combphy_cfg,
+ };
+@@ -578,8 +596,14 @@ static int rk3588_combphy_cfg(struct rockchip_combphy_priv *priv)
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->con1_for_pcie, true);
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->con2_for_pcie, true);
+ 		rockchip_combphy_param_write(priv->phy_grf, &cfg->con3_for_pcie, true);
+-		rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_pcie1l0_sel, true);
+-		rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_pcie1l1_sel, true);
++		switch (priv->id) {
++		case 1:
++			rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_pcie1l0_sel, true);
++			break;
++		case 2:
++			rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_pcie1l1_sel, true);
++			break;
++		}
+ 		break;
+ 	case PHY_TYPE_USB3:
+ 		/* Set SSC downward spread spectrum */
+@@ -736,6 +760,12 @@ static const struct rockchip_combphy_grfcfg rk3588_combphy_grfcfgs = {
+ };
  
--	if (data_len > 0)
--		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
--
- 	if (ret != msg_num)
- 		return ret < 0 ? ret : -EIO;
- 
-@@ -538,9 +533,6 @@ static irqreturn_t i2c_hid_irq(int irq,
- {
- 	struct i2c_hid *ihid = dev_id;
- 
--	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
--		return IRQ_HANDLED;
--
- 	i2c_hid_get_input(ihid);
- 
- 	return IRQ_HANDLED;
+ static const struct rockchip_combphy_cfg rk3588_combphy_cfgs = {
++	.num_phys = 3,
++	.phy_ids = {
++		0xfee00000,
++		0xfee10000,
++		0xfee20000,
++	},
+ 	.grfcfg		= &rk3588_combphy_grfcfgs,
+ 	.combphy_cfg	= rk3588_combphy_cfg,
+ };
+-- 
+2.43.0
+
 
 
 
