@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-42145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D217C8B719E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 627F28B726C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E3D3282893
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A4222843B8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6074F12C490;
-	Tue, 30 Apr 2024 10:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B895412D75C;
+	Tue, 30 Apr 2024 11:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVQhVMcO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwejM/Dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1B612C462;
-	Tue, 30 Apr 2024 10:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9B112D210;
+	Tue, 30 Apr 2024 11:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474713; cv=none; b=e8KfMwaYOjZSoepJFgGRGsDpSbkHz9oBMK74exP0w1JjWJ78PknCtWGGf3Gr5tQU7dsQI4KGaQkJ2jfF1j62NVWN/KIXnul0+B0IfY6EGPefTCRblmtuG02TJUMeCUVIDVjx3auIHj0vfjCEQ3vSAoialQhcCmLLzQdIVkKOU7c=
+	t=1714475269; cv=none; b=l5Me/J94MjfVxOQvtTRglU9smYgk9VbhR6gqycLiePHMHsyJ0IFYNXU4lttnaUIrAAqvBX/wKWPpx6obYbd9qN1/JykaywNgzmFyqYwEHzVECKoWFYU5/a7shHedHZ7/V0iLJEWEkY0FOnQjtLUax1VAvcbmMRFi7ZPzIK4bX/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474713; c=relaxed/simple;
-	bh=JbfmYnG58FfuIWCxLGPrrz0HqX/XzYOZw+9Yp+6R5aQ=;
+	s=arc-20240116; t=1714475269; c=relaxed/simple;
+	bh=j+SUTutyCciRHI+WUuS3GGR2RZ0zQ1YB8x+CaAdRjJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dT53elA6rBzYBcyxWFgqc9J4GtD0Bx+Eh1NWgy6Ugp9PUrrbgII8C9/CP7ax0k/mz6VErcfWIPV8N1ZDymORXJA5wlWdtR+WKe4HR9+B2+GQbzv5H9TowNSi+cQU4wyXQpoeDccjTIieL5CLwzHVXTKVw+x63vcU2eSYPwY1l7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVQhVMcO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A04C2BBFC;
-	Tue, 30 Apr 2024 10:58:32 +0000 (UTC)
+	 MIME-Version; b=beSM0XOMf3SbRL9q78J+98pG5Xw4LTzRl2c/Rjal4wiDPY8y8LmjhWh9ZTwrDakDOd1L3C4wceEC8SXEnjifrGlC1A8QLHV91ekcwTmCq31fU1bZ/w5JAmJ06xMg1nCGJhIFJoZB2Mkrf8xRZzuwnvvcmRJdcz0er4Jj51Yh5Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwejM/Dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED21CC2BBFC;
+	Tue, 30 Apr 2024 11:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474713;
-	bh=JbfmYnG58FfuIWCxLGPrrz0HqX/XzYOZw+9Yp+6R5aQ=;
+	s=korg; t=1714475269;
+	bh=j+SUTutyCciRHI+WUuS3GGR2RZ0zQ1YB8x+CaAdRjJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eVQhVMcOPCbAnEw5WHD/EE0rfUGsbscvcVIfwev4IUqilPJcpihM2Fz6esHYCeitW
-	 omJyRJ/vbx+SMSFvekRz6jNhsYeu0NnQ7aziZX6/1qs6ClD1EAlxG6IshLmaSU0toE
-	 eBihEU2li3VKImuCTeJ+DYBbt8c2h+odQS2FN8dI=
+	b=dwejM/DvcBkrpq5M7B99GWABL4K3Bd2YTtWYkZj4tyDO9wz7dK7kLD4PcHBN2PTSX
+	 fOJ745mNocfrFXCEcpzZ9fJCMiZa62ujiG5Tdssf1JlMxkBTdtbEOH58+OWW9GXDUs
+	 W0idrqkpI77ydu8KUskLVtMP3Y7JX0wCV5v++z38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/138] Bluetooth: SCO: Fix not validating setsockopt user input
+Subject: [PATCH 6.6 046/186] net: bcmasp: fix memory leak when bringing down interface
 Date: Tue, 30 Apr 2024 12:38:18 +0200
-Message-ID: <20240430103049.817748874@linuxfoundation.org>
+Message-ID: <20240430103059.368794743@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit 51eda36d33e43201e7a4fd35232e069b2c850b01 ]
+[ Upstream commit 9f898fc2c31fbf0ac5ecd289f528a716464cb005 ]
 
-syzbot reported sco_sock_setsockopt() is copying data without
-checking user input length.
+When bringing down the TX rings we flush the rings but forget to
+reclaimed the flushed packets. This leads to a memory leak since we
+do not free the dma mapped buffers. This also leads to tx control
+block corruption when bringing down the interface for power
+management.
 
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
-include/linux/sockptr.h:49 [inline]
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
-include/linux/sockptr.h:55 [inline]
-BUG: KASAN: slab-out-of-bounds in sco_sock_setsockopt+0xc0b/0xf90
-net/bluetooth/sco.c:893
-Read of size 4 at addr ffff88805f7b15a3 by task syz-executor.5/12578
-
-Fixes: ad10b1a48754 ("Bluetooth: Add Bluetooth socket voice option")
-Fixes: b96e9c671b05 ("Bluetooth: Add BT_DEFER_SETUP option to sco socket")
-Fixes: 00398e1d5183 ("Bluetooth: Add support for BT_PKT_STATUS CMSG data for SCO connections")
-Fixes: f6873401a608 ("Bluetooth: Allow setting of codec for HFP offload use case")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240418180541.2271719-1-justin.chen@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/bluetooth.h |    9 +++++++++
- net/bluetooth/sco.c               |   19 ++++++++-----------
- 2 files changed, 17 insertions(+), 11 deletions(-)
+ .../net/ethernet/broadcom/asp2/bcmasp_intf.c  | 21 ++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -487,6 +487,15 @@ static inline struct sk_buff *bt_skb_sen
- 	return skb;
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index b3d04f49f77e9..6bf149d645941 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -435,10 +435,8 @@ static void umac_init(struct bcmasp_intf *intf)
+ 	umac_wl(intf, 0x800, UMC_RX_MAX_PKT_SZ);
  }
  
-+static inline int bt_copy_from_sockptr(void *dst, size_t dst_size,
-+				       sockptr_t src, size_t src_size)
-+{
-+	if (dst_size > src_size)
-+		return -EINVAL;
-+
-+	return copy_from_sockptr(dst, src, dst_size);
+-static int bcmasp_tx_poll(struct napi_struct *napi, int budget)
++static int bcmasp_tx_reclaim(struct bcmasp_intf *intf)
+ {
+-	struct bcmasp_intf *intf =
+-		container_of(napi, struct bcmasp_intf, tx_napi);
+ 	struct bcmasp_intf_stats64 *stats = &intf->stats64;
+ 	struct device *kdev = &intf->parent->pdev->dev;
+ 	unsigned long read, released = 0;
+@@ -481,10 +479,16 @@ static int bcmasp_tx_poll(struct napi_struct *napi, int budget)
+ 							DESC_RING_COUNT);
+ 	}
+ 
+-	/* Ensure all descriptors have been written to DRAM for the hardware
+-	 * to see updated contents.
+-	 */
+-	wmb();
++	return released;
 +}
 +
- int bt_to_errno(u16 code);
++static int bcmasp_tx_poll(struct napi_struct *napi, int budget)
++{
++	struct bcmasp_intf *intf =
++		container_of(napi, struct bcmasp_intf, tx_napi);
++	int released = 0;
++
++	released = bcmasp_tx_reclaim(intf);
  
- void hci_sock_set_flag(struct sock *sk, int nr);
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -825,7 +825,7 @@ static int sco_sock_setsockopt(struct so
- 			       sockptr_t optval, unsigned int optlen)
- {
- 	struct sock *sk = sock->sk;
--	int len, err = 0;
-+	int err = 0;
- 	struct bt_voice voice;
- 	u32 opt;
+ 	napi_complete(&intf->tx_napi);
  
-@@ -841,10 +841,9 @@ static int sco_sock_setsockopt(struct so
- 			break;
- 		}
+@@ -794,6 +798,7 @@ static int bcmasp_init_tx(struct bcmasp_intf *intf)
  
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
+ 	intf->tx_spb_index = 0;
+ 	intf->tx_spb_clean_index = 0;
++	memset(intf->tx_cbs, 0, sizeof(struct bcmasp_tx_cb) * DESC_RING_COUNT);
  
- 		if (opt)
- 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
-@@ -861,11 +860,10 @@ static int sco_sock_setsockopt(struct so
+ 	netif_napi_add_tx(intf->ndev, &intf->tx_napi, bcmasp_tx_poll);
  
- 		voice.setting = sco_pi(sk)->setting;
+@@ -904,6 +909,8 @@ static void bcmasp_netif_deinit(struct net_device *dev)
+ 	} while (timeout-- > 0);
+ 	tx_spb_dma_wl(intf, 0x0, TX_SPB_DMA_FIFO_CTRL);
  
--		len = min_t(unsigned int, sizeof(voice), optlen);
--		if (copy_from_sockptr(&voice, optval, len)) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&voice, sizeof(voice), optval,
-+					   optlen);
-+		if (err)
- 			break;
--		}
++	bcmasp_tx_reclaim(intf);
++
+ 	umac_enable_set(intf, UMC_CMD_TX_EN, 0);
  
- 		/* Explicitly check for these values */
- 		if (voice.setting != BT_VOICE_TRANSPARENT &&
-@@ -878,10 +876,9 @@ static int sco_sock_setsockopt(struct so
- 		break;
- 
- 	case BT_PKT_STATUS:
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt)
- 			sco_pi(sk)->cmsg_mask |= SCO_CMSG_PKT_STATUS;
+ 	phy_stop(dev->phydev);
+-- 
+2.43.0
+
 
 
 
