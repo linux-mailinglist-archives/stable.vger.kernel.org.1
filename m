@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602ED8B7352
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200F48B73BB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99BE6B22885
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C4191C233A6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAE612D74F;
-	Tue, 30 Apr 2024 11:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BD912C48B;
+	Tue, 30 Apr 2024 11:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xk4n227b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmCyk54j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E51012D743;
-	Tue, 30 Apr 2024 11:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CD98801;
+	Tue, 30 Apr 2024 11:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475858; cv=none; b=hy+kNtWST+n7Zn8FI2b6/BPGw17Jcv/A3RD2oEXRY44i0SX4u9IvlhrOgJ11zKHzyCMVBDpCstkliJUOi0vjzKrq4y9WAkmJhN54tQVA+MMG3V2L0NaRU0hHRb8Yj1pSmxggO9ZDJm8vU1Z4MMn/gZSnRS6TnyagAE9hJvMF4as=
+	t=1714476159; cv=none; b=avacNUEtqHhpPW+idVlmcgXhQqxyBHTRqQjBJSDnXlLcLwsvWfGPAXlJpgxKJB4ZJt1G78yfhgIBiKhQ5oGKzWhJf8cFqIaARFewRU+qPsz2aIUpBjISzcc94EzvnlHeNFC3ZnNVhxOtoK66LZ8HuPf65eVg+HxOTyNOL2mtjws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475858; c=relaxed/simple;
-	bh=VthXWGqAom68s6wklPJqDJEN5rQZoqWkh9yLZX4Xb70=;
+	s=arc-20240116; t=1714476159; c=relaxed/simple;
+	bh=mfzMJrE64t4RHLZ4XMmIsMMqFeSHYp/9+mZPDDrYkMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buZuOLLYgLeEJrrIYMv3JjALqg/azh31iJyOHMoDlX9knMApD/NI1AWwZSJjfdMbqABxVCCuHnWlHhJX7LdsUz7tn/rl6MmhBOk4ZEiuPHh/2Yaim+4fTGCejAF16F8J8/jCFjLmHALNMWSTlQj8K7qX3YH7fCDxFCdZjSojrMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xk4n227b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A72C4AF19;
-	Tue, 30 Apr 2024 11:17:37 +0000 (UTC)
+	 MIME-Version; b=Suk7JJIgziYlIck8+hkQWc+PYyafJi+PwEJeGxmtyVOZuhgxMAq45U5/rQw52BRCWvtwG4yw7CHfVULu+y5Lf4x4N1MTECO/3laPOgg1tRT8122eTeFJynXvuQFdTyZSvBXJQV6cjQlz7PBsyCCzLCBVGWUqy72NxwrFnL9zA18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmCyk54j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31193C2BBFC;
+	Tue, 30 Apr 2024 11:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475858;
-	bh=VthXWGqAom68s6wklPJqDJEN5rQZoqWkh9yLZX4Xb70=;
+	s=korg; t=1714476159;
+	bh=mfzMJrE64t4RHLZ4XMmIsMMqFeSHYp/9+mZPDDrYkMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xk4n227bQ+5L0bTsfYLoJTC5SnoGi1vPpu2Nn2I9QVrtFZqKTX+lplyx6+govYHpC
-	 BDHg5mgCo3RnX66oyGb0Y83UpxyIPzGPHTZ/V6HFTqDqpJVSHFomThQA/z99cCTkQF
-	 CpeAAJhFPcIjGOn0d8LxDtfVBTORLY0sHMog+Q6k=
+	b=HmCyk54jPVRlV57kvJ3V1+vn2QamiD2NbmV7Tlf09a46+CtUVSQ1jHQLWxolUfyEh
+	 Y8lSt+UraUu3xrDidrmbEKt3E1dM0lcbrZDJbQt8OCLi8xBs4dl6xDhX5g5CXRs55q
+	 nN/MxWe4o4pIGbLJWw+PbWpI5tDICz6nEdedinBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erwan Velu <e.velu@criteo.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Brelinski <tony.brelinski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/80] i40e: Report MFS in decimal base instead of hex
-Date: Tue, 30 Apr 2024 12:40:12 +0200
-Message-ID: <20240430103044.602530283@linuxfoundation.org>
+Subject: [PATCH 5.4 053/107] arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma
+Date: Tue, 30 Apr 2024 12:40:13 +0200
+Message-ID: <20240430103046.222787291@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erwan Velu <e.velu@criteo.com>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-[ Upstream commit ef3c313119ea448c22da10366faa26b5b4b1a18e ]
+[ Upstream commit 945a7c8570916650a415757d15d83e0fa856a686 ]
 
-If the MFS is set below the default (0x2600), a warning message is
-reported like the following :
+The PCIE_WAKE# has a diode used as a level-shifter, and is used as an
+input pin. While the SoC default is to enable the pull-up, the core
+rk3399 pinconf for this pin opted for pull-none. So as to not disturb
+the behaviour of other boards which may rely on pull-none instead of
+pull-up, set the needed pull-up only for RK3399 Puma.
 
-	MFS for port 1 has been set below the default: 600
-
-This message is a bit confusing as the number shown here (600) is in
-fact an hexa number: 0x600 = 1536
-
-Without any explicit "0x" prefix, this message is read like the MFS is
-set to 600 bytes.
-
-MFS, as per MTUs, are usually expressed in decimal base.
-
-This commit reports both current and default MFS values in decimal
-so it's less confusing for end-users.
-
-A typical warning message looks like the following :
-
-	MFS for port 1 (1536) has been set below the default (9728)
-
-Signed-off-by: Erwan Velu <e.velu@criteo.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Tony Brelinski <tony.brelinski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Fixes: 3a2c6ced90e1 ("i40e: Add a check to see if MFS is set")
-Link: https://lore.kernel.org/r/20240423182723.740401-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 60fd9f72ce8a ("arm64: dts: rockchip: add Haikou baseboard with RK3399-Q7 SoM")
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-2-309f83da110a@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 000c1d59ea062..991321b04084a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -16147,8 +16147,8 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	val = (rd32(&pf->hw, I40E_PRTGL_SAH) &
- 	       I40E_PRTGL_SAH_MFS_MASK) >> I40E_PRTGL_SAH_MFS_SHIFT;
- 	if (val < MAX_FRAME_SIZE_DEFAULT)
--		dev_warn(&pdev->dev, "MFS for port %x has been set below the default: %x\n",
--			 pf->hw.port, val);
-+		dev_warn(&pdev->dev, "MFS for port %x (%d) has been set below the default (%d)\n",
-+			 pf->hw.port, val, MAX_FRAME_SIZE_DEFAULT);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+index ecef3d9b0b93e..5382c2f0b6421 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -425,6 +425,11 @@
+ 	gpio1830-supply = <&vcc_1v8>;
+ };
  
- 	/* Add a filter to drop all Flow control frames from any VSI from being
- 	 * transmitted. By doing so we stop a malicious VF from sending out
++&pcie_clkreqn_cpm {
++	rockchip,pins =
++		<2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_up>;
++};
++
+ &pinctrl {
+ 	i2c8 {
+ 		i2c8_xfer_a: i2c8-xfer {
 -- 
 2.43.0
 
