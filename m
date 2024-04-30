@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-41894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74278B7056
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A71A8B72E1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86311C2199F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2699F281CB4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AA512C7FB;
-	Tue, 30 Apr 2024 10:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B31712D745;
+	Tue, 30 Apr 2024 11:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDvcYrNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/gFFiSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C846812C487;
-	Tue, 30 Apr 2024 10:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E41512D1E8;
+	Tue, 30 Apr 2024 11:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473880; cv=none; b=ANz1J8pJ/11o/pZGDdgumuzgIi1EJMSwh2Ynnpks/YBjcV/eRIyGZGxW+vALEW4k6vq6c/pyrCKu9vmv7mDyEvqc6XFfbeLvQGzKYYlt6BNCZG/oiq8zcUC6Wj3Gq2RYhSfMMsUdsr1kkj5WG0driysRgZaZcp6AMLQdQXr3JSc=
+	t=1714475572; cv=none; b=moF/HgNypCX1op9wPDYJ/3o2idxPpQBCdqR7KFNg+5wbzuuMbl2n24sbT6GURNxRyTyJI7OEF29f1kO6Eg0gmefmP4mrVpplM+vcto/a9Q8Ke6qaDhiF4U7cy57OK6XKqLepXAUES4ZPAVBVmuizqd47ZDjpJZJxfQ/446j2Q1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473880; c=relaxed/simple;
-	bh=4uO/oMX7byzZBqIcvKa818s368Ea7A8uA86QpxkVCIA=;
+	s=arc-20240116; t=1714475572; c=relaxed/simple;
+	bh=NBfnvJx0VXjiVwqx8qsDHYxoqK1uvi4yLKAJg4vGu2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMb8e5Xwxh17XxWs2wJz5wXEGzQeEkRfzp+iJXUgHXtI/HKo0XqKu8x1pXVDVF/gjW6LnNQD5x67N2fOR4iVIBiKHUo8g6XQW9jPeqQwww+HuulW8eOatDU4kNXMHSF0x3NSyuvJsIBDTlBb6YjnqIHZSCPF7EFRCZtyBLhUSAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDvcYrNU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489E2C2BBFC;
-	Tue, 30 Apr 2024 10:44:40 +0000 (UTC)
+	 MIME-Version; b=rp3DoQ037gpaZ3GTHuYvyGa2/FOOyjzgRJcrTlmnxBRE1dT5J0Lz0mShUYBnXDu3YhfoupxKmxIj3VT6//N4s08Jq5nn5kbOp8FJqKyV+StEgW+3GC+GuhvSTE5SEF364qyS7MeW5rHZYTXwsFbf0uXkc3IbLimsxBky7mvWy6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/gFFiSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82480C2BBFC;
+	Tue, 30 Apr 2024 11:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473880;
-	bh=4uO/oMX7byzZBqIcvKa818s368Ea7A8uA86QpxkVCIA=;
+	s=korg; t=1714475571;
+	bh=NBfnvJx0VXjiVwqx8qsDHYxoqK1uvi4yLKAJg4vGu2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDvcYrNUrF8MUmWX1+Mgx2c3jLpf0iXdUwOMCINdvGfQiSo0P5y2IknRYNn/z+Eqg
-	 bbhvzRrO00ayTahtq2MSnoMGcYsYv8/AmIO7yhUXEDcankis+BqhmI2nlFN12Pgc6O
-	 k4ChjCV7zpCUEDfY52w/Cb7lFc0+gsZqQgdeiC0s=
+	b=o/gFFiSw5fuN8m2z5Gz0c5ZkhuiPYGqYvI+HePm9dfnqrBmugjrL9RNZ+X0dHwn9k
+	 NA6ugv6MWc5BV+qtq72jHpIHfWGypjlM+lzVRlG2gP+KRfbLBeI5RRFR9h/B2MYR83
+	 NemkHZ4CbZ1CyZxu4ddCDWEH+XviotuImXBQHsaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 70/77] dmaengine: owl: fix register access functions
+	Jiantao Shan <shanjiantao@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 137/186] LoongArch: Fix access error when read fault on a write-only VMA
 Date: Tue, 30 Apr 2024 12:39:49 +0200
-Message-ID: <20240430103043.205649839@linuxfoundation.org>
+Message-ID: <20240430103102.010267865@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jiantao Shan <shanjiantao@loongson.cn>
 
-[ Upstream commit 43c633ef93a5d293c96ebcedb40130df13128428 ]
+commit efb44ff64c95340b06331fc48634b99efc9dd77c upstream.
 
-When building with 'make W=1', clang notices that the computed register
-values are never actually written back but instead the wrong variable
-is set:
+As with most architectures, allow handling of read faults in VMAs that
+have VM_WRITE but without VM_READ (WRITE implies READ).
 
-drivers/dma/owl-dma.c:244:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  244 |         u32 regval;
-      |             ^
-drivers/dma/owl-dma.c:268:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  268 |         u32 regval;
-      |             ^
+Otherwise, reading before writing a write-only memory will error while
+reading after writing everything is fine.
 
-Change these to what was most likely intended.
+BTW, move the VM_EXEC judgement before VM_READ/VM_WRITE to make logic a
+little clearer.
 
-Fixes: 47e20577c24d ("dmaengine: Add Actions Semi Owl family S900 DMA driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240322132116.906475-1-arnd@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 09cfefb7fa70c3af01 ("LoongArch: Add memory management")
+Signed-off-by: Jiantao Shan <shanjiantao@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/owl-dma.c | 4 ++--
+ arch/loongarch/mm/fault.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/owl-dma.c b/drivers/dma/owl-dma.c
-index da5050ab7f387..c12968075abc9 100644
---- a/drivers/dma/owl-dma.c
-+++ b/drivers/dma/owl-dma.c
-@@ -230,7 +230,7 @@ static void pchan_update(struct owl_dma_pchan *pchan, u32 reg,
- 	else
- 		regval &= ~val;
+--- a/arch/loongarch/mm/fault.c
++++ b/arch/loongarch/mm/fault.c
+@@ -202,10 +202,10 @@ good_area:
+ 		if (!(vma->vm_flags & VM_WRITE))
+ 			goto bad_area;
+ 	} else {
+-		if (!(vma->vm_flags & VM_READ) && address != exception_era(regs))
+-			goto bad_area;
+ 		if (!(vma->vm_flags & VM_EXEC) && address == exception_era(regs))
+ 			goto bad_area;
++		if (!(vma->vm_flags & (VM_READ | VM_WRITE)) && address != exception_era(regs))
++			goto bad_area;
+ 	}
  
--	writel(val, pchan->base + reg);
-+	writel(regval, pchan->base + reg);
- }
- 
- static void pchan_writel(struct owl_dma_pchan *pchan, u32 reg, u32 data)
-@@ -254,7 +254,7 @@ static void dma_update(struct owl_dma *od, u32 reg, u32 val, bool state)
- 	else
- 		regval &= ~val;
- 
--	writel(val, od->base + reg);
-+	writel(regval, od->base + reg);
- }
- 
- static void dma_writel(struct owl_dma *od, u32 reg, u32 data)
--- 
-2.43.0
-
+ 	/*
 
 
 
