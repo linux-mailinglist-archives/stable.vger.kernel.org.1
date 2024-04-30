@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113B68B71ED
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D7B8B73AF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4235A1C23049
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9D101C21AD2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8612212C54B;
-	Tue, 30 Apr 2024 11:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525E112D746;
+	Tue, 30 Apr 2024 11:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hM5Uuk7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHxcAre+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4239412B176;
-	Tue, 30 Apr 2024 11:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1215F12C48B;
+	Tue, 30 Apr 2024 11:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474940; cv=none; b=AF6l68XR0sZcm0fVIlEDH0EPf6cP6S/vkNKxs2xRI5BHXVBap3otmbHsKEBN6Z0wEhUezrdyTr/cH3RiON/TtR/2sGmlonCSzUG45rIdcBotNEZeEskkomyv8qKsq1FH9F4WHDiOPb/wi5Tc8cIOF4mTJU2gwgyGEE1Xz1dIEPU=
+	t=1714476127; cv=none; b=fdjokKQJbFt2kogxl9RBiAIoWLQw98fCUy7VjstP2YkJDbzwNFah6su2ka7SrxFmWap8WRZoTcuj2gbf3JGW+RFjoD1oU/bWaEBCHv3VD0mD2TmhCTu+NXI0KB2DqeY2jhFWaISn4Iy4JWbmwpAcD5jAFSfye+G0qiyyXr1ytoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474940; c=relaxed/simple;
-	bh=Z5G67t5DrMJzbA1B2/vIowCOdUxC3TPzslA9H++X6CA=;
+	s=arc-20240116; t=1714476127; c=relaxed/simple;
+	bh=r01qXQzCioYTOwq41XnTsjEF207pFzqgiCXrRPpUvh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eboIR6ARHEk04+yazpoQr+eNjQ1cgd17nMi7lSBbUL0yyeGCBhzSSpiKzyxw0LTSybAx17Wtacd+h2lAM9FllCwXS8ifPai7MM+ZeeXDBAR1v/HcqQw9tSU+1AyVvcJ6Qk+dh9anBiIuqNzUlqBgOPXbFlrINuxTyFD0+jwGD4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hM5Uuk7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88969C2BBFC;
-	Tue, 30 Apr 2024 11:02:19 +0000 (UTC)
+	 MIME-Version; b=SX5brAJ2qUdjdjskA5p7ab0bNP4DHrCd7j8c1DjZkDFDFGSx2FngZ6vf4tS/8jkR9jsNyNDvoocZD0siGoRo7gF5BUeWUlfrbzil/VCTbD88HAdMkJ9TjwDfPMPdVL6aNhpBnpy3PdG4tidrTTAAL9s5UF2qhm3KSKW0pCdvPho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHxcAre+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778DFC2BBFC;
+	Tue, 30 Apr 2024 11:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474939;
-	bh=Z5G67t5DrMJzbA1B2/vIowCOdUxC3TPzslA9H++X6CA=;
+	s=korg; t=1714476126;
+	bh=r01qXQzCioYTOwq41XnTsjEF207pFzqgiCXrRPpUvh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hM5Uuk7HBfpRUzEGKdo5kynFlCDGYYLUW2B3FpI1RNgDXw0ohpdNMU6YhGvEAks2v
-	 P/rHllA3u7hx8Pvr6azj3EQ0j++Hy8vdgykK/rNOmxC4pexFwlYCdB6vWQcVjtyE/8
-	 QSDfAWCZPbx5yMG6OulVn/pGyUKt6R7ZQJLtzzXM=
+	b=kHxcAre+ZOEMsInRSNdeAYapDUZGkbXGpdQ5mDToe19CC6Pkdsna76jFSrI7qNws1
+	 LDuFIslQI5mkmm0y7UIhn+l6BhpRp/FeJ4D5kd+pfW/M2txoeeQf7dWXDkCdheOwYM
+	 U04NFyWHnYoeBg0QQ+wSo/vuwOGVLWXV8/jZA3DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Petr Tesarik <petr@tesarici.cz>,
+	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/138] arm64: dts: mediatek: mt7622: fix ethernet controller "compatible"
+Subject: [PATCH 5.4 005/107] u64_stats: fix u64_stats_init() for lockdep when used repeatedly in one file
 Date: Tue, 30 Apr 2024 12:39:25 +0200
-Message-ID: <20240430103051.778519046@linuxfoundation.org>
+Message-ID: <20240430103044.816720381@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Petr Tesarik <petr@tesarici.cz>
 
-[ Upstream commit 208add29ce5b7291f6c466e4dfd9cbf61c72888e ]
+[ Upstream commit 38a15d0a50e0a43778561a5861403851f0b0194c ]
 
-Fix following validation error:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: ethernet@1b100000: compatible: ['mediatek,mt7622-eth', 'mediatek,mt2701-eth', 'syscon'] is too long
-        from schema $id: http://devicetree.org/schemas/net/mediatek,net.yaml#
-(and other complains about wrong clocks).
+Fix bogus lockdep warnings if multiple u64_stats_sync variables are
+initialized in the same file.
 
-Fixes: 5f599b3a0bb8 ("arm64: dts: mt7622: add ethernet device nodes")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240317221050.18595-4-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+With CONFIG_LOCKDEP, seqcount_init() is a macro which declares:
+
+	static struct lock_class_key __key;
+
+Since u64_stats_init() is a function (albeit an inline one), all calls
+within the same file end up using the same instance, effectively treating
+them all as a single lock-class.
+
+Fixes: 9464ca650008 ("net: make u64_stats_init() a function")
+Closes: https://lore.kernel.org/netdev/ea1567d9-ce66-45e6-8168-ac40a47d1821@roeck-us.net/
+Signed-off-by: Petr Tesarik <petr@tesarici.cz>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240404075740.30682-1-petr@tesarici.cz
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/linux/u64_stats_sync.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index bf0856d37eda8..974520bd3d8fb 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -934,9 +934,7 @@
- 	};
+--- a/include/linux/u64_stats_sync.h
++++ b/include/linux/u64_stats_sync.h
+@@ -70,7 +70,11 @@ struct u64_stats_sync {
  
- 	eth: ethernet@1b100000 {
--		compatible = "mediatek,mt7622-eth",
--			     "mediatek,mt2701-eth",
--			     "syscon";
-+		compatible = "mediatek,mt7622-eth";
- 		reg = <0 0x1b100000 0 0x20000>;
- 		interrupts = <GIC_SPI 223 IRQ_TYPE_LEVEL_LOW>,
- 			     <GIC_SPI 224 IRQ_TYPE_LEVEL_LOW>,
--- 
-2.43.0
-
+ 
+ #if BITS_PER_LONG == 32 && defined(CONFIG_SMP)
+-#define u64_stats_init(syncp)	seqcount_init(&(syncp)->seq)
++#define u64_stats_init(syncp)				\
++	do {						\
++		struct u64_stats_sync *__s = (syncp);	\
++		seqcount_init(&__s->seq);		\
++	} while (0)
+ #else
+ static inline void u64_stats_init(struct u64_stats_sync *syncp)
+ {
 
 
 
