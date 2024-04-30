@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-42122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E83F8B7183
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C018B72E8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F7521C21295
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875ED1F2111D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61ED12C47A;
-	Tue, 30 Apr 2024 10:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE9312C805;
+	Tue, 30 Apr 2024 11:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPaR1WrE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQokegoc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93087129E89;
-	Tue, 30 Apr 2024 10:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9F38801;
+	Tue, 30 Apr 2024 11:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474641; cv=none; b=Si82DWvgrp78bV2jIdWkVRKlnHogFk4j5FgXgLSeMls53TUVK8IBzPgz3i4pcBLj5L8JkehQjPY7GWLyPqfzy3ofJydgyxy9MWYugWBi6TIKklloTu+UFWtqbAisahGE31Rcb3DB2pXaXYqstSRS2FMrJXGlIbBc/7ZGgZG+Aa4=
+	t=1714475590; cv=none; b=ghQNFhyTggeXi4b+Vxxk6dwW8b9LL0+jk/kVBzyY+S97196WMXvpb2U2iVYcQfpiS1g8/nlAUcPdeFOxKvN7DiKiPTckal5B90fdJY1dBh0GFsL55xUsk7IZugJFz961ww/D/x5cIX1QFpdYyU9Iim9WWQZ0yOONKp4MiC2nNWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474641; c=relaxed/simple;
-	bh=qa7YbAGl0fTGj5Cz2w+RR7lppzY0bGgUCir0hmrUX3A=;
+	s=arc-20240116; t=1714475590; c=relaxed/simple;
+	bh=9JmD5si2/W5mxS5MU4youPPHtWdjdGBebuWYqQLmSGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1l/Ef3CWD6w6USzhNQx5K+MczGQ+mHVV8Nj8APGUuwW1aeQFukKbOvBGa+4q74ozxOPQC7ywc7nB/uXuFk88Vg8qujeb00562o1j4+io8ib9VBnSYwPSl3b+IyQPjejtzb//E+U13iwL7w8Jc7AUGQOma7alD6L8pjSpXFLsG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPaR1WrE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA76C2BBFC;
-	Tue, 30 Apr 2024 10:57:20 +0000 (UTC)
+	 MIME-Version; b=qZmIsyKwSIDyzVzae74YVq/wNpQQUKELnrb34iOhUX+aX/rdEBUD2Qdg/YOSEjv7nYcHcwKqf+FRb270Y/him73J0FophiAvO7cGRXtbDKaj2o3aH2bTo2fifKKkmUim9Z88ElCfLW5FZarZmHJRP7f4Aj44fzBDprP7O0+eTbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQokegoc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBF1C2BBFC;
+	Tue, 30 Apr 2024 11:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474641;
-	bh=qa7YbAGl0fTGj5Cz2w+RR7lppzY0bGgUCir0hmrUX3A=;
+	s=korg; t=1714475590;
+	bh=9JmD5si2/W5mxS5MU4youPPHtWdjdGBebuWYqQLmSGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zPaR1WrEiQ5Ut7VXP2/GP5L3UhA8DgJKiIW1a0jBvotrE+oLfSHAZdPHt7ejWfN+7
-	 WafNk+AWNxg4aYj+VwPRBYYEGuGPAiMU9nbOwoLzjnoegGlLoAMq3fde3NM6ll0n2O
-	 nFJUGmj/wjrIHbKapaerzgNXQNcMtfE9nfY+wDj4=
+	b=zQokegoccKpCvqZVrglfvoXz5oMr8WpDNmVjk/3NuJNvXtAvtbOPBnilPqFT/zQ9S
+	 uXLJeV7M8i8PsesuPxpkZbsIWWOu5HQnwbnL9tA2SyAYi7/CabRO2zU2ECoTI2nUcf
+	 /FYF5+Dxm5zaU0FDlp8ZgAbwn+uCyIFuAIj5/qsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Marek Vasut <marex@denx.de>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 217/228] dt-bindings: eeprom: at24: Fix ST M24C64-D compatible schema
+	Mukul Joshi <mukul.joshi@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 143/186] drm/amdgpu: Fix leak when GPU memory allocation fails
 Date: Tue, 30 Apr 2024 12:39:55 +0200
-Message-ID: <20240430103110.066914329@linuxfoundation.org>
+Message-ID: <20240430103102.184499360@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Mukul Joshi <mukul.joshi@amd.com>
 
-[ Upstream commit b3de7b433a323bb80303d77e69f1281bfab0a70b ]
+commit 25e9227c6afd200bed6774c866980b8e36d033af upstream.
 
-The schema for the ST M24C64-D compatible string doesn't work.
-Validation fails as the 'd-wl' suffix is not added to the preceeding
-schema which defines the entries and vendors. The actual users are
-incorrect as well because the vendor is listed as Atmel whereas the
-part is made by ST.
+Free the sync object if the memory allocation fails for any
+reason.
 
-As this part doesn't appear to have multiple vendors, move it to its own
-entry.
-
-Fixes: 0997ff1fc143 ("dt-bindings: at24: add ST M24C64-D Additional Write lockable page")
-Fixes: c761068f484c ("dt-bindings: at24: add ST M24C32-D Additional Write lockable page")
-Signed-off-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/eeprom/at24.yaml | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/eeprom/at24.yaml b/Documentation/devicetree/bindings/eeprom/at24.yaml
-index 1812ef31d5f1e..3c36cd0510de8 100644
---- a/Documentation/devicetree/bindings/eeprom/at24.yaml
-+++ b/Documentation/devicetree/bindings/eeprom/at24.yaml
-@@ -68,14 +68,10 @@ properties:
-                   pattern: cs16$
-               - items:
-                   pattern: c32$
--              - items:
--                  pattern: c32d-wl$
-               - items:
-                   pattern: cs32$
-               - items:
-                   pattern: c64$
--              - items:
--                  pattern: c64d-wl$
-               - items:
-                   pattern: cs64$
-               - items:
-@@ -136,6 +132,7 @@ properties:
-               - renesas,r1ex24128
-               - samsung,s524ad0xd1
-           - const: atmel,24c128
-+      - pattern: '^atmel,24c(32|64)d-wl$' # Actual vendor is st
- 
-   label:
-     description: Descriptive name of the EEPROM.
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1785,6 +1785,7 @@ err_node_allow:
+ err_bo_create:
+ 	amdgpu_amdkfd_unreserve_mem_limit(adev, aligned_size, flags, xcp_id);
+ err_reserve_limit:
++	amdgpu_sync_free(&(*mem)->sync);
+ 	mutex_destroy(&(*mem)->lock);
+ 	if (gobj)
+ 		drm_gem_object_put(gobj);
 
 
 
