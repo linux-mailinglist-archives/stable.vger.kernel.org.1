@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B968B7340
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D96AD8B741C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34D891C23148
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16C9E1C208EA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3534F12CDAE;
-	Tue, 30 Apr 2024 11:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AE912D209;
+	Tue, 30 Apr 2024 11:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/gph0sw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IxZoHKT4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E595D8801;
-	Tue, 30 Apr 2024 11:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F77317592;
+	Tue, 30 Apr 2024 11:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475817; cv=none; b=U/VHkP7RPuRFDNKAJ4ngB3DWIpXyet5mBzeMgVpJaxq5LWymf4z0cENzkh3F/0OO37CJqrqAyBWNKW2FTrnXsJv3KfTv+GZDle+xz6xa2A+0xoWmoi376rEhtKsF5JDrDiVe47hwgZBAF9F+mq3puUYr3Z8uDKTZCjVUUxwSrpo=
+	t=1714476432; cv=none; b=gtQmo3i/IGFy2hejMxSZyVBKvFlEHebT6uD30loKO8BrjbDdpny7gcV4uwEzynehloySFv0S6OWNMjERw0QMAuhBxGBmOi/KedWR2R9MgZkLGxoqgCSdMqdI9MRTBDQdPU4VjstqPG0/uGeiiMWZKRRi3jUyF5CmzwnbseiTq6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475817; c=relaxed/simple;
-	bh=Oamz2ng+i9a3aGidEiyeGF6Hv4gxp76k5xLW4b7yliw=;
+	s=arc-20240116; t=1714476432; c=relaxed/simple;
+	bh=ntpSzpZKu82fmNVeMkLF7nt0dvdDJM443KAGlDQjqNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ok7d8QvtAfNVzYaZGaHq1e5ULT+uQ6wx8feMn+GEIxnCSTOMP13PSv0moNtaxgOiXU/DqCGXiGGA5cM3mb/Ub1zVf3Lkn9Y7+9ecQI4rO7A0jE6+L1t7VQ5GnZifvF73oE+u4aoa/yLT+fBcWsJmESMq+BgeJxFdRi15lhLuMek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/gph0sw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E26EC2BBFC;
-	Tue, 30 Apr 2024 11:16:56 +0000 (UTC)
+	 MIME-Version; b=YdeYircAEUZeyoyugpVxN8SZWC6o4owizqCFshlbftuYamOWYdzaG3Ay5CsAi2hhZi7wlE/MECsVYLXLQ5L0VfuPTKgqXKmil3AlNFcY+l+jBEy7A8Del5YwK/41ya1nadqNyzjYiv4hN2Bu5QOaLNucq1tlyfoae4mtX0l2ZIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxZoHKT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8518BC4AF1A;
+	Tue, 30 Apr 2024 11:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475816;
-	bh=Oamz2ng+i9a3aGidEiyeGF6Hv4gxp76k5xLW4b7yliw=;
+	s=korg; t=1714476432;
+	bh=ntpSzpZKu82fmNVeMkLF7nt0dvdDJM443KAGlDQjqNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/gph0swVWG6JsETfAqIQ7g5qDRpGg3if9UhgEwr9NGn1I76A8Z8KQPTGYmf4YyZI
-	 CfdxZ8XO0H43Eta4xNyuzRmpqVq+OwoFmkOh225DQQcOqKxqR8XhIZWYrZ35m/nsmY
-	 oFC6RNq8T7f6dyfwbjDfLkxIaQ910PnyXT5Zuz+Q=
+	b=IxZoHKT4iEbtLbh1ciUsFCm+IPNlWkglqSYwuVLDF4iZB6aIYj99f7g6ad67Qz5W6
+	 M/xOQdDqAkSD63iu7s+Ti5N09UbiHqfRZ56s0KZypLqJWO99RsDAPQm8v9Inzokwha
+	 AzvMOGrgE23rpza40B7V8iEKY5snmRvpVxGbJ9kA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	shironeko <shironeko@tesaguri.club>,
-	Eric Dumazet <edumazet@google.com>,
-	Jose Alonso <joalonsof@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/80] net: usb: ax88179_178a: stop lying about skb->truesize
-Date: Tue, 30 Apr 2024 12:39:58 +0200
-Message-ID: <20240430103044.189037435@linuxfoundation.org>
+Subject: [PATCH 6.1 030/110] bnxt_en: refactor reset close code
+Date: Tue, 30 Apr 2024 12:39:59 +0200
+Message-ID: <20240430103048.458751219@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vikas Gupta <vikas.gupta@broadcom.com>
 
-[ Upstream commit 4ce62d5b2f7aecd4900e7d6115588ad7f9acccca ]
+[ Upstream commit 7474b1c82be3780692d537d331f9aa7fc1e5a368 ]
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+Introduce bnxt_fw_fatal_close() API which can be used
+to stop data path and disable device when firmware
+is in fatal state.
 
-In this patch, I removed one of the skb->truesize overide.
-
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path")
-
-Fixes: f8ebb3ac881b ("net: usb: ax88179_178a: Fix packet receiving")
-Reported-by: shironeko <shironeko@tesaguri.club>
-Closes: https://lore.kernel.org/netdev/c110f41a0d2776b525930f213ca9715c@tesaguri.club/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jose Alonso <joalonsof@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240421193828.1966195-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: a1acdc226bae ("bnxt_en: Fix the PCI-AER routines")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index f11748cc5b228..868fad2f8c78a 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1478,21 +1478,16 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			/* Skip IP alignment pseudo header */
- 			skb_pull(skb, 2);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 0d0aad7141c15..e889017e3a7fb 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11812,6 +11812,16 @@ static void bnxt_rx_ring_reset(struct bnxt *bp)
+ 	bnxt_rtnl_unlock_sp(bp);
+ }
  
--			skb->truesize = SKB_TRUESIZE(pkt_len_plus_padd);
- 			ax88179_rx_checksum(skb, pkt_hdr);
- 			return 1;
- 		}
- 
--		ax_skb = skb_clone(skb, GFP_ATOMIC);
-+		ax_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
- 		if (!ax_skb)
- 			return 0;
--		skb_trim(ax_skb, pkt_len);
-+		skb_put(ax_skb, pkt_len);
-+		memcpy(ax_skb->data, skb->data + 2, pkt_len);
- 
--		/* Skip IP alignment pseudo header */
--		skb_pull(ax_skb, 2);
--
--		skb->truesize = pkt_len_plus_padd +
--				SKB_DATA_ALIGN(sizeof(struct sk_buff));
- 		ax88179_rx_checksum(ax_skb, pkt_hdr);
- 		usbnet_skb_return(dev, ax_skb);
- 
++static void bnxt_fw_fatal_close(struct bnxt *bp)
++{
++	bnxt_tx_disable(bp);
++	bnxt_disable_napi(bp);
++	bnxt_disable_int_sync(bp);
++	bnxt_free_irq(bp);
++	bnxt_clear_int_mode(bp);
++	pci_disable_device(bp->pdev);
++}
++
+ static void bnxt_fw_reset_close(struct bnxt *bp)
+ {
+ 	bnxt_ulp_stop(bp);
+@@ -11825,12 +11835,7 @@ static void bnxt_fw_reset_close(struct bnxt *bp)
+ 		pci_read_config_word(bp->pdev, PCI_SUBSYSTEM_ID, &val);
+ 		if (val == 0xffff)
+ 			bp->fw_reset_min_dsecs = 0;
+-		bnxt_tx_disable(bp);
+-		bnxt_disable_napi(bp);
+-		bnxt_disable_int_sync(bp);
+-		bnxt_free_irq(bp);
+-		bnxt_clear_int_mode(bp);
+-		pci_disable_device(bp->pdev);
++		bnxt_fw_fatal_close(bp);
+ 	}
+ 	__bnxt_close_nic(bp, true, false);
+ 	bnxt_vf_reps_free(bp);
 -- 
 2.43.0
 
