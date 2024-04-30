@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCFB8B7206
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974E38B7332
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E95A1C23211
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541D42879BE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D7112C490;
-	Tue, 30 Apr 2024 11:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E8812D755;
+	Tue, 30 Apr 2024 11:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gS4Zx5g/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wm4wvyd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A198B12B176;
-	Tue, 30 Apr 2024 11:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979488801;
+	Tue, 30 Apr 2024 11:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475000; cv=none; b=s73YGeUSEReaVz+/QhkhG5j2eDhMiZ3+nxEhM+IzwPwiuO8UmMH7avoxkWSL1VquZtCeoeTvl5FahnOfrgj1FWp6Mtg4z67GlQm5BPeUceNt//Z/20rOmVpS4OFqKHe2deom0pNU0/aRonKuqfrxTK3o2vs3IqumaK/jQGPnG+Q=
+	t=1714475774; cv=none; b=Q3P4iEGUivmISBAZIYFG0zaG8Ix078X1ICMfEvYop+aoAbW126AbfSD2usta4Qvx8q1inPPH2tmtLrgEWk7cC/+o6AyBM9knra+Onvt6AUbTfqbd+vwXOESU4jn7nYSd2YLvgH5Ggq9jgjM4vy0nDo/Bpc/E1b5/Lbs8cDPjAR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475000; c=relaxed/simple;
-	bh=DZGd99wZcFQeTuzUh/2gjEgQiA7cJMozg7nc/vxu+ao=;
+	s=arc-20240116; t=1714475774; c=relaxed/simple;
+	bh=J3eA7GYb1BH6z60Ou6DRaGHpmCK1+JFscjhNZo+9r8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDiaQeZ7k+gHjxiw03g4lmCeZtSndkfwipcOvtlqNdWlA8luG3Jj73ZTbNONt9pQy5dK61MGvwkgX9K7MNY9XjjAF45w7VddnvMwzWfHmO2rmWWdTDYIdtOebiRBz9jwsLknRPw5kyFsdoDsfyZ2tdAGDriHfCLK6Mr+b05pmNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gS4Zx5g/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD78C2BBFC;
-	Tue, 30 Apr 2024 11:03:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l61jqKbq0v5nfH8QOrLYozUIBvZZOThlMVpuVWRe0Ud7C/DlQvUppkLT0iZXEXtw3r0Dnf/9hl5WqJqzAsj8Qdxvu4QfFB7EUByNhOTULv6pgsygb1rJrIbX1Zy6kVaH7NxHDwn5pBEvkpeGxaAtComatZbIhcDBZxrg5NUZcRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wm4wvyd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3212C2BBFC;
+	Tue, 30 Apr 2024 11:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475000;
-	bh=DZGd99wZcFQeTuzUh/2gjEgQiA7cJMozg7nc/vxu+ao=;
+	s=korg; t=1714475774;
+	bh=J3eA7GYb1BH6z60Ou6DRaGHpmCK1+JFscjhNZo+9r8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gS4Zx5g/q4/9jSiSCpP/NmcY24TnVjdQOWY/1CtoAYNeDFd08CxX94uc0Zo22P0cy
-	 x6AOJpq7Nbg+Od8XEOZ256Jg7jBtI/2vGzL2Y6peYDA/S9Qe67AuUlnQa+XEn4oiNj
-	 VTHWKsZlJ+JjnOyu0K50wvpJwKgyqkXOx4+/eVg4=
+	b=wm4wvyd1wRKLmX4R/uQKMCC3vN/dd2KTDiIvMftfmInNL43V53u/bJqzk7yB+Vau6
+	 XJs3sDqvChXVBPWB6LYrmJ6+wz9RrsE/C1Vq1U75/9fl6FurMl+NdtTrXp+LJc4w1a
+	 C96jCOpZsoSEnyyD0YJQvUoV6NhOgShmR3HSNrcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/138] netfilter: nf_tables: honor table dormant flag from netdev release event path
+Subject: [PATCH 5.15 14/80] arm64: dts: mediatek: mt7622: fix ethernet controller "compatible"
 Date: Tue, 30 Apr 2024 12:39:46 +0200
-Message-ID: <20240430103052.386487420@linuxfoundation.org>
+Message-ID: <20240430103043.833345106@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 8e30abc9ace4f0add4cd761dfdbfaebae5632dd2 ]
+[ Upstream commit 208add29ce5b7291f6c466e4dfd9cbf61c72888e ]
 
-Check for table dormant flag otherwise netdev release event path tries
-to unregister an already unregistered hook.
+Fix following validation error:
+arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: ethernet@1b100000: compatible: ['mediatek,mt7622-eth', 'mediatek,mt2701-eth', 'syscon'] is too long
+        from schema $id: http://devicetree.org/schemas/net/mediatek,net.yaml#
+(and other complains about wrong clocks).
 
-[524854.857999] ------------[ cut here ]------------
-[524854.858010] WARNING: CPU: 0 PID: 3386599 at net/netfilter/core.c:501 __nf_unregister_net_hook+0x21a/0x260
-[...]
-[524854.858848] CPU: 0 PID: 3386599 Comm: kworker/u32:2 Not tainted 6.9.0-rc3+ #365
-[524854.858869] Workqueue: netns cleanup_net
-[524854.858886] RIP: 0010:__nf_unregister_net_hook+0x21a/0x260
-[524854.858903] Code: 24 e8 aa 73 83 ff 48 63 43 1c 83 f8 01 0f 85 3d ff ff ff e8 98 d1 f0 ff 48 8b 3c 24 e8 8f 73 83 ff 48 63 43 1c e9 26 ff ff ff <0f> 0b 48 83 c4 18 48 c7 c7 00 68 e9 82 5b 5d 41 5c 41 5d 41 5e 41
-[524854.858914] RSP: 0018:ffff8881e36d79e0 EFLAGS: 00010246
-[524854.858926] RAX: 0000000000000000 RBX: ffff8881339ae790 RCX: ffffffff81ba524a
-[524854.858936] RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff8881c8a16438
-[524854.858945] RBP: ffff8881c8a16438 R08: 0000000000000001 R09: ffffed103c6daf34
-[524854.858954] R10: ffff8881e36d79a7 R11: 0000000000000000 R12: 0000000000000005
-[524854.858962] R13: ffff8881c8a16000 R14: 0000000000000000 R15: ffff8881351b5a00
-[524854.858971] FS:  0000000000000000(0000) GS:ffff888390800000(0000) knlGS:0000000000000000
-[524854.858982] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[524854.858991] CR2: 00007fc9be0f16f4 CR3: 00000001437cc004 CR4: 00000000001706f0
-[524854.859000] Call Trace:
-[524854.859006]  <TASK>
-[524854.859013]  ? __warn+0x9f/0x1a0
-[524854.859027]  ? __nf_unregister_net_hook+0x21a/0x260
-[524854.859044]  ? report_bug+0x1b1/0x1e0
-[524854.859060]  ? handle_bug+0x3c/0x70
-[524854.859071]  ? exc_invalid_op+0x17/0x40
-[524854.859083]  ? asm_exc_invalid_op+0x1a/0x20
-[524854.859100]  ? __nf_unregister_net_hook+0x6a/0x260
-[524854.859116]  ? __nf_unregister_net_hook+0x21a/0x260
-[524854.859135]  nf_tables_netdev_event+0x337/0x390 [nf_tables]
-[524854.859304]  ? __pfx_nf_tables_netdev_event+0x10/0x10 [nf_tables]
-[524854.859461]  ? packet_notifier+0xb3/0x360
-[524854.859476]  ? _raw_spin_unlock_irqrestore+0x11/0x40
-[524854.859489]  ? dcbnl_netdevice_event+0x35/0x140
-[524854.859507]  ? __pfx_nf_tables_netdev_event+0x10/0x10 [nf_tables]
-[524854.859661]  notifier_call_chain+0x7d/0x140
-[524854.859677]  unregister_netdevice_many_notify+0x5e1/0xae0
-
-Fixes: d54725cd11a5 ("netfilter: nf_tables: support for multiple devices per netdev hook")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 5f599b3a0bb8 ("arm64: dts: mt7622: add ethernet device nodes")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240317221050.18595-4-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_chain_filter.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
-index a18582a4ecf34..aad676402919b 100644
---- a/net/netfilter/nft_chain_filter.c
-+++ b/net/netfilter/nft_chain_filter.c
-@@ -339,7 +339,9 @@ static void nft_netdev_event(unsigned long event, struct net_device *dev,
- 		return;
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index f3bc89ac0bef4..7a54af96e1d90 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -935,9 +935,7 @@
+ 	};
  
- 	if (n > 1) {
--		nf_unregister_net_hook(ctx->net, &found->ops);
-+		if (!(ctx->chain->table->flags & NFT_TABLE_F_DORMANT))
-+			nf_unregister_net_hook(ctx->net, &found->ops);
-+
- 		list_del_rcu(&found->list);
- 		kfree_rcu(found, rcu);
- 		return;
+ 	eth: ethernet@1b100000 {
+-		compatible = "mediatek,mt7622-eth",
+-			     "mediatek,mt2701-eth",
+-			     "syscon";
++		compatible = "mediatek,mt7622-eth";
+ 		reg = <0 0x1b100000 0 0x20000>;
+ 		interrupts = <GIC_SPI 223 IRQ_TYPE_LEVEL_LOW>,
+ 			     <GIC_SPI 224 IRQ_TYPE_LEVEL_LOW>,
 -- 
 2.43.0
 
