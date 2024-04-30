@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D8F8B72EC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA098B741B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A38DB20F61
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE7AE1F21618
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE7D12CDA5;
-	Tue, 30 Apr 2024 11:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D2812CDAE;
+	Tue, 30 Apr 2024 11:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdnAqx1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NS2dTeAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD69211C;
-	Tue, 30 Apr 2024 11:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E387217592;
+	Tue, 30 Apr 2024 11:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475603; cv=none; b=jgjDaKPEOB3NSLE1MQdtptCqEbSmOsHYtq4gKRqVtda2wOVTg48u8LbS53PqNcQV6hkcjb912/DRMTC7CmAUZeJWXKRSsIGIZ/oI7NdP+Lb4/Wq7M0SB4ApagZP9okoqpdQwBdvJMyRZoA22lfl9FZ2nW745S4Ok3siscQtUD5Y=
+	t=1714476429; cv=none; b=RPEGRSmTDS+6HoRuhOvynNQD3vPEKdwoDQHxt3tHp1gAFWlf91bJPhvrXA0uvq6McJfnRqL9YYdNkw8yxvYSt3NvnPzkNOGwBbiFupzyVJgh+GrtAQg7IlisEss25PyVpM0xNJTOHj68f4IACqa1v5nEOFEx2FBO0eg5Xow6YEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475603; c=relaxed/simple;
-	bh=cQc5GczSyO/FDFoRWVIhMNchZtditPgqscvpLi3186s=;
+	s=arc-20240116; t=1714476429; c=relaxed/simple;
+	bh=VEwVqhdG8zplwv9hgvQQiIza+yj/i4evhYY6SypqrxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWdqzNVhwX0e/EGxce6IWrd1sCYJ1TpRnCNJ9VPr0EzHnmnAsCUrIZfqw2ZjbMpfDh09IdTVVwar7mELw9NGmckVe5JrveXSdNGttzeKOS+r5zIbIa/uXX2zDU+byx4DPLTejUpeW8yBkBtHX4hXRTZA2JyHEA9XFQE+w/Iohqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdnAqx1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178ECC2BBFC;
-	Tue, 30 Apr 2024 11:13:22 +0000 (UTC)
+	 MIME-Version; b=IoNj4q4OLhEQj9ZK3vSGG7M6npBQnNDbiHqLqU+lGZIVWBzETE2RvNpe6Zje+k/X2QTeKhjXuS8yMssE20+5vGvHvUFdO1prOeKMAioE2NWsJ0KZ5hJ7ZeBbpkbHxk6/pnfN9by0yV8cfk9rTLceLRyHz35EaMkqeVMbH/6JBQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NS2dTeAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A440C2BBFC;
+	Tue, 30 Apr 2024 11:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475603;
-	bh=cQc5GczSyO/FDFoRWVIhMNchZtditPgqscvpLi3186s=;
+	s=korg; t=1714476428;
+	bh=VEwVqhdG8zplwv9hgvQQiIza+yj/i4evhYY6SypqrxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdnAqx1Y+KuYWoLVQ1ropOWMqYyIESPpP3pUt8wX4h4ZKtwjvj+YQGh7CfPd2lUlF
-	 aSxdSaJZVNn65WFIQEqRKRbyvHfp8OQEoadvqM+7YcNDIhRkBGaTz19ajXdE4Z8t9g
-	 YWIkxWcudT5eF4kmjKALymQ3kxkvM1bt+Bb7OLDc=
+	b=NS2dTeAPv8w4oRbRhGbzyN/eNjkkepRX6UvlPs6TwveuSmbCO0PzgOUhXPYV2a9M8
+	 RXER1o/9rpQYiFBoD+IqI2tgMSk7nmuTNGh5n+FaTWWdj2Nc2rF2141cOvWvRLAQtT
+	 29YCg9AywYl3q3uRdLJuz2JuaNCWawsPw4G/Q1OA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarred White <jarredwhite@linux.microsoft.com>,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 146/186] ACPI: CPPC: Fix bit_offset shift in MASK_VAL() macro
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 029/110] bridge/br_netlink.c: no need to return void function
 Date: Tue, 30 Apr 2024 12:39:58 +0200
-Message-ID: <20240430103102.271340009@linuxfoundation.org>
+Message-ID: <20240430103048.429387202@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarred White <jarredwhite@linux.microsoft.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 05d92ee782eeb7b939bdd0189e6efcab9195bf95 upstream.
+[ Upstream commit 4fd1edcdf13c0d234543ecf502092be65c5177db ]
 
-Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
-system memory accesses") neglected to properly wrap the bit_offset shift
-when it comes to applying the mask. This may cause incorrect values to be
-read and may cause the cpufreq module not be loaded.
+br_info_notify is a void function. There is no need to return.
 
-[   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
-[   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
-
-Also, corrected the bitmask generation in GENMASK (extra bit being added).
-
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
-Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
-Reviewed-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b6d0425b816e ("bridge: cfm: Netlink Notifications.")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bridge/br_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -167,8 +167,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_
- #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
+diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
+index d087fd4c784ac..d38eff27767dc 100644
+--- a/net/bridge/br_netlink.c
++++ b/net/bridge/br_netlink.c
+@@ -650,7 +650,7 @@ void br_ifinfo_notify(int event, const struct net_bridge *br,
+ {
+ 	u32 filter = RTEXT_FILTER_BRVLAN_COMPRESSED;
  
- /* Shift and apply the mask for CPC reads/writes */
--#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
--					GENMASK(((reg)->bit_width), 0)))
-+#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
-+					GENMASK(((reg)->bit_width) - 1, 0))
+-	return br_info_notify(event, br, port, filter);
++	br_info_notify(event, br, port, filter);
+ }
  
- static ssize_t show_feedback_ctrs(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
+ /*
+-- 
+2.43.0
+
 
 
 
