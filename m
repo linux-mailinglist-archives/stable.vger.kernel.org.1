@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-42495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13FC8B734C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C798B732C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC081C230DF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57BBB1C231CE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BAC12D76B;
-	Tue, 30 Apr 2024 11:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69BD12D210;
+	Tue, 30 Apr 2024 11:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAAX4DwQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2fL8qBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A3017592;
-	Tue, 30 Apr 2024 11:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52A612D209;
+	Tue, 30 Apr 2024 11:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475848; cv=none; b=Lh6VL7DVALrotwPzuRFQ9MnzWmb/9bHbBi+KAFzixzhgOafREtR1NL9pKiC+GWODDtUGdeIGrOk4PU7xYwASKSKY8lFcrZ7ZvSuoYPPraaoyZWyg6bO61JHzT/diMTnHpvN9eWW3xihdCDS3RDSOKBMm3sBApWRBzEf6kwwrhcI=
+	t=1714475755; cv=none; b=g+euNloa5UVITbxUHjoPskSjmo84GB3o44CDHS+8L5MfKn/1incoy2FYdH1kxkljGszEchhMEZ6BdGPAcok3O2sgjULLaA6kQmxvN+XzGO+Kafbskiy5SJZ1TixxKP3fEoCcgyNT+UKpqWcB4MFDDJKIz0XAQWIGH47VlbigyiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475848; c=relaxed/simple;
-	bh=+fiB6kwVRCS/cXHLcmJKX4kK0NO4hp8AXpw53e4R8L4=;
+	s=arc-20240116; t=1714475755; c=relaxed/simple;
+	bh=yoEf/jLkskwEwiUGktfhWNELYT8knpZ8ZgCjdMamZBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4N79suAkcgPiKKYqtlBRqkF1O6lnVv8Hrg+L2RmJFgg0hLqTo1VeaEdG0gYuzUsz2U3aNwiZWyCmXOYfk3zTHdVTtCSEHbkEXkML8dBLzcGFkk8n3rJuZM81+8VS6m6+5vf3AAAYk6PuYnMUBxruKtYUtm7DeD71VflG5wpNVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAAX4DwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B874BC2BBFC;
-	Tue, 30 Apr 2024 11:17:27 +0000 (UTC)
+	 MIME-Version; b=Yf6ttyCwQYkaO3YEDWXTlQ/1O2OwCh9z0jJNN5v6qQBlpz8X6d55Uyby1RZl1pmMuSOgH2tli7RKBT74dEJLpIbiBFy+C34CUcx8byqv23aDiqcEiVGQYG8rblScXgWm5jYJjc/uAoPWvxTWeQkgNx7VHTBN9LP8wy6+xFV8SEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2fL8qBV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD01C2BBFC;
+	Tue, 30 Apr 2024 11:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475848;
-	bh=+fiB6kwVRCS/cXHLcmJKX4kK0NO4hp8AXpw53e4R8L4=;
+	s=korg; t=1714475755;
+	bh=yoEf/jLkskwEwiUGktfhWNELYT8knpZ8ZgCjdMamZBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAAX4DwQxk01oQ8ug0cdAcKEQB7IvFcs2adY/vZRYXx1TyzmvshjMThyjvAFJNuP7
-	 gXLC/zwLwDDMZVXCH7ixXsSo2z7t05yQMqrh1CisDnuNpV2iOosfRkb2/3aY1hNNrl
-	 A+JgTeSD6lGFXabqtGfkUez2+nPt2PL2ci3bb6q4=
+	b=h2fL8qBVnLqZ9fLHhkjLK74qlv80NqrUFOFCxPFPgZCnq5KY/25b/yFYGRdF+TXDq
+	 8LaG0IVfB5yW6yzv70pK0Tw1u0CnJd6IprvtR7yoC3HScV2JTsp9fecrc0ouJLGasI
+	 s6iCMwvVaMqzaZ+wfVr7TnWSn1FoXibg0fHKVCyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/80] mlxsw: spectrum_acl_tcam: Fix memory leak when canceling rehash work
-Date: Tue, 30 Apr 2024 12:40:09 +0200
-Message-ID: <20240430103044.513299810@linuxfoundation.org>
+Subject: [PATCH 6.6 158/186] dmaengine: owl: fix register access functions
+Date: Tue, 30 Apr 2024 12:40:10 +0200
+Message-ID: <20240430103102.620125596@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit fb4e2b70a7194b209fc7320bbf33b375f7114bd5 ]
+[ Upstream commit 43c633ef93a5d293c96ebcedb40130df13128428 ]
 
-The rehash delayed work is rescheduled with a delay if the number of
-credits at end of the work is not negative as supposedly it means that
-the migration ended. Otherwise, it is rescheduled immediately.
+When building with 'make W=1', clang notices that the computed register
+values are never actually written back but instead the wrong variable
+is set:
 
-After "mlxsw: spectrum_acl_tcam: Fix possible use-after-free during
-rehash" the above is no longer accurate as a non-negative number of
-credits is no longer indicative of the migration being done. It can also
-happen if the work encountered an error in which case the migration will
-resume the next time the work is scheduled.
+drivers/dma/owl-dma.c:244:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
+  244 |         u32 regval;
+      |             ^
+drivers/dma/owl-dma.c:268:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
+  268 |         u32 regval;
+      |             ^
 
-The significance of the above is that it is possible for the work to be
-pending and associated with hints that were allocated when the migration
-started. This leads to the hints being leaked [1] when the work is
-canceled while pending as part of ACL region dismantle.
+Change these to what was most likely intended.
 
-Fix by freeing the hints if hints are associated with a work that was
-canceled while pending.
-
-Blame the original commit since the reliance on not having a pending
-work associated with hints is fragile.
-
-[1]
-unreferenced object 0xffff88810e7c3000 (size 256):
-  comm "kworker/0:16", pid 176, jiffies 4295460353
-  hex dump (first 32 bytes):
-    00 30 95 11 81 88 ff ff 61 00 00 00 00 00 00 80  .0......a.......
-    00 00 61 00 40 00 00 00 00 00 00 00 04 00 00 00  ..a.@...........
-  backtrace (crc 2544ddb9):
-    [<00000000cf8cfab3>] kmalloc_trace+0x23f/0x2a0
-    [<000000004d9a1ad9>] objagg_hints_get+0x42/0x390
-    [<000000000b143cf3>] mlxsw_sp_acl_erp_rehash_hints_get+0xca/0x400
-    [<0000000059bdb60a>] mlxsw_sp_acl_tcam_vregion_rehash_work+0x868/0x1160
-    [<00000000e81fd734>] process_one_work+0x59c/0xf20
-    [<00000000ceee9e81>] worker_thread+0x799/0x12c0
-    [<00000000bda6fe39>] kthread+0x246/0x300
-    [<0000000070056d23>] ret_from_fork+0x34/0x70
-    [<00000000dea2b93e>] ret_from_fork_asm+0x1a/0x30
-
-Fixes: c9c9af91f1d9 ("mlxsw: spectrum_acl: Allow to interrupt/continue rehash work")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/0cc12ebb07c4d4c41a1265ee2c28b392ff997a86.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 47e20577c24d ("dmaengine: Add Actions Semi Owl family S900 DMA driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240322132116.906475-1-arnd@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/dma/owl-dma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index e0e7f630801a9..46b1120a8151e 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -831,10 +831,14 @@ mlxsw_sp_acl_tcam_vregion_destroy(struct mlxsw_sp *mlxsw_sp,
- 	struct mlxsw_sp_acl_tcam *tcam = vregion->tcam;
+diff --git a/drivers/dma/owl-dma.c b/drivers/dma/owl-dma.c
+index 384476757c5e3..3bcf73ef69dc7 100644
+--- a/drivers/dma/owl-dma.c
++++ b/drivers/dma/owl-dma.c
+@@ -250,7 +250,7 @@ static void pchan_update(struct owl_dma_pchan *pchan, u32 reg,
+ 	else
+ 		regval &= ~val;
  
- 	if (vgroup->vregion_rehash_enabled && ops->region_rehash_hints_get) {
-+		struct mlxsw_sp_acl_tcam_rehash_ctx *ctx = &vregion->rehash.ctx;
-+
- 		mutex_lock(&tcam->lock);
- 		list_del(&vregion->tlist);
- 		mutex_unlock(&tcam->lock);
--		cancel_delayed_work_sync(&vregion->rehash.dw);
-+		if (cancel_delayed_work_sync(&vregion->rehash.dw) &&
-+		    ctx->hints_priv)
-+			ops->region_rehash_hints_put(ctx->hints_priv);
- 	}
- 	mlxsw_sp_acl_tcam_vgroup_vregion_detach(mlxsw_sp, vregion);
- 	if (vregion->region2)
+-	writel(val, pchan->base + reg);
++	writel(regval, pchan->base + reg);
+ }
+ 
+ static void pchan_writel(struct owl_dma_pchan *pchan, u32 reg, u32 data)
+@@ -274,7 +274,7 @@ static void dma_update(struct owl_dma *od, u32 reg, u32 val, bool state)
+ 	else
+ 		regval &= ~val;
+ 
+-	writel(val, od->base + reg);
++	writel(regval, od->base + reg);
+ }
+ 
+ static void dma_writel(struct owl_dma *od, u32 reg, u32 data)
 -- 
 2.43.0
 
