@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA898B71EC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E153E8B718E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C84491F2378F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE9F1C2217C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C19B12C530;
-	Tue, 30 Apr 2024 11:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19AB12C476;
+	Tue, 30 Apr 2024 10:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAPIDLXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOULp32z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7C912B176;
-	Tue, 30 Apr 2024 11:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7C812C499;
+	Tue, 30 Apr 2024 10:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474937; cv=none; b=JBO8kTtaI3wpnHDdDp/qd3VdRZwBda8gBg1gIZcn1JsvMANmFuYe6/uGmRsoPN1tsY33BfblHTR9uQv4kVZlcG8uKEYEPojtuajtA+aG7GhIwwCJ7U5vIeQKRVe/fvDsD55T8XomJOp+V7ujd0EVvG9LTdG9AwT4XAEQqXF4d0Y=
+	t=1714474665; cv=none; b=iSJsj4ymVomvymEgQ9hln1OyMB4wuQSchcqLxbIUJgbxVClyuUWhNw4kD04QoC4qAwPvRlJE66ZLIs64IzkMRh3fCgeynX1m+Qj++ITR3ykonHfYo3isXQa13lbGF6gGiLYBmR9+XWBonpmbD0dGRsx0F37tB3BhxA0+d86BHjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474937; c=relaxed/simple;
-	bh=iD47SEU/2V2TrWZXX4MXalvpz9OGqsAKJbw2/FzWuu8=;
+	s=arc-20240116; t=1714474665; c=relaxed/simple;
+	bh=e6S9pWi43rfm1zy6yty8cS1ISsC/mg4wlPfgtExCx+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r2ykIag0vDUxgb19qqpWpVLwvH672Ad4SxphRbRovI5kFvkw1jv8Un9xbNcKpTUsw5B0KeIlDkdXKkbVVgGnmg4p2JENUhzmcz7uxpvI4KvhXBg1tKq8MwNim36i3O7Y/66eV8oKLc6fY7LBTEbGJeASc92SeYcl1QTI218HuVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAPIDLXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70171C2BBFC;
-	Tue, 30 Apr 2024 11:02:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YvYYgQsuiNSCAf1gWETcm3iXM4ZZ2RwiGX/5AnKxuAtr0/5jydi8jjwl30HKMuz3nn2d0PKKaD2FXVN7dESJSRU2JZ4iC/GfgLTovYhGE31XqsLN4AVNmfgpTIWixwNbu5rQKTZ1BCEncjgCXjhtOj9sUu9TNAAFVbSfN8WN0+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOULp32z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38738C4AF18;
+	Tue, 30 Apr 2024 10:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474936;
-	bh=iD47SEU/2V2TrWZXX4MXalvpz9OGqsAKJbw2/FzWuu8=;
+	s=korg; t=1714474665;
+	bh=e6S9pWi43rfm1zy6yty8cS1ISsC/mg4wlPfgtExCx+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aAPIDLXp7lRR1kRP2T0ABrgqVsI+JT9kmvTt3rh4M/upA2Embrakezdgni9gE59lZ
-	 8spFv6boH2mknK1e1H+nYyiAbIIaHSD9tlMR03pokK0GWo2w0vDKgCwdHdcuW/B2zN
-	 PJm9x7V99Mr7XLE+LliGWTLcRNOwNGsc8E6yu4lg=
+	b=UOULp32zyiSmSXkVB5tZ0v9M1mGLgPwVLb+MYaA92MqwBLEuECQ2yKrvaEZAw801z
+	 cygfKZmKLypKtnIwbvaKP4dUbG8tjSdJhSJLeKsVPrSvRgwyyTQalGn+dp28Tzhggs
+	 4ImZiNXh9Hk87JAcRLhTiEUKUocw1g0tYwAqoeQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/138] arm64: dts: mediatek: mt7622: fix IR nodename
-Date: Tue, 30 Apr 2024 12:39:24 +0200
-Message-ID: <20240430103051.749548547@linuxfoundation.org>
+	=?UTF-8?q?Peter=20M=C3=BCnster?= <pm@a16n.net>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Vaclav Svoboda <svoboda@neng.cz>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 187/228] net: b44: set pause params only when interface is up
+Date: Tue, 30 Apr 2024 12:39:25 +0200
+Message-ID: <20240430103109.197955230@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +66,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Peter Münster <pm@a16n.net>
 
-[ Upstream commit 800dc93c3941e372c94278bf4059e6e82f60bd66 ]
+commit e3eb7dd47bd4806f00e104eb6da092c435f9fb21 upstream.
 
-Fix following validation error:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: cir@10009000: $nodename:0: 'cir@10009000' does not match '^ir(-receiver)?(@[a-f0-9]+)?$'
-        from schema $id: http://devicetree.org/schemas/media/mediatek,mt7622-cir.yaml#
+b44_free_rings() accesses b44::rx_buffers (and ::tx_buffers)
+unconditionally, but b44::rx_buffers is only valid when the
+device is up (they get allocated in b44_open(), and deallocated
+again in b44_close()), any other time these are just a NULL pointers.
 
-Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related device nodes")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240317221050.18595-3-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So if you try to change the pause params while the network interface
+is disabled/administratively down, everything explodes (which likely
+netifd tries to do).
+
+Link: https://github.com/openwrt/openwrt/issues/13789
+Fixes: 1da177e4c3f4 (Linux-2.6.12-rc2)
+Cc: stable@vger.kernel.org
+Reported-by: Peter Münster <pm@a16n.net>
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Vaclav Svoboda <svoboda@neng.cz>
+Tested-by: Peter Münster <pm@a16n.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Peter Münster <pm@a16n.net>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/87y192oolj.fsf@a16n.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/b44.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index b590c2d3bc86f..bf0856d37eda8 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -244,7 +244,7 @@
- 		clock-names = "hif_sel";
- 	};
+--- a/drivers/net/ethernet/broadcom/b44.c
++++ b/drivers/net/ethernet/broadcom/b44.c
+@@ -2009,12 +2009,14 @@ static int b44_set_pauseparam(struct net
+ 		bp->flags |= B44_FLAG_TX_PAUSE;
+ 	else
+ 		bp->flags &= ~B44_FLAG_TX_PAUSE;
+-	if (bp->flags & B44_FLAG_PAUSE_AUTO) {
+-		b44_halt(bp);
+-		b44_init_rings(bp);
+-		b44_init_hw(bp, B44_FULL_RESET);
+-	} else {
+-		__b44_set_flow_ctrl(bp, bp->flags);
++	if (netif_running(dev)) {
++		if (bp->flags & B44_FLAG_PAUSE_AUTO) {
++			b44_halt(bp);
++			b44_init_rings(bp);
++			b44_init_hw(bp, B44_FULL_RESET);
++		} else {
++			__b44_set_flow_ctrl(bp, bp->flags);
++		}
+ 	}
+ 	spin_unlock_irq(&bp->lock);
  
--	cir: cir@10009000 {
-+	cir: ir-receiver@10009000 {
- 		compatible = "mediatek,mt7622-cir";
- 		reg = <0 0x10009000 0 0x1000>;
- 		interrupts = <GIC_SPI 175 IRQ_TYPE_LEVEL_LOW>;
--- 
-2.43.0
-
 
 
 
