@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE868B73AC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D8F8B72EC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BBE01F22079
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A38DB20F61
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E0612D214;
-	Tue, 30 Apr 2024 11:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE7D12CDA5;
+	Tue, 30 Apr 2024 11:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzsREEqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdnAqx1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2419312D1FD;
-	Tue, 30 Apr 2024 11:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD69211C;
+	Tue, 30 Apr 2024 11:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476117; cv=none; b=b/x71G/KQk1zm/h3xl8wliJG8C4vihKUQqIb7relC4Om9OnOrqXWA13pwxs7xMbbzZ7SKl97uz7kNaRmNFXBmq1Oxdha0BQoMLz9OqXRdT/SdF6/g6nY+7JtJWDmlt5vKUxJfWXmyaZytQpHfIE6OiHuaHthovyVHjIWiyiD41g=
+	t=1714475603; cv=none; b=jgjDaKPEOB3NSLE1MQdtptCqEbSmOsHYtq4gKRqVtda2wOVTg48u8LbS53PqNcQV6hkcjb912/DRMTC7CmAUZeJWXKRSsIGIZ/oI7NdP+Lb4/Wq7M0SB4ApagZP9okoqpdQwBdvJMyRZoA22lfl9FZ2nW745S4Ok3siscQtUD5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476117; c=relaxed/simple;
-	bh=qxxf1Q25nOdfYMi1P0QVnU8Q9wBImlM/w2vIKap0DhM=;
+	s=arc-20240116; t=1714475603; c=relaxed/simple;
+	bh=cQc5GczSyO/FDFoRWVIhMNchZtditPgqscvpLi3186s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SD3C3yU9Dm5LLJOLyvO3h/hxwwMfWYAKOKG+G85muDqwu5LzkrPi5gJ2LTdUEl542plCP/+C6VbMX/eLmlb49rWAceeji3PF8+D73I/z9vctAQ12OAMzmByiqjD2MUvwTgmRwTy4DFdkaIdj7Ji4oWD49cZjT2dkp57gvp8+ook=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzsREEqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B516C2BBFC;
-	Tue, 30 Apr 2024 11:21:56 +0000 (UTC)
+	 MIME-Version; b=KWdqzNVhwX0e/EGxce6IWrd1sCYJ1TpRnCNJ9VPr0EzHnmnAsCUrIZfqw2ZjbMpfDh09IdTVVwar7mELw9NGmckVe5JrveXSdNGttzeKOS+r5zIbIa/uXX2zDU+byx4DPLTejUpeW8yBkBtHX4hXRTZA2JyHEA9XFQE+w/Iohqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdnAqx1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178ECC2BBFC;
+	Tue, 30 Apr 2024 11:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476117;
-	bh=qxxf1Q25nOdfYMi1P0QVnU8Q9wBImlM/w2vIKap0DhM=;
+	s=korg; t=1714475603;
+	bh=cQc5GczSyO/FDFoRWVIhMNchZtditPgqscvpLi3186s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hzsREEqugeWhyzefUzWDG8PYSaQP05Rr5/xziO+HFvep0Ax5z03PKsSURlU/Ge5x+
-	 7lDDXvEkaLMBV4PJiROlxuJ/Omwa/sdECVCONAzWagfHFjmwAMre9OarOexsnnDIZr
-	 mHcEXoDv3anWsBJzsYOWw9n9sMR3MQI8AMBvrjO0=
+	b=RdnAqx1Y+KuYWoLVQ1ropOWMqYyIESPpP3pUt8wX4h4ZKtwjvj+YQGh7CfPd2lUlF
+	 aSxdSaJZVNn65WFIQEqRKRbyvHfp8OQEoadvqM+7YcNDIhRkBGaTz19ajXdE4Z8t9g
+	 YWIkxWcudT5eF4kmjKALymQ3kxkvM1bt+Bb7OLDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bolan wang <bolan.wang@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 038/107] USB: serial: option: add Fibocom FM135-GL variants
+	Jarred White <jarredwhite@linux.microsoft.com>,
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 146/186] ACPI: CPPC: Fix bit_offset shift in MASK_VAL() macro
 Date: Tue, 30 Apr 2024 12:39:58 +0200
-Message-ID: <20240430103045.783276612@linuxfoundation.org>
+Message-ID: <20240430103102.271340009@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: bolan wang <bolan.wang@fibocom.com>
+From: Jarred White <jarredwhite@linux.microsoft.com>
 
-commit 356952b13af5b2c338df1e06889fd1b5e12cbbf4 upstream.
+commit 05d92ee782eeb7b939bdd0189e6efcab9195bf95 upstream.
 
-Update the USB serial option driver support for the Fibocom
-FM135-GL LTE modules.
-- VID:PID 2cb7:0115, FM135-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
+Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
+system memory accesses") neglected to properly wrap the bit_offset shift
+when it comes to applying the mask. This may cause incorrect values to be
+read and may cause the cpufreq module not be loaded.
 
-0x0115: mbim, diag, at, pipe
+[   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
+[   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
 
-Here are the outputs of usb-devices:
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0115 Rev=05.15
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom Module
-S:  SerialNumber=12345678
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Also, corrected the bitmask generation in GENMASK (extra bit being added).
 
-Signed-off-by: bolan wang <bolan.wang@fibocom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
+Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
+Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
+Reviewed-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/cppc_acpi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2272,6 +2272,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -167,8 +167,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_
+ #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
+ 
+ /* Shift and apply the mask for CPC reads/writes */
+-#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
+-					GENMASK(((reg)->bit_width), 0)))
++#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
++					GENMASK(((reg)->bit_width) - 1, 0))
+ 
+ static ssize_t show_feedback_ctrs(struct kobject *kobj,
+ 		struct kobj_attribute *attr, char *buf)
 
 
 
