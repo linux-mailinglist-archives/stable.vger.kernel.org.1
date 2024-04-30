@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-42150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265448B71A3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D04E8B7108
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D58E9283038
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A5FB22A91
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7056412C476;
-	Tue, 30 Apr 2024 10:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3645412C54B;
+	Tue, 30 Apr 2024 10:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnpLhNMw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oh2lVhCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF787464;
-	Tue, 30 Apr 2024 10:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E335D12C49E;
+	Tue, 30 Apr 2024 10:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474729; cv=none; b=mYg3I61lScCTpU0HQ6rfHxXiWCI/KXxXIz2deMZeTiLbQvzn+qnzXTjiBWc/wsAZnrZ4HwUroaEnuLS5tJylYHrb5MiMsb9W+JNJIxiOfjiKpGJp1FkkaZVcndwYDZHf+AMGj7w4iEyWPV0sFwK1wwkQNwa3S2DdaUs0aNu8n8Y=
+	t=1714474330; cv=none; b=V/Xn2HIPMN8K2KQdj4ha+7YfRnZXyGph9h6LlkqTbnZpYjMwWkKxeJXJFEyR6QHSQVUzIXIgixsIcSHLKyuUWXoK9a53koFDlNQR8YjgistAACbmDNLneHcwg1R1tCofnAToLJ6Mkl6ePCJ4a01u0ywu3YKLKRi2i531ZuQmni0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474729; c=relaxed/simple;
-	bh=1Fx14G7St93U9GKNuwE8xy8vZbtK2FfNfeAZ7w+3K1k=;
+	s=arc-20240116; t=1714474330; c=relaxed/simple;
+	bh=G7YLd8FcaZIdmM9XUifJPDPxYOltl1fYAGiGHsOe2LY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTYOjtUtmF/o4vCTysEyoqPkvUky815bjL0OcRzGPk/9L5Qemvz+BfdM2PUczyF/4hqcltqV3Z/5MMUDNHJpL8hy3dsa6GCJZ1nNcIBAlfT2YE/NyhRa395/P2I/JwPmRVhhIv1ydA4rh4HJd15+nkjKtgVkrFy7K/e9dX+2/tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnpLhNMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA960C2BBFC;
-	Tue, 30 Apr 2024 10:58:48 +0000 (UTC)
+	 MIME-Version; b=lkhQiUDooBmGCl7sZoDjSiF5d168pI+n/LzI+8++uGPVl6IQ4Jw3LYroegQnz2+HrYiVUfCW2MW0Z+fkwja8U2ek1dHnAzY6xZl0otVnJK77FIjksKKl2PxihPIRv2CkVDqJ05fek/xvhkDiPN/oPrjpbMiv/HBubfo8VHrzlFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oh2lVhCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A27C2BBFC;
+	Tue, 30 Apr 2024 10:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474729;
-	bh=1Fx14G7St93U9GKNuwE8xy8vZbtK2FfNfeAZ7w+3K1k=;
+	s=korg; t=1714474329;
+	bh=G7YLd8FcaZIdmM9XUifJPDPxYOltl1fYAGiGHsOe2LY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CnpLhNMwKxlFCCR1ZN9gOyNHKre6lVb90kbNfQGFYZpHfM6lwZ7BMW1WKhQszwKs6
-	 +quecYifev2bgy/FEdlvjJ3IMX3Oodqpkvg7EMYx+jc1dEiWRZTkEYmi4y4TEtj8Dl
-	 9uRa1QES1IjEfqjXP7IggdiHM0q0R0JyBxUcdl7w=
+	b=Oh2lVhCbvScbbFKAtzL1v7ikz2ML4hpwcFoU2voIvgZl/+mSfNE2Q6fU9t2wF46Ai
+	 +t2ebw0pWOJQUVbSQPSKwLecODu6snwHARjS9STzi/uj01XxDpvAofNy3Xv4pzGBCG
+	 rJ+3f/brQ7bYsilFT4SSHgXJZcLwjK2B2iv3en/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Babu Moger <babu.moger@amd.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Like Xu <like.xu.linux@gmail.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/138] net: ena: Fix potential sign extension issue
+Subject: [PATCH 6.8 125/228] KVM: x86/pmu: Set enable bits for GP counters in PERF_GLOBAL_CTRL at "RESET"
 Date: Tue, 30 Apr 2024 12:38:23 +0200
-Message-ID: <20240430103049.963733155@linuxfoundation.org>
+Message-ID: <20240430103107.414485011@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +66,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arinzon <darinzon@amazon.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 713a85195aad25d8a26786a37b674e3e5ec09e3c ]
+[ Upstream commit de120e1d692d73c7eefa3278837b1eb68f90728a ]
 
-Small unsigned types are promoted to larger signed types in
-the case of multiplication, the result of which may overflow.
-In case the result of such a multiplication has its MSB
-turned on, it will be sign extended with '1's.
-This changes the multiplication result.
+Set the enable bits for general purpose counters in IA32_PERF_GLOBAL_CTRL
+when refreshing the PMU to emulate the MSR's architecturally defined
+post-RESET behavior.  Per Intel's SDM:
 
-Code example of the phenomenon:
--------------------------------
-u16 x, y;
-size_t z1, z2;
+  IA32_PERF_GLOBAL_CTRL:  Sets bits n-1:0 and clears the upper bits.
 
-x = y = 0xffff;
-printk("x=%x y=%x\n",x,y);
+and
 
-z1 = x*y;
-z2 = (size_t)x*y;
+  Where "n" is the number of general-purpose counters available in the processor.
 
-printk("z1=%lx z2=%lx\n", z1, z2);
+AMD also documents this behavior for PerfMonV2 CPUs in one of AMD's many
+PPRs.
 
-Output:
--------
-x=ffff y=ffff
-z1=fffffffffffe0001 z2=fffe0001
+Do not set any PERF_GLOBAL_CTRL bits if there are no general purpose
+counters, although a literal reading of the SDM would require the CPU to
+set either bits 63:0 or 31:0.  The intent of the behavior is to globally
+enable all GP counters; honor the intent, if not the letter of the law.
 
-The expected result of ffff*ffff is fffe0001, and without the
-explicit casting to avoid the unwanted sign extension we got
-fffffffffffe0001.
+Leaving PERF_GLOBAL_CTRL '0' effectively breaks PMU usage in guests that
+haven't been updated to work with PMUs that support PERF_GLOBAL_CTRL.
+This bug was recently exposed when KVM added supported for AMD's
+PerfMonV2, i.e. when KVM started exposing a vPMU with PERF_GLOBAL_CTRL to
+guest software that only knew how to program v1 PMUs (that don't support
+PERF_GLOBAL_CTRL).
 
-This commit adds an explicit casting to avoid the sign extension
-issue.
+Failure to emulate the post-RESET behavior results in such guests
+unknowingly leaving all general purpose counters globally disabled (the
+entire reason the post-RESET value sets the GP counter enable bits is to
+maintain backwards compatibility).
 
-Fixes: 689b2bdaaa14 ("net: ena: add functions for handling Low Latency Queues in ena_com")
-Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The bug has likely gone unnoticed because PERF_GLOBAL_CTRL has been
+supported on Intel CPUs for as long as KVM has existed, i.e. hardly anyone
+is running guest software that isn't aware of PERF_GLOBAL_CTRL on Intel
+PMUs.  And because up until v6.0, KVM _did_ emulate the behavior for Intel
+CPUs, although the old behavior was likely dumb luck.
+
+Because (a) that old code was also broken in its own way (the history of
+this code is a comedy of errors), and (b) PERF_GLOBAL_CTRL was documented
+as having a value of '0' post-RESET in all SDMs before March 2023.
+
+Initial vPMU support in commit f5132b01386b ("KVM: Expose a version 2
+architectural PMU to a guests") *almost* got it right (again likely by
+dumb luck), but for some reason only set the bits if the guest PMU was
+advertised as v1:
+
+        if (pmu->version == 1) {
+                pmu->global_ctrl = (1 << pmu->nr_arch_gp_counters) - 1;
+                return;
+        }
+
+Commit f19a0c2c2e6a ("KVM: PMU emulation: GLOBAL_CTRL MSR should be
+enabled on reset") then tried to remedy that goof, presumably because
+guest PMUs were leaving PERF_GLOBAL_CTRL '0', i.e. weren't enabling
+counters.
+
+        pmu->global_ctrl = ((1 << pmu->nr_arch_gp_counters) - 1) |
+                (((1ull << pmu->nr_arch_fixed_counters) - 1) << X86_PMC_IDX_FIXED);
+        pmu->global_ctrl_mask = ~pmu->global_ctrl;
+
+That was KVM's behavior up until commit c49467a45fe0 ("KVM: x86/pmu:
+Don't overwrite the pmu->global_ctrl when refreshing") removed
+*everything*.  However, it did so based on the behavior defined by the
+SDM , which at the time stated that "Global Perf Counter Controls" is
+'0' at Power-Up and RESET.
+
+But then the March 2023 SDM (325462-079US), stealthily changed its
+"IA-32 and Intel 64 Processor States Following Power-up, Reset, or INIT"
+table to say:
+
+  IA32_PERF_GLOBAL_CTRL: Sets bits n-1:0 and clears the upper bits.
+
+Note, kvm_pmu_refresh() can be invoked multiple times, i.e. it's not a
+"pure" RESET flow.  But it can only be called prior to the first KVM_RUN,
+i.e. the guest will only ever observe the final value.
+
+Note #2, KVM has always cleared global_ctrl during refresh (see commit
+f5132b01386b ("KVM: Expose a version 2 architectural PMU to a guests")),
+i.e. there is no danger of breaking existing setups by clobbering a value
+set by userspace.
+
+Reported-by: Babu Moger <babu.moger@amd.com>
+Cc: Sandipan Das <sandipan.das@amd.com>
+Cc: Like Xu <like.xu.linux@gmail.com>
+Cc: Mingwei Zhang <mizhang@google.com>
+Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Tested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://lore.kernel.org/r/20240309013641.1413400-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_com.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/pmu.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
-index d59ea5148c16c..60645ea7c0f80 100644
---- a/drivers/net/ethernet/amazon/ena/ena_com.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_com.c
-@@ -352,7 +352,7 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
- 			ENA_COM_BOUNCE_BUFFER_CNTRL_CNT;
- 		io_sq->bounce_buf_ctrl.next_to_use = 0;
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index 38512954ec267..2ab2d5213f52f 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -766,8 +766,20 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
+ 	pmu->pebs_data_cfg_mask = ~0ull;
+ 	bitmap_zero(pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX);
  
--		size = io_sq->bounce_buf_ctrl.buffer_size *
-+		size = (size_t)io_sq->bounce_buf_ctrl.buffer_size *
- 			io_sq->bounce_buf_ctrl.buffers_num;
+-	if (vcpu->kvm->arch.enable_pmu)
+-		static_call(kvm_x86_pmu_refresh)(vcpu);
++	if (!vcpu->kvm->arch.enable_pmu)
++		return;
++
++	static_call(kvm_x86_pmu_refresh)(vcpu);
++
++	/*
++	 * At RESET, both Intel and AMD CPUs set all enable bits for general
++	 * purpose counters in IA32_PERF_GLOBAL_CTRL (so that software that
++	 * was written for v1 PMUs don't unknowingly leave GP counters disabled
++	 * in the global controls).  Emulate that behavior when refreshing the
++	 * PMU so that userspace doesn't need to manually set PERF_GLOBAL_CTRL.
++	 */
++	if (kvm_pmu_has_perf_global_ctrl(pmu) && pmu->nr_arch_gp_counters)
++		pmu->global_ctrl = GENMASK_ULL(pmu->nr_arch_gp_counters - 1, 0);
+ }
  
- 		dev_node = dev_to_node(ena_dev->dmadev);
+ void kvm_pmu_init(struct kvm_vcpu *vcpu)
 -- 
 2.43.0
 
