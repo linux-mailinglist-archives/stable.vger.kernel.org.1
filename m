@@ -1,51 +1,54 @@
-Return-Path: <stable+bounces-41811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B938B6C38
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 09:53:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A7C8B6C44
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 09:54:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F1192835E0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:53:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62D3E1F23247
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDACC3FE37;
-	Tue, 30 Apr 2024 07:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D86D3FB87;
+	Tue, 30 Apr 2024 07:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxfU2zBa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwoHLqf5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE733EA83;
-	Tue, 30 Apr 2024 07:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8C914AB7
+	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 07:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714463579; cv=none; b=QYidxXrNLIvACQQoRWVjwYIcjcroEo2RaTg2el+gZ/tS6/3EFe1ZflqaQIqkFOVGEU/bSF3kE+xMq8iyHVn//vJXv00S9QN9zkyI9gYPGNMMoCpKymCxw/OpS85Pr6AzP/CH5HiOM52ZZVPNab6A6Ru/FqT/2h0cofEMIfG9Bx8=
+	t=1714463689; cv=none; b=E3dCRDvOBfFcHyYqt37OD1Aj0zAeY/5XGhC1HpogCPRLCY16E4FBiKXAnnXhjMUT5kGEy2kCgwtW+SlbU2xMUh7V+sZavzAJO26+tVDkfW9ckpsBITvwC6x187Vsb/FZmsjFukzXTuD+H6KuaiWAu5Wl+U7mnL3fISDIIV5Kbpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714463579; c=relaxed/simple;
-	bh=xJVRBclfh8P+8hLG+1T8YfTZhmWHpBhetFNBinVd8eU=;
+	s=arc-20240116; t=1714463689; c=relaxed/simple;
+	bh=Rr5gx5QtH+zNL5dt9IG0V61YEwuWc+tLoWK8gxxhxZQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kUbD8SzzUuyOf1DZCFuEBJXIzH8ZcK2mCiTUPiIoE3XTH4vA1HSsYlRMihvSDmqd5ULWPCef6E/lju/pw5NYd+ciHaHuTvHF1WNB92JtEDzqHZHwA6Hy/8WMQYcEL6tvzIcxvyUGXq6f/I/x5Gm9CymSJer2R2xW2F0qXyMboNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxfU2zBa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC838C2BBFC;
-	Tue, 30 Apr 2024 07:52:58 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=iCttDHzU3cPc0gMmbvsBEpeibKj/pWb3AFsBZ+T+IWC1iDNOOwu0L/nJO3ElW3d6UeLRsZOPQGPq9hR08x7auye88BTY0FAdaLBLIUk0shp6/np2yHP6UnGcm7aLGkzTOg4lwtnT1jX+2cXpv/yhmh7RDXsYz56VboMltCEF+w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwoHLqf5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558C0C2BBFC;
+	Tue, 30 Apr 2024 07:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714463579;
-	bh=xJVRBclfh8P+8hLG+1T8YfTZhmWHpBhetFNBinVd8eU=;
+	s=korg; t=1714463688;
+	bh=Rr5gx5QtH+zNL5dt9IG0V61YEwuWc+tLoWK8gxxhxZQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qxfU2zBaHoy5EyBR2oheLZJMP1PyuAf8N4E/D6slFK0xBsknZRUsHBrDulxgwxci4
-	 c7owR20uCYLyPfj6ngU64oqT172GOa8e3lBy0LIUpuFIjB/8/65M0/us4GoSD2n0BR
-	 QdK7Lz9h64B36HRRmtYzTVMsRQH68e4P5LFe2ySo=
-Date: Tue, 30 Apr 2024 09:52:56 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jingbo Xu <jefflexu@linux.alibaba.com>
-Cc: sashal@kernel.org, stable@vger.kernel.org, amir73il@gmail.com,
-	linux-unionfs@vger.kernel.org
-Subject: Re: [STABLE 6.6.y] ovl: fix memory leak in ovl_parse_param()
-Message-ID: <2024043049-divisibly-discover-7a32@gregkh>
-References: <20240430034854.126947-1-jefflexu@linux.alibaba.com>
+	b=pwoHLqf5lI99HnGHPG0PjC+CQ9SkHq4QZ/72kpn+8hKtEideGoPCmBT8ph7Mjt91U
+	 3bGU+TTva8LkroO8w8rTdQpbm7sBMMJyo/HnO7vsrv2SLoiuEKWS45Kdkkat1K9PR3
+	 o5OITLZ+ObAejjtVP1FHgIoTcvyZ4VcnlB/pb45U=
+Date: Tue, 30 Apr 2024 09:54:46 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Cc: Baoquan He <bhe@redhat.com>, stable@vger.kernel.org,
+	Chen Jiahao <chenjiahao16@huawei.com>
+Subject: Re: [PATCH v2] Revert "riscv: kdump: fix crashkernel reserving
+ problem on RISC-V"
+Message-ID: <2024043037-enroll-polygon-e7eb@gregkh>
+References: <20240430032403.19562-1-xingmingzheng@iscas.ac.cn>
+ <ZjBoBYwdPMyPDGhG@MiWiFi-R3L-srv>
+ <7f976727-3ad8-4071-9a91-4a32a01abd32@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,32 +57,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240430034854.126947-1-jefflexu@linux.alibaba.com>
+In-Reply-To: <7f976727-3ad8-4071-9a91-4a32a01abd32@iscas.ac.cn>
 
-On Tue, Apr 30, 2024 at 11:48:54AM +0800, Jingbo Xu wrote:
-> From: Amir Goldstein <amir73il@gmail.com>
+On Tue, Apr 30, 2024 at 11:51:53AM +0800, Mingzheng Xing wrote:
+> On 4/30/24 11:39, Baoquan He wrote:
+> > On 04/30/24 at 11:24am, Mingzheng Xing wrote:
+> >> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which was
+> >> mistakenly added into v6.6.y and the commit corresponding to the 'Fixes:'
+> >> tag is invalid. For more information, see link [1].
+> >>
+> >> This will result in the loss of Crashkernel data in /proc/iomem, and kdump
+> >> failed:
+> >>
+> >> ```
+> >> Memory for crashkernel is not reserved
+> >> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
+> >> Then try to loading kdump kernel
+> >> ```
+> >>
+> >> After revert, kdump works fine. Tested on QEMU riscv.
+> >>
+> >> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
+> >> Cc: Baoquan He <bhe@redhat.com>
+> >> Cc: Chen Jiahao <chenjiahao16@huawei.com>
+> >> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+> > 
+> > Ack. This is necessary for v6.6.y stable branch.
+> > 
+> > Acked-by: Baoquan He <bhe@redhat.com>
+> > 
 > 
-> commit 37f32f52643869131ec01bb69bdf9f404f6109fb upstream.
+> Thanks,
 > 
-> On failure to parse parameters in ovl_parse_param_lowerdir(), it is
-> necessary to update ctx->nr with the correct nr before using
-> ovl_reset_lowerdirs() to release l->name.
-> 
-> Reported-and-tested-by: syzbot+26eedf3631650972f17c@syzkaller.appspotmail.com
-> Fixes: c835110b588a ("ovl: remove unused code in lowerdir param parsing")
-> Co-authored-by: Edward Adam Davis <eadavis@qq.com>
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-> ---
-> Commit c835110b588a ("ovl: remove unused code in lowerdir param
-> parsing") was back ported to 6.6.y as a "Stable-dep-of" of commit
-> 2824083db76c ("ovl: Always reject mounting over case-insensitive
-> directories"), while omitting the fix for commit c835110b588a itself.
-> Maybe that is because by the time commit 37f32f526438 (the fix) is merged
-> into master branch, commit c835110b588a has not been back ported to 6.6.y
-> yet.
+> Hi, Greg. This is for the 6.6.y branch only.
 
-Now queued up, thanks.
+Thanks, now queued up.
 
 greg k-h
 
