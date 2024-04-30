@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB238B71E2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB318B7014
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:43:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC67A282FCB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A27941F22950
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB64E12D209;
-	Tue, 30 Apr 2024 11:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512DE12C46D;
+	Tue, 30 Apr 2024 10:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXGlRNDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDbZx+s3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C4512D1F4;
-	Tue, 30 Apr 2024 11:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F097127B70;
+	Tue, 30 Apr 2024 10:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474914; cv=none; b=cnj2krKoTqYOq+Y78h2yx9iwAXv2yL4pkGjX5kpg0ZJOwoWbS/Tig/SH8w5yXTNEItZiXio9ozowN6BMNEgvvWXdrRWoipsT89BsZRfw/7rCdWMdTodbYwiKDmj5ywtganAMOuDPTDLY1O34avKLbTmyKY4dMBs2Az4galPY+Ag=
+	t=1714473794; cv=none; b=HAO8+G5JXg8nUtIrl6l7rHmv7SjOYGuMXPJnWTAQlHk3K+W1EHiAHzzmhm0pqz4Tf66nT02VzGwiVvTMbFFiGWOeX+dGV/OwzQuVwSiMuZxGDWFTRJVlam2TrJ1ABBugymr1XVTEVOmSd1TrA7z7Y6aKwkyVEyqzsGrFCuS7HM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474914; c=relaxed/simple;
-	bh=DzJuiWV+KrDI7Dr3M/c+4/xaYbozVuC1Au4h3ULn/3Y=;
+	s=arc-20240116; t=1714473794; c=relaxed/simple;
+	bh=pa+TUf11CP1cElIu4U3vryrElD3eh3CuuC+OSi2fpWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jq5VBmnIS8o8nrMA4mKNyMdPgH5aqPbXK8tkvjjFisT/RFies9HvHDFGXKwlqRFBpo+uGfvhQg2Cb1PcJo9t5HcU6MO/tp88WbW0+84py94WvA+lHVmP5QHnnUaq8+qmiy74sdLcaFtWpr59q93REPu3bPZryZoY3ORTyYCYYaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXGlRNDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DC1C2BBFC;
-	Tue, 30 Apr 2024 11:01:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YVp9sPJvOCE8Rbd5z4bZHkIJLbq4audsaLzjg5u8bngNHiQL6Ph1Ku5Wb7StUlMbS09o0Dvr5gWwwGZ0IChhPnRyZroCrgKJvA27p5aRy6ZZcF/GdEC6ZIyAV7PuvHzDWUgC1zfRPnOwBmbBT5CTDSGAm2XY7ekQ1BoUXLVfS7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDbZx+s3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAAFC2BBFC;
+	Tue, 30 Apr 2024 10:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474914;
-	bh=DzJuiWV+KrDI7Dr3M/c+4/xaYbozVuC1Au4h3ULn/3Y=;
+	s=korg; t=1714473793;
+	bh=pa+TUf11CP1cElIu4U3vryrElD3eh3CuuC+OSi2fpWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXGlRNDhsTg3A5RH7LLJOIILz+m722e65kBzskom44NDOg/loCH7dyyxtrskwdDQi
-	 AZM70ld/KNYIfHOlQnmEG4upAfNtNlQLIYDR2Wtp6eArwWiXh/SL4sUbjnY0dCL1K5
-	 ns1Uqn5w0Hn7d1MppN+GkMQUJrnK/y3Vs4Q3JOq4=
+	b=gDbZx+s35xwtNZk/qIPgMbcAUzOel+UffpPBRd6+Vq95P5OWPU5XJErPEREO5Jkk6
+	 fesFevCZTwVnL9IIvxvjr7g5wV6uBer8LlqQJ1SYmulrZv7J4RmuttMrzxprmvf5Ym
+	 fsYQne6RdmErWUOp5c6GrmSLrgsNfLpVYNh3taQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 073/138] arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma
-Date: Tue, 30 Apr 2024 12:39:18 +0200
-Message-ID: <20240430103051.576658362@linuxfoundation.org>
+Subject: [PATCH 4.19 40/77] arm64: dts: mediatek: mt7622: fix IR nodename
+Date: Tue, 30 Apr 2024 12:39:19 +0200
+Message-ID: <20240430103042.316920509@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 945a7c8570916650a415757d15d83e0fa856a686 ]
+[ Upstream commit 800dc93c3941e372c94278bf4059e6e82f60bd66 ]
 
-The PCIE_WAKE# has a diode used as a level-shifter, and is used as an
-input pin. While the SoC default is to enable the pull-up, the core
-rk3399 pinconf for this pin opted for pull-none. So as to not disturb
-the behaviour of other boards which may rely on pull-none instead of
-pull-up, set the needed pull-up only for RK3399 Puma.
+Fix following validation error:
+arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: cir@10009000: $nodename:0: 'cir@10009000' does not match '^ir(-receiver)?(@[a-f0-9]+)?$'
+        from schema $id: http://devicetree.org/schemas/media/mediatek,mt7622-cir.yaml#
 
-Fixes: 60fd9f72ce8a ("arm64: dts: rockchip: add Haikou baseboard with RK3399-Q7 SoM")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-2-309f83da110a@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related device nodes")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240317221050.18595-3-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index aaa042fba1ebf..5455bdc2df841 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -430,6 +430,11 @@
- 	gpio1830-supply = <&vcc_1v8>;
- };
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index 5cb0470ede723..5c12e9dad9167 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -232,7 +232,7 @@
+ 		clock-names = "hif_sel";
+ 	};
  
-+&pcie_clkreqn_cpm {
-+	rockchip,pins =
-+		<2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_up>;
-+};
-+
- &pinctrl {
- 	i2c8 {
- 		i2c8_xfer_a: i2c8-xfer {
+-	cir: cir@10009000 {
++	cir: ir-receiver@10009000 {
+ 		compatible = "mediatek,mt7622-cir";
+ 		reg = <0 0x10009000 0 0x1000>;
+ 		interrupts = <GIC_SPI 175 IRQ_TYPE_LEVEL_LOW>;
 -- 
 2.43.0
 
