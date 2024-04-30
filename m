@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-42722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8FDD8B7453
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03DA8B73F1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:25:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 264C91C2302B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB22A284B06
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B128112D745;
-	Tue, 30 Apr 2024 11:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CA212CDAE;
+	Tue, 30 Apr 2024 11:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1lc3vyK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJVOnjDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E33B12C805;
-	Tue, 30 Apr 2024 11:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128F717592;
+	Tue, 30 Apr 2024 11:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476573; cv=none; b=rU2hRqyzw/MTwQyerRZiTfv8rP1jTfAs3Z6BjFfawJVSRug2dWH6ThXEokEPbMpl4xDn0+a16luf0miFAcq93mNiH6FQ1uX/LB5wpNqedYL+vIbtfLMVBB9p20HSFVH7lG4TuaU9uJYW5rUEXkK9aM2QkTkU56UIUObzReIJ5fA=
+	t=1714476311; cv=none; b=u67CmBZGpItPeeYzyom3vkXo9ELSOojsZ8IP8hW/q6+mv3p9ZkXAUumzUpoucUhFpaPtc1RvdziHKaQ9oJ/U0gQaDMxGSVNE/WKm76MQHspH/TUL/v9h2sqoc4vossReWKkO5AWFYzDX4twrubPqL6xsChLvfEJZj7s2NFPV4CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476573; c=relaxed/simple;
-	bh=XdhTJ1sRmoQ4i2IfOGIjQmoXVM/draYtZf+PVhy7T6E=;
+	s=arc-20240116; t=1714476311; c=relaxed/simple;
+	bh=UZ9nlwAMszOHD5xC0DgkcYCKan4AlhpK+qN1WAQfhaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XX614wK2rSexpUY2WUUP4hDTaX2ruORJERqgUaFp9UvdG1oZhJx5+PzchuIplqsOqgQ91Vb19NtKafYkXoTfT3tQ2dTF/ascOvSLnJbAjYRw2eur7stFz0h24J1r9yZLh176fQ1+DDcKf01lSF8tdExxIqmqWZyCLEfJUnmjiWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1lc3vyK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D9CC2BBFC;
-	Tue, 30 Apr 2024 11:29:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YBjSsvY3nqKX71q2NTbyllNy+isRhKcQe0gh1E3oxarTru3OBEeVsyEcANiaDlcDz4T/JRprJ1cQZ5mxVczIRjQBhVCq3UkT2zH/jyVqgsJ149djDJ1/1T+fYFbYibSKBGowLdKgehZurSNIr7qks0oXWnNh6gtis6SfDiZoOu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJVOnjDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90405C2BBFC;
+	Tue, 30 Apr 2024 11:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476573;
-	bh=XdhTJ1sRmoQ4i2IfOGIjQmoXVM/draYtZf+PVhy7T6E=;
+	s=korg; t=1714476310;
+	bh=UZ9nlwAMszOHD5xC0DgkcYCKan4AlhpK+qN1WAQfhaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1lc3vyKEFQWSOOFgKhuLEE90rUI1FrCNsXiPeQMUGTkvsHYpxoGwk4X7nOMK4W5Y
-	 r+IfSsvbS9IhnEhNiGCDIK3f37xahbTUo75vrXcbUJHSg1dGvmbXmGJ9uCwrXRPEt6
-	 b4IvuGDD2NaR+/F+qhU9ufV/wwWKcaQpEf1AxtVY=
+	b=BJVOnjDVci7I91PMP72cAWPZ7Y/hX51vWTJbyot00ze65NfitSkOf3XK/uDEX/C7i
+	 QBBj1Pnk+Xa5oNj9xkSJEQmcUXYdC0SE2ljc3yYjFEpSngWgrmZfZiyNlYiQ+GqBxc
+	 g2RkpB9tcf9hP4O7Z6lQmocP9T4623xqkhQPduWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sean Christopherson <seanjc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 6.1 074/110] cpu: Re-enable CPU mitigations by default for !X86 architectures
+	Vlad Stolyarov <hexed@google.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	xinhui pan <xinhui.pan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 083/107] drm/amdgpu: validate the parameters of bo mapping operations more clearly
 Date: Tue, 30 Apr 2024 12:40:43 +0200
-Message-ID: <20240430103049.751443523@linuxfoundation.org>
+Message-ID: <20240430103047.108035446@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +62,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: xinhui pan <xinhui.pan@amd.com>
 
-commit fe42754b94a42d08cf9501790afc25c4f6a5f631 upstream.
+[ Upstream commit 6fef2d4c00b5b8561ad68dd2b68173f5c6af1e75 ]
 
-Rename x86's to CPU_MITIGATIONS, define it in generic code, and force it
-on for all architectures exception x86.  A recent commit to turn
-mitigations off by default if SPECULATION_MITIGATIONS=n kinda sorta
-missed that "cpu_mitigations" is completely generic, whereas
-SPECULATION_MITIGATIONS is x86-specific.
+Verify the parameters of
+amdgpu_vm_bo_(map/replace_map/clearing_mappings) in one common place.
 
-Rename x86's SPECULATIVE_MITIGATIONS instead of keeping both and have it
-select CPU_MITIGATIONS, as having two configs for the same thing is
-unnecessary and confusing.  This will also allow x86 to use the knob to
-manage mitigations that aren't strictly related to speculative
-execution.
-
-Use another Kconfig to communicate to common code that CPU_MITIGATIONS
-is already defined instead of having x86's menu depend on the common
-CPU_MITIGATIONS.  This allows keeping a single point of contact for all
-of x86's mitigations, and it's not clear that other architectures *want*
-to allow disabling mitigations at compile-time.
-
-Fixes: f337a6a21e2f ("x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n")
-Closes: https://lkml.kernel.org/r/20240413115324.53303a68%40canb.auug.org.au
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Fixes: dc54d3d1744d ("drm/amdgpu: implement AMDGPU_VA_OP_CLEAR v2")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240420000556.2645001-2-seanjc@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Vlad Stolyarov <hexed@google.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: xinhui pan <xinhui.pan@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/Kconfig     |    8 ++++++++
- arch/x86/Kconfig |   11 ++++++-----
- kernel/cpu.c     |    4 ++--
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 72 ++++++++++++++++----------
+ 1 file changed, 46 insertions(+), 26 deletions(-)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -9,6 +9,14 @@
- #
- source "arch/$(SRCARCH)/Kconfig"
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index dfec651ec0b45..1da72ecf0facb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2095,6 +2095,37 @@ static void amdgpu_vm_bo_insert_map(struct amdgpu_device *adev,
+ 	trace_amdgpu_vm_bo_map(bo_va, mapping);
+ }
  
-+config ARCH_CONFIGURES_CPU_MITIGATIONS
-+	bool
++/* Validate operation parameters to prevent potential abuse */
++static int amdgpu_vm_verify_parameters(struct amdgpu_device *adev,
++					  struct amdgpu_bo *bo,
++					  uint64_t saddr,
++					  uint64_t offset,
++					  uint64_t size)
++{
++	uint64_t tmp, lpfn;
 +
-+if !ARCH_CONFIGURES_CPU_MITIGATIONS
-+config CPU_MITIGATIONS
-+	def_bool y
-+endif
++	if (saddr & AMDGPU_GPU_PAGE_MASK
++	    || offset & AMDGPU_GPU_PAGE_MASK
++	    || size & AMDGPU_GPU_PAGE_MASK)
++		return -EINVAL;
 +
- menu "General architecture-dependent options"
++	if (check_add_overflow(saddr, size, &tmp)
++	    || check_add_overflow(offset, size, &tmp)
++	    || size == 0 /* which also leads to end < begin */)
++		return -EINVAL;
++
++	/* make sure object fit at this offset */
++	if (bo && offset + size > amdgpu_bo_size(bo))
++		return -EINVAL;
++
++	/* Ensure last pfn not exceed max_pfn */
++	lpfn = (saddr + size - 1) >> AMDGPU_GPU_PAGE_SHIFT;
++	if (lpfn >= adev->vm_manager.max_pfn)
++		return -EINVAL;
++
++	return 0;
++}
++
+ /**
+  * amdgpu_vm_bo_map - map bo inside a vm
+  *
+@@ -2121,21 +2152,14 @@ int amdgpu_vm_bo_map(struct amdgpu_device *adev,
+ 	struct amdgpu_bo *bo = bo_va->base.bo;
+ 	struct amdgpu_vm *vm = bo_va->base.vm;
+ 	uint64_t eaddr;
++	int r;
  
- config CRASH_CORE
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -61,6 +61,7 @@ config X86
- 	select ACPI_SYSTEM_POWER_STATES_SUPPORT	if ACPI
- 	select ARCH_32BIT_OFF_T			if X86_32
- 	select ARCH_CLOCKSOURCE_INIT
-+	select ARCH_CONFIGURES_CPU_MITIGATIONS
- 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
-@@ -2449,17 +2450,17 @@ config CC_HAS_SLS
- config CC_HAS_RETURN_THUNK
- 	def_bool $(cc-option,-mfunction-return=thunk-extern)
+-	/* validate the parameters */
+-	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
+-		return -EINVAL;
+-	if (saddr + size <= saddr || offset + size <= offset)
+-		return -EINVAL;
+-
+-	/* make sure object fit at this offset */
+-	eaddr = saddr + size - 1;
+-	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
+-	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+-		return -EINVAL;
++	r = amdgpu_vm_verify_parameters(adev, bo, saddr, offset, size);
++	if (r)
++		return r;
  
--menuconfig SPECULATION_MITIGATIONS
--	bool "Mitigations for speculative execution vulnerabilities"
-+menuconfig CPU_MITIGATIONS
-+	bool "Mitigations for CPU vulnerabilities"
- 	default y
- 	help
--	  Say Y here to enable options which enable mitigations for
--	  speculative execution hardware vulnerabilities.
-+	  Say Y here to enable options which enable mitigations for hardware
-+	  vulnerabilities (usually related to speculative execution).
+ 	saddr /= AMDGPU_GPU_PAGE_SIZE;
+-	eaddr /= AMDGPU_GPU_PAGE_SIZE;
++	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
  
- 	  If you say N, all mitigations will be disabled. You really
- 	  should know what you are doing to say so.
+ 	tmp = amdgpu_vm_it_iter_first(&vm->va, saddr, eaddr);
+ 	if (tmp) {
+@@ -2188,17 +2212,9 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
+ 	uint64_t eaddr;
+ 	int r;
  
--if SPECULATION_MITIGATIONS
-+if CPU_MITIGATIONS
+-	/* validate the parameters */
+-	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
+-		return -EINVAL;
+-	if (saddr + size <= saddr || offset + size <= offset)
+-		return -EINVAL;
+-
+-	/* make sure object fit at this offset */
+-	eaddr = saddr + size - 1;
+-	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
+-	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
+-		return -EINVAL;
++	r = amdgpu_vm_verify_parameters(adev, bo, saddr, offset, size);
++	if (r)
++		return r;
  
- config PAGE_TABLE_ISOLATION
- 	bool "Remove the kernel mapping in user mode"
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2788,8 +2788,8 @@ enum cpu_mitigations {
- };
+ 	/* Allocate all the needed memory */
+ 	mapping = kmalloc(sizeof(*mapping), GFP_KERNEL);
+@@ -2212,7 +2228,7 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
+ 	}
  
- static enum cpu_mitigations cpu_mitigations __ro_after_init =
--	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
--						     CPU_MITIGATIONS_OFF;
-+	IS_ENABLED(CONFIG_CPU_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
-+					     CPU_MITIGATIONS_OFF;
+ 	saddr /= AMDGPU_GPU_PAGE_SIZE;
+-	eaddr /= AMDGPU_GPU_PAGE_SIZE;
++	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
  
- static int __init mitigations_parse_cmdline(char *arg)
- {
+ 	mapping->start = saddr;
+ 	mapping->last = eaddr;
+@@ -2299,10 +2315,14 @@ int amdgpu_vm_bo_clear_mappings(struct amdgpu_device *adev,
+ 	struct amdgpu_bo_va_mapping *before, *after, *tmp, *next;
+ 	LIST_HEAD(removed);
+ 	uint64_t eaddr;
++	int r;
++
++	r = amdgpu_vm_verify_parameters(adev, NULL, saddr, 0, size);
++	if (r)
++		return r;
+ 
+-	eaddr = saddr + size - 1;
+ 	saddr /= AMDGPU_GPU_PAGE_SIZE;
+-	eaddr /= AMDGPU_GPU_PAGE_SIZE;
++	eaddr = saddr + (size - 1) / AMDGPU_GPU_PAGE_SIZE;
+ 
+ 	/* Allocate all the needed memory */
+ 	before = kzalloc(sizeof(*before), GFP_KERNEL);
+-- 
+2.43.0
+
 
 
 
