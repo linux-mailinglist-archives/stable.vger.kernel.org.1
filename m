@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7CCF8B7361
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF6848B7311
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 779811F239D4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E07E41C231EC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000D712CDAE;
-	Tue, 30 Apr 2024 11:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403B312D746;
+	Tue, 30 Apr 2024 11:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuaIuD0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBrD+2xb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B253617592;
-	Tue, 30 Apr 2024 11:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0B012D1F1;
+	Tue, 30 Apr 2024 11:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475902; cv=none; b=PY/2lKx1XEqSTM1TvDK6IPu+BqqjYdy77GYZhpIeKOdmOdZTlyFbcLT2dvdeiX4ZCRE2DYhzYZ5TpOGn49vxwztXlHyLpBUKZSjkY60n2N8WphTFxVYlwG4xF4SJ9HwVbneCvzQi38VFHbbVyGnklJrLOknCUG7xbt+CfapDrwg=
+	t=1714475689; cv=none; b=OpBc+VLnJ5rHcxf4EvhgvvKKIuMKc8T0xO3uvTUM+ci+UJ4lbmSDrXyvBiQk1CJUwLt29FbQ3HXpg4b1ZItlopWpJwzEDhJjVjhxkCwhWIj34CZcighzaPaLSjJnfyiOUZ0+IHgC56Y7zjL1BVSYeekE5NLZP51KoDWcoOKMObM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475902; c=relaxed/simple;
-	bh=KH23l98jTTixspcED7nrmHIhg9wuFhfm2qHFiqe88kU=;
+	s=arc-20240116; t=1714475689; c=relaxed/simple;
+	bh=WO1uyREcCV9ds+3P7pVWcznnHwJjePuGlLKlR8QifxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BOM/zoX5oPq1X49wK9Y4is7XYZ8xn/HIV4vhSb/P88+JlI74jEzY3scUs7cqKL9DXcRTJMQhLAuLI9D+wuqyfSx2nJy4eMBaZrprihlRvq/JL0YBCOkHwfOACnpdd/v+E6qEEM9bUQmAqs2jkV5uWSnRzdsOPTqxwVFLb70n8DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuaIuD0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0086CC2BBFC;
-	Tue, 30 Apr 2024 11:18:21 +0000 (UTC)
+	 MIME-Version; b=uKMmnHC6xRrQ+V2e3so1/OXNPd8DrO2nPwh8Tps3QBKQ+AF5Ij6HuW4JLAsgxX1zgdxJmj521i+WityBz8/JHQPy/84ZZFc49uhY0301czyyh1h1xKjEZmEA+mCB//MNISozHlbZinwmKvYXx8SIkN7YX3JbV4RelWb1Xy6n3OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBrD+2xb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3596DC2BBFC;
+	Tue, 30 Apr 2024 11:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475902;
-	bh=KH23l98jTTixspcED7nrmHIhg9wuFhfm2qHFiqe88kU=;
+	s=korg; t=1714475688;
+	bh=WO1uyREcCV9ds+3P7pVWcznnHwJjePuGlLKlR8QifxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IuaIuD0byIwrqaNRAYOybQ5V3a+pxVTx148FbWtXRbasucK8MBCB/yiN7pTX6JXTF
-	 y5VbOolpRJFsXG+EV47MvvLEu/cxs1m6RzaZkYMtJZEhj4j9mrzIDdYBDrPOgqA70z
-	 pq44tCSzjw6YDblqFfHbiipAICVdvd1EfWW41ac4=
+	b=EBrD+2xbNDYGmhp189uQ3SlliPP8qKp6CtuJWdwIrLUyigAMshx5sGxdc87VDJ+fk
+	 KBbeMBTWnUfP+M9WVKF5qE/CSPJPA/7GrtHw2+iaax35WbhwSnuyVg+MkuD77Io/Um
+	 HkLati6lAGTHWNc9+3/1iPyl7DrbQEjOLj4njMYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 53/80] Bluetooth: Fix type of len in {l2cap,sco}_sock_getsockopt_old()
-Date: Tue, 30 Apr 2024 12:40:25 +0200
-Message-ID: <20240430103044.983868104@linuxfoundation.org>
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 174/186] riscv: Fix loading 64-bit NOMMU kernels past the start of RAM
+Date: Tue, 30 Apr 2024 12:40:26 +0200
+Message-ID: <20240430103103.082778934@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit 9bf4e919ccad613b3596eebf1ff37b05b6405307 upstream.
+[ Upstream commit aea702dde7e9876fb00571a2602f25130847bf0f ]
 
-After an innocuous optimization change in LLVM main (19.0.0), x86_64
-allmodconfig (which enables CONFIG_KCSAN / -fsanitize=thread) fails to
-build due to the checks in check_copy_size():
+commit 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear
+mapping") added logic to allow using RAM below the kernel load address.
+However, this does not work for NOMMU, where PAGE_OFFSET is fixed to the
+kernel load address. Since that range of memory corresponds to PFNs
+below ARCH_PFN_OFFSET, mm initialization runs off the beginning of
+mem_map and corrupts adjacent kernel memory. Fix this by restoring the
+previous behavior for NOMMU kernels.
 
-  In file included from net/bluetooth/sco.c:27:
-  In file included from include/linux/module.h:13:
-  In file included from include/linux/stat.h:19:
-  In file included from include/linux/time.h:60:
-  In file included from include/linux/time32.h:13:
-  In file included from include/linux/timex.h:67:
-  In file included from arch/x86/include/asm/timex.h:6:
-  In file included from arch/x86/include/asm/tsc.h:10:
-  In file included from arch/x86/include/asm/msr.h:15:
-  In file included from include/linux/percpu.h:7:
-  In file included from include/linux/smp.h:118:
-  include/linux/thread_info.h:244:4: error: call to '__bad_copy_from'
-  declared with 'error' attribute: copy source size is too small
-    244 |                         __bad_copy_from();
-        |                         ^
-
-The same exact error occurs in l2cap_sock.c. The copy_to_user()
-statements that are failing come from l2cap_sock_getsockopt_old() and
-sco_sock_getsockopt_old(). This does not occur with GCC with or without
-KCSAN or Clang without KCSAN enabled.
-
-len is defined as an 'int' because it is assigned from
-'__user int *optlen'. However, it is clamped against the result of
-sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
-platforms). This is done with min_t() because min() requires compatible
-types, which results in both len and the result of sizeof() being casted
-to 'unsigned int', meaning len changes signs and the result of sizeof()
-is truncated. From there, len is passed to copy_to_user(), which has a
-third parameter type of 'unsigned long', so it is widened and changes
-signs again. This excessive casting in combination with the KCSAN
-instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
-call, failing the build.
-
-The official recommendation from LLVM developers is to consistently use
-long types for all size variables to avoid the unnecessary casting in
-the first place. Change the type of len to size_t in both
-l2cap_sock_getsockopt_old() and sco_sock_getsockopt_old(). This clears
-up the error while allowing min_t() to be replaced with min(), resulting
-in simpler code with no casts and fewer implicit conversions. While len
-is a different type than optlen now, it should result in no functional
-change because the result of sizeof() will clamp all values of optlen in
-the same manner as before.
-
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2007
-Link: https://github.com/llvm/llvm-project/issues/85647
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear mapping")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20240227003630.3634533-3-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c |    7 ++++---
- net/bluetooth/sco.c        |    7 ++++---
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ arch/riscv/include/asm/page.h | 2 +-
+ arch/riscv/mm/init.c          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -456,7 +456,8 @@ static int l2cap_sock_getsockopt_old(str
- 	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
- 	struct l2cap_options opts;
- 	struct l2cap_conninfo cinfo;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 	u32 opt;
+diff --git a/arch/riscv/include/asm/page.h b/arch/riscv/include/asm/page.h
+index 57e887bfa34cb..94b3d6930fc37 100644
+--- a/arch/riscv/include/asm/page.h
++++ b/arch/riscv/include/asm/page.h
+@@ -89,7 +89,7 @@ typedef struct page *pgtable_t;
+ #define PTE_FMT "%08lx"
+ #endif
  
- 	BT_DBG("sk %p", sk);
-@@ -503,7 +504,7 @@ static int l2cap_sock_getsockopt_old(str
+-#ifdef CONFIG_64BIT
++#if defined(CONFIG_64BIT) && defined(CONFIG_MMU)
+ /*
+  * We override this value as its generic definition uses __pa too early in
+  * the boot process (before kernel_map.va_pa_offset is set).
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index b50faa232b5e9..ec02ea86aa39f 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -230,7 +230,7 @@ static void __init setup_bootmem(void)
+ 	 * In 64-bit, any use of __va/__pa before this point is wrong as we
+ 	 * did not know the start of DRAM before.
+ 	 */
+-	if (IS_ENABLED(CONFIG_64BIT))
++	if (IS_ENABLED(CONFIG_64BIT) && IS_ENABLED(CONFIG_MMU))
+ 		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
  
- 		BT_DBG("mode 0x%2.2x", chan->mode);
- 
--		len = min_t(unsigned int, len, sizeof(opts));
-+		len = min(len, sizeof(opts));
- 		if (copy_to_user(optval, (char *) &opts, len))
- 			err = -EFAULT;
- 
-@@ -553,7 +554,7 @@ static int l2cap_sock_getsockopt_old(str
- 		cinfo.hci_handle = chan->conn->hcon->handle;
- 		memcpy(cinfo.dev_class, chan->conn->hcon->dev_class, 3);
- 
--		len = min_t(unsigned int, len, sizeof(cinfo));
-+		len = min(len, sizeof(cinfo));
- 		if (copy_to_user(optval, (char *) &cinfo, len))
- 			err = -EFAULT;
- 
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -904,7 +904,8 @@ static int sco_sock_getsockopt_old(struc
- 	struct sock *sk = sock->sk;
- 	struct sco_options opts;
- 	struct sco_conninfo cinfo;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 
- 	BT_DBG("sk %p", sk);
- 
-@@ -926,7 +927,7 @@ static int sco_sock_getsockopt_old(struc
- 
- 		BT_DBG("mtu %u", opts.mtu);
- 
--		len = min_t(unsigned int, len, sizeof(opts));
-+		len = min(len, sizeof(opts));
- 		if (copy_to_user(optval, (char *)&opts, len))
- 			err = -EFAULT;
- 
-@@ -944,7 +945,7 @@ static int sco_sock_getsockopt_old(struc
- 		cinfo.hci_handle = sco_pi(sk)->conn->hcon->handle;
- 		memcpy(cinfo.dev_class, sco_pi(sk)->conn->hcon->dev_class, 3);
- 
--		len = min_t(unsigned int, len, sizeof(cinfo));
-+		len = min(len, sizeof(cinfo));
- 		if (copy_to_user(optval, (char *)&cinfo, len))
- 			err = -EFAULT;
- 
+ 	/*
+-- 
+2.43.0
+
 
 
 
