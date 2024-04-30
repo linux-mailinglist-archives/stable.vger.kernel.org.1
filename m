@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-42482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B7A8B733D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E83F8B7183
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16511C231C0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F7521C21295
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3570B1E50A;
-	Tue, 30 Apr 2024 11:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61ED12C47A;
+	Tue, 30 Apr 2024 10:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwB6FDBT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPaR1WrE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83F78801;
-	Tue, 30 Apr 2024 11:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93087129E89;
+	Tue, 30 Apr 2024 10:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475807; cv=none; b=l2mM6yN/I4HJsesXMf+bwFZD2k/qMEah98OqpW8Db2iDy8q0w1S958zGfJL7PJCXoNNOO4poRfXs1Xu0GK24Jv4O84hEjTHdIjjJQ7APauY//+R2iKT0ul8KgNR4kkmeYy5KuRHSCvZdc2G26m87RyBDQEiM5c5+r4WVRjrpGLs=
+	t=1714474641; cv=none; b=Si82DWvgrp78bV2jIdWkVRKlnHogFk4j5FgXgLSeMls53TUVK8IBzPgz3i4pcBLj5L8JkehQjPY7GWLyPqfzy3ofJydgyxy9MWYugWBi6TIKklloTu+UFWtqbAisahGE31Rcb3DB2pXaXYqstSRS2FMrJXGlIbBc/7ZGgZG+Aa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475807; c=relaxed/simple;
-	bh=ehIWqThAQzhCcCGHbHtKC78Q9xhaZfkgCwE725AIKF8=;
+	s=arc-20240116; t=1714474641; c=relaxed/simple;
+	bh=qa7YbAGl0fTGj5Cz2w+RR7lppzY0bGgUCir0hmrUX3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GU9Y8TjsnserKyVYfqgHJD1QK/H/2wVrTdNC4Wa1ScCxF21YvE0g5FazNHMMz28BJlKz/pX0/hCuS4vx27pgQhnqmBS6h6Fg+Pbsg9rBpIPQ97nBE97gomj6+Htp2lcqMc4D2kpuDq8aY1FOnDNrtyitMaQ3fE18waVWx5A18Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwB6FDBT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E112C2BBFC;
-	Tue, 30 Apr 2024 11:16:46 +0000 (UTC)
+	 MIME-Version; b=U1l/Ef3CWD6w6USzhNQx5K+MczGQ+mHVV8Nj8APGUuwW1aeQFukKbOvBGa+4q74ozxOPQC7ywc7nB/uXuFk88Vg8qujeb00562o1j4+io8ib9VBnSYwPSl3b+IyQPjejtzb//E+U13iwL7w8Jc7AUGQOma7alD6L8pjSpXFLsG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPaR1WrE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA76C2BBFC;
+	Tue, 30 Apr 2024 10:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475806;
-	bh=ehIWqThAQzhCcCGHbHtKC78Q9xhaZfkgCwE725AIKF8=;
+	s=korg; t=1714474641;
+	bh=qa7YbAGl0fTGj5Cz2w+RR7lppzY0bGgUCir0hmrUX3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwB6FDBTzWquL2HfpxTFL7cqoA2VCM3PZZOTzFwfR+u9AFkgBbwEDHHqFli63JB72
-	 LscqYpB2p5sWBZta+rmTLl2piJ8jW9DtoNw/vXrHyx63R2AlsIEd8qCTgA+XNncgj8
-	 Ze6sMSMT1oZW/iVxB6ZGprbDsxVotmHYl7gSU1C4=
+	b=zPaR1WrEiQ5Ut7VXP2/GP5L3UhA8DgJKiIW1a0jBvotrE+oLfSHAZdPHt7ejWfN+7
+	 WafNk+AWNxg4aYj+VwPRBYYEGuGPAiMU9nbOwoLzjnoegGlLoAMq3fde3NM6ll0n2O
+	 nFJUGmj/wjrIHbKapaerzgNXQNcMtfE9nfY+wDj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Rob Herring <robh@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 23/80] bridge/br_netlink.c: no need to return void function
+Subject: [PATCH 6.8 217/228] dt-bindings: eeprom: at24: Fix ST M24C64-D compatible schema
 Date: Tue, 30 Apr 2024 12:39:55 +0200
-Message-ID: <20240430103044.101067543@linuxfoundation.org>
+Message-ID: <20240430103110.066914329@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 4fd1edcdf13c0d234543ecf502092be65c5177db ]
+[ Upstream commit b3de7b433a323bb80303d77e69f1281bfab0a70b ]
 
-br_info_notify is a void function. There is no need to return.
+The schema for the ST M24C64-D compatible string doesn't work.
+Validation fails as the 'd-wl' suffix is not added to the preceeding
+schema which defines the entries and vendors. The actual users are
+incorrect as well because the vendor is listed as Atmel whereas the
+part is made by ST.
 
-Fixes: b6d0425b816e ("bridge: cfm: Netlink Notifications.")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+As this part doesn't appear to have multiple vendors, move it to its own
+entry.
+
+Fixes: 0997ff1fc143 ("dt-bindings: at24: add ST M24C64-D Additional Write lockable page")
+Fixes: c761068f484c ("dt-bindings: at24: add ST M24C32-D Additional Write lockable page")
+Signed-off-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/eeprom/at24.yaml | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index e365cf82f0615..a1a703b7d5235 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -619,7 +619,7 @@ void br_ifinfo_notify(int event, const struct net_bridge *br,
- {
- 	u32 filter = RTEXT_FILTER_BRVLAN_COMPRESSED;
+diff --git a/Documentation/devicetree/bindings/eeprom/at24.yaml b/Documentation/devicetree/bindings/eeprom/at24.yaml
+index 1812ef31d5f1e..3c36cd0510de8 100644
+--- a/Documentation/devicetree/bindings/eeprom/at24.yaml
++++ b/Documentation/devicetree/bindings/eeprom/at24.yaml
+@@ -68,14 +68,10 @@ properties:
+                   pattern: cs16$
+               - items:
+                   pattern: c32$
+-              - items:
+-                  pattern: c32d-wl$
+               - items:
+                   pattern: cs32$
+               - items:
+                   pattern: c64$
+-              - items:
+-                  pattern: c64d-wl$
+               - items:
+                   pattern: cs64$
+               - items:
+@@ -136,6 +132,7 @@ properties:
+               - renesas,r1ex24128
+               - samsung,s524ad0xd1
+           - const: atmel,24c128
++      - pattern: '^atmel,24c(32|64)d-wl$' # Actual vendor is st
  
--	return br_info_notify(event, br, port, filter);
-+	br_info_notify(event, br, port, filter);
- }
- 
- /*
+   label:
+     description: Descriptive name of the EEPROM.
 -- 
 2.43.0
 
