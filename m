@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4258B7204
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CE88B739B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C860D2829BE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F91C28884B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636D412C530;
-	Tue, 30 Apr 2024 11:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F9B12CDAE;
+	Tue, 30 Apr 2024 11:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cA6L+65"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhAJQTPn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2049D12C462;
-	Tue, 30 Apr 2024 11:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B062712C805;
+	Tue, 30 Apr 2024 11:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474994; cv=none; b=FR2j8VLiS79tlYm8K5LMu8atJRBFmewkxvN0mprSM90KK/VYv3TyMGa9Z8bwshJvXmAyzMlKhTbb+vt13/K4KywynpMgmLEmCrHuTruHMYMYbcnPChPkZ+KE2SY2MT1jt14IMOK4vlD5gKBHYDDY6ip56VW6q9J36VWqJF6EDiY=
+	t=1714476072; cv=none; b=jMt332CS2Qs/59nKKYZVt1km10Ed5f0f4u5W5wq/J5TgdQStOdecePlBc9mrSKycC1bJ2zfbxN2aSeuOwAjWr9qRvUjtQYrs2T4Gjd6AbtfHaVt6TyRxgNEg3Njq4ZV+UN0h+qiN3/2WMosroKy+noVY6/kUEg7Gbb3yjte+8yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474994; c=relaxed/simple;
-	bh=3+/Xm8EDWDuS+dFBhHVH1JiEiReGYhTxAUdnkYEGJT8=;
+	s=arc-20240116; t=1714476072; c=relaxed/simple;
+	bh=HgDv0P8AmDCURZVOXaHoHvBN6qb9mzqXOTO0x/llzZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ptkju6a5yULt2zqeD6836ETIsg5hVP+DZ4sqXR6j4d01HSlt/3aHxde23rHMLcAfTl1BZzkROWTyAAGi4b0MfoVkpiQF1YIP4K8zbp9Zsid86ef0OGDKXWvyXw1JxYM8iLwT6OjBcIAfEe/qulixfYA79g/NR+ol35/fDGCfvW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cA6L+65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9348EC2BBFC;
-	Tue, 30 Apr 2024 11:03:13 +0000 (UTC)
+	 MIME-Version; b=kga30tdwADz8h5lVh3qqRroQZ+6dnR73yAMdMTdXC0L4iOX10Gz8P7WwemIlvNxw4V8XsTTJwbNHkm6wW4MiFoADTSFQqYt3mDXtBrTkfi+fhpuz4wL8/Bet2d8c6NRl6uOXY+1NvsXVcmbh0K0IxC5ngHTI+f73KStaSb/+Gx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhAJQTPn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DA7C2BBFC;
+	Tue, 30 Apr 2024 11:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474994;
-	bh=3+/Xm8EDWDuS+dFBhHVH1JiEiReGYhTxAUdnkYEGJT8=;
+	s=korg; t=1714476072;
+	bh=HgDv0P8AmDCURZVOXaHoHvBN6qb9mzqXOTO0x/llzZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0cA6L+65vjzLLHBiwv0XRIb8CHjwyk+/xD6Q1NcVgEcLV2fdG6aMDxfh3d2xp6HIT
-	 yjqBzkeBn6F847h2//lgIc8V1j1hxO9kPdXPIs4tPUnpCB/rN5NF/zWcCsICaBNzn2
-	 ivHsxkTZ9CKwADNs2C4bjC3ltI82R3q/Eci4xrGg=
+	b=bhAJQTPnO7UX02wbDOmbKwBDom9EQiyJJcPiZlY/Q3AjOktR5SoGNc7LsdkS+xNct
+	 TDbC20aUsMP9ALhuCN9a7nheho8TKLhI9T08xoR9QML+frAPyZZZ0qrYnXqBWFmtFW
+	 Dm52RLVucLAp85RfzFfK9LlTiJ+N4ZgpVL6cjUtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
+	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/138] mlxsw: spectrum_acl_tcam: Fix memory leak when canceling rehash work
+Subject: [PATCH 5.4 025/107] RDMA/rxe: Fix the problem "mutex_destroy missing"
 Date: Tue, 30 Apr 2024 12:39:45 +0200
-Message-ID: <20240430103052.357868758@linuxfoundation.org>
+Message-ID: <20240430103045.406374741@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Yanjun.Zhu <yanjun.zhu@linux.dev>
 
-[ Upstream commit fb4e2b70a7194b209fc7320bbf33b375f7114bd5 ]
+[ Upstream commit 481047d7e8391d3842ae59025806531cdad710d9 ]
 
-The rehash delayed work is rescheduled with a delay if the number of
-credits at end of the work is not negative as supposedly it means that
-the migration ended. Otherwise, it is rescheduled immediately.
+When a mutex lock is not used any more, the function mutex_destroy
+should be called to mark the mutex lock uninitialized.
 
-After "mlxsw: spectrum_acl_tcam: Fix possible use-after-free during
-rehash" the above is no longer accurate as a non-negative number of
-credits is no longer indicative of the migration being done. It can also
-happen if the work encountered an error in which case the migration will
-resume the next time the work is scheduled.
-
-The significance of the above is that it is possible for the work to be
-pending and associated with hints that were allocated when the migration
-started. This leads to the hints being leaked [1] when the work is
-canceled while pending as part of ACL region dismantle.
-
-Fix by freeing the hints if hints are associated with a work that was
-canceled while pending.
-
-Blame the original commit since the reliance on not having a pending
-work associated with hints is fragile.
-
-[1]
-unreferenced object 0xffff88810e7c3000 (size 256):
-  comm "kworker/0:16", pid 176, jiffies 4295460353
-  hex dump (first 32 bytes):
-    00 30 95 11 81 88 ff ff 61 00 00 00 00 00 00 80  .0......a.......
-    00 00 61 00 40 00 00 00 00 00 00 00 04 00 00 00  ..a.@...........
-  backtrace (crc 2544ddb9):
-    [<00000000cf8cfab3>] kmalloc_trace+0x23f/0x2a0
-    [<000000004d9a1ad9>] objagg_hints_get+0x42/0x390
-    [<000000000b143cf3>] mlxsw_sp_acl_erp_rehash_hints_get+0xca/0x400
-    [<0000000059bdb60a>] mlxsw_sp_acl_tcam_vregion_rehash_work+0x868/0x1160
-    [<00000000e81fd734>] process_one_work+0x59c/0xf20
-    [<00000000ceee9e81>] worker_thread+0x799/0x12c0
-    [<00000000bda6fe39>] kthread+0x246/0x300
-    [<0000000070056d23>] ret_from_fork+0x34/0x70
-    [<00000000dea2b93e>] ret_from_fork_asm+0x1a/0x30
-
-Fixes: c9c9af91f1d9 ("mlxsw: spectrum_acl: Allow to interrupt/continue rehash work")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/0cc12ebb07c4d4c41a1265ee2c28b392ff997a86.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Yanjun.Zhu <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240314065140.27468-1-yanjun.zhu@linux.dev
+Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index e0e7f630801a9..46b1120a8151e 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -831,10 +831,14 @@ mlxsw_sp_acl_tcam_vregion_destroy(struct mlxsw_sp *mlxsw_sp,
- 	struct mlxsw_sp_acl_tcam *tcam = vregion->tcam;
+diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
+index de5f3efe9fcb4..76e103ef5be31 100644
+--- a/drivers/infiniband/sw/rxe/rxe.c
++++ b/drivers/infiniband/sw/rxe/rxe.c
+@@ -72,6 +72,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
  
- 	if (vgroup->vregion_rehash_enabled && ops->region_rehash_hints_get) {
-+		struct mlxsw_sp_acl_tcam_rehash_ctx *ctx = &vregion->rehash.ctx;
+ 	if (rxe->tfm)
+ 		crypto_free_shash(rxe->tfm);
 +
- 		mutex_lock(&tcam->lock);
- 		list_del(&vregion->tlist);
- 		mutex_unlock(&tcam->lock);
--		cancel_delayed_work_sync(&vregion->rehash.dw);
-+		if (cancel_delayed_work_sync(&vregion->rehash.dw) &&
-+		    ctx->hints_priv)
-+			ops->region_rehash_hints_put(ctx->hints_priv);
- 	}
- 	mlxsw_sp_acl_tcam_vgroup_vregion_detach(mlxsw_sp, vregion);
- 	if (vregion->region2)
++	mutex_destroy(&rxe->usdev_lock);
+ }
+ 
+ /* initialize rxe device parameters */
 -- 
 2.43.0
 
