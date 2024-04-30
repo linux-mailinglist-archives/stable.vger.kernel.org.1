@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-42211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF1C8B71E6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F3A8B72BC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F7191C22F23
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C98A31C23133
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D36612C54B;
-	Tue, 30 Apr 2024 11:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37DD12D1E8;
+	Tue, 30 Apr 2024 11:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmrgKaHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PChNFFQf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B58012B176;
-	Tue, 30 Apr 2024 11:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C1F8801;
+	Tue, 30 Apr 2024 11:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474927; cv=none; b=tIQ+uF8Cqf8xzK092TzseU5uO2tMHoUVUwWgRv0JgI9pKbYn1SSvybzpn+bfUtAyOjzlyT4tQx5xIj9xz/WkJnkNbOCAZ4JsUz+Bz5hnYkQfv0cwX/hdhUPeKtjh1do577+cIZMEGsZWxLE/O5MxInRE/OtCkUG+1sDdmy6PCoE=
+	t=1714475490; cv=none; b=qCETvDiWncTDwVRSF8Nqk29AWbK2AMVR7aYKfiIlJntexvhlmf4EIXUhkuYXZRGRl+sUZxBwBYTon/BGxHiE5fJI7I/DnOvnOXl552iqCVHfs2fbFpIWXDHnQTyftGXzATNkQmltYCytWVCg8kfG0dH1P7FG8no/GviYRNiPKX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474927; c=relaxed/simple;
-	bh=0d/iwT6mTbtvXcAg7UR7t4v2nH+r5rnd04bCOLt8KAQ=;
+	s=arc-20240116; t=1714475490; c=relaxed/simple;
+	bh=Ak2rZDxDOqze2OA7sGtfRJ1rQuuYPdFxNl/68+UAGb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3Vu2BNjuJnht2uqUnpRimI2qYIpWIZUWI8C/PEJY+g3V182shKb4uXPtEe6Vg83z6TYzjB6nY4TNA/+07m1Y1CE4bM18lGHW2VvlvYzbJALPatFFm4lZdZuJedUiC5Dq6WTyCFVmH0gFMrobOg8M02gf7fRAZ4bfwEcRjGWiRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmrgKaHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865B1C4AF18;
-	Tue, 30 Apr 2024 11:02:06 +0000 (UTC)
+	 MIME-Version; b=Q77WoZC0+naH/pknMpSPUN+nB8ZtlKzAU1f3NVvFe4pNbNIM4taoQgbjS45ODF4/JDqlLcHfVU4LKrumr7fqIN1pb35hws4ymxROjUNYXrO3hvh76hrcb2pkgW9LhIvyXD2okQBzTc5CO5gnDyDN+PW3lngXz6GARloMiJ/8u6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PChNFFQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A482CC4AF19;
+	Tue, 30 Apr 2024 11:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474926;
-	bh=0d/iwT6mTbtvXcAg7UR7t4v2nH+r5rnd04bCOLt8KAQ=;
+	s=korg; t=1714475490;
+	bh=Ak2rZDxDOqze2OA7sGtfRJ1rQuuYPdFxNl/68+UAGb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmrgKaHWn+af7Bemfzq9XyKW3Sky0VnBxshxwXXF3TIEE56uD2Qylk0ABx4qttxmb
-	 XtXMSkndqEfxyDwOgQO3ScuV2JGvAUKhJtWh3hoeZyJMtk7F9MZSngwsKZ3Ngi+Jq4
-	 jQt0HnNvRS6po6ekNgXfG1s9/PNQjZr9le9GIaGw=
+	b=PChNFFQf+raGh0E6qfMr9V+ImtUbQ0e9B5+QvJx4rvgKID7PSkNI73V+D/8VsE5BR
+	 bxbsWRTiQHj2xmUFwd0IOCpSXXjFin+x+bN7Jv5busbu/xMHiE05a2PvK8fP6z7MrP
+	 532yEc6kq+N/cwmTGTUyvphCCNTRKPmFIt2heTj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/138] arm64: dts: mediatek: mt7622: introduce nodes for Wireless Ethernet Dispatch
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Thorvald Natvig <thorvald@google.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peng Zhang <zhangpeng.00@bytedance.com>,
+	Tycho Andersen <tandersen@netflix.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 110/186] fork: defer linking file vma until vma is fully initialized
 Date: Tue, 30 Apr 2024 12:39:22 +0200
-Message-ID: <20240430103051.692592901@linuxfoundation.org>
+Message-ID: <20240430103101.226378191@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +73,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-[ Upstream commit e9b65ecb7c3050dd34ee22ce17f1cf95e8405b15 ]
+commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19 upstream.
 
-Introduce wed0 and wed1 nodes in order to enable offloading forwarding
-between ethernet and wireless devices on the mt7622 chipset.
+Thorvald reported a WARNING [1]. And the root cause is below race:
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 3ba5a6159434 ("arm64: dts: mediatek: mt7622: fix clock controllers")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ CPU 1					CPU 2
+ fork					hugetlbfs_fallocate
+  dup_mmap				 hugetlbfs_punch_hole
+   i_mmap_lock_write(mapping);
+   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
+   i_mmap_unlock_write(mapping);
+   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
+					 i_mmap_lock_write(mapping);
+   					 hugetlb_vmdelete_list
+					  vma_interval_tree_foreach
+					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
+   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
+					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
+					 i_mmap_unlock_write(mapping);
+
+hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
+i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
+by deferring linking file vma until vma is fully initialized.  Those vmas
+should be initialized first before they can be used.
+
+Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
+Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reported-by: Thorvald Natvig <thorvald@google.com>
+Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 28 ++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ kernel/fork.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index 07b4d3ba55612..ab218229b7ea1 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -893,6 +893,11 @@
- 		};
- 	};
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -727,6 +727,15 @@ static __latent_entropy int dup_mmap(str
+ 		} else if (anon_vma_fork(tmp, mpnt))
+ 			goto fail_nomem_anon_vma_fork;
+ 		vm_flags_clear(tmp, VM_LOCKED_MASK);
++		/*
++		 * Copy/update hugetlb private vma information.
++		 */
++		if (is_vm_hugetlb_page(tmp))
++			hugetlb_dup_vma_private(tmp);
++
++		if (tmp->vm_ops && tmp->vm_ops->open)
++			tmp->vm_ops->open(tmp);
++
+ 		file = tmp->vm_file;
+ 		if (file) {
+ 			struct address_space *mapping = file->f_mapping;
+@@ -743,12 +752,6 @@ static __latent_entropy int dup_mmap(str
+ 			i_mmap_unlock_write(mapping);
+ 		}
  
-+	hifsys: syscon@1af00000 {
-+		compatible = "mediatek,mt7622-hifsys", "syscon";
-+		reg = <0 0x1af00000 0 0x70>;
-+	};
-+
- 	ethsys: syscon@1b000000 {
- 		compatible = "mediatek,mt7622-ethsys",
- 			     "syscon";
-@@ -911,6 +916,26 @@
- 		#dma-cells = <1>;
- 	};
+-		/*
+-		 * Copy/update hugetlb private vma information.
+-		 */
+-		if (is_vm_hugetlb_page(tmp))
+-			hugetlb_dup_vma_private(tmp);
+-
+ 		/* Link the vma into the MT */
+ 		if (vma_iter_bulk_store(&vmi, tmp))
+ 			goto fail_nomem_vmi_store;
+@@ -757,9 +760,6 @@ static __latent_entropy int dup_mmap(str
+ 		if (!(tmp->vm_flags & VM_WIPEONFORK))
+ 			retval = copy_page_range(tmp, mpnt);
  
-+	pcie_mirror: pcie-mirror@10000400 {
-+		compatible = "mediatek,mt7622-pcie-mirror",
-+			     "syscon";
-+		reg = <0 0x10000400 0 0x10>;
-+	};
-+
-+	wed0: wed@1020a000 {
-+		compatible = "mediatek,mt7622-wed",
-+			     "syscon";
-+		reg = <0 0x1020a000 0 0x1000>;
-+		interrupts = <GIC_SPI 214 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+
-+	wed1: wed@1020b000 {
-+		compatible = "mediatek,mt7622-wed",
-+			     "syscon";
-+		reg = <0 0x1020b000 0 0x1000>;
-+		interrupts = <GIC_SPI 215 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+
- 	eth: ethernet@1b100000 {
- 		compatible = "mediatek,mt7622-eth",
- 			     "mediatek,mt2701-eth",
-@@ -938,6 +963,9 @@
- 		mediatek,ethsys = <&ethsys>;
- 		mediatek,sgmiisys = <&sgmiisys>;
- 		mediatek,cci-control = <&cci_control2>;
-+		mediatek,wed = <&wed0>, <&wed1>;
-+		mediatek,pcie-mirror = <&pcie_mirror>;
-+		mediatek,hifsys = <&hifsys>;
- 		dma-coherent;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--- 
-2.43.0
-
+-		if (tmp->vm_ops && tmp->vm_ops->open)
+-			tmp->vm_ops->open(tmp);
+-
+ 		if (retval)
+ 			goto loop_out;
+ 	}
 
 
 
