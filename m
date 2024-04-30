@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-42032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816AF8B7109
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490DD8B7273
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3D2C1C20CF5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01546283670
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EACF12C499;
-	Tue, 30 Apr 2024 10:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0F312CD90;
+	Tue, 30 Apr 2024 11:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6i4HfqV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmiirRMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E2F12C487;
-	Tue, 30 Apr 2024 10:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEBD1E50A;
+	Tue, 30 Apr 2024 11:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474339; cv=none; b=rShxT+VqSoO4A8YphjiMpZeTg+nhf1KagwmVhy+YneIRxwLTd70yhGjiGh7IJXKap6SI3N7lYchVCKvSM3//kb8AKiWiQVG0Jjr+UDwhYPimLmUGwmiT1ftL4uH2tCzS4zXYeLCTUozLe5d33waGAoe1LRERKNM0R3XjXopbDBk=
+	t=1714475297; cv=none; b=oJEqhoRva/w9ZBIgS6OKupHFbYkoCt8gEyJNKWZbVyvGWrUoYpOk+MyFgmZY11TohMw0QuWOx88N9amr40CC7lIFrlSEcsTovTBxWO2lOe88GGGhXxKcq2RoSbhpQE6Vs+xqmkF4I/PsnxhrH6fuH9TasWNhV63vehrhMZ1G8BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474339; c=relaxed/simple;
-	bh=IXAokeOem87J8/nxHyzHuo/UxK2MUOcroGjWsnQKwog=;
+	s=arc-20240116; t=1714475297; c=relaxed/simple;
+	bh=FsZVI+MU9SdGJesUXDX0nQPEswRAR8IaV+/jVDYv64k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P1dk3UzdZZdLk6dM9dXESzuIcgnAzoCtxkQKoODkZhXE9jXpTATsx2JH8XDlYIvG1Ufj/YUheWT5lE7cjWMQmiVAuqYhD+S4jLQS+1f2x6J6Ljz1gYmX6GQ8nk86/bWcYgF1J2aiLlh3zUQrMBcqAw0y46IgXjCavH+FgMUv6qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6i4HfqV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62F2C2BBFC;
-	Tue, 30 Apr 2024 10:52:18 +0000 (UTC)
+	 MIME-Version; b=NKF5eFEie73zFZKtWkJkKg5IZqPu/Ezii/esV4WjjvBYtexojxi/ZViwKvAzLCsyVTuBHYyh5RInmGGYia+3dfPkb/79FRBl++Z4urFwWI0ziCMMaJ/p1w9claWtzwsdVTjyY2ViRR5B6GRVrKnhsheeT2GyWQT04o8NV5NROII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmiirRMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B451C2BBFC;
+	Tue, 30 Apr 2024 11:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474339;
-	bh=IXAokeOem87J8/nxHyzHuo/UxK2MUOcroGjWsnQKwog=;
+	s=korg; t=1714475297;
+	bh=FsZVI+MU9SdGJesUXDX0nQPEswRAR8IaV+/jVDYv64k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6i4HfqVDeQi2kV2hd8mN81YRKz1KNtjUptOpkl3pMaGDGFMqBTX01w85ez0mUgFZ
-	 7MwRtfoMbk1cae/x7Q48FgTzq4cfwE99fkBddF1vf6rqUe3JXEJFTGZqHCNOT5mn6J
-	 QIOdsrpdxzZgBr/cYtLDta3fzUHhdbEJ2nB0k+r4=
+	b=gmiirRMyLsM7yTJIsM982IPuqd4UfxFC/42F4ciEDAilemG5b01/X9bIS+WnV1SlS
+	 nR1TkurvtUvaIYnsSz22DsgrM8INrGY7kI4UIG5kX3u2t62lCXHzEJlEzRWf3Ms/YY
+	 i6YXilOwb1OqF4gvk/YobKBnYJYNIKGHJoYheXrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rob Clark <robdclark@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.keonig@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Kwangjin Ko <kwangjin.ko@sk.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 127/228] drm/amdgpu: add shared fdinfo stats
-Date: Tue, 30 Apr 2024 12:38:25 +0200
-Message-ID: <20240430103107.471549116@linuxfoundation.org>
+Subject: [PATCH 6.6 054/186] cxl/core: Fix potential payload size confusion in cxl_mem_get_poison()
+Date: Tue, 30 Apr 2024 12:38:26 +0200
+Message-ID: <20240430103059.600144903@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +63,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit ba1a58d5b907bdf1814f8f57434aebc86233430f ]
+[ Upstream commit 4b759dd5765503bd466defac7d93aca14c23a15d ]
 
-Add shared stats.  Useful for seeing shared memory.
+A recent change to cxl_mem_get_records_log() [1] highlighted a subtle
+nuance of looping calls to cxl_internal_send_cmd(), i.e. that
+cxl_internal_send_cmd() modifies the 'size_out' member of the @mbox_cmd
+argument. That mechanism is useful for communicating underflow, but it
+is unwanted when reusing @mbox_cmd for a subsequent submission. It turns
+out that cxl_xfer_log() avoids this scenario by always redefining
+@mbox_cmd each iteration.
 
-v2: take dma-buf into account as well
-v3: use the new gem helper
+Update cxl_mem_get_records_log() and cxl_mem_get_poison() to follow the
+same style as cxl_xfer_log(), i.e. re-define @mbox_cmd each iteration.
+The cxl_mem_get_records_log() change is just a style fixup, but the
+cxl_mem_get_poison() change is a potential fix, per Alison [2]:
 
-Link: https://lore.kernel.org/all/20231207180225.439482-1-alexander.deucher@amd.com/
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Rob Clark <robdclark@gmail.com>
-Reviewed-by: Christian König <christian.keonig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Stable-dep-of: a6ff969fe9cb ("drm/amdgpu: fix visible VRAM handling during faults")
+    Poison list retrieval can hit this case if the MORE flag is set and
+    a follow on read of the list delivers more records than the previous
+    read.  ie. device gives one record, sets the _MORE flag, then gives 5.
+
+Not an urgent fix since this behavior has not been seen in the wild,
+but worth tracking as a fix.
+
+Cc: Kwangjin Ko <kwangjin.ko@sk.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Fixes: ed83f7ca398b ("cxl/mbox: Add GET_POISON_LIST mailbox command")
+Link: http://lore.kernel.org/r/20240402081404.1106-2-kwangjin.ko@sk.com [1]
+Link: http://lore.kernel.org/r/ZhAhAL/GOaWFrauw@aschofie-mobl2 [2]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://lore.kernel.org/r/171235441633.2716581.12330082428680958635.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_fdinfo.c |  4 ++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 11 +++++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |  6 ++++++
- 3 files changed, 21 insertions(+)
+ drivers/cxl/core/mbox.c | 38 +++++++++++++++++---------------------
+ 1 file changed, 17 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_fdinfo.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_fdinfo.c
-index 5706b282a0c7e..c7df7fa3459f1 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fdinfo.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fdinfo.c
-@@ -97,6 +97,10 @@ void amdgpu_show_fdinfo(struct drm_printer *p, struct drm_file *file)
- 		   stats.requested_visible_vram/1024UL);
- 	drm_printf(p, "amd-requested-gtt:\t%llu KiB\n",
- 		   stats.requested_gtt/1024UL);
-+	drm_printf(p, "drm-shared-vram:\t%llu KiB\n", stats.vram_shared/1024UL);
-+	drm_printf(p, "drm-shared-gtt:\t%llu KiB\n", stats.gtt_shared/1024UL);
-+	drm_printf(p, "drm-shared-cpu:\t%llu KiB\n", stats.cpu_shared/1024UL);
+diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+index 4b4c15e943380..fecaa18f4dd20 100644
+--- a/drivers/cxl/core/mbox.c
++++ b/drivers/cxl/core/mbox.c
+@@ -959,25 +959,22 @@ static void cxl_mem_get_records_log(struct cxl_memdev_state *mds,
+ 	struct cxl_memdev *cxlmd = mds->cxlds.cxlmd;
+ 	struct device *dev = mds->cxlds.dev;
+ 	struct cxl_get_event_payload *payload;
+-	struct cxl_mbox_cmd mbox_cmd;
+ 	u8 log_type = type;
+ 	u16 nr_rec;
+ 
+ 	mutex_lock(&mds->event.log_lock);
+ 	payload = mds->event.buf;
+ 
+-	mbox_cmd = (struct cxl_mbox_cmd) {
+-		.opcode = CXL_MBOX_OP_GET_EVENT_RECORD,
+-		.payload_in = &log_type,
+-		.size_in = sizeof(log_type),
+-		.payload_out = payload,
+-		.min_out = struct_size(payload, records, 0),
+-	};
+-
+ 	do {
+ 		int rc, i;
+-
+-		mbox_cmd.size_out = mds->payload_size;
++		struct cxl_mbox_cmd mbox_cmd = (struct cxl_mbox_cmd) {
++			.opcode = CXL_MBOX_OP_GET_EVENT_RECORD,
++			.payload_in = &log_type,
++			.size_in = sizeof(log_type),
++			.payload_out = payload,
++			.size_out = mds->payload_size,
++			.min_out = struct_size(payload, records, 0),
++		};
+ 
+ 		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
+ 		if (rc) {
+@@ -1311,7 +1308,6 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+ 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
+ 	struct cxl_mbox_poison_out *po;
+ 	struct cxl_mbox_poison_in pi;
+-	struct cxl_mbox_cmd mbox_cmd;
+ 	int nr_records = 0;
+ 	int rc;
+ 
+@@ -1323,16 +1319,16 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+ 	pi.offset = cpu_to_le64(offset);
+ 	pi.length = cpu_to_le64(len / CXL_POISON_LEN_MULT);
+ 
+-	mbox_cmd = (struct cxl_mbox_cmd) {
+-		.opcode = CXL_MBOX_OP_GET_POISON,
+-		.size_in = sizeof(pi),
+-		.payload_in = &pi,
+-		.size_out = mds->payload_size,
+-		.payload_out = po,
+-		.min_out = struct_size(po, record, 0),
+-	};
+-
+ 	do {
++		struct cxl_mbox_cmd mbox_cmd = (struct cxl_mbox_cmd){
++			.opcode = CXL_MBOX_OP_GET_POISON,
++			.size_in = sizeof(pi),
++			.payload_in = &pi,
++			.size_out = mds->payload_size,
++			.payload_out = po,
++			.min_out = struct_size(po, record, 0),
++		};
 +
- 	for (hw_ip = 0; hw_ip < AMDGPU_HW_IP_NUM; ++hw_ip) {
- 		if (!usage[hw_ip])
- 			continue;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-index 425cebcc5cbff..e6f69fce539b5 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -1276,25 +1276,36 @@ void amdgpu_bo_get_memory(struct amdgpu_bo *bo,
- 			  struct amdgpu_mem_stats *stats)
- {
- 	uint64_t size = amdgpu_bo_size(bo);
-+	struct drm_gem_object *obj;
- 	unsigned int domain;
-+	bool shared;
- 
- 	/* Abort if the BO doesn't currently have a backing store */
- 	if (!bo->tbo.resource)
- 		return;
- 
-+	obj = &bo->tbo.base;
-+	shared = drm_gem_object_is_shared_for_memory_stats(obj);
-+
- 	domain = amdgpu_mem_type_to_domain(bo->tbo.resource->mem_type);
- 	switch (domain) {
- 	case AMDGPU_GEM_DOMAIN_VRAM:
- 		stats->vram += size;
- 		if (amdgpu_bo_in_cpu_visible_vram(bo))
- 			stats->visible_vram += size;
-+		if (shared)
-+			stats->vram_shared += size;
- 		break;
- 	case AMDGPU_GEM_DOMAIN_GTT:
- 		stats->gtt += size;
-+		if (shared)
-+			stats->gtt_shared += size;
- 		break;
- 	case AMDGPU_GEM_DOMAIN_CPU:
- 	default:
- 		stats->cpu += size;
-+		if (shared)
-+			stats->cpu_shared += size;
- 		break;
- 	}
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-index a3ea8a82db23a..be679c42b0b8c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -138,12 +138,18 @@ struct amdgpu_bo_vm {
- struct amdgpu_mem_stats {
- 	/* current VRAM usage, includes visible VRAM */
- 	uint64_t vram;
-+	/* current shared VRAM usage, includes visible VRAM */
-+	uint64_t vram_shared;
- 	/* current visible VRAM usage */
- 	uint64_t visible_vram;
- 	/* current GTT usage */
- 	uint64_t gtt;
-+	/* current shared GTT usage */
-+	uint64_t gtt_shared;
- 	/* current system memory usage */
- 	uint64_t cpu;
-+	/* current shared system memory usage */
-+	uint64_t cpu_shared;
- 	/* sum of evicted buffers, includes visible VRAM */
- 	uint64_t evicted_vram;
- 	/* sum of evicted buffers due to CPU access */
+ 		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
+ 		if (rc)
+ 			break;
 -- 
 2.43.0
 
