@@ -1,235 +1,195 @@
-Return-Path: <stable+bounces-41803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423578B6B4B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 09:17:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBDA8B6BC6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 09:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4C132821E3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:17:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF11AB21FA3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C287B2C184;
-	Tue, 30 Apr 2024 07:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71D98287C;
+	Tue, 30 Apr 2024 07:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gZj4YxjG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8AdA6xDH"
 X-Original-To: stable@vger.kernel.org
-Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8242556F
-	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 07:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=222.66.158.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48AC45027;
+	Tue, 30 Apr 2024 07:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714461468; cv=none; b=KP8kW5NP8kZhQb1+Iw2LKnCJjKNQI5CkTJUZ7y+AfeVqg9H5gkjly+P7twz1Rp4noWNoq4ZB9jtrqayJl9TYfvCZz5yyy80d+BzUlMvrdAOj+a+m0gidLKG7fMD506rvjyfa9ASatg163cidfUUTfWapIDUvLuUPft6QUeBXjTk=
+	t=1714462279; cv=none; b=dUte2nLvNVMkJQonUOq4Z/nh3wzqA7QWfEIvQtEjP/ssaDp2YUjCchnayc9TxXKmWOVb8/rsSkvh1irfpyzbrZTJOI174hfYOUh/5QCcuEzQX+aVfmjPuvpp9b5AMKHnaSkk2ue9QSVPM57twvW25iXp/glccflYF2G4ZHhfa7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714461468; c=relaxed/simple;
-	bh=vpiLrtoA8Clxum6XMseE7kszP5lb19KSUPU8G9SIgN0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jFjJyIrPegD3n3zMh2Os6i9FU8y+y5bl3gpsg1xt0djyEsc94Kv8LprHahPw1n2H/wHohVosiDfx5kGVtCLi7Q4kZyqzIUQJ72xSFOpHxN2TLZvkTrMc1dSyYBV+t9oLFHw4B458vMD9Dvrk4vR1Y1W4X1CuckZSUIscazrOUp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unisoc.com; spf=pass smtp.mailfrom=unisoc.com; arc=none smtp.client-ip=222.66.158.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unisoc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unisoc.com
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 43U7FCBV023552;
-	Tue, 30 Apr 2024 15:15:12 +0800 (+08)
-	(envelope-from Zhiguo.Niu@unisoc.com)
-Received: from SHDLP.spreadtrum.com (bjmbx02.spreadtrum.com [10.0.64.8])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4VTBGJ2hWzz2P4QcL;
-	Tue, 30 Apr 2024 15:12:08 +0800 (CST)
-Received: from BJMBX02.spreadtrum.com (10.0.64.8) by BJMBX02.spreadtrum.com
- (10.0.64.8) with Microsoft SMTP Server (TLS) id 15.0.1497.23; Tue, 30 Apr
- 2024 15:14:55 +0800
-Received: from BJMBX02.spreadtrum.com ([fe80::c8c3:f3a0:9c9f:b0fb]) by
- BJMBX02.spreadtrum.com ([fe80::c8c3:f3a0:9c9f:b0fb%19]) with mapi id
- 15.00.1497.023; Tue, 30 Apr 2024 15:14:55 +0800
-From: =?utf-8?B?54mb5b+X5Zu9IChaaGlndW8gTml1KQ==?= <Zhiguo.Niu@unisoc.com>
-To: Carlos Llamas <cmllamas@google.com>,
-        Peter Zijlstra
-	<peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-        Will Deacon
-	<will@kernel.org>, Waiman Long <longman@redhat.com>,
-        Boqun Feng
-	<boqun.feng@gmail.com>,
-        Bart Van Assche <bvanassche@acm.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-team@android.com" <kernel-team@android.com>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>,
-        =?utf-8?B?6Zer5a2m5paHIChYdWV3ZW4gWWFuKQ==?=
-	<Xuewen.Yan@unisoc.com>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: =?utf-8?B?562U5aSNOiBbUEFUQ0ggdjQgUkVTRU5EXSBsb2NrZGVwOiBmaXggZGVhZGxv?=
- =?utf-8?Q?ck_issue_between_lockdep_and_rcu?=
-Thread-Topic: [PATCH v4 RESEND] lockdep: fix deadlock issue between lockdep
- and rcu
-Thread-Index: AQHakRNq1uHIPB8QHkOifECnk9qXgbGAeTSg
-Date: Tue, 30 Apr 2024 07:14:54 +0000
-Message-ID: <f24f9261248641f5a6e006c61f73c86c@BJMBX02.spreadtrum.com>
-References: <20240417220534.1370087-1-cmllamas@google.com>
-In-Reply-To: <20240417220534.1370087-1-cmllamas@google.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-transport-fromentityheader: Hosted
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1714462279; c=relaxed/simple;
+	bh=heoyc4aobx9qT1MKfpsIMMQmkYLGiDQHLCVrfmGWIN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A43bvO13/IUgj6E9H4nKz2WMtaTSFq9S/VADFrAQroHS8vX7mVSvalEJUGoPV8KGNKSzoea0UA9vU2FIH2K5EnJmsTwQTGwg3Y0CW8jD+tI4DpdxInvdrn9hrt1z4kXrfY9CNyP1bQro1VAftfW/r3Zpmqfo9TA/6MFPZy/orN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gZj4YxjG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8AdA6xDH; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 30 Apr 2024 09:31:07 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1714462275;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DqrYzQE/eh5FY4RgzTW10+8t5SwsCC9zr0+QvqJHjrc=;
+	b=gZj4YxjG906AKACZuGLWmHr5AMq85uWqbLLVO7IobnuUbSLwcu+Ja6ppeFHLMasAnVIg7D
+	RV/Hyn3blm+ooOu7eTVMrwnNq8Kejn5d9fceqS6uhC2RMTfZCFjX67nm4vTY47TLf4OOvY
+	VmWXIk6Bbp7pKw3TH9Ind5RYBx2YLK69fYTXZqhVNdoW60WJjCx54pno+VtfWUa0GE8a44
+	Dh4dmkmzbwdXh96opJ9qVU0xra/rYoqmwmXgM3dg2PQDUxd4aDCaOAgT5d8C7TUYp/371r
+	X8zLAQAehJX7TQC3+0Bj9IetHM5Fy9hH6NIIS07dsNCpSlr8CLE2kTwkAJe45g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1714462275;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DqrYzQE/eh5FY4RgzTW10+8t5SwsCC9zr0+QvqJHjrc=;
+	b=8AdA6xDHGkSuRiD6v8behqV1g2AbTjtevYIkGQ44lTzvNa3hHHgrj18SkOJt4ZoW9u8BJR
+	tAsH9vf3SHlsL8CQ==
+From: Nam Cao <namcao@linutronix.de>
+To: Joel Granados <j.granados@samsung.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Andreas Dilger <adilger@dilger.ca>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	linux-riscv@lists.infradead.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"ndesaulniers @ google . com" <ndesaulniers@google.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Tejun Heo <tj@kernel.org>,
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Changbin Du <changbin.du@huawei.com>, Arnd Bergmann <arnd@arndb.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] init: fix allocated page overlapping with PTR_ERR
+Message-ID: <20240430073056.bEG4-yk8@linutronix.de>
+References: <20240418102943.180510-1-namcao@linutronix.de>
+ <CGME20240429125236eucas1p24219f2d332e0267794a2f87dea9f39c4@eucas1p2.samsung.com>
+ <20240429125230.s5pbeye24iw5aurz@joelS2.panther.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MAIL:SHSQR01.spreadtrum.com 43U7FCBV023552
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240429125230.s5pbeye24iw5aurz@joelS2.panther.com>
 
-UGluZy4uLi4uDQoNCkhpIENhcmxvcyBMbGFtYXMsDQpJZiB0aGVyZSBpcyBubyBtYWludGFpbmVy
-IGhlbHAgdG8gbWVyZ2UgdGhpcyBwYXRjaCwgd2UgcGxhbiB0byB1cHN0cmVhbSBpdCB0byBnb29n
-bGUga2VybmVsLiANCkhvdyBhYm91dCB5b3VyIG9waW5pb25zPw0KVGhhbmtzIA0KDQotLS0tLemC
-ruS7tuWOn+S7ti0tLS0tDQrlj5Hku7bkuro6IENhcmxvcyBMbGFtYXMgPGNtbGxhbWFzQGdvb2ds
-ZS5jb20+IA0K5Y+R6YCB5pe26Ze0OiAyMDI05bm0NOaciDE45pelIDY6MDYNCuaUtuS7tuS6ujog
-UGV0ZXIgWmlqbHN0cmEgPHBldGVyekBpbmZyYWRlYWQub3JnPjsgSW5nbyBNb2xuYXIgPG1pbmdv
-QHJlZGhhdC5jb20+OyBXaWxsIERlYWNvbiA8d2lsbEBrZXJuZWwub3JnPjsgV2FpbWFuIExvbmcg
-PGxvbmdtYW5AcmVkaGF0LmNvbT47IEJvcXVuIEZlbmcgPGJvcXVuLmZlbmdAZ21haWwuY29tPjsg
-QmFydCBWYW4gQXNzY2hlIDxidmFuYXNzY2hlQGFjbS5vcmc+DQrmioTpgIE6IGxpbnV4LWtlcm5l
-bEB2Z2VyLmtlcm5lbC5vcmc7IGtlcm5lbC10ZWFtQGFuZHJvaWQuY29tOyDniZvlv5flm70gKFpo
-aWd1byBOaXUpIDxaaGlndW8uTml1QHVuaXNvYy5jb20+OyBzdGFibGVAdmdlci5rZXJuZWwub3Jn
-OyBDYXJsb3MgTGxhbWFzIDxjbWxsYW1hc0Bnb29nbGUuY29tPjsg6Zer5a2m5paHIChYdWV3ZW4g
-WWFuKSA8WHVld2VuLllhbkB1bmlzb2MuY29tPjsgSW5nbyBNb2xuYXIgPG1pbmdvQGtlcm5lbC5v
-cmc+DQrkuLvpopg6IFtQQVRDSCB2NCBSRVNFTkRdIGxvY2tkZXA6IGZpeCBkZWFkbG9jayBpc3N1
-ZSBiZXR3ZWVuIGxvY2tkZXAgYW5kIHJjdQ0KDQoNCuazqOaEjzog6L+Z5bCB6YKu5Lu25p2l6Ieq
-5LqO5aSW6YOo44CC6Zmk6Z2e5L2g56Gu5a6a6YKu5Lu25YaF5a655a6J5YWo77yM5ZCm5YiZ5LiN
-6KaB54K55Ye75Lu75L2V6ZO+5o6l5ZKM6ZmE5Lu244CCDQpDQVVUSU9OOiBUaGlzIGVtYWlsIG9y
-aWdpbmF0ZWQgZnJvbSBvdXRzaWRlIG9mIHRoZSBvcmdhbml6YXRpb24uIERvIG5vdCBjbGljayBs
-aW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5b3UgcmVjb2duaXplIHRoZSBzZW5kZXIg
-YW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4NCg0KDQoNCkZyb206IFpoaWd1byBOaXUgPHpo
-aWd1by5uaXVAdW5pc29jLmNvbT4NCg0KVGhlcmUgaXMgYSBkZWFkbG9jayBzY2VuYXJpbyBiZXR3
-ZWVuIGxvY2tkZXAgYW5kIHJjdSB3aGVuIHJjdSBub2NiIGZlYXR1cmUgaXMgZW5hYmxlZCwganVz
-dCBhcyBmb2xsb3dpbmcgY2FsbCBzdGFjazoNCg0KICAgICByY3VvcC94DQotMDAwfHF1ZXVlZF9z
-cGluX2xvY2tfc2xvd3BhdGgobG9jayA9IDB4RkZGRkZGODE3RjJBOEE4MCwgdmFsID0gPykNCi0w
-MDF8cXVldWVkX3NwaW5fbG9jayhpbmxpbmUpIC8vIHRyeSB0byBob2xkIG5vY2JfZ3BfbG9jayAN
-Ci0wMDF8ZG9fcmF3X3NwaW5fbG9jayhsb2NrID0gMHhGRkZGRkY4MTdGMkE4QTgwKQ0KLTAwMnxf
-X3Jhd19zcGluX2xvY2tfaXJxc2F2ZShpbmxpbmUpDQotMDAyfF9yYXdfc3Bpbl9sb2NrX2lycXNh
-dmUobG9jayA9IDB4RkZGRkZGODE3RjJBOEE4MCkNCi0wMDN8d2FrZV9ub2NiX2dwX2RlZmVyKGlu
-bGluZSkNCi0wMDN8X19jYWxsX3JjdV9ub2NiX3dha2UocmRwID0gMHhGRkZGRkY4MTdGMzBCNjgw
-KQ0KLTAwNHxfX2NhbGxfcmN1X2NvbW1vbihpbmxpbmUpDQotMDA0fGNhbGxfcmN1KGhlYWQgPSAw
-eEZGRkZGRkMwODJFRUNDMjgsIGZ1bmMgPSA/KQ0KLTAwNXxjYWxsX3JjdV96YXBwZWQoaW5saW5l
-KQ0KLTAwNXxmcmVlX3phcHBlZF9yY3UoY2ggPSA/KS8vIGhvbGQgZ3JhcGggbG9jaw0KLTAwNnxy
-Y3VfZG9fYmF0Y2gocmRwID0gMHhGRkZGRkY4MTdGMjQ1NjgwKQ0KLTAwN3xub2NiX2NiX3dhaXQo
-aW5saW5lKQ0KLTAwN3xyY3Vfbm9jYl9jYl9rdGhyZWFkKGFyZyA9IDB4RkZGRkZGODE3RjI0NTY4
-MCkNCi0wMDh8a3RocmVhZChfY3JlYXRlID0gMHhGRkZGRkY4MDgwMzEyMkMwKQ0KLTAwOXxyZXRf
-ZnJvbV9mb3JrKGFzbSkNCg0KICAgICByY3VvcC95DQotMDAwfHF1ZXVlZF9zcGluX2xvY2tfc2xv
-d3BhdGgobG9jayA9IDB4RkZGRkZGQzA4MjkxQkJDOCwgdmFsID0gMCkNCi0wMDF8cXVldWVkX3Nw
-aW5fbG9jaygpDQotMDAxfGxvY2tkZXBfbG9jaygpDQotMDAxfGdyYXBoX2xvY2soKSAvLyB0cnkg
-dG8gaG9sZCBncmFwaCBsb2NrDQotMDAyfGxvb2t1cF9jaGFpbl9jYWNoZV9hZGQoKQ0KLTAwMnx2
-YWxpZGF0ZV9jaGFpbigpDQotMDAzfGxvY2tfYWNxdWlyZQ0KLTAwNHxfcmF3X3NwaW5fbG9ja19p
-cnFzYXZlKGxvY2sgPSAweEZGRkZGRjgxN0YyMTFEODApDQotMDA1fGxvY2tfdGltZXJfYmFzZShp
-bmxpbmUpDQotMDA2fG1vZF90aW1lcihpbmxpbmUpDQotMDA2fHdha2Vfbm9jYl9ncF9kZWZlcihp
-bmxpbmUpLy8gaG9sZCBub2NiX2dwX2xvY2sgDQotMDA2fF9fY2FsbF9yY3Vfbm9jYl93YWtlKHJk
-cCA9IDB4RkZGRkZGODE3RjJBODY4MCkNCi0wMDd8X19jYWxsX3JjdV9jb21tb24oaW5saW5lKQ0K
-LTAwN3xjYWxsX3JjdShoZWFkID0gMHhGRkZGRkZDMDgyMkUwQjU4LCBmdW5jID0gPykNCi0wMDh8
-Y2FsbF9yY3VfaHVycnkoaW5saW5lKQ0KLTAwOHxyY3Vfc3luY19jYWxsKGlubGluZSkNCi0wMDh8
-cmN1X3N5bmNfZnVuYyhyaHAgPSAweEZGRkZGRkMwODIyRTBCNTgpDQotMDA5fHJjdV9kb19iYXRj
-aChyZHAgPSAweEZGRkZGRjgxN0YyNjY2ODApDQotMDEwfG5vY2JfY2Jfd2FpdChpbmxpbmUpDQot
-MDEwfHJjdV9ub2NiX2NiX2t0aHJlYWQoYXJnID0gMHhGRkZGRkY4MTdGMjY2NjgwKQ0KLTAxMXxr
-dGhyZWFkKF9jcmVhdGUgPSAweEZGRkZGRjgwODAzNjM3NDApDQotMDEyfHJldF9mcm9tX2Zvcmso
-YXNtKQ0KDQpyY3VvcC94IGFuZCByY3VvcC95IGFyZSByY3Ugbm9jYiB0aHJlYWRzIHdpdGggdGhl
-IHNhbWUgbm9jYiBncCB0aHJlYWQuDQpUaGlzIHBhdGNoIHJlbGVhc2UgdGhlIGdyYXBoIGxvY2sg
-YmVmb3JlIGxvY2tkZXAgY2FsbF9yY3UuDQoNCkZpeGVzOiBhMGIwZmQ1M2UxZTYgKCJsb2NraW5n
-L2xvY2tkZXA6IEZyZWUgbG9jayBjbGFzc2VzIHRoYXQgYXJlIG5vIGxvbmdlciBpbiB1c2UiKQ0K
-Q2M6ICA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NCkNjOiBCb3F1biBGZW5nIDxib3F1bi5mZW5n
-QGdtYWlsLmNvbT4NCkNjOiBXYWltYW4gTG9uZyA8bG9uZ21hbkByZWRoYXQuY29tPg0KQ2M6IENh
-cmxvcyBMbGFtYXMgPGNtbGxhbWFzQGdvb2dsZS5jb20+DQpDYzogQmFydCBWYW4gQXNzY2hlIDxi
-dmFuYXNzY2hlQGFjbS5vcmc+DQpTaWduZWQtb2ZmLWJ5OiBaaGlndW8gTml1IDx6aGlndW8ubml1
-QHVuaXNvYy5jb20+DQpTaWduZWQtb2ZmLWJ5OiBYdWV3ZW4gWWFuIDx4dWV3ZW4ueWFuQHVuaXNv
-Yy5jb20+DQpSZXZpZXdlZC1ieTogQm9xdW4gRmVuZyA8Ym9xdW4uZmVuZ0BnbWFpbC5jb20+DQpS
-ZXZpZXdlZC1ieTogV2FpbWFuIExvbmcgPGxvbmdtYW5AcmVkaGF0LmNvbT4NClJldmlld2VkLWJ5
-OiBDYXJsb3MgTGxhbWFzIDxjbWxsYW1hc0Bnb29nbGUuY29tPg0KUmV2aWV3ZWQtYnk6IEJhcnQg
-VmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPg0KLS0tDQoga2VybmVsL2xvY2tpbmcvbG9j
-a2RlcC5jIHwgNDggKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLQ0KIDEg
-ZmlsZSBjaGFuZ2VkLCAzMiBpbnNlcnRpb25zKCspLCAxNiBkZWxldGlvbnMoLSkNCg0KZGlmZiAt
-LWdpdCBhL2tlcm5lbC9sb2NraW5nL2xvY2tkZXAuYyBiL2tlcm5lbC9sb2NraW5nL2xvY2tkZXAu
-YyBpbmRleCAxNTFiZDNkZTU5MzYuLjM0NjhkODIzMGU1ZiAxMDA2NDQNCi0tLSBhL2tlcm5lbC9s
-b2NraW5nL2xvY2tkZXAuYw0KKysrIGIva2VybmVsL2xvY2tpbmcvbG9ja2RlcC5jDQpAQCAtNjE4
-NCwyNSArNjE4NCwyNyBAQCBzdGF0aWMgc3RydWN0IHBlbmRpbmdfZnJlZSAqZ2V0X3BlbmRpbmdf
-ZnJlZSh2b2lkKSAgc3RhdGljIHZvaWQgZnJlZV96YXBwZWRfcmN1KHN0cnVjdCByY3VfaGVhZCAq
-Y2IpOw0KDQogLyoNCi0gKiBTY2hlZHVsZSBhbiBSQ1UgY2FsbGJhY2sgaWYgbm8gUkNVIGNhbGxi
-YWNrIGlzIHBlbmRpbmcuIE11c3QgYmUgY2FsbGVkIHdpdGgNCi0gKiB0aGUgZ3JhcGggbG9jayBo
-ZWxkLg0KLSAqLw0KLXN0YXRpYyB2b2lkIGNhbGxfcmN1X3phcHBlZChzdHJ1Y3QgcGVuZGluZ19m
-cmVlICpwZikNCisqIFNlZSBpZiB3ZSBuZWVkIHRvIHF1ZXVlIGFuIFJDVSBjYWxsYmFjaywgbXVz
-dCBjYWxsZWQgd2l0aA0KKyogdGhlIGxvY2tkZXAgbG9jayBoZWxkLCByZXR1cm5zIGZhbHNlIGlm
-IGVpdGhlciB3ZSBkb24ndCBoYXZlDQorKiBhbnkgcGVuZGluZyBmcmVlIG9yIHRoZSBjYWxsYmFj
-ayBpcyBhbHJlYWR5IHNjaGVkdWxlZC4NCisqIE90aGVyd2lzZSwgYSBjYWxsX3JjdSgpIG11c3Qg
-Zm9sbG93IHRoaXMgZnVuY3Rpb24gY2FsbC4NCisqLw0KK3N0YXRpYyBib29sIHByZXBhcmVfY2Fs
-bF9yY3VfemFwcGVkKHN0cnVjdCBwZW5kaW5nX2ZyZWUgKnBmKQ0KIHsNCiAgICAgICAgV0FSTl9P
-Tl9PTkNFKGluc2lkZV9zZWxmdGVzdCgpKTsNCg0KICAgICAgICBpZiAobGlzdF9lbXB0eSgmcGYt
-PnphcHBlZCkpDQotICAgICAgICAgICAgICAgcmV0dXJuOw0KKyAgICAgICAgICAgICAgIHJldHVy
-biBmYWxzZTsNCg0KICAgICAgICBpZiAoZGVsYXllZF9mcmVlLnNjaGVkdWxlZCkNCi0gICAgICAg
-ICAgICAgICByZXR1cm47DQorICAgICAgICAgICAgICAgcmV0dXJuIGZhbHNlOw0KDQogICAgICAg
-IGRlbGF5ZWRfZnJlZS5zY2hlZHVsZWQgPSB0cnVlOw0KDQogICAgICAgIFdBUk5fT05fT05DRShk
-ZWxheWVkX2ZyZWUucGYgKyBkZWxheWVkX2ZyZWUuaW5kZXggIT0gcGYpOw0KICAgICAgICBkZWxh
-eWVkX2ZyZWUuaW5kZXggXj0gMTsNCg0KLSAgICAgICBjYWxsX3JjdSgmZGVsYXllZF9mcmVlLnJj
-dV9oZWFkLCBmcmVlX3phcHBlZF9yY3UpOw0KKyAgICAgICByZXR1cm4gdHJ1ZTsNCiB9DQoNCiAv
-KiBUaGUgY2FsbGVyIG11c3QgaG9sZCB0aGUgZ3JhcGggbG9jay4gTWF5IGJlIGNhbGxlZCBmcm9t
-IFJDVSBjb250ZXh0LiAqLyBAQCAtNjIyOCw2ICs2MjMwLDcgQEAgc3RhdGljIHZvaWQgZnJlZV96
-YXBwZWRfcmN1KHN0cnVjdCByY3VfaGVhZCAqY2gpICB7DQogICAgICAgIHN0cnVjdCBwZW5kaW5n
-X2ZyZWUgKnBmOw0KICAgICAgICB1bnNpZ25lZCBsb25nIGZsYWdzOw0KKyAgICAgICBib29sIG5l
-ZWRfY2FsbGJhY2s7DQoNCiAgICAgICAgaWYgKFdBUk5fT05fT05DRShjaCAhPSAmZGVsYXllZF9m
-cmVlLnJjdV9oZWFkKSkNCiAgICAgICAgICAgICAgICByZXR1cm47DQpAQCAtNjIzOSwxNCArNjI0
-MiwxOCBAQCBzdGF0aWMgdm9pZCBmcmVlX3phcHBlZF9yY3Uoc3RydWN0IHJjdV9oZWFkICpjaCkN
-CiAgICAgICAgcGYgPSBkZWxheWVkX2ZyZWUucGYgKyAoZGVsYXllZF9mcmVlLmluZGV4IF4gMSk7
-DQogICAgICAgIF9fZnJlZV96YXBwZWRfY2xhc3NlcyhwZik7DQogICAgICAgIGRlbGF5ZWRfZnJl
-ZS5zY2hlZHVsZWQgPSBmYWxzZTsNCisgICAgICAgbmVlZF9jYWxsYmFjayA9DQorICAgICAgICAg
-ICAgICAgcHJlcGFyZV9jYWxsX3JjdV96YXBwZWQoZGVsYXllZF9mcmVlLnBmICsgZGVsYXllZF9m
-cmVlLmluZGV4KTsNCisgICAgICAgbG9ja2RlcF91bmxvY2soKTsNCisgICAgICAgcmF3X2xvY2Fs
-X2lycV9yZXN0b3JlKGZsYWdzKTsNCg0KICAgICAgICAvKg0KLSAgICAgICAgKiBJZiB0aGVyZSdz
-IGFueXRoaW5nIG9uIHRoZSBvcGVuIGxpc3QsIGNsb3NlIGFuZCBzdGFydCBhIG5ldyBjYWxsYmFj
-ay4NCi0gICAgICAgICovDQotICAgICAgIGNhbGxfcmN1X3phcHBlZChkZWxheWVkX2ZyZWUucGYg
-KyBkZWxheWVkX2ZyZWUuaW5kZXgpOw0KKyAgICAgICAqIElmIHRoZXJlJ3MgcGVuZGluZyBmcmVl
-IGFuZCBpdHMgY2FsbGJhY2sgaGFzIG5vdCBiZWVuIHNjaGVkdWxlZCwNCisgICAgICAgKiBxdWV1
-ZSBhbiBSQ1UgY2FsbGJhY2suDQorICAgICAgICovDQorICAgICAgIGlmIChuZWVkX2NhbGxiYWNr
-KQ0KKyAgICAgICAgICAgICAgIGNhbGxfcmN1KCZkZWxheWVkX2ZyZWUucmN1X2hlYWQsIGZyZWVf
-emFwcGVkX3JjdSk7DQoNCi0gICAgICAgbG9ja2RlcF91bmxvY2soKTsNCi0gICAgICAgcmF3X2xv
-Y2FsX2lycV9yZXN0b3JlKGZsYWdzKTsNCiB9DQoNCiAvKg0KQEAgLTYyODYsNiArNjI5Myw3IEBA
-IHN0YXRpYyB2b2lkIGxvY2tkZXBfZnJlZV9rZXlfcmFuZ2VfcmVnKHZvaWQgKnN0YXJ0LCB1bnNp
-Z25lZCBsb25nIHNpemUpICB7DQogICAgICAgIHN0cnVjdCBwZW5kaW5nX2ZyZWUgKnBmOw0KICAg
-ICAgICB1bnNpZ25lZCBsb25nIGZsYWdzOw0KKyAgICAgICBib29sIG5lZWRfY2FsbGJhY2s7DQoN
-CiAgICAgICAgaW5pdF9kYXRhX3N0cnVjdHVyZXNfb25jZSgpOw0KDQpAQCAtNjI5MywxMCArNjMw
-MSwxMSBAQCBzdGF0aWMgdm9pZCBsb2NrZGVwX2ZyZWVfa2V5X3JhbmdlX3JlZyh2b2lkICpzdGFy
-dCwgdW5zaWduZWQgbG9uZyBzaXplKQ0KICAgICAgICBsb2NrZGVwX2xvY2soKTsNCiAgICAgICAg
-cGYgPSBnZXRfcGVuZGluZ19mcmVlKCk7DQogICAgICAgIF9fbG9ja2RlcF9mcmVlX2tleV9yYW5n
-ZShwZiwgc3RhcnQsIHNpemUpOw0KLSAgICAgICBjYWxsX3JjdV96YXBwZWQocGYpOw0KKyAgICAg
-ICBuZWVkX2NhbGxiYWNrID0gcHJlcGFyZV9jYWxsX3JjdV96YXBwZWQocGYpOw0KICAgICAgICBs
-b2NrZGVwX3VubG9jaygpOw0KICAgICAgICByYXdfbG9jYWxfaXJxX3Jlc3RvcmUoZmxhZ3MpOw0K
-LQ0KKyAgICAgICBpZiAobmVlZF9jYWxsYmFjaykNCisgICAgICAgICAgICAgICBjYWxsX3JjdSgm
-ZGVsYXllZF9mcmVlLnJjdV9oZWFkLCBmcmVlX3phcHBlZF9yY3UpOw0KICAgICAgICAvKg0KICAg
-ICAgICAgKiBXYWl0IGZvciBhbnkgcG9zc2libGUgaXRlcmF0b3JzIGZyb20gbG9va191cF9sb2Nr
-X2NsYXNzKCkgdG8gcGFzcw0KICAgICAgICAgKiBiZWZvcmUgY29udGludWluZyB0byBmcmVlIHRo
-ZSBtZW1vcnkgdGhleSByZWZlciB0by4NCkBAIC02MzkwLDYgKzYzOTksNyBAQCBzdGF0aWMgdm9p
-ZCBsb2NrZGVwX3Jlc2V0X2xvY2tfcmVnKHN0cnVjdCBsb2NrZGVwX21hcCAqbG9jaykNCiAgICAg
-ICAgc3RydWN0IHBlbmRpbmdfZnJlZSAqcGY7DQogICAgICAgIHVuc2lnbmVkIGxvbmcgZmxhZ3M7
-DQogICAgICAgIGludCBsb2NrZWQ7DQorICAgICAgIGJvb2wgbmVlZF9jYWxsYmFjayA9IGZhbHNl
-Ow0KDQogICAgICAgIHJhd19sb2NhbF9pcnFfc2F2ZShmbGFncyk7DQogICAgICAgIGxvY2tlZCA9
-IGdyYXBoX2xvY2soKTsNCkBAIC02Mzk4LDExICs2NDA4LDEzIEBAIHN0YXRpYyB2b2lkIGxvY2tk
-ZXBfcmVzZXRfbG9ja19yZWcoc3RydWN0IGxvY2tkZXBfbWFwICpsb2NrKQ0KDQogICAgICAgIHBm
-ID0gZ2V0X3BlbmRpbmdfZnJlZSgpOw0KICAgICAgICBfX2xvY2tkZXBfcmVzZXRfbG9jayhwZiwg
-bG9jayk7DQotICAgICAgIGNhbGxfcmN1X3phcHBlZChwZik7DQorICAgICAgIG5lZWRfY2FsbGJh
-Y2sgPSBwcmVwYXJlX2NhbGxfcmN1X3phcHBlZChwZik7DQoNCiAgICAgICAgZ3JhcGhfdW5sb2Nr
-KCk7DQogb3V0X2lycToNCiAgICAgICAgcmF3X2xvY2FsX2lycV9yZXN0b3JlKGZsYWdzKTsNCisg
-ICAgICAgaWYgKG5lZWRfY2FsbGJhY2spDQorICAgICAgICAgICAgICAgY2FsbF9yY3UoJmRlbGF5
-ZWRfZnJlZS5yY3VfaGVhZCwgZnJlZV96YXBwZWRfcmN1KTsNCiB9DQoNCiAvKg0KQEAgLTY0NDYs
-NiArNjQ1OCw3IEBAIHZvaWQgbG9ja2RlcF91bnJlZ2lzdGVyX2tleShzdHJ1Y3QgbG9ja19jbGFz
-c19rZXkgKmtleSkNCiAgICAgICAgc3RydWN0IHBlbmRpbmdfZnJlZSAqcGY7DQogICAgICAgIHVu
-c2lnbmVkIGxvbmcgZmxhZ3M7DQogICAgICAgIGJvb2wgZm91bmQgPSBmYWxzZTsNCisgICAgICAg
-Ym9vbCBuZWVkX2NhbGxiYWNrID0gZmFsc2U7DQoNCiAgICAgICAgbWlnaHRfc2xlZXAoKTsNCg0K
-QEAgLTY0NjYsMTEgKzY0NzksMTQgQEAgdm9pZCBsb2NrZGVwX3VucmVnaXN0ZXJfa2V5KHN0cnVj
-dCBsb2NrX2NsYXNzX2tleSAqa2V5KQ0KICAgICAgICBpZiAoZm91bmQpIHsNCiAgICAgICAgICAg
-ICAgICBwZiA9IGdldF9wZW5kaW5nX2ZyZWUoKTsNCiAgICAgICAgICAgICAgICBfX2xvY2tkZXBf
-ZnJlZV9rZXlfcmFuZ2UocGYsIGtleSwgMSk7DQotICAgICAgICAgICAgICAgY2FsbF9yY3VfemFw
-cGVkKHBmKTsNCisgICAgICAgICAgICAgICBuZWVkX2NhbGxiYWNrID0gcHJlcGFyZV9jYWxsX3Jj
-dV96YXBwZWQocGYpOw0KICAgICAgICB9DQogICAgICAgIGxvY2tkZXBfdW5sb2NrKCk7DQogICAg
-ICAgIHJhd19sb2NhbF9pcnFfcmVzdG9yZShmbGFncyk7DQoNCisgICAgICAgaWYgKG5lZWRfY2Fs
-bGJhY2spDQorICAgICAgICAgICAgICAgY2FsbF9yY3UoJmRlbGF5ZWRfZnJlZS5yY3VfaGVhZCwg
-ZnJlZV96YXBwZWRfcmN1KTsNCisNCiAgICAgICAgLyogV2FpdCB1bnRpbCBpc19keW5hbWljX2tl
-eSgpIGhhcyBmaW5pc2hlZCBhY2Nlc3Npbmcgay0+aGFzaF9lbnRyeS4gKi8NCiAgICAgICAgc3lu
-Y2hyb25pemVfcmN1KCk7DQogfQ0KLS0NCjIuNDQuMC42ODMuZzc5NjFjODM4YWMtZ29vZw0KDQo=
+On Mon, Apr 29, 2024 at 02:52:30PM +0200, Joel Granados wrote:
+> On Thu, Apr 18, 2024 at 12:29:43PM +0200, Nam Cao wrote:
+> > There is nothing preventing kernel memory allocators from allocating a
+> > page that overlaps with PTR_ERR(), except for architecture-specific
+> > code that setup memblock.
+> > 
+> > It was discovered that RISCV architecture doesn't setup memblock
+> > corectly, leading to a page overlapping with PTR_ERR() being allocated,
+> > and subsequently crashing the kernel (link in Close: )
+> > 
+> > The reported crash has nothing to do with PTR_ERR(): the last page
+> > (at address 0xfffff000) being allocated leads to an unexpected
+> > arithmetic overflow in ext4; but still, this page shouldn't be
+> > allocated in the first place.
+> > 
+> > Because PTR_ERR() is an architecture-independent thing, we shouldn't
+> > ask every single architecture to set this up. There may be other
+> > architectures beside RISCV that have the same problem.
+> > 
+> > Fix this one and for all by reserving the physical memory page that
+> > may be mapped to the last virtual memory page as part of low memory.
+> > 
+> > Unfortunately, this means if there is actual memory at this reserved
+> > location, that memory will become inaccessible. However, if this page
+> > is not reserved, it can only be accessed as high memory, so this
+> > doesn't matter if high memory is not supported. Even if high memory is
+> > supported, it is still only one page.
+> > 
+> > Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
+> > Signed-off-by: Nam Cao <namcao@linutronix.de>
+> > Cc: <stable@vger.kernel.org> # all versions
+> > ---
+> >  init/main.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/init/main.c b/init/main.c
+> > index 881f6230ee59..f8d2793c4641 100644
+> > --- a/init/main.c
+> > +++ b/init/main.c
+> > @@ -900,6 +900,7 @@ void start_kernel(void)
+> >  	page_address_init();
+> >  	pr_notice("%s", linux_banner);
+> >  	early_security_init();
+> > +	memblock_reserve(__pa(-PAGE_SIZE), PAGE_SIZE); /* reserve last page for ERR_PTR */
+> >  	setup_arch(&command_line);
+> >  	setup_boot_config();
+> >  	setup_command_line(command_line);
+> > -- 
+> > 2.39.2
+> > 
+> 
+> I received a similar(ish) report recently
+> https://lore.kernel.org/oe-kbuild-all/202404211031.J6l2AfJk-lkp@intel.com/
+> regarding RISC-V in init/mail.c. Here is the meat of the report in case
+> you want to avoid going to the actual link:
+
+This issue doesn't look like it has anything to do with this patch: this
+patch is about overlapping of dynamically allocated memory, while I think
+the issue is about overlapping sections during linking (maybe something
+wrong with riscv linker script?)
+
+Also, FWIW, this patch is not going to be in mainline because of a
+regression.
+
+Nonetheless, I will have a look at this later.
+
+Best regards,
+Nam
+
+> "
+> ...
+>    riscv64-linux-ld: section .data LMA [000000000099b000,0000000001424de7] overlaps section .text LMA [0000000000104040,000000000213c543]
+>    riscv64-linux-ld: section .data..percpu LMA [00000000024e2000,00000000026b46e7] overlaps section .rodata LMA [000000000213c580,000000000292d0dd]
+>    riscv64-linux-ld: section .rodata VMA [ffffffff8213c580,ffffffff8292d0dd] overlaps section .data VMA [ffffffff82000000,ffffffff82a89de7]
+>    init/main.o: in function `rdinit_setup':
+> >> init/main.c:613:(.init.text+0x358): relocation truncated to fit: R_RISCV_GPREL_I against symbol `__setup_start' defined in .init.rodata section in .tmp_vmlinux.kallsyms1
+>    net/ipv4/ipconfig.o: in function `ic_dhcp_init_options':
+>    net/ipv4/ipconfig.c:682:(.init.text+0x9b4): relocation truncated to fit: R_RISCV_GPREL_I against `ic_bootp_cookie'
+>    net/sunrpc/auth_gss/gss_krb5_mech.o: in function `gss_krb5_prepare_enctype_priority_list':
+> >> net/sunrpc/auth_gss/gss_krb5_mech.c:213:(.text.gss_krb5_prepare_enctype_priority_list+0x9c): relocation truncated to fit: R_RISCV_GPREL_I against `gss_krb5_enctypes.0'
+>    lib/maple_tree.o: in function `mas_leaf_max_gap':
+> >> lib/maple_tree.c:1512:(.text.mas_leaf_max_gap+0x2b8): relocation truncated to fit: R_RISCV_GPREL_I against `mt_pivots'
+>    lib/maple_tree.o: in function `ma_dead_node':
+> >> lib/maple_tree.c:560:(.text.mas_data_end+0x110): relocation truncated to fit: R_RISCV_GPREL_I against `mt_pivots'
+>    lib/maple_tree.o: in function `mas_extend_spanning_null':
+> >> lib/maple_tree.c:3662:(.text.mas_extend_spanning_null+0x69c): relocation truncated to fit: R_RISCV_GPREL_I against `mt_pivots'
+>    lib/maple_tree.o: in function `mas_mab_cp':
+> >> lib/maple_tree.c:1943:(.text.mas_mab_cp+0x248): relocation truncated to fit: R_RISCV_GPREL_I against `mt_pivots'
+>    lib/maple_tree.o: in function `mab_mas_cp':
+> >> lib/maple_tree.c:2000:(.text.mab_mas_cp+0x15c): relocation truncated to fit: R_RISCV_GPREL_I against `mt_pivots'
+>    lib/maple_tree.o: in function `mas_reuse_node':
+> >> lib/maple_tree.c:3416:(.text.mas_reuse_node+0x17c): relocation truncated to fit: R_RISCV_GPREL_I against `mt_slots'
+>    lib/maple_tree.o: in function `mt_free_walk':
+> >> lib/maple_tree.c:5238:(.text.mt_free_walk+0x15c): relocation truncated to fit: R_RISCV_GPREL_I against `mt_slots'
+>    lib/maple_tree.o: in function `mtree_lookup_walk':
+>    lib/maple_tree.c:3700:(.text.mtree_lookup_walk+0x94): additional relocation overflows omitted from the output
+> ...
+> 
+> "
+> 
+> Could the fix that you have posted here be related to that report?
+> Comments are greatly appreciated.
+> 
+> Best
+> --
+> 
+> Joel Granados
+
+
 
