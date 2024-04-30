@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C188B70F7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4078B7290
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96371288CF4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1921C22D5B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478A012C7FB;
-	Tue, 30 Apr 2024 10:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72DE12C819;
+	Tue, 30 Apr 2024 11:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRXsXagD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6pb1v4T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066CB4176D;
-	Tue, 30 Apr 2024 10:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7499912C46E;
+	Tue, 30 Apr 2024 11:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474290; cv=none; b=u01MJUd94bS6YH87+pzkxQZKf6EAJfF16R9+lCXoPOkJ1UFhSwBQYCEmin7bH7zecfbvg2MZwUjC/whL++zR8fEJ6UbVoM37Zdql9P3/Zv6Vab3oyBU/ZQmeXuDsrhfN/8FFD8S6vye9Z3gZb3gTwTUQI4lfozOnrREXMihnk0M=
+	t=1714475383; cv=none; b=Q7H2JjF8gSiIa6IscAzZEFOV+ba6YjJJoweGJ3V7YOQ9VWqM7UjlpKchf6jl2trSemBezLcl+Y5cYRbasoJf+jJMzSA5mVxt9bSy7Bt4rbJ4TdBaz/5K3MYZzphHVLY0vcCuqi/737n/C0uVxm9cZA5A5E74Bntr5S0oum/FnDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474290; c=relaxed/simple;
-	bh=MY714E2bsYK74FI2L8Ha3Us72kOh4isBkmIq1RZ8LeA=;
+	s=arc-20240116; t=1714475383; c=relaxed/simple;
+	bh=Bhx+6794/OBijhD2M5mJDirQIkZ8XJLT2uEU/biYn9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k7P5Zvp4nzbP88+jeW34R+lfgZQtX45H1eMCInLZWXzxjEXMobsj869HT5N6FjJqqQ/+HxQdUzo3VZGMdCv2oAUT7RroKv42lrSIP5uIgAUXIRw8bco1DFaHPimkXsb+yL9SMVXmWaUcdizgvQo4rKJxdotRRTO/3A82+Z36Urg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRXsXagD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D768C2BBFC;
-	Tue, 30 Apr 2024 10:51:29 +0000 (UTC)
+	 MIME-Version; b=dthi2qrXtxYiVkBOsnNvCIH7wzVGlhatI6REVTNzuPjKHs/aWLUGnW3kBHMiv7viF5ud2Ny+OycoRRwo3AtgNhYk5rZa/XyoWYFDwCBHEd47tn02UylwqRAZVbhUi8pxuKRTKH7CKndUavm8YbDjiLyzV8LekLmpGJUGz2rwXbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6pb1v4T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8E4C4AF19;
+	Tue, 30 Apr 2024 11:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474289;
-	bh=MY714E2bsYK74FI2L8Ha3Us72kOh4isBkmIq1RZ8LeA=;
+	s=korg; t=1714475382;
+	bh=Bhx+6794/OBijhD2M5mJDirQIkZ8XJLT2uEU/biYn9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QRXsXagD0KEfLxMMEf6f3b+djGKqWzrz97UXZpF3felipfzW3vvi5BlVVEmfqdsm+
-	 AOPLuScVWgmcuobS2dZNJ9nhycIX+quQJKN4ca8PGxrKf1o9JIdqiJ8lkYLAeWIV+N
-	 7zJk0AUFtuNx6Q/ZP3zqMuUPtzQzaUqkHB0vh3Sw=
+	b=s6pb1v4TgtnChXoWAGHdPSvLUYtwQNcP9WaPhEDNdf91oPMMym8ypHZgCS612UX43
+	 06RSdmqWfMkmfByhSBTq/kimmNmoLn+KaVagLeeuKGqcIl96AWRUVGC6a43U6jUqQR
+	 z1u/bYIFN5EvyZMgiRVIGLzhTPt79J7hVx3hgprI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Enrico Bartky <enrico.bartky@gmail.com>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 114/228] octeontx2-af: fix the double free in rvu_npc_freemem()
+Subject: [PATCH 6.6 040/186] drm/gma500: Remove lid code
 Date: Tue, 30 Apr 2024 12:38:12 +0200
-Message-ID: <20240430103107.099501561@linuxfoundation.org>
+Message-ID: <20240430103059.195062556@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,197 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
 
-[ Upstream commit 6e965eba43e9724f3e603d7b7cc83e53b23d155e ]
+[ Upstream commit 6aff4c26ed677b1f464f721fbd3e7767f24a684d ]
 
-Clang static checker(scan-build) warning：
-drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c:line 2184, column 2
-Attempt to free released memory.
+Due to a change in the order of initialization, the lid timer got
+started before proper setup was made. This resulted in a crash during
+boot.
 
-npc_mcam_rsrcs_deinit() has released 'mcam->counters.bmap'. Deleted this
-redundant kfree() to fix this double free problem.
+The lid switch is handled by gma500 through a timer that periodically
+polls the opregion for changes. These types of ACPI events shouldn't be
+handled by the graphics driver so let's get rid of the lid code.  This
+fixes the crash during boot.
 
-Fixes: dd7842878633 ("octeontx2-af: Add new devlink param to configure maximum usable NIX block LFs")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Link: https://lore.kernel.org/r/20240424022724.144587-1-suhui@nfschina.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Enrico Bartky <enrico.bartky@gmail.com>
+Fixes: 8f1aaccb04b7 ("drm/gma500: Implement client-based fbdev emulation")
+Tested-by: Enrico Bartky <enrico.bartky@gmail.com>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415112731.31841-1-patrik.r.jakobsson@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/gma500/Makefile     |  1 -
+ drivers/gpu/drm/gma500/psb_device.c |  5 +-
+ drivers/gpu/drm/gma500/psb_drv.h    |  9 ----
+ drivers/gpu/drm/gma500/psb_lid.c    | 80 -----------------------------
+ 4 files changed, 1 insertion(+), 94 deletions(-)
+ delete mode 100644 drivers/gpu/drm/gma500/psb_lid.c
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 42b5ed02bc87f..d94b7b88e14ca 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -2181,7 +2181,6 @@ void rvu_npc_freemem(struct rvu *rvu)
+diff --git a/drivers/gpu/drm/gma500/Makefile b/drivers/gpu/drm/gma500/Makefile
+index 4f302cd5e1a6c..58fed80c7392a 100644
+--- a/drivers/gpu/drm/gma500/Makefile
++++ b/drivers/gpu/drm/gma500/Makefile
+@@ -34,7 +34,6 @@ gma500_gfx-y += \
+ 	  psb_intel_lvds.o \
+ 	  psb_intel_modes.o \
+ 	  psb_intel_sdvo.o \
+-	  psb_lid.o \
+ 	  psb_irq.o
  
- 	kfree(pkind->rsrc.bmap);
- 	npc_mcam_rsrcs_deinit(rvu);
--	kfree(mcam->counters.bmap);
- 	if (rvu->kpu_prfl_addr)
- 		iounmap(rvu->kpu_prfl_addr);
- 	else
+ gma500_gfx-$(CONFIG_ACPI) +=  opregion.o
+diff --git a/drivers/gpu/drm/gma500/psb_device.c b/drivers/gpu/drm/gma500/psb_device.c
+index dcfcd7b89d4a1..6dece8f0e380f 100644
+--- a/drivers/gpu/drm/gma500/psb_device.c
++++ b/drivers/gpu/drm/gma500/psb_device.c
+@@ -73,8 +73,7 @@ static int psb_backlight_setup(struct drm_device *dev)
+ 	}
+ 
+ 	psb_intel_lvds_set_brightness(dev, PSB_MAX_BRIGHTNESS);
+-	/* This must occur after the backlight is properly initialised */
+-	psb_lid_timer_init(dev_priv);
++
+ 	return 0;
+ }
+ 
+@@ -259,8 +258,6 @@ static int psb_chip_setup(struct drm_device *dev)
+ 
+ static void psb_chip_teardown(struct drm_device *dev)
+ {
+-	struct drm_psb_private *dev_priv = to_drm_psb_private(dev);
+-	psb_lid_timer_takedown(dev_priv);
+ 	gma_intel_teardown_gmbus(dev);
+ }
+ 
+diff --git a/drivers/gpu/drm/gma500/psb_drv.h b/drivers/gpu/drm/gma500/psb_drv.h
+index 70d9adafa2333..bb1cd45c085cd 100644
+--- a/drivers/gpu/drm/gma500/psb_drv.h
++++ b/drivers/gpu/drm/gma500/psb_drv.h
+@@ -170,7 +170,6 @@
+ 
+ #define PSB_NUM_VBLANKS 2
+ #define PSB_WATCHDOG_DELAY (HZ * 2)
+-#define PSB_LID_DELAY (HZ / 10)
+ 
+ #define PSB_MAX_BRIGHTNESS		100
+ 
+@@ -499,11 +498,7 @@ struct drm_psb_private {
+ 	/* Hotplug handling */
+ 	struct work_struct hotplug_work;
+ 
+-	/* LID-Switch */
+-	spinlock_t lid_lock;
+-	struct timer_list lid_timer;
+ 	struct psb_intel_opregion opregion;
+-	u32 lid_last_state;
+ 
+ 	/* Watchdog */
+ 	uint32_t apm_reg;
+@@ -599,10 +594,6 @@ struct psb_ops {
+ 	int i2c_bus;		/* I2C bus identifier for Moorestown */
+ };
+ 
+-/* psb_lid.c */
+-extern void psb_lid_timer_init(struct drm_psb_private *dev_priv);
+-extern void psb_lid_timer_takedown(struct drm_psb_private *dev_priv);
+-
+ /* modesetting */
+ extern void psb_modeset_init(struct drm_device *dev);
+ extern void psb_modeset_cleanup(struct drm_device *dev);
+diff --git a/drivers/gpu/drm/gma500/psb_lid.c b/drivers/gpu/drm/gma500/psb_lid.c
+deleted file mode 100644
+index 58a7fe3926360..0000000000000
+--- a/drivers/gpu/drm/gma500/psb_lid.c
++++ /dev/null
+@@ -1,80 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/**************************************************************************
+- * Copyright (c) 2007, Intel Corporation.
+- *
+- * Authors: Thomas Hellstrom <thomas-at-tungstengraphics-dot-com>
+- **************************************************************************/
+-
+-#include <linux/spinlock.h>
+-
+-#include "psb_drv.h"
+-#include "psb_intel_reg.h"
+-#include "psb_reg.h"
+-
+-static void psb_lid_timer_func(struct timer_list *t)
+-{
+-	struct drm_psb_private *dev_priv = from_timer(dev_priv, t, lid_timer);
+-	struct drm_device *dev = (struct drm_device *)&dev_priv->dev;
+-	struct timer_list *lid_timer = &dev_priv->lid_timer;
+-	unsigned long irq_flags;
+-	u32 __iomem *lid_state = dev_priv->opregion.lid_state;
+-	u32 pp_status;
+-
+-	if (readl(lid_state) == dev_priv->lid_last_state)
+-		goto lid_timer_schedule;
+-
+-	if ((readl(lid_state)) & 0x01) {
+-		/*lid state is open*/
+-		REG_WRITE(PP_CONTROL, REG_READ(PP_CONTROL) | POWER_TARGET_ON);
+-		do {
+-			pp_status = REG_READ(PP_STATUS);
+-		} while ((pp_status & PP_ON) == 0 &&
+-			 (pp_status & PP_SEQUENCE_MASK) != 0);
+-
+-		if (REG_READ(PP_STATUS) & PP_ON) {
+-			/*FIXME: should be backlight level before*/
+-			psb_intel_lvds_set_brightness(dev, 100);
+-		} else {
+-			DRM_DEBUG("LVDS panel never powered up");
+-			return;
+-		}
+-	} else {
+-		psb_intel_lvds_set_brightness(dev, 0);
+-
+-		REG_WRITE(PP_CONTROL, REG_READ(PP_CONTROL) & ~POWER_TARGET_ON);
+-		do {
+-			pp_status = REG_READ(PP_STATUS);
+-		} while ((pp_status & PP_ON) == 0);
+-	}
+-	dev_priv->lid_last_state =  readl(lid_state);
+-
+-lid_timer_schedule:
+-	spin_lock_irqsave(&dev_priv->lid_lock, irq_flags);
+-	if (!timer_pending(lid_timer)) {
+-		lid_timer->expires = jiffies + PSB_LID_DELAY;
+-		add_timer(lid_timer);
+-	}
+-	spin_unlock_irqrestore(&dev_priv->lid_lock, irq_flags);
+-}
+-
+-void psb_lid_timer_init(struct drm_psb_private *dev_priv)
+-{
+-	struct timer_list *lid_timer = &dev_priv->lid_timer;
+-	unsigned long irq_flags;
+-
+-	spin_lock_init(&dev_priv->lid_lock);
+-	spin_lock_irqsave(&dev_priv->lid_lock, irq_flags);
+-
+-	timer_setup(lid_timer, psb_lid_timer_func, 0);
+-
+-	lid_timer->expires = jiffies + PSB_LID_DELAY;
+-
+-	add_timer(lid_timer);
+-	spin_unlock_irqrestore(&dev_priv->lid_lock, irq_flags);
+-}
+-
+-void psb_lid_timer_takedown(struct drm_psb_private *dev_priv)
+-{
+-	del_timer_sync(&dev_priv->lid_timer);
+-}
+-
 -- 
 2.43.0
 
