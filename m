@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE208B7397
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 699C88B742F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AAE228883C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26000286386
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7EF12CDA5;
-	Tue, 30 Apr 2024 11:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B690E12D1F1;
+	Tue, 30 Apr 2024 11:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwTnsNlW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrwCq70F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD57F8801;
-	Tue, 30 Apr 2024 11:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D79717592;
+	Tue, 30 Apr 2024 11:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476059; cv=none; b=tVBQ8iSDdUN/6wiHm4bRFey0/NsO7zGrKbUkQ4pvAyB4vCXiQf2kvFuOVZLmZf4p/beu7rBNoaGmSmeQaB+5l0+KMEUn3WC7lTpL3feHyr77L3+b528UpDyc08lPhEuF7T6uYHLuMJugEnMcj28a8cHpqwayZXyKIi0i0qexXPE=
+	t=1714476492; cv=none; b=QVMjvChZQEtnBEnehr3MJiblZxBhwLfij8b0nEa23PX98B1BBegArMsB6cpq0nXKFkXUdCUMGAIctPYzsMRU4keGmJRlqOb+rHETRF+qZSfIDe26OHDlCDzUjC4JslJuW2O0zkrASVAdYTfw+8bBGMBkNxAegLdaIjYjdiZZOt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476059; c=relaxed/simple;
-	bh=60Wd/BsUrZ+MKqBt3SErZC7kTe6In69fNIWLykZAfIc=;
+	s=arc-20240116; t=1714476492; c=relaxed/simple;
+	bh=2xAmWcQmfHMPht1W6m5I7K1MvyWK1U3GBHpX30AuzOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nprEuBVj0bz1x0opa8bg2UFVL8okt7MvouW5BnNH3Cs+fre+IgE7lKFRQLJnRRioOoLajF2w2zv/D20gZxheiu9+mDg+XOKn/hZ9RKxqJ2Ihf+ocT21qEOL2/2NBCOilyXTGvSoo7jxLMxJ69j88coSPJyJDfsRhSrsNNEBcvCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwTnsNlW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348E4C2BBFC;
-	Tue, 30 Apr 2024 11:20:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=agBRIqp+mJw2gUI8NgiXRv8u2QKXXduefkf8rtSNmALcU6j7fsrGPY8jUNOHYoHbY5Sk2XA9bIQtHaD+fHFwfXpQSrQ8vuzy3W0G5T+VDmqIHN+KzwVZ8HsqG8jZKLy58FVFjgZ9B1qoqD8avq3QtpminR9jIs48ET/yEgv/YgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrwCq70F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA023C2BBFC;
+	Tue, 30 Apr 2024 11:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476059;
-	bh=60Wd/BsUrZ+MKqBt3SErZC7kTe6In69fNIWLykZAfIc=;
+	s=korg; t=1714476492;
+	bh=2xAmWcQmfHMPht1W6m5I7K1MvyWK1U3GBHpX30AuzOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwTnsNlWNEW+3Lsj9ZUWvS5EpUTxrOwfMtGJ0+jq6bRCDeVyXde9GmtABfAx2XmGx
-	 Uk5cLi8Ao+siJA6c45sdbkXBa56iznY1OLADKaVEDgRJllRYCk9sd/DEk/NM+AMxpc
-	 h85epqst8C3sipvC0+gX/cIWftNUyeuGrpZOfg7g=
+	b=CrwCq70FDo4TAaWzJIe0aQeqGo+ay+5vUUryv7yFHvCxz61ZVrtYR7/eEiTFs5rpO
+	 3DueY5+vJmsonFWOHkx2l6WSQwgAr3wyWEPYDj1CztnRQXkuN/0s3YeFv1X8OYqYHC
+	 UgIv1zlLxEBOMAcmgsVe0dxu/JM4YY6mcx5TMouQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.4 021/107] kprobes: Fix possible use-after-free issue on kprobe registration
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 012/110] arm64: dts: mediatek: mt8195: Add missing gce-client-reg to vpp/vdosys
 Date: Tue, 30 Apr 2024 12:39:41 +0200
-Message-ID: <20240430103045.290518722@linuxfoundation.org>
+Message-ID: <20240430103047.932298971@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-commit 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8 upstream.
+[ Upstream commit 96b0c1528ef41fe754f5d1378b1db6c098a2e33f ]
 
-When unloading a module, its state is changing MODULE_STATE_LIVE ->
- MODULE_STATE_GOING -> MODULE_STATE_UNFORMED. Each change will take
-a time. `is_module_text_address()` and `__module_text_address()`
-works with MODULE_STATE_LIVE and MODULE_STATE_GOING.
-If we use `is_module_text_address()` and `__module_text_address()`
-separately, there is a chance that the first one is succeeded but the
-next one is failed because module->state becomes MODULE_STATE_UNFORMED
-between those operations.
+Add the missing mediatek,gce-client-reg property to the vppsys and
+vdosys nodes to allow them to use the GCE. This prevents the "can't
+parse gce-client-reg property" error from being printed and should
+result in better performance.
 
-In `check_kprobe_address_safe()`, if the second `__module_text_address()`
-is failed, that is ignored because it expected a kernel_text address.
-But it may have failed simply because module->state has been changed
-to MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify
-non-exist module text address (use-after-free).
-
-To fix this problem, we should not use separated `is_module_text_address()`
-and `__module_text_address()`, but use only `__module_text_address()`
-once and do `try_module_get(module)` which is only available with
-MODULE_STATE_LIVE.
-
-Link: https://lore.kernel.org/all/20240410015802.265220-1-zhengyejian1@huawei.com/
-
-Fixes: 28f6c37a2910 ("kprobes: Forbid probing on trampoline and BPF code areas")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-[Fix conflict due to lack dependency
-commit 223a76b268c9 ("kprobes: Fix coding style issues")]
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6aa5b46d1755 ("arm64: dts: mt8195: Add vdosys and vppsys clock nodes")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20240229-gce-client-reg-add-missing-mt8192-95-v1-2-b12c233a8a33@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kprobes.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1593,10 +1593,17 @@ static int check_kprobe_address_safe(str
- 	jump_label_lock();
- 	preempt_disable();
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 414cbe3451270..8f33b3226435a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -1492,6 +1492,7 @@
+ 			compatible = "mediatek,mt8195-vppsys0";
+ 			reg = <0 0x14000000 0 0x1000>;
+ 			#clock-cells = <1>;
++			mediatek,gce-client-reg = <&gce1 SUBSYS_1400XXXX 0 0x1000>;
+ 		};
  
--	/* Ensure it is not in reserved area nor out of text */
--	if (!(core_kernel_text((unsigned long) p->addr) ||
--	    is_module_text_address((unsigned long) p->addr)) ||
--	    in_gate_area_no_mm((unsigned long) p->addr) ||
-+	/* Ensure the address is in a text area, and find a module if exists. */
-+	*probed_mod = NULL;
-+	if (!core_kernel_text((unsigned long) p->addr)) {
-+		*probed_mod = __module_text_address((unsigned long) p->addr);
-+		if (!(*probed_mod)) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+	}
-+	/* Ensure it is not in reserved area. */
-+	if (in_gate_area_no_mm((unsigned long) p->addr) ||
- 	    within_kprobe_blacklist((unsigned long) p->addr) ||
- 	    jump_label_text_reserved(p->addr, p->addr) ||
- 	    find_bug((unsigned long)p->addr)) {
-@@ -1604,8 +1611,7 @@ static int check_kprobe_address_safe(str
- 		goto out;
- 	}
+ 		smi_sub_common_vpp0_vpp1_2x1: smi@14010000 {
+@@ -1597,6 +1598,7 @@
+ 			compatible = "mediatek,mt8195-vppsys1";
+ 			reg = <0 0x14f00000 0 0x1000>;
+ 			#clock-cells = <1>;
++			mediatek,gce-client-reg = <&gce1 SUBSYS_14f0XXXX 0 0x1000>;
+ 		};
  
--	/* Check if are we probing a module */
--	*probed_mod = __module_text_address((unsigned long) p->addr);
-+	/* Get module refcount and reject __init functions for loaded modules. */
- 	if (*probed_mod) {
- 		/*
- 		 * We must hold a refcount of the probed module while updating
+ 		larb5: larb@14f02000 {
+@@ -1982,6 +1984,7 @@
+ 			reg = <0 0x1c01a000 0 0x1000>;
+ 			mboxes = <&gce0 0 CMDQ_THR_PRIO_4>;
+ 			#clock-cells = <1>;
++			mediatek,gce-client-reg = <&gce0 SUBSYS_1c01XXXX 0xa000 0x1000>;
+ 		};
+ 
+ 		larb20: larb@1b010000 {
+-- 
+2.43.0
+
 
 
 
