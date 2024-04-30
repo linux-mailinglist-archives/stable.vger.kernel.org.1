@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1CE8B7432
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C129F8B7065
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 800891C22E9A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60D651F2210A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC60B12D1F1;
-	Tue, 30 Apr 2024 11:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E0212CD98;
+	Tue, 30 Apr 2024 10:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlNA+HS3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIwU5XAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841AF12BF32;
-	Tue, 30 Apr 2024 11:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3936B12C461;
+	Tue, 30 Apr 2024 10:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476501; cv=none; b=kEAlNQBSGHJQUHTJl5WISDkViJdiGAGppxmVs2bIoA8NbKbOQMYQNs01b2c9iPIwbMjcwtbxwJc5OHW1n2u20mMNDs8nV5xcKreKGDuL2uloegPsimhJUz7uWCYy7tS3MooBQffKuUQKsts9qyvGTJFn9FmOpUCv3nHqe8A6WE0=
+	t=1714473922; cv=none; b=T7xuNmHsMZY7BLWAC/NAL8exVwq/Y0RNI5lvJ07dYB/zgnu4cGcwdqVjN59utSasyiEf5bD2j6mGphAUlt3u7UBBrXyqWBdKNCJLx7zC4OOnUWwC4CLiUx96NPrZN3CkscN3N+hYwGBrtuSELSY0wiVixXVbkh8+WniMi60v/Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476501; c=relaxed/simple;
-	bh=C15xDCfyaD482pGx+HZE1Rj97RH8zZl/4YopgtXhvSA=;
+	s=arc-20240116; t=1714473922; c=relaxed/simple;
+	bh=EHCuvdOpnLWkIyn4CbtMVFYnQXrS5Nlol9131yErSF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mN/vm5v42HW3VsOJrboa+6I6RpZtVVwMipMC8VaGu/A7ZkG2mKSDuolRAUY8fa6uauv3dAY0UHZjCq79QgMcZNDwOqAPi5I+X+wAqX9qppQWu2h13CkKtaCF7QbwhVTdsKosQJXDhpCE5tfowxgg7nCBVx95ZSWvXn4uK6NKE5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlNA+HS3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F00CC2BBFC;
-	Tue, 30 Apr 2024 11:28:20 +0000 (UTC)
+	 MIME-Version; b=rbp8rycj/IZOwRSrEigs5/IQTgAVewdcSCXPyU0hpnjNfE7UA8CGECN9JD+GNw0Ot8V49lnfhE20XtU3/3InNwne+x1F2zfFTjT4MCXYPEGLWM/OGjzGq7cbFU7wOW/e28LeW9mETnOjw6V1jxkhe6DVSgRXxTxfeJXctrt/IUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIwU5XAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1F3C2BBFC;
+	Tue, 30 Apr 2024 10:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476501;
-	bh=C15xDCfyaD482pGx+HZE1Rj97RH8zZl/4YopgtXhvSA=;
+	s=korg; t=1714473922;
+	bh=EHCuvdOpnLWkIyn4CbtMVFYnQXrS5Nlol9131yErSF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xlNA+HS3DgwV9vXLVL+Wh9jIIEk0W1e5LDaFgYDACZ0WA2zTJ5EaBjMDlISVHpk/8
-	 BIvviomwheFEFM1ar3U6dfQSRPeJ7Cg4Jfeo6ckguI45lcIlkiPDaON+El53vqAQtP
-	 Hb6ARlQJcehNR7B11hmzP8wq0nkx9IDjOX06MZBg=
+	b=lIwU5XARWAx6xM07oSe8udkYH27YGFLdC2FewnBtZSgJ8aDXzXGb07pBFzOn0JTDr
+	 gRMt2OSBKpqtHh/t51pycnPXQQ6HQM9mDwIyGfv0761PiF3lv16p39qY7Hl5L+G9Xt
+	 q3FRF5A7x/ZgWjCcVwUA3GiZnKNghyPurkMVgCKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/110] arm64: dts: mediatek: mt8195: Add missing gce-client-reg to mutex
+	Iskander Amara <iskander.amara@theobroma-systems.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 4.19 63/77] arm64: dts: rockchip: enable internal pull-up for Q7_THRM# on RK3399 Puma
 Date: Tue, 30 Apr 2024 12:39:42 +0200
-Message-ID: <20240430103047.961690738@linuxfoundation.org>
+Message-ID: <20240430103042.998345183@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Iskander Amara <iskander.amara@theobroma-systems.com>
 
-[ Upstream commit 3b129949184a1251e6a42db714f6d68b75fabedd ]
+commit 0ac417b8f124427c90ec8c2ef4f632b821d924cc upstream.
 
-Add the missing mediatek,gce-client-reg property to the mutex node to
-allow it to use the GCE. This prevents the "can't parse gce-client-reg
-property" error from being printed and should result in better
-performance.
+Q7_THRM# pin is connected to a diode on the module which is used
+as a level shifter, and the pin have a pull-down enabled by
+default. We need to configure it to internal pull-up, other-
+wise whenever the pin is configured as INPUT and we try to
+control it externally the value will always remain zero.
 
-Fixes: b852ee68fd72 ("arm64: dts: mt8195: Add display node for vdosys0")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20240229-gce-client-reg-add-missing-mt8192-95-v1-3-b12c233a8a33@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240308085243.69903-1-iskander.amara@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 8f33b3226435a..bdf002e9cece1 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -2088,6 +2088,7 @@
- 			interrupts = <GIC_SPI 658 IRQ_TYPE_LEVEL_HIGH 0>;
- 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS0>;
- 			clocks = <&vdosys0 CLK_VDO0_DISP_MUTEX0>;
-+			mediatek,gce-client-reg = <&gce0 SUBSYS_1c01XXXX 0x6000 0x1000>;
- 			mediatek,gce-events = <CMDQ_EVENT_VDO0_DISP_STREAM_DONE_0>;
- 		};
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -432,6 +432,16 @@
+ };
  
--- 
-2.43.0
-
+ &pinctrl {
++	pinctrl-names = "default";
++	pinctrl-0 = <&q7_thermal_pin>;
++
++	gpios {
++		q7_thermal_pin: q7-thermal-pin {
++			rockchip,pins =
++				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
++	};
++
+ 	i2c8 {
+ 		i2c8_xfer_a: i2c8-xfer {
+ 			rockchip,pins =
 
 
 
