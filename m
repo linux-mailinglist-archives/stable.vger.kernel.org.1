@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-42436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AA58B7307
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9EB68B7169
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0E9D1F240E8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61972285ABB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB0E12F360;
-	Tue, 30 Apr 2024 11:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C32F12C550;
+	Tue, 30 Apr 2024 10:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z52dbDfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtdzgfS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBE412D770;
-	Tue, 30 Apr 2024 11:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD61012C534;
+	Tue, 30 Apr 2024 10:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475659; cv=none; b=kGe1l1tijoDSKzVnixEMW3SNoFQ6St9ilB7SG3MzggHzr3ZOLnb8yKtBmKUE3hqg4jMKxye7QAje2EVCtw0wJlpvKxmyGqntb3GCj2Q3wWSVeOpfazoBFo4afIlwF6PKT1vJ9QNPG47TMSXQeesbiPs+MPmzFORxjMM6suMAa7Y=
+	t=1714474576; cv=none; b=XEt9SUJHXv+VM1BK9dHRr/73SG5IbpDkvgpXeZWR7sR24ke2isV6T9rzGpqFVfaUR1L3KXjlTyCOiofneElErdL+CX73PqpohJfZXCjH/YXr4uKcpFHJuPCaFvOcA2BF01MR8HJyw5x3VF01dWH+hvwrv9aTc45mVMPBzxnRca4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475659; c=relaxed/simple;
-	bh=N3Seo0Y0v8aBgO5QlgTAXOjh0gqOAxz37ilXfdXvKOY=;
+	s=arc-20240116; t=1714474576; c=relaxed/simple;
+	bh=AO6y+YKJoirzJpk/UyWJsmb/mThT2G68Rv7R+xWkic8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzlNlf9rhvJFwjme94vTSeeZl8wbbV9GjKWnmGGkjsFFRlkXhQOD5hqrt0B5jtqjm311ydcZJzr5OI5jrEaz2HyBYwrb3w9/O/xqQ36dl7/iPSQNX1DsdX69wvK962ulCm5V9Iu2uaPO3bb/yQnLUPr67S5USSmufodxD99cXNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z52dbDfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E60C4AF19;
-	Tue, 30 Apr 2024 11:14:18 +0000 (UTC)
+	 MIME-Version; b=Q9xYuJ0jYo/XZ2R98pA0VZiQy56+WYJu9GotaAMgUM03YafmNhLgtoe7dtga8Amavh1tpdvYjkjR9s/wFk9xKcBXVnC8q0L4BPFVunQHIXGEdNr1o673k+smyfNOD6ocygW20MDu8KMJAuAFjAz5Clb8eZ2A7WGHLaJydWWGK5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtdzgfS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0E3C2BBFC;
+	Tue, 30 Apr 2024 10:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475658;
-	bh=N3Seo0Y0v8aBgO5QlgTAXOjh0gqOAxz37ilXfdXvKOY=;
+	s=korg; t=1714474576;
+	bh=AO6y+YKJoirzJpk/UyWJsmb/mThT2G68Rv7R+xWkic8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z52dbDfdkGdknGVHsn6oDIaTALEe76ajFVgpl/a+pRD+UUPq4PKeT953DGk+o3Q/6
-	 6Hzv0iZTzMkNREdszOjkWo/paB/loxpp+IKz+85jVKX36LM8zsM3/KJwwH2T9Nt67s
-	 bIgTyMw2gpditxVgmv5cnv3USJagdlkzVwvDS5Q0=
+	b=qtdzgfS1kSlPxUbd8gg19j4LArnnTCzlcAiA5AN5CoKGKAaD3B/rYWAbFSuy1+H3j
+	 gCr3bMM4iT+jIhZmmkJqkxtSRCb8S02oPnz50TF+8RQyCWfQLIxGda4AkcRcnT5oL3
+	 UJ/A+XbSHsqf3Dgm7c7GRS49sLttr2ag4mYTsWHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Christian Heusel <christian@heusel.eu>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Dan Streetman <ddstreet@ieee.org>,
+	"Richard W.M. Jones" <rjones@redhat.com>,
+	Seth Jennings <sjenning@redhat.com>,
+	Vitaly Wool <vitaly.wool@konsulko.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 125/186] mm: create FOLIO_FLAG_FALSE and FOLIO_TYPE_OPS macros
+Subject: [PATCH 6.8 199/228] mm: zswap: fix shrinker NULL crash with cgroup_disable=memory
 Date: Tue, 30 Apr 2024 12:39:37 +0200
-Message-ID: <20240430103101.661289671@linuxfoundation.org>
+Message-ID: <20240430103109.544924480@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,149 +69,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Johannes Weiner <hannes@cmpxchg.org>
 
-commit 12bbaae7635a56049779db3bef6e7140d9aa5f67 upstream.
+commit 682886ec69d22363819a83ddddd5d66cb5c791e1 upstream.
 
-Following the separation of FOLIO_FLAGS from PAGEFLAGS, separate
-FOLIO_FLAG_FALSE from PAGEFLAG_FALSE and FOLIO_TYPE_OPS from
-PAGE_TYPE_OPS.
+Christian reports a NULL deref in zswap that he bisected down to the zswap
+shrinker.  The issue also cropped up in the bug trackers of libguestfs [1]
+and the Red Hat bugzilla [2].
 
-Link: https://lkml.kernel.org/r/20240321142448.1645400-3-willy@infradead.org
-Fixes: 9c5ccf2db04b ("mm: remove HUGETLB_PAGE_DTOR")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
+The problem is that when memcg is disabled with the boot time flag, the
+zswap shrinker might get called with sc->memcg == NULL.  This is okay in
+many places, like the lruvec operations.  But it crashes in
+memcg_page_state() - which is only used due to the non-node accounting of
+cgroup's the zswap memory to begin with.
+
+Nhat spotted that the memcg can be NULL in the memcg-disabled case, and I
+was then able to reproduce the crash locally as well.
+
+[1] https://github.com/libguestfs/libguestfs/issues/139
+[2] https://bugzilla.redhat.com/show_bug.cgi?id=2275252
+
+Link: https://lkml.kernel.org/r/20240418124043.GC1055428@cmpxchg.org
+Link: https://lkml.kernel.org/r/20240417143324.GA1055428@cmpxchg.org
+Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reported-by: Christian Heusel <christian@heusel.eu>
+Debugged-by: Nhat Pham <nphamcs@gmail.com>
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
+Tested-by: Christian Heusel <christian@heusel.eu>
+Acked-by: Yosry Ahmed <yosryahmed@google.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Dan Streetman <ddstreet@ieee.org>
+Cc: Richard W.M. Jones <rjones@redhat.com>
+Cc: Seth Jennings <sjenning@redhat.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+Cc: <stable@vger.kernel.org>	[v6.8]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/page-flags.h |   70 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 47 insertions(+), 23 deletions(-)
+ mm/zswap.c |   25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -432,30 +432,51 @@ static __always_inline int TestClearPage
- 	TESTSETFLAG(uname, lname, policy)				\
- 	TESTCLEARFLAG(uname, lname, policy)
+Two minor conflicts in the else branch:
+- zswap_pool_total_size was get_zswap_pool_size() in 6.8
+- zswap_nr_stored was pool->nr_stored in 6.8
+
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -653,15 +653,22 @@ static unsigned long zswap_shrinker_coun
+ 	if (!gfp_has_io_fs(sc->gfp_mask))
+ 		return 0;
  
-+#define FOLIO_TEST_FLAG_FALSE(name)					\
-+static inline bool folio_test_##name(const struct folio *folio)		\
-+{ return false; }
-+#define FOLIO_SET_FLAG_NOOP(name)					\
-+static inline void folio_set_##name(struct folio *folio) { }
-+#define FOLIO_CLEAR_FLAG_NOOP(name)					\
-+static inline void folio_clear_##name(struct folio *folio) { }
-+#define __FOLIO_SET_FLAG_NOOP(name)					\
-+static inline void __folio_set_##name(struct folio *folio) { }
-+#define __FOLIO_CLEAR_FLAG_NOOP(name)					\
-+static inline void __folio_clear_##name(struct folio *folio) { }
-+#define FOLIO_TEST_SET_FLAG_FALSE(name)					\
-+static inline bool folio_test_set_##name(struct folio *folio)		\
-+{ return false; }
-+#define FOLIO_TEST_CLEAR_FLAG_FALSE(name)				\
-+static inline bool folio_test_clear_##name(struct folio *folio)		\
-+{ return false; }
-+
-+#define FOLIO_FLAG_FALSE(name)						\
-+FOLIO_TEST_FLAG_FALSE(name)						\
-+FOLIO_SET_FLAG_NOOP(name)						\
-+FOLIO_CLEAR_FLAG_NOOP(name)
-+
- #define TESTPAGEFLAG_FALSE(uname, lname)				\
--static inline bool folio_test_##lname(const struct folio *folio) { return false; } \
-+FOLIO_TEST_FLAG_FALSE(lname)						\
- static inline int Page##uname(const struct page *page) { return 0; }
+-#ifdef CONFIG_MEMCG_KMEM
+-	mem_cgroup_flush_stats(memcg);
+-	nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
+-	nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED);
+-#else
+-	/* use pool stats instead of memcg stats */
+-	nr_backing = get_zswap_pool_size(pool) >> PAGE_SHIFT;
+-	nr_stored = atomic_read(&pool->nr_stored);
+-#endif
++	/*
++	 * For memcg, use the cgroup-wide ZSWAP stats since we don't
++	 * have them per-node and thus per-lruvec. Careful if memcg is
++	 * runtime-disabled: we can get sc->memcg == NULL, which is ok
++	 * for the lruvec, but not for memcg_page_state().
++	 *
++	 * Without memcg, use the zswap pool-wide metrics.
++	 */
++	if (!mem_cgroup_disabled()) {
++		mem_cgroup_flush_stats(memcg);
++		nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
++		nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED);
++	} else {
++		nr_backing = get_zswap_pool_size(pool) >> PAGE_SHIFT;
++		nr_stored = atomic_read(&pool->nr_stored);
++	}
  
- #define SETPAGEFLAG_NOOP(uname, lname)					\
--static inline void folio_set_##lname(struct folio *folio) { }		\
-+FOLIO_SET_FLAG_NOOP(lname)						\
- static inline void SetPage##uname(struct page *page) {  }
- 
- #define CLEARPAGEFLAG_NOOP(uname, lname)				\
--static inline void folio_clear_##lname(struct folio *folio) { }		\
-+FOLIO_CLEAR_FLAG_NOOP(lname)						\
- static inline void ClearPage##uname(struct page *page) {  }
- 
- #define __CLEARPAGEFLAG_NOOP(uname, lname)				\
--static inline void __folio_clear_##lname(struct folio *folio) { }	\
-+__FOLIO_CLEAR_FLAG_NOOP(lname)						\
- static inline void __ClearPage##uname(struct page *page) {  }
- 
- #define TESTSETFLAG_FALSE(uname, lname)					\
--static inline bool folio_test_set_##lname(struct folio *folio)		\
--{ return 0; }								\
-+FOLIO_TEST_SET_FLAG_FALSE(lname)					\
- static inline int TestSetPage##uname(struct page *page) { return 0; }
- 
- #define TESTCLEARFLAG_FALSE(uname, lname)				\
--static inline bool folio_test_clear_##lname(struct folio *folio)	\
--{ return 0; }								\
-+FOLIO_TEST_CLEAR_FLAG_FALSE(lname)					\
- static inline int TestClearPage##uname(struct page *page) { return 0; }
- 
- #define PAGEFLAG_FALSE(uname, lname) TESTPAGEFLAG_FALSE(uname, lname)	\
-@@ -937,35 +958,38 @@ static inline int page_has_type(struct p
- 	return page_type_has_type(page->page_type);
- }
- 
-+#define FOLIO_TYPE_OPS(lname, fname)					\
-+static __always_inline bool folio_test_##fname(const struct folio *folio)\
-+{									\
-+	return folio_test_type(folio, PG_##lname);			\
-+}									\
-+static __always_inline void __folio_set_##fname(struct folio *folio)	\
-+{									\
-+	VM_BUG_ON_FOLIO(!folio_test_type(folio, 0), folio);		\
-+	folio->page.page_type &= ~PG_##lname;				\
-+}									\
-+static __always_inline void __folio_clear_##fname(struct folio *folio)	\
-+{									\
-+	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
-+	folio->page.page_type |= PG_##lname;				\
-+}
-+
- #define PAGE_TYPE_OPS(uname, lname, fname)				\
-+FOLIO_TYPE_OPS(lname, fname)						\
- static __always_inline int Page##uname(const struct page *page)		\
- {									\
- 	return PageType(page, PG_##lname);				\
- }									\
--static __always_inline int folio_test_##fname(const struct folio *folio)\
--{									\
--	return folio_test_type(folio, PG_##lname);			\
--}									\
- static __always_inline void __SetPage##uname(struct page *page)		\
- {									\
- 	VM_BUG_ON_PAGE(!PageType(page, 0), page);			\
- 	page->page_type &= ~PG_##lname;					\
- }									\
--static __always_inline void __folio_set_##fname(struct folio *folio)	\
--{									\
--	VM_BUG_ON_FOLIO(!folio_test_type(folio, 0), folio);		\
--	folio->page.page_type &= ~PG_##lname;				\
--}									\
- static __always_inline void __ClearPage##uname(struct page *page)	\
- {									\
- 	VM_BUG_ON_PAGE(!Page##uname(page), page);			\
- 	page->page_type |= PG_##lname;					\
--}									\
--static __always_inline void __folio_clear_##fname(struct folio *folio)	\
--{									\
--	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
--	folio->page.page_type |= PG_##lname;				\
--}									\
-+}
- 
- /*
-  * PageBuddy() indicates that the page is free and in the buddy system
+ 	if (!nr_stored)
+ 		return 0;
 
 
 
