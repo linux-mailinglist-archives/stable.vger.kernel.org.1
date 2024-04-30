@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-42444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F038B8B7310
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19B58B746A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACCCE2871DD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86BE1F2273F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CB8211C;
-	Tue, 30 Apr 2024 11:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371A312D755;
+	Tue, 30 Apr 2024 11:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiPsjgbH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMOQOgHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E65D12D1F1;
-	Tue, 30 Apr 2024 11:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96C812BF32;
+	Tue, 30 Apr 2024 11:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475685; cv=none; b=iasF/LQlOunIfy2pHYkR1bqUFGdqWNjcCu/8yJFVcuCHMVBH+CGdha0d4W2SlIJu3jM7Ct5O7ujxt8i3IYZuuoYRBbY8zp6Y3mTKHPj05PI+grisWKIm7pIzP5te5y3LC8rYzLfpwBk3bAMYUyHJ+Cv+1j3/6b40aWW1HwcjC8Q=
+	t=1714476638; cv=none; b=ir0tkeUHbSJr2FCM2sQ9EZ+6YRXqf8ubXGK56sE5XHBSFD9gBasOfDUetNjvYv3GTGl4ral1R1vF/fwyf+3usGdzAxo1oX90Z5Yq9o8OEsaU5O4xOEQ6KreVUPB1z20dcPddsay1/1lKYdvxKxSSARWLvleihoQv+vDXfN5gtEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475685; c=relaxed/simple;
-	bh=dNN717FtmjQqxZVzOzFbSfE+19qVdldgUge3cfDCCAs=;
+	s=arc-20240116; t=1714476638; c=relaxed/simple;
+	bh=B8yibZWfRahkhGFA4ENZbrda8wQGTpNGtVocNF0u8Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PL1yoU9alkE0j/UvzmgsJlCJ24pmrK87rwfIDIS4b1pZeYfX8PAKkWxZyFHlNfieIeLYrHL5LmR1N1HeMWMFTCsuYUz0ZKkLa4BrQvdacqSBqVP/+CkTbI6pF/XRKnMgm7fWJA4gsRcxm5sVmdH2oViSuCtOvTfDE+cK9BLF45o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiPsjgbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62395C2BBFC;
-	Tue, 30 Apr 2024 11:14:44 +0000 (UTC)
+	 MIME-Version; b=ShpUtW1ghf+z8LtPN5fo/l4vg3i/26ulQGSg11kBt12wJ5E3TlL9y1R7D1NMX6vF9Dg6728rw9p3+liImsmUK7t6Zt9Z7/KM94ZR6r0pN0k0PiJgRvyce8mK1EdzHgEzSSJy90WfaAuwKHUG8Lfy8d2rrBppNFSogGU5A0IL1Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMOQOgHR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EA8C2BBFC;
+	Tue, 30 Apr 2024 11:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475685;
-	bh=dNN717FtmjQqxZVzOzFbSfE+19qVdldgUge3cfDCCAs=;
+	s=korg; t=1714476637;
+	bh=B8yibZWfRahkhGFA4ENZbrda8wQGTpNGtVocNF0u8Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiPsjgbHegMB97UWBTiYToR59vOLSvSSgvVKqXumzEjXRGjK1IZd74gaVaS96TNxX
-	 te20p9fyo7n9KY4flg2PO6GdyVRcPPcJc3bSVTnB6DDZnRA9XHYhevQsWRhwXIQw8A
-	 U7ggn/5fH9/pSjpWjTdhjQe+Ut22aM2hCA2W1mF8=
+	b=rMOQOgHRbrEvb2ATW6IHhC+YS2P34K/ecNX+gXUOUPZgJckzVhPBFOlqKTOTupIm3
+	 9XIqsto3/mETaSFWwju/kzjxQ8fKXWzCDpA5wjRoOYKDfTFsDtnt+qAWzyQ/AFMIUJ
+	 JfxnmTALjsIWu9hlF+CkMa3SG97sE7NJhdlzcQNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Bo Gan <ganboing@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/186] riscv: Fix TASK_SIZE on 64-bit NOMMU
+	Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Mineri Bhange <minerix.bhange@intel.com>
+Subject: [PATCH 6.1 056/110] iavf: Fix TC config comparison with existing adapter TC config
 Date: Tue, 30 Apr 2024 12:40:25 +0200
-Message-ID: <20240430103103.054262772@linuxfoundation.org>
+Message-ID: <20240430103049.219205126@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
 
-[ Upstream commit 6065e736f82c817c9a597a31ee67f0ce4628e948 ]
+[ Upstream commit 54976cf58d6168b8d15cebb395069f23b2f34b31 ]
 
-On NOMMU, userspace memory can come from anywhere in physical RAM. The
-current definition of TASK_SIZE is wrong if any RAM exists above 4G,
-causing spurious failures in the userspace access routines.
+Same number of TCs doesn't imply that underlying TC configs are
+same. The config could be different due to difference in number
+of queues in each TC. Add utility function to determine if TC
+configs are same.
 
-Fixes: 6bd33e1ece52 ("riscv: add nommu support")
-Fixes: c3f896dcf1e4 ("mm: switch the test_vmalloc module to use __vmalloc_node")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
-Reviewed-by: Bo Gan <ganboing@gmail.com>
-Link: https://lore.kernel.org/r/20240227003630.3634533-2-samuel.holland@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: d5b33d024496 ("i40evf: add ndo_setup_tc callback to i40evf")
+Signed-off-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
+Tested-by: Mineri Bhange <minerix.bhange@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240423182723.740401-4-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 30 ++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index eaa54a3a16212..719c3041ae1c2 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -903,7 +903,7 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- #define PAGE_SHARED		__pgprot(0)
- #define PAGE_KERNEL		__pgprot(0)
- #define swapper_pg_dir		NULL
--#define TASK_SIZE		0xffffffffUL
-+#define TASK_SIZE		_AC(-1, UL)
- #define VMALLOC_START		_AC(0, UL)
- #define VMALLOC_END		TASK_SIZE
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index b9c4b311cd625..53b9fe35d8035 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -3631,6 +3631,34 @@ static void iavf_del_all_cloud_filters(struct iavf_adapter *adapter)
+ 	spin_unlock_bh(&adapter->cloud_filter_list_lock);
+ }
+ 
++/**
++ * iavf_is_tc_config_same - Compare the mqprio TC config with the
++ * TC config already configured on this adapter.
++ * @adapter: board private structure
++ * @mqprio_qopt: TC config received from kernel.
++ *
++ * This function compares the TC config received from the kernel
++ * with the config already configured on the adapter.
++ *
++ * Return: True if configuration is same, false otherwise.
++ **/
++static bool iavf_is_tc_config_same(struct iavf_adapter *adapter,
++				   struct tc_mqprio_qopt *mqprio_qopt)
++{
++	struct virtchnl_channel_info *ch = &adapter->ch_config.ch_info[0];
++	int i;
++
++	if (adapter->num_tc != mqprio_qopt->num_tc)
++		return false;
++
++	for (i = 0; i < adapter->num_tc; i++) {
++		if (ch[i].count != mqprio_qopt->count[i] ||
++		    ch[i].offset != mqprio_qopt->offset[i])
++			return false;
++	}
++	return true;
++}
++
+ /**
+  * __iavf_setup_tc - configure multiple traffic classes
+  * @netdev: network interface device structure
+@@ -3688,7 +3716,7 @@ static int __iavf_setup_tc(struct net_device *netdev, void *type_data)
+ 		if (ret)
+ 			return ret;
+ 		/* Return if same TC config is requested */
+-		if (adapter->num_tc == num_tc)
++		if (iavf_is_tc_config_same(adapter, &mqprio_qopt->qopt))
+ 			return 0;
+ 		adapter->num_tc = num_tc;
  
 -- 
 2.43.0
