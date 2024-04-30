@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268288B717E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3FD8B7058
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A87691F20F26
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18A651C21765
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3567912CD96;
-	Tue, 30 Apr 2024 10:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2358612C53F;
+	Tue, 30 Apr 2024 10:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vxx6zONS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kb+zATHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78D312C549;
-	Tue, 30 Apr 2024 10:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A1312C49C;
+	Tue, 30 Apr 2024 10:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474629; cv=none; b=A+QFlq7RBfgKAbMJofVvdeE3ZU1Rd5cAzUmPzauJGulXiGoTvJPSpWcbJxLVKlgwmXjAN2lvH+ZspZicrkEx7yRIjMad/0i1gMKb7PMVQdbGq4/TIhaRfX1uSLvNvmRzaZypMy9Xe3tRFqCMdYQY2bREb1eKh1oRbIBSiF8qa+k=
+	t=1714473886; cv=none; b=SbNcmsQdh4cTpJPrBPOHlr67kgfh/tE+bwddZffizu4Tz71Ubq09v4JtTd2D2jaxZLn6gwRwEo8rLbxyqsDpL5StkiTclGN8KDBTcJ2ib46xQnoluv4QlftCmg6bkcvhnRzmbktlHt1+X53YiUzOYb91zdVVTxxHYro3GSOWyYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474629; c=relaxed/simple;
-	bh=Iv1j78aFxr5U0leNWpCQ4mR4XpE+Ftr+9xM0W7PJo1k=;
+	s=arc-20240116; t=1714473886; c=relaxed/simple;
+	bh=uhjzMqo/PcgTF3CPi5JbUx0e0XG/cd+rxb+g6zig7ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MeTGr7cpMznKRZ83fvmb3NfzZGZQ8jDG2lFuizB7wVJdkwu/xHLKCCgCk5UlaNiVg85Ee9029WWVxuElbK9O46sVQp/Jbr3ITymiszrUV4d1JELGIWcKmvYjDvx7tTNXuSLM5cbELAHFGGhZuL8HKL4sGk5YDEGHdMLY91bdKNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vxx6zONS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB70C2BBFC;
-	Tue, 30 Apr 2024 10:57:08 +0000 (UTC)
+	 MIME-Version; b=f6hBSLX3xi+ZxlHEfiow+4xfE8oDnvMq7SR0p54//be1dnuaHu/dYoW1NyC1iEcF1irdklYdCUmhziv/Q+arrxYde3iJ+TaUIeh+CGffjTOfoRjzjjfMQVgrOzvVEb/4IS4r2l6APbLpgR+esBDIfPpiQ9AwQRU3TyRETfp0GNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kb+zATHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C16C2BBFC;
+	Tue, 30 Apr 2024 10:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474628;
-	bh=Iv1j78aFxr5U0leNWpCQ4mR4XpE+Ftr+9xM0W7PJo1k=;
+	s=korg; t=1714473886;
+	bh=uhjzMqo/PcgTF3CPi5JbUx0e0XG/cd+rxb+g6zig7ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vxx6zONSKnk/l4FkIrD11Wo9VtXBApI3s2RW4iyJOdKscTgZzmTUlehzMMfI0NIYw
-	 EhTLVAtVHIdsBNjH72W1uCUmr/SO64FFtInupwpJEghn17ZiAt8cCefKrfusSQjknf
-	 ZqzrkFo8cq/E83t92tATYCbTlE3lIUX+wO0eSH7M=
+	b=kb+zATHEtxdJ1pnZFi3yVAH7RV2j6q7CS6oMEpTkkmtXJ4wLtSEFa3DMwE8OVmwy9
+	 KzyEYd054G1lNd7WAR43ejJYOibSIdqeiBsKDuka17P0A9g6ryQxC9TMPLcWxzbhgB
+	 jeDHahYD9InxefXVm2fRjh1NGAcJ4jJx8eeoDAU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terrence Xu <terrence.xu@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 213/228] dmaengine: idxd: Fix oops during rmmod on single-CPU platforms
+Subject: [PATCH 4.19 72/77] i2c: smbus: fix NULL function pointer dereference
 Date: Tue, 30 Apr 2024 12:39:51 +0200
-Message-ID: <20240430103109.952395500@linuxfoundation.org>
+Message-ID: <20240430103043.265162617@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenghua Yu <fenghua.yu@intel.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit f221033f5c24659dc6ad7e5cf18fb1b075f4a8be ]
+[ Upstream commit 91811a31b68d3765b3065f4bb6d7d6d84a7cfc9f ]
 
-During the removal of the idxd driver, registered offline callback is
-invoked as part of the clean up process. However, on systems with only
-one CPU online, no valid target is available to migrate the
-perf context, resulting in a kernel oops:
+Baruch reported an OOPS when using the designware controller as target
+only. Target-only modes break the assumption of one transfer function
+always being available. Fix this by always checking the pointer in
+__i2c_transfer.
 
-    BUG: unable to handle page fault for address: 000000000002a2b8
-    #PF: supervisor write access in kernel mode
-    #PF: error_code(0x0002) - not-present page
-    PGD 1470e1067 P4D 0
-    Oops: 0002 [#1] PREEMPT SMP NOPTI
-    CPU: 0 PID: 20 Comm: cpuhp/0 Not tainted 6.8.0-rc6-dsa+ #57
-    Hardware name: Intel Corporation AvenueCity/AvenueCity, BIOS BHSDCRB1.86B.2492.D03.2307181620 07/18/2023
-    RIP: 0010:mutex_lock+0x2e/0x50
-    ...
-    Call Trace:
-    <TASK>
-    __die+0x24/0x70
-    page_fault_oops+0x82/0x160
-    do_user_addr_fault+0x65/0x6b0
-    __pfx___rdmsr_safe_on_cpu+0x10/0x10
-    exc_page_fault+0x7d/0x170
-    asm_exc_page_fault+0x26/0x30
-    mutex_lock+0x2e/0x50
-    mutex_lock+0x1e/0x50
-    perf_pmu_migrate_context+0x87/0x1f0
-    perf_event_cpu_offline+0x76/0x90 [idxd]
-    cpuhp_invoke_callback+0xa2/0x4f0
-    __pfx_perf_event_cpu_offline+0x10/0x10 [idxd]
-    cpuhp_thread_fun+0x98/0x150
-    smpboot_thread_fn+0x27/0x260
-    smpboot_thread_fn+0x1af/0x260
-    __pfx_smpboot_thread_fn+0x10/0x10
-    kthread+0x103/0x140
-    __pfx_kthread+0x10/0x10
-    ret_from_fork+0x31/0x50
-    __pfx_kthread+0x10/0x10
-    ret_from_fork_asm+0x1b/0x30
-    <TASK>
-
-Fix the issue by preventing the migration of the perf context to an
-invalid target.
-
-Fixes: 81dd4d4d6178 ("dmaengine: idxd: Add IDXD performance monitor support")
-Reported-by: Terrence Xu <terrence.xu@intel.com>
-Tested-by: Terrence Xu <terrence.xu@intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Link: https://lore.kernel.org/r/20240313214031.1658045-1-fenghua.yu@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reported-by: Baruch Siach <baruch@tkos.co.il>
+Closes: https://lore.kernel.org/r/4269631780e5ba789cf1ae391eec1b959def7d99.1712761976.git.baruch@tkos.co.il
+Fixes: 4b1acc43331d ("i2c: core changes for slave support")
+[wsa: dropped the simplification in core-smbus to avoid theoretical regressions]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Baruch Siach <baruch@tkos.co.il>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/perfmon.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/i2c/i2c-core-base.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/perfmon.c b/drivers/dma/idxd/perfmon.c
-index fdda6d6042629..5e94247e1ea70 100644
---- a/drivers/dma/idxd/perfmon.c
-+++ b/drivers/dma/idxd/perfmon.c
-@@ -528,14 +528,11 @@ static int perf_event_cpu_offline(unsigned int cpu, struct hlist_node *node)
- 		return 0;
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 9079be0d51d15..2bdb8bc4cc829 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1872,13 +1872,18 @@ static int i2c_check_for_quirks(struct i2c_adapter *adap, struct i2c_msg *msgs,
+  * Returns negative errno, else the number of messages executed.
+  *
+  * Adapter lock must be held when calling this function. No debug logging
+- * takes place. adap->algo->master_xfer existence isn't checked.
++ * takes place.
+  */
+ int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ {
+ 	unsigned long orig_jiffies;
+ 	int ret, try;
  
- 	target = cpumask_any_but(cpu_online_mask, cpu);
--
- 	/* migrate events if there is a valid target */
--	if (target < nr_cpu_ids)
-+	if (target < nr_cpu_ids) {
- 		cpumask_set_cpu(target, &perfmon_dsa_cpu_mask);
--	else
--		target = -1;
--
--	perf_pmu_migrate_context(&idxd_pmu->pmu, cpu, target);
-+		perf_pmu_migrate_context(&idxd_pmu->pmu, cpu, target);
++	if (!adap->algo->master_xfer) {
++		dev_dbg(&adap->dev, "I2C level transfers not supported\n");
++		return -EOPNOTSUPP;
 +	}
++
+ 	if (WARN_ON(!msgs || num < 1))
+ 		return -EINVAL;
  
- 	return 0;
- }
 -- 
 2.43.0
 
