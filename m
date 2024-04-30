@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-42188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D578B71CB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB248B713E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F269D1C223FC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AB2BB22EB5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3206B12C490;
-	Tue, 30 Apr 2024 11:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D8B12CDA5;
+	Tue, 30 Apr 2024 10:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAc2tdV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2U6k2acn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1207464;
-	Tue, 30 Apr 2024 11:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDC712CD99;
+	Tue, 30 Apr 2024 10:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474853; cv=none; b=Ug2/EIUlmy2B5kAM0s+0E6K9fRTZqqMF3RODUpT0opWzqbGdApqlj5nQnx172dOEV1/L+wbjiXZE5bFTma5k4dO75WMK+M9s/Aikd7gS6ACLMcl2u6StYg7eJYvgeckrXoVswBCgfi0rrF4rmv0eFNcm2h00Slgae0C1rdgf5qo=
+	t=1714474460; cv=none; b=gU3Ur4uAkxDceG8ftzn+5yfZIIJJIMt2I4kOGJn/oqVB7v+N9aq7U1bxK7IHsCob/hDGEtYgbp9BiejAeKYvGuynJtS8ULCiLAoYDIxBlF0jv9NY2k7tsO1NgvkQDKoxccavzB9VPv1E1OAMqq/BLITOKd6UT9KN8mbEoVscFnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474853; c=relaxed/simple;
-	bh=BJM5QGLmiNqE2guFY6LQdF/47SQZcGZA4ULZDYfifE4=;
+	s=arc-20240116; t=1714474460; c=relaxed/simple;
+	bh=VO1eHLIUEVVVaD7kzKfGi8fHpLBqaAlQJqpEB4ZclJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTuH2b23U++eyCU2oKn2siXQzkDKNGQgOXPJcMSRCS8XzI3RGE4cvylUlX27EnengxfiMriKCSTDdb5Z7duJgdCMwk82OIU0Twz8cI4rGGQZwg6rPK995FV/Hl9EWcfNrDAOT54X86EMnupxsjVa0JyZiFqnlJzxdVuyjgPJ9aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAc2tdV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E27C4AF19;
-	Tue, 30 Apr 2024 11:00:51 +0000 (UTC)
+	 MIME-Version; b=jDDDOBk1ARm8OZm1uKUfA09K+EHO212XXQxW77aAJEHDxBnAVlP0yjMXZKIuIzmMRVALcnSKgW5vrI1C9hrvbUkyp1Wl0QU7cPBxsOJjAZWs6uSVn12xO6++KMcR/GB1OsLhGiXNYuqpqrGOGbD9qOm3n4IVwKWQS2yjptsEBRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2U6k2acn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423F0C2BBFC;
+	Tue, 30 Apr 2024 10:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474852;
-	bh=BJM5QGLmiNqE2guFY6LQdF/47SQZcGZA4ULZDYfifE4=;
+	s=korg; t=1714474459;
+	bh=VO1eHLIUEVVVaD7kzKfGi8fHpLBqaAlQJqpEB4ZclJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KAc2tdV8IUVAGU8zVz2WPhad5GMcE7g3D/qhmRIERVZLs4JA9TTOeZCzOUg2nE18Z
-	 6oAptZf+WGDpdZSmJoHxyi3U65X9acZ4GCOrBM598JUOStWHzoGIvd+c6sgiMlfGvv
-	 aRbwYQn2isEgTPKjiRg8w2iSoKk4uNcus4gXJdso=
+	b=2U6k2acnqTIs4yTy8/kj3T8WD0jtnCTng+3TGhBMb900jzNdwujVHrt0Cyr/xwBrl
+	 lHaeyTREx9dHSBDRKzYtK8BCM7tvTF+TrKBE7ziUnXyRYo0gbIinxXgY4kHDD+9knr
+	 +uy04UBt7a/NQnxDi8mEMwNDtjhtnfn/l1EqDduk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bolan wang <bolan.wang@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 056/138] USB: serial: option: add Fibocom FM135-GL variants
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Sean Christopherson <seanjc@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 6.8 163/228] cpu: Re-enable CPU mitigations by default for !X86 architectures
 Date: Tue, 30 Apr 2024 12:39:01 +0200
-Message-ID: <20240430103051.079652972@linuxfoundation.org>
+Message-ID: <20240430103108.511314772@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +65,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: bolan wang <bolan.wang@fibocom.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 356952b13af5b2c338df1e06889fd1b5e12cbbf4 upstream.
+commit fe42754b94a42d08cf9501790afc25c4f6a5f631 upstream.
 
-Update the USB serial option driver support for the Fibocom
-FM135-GL LTE modules.
-- VID:PID 2cb7:0115, FM135-GL for laptop debug M.2 cards(with MBIM
-interface for /Linux/Chrome OS)
+Rename x86's to CPU_MITIGATIONS, define it in generic code, and force it
+on for all architectures exception x86.  A recent commit to turn
+mitigations off by default if SPECULATION_MITIGATIONS=n kinda sorta
+missed that "cpu_mitigations" is completely generic, whereas
+SPECULATION_MITIGATIONS is x86-specific.
 
-0x0115: mbim, diag, at, pipe
+Rename x86's SPECULATIVE_MITIGATIONS instead of keeping both and have it
+select CPU_MITIGATIONS, as having two configs for the same thing is
+unnecessary and confusing.  This will also allow x86 to use the knob to
+manage mitigations that aren't strictly related to speculative
+execution.
 
-Here are the outputs of usb-devices:
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0115 Rev=05.15
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom Module
-S:  SerialNumber=12345678
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Use another Kconfig to communicate to common code that CPU_MITIGATIONS
+is already defined instead of having x86's menu depend on the common
+CPU_MITIGATIONS.  This allows keeping a single point of contact for all
+of x86's mitigations, and it's not clear that other architectures *want*
+to allow disabling mitigations at compile-time.
 
-Signed-off-by: bolan wang <bolan.wang@fibocom.com>
+Fixes: f337a6a21e2f ("x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n")
+Closes: https://lkml.kernel.org/r/20240413115324.53303a68%40canb.auug.org.au
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20240420000556.2645001-2-seanjc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/Kconfig     |    8 ++++++++
+ arch/x86/Kconfig |   11 ++++++-----
+ kernel/cpu.c     |    4 ++--
+ 3 files changed, 16 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2272,6 +2272,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -9,6 +9,14 @@
+ #
+ source "arch/$(SRCARCH)/Kconfig"
+ 
++config ARCH_CONFIGURES_CPU_MITIGATIONS
++	bool
++
++if !ARCH_CONFIGURES_CPU_MITIGATIONS
++config CPU_MITIGATIONS
++	def_bool y
++endif
++
+ menu "General architecture-dependent options"
+ 
+ config ARCH_HAS_SUBPAGE_FAULTS
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -62,6 +62,7 @@ config X86
+ 	select ACPI_HOTPLUG_CPU			if ACPI_PROCESSOR && HOTPLUG_CPU
+ 	select ARCH_32BIT_OFF_T			if X86_32
+ 	select ARCH_CLOCKSOURCE_INIT
++	select ARCH_CONFIGURES_CPU_MITIGATIONS
+ 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
+ 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
+@@ -2467,17 +2468,17 @@ config PREFIX_SYMBOLS
+ 	def_bool y
+ 	depends on CALL_PADDING && !CFI_CLANG
+ 
+-menuconfig SPECULATION_MITIGATIONS
+-	bool "Mitigations for speculative execution vulnerabilities"
++menuconfig CPU_MITIGATIONS
++	bool "Mitigations for CPU vulnerabilities"
+ 	default y
+ 	help
+-	  Say Y here to enable options which enable mitigations for
+-	  speculative execution hardware vulnerabilities.
++	  Say Y here to enable options which enable mitigations for hardware
++	  vulnerabilities (usually related to speculative execution).
+ 
+ 	  If you say N, all mitigations will be disabled. You really
+ 	  should know what you are doing to say so.
+ 
+-if SPECULATION_MITIGATIONS
++if CPU_MITIGATIONS
+ 
+ config PAGE_TABLE_ISOLATION
+ 	bool "Remove the kernel mapping in user mode"
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -3207,8 +3207,8 @@ enum cpu_mitigations {
+ };
+ 
+ static enum cpu_mitigations cpu_mitigations __ro_after_init =
+-	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
+-						     CPU_MITIGATIONS_OFF;
++	IS_ENABLED(CONFIG_CPU_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
++					     CPU_MITIGATIONS_OFF;
+ 
+ static int __init mitigations_parse_cmdline(char *arg)
+ {
 
 
 
