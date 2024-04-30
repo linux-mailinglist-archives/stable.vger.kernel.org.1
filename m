@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-41809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810DB8B6C27
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 09:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB918B6C33
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 09:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D22B283615
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:50:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4873028370B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 07:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6C43FB87;
-	Tue, 30 Apr 2024 07:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EA140BE1;
+	Tue, 30 Apr 2024 07:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cymnZ8rV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fpxq5981"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDE114AB7;
-	Tue, 30 Apr 2024 07:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658E73FB87;
+	Tue, 30 Apr 2024 07:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714463455; cv=none; b=Ooi2d206A8XKubVJ4ywAg6xfyXcaZeaSFz2AQfzK9zRuXHp4Y41C7Zeaz8dUG/fzluxQXukWjHhatYBdW79HJ8RRXy9n/6YwhqjSqvex/EYljyF7hWUZTN3Cc5CL01jneq+rRxGM7b4cEoGBpSI8ksZJ6IYw58ELn0jDvLxWKB0=
+	t=1714463517; cv=none; b=WCE1dlsY+vUbW8LQVP/cZJvcYmjBjhZO5AGE+NdE/T9ahHDuuE4KLdWpOZfaUNTG/Srw1amZQywuJ2HTxktP6K4E6e/v+JzImssuO2X/qXTFT2SrQd5svcRWobRF4opGpx/c5UrHtu1WRMYTm2gqSN4VXW5d5RNns02WTB0YA2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714463455; c=relaxed/simple;
-	bh=Hz1ZgvHpYULY+kIy7eFI9BiDKMMj0EzDJmGcsXcjvLY=;
+	s=arc-20240116; t=1714463517; c=relaxed/simple;
+	bh=v0WF6wRNl0/o4ZfZUcYLksd3B2wnn2d8J5cCYz5LJiU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jKmPOhmz8Fud59Plf5VKYtQHl2+ggi8d94VICvwAYvTq9NfNquECvLUEw8Q96maajP/uUH3BxRKpzoVoffd0nTN7oRWFM5deZoRg3oD+sWkT25Pu36uhbl2JOL6lsLpwzNcAH6cbDK9BBAmCfii1/xv0Cc74rcztzFdfzTgLmJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cymnZ8rV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4CFC2BBFC;
-	Tue, 30 Apr 2024 07:50:54 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=E0yfobmPJrPvNS9UZY/4maXr/3fWSYeiRnh8J0W4mQatslPtjLJ8oSiY/AGqB+6qIHE48KaGTT+Rj8KwsKdGjHDkEVosyYGgjenmuvSFHwNtgR+CTD45ro6Hu8B1zEfMQIdSYYGrqIUgQq4vbvjI4PwymP/oCJkhsJJEY/Ve5ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fpxq5981; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6293C4AF17;
+	Tue, 30 Apr 2024 07:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714463455;
-	bh=Hz1ZgvHpYULY+kIy7eFI9BiDKMMj0EzDJmGcsXcjvLY=;
+	s=korg; t=1714463517;
+	bh=v0WF6wRNl0/o4ZfZUcYLksd3B2wnn2d8J5cCYz5LJiU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cymnZ8rVbwtJL4Tqsp/3dyqUT4yjeDdeM0BpJs1/nIVuxEMwQiUEwAEk9l5dXn7xh
-	 l6/Fqejfp+RRUr8DeaHPcT73gHDISa8owcGjz2thVvci1Pgn+qjleyrJPQ12qUB8kE
-	 wXie7FFvNBN5BVY6VhYRsup7hoWf8h1GcTTukM0E=
-Date: Tue, 30 Apr 2024 09:50:52 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Martijn Coenen <maco@android.com>, Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Genjian Zhang <zhanggenjian@kylinos.cn>
-Subject: Re: [PATCH 4.19] Revert "loop: Remove sector_t truncation checks"
-Message-ID: <2024043043-scandal-silicon-7009@gregkh>
-References: <496c59ccd7eefd9cd27f6454f6271f96e66f1da7.camel@decadent.org.uk>
- <ZjAT5UeQ8fc7CY0w@decadent.org.uk>
+	b=Fpxq5981i/tonHvgQuediTxuWMIbKvv5Ne3dxmiMm0+57NaqNaLrzxSit2KNKqwQt
+	 1sB2Gfq/k7rpxsTFiB/Yk2rqVvlJ7iYVvTD7vxCOApgJYPbfXjwTi04locT3zBEFeP
+	 U0FR3AVlJXYsMXTfYA0uKhbiYucrmOlhbIN9qnFg=
+Date: Tue, 30 Apr 2024 09:51:54 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Edward Liaw <edliaw@google.com>
+Cc: stable@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	kernel-team@android.com, Mark Brown <broonie@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.6.y] kselftest: Add a ksft_perror() helper
+Message-ID: <2024043037-debate-capsize-e44c@gregkh>
+References: <20240430010628.430427-1-edliaw@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,28 +57,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZjAT5UeQ8fc7CY0w@decadent.org.uk>
+In-Reply-To: <20240430010628.430427-1-edliaw@google.com>
 
-On Mon, Apr 29, 2024 at 11:40:53PM +0200, Ben Hutchings wrote:
-> This reverts commit f92a3b0d003b9f7eb1f452598966a08802183f47, which
-> was commit 083a6a50783ef54256eec3499e6575237e0e3d53 upstream.  In 4.19
-> there is still an option to use 32-bit sector_t on 32-bit
-> architectures, so we need to keep checking for truncation.
+On Tue, Apr 30, 2024 at 01:06:27AM +0000, Edward Liaw wrote:
+> From: Mark Brown <broonie@kernel.org>
 > 
-> Since loop_set_status() was refactored by subsequent patches, this
-> reintroduces its truncation check in loop_set_status_from_info()
-> instead.
+> [ Upstream commit 907f33028871fa7c9a3db1efd467b78ef82cce20 ]
 > 
-> I tested that the loop ioctl operations have the expected behaviour on
-> x86_64, x86_32 with CONFIG_LBDAF=y, and (the special case) x86_32 with
-> CONFIG_LBDAF=n.
+> The standard library perror() function provides a convenient way to print
+> an error message based on the current errno but this doesn't play nicely
+> with KTAP output. Provide a helper which does an equivalent thing in a KTAP
+> compatible format.
 > 
-> Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+> nolibc doesn't have a strerror() and adding the table of strings required
+> doesn't seem like a good fit for what it's trying to do so when we're using
+> that only print the errno.
+> 
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+> Stable-dep-of: 071af0c9e582 ("selftests: timers: Convert posix_timers test to generate KTAP output")
+> Signed-off-by: Edward Liaw <edliaw@google.com>
 > ---
->  drivers/block/loop.c | 19 +++++++++++++++----
->  1 file changed, 15 insertions(+), 4 deletions(-)
+>  tools/testing/selftests/kselftest.h | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 
-Thanks, both reverts now queued up.
+This commit is already in 6.6.29, why submit it again?
+
+confused,
 
 greg k-h
 
