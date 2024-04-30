@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AC78B7429
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B79648B73BC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 131B31C20D5F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4C9AB21A3C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109FF12D209;
-	Tue, 30 Apr 2024 11:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FEF12D743;
+	Tue, 30 Apr 2024 11:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHhK1SlS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prXaIeER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42AA12C47A;
-	Tue, 30 Apr 2024 11:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E94B17592;
+	Tue, 30 Apr 2024 11:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476473; cv=none; b=TImDWvcqANlax3Ll7SYB5lc01JqPN2loa2kdLAvYbVJvQ5cp3NHbly8HMhZzCJ+4hgggnmphkKuAIrqk946DKQj4N1azjqEHPWEZHmiK5AC2yfeGr+/OypuJ4BHjpD1d90p3jWz6MGJ8bav6/j5UUjTjd5cji5XG/ZAOcp6kMkY=
+	t=1714476153; cv=none; b=EY+vUZnqB2zxlIylMdEQoTGuiLOsytjXQFMSbh971dHqy0sBpa5rOdPR+R2rsNx6D3crU/9kXHTclXXGHSX38Y4bwffbIZLvRa8NfFyqoFna3sJWlbirXOnE5P7dV+ltn87kZJ3CaRxiVHGVhTPfM+QDFFSpmSIT3LQvr6uAFMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476473; c=relaxed/simple;
-	bh=CaFkkvnNE8XQgNgFRSLM2uCFCHzHdKzZtNdxmt+MgpI=;
+	s=arc-20240116; t=1714476153; c=relaxed/simple;
+	bh=fgWBIAkIllrPTXsOceRCpjOqxUzNoApWefsIeVkz/iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfBKX0SbQYKw0zwqAMQNA4/xEgo4IG7UIMrnuoInmUtZDV0cIf5aM49ZLLg82uItYNwW/1LHiGhiRNbPX18nnerycfM0HghYqc8fqJ6aobM7wHqULZb0y5Al0YsTzmlf/BqUxFlXfDwQsyD8CL4C8dRGfAN1ty5/lbxAFl9+GZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHhK1SlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EFA9C2BBFC;
-	Tue, 30 Apr 2024 11:27:53 +0000 (UTC)
+	 MIME-Version; b=s4Vfrayc9jgi8ck9w56kx2dTlAq7LSWHvJPaKmUfApPCXGkrxsK1nfmdH9OSHxiK+1BPdymZB4pWqaUuyU/Vzaj0pDi/kF4Yj4eZATyQAOIcaF7BwMwqXrExoIXhY8kzetKTI7cDFEgk7VCU+jtNMHFSVTHBual+J3N7uxUZ8WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prXaIeER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB538C2BBFC;
+	Tue, 30 Apr 2024 11:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476473;
-	bh=CaFkkvnNE8XQgNgFRSLM2uCFCHzHdKzZtNdxmt+MgpI=;
+	s=korg; t=1714476153;
+	bh=fgWBIAkIllrPTXsOceRCpjOqxUzNoApWefsIeVkz/iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHhK1SlSpfwB4lHleKM8p03RaCOwhaD3UdB4MxA1Fwo7wL/zehBgtz0Xtn0FA+A35
-	 6v6ojJ2GXV50BOVVvF57pY8PV7VDA74vI/KCPo5WKu94ljMHG8kx+ZUMlXakdvUOLq
-	 uPVRoS0S2oH1OctPgHMdGr2Gfz+f6F9hN/Vg/gEs=
+	b=prXaIeERp8cHmvp651TEN22dHss8SMJFYQbrzNh4nOZphORwQdikRZLIGtuUpXZRX
+	 2BdI+L7PVaq8It738gXSReCD2t1TKQA45/LaUpiAFNs4RQs+NP6CQ03mADa7+XsF3V
+	 VIpxJae6a/yx2L8l3sZNwq7SMX/4D6g4gXfctnNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ismael Luceno <iluceno@suse.de>,
-	Andreas Taschner <andreas.taschner@suse.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Firo Yang <firo.yang@suse.com>
-Subject: [PATCH 6.1 042/110] ipvs: Fix checksumming on GSO of SCTP packets
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <sean.j.christopherson@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.4 051/107] KVM: async_pf: Cleanup kvm_setup_async_pf()
 Date: Tue, 30 Apr 2024 12:40:11 +0200
-Message-ID: <20240430103048.809351402@linuxfoundation.org>
+Message-ID: <20240430103046.164175677@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ismael Luceno <iluceno@suse.de>
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-[ Upstream commit e10d3ba4d434ed172914617ed8d74bd411421193 ]
+commit 7863e346e1089b40cac1c7d9098314c405e2e1e3 upstream.
 
-It was observed in the wild that pairs of consecutive packets would leave
-the IPVS with the same wrong checksum, and the issue only went away when
-disabling GSO.
+schedule_work() returns 'false' only when the work is already on the queue
+and this can't happen as kvm_setup_async_pf() always allocates a new one.
+Also, to avoid potential race, it makes sense to to schedule_work() at the
+very end after we've added it to the queue.
 
-IPVS needs to avoid computing the SCTP checksum when using GSO.
+While on it, do some minor cleanup. gfn_to_pfn_async() mentioned in a
+comment does not currently exist and, moreover, we can check
+kvm_is_error_hva() at the very beginning, before we try to allocate work so
+'retry_sync' label can go away completely.
 
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Co-developed-by: Firo Yang <firo.yang@suse.com>
-Signed-off-by: Ismael Luceno <iluceno@suse.de>
-Tested-by: Andreas Taschner <andreas.taschner@suse.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Message-Id: <20200610175532.779793-1-vkuznets@redhat.com>
+Reviewed-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ virt/kvm/async_pf.c |   19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index a0921adc31a9f..1e689c7141271 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -126,7 +126,8 @@ sctp_snat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	if (sctph->source != cp->vport || payload_csum ||
- 	    skb->ip_summed == CHECKSUM_PARTIAL) {
- 		sctph->source = cp->vport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 	}
-@@ -174,7 +175,8 @@ sctp_dnat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	    (skb->ip_summed == CHECKSUM_PARTIAL &&
- 	     !(skb_dst(skb)->dev->features & NETIF_F_SCTP_CRC))) {
- 		sctph->dest = cp->dport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else if (skb->ip_summed != CHECKSUM_PARTIAL) {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 	}
--- 
-2.43.0
-
+--- a/virt/kvm/async_pf.c
++++ b/virt/kvm/async_pf.c
+@@ -195,7 +195,9 @@ int kvm_setup_async_pf(struct kvm_vcpu *
+ 	if (vcpu->async_pf.queued >= ASYNC_PF_PER_VCPU)
+ 		return 0;
+ 
+-	/* setup delayed work */
++	/* Arch specific code should not do async PF in this case */
++	if (unlikely(kvm_is_error_hva(hva)))
++		return 0;
+ 
+ 	/*
+ 	 * do alloc nowait since if we are going to sleep anyway we
+@@ -213,24 +215,15 @@ int kvm_setup_async_pf(struct kvm_vcpu *
+ 	work->mm = current->mm;
+ 	mmget(work->mm);
+ 
+-	/* this can't really happen otherwise gfn_to_pfn_async
+-	   would succeed */
+-	if (unlikely(kvm_is_error_hva(work->addr)))
+-		goto retry_sync;
+-
+ 	INIT_WORK(&work->work, async_pf_execute);
+-	if (!schedule_work(&work->work))
+-		goto retry_sync;
+ 
+ 	list_add_tail(&work->queue, &vcpu->async_pf.queue);
+ 	vcpu->async_pf.queued++;
+ 	kvm_arch_async_page_not_present(vcpu, work);
++
++	schedule_work(&work->work);
++
+ 	return 1;
+-retry_sync:
+-	kvm_put_kvm(work->vcpu->kvm);
+-	mmput(work->mm);
+-	kmem_cache_free(async_pf_cache, work);
+-	return 0;
+ }
+ 
+ int kvm_async_pf_wakeup_all(struct kvm_vcpu *vcpu)
 
 
 
