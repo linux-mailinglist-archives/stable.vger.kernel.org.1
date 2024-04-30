@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0408B72BB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:11:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF1C8B71E6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94E481F23DE2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:11:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F7191C22F23
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CED812CDAE;
-	Tue, 30 Apr 2024 11:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D36612C54B;
+	Tue, 30 Apr 2024 11:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcYXXi9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmrgKaHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1CF211C;
-	Tue, 30 Apr 2024 11:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B58012B176;
+	Tue, 30 Apr 2024 11:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475487; cv=none; b=KV7Uu+xjPiFE7r3vtDok68pvA77jr2qXZ3mSfPgTtAAfhlFFxTwl31xk6G9NKkEqQcRyG8A6FwYTXjTolr82jlWBLKmI11GWbBPoe5dVs8o/xieNXxOfV81jjvqQv6jTyuSb+Mm96QlnxcDDBHmlWe/AtCvf7r81nCPHi/0lfP8=
+	t=1714474927; cv=none; b=tIQ+uF8Cqf8xzK092TzseU5uO2tMHoUVUwWgRv0JgI9pKbYn1SSvybzpn+bfUtAyOjzlyT4tQx5xIj9xz/WkJnkNbOCAZ4JsUz+Bz5hnYkQfv0cwX/hdhUPeKtjh1do577+cIZMEGsZWxLE/O5MxInRE/OtCkUG+1sDdmy6PCoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475487; c=relaxed/simple;
-	bh=sSBpdqNHnsW8KsoKYI0yl12W2l1SfqkpVEWxXtmK5sQ=;
+	s=arc-20240116; t=1714474927; c=relaxed/simple;
+	bh=0d/iwT6mTbtvXcAg7UR7t4v2nH+r5rnd04bCOLt8KAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZsyZoIWCEJg8vuaYuHurXVFwjH3qAe6C0jliOasXdxugo6ObmLgrs8Hfvk5/EBMmcIiqo++xRKgjloHLpwdcwBqOJjPJBQLdJYp8mVDAMQiHSZ3ffAyv2VX5QMHk1AqO0kV2mYs4JXr23nHpIezmc8pEbtVkrtqiuhAgnRg1GXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcYXXi9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECD5C2BBFC;
-	Tue, 30 Apr 2024 11:11:26 +0000 (UTC)
+	 MIME-Version; b=j3Vu2BNjuJnht2uqUnpRimI2qYIpWIZUWI8C/PEJY+g3V182shKb4uXPtEe6Vg83z6TYzjB6nY4TNA/+07m1Y1CE4bM18lGHW2VvlvYzbJALPatFFm4lZdZuJedUiC5Dq6WTyCFVmH0gFMrobOg8M02gf7fRAZ4bfwEcRjGWiRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmrgKaHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865B1C4AF18;
+	Tue, 30 Apr 2024 11:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475487;
-	bh=sSBpdqNHnsW8KsoKYI0yl12W2l1SfqkpVEWxXtmK5sQ=;
+	s=korg; t=1714474926;
+	bh=0d/iwT6mTbtvXcAg7UR7t4v2nH+r5rnd04bCOLt8KAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcYXXi9VE7/uXQ2IeEzhmUsseQx3Gs09rpMbktbP6l01yGTtrsyTD8IPTLIXfeM28
-	 C+/2QDTeBq5VTK0BuwqwA7PpUmZPz1KoDrh5DNcuH9WG8+My9Dat3VhhP2i8w6BZxL
-	 HmYnWD5Y7wn/rz77PjqS6mnjEv91gDl5ymv8PvYc=
+	b=XmrgKaHWn+af7Bemfzq9XyKW3Sky0VnBxshxwXXF3TIEE56uD2Qylk0ABx4qttxmb
+	 XtXMSkndqEfxyDwOgQO3ScuV2JGvAUKhJtWh3hoeZyJMtk7F9MZSngwsKZ3Ngi+Jq4
+	 jQt0HnNvRS6po6ekNgXfG1s9/PNQjZr9le9GIaGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Tritton <terry.tritton@linaro.org>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6.6 109/186] selftests/seccomp: Handle EINVAL on unshare(CLONE_NEWPID)
-Date: Tue, 30 Apr 2024 12:39:21 +0200
-Message-ID: <20240430103101.197772428@linuxfoundation.org>
+	Felix Fietkau <nbd@nbd.name>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 077/138] arm64: dts: mediatek: mt7622: introduce nodes for Wireless Ethernet Dispatch
+Date: Tue, 30 Apr 2024 12:39:22 +0200
+Message-ID: <20240430103051.692592901@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Tritton <terry.tritton@linaro.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit ecaaa55c9fa5e8058445a8b891070b12208cdb6d upstream.
+[ Upstream commit e9b65ecb7c3050dd34ee22ce17f1cf95e8405b15 ]
 
-unshare(CLONE_NEWPID) can return EINVAL if the kernel does not have the
-CONFIG_PID_NS option enabled.
+Introduce wed0 and wed1 nodes in order to enable offloading forwarding
+between ethernet and wireless devices on the mt7622 chipset.
 
-Add a check on these calls to skip the test if we receive EINVAL.
-
-Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
-Link: https://lore.kernel.org/r/20240124141357.1243457-2-terry.tritton@linaro.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 3ba5a6159434 ("arm64: dts: mediatek: mt7622: fix clock controllers")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/seccomp/seccomp_bpf.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 28 ++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-+++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -3709,7 +3709,12 @@ TEST(user_notification_sibling_pid_ns)
- 	ASSERT_GE(pid, 0);
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index 07b4d3ba55612..ab218229b7ea1 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -893,6 +893,11 @@
+ 		};
+ 	};
  
- 	if (pid == 0) {
--		ASSERT_EQ(unshare(CLONE_NEWPID), 0);
-+		ASSERT_EQ(unshare(CLONE_NEWPID), 0) {
-+			if (errno == EPERM)
-+				SKIP(return, "CLONE_NEWPID requires CAP_SYS_ADMIN");
-+			else if (errno == EINVAL)
-+				SKIP(return, "CLONE_NEWPID is invalid (missing CONFIG_PID_NS?)");
-+		}
++	hifsys: syscon@1af00000 {
++		compatible = "mediatek,mt7622-hifsys", "syscon";
++		reg = <0 0x1af00000 0 0x70>;
++	};
++
+ 	ethsys: syscon@1b000000 {
+ 		compatible = "mediatek,mt7622-ethsys",
+ 			     "syscon";
+@@ -911,6 +916,26 @@
+ 		#dma-cells = <1>;
+ 	};
  
- 		pid2 = fork();
- 		ASSERT_GE(pid2, 0);
-@@ -3727,6 +3732,8 @@ TEST(user_notification_sibling_pid_ns)
- 	ASSERT_EQ(unshare(CLONE_NEWPID), 0) {
- 		if (errno == EPERM)
- 			SKIP(return, "CLONE_NEWPID requires CAP_SYS_ADMIN");
-+		else if (errno == EINVAL)
-+			SKIP(return, "CLONE_NEWPID is invalid (missing CONFIG_PID_NS?)");
- 	}
- 	ASSERT_EQ(errno, 0);
- 
++	pcie_mirror: pcie-mirror@10000400 {
++		compatible = "mediatek,mt7622-pcie-mirror",
++			     "syscon";
++		reg = <0 0x10000400 0 0x10>;
++	};
++
++	wed0: wed@1020a000 {
++		compatible = "mediatek,mt7622-wed",
++			     "syscon";
++		reg = <0 0x1020a000 0 0x1000>;
++		interrupts = <GIC_SPI 214 IRQ_TYPE_LEVEL_LOW>;
++	};
++
++	wed1: wed@1020b000 {
++		compatible = "mediatek,mt7622-wed",
++			     "syscon";
++		reg = <0 0x1020b000 0 0x1000>;
++		interrupts = <GIC_SPI 215 IRQ_TYPE_LEVEL_LOW>;
++	};
++
+ 	eth: ethernet@1b100000 {
+ 		compatible = "mediatek,mt7622-eth",
+ 			     "mediatek,mt2701-eth",
+@@ -938,6 +963,9 @@
+ 		mediatek,ethsys = <&ethsys>;
+ 		mediatek,sgmiisys = <&sgmiisys>;
+ 		mediatek,cci-control = <&cci_control2>;
++		mediatek,wed = <&wed0>, <&wed1>;
++		mediatek,pcie-mirror = <&pcie_mirror>;
++		mediatek,hifsys = <&hifsys>;
+ 		dma-coherent;
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+-- 
+2.43.0
+
 
 
 
