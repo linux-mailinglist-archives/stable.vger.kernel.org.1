@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-41979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E51CD8B70C1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:49:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136C28B7245
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:06:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22F5D1C21AEB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:49:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44D481C2258A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B60912C549;
-	Tue, 30 Apr 2024 10:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96AEA12C54B;
+	Tue, 30 Apr 2024 11:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVTfli/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSix1EYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AA412C46B;
-	Tue, 30 Apr 2024 10:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555351E50A;
+	Tue, 30 Apr 2024 11:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474167; cv=none; b=edoEvdB3E1Io0NeX9S59x06niSRTTk8eY9GHl02Md7CDiCommcnthgIQwWpUwdnNtyflhrT1NrMhpUOMXfQBSokGIYRDW15zGgTH0sxYCUaw2ShvnF0Cl/HrK0daf2LcVA06rJboWiRjXVc0bAANC7JGXlTb0gyCon7/+yHympk=
+	t=1714475184; cv=none; b=PlCCpvMCd85MC3bt/pxQn+fVQeHQmMV/2gjVFEMNuxZpBi+DGxMPup3MF+Vl76xW9fu+yCNNie5qyUnBLuZyXvTjXQZLzA8CNjjx2JKSSAiPnXIe365OET3r797/AxTj7AWv6OMSsMDfcM/Vx+I4Sg69RVp891WgSdh/gxM8kRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474167; c=relaxed/simple;
-	bh=1NkSb3140fAQkD0UgFg4fKs+7ezNfQCFtD554OchSWE=;
+	s=arc-20240116; t=1714475184; c=relaxed/simple;
+	bh=m+i7NVb+7tlRPAS8F49bZZ1hnTX0ZK4ukOhkTSiqj2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HLd8f+JplecqTMYhB//Ri4p3Mii7z9Xtz6pkJsSF3k1yYZDZMfFESoAQY8dC8aCBtnmCnin6K0Sc25g3+KXZ1ljr0wHxGeynWLWpyXVKJhgQ8BpnYwdU2HTq1RpUTpN1yle+eXMgcnMnzkphPzMYp8qWhunJKRgmmcZ9Vi4ALUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVTfli/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74A8C4AF1A;
-	Tue, 30 Apr 2024 10:49:26 +0000 (UTC)
+	 MIME-Version; b=Yh51AbtzUTeGUbUiEHRHeWSgFhXZH3fowlY8v1R6O3Qx7wwS7cQ6FgpNWjbDiO1KIm/wksnVgsvTNCHvLBrL86fzOYubCedM4Oq0yaMpDaaWQPOCCQWTVh2kELBD9L8zUA8hM5ao1dODLYc+uxDdyvDwg+aFBy7kLBtcsdO0fAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSix1EYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B12C2BBFC;
+	Tue, 30 Apr 2024 11:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474167;
-	bh=1NkSb3140fAQkD0UgFg4fKs+7ezNfQCFtD554OchSWE=;
+	s=korg; t=1714475184;
+	bh=m+i7NVb+7tlRPAS8F49bZZ1hnTX0ZK4ukOhkTSiqj2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVTfli/qFt9tZPt63KCHZwFE2ml3erqXfX0G5s/c2Pd5PPiutRQGIJdI4zXdK+3ah
-	 W+6F5mRnXoJODSeSmZFCHHReO8cRzAtdCFBltWF488G1B29NHjC+wH9+gY7WjQRAzP
-	 AWbBeZP49U+8mK1qZ4efO7BGWKojddvxqvfLgKHE=
+	b=wSix1EYIDeNKSaZSF/kil7BYvM+v4EMZXhOrNhOecssbls8S/UO6lPPVMMPY4aoS1
+	 7M7Rb1P0sOfx7JirAuNQAqQq84ovsSeQypux14xCpGXdMwXLTQgDzYknuXZvYtGhtH
+	 YyvPN5JDdh8eX0+FKCySBQBCNu9wiYwvQxt7zDfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 076/228] drm/xe: call free_gsc_pkt only once on action add failure
+Subject: [PATCH 6.6 002/186] smb: client: fix rename(2) regression against samba
 Date: Tue, 30 Apr 2024 12:37:34 +0200
-Message-ID: <20240430103105.998171851@linuxfoundation.org>
+Message-ID: <20240430103058.087050293@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit f38c4d224aa37fce1e3fe05db4377ef888f0737f ]
+[ Upstream commit 18d86965e31f9be4d477da0744a7cdc9815858de ]
 
-The drmm_add_action_or_reset function automatically invokes the
-action (free_gsc_pkt) in the event of a failure; therefore, there's no
-necessity to call it within the return check.
+After commit 2c7d399e551c ("smb: client: reuse file lease key in
+compound operations") the client started reusing lease keys for
+rename, unlink and set path size operations to prevent it from
+breaking its own leases and thus causing unnecessary lease breaks to
+same connection.
 
--v2
-Fix commit message. (Lucas)
+The implementation relies on positive dentries and
+cifsInodeInfo::lease_granted to decide whether reusing lease keys for
+the compound requests.  cifsInodeInfo::lease_granted was introduced by
+commit 0ab95c2510b6 ("Defer close only when lease is enabled.") to
+indicate whether lease caching is granted for a specific file, but
+that can only happen until file is open, so
+cifsInodeInfo::lease_granted was left uninitialised in ->alloc_inode
+and then client started sending random lease keys for files that
+hadn't any leases.
 
-Fixes: d8b1571312b7 ("drm/xe/huc: HuC authentication via GSC")
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240412181211.1155732-4-himal.prasad.ghimiray@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 22bf0bc04d273ca002a47de55693797b13076602)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+This fixes the following test case against samba:
+
+mount.cifs //srv/share /mnt/1 -o ...,nosharesock
+mount.cifs //srv/share /mnt/2 -o ...,nosharesock
+touch /mnt/1/foo; tail -f /mnt/1/foo & pid=$!
+mv /mnt/2/foo /mnt/2/bar # fails with -EIO
+kill $pid
+
+Fixes: 0ab95c2510b6 ("Defer close only when lease is enabled.")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_huc.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ fs/smb/client/cifsfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_huc.c b/drivers/gpu/drm/xe/xe_huc.c
-index eca109791c6ae..01b2d0bd26a30 100644
---- a/drivers/gpu/drm/xe/xe_huc.c
-+++ b/drivers/gpu/drm/xe/xe_huc.c
-@@ -53,7 +53,6 @@ static int huc_alloc_gsc_pkt(struct xe_huc *huc)
- 	struct xe_gt *gt = huc_to_gt(huc);
- 	struct xe_device *xe = gt_to_xe(gt);
- 	struct xe_bo *bo;
--	int err;
- 
- 	/* we use a single object for both input and output */
- 	bo = xe_bo_create_pin_map(xe, gt_to_tile(gt), NULL,
-@@ -66,13 +65,7 @@ static int huc_alloc_gsc_pkt(struct xe_huc *huc)
- 
- 	huc->gsc_pkt = bo;
- 
--	err = drmm_add_action_or_reset(&xe->drm, free_gsc_pkt, huc);
--	if (err) {
--		free_gsc_pkt(&xe->drm, huc);
--		return err;
--	}
--
--	return 0;
-+	return drmm_add_action_or_reset(&xe->drm, free_gsc_pkt, huc);
- }
- 
- int xe_huc_init(struct xe_huc *huc)
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index fcb93a66e47cb..44e2cc37a8b63 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -392,6 +392,7 @@ cifs_alloc_inode(struct super_block *sb)
+ 	 * server, can not assume caching of file data or metadata.
+ 	 */
+ 	cifs_set_oplock_level(cifs_inode, 0);
++	cifs_inode->lease_granted = false;
+ 	cifs_inode->flags = 0;
+ 	spin_lock_init(&cifs_inode->writers_lock);
+ 	cifs_inode->writers = 0;
 -- 
 2.43.0
 
