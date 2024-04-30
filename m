@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-42359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C648B7299
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BAD8B71C9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D6A2B2098C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31D3B1C224BB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691A712C819;
-	Tue, 30 Apr 2024 11:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E6D12C487;
+	Tue, 30 Apr 2024 11:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qpJb3uZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHi6NiHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2700D12C46E;
-	Tue, 30 Apr 2024 11:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C1212B176;
+	Tue, 30 Apr 2024 11:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475414; cv=none; b=hLtch0u9x9VE+4DBFrbO5XFvMo4/ndI7GoZ7fypLWlK+ir67vwQ4lAtEVrxOYYrbb6t2txF6UuHu0mAk7MI9/wgaBo2FBS0K+HA9ksG2OCObBp6Kt7N7ITBNATzNJtynMRhF8ePUg0lZzn/x/DjR1oNikJXQb1EePtPCsjLXQT0=
+	t=1714474849; cv=none; b=DtQgYiAGRjHHgheCwgpcdH11kjH7lwI4HZypamKYYuKfx5zp7cMj/4VdjFGjS6ElK5kXwTTbi6DgfoN6OVK4Kh6VjEV7h40lJTBpCVyK51Txkh1C73qDXY0MHkuidfidoA8Uc6VFVy4Rxn5wNIla8XoPt1ghxWkFGm7LOE44m4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475414; c=relaxed/simple;
-	bh=X5ozm7nw+7sCi/XqNl1WqpacrqUoihbfuzfmA+0C1G4=;
+	s=arc-20240116; t=1714474849; c=relaxed/simple;
+	bh=yDfoGFiM6pw6A7rsJi8yDj721g770UmlL36RYXmgNwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYYnVD/CgSaF2x+X1piKf34fP5xvn+Rp5WNZk13skthwjmemTlTeWsA7Rzasfk53+uhjaZINoqLSUAFONfyMtms+vt+yvL11MAlkWfD0qts5GUe6BcwevD0bo6d/ndIyUpX2gKNu6N0kIDg3D3m50jk80UmfiOIjwQui05XbGo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qpJb3uZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4409C2BBFC;
-	Tue, 30 Apr 2024 11:10:13 +0000 (UTC)
+	 MIME-Version; b=ZLfvNso/aQpg0FGw7oPy4zKYT3HQ3q8sv+Sc34qj0+1yO7eJP92yuI7NBEbN3S9QPYMsR3q2sjOIX8qEJ/yAVTXxgsogzVXFjlB0Eh4hEfScpgveDVFOQbAmIErliFHRNN8r/4liRg+lMKajQGLqyo2k6A6CwiD8RTtyQSYcu5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHi6NiHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A2DC2BBFC;
+	Tue, 30 Apr 2024 11:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475414;
-	bh=X5ozm7nw+7sCi/XqNl1WqpacrqUoihbfuzfmA+0C1G4=;
+	s=korg; t=1714474849;
+	bh=yDfoGFiM6pw6A7rsJi8yDj721g770UmlL36RYXmgNwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1qpJb3uZDpc3OIkcDW7BLgKWZ092rQ3cbLrI8YqJ3GI4RI1w6ukknik38xhHAitI4
-	 mddFz+j2Djly2bP27JWS+LTA4KcTwU8R1FYZOYuxZF8ca+SJTKsT7SoHdPf+SkasSa
-	 iUVUAh91Cno3cFSk3DfHSlxOJpgmmdFIZmrkXDLw=
+	b=tHi6NiHLm14wTPX/N4EY/WXPKc9F+Tk9MCjR4SvT/JqMt1qcHBLOq66GooDoz6WOP
+	 yUWf89smBjaJtEFdXYE6ucjGVot3FfzKxOqLEoBNgYnyCe3iHcpKOJEhF0haqU8xkv
+	 AtHvCaqMhg2ztpTf53LxeLdH/IZyv75V+wrHz59s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/186] net: ti: icssg-prueth: Fix signedness bug in prueth_init_rx_chns()
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	stable@kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH 5.10 055/138] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
 Date: Tue, 30 Apr 2024 12:39:00 +0200
-Message-ID: <20240430103100.587928278@linuxfoundation.org>
+Message-ID: <20240430103051.046715060@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +69,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 4dcd0e83ea1d1df9b2e0174a6d3e795b3477d64e ]
+commit 1be3226445362bfbf461c92a5bcdb1723f2e4907 upstream.
 
-The rx_chn->irq[] array is unsigned int but it should be signed for the
-error handling to work.  Also if k3_udma_glue_rx_get_irq() returns zero
-then we should return -ENXIO instead of success.
+The mitigation was intended to stop the irq completely. That may be
+better than a hard lock-up but it turns out that you get a crash anyway
+if you're using pmac_zilog as a serial console:
 
-Fixes: 128d5874c082 ("net: ti: icssg-prueth: Add ICSSG ethernet driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: MD Danish Anwar <danishanwar@ti.com>
-Link: https://lore.kernel.org/r/05282415-e7f4-42f3-99f8-32fde8f30936@moroto.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ttyPZ0: pmz: rx irq flood !
+BUG: spinlock recursion on CPU#0, swapper/0
+
+That's because the pr_err() call in pmz_receive_chars() results in
+pmz_console_write() attempting to lock a spinlock already locked in
+pmz_interrupt(). With CONFIG_DEBUG_SPINLOCK=y, this produces a fatal
+BUG splat. The spinlock in question is the one in struct uart_port.
+
+Even when it's not fatal, the serial port rx function ceases to work.
+Also, the iteration limit doesn't play nicely with QEMU, as can be
+seen in the bug report linked below.
+
+A web search for other reports of the error message "pmz: rx irq flood"
+didn't produce anything. So I don't think this code is needed any more.
+Remove it.
+
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: stable@kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Link: https://github.com/vivier/qemu-m68k/issues/44
+Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/e853cf2c762f23101cd2ddec0cc0c2be0e72685f.1712568223.git.fthain@linux-m68k.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/tty/serial/pmac_zilog.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index c09ecb3da7723..925044c16c6ae 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -421,12 +421,14 @@ static int prueth_init_rx_chns(struct prueth_emac *emac,
- 		if (!i)
- 			fdqring_id = k3_udma_glue_rx_flow_get_fdq_id(rx_chn->rx_chn,
- 								     i);
--		rx_chn->irq[i] = k3_udma_glue_rx_get_irq(rx_chn->rx_chn, i);
--		if (rx_chn->irq[i] <= 0) {
--			ret = rx_chn->irq[i];
-+		ret = k3_udma_glue_rx_get_irq(rx_chn->rx_chn, i);
-+		if (ret <= 0) {
-+			if (!ret)
-+				ret = -ENXIO;
- 			netdev_err(ndev, "Failed to get rx dma irq");
- 			goto fail;
- 		}
-+		rx_chn->irq[i] = ret;
+--- a/drivers/tty/serial/pmac_zilog.c
++++ b/drivers/tty/serial/pmac_zilog.c
+@@ -217,7 +217,6 @@ static bool pmz_receive_chars(struct uar
+ {
+ 	struct tty_port *port;
+ 	unsigned char ch, r1, drop, flag;
+-	int loops = 0;
+ 
+ 	/* Sanity check, make sure the old bug is no longer happening */
+ 	if (uap->port.state == NULL) {
+@@ -298,25 +297,12 @@ static bool pmz_receive_chars(struct uar
+ 		if (r1 & Rx_OVR)
+ 			tty_insert_flip_char(port, 0, TTY_OVERRUN);
+ 	next_char:
+-		/* We can get stuck in an infinite loop getting char 0 when the
+-		 * line is in a wrong HW state, we break that here.
+-		 * When that happens, I disable the receive side of the driver.
+-		 * Note that what I've been experiencing is a real irq loop where
+-		 * I'm getting flooded regardless of the actual port speed.
+-		 * Something strange is going on with the HW
+-		 */
+-		if ((++loops) > 1000)
+-			goto flood;
+ 		ch = read_zsreg(uap, R0);
+ 		if (!(ch & Rx_CH_AV))
+ 			break;
  	}
  
- 	return 0;
--- 
-2.43.0
-
+ 	return true;
+- flood:
+-	pmz_interrupt_control(uap, 0);
+-	pmz_error("pmz: rx irq flood !\n");
+-	return true;
+ }
+ 
+ static void pmz_status_handle(struct uart_pmac_port *uap)
 
 
 
