@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-42715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AD28B744A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF6298B7320
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C241C232DC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E11521C2320C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B01012D214;
-	Tue, 30 Apr 2024 11:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FACA12E1C9;
+	Tue, 30 Apr 2024 11:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nk7FBTn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2f4r6I5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3830112C47F;
-	Tue, 30 Apr 2024 11:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C89512D76F;
+	Tue, 30 Apr 2024 11:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476551; cv=none; b=fsXxLrYqeymGyuhFDVeERxG5qVp2Hii9/YhUoDMvppiIwGYz/WlRXOLwfXsaOc4l4j1njeaB18wOrTdCE54LJw1ICywqPoAfVO9PBbTqoU1wMJWeQkkbCWdkW36hFD5izTN/+ePIMZGVyYEmaHheKrYWh7BaO5CaOtSSWIhNnhg=
+	t=1714475727; cv=none; b=pziYzRKX6udhCbVWJQHgxpHoCD4SRXSPb3OFEUYzccb3p15tHf0jaRFc9b5BC9ZAFqQ61r48NLP0f3ohlipPy03HbMB3CDvDgF8LmWXK7XcqiyWoBZH/Z8zVrbaYmcepB+xhRgt56ombutsUiaAkWzrkUorSJOorFI74aemTYMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476551; c=relaxed/simple;
-	bh=PlW4O9Ce+KZthJAvitDmnPmF5aQMbr2LsybrXF1PzA0=;
+	s=arc-20240116; t=1714475727; c=relaxed/simple;
+	bh=TKx4ABt9G5wDsi2jpP0ZgHBwGlf/9LotGEHr2w19N1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfKBIuTxlbpioFDfn3WwDC1wpJLXsq4yslv0L3HS+f0yM5hDmuLylfKoT+tiIUo4qlA3nk5GCNS3oUFUbrB7Xf8pq0kzA/m+3V5AP8yOVW6jwXSWRs+dgU/9auLk9+nTKrTSJBLXFIb9pSG1YhZi666Rjkat9RRBC/IeeR9TDpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nk7FBTn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B65FC4AF1C;
-	Tue, 30 Apr 2024 11:29:10 +0000 (UTC)
+	 MIME-Version; b=CXbST3k9sjPUipR+WbQsNxys1urorh6OcaifQmAsHwljVSvQ7Pbz/Sh+XlwlfExL9EOwilupnlQRH3aUqRJOe/I8sneprEZHWt9cPteZ7IRdj6IKZRzewv3pKcj9XOamqO1lS3dk01jpmdaaZ0k/Go4mL7wV5k0C4JtyR++g8Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2f4r6I5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F94C2BBFC;
+	Tue, 30 Apr 2024 11:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476551;
-	bh=PlW4O9Ce+KZthJAvitDmnPmF5aQMbr2LsybrXF1PzA0=;
+	s=korg; t=1714475727;
+	bh=TKx4ABt9G5wDsi2jpP0ZgHBwGlf/9LotGEHr2w19N1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nk7FBTn2j1AaHJxOqZbAbX1ojFU0ZJ2tNE0Ip4lRpAj3V5TBRXrq8/VN+35NUzSw1
-	 MyySbINZgBSSsZDmVpPXFCiDyhWysVoxIe+xKjS2AwTegXwuvmBewBkq9BSR46Bqed
-	 e1FgaZFUn4OuvDA1h9vytqmEtEzq4XviA553sBug=
+	b=2f4r6I5j7L5Nce2B3XPCoa5h+jVZlJcCesu5YpSw4xg8YFlnXDs8xNVd8b5R2wrLw
+	 9eRG6F13qsjWutWYVlzhimRShp6KxAwHt61/cLZQgNlx97fD2u6WxcWMklg/OXE90M
+	 kcn0HWiIOIbawcV9qD0cxCTj1G4ho9aS83w4H9Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 068/110] Bluetooth: qca: fix NULL-deref on non-serdev suspend
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 185/186] net/mlx5e: Advertise mlx5 ethernet driver updates sk_buff md_dst for MACsec
 Date: Tue, 30 Apr 2024 12:40:37 +0200
-Message-ID: <20240430103049.574739386@linuxfoundation.org>
+Message-ID: <20240430103103.402032645@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit 73e87c0a49fda31d7b589edccf4c72e924411371 upstream.
+commit 39d26a8f2efcb8b5665fe7d54a7dba306a8f1dff upstream.
 
-Qualcomm ROME controllers can be registered from the Bluetooth line
-discipline and in this case the HCI UART serdev pointer is NULL.
+mlx5 Rx flow steering and CQE handling enable the driver to be able to
+update an skb's md_dst attribute as MACsec when MACsec traffic arrives when
+a device is configured for offloading. Advertise this to the core stack to
+take advantage of this capability.
 
-Add the missing sanity check to prevent a NULL-pointer dereference when
-wakeup() is called for a non-serdev controller during suspend.
-
-Just return true for now to restore the original behaviour and address
-the crash with pre-6.2 kernels, which do not have commit e9b3e5b8c657
-("Bluetooth: hci_qca: only assign wakeup with serial port support") that
-causes the crash to happen already at setup() time.
-
-Fixes: c1a74160eaf1 ("Bluetooth: hci_qca: Add device_may_wakeup support")
-Cc: stable@vger.kernel.org      # 5.13
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: b7c9400cbc48 ("net/mlx5e: Implement MACsec Rx data path using MACsec skb_metadata_dst")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240423181319.115860-5-rrameshbabu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1645,6 +1645,9 @@ static bool qca_wakeup(struct hci_dev *h
- 	struct hci_uart *hu = hci_get_drvdata(hdev);
- 	bool wakeup;
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+@@ -1640,6 +1640,7 @@ static const struct macsec_ops macsec_of
+ 	.mdo_add_secy = mlx5e_macsec_add_secy,
+ 	.mdo_upd_secy = mlx5e_macsec_upd_secy,
+ 	.mdo_del_secy = mlx5e_macsec_del_secy,
++	.rx_uses_md_dst = true,
+ };
  
-+	if (!hu->serdev)
-+		return true;
-+
- 	/* BT SoC attached through the serial bus is handled by the serdev driver.
- 	 * So we need to use the device handle of the serdev driver to get the
- 	 * status of device may wakeup.
+ bool mlx5e_macsec_handle_tx_skb(struct mlx5e_macsec *macsec, struct sk_buff *skb)
 
 
 
