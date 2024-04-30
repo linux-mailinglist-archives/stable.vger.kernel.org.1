@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B288B7404
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FA98B7034
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81CB8285805
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1243828566C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85BD12D210;
-	Tue, 30 Apr 2024 11:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496F712C550;
+	Tue, 30 Apr 2024 10:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zF5bfK99"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryMPGtEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772C712C47A;
-	Tue, 30 Apr 2024 11:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0519512C54B;
+	Tue, 30 Apr 2024 10:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476362; cv=none; b=UjB92ftYY1DBkZYAD6wC//1wjE/rrHzjARcHB8rqOe+LX/Qn+HZXHdSEF6M74fo8GRykMAdMRDHkBoM/5FjGDhnbbprX+2uvuLLtvxkjbpLKXyXqKgs+z3SAmDoD3RxIMLY179cd5BbDsi9ZZlU5oGtXmbSWHOUE+/hKojmygC4=
+	t=1714473830; cv=none; b=SrvKd1NDFX/FaiOJziMAPzsG5xly+nXPwUD4Veh1R7rFygqjcr+4GTV5MsG7K9I7y52mmRWzw1nWVIo8I3WWuZxuYdZc1XorH1GnVEFIh/7eGMe5ppzRHS5QM7y6erLnfl80eOpsRGrs+jnHvkFE+AXVa8KEToFVwAIO7X/efqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476362; c=relaxed/simple;
-	bh=VLkcYWo3+IafxTh4CLWWMEuuODbxofv6/hBKNxhr3QI=;
+	s=arc-20240116; t=1714473830; c=relaxed/simple;
+	bh=xCt7f1sQ1ukGpbbVUJhD76nIcRisWl4fNWnPPW1/OZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWQLDrBCtb41btHcLQTUgtFcWHCv7Oy1gNg9L1j4MJiOptPGUhPNph2ulXfkTlyjQCHe+t8ShSN3aW0vZu0fJQMwUAwaLGvfojkQNaZ3mHILgU2T+mvWgyr5pSA1oqLtRSHnfFBjBwaKL09uO2c7fUgElL3oEdpdnYhIAT+ROqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zF5bfK99; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CAFC4AF18;
-	Tue, 30 Apr 2024 11:26:01 +0000 (UTC)
+	 MIME-Version; b=XWKzTDPnQwIC0OkC3eEFN2iGfsmZTyZLEx1eF7y/pC17d600lI+FcqvYIy0mb5yAAY3jxnj5JCUHzRPFaRXX2nConstmDC2utYPiHkPgyVueiF0nWqX6YqVIQMM/OZNsGZm6HE8JLWQ+zlNsyeHbzm11jQzrYUlltg/8xtvuw9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryMPGtEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B9CC2BBFC;
+	Tue, 30 Apr 2024 10:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476362;
-	bh=VLkcYWo3+IafxTh4CLWWMEuuODbxofv6/hBKNxhr3QI=;
+	s=korg; t=1714473829;
+	bh=xCt7f1sQ1ukGpbbVUJhD76nIcRisWl4fNWnPPW1/OZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zF5bfK99d0zPzQjuQ5oSm/330JCO+ck3EF6e6W9+ug0SC1AXHk0y1UBxvlpB2urWS
-	 aP9TYDjlIDuj7DqOepWIucPtHjjaQOeeLP+0MV5bUWczyuqzjSLa6MbE7HOu9gslBZ
-	 AdhEWzfT3v7ysIy9pFdrg1VGG6k9tNOPrtFPAgAk=
+	b=ryMPGtEhJ0M2x2Oa3PXghBfoMsAn0CLKKOs7rQCeyxpb7ZRG4IK7yVZ7EvkcnJFV6
+	 9KSRgYK8EfJEdPGTWbI+F7aD0qXK6FqcL+b0UoJSsAEKl0MsLfxhHTz3QmJoppJztP
+	 1Rg2SFcrWK91TKSAYMit02mkYvfn1qukqLd+xk7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Eric Dumazet <edumazet@google.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/110] smb: client: fix rename(2) regression against samba
+Subject: [PATCH 4.19 51/77] net: openvswitch: Fix Use-After-Free in ovs_ct_exit
 Date: Tue, 30 Apr 2024 12:39:30 +0200
-Message-ID: <20240430103047.609179828@linuxfoundation.org>
+Message-ID: <20240430103042.643880996@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit 18d86965e31f9be4d477da0744a7cdc9815858de ]
+[ Upstream commit 5ea7b72d4fac2fdbc0425cd8f2ea33abe95235b2 ]
 
-After commit 2c7d399e551c ("smb: client: reuse file lease key in
-compound operations") the client started reusing lease keys for
-rename, unlink and set path size operations to prevent it from
-breaking its own leases and thus causing unnecessary lease breaks to
-same connection.
+Since kfree_rcu, which is called in the hlist_for_each_entry_rcu traversal
+of ovs_ct_limit_exit, is not part of the RCU read critical section, it
+is possible that the RCU grace period will pass during the traversal and
+the key will be free.
 
-The implementation relies on positive dentries and
-cifsInodeInfo::lease_granted to decide whether reusing lease keys for
-the compound requests.  cifsInodeInfo::lease_granted was introduced by
-commit 0ab95c2510b6 ("Defer close only when lease is enabled.") to
-indicate whether lease caching is granted for a specific file, but
-that can only happen until file is open, so
-cifsInodeInfo::lease_granted was left uninitialised in ->alloc_inode
-and then client started sending random lease keys for files that
-hadn't any leases.
+To prevent this, it should be changed to hlist_for_each_entry_safe.
 
-This fixes the following test case against samba:
-
-mount.cifs //srv/share /mnt/1 -o ...,nosharesock
-mount.cifs //srv/share /mnt/2 -o ...,nosharesock
-touch /mnt/1/foo; tail -f /mnt/1/foo & pid=$!
-mv /mnt/2/foo /mnt/2/bar # fails with -EIO
-kill $pid
-
-Fixes: 0ab95c2510b6 ("Defer close only when lease is enabled.")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://lore.kernel.org/r/ZiYvzQN/Ry5oeFQW@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/openvswitch/conntrack.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 0a79771c8f33b..f0a3336ffb6c8 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -387,6 +387,7 @@ cifs_alloc_inode(struct super_block *sb)
- 	 * server, can not assume caching of file data or metadata.
- 	 */
- 	cifs_set_oplock_level(cifs_inode, 0);
-+	cifs_inode->lease_granted = false;
- 	cifs_inode->flags = 0;
- 	spin_lock_init(&cifs_inode->writers_lock);
- 	cifs_inode->writers = 0;
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 352e80e6cd75c..3ea1e5ffaf80d 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -1836,9 +1836,9 @@ static void ovs_ct_limit_exit(struct net *net, struct ovs_net *ovs_net)
+ 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
+ 		struct hlist_head *head = &info->limits[i];
+ 		struct ovs_ct_limit *ct_limit;
++		struct hlist_node *next;
+ 
+-		hlist_for_each_entry_rcu(ct_limit, head, hlist_node,
+-					 lockdep_ovsl_is_held())
++		hlist_for_each_entry_safe(ct_limit, next, head, hlist_node)
+ 			kfree_rcu(ct_limit, rcu);
+ 	}
+ 	kfree(ovs_net->ct_limit_info->limits);
 -- 
 2.43.0
 
