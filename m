@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-42238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1688B720C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08ED58B72E5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB148282D01
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BFB5B23303
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA95512C534;
-	Tue, 30 Apr 2024 11:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78ADF12D1F1;
+	Tue, 30 Apr 2024 11:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVRm7R4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yj6tzmNc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C3B12C476;
-	Tue, 30 Apr 2024 11:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D7A1E50A;
+	Tue, 30 Apr 2024 11:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475014; cv=none; b=gKwlTCoyHPqFBMI6FvSKhBqCjumk5UsJ54EW5nNQOxwah6eVCGQRO6bbpEb9NTe59n34luZhotL1067aUXuuh4nft0xIoHVaOJjCfPOC7ob3k91kcB44WRFo7eWVBvUxgwbkuJs9vNdC1J2SKaLgvY+QF/UyuuqvXDI+Tvndmh8=
+	t=1714475575; cv=none; b=teiM+dVUp39z5wbsM7voAV/mcrg6e6dOlalYmoPTAtkUNEyIczRGDnzaonGxBo5Ko38ClEdjKRbUOg+ECyxc2B4lswg9slNT2KLv6y0hy+wxD4o/lVrOAPQFbuuB7z91d+3l8roG4LMAexjbHuAi7m2sHxreRsbidxIIgtyE++A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475014; c=relaxed/simple;
-	bh=TFLj5MhOgeEeig523P/ra88ZL0jSoX5U6gz4ueCVhZU=;
+	s=arc-20240116; t=1714475575; c=relaxed/simple;
+	bh=QI3hJTguCJhIWrqWON2Ye0I30rrtKfRuvTFw6r8oEGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kW11jjAhE8cxwOs8Rb+1ehKPp/yFhr1b3PYzawFFVFgvE2gqtZju6DXHDSLmLPf2W3yb9d5WNtdQMX3Ts1EIjDG6fMDJ6YpTBSA9vQ2PPWXDEwsRhkg7z9ZWQAPEV4xeE1ttY6cCD/rzDRXgIWUnivl01CjblXK7UTzKtqad0Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVRm7R4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF4BC2BBFC;
-	Tue, 30 Apr 2024 11:03:32 +0000 (UTC)
+	 MIME-Version; b=eynZWqboqSKiHHezWh2Ab9ZKTpz/KElWPJ8w2ZHDIxzPRLAg8cyzgcI7X746h/6Y3aWNT0m+gKRqj6XBs893Z61/GPjuOOZ+qI2rH9lSAmxuvGF2tCK/SP8Bt73LHBuqdhyv5pg7LPAmJ3RjTNBrkYohXEsQTIVj0+QLzgjHe9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yj6tzmNc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9FDC2BBFC;
+	Tue, 30 Apr 2024 11:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475014;
-	bh=TFLj5MhOgeEeig523P/ra88ZL0jSoX5U6gz4ueCVhZU=;
+	s=korg; t=1714475575;
+	bh=QI3hJTguCJhIWrqWON2Ye0I30rrtKfRuvTFw6r8oEGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVRm7R4EnLSzf9WwLEHjLMxArd38GjlhmmeaZb09JBYlGEREN8cXqJmWDMUxwWyTi
-	 qrUXZZD8eVc/qRWAfGVDhoeLZQlLgHZidcEsGr2sHWSNAT92g0UIXKpyYTXDAUQvaP
-	 6wlsoaG07t0B8YMGiT9A/h+3VvpKDjCHjSi9yLIg=
+	b=yj6tzmNcqIBALL36LB1nJnzuLb/xYOg7VueG9ikRgF7WZ8sk6dq+oPaZFN42qcl6z
+	 PPSf/y755V7PIqoNs/KaZ8ic4gHsdAzc8/L2kjOzkammTxhu7pLOwHx3/Qf3fZuHj9
+	 tbJgk3tl7cDkQCgvAKrnwcG7Ga1lwryQpuuJ7BDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Reeder <jreeder@ti.com>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Ed Trexel <ed.trexel@hp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/138] net: ethernet: ti: am65-cpts: Fix PTPv1 message type on TX packets
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 138/186] arm64: dts: qcom: sc8280xp: add missing PCIe minimum OPP
 Date: Tue, 30 Apr 2024 12:39:50 +0200
-Message-ID: <20240430103052.505879813@linuxfoundation.org>
+Message-ID: <20240430103102.038896408@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Reeder <jreeder@ti.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 1b9e743e923b256e353a9a644195372285e5a6c0 ]
+commit 8b8ec83a1d7d3b6605d9163d2e306971295a4ce8 upstream.
 
-The CPTS, by design, captures the messageType (Sync, Delay_Req, etc.)
-field from the second nibble of the PTP header which is defined in the
-PTPv2 (1588-2008) specification. In the PTPv1 (1588-2002) specification
-the first two bytes of the PTP header are defined as the versionType
-which is always 0x0001. This means that any PTPv1 packets that are
-tagged for TX timestamping by the CPTS will have their messageType set
-to 0x0 which corresponds to a Sync message type. This causes issues
-when a PTPv1 stack is expecting a Delay_Req (messageType: 0x1)
-timestamp that never appears.
+Add the missing PCIe CX performance level votes to avoid relying on
+other drivers (e.g. USB or UFS) to maintain the nominal performance
+level required for Gen3 speeds.
 
-Fix this by checking if the ptp_class of the timestamped TX packet is
-PTP_CLASS_V1 and then matching the PTP sequence ID to the stored
-sequence ID in the skb->cb data structure. If the sequence IDs match
-and the packet is of type PTPv1 then there is a chance that the
-messageType has been incorrectly stored by the CPTS so overwrite the
-messageType stored by the CPTS with the messageType from the skb->cb
-data structure. This allows the PTPv1 stack to receive TX timestamps
-for Delay_Req packets which are necessary to lock onto a PTP Leader.
-
-Signed-off-by: Jason Reeder <jreeder@ti.com>
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Tested-by: Ed Trexel <ed.trexel@hp.com>
-Fixes: f6bd59526ca5 ("net: ethernet: ti: introduce am654 common platform time sync driver")
-Link: https://lore.kernel.org/r/20240424071626.32558-1-r-gunasekaran@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 813e83157001 ("arm64: dts: qcom: sc8280xp/sa8540p: add PCIe2-4 nodes")
+Cc: stable@vger.kernel.org      # 6.2
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240306095651.4551-5-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/am65-cpts.c | 5 +++++
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi |    5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpts.c b/drivers/net/ethernet/ti/am65-cpts.c
-index 5dc60ecabe561..e0fcdbadf2cba 100644
---- a/drivers/net/ethernet/ti/am65-cpts.c
-+++ b/drivers/net/ethernet/ti/am65-cpts.c
-@@ -649,6 +649,11 @@ static bool am65_cpts_match_tx_ts(struct am65_cpts *cpts,
- 		struct am65_cpts_skb_cb_data *skb_cb =
- 					(struct am65_cpts_skb_cb_data *)skb->cb;
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -1773,6 +1773,7 @@
+ 			reset-names = "pci";
  
-+		if ((ptp_classify_raw(skb) & PTP_CLASS_V1) &&
-+		    ((mtype_seqid & AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK) ==
-+		     (skb_cb->skb_mtype_seqid & AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK)))
-+			mtype_seqid = skb_cb->skb_mtype_seqid;
-+
- 		if (mtype_seqid == skb_cb->skb_mtype_seqid) {
- 			u64 ns = event->timestamp;
+ 			power-domains = <&gcc PCIE_4_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
  
--- 
-2.43.0
-
+ 			phys = <&pcie4_phy>;
+ 			phy-names = "pciephy";
+@@ -1871,6 +1872,7 @@
+ 			reset-names = "pci";
+ 
+ 			power-domains = <&gcc PCIE_3B_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			phys = <&pcie3b_phy>;
+ 			phy-names = "pciephy";
+@@ -1969,6 +1971,7 @@
+ 			reset-names = "pci";
+ 
+ 			power-domains = <&gcc PCIE_3A_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			phys = <&pcie3a_phy>;
+ 			phy-names = "pciephy";
+@@ -2070,6 +2073,7 @@
+ 			reset-names = "pci";
+ 
+ 			power-domains = <&gcc PCIE_2B_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			phys = <&pcie2b_phy>;
+ 			phy-names = "pciephy";
+@@ -2168,6 +2172,7 @@
+ 			reset-names = "pci";
+ 
+ 			power-domains = <&gcc PCIE_2A_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			phys = <&pcie2a_phy>;
+ 			phy-names = "pciephy";
 
 
 
