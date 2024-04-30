@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-42278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931CC8B7236
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A4B8B7329
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47EFD1F23A70
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21965B219E7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A7212CDB6;
-	Tue, 30 Apr 2024 11:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A8712DDB3;
+	Tue, 30 Apr 2024 11:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsIPgDTD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVtlsX/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457FF12CD96;
-	Tue, 30 Apr 2024 11:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86B612DD87;
+	Tue, 30 Apr 2024 11:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475143; cv=none; b=ufE2ycVqQ5+dewKLt6Pbm3UwaCTgQBPiPwBJ+TdVqE3+CINQNOEGMbLUqewFMPAWBbpF4XZKsCnEcpgameBIKgv7aSOEVEaTQxw33wUKqMr3OTfbidS/qXdPOE70vvlhk7zN0trlaXFSH9SsHdvdv8TsGvryJhE8o4Mo7WU64ow=
+	t=1714475746; cv=none; b=AuPsZxxQmtXmn+oSgToNy9IwJ/6eQJDJEVaaG1qZASvG6r46XYGJit926LCYpZQRQdhplqPVmZkjcwnz6mMidmdhjoC2kjEJ/mK2vEAH2YziX5utQk0CjV3Pqlk7wVRIjv0G+Hv3rVdiJKZLSWFyRu+AKkjAZ9NdehDA4rPv1Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475143; c=relaxed/simple;
-	bh=Op6qcBLJXvAEK+q8QPLjhZGv4t7PB4Gu9fFFpocc3Kw=;
+	s=arc-20240116; t=1714475746; c=relaxed/simple;
+	bh=94HEfh5XyY8gUY5WzSd7g0NKhB9xrh3ko0oaGhBXNQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKa4+yr2hc2OZafWE6k6XFTiSxn2dt05JRTBMOcsMSUwXrBu2aziFVabGFndXQjjB9NoXO7AXssFQ9H3z4VaAqhQryEctytPI60yTapmWQNYAYump/zMNWXTGEbZD1ELWssHupJlu9oXW+FYMOZRQgUMxGuU2h+Gtfe59rudYSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsIPgDTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6467EC4AF19;
-	Tue, 30 Apr 2024 11:05:42 +0000 (UTC)
+	 MIME-Version; b=HfaESrl/ljire2utuAFFr3IM9unwogelpatXy/FQRQFTlLiQ/5LeJpJcUEUngLXlOt1vOjoA36uf/5uomB3YJ3Hq6DkaPH/G2lnOxDMq7OD0NY9AI6nn+hyhDpfOUt2EbhFbDiJX9GTPfs5jJ1beOTgHY3Ba0m1X5vSmL4KmPDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVtlsX/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E947C2BBFC;
+	Tue, 30 Apr 2024 11:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475142;
-	bh=Op6qcBLJXvAEK+q8QPLjhZGv4t7PB4Gu9fFFpocc3Kw=;
+	s=korg; t=1714475745;
+	bh=94HEfh5XyY8gUY5WzSd7g0NKhB9xrh3ko0oaGhBXNQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsIPgDTDWkNX6m2llPb8l7woD1txpGLlZYBOtlo9AUuWIRMj047vQlt2lgIhmoE4I
-	 tEXW84k/NtJUXYz70pmqAbWUzjfOiuOxdeOh0dJWThI/zPLrS9+iQX6I1CCJtqLf9H
-	 9Oqw66QJNAwd44LyOoZGpDXX6YT+EwgfDiRJZOp0=
+	b=cVtlsX/LkrddOZ+iuFXWQaVm+2zZSoGCig9diYHmZAMynxdFUTIOH44utHSdUE+gK
+	 BK9Sr2RQxP7S2LtpPgCnxwRvvwFhYAt60SvxOOckwAfUxwYf3uw4u05o7AKFRLvbp4
+	 xHGwm8A1KLMbstNRca/Kd95yCxfVDD+mlwnPt7Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Bo Gan <ganboing@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Michal Tomek <mtdev79b@gmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 132/138] riscv: Fix TASK_SIZE on 64-bit NOMMU
+Subject: [PATCH 6.6 165/186] phy: rockchip-snps-pcie3: fix bifurcation on rk3588
 Date: Tue, 30 Apr 2024 12:40:17 +0200
-Message-ID: <20240430103053.287991181@linuxfoundation.org>
+Message-ID: <20240430103102.822050329@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Michal Tomek <mtdev79b@gmail.com>
 
-[ Upstream commit 6065e736f82c817c9a597a31ee67f0ce4628e948 ]
+[ Upstream commit f8020dfb311d2b6cf657668792aaa5fa8863a7dd ]
 
-On NOMMU, userspace memory can come from anywhere in physical RAM. The
-current definition of TASK_SIZE is wrong if any RAM exists above 4G,
-causing spurious failures in the userspace access routines.
+So far all RK3588 boards use fully aggregated PCIe. CM3588 is one
+of the few boards using this feature and apparently it is broken.
 
-Fixes: 6bd33e1ece52 ("riscv: add nommu support")
-Fixes: c3f896dcf1e4 ("mm: switch the test_vmalloc module to use __vmalloc_node")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
-Reviewed-by: Bo Gan <ganboing@gmail.com>
-Link: https://lore.kernel.org/r/20240227003630.3634533-2-samuel.holland@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+The PHY offers the following mapping options:
+
+  port 0 lane 0 - always mapped to controller 0 (4L)
+  port 0 lane 1 - to controller 0 or 2 (1L0)
+  port 1 lane 0 - to controller 0 or 1 (2L)
+  port 1 lane 1 - to controller 0, 1 or 3 (1L1)
+
+The data-lanes DT property maps these as follows:
+
+  0 = no controller (unsupported by the HW)
+  1 = 4L
+  2 = 2L
+  3 = 1L0
+  4 = 1L1
+
+That allows the following configurations with first column being the
+mainline data-lane mapping, second column being the downstream name,
+third column being PCIE3PHY_GRF_CMN_CON0 and PHP_GRF_PCIESEL register
+values and final column being the user visible lane setup:
+
+  <1 1 1 1> = AGGREG = [4 0] = x4 (aggregation)
+  <1 1 2 2> = NANBNB = [0 0] = x2 x2 (no bif.)
+  <1 3 2 2> = NANBBI = [1 1] = x2 x1x1 (bif. of port 0)
+  <1 1 2 4> = NABINB = [2 2] = x1x1 x2 (bif. of port 1)
+  <1 3 2 4> = NABIBI = [3 3] = x1x1 x1x1 (bif. of both ports)
+
+The driver currently does not program PHP_GRF_PCIESEL correctly, which
+is fixed by this patch. As a side-effect the new logic is much simpler
+than the old logic.
+
+Fixes: 2e9bffc4f713 ("phy: rockchip: Support PCIe v3")
+Signed-off-by: Michal Tomek <mtdev79b@gmail.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20240404-rk3588-pcie-bifurcation-fixes-v1-1-9907136eeafd@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../phy/rockchip/phy-rockchip-snps-pcie3.c    | 24 +++++++------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index d048fb5faa691..982745572945e 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -456,7 +456,7 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
- #define PAGE_SHARED		__pgprot(0)
- #define PAGE_KERNEL		__pgprot(0)
- #define swapper_pg_dir		NULL
--#define TASK_SIZE		0xffffffffUL
-+#define TASK_SIZE		_AC(-1, UL)
- #define VMALLOC_START		_AC(0, UL)
- #define VMALLOC_END		TASK_SIZE
+diff --git a/drivers/phy/rockchip/phy-rockchip-snps-pcie3.c b/drivers/phy/rockchip/phy-rockchip-snps-pcie3.c
+index 121e5961ce114..d5bcc9c42b284 100644
+--- a/drivers/phy/rockchip/phy-rockchip-snps-pcie3.c
++++ b/drivers/phy/rockchip/phy-rockchip-snps-pcie3.c
+@@ -132,7 +132,7 @@ static const struct rockchip_p3phy_ops rk3568_ops = {
+ static int rockchip_p3phy_rk3588_init(struct rockchip_p3phy_priv *priv)
+ {
+ 	u32 reg = 0;
+-	u8 mode = 0;
++	u8 mode = RK3588_LANE_AGGREGATION; /* default */
+ 	int ret;
  
+ 	/* Deassert PCIe PMA output clamp mode */
+@@ -140,28 +140,20 @@ static int rockchip_p3phy_rk3588_init(struct rockchip_p3phy_priv *priv)
+ 
+ 	/* Set bifurcation if needed */
+ 	for (int i = 0; i < priv->num_lanes; i++) {
+-		if (!priv->lanes[i])
+-			mode |= (BIT(i) << 3);
+-
+ 		if (priv->lanes[i] > 1)
+-			mode |= (BIT(i) >> 1);
+-	}
+-
+-	if (!mode)
+-		reg = RK3588_LANE_AGGREGATION;
+-	else {
+-		if (mode & (BIT(0) | BIT(1)))
+-			reg |= RK3588_BIFURCATION_LANE_0_1;
+-
+-		if (mode & (BIT(2) | BIT(3)))
+-			reg |= RK3588_BIFURCATION_LANE_2_3;
++			mode &= ~RK3588_LANE_AGGREGATION;
++		if (priv->lanes[i] == 3)
++			mode |= RK3588_BIFURCATION_LANE_0_1;
++		if (priv->lanes[i] == 4)
++			mode |= RK3588_BIFURCATION_LANE_2_3;
+ 	}
+ 
++	reg = mode;
+ 	regmap_write(priv->phy_grf, RK3588_PCIE3PHY_GRF_CMN_CON0, (0x7<<16) | reg);
+ 
+ 	/* Set pcie1ln_sel in PHP_GRF_PCIESEL_CON */
+ 	if (!IS_ERR(priv->pipe_grf)) {
+-		reg = (mode & (BIT(6) | BIT(7))) >> 6;
++		reg = mode & 3;
+ 		if (reg)
+ 			regmap_write(priv->pipe_grf, PHP_GRF_PCIESEL_CON,
+ 				     (reg << 16) | reg);
 -- 
 2.43.0
 
