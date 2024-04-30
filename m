@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF878B742E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:28:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BC38B73BF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F30A1C21ED5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:28:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5C7228886C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13CF12CDAE;
-	Tue, 30 Apr 2024 11:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A4312CDA5;
+	Tue, 30 Apr 2024 11:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlkbzT5S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htQFtdlm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD9C17592;
-	Tue, 30 Apr 2024 11:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276328801;
+	Tue, 30 Apr 2024 11:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476489; cv=none; b=r9+uvTLXHOFBizlXmDY2xlgYxWDqTESKEuFHTrYceW4R6TbH/4tN9x2ed5nUJDs6/VlF7O/N29bAlMx4sVWxyFVa4Cj6YdWIR3YA9KF/XH6smY3PdQ4te2YvHKDzrN6RI0cP//1Y9yJBryRatgHcgiaitSVD5QUoM/i+TKCqzPg=
+	t=1714476169; cv=none; b=KUOaROTnUt/nU/SqYHbaFypEB/WLUKYzxhXRJGLVbdp6Wz1wt70RT148WE9qQ/qR6yyigbxwY1W2LsVM7N+PNSA29s140b34HT+a/47gktYmzhFZQ9nXB0BF1PBVm+1QwNljrebXLV1LtKcGTzlx0UAR4dryr/FBW1NyqemCqz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476489; c=relaxed/simple;
-	bh=TtjWmCJLUc3M0HlbdUFiQUGA/JKVqy45+hBHNCKLzv4=;
+	s=arc-20240116; t=1714476169; c=relaxed/simple;
+	bh=VG2ix6MURrr6bYZav9XKvXLBrinHND+WibkzV4hAOa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDZNAV76WduANbC3c6ipbf5SusugpcS8B9DwrPOyqskgFbHeBYEhvwmOff6I4a8UYiSVd849Vw1wXeqkjacyyUIxv4cZsV3Da6K76sGZ7iOM7PGiNNs3dLutjQTGt7IYIOWJ6ArBElicUI3QQJ1DLFBKE6WjzLEIMabGIRVHnRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlkbzT5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE516C2BBFC;
-	Tue, 30 Apr 2024 11:28:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tdpyWwZVIkI0a3yrN3ui0fkPf6Y8tKmKyM5/W3c0bmHbrZL6wvGJWqT2xnxHj6Nok0UennFNQMRycM/64G45FF6UqYgufqu++24d2xiyB9aGZEWwhkmbDVqh7gAmh0fQuHQMLCHu9rfBuESmMZj1rNKv316SaH7qwAMMAgcBgns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htQFtdlm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523A3C2BBFC;
+	Tue, 30 Apr 2024 11:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476489;
-	bh=TtjWmCJLUc3M0HlbdUFiQUGA/JKVqy45+hBHNCKLzv4=;
+	s=korg; t=1714476168;
+	bh=VG2ix6MURrr6bYZav9XKvXLBrinHND+WibkzV4hAOa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlkbzT5Scipv1I+2K93/PpGvHbjrCRwWynyGrLe73EhlqEEUEJ4gmZUGTudxcDLZA
-	 /Vjr4VkXH/Yq0jZUJTT6FfDeNcLzMDcT2kWJWr4wC35Y3mFv/f2dcE/DY16AeFt3oi
-	 Wu4CfnDZyBnwsNAdi6yrH2oLfnpWKZlM9yLKHewc=
+	b=htQFtdlmK5EEd9OhgxbQw0SloXTmvgKetvNNrWiEsQDRBPaPcTxtwQUaXPp+A8Ahb
+	 mWpDti4U96tTpueWObTnzrRZW8o3UVHTOPc4T8wbqH4u5UcgE5x0KJNGLAqUId4/tr
+	 51KL3EOCGIv8E662+8fqZi31KfhLW7ShdnE355Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/110] mlxsw: spectrum_acl_tcam: Rate limit error message
+Subject: [PATCH 5.4 056/107] arm64: dts: mediatek: mt7622: fix ethernet controller "compatible"
 Date: Tue, 30 Apr 2024 12:40:16 +0200
-Message-ID: <20240430103048.956800212@linuxfoundation.org>
+Message-ID: <20240430103046.310331255@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 5bcf925587e9b5d36420d572a0b4d131c90fb306 ]
+[ Upstream commit 208add29ce5b7291f6c466e4dfd9cbf61c72888e ]
 
-In the rare cases when the device resources are exhausted it is likely
-that the rehash delayed work will fail. An error message will be printed
-whenever this happens which can be overwhelming considering the fact
-that the work is per-region and that there can be hundreds of regions.
+Fix following validation error:
+arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: ethernet@1b100000: compatible: ['mediatek,mt7622-eth', 'mediatek,mt2701-eth', 'syscon'] is too long
+        from schema $id: http://devicetree.org/schemas/net/mediatek,net.yaml#
+(and other complains about wrong clocks).
 
-Fix by rate limiting the error message.
-
-Fixes: e5e7962ee5c2 ("mlxsw: spectrum_acl: Implement region migration according to hints")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/c510763b2ebd25e7990d80183feff91cde593145.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5f599b3a0bb8 ("arm64: dts: mt7622: add ethernet device nodes")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240317221050.18595-4-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 44c750e1025ac..b0396cbf3cce8 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1547,7 +1547,7 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
- 	err = mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion,
- 						ctx, credits);
- 	if (err) {
--		dev_err(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
-+		dev_err_ratelimited(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
- 		return;
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index 7f5ffbd2381fb..aa4593af576c7 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -901,9 +901,7 @@
+ 	};
  
+ 	eth: ethernet@1b100000 {
+-		compatible = "mediatek,mt7622-eth",
+-			     "mediatek,mt2701-eth",
+-			     "syscon";
++		compatible = "mediatek,mt7622-eth";
+ 		reg = <0 0x1b100000 0 0x20000>;
+ 		interrupts = <GIC_SPI 223 IRQ_TYPE_LEVEL_LOW>,
+ 			     <GIC_SPI 224 IRQ_TYPE_LEVEL_LOW>,
 -- 
 2.43.0
 
