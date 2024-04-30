@@ -1,120 +1,153 @@
-Return-Path: <stable+bounces-42774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E12F8B7695
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 15:07:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 115B68B76B8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 15:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F176C1F229A8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:07:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42AE41C228D4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DD6171650;
-	Tue, 30 Apr 2024 13:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877BF171650;
+	Tue, 30 Apr 2024 13:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UBJeq0bb"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OIL2DXpZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oexfdXF7";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OIL2DXpZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oexfdXF7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E811242AA5;
-	Tue, 30 Apr 2024 13:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E7D171652;
+	Tue, 30 Apr 2024 13:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714482446; cv=none; b=QJrXMxJK2dzyrJThXq6b/wjq3iqj0ISTKDPYT8IlP5qLDIdqG+d9I+tacWhHMpo8cy6B5uwSIyVnrIJlqxwnwOQwsFZf1DA/lippVoI/gaLdneBdO3WyMLw/dzfX7qh7+tqTZUOE9sVuBTPrgQqi3mTwspmW90abfIDVLDcq1OM=
+	t=1714482951; cv=none; b=ggDynkErimkRhL/VYTwXFkN5FmdvUKSjgV9GlXl4nlJKWhGRfxj2G8KkBb5AXrCUJTAk4VsabRMarALCFMOXpS1xMThni5h88btE6vY1HKK20kN5d2e9VAEb91eLnilPxCu/7Cv/Cq45l8KnBl6r6ZYnL6/DwdxznK63oM7yNq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714482446; c=relaxed/simple;
-	bh=qiB8b8aLGWUB+eW++cRid6E+04uq3CftdA6/Q44apIo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MbbfRYT6A986sTUlDX/L8xuQgRDpUVSEgylVxeCVJQOGFS+w4Q+M2xozDFI3apvvuPscYspkyze8gTOYb2H9E1vpcx7C7gvi7QGwOnPGJ3Ac5XuRD8DV89j8uxQE4KuOF5bPdak5LoY3S8+4oEtO5XvT2AKBjso4VD/BcCyN01s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UBJeq0bb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751C5C2BBFC;
-	Tue, 30 Apr 2024 13:07:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714482445;
-	bh=qiB8b8aLGWUB+eW++cRid6E+04uq3CftdA6/Q44apIo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UBJeq0bbPN317U9uxx2fIaIucH6xI2Fc7aKbxOwOVV6pLDIovvHFJjiwY9CiiKt0k
-	 cMFeGHF/xDFlqhnZISR8MnYp74hPGMrvGK1f67KZC4iCpAtkDYR2QQSvREBPtFphs0
-	 RKeM8Qr85mIh2L33tfOFplIUlzyWOi5TWdJXeU/wCJX9Nr/HM/0viGOTQ7Ohj1VMVL
-	 pBbKyNxXASVF42DCSYtwuhTieLO2zyBAwgbzdGCjx5s+EFT1ME4VoUf6M9bEB/9xdE
-	 N5Ke11VPDfWk6rUgWK7H0DUmuV/2BNe7QcbuPGY52qi3qCR12fmruRszx9fWUqILfP
-	 gGMkL0VEqKaBA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1s1nCf-000000007Ur-3g1n;
-	Tue, 30 Apr 2024 15:07:26 +0200
-Date: Tue, 30 Apr 2024 15:07:25 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Doug Anderson <dianders@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, quic_mohamull@quicinc.com,
-	quic_hbandi@quicinc.com, quic_anubhavg@quicinc.com
-Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
-Message-ID: <ZjDtDRCHT3z-3nHh@hovoldconsulting.com>
-References: <20240426155801.25277-1-johan+linaro@kernel.org>
- <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
- <ZizKmtcUIYAMpvOQ@hovoldconsulting.com>
- <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
- <Zi-ohCWv58d2h5VM@hovoldconsulting.com>
- <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
- <CABBYNZJyRR9FA7TYN4+aWMtG9FPUBWMvCtMNUfvaEzxVcYOt-g@mail.gmail.com>
- <ZjCYu2pc8376rjXk@hovoldconsulting.com>
- <9eebd77b-c070-4260-a979-9b97f14eb5b1@quicinc.com>
+	s=arc-20240116; t=1714482951; c=relaxed/simple;
+	bh=NHFBbVYd6TqTEjk1e1f5A0cfaZCmIdAdIEDCn7WWWAo=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ca1LgeroFt06ADejHXbnjU5m/4qh9BI3nEjSgXLMen3CxTYqHSysvNqkl30kLEUw7FCOaU7Ec3/5O4NWMzZzeYlqGLlKF45lXoIgLH3zBtHXGHPjJBC6JdATVf0pL5L9dLwVkqLSTdmiIUOeu+cT8tDW1SEMNWZuLWZmyRI0OV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OIL2DXpZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oexfdXF7; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OIL2DXpZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oexfdXF7; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from knuth.suse.de (unknown [10.168.5.16])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 076FA1F7E0;
+	Tue, 30 Apr 2024 13:15:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1714482948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZlpGECdT+c9Qy7blIqpDlDNH0IDa2wwkY1+icJBCQMk=;
+	b=OIL2DXpZNEEr94TEdAEsTW+iMBzmiTO9VnD6nOFODgHkwRxxoHq24SfX6kL0qLP7vlgftN
+	wAjIUajMIn7FeGki1yYE4869OcpjvHFb5DhAsycun9cdCrLRtbkJgnY1BRSUV9wNv3NhpV
+	i5VWL01zMFDJSRreMkpELzYrKr9myRc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1714482948;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZlpGECdT+c9Qy7blIqpDlDNH0IDa2wwkY1+icJBCQMk=;
+	b=oexfdXF7vxm3RzDmBdVyDlQ8D/V34MIirTD8A51WKZ6+GUod+mTvf3j2u9UWF42DDLhxsW
+	v2lFFNNwUqXhiyCw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1714482948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZlpGECdT+c9Qy7blIqpDlDNH0IDa2wwkY1+icJBCQMk=;
+	b=OIL2DXpZNEEr94TEdAEsTW+iMBzmiTO9VnD6nOFODgHkwRxxoHq24SfX6kL0qLP7vlgftN
+	wAjIUajMIn7FeGki1yYE4869OcpjvHFb5DhAsycun9cdCrLRtbkJgnY1BRSUV9wNv3NhpV
+	i5VWL01zMFDJSRreMkpELzYrKr9myRc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1714482948;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZlpGECdT+c9Qy7blIqpDlDNH0IDa2wwkY1+icJBCQMk=;
+	b=oexfdXF7vxm3RzDmBdVyDlQ8D/V34MIirTD8A51WKZ6+GUod+mTvf3j2u9UWF42DDLhxsW
+	v2lFFNNwUqXhiyCw==
+Received: by knuth.suse.de (Postfix, from userid 10510)
+	id EC48A3506FA; Tue, 30 Apr 2024 15:15:47 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by knuth.suse.de (Postfix) with ESMTP id DCD2C3506F9;
+	Tue, 30 Apr 2024 15:15:47 +0200 (CEST)
+Date: Tue, 30 Apr 2024 15:15:47 +0200 (CEST)
+From: Michael Matz <matz@suse.de>
+To: Jiri Slaby <jirislaby@kernel.org>
+cc: Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb+git@google.com>, 
+    linux-kernel@vger.kernel.org, x86@kernel.org, 
+    Ard Biesheuvel <ardb@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+    Nick Desaulniers <ndesaulniers@google.com>, 
+    Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+    Song Liu <song@kernel.org>, Ricardo Ribalda <ribalda@kernel.org>, 
+    Fangrui Song <maskray@google.com>, Arthur Eubanks <aeubanks@google.com>, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH] x86/purgatory: Switch to the position-independent small
+ code model
+In-Reply-To: <4ce6cf96-685d-4792-b2fd-949c07eff707@kernel.org>
+Message-ID: <5199b4f0-b4c7-5ef4-e8b7-0ade7c533edd@suse.de>
+References: <20240418201705.3673200-2-ardb+git@google.com> <3f23b551-4815-4a06-9217-ff5beeb80df2@kernel.org> <20240420131717.GAZiPAXY9EAYnHajaw@fat_crate.local> <836c267f-a028-acce-8b19-180162a5febc@suse.de>
+ <4ce6cf96-685d-4792-b2fd-949c07eff707@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9eebd77b-c070-4260-a979-9b97f14eb5b1@quicinc.com>
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.81 / 50.00];
+	BAYES_HAM(-2.61)[98.29%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.989];
+	RCVD_NO_TLS_LAST(0.10)[];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_COUNT_TWO(0.00)[2];
+	ARC_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TAGGED_RCPT(0.00)[git];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Spam-Score: -3.81
+X-Spam-Flag: NO
 
-On Tue, Apr 30, 2024 at 06:22:26PM +0530, Janaki Ramaiah Thota wrote:
-> On 4/30/2024 12:37 PM, Johan Hovold wrote:
-> > On Mon, Apr 29, 2024 at 01:31:53PM -0400, Luiz Augusto von Dentz wrote:
+Hello,
 
-> >> Anyway the fact that firmware loading itself is programming a
-> >> potentially duplicated address already seems wrong enough to me,
-> >> either it shall leave it as 00... or set a valid address otherwise we
-> >> always risk missing yet another duplicate address being introduced and
-> >> then used over the air causing all sorts of problems for users.
-> >>
-> >> So to be clear, QCA firmware shall never attempt to flash anything
-> >> other than 00:00:00:00:00:00 if you don't have a valid and unique
-> >> identity address, so we can get rid of this table altogether.
+On Tue, 30 Apr 2024, Jiri Slaby wrote:
+
+> >> Interesting. I thought gcc doesn't have problems here yet and was
+> >> talking to Matz on Thu about it and it seems he's forgotten about his
+> >> statement too that "you should simply stop using -mcmodel=large.  Noone
+> >> should use it." :-)
 > > 
+> > It may be so ingrained in my brain that I'm not _always_ saying it when
+> > talking about the large code model over a beer.  And indeed I know of no
+> > particular problems with it vis GCC,
 > 
-> Yes agree with this point.
-> BD address should be treated as invalid if it is 00:00:00:00:00:00.
+> Of course you do :).
 
-We all agree on that.
+:-P
 
-> NVM Tag 2: bd address is default BD address (other than 0), should be
-> configured as valid address and as its not unique address and it will
-> be same for all devices so mark it is configured but still allow
-> user-space to change the address.
+> That bsc#1211853 I linked earlier. I.e. gcc-13 +
+> -fstrict-flex-arrays=3 + -mcmodel=large + some asm() expecting __FILE__ to be
+> constant (not true with the large model).
 
-But here we disagree. A non-unique address is not a valid one as it will
-cause collisions if you have more than one such controller.
+"asm() expecting $whatever" - clearly a user problem, not a GCC problem 
+;-)
 
-I understand that this may be convenient/good enough for developers in
-some cases, but this can hurt end users that do not realise why things
-break.
 
-And a developer can always configure an address manually or patch the
-driver as needed for internal use.
-
-Are there any other reasons that makes you want to keep the option to
-configure the device address through NVM files? I'm assuming you're not
-relying on patching NVM files to provision device-specific addresses
-after installation on target?
-
-Johan
+Ciao,
+Michael.
 
