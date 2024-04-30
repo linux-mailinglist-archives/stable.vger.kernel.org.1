@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-42389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0968B72CC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321FE8B73B1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C9F31C23347
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1F3128889A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5864F12D74E;
-	Tue, 30 Apr 2024 11:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB18F12D214;
+	Tue, 30 Apr 2024 11:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZ2I/JdB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwxoABP3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FAB12D1EA;
-	Tue, 30 Apr 2024 11:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A0912D1EA;
+	Tue, 30 Apr 2024 11:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475510; cv=none; b=n5hTi9dggbvrBnuQvk6te8XY/z+jeIj8nj7QVHxsutRCFepfOiujC07xxG33v5O0mXwPrFQ0HSA24RrYR4CW/xn6zy9Ycg99hpIFULmW7l2jh6qle5BNu4DMNPe1Kz6ejnIKttJYEhHsML7/iMhgzGVsTsw6ijQm26vysui7PNo=
+	t=1714476133; cv=none; b=MMhGIg4APwrDbgHcbNUicva9szcjN327YgTGnfc4ab50OLD087LQ/fzxLimT1NA7wnNkJcP/AXMrEA7OUUfByZrO13N7sNOQBMAAV3hdX5H82LxgV+98DXLJhulCB+Rcb1KctufLTRlMJESu3jP7/CEOUDx5nyrUYx2EIjJMals=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475510; c=relaxed/simple;
-	bh=Oqun/sJoVDl3iMS4GT082TTqhpMjchOClV3yvdbzgPI=;
+	s=arc-20240116; t=1714476133; c=relaxed/simple;
+	bh=mShDFB0iKg2PxgpFeMJ8AJB+YLGhu+oLZBR7MhOzYPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eA7JozjuJvT+gXkOFW7iqTUdJ+kopWI5PXTOBDllY5SDnHs8hrTeW0ZEk0/o8AgWmJoIy4/vGHEAAALuFjm5RtwLFn46MF65ixmj+AtHC4n3+gVjXGfweCOP7LXitdmG8BGrWctoxbEQEp2b0bo0Ixre38q2deLMIkl2RdOv1BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZ2I/JdB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357C4C2BBFC;
-	Tue, 30 Apr 2024 11:11:49 +0000 (UTC)
+	 MIME-Version; b=G5ZDJIzLcBf12879/QywBCRmiM0+5wtnH3Cp8Or6KqRLztDZ3Zw6D6flI5IZPtkK5OJUCg5/BX9fwwhzjeMLV4hliuy/7ENo0TIJoS0jvM7b4ifSF799K2q0fAx2y3gD2bwrWkNIfhTBZ3f8bNDYuwJPYVxcFAgIuvFxlzva2Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwxoABP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB079C2BBFC;
+	Tue, 30 Apr 2024 11:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475509;
-	bh=Oqun/sJoVDl3iMS4GT082TTqhpMjchOClV3yvdbzgPI=;
+	s=korg; t=1714476133;
+	bh=mShDFB0iKg2PxgpFeMJ8AJB+YLGhu+oLZBR7MhOzYPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZ2I/JdBTJVj51IkRZFn7Zs8zqhYb4MrLr8zBWl2IP6Z9D/WOcLOh3Bg+ma1mRCOu
-	 0/Lj7t6L/EqKJYZqH5YknbJsJ+dtVZZgUC9hdWOIhZ2a22TuWVT0y+eivf5SZUuKyV
-	 EMa4M+JR95LH8hy0fsEomA4NcwPS36TZXInVn3u8=
+	b=VwxoABP3ynAsfgXf+lo2J/08t6ADx5BpbcQEyg80iSql9+wjA3Rzo2Ry9+6A099PI
+	 nfSqqbvoV1iCpSaVXpppccGBCx9FNvbn0Pmw9Qn7FWR4i2O7fPV4m+bPT/9xKZmK9q
+	 x2Cwn36P/am4cjFeKI4d5H2KZOceMRK9GvDAk7tE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.6 115/186] kbuild: rust: remove unneeded `@rustc_cfg` to avoid ICE
+	David Ahern <dsahern@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 007/107] ipv6: fib: hide unused pn variable
 Date: Tue, 30 Apr 2024 12:39:27 +0200
-Message-ID: <20240430103101.371382867@linuxfoundation.org>
+Message-ID: <20240430103044.875067966@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 50cfe93b01475ba36878b65d35d812e1bb48ac71 upstream.
+[ Upstream commit 74043489fcb5e5ca4074133582b5b8011b67f9e7 ]
 
-When KUnit tests are enabled, under very big kernel configurations
-(e.g. `allyesconfig`), we can trigger a `rustdoc` ICE [1]:
+When CONFIG_IPV6_SUBTREES is disabled, the only user is hidden, causing
+a 'make W=1' warning:
 
-      RUSTDOC TK rust/kernel/lib.rs
-    error: the compiler unexpectedly panicked. this is a bug.
+net/ipv6/ip6_fib.c: In function 'fib6_add':
+net/ipv6/ip6_fib.c:1388:32: error: variable 'pn' set but not used [-Werror=unused-but-set-variable]
 
-The reason is that this build step has a duplicated `@rustc_cfg` argument,
-which contains the kernel configuration, and thus a lot of arguments. The
-factor 2 happens to be enough to reach the ICE.
+Add another #ifdef around the variable declaration, matching the other
+uses in this file.
 
-Thus remove the unneeded `@rustc_cfg`. By doing so, we clean up the
-command and workaround the ICE.
-
-The ICE has been fixed in the upcoming Rust 1.79 [2].
-
-Cc: stable@vger.kernel.org
-Fixes: a66d733da801 ("rust: support running Rust documentation tests as KUnit ones")
-Link: https://github.com/rust-lang/rust/issues/122722 [1]
-Link: https://github.com/rust-lang/rust/pull/122840 [2]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240422091215.526688-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 66729e18df08 ("[IPV6] ROUTE: Make sure we have fn->leaf when adding a node on subtree.")
+Link: https://lore.kernel.org/netdev/20240322131746.904943-1-arnd@kernel.org/
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240408074219.3030256-1-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/Makefile |    1 -
- 1 file changed, 1 deletion(-)
+ net/ipv6/ip6_fib.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -173,7 +173,6 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC
- 	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(RUSTDOC) --test $(rust_flags) \
--		@$(objtree)/include/generated/rustc_cfg \
- 		-L$(objtree)/$(obj) --extern alloc --extern kernel \
- 		--extern build_error --extern macros \
- 		--extern bindings --extern uapi \
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index 7d593e50977cf..3afc32fe9b07b 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1307,7 +1307,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 	     struct nl_info *info, struct netlink_ext_ack *extack)
+ {
+ 	struct fib6_table *table = rt->fib6_table;
+-	struct fib6_node *fn, *pn = NULL;
++	struct fib6_node *fn;
++#ifdef CONFIG_IPV6_SUBTREES
++	struct fib6_node *pn = NULL;
++#endif
+ 	int err = -ENOMEM;
+ 	int allow_create = 1;
+ 	int replace_required = 0;
+@@ -1331,9 +1334,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 		goto out;
+ 	}
+ 
++#ifdef CONFIG_IPV6_SUBTREES
+ 	pn = fn;
+ 
+-#ifdef CONFIG_IPV6_SUBTREES
+ 	if (rt->fib6_src.plen) {
+ 		struct fib6_node *sn;
+ 
+-- 
+2.43.0
+
 
 
 
