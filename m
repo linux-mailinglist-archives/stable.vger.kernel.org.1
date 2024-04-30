@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-42302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8568B8B7251
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:07:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8ED28B7258
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A89011C23152
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:07:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76BB81F22680
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B8D12D1E0;
-	Tue, 30 Apr 2024 11:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143E812C819;
+	Tue, 30 Apr 2024 11:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njGEgUT1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJfHJXce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8539312C530;
-	Tue, 30 Apr 2024 11:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C719D1E50A;
+	Tue, 30 Apr 2024 11:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475219; cv=none; b=gusWU2+GUa1LVW3AnSwhTQ/lr/N+Mw0K+hfM+Cc2m+YucMpesK3qiK+f615n7A6T1AFMW9S+q7YDu3ddaahwi78TPciGad/3yPuugOPdOvHfaPTWmBEd9wcXkpSjuvBbZP6M5GIUeyHyxXyaoRXpKpCOAyqj8w3rRp5zOLVGu98=
+	t=1714475232; cv=none; b=AzuwPhteSP9Gnvxoy4VfjCE4PvD+AbTyIxZgkuGT11l5NQDwSE5xosm0yv353SoYTfIVzMetfa/7+HxZDvOB0jgp5O4Z9lbnMuCyrx5dHcY9gnwNT+9K6pXPo9VqnxCzZWsodZ2MHrOyY4KX+Cutg2fs3k8oe0yJRbx7d/la3XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475219; c=relaxed/simple;
-	bh=e+Y/bKTor1y3nHMSwk+boAPjsv62OfODT6vxn+ffNPs=;
+	s=arc-20240116; t=1714475232; c=relaxed/simple;
+	bh=904ZY2ur2vwE19nA3j0UUL3blDAqjfkCbVn7G9DjSWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKChqIu2p8WhASbmFHOjppW0E4iOFINZT8/QkwpEVKxM8xGHMtJjNc52cW2FXgtKcxaeoDOHObXGKTdEVL1/eydJ6XM/gBuPKZHyRGDAMVWwcujedxMklyNcXxOwwFSB1zqrKCFkP4My81PFoLzeD47SDzi3C/D8eC4Np/UzjIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njGEgUT1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F131C2BBFC;
-	Tue, 30 Apr 2024 11:06:58 +0000 (UTC)
+	 MIME-Version; b=mYG9FOHWrQqrB7QXp60jJIh7wFERFSeEiU2AFKH5k2EtrI8HvjtRjHADRlzqHP7CGdNp0P4c5W1a4cO8nQ59MsfGA4Bp1QKD5iAYTy0zIeidQiILZ6ZmEgguWMjMeR4oRAygBDROoJx4A3JLqdNQS+RLB/3mQKIl7/Id4B2rXvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJfHJXce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EBFC2BBFC;
+	Tue, 30 Apr 2024 11:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475219;
-	bh=e+Y/bKTor1y3nHMSwk+boAPjsv62OfODT6vxn+ffNPs=;
+	s=korg; t=1714475232;
+	bh=904ZY2ur2vwE19nA3j0UUL3blDAqjfkCbVn7G9DjSWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njGEgUT1grlDENjABeoBjB9/88Vs0ACeMJr41dslxmisqQcE0hrlmZKj6ohieB8gG
-	 5/EPZi3s1xRqUP5NiRfGU2UwsUsMPEe8qhb61Xqb76IlULSYcDLsUW8oA+HebXhs+q
-	 9ARDpM54PPNonY0DkuldGXxA5HKNZptsoPJJVKyc=
+	b=wJfHJXceFm5f3CRqZwqVEXRH3jyiJtYGDocl99Li75dGHPJAT2tOhF9MIa7Xh5H08
+	 wEemcV1siqwaYXUnFTo7NkqDz9EghPY+bbiUCuzrAXhBwKiJtKevGTFsy4628okpUn
+	 EyzJGV/ihXu6mqxafR2cJCRCbnqWfyeDTzzxMVCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takayuki Nagata <tnagata@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Ronnie Sahlberg <lsahlber@redhat.com>,
-	Tom Talpey <tom@talpey.com>,
-	Steve French <stfrench@microsoft.com>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/186] cifs: reinstate original behavior again for forceuid/forcegid
-Date: Tue, 30 Apr 2024 12:37:35 +0200
-Message-ID: <20240430103058.115824144@linuxfoundation.org>
+Subject: [PATCH 6.6 004/186] HID: intel-ish-hid: ipc: Fix dev_err usage with uninitialized dev->devc
+Date: Tue, 30 Apr 2024 12:37:36 +0200
+Message-ID: <20240430103058.144950993@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
 References: <20240430103058.010791820@linuxfoundation.org>
@@ -69,80 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takayuki Nagata <tnagata@redhat.com>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit 77d8aa79ecfb209308e0644c02f655122b31def7 ]
+[ Upstream commit 92826905ae340b7f2b25759a06c8c60bfc476b9f ]
 
-forceuid/forcegid should be enabled by default when uid=/gid= options are
-specified, but commit 24e0a1eff9e2 ("cifs: switch to new mount api")
-changed the behavior. Due to the change, a mounted share does not show
-intentional uid/gid for files and directories even though uid=/gid=
-options are specified since forceuid/forcegid are not enabled.
+The variable dev->devc in ish_dev_init was utilized by dev_err before it
+was properly assigned. To rectify this, the assignment of dev->devc has
+been moved to immediately follow memory allocation.
 
-This patch reinstates original behavior that overrides uid/gid with
-specified uid/gid by the options.
+Without this change "(NULL device *)" is printed for device information.
 
-Fixes: 24e0a1eff9e2 ("cifs: switch to new mount api")
-Signed-off-by: Takayuki Nagata <tnagata@redhat.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Acked-by: Ronnie Sahlberg <lsahlber@redhat.com>
-Acked-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 8ae2f2b0a284 ("HID: intel-ish-hid: ipc: Fix potential use-after-free in work function")
+Fixes: ae02e5d40d5f ("HID: intel-ish-hid: ipc layer")
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 12 ++++++++++++
- fs/smb/client/fs_context.h |  2 ++
- 2 files changed, 14 insertions(+)
+ drivers/hid/intel-ish-hid/ipc/ipc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 58567ae617b9f..103421791bb5d 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -714,6 +714,16 @@ static int smb3_fs_context_validate(struct fs_context *fc)
- 	/* set the port that we got earlier */
- 	cifs_set_port((struct sockaddr *)&ctx->dstaddr, ctx->port);
+diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
+index a49c6affd7c4c..dd5fc60874ba1 100644
+--- a/drivers/hid/intel-ish-hid/ipc/ipc.c
++++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
+@@ -948,6 +948,7 @@ struct ishtp_device *ish_dev_init(struct pci_dev *pdev)
+ 	if (!dev)
+ 		return NULL;
  
-+	if (ctx->uid_specified && !ctx->forceuid_specified) {
-+		ctx->override_uid = 1;
-+		pr_notice("enabling forceuid mount option implicitly because uid= option is specified\n");
-+	}
-+
-+	if (ctx->gid_specified && !ctx->forcegid_specified) {
-+		ctx->override_gid = 1;
-+		pr_notice("enabling forcegid mount option implicitly because gid= option is specified\n");
-+	}
-+
- 	if (ctx->override_uid && !ctx->uid_specified) {
- 		ctx->override_uid = 0;
- 		pr_notice("ignoring forceuid mount option specified with no uid= option\n");
-@@ -983,12 +993,14 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 			ctx->override_uid = 0;
- 		else
- 			ctx->override_uid = 1;
-+		ctx->forceuid_specified = true;
- 		break;
- 	case Opt_forcegid:
- 		if (result.negated)
- 			ctx->override_gid = 0;
- 		else
- 			ctx->override_gid = 1;
-+		ctx->forcegid_specified = true;
- 		break;
- 	case Opt_perm:
- 		if (result.negated)
-diff --git a/fs/smb/client/fs_context.h b/fs/smb/client/fs_context.h
-index 8cfc25b609b6b..4e409238fe8f7 100644
---- a/fs/smb/client/fs_context.h
-+++ b/fs/smb/client/fs_context.h
-@@ -155,6 +155,8 @@ enum cifs_param {
- };
++	dev->devc = &pdev->dev;
+ 	ishtp_device_init(dev);
  
- struct smb3_fs_context {
-+	bool forceuid_specified;
-+	bool forcegid_specified;
- 	bool uid_specified;
- 	bool cruid_specified;
- 	bool gid_specified;
+ 	init_waitqueue_head(&dev->wait_hw_ready);
+@@ -983,7 +984,6 @@ struct ishtp_device *ish_dev_init(struct pci_dev *pdev)
+ 	}
+ 
+ 	dev->ops = &ish_hw_ops;
+-	dev->devc = &pdev->dev;
+ 	dev->mtu = IPC_PAYLOAD_SIZE - sizeof(struct ishtp_msg_hdr);
+ 	return dev;
+ }
 -- 
 2.43.0
 
