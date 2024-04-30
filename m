@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-42128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5872E8B718A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4124B8B701A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A271C213AF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72EBE1C21A1F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461E312C550;
-	Tue, 30 Apr 2024 10:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BB712C46C;
+	Tue, 30 Apr 2024 10:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYWIAKDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fDuP13m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063F0129E89;
-	Tue, 30 Apr 2024 10:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD5112B176;
+	Tue, 30 Apr 2024 10:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474660; cv=none; b=DuXbAFBNPemorE/nhY8sB6KRRmNnHJAqnkMocJs7RfRR5wH50DpPHz3Nx/HEaXnwkyI9Rd/OZCNZc5bILib+E4YGXCp3CpgrfV17XvG93JNh6YaSNrmQHmRLU+y9Jm50fMKE+c0iLVmX6+1G9MExZsA4hdEL/+3ZAG60q88KFCg=
+	t=1714473809; cv=none; b=uiav6J9BNsLxQ6bRj3JNJ35NVaapwsKglD+cFChtdDd2EYdDyZpM5z7sZefUl909vh+y2yTOP76feWPhMvoDEFYn6zKTgcsKb5dvZsEpUJP3o8QvTQApZqUEXjyrRvQ3ffsrPn3+eSBRLE4fo80gaHscv/DaC6EABBSCkBCxCLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474660; c=relaxed/simple;
-	bh=VT6fUH+BQLW/P6aF0aZYJzJlmuX09tKV9N+LOr/EhQA=;
+	s=arc-20240116; t=1714473809; c=relaxed/simple;
+	bh=IWI2ArPW4FTReLIYMyL1DD9EG/oYyBKsEf90EEPfFcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5uF4QTzLTCREY8Ye1UVJFUt1VCjSriea+KMcDreKrRhGpjgenIiKEPNZmWcfkk9k0J7+C47IQPIDAA0DlvHTJ79aebIt5xVH2ZwnO5gplKW0APFC2raZWmfrCXlq1gtmoHY0X0TXfwGygQCOuY9YRkOrxD3ymDqx1lDntFnqNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYWIAKDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCECC4AF18;
-	Tue, 30 Apr 2024 10:57:39 +0000 (UTC)
+	 MIME-Version; b=Ob8Y0pfLRNmK7n0/+pxdyrUB97+vRQXx0cs5q9R54AsMXaAAinhqBBOqu1ksDkPwslg0EYbPXnKMg4/lrH+bX2G39gaRgQVDTltkCcS1hQlyt3TRoRhcnqPP9QPRK1Ta710DpXberX0e1EdWPO/i4x7zmTuGvTiAe+pul3ARTzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fDuP13m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A2CC2BBFC;
+	Tue, 30 Apr 2024 10:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474659;
-	bh=VT6fUH+BQLW/P6aF0aZYJzJlmuX09tKV9N+LOr/EhQA=;
+	s=korg; t=1714473809;
+	bh=IWI2ArPW4FTReLIYMyL1DD9EG/oYyBKsEf90EEPfFcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AYWIAKDRRs6bmu5MeVPUdHt5lDc5V+qNhpQ3JkCA7CRzg7tSbaztQtG5vbXNZjsPv
-	 zPw/cLbj1dnd8YNsr19cFbUMk/ux/udhL0sjMckwyD0Zk0tZLrlGTBWwv5Hyq8yTaS
-	 fTU+iIoAUOj40Y0ieajX7Jgp4X1dp+3f5GNdpON8=
+	b=1fDuP13maaBYH3+oqYSggdlMcoYHMqxYIFxlHEFseXAzvLUSdACFK8c4PduxgP9RP
+	 ZdqkJ8I0LQGTzus3IM5c0HdR8AX09RNlaQH2khXsERfYb2TKRInI3SbHsAeUT3+XEh
+	 A7CXMP/tjRojCxQxeM75qWkJHCN8i9pV+oforyaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 185/228] net/mlx5e: Advertise mlx5 ethernet driver updates sk_buff md_dst for MACsec
+	Ido Schimmel <idosch@nvidia.com>,
+	David Bauer <mail@david-bauer.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 44/77] vxlan: drop packets from invalid src-address
 Date: Tue, 30 Apr 2024 12:39:23 +0200
-Message-ID: <20240430103109.141807309@linuxfoundation.org>
+Message-ID: <20240430103042.436086664@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: David Bauer <mail@david-bauer.net>
 
-commit 39d26a8f2efcb8b5665fe7d54a7dba306a8f1dff upstream.
+[ Upstream commit f58f45c1e5b92975e91754f5407250085a6ae7cf ]
 
-mlx5 Rx flow steering and CQE handling enable the driver to be able to
-update an skb's md_dst attribute as MACsec when MACsec traffic arrives when
-a device is configured for offloading. Advertise this to the core stack to
-take advantage of this capability.
+The VXLAN driver currently does not check if the inner layer2
+source-address is valid.
 
-Cc: stable@vger.kernel.org
-Fixes: b7c9400cbc48 ("net/mlx5e: Implement MACsec Rx data path using MACsec skb_metadata_dst")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240423181319.115860-5-rrameshbabu@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In case source-address snooping/learning is enabled, a entry in the FDB
+for the invalid address is created with the layer3 address of the tunnel
+endpoint.
+
+If the frame happens to have a non-unicast address set, all this
+non-unicast traffic is subsequently not flooded to the tunnel network
+but sent to the learnt host in the FDB. To make matters worse, this FDB
+entry does not expire.
+
+Apply the same filtering for packets as it is done for bridges. This not
+only drops these invalid packets but avoids them from being learnt into
+the FDB.
+
+Fixes: d342894c5d2f ("vxlan: virtual extensible lan")
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/vxlan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-@@ -1640,6 +1640,7 @@ static const struct macsec_ops macsec_of
- 	.mdo_add_secy = mlx5e_macsec_add_secy,
- 	.mdo_upd_secy = mlx5e_macsec_upd_secy,
- 	.mdo_del_secy = mlx5e_macsec_del_secy,
-+	.rx_uses_md_dst = true,
- };
+diff --git a/drivers/net/vxlan.c b/drivers/net/vxlan.c
+index d5c8d0d54b33d..b004c8b6ec28e 100644
+--- a/drivers/net/vxlan.c
++++ b/drivers/net/vxlan.c
+@@ -1320,6 +1320,10 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
+ 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
+ 		return false;
  
- bool mlx5e_macsec_handle_tx_skb(struct mlx5e_macsec *macsec, struct sk_buff *skb)
++	/* Ignore packets from invalid src-address */
++	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
++		return false;
++
+ 	/* Get address from the outer IP header */
+ 	if (vxlan_get_sk_family(vs) == AF_INET) {
+ 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
+-- 
+2.43.0
+
 
 
 
