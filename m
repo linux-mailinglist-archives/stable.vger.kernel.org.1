@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-42623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80B48B73E0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1998B721C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64344285DA5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B591285B5C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A7812D74E;
-	Tue, 30 Apr 2024 11:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298D112C530;
+	Tue, 30 Apr 2024 11:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWtdWgFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlGt5a/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D5012C805;
-	Tue, 30 Apr 2024 11:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD2F12C462;
+	Tue, 30 Apr 2024 11:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476257; cv=none; b=hx7l8NBsj/DhlpD/dnrweoDO1PSHqCdNTBcxc8CD3/dbrue3wju9jED02xBb46n55W4Un6rHCwY1N5ykoZcoc4I5NxrnXrK6QO/rpPt+Df/R4WndbY41ezCw7oJWDfFArShB1avqa3HwunLIyHB7NpJuurf+bAYNsVBoHXEjLQk=
+	t=1714475066; cv=none; b=gw03/QpLUCgiHLvvVtL8xxFa0oeyyyGvOthpyvytbuMHj765lolvczspHkNea3LYV2CV5WBQz9cjcbvIbfw6nrdOkBNRSqPHcINsMtLU35EctrymBTuidY/pArs5ewBD0LCVHFVhDBeRBmAj0thBXSiB4NFXGGIVl6zZE69RkSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476257; c=relaxed/simple;
-	bh=HJ8WZk2vjMyh20c7ugR9KaWkCKF7CreAhC/PtJrx4p8=;
+	s=arc-20240116; t=1714475066; c=relaxed/simple;
+	bh=ExyWy5Q0RMHwZ79HBO7v8BB3F8OsG6fTxBLgDXqOJ+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwQ/6Ct3J6z0RIruk2vzwEe3cqffnyEZNRganRqrJy/qq8L/OZtrKSQehqadwyDkd/FEW9Ybvezni3tCyLME5BxVfz5HwdC6CBxoFZFZYN8faBQuEKd9bWF5OqAe10bgdyrn2sBT/xQj7oi8K24fEQCDcGaa7HLUu7PzSv//WtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWtdWgFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7977C2BBFC;
-	Tue, 30 Apr 2024 11:24:16 +0000 (UTC)
+	 MIME-Version; b=X8lQ/WhaEU+xH8s5MsrjCwnys4fJWLqKTaZ59HBo9CcTFy1IKwnsekz6PpBuZ0Ey4JsRq8oMIdgJ4Isnf+8uUBTQGbJDm2cOqbnffC+Yn4I906sTrYqabONxInfXxh365jfLiLtIiWUq+3hjC0ZCZLdauJChF7riGKRE7gIK+fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlGt5a/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554A0C2BBFC;
+	Tue, 30 Apr 2024 11:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476257;
-	bh=HJ8WZk2vjMyh20c7ugR9KaWkCKF7CreAhC/PtJrx4p8=;
+	s=korg; t=1714475065;
+	bh=ExyWy5Q0RMHwZ79HBO7v8BB3F8OsG6fTxBLgDXqOJ+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWtdWgFNOUGUjXTluQ1QoijrwuKQ9yY4o4kQxUUR9SMEStRBQHsviTMc04r4/g0ZN
-	 /enprR1wBDKEwceAzpeW5EFYVCYK3lvtaPVo+rSHHtakcRvmNwZHiKi1ndwzCClwVr
-	 JwSlo/q5woGMRHh94xrgk4XLm7VSfXoRkdqDogwk=
+	b=jlGt5a/Wp5ldK+Lmbf/MHzX+nGqJnBj8gwiom/gcS7ZKOhDhhAA8edIDvSd8PPVQv
+	 p0bkEoF3A0iw8N3PSvkLrPGbfysa+DqCYl1wNxzlbE7ifj3MtlSrVm2sTBjr+5lMf8
+	 Xio9JuqMUSTvPwVOqi//DcI/E6N1Tp2tjRQAC5eE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 5.4 045/107] usb: dwc2: host: Fix dereference issue in DDMA completion flow.
+	Mukul Joshi <mukul.joshi@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 120/138] drm/amdgpu: Fix leak when GPU memory allocation fails
 Date: Tue, 30 Apr 2024 12:40:05 +0200
-Message-ID: <20240430103045.988651321@linuxfoundation.org>
+Message-ID: <20240430103052.938491270@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Mukul Joshi <mukul.joshi@amd.com>
 
-commit eed04fa96c48790c1cce73c8a248e9d460b088f8 upstream.
+commit 25e9227c6afd200bed6774c866980b8e36d033af upstream.
 
-Fixed variable dereference issue in DDMA completion flow.
+Free the sync object if the memory allocation fails for any
+reason.
 
-Fixes: b258e4268850 ("usb: dwc2: host: Fix ISOC flow in DDMA mode")
-CC: stable@vger.kernel.org
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-usb/2024040834-ethically-rumble-701f@gregkh/T/#m4c4b83bef0ebb4b67fe2e0a7d6466cbb6f416e39
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/cc826d3ef53c934d8e6d98870f17f3cdc3d2755d.1712665387.git.Minas.Harutyunyan@synopsys.com
+Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd_ddma.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc2/hcd_ddma.c
-+++ b/drivers/usb/dwc2/hcd_ddma.c
-@@ -897,13 +897,15 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- 	struct dwc2_dma_desc *dma_desc;
- 	struct dwc2_hcd_iso_packet_desc *frame_desc;
- 	u16 frame_desc_idx;
--	struct urb *usb_urb = qtd->urb->priv;
-+	struct urb *usb_urb;
- 	u16 remain = 0;
- 	int rc = 0;
- 
- 	if (!qtd->urb)
- 		return -EINVAL;
- 
-+	usb_urb = qtd->urb->priv;
-+
- 	dma_sync_single_for_cpu(hsotg->dev, qh->desc_list_dma + (idx *
- 				sizeof(struct dwc2_dma_desc)),
- 				sizeof(struct dwc2_dma_desc),
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1259,6 +1259,7 @@ allocate_init_user_pages_failed:
+ err_bo_create:
+ 	unreserve_mem_limit(adev, size, alloc_domain, !!sg);
+ err_reserve_limit:
++	amdgpu_sync_free(&(*mem)->sync);
+ 	mutex_destroy(&(*mem)->lock);
+ 	kfree(*mem);
+ err:
 
 
 
