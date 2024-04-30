@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-42221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E908B71F9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F438B7288
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 055AF1C223B5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8541C22E45
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF1212C54B;
-	Tue, 30 Apr 2024 11:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5593912CDB2;
+	Tue, 30 Apr 2024 11:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbZHnpiK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGsfJ97j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2B912C487;
-	Tue, 30 Apr 2024 11:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1442C1E50A;
+	Tue, 30 Apr 2024 11:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474959; cv=none; b=XyedkCt6KA7B5C9r/ZteetiUIMWMip48bur08wyZK/e2JKXVYNCNxkvasItK+dyKGXUpZDFEs+WaT/+SftkrT48+hMOBKxnlR1uD1kMbsKLj6BrmNumcRnEGiRN1CoXQd2AWqeourTAoLIYGm5z7hPmYFXRvCPd2QAg8bYNWUm4=
+	t=1714475359; cv=none; b=HUxkKFns1uKYHc3Lv1MZg6jkuIC4bsoujwNHgCDmKQlp1ZHkdtPKi7ZhDkb48qVcvckyixsZC7dz6DIxmNdB9MYj2L7QUEODubdDAfKSqcJfUpXPNiUkk/EKV0KbeT7iH7Nohp1+onSpwiQwnZ+ymcvLq/+SV73/SblUuCuEgdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474959; c=relaxed/simple;
-	bh=Hz+64iiwa2xGMdUUB88CPLws4b0lYSiYAs+ffxtMsJc=;
+	s=arc-20240116; t=1714475359; c=relaxed/simple;
+	bh=CrNHAWLxxCnck6TBzrwf5lbMMh2ZShT0YEedmDcgO18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bP3FlMmeBTRJgH2+EHJqUKYFpuD9YN6re3uDEJVY966W1MgrI8vv9aM5MgOjO9T1vKWEj8g6+W3JwKTS23BU5b03+4lTMH9DuwfgGdbLFBL0WZRJz8EBgiHuBlnzoeUkTJQ99GllfS6GvKecGRN+bmZlKugvK5drkmdFjbN3/o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbZHnpiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4D6C2BBFC;
-	Tue, 30 Apr 2024 11:02:39 +0000 (UTC)
+	 MIME-Version; b=WHAmTPLBLSP0LN4dAPrA6XKHtNQpaIVZPn8bXG9n+gpeGSzSA9kTWpDF6wIGkp0gKuX3hlspIu84M+UmeizRspaOROJepXYgoN2RvpY/G/vzt4ecHdkOOaILS/Zrj716gT8GH5MXi8xtOPX55/vIg7ik0yzV7ugAJGZBuGd1wqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGsfJ97j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90586C2BBFC;
+	Tue, 30 Apr 2024 11:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474959;
-	bh=Hz+64iiwa2xGMdUUB88CPLws4b0lYSiYAs+ffxtMsJc=;
+	s=korg; t=1714475358;
+	bh=CrNHAWLxxCnck6TBzrwf5lbMMh2ZShT0YEedmDcgO18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RbZHnpiKQbipBiVeH5NMBabxPkN3SUk3RDLB+DJxo9xS1QEAwJpehoYdpTOcRN/dC
-	 WIH4q7FPBzzdMnJ9e1J08UtI02n+OAU8OiL9O6aY9lGU56xL/Laj7neprkIkiWHnn+
-	 gJfysyPnA+C00enWP9LAV9ctgxRO14tHPyDs4Fco=
+	b=OGsfJ97jJcxd70WxvUKWdHb6Q4lUJVqNUXogpuXWuUE3tWK/vhxDCNDcR3H5uri4G
+	 2WDQ1E7Ig88BkWsBZEtxumE+idCFXQwQ4fMruLCUrjq2WK3TshHcBh7jqvvonffM2W
+	 G3OQ7Zdi1izZ58ytm4nxshO+mpzPnvbrpNDwjk/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
-	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/138] RDMA/rxe: Fix the problem "mutex_destroy missing"
+	Ismael Luceno <iluceno@suse.de>,
+	Andreas Taschner <andreas.taschner@suse.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Firo Yang <firo.yang@suse.com>
+Subject: [PATCH 6.6 072/186] ipvs: Fix checksumming on GSO of SCTP packets
 Date: Tue, 30 Apr 2024 12:38:44 +0200
-Message-ID: <20240430103050.583799263@linuxfoundation.org>
+Message-ID: <20240430103100.127645243@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanjun.Zhu <yanjun.zhu@linux.dev>
+From: Ismael Luceno <iluceno@suse.de>
 
-[ Upstream commit 481047d7e8391d3842ae59025806531cdad710d9 ]
+[ Upstream commit e10d3ba4d434ed172914617ed8d74bd411421193 ]
 
-When a mutex lock is not used any more, the function mutex_destroy
-should be called to mark the mutex lock uninitialized.
+It was observed in the wild that pairs of consecutive packets would leave
+the IPVS with the same wrong checksum, and the issue only went away when
+disabling GSO.
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Yanjun.Zhu <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240314065140.27468-1-yanjun.zhu@linux.dev
-Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+IPVS needs to avoid computing the SCTP checksum when using GSO.
+
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Co-developed-by: Firo Yang <firo.yang@suse.com>
+Signed-off-by: Ismael Luceno <iluceno@suse.de>
+Tested-by: Andreas Taschner <andreas.taschner@suse.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/ipvs/ip_vs_proto_sctp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
-index 95f0de0c8b49c..0505c81aa8d04 100644
---- a/drivers/infiniband/sw/rxe/rxe.c
-+++ b/drivers/infiniband/sw/rxe/rxe.c
-@@ -35,6 +35,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
- 
- 	if (rxe->tfm)
- 		crypto_free_shash(rxe->tfm);
-+
-+	mutex_destroy(&rxe->usdev_lock);
- }
- 
- /* initialize rxe device parameters */
+diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
+index a0921adc31a9f..1e689c7141271 100644
+--- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
+@@ -126,7 +126,8 @@ sctp_snat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
+ 	if (sctph->source != cp->vport || payload_csum ||
+ 	    skb->ip_summed == CHECKSUM_PARTIAL) {
+ 		sctph->source = cp->vport;
+-		sctp_nat_csum(skb, sctph, sctphoff);
++		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
++			sctp_nat_csum(skb, sctph, sctphoff);
+ 	} else {
+ 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 	}
+@@ -174,7 +175,8 @@ sctp_dnat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
+ 	    (skb->ip_summed == CHECKSUM_PARTIAL &&
+ 	     !(skb_dst(skb)->dev->features & NETIF_F_SCTP_CRC))) {
+ 		sctph->dest = cp->dport;
+-		sctp_nat_csum(skb, sctph, sctphoff);
++		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
++			sctp_nat_csum(skb, sctph, sctphoff);
+ 	} else if (skb->ip_summed != CHECKSUM_PARTIAL) {
+ 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 	}
 -- 
 2.43.0
 
