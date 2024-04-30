@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189E78B745F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2878B737D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3ED71F22627
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8A1C1F23FD3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3629312D746;
-	Tue, 30 Apr 2024 11:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D82112D1EA;
+	Tue, 30 Apr 2024 11:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEgsgNcY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIgfgU3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E678312BF32;
-	Tue, 30 Apr 2024 11:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDA917592;
+	Tue, 30 Apr 2024 11:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476603; cv=none; b=WjaiAcRxLmxew1X97Xdi/VyodV5KkAHEE3XzncFhaon45VH2UEVADiGi5sebpf37Blxy39PkCzezeHBJXiZikmua2fZkLcjy36vmeg+iaoPM5r5/IbnGVhC3RAyxtR4VNTtU80bpHA5hq1E1l061iLjxfJkEW/WH0g9pt60YOx0=
+	t=1714475983; cv=none; b=S9lwS62/2nK6tFKKFQWfqXfD0QHKpUvKiY70lFly71hHDuudli92BQDb8Wg4BK7E7XuN8yXP+at80WhyF+5KtR4UmPYT1N94nw/bM93DKxyR6SgVfD9JQmfy/i/jgWNm6ReXXlZlarTbTsTYKL5v8FUQR9/cvzwnxB95zjMVovo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476603; c=relaxed/simple;
-	bh=t835IqbI708riW5DU2yxRhwwR+9G4X33J/7LBjeofuw=;
+	s=arc-20240116; t=1714475983; c=relaxed/simple;
+	bh=fl1ZbdRvPVVe1BgFd1B8kuOgNo4CMgv0xR9jVL+T22k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iupqzoS65Lu6ZQ55QBF8pJ9YOBk+PzGzdihRjzd8KUIbdmpBWfQ79MKLFARrp/usTiBybcld7UkF5MYyjO1LYqhG0t4+lhYiM7jKPyn+16uWIacdnW/G2HYtGrYE8QNSNsqeLPO7L/VRqGHtETSuv/LcERGcgXp7VaCWrVV6yu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEgsgNcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BA8C2BBFC;
-	Tue, 30 Apr 2024 11:30:02 +0000 (UTC)
+	 MIME-Version; b=vAF4FobA223w8rHoNXm00sOcaY7tRDGPeNrk8DbQ8TRKhfeiQjLKl9X+/Ax/F6JnNqrAO0mjhvvX4Dy8zQGoNffo82KmQtjY9lXiARcge/LtXhe95Ip0ysblqT38yNgJf/TrwYiu1u3XG1DJQfZh/YCv0M/uvSyywIe/LB10AOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIgfgU3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90645C2BBFC;
+	Tue, 30 Apr 2024 11:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476602;
-	bh=t835IqbI708riW5DU2yxRhwwR+9G4X33J/7LBjeofuw=;
+	s=korg; t=1714475983;
+	bh=fl1ZbdRvPVVe1BgFd1B8kuOgNo4CMgv0xR9jVL+T22k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEgsgNcYJPgj76NlE7cVnBJYlxP0JqQTBW8V+/0V4i5uOPMLTpGnIp0EoEDcxD3V+
-	 frths8z6AReZ/epzpd4EzI0TJODZn09RSzL6DbZKvdLRX8JkfJzsmyoeZU4CvYm1D6
-	 FITfCjLtYax+krXB+H0PTTfj3WYBtPLwdV+J9KH0=
+	b=pIgfgU3DXufmmmTG6in8zoMRKeJxIJT8BAPBVMzTTCh75rpLScE6CX0KjE3xxcM73
+	 AL7yjv7swKc3w6kepfR7Vy01yp76vq3Wcwjorp+H3oz+FDevFHzHdDmc7rnYagwVrl
+	 3+WthWbzBlIXIfl+ukMr5CT3bM/e9hwHu6SmZAqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarred White <jarredwhite@linux.microsoft.com>,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 082/110] ACPI: CPPC: Fix bit_offset shift in MASK_VAL() macro
+	Yick Xie <yick.xie@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 79/80] udp: preserve the connected status if only UDP cmsg
 Date: Tue, 30 Apr 2024 12:40:51 +0200
-Message-ID: <20240430103049.987227611@linuxfoundation.org>
+Message-ID: <20240430103045.743086530@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarred White <jarredwhite@linux.microsoft.com>
+From: Yick Xie <yick.xie@gmail.com>
 
-commit 05d92ee782eeb7b939bdd0189e6efcab9195bf95 upstream.
+commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
 
-Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
-system memory accesses") neglected to properly wrap the bit_offset shift
-when it comes to applying the mask. This may cause incorrect values to be
-read and may cause the cpufreq module not be loaded.
+If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+"connected" should not be set to 0. Otherwise it stops
+the connected socket from using the cached route.
 
-[   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
-[   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
-
-Also, corrected the bitmask generation in GENMASK (extra bit being added).
-
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
-Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
-Reviewed-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/udp.c |    5 +++--
+ net/ipv6/udp.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -167,8 +167,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_
- #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1139,16 +1139,17 @@ int udp_sendmsg(struct sock *sk, struct
  
- /* Shift and apply the mask for CPC reads/writes */
--#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
--					GENMASK(((reg)->bit_width), 0)))
-+#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
-+					GENMASK(((reg)->bit_width) - 1, 0))
+ 	if (msg->msg_controllen) {
+ 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip_cmsg_send(sk, msg, &ipc,
+ 					   sk->sk_family == AF_INET6);
++			connected = 0;
++		}
+ 		if (unlikely(err < 0)) {
+ 			kfree(ipc.opt);
+ 			return err;
+ 		}
+ 		if (ipc.opt)
+ 			free = 1;
+-		connected = 0;
+ 	}
+ 	if (!ipc.opt) {
+ 		struct ip_options_rcu *inet_opt;
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1479,9 +1479,11 @@ do_udp_sendmsg:
+ 		ipc6.opt = opt;
  
- static ssize_t show_feedback_ctrs(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
+ 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, &fl6,
+ 						    &ipc6);
++			connected = false;
++		}
+ 		if (err < 0) {
+ 			fl6_sock_release(flowlabel);
+ 			return err;
+@@ -1493,7 +1495,6 @@ do_udp_sendmsg:
+ 		}
+ 		if (!(opt->opt_nflen|opt->opt_flen))
+ 			opt = NULL;
+-		connected = false;
+ 	}
+ 	if (!opt) {
+ 		opt = txopt_get(np);
 
 
 
