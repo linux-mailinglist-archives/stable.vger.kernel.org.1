@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-42065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6468B713D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205218B71C8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45048B220EC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:54:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0635281AFD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD47A12C7FB;
-	Tue, 30 Apr 2024 10:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8113512C490;
+	Tue, 30 Apr 2024 11:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOvIgddo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQYwpTi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C19D12C49E;
-	Tue, 30 Apr 2024 10:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C17F12C462;
+	Tue, 30 Apr 2024 11:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474453; cv=none; b=nhF3m7zkphkDoM3X+0dqrGQ1EPKlmOgz6ksiNIepWdICr5KmgugwW9dmfF3FoVcOltPpObINghqLZ2JwCjQuWF3/V8A2APSe4xZGQUqGbPR//zsHBGQrx0ge6CcV3B9Wyuo6byYgRXJyj+l345HlNqFoN9tsNbyBLPxHj+wHNRc=
+	t=1714474846; cv=none; b=XttB58N5TSjoZV9AWAgPjeH7/Zgollb68l3Hs6kls7mHqi+1oMLI/RI0iaJ42vVmjFKV+4oSpFMyOf4Waclkr/7Np7N8HYqkBM+F5qVBa6Dhl9FQKfAPoAJpuyiibjc4Hed1+Wa4m6qbawwEJML8m++/LqddryRcKAmkdrOEC0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474453; c=relaxed/simple;
-	bh=ersPDGGhimLU/VHOWWVGRIHdbNg1bZmmHXozzQCCwqI=;
+	s=arc-20240116; t=1714474846; c=relaxed/simple;
+	bh=sGy1ZyYOF4FS12yibcOcEoxYvOlMk7gymTtecFtfkfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDGFj8h7ERsvsKQ/Vn+gC79ijmDJIcEw+tb2fCmrd0QgxK/EYvvaGNvxdKCP9tKdPXm0e9XikrIbkHq+uzbsYMMsxv4w+dhuK00gtkxV/0wantA+F/fy6bEG4ocH+ObVvaYvh+JKAtXSDWkRM7nzjljIGcyzNmwJFi5Nc/E4ZQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOvIgddo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B2EC2BBFC;
-	Tue, 30 Apr 2024 10:54:12 +0000 (UTC)
+	 MIME-Version; b=hk7AItr6c4b15jjN5JMMU8jx/AX4OaFOT13L1LWNdbrBgfpEqHnvCiRJ05f1nzVAdm0eX00QYpfGYstUDQykIWxEq+Willm4N1LqRbMVaLAHZJLxwaV51tDfuFRuhp9CrLYcC+8G0FWJIx+Dvm3MRgRgnHW1uhqGjB9wATlNj/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQYwpTi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9398C4AF1A;
+	Tue, 30 Apr 2024 11:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474453;
-	bh=ersPDGGhimLU/VHOWWVGRIHdbNg1bZmmHXozzQCCwqI=;
+	s=korg; t=1714474846;
+	bh=sGy1ZyYOF4FS12yibcOcEoxYvOlMk7gymTtecFtfkfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IOvIgddoekzeK3keYC7aP5V6FdiVWG13ArJbn/J2hoE/vFnVku1BUiUGg62lOWQej
-	 huBe7Y2Za9CPPqBK37KYg1X8Cj55xqwsRRKWVrahn+POpPvbgu4kTbzS/DEQ+ZEQHK
-	 afZ841n5iNE6Hl2mMSc4AKfU8evOy6lYsKP4ivz0=
+	b=BQYwpTi2QAxHNMktq/vp2GpZhfRyj901S2kpEU1Wa+UtKCrC0Te/Kzbm6jP9Z61Ym
+	 rUhbxjmGeY6DqAaUDzUBEtcBQAWrPqY/k4DmvO09ol76tFZEa/tjFvn4NK0sPWiSVF
+	 zPvJQZl3y4Md6f6o+/foiWMsHDU3APD1Ea1pFqGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+510a1abbb8116eeb341d@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <Johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 161/228] btrfs: fix information leak in btrfs_ioctl_logical_to_ino()
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 054/138] comedi: vmk80xx: fix incomplete endpoint checking
 Date: Tue, 30 Apr 2024 12:38:59 +0200
-Message-ID: <20240430103108.453311333@linuxfoundation.org>
+Message-ID: <20240430103051.017295953@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 2f7ef5bb4a2f3e481ef05fab946edb97c84f67cf upstream.
+commit d1718530e3f640b7d5f0050e725216eab57a85d8 upstream.
 
-Syzbot reported the following information leak for in
-btrfs_ioctl_logical_to_ino():
+While vmk80xx does have endpoint checking implemented, some things
+can fall through the cracks. Depending on the hardware model,
+URBs can have either bulk or interrupt type, and current version
+of vmk80xx_find_usb_endpoints() function does not take that fully
+into account. While this warning does not seem to be too harmful,
+at the very least it will crash systems with 'panic_on_warn' set on
+them.
 
-  BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-  BUG: KMSAN: kernel-infoleak in _copy_to_user+0xbc/0x110 lib/usercopy.c:40
-   instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-   _copy_to_user+0xbc/0x110 lib/usercopy.c:40
-   copy_to_user include/linux/uaccess.h:191 [inline]
-   btrfs_ioctl_logical_to_ino+0x440/0x750 fs/btrfs/ioctl.c:3499
-   btrfs_ioctl+0x714/0x1260
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:904 [inline]
-   __se_sys_ioctl+0x261/0x450 fs/ioctl.c:890
-   __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:890
-   x64_sys_call+0x1883/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:17
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Fix the issue found by Syzkaller [1] by somewhat simplifying the
+endpoint checking process with usb_find_common_endpoints() and
+ensuring that only expected endpoint types are present.
 
-  Uninit was created at:
-   __kmalloc_large_node+0x231/0x370 mm/slub.c:3921
-   __do_kmalloc_node mm/slub.c:3954 [inline]
-   __kmalloc_node+0xb07/0x1060 mm/slub.c:3973
-   kmalloc_node include/linux/slab.h:648 [inline]
-   kvmalloc_node+0xc0/0x2d0 mm/util.c:634
-   kvmalloc include/linux/slab.h:766 [inline]
-   init_data_container+0x49/0x1e0 fs/btrfs/backref.c:2779
-   btrfs_ioctl_logical_to_ino+0x17c/0x750 fs/btrfs/ioctl.c:3480
-   btrfs_ioctl+0x714/0x1260
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:904 [inline]
-   __se_sys_ioctl+0x261/0x450 fs/ioctl.c:890
-   __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:890
-   x64_sys_call+0x1883/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:17
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This patch has not been tested on real hardware.
 
-  Bytes 40-65535 of 65536 are uninitialized
-  Memory access of size 65536 starts at ffff888045a40000
+[1] Syzkaller report:
+usb 1-1: BOGUS urb xfer, pipe 1 != type 3
+WARNING: CPU: 0 PID: 781 at drivers/usb/core/urb.c:504 usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
+...
+Call Trace:
+ <TASK>
+ usb_start_wait_urb+0x113/0x520 drivers/usb/core/message.c:59
+ vmk80xx_reset_device drivers/comedi/drivers/vmk80xx.c:227 [inline]
+ vmk80xx_auto_attach+0xa1c/0x1a40 drivers/comedi/drivers/vmk80xx.c:818
+ comedi_auto_config+0x238/0x380 drivers/comedi/drivers.c:1067
+ usb_probe_interface+0x5cd/0xb00 drivers/usb/core/driver.c:399
+...
 
-This happens, because we're copying a 'struct btrfs_data_container' back
-to user-space. This btrfs_data_container is allocated in
-'init_data_container()' via kvmalloc(), which does not zero-fill the
-memory.
+Similar issue also found by Syzkaller:
+Link: https://syzkaller.appspot.com/bug?extid=5205eb2f17de3e01946e
 
-Fix this by using kvzalloc() which zeroes out the memory on allocation.
-
-CC: stable@vger.kernel.org # 4.14+
-Reported-by:  <syzbot+510a1abbb8116eeb341d@syzkaller.appspotmail.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Johannes Thumshirn <Johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-and-tested-by: syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Fixes: 49253d542cc0 ("staging: comedi: vmk80xx: factor out usb endpoint detection")
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240408171633.31649-1-n.zhandarovich@fintech.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/backref.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/staging/comedi/drivers/vmk80xx.c |   35 ++++++++++---------------------
+ 1 file changed, 12 insertions(+), 23 deletions(-)
 
---- a/fs/btrfs/backref.c
-+++ b/fs/btrfs/backref.c
-@@ -2773,20 +2773,14 @@ struct btrfs_data_container *init_data_c
- 	size_t alloc_bytes;
+--- a/drivers/staging/comedi/drivers/vmk80xx.c
++++ b/drivers/staging/comedi/drivers/vmk80xx.c
+@@ -642,33 +642,22 @@ static int vmk80xx_find_usb_endpoints(st
+ 	struct vmk80xx_private *devpriv = dev->private;
+ 	struct usb_interface *intf = comedi_to_usb_interface(dev);
+ 	struct usb_host_interface *iface_desc = intf->cur_altsetting;
+-	struct usb_endpoint_descriptor *ep_desc;
+-	int i;
++	struct usb_endpoint_descriptor *ep_rx_desc, *ep_tx_desc;
++	int ret;
  
- 	alloc_bytes = max_t(size_t, total_bytes, sizeof(*data));
--	data = kvmalloc(alloc_bytes, GFP_KERNEL);
-+	data = kvzalloc(alloc_bytes, GFP_KERNEL);
- 	if (!data)
- 		return ERR_PTR(-ENOMEM);
- 
--	if (total_bytes >= sizeof(*data)) {
-+	if (total_bytes >= sizeof(*data))
- 		data->bytes_left = total_bytes - sizeof(*data);
--		data->bytes_missing = 0;
--	} else {
+-	if (iface_desc->desc.bNumEndpoints != 2)
+-		return -ENODEV;
+-
+-	for (i = 0; i < iface_desc->desc.bNumEndpoints; i++) {
+-		ep_desc = &iface_desc->endpoint[i].desc;
+-
+-		if (usb_endpoint_is_int_in(ep_desc) ||
+-		    usb_endpoint_is_bulk_in(ep_desc)) {
+-			if (!devpriv->ep_rx)
+-				devpriv->ep_rx = ep_desc;
+-			continue;
+-		}
++	if (devpriv->model == VMK8061_MODEL)
++		ret = usb_find_common_endpoints(iface_desc, &ep_rx_desc,
++						&ep_tx_desc, NULL, NULL);
 +	else
- 		data->bytes_missing = sizeof(*data) - total_bytes;
--		data->bytes_left = 0;
++		ret = usb_find_common_endpoints(iface_desc, NULL, NULL,
++						&ep_rx_desc, &ep_tx_desc);
+ 
+-		if (usb_endpoint_is_int_out(ep_desc) ||
+-		    usb_endpoint_is_bulk_out(ep_desc)) {
+-			if (!devpriv->ep_tx)
+-				devpriv->ep_tx = ep_desc;
+-			continue;
+-		}
 -	}
 -
--	data->elem_cnt = 0;
--	data->elem_missed = 0;
+-	if (!devpriv->ep_rx || !devpriv->ep_tx)
++	if (ret)
+ 		return -ENODEV;
  
- 	return data;
- }
++	devpriv->ep_rx = ep_rx_desc;
++	devpriv->ep_tx = ep_tx_desc;
++
+ 	if (!usb_endpoint_maxp(devpriv->ep_rx) || !usb_endpoint_maxp(devpriv->ep_tx))
+ 		return -EINVAL;
+ 
 
 
 
