@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-42674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535248B7418
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD3D8B72E9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7BDC1F2123A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17991C20AA4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8140012D209;
-	Tue, 30 Apr 2024 11:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C5D12CDA5;
+	Tue, 30 Apr 2024 11:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eIjJYEo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vGu3+wT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409C212C47A;
-	Tue, 30 Apr 2024 11:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285B08801;
+	Tue, 30 Apr 2024 11:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476419; cv=none; b=iqMW4BYCJUhkUvEUveW6eFj9Bzegw3E2uQapm5/Bmkf2lxJ5YheAODur8bgGLpLlrJfsMf39vKcDErxVvh9kxFLMFNBgZ/Oz/fN/jkDkpzEk6YlGlTi//iM6RLs7X+zJZn2vMZVmuCosW8DtwPIM8Myene2AKTQgSDB45clspOc=
+	t=1714475594; cv=none; b=TXHX3G3vY/+U/93+V0u46ctgigTrsS5S2WMCfXJgb7hzrf1xet05W4KXobPe6xoM9mGap6ApwZBt6iMXTcm/MUqlk0VvTwt6yqUXdU793HBhbiOm61QbbVl0+hCVaL5dq8uiqvXti3DETps33TNp0MUI+OFghQCX3efa17bbwaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476419; c=relaxed/simple;
-	bh=MdWnSpwCQQOZoKzhD9dNyhqJGksuaEWMzuu28bXYy5g=;
+	s=arc-20240116; t=1714475594; c=relaxed/simple;
+	bh=4Dm8+4qJZ3jTxmAeVM0tTcaoHfvLUtUz+Dtohh1PH7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqegnA3zZS7SbFQ1cSl+/MN2Lt2oCh2z49NXPdEDNDmxtrXb1OY81eGFpivn3fE98J5/ZNhED8a3bR6V/03nZIQ5a++vwVZOR9N+x7jubSg1qBgjMfQvNOUqQgBmo5F6lGmETtzxFxlyKkA8drbqypN/0JCLTm4Orh635pZRO0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eIjJYEo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A49C2BBFC;
-	Tue, 30 Apr 2024 11:26:58 +0000 (UTC)
+	 MIME-Version; b=lrcYZChiAYXj/YMxs4VcDyyzt+wZEC+iFWtZzQ1oamfcBRA5Q80kNT52M2BtnMBgn6x+UqRE9kY8eRhPHNdNrnLUDVRsuotBlcqpIOJt10LkE3GwKHvXciwaqgH6aGTwvKuYt0SbXdHykKSlxeH39JDE+Z/Xj85lhPwZDAi2cAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vGu3+wT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB51C2BBFC;
+	Tue, 30 Apr 2024 11:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476419;
-	bh=MdWnSpwCQQOZoKzhD9dNyhqJGksuaEWMzuu28bXYy5g=;
+	s=korg; t=1714475594;
+	bh=4Dm8+4qJZ3jTxmAeVM0tTcaoHfvLUtUz+Dtohh1PH7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2eIjJYEoprQppRRQY8CUUiM4SGuDYjj4Tuv+zUx6LYr0iJVjO9MMMFP/hxWTVcuPO
-	 veSzPMsldhWBp9ZIRdbeZImIHTpQbf1981I+owWjt6JI3sEtAjoFGNAQ+dmxzLW8Yw
-	 W9mDpDw4l2Vsr4vw1REYAY1CogyrbT5I0ENDAD9o=
+	b=0vGu3+wTKs4PW/LNmS2yMRjhkyxBnpgDEGpRvNTmwj19rPzhcx6EQPmsfD7a45+sn
+	 HnQALix5y5O43h17+hHKrF6oVlSLp3ImdDarJsVcjbNJjW/nXe7Fh193SJoB8PBvY7
+	 zKMZ3aoI3hR0PtIn0je7gXvU4pdZopoEUwYT6gXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/110] ARM: dts: microchip: at91-sama7g5ek: Replace regulator-suspend-voltage with the valid property
+	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH 6.6 144/186] irqchip/gic-v3-its: Prevent double free on error
 Date: Tue, 30 Apr 2024 12:39:56 +0200
-Message-ID: <20240430103048.371091715@linuxfoundation.org>
+Message-ID: <20240430103102.212953553@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Simion <andrei.simion@microchip.com>
+From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
 
-[ Upstream commit e027b71762e84ee9d4ba9ad5401b956b9e83ed2a ]
+commit c26591afd33adce296c022e3480dea4282b7ef91 upstream.
 
-By checking the pmic node with microchip,mcp16502.yaml#
-'regulator-suspend-voltage' does not match any of the
-regexes 'pinctrl-[0-9]+' from schema microchip,mcp16502.yaml#
-which inherits regulator.yaml#. So replace regulator-suspend-voltage
-with regulator-suspend-microvolt to avoid the inconsitency.
+The error handling path in its_vpe_irq_domain_alloc() causes a double free
+when its_vpe_init() fails after successfully allocating at least one
+interrupt. This happens because its_vpe_irq_domain_free() frees the
+interrupts along with the area bitmap and the vprop_page and
+its_vpe_irq_domain_alloc() subsequently frees the area bitmap and the
+vprop_page again.
 
-Fixes: 85b1304b9daa ("ARM: dts: at91: sama7g5ek: set regulator voltages for standby state")
-Signed-off-by: Andrei Simion <andrei.simion@microchip.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20240404123824.19182-2-andrei.simion@microchip.com
-[claudiu.beznea: added a dot before starting the last sentence in commit
- description]
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by unconditionally invoking its_vpe_irq_domain_free() which
+handles all cases correctly and by removing the bitmap/vprop_page freeing
+from its_vpe_irq_domain_alloc().
+
+[ tglx: Massaged change log ]
+
+Fixes: 7d75bbb4bc1a ("irqchip/gic-v3-its: Add VPE irq domain allocation/teardown")
+Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240418061053.96803-2-guanrui.huang@linux.alibaba.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/at91-sama7g5ek.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boot/dts/at91-sama7g5ek.dts b/arch/arm/boot/dts/at91-sama7g5ek.dts
-index 4af8a1c96ed63..bede6e88ae110 100644
---- a/arch/arm/boot/dts/at91-sama7g5ek.dts
-+++ b/arch/arm/boot/dts/at91-sama7g5ek.dts
-@@ -293,7 +293,7 @@
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -4561,13 +4561,8 @@ static int its_vpe_irq_domain_alloc(stru
+ 		irqd_set_resend_when_in_progress(irq_get_irq_data(virq + i));
+ 	}
  
- 					regulator-state-standby {
- 						regulator-on-in-suspend;
--						regulator-suspend-voltage = <1150000>;
-+						regulator-suspend-microvolt = <1150000>;
- 						regulator-mode = <4>;
- 					};
+-	if (err) {
+-		if (i > 0)
+-			its_vpe_irq_domain_free(domain, virq, i);
+-
+-		its_lpi_free(bitmap, base, nr_ids);
+-		its_free_prop_table(vprop_page);
+-	}
++	if (err)
++		its_vpe_irq_domain_free(domain, virq, i);
  
-@@ -314,7 +314,7 @@
- 
- 					regulator-state-standby {
- 						regulator-on-in-suspend;
--						regulator-suspend-voltage = <1050000>;
-+						regulator-suspend-microvolt = <1050000>;
- 						regulator-mode = <4>;
- 					};
- 
-@@ -331,7 +331,7 @@
- 					regulator-always-on;
- 
- 					regulator-state-standby {
--						regulator-suspend-voltage = <1800000>;
-+						regulator-suspend-microvolt = <1800000>;
- 						regulator-on-in-suspend;
- 					};
- 
-@@ -346,7 +346,7 @@
- 					regulator-max-microvolt = <3700000>;
- 
- 					regulator-state-standby {
--						regulator-suspend-voltage = <1800000>;
-+						regulator-suspend-microvolt = <1800000>;
- 						regulator-on-in-suspend;
- 					};
- 
--- 
-2.43.0
-
+ 	return err;
+ }
 
 
 
