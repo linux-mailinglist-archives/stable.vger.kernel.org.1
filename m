@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87468B7363
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 335978B7314
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A0061F24074
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C73AB1F230A5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8ED512CD9B;
-	Tue, 30 Apr 2024 11:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C18912DDAF;
+	Tue, 30 Apr 2024 11:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRvlWVMl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbJRCW9F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C908801;
-	Tue, 30 Apr 2024 11:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F0812D1F1;
+	Tue, 30 Apr 2024 11:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475911; cv=none; b=uGHcVetlQfwlu7nNTh3LFAFSNAoDh5HJ9E8sG0UhkAwYV4vzBTiHKUOgFCKFFTrsu7HNE4WinwWbwCgAG2Z3+us4tuSuSg9UDvj7QCR2UF7TL8OrdMNoZMTIG13FhQmLyMClgDz/X/I/2AH58w5w4gp7iqOYGu0gy4rY43Gm3TA=
+	t=1714475695; cv=none; b=Wlk9fy79imf51ZVhYyIz4TwtAoMcrqgcBapoBCT5XfQ9kxO+hdHw5Uzp2uuq+vu1Aqv/H/NQuKPuqzNJI1Che/2yX6CVqC8nlAOKOnURg8kVTpPA3WTAv/++TB7uFFnTlBQ7ag+ldw+LzHS2Dpi1gAao7Vfiza4oZC+fmhyUUeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475911; c=relaxed/simple;
-	bh=yTLQA4ky10UbDWVA9O/nhnHcNeLXCZ77vWH861unfnQ=;
+	s=arc-20240116; t=1714475695; c=relaxed/simple;
+	bh=6p7SbYZRNIg5HspxSLEw8kG1XSIZJKS+Fzvr93uew/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XG+8yKX+9VDtBwOV5gjO+JcLC+P87oz0/v3cZEie7kn4EY8FdUPNo2wtxC6na+85v7uTwG/JK1IVv3xuJQ51bIbyjbKienfpNq6+IK6nzk2SK+/VXjeacqgxAU/aG0USlpsMPm2uhq0pzGr4izRKNB/9pR3NfMhTdf82fcibrB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRvlWVMl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304E4C2BBFC;
-	Tue, 30 Apr 2024 11:18:31 +0000 (UTC)
+	 MIME-Version; b=px0+dvrzKhGMC4P9tFTAQerc1y6Ub5YfmiGCdAqYiTySakElvT65/5TdRwY/C2AuI5Y/8bqqFLfQNg3JjIL6pcHqAHHbz3a/YkMoppwLSXn3VLc8nhZUfk2w5q2TVg2fak7G+3Rh/q2BViVT65kRVHuPu7GF1s1SR5cLmiNkylo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbJRCW9F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59DCC2BBFC;
+	Tue, 30 Apr 2024 11:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475911;
-	bh=yTLQA4ky10UbDWVA9O/nhnHcNeLXCZ77vWH861unfnQ=;
+	s=korg; t=1714475695;
+	bh=6p7SbYZRNIg5HspxSLEw8kG1XSIZJKS+Fzvr93uew/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRvlWVMlr81CrUTRwFyL+CdjegO4iIQHPsC/yYXMrPUwnu18U5oQT2DMNOExOJKhr
-	 1swlLnMciKnRcsTmPWu6q9CCJ9sqNGKr4RR8zJ3UuqUzdbY/OrPkUwD15eLrmyBjmu
-	 kJSQcnXo5cJKXcPoxx5fJnP2pmgVBIBOiy7QW6iY=
+	b=RbJRCW9FaiqCKW8X/lXWsWT54J85Rk/x0kQFafxS192zmiGJLf2BtkwiW04lpJ5O0
+	 NvddDSX8W2STno8z9ChE4LC+APNGmGpSVeukRz6SXtFk80JRMrM4hJKbkT2MwwSC3C
+	 /OIMMt9MviFXylsied0BiDE46JsTYZte7idICWJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mantas Pucka <mantas@8devices.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 56/80] mmc: sdhci-msm: pervent access to suspended controller
+	Abel Wu <wuyun.abel@bytedance.com>,
+	Tianchen Ding <dtcccc@linux.alibaba.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 176/186] sched/eevdf: Always update V if se->on_rq when reweighting
 Date: Tue, 30 Apr 2024 12:40:28 +0200
-Message-ID: <20240430103045.073135606@linuxfoundation.org>
+Message-ID: <20240430103103.140388045@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mantas Pucka <mantas@8devices.com>
+From: Tianchen Ding <dtcccc@linux.alibaba.com>
 
-commit f8def10f73a516b771051a2f70f2f0446902cb4f upstream.
+[ Upstream commit 11b1b8bc2b98e21ddf47e08b56c21502c685b2c3 ]
 
-Generic sdhci code registers LED device and uses host->runtime_suspended
-flag to protect access to it. The sdhci-msm driver doesn't set this flag,
-which causes a crash when LED is accessed while controller is runtime
-suspended. Fix this by setting the flag correctly.
+reweight_eevdf() needs the latest V to do accurate calculation for new
+ve and vd. So update V unconditionally when se is runnable.
 
-Cc: stable@vger.kernel.org
-Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
-Signed-off-by: Mantas Pucka <mantas@8devices.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eab03c23c2a1 ("sched/eevdf: Fix vruntime adjustment on reweight")
+Suggested-by: Abel Wu <wuyun.abel@bytedance.com>
+Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Abel Wu <wuyun.abel@bytedance.com>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: Chen Yu <yu.c.chen@intel.com>
+Link: https://lore.kernel.org/r/20240306022133.81008-2-dtcccc@linux.alibaba.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -2827,6 +2827,11 @@ static __maybe_unused int sdhci_msm_runt
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	host->runtime_suspended = true;
-+	spin_unlock_irqrestore(&host->lock, flags);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 69fe62126a28e..71e7cf6f77f65 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3740,9 +3740,8 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
  
- 	/* Drop the performance vote */
- 	dev_pm_opp_set_rate(dev, 0);
-@@ -2841,6 +2846,7 @@ static __maybe_unused int sdhci_msm_runt
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	unsigned long flags;
- 	int ret;
- 
- 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
-@@ -2859,7 +2865,15 @@ static __maybe_unused int sdhci_msm_runt
- 
- 	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
- 
--	return sdhci_msm_ice_resume(msm_host);
-+	ret = sdhci_msm_ice_resume(msm_host);
-+	if (ret)
-+		return ret;
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	host->runtime_suspended = false;
-+	spin_unlock_irqrestore(&host->lock, flags);
-+
-+	return ret;
- }
- 
- static const struct dev_pm_ops sdhci_msm_pm_ops = {
+ 	if (se->on_rq) {
+ 		/* commit outstanding execution time */
+-		if (curr)
+-			update_curr(cfs_rq);
+-		else
++		update_curr(cfs_rq);
++		if (!curr)
+ 			__dequeue_entity(cfs_rq, se);
+ 		update_load_sub(&cfs_rq->load, se->load.weight);
+ 	}
+-- 
+2.43.0
+
 
 
 
