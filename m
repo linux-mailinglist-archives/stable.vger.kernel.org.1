@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5CF8B7444
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E516D8B731C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02881B21470
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 222BB1C231D4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD14D12D215;
-	Tue, 30 Apr 2024 11:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62D712BF3E;
+	Tue, 30 Apr 2024 11:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgYoki9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIbKo24T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B22512BF32;
-	Tue, 30 Apr 2024 11:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A414B12D767;
+	Tue, 30 Apr 2024 11:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476541; cv=none; b=gGa7QAgh+FIfrh1es6WZ28U2TAG0oRgk48jkNycAzbpjBF7BfBqOFagYYs+3CnKjO6t+JeNwi9EhL/1bwDKnHZRIi3tT14Ok8hZ+OphJZ0jvKvdq/3H4h7eNIjuGMPe3rOauzTK4N/rlgetQaFcPc9ZARKMxfnMUmPiVmxwPcAU=
+	t=1714475720; cv=none; b=KIYOESKGeLnCGhCLlS0IHRE+wEJ0dVeijEAI5MNtYXiwLyOe0CCumdEil2E3grWVyCOpLIOvDOpu33TrL3zYr7jcQnjoDkF9GzdRV+wYvOGhGy6brycUG3GAGg7+In4yugdl1XTMHWSsm0Zp4VGnfT2ehW2aIihDQU5jUTDre/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476541; c=relaxed/simple;
-	bh=EfSVsNzxufNg9VlFw2ehxQKZFHRRwDLlIQdL6ZcDlHU=;
+	s=arc-20240116; t=1714475720; c=relaxed/simple;
+	bh=JwxPjHiSMkycbYCBr7u4qesU3j5NGxgtSDIc1+nM+hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sqz8gDOaL8sCnKoekmHpokhLRo2sNMP/rHNApEi2FK16K/mFpdfLg6+BoWCt1FZzFBm6/DVNZ+/qaP/aQyvPHr/2W1nxYjgmLcFewzBVDJGG5CX4hP/Vy1aLckwAp8Tyz8YaQxWk2KRiZytaJlYqMLaiqf/WUaXHJIIT3s6QbrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgYoki9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE02C4AF48;
-	Tue, 30 Apr 2024 11:29:00 +0000 (UTC)
+	 MIME-Version; b=BwtWCv5btO3StVd2W8fAW90wJUDVg/1TF2jw6CfSpOL6qjSbBiw0huBD+klPZTz/1DKyyn3EwikblxNd9/KcAHWlGNiODu7f0WjU7J9xu1ejLTswj64UJgJICDq4RQvgswQfHX69tfLJ+rCKOWAFctkaoDjq9Y2pWH3fJsEsu/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIbKo24T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6B5C2BBFC;
+	Tue, 30 Apr 2024 11:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476541;
-	bh=EfSVsNzxufNg9VlFw2ehxQKZFHRRwDLlIQdL6ZcDlHU=;
+	s=korg; t=1714475720;
+	bh=JwxPjHiSMkycbYCBr7u4qesU3j5NGxgtSDIc1+nM+hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgYoki9SyZaHNuk+M4OIXnGTuS9CjpH/amIFO8FKErtcKJPyPGhDt8sRcJK91alK0
-	 CiGNYSHGg2POwTN6d0DBJSrTGFEg8D9GuF6KRS+nQoqRkEWAw4Iuuckp+InXyXxX2r
-	 Le0dY3sXzNfsOjfi1T6avbMKOcm9n1ix/S9pMm50=
+	b=oIbKo24TXxpNZ+K5zFQcQrQgA+bLr75lkyhM+5LZOzePttlSwTHIqtPoJYJmizd/p
+	 a+4Jm/xtA87W631pIn/W1xHtIivQrtBScrH/gE39KUZqOnaMdUVKchVHdVGdmC+sOu
+	 M7zMEZSI6lWol6VwgOt4FYhErBeqkL0E5+KHT918=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.1 065/110] rust: make mutually exclusive with CFI_CLANG
-Date: Tue, 30 Apr 2024 12:40:34 +0200
-Message-ID: <20240430103049.488005996@linuxfoundation.org>
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 183/186] macsec: Enable devices to advertise whether they update sk_buff md_dst during offloads
+Date: Tue, 30 Apr 2024 12:40:35 +0200
+Message-ID: <20240430103103.344252065@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit 8933cf4651e02853ca679be7b2d978dfcdcc5e0c upstream.
+commit 475747a19316b08e856c666a20503e73d7ed67ed upstream.
 
-On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
-loading a rust module will trigger a kernel panic. Support for
-sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
-they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
-to prevent configuring a kernel without symmetrical support for kfi.
+Omit rx_use_md_dst comment in upstream commit since macsec_ops is not
+documented.
 
-[ Matthew Maurer writes [1]:
+Cannot know whether a Rx skb missing md_dst is intended for MACsec or not
+without knowing whether the device is able to update this field during an
+offload. Assume that an offload to a MACsec device cannot support updating
+md_dst by default. Capable devices can advertise that they do indicate that
+an skb is related to a MACsec offloaded packet using the md_dst.
 
-    This patch is fine by me - the last patch needed for KCFI to be
-    functional in Rust just landed upstream last night, so we should
-    revisit this (in the form of enabling it) once we move to
-    `rustc-1.79.0` or later.
-
-  Ramon de C Valle also gave feedback [2] on the status of KCFI for
-  Rust and created a tracking issue [3] in upstream Rust.   - Miguel ]
-
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Cc: Sabrina Dubroca <sd@queasysnail.net>
 Cc: stable@vger.kernel.org
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/rust-for-linux/CAGSQo024u1gHJgzsO38Xg3c4or+JupoPABQx_+0BLEpPg0cOEA@mail.gmail.com/ [1]
-Link: https://lore.kernel.org/rust-for-linux/CAOcBZOS2kPyH0Dm7Fuh4GC3=v7nZhyzBj_-dKu3PfAnrHZvaxg@mail.gmail.com/ [2]
-Link: https://github.com/rust-lang/rust/issues/123479 [3]
-Link: https://lore.kernel.org/r/20240404-providing-emporium-e652e359c711@spud
-[ Added feedback from the list, links, and used Cc for the tag. ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 860ead89b851 ("net/macsec: Add MACsec skb_metadata_dst Rx Data path support")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240423181319.115860-2-rrameshbabu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig |    1 +
+ include/net/macsec.h |    1 +
  1 file changed, 1 insertion(+)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1920,6 +1920,7 @@ config RUST
- 	bool "Rust support"
- 	depends on HAVE_RUST
- 	depends on RUST_IS_AVAILABLE
-+	depends on !CFI_CLANG
- 	depends on !MODVERSIONS
- 	depends on !GCC_PLUGINS
- 	depends on !RANDSTRUCT
+--- a/include/net/macsec.h
++++ b/include/net/macsec.h
+@@ -303,6 +303,7 @@ struct macsec_ops {
+ 	int (*mdo_get_tx_sa_stats)(struct macsec_context *ctx);
+ 	int (*mdo_get_rx_sc_stats)(struct macsec_context *ctx);
+ 	int (*mdo_get_rx_sa_stats)(struct macsec_context *ctx);
++	bool rx_uses_md_dst;
+ };
+ 
+ void macsec_pn_wrapped(struct macsec_secy *secy, struct macsec_tx_sa *tx_sa);
 
 
 
