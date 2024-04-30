@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E668B732E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA578B7407
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BE10B22C3F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F4F71C20B52
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4C812D1FD;
-	Tue, 30 Apr 2024 11:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B4012D1E8;
+	Tue, 30 Apr 2024 11:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjEeu4Ix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPrUOf65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB63211C;
-	Tue, 30 Apr 2024 11:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9430617592;
+	Tue, 30 Apr 2024 11:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475759; cv=none; b=FLJjKbuFSOJCBY/oVLu6groDMSfbi/gs2ZiAzDlrtuVHjcs3QQJBGPyNljU1rNtRAHnirD6+yONzdEEVZIUzkkoGlv/IWrmKs09aOQlrSEKYstIwwrGblAgGN+r7D4PpkJyQLHbAWj8Myk64pBRy+p4o12FGqBjTUKvoHJurARs=
+	t=1714476371; cv=none; b=k/+txDYx1ENnbb3ebz6U5p9KlSAZhEC9DI9rRQciErbhgKXnHEe2S8FTHHz2AaG0CMZUcX+TjvJfHxTc/5OI7E7FscBqRERMaLPB1FtShgIXz9zw0bzOs7DnR3ZaJ/HBEFDCjEChTH7zZzDXhvINiVSxufxeCbEMl71Soxx+ETk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475759; c=relaxed/simple;
-	bh=BEWgrd1dVAYkHvB7mbEj2gdqsFOHavQwMyZ57lKqWfc=;
+	s=arc-20240116; t=1714476371; c=relaxed/simple;
+	bh=a8EQbjAysnnsi3ig9OXGoWNfp4ICHdFFgiFbHIZXjHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWjHgbVqccvXmUtDvmSRtEeQ6/PymZ2bD27y3R/G9s018D4wmCcCkXYYQMMFmS48IqCZKwu0ZyNodH9ajbAWijzFDX8+qjEJ55F6mr9hcwKFc4MBo0TgCxd9az3HzT10LKK2wL9ff0sIkqZWo/QijnIdBQJNrCSTWa6eV83AAYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjEeu4Ix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524CFC2BBFC;
-	Tue, 30 Apr 2024 11:15:58 +0000 (UTC)
+	 MIME-Version; b=AnFHIcsBzZvbhDz5H/qhhf+6vZIrzNT27oWL/wY8TfucAQDHgZF77fJ+vnVq2VMGuhyNxJnkuPrlGKWE/aLVCnozDDSD00LXZF+0iKlyR2AuXMb9lu/ysIyOhsVfig2Undjgv/0qlxJ+QUxw7Xoqbe9dOWyKWqXwrMUZM54cDH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPrUOf65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B926BC4AF18;
+	Tue, 30 Apr 2024 11:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475758;
-	bh=BEWgrd1dVAYkHvB7mbEj2gdqsFOHavQwMyZ57lKqWfc=;
+	s=korg; t=1714476371;
+	bh=a8EQbjAysnnsi3ig9OXGoWNfp4ICHdFFgiFbHIZXjHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vjEeu4IxQ0XOZvXBY610iavMnjZ3EliE6TRzBXoijZe92zXDChqUGG0X6R1O40f4F
-	 b1AlaHn83EfiJTsPEFI1HD0NcEeKgNhLQltU2eMtE7R3soAPjOain1++vJ5X6+Y13V
-	 OD85QXSm6x48IwkeEY+6MfnIilkvEtov38KZoT/M=
+	b=ZPrUOf65VCgszFdnlIv1ysAFhrUKCXSS2mWlb9kaERt+BvzUwqeN4b7yT1Yrgzqko
+	 O6taW2e86P8zcS2Em8cqWqkDNeXOQzFfwoBTUJPpRsExEAWykkOcLFg4oHynhiqBbE
+	 e2VsAs38EQf3CoyB75MfO5bnHc8aChKbpPfCwhwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Yaraslau Furman <yaro330@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 01/80] smb: client: fix rename(2) regression against samba
+Subject: [PATCH 6.1 004/110] HID: logitech-dj: allow mice to use all types of reports
 Date: Tue, 30 Apr 2024 12:39:33 +0200
-Message-ID: <20240430103043.444334807@linuxfoundation.org>
+Message-ID: <20240430103047.698129902@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Yaraslau Furman <yaro330@gmail.com>
 
-[ Upstream commit 18d86965e31f9be4d477da0744a7cdc9815858de ]
+[ Upstream commit 21f28a7eb78dea6c59be6b0a5e0b47bf3d25fcbb ]
 
-After commit 2c7d399e551c ("smb: client: reuse file lease key in
-compound operations") the client started reusing lease keys for
-rename, unlink and set path size operations to prevent it from
-breaking its own leases and thus causing unnecessary lease breaks to
-same connection.
+You can bind whatever action you want to the mouse's reprogrammable
+buttons using Windows application. Allow Linux to receive multimedia keycodes.
 
-The implementation relies on positive dentries and
-cifsInodeInfo::lease_granted to decide whether reusing lease keys for
-the compound requests.  cifsInodeInfo::lease_granted was introduced by
-commit 0ab95c2510b6 ("Defer close only when lease is enabled.") to
-indicate whether lease caching is granted for a specific file, but
-that can only happen until file is open, so
-cifsInodeInfo::lease_granted was left uninitialised in ->alloc_inode
-and then client started sending random lease keys for files that
-hadn't any leases.
-
-This fixes the following test case against samba:
-
-mount.cifs //srv/share /mnt/1 -o ...,nosharesock
-mount.cifs //srv/share /mnt/2 -o ...,nosharesock
-touch /mnt/1/foo; tail -f /mnt/1/foo & pid=$!
-mv /mnt/2/foo /mnt/2/bar # fails with -EIO
-kill $pid
-
-Fixes: 0ab95c2510b6 ("Defer close only when lease is enabled.")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 3ed224e273ac ("HID: logitech-dj: Fix 064d:c52f receiver support")
+Signed-off-by: Yaraslau Furman <yaro330@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifsfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-logitech-dj.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
-index 9bbead15a0287..d3adcb9e70a66 100644
---- a/fs/cifs/cifsfs.c
-+++ b/fs/cifs/cifsfs.c
-@@ -374,6 +374,7 @@ cifs_alloc_inode(struct super_block *sb)
- 	 * server, can not assume caching of file data or metadata.
- 	 */
- 	cifs_set_oplock_level(cifs_inode, 0);
-+	cifs_inode->lease_granted = false;
- 	cifs_inode->flags = 0;
- 	spin_lock_init(&cifs_inode->writers_lock);
- 	cifs_inode->writers = 0;
+diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
+index 08768e5accedc..57697605b2e24 100644
+--- a/drivers/hid/hid-logitech-dj.c
++++ b/drivers/hid/hid-logitech-dj.c
+@@ -965,9 +965,7 @@ static void logi_hidpp_dev_conn_notif_equad(struct hid_device *hdev,
+ 		}
+ 		break;
+ 	case REPORT_TYPE_MOUSE:
+-		workitem->reports_supported |= STD_MOUSE | HIDPP;
+-		if (djrcv_dev->type == recvr_type_mouse_only)
+-			workitem->reports_supported |= MULTIMEDIA;
++		workitem->reports_supported |= STD_MOUSE | HIDPP | MULTIMEDIA;
+ 		break;
+ 	}
+ }
 -- 
 2.43.0
 
