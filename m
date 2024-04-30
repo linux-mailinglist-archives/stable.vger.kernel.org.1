@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E218B7362
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433DA8B746B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA84B1C22971
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 007AD287271
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B1612CD9B;
-	Tue, 30 Apr 2024 11:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DDF12D761;
+	Tue, 30 Apr 2024 11:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyn/Y8dE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBLUHQL4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7567E8801;
-	Tue, 30 Apr 2024 11:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6519F12D215;
+	Tue, 30 Apr 2024 11:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475905; cv=none; b=VHnsn2qNw/LPR/w9Oqy7/tUXDTCybcKcjYkSvsCEf7jxKbpUlfumXn9yqTWbdhgOU8MaORpvLiBlr5bA5U3THHeFgRQD31lgodpOMB/MlwGyFqMbikNgJNcqsoe7HglAbiwhRSnQy8dkPdQMxnvXIaxFXaWOnD9qPGNQG1LGiPQ=
+	t=1714476642; cv=none; b=i4BcNWl/Cxx+HjJp3ZNNB5tbegFomcbvEs7OF7ZgUfcFMmw8tELqGj4zZc5F8toVazr5Is8Ruknk1GR+gOGKDijkLrjnOt7t4eFFuNLkCidGhdXaOGq8jcwx6Tbzntm0t5rXUbm7QnTCqVQYMzh7ch3QcClcba/7tBRIktIfTB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475905; c=relaxed/simple;
-	bh=rHZOIYyRXr4thRAWk62yzd2jv7XOUeDrmxUyx+azThE=;
+	s=arc-20240116; t=1714476642; c=relaxed/simple;
+	bh=OmtcX3E9cnXVwdAvIXeSK5Ys5PUISyYvo4ISNEHbrlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9hnKZptQJ6GVg5EUfGoINZUJRiE5hNHObjCxI1xgtLwmH0SY8p4EUktEUG/q5ME74WfSDDoW59Q5YiRjojkDjx/5rCO5mTLm6Dw9L4IFk1OkgIWQsW5Z0AY3gsYEfPiMvvc36iseYT0MI1aPP6EiLF7X5sr/iED2CUGBXIBhx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyn/Y8dE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE71CC2BBFC;
-	Tue, 30 Apr 2024 11:18:24 +0000 (UTC)
+	 MIME-Version; b=OKpIiIloF0SvZkkpxYVD9b7sRskMNVNG0aWZ1Tg3J21i6joTZEyvtd1djGLY8eu9nWOlpVIP3+eTsILeAKij7JFm67SzdbRjPCitx8n/JXh+LqGyUewim+ieVSPBKfrg2X9+6P1YTU4z8K9moWOIq8CBgxU9lzIj5dYPv5aVMQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BBLUHQL4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D92AC4AF19;
+	Tue, 30 Apr 2024 11:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475905;
-	bh=rHZOIYyRXr4thRAWk62yzd2jv7XOUeDrmxUyx+azThE=;
+	s=korg; t=1714476641;
+	bh=OmtcX3E9cnXVwdAvIXeSK5Ys5PUISyYvo4ISNEHbrlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyn/Y8dEzXGgHtjts/f9agkCie7gDDQu9MMRhDNDb6QHpMmHQbMTvvAoYPDNsCj43
-	 b0qw/7eLGWkxkLaF6nM0YTsX0EOVz1KtnMcmZ5UKTZWKM64LU22bP7K84szJuM2ZfB
-	 m3bJx5WgZBJWmUvsXgNEyL1aqxl6nUJgJaZVcOVQ=
+	b=BBLUHQL4iXJD84EXmMiyS8r8naYLBcIuVBiaJ6SvQAjEGGng5RpJHSmOJapSdImhg
+	 yg1jZEg5PktwfEJnufn/dYJfiSvlpw9WJz8B0npaAAGlKeOHPnTRIJxPxB4qIJV1P5
+	 5GsstJHk6YeiEVZSEc7t5HkbJeOy/XHSqW1gOgxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	WangYuli <wangyuli@uniontech.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 54/80] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x0bda:0x4853
+	Jason Reeder <jreeder@ti.com>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Ed Trexel <ed.trexel@hp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 057/110] net: ethernet: ti: am65-cpts: Fix PTPv1 message type on TX packets
 Date: Tue, 30 Apr 2024 12:40:26 +0200
-Message-ID: <20240430103045.012399647@linuxfoundation.org>
+Message-ID: <20240430103049.249985653@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Jason Reeder <jreeder@ti.com>
 
-commit d1a5a7eede2977da3d2002d5ea3b519019cc1a98 upstream.
+[ Upstream commit 1b9e743e923b256e353a9a644195372285e5a6c0 ]
 
-Add the support ID(0x0bda, 0x4853) to usb_device_id table for
-Realtek RTL8852BE.
+The CPTS, by design, captures the messageType (Sync, Delay_Req, etc.)
+field from the second nibble of the PTP header which is defined in the
+PTPv2 (1588-2008) specification. In the PTPv1 (1588-2002) specification
+the first two bytes of the PTP header are defined as the versionType
+which is always 0x0001. This means that any PTPv1 packets that are
+tagged for TX timestamping by the CPTS will have their messageType set
+to 0x0 which corresponds to a Sync message type. This causes issues
+when a PTPv1 stack is expecting a Delay_Req (messageType: 0x1)
+timestamp that never appears.
 
-Without this change the device utilizes an obsolete version of
-the firmware that is encoded in it rather than the updated Realtek
-firmware and config files from the firmware directory. The latter
-files implement many new features.
+Fix this by checking if the ptp_class of the timestamped TX packet is
+PTP_CLASS_V1 and then matching the PTP sequence ID to the stored
+sequence ID in the skb->cb data structure. If the sequence IDs match
+and the packet is of type PTPv1 then there is a chance that the
+messageType has been incorrectly stored by the CPTS so overwrite the
+messageType stored by the CPTS with the messageType from the skb->cb
+data structure. This allows the PTPv1 stack to receive TX timestamps
+for Delay_Req packets which are necessary to lock onto a PTP Leader.
 
-The device table is as follows:
-
-T: Bus=03 Lev=01 Prnt=01 Port=09 Cnt=03 Dev#= 4 Spd=12 MxCh= 0
-D: Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs= 1
-P: Vendor=0bda ProdID=4853 Rev= 0.00
-S: Manufacturer=Realtek
-S: Product=Bluetooth Radio
-S: SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
-E: Ad=02(O) Atr=02(Bulk) MxPS= 64 Ivl=0ms
-E: Ad=82(I) Atr=02(Bulk) MxPS= 64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
-I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
-I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
-I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
-I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
-I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jason Reeder <jreeder@ti.com>
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Tested-by: Ed Trexel <ed.trexel@hp.com>
+Fixes: f6bd59526ca5 ("net: ethernet: ti: introduce am654 common platform time sync driver")
+Link: https://lore.kernel.org/r/20240424071626.32558-1-r-gunasekaran@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/ti/am65-cpts.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -439,6 +439,8 @@ static const struct usb_device_id blackl
- 	/* Realtek 8852BE Bluetooth devices */
- 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0bda, 0x4853), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
+diff --git a/drivers/net/ethernet/ti/am65-cpts.c b/drivers/net/ethernet/ti/am65-cpts.c
+index 9948ac14e68db..c1bdf045e9815 100644
+--- a/drivers/net/ethernet/ti/am65-cpts.c
++++ b/drivers/net/ethernet/ti/am65-cpts.c
+@@ -649,6 +649,11 @@ static bool am65_cpts_match_tx_ts(struct am65_cpts *cpts,
+ 		struct am65_cpts_skb_cb_data *skb_cb =
+ 					(struct am65_cpts_skb_cb_data *)skb->cb;
+ 
++		if ((ptp_classify_raw(skb) & PTP_CLASS_V1) &&
++		    ((mtype_seqid & AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK) ==
++		     (skb_cb->skb_mtype_seqid & AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK)))
++			mtype_seqid = skb_cb->skb_mtype_seqid;
++
+ 		if (mtype_seqid == skb_cb->skb_mtype_seqid) {
+ 			u64 ns = event->timestamp;
+ 
+-- 
+2.43.0
+
 
 
 
