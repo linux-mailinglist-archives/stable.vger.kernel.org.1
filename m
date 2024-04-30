@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-42595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01BC38B73BF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8E68B7235
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5C7228886C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EEE21F23ADA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A4312CDA5;
-	Tue, 30 Apr 2024 11:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEB012C47A;
+	Tue, 30 Apr 2024 11:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htQFtdlm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrvhBRbj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276328801;
-	Tue, 30 Apr 2024 11:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190D212CDB2;
+	Tue, 30 Apr 2024 11:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476169; cv=none; b=KUOaROTnUt/nU/SqYHbaFypEB/WLUKYzxhXRJGLVbdp6Wz1wt70RT148WE9qQ/qR6yyigbxwY1W2LsVM7N+PNSA29s140b34HT+a/47gktYmzhFZQ9nXB0BF1PBVm+1QwNljrebXLV1LtKcGTzlx0UAR4dryr/FBW1NyqemCqz0=
+	t=1714475140; cv=none; b=mJ7eTlbCrQdwFz6YLQ4cm1IzOwu7BvBG1N3O3M//L6l4B/GV5ybgQ49/rlV/+Q4w73bafpfdvMEVojdj5pB0GyaivlKeQoYN/71EBK97HVbResrR57tF0NfqEoQEovDDqq/IOrEF8gIGRY9LCHIvCUCMop69iIDwJwJuzGc7lT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476169; c=relaxed/simple;
-	bh=VG2ix6MURrr6bYZav9XKvXLBrinHND+WibkzV4hAOa4=;
+	s=arc-20240116; t=1714475140; c=relaxed/simple;
+	bh=UvkB+X+P5SNeCmKSPx8FrUJrlrf9L2CwBa84QUihv0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tdpyWwZVIkI0a3yrN3ui0fkPf6Y8tKmKyM5/W3c0bmHbrZL6wvGJWqT2xnxHj6Nok0UennFNQMRycM/64G45FF6UqYgufqu++24d2xiyB9aGZEWwhkmbDVqh7gAmh0fQuHQMLCHu9rfBuESmMZj1rNKv316SaH7qwAMMAgcBgns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htQFtdlm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523A3C2BBFC;
-	Tue, 30 Apr 2024 11:22:48 +0000 (UTC)
+	 MIME-Version; b=LTZeP95Teimzz56gaOVTEccD2Ub+9FflxWwYV1t0Ump8Nk0ZbR7KvMBvq6n9/iMFjJ8FxjvaN7JnDgm1ir+wvw0NMXyHiIPvb70dmi4raS4SKMYX1RPszfhlEM9AcKvmDcV5H8rX00dGD8gnrkMAsYXpHhjrRtlN+ut7hTdYvTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrvhBRbj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08033C2BBFC;
+	Tue, 30 Apr 2024 11:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476168;
-	bh=VG2ix6MURrr6bYZav9XKvXLBrinHND+WibkzV4hAOa4=;
+	s=korg; t=1714475139;
+	bh=UvkB+X+P5SNeCmKSPx8FrUJrlrf9L2CwBa84QUihv0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htQFtdlmK5EEd9OhgxbQw0SloXTmvgKetvNNrWiEsQDRBPaPcTxtwQUaXPp+A8Ahb
-	 mWpDti4U96tTpueWObTnzrRZW8o3UVHTOPc4T8wbqH4u5UcgE5x0KJNGLAqUId4/tr
-	 51KL3EOCGIv8E662+8fqZi31KfhLW7ShdnE355Ek=
+	b=BrvhBRbjGZw+VAWstOsLhl4mMOhXNPQk++ouCHOgLXg/6KmQN2Ju+fl0fqmdhdnya
+	 6ZGQMO+hiojBXFDOuwJ3+dirnizHz5Ft2GoLl8Ilb4xGCx0OCodyqn0qTAmDR9q7gb
+	 /K8LAPGp5ZN4PXUktTvnAV+gF5vovObofH+SlC2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Baoquan He <bhe@redhat.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Eric DeVolder <eric_devolder@yahoo.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 056/107] arm64: dts: mediatek: mt7622: fix ethernet controller "compatible"
+Subject: [PATCH 5.10 131/138] riscv: fix VMALLOC_START definition
 Date: Tue, 30 Apr 2024 12:40:16 +0200
-Message-ID: <20240430103046.310331255@linuxfoundation.org>
+Message-ID: <20240430103053.257702271@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +67,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit 208add29ce5b7291f6c466e4dfd9cbf61c72888e ]
+[ Upstream commit ac88ff6b9d7dea9f0907c86bdae204dde7d5c0e6 ]
 
-Fix following validation error:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: ethernet@1b100000: compatible: ['mediatek,mt7622-eth', 'mediatek,mt2701-eth', 'syscon'] is too long
-        from schema $id: http://devicetree.org/schemas/net/mediatek,net.yaml#
-(and other complains about wrong clocks).
+When below config items are set, compiler complained:
 
-Fixes: 5f599b3a0bb8 ("arm64: dts: mt7622: add ethernet device nodes")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240317221050.18595-4-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+--------------------
+CONFIG_CRASH_CORE=y
+CONFIG_KEXEC_CORE=y
+CONFIG_CRASH_DUMP=y
+......
+-----------------------
+
+-------------------------------------------------------------------
+arch/riscv/kernel/crash_core.c: In function 'arch_crash_save_vmcoreinfo':
+arch/riscv/kernel/crash_core.c:11:58: warning: format '%lx' expects argument of type 'long unsigned int', but argument 2 has type 'int' [-Wformat=]
+11 |         vmcoreinfo_append_str("NUMBER(VMALLOC_START)=0x%lx\n", VMALLOC_START);
+   |                                                        ~~^
+   |                                                          |
+   |                                                          long unsigned int
+   |                                                        %x
+----------------------------------------------------------------------
+
+This is because on riscv macro VMALLOC_START has different type when
+CONFIG_MMU is set or unset.
+
+arch/riscv/include/asm/pgtable.h:
+--------------------------------------------------
+
+Changing it to _AC(0, UL) in case CONFIG_MMU=n can fix the warning.
+
+Link: https://lkml.kernel.org/r/ZW7OsX4zQRA3mO4+@MiWiFi-R3L-srv
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>	# build-tested
+Cc: Eric DeVolder <eric_devolder@yahoo.com>
+Cc: Ignat Korchagin <ignat@cloudflare.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 6065e736f82c ("riscv: Fix TASK_SIZE on 64-bit NOMMU")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index 7f5ffbd2381fb..aa4593af576c7 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -901,9 +901,7 @@
- 	};
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 5ab13570daa53..d048fb5faa691 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -457,7 +457,7 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+ #define PAGE_KERNEL		__pgprot(0)
+ #define swapper_pg_dir		NULL
+ #define TASK_SIZE		0xffffffffUL
+-#define VMALLOC_START		0
++#define VMALLOC_START		_AC(0, UL)
+ #define VMALLOC_END		TASK_SIZE
  
- 	eth: ethernet@1b100000 {
--		compatible = "mediatek,mt7622-eth",
--			     "mediatek,mt2701-eth",
--			     "syscon";
-+		compatible = "mediatek,mt7622-eth";
- 		reg = <0 0x1b100000 0 0x20000>;
- 		interrupts = <GIC_SPI 223 IRQ_TYPE_LEVEL_LOW>,
- 			     <GIC_SPI 224 IRQ_TYPE_LEVEL_LOW>,
+ static inline void __kernel_map_pages(struct page *page, int numpages, int enable) {}
 -- 
 2.43.0
 
