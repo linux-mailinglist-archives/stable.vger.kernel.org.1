@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-42332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3A18B727A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EFF68B7113
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9FE1F23BBD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE17F288E36
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F9712CD90;
-	Tue, 30 Apr 2024 11:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA14112C54B;
+	Tue, 30 Apr 2024 10:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2HEGhM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4cYw7rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E6712CDAE;
-	Tue, 30 Apr 2024 11:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7337512C462;
+	Tue, 30 Apr 2024 10:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475317; cv=none; b=Sw5DNQ/7oFnG32oI/YjAsN02H2vlmPXbrz/t7JMcbFoJXjvysydLiA4TuThQ+8btFmSOYt1e0mAJoI4HSOLmuaCcnP9s3qNAHuN//MMAEtHAFC/7NeBaZb7843CK6W3rQcxIUcERxVS7cn1Wor+1oZ84u+mkQIgyxzzROPQfs/I=
+	t=1714474361; cv=none; b=BMZQkEQY6wjamosKe/5FVlFkK4jMMW32AzsDNpwZDL4Xw0yzZR5Hxtbv1lNMC0rvUvhtkjug2KKuoNhgJYiIHeJXi8Sz0lvgJE9YKqCYpodOhcmEFsqbxH/Azt68WZg4jYV3Am6lAhnIRYE+RjzBLfIQWn0kaGWTvnu843PYvhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475317; c=relaxed/simple;
-	bh=G4LvLnPXX0qzGSwayZfG3Lig1wNaOelHKxIAwr02Bvw=;
+	s=arc-20240116; t=1714474361; c=relaxed/simple;
+	bh=z5E1Qe0r1JPXHxogUTE9REMIZ7g0izBa04rQ9E7vaZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TMWx5WslfeTS5pRrO+xxLSUBI0UnnASe8bxjAmNwpDKabdPQMKK8+k+9RHVZTTfqgZ5E1QEFDKVUXsbtUCpLs9XL4dyNxSnU+D//1QXvWpkglMxOjfirnXe7Iu6IL77u3/Y/rZqOG/CTvN8LCx6JcgSpy+2lOIrcdRpqxXN5RxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2HEGhM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B79C2BBFC;
-	Tue, 30 Apr 2024 11:08:36 +0000 (UTC)
+	 MIME-Version; b=rFjMpUnvYYepGAxhcVO793ohT5TmeboCjh/VpFqvmybnDwDIRhZz2hEADkOgpz9MPkGFU3KkQaUg2U+CbPSPeNZdLsPwZBEi2VA0zXYHxCjjaYdeVezkLnTHoNqZRI7QBByMO2tfpJOmh6NAJtRlY17+vMOtszt9EfvpU3r9giQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4cYw7rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C0EC2BBFC;
+	Tue, 30 Apr 2024 10:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475316;
-	bh=G4LvLnPXX0qzGSwayZfG3Lig1wNaOelHKxIAwr02Bvw=;
+	s=korg; t=1714474361;
+	bh=z5E1Qe0r1JPXHxogUTE9REMIZ7g0izBa04rQ9E7vaZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2HEGhM/HZ4tnmTaBphbRpN4H1bq4C4mnX3+gQpv/O3zUJ2gYTfdDFVO0/T3Fs5TP
-	 wz6UVGjGORkw7J1jy3P/A+lO5S7Ho9XDMMK5bcmbbZs5VgBpvTYOY5pj40f3rsan4q
-	 9F95CsqdWB3sWM20CWvAsJgBjVgixPZKUdPH7Evc=
+	b=T4cYw7rbxJw1OpyQY1Nyd8EG0V//pjE6d8qK4s3JlvhlXuNaEVuEWqW8xg+AqeS2z
+	 XcCNP7xATefpdMk+CJoN/Ao7aqnyzotCLqz5N4fkMayOPKeqenIBRZaqm2jE1zEbFp
+	 pRg/hSh6qrMM4wUij+ocq9CinvgFJdpIILwNoh0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Heathcote <jonathan.heathcote@bbc.co.uk>,
-	Eric Dumazet <edumazet@google.com>,
-	Soheil Hassas Yeganeh <soheil@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/186] net: fix sk_memory_allocated_{add|sub} vs softirqs
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	netdev@vger.kernel.org,
+	Wedson Almeida Filho <walmeida@microsoft.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.8 134/228] rust: phy: implement `Send` for `Registration`
 Date: Tue, 30 Apr 2024 12:38:32 +0200
-Message-ID: <20240430103059.781270590@linuxfoundation.org>
+Message-ID: <20240430103107.669490717@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Wedson Almeida Filho <walmeida@microsoft.com>
 
-[ Upstream commit 3584718cf2ec7e79b6814f2596dcf398c5fb2eca ]
+commit df70d04d56975f527b9c965322cf56e245909071 upstream.
 
-Jonathan Heathcote reported a regression caused by blamed commit
-on aarch64 architecture.
+In preparation for requiring `Send` for `Module` implementations in the
+next patch.
 
-x86 happens to have irq-safe __this_cpu_add_return()
-and __this_cpu_sub(), but this is not generic.
-
-I think my confusion came from "struct sock" argument,
-because these helpers are called with a locked socket.
-But the memory accounting is per-proto (and per-cpu after
-the blamed commit). We might cleanup these helpers later
-to directly accept a "struct proto *proto" argument.
-
-Switch to this_cpu_add_return() and this_cpu_xchg()
-operations, and get rid of preempt_disable()/preempt_enable() pairs.
-
-Fast path becomes a bit faster as a result :)
-
-Many thanks to Jonathan Heathcote for his awesome report and
-investigations.
-
-Fixes: 3cd3399dd7a8 ("net: implement per-cpu reserves for memory_allocated")
-Reported-by: Jonathan Heathcote <jonathan.heathcote@bbc.co.uk>
-Closes: https://lore.kernel.org/netdev/VI1PR01MB42407D7947B2EA448F1E04EFD10D2@VI1PR01MB4240.eurprd01.prod.exchangelabs.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Link: https://lore.kernel.org/r/20240421175248.1692552-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: Trevor Gross <tmgross@umich.edu>
+Cc: netdev@vger.kernel.org
+Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20240328195457.225001-2-wedsonaf@gmail.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h | 38 ++++++++++++++++++++------------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ rust/kernel/net/phy.rs |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 4372a7225ae6a..53b81e0a89810 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1460,32 +1460,34 @@ sk_memory_allocated(const struct sock *sk)
- #define SK_MEMORY_PCPU_RESERVE (1 << (20 - PAGE_SHIFT))
- extern int sysctl_mem_pcpu_rsv;
- 
-+static inline void proto_memory_pcpu_drain(struct proto *proto)
-+{
-+	int val = this_cpu_xchg(*proto->per_cpu_fw_alloc, 0);
-+
-+	if (val)
-+		atomic_long_add(val, proto->memory_allocated);
-+}
-+
- static inline void
--sk_memory_allocated_add(struct sock *sk, int amt)
-+sk_memory_allocated_add(const struct sock *sk, int val)
- {
--	int local_reserve;
-+	struct proto *proto = sk->sk_prot;
- 
--	preempt_disable();
--	local_reserve = __this_cpu_add_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
--	if (local_reserve >= READ_ONCE(sysctl_mem_pcpu_rsv)) {
--		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
--		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
--	}
--	preempt_enable();
-+	val = this_cpu_add_return(*proto->per_cpu_fw_alloc, val);
-+
-+	if (unlikely(val >= READ_ONCE(sysctl_mem_pcpu_rsv)))
-+		proto_memory_pcpu_drain(proto);
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -640,6 +640,10 @@ pub struct Registration {
+     drivers: Pin<&'static mut [DriverVTable]>,
  }
  
- static inline void
--sk_memory_allocated_sub(struct sock *sk, int amt)
-+sk_memory_allocated_sub(const struct sock *sk, int val)
- {
--	int local_reserve;
-+	struct proto *proto = sk->sk_prot;
- 
--	preempt_disable();
--	local_reserve = __this_cpu_sub_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
--	if (local_reserve <= -READ_ONCE(sysctl_mem_pcpu_rsv)) {
--		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
--		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
--	}
--	preempt_enable();
-+	val = this_cpu_sub_return(*proto->per_cpu_fw_alloc, val);
++// SAFETY: The only action allowed in a `Registration` instance is dropping it, which is safe to do
++// from any thread because `phy_drivers_unregister` can be called from any thread context.
++unsafe impl Send for Registration {}
 +
-+	if (unlikely(val <= -READ_ONCE(sysctl_mem_pcpu_rsv)))
-+		proto_memory_pcpu_drain(proto);
- }
- 
- #define SK_ALLOC_PERCPU_COUNTER_BATCH 16
--- 
-2.43.0
-
+ impl Registration {
+     /// Registers a PHY driver.
+     pub fn register(
 
 
 
