@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97378B7217
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6840C8B741D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F5A51F238BF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 812A8B21E2F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7D212C462;
-	Tue, 30 Apr 2024 11:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145AD12D1F1;
+	Tue, 30 Apr 2024 11:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PayOuH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOUSh/ar"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A2412CD90;
-	Tue, 30 Apr 2024 11:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56BC17592;
+	Tue, 30 Apr 2024 11:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475050; cv=none; b=A6NP9Dw8kXJJ6fXY7vBajcYzocUygrwBPNCBedfNp/b5iCFpRfGfKgzpqW1i0VJg8nr85gcKaz3BDn4yOuP58VvJtmqPGZmNPxbcxzJT/J82aIPfsO8DJU0ZoHiLW2iRX6U81o3u7gL2zhHtCNH02Xk3A4PlqvYEs/NRiCYsNSA=
+	t=1714476435; cv=none; b=tx8M2G8BrutSN+YbvFyTo0OrAi7ji152f2zLHLDbDjdl6cukOfTY4lCiPbF085Ae+aZMfSvOBKD8dEPLG9oKxSF7jIQeizbSOc8/NpdhW69zCSTZVw8ty9k68M7Rvxrpagx6GQDZ71MnCyDIog7hlypl76oweZI3DpiRc4Re1jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475050; c=relaxed/simple;
-	bh=OOmXKWuTJdfuCYfYiMx11ORnMF8fZE/Vp39Y5UjdAfI=;
+	s=arc-20240116; t=1714476435; c=relaxed/simple;
+	bh=6EQueb564aFHuidKhveuoeASYrC5jGNtTWkBfIiApSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5EkJ5VkYJMFKQAzuTDMGPOHXfhjw2mxfeDHWtfI7e4VKrHtn+iXqt9mnH0j+zoZWfZLgo6IKKmzDu60uTCMf0hlhgc+ObblG95xB8rINYqqteF12IIbGzq8JoRVCurZD5sdIDXwECI0fHcB4E9U8mh46y6LOBmHVxZdGZ7s2yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PayOuH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4A5C2BBFC;
-	Tue, 30 Apr 2024 11:04:09 +0000 (UTC)
+	 MIME-Version; b=RzZCQ3ADBXsIAh1pmH27dCrkCd3MNuJvj/xPQP84QhpwHsYgww+KgDuvcP+WMcwhO0TYbtJhkyu1V482BtwhG4KLbBgGAq6WxEROl+2lPgy576dL632GsRKCnSYDmjKMFr0mxzIqBDl/HGRYx1OFlPUbRT8nUvhJvqYsrwtS34g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOUSh/ar; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509E7C2BBFC;
+	Tue, 30 Apr 2024 11:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475049;
-	bh=OOmXKWuTJdfuCYfYiMx11ORnMF8fZE/Vp39Y5UjdAfI=;
+	s=korg; t=1714476435;
+	bh=6EQueb564aFHuidKhveuoeASYrC5jGNtTWkBfIiApSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2PayOuH8VoyYyJyBpP6mexqSWy3llwBMR8I4tMVpB1OVXO7eKiochINpSyfVJ002+
-	 nrV8PTRfNRwRBQmbaYdeYTpGjtygKVLCn2+QKVVwGkr/xrsYes/vr3zWBGRMAK+mig
-	 3vrzYGTkxRZAT+CqmE0MPWaq0t6Woq0m+KWFdQR0=
+	b=tOUSh/ar9k7ozyjYPC8Q5UCCyMOWGzDKCGINQ2RZfg/xfa5FPM6egdMqn1dQa3tPx
+	 A5muo1gAP+K6BqBvy3XsKRxQ69ZYdLUHo4hVAarp7uKM6F+edlUQS1Kzt/36uvC/2n
+	 a35KECbX+XPPnE7iIbjDHf/6y83hX34nPqufbgwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	WangYuli <wangyuli@uniontech.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10 115/138] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x0bda:0x4853
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 031/110] bnxt_en: Fix the PCI-AER routines
 Date: Tue, 30 Apr 2024 12:40:00 +0200
-Message-ID: <20240430103052.793020446@linuxfoundation.org>
+Message-ID: <20240430103048.487858647@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Vikas Gupta <vikas.gupta@broadcom.com>
 
-commit d1a5a7eede2977da3d2002d5ea3b519019cc1a98 upstream.
+[ Upstream commit a1acdc226baec331512f815d6ac9dd6f8435cc7f ]
 
-Add the support ID(0x0bda, 0x4853) to usb_device_id table for
-Realtek RTL8852BE.
+We do not support two simultaneous recoveries so check for reset
+flag, BNXT_STATE_IN_FW_RESET, and do not proceed with AER further.
+When the pci channel state is pci_channel_io_frozen, the PCIe link
+can not be trusted so we disable the traffic immediately and stop
+BAR access by calling bnxt_fw_fatal_close().  BAR access after
+AER fatal error can cause an NMI.
 
-Without this change the device utilizes an obsolete version of
-the firmware that is encoded in it rather than the updated Realtek
-firmware and config files from the firmware directory. The latter
-files implement many new features.
-
-The device table is as follows:
-
-T: Bus=03 Lev=01 Prnt=01 Port=09 Cnt=03 Dev#= 4 Spd=12 MxCh= 0
-D: Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs= 1
-P: Vendor=0bda ProdID=4853 Rev= 0.00
-S: Manufacturer=Realtek
-S: Product=Bluetooth Radio
-S: SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
-E: Ad=02(O) Atr=02(Bulk) MxPS= 64 Ivl=0ms
-E: Ad=82(I) Atr=02(Bulk) MxPS= 64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
-I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
-I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
-I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
-I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
-I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f75d9a0aa967 ("bnxt_en: Re-write PCI BARs after PCI fatal error.")
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -418,6 +418,8 @@ static const struct usb_device_id blackl
- 	/* Realtek 8852BE Bluetooth devices */
- 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0bda, 0x4853), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index e889017e3a7fb..70021b5eb54a6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -13983,6 +13983,7 @@ static pci_ers_result_t bnxt_io_error_detected(struct pci_dev *pdev,
+ {
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 	struct bnxt *bp = netdev_priv(netdev);
++	bool abort = false;
+ 
+ 	netdev_info(netdev, "PCI I/O error detected\n");
+ 
+@@ -13991,16 +13992,27 @@ static pci_ers_result_t bnxt_io_error_detected(struct pci_dev *pdev,
+ 
+ 	bnxt_ulp_stop(bp);
+ 
+-	if (state == pci_channel_io_perm_failure) {
++	if (test_and_set_bit(BNXT_STATE_IN_FW_RESET, &bp->state)) {
++		netdev_err(bp->dev, "Firmware reset already in progress\n");
++		abort = true;
++	}
++
++	if (abort || state == pci_channel_io_perm_failure) {
+ 		rtnl_unlock();
+ 		return PCI_ERS_RESULT_DISCONNECT;
+ 	}
+ 
+-	if (state == pci_channel_io_frozen)
++	/* Link is not reliable anymore if state is pci_channel_io_frozen
++	 * so we disable bus master to prevent any potential bad DMAs before
++	 * freeing kernel memory.
++	 */
++	if (state == pci_channel_io_frozen) {
+ 		set_bit(BNXT_STATE_PCI_CHANNEL_IO_FROZEN, &bp->state);
++		bnxt_fw_fatal_close(bp);
++	}
+ 
+ 	if (netif_running(netdev))
+-		bnxt_close(netdev);
++		__bnxt_close_nic(bp, true, true);
+ 
+ 	if (pci_is_enabled(pdev))
+ 		pci_disable_device(pdev);
+@@ -14086,6 +14098,7 @@ static pci_ers_result_t bnxt_io_slot_reset(struct pci_dev *pdev)
+ 	}
+ 
+ reset_exit:
++	clear_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
+ 	bnxt_clear_reservations(bp, true);
+ 	rtnl_unlock();
+ 
+-- 
+2.43.0
+
 
 
 
