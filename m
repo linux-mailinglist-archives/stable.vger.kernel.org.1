@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-42362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045968B729F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A0F8B7001
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AED221F23A08
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36EA81F248FE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F0F12C549;
-	Tue, 30 Apr 2024 11:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD2512C49E;
+	Tue, 30 Apr 2024 10:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDxztt55"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbpmbqOn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC958801;
-	Tue, 30 Apr 2024 11:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC04D12C476;
+	Tue, 30 Apr 2024 10:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475423; cv=none; b=idgYq7RMnDD/pmCU0bpZbxFO6pJiHkgEIL4bfarRFdyNz62SGzwU5kwSHi64IX9iWdvzfUpTX3f1kcUqXCedOEOJu+jyo79PSbw7IhpnMHRJxAg7B/KFl11VhvZKZOIsiZeEFWSXoWFchhr/FuNAzwPbsPhLQtG/CkpvgGLSKyo=
+	t=1714473743; cv=none; b=oeW7pHIW2/taACrud40P7CG4y7g35/3Lf6/++OF63vzkw/RfU2PE5Q5Iy1Qfh39IB5WKpZ25gcVEyeZpK/Ut9Quo0jdAtGkm4O5UJu0nAKI50MiWQc2iyigdAQ4+HgEAidGv8C4tGNDBmLRqcyu8IfLafsiVei64GU5bu9I0e0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475423; c=relaxed/simple;
-	bh=t4CeHmxFjfc44fTGwl9Cil+nVJcw6ajgL1eAJff4ejQ=;
+	s=arc-20240116; t=1714473743; c=relaxed/simple;
+	bh=snaKCNwTVlkCC14Vr36Ivz8069HWq/sF3K6/w7qzsaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4NTJ7NYqtqBX/ye9JuuItl7QHQ9F7AKlxaTmF0b20WUh9XORR93CW+CBUAIu/zGfmEszblSD1u/JilifsbHDgkBOY3s6RcWQIXblvEbkrD3MYzaKuuJQLMvYzqle2GF+Sv2vlrQybCZjb6/0fFnQ4nu+qN1nRFTJF9LnZaep1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDxztt55; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBA8C2BBFC;
-	Tue, 30 Apr 2024 11:10:22 +0000 (UTC)
+	 MIME-Version; b=nikyKWHfsGsvzcncCvt/xdEB2+gTP8BjRPXoiYLwfnq9N3aniMGgjk2k9sztiS/I4oDgBC2NZlDeAWLT6JFyBXMxW27wFLQLH+7R9f1SacYlFupTJ59qd1YuoOeozxxTTmcBa7/O8E3Q0f2RU8HJ4KPZAS/DEpLS+pQg9P0JlMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbpmbqOn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92F8C4AF1A;
+	Tue, 30 Apr 2024 10:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475423;
-	bh=t4CeHmxFjfc44fTGwl9Cil+nVJcw6ajgL1eAJff4ejQ=;
+	s=korg; t=1714473743;
+	bh=snaKCNwTVlkCC14Vr36Ivz8069HWq/sF3K6/w7qzsaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDxztt550J/lk0lC+Ax6CHQomUhtngMC1qWRAggf9bXzCxRjVE2SaljQcq7pD3xEh
-	 1DURIoCfIvKNARNLuIgdUHuBURNJPLyTC9nGyQKEqXbtRaXEdCXzyfuPt1VT9/nTQx
-	 PRJLq6L/n2svIjno41HAsBxgR3zhEZycuS7I//3U=
+	b=FbpmbqOnqjJGa/jcx3+hH/AZFBwE2iHmwPRGWy+icvLyA7sp32a2I4GwOdRduCWG1
+	 h4kZ6bA2O9M2aYJrtmRJD0OpbcK9f1EYaQTA677aO+6zcq7nEVjCPw7oiBkbVl89Yy
+	 vcygyo0ffMi2yfKe5CKka08x5avIEMe30KkZlybw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Mineri Bhange <minerix.bhange@intel.com>
-Subject: [PATCH 6.6 091/186] iavf: Fix TC config comparison with existing adapter TC config
+	bolan wang <bolan.wang@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 24/77] USB: serial: option: add Fibocom FM135-GL variants
 Date: Tue, 30 Apr 2024 12:39:03 +0200
-Message-ID: <20240430103100.674547008@linuxfoundation.org>
+Message-ID: <20240430103041.842890879@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
+From: bolan wang <bolan.wang@fibocom.com>
 
-[ Upstream commit 54976cf58d6168b8d15cebb395069f23b2f34b31 ]
+commit 356952b13af5b2c338df1e06889fd1b5e12cbbf4 upstream.
 
-Same number of TCs doesn't imply that underlying TC configs are
-same. The config could be different due to difference in number
-of queues in each TC. Add utility function to determine if TC
-configs are same.
+Update the USB serial option driver support for the Fibocom
+FM135-GL LTE modules.
+- VID:PID 2cb7:0115, FM135-GL for laptop debug M.2 cards(with MBIM
+interface for /Linux/Chrome OS)
 
-Fixes: d5b33d024496 ("i40evf: add ndo_setup_tc callback to i40evf")
-Signed-off-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
-Tested-by: Mineri Bhange <minerix.bhange@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240423182723.740401-4-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x0115: mbim, diag, at, pipe
+
+Here are the outputs of usb-devices:
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 16 Spd=480 MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0115 Rev=05.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=12345678
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: bolan wang <bolan.wang@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 30 ++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 257865647c865..ce0b919995264 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -3574,6 +3574,34 @@ static void iavf_del_all_cloud_filters(struct iavf_adapter *adapter)
- 	spin_unlock_bh(&adapter->cloud_filter_list_lock);
- }
- 
-+/**
-+ * iavf_is_tc_config_same - Compare the mqprio TC config with the
-+ * TC config already configured on this adapter.
-+ * @adapter: board private structure
-+ * @mqprio_qopt: TC config received from kernel.
-+ *
-+ * This function compares the TC config received from the kernel
-+ * with the config already configured on the adapter.
-+ *
-+ * Return: True if configuration is same, false otherwise.
-+ **/
-+static bool iavf_is_tc_config_same(struct iavf_adapter *adapter,
-+				   struct tc_mqprio_qopt *mqprio_qopt)
-+{
-+	struct virtchnl_channel_info *ch = &adapter->ch_config.ch_info[0];
-+	int i;
-+
-+	if (adapter->num_tc != mqprio_qopt->num_tc)
-+		return false;
-+
-+	for (i = 0; i < adapter->num_tc; i++) {
-+		if (ch[i].count != mqprio_qopt->count[i] ||
-+		    ch[i].offset != mqprio_qopt->offset[i])
-+			return false;
-+	}
-+	return true;
-+}
-+
- /**
-  * __iavf_setup_tc - configure multiple traffic classes
-  * @netdev: network interface device structure
-@@ -3631,7 +3659,7 @@ static int __iavf_setup_tc(struct net_device *netdev, void *type_data)
- 		if (ret)
- 			return ret;
- 		/* Return if same TC config is requested */
--		if (adapter->num_tc == num_tc)
-+		if (iavf_is_tc_config_same(adapter, &mqprio_qopt->qopt))
- 			return 0;
- 		adapter->num_tc = num_tc;
- 
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2272,6 +2272,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
 
 
 
