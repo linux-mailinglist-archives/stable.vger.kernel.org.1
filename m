@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3700D8B73CA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C020D8B7313
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAADC1F220B7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1DC51C231EC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7DE12D209;
-	Tue, 30 Apr 2024 11:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F1A12DDA5;
+	Tue, 30 Apr 2024 11:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pe0W2EX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDn97EMO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0876217592;
-	Tue, 30 Apr 2024 11:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFE712D1F1;
+	Tue, 30 Apr 2024 11:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476203; cv=none; b=FisQRgdSx16/saBQZWF1bZcPwG2pw9eZiuPO/6OOoxgL0zwbdIbkARzz3vrXtNI6hmvt4Bg8ZQhLyT8v4lOZFyegts+iXGbJAwY5Nb0qlyWGGUjkhBdQW+O2XEustWbmZHQs49o5sT/qivbdT4lIIhFWSfsdty6c2Depl+QGxWc=
+	t=1714475692; cv=none; b=sQ7Ma3sbOEG1G7FxjUwfP0nUA2WhT/J7vEEBjwdjCn4Ny3wu3XpzcPNy+hxnwk9FM7ZGtk46bS2NJg1vw0eTuClvBocYUKAP7oWHRWtbSNvBvrGMsJZTQ+MRf/zkpNt2ko/IlRunyhYsXEgXgfEK2/FdwbKLFjeqz71Vqz1t2II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476203; c=relaxed/simple;
-	bh=QHO4ZGk9QFyGpxF77Y1exEle0qMCQmdy3AtuAongPPQ=;
+	s=arc-20240116; t=1714475692; c=relaxed/simple;
+	bh=BdTnfoBHYFgKskadaMz6MLOHDhH/Mx9y3N7AZXhWWvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6Ph1xRIT0Fi1GUSmSpNnxL8SMsgnEzGixOBtPALyQcCvU/E0oDpA9R/D7tov7m1IuZ+SMvpIBTje4B89n2YAFFbB0VL+sDp4PE7ght/8fr0AV9bbuHbT+EGSmCQyZ37Q4TOsr0mCgm+9ngwFg6ObNLU045vKqnzbW9B1UxTJkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pe0W2EX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749FEC2BBFC;
-	Tue, 30 Apr 2024 11:23:22 +0000 (UTC)
+	 MIME-Version; b=MRX2tnPVDvjzYjfP4q2//ivyPAx7ikIfl+2BdNW1WINDXemQCHEcZ6/Z+AESF+OZeR5FLfcgGpu/djcvCedQ8q81MxuNa2GY4f9ccp+v68TFgJonnvwEr/aw3ZLxXc79TFyDqTbmQ/p1vQrWI/iXZE5pMHHkcmo55V1fZrTRKLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDn97EMO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5F6C2BBFC;
+	Tue, 30 Apr 2024 11:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476202;
-	bh=QHO4ZGk9QFyGpxF77Y1exEle0qMCQmdy3AtuAongPPQ=;
+	s=korg; t=1714475691;
+	bh=BdTnfoBHYFgKskadaMz6MLOHDhH/Mx9y3N7AZXhWWvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pe0W2EX6giQJnKepQGF5UWPG/pT2pmmRfggD4JhsDXCu0JSRVe3BEPNHHyNhdTJTJ
-	 SJHChs9kvviycFPBpt/djndC7l4TtP0PMm/PLv3gHV01ik1LJlD4fi2wBx8YK+VYEe
-	 gWvj3S23Zm9X/FUbU00WWSxKMXZjMPTyE2qRFSHg=
+	b=xDn97EMOu+Tpc7evygWVKHdbDGaiP99qw0hmfFKYGppbM0i71rea5t12/GjyZIccc
+	 xI5kNS4BXgxV0fx7aXmutkXq55Rk0zg0eC6ijz2n1isJRcK5MEFNlEON+hR9GWULBz
+	 iaWifSgkgadfupfagmiStgVC+5iSlqwD3N+s6+2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ismael Luceno <iluceno@suse.de>,
-	Andreas Taschner <andreas.taschner@suse.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Firo Yang <firo.yang@suse.com>
-Subject: [PATCH 5.4 066/107] ipvs: Fix checksumming on GSO of SCTP packets
-Date: Tue, 30 Apr 2024 12:40:26 +0200
-Message-ID: <20240430103046.604570738@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 175/186] phy: ti: tusb1210: Resolve charger-det crash if charger psy is unregistered
+Date: Tue, 30 Apr 2024 12:40:27 +0200
+Message-ID: <20240430103103.111764084@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ismael Luceno <iluceno@suse.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e10d3ba4d434ed172914617ed8d74bd411421193 ]
+[ Upstream commit bf6e4ee5c43690e4c5a8a057bbcd4ff986bed052 ]
 
-It was observed in the wild that pairs of consecutive packets would leave
-the IPVS with the same wrong checksum, and the issue only went away when
-disabling GSO.
+The power_supply frame-work is not really designed for there to be
+long living in kernel references to power_supply devices.
 
-IPVS needs to avoid computing the SCTP checksum when using GSO.
+Specifically unregistering a power_supply while some other code has
+a reference to it triggers a WARN in power_supply_unregister():
 
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Co-developed-by: Firo Yang <firo.yang@suse.com>
-Signed-off-by: Ismael Luceno <iluceno@suse.de>
-Tested-by: Andreas Taschner <andreas.taschner@suse.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+	WARN_ON(atomic_dec_return(&psy->use_cnt));
+
+Folllowed by the power_supply still getting removed and the
+backing data freed anyway, leaving the tusb1210 charger-detect code
+with a dangling reference, resulting in a crash the next time
+tusb1210_get_online() is called.
+
+Fix this by only holding the reference in tusb1210_get_online()
+freeing it at the end of the function. Note this still leaves
+a theoretical race window, but it avoids the issue when manually
+rmmod-ing the charger chip driver during development.
+
+Fixes: 48969a5623ed ("phy: ti: tusb1210: Add charger detection")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240406140821.18624-1-hdegoede@redhat.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/phy/ti/phy-tusb1210.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index a0921adc31a9f..1e689c7141271 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -126,7 +126,8 @@ sctp_snat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	if (sctph->source != cp->vport || payload_csum ||
- 	    skb->ip_summed == CHECKSUM_PARTIAL) {
- 		sctph->source = cp->vport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+diff --git a/drivers/phy/ti/phy-tusb1210.c b/drivers/phy/ti/phy-tusb1210.c
+index b4881cb344759..c23eecc7d1800 100644
+--- a/drivers/phy/ti/phy-tusb1210.c
++++ b/drivers/phy/ti/phy-tusb1210.c
+@@ -65,7 +65,6 @@ struct tusb1210 {
+ 	struct delayed_work chg_det_work;
+ 	struct notifier_block psy_nb;
+ 	struct power_supply *psy;
+-	struct power_supply *charger;
+ #endif
+ };
+ 
+@@ -231,19 +230,24 @@ static const char * const tusb1210_chargers[] = {
+ 
+ static bool tusb1210_get_online(struct tusb1210 *tusb)
+ {
++	struct power_supply *charger = NULL;
+ 	union power_supply_propval val;
+-	int i;
++	bool online = false;
++	int i, ret;
+ 
+-	for (i = 0; i < ARRAY_SIZE(tusb1210_chargers) && !tusb->charger; i++)
+-		tusb->charger = power_supply_get_by_name(tusb1210_chargers[i]);
++	for (i = 0; i < ARRAY_SIZE(tusb1210_chargers) && !charger; i++)
++		charger = power_supply_get_by_name(tusb1210_chargers[i]);
+ 
+-	if (!tusb->charger)
++	if (!charger)
+ 		return false;
+ 
+-	if (power_supply_get_property(tusb->charger, POWER_SUPPLY_PROP_ONLINE, &val))
+-		return false;
++	ret = power_supply_get_property(charger, POWER_SUPPLY_PROP_ONLINE, &val);
++	if (ret == 0)
++		online = val.intval;
++
++	power_supply_put(charger);
+ 
+-	return val.intval;
++	return online;
+ }
+ 
+ static void tusb1210_chg_det_work(struct work_struct *work)
+@@ -467,9 +471,6 @@ static void tusb1210_remove_charger_detect(struct tusb1210 *tusb)
+ 		cancel_delayed_work_sync(&tusb->chg_det_work);
+ 		power_supply_unregister(tusb->psy);
  	}
-@@ -174,7 +175,8 @@ sctp_dnat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	    (skb->ip_summed == CHECKSUM_PARTIAL &&
- 	     !(skb_dst(skb)->dev->features & NETIF_F_SCTP_CRC))) {
- 		sctph->dest = cp->dport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else if (skb->ip_summed != CHECKSUM_PARTIAL) {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 	}
+-
+-	if (tusb->charger)
+-		power_supply_put(tusb->charger);
+ }
+ #else
+ static void tusb1210_probe_charger_detect(struct tusb1210 *tusb) { }
 -- 
 2.43.0
 
