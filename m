@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-42180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4AA8B71C2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83058B7157
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47D1BB209B2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DDB81F21A27
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297B012CD99;
-	Tue, 30 Apr 2024 11:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D1512C805;
+	Tue, 30 Apr 2024 10:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xix+VeUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ+zOF0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC03712CD89;
-	Tue, 30 Apr 2024 11:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9085412C47A;
+	Tue, 30 Apr 2024 10:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474826; cv=none; b=DrGzvfH8QT4P1KIBdJe5xQ2zqkyj3xylgUdphDFi4rci13dAOYTMzfr8j2sFCxX+2n7VjVkbR+yIPIdybn/2VWBO9LOEMeDz1SVmysoE3gflxKj/VAG8qjld2m8qUNDPgMLMGUoO5Wvxx8DD94zMda4dk/tePuVJdEdVaCfPfFA=
+	t=1714474529; cv=none; b=EOHWt8pHy0fVNogsYDC0YuuDiMgp54swJBPy5Ru44evk6iZXPXjv57Zjv9EWK4LXW8XCinJhSnYz2hMT+zljx5inhKEBRgudRETDKsiyrxqZFrK9n21TXYN/X6UrI5t6qwjiG8cPk9U+IPLPki5ynq/2a2lvEsuaOsnrvIWT2/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474826; c=relaxed/simple;
-	bh=c2iM7UdawElzJOWTItRUsiRmE2cpXgcJUl6pkyyHAvc=;
+	s=arc-20240116; t=1714474529; c=relaxed/simple;
+	bh=FJVCFCmbA8z00j5VuAr1u5A3pYl7BfJCI6eNk6DT/u4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVVrdzO1wcvFWekMnll7lFgpLP7NuMyG2YhdQ/xZmxAZwtQf+H1fb2KH5KPpZxgJ9gKOHsZhHRb3fQ8BNW0WIyH2k37QemhibVypMBSOs6Vu96hhO9lLuQ2DRFAjsaAzIssslIHjBwf9kMh9Z4JYeFffLVmVjcsCC3aXaKcvm0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xix+VeUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0E7C4AF18;
-	Tue, 30 Apr 2024 11:00:26 +0000 (UTC)
+	 MIME-Version; b=gvTb/5INTb+Y6JOs+yaPZRO52NFOpXH3xJdxl85LJzKFX4RV+bDede63E2VF/tAVcCZ+XvCKago+0n4fmzYMcVcktFn7Zz2EVGxETh7WmWtS1SduDgwBMHUetggSh19gZiF0g11zssT+Cy9QVbwpONIPcy3sOG7yPowQScGkMlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ+zOF0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A56CC2BBFC;
+	Tue, 30 Apr 2024 10:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474826;
-	bh=c2iM7UdawElzJOWTItRUsiRmE2cpXgcJUl6pkyyHAvc=;
+	s=korg; t=1714474529;
+	bh=FJVCFCmbA8z00j5VuAr1u5A3pYl7BfJCI6eNk6DT/u4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xix+VeUKD3SUT4Rt3afxQVK+Gw7IA/wAuJ/HjFs83AJxcLqR00G4PfTGn/uzSZ3EH
-	 2LBO2zbtQBiAVpmSCXHh7JcHsdk92eOaXOWZcGUM0j5Xkqw5lfpCqgxPF65Ccbdwmm
-	 hiZ16k8tyxYdQd5jr1H742fOc36lFLJJ9iQVdQfs=
+	b=dJ+zOF0dhIuuLFaZbq3yIpJFADdvbPq90S7g+p2KNWurwjPecA5lhyh8HXtIoE97c
+	 SkRh8FON8fDmCdsuoQ1hWsyLuXMqy6eKxbAlQUT/Nj0YfAdgAee0elMXxdqJjD+7hG
+	 jhj2rNRG4p4h6xkhy0txB3JsjqpuQqrR9PnPtLK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Zhang <markzhang@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/138] RDMA/cm: Print the old state when cm_destroy_id gets timeout
+	Peter Xu <peterx@redhat.com>,
+	syzbot+4b8077a5fccc61c385a1@syzkaller.appspotmail.com,
+	Mina Almasry <almasrymina@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 147/228] mm/hugetlb: fix missing hugetlb_lock for resv uncharge
 Date: Tue, 30 Apr 2024 12:38:45 +0200
-Message-ID: <20240430103050.612898742@linuxfoundation.org>
+Message-ID: <20240430103108.050279662@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Peter Xu <peterx@redhat.com>
 
-[ Upstream commit b68e1acb5834ed1a2ad42d9d002815a8bae7c0b6 ]
+commit b76b46902c2d0395488c8412e1116c2486cdfcb2 upstream.
 
-The old state is helpful for debugging, as the current state is always
-IB_CM_IDLE when timeout happens.
+There is a recent report on UFFDIO_COPY over hugetlb:
 
-Fixes: 96d9cbe2f2ff ("RDMA/cm: add timeout to cm_destroy_id wait")
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Link: https://lore.kernel.org/r/20240322112049.2022994-1-markzhang@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+https://lore.kernel.org/all/000000000000ee06de0616177560@google.com/
+
+350:	lockdep_assert_held(&hugetlb_lock);
+
+Should be an issue in hugetlb but triggered in an userfault context, where
+it goes into the unlikely path where two threads modifying the resv map
+together.  Mike has a fix in that path for resv uncharge but it looks like
+the locking criteria was overlooked: hugetlb_cgroup_uncharge_folio_rsvd()
+will update the cgroup pointer, so it requires to be called with the lock
+held.
+
+Link: https://lkml.kernel.org/r/20240417211836.2742593-3-peterx@redhat.com
+Fixes: 79aa925bf239 ("hugetlb_cgroup: fix reservation accounting")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reported-by: syzbot+4b8077a5fccc61c385a1@syzkaller.appspotmail.com
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/cm.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ mm/hugetlb.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
-index 2a30b25c5e7e5..26c66685a43dd 100644
---- a/drivers/infiniband/core/cm.c
-+++ b/drivers/infiniband/core/cm.c
-@@ -1057,23 +1057,26 @@ static void cm_reset_to_idle(struct cm_id_private *cm_id_priv)
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3266,9 +3266,12 @@ struct folio *alloc_hugetlb_folio(struct
+ 
+ 		rsv_adjust = hugepage_subpool_put_pages(spool, 1);
+ 		hugetlb_acct_memory(h, -rsv_adjust);
+-		if (deferred_reserve)
++		if (deferred_reserve) {
++			spin_lock_irq(&hugetlb_lock);
+ 			hugetlb_cgroup_uncharge_folio_rsvd(hstate_index(h),
+ 					pages_per_huge_page(h), folio);
++			spin_unlock_irq(&hugetlb_lock);
++		}
  	}
- }
  
--static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id)
-+static noinline void cm_destroy_id_wait_timeout(struct ib_cm_id *cm_id,
-+						enum ib_cm_state old_state)
- {
- 	struct cm_id_private *cm_id_priv;
- 
- 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
--	pr_err("%s: cm_id=%p timed out. state=%d refcnt=%d\n", __func__,
--	       cm_id, cm_id->state, refcount_read(&cm_id_priv->refcount));
-+	pr_err("%s: cm_id=%p timed out. state %d -> %d, refcnt=%d\n", __func__,
-+	       cm_id, old_state, cm_id->state, refcount_read(&cm_id_priv->refcount));
- }
- 
- static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
- {
- 	struct cm_id_private *cm_id_priv;
-+	enum ib_cm_state old_state;
- 	struct cm_work *work;
- 	int ret;
- 
- 	cm_id_priv = container_of(cm_id, struct cm_id_private, id);
- 	spin_lock_irq(&cm_id_priv->lock);
-+	old_state = cm_id->state;
- retest:
- 	switch (cm_id->state) {
- 	case IB_CM_LISTEN:
-@@ -1187,7 +1190,7 @@ static void cm_destroy_id(struct ib_cm_id *cm_id, int err)
- 						  msecs_to_jiffies(
- 						  CM_DESTROY_ID_WAIT_TIMEOUT));
- 		if (!ret) /* timeout happened */
--			cm_destroy_id_wait_timeout(cm_id);
-+			cm_destroy_id_wait_timeout(cm_id, old_state);
- 	} while (!ret);
- 
- 	while ((work = cm_dequeue_work(cm_id_priv)) != NULL)
--- 
-2.43.0
-
+ 	if (!memcg_charge_ret)
 
 
 
