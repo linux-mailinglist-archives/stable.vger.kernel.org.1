@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-42310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783EF8B7261
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:07:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B16BD8B70C8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33BFD282A75
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:07:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D48C41C21BB7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3A912CDB2;
-	Tue, 30 Apr 2024 11:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8468312C499;
+	Tue, 30 Apr 2024 10:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2CIWTCj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRsS/B7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5A612C805;
-	Tue, 30 Apr 2024 11:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EA412B176;
+	Tue, 30 Apr 2024 10:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475245; cv=none; b=FEgQ/Pgaf04D2IprExmG1Dip0e9YYF9LP7vvc5U2xiME5rdGSIh4BJG55YlGDOCyALHG93d4uPSU01nH2kAiLk5/BSSm7i8NPu00FS5G6pXrJilJoqgID1B1ctS+Vw4iHN6kcdvXduMHp4RshmPgZGcWgjwsaqYgtYYaqp2S3qE=
+	t=1714474186; cv=none; b=ZeOeIjwdaJTebw1AjBUAp1T8n/P1ZzlFGZQFUX2vuLmjDBe2TrAwz3tm0R1+g8nHdAPs8/7Qvc+mu6zFKJAi+WS0Po01UuZqi1Xks+4PGUkj8CTyqW4I0cDkOnX7Itjkv0u13pbUnEfNRyyGy3TcKPprQqpRnrYVdLMLK69zdPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475245; c=relaxed/simple;
-	bh=S1tArmvi2Xu+7D3Lrh7MrDHu0MDKttTpEwEljJPPrY8=;
+	s=arc-20240116; t=1714474186; c=relaxed/simple;
+	bh=Hc0hzF/TvxjFtYHkySKP5NC0bNRd7XsO//6+KpfRtak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tteqWeFRIlOvJHZ083VisYh24f+icPkQ1ilsPC8BaQPfksrmzX/SYbZgDaTE7Bj7k4fU1ZZ4InJad/swyDG9ouhMmHyhnEN6kh61hY68heYP26AXApJJYBOXvIvh2M42CkS+lBcsp7/Kl5p7PxBEFOctB/QqRCabG+2F9a7hefY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2CIWTCj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8E2C4AF18;
-	Tue, 30 Apr 2024 11:07:25 +0000 (UTC)
+	 MIME-Version; b=pytz9D4daQqoqWvWLNTr1DD53PqzYMzTf4O8RwmpqtqPxRR9hgwgROXFMU9/R/T0vH9VUmGFCIROeMTxDPuFpgo4ZUQwYZtfueNLWEpxf0FyXcYXsNLCPMhHc7GA0CqhJsihfw5I0hG56B9U00IshksPbzeP7+IgYMFwgBB0qqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRsS/B7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFC0C2BBFC;
+	Tue, 30 Apr 2024 10:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475245;
-	bh=S1tArmvi2Xu+7D3Lrh7MrDHu0MDKttTpEwEljJPPrY8=;
+	s=korg; t=1714474186;
+	bh=Hc0hzF/TvxjFtYHkySKP5NC0bNRd7XsO//6+KpfRtak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2CIWTCjxUDosZJDxi20two7VAuRfgW9MvpBxPzAsA0dfczImMiK9E0uBPrZqMiXa
-	 qXho2mLheOlP80J5E7JdT2mlVEZre7tMqlEuBIfYDsF1wWT6N1lyTBMmoO50hYNVyg
-	 5/f1luPXIEnx5vHm96P+jbuDNEpPSwyWZw5bbyCI=
+	b=lRsS/B7uG8hQoFctMO125PbkeXoj54Y3py0F7cFisBGbAMxRs+CNa2kPndTh6eJw+
+	 d5EqTA6m4YZvSQ8R6IrU664tkTL3D4zkC1rbjP1v4yofHCNdWe8nqlQOSlrZcyXsWd
+	 O/q3j2R9YbaC/JasSNPI37SWRF2VxHTmzWn1wEy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskander Amara <iskander.amara@theobroma-systems.com>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/186] arm64: dts: rockchip: fix alphabetical ordering RK3399 puma
+Subject: [PATCH 6.8 082/228] Bluetooth: hci_sync: Add helper functions to manipulate cmd_sync queue
 Date: Tue, 30 Apr 2024 12:37:40 +0200
-Message-ID: <20240430103058.260163775@linuxfoundation.org>
+Message-ID: <20240430103106.169890814@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,212 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iskander Amara <iskander.amara@theobroma-systems.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit f0abb4b2c7acf3c3e4130dc3f54cd90cf2ae62bc ]
+[ Upstream commit 505ea2b295929e7be2b4e1bc86ee31cb7862fb01 ]
 
-Nodes overridden by their reference should be ordered alphabetically to
-make it easier to read the DTS. pinctrl node is defined in the wrong
-location so let's reorder it.
+This adds functions to queue, dequeue and lookup into the cmd_sync
+list.
 
-Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308085243.69903-2-iskander.amara@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Stable-dep-of: 945a7c857091 ("arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 2e7ed5f5e69b ("Bluetooth: hci_sync: Use advertised PHYs on hci_le_ext_create_conn_sync")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ include/net/bluetooth/hci_sync.h |  12 +++
+ net/bluetooth/hci_sync.c         | 132 +++++++++++++++++++++++++++++--
+ 2 files changed, 136 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index 9b9d70bf7f0ca..2979e6f4f96ce 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -401,15 +401,6 @@
- 	gpio1830-supply = <&vcc_1v8>;
- };
+diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
+index ed334c253ebcd..4ff4aa68ee196 100644
+--- a/include/net/bluetooth/hci_sync.h
++++ b/include/net/bluetooth/hci_sync.h
+@@ -48,6 +48,18 @@ int hci_cmd_sync_submit(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
+ 			void *data, hci_cmd_sync_work_destroy_t destroy);
+ int hci_cmd_sync_queue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
+ 		       void *data, hci_cmd_sync_work_destroy_t destroy);
++struct hci_cmd_sync_work_entry *
++hci_cmd_sync_lookup_entry(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++			  void *data, hci_cmd_sync_work_destroy_t destroy);
++int hci_cmd_sync_queue_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++			    void *data, hci_cmd_sync_work_destroy_t destroy);
++void hci_cmd_sync_cancel_entry(struct hci_dev *hdev,
++			       struct hci_cmd_sync_work_entry *entry);
++bool hci_cmd_sync_dequeue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++			  void *data, hci_cmd_sync_work_destroy_t destroy);
++bool hci_cmd_sync_dequeue_once(struct hci_dev *hdev,
++			      hci_cmd_sync_work_func_t func, void *data,
++			      hci_cmd_sync_work_destroy_t destroy);
  
--&pmu_io_domains {
--	status = "okay";
--	pmu1830-supply = <&vcc_1v8>;
--};
--
--&pwm2 {
--	status = "okay";
--};
--
- &pinctrl {
- 	i2c8 {
- 		i2c8_xfer_a: i2c8-xfer {
-@@ -448,6 +439,15 @@
- 	};
- };
+ int hci_update_eir_sync(struct hci_dev *hdev);
+ int hci_update_class_sync(struct hci_dev *hdev);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index cffa61ecf234f..22db2949eb3ef 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -570,6 +570,17 @@ void hci_cmd_sync_init(struct hci_dev *hdev)
+ 	INIT_DELAYED_WORK(&hdev->adv_instance_expire, adv_timeout_expire);
+ }
  
-+&pmu_io_domains {
-+	status = "okay";
-+	pmu1830-supply = <&vcc_1v8>;
-+};
++static void _hci_cmd_sync_cancel_entry(struct hci_dev *hdev,
++				       struct hci_cmd_sync_work_entry *entry,
++				       int err)
++{
++	if (entry->destroy)
++		entry->destroy(hdev, entry->data, err);
 +
-+&pwm2 {
-+	status = "okay";
-+};
++	list_del(&entry->list);
++	kfree(entry);
++}
 +
- &sdhci {
- 	/*
- 	 * Signal integrity isn't great at 200MHz but 100MHz has proven stable
+ void hci_cmd_sync_clear(struct hci_dev *hdev)
+ {
+ 	struct hci_cmd_sync_work_entry *entry, *tmp;
+@@ -578,13 +589,8 @@ void hci_cmd_sync_clear(struct hci_dev *hdev)
+ 	cancel_work_sync(&hdev->reenable_adv_work);
+ 
+ 	mutex_lock(&hdev->cmd_sync_work_lock);
+-	list_for_each_entry_safe(entry, tmp, &hdev->cmd_sync_work_list, list) {
+-		if (entry->destroy)
+-			entry->destroy(hdev, entry->data, -ECANCELED);
+-
+-		list_del(&entry->list);
+-		kfree(entry);
+-	}
++	list_for_each_entry_safe(entry, tmp, &hdev->cmd_sync_work_list, list)
++		_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
+ 	mutex_unlock(&hdev->cmd_sync_work_lock);
+ }
+ 
+@@ -676,6 +682,115 @@ int hci_cmd_sync_queue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
+ }
+ EXPORT_SYMBOL(hci_cmd_sync_queue);
+ 
++static struct hci_cmd_sync_work_entry *
++_hci_cmd_sync_lookup_entry(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++			   void *data, hci_cmd_sync_work_destroy_t destroy)
++{
++	struct hci_cmd_sync_work_entry *entry, *tmp;
++
++	list_for_each_entry_safe(entry, tmp, &hdev->cmd_sync_work_list, list) {
++		if (func && entry->func != func)
++			continue;
++
++		if (data && entry->data != data)
++			continue;
++
++		if (destroy && entry->destroy != destroy)
++			continue;
++
++		return entry;
++	}
++
++	return NULL;
++}
++
++/* Queue HCI command entry once:
++ *
++ * - Lookup if an entry already exist and only if it doesn't creates a new entry
++ *   and queue it.
++ */
++int hci_cmd_sync_queue_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++			    void *data, hci_cmd_sync_work_destroy_t destroy)
++{
++	if (hci_cmd_sync_lookup_entry(hdev, func, data, destroy))
++		return 0;
++
++	return hci_cmd_sync_queue(hdev, func, data, destroy);
++}
++EXPORT_SYMBOL(hci_cmd_sync_queue_once);
++
++/* Lookup HCI command entry:
++ *
++ * - Return first entry that matches by function callback or data or
++ *   destroy callback.
++ */
++struct hci_cmd_sync_work_entry *
++hci_cmd_sync_lookup_entry(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++			  void *data, hci_cmd_sync_work_destroy_t destroy)
++{
++	struct hci_cmd_sync_work_entry *entry;
++
++	mutex_lock(&hdev->cmd_sync_work_lock);
++	entry = _hci_cmd_sync_lookup_entry(hdev, func, data, destroy);
++	mutex_unlock(&hdev->cmd_sync_work_lock);
++
++	return entry;
++}
++EXPORT_SYMBOL(hci_cmd_sync_lookup_entry);
++
++/* Cancel HCI command entry */
++void hci_cmd_sync_cancel_entry(struct hci_dev *hdev,
++			       struct hci_cmd_sync_work_entry *entry)
++{
++	mutex_lock(&hdev->cmd_sync_work_lock);
++	_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
++	mutex_unlock(&hdev->cmd_sync_work_lock);
++}
++EXPORT_SYMBOL(hci_cmd_sync_cancel_entry);
++
++/* Dequeue one HCI command entry:
++ *
++ * - Lookup and cancel first entry that matches.
++ */
++bool hci_cmd_sync_dequeue_once(struct hci_dev *hdev,
++			       hci_cmd_sync_work_func_t func,
++			       void *data, hci_cmd_sync_work_destroy_t destroy)
++{
++	struct hci_cmd_sync_work_entry *entry;
++
++	entry = hci_cmd_sync_lookup_entry(hdev, func, data, destroy);
++	if (!entry)
++		return false;
++
++	hci_cmd_sync_cancel_entry(hdev, entry);
++
++	return true;
++}
++EXPORT_SYMBOL(hci_cmd_sync_dequeue_once);
++
++/* Dequeue HCI command entry:
++ *
++ * - Lookup and cancel any entry that matches by function callback or data or
++ *   destroy callback.
++ */
++bool hci_cmd_sync_dequeue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++			  void *data, hci_cmd_sync_work_destroy_t destroy)
++{
++	struct hci_cmd_sync_work_entry *entry;
++	bool ret = false;
++
++	mutex_lock(&hdev->cmd_sync_work_lock);
++	while ((entry = _hci_cmd_sync_lookup_entry(hdev, func, data,
++						   destroy))) {
++		_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
++		ret = true;
++	}
++	mutex_unlock(&hdev->cmd_sync_work_lock);
++
++	return ret;
++}
++EXPORT_SYMBOL(hci_cmd_sync_dequeue);
++
+ int hci_update_eir_sync(struct hci_dev *hdev)
+ {
+ 	struct hci_cp_write_eir cp;
+@@ -2932,7 +3047,8 @@ int hci_update_passive_scan(struct hci_dev *hdev)
+ 	    hci_dev_test_flag(hdev, HCI_UNREGISTER))
+ 		return 0;
+ 
+-	return hci_cmd_sync_queue(hdev, update_passive_scan_sync, NULL, NULL);
++	return hci_cmd_sync_queue_once(hdev, update_passive_scan_sync, NULL,
++				       NULL);
+ }
+ 
+ int hci_write_sc_support_sync(struct hci_dev *hdev, u8 val)
 -- 
 2.43.0
 
