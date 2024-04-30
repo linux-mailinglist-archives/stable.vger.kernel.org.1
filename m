@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-42318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E99A8B726D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF5F8B719F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603641C21D29
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F82B1C22310
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C785512D1F4;
-	Tue, 30 Apr 2024 11:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D07112C476;
+	Tue, 30 Apr 2024 10:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7VeL8fJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lb0Z0NM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8477D12D1EA;
-	Tue, 30 Apr 2024 11:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494387464;
+	Tue, 30 Apr 2024 10:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475272; cv=none; b=N2KNqQAd+gFaOK9qDeMRQGGDiceNVueQW/sVoFaEt/ZMB3mAUadgbHQ+hEkgCwyTuSr5w+UVCL2Hxqb+mEIzR3zZ9uSPocSZcDKb6ndZBhV/XfJM9EMsrOtuhMA/9Mp1vr+MalcAzWDPqhk6eNgEIeWIg/aAb/GY52+LWTGm7No=
+	t=1714474716; cv=none; b=kExyGcPuKr1rfebb55j99ahHz0eUb6HuL9gRBIRciRUlvr9j9pcrOvzU7KfuyMdS8EQFMVvVFbXQYAbqAiiBbdqZnimmeYMCKyWzvW5PMOfmvJAfGjPPKhUTn1Ev5JTDs37lpd0VORl0sKPBsXo+FFPKzW2MzdySe665oRU11KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475272; c=relaxed/simple;
-	bh=G6w06YJvn5nn8pqxwanlckeIJx/w8GP2LDbqgXLJgtI=;
+	s=arc-20240116; t=1714474716; c=relaxed/simple;
+	bh=y+0CakNk45QuvNGH/5HYSPWkt/Sr42nuJ+z825LhVCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PnmYBBXj80voSYLNVKT6wSxFdsnKqshM9aoRb6fewZvG+tl2OkuQw5dKMWLJ6FcYIZKqbMh1N9cq6bkoZNe7ay+ir86n4GCigguU2t4MXuMG8FsEA/Zxkqu2GChdcajXTsQI/hmWy5kf7RgZ8qgx7BAKr4nRwD1XXZJJnBjysdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7VeL8fJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D6EC4AF1B;
-	Tue, 30 Apr 2024 11:07:51 +0000 (UTC)
+	 MIME-Version; b=TzXnzqcRqBGRaHtgDjGHtatnhCnjwL+RJyAF24N/h5qIeK6pK6eGWnl2rcFTsd3+5Ncy2jcGPXLvdtI1TZ+mtxG0VVZzgdKjjKzv3qiut/wgjlbjmicURKp+rf3HFM4KcGW7+7zxq6TDoc6IBX3CVe0ixtNqlRBAqWfrlpJHfqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lb0Z0NM4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BE1C2BBFC;
+	Tue, 30 Apr 2024 10:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475272;
-	bh=G6w06YJvn5nn8pqxwanlckeIJx/w8GP2LDbqgXLJgtI=;
+	s=korg; t=1714474716;
+	bh=y+0CakNk45QuvNGH/5HYSPWkt/Sr42nuJ+z825LhVCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7VeL8fJnZPGUxAx3PnfhEkyGrw+hPU9HYh+75TWZc6JS2ABUtLNnJTnOZMYmNM0f
-	 E7uk9xQgIRNERWccqCIJd1eJ6P6/0xt7i6TSBSvUx3iZeIn25WlFRZve3kWOh7M5HC
-	 aHwNgc9pr/AGAzHIvlL8zbNS/hNoSbpjSYFclF9s=
+	b=lb0Z0NM4jh0HX+FV97AuyICvwkuY8/QOTEVrA5n2piQzomka7cKEatM9opCkZMh9C
+	 GZRoRNfOF2dw7x9yA4P7iOAruYYO4ZgpK2EF+2Li/9+SWz7MikEJVP5hSQsrY2UnYT
+	 ltPP9TUO3KXJb65qWKVnqmeP3EKcrvyHC3obkaqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/186] mlxsw: core: Unregister EMAD trap using FORWARD action
+Subject: [PATCH 5.10 014/138] netfilter: complete validation of user input
 Date: Tue, 30 Apr 2024 12:38:19 +0200
-Message-ID: <20240430103059.397713543@linuxfoundation.org>
+Message-ID: <20240430103049.845645451@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 976c44af48141cd8595601c0af2a19a43c5b228b ]
+[ Upstream commit 65acf6e0501ac8880a4f73980d01b5d27648b956 ]
 
-The device's manual (PRM - Programmer's Reference Manual) classifies the
-trap that is used to deliver EMAD responses as an "event trap". Among
-other things, it means that the only actions that can be associated with
-the trap are TRAP and FORWARD (NOP).
+In my recent commit, I missed that do_replace() handlers
+use copy_from_sockptr() (which I fixed), followed
+by unsafe copy_from_sockptr_offset() calls.
 
-Currently, during driver de-initialization the driver unregisters the
-trap by setting its action to DISCARD, which violates the above
-guideline. Future firmware versions will prevent such misuses by
-returning an error. This does not prevent the driver from working, but
-an error will be printed to the kernel log during module removal /
-devlink reload:
+In all functions, we can perform the @optlen validation
+before even calling xt_alloc_table_info() with the following
+check:
 
-mlxsw_spectrum 0000:03:00.0: Reg cmd access status failed (status=7(bad parameter))
-mlxsw_spectrum 0000:03:00.0: Reg cmd access failed (reg_id=7003(hpkt),type=write)
+if ((u64)optlen < (u64)tmp.size + sizeof(tmp))
+        return -EINVAL;
 
-Suppress the error message by aligning the driver to the manual and use
-a FORWARD (NOP) action when unregistering the trap.
-
-Fixes: 4ec14b7634b2 ("mlxsw: Add interface to access registers and process events")
-Cc: Jiri Pirko <jiri@resnulli.us>
-Cc: Amit Cohen <amcohen@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/753a89e14008fde08cb4a2c1e5f537b81d8eb2d6.1713446092.git.petrm@nvidia.com
+Fixes: 0c83842df40f ("netfilter: validate user input for expected length")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://lore.kernel.org/r/20240409120741.3538135-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/netfilter/arp_tables.c | 4 ++++
+ net/ipv4/netfilter/ip_tables.c  | 4 ++++
+ net/ipv6/netfilter/ip6_tables.c | 4 ++++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.c b/drivers/net/ethernet/mellanox/mlxsw/core.c
-index 1ccf3b73ed724..85507d01fd457 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core.c
-@@ -835,7 +835,7 @@ static void mlxsw_emad_rx_listener_func(struct sk_buff *skb, u16 local_port,
+diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
+index 48c6aa3d91ae8..5823e89b8a734 100644
+--- a/net/ipv4/netfilter/arp_tables.c
++++ b/net/ipv4/netfilter/arp_tables.c
+@@ -965,6 +965,8 @@ static int do_replace(struct net *net, sockptr_t arg, unsigned int len)
+ 		return -ENOMEM;
+ 	if (tmp.num_counters == 0)
+ 		return -EINVAL;
++	if ((u64)len < (u64)tmp.size + sizeof(tmp))
++		return -EINVAL;
  
- static const struct mlxsw_listener mlxsw_emad_rx_listener =
- 	MLXSW_RXL(mlxsw_emad_rx_listener_func, ETHEMAD, TRAP_TO_CPU, false,
--		  EMAD, DISCARD);
-+		  EMAD, FORWARD);
+ 	tmp.name[sizeof(tmp.name)-1] = 0;
  
- static int mlxsw_emad_tlv_enable(struct mlxsw_core *mlxsw_core)
- {
+@@ -1265,6 +1267,8 @@ static int compat_do_replace(struct net *net, sockptr_t arg, unsigned int len)
+ 		return -ENOMEM;
+ 	if (tmp.num_counters == 0)
+ 		return -EINVAL;
++	if ((u64)len < (u64)tmp.size + sizeof(tmp))
++		return -EINVAL;
+ 
+ 	tmp.name[sizeof(tmp.name)-1] = 0;
+ 
+diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
+index b46d58b9f3fe4..22e9ff592cd75 100644
+--- a/net/ipv4/netfilter/ip_tables.c
++++ b/net/ipv4/netfilter/ip_tables.c
+@@ -1119,6 +1119,8 @@ do_replace(struct net *net, sockptr_t arg, unsigned int len)
+ 		return -ENOMEM;
+ 	if (tmp.num_counters == 0)
+ 		return -EINVAL;
++	if ((u64)len < (u64)tmp.size + sizeof(tmp))
++		return -EINVAL;
+ 
+ 	tmp.name[sizeof(tmp.name)-1] = 0;
+ 
+@@ -1505,6 +1507,8 @@ compat_do_replace(struct net *net, sockptr_t arg, unsigned int len)
+ 		return -ENOMEM;
+ 	if (tmp.num_counters == 0)
+ 		return -EINVAL;
++	if ((u64)len < (u64)tmp.size + sizeof(tmp))
++		return -EINVAL;
+ 
+ 	tmp.name[sizeof(tmp.name)-1] = 0;
+ 
+diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
+index d013395be05fc..df7cd3d285e4f 100644
+--- a/net/ipv6/netfilter/ip6_tables.c
++++ b/net/ipv6/netfilter/ip6_tables.c
+@@ -1137,6 +1137,8 @@ do_replace(struct net *net, sockptr_t arg, unsigned int len)
+ 		return -ENOMEM;
+ 	if (tmp.num_counters == 0)
+ 		return -EINVAL;
++	if ((u64)len < (u64)tmp.size + sizeof(tmp))
++		return -EINVAL;
+ 
+ 	tmp.name[sizeof(tmp.name)-1] = 0;
+ 
+@@ -1515,6 +1517,8 @@ compat_do_replace(struct net *net, sockptr_t arg, unsigned int len)
+ 		return -ENOMEM;
+ 	if (tmp.num_counters == 0)
+ 		return -EINVAL;
++	if ((u64)len < (u64)tmp.size + sizeof(tmp))
++		return -EINVAL;
+ 
+ 	tmp.name[sizeof(tmp.name)-1] = 0;
+ 
 -- 
 2.43.0
 
