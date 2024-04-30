@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9728B7300
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:14:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8E68B7408
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 768CA2861F9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:14:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39B29B20386
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CD512DDAF;
-	Tue, 30 Apr 2024 11:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D15612D215;
+	Tue, 30 Apr 2024 11:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNpv/Z1k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rx1zaizh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E9812D215;
-	Tue, 30 Apr 2024 11:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C75812C47A;
+	Tue, 30 Apr 2024 11:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475649; cv=none; b=L4fWHUFipIP7EonxjtGQZinjeduwmjij0ruI7rJicK1O3bnsSroEVHJ1wtjFYw21dGhu6gwrao+iHuKS2chau4y2lNDYFe7nE43NI3VUMHcyHio/FMQZuM3obdOIaKW9VqmN9V/cTM2T9wZf1VMazip2EJKDmjx//HsVgMnKSL8=
+	t=1714476374; cv=none; b=pwBtAZdBto+utDdH3ojV/Cft7Ceou1fx6SAFu7Wat8AU76QLqa19k1qWXsy/+jRnBFxWQiFJOVqUqH4cMxVtauYIGvuXrM1muICHCfSKu1GBa5ZYLFoDH3QjTQvq/u2iShrKizqIj1pXPv3cH0HMhUUModgHkLQpR2hCNb1yubM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475649; c=relaxed/simple;
-	bh=QER33Um8DSt9li4AakiqdP6eonE84+scmJVfTMhqtCM=;
+	s=arc-20240116; t=1714476374; c=relaxed/simple;
+	bh=Hdv0P8mEEWzHGMdQ21XpGusN25DBTCCawk9pqBdICJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bZIptTMBHNOb9PRgcwW9+l2dyy99JngOura6IEzUKx/Ze5MyVvRjLdfgpLA1OvYegyxq8D1c8PyrKQyEUZ1RTNRCdq4ZSd2mDzVEvoYUZQEIghuW3UQrmGALKsnUm68uO1bjvNvrSo4kjxZ7/VLK+zc1HGwks9FR4qoPTrIB2y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNpv/Z1k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E6DC4AF1B;
-	Tue, 30 Apr 2024 11:14:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XvAMcYm9/Z0vY/Q/aGzculuu8OBAX5gYOhLnxMyYm470HYI9qF8m313X/WTKzFpPTIHHGXrEJgehpMNYK208K/8wSYZXtndTS+tKkATPY1i5Ezz8kBEQ/ieaiBMFfbTXW1NtHgek+oXk5kvle9Ba8qHvcds+RzbBQe1J+M5vDmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rx1zaizh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D230AC4AF1A;
+	Tue, 30 Apr 2024 11:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475649;
-	bh=QER33Um8DSt9li4AakiqdP6eonE84+scmJVfTMhqtCM=;
+	s=korg; t=1714476374;
+	bh=Hdv0P8mEEWzHGMdQ21XpGusN25DBTCCawk9pqBdICJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNpv/Z1khctJDl2cOcafCSbWaJV2kjQIb6LMQHmsp4+fn3AeS46CI34LxY+DOym3F
-	 tvueLdjmnzwI76/20IWjkCRPSgMdOSmrwcD7tn9N1JtlH0Z699bwqh11La4G0G6V0i
-	 tllpC/lDl3Q2eL12rjsv8qAvsjiYycq6EM8i4xsg=
+	b=rx1zaizhhcV+PaP0r+G5SDO9eHXJ90+jvCkzeA+WMgZrmGZUFH9/78A+2Dahb4ufm
+	 Oh9XNj3PnOT5Cn7sIeAI8YsHMJS7F5ci75m3Tyu944RPjcIXbKkhGDnw0xGOBUX+cu
+	 TOnyCsgSlhSiScHd/corzT+b2Y7yX/0JeT1r1+a0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 122/186] mtd: rawnand: qcom: Fix broken OP_RESET_DEVICE command in qcom_misc_cmd_type_exec()
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 005/110] arm64: dts: rockchip: set PHY address of MT7531 switch to 0x1f
 Date: Tue, 30 Apr 2024 12:39:34 +0200
-Message-ID: <20240430103101.575140727@linuxfoundation.org>
+Message-ID: <20240430103047.726998122@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-commit b61bb5bc2c1cd00bb53db42f705735db6e8700f0 upstream.
+[ Upstream commit a2ac2a1b02590a22a236c43c455f421cdede45f5 ]
 
-While migrating to exec_ops in commit a82990c8a409 ("mtd: rawnand: qcom:
-Add read/read_start ops in exec_op path"), OP_RESET_DEVICE command handling
-got broken unintentionally. Right now for the OP_RESET_DEVICE command,
-qcom_misc_cmd_type_exec() will simply return 0 without handling it. Even,
-if that gets fixed, an unnecessary FLASH_STATUS read descriptor command is
-being added in the middle and that seems to be causing the command to fail
-on IPQ806x devices.
+The MT7531 switch listens on PHY address 0x1f on an MDIO bus. I've got two
+findings that support this. There's no bootstrapping option to change the
+PHY address of the switch. The Linux driver hardcodes 0x1f as the PHY
+address of the switch. So the reg property on the device tree is currently
+ignored by the Linux driver.
 
-So let's fix the above two issues to make OP_RESET_DEVICE command working
-again.
+Therefore, describe the correct PHY address on Banana Pi BPI-R2 Pro that
+has this switch.
 
-Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
-Cc: stable@vger.kernel.org
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240404083157.940-1-ansuelsmth@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Fixes: c1804463e5c6 ("arm64: dts: rockchip: Add mt7531 dsa node to BPI-R2-Pro board")
+Link: https://lore.kernel.org/r/20240314-for-rockchip-mt7531-phy-address-v1-1-743b5873358f@arinc9.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index b079605c84d3..b8cff9240b28 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2815,7 +2815,7 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
- 			      host->cfg0_raw & ~(7 << CW_PER_PAGE));
- 		nandc_set_reg(chip, NAND_DEV0_CFG1, host->cfg1_raw);
- 		instrs = 3;
--	} else {
-+	} else if (q_op.cmd_reg != OP_RESET_DEVICE) {
- 		return 0;
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts b/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
+index 26d7fda275edb..7952a14314360 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
+@@ -521,9 +521,9 @@
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
  
-@@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
- 	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
+-	switch@0 {
++	switch@1f {
+ 		compatible = "mediatek,mt7531";
+-		reg = <0>;
++		reg = <0x1f>;
  
- 	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
--	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
--	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
--	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
-+	if (q_op.cmd_reg == OP_BLOCK_ERASE)
-+		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
- 
- 	write_reg_dma(nandc, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
- 	read_reg_dma(nandc, NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
+ 		ports {
+ 			#address-cells = <1>;
 -- 
-2.44.0
+2.43.0
 
 
 
