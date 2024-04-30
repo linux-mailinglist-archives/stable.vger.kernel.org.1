@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-42518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34BB8B7367
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA16D8B7317
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7F31F2117C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBB931C23215
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8176312CDA5;
-	Tue, 30 Apr 2024 11:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A7E12DDB2;
+	Tue, 30 Apr 2024 11:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t23dfEmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlpy6Gje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E59B8801;
-	Tue, 30 Apr 2024 11:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F0F12CD9B;
+	Tue, 30 Apr 2024 11:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475921; cv=none; b=Q3xcxcTADQ+hcZQnV3qBLijmts7ONeC2z6usLRtc9/Z/VhN+eCNWbyroK/swZ05NL6n27845V/zyY63LjxkkaHnUhyLGQ3h09WpgihOmst8snZvZ9pGF0RxxfTXlLLUgPOk6VOB55jA47m34j2vPhfl9wa1DaPB2s7tm+HcyXvM=
+	t=1714475705; cv=none; b=LI7blnWliRm3SPlD+TxkVabgx4GsnNHs4x1ARBTp2KLKJECjlcNwTr12zdPuH4Bpfuv0Eyblz6Ot51HS1Fs2VcvOzsaRykQnhWAZJWH1CsLnYTHU2w6UYBysIeISoIo15DgYggxpGr5IqhrZQ22Ue9QXl6gqAOQzV3G138MzBjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475921; c=relaxed/simple;
-	bh=JNe4URyr+QRo7g12Dw53dKk+2vsG5isLTNvVFmqxna0=;
+	s=arc-20240116; t=1714475705; c=relaxed/simple;
+	bh=uKR3p7HHsAJQ44tDIyvKSlWrgUFWBitQXWGG0qoIDIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KyJ2XpDMtQucr4e89+yLbMz33hZs90rJOCYQ+jZZ4QK5Ru2IPnSyERNT4m1kEmT3wSUEyXQuOB9IgPr1Iw12Zgs88KTehWXlgdTFObzu20/1fo58Q4d/8NNot6RXYGYzpx3vROMixxV9dal/nDMg4RaYLitzVBNV786lEjEJ5G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t23dfEmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC720C2BBFC;
-	Tue, 30 Apr 2024 11:18:40 +0000 (UTC)
+	 MIME-Version; b=Zjq2EhDaT5mj35aYjl94+rKdhJYRhEOLzuS48S44AVRwcpx6z7Mkf92TgJtx2bESu9DRkkAWpL1vEK7jaDq6qIFbjxoctHsU/Hi/E3DQqZDa+n1QKLkIj9c7UkouQM63Qe8t81e3/egN7u/qnDPkvr3eFvueYGCHKliIpS3s1LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlpy6Gje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F5AC2BBFC;
+	Tue, 30 Apr 2024 11:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475921;
-	bh=JNe4URyr+QRo7g12Dw53dKk+2vsG5isLTNvVFmqxna0=;
+	s=korg; t=1714475704;
+	bh=uKR3p7HHsAJQ44tDIyvKSlWrgUFWBitQXWGG0qoIDIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t23dfEmEB3BfFisfjWMh/BxCr6fPMmNelQXK9l/AgecALoAJeK7ByMK4DRgtfh8zL
-	 GHImaE6rWcyAlwEUBvSOxGKa06kJW4QODt8YmPS0jAshQdeux/r92GeiG+jdSa2xG5
-	 182yGWqZvm7aPaKR903DXGXQ59mMXH7Csrnju3cg=
+	b=rlpy6Gje8ubpSYLhNEgnBIbceBfmLkMANWxXqftWJqdQhPIaSVk077Al0qy1ZDkmE
+	 pgoDfa0HlHsfleSJScZIDKISNrVvz8qCKHSO44WFwabvCMNY68KViXfF2wfFsbt8a5
+	 p4p/r6Ep0hLjG/FNfjTczduM67jpbbDSlYlETKhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sean Christopherson <seanjc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.15 58/80] cpu: Re-enable CPU mitigations by default for !X86 architectures
+	Sergei Trofimovich <slyich@gmail.com>,
+	Igor Raits <igor@gooddata.com>,
+	Breno Leitao <leitao@debian.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Yujie Liu <yujie.liu@intel.com>,
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Chen Yu <yu.c.chen@intel.com>
+Subject: [PATCH 6.6 178/186] sched/eevdf: Prevent vlag from going out of bounds in reweight_eevdf()
 Date: Tue, 30 Apr 2024 12:40:30 +0200
-Message-ID: <20240430103045.132210757@linuxfoundation.org>
+Message-ID: <20240430103103.198157606@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,113 +68,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-commit fe42754b94a42d08cf9501790afc25c4f6a5f631 upstream.
+[ Upstream commit 1560d1f6eb6b398bddd80c16676776c0325fe5fe ]
 
-Rename x86's to CPU_MITIGATIONS, define it in generic code, and force it
-on for all architectures exception x86.  A recent commit to turn
-mitigations off by default if SPECULATION_MITIGATIONS=n kinda sorta
-missed that "cpu_mitigations" is completely generic, whereas
-SPECULATION_MITIGATIONS is x86-specific.
+It was possible to have pick_eevdf() return NULL, which then causes a
+NULL-deref. This turned out to be due to entity_eligible() returning
+falsely negative because of a s64 multiplcation overflow.
 
-Rename x86's SPECULATIVE_MITIGATIONS instead of keeping both and have it
-select CPU_MITIGATIONS, as having two configs for the same thing is
-unnecessary and confusing.  This will also allow x86 to use the knob to
-manage mitigations that aren't strictly related to speculative
-execution.
+Specifically, reweight_eevdf() computes the vlag without considering
+the limit placed upon vlag as update_entity_lag() does, and then the
+scaling multiplication (remember that weight is 20bit fixed point) can
+overflow. This then leads to the new vruntime being weird which then
+causes the above entity_eligible() to go side-ways and claim nothing
+is eligible.
 
-Use another Kconfig to communicate to common code that CPU_MITIGATIONS
-is already defined instead of having x86's menu depend on the common
-CPU_MITIGATIONS.  This allows keeping a single point of contact for all
-of x86's mitigations, and it's not clear that other architectures *want*
-to allow disabling mitigations at compile-time.
+Thus limit the range of vlag accordingly.
 
-Fixes: f337a6a21e2f ("x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=n")
-Closes: https://lkml.kernel.org/r/20240413115324.53303a68%40canb.auug.org.au
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240420000556.2645001-2-seanjc@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+All this was quite rare, but fatal when it does happen.
+
+Closes: https://lore.kernel.org/all/ZhuYyrh3mweP_Kd8@nz.home/
+Closes: https://lore.kernel.org/all/CA+9S74ih+45M_2TPUY_mPPVDhNvyYfy1J1ftSix+KjiTVxg8nw@mail.gmail.com/
+Closes: https://lore.kernel.org/lkml/202401301012.2ed95df0-oliver.sang@intel.com/
+Fixes: eab03c23c2a1 ("sched/eevdf: Fix vruntime adjustment on reweight")
+Reported-by: Sergei Trofimovich <slyich@gmail.com>
+Reported-by: Igor Raits <igor@gooddata.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Reported-by: Yujie Liu <yujie.liu@intel.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Reviewed-and-tested-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240422082238.5784-1-xuewen.yan@unisoc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/Kconfig     |    8 ++++++++
- arch/x86/Kconfig |   11 ++++++-----
- kernel/cpu.c     |    4 ++--
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ kernel/sched/fair.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -9,6 +9,14 @@
- #
- source "arch/$(SRCARCH)/Kconfig"
- 
-+config ARCH_CONFIGURES_CPU_MITIGATIONS
-+	bool
-+
-+if !ARCH_CONFIGURES_CPU_MITIGATIONS
-+config CPU_MITIGATIONS
-+	def_bool y
-+endif
-+
- menu "General architecture-dependent options"
- 
- config CRASH_CORE
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -61,6 +61,7 @@ config X86
- 	select ACPI_SYSTEM_POWER_STATES_SUPPORT	if ACPI
- 	select ARCH_32BIT_OFF_T			if X86_32
- 	select ARCH_CLOCKSOURCE_INIT
-+	select ARCH_CONFIGURES_CPU_MITIGATIONS
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64 || (X86_32 && HIGHMEM)
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
-@@ -2394,17 +2395,17 @@ config CC_HAS_SLS
- config CC_HAS_RETURN_THUNK
- 	def_bool $(cc-option,-mfunction-return=thunk-extern)
- 
--menuconfig SPECULATION_MITIGATIONS
--	bool "Mitigations for speculative execution vulnerabilities"
-+menuconfig CPU_MITIGATIONS
-+	bool "Mitigations for CPU vulnerabilities"
- 	default y
- 	help
--	  Say Y here to enable options which enable mitigations for
--	  speculative execution hardware vulnerabilities.
-+	  Say Y here to enable options which enable mitigations for hardware
-+	  vulnerabilities (usually related to speculative execution).
- 
- 	  If you say N, all mitigations will be disabled. You really
- 	  should know what you are doing to say so.
- 
--if SPECULATION_MITIGATIONS
-+if CPU_MITIGATIONS
- 
- config PAGE_TABLE_ISOLATION
- 	bool "Remove the kernel mapping in user mode"
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2722,8 +2722,8 @@ enum cpu_mitigations {
- };
- 
- static enum cpu_mitigations cpu_mitigations __ro_after_init =
--	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
--						     CPU_MITIGATIONS_OFF;
-+	IS_ENABLED(CONFIG_CPU_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
-+					     CPU_MITIGATIONS_OFF;
- 
- static int __init mitigations_parse_cmdline(char *arg)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index a5466eb6a1f15..397ef27c9bdb1 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -707,15 +707,21 @@ u64 avg_vruntime(struct cfs_rq *cfs_rq)
+  *
+  * XXX could add max_slice to the augmented data to track this.
+  */
+-static void update_entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se)
++static s64 entity_lag(u64 avruntime, struct sched_entity *se)
  {
+-	s64 lag, limit;
++	s64 vlag, limit;
++
++	vlag = avruntime - se->vruntime;
++	limit = calc_delta_fair(max_t(u64, 2*se->slice, TICK_NSEC), se);
++
++	return clamp(vlag, -limit, limit);
++}
+ 
++static void update_entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se)
++{
+ 	SCHED_WARN_ON(!se->on_rq);
+-	lag = avg_vruntime(cfs_rq) - se->vruntime;
+ 
+-	limit = calc_delta_fair(max_t(u64, 2*se->slice, TICK_NSEC), se);
+-	se->vlag = clamp(lag, -limit, limit);
++	se->vlag = entity_lag(avg_vruntime(cfs_rq), se);
+ }
+ 
+ /*
+@@ -3710,7 +3716,7 @@ static void reweight_eevdf(struct sched_entity *se, u64 avruntime,
+ 	 *	   = V  - vl'
+ 	 */
+ 	if (avruntime != se->vruntime) {
+-		vlag = (s64)(avruntime - se->vruntime);
++		vlag = entity_lag(avruntime, se);
+ 		vlag = div_s64(vlag * old_weight, weight);
+ 		se->vruntime = avruntime - vlag;
+ 	}
+-- 
+2.43.0
+
 
 
 
