@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-42117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CA08B717D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1688B720C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C25B1F21653
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB148282D01
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6CE12C817;
-	Tue, 30 Apr 2024 10:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA95512C534;
+	Tue, 30 Apr 2024 11:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUC2ghi6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVRm7R4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75485129E89;
-	Tue, 30 Apr 2024 10:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C3B12C476;
+	Tue, 30 Apr 2024 11:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474625; cv=none; b=V+2azbIXdEKXJDolqkaXK6Ov2hPY+5tKFKGfqwHiur+fuhzRkS8DNqh6NqnuJtvG6kSqUx7KwzeuXADXoIAe5qY1BJM0rlY4k+xz9hHntV/9jfUELg8XSKRJXoiCriB1BP+6+46RYOJKR0NYRez6Z4TU3b8Bs2OxeePsNIBsepg=
+	t=1714475014; cv=none; b=gKwlTCoyHPqFBMI6FvSKhBqCjumk5UsJ54EW5nNQOxwah6eVCGQRO6bbpEb9NTe59n34luZhotL1067aUXuuh4nft0xIoHVaOJjCfPOC7ob3k91kcB44WRFo7eWVBvUxgwbkuJs9vNdC1J2SKaLgvY+QF/UyuuqvXDI+Tvndmh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474625; c=relaxed/simple;
-	bh=zRcs6NP5AWs1kHo4Uy7r/CZ9DxjbyE+vEbUI6CZaCdc=;
+	s=arc-20240116; t=1714475014; c=relaxed/simple;
+	bh=TFLj5MhOgeEeig523P/ra88ZL0jSoX5U6gz4ueCVhZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d3uLl6j60DWbay4j7c47mbGHWL3dit/u1ek5E26NL7EvFoWLoo94pSI9KLWIANcrPoq5iEflHXC5PwpwkHzJoLbKEBHrlgvACFC74aOzM2QNJgN7TKeeIep782jlA5ThCpcrQ4l8k7kSrnsj26CbxNqPIlBlkCmPmfOcrMKEtEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUC2ghi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E15C2BBFC;
-	Tue, 30 Apr 2024 10:57:04 +0000 (UTC)
+	 MIME-Version; b=kW11jjAhE8cxwOs8Rb+1ehKPp/yFhr1b3PYzawFFVFgvE2gqtZju6DXHDSLmLPf2W3yb9d5WNtdQMX3Ts1EIjDG6fMDJ6YpTBSA9vQ2PPWXDEwsRhkg7z9ZWQAPEV4xeE1ttY6cCD/rzDRXgIWUnivl01CjblXK7UTzKtqad0Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVRm7R4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF4BC2BBFC;
+	Tue, 30 Apr 2024 11:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474625;
-	bh=zRcs6NP5AWs1kHo4Uy7r/CZ9DxjbyE+vEbUI6CZaCdc=;
+	s=korg; t=1714475014;
+	bh=TFLj5MhOgeEeig523P/ra88ZL0jSoX5U6gz4ueCVhZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUC2ghi6Q5RZKQ03EhXzA4xdvpp/ywO73rrGPHAf/rJhqmyegv87Zve4phdmrNmcT
-	 7BoGaB1Ir7Jx9hjOx63R+a0N23N5Jhkilxmrik89cf2D1/xJTl33U/zKsuciaZ/7Dd
-	 NquJMmpoiLfgFo4+z/IBif0jogBAigIeaAIjLB8k=
+	b=wVRm7R4EnLSzf9WwLEHjLMxArd38GjlhmmeaZb09JBYlGEREN8cXqJmWDMUxwWyTi
+	 qrUXZZD8eVc/qRWAfGVDhoeLZQlLgHZidcEsGr2sHWSNAT92g0UIXKpyYTXDAUQvaP
+	 6wlsoaG07t0B8YMGiT9A/h+3VvpKDjCHjSi9yLIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jason Reeder <jreeder@ti.com>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Ed Trexel <ed.trexel@hp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 212/228] dma: xilinx_dpdma: Fix locking
+Subject: [PATCH 5.10 105/138] net: ethernet: ti: am65-cpts: Fix PTPv1 message type on TX packets
 Date: Tue, 30 Apr 2024 12:39:50 +0200
-Message-ID: <20240430103109.923998847@linuxfoundation.org>
+Message-ID: <20240430103052.505879813@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,150 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Jason Reeder <jreeder@ti.com>
 
-[ Upstream commit 244296cc3a155199a8b080d19e645d7d49081a38 ]
+[ Upstream commit 1b9e743e923b256e353a9a644195372285e5a6c0 ]
 
-There are several places where either chan->lock or chan->vchan.lock was
-not held. Add appropriate locking. This fixes lockdep warnings like
+The CPTS, by design, captures the messageType (Sync, Delay_Req, etc.)
+field from the second nibble of the PTP header which is defined in the
+PTPv2 (1588-2008) specification. In the PTPv1 (1588-2002) specification
+the first two bytes of the PTP header are defined as the versionType
+which is always 0x0001. This means that any PTPv1 packets that are
+tagged for TX timestamping by the CPTS will have their messageType set
+to 0x0 which corresponds to a Sync message type. This causes issues
+when a PTPv1 stack is expecting a Delay_Req (messageType: 0x1)
+timestamp that never appears.
 
-[   31.077578] ------------[ cut here ]------------
-[   31.077831] WARNING: CPU: 2 PID: 40 at drivers/dma/xilinx/xilinx_dpdma.c:834 xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
-[   31.077953] Modules linked in:
-[   31.078019] CPU: 2 PID: 40 Comm: kworker/u12:1 Not tainted 6.6.20+ #98
-[   31.078102] Hardware name: xlnx,zynqmp (DT)
-[   31.078169] Workqueue: events_unbound deferred_probe_work_func
-[   31.078272] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   31.078377] pc : xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
-[   31.078473] lr : xilinx_dpdma_chan_queue_transfer+0x270/0x5e0
-[   31.078550] sp : ffffffc083bb2e10
-[   31.078590] x29: ffffffc083bb2e10 x28: 0000000000000000 x27: ffffff880165a168
-[   31.078754] x26: ffffff880164e920 x25: ffffff880164eab8 x24: ffffff880164d480
-[   31.078920] x23: ffffff880165a148 x22: ffffff880164e988 x21: 0000000000000000
-[   31.079132] x20: ffffffc082aa3000 x19: ffffff880164e880 x18: 0000000000000000
-[   31.079295] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-[   31.079453] x14: 0000000000000000 x13: ffffff8802263dc0 x12: 0000000000000001
-[   31.079613] x11: 0001ffc083bb2e34 x10: 0001ff880164e98f x9 : 0001ffc082aa3def
-[   31.079824] x8 : 0001ffc082aa3dec x7 : 0000000000000000 x6 : 0000000000000516
-[   31.079982] x5 : ffffffc7f8d43000 x4 : ffffff88003c9c40 x3 : ffffffffffffffff
-[   31.080147] x2 : ffffffc7f8d43000 x1 : 00000000000000c0 x0 : 0000000000000000
-[   31.080307] Call trace:
-[   31.080340]  xilinx_dpdma_chan_queue_transfer+0x274/0x5e0
-[   31.080518]  xilinx_dpdma_issue_pending+0x11c/0x120
-[   31.080595]  zynqmp_disp_layer_update+0x180/0x3ac
-[   31.080712]  zynqmp_dpsub_plane_atomic_update+0x11c/0x21c
-[   31.080825]  drm_atomic_helper_commit_planes+0x20c/0x684
-[   31.080951]  drm_atomic_helper_commit_tail+0x5c/0xb0
-[   31.081139]  commit_tail+0x234/0x294
-[   31.081246]  drm_atomic_helper_commit+0x1f8/0x210
-[   31.081363]  drm_atomic_commit+0x100/0x140
-[   31.081477]  drm_client_modeset_commit_atomic+0x318/0x384
-[   31.081634]  drm_client_modeset_commit_locked+0x8c/0x24c
-[   31.081725]  drm_client_modeset_commit+0x34/0x5c
-[   31.081812]  __drm_fb_helper_restore_fbdev_mode_unlocked+0x104/0x168
-[   31.081899]  drm_fb_helper_set_par+0x50/0x70
-[   31.081971]  fbcon_init+0x538/0xc48
-[   31.082047]  visual_init+0x16c/0x23c
-[   31.082207]  do_bind_con_driver.isra.0+0x2d0/0x634
-[   31.082320]  do_take_over_console+0x24c/0x33c
-[   31.082429]  do_fbcon_takeover+0xbc/0x1b0
-[   31.082503]  fbcon_fb_registered+0x2d0/0x34c
-[   31.082663]  register_framebuffer+0x27c/0x38c
-[   31.082767]  __drm_fb_helper_initial_config_and_unlock+0x5c0/0x91c
-[   31.082939]  drm_fb_helper_initial_config+0x50/0x74
-[   31.083012]  drm_fbdev_dma_client_hotplug+0xb8/0x108
-[   31.083115]  drm_client_register+0xa0/0xf4
-[   31.083195]  drm_fbdev_dma_setup+0xb0/0x1cc
-[   31.083293]  zynqmp_dpsub_drm_init+0x45c/0x4e0
-[   31.083431]  zynqmp_dpsub_probe+0x444/0x5e0
-[   31.083616]  platform_probe+0x8c/0x13c
-[   31.083713]  really_probe+0x258/0x59c
-[   31.083793]  __driver_probe_device+0xc4/0x224
-[   31.083878]  driver_probe_device+0x70/0x1c0
-[   31.083961]  __device_attach_driver+0x108/0x1e0
-[   31.084052]  bus_for_each_drv+0x9c/0x100
-[   31.084125]  __device_attach+0x100/0x298
-[   31.084207]  device_initial_probe+0x14/0x20
-[   31.084292]  bus_probe_device+0xd8/0xdc
-[   31.084368]  deferred_probe_work_func+0x11c/0x180
-[   31.084451]  process_one_work+0x3ac/0x988
-[   31.084643]  worker_thread+0x398/0x694
-[   31.084752]  kthread+0x1bc/0x1c0
-[   31.084848]  ret_from_fork+0x10/0x20
-[   31.084932] irq event stamp: 64549
-[   31.084970] hardirqs last  enabled at (64548): [<ffffffc081adf35c>] _raw_spin_unlock_irqrestore+0x80/0x90
-[   31.085157] hardirqs last disabled at (64549): [<ffffffc081adf010>] _raw_spin_lock_irqsave+0xc0/0xdc
-[   31.085277] softirqs last  enabled at (64503): [<ffffffc08001071c>] __do_softirq+0x47c/0x500
-[   31.085390] softirqs last disabled at (64498): [<ffffffc080017134>] ____do_softirq+0x10/0x1c
-[   31.085501] ---[ end trace 0000000000000000 ]---
+Fix this by checking if the ptp_class of the timestamped TX packet is
+PTP_CLASS_V1 and then matching the PTP sequence ID to the stored
+sequence ID in the skb->cb data structure. If the sequence IDs match
+and the packet is of type PTPv1 then there is a chance that the
+messageType has been incorrectly stored by the CPTS so overwrite the
+messageType stored by the CPTS with the messageType from the skb->cb
+data structure. This allows the PTPv1 stack to receive TX timestamps
+for Delay_Req packets which are necessary to lock onto a PTP Leader.
 
-Fixes: 7cbb0c63de3f ("dmaengine: xilinx: dpdma: Add the Xilinx DisplayPort DMA engine driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240308210034.3634938-2-sean.anderson@linux.dev
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Jason Reeder <jreeder@ti.com>
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Tested-by: Ed Trexel <ed.trexel@hp.com>
+Fixes: f6bd59526ca5 ("net: ethernet: ti: introduce am654 common platform time sync driver")
+Link: https://lore.kernel.org/r/20240424071626.32558-1-r-gunasekaran@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dpdma.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ti/am65-cpts.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/dma/xilinx/xilinx_dpdma.c b/drivers/dma/xilinx/xilinx_dpdma.c
-index b82815e64d24e..eb0637d90342a 100644
---- a/drivers/dma/xilinx/xilinx_dpdma.c
-+++ b/drivers/dma/xilinx/xilinx_dpdma.c
-@@ -214,7 +214,8 @@ struct xilinx_dpdma_tx_desc {
-  * @running: true if the channel is running
-  * @first_frame: flag for the first frame of stream
-  * @video_group: flag if multi-channel operation is needed for video channels
-- * @lock: lock to access struct xilinx_dpdma_chan
-+ * @lock: lock to access struct xilinx_dpdma_chan. Must be taken before
-+ *        @vchan.lock, if both are to be held.
-  * @desc_pool: descriptor allocation pool
-  * @err_task: error IRQ bottom half handler
-  * @desc: References to descriptors being processed
-@@ -1097,12 +1098,14 @@ static void xilinx_dpdma_chan_vsync_irq(struct  xilinx_dpdma_chan *chan)
- 	 * Complete the active descriptor, if any, promote the pending
- 	 * descriptor to active, and queue the next transfer, if any.
- 	 */
-+	spin_lock(&chan->vchan.lock);
- 	if (chan->desc.active)
- 		vchan_cookie_complete(&chan->desc.active->vdesc);
- 	chan->desc.active = pending;
- 	chan->desc.pending = NULL;
+diff --git a/drivers/net/ethernet/ti/am65-cpts.c b/drivers/net/ethernet/ti/am65-cpts.c
+index 5dc60ecabe561..e0fcdbadf2cba 100644
+--- a/drivers/net/ethernet/ti/am65-cpts.c
++++ b/drivers/net/ethernet/ti/am65-cpts.c
+@@ -649,6 +649,11 @@ static bool am65_cpts_match_tx_ts(struct am65_cpts *cpts,
+ 		struct am65_cpts_skb_cb_data *skb_cb =
+ 					(struct am65_cpts_skb_cb_data *)skb->cb;
  
- 	xilinx_dpdma_chan_queue_transfer(chan);
-+	spin_unlock(&chan->vchan.lock);
- 
- out:
- 	spin_unlock_irqrestore(&chan->lock, flags);
-@@ -1264,10 +1267,12 @@ static void xilinx_dpdma_issue_pending(struct dma_chan *dchan)
- 	struct xilinx_dpdma_chan *chan = to_xilinx_chan(dchan);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&chan->vchan.lock, flags);
-+	spin_lock_irqsave(&chan->lock, flags);
-+	spin_lock(&chan->vchan.lock);
- 	if (vchan_issue_pending(&chan->vchan))
- 		xilinx_dpdma_chan_queue_transfer(chan);
--	spin_unlock_irqrestore(&chan->vchan.lock, flags);
-+	spin_unlock(&chan->vchan.lock);
-+	spin_unlock_irqrestore(&chan->lock, flags);
- }
- 
- static int xilinx_dpdma_config(struct dma_chan *dchan,
-@@ -1495,7 +1500,9 @@ static void xilinx_dpdma_chan_err_task(struct tasklet_struct *t)
- 		    XILINX_DPDMA_EINTR_CHAN_ERR_MASK << chan->id);
- 
- 	spin_lock_irqsave(&chan->lock, flags);
-+	spin_lock(&chan->vchan.lock);
- 	xilinx_dpdma_chan_queue_transfer(chan);
-+	spin_unlock(&chan->vchan.lock);
- 	spin_unlock_irqrestore(&chan->lock, flags);
- }
++		if ((ptp_classify_raw(skb) & PTP_CLASS_V1) &&
++		    ((mtype_seqid & AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK) ==
++		     (skb_cb->skb_mtype_seqid & AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK)))
++			mtype_seqid = skb_cb->skb_mtype_seqid;
++
+ 		if (mtype_seqid == skb_cb->skb_mtype_seqid) {
+ 			u64 ns = event->timestamp;
  
 -- 
 2.43.0
