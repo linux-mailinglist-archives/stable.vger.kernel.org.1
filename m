@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-42022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052638B70FC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4EA8B719C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7191E1F21C46
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FE451C20318
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EFF12C816;
-	Tue, 30 Apr 2024 10:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567E912C490;
+	Tue, 30 Apr 2024 10:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCwWIhvj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOsLjy/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BDA12C54A;
-	Tue, 30 Apr 2024 10:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158F812B176;
+	Tue, 30 Apr 2024 10:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474307; cv=none; b=OuGHBVL+s/Hwr11VSmn8OLxHZ6R4skrRep8nALmyjTF5leeTaiJSSbBYwW3QtqtZymcbJxLX16Z61Ow3tfGocJife6aRkBtYgVT0zzzAIouEIPyYlNXlwc5FExTZqsxvJJaE0zZDwAzv11OzkN56sHygWn4FF4G2cJDll5uhY6M=
+	t=1714474707; cv=none; b=oFGyxtFn33mLsXbSOJ5EgVrr8gUxQ2Ml5WpLPVIgDSisfTboatcgj1qpLFd06By+NAbxVfdEeELF1+wD7mB0x5GA7bh8z47puxh8+dBWASlaV0u9bIJzK96TfyrFxXZBpdLZs0//Cppo/EvVF32evw6/gOQouPbDMRUQXQTGio8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474307; c=relaxed/simple;
-	bh=1p6/RkXCXFuaSkoXPITI3lCnMNsJMzEbLKblL0rQ1qE=;
+	s=arc-20240116; t=1714474707; c=relaxed/simple;
+	bh=Lka3uClTZnsxW2gccXUJgPmIvxsTq4HE4NGrpSFh1xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1yOjeKOx1cncJr23EXFyGuyGRRSYuyivMvhG0SrmUbYW7e3W11kr4sZnXkD5btFLKfLp8EToIZrfBAqBAhJBX0vzgRrA83TUFwtN/NkZs/DwgZu6W96j8ixMoUaU8srWV43GydElXItFgnoDBr9+nNB2sDNYNe603g7GFBhEh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCwWIhvj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAE5C2BBFC;
-	Tue, 30 Apr 2024 10:51:46 +0000 (UTC)
+	 MIME-Version; b=oX4RWy4Z6gRNIKfVmCvfwRe4cY/mPLEoQ7ROTSbFgXLocWSjGHuaog1g/wXoW8H65+N4ijUhIIyYchyWZDnAxJdAVzLW4qHurut8PhX9yPIZvZI5rZ0ZQxk/v3FI50I5rZ/9DGoUWKSLIQKxkK5/M5NStJI1TpX+F1Pgdv+U8Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOsLjy/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D19C2BBFC;
+	Tue, 30 Apr 2024 10:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474306;
-	bh=1p6/RkXCXFuaSkoXPITI3lCnMNsJMzEbLKblL0rQ1qE=;
+	s=korg; t=1714474707;
+	bh=Lka3uClTZnsxW2gccXUJgPmIvxsTq4HE4NGrpSFh1xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCwWIhvjdzQQ4EkT2bLIQ7qhIGOmBl+eueAHGftsz0RgvEPNT+sIUPv6SVkxkzvjI
-	 PWAUZwk3VMEselYQRESmT4j0Qo20eULQQb1dcEpjlyYgNdLLPtYb4/LeqepkXE4mkr
-	 kmTHkhhYJLaVltmAhUOZdH+iewno0qpkL0tbBB00=
+	b=fOsLjy/AAfTbcJ9XlTSa9N8Arz7TMY0bYZCSy9PFn5gtVnfyPGfOID+G8jIzpJRLv
+	 ulhYiMyIWQ69S/ox0m6UippYU5qSxB2QjbRpCYvmsNLV2jfZhGsKaDGQjdr5aaoycn
+	 DACrKydC1xVrDlS9p3Fs6fIqf2iuN4oGucmV5hAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+fa379358c28cc87cc307@syzkaller.appspotmail.com
-Subject: [PATCH 6.8 118/228] af_unix: Suppress false-positive lockdep splat for spin_lock() in __unix_gc().
+	David Ahern <dsahern@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 011/138] ipv4/route: avoid unused-but-set-variable warning
 Date: Tue, 30 Apr 2024 12:38:16 +0200
-Message-ID: <20240430103107.213660070@linuxfoundation.org>
+Message-ID: <20240430103049.758296235@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,172 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 1971d13ffa84a551d29a81fdf5b5ec5be166ac83 ]
+[ Upstream commit cf1b7201df59fb936f40f4a807433fe3f2ce310a ]
 
-syzbot reported a lockdep splat regarding unix_gc_lock and
-unix_state_lock().
+The log_martians variable is only used in an #ifdef, causing a 'make W=1'
+warning with gcc:
 
-One is called from recvmsg() for a connected socket, and another
-is called from GC for TCP_LISTEN socket.
+net/ipv4/route.c: In function 'ip_rt_send_redirect':
+net/ipv4/route.c:880:13: error: variable 'log_martians' set but not used [-Werror=unused-but-set-variable]
 
-So, the splat is false-positive.
+Change the #ifdef to an equivalent IS_ENABLED() to let the compiler
+see where the variable is used.
 
-Let's add a dedicated lock class for the latter to suppress the splat.
-
-Note that this change is not necessary for net-next.git as the issue
-is only applied to the old GC impl.
-
-[0]:
-WARNING: possible circular locking dependency detected
-6.9.0-rc5-syzkaller-00007-g4d2008430ce8 #0 Not tainted
- -----------------------------------------------------
-kworker/u8:1/11 is trying to acquire lock:
-ffff88807cea4e70 (&u->lock){+.+.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
-ffff88807cea4e70 (&u->lock){+.+.}-{2:2}, at: __unix_gc+0x40e/0xf70 net/unix/garbage.c:302
-
-but task is already holding lock:
-ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
-ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: __unix_gc+0x117/0xf70 net/unix/garbage.c:261
-
-which lock already depends on the new lock.
-
-the existing dependency chain (in reverse order) is:
-
- -> #1 (unix_gc_lock){+.+.}-{2:2}:
-       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
-       __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
-       _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
-       spin_lock include/linux/spinlock.h:351 [inline]
-       unix_notinflight+0x13d/0x390 net/unix/garbage.c:140
-       unix_detach_fds net/unix/af_unix.c:1819 [inline]
-       unix_destruct_scm+0x221/0x350 net/unix/af_unix.c:1876
-       skb_release_head_state+0x100/0x250 net/core/skbuff.c:1188
-       skb_release_all net/core/skbuff.c:1200 [inline]
-       __kfree_skb net/core/skbuff.c:1216 [inline]
-       kfree_skb_reason+0x16d/0x3b0 net/core/skbuff.c:1252
-       kfree_skb include/linux/skbuff.h:1262 [inline]
-       manage_oob net/unix/af_unix.c:2672 [inline]
-       unix_stream_read_generic+0x1125/0x2700 net/unix/af_unix.c:2749
-       unix_stream_splice_read+0x239/0x320 net/unix/af_unix.c:2981
-       do_splice_read fs/splice.c:985 [inline]
-       splice_file_to_pipe+0x299/0x500 fs/splice.c:1295
-       do_splice+0xf2d/0x1880 fs/splice.c:1379
-       __do_splice fs/splice.c:1436 [inline]
-       __do_sys_splice fs/splice.c:1652 [inline]
-       __se_sys_splice+0x331/0x4a0 fs/splice.c:1634
-       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-       do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
- -> #0 (&u->lock){+.+.}-{2:2}:
-       check_prev_add kernel/locking/lockdep.c:3134 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3253 [inline]
-       validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
-       __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
-       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
-       __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
-       _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
-       spin_lock include/linux/spinlock.h:351 [inline]
-       __unix_gc+0x40e/0xf70 net/unix/garbage.c:302
-       process_one_work kernel/workqueue.c:3254 [inline]
-       process_scheduled_works+0xa10/0x17c0 kernel/workqueue.c:3335
-       worker_thread+0x86d/0xd70 kernel/workqueue.c:3416
-       kthread+0x2f0/0x390 kernel/kthread.c:388
-       ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(unix_gc_lock);
-                               lock(&u->lock);
-                               lock(unix_gc_lock);
-  lock(&u->lock);
-
- *** DEADLOCK ***
-
-3 locks held by kworker/u8:1/11:
- #0: ffff888015089148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3229 [inline]
- #0: ffff888015089148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_scheduled_works+0x8e0/0x17c0 kernel/workqueue.c:3335
- #1: ffffc90000107d00 (unix_gc_work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3230 [inline]
- #1: ffffc90000107d00 (unix_gc_work){+.+.}-{0:0}, at: process_scheduled_works+0x91b/0x17c0 kernel/workqueue.c:3335
- #2: ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
- #2: ffffffff8f6ab638 (unix_gc_lock){+.+.}-{2:2}, at: __unix_gc+0x117/0xf70 net/unix/garbage.c:261
-
-stack backtrace:
-CPU: 0 PID: 11 Comm: kworker/u8:1 Not tainted 6.9.0-rc5-syzkaller-00007-g4d2008430ce8 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Workqueue: events_unbound __unix_gc
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
- check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2187
- check_prev_add kernel/locking/lockdep.c:3134 [inline]
- check_prevs_add kernel/locking/lockdep.c:3253 [inline]
- validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
- __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
- lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
- __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
- _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
- spin_lock include/linux/spinlock.h:351 [inline]
- __unix_gc+0x40e/0xf70 net/unix/garbage.c:302
- process_one_work kernel/workqueue.c:3254 [inline]
- process_scheduled_works+0xa10/0x17c0 kernel/workqueue.c:3335
- worker_thread+0x86d/0xd70 kernel/workqueue.c:3416
- kthread+0x2f0/0x390 kernel/kthread.c:388
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-Fixes: 47d8ac011fe1 ("af_unix: Fix garbage collector racing against connect()")
-Reported-and-tested-by: syzbot+fa379358c28cc87cc307@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=fa379358c28cc87cc307
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240424170443.9832-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 30038fc61adf ("net: ip_rt_send_redirect() optimization")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240408074219.3030256-2-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_unix.h | 3 +++
- net/unix/garbage.c    | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/route.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index d1b07ddbe677e..77bf30203d3cf 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -77,6 +77,9 @@ enum unix_socket_lock_class {
- 	U_LOCK_NORMAL,
- 	U_LOCK_SECOND,	/* for double locking, see unix_state_double_lock(). */
- 	U_LOCK_DIAG, /* used while dumping icons, see sk_diag_dump_icons(). */
-+	U_LOCK_GC_LISTENER, /* used for listening socket while determining gc
-+			     * candidates to close a small race window.
-+			     */
- };
- 
- static inline void unix_state_lock_nested(struct sock *sk,
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 8734c0c1fc197..2a758531e1027 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -260,7 +260,7 @@ void unix_gc(void)
- 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
- 
- 			if (sk->sk_state == TCP_LISTEN) {
--				unix_state_lock(sk);
-+				unix_state_lock_nested(sk, U_LOCK_GC_LISTENER);
- 				unix_state_unlock(sk);
- 			}
- 		}
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index d360c7d70e8a2..b7cba4bdc5786 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -955,13 +955,11 @@ void ip_rt_send_redirect(struct sk_buff *skb)
+ 		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST, gw);
+ 		peer->rate_last = jiffies;
+ 		++peer->n_redirects;
+-#ifdef CONFIG_IP_ROUTE_VERBOSE
+-		if (log_martians &&
++		if (IS_ENABLED(CONFIG_IP_ROUTE_VERBOSE) && log_martians &&
+ 		    peer->n_redirects == ip_rt_redirect_number)
+ 			net_warn_ratelimited("host %pI4/if%d ignores redirects for %pI4 to %pI4\n",
+ 					     &ip_hdr(skb)->saddr, inet_iif(skb),
+ 					     &ip_hdr(skb)->daddr, &gw);
+-#endif
+ 	}
+ out_put_peer:
+ 	inet_putpeer(peer);
 -- 
 2.43.0
 
