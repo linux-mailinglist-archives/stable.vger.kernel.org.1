@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151A68B7344
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D338B7392
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 466351C22CD6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA6C11C22EF7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98CB12BF3E;
-	Tue, 30 Apr 2024 11:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B4E12CDA5;
+	Tue, 30 Apr 2024 11:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVukvf8S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqct/Xej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692728801;
-	Tue, 30 Apr 2024 11:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB31F8801;
+	Tue, 30 Apr 2024 11:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475826; cv=none; b=ndgUyazdh831vpWR8BWh1H+Y1r0nEt8l6NpKKsJVNR/ViT43ZtuJq3TCZpaUVV3AgyIX2il5T/rZjQgjOBj7adSx/SaNd9pT+pAf3+ynIS5xxVQ2SemMMO8D0XPsimIpfBw2qKlK7i3HFQnSLqm/V41AyMBKza8BeQ+RhrCbem4=
+	t=1714476043; cv=none; b=CMjgB6e8VPilTEJ4aZ+ApJrTCUxbRY6TY0q8vAKvt/MEzPIMuaFBEAJNVe1BTav/S6Hv7t6qyymDH7w6Fq5XTPdll/F5KJ4hJrweKjPVNJBYxJ5w3PSeKsuioxUD0hAg5kJP5rqDL+/4TZT0zVZfiCQhNEWC8xiRsoAqmqUtT4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475826; c=relaxed/simple;
-	bh=5anNoHDfoMYdZxh72AmA/Rgb5D9Dz6sYbKagp6XAgZI=;
+	s=arc-20240116; t=1714476043; c=relaxed/simple;
+	bh=htxm7hd2DYIXPo20g564t+hXnAJyZlTuxkJ/6nt+udg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGK8SFVkWUGJaO5yoq3e81hreXJxmK1lulnF31x7n1IN9dWdtqgi3B44l81T67GzfFKZU7Bu9FvlyMsxXpIaKNOIviMTOTv7lWcDB7ayoX65mTEcJm37bbQGarbsZaCMPbB44/usTBMbWJpKS7E4t72rgiHWrRx+gxHjnTDhkgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVukvf8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EF2C2BBFC;
-	Tue, 30 Apr 2024 11:17:05 +0000 (UTC)
+	 MIME-Version; b=B1Csjw6iteCrxITmFZf0FcyTaxAWcvUt7UG/z2kUfkQW/W5ctYsikApw3RD7EAREMeo7HtaP9x4D+RSI2v70nMpXVYybjDINAbKqxQVvBBMCo0N+MCQ0oGePfNjfYXpZDZnrBzSpoo2UMpDpF1bGu+iNc1DW3m2b0nHkVwHAT0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqct/Xej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448A0C2BBFC;
+	Tue, 30 Apr 2024 11:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475826;
-	bh=5anNoHDfoMYdZxh72AmA/Rgb5D9Dz6sYbKagp6XAgZI=;
+	s=korg; t=1714476043;
+	bh=htxm7hd2DYIXPo20g564t+hXnAJyZlTuxkJ/6nt+udg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qVukvf8S2CMhdUwxu7wyHSub3hvTIDvMHK7PTuqjqzffK7OCIqyig9V8mBXXqEhkE
-	 WG/4Pia0N8B7ifBoHqISnD7E7u1LHz9xqUYT2sPuHhdl182jU66TPFRS5nVQeMhFNJ
-	 Bp2mYJJBpFhkKO+r7QFSMxndJsRJ0UKtPW2cngWU=
+	b=tqct/XejB0yPYvkg75tfIwHB25puc380Yjlr5RqP9BQwu/wKe1V83HKpFxWOV5VMV
+	 coMKgtn/7O7cGDmX1Ebs1hCH+rPueBE71oGHYNbzGS3Uzh2r7s2u8QD3aVRUOcwwQG
+	 FL0isdW3KmFElIKPKJCsJQLeTiMnEMSl0DXEZnsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 05/80] arm64: dts: rockchip: enable internal pull-up on Q7_USB_ID for RK3399 Puma
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.4 017/107] selftests: timers: Fix abs() warning in posix_timers test
 Date: Tue, 30 Apr 2024 12:39:37 +0200
-Message-ID: <20240430103043.560735912@linuxfoundation.org>
+Message-ID: <20240430103045.171970492@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit e6b1168f37e3f86d9966276c5a3fff9eb0df3e5f ]
+commit ed366de8ec89d4f960d66c85fc37d9de22f7bf6d upstream.
 
-The Q7_USB_ID has a diode used as a level-shifter, and is used as an
-input pin. The SoC default for this pin is a pull-up, which is correct
-but the pinconf in the introducing commit missed that, so let's fix this
-oversight.
+Building with clang results in the following warning:
 
-Fixes: ed2c66a95c0c ("arm64: dts: rockchip: fix rk3399-puma-haikou USB OTG mode")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-1-309f83da110a@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  posix_timers.c:69:6: warning: absolute value function 'abs' given an
+      argument of type 'long long' but has parameter of type 'int' which may
+      cause truncation of value [-Wabsolute-value]
+        if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+            ^
+So switch to using llabs() instead.
+
+Fixes: 0bc4b0cf1570 ("selftests: add basic posix timers selftests")
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240410232637.4135564-3-jstultz@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 2 +-
+ tools/testing/selftests/timers/posix_timers.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index 7b27079fd6116..d9859fa4a7499 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -432,7 +432,7 @@
- 	usb3 {
- 		usb3_id: usb3-id {
- 			rockchip,pins =
--			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
-+			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_up>;
- 		};
- 	};
- };
--- 
-2.43.0
-
+--- a/tools/testing/selftests/timers/posix_timers.c
++++ b/tools/testing/selftests/timers/posix_timers.c
+@@ -66,7 +66,7 @@ static int check_diff(struct timeval sta
+ 	diff = end.tv_usec - start.tv_usec;
+ 	diff += (end.tv_sec - start.tv_sec) * USECS_PER_SEC;
+ 
+-	if (abs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
++	if (llabs(diff - DELAY * USECS_PER_SEC) > USECS_PER_SEC / 2) {
+ 		printf("Diff too high: %lld..", diff);
+ 		return -1;
+ 	}
 
 
 
