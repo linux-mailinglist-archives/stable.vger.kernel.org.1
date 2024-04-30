@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-42533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26118B7379
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A868F8B72F8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1585DB209F3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FAEC1F21BA0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954A012CDAE;
-	Tue, 30 Apr 2024 11:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4161E12D209;
+	Tue, 30 Apr 2024 11:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBrrA+XA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbzG4nMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9D48801;
-	Tue, 30 Apr 2024 11:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C218801;
+	Tue, 30 Apr 2024 11:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475970; cv=none; b=t3zHktB88U8t8gWoYhG6Fa/+9bdEYyqym4X5CahEB2rVr9uJy1773SLLFA041zmAFhyX80PWaGeWi9KCLUdPNiIrfQl/R4AA0jsYgkmuTDxQOEsrvOpp/zBnkea+E1yc6WYPZt+ZOdOC0CYYHyJ7DS1niguqa0zXJCDTaZrPAio=
+	t=1714475633; cv=none; b=l2zAo8Dm29FW7wc65VPkIIPlL/Ib/vV8Isc/IjJMtCOlJGWOVxyvPamk4jiKrjafRkh0ngTDOkeznLnYCay6p8CN/8QjWvKrwOGsvOJEGz4Q/rB7TYl7ctoJMNZMMRjskDgA+zxSt/krE9ujVgGJFodXAbo1LTalvHoERSUxupQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475970; c=relaxed/simple;
-	bh=/DZuc+mf/p6b1qWN0ecZJ11ZE21Bvci8W1alxCg19Rw=;
+	s=arc-20240116; t=1714475633; c=relaxed/simple;
+	bh=M/Ds26Z4aKvkQTGw6muPw+t2cIwLklUDqwxWc/fMbOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLXpl9rEp0QuOFj2bdTS/NkqVeqq9yBf8vFHp89bhzIt7wPvNEd4CtRS8JcOot8B9HDtML3qdJVhtNutVogvvu0X9ZO8aY51Ecd6V91b5HsPunTldu/hVELHb5eDMErGxur42O43xBX8MZmxA4KS725yJpShMKcN/WX1f2Bkk3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBrrA+XA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9EAC2BBFC;
-	Tue, 30 Apr 2024 11:19:29 +0000 (UTC)
+	 MIME-Version; b=NJWwSAOaJQKqi9ij1LQH9Ok2ta+j6L1p1emz58oi54GliN057SbD+OUK+KavV7BUYZyCYRqC/FZ5Bf1aylk5k5DGTwcQeWMJEpzpefLVguJGTzsOj260dSeaujVdfSOgPUw64oS0MduX4OXerwTqukHhoMzV1s+9Bzatclvs/hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbzG4nMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C151C2BBFC;
+	Tue, 30 Apr 2024 11:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475970;
-	bh=/DZuc+mf/p6b1qWN0ecZJ11ZE21Bvci8W1alxCg19Rw=;
+	s=korg; t=1714475632;
+	bh=M/Ds26Z4aKvkQTGw6muPw+t2cIwLklUDqwxWc/fMbOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XBrrA+XAUVahYVAySMW6jk39YdacF9DPWLZdRykFhP0mSUbVdiB3wRkuwOqcTXVil
-	 Hj/05ovAj/XfMEEppTUjxSmEzOhvgVh1qqQ9iWFoopWk7EFs2CwARfBGGfSXUKQWFr
-	 xzfSsjle9ysw9Ylhtk/G1PFKfxcbP0SDW5uVRHhI=
+	b=UbzG4nMMsTPzsHuXYwV8WS8r43f5cBZbElj9qHR9C8BHFeZNqJ2HFfes4EMufO4et
+	 iAiJav7UJn+K7++Gz4394wWPcMpZJ0QKkHpt0940aMHJArXncgb4NIdoT15H0iLpRB
+	 jiNj21wFSPJk6wSa1h0WTTIuhXzVmSIkC8/mwSEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/80] mlxsw: spectrum_acl_tcam: Fix warning during rehash
+	Douglas Anderson <dianders@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 155/186] phy: qcom: qmp-combo: Fix VCO div offset on v3
 Date: Tue, 30 Apr 2024 12:40:07 +0200
-Message-ID: <20240430103044.454243919@linuxfoundation.org>
+Message-ID: <20240430103102.534129531@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,138 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit 743edc8547a92b6192aa1f1b6bb78233fa21dc9b ]
+commit 5abed58a8bde6d349bde364a160510b5bb904d18 upstream.
 
-As previously explained, the rehash delayed work migrates filters from
-one region to another. This is done by iterating over all chunks (all
-the filters with the same priority) in the region and in each chunk
-iterating over all the filters.
+Commit ec17373aebd0 ("phy: qcom: qmp-combo: extract common function to
+setup clocks") changed the offset that is used to write to
+DP_PHY_VCO_DIV from QSERDES_V3_DP_PHY_VCO_DIV to
+QSERDES_V4_DP_PHY_VCO_DIV. Unfortunately, this offset is different
+between v3 and v4 phys:
 
-When the work runs out of credits it stores the current chunk and entry
-as markers in the per-work context so that it would know where to resume
-the migration from the next time the work is scheduled.
+ #define QSERDES_V3_DP_PHY_VCO_DIV                 0x064
+ #define QSERDES_V4_DP_PHY_VCO_DIV                 0x070
 
-Upon error, the chunk marker is reset to NULL, but without resetting the
-entry markers despite being relative to it. This can result in migration
-being resumed from an entry that does not belong to the chunk being
-migrated. In turn, this will eventually lead to a chunk being iterated
-over as if it is an entry. Because of how the two structures happen to
-be defined, this does not lead to KASAN splats, but to warnings such as
-[1].
+meaning that we write the wrong register on v3 phys now. Add another
+generic register to 'regs' and use it here instead of a version specific
+define to fix this.
 
-Fix by creating a helper that resets all the markers and call it from
-all the places the currently only reset the chunk marker. For good
-measures also call it when starting a completely new rehash. Add a
-warning to avoid future cases.
+This was discovered after Abhinav looked over register dumps with me
+from sc7180 Trogdor devices that started failing to light up the
+external display with v6.6 based kernels. It turns out that some
+monitors are very specific about their link clk frequency and if the
+default power on reset value is still there the monitor will show a
+blank screen or a garbled display. Other monitors are perfectly happy to
+get a bad clock signal.
 
-[1]
-WARNING: CPU: 7 PID: 1076 at drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c:407 mlxsw_afk_encode+0x242/0x2f0
-Modules linked in:
-CPU: 7 PID: 1076 Comm: kworker/7:24 Tainted: G        W          6.9.0-rc3-custom-00880-g29e61d91b77b #29
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-RIP: 0010:mlxsw_afk_encode+0x242/0x2f0
-[...]
-Call Trace:
- <TASK>
- mlxsw_sp_acl_atcam_entry_add+0xd9/0x3c0
- mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
- mlxsw_sp_acl_tcam_vchunk_migrate_all+0x109/0x290
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x6c/0x470
- process_one_work+0x151/0x370
- worker_thread+0x2cb/0x3e0
- kthread+0xd0/0x100
- ret_from_fork+0x34/0x50
- </TASK>
-
-Fixes: 6f9579d4e302 ("mlxsw: spectrum_acl: Remember where to continue rehash migration")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/cc17eed86b41dd829d39b07906fec074a9ce580e.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: ec17373aebd0 ("phy: qcom: qmp-combo: extract common function to setup clocks")
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240404234345.1446300-1-swboyd@chromium.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlxsw/spectrum_acl_tcam.c        | 20 ++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-combo.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index b63b4a3ee7c42..8c1e97d463eb7 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -725,6 +725,17 @@ static void mlxsw_sp_acl_tcam_vregion_rehash_work(struct work_struct *work)
- 		mlxsw_sp_acl_tcam_vregion_rehash_work_schedule(vregion);
- }
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+@@ -112,6 +112,7 @@ enum qphy_reg_layout {
+ 	QPHY_COM_BIAS_EN_CLKBUFLR_EN,
  
-+static void
-+mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(struct mlxsw_sp_acl_tcam_rehash_ctx *ctx)
-+{
-+	/* The entry markers are relative to the current chunk and therefore
-+	 * needs to be reset together with the chunk marker.
-+	 */
-+	ctx->current_vchunk = NULL;
-+	ctx->start_ventry = NULL;
-+	ctx->stop_ventry = NULL;
-+}
-+
- static void
- mlxsw_sp_acl_tcam_rehash_ctx_vchunk_changed(struct mlxsw_sp_acl_tcam_vchunk *vchunk)
- {
-@@ -747,7 +758,7 @@ mlxsw_sp_acl_tcam_rehash_ctx_vregion_changed(struct mlxsw_sp_acl_tcam_vregion *v
- 	 * the current chunk pointer to make sure all chunks
- 	 * are properly migrated.
- 	 */
--	vregion->rehash.ctx.current_vchunk = NULL;
-+	mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(&vregion->rehash.ctx);
- }
+ 	QPHY_DP_PHY_STATUS,
++	QPHY_DP_PHY_VCO_DIV,
  
- static struct mlxsw_sp_acl_tcam_vregion *
-@@ -1250,7 +1261,7 @@ mlxsw_sp_acl_tcam_vchunk_migrate_end(struct mlxsw_sp *mlxsw_sp,
- {
- 	mlxsw_sp_acl_tcam_chunk_destroy(mlxsw_sp, vchunk->chunk2);
- 	vchunk->chunk2 = NULL;
--	ctx->current_vchunk = NULL;
-+	mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(ctx);
- }
+ 	QPHY_TX_TX_POL_INV,
+ 	QPHY_TX_TX_DRV_LVL,
+@@ -137,6 +138,7 @@ static const unsigned int qmp_v3_usb3phy
+ 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V3_COM_BIAS_EN_CLKBUFLR_EN,
  
- static int
-@@ -1282,6 +1293,8 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
- 		ventry = list_first_entry(&vchunk->ventry_list,
- 					  typeof(*ventry), list);
+ 	[QPHY_DP_PHY_STATUS]		= QSERDES_V3_DP_PHY_STATUS,
++	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V3_DP_PHY_VCO_DIV,
  
-+	WARN_ON(ventry->vchunk != vchunk);
-+
- 	list_for_each_entry_from(ventry, &vchunk->ventry_list, list) {
- 		/* During rollback, once we reach the ventry that failed
- 		 * to migrate, we are done.
-@@ -1373,7 +1386,7 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
- 		 * to vregion->region.
- 		 */
- 		swap(vregion->region, vregion->region2);
--		ctx->current_vchunk = NULL;
-+		mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(ctx);
- 		ctx->this_is_rollback = true;
- 		err2 = mlxsw_sp_acl_tcam_vchunk_migrate_all(mlxsw_sp, vregion,
- 							    ctx, credits);
-@@ -1432,6 +1445,7 @@ mlxsw_sp_acl_tcam_vregion_rehash_start(struct mlxsw_sp *mlxsw_sp,
+ 	[QPHY_TX_TX_POL_INV]		= QSERDES_V3_TX_TX_POL_INV,
+ 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V3_TX_TX_DRV_LVL,
+@@ -161,6 +163,7 @@ static const unsigned int qmp_v45_usb3ph
+ 	[QPHY_COM_BIAS_EN_CLKBUFLR_EN]	= QSERDES_V4_COM_BIAS_EN_CLKBUFLR_EN,
  
- 	ctx->hints_priv = hints_priv;
- 	ctx->this_is_rollback = false;
-+	mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(ctx);
+ 	[QPHY_DP_PHY_STATUS]		= QSERDES_V4_DP_PHY_STATUS,
++	[QPHY_DP_PHY_VCO_DIV]		= QSERDES_V4_DP_PHY_VCO_DIV,
  
- 	return 0;
+ 	[QPHY_TX_TX_POL_INV]		= QSERDES_V4_TX_TX_POL_INV,
+ 	[QPHY_TX_TX_DRV_LVL]		= QSERDES_V4_TX_TX_DRV_LVL,
+@@ -2059,6 +2062,7 @@ static int qmp_combo_configure_dp_clocks
+ 	const struct phy_configure_opts_dp *dp_opts = &qmp->dp_opts;
+ 	u32 phy_vco_div;
+ 	unsigned long pixel_freq;
++	const struct qmp_phy_cfg *cfg = qmp->cfg;
  
--- 
-2.43.0
-
+ 	switch (dp_opts->link_rate) {
+ 	case 1620:
+@@ -2081,7 +2085,7 @@ static int qmp_combo_configure_dp_clocks
+ 		/* Other link rates aren't supported */
+ 		return -EINVAL;
+ 	}
+-	writel(phy_vco_div, qmp->dp_dp_phy + QSERDES_V4_DP_PHY_VCO_DIV);
++	writel(phy_vco_div, qmp->dp_dp_phy + cfg->regs[QPHY_DP_PHY_VCO_DIV]);
+ 
+ 	clk_set_rate(qmp->dp_link_hw.clk, dp_opts->link_rate * 100000);
+ 	clk_set_rate(qmp->dp_pixel_hw.clk, pixel_freq);
 
 
 
