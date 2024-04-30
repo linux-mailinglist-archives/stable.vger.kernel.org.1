@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-42085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913DC8B7153
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEFE8B71E1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EE5D2854E9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D0F41C22D1F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA57612D1F1;
-	Tue, 30 Apr 2024 10:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63AA312C54B;
+	Tue, 30 Apr 2024 11:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/Q2Tc0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzmIy4mv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E90129E89;
-	Tue, 30 Apr 2024 10:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A4512B176;
+	Tue, 30 Apr 2024 11:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474516; cv=none; b=cKR7XAgXylmLub+Q2S7RXA9idvBWz34iofL6AW76n143WFdNw7W5NFTDiFgWB9ynTZdkP7dNkcjzBM/La0CeYkLw9H/2O3v7TRdIibmqC+PSZf+1T/OSb6QkPSx/PI/wrYnHPYlG8mukJ9O+HxJ40DhUzLFbpIQgj2htUlIbs04=
+	t=1714474911; cv=none; b=qQBNuihH/z2tGnj+PqqOWqZNMIpgV06oBXnwAjBGOlVZCS6lTKf4pcqEvXNsx7bU/p8GocSTEEpOxdCE3iPWGiyEq33pEXtDyEh7KvJbEDswlCKAHYq+jgMliverfAue30d2lWGg7aVOG31r2F3b31M0Ue6xBT6pq7g6imFpy3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474516; c=relaxed/simple;
-	bh=ht9jEVNJtM2+W+UZ5cklyYV8/66Obq+Mor1zUTtsoVs=;
+	s=arc-20240116; t=1714474911; c=relaxed/simple;
+	bh=FK8Ej/IgYBMQMu4ybbPyTqH/S17av5Ld6a8nqGgt1gQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L3LXzl+bXIRyXHFZPpeVETvO4xZtY3BtJpQkROq6CaEeDmL582lmjwhXujTeK9SzTA2dZ8AVjXAJ0Ns3uEJiMV6kj+43faoOYYBsd4ic82hrjvu/9+Ckw5A1zr/Y0d/2rri+7k/CvfF3vgS0cDkNwtMO1MXuWNfsZrodEzwz+lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/Q2Tc0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070CDC2BBFC;
-	Tue, 30 Apr 2024 10:55:15 +0000 (UTC)
+	 MIME-Version; b=LH2tKB5R9oNZo9UABPMGPZlYR76rGTOO7kUP2S+C0c70b3fENRkrT9VtWJH94scbxJVxlunqaO9JaNGrh5/3Ar/Ik9ZhVcWfEnFoGUdMgVFTYkoZOFQhh+Rqs5WC/VybDAaBKrEPVzOLvteOvHVPJioS7uoZBTIAhR89RENxsjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzmIy4mv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDFDC4AF1A;
+	Tue, 30 Apr 2024 11:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474516;
-	bh=ht9jEVNJtM2+W+UZ5cklyYV8/66Obq+Mor1zUTtsoVs=;
+	s=korg; t=1714474911;
+	bh=FK8Ej/IgYBMQMu4ybbPyTqH/S17av5Ld6a8nqGgt1gQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/Q2Tc0wLsIWZcFJvmlRuqo4nNxi3+WOOzREsJCbZprbGncEDMdZ2rCg8PKgxPNPY
-	 FZtdTDoMrc+6PBapQgJ+iEYjlMOzp8EXCxxLAyI/xZqDuBhOmkCsmU/d9tvrGRu77a
-	 x0uLbjTFeOB1paMnFH7PFBemhFTNOReGr9p0rL9c=
+	b=WzmIy4mv1Hlrll+s/HbPVQVyhstKmmEWVOKy//86Cny/RstWKd4hfSDZs0nHns0Gu
+	 yxEWwvDOiWb7aT06OfJZXmNM3dyFIIgn4y6jjwKXXJgbdP+cJSoj0OnI9fBK26XPZs
+	 V39d/VAgBwRactF2WvBL1EZ/94ne1TJUKwBF5HPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Yunxiang Li <Yunxiang.Li@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.8 179/228] drm/amdkfd: Fix rescheduling of restore worker
+	Iskander Amara <iskander.amara@theobroma-systems.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 072/138] arm64: dts: rockchip: fix alphabetical ordering RK3399 puma
 Date: Tue, 30 Apr 2024 12:39:17 +0200
-Message-ID: <20240430103108.968747917@linuxfoundation.org>
+Message-ID: <20240430103051.548181280@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Kuehling <felix.kuehling@amd.com>
+From: Iskander Amara <iskander.amara@theobroma-systems.com>
 
-commit e26305f369ed0e087a043c2cdc76f3d9a6efb3bd upstream.
+[ Upstream commit f0abb4b2c7acf3c3e4130dc3f54cd90cf2ae62bc ]
 
-Handle the case that the restore worker was already scheduled by another
-eviction while the restore was in progress.
+Nodes overridden by their reference should be ordered alphabetically to
+make it easier to read the DTS. pinctrl node is defined in the wrong
+location so let's reorder it.
 
-Fixes: 9a1c1339abf9 ("drm/amdkfd: Run restore_workers on freezable WQs")
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Tested-by: Yunxiang Li <Yunxiang.Li@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240308085243.69903-2-iskander.amara@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Stable-dep-of: 945a7c857091 ("arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -2011,9 +2011,9 @@ static void restore_process_worker(struc
- 	if (ret) {
- 		pr_debug("Failed to restore BOs of pasid 0x%x, retry after %d ms\n",
- 			 p->pasid, PROCESS_BACK_OFF_TIME_MS);
--		ret = queue_delayed_work(kfd_restore_wq, &p->restore_work,
--				msecs_to_jiffies(PROCESS_BACK_OFF_TIME_MS));
--		WARN(!ret, "reschedule restore work failed\n");
-+		if (mod_delayed_work(kfd_restore_wq, &p->restore_work,
-+				     msecs_to_jiffies(PROCESS_RESTORE_TIME_MS)))
-+			kfd_process_restore_queues(p);
- 	}
- }
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+index 95bc7a5f61dd5..aaa042fba1ebf 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -430,15 +430,6 @@
+ 	gpio1830-supply = <&vcc_1v8>;
+ };
  
+-&pmu_io_domains {
+-	status = "okay";
+-	pmu1830-supply = <&vcc_1v8>;
+-};
+-
+-&pwm2 {
+-	status = "okay";
+-};
+-
+ &pinctrl {
+ 	i2c8 {
+ 		i2c8_xfer_a: i2c8-xfer {
+@@ -470,6 +461,15 @@
+ 	};
+ };
+ 
++&pmu_io_domains {
++	status = "okay";
++	pmu1830-supply = <&vcc_1v8>;
++};
++
++&pwm2 {
++	status = "okay";
++};
++
+ &sdhci {
+ 	/*
+ 	 * Signal integrity isn't great at 200MHz but 100MHz has proven stable
+-- 
+2.43.0
+
 
 
 
