@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2A38B73FF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D168B7459
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07BFD285327
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 063A31C23210
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8690312D214;
-	Tue, 30 Apr 2024 11:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3573412D746;
+	Tue, 30 Apr 2024 11:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OX2ek7er"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybVZyWXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4579412D745;
-	Tue, 30 Apr 2024 11:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E695712BF32;
+	Tue, 30 Apr 2024 11:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476346; cv=none; b=JOD+ikDd983vc1LrTZfiS1/TR3YpRmjKgUFemkeAxvRtPMCC5lJnFXkfoCdCmmFJyqXgUk9IiIvTMefe5bN54ick3Dyu4h7Xi80KTIrpkXecnftumS3E5HwA7fcUSozr7t4l3IgpXt0FZSkXBOJEgPkspI6CScl4tt2llFOT6Lo=
+	t=1714476587; cv=none; b=ooeB11pcWfwOM46rm2kv/7Yhp4uJQAory+VaJL3JyhZt7tXjRmY7ei89uI9TJR0EgjHTE8+6L/w3T8B8ynd7mCYHXI11wBGgF8Cb6QsY38XEB3W9ZJyfZRrDoFvdvLMxbplznNlLZdBAEd0YVAHXBWMzFZ701SXAOtn0G/hAdis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476346; c=relaxed/simple;
-	bh=xsqkFiSY56F8M7JMf46iqos7RVp0F5D2jJAuzoiFRcY=;
+	s=arc-20240116; t=1714476587; c=relaxed/simple;
+	bh=Z4NsQRub5egQtc5z6+2GZt4v0Ikb9AbYvrCxOXqhUIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMMvydfCLKiOSPkkmO9X3AoaBR7KvM6gQvShke/gevQd21O9BN9j61yxhsqIme97lfIKiDhJxMuDdLsDgUots+yjRfCCrktIrxEBehg/s8bhtH38jHECs/59CdKlIcZ04j+dnkYwhdWaNKfD1iQazPHfZMKul0FKi6aIq7WoDjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OX2ek7er; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D37C2BBFC;
-	Tue, 30 Apr 2024 11:25:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FA0k39BPOhJ8x4Praz/6bfUNpv0k1Tp2RNshrlbZvZnVn1AqcW7GekTLU91qGi/X0FLLxzeHHD22XL2Emc3KxX6pHBpEDxhOdC7xO9tZ7N3DhXIGtj/CVeqOXRboIx89/GIN22Hmlmfq41TmE3Eq5Egnk1psEW/j6VPbdaSgJiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybVZyWXy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098F9C2BBFC;
+	Tue, 30 Apr 2024 11:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476345;
-	bh=xsqkFiSY56F8M7JMf46iqos7RVp0F5D2jJAuzoiFRcY=;
+	s=korg; t=1714476586;
+	bh=Z4NsQRub5egQtc5z6+2GZt4v0Ikb9AbYvrCxOXqhUIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OX2ek7erJqLHKC7gFr+SW7Q/DM2C0S/CnaGmin1VIHlEvYRH/fDAPlBG5ZY5as/Go
-	 IK01KQmbg3zBoZAuVvxMFCD3WXIyb7TXDNY8lB0n1smH18TlygXNJTp2B+3VUR2fjT
-	 bQUovQt0ICkcmw6gm+RIBK1fR+fuNZfYFB1/BA3w=
+	b=ybVZyWXyGyHva+14agAuDvpkjskpJcavbN6gzIHPRTYkxr8hYTlunGzEthefHNmgj
+	 4N8tnVw/+yTN2lX0OGSXf4jr91WhGqRjHFLMV8kWXJpBmZ2XxywL6r7sSZqwogGnMM
+	 xreC0XxAUgeNsFq23quLY1Hc1rS4ACzdFRt8XND0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Robin H. Johnson" <robbat2@gentoo.org>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.4 087/107] tracing: Increase PERF_MAX_TRACE_SIZE to handle Sentinel1 and docker together
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 078/110] drm/amdgpu/sdma5.2: use legacy HDP flush for SDMA2/3
 Date: Tue, 30 Apr 2024 12:40:47 +0200
-Message-ID: <20240430103047.225926179@linuxfoundation.org>
+Message-ID: <20240430103049.868783261@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin H. Johnson <robbat2@gentoo.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit e531e90b5ab0f7ce5ff298e165214c1aec6ed187 upstream.
+commit 9792b7cc18aaa0c2acae6af5d0acf249bcb1ab0d upstream.
 
-Running endpoint security solutions like Sentinel1 that use perf-based
-tracing heavily lead to this repeated dump complaining about dockerd.
-The default value of 2048 is nowhere near not large enough.
+This avoids a potential conflict with firmwares with the newer
+HDP flush mechanism.
 
-Using the prior patch "tracing: show size of requested buffer", we get
-"perf buffer not large enough, wanted 6644, have 6144", after repeated
-up-sizing (I did 2/4/6/8K). With 8K, the problem doesn't occur at all,
-so below is the trace for 6K.
-
-I'm wondering if this value should be selectable at boot time, but this
-is a good starting point.
-
-```
-------------[ cut here ]------------
-perf buffer not large enough, wanted 6644, have 6144
-WARNING: CPU: 1 PID: 4997 at kernel/trace/trace_event_perf.c:402 perf_trace_buf_alloc+0x8c/0xa0
-Modules linked in: [..]
-CPU: 1 PID: 4997 Comm: sh Tainted: G                T 5.13.13-x86_64-00039-gb3959163488e #63
-Hardware name: LENOVO 20KH002JUS/20KH002JUS, BIOS N23ET66W (1.41 ) 09/02/2019
-RIP: 0010:perf_trace_buf_alloc+0x8c/0xa0
-Code: 80 3d 43 97 d0 01 00 74 07 31 c0 5b 5d 41 5c c3 ba 00 18 00 00 89 ee 48 c7 c7 00 82 7d 91 c6 05 25 97 d0 01 01 e8 22 ee bc 00 <0f> 0b 31 c0 eb db 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 55 89
-RSP: 0018:ffffb922026b7d58 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff9da5ee012000 RCX: 0000000000000027
-RDX: ffff9da881657828 RSI: 0000000000000001 RDI: ffff9da881657820
-RBP: 00000000000019f4 R08: 0000000000000000 R09: ffffb922026b7b80
-R10: ffffb922026b7b78 R11: ffffffff91dda688 R12: 000000000000000f
-R13: ffff9da5ee012108 R14: ffff9da8816570a0 R15: ffffb922026b7e30
-FS:  00007f420db1a080(0000) GS:ffff9da881640000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000060 CR3: 00000002504a8006 CR4: 00000000003706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- kprobe_perf_func+0x11e/0x270
- ? do_execveat_common.isra.0+0x1/0x1c0
- ? do_execveat_common.isra.0+0x5/0x1c0
- kprobe_ftrace_handler+0x10e/0x1d0
- 0xffffffffc03aa0c8
- ? do_execveat_common.isra.0+0x1/0x1c0
- do_execveat_common.isra.0+0x5/0x1c0
- __x64_sys_execve+0x33/0x40
- do_syscall_64+0x6b/0xc0
- ? do_syscall_64+0x11/0xc0
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-RIP: 0033:0x7f420dc1db37
-Code: ff ff 76 e7 f7 d8 64 41 89 00 eb df 0f 1f 80 00 00 00 00 f7 d8 64 41 89 00 eb dc 0f 1f 84 00 00 00 00 00 b8 3b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 01 43 0f 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffd4e8b4e38 EFLAGS: 00000246 ORIG_RAX: 000000000000003b
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f420dc1db37
-RDX: 0000564338d1e740 RSI: 0000564338d32d50 RDI: 0000564338d28f00
-RBP: 0000564338d28f00 R08: 0000564338d32d50 R09: 0000000000000020
-R10: 00000000000001b6 R11: 0000000000000246 R12: 0000564338d28f00
-R13: 0000564338d32d50 R14: 0000564338d1e740 R15: 0000564338d28c60
----[ end trace 83ab3e8e16275e49 ]---
-```
-
-Link: https://lkml.kernel.org/r/20210831043723.13481-2-robbat2@gentoo.org
-
-Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/trace_events.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -427,7 +427,7 @@ struct trace_event_file {
- 	}								\
- 	early_initcall(trace_init_perf_perm_##name);
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
+@@ -345,17 +345,21 @@ static void sdma_v5_2_ring_emit_hdp_flus
+ 	u32 ref_and_mask = 0;
+ 	const struct nbio_hdp_flush_reg *nbio_hf_reg = adev->nbio.hdp_flush_reg;
  
--#define PERF_MAX_TRACE_SIZE	2048
-+#define PERF_MAX_TRACE_SIZE	8192
+-	ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
++	if (ring->me > 1) {
++		amdgpu_asic_flush_hdp(adev, ring);
++	} else {
++		ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
  
- #define MAX_FILTER_STR_VAL	256	/* Should handle KSYM_SYMBOL_LEN */
+-	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
+-			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
+-			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
+-	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
+-	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
+-	amdgpu_ring_write(ring, ref_and_mask); /* reference */
+-	amdgpu_ring_write(ring, ref_and_mask); /* mask */
+-	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
+-			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
++		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
++				  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
++				  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
++		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
++		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
++		amdgpu_ring_write(ring, ref_and_mask); /* reference */
++		amdgpu_ring_write(ring, ref_and_mask); /* mask */
++		amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
++				  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
++	}
+ }
  
+ /**
 
 
 
