@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-42054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DF78B712F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:54:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 069778B72A3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B4E31C22223
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:54:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37C5F1C23114
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5393212D20F;
-	Tue, 30 Apr 2024 10:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AED612C805;
+	Tue, 30 Apr 2024 11:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMSoFahz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyqHBK+5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F6412C549;
-	Tue, 30 Apr 2024 10:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370F11E50A;
+	Tue, 30 Apr 2024 11:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474416; cv=none; b=UI8vUEcmhOKZwEu+qxLRaINfIcorgWFSHFvUtvVkW7SpS9L18IBKVp0enpS5AGrXevpQksMzLPUF8U8MYhm0eUqi+e3dUiFvo6bDXTFW124VT5vx+Vx/zpVOQBOKCwo9eIGrQlZH/2qF+zfnlTZ4CyUF+NLxGxoQjHOxmm72RYM=
+	t=1714475436; cv=none; b=S2/HkyO6UeE7AE3Ygcn4LiknDwk5E7Gxr0imHbDLoB5CxdhMGAwWPvlKXdmM8M2fMhVdAH8AcHUJkEreK7urtiz9uDdC+VRHeQLO9D4rP7h2Zm7mgtTV7S2JYrfg9zH+nRe6PzyqCOEG5wKEQmsgYyp4dmpG97j627g/+MSzxQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474416; c=relaxed/simple;
-	bh=OeG2i0vAkfIbIdSA7k33vTZT5PLpY7CFOm63HGBy2wo=;
+	s=arc-20240116; t=1714475436; c=relaxed/simple;
+	bh=8b68tgCsYn+U4eTwtFR58kAfhqqdLYFwiP3ItgV58uM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=au1Zobd0teutsprDae9H/qbLQoap/t8bicAPbBjyDZ9L1vO1COGL6fIXTM9T+IW83+KK+PnW6PUJNe+QHGeaAv3SXAN6vbxgz8ywAaMnysp4WUnP3ofVNtqYolJqyB7tbe2h7ZegD2GOSER0hqFGlcTAS4yH/ssF96NXIJvwmM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMSoFahz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8594DC4AF18;
-	Tue, 30 Apr 2024 10:53:35 +0000 (UTC)
+	 MIME-Version; b=G7zOhg0tdOH2+h4V36qCNodHIzAf/lXSMZuwnzEF2agslxZWojpBzfW23r0KNGnHkv+bTfcXzVTROxlDc7LDxwc2wQ8gHD7wpu0LeG120sgr3+hbd/blgMH5kh/UPvaeYkDrJGfgt9OzqbiCxxpKFC7WAxzEHaF37oeFmKYddOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyqHBK+5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9137EC2BBFC;
+	Tue, 30 Apr 2024 11:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474415;
-	bh=OeG2i0vAkfIbIdSA7k33vTZT5PLpY7CFOm63HGBy2wo=;
+	s=korg; t=1714475436;
+	bh=8b68tgCsYn+U4eTwtFR58kAfhqqdLYFwiP3ItgV58uM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMSoFahzvxTscyG6cfAERdpjx/6bEqjKEbvarKtHDq7co4Yl982SkAO1O7LRVPX04
-	 LKcS3zqnqO9ZWSfDInljKEqaRaYM8xMFUSlXz9qUJG005rvLqx1Lz4YuFSNrG/J0A7
-	 8AHFRMkojh+hmdUyF6vbDBBbZ0aDkaXgt6DaetsI=
+	b=XyqHBK+5pgH5Uimk3q6a/cRvuB/IGK6iemAwhvq2DNBEtui5mtWgPjUykMun4Qm2B
+	 jpCHB5Y4bRisjBUdXtrB6ZyzrwamE6cWXDIljbYMFg2bySiL/sA2i+vogPzrPwGURJ
+	 EleXfXRvtM3lK3bFPuBEhn00ui7zPi3Jo7unBKbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 151/228] mm: support page_mapcount() on page_has_type() pages
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 077/186] mlxsw: spectrum_acl_tcam: Fix possible use-after-free during activity update
 Date: Tue, 30 Apr 2024 12:38:49 +0200
-Message-ID: <20240430103108.164292664@linuxfoundation.org>
+Message-ID: <20240430103100.273117676@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +65,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit fd1a745ce03e37945674c14833870a9af0882e2d upstream.
+[ Upstream commit 79b5b4b18bc85b19d3a518483f9abbbe6d7b3ba4 ]
 
-Return 0 for pages which can't be mapped.  This matches how page_mapped()
-works.  It is more convenient for users to not have to filter out these
-pages.
+The rule activity update delayed work periodically traverses the list of
+configured rules and queries their activity from the device.
 
-Link: https://lkml.kernel.org/r/20240321142448.1645400-5-willy@infradead.org
-Fixes: 9c5ccf2db04b ("mm: remove HUGETLB_PAGE_DTOR")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As part of this task it accesses the entry pointed by 'ventry->entry',
+but this entry can be changed concurrently by the rehash delayed work,
+leading to a use-after-free [1].
+
+Fix by closing the race and perform the activity query under the
+'vregion->lock' mutex.
+
+[1]
+BUG: KASAN: slab-use-after-free in mlxsw_sp_acl_tcam_flower_rule_activity_get+0x121/0x140
+Read of size 8 at addr ffff8881054ed808 by task kworker/0:18/181
+
+CPU: 0 PID: 181 Comm: kworker/0:18 Not tainted 6.9.0-rc2-custom-00781-gd5ab772d32f7 #2
+Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
+Workqueue: mlxsw_core mlxsw_sp_acl_rule_activity_update_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xc6/0x120
+ print_report+0xce/0x670
+ kasan_report+0xd7/0x110
+ mlxsw_sp_acl_tcam_flower_rule_activity_get+0x121/0x140
+ mlxsw_sp_acl_rule_activity_update_work+0x219/0x400
+ process_one_work+0x8eb/0x19b0
+ worker_thread+0x6c9/0xf70
+ kthread+0x2c9/0x3b0
+ ret_from_fork+0x4d/0x80
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Allocated by task 1039:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ __kmalloc+0x19c/0x360
+ mlxsw_sp_acl_tcam_entry_create+0x7b/0x1f0
+ mlxsw_sp_acl_tcam_vchunk_migrate_all+0x30d/0xb50
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0x157/0x1300
+ process_one_work+0x8eb/0x19b0
+ worker_thread+0x6c9/0xf70
+ kthread+0x2c9/0x3b0
+ ret_from_fork+0x4d/0x80
+ ret_from_fork_asm+0x1a/0x30
+
+Freed by task 1039:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ poison_slab_object+0x102/0x170
+ __kasan_slab_free+0x14/0x30
+ kfree+0xc1/0x290
+ mlxsw_sp_acl_tcam_vchunk_migrate_all+0x3d7/0xb50
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0x157/0x1300
+ process_one_work+0x8eb/0x19b0
+ worker_thread+0x6c9/0xf70
+ kthread+0x2c9/0x3b0
+ ret_from_fork+0x4d/0x80
+ ret_from_fork_asm+0x1a/0x30
+
+Fixes: 2bffc5322fd8 ("mlxsw: spectrum_acl: Don't take mutex in mlxsw_sp_acl_tcam_vregion_rehash_work()")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/1fcce0a60b231ebeb2515d91022284ba7b4ffe7a.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/page.c             |    7 ++-----
- include/linux/mm.h         |    8 +++++---
- include/linux/page-flags.h |    4 ++--
- 3 files changed, 9 insertions(+), 10 deletions(-)
+ .../net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c    | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/proc/page.c
-+++ b/fs/proc/page.c
-@@ -67,7 +67,7 @@ static ssize_t kpagecount_read(struct fi
- 		 */
- 		ppage = pfn_to_online_page(pfn);
- 
--		if (!ppage || PageSlab(ppage) || page_has_type(ppage))
-+		if (!ppage)
- 			pcount = 0;
- 		else
- 			pcount = page_mapcount(ppage);
-@@ -124,11 +124,8 @@ u64 stable_page_flags(struct page *page)
- 
- 	/*
- 	 * pseudo flags for the well known (anonymous) memory mapped pages
--	 *
--	 * Note that page->_mapcount is overloaded in SLAB, so the
--	 * simple test in page_mapped() is not enough.
- 	 */
--	if (!PageSlab(page) && page_mapped(page))
-+	if (page_mapped(page))
- 		u |= 1 << KPF_MMAP;
- 	if (PageAnon(page))
- 		u |= 1 << KPF_ANON;
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1204,14 +1204,16 @@ static inline void page_mapcount_reset(s
-  * a large folio, it includes the number of times this page is mapped
-  * as part of that folio.
-  *
-- * The result is undefined for pages which cannot be mapped into userspace.
-- * For example SLAB or special types of pages. See function page_has_type().
-- * They use this field in struct page differently.
-+ * Will report 0 for pages which cannot be mapped into userspace, eg
-+ * slab, page tables and similar.
-  */
- static inline int page_mapcount(struct page *page)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 9c0c728bb42dc..7e69225c057de 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -1159,8 +1159,14 @@ mlxsw_sp_acl_tcam_ventry_activity_get(struct mlxsw_sp *mlxsw_sp,
+ 				      struct mlxsw_sp_acl_tcam_ventry *ventry,
+ 				      bool *activity)
  {
- 	int mapcount = atomic_read(&page->_mapcount) + 1;
+-	return mlxsw_sp_acl_tcam_entry_activity_get(mlxsw_sp,
+-						    ventry->entry, activity);
++	struct mlxsw_sp_acl_tcam_vregion *vregion = ventry->vchunk->vregion;
++	int err;
++
++	mutex_lock(&vregion->lock);
++	err = mlxsw_sp_acl_tcam_entry_activity_get(mlxsw_sp, ventry->entry,
++						   activity);
++	mutex_unlock(&vregion->lock);
++	return err;
+ }
  
-+	/* Handle page_has_type() pages */
-+	if (mapcount < 0)
-+		mapcount = 0;
- 	if (unlikely(PageCompound(page)))
- 		mapcount += folio_entire_mapcount(page_folio(page));
- 
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -945,12 +945,12 @@ static inline bool is_page_hwpoison(stru
-  * page_type may be used.  Because it is initialised to -1, we invert the
-  * sense of the bit, so __SetPageFoo *clears* the bit used for PageFoo, and
-  * __ClearPageFoo *sets* the bit used for PageFoo.  We reserve a few high and
-- * low bits so that an underflow or overflow of page_mapcount() won't be
-+ * low bits so that an underflow or overflow of _mapcount won't be
-  * mistaken for a page type value.
-  */
- 
- #define PAGE_TYPE_BASE	0xf0000000
--/* Reserve		0x0000007f to catch underflows of page_mapcount */
-+/* Reserve		0x0000007f to catch underflows of _mapcount */
- #define PAGE_MAPCOUNT_RESERVE	-128
- #define PG_buddy	0x00000080
- #define PG_offline	0x00000100
+ static int
+-- 
+2.43.0
+
 
 
 
