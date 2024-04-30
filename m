@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF23B8B72CA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215408B718D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F01F51C2366D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B63BE1F21678
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE9712D769;
-	Tue, 30 Apr 2024 11:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B0F12CDB6;
+	Tue, 30 Apr 2024 10:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DP+UfFgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiM/Pq5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF52812E1F8;
-	Tue, 30 Apr 2024 11:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC7112CD89;
+	Tue, 30 Apr 2024 10:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475497; cv=none; b=Mfdrr9fRunGOa3lu8SVUlhIoOBtHr4dwOU61ZDookMc6WmWiS1j/oGNsXe72rwVCEGb2m9BigjhqQVKZQmTt8R8flHkHRi3CnO3vzf4pzAV09wBBbW2/tprp4Zp3SXdg8FvrqWWRxBeh4ubC3zJmdBZWfBpw0STN2teZPKv6OLE=
+	t=1714474662; cv=none; b=t28X5ZAcxgT0kaZpMiVp6Y0JdpctQA9LIiCayN8qhGzgvdX28JKFruhmlsn8wx42YY7TAYa8A4/iVdUhOGItDh7Q1TChExIDS7ZPyglKHFPD4YImhmZwGQvAlMIsO35ouB5pdAK/9qsfu71vZJyrDtNKIxq9Tr/IhFGHuIAO+CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475497; c=relaxed/simple;
-	bh=52exE09QOeGQy/ycTOq9ptjLIxvLTVLWU2BVUh0ySeM=;
+	s=arc-20240116; t=1714474662; c=relaxed/simple;
+	bh=TcpIsq1dtpZoLDGYjDGKtWpYzOITIB/1fq8E6jIsAG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qocEWAlCturWWTL9fgqktmkc/DKwPVph45mbix1EAerNM2zu33JWmL/ruy1OfBOXavlE8I1CNJNbeAZ358FLkS1J3kgkOGBacX6VHJ6WZFKEssLkYMRgwWIVOT5uZE5RdEuTUuwVSwW8iIaN/FI76N/xA0jWk1OsIIN67T6WkkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DP+UfFgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C263C4AF1D;
-	Tue, 30 Apr 2024 11:11:36 +0000 (UTC)
+	 MIME-Version; b=eKsNr/ax3QICM/VXYwkcD1SM0YfUJNnNv6kB2MAA4lzWA00QnE1+fLJjFH0d4L3mTGOvRShdVKMc6e8+44b7i2NvqjruLFJfDuIbVyUOdiQCTEKDyUqMMQwxKxN9jNDphQAm2SLCi0O08EZey/1odIEiCYidk2y3qptlkEBa3dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiM/Pq5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243E5C2BBFC;
+	Tue, 30 Apr 2024 10:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475496;
-	bh=52exE09QOeGQy/ycTOq9ptjLIxvLTVLWU2BVUh0ySeM=;
+	s=korg; t=1714474662;
+	bh=TcpIsq1dtpZoLDGYjDGKtWpYzOITIB/1fq8E6jIsAG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DP+UfFglcWNXe6poK2AURNJStI7U2D5PjkvZGBPX6ghdBz9nkIBS7seCO3+2C0sDy
-	 WmzwpYqhLKsQ4YSNJuOfn7j6hJt6/wN8+uvVraBTiGh+3O/6L2qFSlmS+c+Lg8AD5H
-	 HvsoMlApbr0NXzhUmIYfH+xVUaZqNCiG9D/gLvIE=
+	b=eiM/Pq5FHkhT3568BYzHuHkNQTGigE8WHPezNnVKSPo13nsors4W/Azr+cWggO9Mm
+	 HbpC3gVivP/V9xTEfks+EJEP6dd425iy0tac2FU7f3IW3TtQqUh75c9HPNvNocxxuN
+	 eot6KW4JAjYA/N1Ut0wkhnYpRCvu3HIVLIgr14KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.6 112/186] rust: dont select CONSTRUCTORS
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 186/228] ethernet: Add helper for assigning packet type when dest address does not match device address
 Date: Tue, 30 Apr 2024 12:39:24 +0200
-Message-ID: <20240430103101.284870656@linuxfoundation.org>
+Message-ID: <20240430103109.169677596@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit 7d49f53af4b988b188d3932deac2c9c80fd7d9ce upstream.
+commit 6e159fd653d7ebf6290358e0330a0cb8a75cf73b upstream.
 
-This was originally part of commit 4b9a68f2e59a0 ("rust: add support for
-static synchronisation primitives") from the old Rust branch, which used
-module constructors to initialize globals containing various
-synchronisation primitives with pin-init. That commit has never been
-upstreamed, but the `select CONSTRUCTORS` statement ended up being
-included in the patch that initially added Rust support to the Linux
-Kernel.
+Enable reuse of logic in eth_type_trans for determining packet type.
 
-We are not using module constructors, so let's remove the select.
-
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
 Cc: stable@vger.kernel.org
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Link: https://lore.kernel.org/r/20240308-constructors-v1-1-4c811342391c@google.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240423181319.115860-3-rrameshbabu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+ include/linux/etherdevice.h |   25 +++++++++++++++++++++++++
+ net/ethernet/eth.c          |   12 +-----------
+ 2 files changed, 26 insertions(+), 11 deletions(-)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1898,7 +1898,6 @@ config RUST
- 	depends on !GCC_PLUGINS
- 	depends on !RANDSTRUCT
- 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
--	select CONSTRUCTORS
- 	help
- 	  Enables Rust support in the kernel.
+--- a/include/linux/etherdevice.h
++++ b/include/linux/etherdevice.h
+@@ -608,6 +608,31 @@ static inline void eth_hw_addr_gen(struc
+ }
  
+ /**
++ * eth_skb_pkt_type - Assign packet type if destination address does not match
++ * @skb: Assigned a packet type if address does not match @dev address
++ * @dev: Network device used to compare packet address against
++ *
++ * If the destination MAC address of the packet does not match the network
++ * device address, assign an appropriate packet type.
++ */
++static inline void eth_skb_pkt_type(struct sk_buff *skb,
++				    const struct net_device *dev)
++{
++	const struct ethhdr *eth = eth_hdr(skb);
++
++	if (unlikely(!ether_addr_equal_64bits(eth->h_dest, dev->dev_addr))) {
++		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
++			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
++				skb->pkt_type = PACKET_BROADCAST;
++			else
++				skb->pkt_type = PACKET_MULTICAST;
++		} else {
++			skb->pkt_type = PACKET_OTHERHOST;
++		}
++	}
++}
++
++/**
+  * eth_skb_pad - Pad buffer to mininum number of octets for Ethernet frame
+  * @skb: Buffer to pad
+  *
+--- a/net/ethernet/eth.c
++++ b/net/ethernet/eth.c
+@@ -164,17 +164,7 @@ __be16 eth_type_trans(struct sk_buff *sk
+ 	eth = (struct ethhdr *)skb->data;
+ 	skb_pull_inline(skb, ETH_HLEN);
+ 
+-	if (unlikely(!ether_addr_equal_64bits(eth->h_dest,
+-					      dev->dev_addr))) {
+-		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
+-			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
+-				skb->pkt_type = PACKET_BROADCAST;
+-			else
+-				skb->pkt_type = PACKET_MULTICAST;
+-		} else {
+-			skb->pkt_type = PACKET_OTHERHOST;
+-		}
+-	}
++	eth_skb_pkt_type(skb, dev);
+ 
+ 	/*
+ 	 * Some variants of DSA tagging don't have an ethertype field
 
 
 
