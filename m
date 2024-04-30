@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFE58B731D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7496A8B73D4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA638B22901
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B0791F22463
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0820A12DDBD;
-	Tue, 30 Apr 2024 11:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893BD12D1E8;
+	Tue, 30 Apr 2024 11:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdiK7/PH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XevwZyQl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B982712D768;
-	Tue, 30 Apr 2024 11:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4633E8801;
+	Tue, 30 Apr 2024 11:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475717; cv=none; b=EWm1bmm+FBIRpS9Zi7YDWMbVUlMqbo7vClwqo0/3kl7hPHXHepyx6Vf7dBEBs5RqHikLh0nBWnttckTGjrB2WrgWK0d7nOSwUcY4KrdpJCjsQXbUQkv+/n+LYwNHTsiXLx92GbnNSCnqDcIOTousRh8rxt60I3yNkRkEDJGZDFw=
+	t=1714476232; cv=none; b=KOVOdYklu9FD+IzGa48QRDlB8ZFaSpXMoZCkDUmvfjDyyzc27gvxbh5/dgy/vImRqIvXe9qgEZcSejVzpAzl9XQniA2WrhtAwpMpQ24iMy4Loezj93C9ztX0mmBsyN8rfDK84Ze0fpVErmCiHpcMhI+JO91HouzgscztaStzYAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475717; c=relaxed/simple;
-	bh=MkFvTpOhSh0XDzpIsulph6AtKtyN00Mt/HpUk21gBUw=;
+	s=arc-20240116; t=1714476232; c=relaxed/simple;
+	bh=et/evpRVxLl3KeVrgIEWZTsxizSPvD1LzqxTZwXJC0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qia7J1VD6wqGPWeCRZjsPYWifdPDKKMXYKFRML8USlXoOdUAoG/Ne4Rwa8sZU0pu5QmMiADthh4LEeLyZtGaynpNuPhDs6gqpjDSZxN2qK9BgxVC3NOCP6mguq5jEuMeFX6HiCoUAfHiDXCMhlFtpQiF3tKI5XwGPl4NRbWDvSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdiK7/PH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0A4C2BBFC;
-	Tue, 30 Apr 2024 11:15:16 +0000 (UTC)
+	 MIME-Version; b=lhm6BebmPbubvtBMVhdIypHHgDtPRJT0Oyq9ZTYYMrw0AA2HN87lzE9X4Io3Zgi1pzqx/vJeNfovdBWtEFA6Fo9L3jFFKEI+DDHK1m+RXWgiZ48FzpF3sh5POnjGLTs5AzSpQtCyE1KrCRi7GKIWkI+fxNvWnDxNTwPGog/Kep4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XevwZyQl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95F3C4AF1A;
+	Tue, 30 Apr 2024 11:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475717;
-	bh=MkFvTpOhSh0XDzpIsulph6AtKtyN00Mt/HpUk21gBUw=;
+	s=korg; t=1714476232;
+	bh=et/evpRVxLl3KeVrgIEWZTsxizSPvD1LzqxTZwXJC0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdiK7/PHgxFaa0Dctflog8jUk32LN8+fRU8cunWeIrfK38cz2nxsoo61dJCYAnNNg
-	 ZKbez7/v+jBVh64FZMrBKGNZPflRZz/x8vcuCBEUYo8mbYP5X86CYCFgtLNrZPBzCi
-	 H8Jonoa4mstF4RGxY9oI57p9vjItZbEvXdUmKt2Y=
+	b=XevwZyQl8bd/owcj8wIC6pW7NP2hWWtsMHeLsERAHfwdWd4mNpLB3ChJySiBhR7WG
+	 qSOZqTvPJEU0d2w2Br4gK5doH3mz0iDNlWPHAlITVjw9BQbKGOOOh19ZGWIUDNcCSo
+	 MXndxohhmienJx14ZxF7OtsDBu6H27bk08wgsD5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baoquan He <bhe@redhat.com>,
-	Chen Jiahao <chenjiahao16@huawei.com>,
-	Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Subject: [PATCH 6.6 182/186] Revert "riscv: kdump: fix crashkernel reserving problem on RISC-V"
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 074/107] mlxsw: spectrum_acl_tcam: Fix incorrect list API usage
 Date: Tue, 30 Apr 2024 12:40:34 +0200
-Message-ID: <20240430103103.314748940@linuxfoundation.org>
+Message-ID: <20240430103046.839839701@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+From: Ido Schimmel <idosch@nvidia.com>
 
-This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which was
-mistakenly added into v6.6.y and the commit corresponding to the 'Fixes:'
-tag is invalid. For more information, see link [1].
+[ Upstream commit b377add0f0117409c418ddd6504bd682ebe0bf79 ]
 
-This will result in the loss of Crashkernel data in /proc/iomem, and kdump
-failed:
+Both the function that migrates all the chunks within a region and the
+function that migrates all the entries within a chunk call
+list_first_entry() on the respective lists without checking that the
+lists are not empty. This is incorrect usage of the API, which leads to
+the following warning [1].
 
-```
-Memory for crashkernel is not reserved
-Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
-Then try to loading kdump kernel
-```
+Fix by returning if the lists are empty as there is nothing to migrate
+in this case.
 
-After revert, kdump works fine. Tested on QEMU riscv.
+[1]
+WARNING: CPU: 0 PID: 6437 at drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c:1266 mlxsw_sp_acl_tcam_vchunk_migrate_all+0x1f1/0>
+Modules linked in:
+CPU: 0 PID: 6437 Comm: kworker/0:37 Not tainted 6.9.0-rc3-custom-00883-g94a65f079ef6 #39
+Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
+Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
+RIP: 0010:mlxsw_sp_acl_tcam_vchunk_migrate_all+0x1f1/0x2c0
+[...]
+Call Trace:
+ <TASK>
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0x6c/0x4a0
+ process_one_work+0x151/0x370
+ worker_thread+0x2cb/0x3e0
+ kthread+0xd0/0x100
+ ret_from_fork+0x34/0x50
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Chen Jiahao <chenjiahao16@huawei.com>
-Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Acked-by: Baoquan He <bhe@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6f9579d4e302 ("mlxsw: spectrum_acl: Remember where to continue rehash migration")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/4628e9a22d1d84818e28310abbbc498e7bc31bc9.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/setup.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -173,6 +173,19 @@ static void __init init_resources(void)
- 	if (ret < 0)
- 		goto error;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 26042c859cf68..89ce9b1233bd9 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -1325,6 +1325,9 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
+ 		return 0;
+ 	}
  
-+#ifdef CONFIG_KEXEC_CORE
-+	if (crashk_res.start != crashk_res.end) {
-+		ret = add_resource(&iomem_resource, &crashk_res);
-+		if (ret < 0)
-+			goto error;
-+	}
-+	if (crashk_low_res.start != crashk_low_res.end) {
-+		ret = add_resource(&iomem_resource, &crashk_low_res);
-+		if (ret < 0)
-+			goto error;
-+	}
-+#endif
++	if (list_empty(&vchunk->ventry_list))
++		goto out;
 +
- #ifdef CONFIG_CRASH_DUMP
- 	if (elfcorehdr_size > 0) {
- 		elfcorehdr_res.start = elfcorehdr_addr;
+ 	/* If the migration got interrupted, we have the ventry to start from
+ 	 * stored in context.
+ 	 */
+@@ -1376,6 +1379,7 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
+ 		}
+ 	}
+ 
++out:
+ 	mlxsw_sp_acl_tcam_vchunk_migrate_end(mlxsw_sp, vchunk, ctx);
+ 	return 0;
+ }
+@@ -1389,6 +1393,9 @@ mlxsw_sp_acl_tcam_vchunk_migrate_all(struct mlxsw_sp *mlxsw_sp,
+ 	struct mlxsw_sp_acl_tcam_vchunk *vchunk;
+ 	int err;
+ 
++	if (list_empty(&vregion->vchunk_list))
++		return 0;
++
+ 	/* If the migration got interrupted, we have the vchunk
+ 	 * we are working on stored in context.
+ 	 */
+-- 
+2.43.0
+
 
 
 
