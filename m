@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-42343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063578B7287
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:09:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904D68B7154
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1E221F23A18
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:09:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0FA81C2283E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB9912D1EA;
-	Tue, 30 Apr 2024 11:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F114C12C817;
+	Tue, 30 Apr 2024 10:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UaIMxyhK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dH35O5TT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C65C12C819;
-	Tue, 30 Apr 2024 11:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE82812C487;
+	Tue, 30 Apr 2024 10:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475351; cv=none; b=iwXw7sjF5agOWWwYxzdvFQ/+nO9P+WJcf2hYTZVEmmTwr4NxS0wNXBFq3lW1a/DoU0H51ndsMU28QIcL71CFbsLpgIQeSEMMqwuKVtswHKARyEvL9FEtghELk/XbA/1K8/dBlr7P1yzJf1PqNd/qXKphX8k0yRvI+mGdhUifxMk=
+	t=1714474519; cv=none; b=U6IqwncAAmAnr/ufsSPYqQM/V6+q1IDnBQhBkkyMpBvcVUciqjgRfNMMxYjsKN7NAvjIO7Le9f34JmCLgKlr/uKkYti3W9XTIvu8vSOuef5oQqJ/n79HN9bdI9GHUdOFNyGD6BXJvlccOFD1WuFFvBpfosSXLnCINirijw/9Lig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475351; c=relaxed/simple;
-	bh=KtD+gYgDoZJqVdi3w+WxrbemQTZ4U/krqmFX2iizxbU=;
+	s=arc-20240116; t=1714474519; c=relaxed/simple;
+	bh=29t/t/bMbzy9IVK9dMB6oct62xFBq9bZEnEiw+7HnSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZS5T9fcO40ty2Njaald55JhXffjwPLno7SLJY7OngAOyK//5DGb2boJbHie56hROhrdmdViGdAzhhs3/pDoEgYrJMz3GOYbhYrbxIxzuYZa0/WcmFv4DcO4yPS52xxmdMHua22UlISB4xe88LxICc2gWR24iL6P3vbOAldNQrWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UaIMxyhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03155C4AF18;
-	Tue, 30 Apr 2024 11:09:10 +0000 (UTC)
+	 MIME-Version; b=KZTri9ic89svV+ehYRrwvrO3rzao7zSC0Kn51u3c0kCVINJyj8QuJHaN0A7WdKAaZFyBoYnc7kqiGhjBbYbuicsHrK7PNNI1WbiYBLrvNKqTEZXYf1x1KFTBi3Za70ci+RxrouN9kA9JOdP6lytwXL6Pw/bzyJyvFUyFt/T/oBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dH35O5TT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A00C2BBFC;
+	Tue, 30 Apr 2024 10:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475351;
-	bh=KtD+gYgDoZJqVdi3w+WxrbemQTZ4U/krqmFX2iizxbU=;
+	s=korg; t=1714474519;
+	bh=29t/t/bMbzy9IVK9dMB6oct62xFBq9bZEnEiw+7HnSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UaIMxyhKtKfEEZr9X5dR3f0igelYBMKXgDC3wAIpkSCal8gzBMXwJvXeX2NLOhdc1
-	 42YIKJoNA+4+Ed4sbrzOgSciZueAoMAXNwOXo2MMGmtEMoQ6GlthyK32XxU/2Wqj8z
-	 234RhvmyptFhWeZ0N+q1mvTsQovTDmm3KQeBbHBg=
+	b=dH35O5TT7l2xMiYdPp9b2b1Pb5tFLyuSTR7LrAputoJoFLt8NeVKiyRp214BKBLSl
+	 fS8wfro7ciHgki2YvHKxYXNpJSq9h+PRXnBHWIMQ+pV1kGS260t0hIFdqQdNxHR4fb
+	 EX2vLngI+mZKAuOsSOYf9YE/50SVdfRpE/CBUeBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Manish Mandlik <mmandlik@google.com>,
-	Archie Pusaka <apusaka@chromium.org>,
-	Miao-chen Chou <mcchou@chromium.org>,
-	Chun-Yi Lee <jlee@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/186] Bluetooth: hci_sync: Using hci_cmd_sync_submit when removing Adv Monitor
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.8 144/228] Bluetooth: qca: fix NULL-deref on non-serdev suspend
 Date: Tue, 30 Apr 2024 12:38:42 +0200
-Message-ID: <20240430103100.069296016@linuxfoundation.org>
+Message-ID: <20240430103107.953680051@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Yi Lee <jlee@suse.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 88cd6e6b2d327faa13e4505b07f1e380e51b21ff ]
+commit 73e87c0a49fda31d7b589edccf4c72e924411371 upstream.
 
-Since the d883a4669a1de be introduced in v6.4, bluetooth daemon
-got the following failed message of MGMT_OP_REMOVE_ADV_MONITOR
-command when controller is power-off:
+Qualcomm ROME controllers can be registered from the Bluetooth line
+discipline and in this case the HCI UART serdev pointer is NULL.
 
-bluetoothd[20976]:
-src/adapter.c:reset_adv_monitors_complete() Failed to reset Adv
-Monitors: Failed>
+Add the missing sanity check to prevent a NULL-pointer dereference when
+wakeup() is called for a non-serdev controller during suspend.
 
-Normally this situation is happened when the bluetoothd deamon
-be started manually after system booting. Which means that
-bluetoothd received MGMT_EV_INDEX_ADDED event after kernel
-runs hci_power_off().
+Just return true for now to restore the original behaviour and address
+the crash with pre-6.2 kernels, which do not have commit e9b3e5b8c657
+("Bluetooth: hci_qca: only assign wakeup with serial port support") that
+causes the crash to happen already at setup() time.
 
-Base on doc/mgmt-api.txt, the MGMT_OP_REMOVE_ADV_MONITOR command
-can be used when the controller is not powered. This patch changes
-the code in remove_adv_monitor() to use hci_cmd_sync_submit()
-instead of hci_cmd_sync_queue().
-
-Fixes: d883a4669a1de ("Bluetooth: hci_sync: Only allow hci_cmd_sync_queue if running")
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Manish Mandlik <mmandlik@google.com>
-Cc: Archie Pusaka <apusaka@chromium.org>
-Cc: Miao-chen Chou <mcchou@chromium.org>
-Signed-off-by: Chun-Yi Lee <jlee@suse.com>
+Fixes: c1a74160eaf1 ("Bluetooth: hci_qca: Add device_may_wakeup support")
+Cc: stable@vger.kernel.org      # 5.13
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bluetooth/hci_qca.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 6d41bc0e7896a..ac693e64f1f9f 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -5477,8 +5477,8 @@ static int remove_adv_monitor(struct sock *sk, struct hci_dev *hdev,
- 		goto unlock;
- 	}
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1672,6 +1672,9 @@ static bool qca_wakeup(struct hci_dev *h
+ 	struct hci_uart *hu = hci_get_drvdata(hdev);
+ 	bool wakeup;
  
--	err = hci_cmd_sync_queue(hdev, mgmt_remove_adv_monitor_sync, cmd,
--				 mgmt_remove_adv_monitor_complete);
-+	err = hci_cmd_sync_submit(hdev, mgmt_remove_adv_monitor_sync, cmd,
-+				  mgmt_remove_adv_monitor_complete);
- 
- 	if (err) {
- 		mgmt_pending_remove(cmd);
--- 
-2.43.0
-
++	if (!hu->serdev)
++		return true;
++
+ 	/* BT SoC attached through the serial bus is handled by the serdev driver.
+ 	 * So we need to use the device handle of the serdev driver to get the
+ 	 * status of device may wakeup.
 
 
 
