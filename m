@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-42742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19B58B746A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA278B73C9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86BE1F2273F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D42B1F2222C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371A312D755;
-	Tue, 30 Apr 2024 11:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B65C12CDAE;
+	Tue, 30 Apr 2024 11:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMOQOgHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqT7YCol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96C812BF32;
-	Tue, 30 Apr 2024 11:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBBA17592;
+	Tue, 30 Apr 2024 11:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476638; cv=none; b=ir0tkeUHbSJr2FCM2sQ9EZ+6YRXqf8ubXGK56sE5XHBSFD9gBasOfDUetNjvYv3GTGl4ral1R1vF/fwyf+3usGdzAxo1oX90Z5Yq9o8OEsaU5O4xOEQ6KreVUPB1z20dcPddsay1/1lKYdvxKxSSARWLvleihoQv+vDXfN5gtEs=
+	t=1714476200; cv=none; b=GR5bQAQeIodL0Xq1ubik1SgeGRjpF2gjZodEOvDmV3czfH68wHISV30bDxrj3AOBurpEp3/kArur0vpLDYXPum2MT/qUfq095Im89CGZxsnNnKjahhvWcU9mm+yjByje+WOhvcTmN9+4yn9qZjYtwoYsUF8/9VxX7XurSm8q5GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476638; c=relaxed/simple;
-	bh=B8yibZWfRahkhGFA4ENZbrda8wQGTpNGtVocNF0u8Wc=;
+	s=arc-20240116; t=1714476200; c=relaxed/simple;
+	bh=TYePNH1LP027FHcNmpkEob3HnpyGgnA21/XKqGu8kRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShpUtW1ghf+z8LtPN5fo/l4vg3i/26ulQGSg11kBt12wJ5E3TlL9y1R7D1NMX6vF9Dg6728rw9p3+liImsmUK7t6Zt9Z7/KM94ZR6r0pN0k0PiJgRvyce8mK1EdzHgEzSSJy90WfaAuwKHUG8Lfy8d2rrBppNFSogGU5A0IL1Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMOQOgHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EA8C2BBFC;
-	Tue, 30 Apr 2024 11:30:37 +0000 (UTC)
+	 MIME-Version; b=jw2+inTEmsq4JxGTin5eKfFOjnOYO6IWlWPQ8bGgQ/mlWIA3Kcq+6N3LqULXVeJiGd17LVc7O7mK6VXd24wxE4GqBH4t78KqvdZe627+L12aownejrmuMGdLe2DQKExY3WTk9KFNuVRadH6TTar9iTzkgP4Nn4nMbTxoKLr39FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqT7YCol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F5AC2BBFC;
+	Tue, 30 Apr 2024 11:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476637;
-	bh=B8yibZWfRahkhGFA4ENZbrda8wQGTpNGtVocNF0u8Wc=;
+	s=korg; t=1714476199;
+	bh=TYePNH1LP027FHcNmpkEob3HnpyGgnA21/XKqGu8kRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMOQOgHRbrEvb2ATW6IHhC+YS2P34K/ecNX+gXUOUPZgJckzVhPBFOlqKTOTupIm3
-	 9XIqsto3/mETaSFWwju/kzjxQ8fKXWzCDpA5wjRoOYKDfTFsDtnt+qAWzyQ/AFMIUJ
-	 JfxnmTALjsIWu9hlF+CkMa3SG97sE7NJhdlzcQNQ=
+	b=wqT7YColMzfhQjIczcrUh6vUssWH9+PUU0PrGoozeIyWEfS3/26Oly0dJhyQm6tmC
+	 C6MklUBxM/2iKc82KOS2bjL+zSHa0pnDuWHltYCC55tWKTYSFnLn/J6RzQb6LUTddu
+	 W41pnjkdRv5T2KcHGFQ36+UXJrsnE+XS0J3weBbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Mineri Bhange <minerix.bhange@intel.com>
-Subject: [PATCH 6.1 056/110] iavf: Fix TC config comparison with existing adapter TC config
+	Hyunwoo Kim <v4bel@theori.io>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 065/107] net: gtp: Fix Use-After-Free in gtp_dellink
 Date: Tue, 30 Apr 2024 12:40:25 +0200
-Message-ID: <20240430103049.219205126@linuxfoundation.org>
+Message-ID: <20240430103046.574716495@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit 54976cf58d6168b8d15cebb395069f23b2f34b31 ]
+[ Upstream commit f2a904107ee2b647bb7794a1a82b67740d7c8a64 ]
 
-Same number of TCs doesn't imply that underlying TC configs are
-same. The config could be different due to difference in number
-of queues in each TC. Add utility function to determine if TC
-configs are same.
+Since call_rcu, which is called in the hlist_for_each_entry_rcu traversal
+of gtp_dellink, is not part of the RCU read critical section, it
+is possible that the RCU grace period will pass during the traversal and
+the key will be free.
 
-Fixes: d5b33d024496 ("i40evf: add ndo_setup_tc callback to i40evf")
-Signed-off-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
-Tested-by: Mineri Bhange <minerix.bhange@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240423182723.740401-4-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To prevent this, it should be changed to hlist_for_each_entry_safe.
+
+Fixes: 94dc550a5062 ("gtp: fix an use-after-free in ipv4_pdp_find()")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 30 ++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ drivers/net/gtp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index b9c4b311cd625..53b9fe35d8035 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -3631,6 +3631,34 @@ static void iavf_del_all_cloud_filters(struct iavf_adapter *adapter)
- 	spin_unlock_bh(&adapter->cloud_filter_list_lock);
- }
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index e5961082a4afd..0d6d2fe9eabdb 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -706,11 +706,12 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
+ static void gtp_dellink(struct net_device *dev, struct list_head *head)
+ {
+ 	struct gtp_dev *gtp = netdev_priv(dev);
++	struct hlist_node *next;
+ 	struct pdp_ctx *pctx;
+ 	int i;
  
-+/**
-+ * iavf_is_tc_config_same - Compare the mqprio TC config with the
-+ * TC config already configured on this adapter.
-+ * @adapter: board private structure
-+ * @mqprio_qopt: TC config received from kernel.
-+ *
-+ * This function compares the TC config received from the kernel
-+ * with the config already configured on the adapter.
-+ *
-+ * Return: True if configuration is same, false otherwise.
-+ **/
-+static bool iavf_is_tc_config_same(struct iavf_adapter *adapter,
-+				   struct tc_mqprio_qopt *mqprio_qopt)
-+{
-+	struct virtchnl_channel_info *ch = &adapter->ch_config.ch_info[0];
-+	int i;
-+
-+	if (adapter->num_tc != mqprio_qopt->num_tc)
-+		return false;
-+
-+	for (i = 0; i < adapter->num_tc; i++) {
-+		if (ch[i].count != mqprio_qopt->count[i] ||
-+		    ch[i].offset != mqprio_qopt->offset[i])
-+			return false;
-+	}
-+	return true;
-+}
-+
- /**
-  * __iavf_setup_tc - configure multiple traffic classes
-  * @netdev: network interface device structure
-@@ -3688,7 +3716,7 @@ static int __iavf_setup_tc(struct net_device *netdev, void *type_data)
- 		if (ret)
- 			return ret;
- 		/* Return if same TC config is requested */
--		if (adapter->num_tc == num_tc)
-+		if (iavf_is_tc_config_same(adapter, &mqprio_qopt->qopt))
- 			return 0;
- 		adapter->num_tc = num_tc;
+ 	for (i = 0; i < gtp->hash_size; i++)
+-		hlist_for_each_entry_rcu(pctx, &gtp->tid_hash[i], hlist_tid)
++		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
+ 			pdp_context_delete(pctx);
  
+ 	list_del_rcu(&gtp->list);
 -- 
 2.43.0
 
