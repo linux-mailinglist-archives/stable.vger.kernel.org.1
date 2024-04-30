@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5358B7375
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087848B744F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CBC7B209CE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA0DB286B25
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885C912D1E8;
-	Tue, 30 Apr 2024 11:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6469212D215;
+	Tue, 30 Apr 2024 11:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlutY5dx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbJxSo3r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A3617592;
-	Tue, 30 Apr 2024 11:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2152A12BF32;
+	Tue, 30 Apr 2024 11:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475957; cv=none; b=qXIZ7Bt2oessqaQfjc2WwKtC9lRl3/iDMFsxxpV0G/dEJ/rKedw+mJhv553N4EKfC2LOFN9EzziAScvoamDkW3F3IAqpg2LBpXCnVGJ+Kl4qu/CKxwHoibg0iVcgMjaoR7TWpUy14zA4shUCWu6la0C21qBhCIf1DfBBi/ax9/c=
+	t=1714476564; cv=none; b=IKkxlINPabpnuWZ/Y09CCD3wN0omUxUDTj0LJ8qZ6TWyYsjZpRCFcLRyeI2pkYrr+cCElfvBcBjn9l2tPNQjAw9DRCoXnV05ix0X8vhiIkfKw7TKU9TDSxoRjN11sLZ9rM1gpPV+SX2FMrJWN5/csP4aVGhQwT4NI4R83R01SpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475957; c=relaxed/simple;
-	bh=pllNQiRF9y62eQocaOi+0i45UrGClZK8RXPZxFrm4lA=;
+	s=arc-20240116; t=1714476564; c=relaxed/simple;
+	bh=mUQ72RJeknWE5TpwGII29XFkDKsqWJR3J2/Ht9+8QSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQOtCdcBfIOJz1TgccF/vo/o5XdRucH9C57+nlxtQpXYOkREB4fisOsECSEbXr0wu0dJrYCOFZjfSrQIG5zu/9ObhhF6D3zkHavOtTb/2F9xMubeJRUvBfIvzgKQpHAOE8LQc8Dv5e1v9M59+YD0SmwL9Yc4wr0CiioaP5uHn5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlutY5dx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE266C2BBFC;
-	Tue, 30 Apr 2024 11:19:16 +0000 (UTC)
+	 MIME-Version; b=U4uaTTTkQBtAW9zG+2utIEw/TmPzfLxCho/KvGe67j926hHbEcyeeG5t1Rsts17fCMrCvo92ZgUH/aRwWn8bQ5ce47IdRwGtOMf8f3sauxmFFeXHngv6wNHvRF1CtzLXpYLjTBc7MDjPpoZxdoEZbXcGAwoojWKqi3l80PNikfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbJxSo3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38104C2BBFC;
+	Tue, 30 Apr 2024 11:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475957;
-	bh=pllNQiRF9y62eQocaOi+0i45UrGClZK8RXPZxFrm4lA=;
+	s=korg; t=1714476563;
+	bh=mUQ72RJeknWE5TpwGII29XFkDKsqWJR3J2/Ht9+8QSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlutY5dxTKG2KLzKamvXCBPddFOuXJ6QKgdZM13h4jKOyQZ6zMc886OI/31taP2UD
-	 hYipph2UGGVqR5mJXKtEUsCWnOXkPjqmU1tiJeiomRaJ7w0deI7nkdZIa39Zyzq+G+
-	 CNVKwGVSxgFkPiFrHk07Z0Enwgw3yHUg0fLmbh9Y=
+	b=UbJxSo3rpHKsbWQScH4my9bMv2rV1okFCUwcO7K9DMleRs0WLEwYnFwfVjAycIVh2
+	 FuQc0bbgoIXUpxu5yfyaG3NsS2vLDfHYGiI+KFfmWbClzKvWCIa8PmwAE/FqhOKyVw
+	 yanIuJtFlj7IR7+i2tzX+7uWUQmmDfJs2+hxpkbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Zhengchao Shao <shaozhengchao@huawei.com>
-Subject: [PATCH 5.15 68/80] tcp: Fix NEW_SYN_RECV handling in inet_twsk_purge()
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 071/110] smb3: fix lock ordering potential deadlock in cifs_sync_mid_result
 Date: Tue, 30 Apr 2024 12:40:40 +0200
-Message-ID: <20240430103045.424319786@linuxfoundation.org>
+Message-ID: <20240430103049.662665517@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 1c4e97dd2d3c9a3e84f7e26346aa39bc426d3249 upstream.
+commit 8861fd5180476f45f9e8853db154600469a0284f upstream.
 
-inet_twsk_purge() uses rcu to find TIME_WAIT and NEW_SYN_RECV
-objects to purge.
+Coverity spotted that the cifs_sync_mid_result function could deadlock
 
-These objects use SLAB_TYPESAFE_BY_RCU semantic and need special
-care. We need to use refcount_inc_not_zero(&sk->sk_refcnt).
+"Thread deadlock (ORDER_REVERSAL) lock_order: Calling spin_lock acquires
+lock TCP_Server_Info.srv_lock while holding lock TCP_Server_Info.mid_lock"
 
-Reuse the existing correct logic I wrote for TIME_WAIT,
-because both structures have common locations for
-sk_state, sk_family, and netns pointer.
-
-If after the refcount_inc_not_zero() the object fields longer match
-the keys, use sock_gen_put(sk) to release the refcount.
-
-Then we can call inet_twsk_deschedule_put() for TIME_WAIT,
-inet_csk_reqsk_queue_drop_and_put() for NEW_SYN_RECV sockets,
-with BH disabled.
-
-Then we need to restart the loop because we had drop rcu_read_lock().
-
-Fixes: 740ea3c4a0b2 ("tcp: Clean up kernel listener's reqsk in inet_twsk_purge()")
-Link: https://lore.kernel.org/netdev/CANn89iLvFuuihCtt9PME2uS1WJATnf5fKjDToa1WzVnRzHnPfg@mail.gmail.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240308200122.64357-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Addresses-Coverity: 1590401 ("Thread deadlock (ORDER_REVERSAL)")
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_timewait_sock.c |   41 +++++++++++++++++++----------------------
- 1 file changed, 19 insertions(+), 22 deletions(-)
+ fs/smb/client/transport.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ipv4/inet_timewait_sock.c
-+++ b/net/ipv4/inet_timewait_sock.c
-@@ -254,12 +254,12 @@ void __inet_twsk_schedule(struct inet_ti
- }
- EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
- 
-+/* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
- void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
- {
--	struct inet_timewait_sock *tw;
--	struct sock *sk;
- 	struct hlist_nulls_node *node;
- 	unsigned int slot;
-+	struct sock *sk;
- 
- 	for (slot = 0; slot <= hashinfo->ehash_mask; slot++) {
- 		struct inet_ehash_bucket *head = &hashinfo->ehash[slot];
-@@ -268,38 +268,35 @@ restart_rcu:
- 		rcu_read_lock();
- restart:
- 		sk_nulls_for_each_rcu(sk, node, &head->chain) {
--			if (sk->sk_state != TCP_TIME_WAIT) {
--				/* A kernel listener socket might not hold refcnt for net,
--				 * so reqsk_timer_handler() could be fired after net is
--				 * freed.  Userspace listener and reqsk never exist here.
--				 */
--				if (unlikely(sk->sk_state == TCP_NEW_SYN_RECV &&
--					     hashinfo->pernet)) {
--					struct request_sock *req = inet_reqsk(sk);
--
--					inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
--				}
-+			int state = inet_sk_state_load(sk);
- 
-+			if ((1 << state) & ~(TCPF_TIME_WAIT |
-+					     TCPF_NEW_SYN_RECV))
- 				continue;
--			}
- 
--			tw = inet_twsk(sk);
--			if ((tw->tw_family != family) ||
--				refcount_read(&twsk_net(tw)->ns.count))
-+			if (sk->sk_family != family ||
-+			    refcount_read(&sock_net(sk)->ns.count))
- 				continue;
- 
--			if (unlikely(!refcount_inc_not_zero(&tw->tw_refcnt)))
-+			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
- 				continue;
- 
--			if (unlikely((tw->tw_family != family) ||
--				     refcount_read(&twsk_net(tw)->ns.count))) {
--				inet_twsk_put(tw);
-+			if (unlikely(sk->sk_family != family ||
-+				     refcount_read(&sock_net(sk)->ns.count))) {
-+				sock_gen_put(sk);
- 				goto restart;
- 			}
- 
- 			rcu_read_unlock();
- 			local_bh_disable();
--			inet_twsk_deschedule_put(tw);
-+			if (state == TCP_TIME_WAIT) {
-+				inet_twsk_deschedule_put(inet_twsk(sk));
-+			} else {
-+				struct request_sock *req = inet_reqsk(sk);
-+
-+				inet_csk_reqsk_queue_drop_and_put(req->rsk_listener,
-+								  req);
-+			}
- 			local_bh_enable();
- 			goto restart_rcu;
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -931,12 +931,15 @@ cifs_sync_mid_result(struct mid_q_entry
+ 			list_del_init(&mid->qhead);
+ 			mid->mid_flags |= MID_DELETED;
  		}
++		spin_unlock(&server->mid_lock);
+ 		cifs_server_dbg(VFS, "%s: invalid mid state mid=%llu state=%d\n",
+ 			 __func__, mid->mid, mid->mid_state);
+ 		rc = -EIO;
++		goto sync_mid_done;
+ 	}
+ 	spin_unlock(&server->mid_lock);
+ 
++sync_mid_done:
+ 	release_mid(mid);
+ 	return rc;
+ }
 
 
 
