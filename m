@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-41869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1F28B7019
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:43:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F878B71C5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 627921F21AF5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:43:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 268921C22596
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C1312C486;
-	Tue, 30 Apr 2024 10:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5E412C487;
+	Tue, 30 Apr 2024 11:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x35KBOoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmSdzsbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116A112C46E;
-	Tue, 30 Apr 2024 10:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BADA7464;
+	Tue, 30 Apr 2024 11:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473806; cv=none; b=nu+gQs3FFRVksR7ODqRKiBM3ksOiH9Kk6T8fAF2ExIyHKkmgQLHicYWQbpaAxToVJciYIHnTAFr6BKvcbQ3Nd473XYQBn3vzbmWh/JGIjvANT+Z9JHMa1+U5oreZKnFWY32C03u8A3tKhcbJkauQxV5dtGUO/5pm0L3v/9k9xu0=
+	t=1714474836; cv=none; b=VcGh9yLHWB3c57WkkFdTHxHFHC9LJnhT8n7VrqesrzaDcWLy9NJdB9w8IYlzWc0j+iESy0FFAv6n/gtdwcXJjQBEMOap1tjkk6yPXQFx9x3w8D4jVbBF5+0QCdhL5m/ZyUSjoZzYA4HQGxpQlWxE98I/sCO+YN0Bi4FpSGXpT64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473806; c=relaxed/simple;
-	bh=AvcuzfNWlSEJHnrEfhqGJwZ6gvV7nw46GXrwYte1vNU=;
+	s=arc-20240116; t=1714474836; c=relaxed/simple;
+	bh=2G0H4LbhCwV2kDlpr9mm3Fzq9nsTrmvCAkGQwVQY++k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZmDE64gUS169PUxWzcC+jtzRiZkro4ROx1rjLZhEPjobOUcbRRIZl6isGTRP0ALsYsTJ9QIDP0xh8NmzXgLux2jGcciWml1UMMOIOAB8J7hrnjEGJyAaaIndhTJOxYLyxNmwaGoZehzB/WyR3ND0bVqqcwNf1td9XQ1r+Oqrg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x35KBOoS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D771C4AF14;
-	Tue, 30 Apr 2024 10:43:25 +0000 (UTC)
+	 MIME-Version; b=rfNsrPJgpC9+ocj6xst1Y8xoDgRbsuxo1xdACieiXL5WKKejK0km0wgArTzdx2gePN3Jiz89Gl1fZlPnt/bS5rKHeiPxz/y3GHPyrdIjzgsHdVyTvyvRkFEbuKbxMyYuj2alKRgVWnFhKPyoeTvkS5cv6x2Jc7suY79uLsy+/7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmSdzsbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02996C2BBFC;
+	Tue, 30 Apr 2024 11:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473805;
-	bh=AvcuzfNWlSEJHnrEfhqGJwZ6gvV7nw46GXrwYte1vNU=;
+	s=korg; t=1714474836;
+	bh=2G0H4LbhCwV2kDlpr9mm3Fzq9nsTrmvCAkGQwVQY++k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x35KBOoSwTN/8WSX5Ple+VZM4iqKnQyUpeioo2be7xp+XxFk01PwCELq5eJ2DKu9X
-	 ZKyiNL0T3QhHE8MY7PppY5jneKPk0rEPnrSwa4v1lB1wOpSjMOxf3F9905rNgnys34
-	 YGtZRmi6DC7iM+ZDbmZAzBfVHRs0JDnOlUkpTsEA=
+	b=tmSdzsbf9oPtRXHyBrB57aZEmPratKWCArfd/VjLxEAr+/xE0HwTeYKKUVrQgAWm5
+	 Fb9ytt6Fx0eX+CGUNu4sgmGGiECgPUhhP94Kpu3w3PGyWAqtL7fm8pZ1NEVhCSFIqX
+	 Mbzxu34iU6XVAVEq66+XNJHtNqvXqZn/6Z8Rqcr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 17/77] netfilter: nf_tables: __nft_expr_type_get() selects specific family type
+	Carlos Llamas <cmllamas@google.com>,
+	Todd Kjos <tkjos@google.com>
+Subject: [PATCH 5.10 051/138] binder: check offset alignment in binder_get_object()
 Date: Tue, 30 Apr 2024 12:38:56 +0200
-Message-ID: <20240430103041.634582331@linuxfoundation.org>
+Message-ID: <20240430103050.930848932@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 9cff126f73a7025bcb0883189b2bed90010a57d4 ]
+commit aaef73821a3b0194a01bd23ca77774f704a04d40 upstream.
 
-In case that there are two types, prefer the family specify extension.
+Commit 6d98eb95b450 ("binder: avoid potential data leakage when copying
+txn") introduced changes to how binder objects are copied. In doing so,
+it unintentionally removed an offset alignment check done through calls
+to binder_alloc_copy_from_buffer() -> check_buffer().
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: f969eb84ce48 ("netfilter: nf_tables: Fix potential data-race in __nft_expr_type_get()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+These calls were replaced in binder_get_object() with copy_from_user(),
+so now an explicit offset alignment check is needed here. This avoids
+later complications when unwinding the objects gets harder.
+
+It is worth noting this check existed prior to commit 7a67a39320df
+("binder: add function to copy binder object from buffer"), likely
+removed due to redundancy at the time.
+
+Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Acked-by: Todd Kjos <tkjos@google.com>
+Link: https://lore.kernel.org/r/20240330190115.1877819-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/android/binder.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index dc40222a9e66b..79d0545badcab 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2081,14 +2081,17 @@ EXPORT_SYMBOL_GPL(nft_unregister_expr);
- static const struct nft_expr_type *__nft_expr_type_get(u8 family,
- 						       struct nlattr *nla)
- {
--	const struct nft_expr_type *type;
-+	const struct nft_expr_type *type, *candidate = NULL;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -2042,8 +2042,10 @@ static size_t binder_get_object(struct b
+ 	size_t object_size = 0;
  
- 	list_for_each_entry(type, &nf_tables_expressions, list) {
--		if (!nla_strcmp(nla, type->name) &&
--		    (!type->family || type->family == family))
--			return type;
-+		if (!nla_strcmp(nla, type->name)) {
-+			if (!type->family && !candidate)
-+				candidate = type;
-+			else if (type->family == family)
-+				candidate = type;
-+		}
- 	}
--	return NULL;
-+	return candidate;
- }
- 
- static const struct nft_expr_type *nft_expr_type_get(struct net *net,
--- 
-2.43.0
-
+ 	read_size = min_t(size_t, sizeof(*object), buffer->data_size - offset);
+-	if (offset > buffer->data_size || read_size < sizeof(*hdr))
++	if (offset > buffer->data_size || read_size < sizeof(*hdr) ||
++	    !IS_ALIGNED(offset, sizeof(u32)))
+ 		return 0;
++
+ 	if (u) {
+ 		if (copy_from_user(object, u + offset, read_size))
+ 			return 0;
 
 
 
