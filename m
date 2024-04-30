@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEFE8B71E1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0492D8B72B5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D0F41C22D1F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31B381C2316A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63AA312C54B;
-	Tue, 30 Apr 2024 11:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB31312D745;
+	Tue, 30 Apr 2024 11:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzmIy4mv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOIc4qOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A4512B176;
-	Tue, 30 Apr 2024 11:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E9C8801;
+	Tue, 30 Apr 2024 11:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474911; cv=none; b=qQBNuihH/z2tGnj+PqqOWqZNMIpgV06oBXnwAjBGOlVZCS6lTKf4pcqEvXNsx7bU/p8GocSTEEpOxdCE3iPWGiyEq33pEXtDyEh7KvJbEDswlCKAHYq+jgMliverfAue30d2lWGg7aVOG31r2F3b31M0Ue6xBT6pq7g6imFpy3Y=
+	t=1714475474; cv=none; b=ti/f/hhmH/2HctzlCkofxeGamNMKj214GMtv4A9e/Lv4gI8Sv2ao+e+62hwYPaYbROcbUftHs2vTLTWyXTfVLgMQbW7vbxhwLPl8YzL1dKF2uiwMokdaXctpHGoTMOnZX0CIG9S1zk+Eroen78FrmWbzfIUonVPV6aOjXT6fNpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474911; c=relaxed/simple;
-	bh=FK8Ej/IgYBMQMu4ybbPyTqH/S17av5Ld6a8nqGgt1gQ=;
+	s=arc-20240116; t=1714475474; c=relaxed/simple;
+	bh=l7hJm2E4iu4K7FZ9J+qI87juqw7S3rnOTKYdo9QzluU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LH2tKB5R9oNZo9UABPMGPZlYR76rGTOO7kUP2S+C0c70b3fENRkrT9VtWJH94scbxJVxlunqaO9JaNGrh5/3Ar/Ik9ZhVcWfEnFoGUdMgVFTYkoZOFQhh+Rqs5WC/VybDAaBKrEPVzOLvteOvHVPJioS7uoZBTIAhR89RENxsjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzmIy4mv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDFDC4AF1A;
-	Tue, 30 Apr 2024 11:01:50 +0000 (UTC)
+	 MIME-Version; b=AovozSBLDlvgjqCxO8BmknfvAcRveyoo3MWHYSlTIp16tPoyjYJekxPguac5OI4LmZgEiW+rnUQpvU02+XOt2MczTb502MzC4aJSahy9qac5yCWAXO+G1zYmUST6rP0YX+FdUSjeUTZbTLMYkL7BCMMcT+F1EFMTXqyk3Dc28eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOIc4qOU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9395C2BBFC;
+	Tue, 30 Apr 2024 11:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474911;
-	bh=FK8Ej/IgYBMQMu4ybbPyTqH/S17av5Ld6a8nqGgt1gQ=;
+	s=korg; t=1714475474;
+	bh=l7hJm2E4iu4K7FZ9J+qI87juqw7S3rnOTKYdo9QzluU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzmIy4mv1Hlrll+s/HbPVQVyhstKmmEWVOKy//86Cny/RstWKd4hfSDZs0nHns0Gu
-	 yxEWwvDOiWb7aT06OfJZXmNM3dyFIIgn4y6jjwKXXJgbdP+cJSoj0OnI9fBK26XPZs
-	 V39d/VAgBwRactF2WvBL1EZ/94ne1TJUKwBF5HPw=
+	b=zOIc4qOUUYC4q6PcI1XrZsrUPbjqN/aepWhKUGmpyi0loue57nAPkhIYgQArCvUE9
+	 djqiIP6i8e7NTBMurN25Ucj2KD0x4m6WEqV6uzi+bay9EdeiLYQAeAxCHUrgSAm9zf
+	 Q84jWNAZK50oW8PE42nP91JwKy0cAyTftt3OXAAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskander Amara <iskander.amara@theobroma-systems.com>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 072/138] arm64: dts: rockchip: fix alphabetical ordering RK3399 puma
+Subject: [PATCH 6.6 105/186] squashfs: convert to new timestamp accessors
 Date: Tue, 30 Apr 2024 12:39:17 +0200
-Message-ID: <20240430103051.548181280@linuxfoundation.org>
+Message-ID: <20240430103101.082843463@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iskander Amara <iskander.amara@theobroma-systems.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit f0abb4b2c7acf3c3e4130dc3f54cd90cf2ae62bc ]
+[ Upstream commit a1f13ed8c74893ed31d41c5bca156a623b0e9a86 ]
 
-Nodes overridden by their reference should be ordered alphabetically to
-make it easier to read the DTS. pinctrl node is defined in the wrong
-location so let's reorder it.
+Convert to using the new inode timestamp accessor functions.
 
-Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240308085243.69903-2-iskander.amara@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Stable-dep-of: 945a7c857091 ("arm64: dts: rockchip: enable internal pull-up on PCIE_WAKE# for RK3399 Puma")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/20231004185347.80880-68-jlayton@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 9253c54e01b6 ("Squashfs: check the inode number is not the invalid value of zero")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/squashfs/inode.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index 95bc7a5f61dd5..aaa042fba1ebf 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -430,15 +430,6 @@
- 	gpio1830-supply = <&vcc_1v8>;
- };
+diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
+index c6e626b00546b..aa3411354e66d 100644
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -59,9 +59,9 @@ static int squashfs_new_inode(struct super_block *sb, struct inode *inode,
+ 	i_uid_write(inode, i_uid);
+ 	i_gid_write(inode, i_gid);
+ 	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
+-	inode->i_mtime.tv_sec = le32_to_cpu(sqsh_ino->mtime);
+-	inode->i_atime.tv_sec = inode->i_mtime.tv_sec;
+-	inode_set_ctime(inode, inode->i_mtime.tv_sec, 0);
++	inode_set_mtime(inode, le32_to_cpu(sqsh_ino->mtime), 0);
++	inode_set_atime(inode, inode_get_mtime_sec(inode), 0);
++	inode_set_ctime(inode, inode_get_mtime_sec(inode), 0);
+ 	inode->i_mode = le16_to_cpu(sqsh_ino->mode);
+ 	inode->i_size = 0;
  
--&pmu_io_domains {
--	status = "okay";
--	pmu1830-supply = <&vcc_1v8>;
--};
--
--&pwm2 {
--	status = "okay";
--};
--
- &pinctrl {
- 	i2c8 {
- 		i2c8_xfer_a: i2c8-xfer {
-@@ -470,6 +461,15 @@
- 	};
- };
- 
-+&pmu_io_domains {
-+	status = "okay";
-+	pmu1830-supply = <&vcc_1v8>;
-+};
-+
-+&pwm2 {
-+	status = "okay";
-+};
-+
- &sdhci {
- 	/*
- 	 * Signal integrity isn't great at 200MHz but 100MHz has proven stable
 -- 
 2.43.0
 
