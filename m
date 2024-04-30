@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCFC8B71B5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7864E8B7138
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB46B284F60
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18C841F2339A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6783E12C530;
-	Tue, 30 Apr 2024 10:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940F612C472;
+	Tue, 30 Apr 2024 10:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gw+YEUM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9A07FGC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272867464;
-	Tue, 30 Apr 2024 10:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4912712D74E;
+	Tue, 30 Apr 2024 10:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474787; cv=none; b=F4FJimm0NMHi+5VZAb6AH791K4/qY438/o4kKzJs4lANEq0lKOeZtDenG/Td0jrfVFKGiQhNa8KaKV2Ay0fGnLUzuFP46D3v5xL5+inZ2VI7VQPWXaOilrXh95EZTJEbKalLRWpMSwWX+5qYLU9BMi1TO70vmUGc/N+SgfzHExc=
+	t=1714474444; cv=none; b=ceyAEHWNySYh23ahpzxgjnPcxj7p3XO5STYOdQaNTY1I1d168MUl44ZrUWGKVfZ3SYgtd3rd7ksAQQoURLwmTp1zjC2ZHC/yBjj1p5rKs1zzYPFHZ39D+8FJdPrJ/tDbVv+ndGukdnRB9c40ZrAS0+zBpayFeiiz96x2OyAeAG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474787; c=relaxed/simple;
-	bh=fs7HMt1Mp9r6z7EeaDLjCa2Ay71145zeY0Ojy7ZGVGI=;
+	s=arc-20240116; t=1714474444; c=relaxed/simple;
+	bh=+FbspavUHQkOjtFXjuCtNPHj8JXW90QO9aPjQu8/Os4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J56nSj9gVtbVSHW7x/GnpdxB5AjZOVDM447Q/J+h60ahJlbaF7NYUbyMI1NDP62nS7u3mYVMmW4Fc2eFsyFJStf5iXlcPBvOgjRkHZqnBQxiLA2zqEaI8+sF6DfW/s67D+A9qhvZf8iyI61bKjj6IVi98sv4a6Co2El3nr6nko8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gw+YEUM+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D731C2BBFC;
-	Tue, 30 Apr 2024 10:59:46 +0000 (UTC)
+	 MIME-Version; b=hKIyhnGqeiOi1RtI1oG+0dzQOhG4/OehwnXid5mIu/pb7nyhYgNFKh3ybc9W7fZyZWfsHt8JYbfJPHGDmNA/dwGKz9mYzL1zjLg1pl/m8eXXZHazvnTDrY//6eSk5kb3BC15Nn35tg8JcvWz67furn6WqmuhSqgcaq435Pq8p7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9A07FGC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A954C4AF19;
+	Tue, 30 Apr 2024 10:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474787;
-	bh=fs7HMt1Mp9r6z7EeaDLjCa2Ay71145zeY0Ojy7ZGVGI=;
+	s=korg; t=1714474443;
+	bh=+FbspavUHQkOjtFXjuCtNPHj8JXW90QO9aPjQu8/Os4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gw+YEUM+4CptynrfG1VNAMXbivZo42tBLiovGxL6kutwKO/SkHcjvr46+JcjEmK/S
-	 Yg0OysxkBTgk326gppaysMB/Ll27FEB9QaqtyMDHLIO/GpDQ5YNWcs3XM1fKljFmG1
-	 7uU3raLWRZA2+75kuktgykSLp9bRURn7Q2Fg4g6k=
+	b=f9A07FGC68/ZJFDDHYJhlS8fj81WiQxSLTfb1F+JMLTHhmxW8GbAibf/cpKgM2uA3
+	 aAZDPsYL2YtO6iOWP+w2D9wwJBAGkbiAXJAzw9UmxDceOWuBoJtRpRXEuwz2Kcv2L3
+	 DDTbhw/6Y3f6wJPyzOVvynPmPxDxnhJMD/xpTEkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.10 034/138] kprobes: Fix possible use-after-free issue on kprobe registration
+	Aswin Unnikrishnan <aswinunni01@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.8 141/228] rust: remove `params` from `module` macro example
 Date: Tue, 30 Apr 2024 12:38:39 +0200
-Message-ID: <20240430103050.435923987@linuxfoundation.org>
+Message-ID: <20240430103107.869091565@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Aswin Unnikrishnan <aswinunni01@gmail.com>
 
-commit 325f3fb551f8cd672dbbfc4cf58b14f9ee3fc9e8 upstream.
+commit 19843452dca40e28d6d3f4793d998b681d505c7f upstream.
 
-When unloading a module, its state is changing MODULE_STATE_LIVE ->
- MODULE_STATE_GOING -> MODULE_STATE_UNFORMED. Each change will take
-a time. `is_module_text_address()` and `__module_text_address()`
-works with MODULE_STATE_LIVE and MODULE_STATE_GOING.
-If we use `is_module_text_address()` and `__module_text_address()`
-separately, there is a chance that the first one is succeeded but the
-next one is failed because module->state becomes MODULE_STATE_UNFORMED
-between those operations.
+Remove argument `params` from the `module` macro example, because the
+macro does not currently support module parameters since it was not sent
+with the initial merge.
 
-In `check_kprobe_address_safe()`, if the second `__module_text_address()`
-is failed, that is ignored because it expected a kernel_text address.
-But it may have failed simply because module->state has been changed
-to MODULE_STATE_UNFORMED. In this case, arm_kprobe() will try to modify
-non-exist module text address (use-after-free).
-
-To fix this problem, we should not use separated `is_module_text_address()`
-and `__module_text_address()`, but use only `__module_text_address()`
-once and do `try_module_get(module)` which is only available with
-MODULE_STATE_LIVE.
-
-Link: https://lore.kernel.org/all/20240410015802.265220-1-zhengyejian1@huawei.com/
-
-Fixes: 28f6c37a2910 ("kprobes: Forbid probing on trampoline and BPF code areas")
+Signed-off-by: Aswin Unnikrishnan <aswinunni01@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-[Fix conflict due to lack dependency
-commit 223a76b268c9 ("kprobes: Fix coding style issues")]
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Fixes: 1fbde52bde73 ("rust: add `macros` crate")
+Link: https://lore.kernel.org/r/20240419215015.157258-1-aswinunni01@gmail.com
+[ Reworded slightly. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kprobes.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ rust/macros/lib.rs |   12 ------------
+ 1 file changed, 12 deletions(-)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1647,10 +1647,17 @@ static int check_kprobe_address_safe(str
- 	jump_label_lock();
- 	preempt_disable();
- 
--	/* Ensure it is not in reserved area nor out of text */
--	if (!(core_kernel_text((unsigned long) p->addr) ||
--	    is_module_text_address((unsigned long) p->addr)) ||
--	    in_gate_area_no_mm((unsigned long) p->addr) ||
-+	/* Ensure the address is in a text area, and find a module if exists. */
-+	*probed_mod = NULL;
-+	if (!core_kernel_text((unsigned long) p->addr)) {
-+		*probed_mod = __module_text_address((unsigned long) p->addr);
-+		if (!(*probed_mod)) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+	}
-+	/* Ensure it is not in reserved area. */
-+	if (in_gate_area_no_mm((unsigned long) p->addr) ||
- 	    within_kprobe_blacklist((unsigned long) p->addr) ||
- 	    jump_label_text_reserved(p->addr, p->addr) ||
- 	    static_call_text_reserved(p->addr, p->addr) ||
-@@ -1660,8 +1667,7 @@ static int check_kprobe_address_safe(str
- 		goto out;
- 	}
- 
--	/* Check if are we probing a module */
--	*probed_mod = __module_text_address((unsigned long) p->addr);
-+	/* Get module refcount and reject __init functions for loaded modules. */
- 	if (*probed_mod) {
- 		/*
- 		 * We must hold a refcount of the probed module while updating
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -35,18 +35,6 @@ use proc_macro::TokenStream;
+ ///     author: "Rust for Linux Contributors",
+ ///     description: "My very own kernel module!",
+ ///     license: "GPL",
+-///     params: {
+-///        my_i32: i32 {
+-///            default: 42,
+-///            permissions: 0o000,
+-///            description: "Example of i32",
+-///        },
+-///        writeable_i32: i32 {
+-///            default: 42,
+-///            permissions: 0o644,
+-///            description: "Example of i32",
+-///        },
+-///    },
+ /// }
+ ///
+ /// struct MyModule;
 
 
 
