@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-42237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68CD58B720A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BD28B7337
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DBE11F237BF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62E4D287A8D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F8E12C530;
-	Tue, 30 Apr 2024 11:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB2B12CD9B;
+	Tue, 30 Apr 2024 11:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiLnBazX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmhRH58u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CF712B176;
-	Tue, 30 Apr 2024 11:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FF117592;
+	Tue, 30 Apr 2024 11:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475010; cv=none; b=slSyQpPD7ZYw5AJegprLMlaZa0hiqFyDwytY0At4NLcmhbyGW1mE3KEooFbfsrr/o53bN24PsUa7QU+sIK6exbp1oyq3kanXC7846V/WzHBWhzsmvHTzMtPP/5dtreldgmO1rJVxqcykvCaXXubMAD41bkYxltaRpvk6z0/EyYE=
+	t=1714475787; cv=none; b=ayKwHCVxpwDQAyTNOwC7MTiLwGuwS74o8FYeAMAMk2AedB/efAMLVBYLXMPHEDG73ac9eh5gEtVY9COoh8hr0u55tO6IOE3Bb2Mqoj1Du1lEJ7/JYUIIIQQtXut5NHexVTwy4X/7JPqI8AzLcJNBaznyrMKnSNEVEBvM0yJ4C5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475010; c=relaxed/simple;
-	bh=FtXNeBQEry6jOlaQl5vsT6qI9XWPFD3A+K7Owkruiso=;
+	s=arc-20240116; t=1714475787; c=relaxed/simple;
+	bh=2xbi+JpBzzhV2+Y5TimVbr/vXVKetHl4XivcwCF+3kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGD60xD18LoarPYN4hEBYSol1v5mqvT7h7uYnRwmVctUC+Zzf5uFnkVMHfl8eZHcjMlwi0k0sgNbBCucOUWRl2LtkIHSjdXJJZt38JMplWASijMhRJFVhTWgzddAV4xSNl/4LyH2o1ey7KINglARBsxjc6hVOGK8FDUn5jcag6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiLnBazX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FC7C2BBFC;
-	Tue, 30 Apr 2024 11:03:29 +0000 (UTC)
+	 MIME-Version; b=oFsIOHJd7jimJSZfNsIGWaQg/tSP8GKnJKpkvh5l7i0iw2TAXPTz4lzLiTbB/4F6Gvr3cxDSxDI6+bDYoqBfNyiVkmWF+F/38VNPkLzcqPqXJedItdpOWSG/GEG1QWX4H8Q8ey4sXXNyZ6ZzuYLHN++TXxaUKu+7VNH5mdWjpkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmhRH58u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3419C2BBFC;
+	Tue, 30 Apr 2024 11:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475010;
-	bh=FtXNeBQEry6jOlaQl5vsT6qI9XWPFD3A+K7Owkruiso=;
+	s=korg; t=1714475787;
+	bh=2xbi+JpBzzhV2+Y5TimVbr/vXVKetHl4XivcwCF+3kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wiLnBazXPH71BUMpMgW2vYTGzJoI2W4vYnU3l1WmF5cw83kXZLyiy90fDIZc7sXhf
-	 ml+sjTN8zy2yuNSfhYz08kbhmERN40YXcwYgrt32e2gg9eRJsNLCz7AODwNxMEJYos
-	 qHiONqFkQtBAdRUKNVzrLUIZOXqB10qSREkyfXRw=
+	b=jmhRH58uQv1PHYiXkLlHqaoPLAJIurH/01+8oIwZGIinfL1h3/uge/PhUAnknaYEO
+	 b67gR8x3EL8eT6ZIGiUO9Mxet6wOheh0rvPjlGfONbvHaRY25AeQAUHqsUWt63i59Z
+	 aLb5gaXw+eXEemUZzOBmrsSQoCEPrUBcrCcF6Q4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Mineri Bhange <minerix.bhange@intel.com>
-Subject: [PATCH 5.10 104/138] iavf: Fix TC config comparison with existing adapter TC config
-Date: Tue, 30 Apr 2024 12:39:49 +0200
-Message-ID: <20240430103052.476098770@linuxfoundation.org>
+	Avraham Stern <avraham.stern@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 18/80] wifi: iwlwifi: mvm: remove old PASN station when adding a new one
+Date: Tue, 30 Apr 2024 12:39:50 +0200
+Message-ID: <20240430103043.952157464@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit 54976cf58d6168b8d15cebb395069f23b2f34b31 ]
+[ Upstream commit dbfff5bf9292714f02ace002fea8ce6599ea1145 ]
 
-Same number of TCs doesn't imply that underlying TC configs are
-same. The config could be different due to difference in number
-of queues in each TC. Add utility function to determine if TC
-configs are same.
+If a PASN station is added, and an old PASN station already exists
+for the same mac address, remove the old station before adding the
+new one. Keeping the old station caueses old security context to
+be used in measurements.
 
-Fixes: d5b33d024496 ("i40evf: add ndo_setup_tc callback to i40evf")
-Signed-off-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
-Tested-by: Mineri Bhange <minerix.bhange@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240423182723.740401-4-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0739a7d70e00 ("iwlwifi: mvm: initiator: add option for adding a PASN responder")
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240415114847.ef3544a416f2.I4e8c7c8ca22737f4f908ae5cd4fc0b920c703dd3@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 30 ++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index b64801bc216bb..65259722a5728 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -2642,6 +2642,34 @@ static void iavf_del_all_cloud_filters(struct iavf_adapter *adapter)
- 	spin_unlock_bh(&adapter->cloud_filter_list_lock);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+index bb5fff8174435..2dcf5a827b361 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+@@ -48,6 +48,8 @@ int iwl_mvm_ftm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	if (!pasn)
+ 		return -ENOBUFS;
  
-+/**
-+ * iavf_is_tc_config_same - Compare the mqprio TC config with the
-+ * TC config already configured on this adapter.
-+ * @adapter: board private structure
-+ * @mqprio_qopt: TC config received from kernel.
-+ *
-+ * This function compares the TC config received from the kernel
-+ * with the config already configured on the adapter.
-+ *
-+ * Return: True if configuration is same, false otherwise.
-+ **/
-+static bool iavf_is_tc_config_same(struct iavf_adapter *adapter,
-+				   struct tc_mqprio_qopt *mqprio_qopt)
-+{
-+	struct virtchnl_channel_info *ch = &adapter->ch_config.ch_info[0];
-+	int i;
++	iwl_mvm_ftm_remove_pasn_sta(mvm, addr);
 +
-+	if (adapter->num_tc != mqprio_qopt->num_tc)
-+		return false;
-+
-+	for (i = 0; i < adapter->num_tc; i++) {
-+		if (ch[i].count != mqprio_qopt->count[i] ||
-+		    ch[i].offset != mqprio_qopt->offset[i])
-+			return false;
-+	}
-+	return true;
-+}
-+
- /**
-  * __iavf_setup_tc - configure multiple traffic classes
-  * @netdev: network interface device structure
-@@ -2698,7 +2726,7 @@ static int __iavf_setup_tc(struct net_device *netdev, void *type_data)
- 		if (ret)
- 			return ret;
- 		/* Return if same TC config is requested */
--		if (adapter->num_tc == num_tc)
-+		if (iavf_is_tc_config_same(adapter, &mqprio_qopt->qopt))
- 			return 0;
- 		adapter->num_tc = num_tc;
+ 	pasn->cipher = iwl_mvm_cipher_to_location_cipher(cipher);
  
+ 	switch (pasn->cipher) {
 -- 
 2.43.0
 
