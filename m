@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-42090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE67F8B715A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E19788B7130
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:54:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7B8AB22BF9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C1A8B22E92
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4D412C81F;
-	Tue, 30 Apr 2024 10:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E39612D1FA;
+	Tue, 30 Apr 2024 10:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OeucSfiA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+f3Kftr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD6012C47A;
-	Tue, 30 Apr 2024 10:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9A212D1FC;
+	Tue, 30 Apr 2024 10:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474532; cv=none; b=JT6Xm3zcd6no7Iqvnj2AQiCZS9cOFzCq7bH5uEMeDrin5POLlHzbWX7zdJTs91mr8Nc2P8c8T71kqDH9m21YXzR6g9dvewYHMYWcav4B7fYLDJSxhDH0a+y2XQ2r1ipLTZcM6AT9diD4u80srHdVtIQSrjbPlNeCUdPRpTGaiP4=
+	t=1714474410; cv=none; b=Mu/izlvtUvle31Ulze84QZoy7F2ANSaNvBNOWXfyrvlK0NbTzC8UvsIjCbo8tz+5Gt9KXRHeeQaSJ2bG5sXb9K5ZZrmuTAvYSRdundJ+kEbDI5/2EeSzHmwSRG2StpltRhl9u9PLAzLd7ODbxEYgO5euQRR9wCjdLbpWuYKQsLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474532; c=relaxed/simple;
-	bh=d3rHV8uKZYDJQXWdCSlMgcLIWqAQRD2uwjQGBIAEK74=;
+	s=arc-20240116; t=1714474410; c=relaxed/simple;
+	bh=6GjzXq1kGhgHQjK4OsBtH897CEl3DXIUlPtP6463DqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I30iJFgDUZHyLiRUuEhKY+EJdZBNG9xT9yvrVKhWqTqNxYbgFGECDKnEFMJTjwvmGW86yDoaqPVHfVEdp7JRxI/LgumV1d2PaArzsYk1KmL96WQ3EJkcUBQ0LYy3ya7fKcgopUXsb8mPaWYyclDkNAev0RsZkntljcPTUjy+ixg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OeucSfiA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224ADC2BBFC;
-	Tue, 30 Apr 2024 10:55:31 +0000 (UTC)
+	 MIME-Version; b=LgasVQlsxU8Y62bvjyH2j8pO54AzLDNhDJHPDNkTwgKz1LABJXPDHfhG0yB9LCEmHtWv4o40dVGLs4M6eJkLubdhHvFSeH76XHYoEkOd6EjJEsQYsvd2wvkEcsuaka0lB+NrCavw0sslWpFK2Aw61e28fZaAz9JtT2+Lb+jf+Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+f3Kftr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E31FC2BBFC;
+	Tue, 30 Apr 2024 10:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474532;
-	bh=d3rHV8uKZYDJQXWdCSlMgcLIWqAQRD2uwjQGBIAEK74=;
+	s=korg; t=1714474409;
+	bh=6GjzXq1kGhgHQjK4OsBtH897CEl3DXIUlPtP6463DqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OeucSfiA4eqticRhrUeS0mr1XPQr/3rTkYoG5cc2NhIuuCqpVaTg0oBw5wWl9Z/zD
-	 xWc7scTdt4J1z7iXve5QAxiCGRRGoGiC9q1iYF8upehYh8Ekg/7O+jqU7IMOPQEwB9
-	 DAT3zjvywu+uLNQgsyi/ucnibWpkOE6TwxiJzfn4=
+	b=s+f3KftrlFlGTPvdMnrNFbPCs1GN+kKWfx6OTScF7Dq/9Ide+hqAZoDeYNmvAPLHt
+	 eJk5K+P8Pw1NbH2JWkVVuzgTG0o7IN5VwmT4oVH3beX2VTCqVqYAVqN7Mx1yA3o+jH
+	 myxL35F5j58V/DegU2qd+jgj4jj+WAp9pbvkZEAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mantas Pucka <mantas@8devices.com>,
+	Drew Fustini <drew@pdp7.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Maksim Kiselev <bigunclemax@gmail.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.8 148/228] mmc: sdhci-msm: pervent access to suspended controller
-Date: Tue, 30 Apr 2024 12:38:46 +0200
-Message-ID: <20240430103108.078914404@linuxfoundation.org>
+Subject: [PATCH 6.8 149/228] mmc: sdhci-of-dwcmshc: th1520: Increase tuning loop count to 128
+Date: Tue, 30 Apr 2024 12:38:47 +0200
+Message-ID: <20240430103108.107266347@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 References: <20240430103103.806426847@linuxfoundation.org>
@@ -66,65 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mantas Pucka <mantas@8devices.com>
+From: Maksim Kiselev <bigunclemax@gmail.com>
 
-commit f8def10f73a516b771051a2f70f2f0446902cb4f upstream.
+commit ace323f80b9bc6734289a4e8a77938a3ce964c7d upstream.
 
-Generic sdhci code registers LED device and uses host->runtime_suspended
-flag to protect access to it. The sdhci-msm driver doesn't set this flag,
-which causes a crash when LED is accessed while controller is runtime
-suspended. Fix this by setting the flag correctly.
+Fix SD card tuning error by increasing tuning loop count
+from 40(MAX_TUNING_LOOP) to 128.
 
-Cc: stable@vger.kernel.org
-Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
-Signed-off-by: Mantas Pucka <mantas@8devices.com>
+For some reason the tuning algorithm requires to move through all the taps
+of delay line even if the THRESHOLD_MODE (bit 2 in AT_CTRL_R) is used
+instead of the LARGEST_WIN_MODE.
+
+Tested-by: Drew Fustini <drew@pdp7.com>
+Tested-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
 Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com
+Fixes: 43658a542ebf ("mmc: sdhci-of-dwcmshc: Add support for T-Head TH1520")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240402093539.184287-1-bigunclemax@gmail.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-msm.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -2694,6 +2694,11 @@ static __maybe_unused int sdhci_msm_runt
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	host->runtime_suspended = true;
-+	spin_unlock_irqrestore(&host->lock, flags);
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -612,6 +612,7 @@ static int th1520_execute_tuning(struct
  
- 	/* Drop the performance vote */
- 	dev_pm_opp_set_rate(dev, 0);
-@@ -2708,6 +2713,7 @@ static __maybe_unused int sdhci_msm_runt
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	unsigned long flags;
- 	int ret;
- 
- 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
-@@ -2726,7 +2732,15 @@ static __maybe_unused int sdhci_msm_runt
- 
- 	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
- 
--	return sdhci_msm_ice_resume(msm_host);
-+	ret = sdhci_msm_ice_resume(msm_host);
-+	if (ret)
-+		return ret;
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	host->runtime_suspended = false;
-+	spin_unlock_irqrestore(&host->lock, flags);
-+
-+	return ret;
- }
- 
- static const struct dev_pm_ops sdhci_msm_pm_ops = {
+ 	/* perform tuning */
+ 	sdhci_start_tuning(host);
++	host->tuning_loop_count = 128;
+ 	host->tuning_err = __sdhci_execute_tuning(host, opcode);
+ 	if (host->tuning_err) {
+ 		/* disable auto-tuning upon tuning error */
 
 
 
