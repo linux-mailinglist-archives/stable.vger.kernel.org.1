@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D868B7421
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F0A8B72F5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA44285720
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A9F51F231C5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B9B12D215;
-	Tue, 30 Apr 2024 11:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C4E12D1EA;
+	Tue, 30 Apr 2024 11:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZTczPeU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADcuv9+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C854717592;
-	Tue, 30 Apr 2024 11:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93649211C;
+	Tue, 30 Apr 2024 11:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476448; cv=none; b=TCjs6gDyDFAh8DL+l9/6fikh7dVbn2mAGz3jhH+1+p8Laajy8shcGAbGYsh7s9jZZJp+KEAWVrJItVndQhX8klN1OwF5x8SH2owlkbvu5lG+7npza2HfpnxEGvJTDnkbw61U36islmstfX3lZbi6OrtMb770aO5yy7f9ptADMGg=
+	t=1714475623; cv=none; b=Ly36WwaV5mKmz3Q93eW/rqzwJXBikJ//PJ+Pqje9poTGW71hkB3NeQSwvOJJXQ6y84kOnadEOQe39bqLDoaGhh/NKxNF3Em2qlWO7r8JYIbURmC/uNVHbbZZwJ0Jnnib6xvldiUKdMn+naK51JTr0m7ynzT4gS3msPSlmGugdOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476448; c=relaxed/simple;
-	bh=k7sA9mUqaHZwHEk/tIAomIKE+9yzsAV+0Ciaa9opk08=;
+	s=arc-20240116; t=1714475623; c=relaxed/simple;
+	bh=h8OLQxdwqei9/gUUBp5duQ4QcugFP57GcrpvUbQIHY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHsKfo1f50nADlEjdTlTtAt2lP6rKZ86vVggzwOzIO0L5FMRNfG+N3mgoM0pEdERPjksAqquw9NBK06sAllo6m4FH/fSqDN3hZ6HfW69wEHGi5l+Xfagpk4J+9zZrgwduL8cLAa8On2C9Q3qlRjaS1TWnOsepg9yl+Tr4K0tePg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZTczPeU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E21C2BBFC;
-	Tue, 30 Apr 2024 11:27:28 +0000 (UTC)
+	 MIME-Version; b=B6QV2SoKQ/MYvj4g25a78I4+M/bIXQyFDNpuuQFGZAUiCDj1skEhAqSZGiNq4eDg3407biLHOhCkVOCD4Fgsq4QwM1HIGNgbzmtiHy9t+ZSfNLESThr8QhamBLjLklmKGDLJd60WC2c5sBq+FwChDufFN4Xgj5HA0EM9uyIbrow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADcuv9+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F0EC2BBFC;
+	Tue, 30 Apr 2024 11:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476448;
-	bh=k7sA9mUqaHZwHEk/tIAomIKE+9yzsAV+0Ciaa9opk08=;
+	s=korg; t=1714475623;
+	bh=h8OLQxdwqei9/gUUBp5duQ4QcugFP57GcrpvUbQIHY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZTczPeUDk9kmOYGdLo5r+EJ3SgPqTi0UrPoFoRGfvtYwGRHhB3M2r5lPjDcNgWt2
-	 wVmsh8fa41rh8jTGnJcq0vXp5VjO0evXk1gji0A3MURcOYD1sXc+gXVM1/9Sb3CuSi
-	 YoJiWSHzOFKZJuVUpWZhnpTFI1ExfJXNMA6RVxtE=
+	b=ADcuv9+nrBBnmTughXdVbvR2xeDi7IbJ1j0T6AmLEUVq5yLiNANtgaKPEA1tx1Nvs
+	 9kMMOvH5ZJy4CLpTBtejJhFdq3idc7bttOxCy+Sp1BGSQpSkM3dfsBt9iqJFd0xd8a
+	 dX4iquPJMcmByiIfuj6s8KkC0Sc2xhFpnovJEGYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Heathcote <jonathan.heathcote@bbc.co.uk>,
-	Eric Dumazet <edumazet@google.com>,
-	Soheil Hassas Yeganeh <soheil@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/110] net: fix sk_memory_allocated_{add|sub} vs softirqs
+	Yick Xie <yick.xie@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 152/186] udp: preserve the connected status if only UDP cmsg
 Date: Tue, 30 Apr 2024 12:40:04 +0200
-Message-ID: <20240430103048.604954207@linuxfoundation.org>
+Message-ID: <20240430103102.446737715@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yick Xie <yick.xie@gmail.com>
 
-[ Upstream commit 3584718cf2ec7e79b6814f2596dcf398c5fb2eca ]
+commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
 
-Jonathan Heathcote reported a regression caused by blamed commit
-on aarch64 architecture.
+If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+"connected" should not be set to 0. Otherwise it stops
+the connected socket from using the cached route.
 
-x86 happens to have irq-safe __this_cpu_add_return()
-and __this_cpu_sub(), but this is not generic.
-
-I think my confusion came from "struct sock" argument,
-because these helpers are called with a locked socket.
-But the memory accounting is per-proto (and per-cpu after
-the blamed commit). We might cleanup these helpers later
-to directly accept a "struct proto *proto" argument.
-
-Switch to this_cpu_add_return() and this_cpu_xchg()
-operations, and get rid of preempt_disable()/preempt_enable() pairs.
-
-Fast path becomes a bit faster as a result :)
-
-Many thanks to Jonathan Heathcote for his awesome report and
-investigations.
-
-Fixes: 3cd3399dd7a8 ("net: implement per-cpu reserves for memory_allocated")
-Reported-by: Jonathan Heathcote <jonathan.heathcote@bbc.co.uk>
-Closes: https://lore.kernel.org/netdev/VI1PR01MB42407D7947B2EA448F1E04EFD10D2@VI1PR01MB4240.eurprd01.prod.exchangelabs.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Link: https://lore.kernel.org/r/20240421175248.1692552-1-edumazet@google.com
+Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h | 38 ++++++++++++++++++++------------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ net/ipv4/udp.c |    5 +++--
+ net/ipv6/udp.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 6ef6ce43a2edc..77298c74822a6 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1485,32 +1485,34 @@ sk_memory_allocated(const struct sock *sk)
- #define SK_MEMORY_PCPU_RESERVE (1 << (20 - PAGE_SHIFT))
- extern int sysctl_mem_pcpu_rsv;
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1124,16 +1124,17 @@ int udp_sendmsg(struct sock *sk, struct
  
-+static inline void proto_memory_pcpu_drain(struct proto *proto)
-+{
-+	int val = this_cpu_xchg(*proto->per_cpu_fw_alloc, 0);
-+
-+	if (val)
-+		atomic_long_add(val, proto->memory_allocated);
-+}
-+
- static inline void
--sk_memory_allocated_add(struct sock *sk, int amt)
-+sk_memory_allocated_add(const struct sock *sk, int val)
- {
--	int local_reserve;
-+	struct proto *proto = sk->sk_prot;
+ 	if (msg->msg_controllen) {
+ 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip_cmsg_send(sk, msg, &ipc,
+ 					   sk->sk_family == AF_INET6);
++			connected = 0;
++		}
+ 		if (unlikely(err < 0)) {
+ 			kfree(ipc.opt);
+ 			return err;
+ 		}
+ 		if (ipc.opt)
+ 			free = 1;
+-		connected = 0;
+ 	}
+ 	if (!ipc.opt) {
+ 		struct ip_options_rcu *inet_opt;
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1476,9 +1476,11 @@ do_udp_sendmsg:
+ 		ipc6.opt = opt;
  
--	preempt_disable();
--	local_reserve = __this_cpu_add_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
--	if (local_reserve >= READ_ONCE(sysctl_mem_pcpu_rsv)) {
--		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
--		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
--	}
--	preempt_enable();
-+	val = this_cpu_add_return(*proto->per_cpu_fw_alloc, val);
-+
-+	if (unlikely(val >= READ_ONCE(sysctl_mem_pcpu_rsv)))
-+		proto_memory_pcpu_drain(proto);
- }
- 
- static inline void
--sk_memory_allocated_sub(struct sock *sk, int amt)
-+sk_memory_allocated_sub(const struct sock *sk, int val)
- {
--	int local_reserve;
-+	struct proto *proto = sk->sk_prot;
- 
--	preempt_disable();
--	local_reserve = __this_cpu_sub_return(*sk->sk_prot->per_cpu_fw_alloc, amt);
--	if (local_reserve <= -READ_ONCE(sysctl_mem_pcpu_rsv)) {
--		__this_cpu_sub(*sk->sk_prot->per_cpu_fw_alloc, local_reserve);
--		atomic_long_add(local_reserve, sk->sk_prot->memory_allocated);
--	}
--	preempt_enable();
-+	val = this_cpu_sub_return(*proto->per_cpu_fw_alloc, val);
-+
-+	if (unlikely(val <= -READ_ONCE(sysctl_mem_pcpu_rsv)))
-+		proto_memory_pcpu_drain(proto);
- }
- 
- #define SK_ALLOC_PERCPU_COUNTER_BATCH 16
--- 
-2.43.0
-
+ 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, fl6,
+ 						    &ipc6);
++			connected = false;
++		}
+ 		if (err < 0) {
+ 			fl6_sock_release(flowlabel);
+ 			return err;
+@@ -1490,7 +1492,6 @@ do_udp_sendmsg:
+ 		}
+ 		if (!(opt->opt_nflen|opt->opt_flen))
+ 			opt = NULL;
+-		connected = false;
+ 	}
+ 	if (!opt) {
+ 		opt = txopt_get(np);
 
 
 
