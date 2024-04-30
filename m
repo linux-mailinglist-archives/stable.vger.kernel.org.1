@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837D38B7338
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C748B7414
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4DD71C23251
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DA20B2226A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDA212CDAE;
-	Tue, 30 Apr 2024 11:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7B212D215;
+	Tue, 30 Apr 2024 11:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XMp2vOs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E55kxxIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBC317592;
-	Tue, 30 Apr 2024 11:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E26912D1E8;
+	Tue, 30 Apr 2024 11:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475790; cv=none; b=A/LvgGsgrU68ZL8Moq8nRabM1iePO8qa82lQFgai5mRVb69HwYfuCI+g59HfZyUmxfuGPlr12ILtH8ROP1Sx5zFQTr7wxfgbYEwzdM/wSTsr757pHYYYvn/Aiw+nq2RAvRM+pz+nn+V7kKgmxEzoQacjltQKYFClcKU9DfJHmds=
+	t=1714476403; cv=none; b=QdwSJSWON7tzCJ+xja6ub4vlO/Dqj9mNBUOl2GLkTyAxLFuG4imIDSFiJllYYie+8o0yZTWSrPXBY4oV29j+eXQwxNnAVDs+ZlUqVFjdncEKcj9WygiG2deUTuCjq6NbUw+ehUlmt7nsYfQynUSqpW6YjyrtHI/aO2N2wdJhZbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475790; c=relaxed/simple;
-	bh=ZNdIpC9GODWzTrm+G1nDkIxYggwgQ1kGFmXcz7GblCg=;
+	s=arc-20240116; t=1714476403; c=relaxed/simple;
+	bh=K5jMSKXyQxo5SjfqiBeJFSpbcRin/32n7WpUzxfMN8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZfdSpiLiaymFTtXbaA/NEQ0N9riuIQ/MNhOjav5McDpHQihmspAIE60AiXhX0znMkCchYPBzkj3Suajiz8RvtIpYbVpEz88X00/OA7lYfWuASxF13rTgKTH5APeeLKSjirbBGDXFTlb2jI2ROWCtf1cVxqM445TcboXmc1/+Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XMp2vOs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE64EC2BBFC;
-	Tue, 30 Apr 2024 11:16:29 +0000 (UTC)
+	 MIME-Version; b=P7CgJ97x8Z7Wd0AkMq+vW+DObUg9aomSVItd+aeBUeSyL2O5AvYmkfsHcw2GNkEusdq92iMr/VYp55U5CcW10D8Z+XTgVmPnvkqo4TL69LPdsvUQRZWK2fICXmj5j2NXNBXOqn5TsxVFebC9jsxwxK9n8NEXwNmgRGVfXLicRx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E55kxxIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896C8C2BBFC;
+	Tue, 30 Apr 2024 11:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475790;
-	bh=ZNdIpC9GODWzTrm+G1nDkIxYggwgQ1kGFmXcz7GblCg=;
+	s=korg; t=1714476403;
+	bh=K5jMSKXyQxo5SjfqiBeJFSpbcRin/32n7WpUzxfMN8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XMp2vOsXGhFYFkmsGNDJEtYXucBHbO+lNeOGvvXK5VacGFbYlbS/o3TcsF58dSG6
-	 4LCB8ufvWXHIMmvIsKT1DD0GaPr04Cqqw/77LfYLMqgkPIRwW1rvq9RV/aYUEW4eIe
-	 97mixy/QVEbq+NDgio4nWWA+gHHGMUMciGUTu9nE=
+	b=E55kxxIpgcmiE5dS3zEhpx1KCvDL0bkO0OzqjG+ihhgJ/LHfJD1A3TLtJUYn4PWiC
+	 +kzdWogG9oW9+fWPlKx6rsTbkL9mDeyIVOXslNRwL5zNcLrZnk9eHap/VeasF51Bqj
+	 r6wkPSjtzCbvHxhpXQ55RRUOK3ELgNbvP/Wj42zI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 19/80] wifi: iwlwifi: mvm: return uid from iwl_mvm_build_scan_cmd
+Subject: [PATCH 6.1 022/110] ARC: [plat-hsdk]: Remove misplaced interrupt-cells property
 Date: Tue, 30 Apr 2024 12:39:51 +0200
-Message-ID: <20240430103043.981706039@linuxfoundation.org>
+Message-ID: <20240430103048.226122888@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Alexey Brodkin <Alexey.Brodkin@synopsys.com>
 
-[ Upstream commit bada85a3f584763deadd201147778c3e791d279c ]
+[ Upstream commit 61231eb8113ce47991f35024f9c20810b37996bf ]
 
-This function is supposed to return a uid on success, and an errno in
-failure.
-But it currently returns the return value of the specific cmd version
-handler, which in turn returns 0 on success and errno otherwise.
-This means that on success, iwl_mvm_build_scan_cmd will return 0
-regardless if the actual uid.
-Fix this by returning the uid if the handler succeeded.
+"gmac" node stands for just an ordinary Ethernet controller,
+which is by no means a provider of interrupts, i.e. it doesn't serve
+as an interrupt controller, thus "#interrupt-cells" property doesn't
+belong to it and so we remove it.
 
-Fixes: 687db6ff5b70 ("iwlwifi: scan: make new scan req versioning flow")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Link: https://msgid.link/20240415114847.5e2d602b3190.I4c4931021be74a67a869384c8f8ee7463e0c7857@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes:
+------------>8------------
+  DTC     arch/arc/boot/dts/hsdk.dtb
+arch/arc/boot/dts/hsdk.dts:207.23-235.5: Warning (interrupt_provider): /soc/ethernet@8000: '#interrupt-cells' found, but node is not an interrupt provider
+arch/arc/boot/dts/hsdk.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+------------>8------------
+
+Reported-by: Vineet Gupta <vgupta@kernel.org>
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arc/boot/dts/hsdk.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index e4fd58f043ce2..c0ffa26bc5aaa 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -2571,7 +2571,8 @@ static int iwl_mvm_build_scan_cmd(struct iwl_mvm *mvm,
- 		if (ver_handler->version != scan_ver)
- 			continue;
+diff --git a/arch/arc/boot/dts/hsdk.dts b/arch/arc/boot/dts/hsdk.dts
+index 6691f42550778..41b980df862b1 100644
+--- a/arch/arc/boot/dts/hsdk.dts
++++ b/arch/arc/boot/dts/hsdk.dts
+@@ -205,7 +205,6 @@
+ 		};
  
--		return ver_handler->handler(mvm, vif, params, type, uid);
-+		err = ver_handler->handler(mvm, vif, params, type, uid);
-+		return err ? : uid;
- 	}
- 
- 	err = iwl_mvm_scan_umac(mvm, vif, params, type, uid);
+ 		gmac: ethernet@8000 {
+-			#interrupt-cells = <1>;
+ 			compatible = "snps,dwmac";
+ 			reg = <0x8000 0x2000>;
+ 			interrupts = <10>;
 -- 
 2.43.0
 
