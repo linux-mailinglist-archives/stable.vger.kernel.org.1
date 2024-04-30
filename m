@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8EF8B716D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332968B740E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A611F232F9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0DC31F24386
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24DA12CDBB;
-	Tue, 30 Apr 2024 10:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D5B12D76B;
+	Tue, 30 Apr 2024 11:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IjZLiCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBV97Po9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DD912D1EA;
-	Tue, 30 Apr 2024 10:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F8A12D762;
+	Tue, 30 Apr 2024 11:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474583; cv=none; b=fh+qzj4e4Kc0o6qkFZUXxSYdiPPbrcFefX07azablRD21YZxgJ0rJ0wpZe/rMWtwjmBcBi28YeV3ZuzH0meY/knnXHJI1cmbU68FGYPiARjcpciklxBZ1tP0JhKP3jIxxlMatUNHtgFWki8ih/zO394hf+lvgEilTDT4dIyW6gM=
+	t=1714476387; cv=none; b=CsShuIgxgNdIrUv9vtd/UQPzrEgysTm6G4ulYJl3A9siGijxHGLtDLTgcIBD5rbAkby2hvLymuctq9reigc+Vr+8xW5/AnNWbL79ohMhiwud13/4DsFfFl54kDMRVRxjjnEwUmTW0giU5j5GdpQ5QFP5vjklqhdvtBSDM+pYHb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474583; c=relaxed/simple;
-	bh=+roPYsY/mNdQbLcdR8sap7VO76RY6ei6dJyyiPK2O/c=;
+	s=arc-20240116; t=1714476387; c=relaxed/simple;
+	bh=9qh8/fUZ7skMCrC8zvDnfOJRq6dNVI8gI9+TgjU7Ltg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCLo+RwB8oq1VeM4OYMrAKCA4nJHFqy0J/wIDKqydJVVuobGDQO0wNkpgQBFGn5glt65xuM90XcLDvJ7d+1DAw6NcgE+1o2FVTtg376XRuppmmWePYE03jUdA1xPe/gGGjyfponrfLe2hWg6Q0oLyHK0mjRhvCGmbkNYwQ7uz/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IjZLiCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2B9C2BBFC;
-	Tue, 30 Apr 2024 10:56:22 +0000 (UTC)
+	 MIME-Version; b=BnI3XQoAliyi8Y4Rwm3vfG6SKTAH6DJe6Un8lxiuwVaB8eC4qkDia6cWn8sXytxa9oGzz+29UMjW5GxVMKE4baxhR21sPEqesrDi7AD9B6TbB2iQtPQo9+oJ7zBf9TzIgaW1j8VDHAFXs3OvswAG63sl9T48rJj1xbPlcGZ3oC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBV97Po9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A43EC2BBFC;
+	Tue, 30 Apr 2024 11:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474583;
-	bh=+roPYsY/mNdQbLcdR8sap7VO76RY6ei6dJyyiPK2O/c=;
+	s=korg; t=1714476387;
+	bh=9qh8/fUZ7skMCrC8zvDnfOJRq6dNVI8gI9+TgjU7Ltg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2IjZLiCRh+z2+e/b5wGYqK/Wv46FJGtoivd/dRamE9ReDuJNFvHfuCX4Maea5bmS9
-	 r0058j2SQO5H9OwoagGozk1MF4wvkQd7/ti5/Z24R+f4kopCd3M2vuVP26GWHLRz2N
-	 IkoEmpEVb+DfFdavyCA57S9aCuwwxE0quA4K8shE=
+	b=aBV97Po93WMrhRYpDEHPbndQ0KCFWfUseqpd7Q1UxctAl6iPrFPb8VDVK98VuqMss
+	 91aRb5kkbekNBj0366/ojdh5OgYLqNpko8Gup7LjjnbctKbT1fJDLBthXWJK3zYMNI
+	 ZFbBO8/IqEFg9kQYx8mbSTHb6JATAbR76A4dwxc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 200/228] dmaengine: owl: fix register access functions
+Subject: [PATCH 6.1 009/110] arm64: dts: rockchip: Remove unsupported node from the Pinebook Pro dts
 Date: Tue, 30 Apr 2024 12:39:38 +0200
-Message-ID: <20240430103109.574779443@linuxfoundation.org>
+Message-ID: <20240430103047.844884356@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit 43c633ef93a5d293c96ebcedb40130df13128428 ]
+[ Upstream commit 43853e843aa6c3d47ff2b0cce898318839483d05 ]
 
-When building with 'make W=1', clang notices that the computed register
-values are never actually written back but instead the wrong variable
-is set:
+Remove a redundant node from the Pine64 Pinebook Pro dts, which is intended
+to provide a value for the delay in PCI Express enumeration, but that isn't
+supported without additional out-of-tree kernel patches.
 
-drivers/dma/owl-dma.c:244:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  244 |         u32 regval;
-      |             ^
-drivers/dma/owl-dma.c:268:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  268 |         u32 regval;
-      |             ^
+There were already efforts to upstream those kernel patches, because they
+reportedly make some PCI Express cards (such as LSI SAS HBAs) usable in
+Pine64 RockPro64 (which is also based on the RK3399);  otherwise, those PCI
+Express cards fail to enumerate.  However, providing the required background
+and explanations proved to be a tough nut to crack, which is the reason why
+those patches remain outside of the kernel mainline for now.
 
-Change these to what was most likely intended.
+If those out-of-tree patches eventually become upstreamed, the resulting
+device-tree changes will almost surely belong to the RK3399 SoC dtsi.  Also,
+the above-mentioned unusable-without-out-of-tree-patches PCI Express devices
+are in all fairness not usable in a Pinebook Pro without some extensive
+hardware modifications, which is another reason to delete this redundant
+node.  When it comes to the Pinebook Pro, only M.2 NVMe SSDs can be installed
+out of the box (using an additional passive adapter PCB sold separately by
+Pine64), which reportedly works fine with no additional patches.
 
-Fixes: 47e20577c24d ("dmaengine: Add Actions Semi Owl family S900 DMA driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240322132116.906475-1-arnd@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/0f82c3f97cb798d012270d13b34d8d15305ef293.1711923520.git.dsimic@manjaro.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/owl-dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/dma/owl-dma.c b/drivers/dma/owl-dma.c
-index 4e76c4ec2d396..e001f4f7aa640 100644
---- a/drivers/dma/owl-dma.c
-+++ b/drivers/dma/owl-dma.c
-@@ -250,7 +250,7 @@ static void pchan_update(struct owl_dma_pchan *pchan, u32 reg,
- 	else
- 		regval &= ~val;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 194e48c755f6b..a51e8d0493cab 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -789,7 +789,6 @@
+ };
  
--	writel(val, pchan->base + reg);
-+	writel(regval, pchan->base + reg);
- }
- 
- static void pchan_writel(struct owl_dma_pchan *pchan, u32 reg, u32 data)
-@@ -274,7 +274,7 @@ static void dma_update(struct owl_dma *od, u32 reg, u32 val, bool state)
- 	else
- 		regval &= ~val;
- 
--	writel(val, od->base + reg);
-+	writel(regval, od->base + reg);
- }
- 
- static void dma_writel(struct owl_dma *od, u32 reg, u32 data)
+ &pcie0 {
+-	bus-scan-delay-ms = <1000>;
+ 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
+ 	num-lanes = <4>;
+ 	pinctrl-names = "default";
 -- 
 2.43.0
 
