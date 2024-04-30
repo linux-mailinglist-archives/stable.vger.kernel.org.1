@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-42526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7708B7373
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C1F8B7321
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55F262887F2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFB50287562
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035C512C805;
-	Tue, 30 Apr 2024 11:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0E012D76F;
+	Tue, 30 Apr 2024 11:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2B4a/DY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIiMu84+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61218801;
-	Tue, 30 Apr 2024 11:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256BB12D776;
+	Tue, 30 Apr 2024 11:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475947; cv=none; b=jfjv38hHJWIVpvdhPO/p0c4ooTENetTe72yDEBAZOHp4DUyHQoXq5e+6ROgWFJ6+qyA7JV6WzyHLXH2e+q4KO4Kdkg+rVubbP6pVsyqPFgxsIumVFq9UvjMj+k8/44TQHCNa7HK93/TPYLqqTft2nlDu+Yg/lcLdsF7aez9bX0I=
+	t=1714475730; cv=none; b=ZZZGfsIj+FTZtVUq4V8ewMg9wWNSkRENjgI8MXjpBD6yhGXT8eiABBi/UPh1FqWHHlb0PuqPtm6sfOXIW6QLSkriRjOgBraYQDSV1SqSgi1XeOdm9vcg2kiToLdh+d+3VFs/GoyKlDt6DfMq/zP8D3TXVsk1KNgukWil+T9bkkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475947; c=relaxed/simple;
-	bh=WfZpPZUwTWEgrVbgqPZ70CjoCZreXJxJgd4K+lJnEd0=;
+	s=arc-20240116; t=1714475730; c=relaxed/simple;
+	bh=cZcyCJYZaHx9qUifVohoEXxZNbZn+WzDYY1lHCiqxH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdMvlIK+LsRVIww6KXBY8XQJpfgl4cUDuxt/iWWOTK2q3ADiTB5UuoitG9ORyVas3NwlbaNssHk/z9kmZXbOQ3OCfv7OAH2WodAVrGQzSkB1cOcw6PpPNOGz/i1Houz9KfYeX93K6OzGCe1nSRPb32qzdWQ455fv5xQji2Sslb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2B4a/DY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2BDC2BBFC;
-	Tue, 30 Apr 2024 11:19:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N8dUI9amy3nLYvCQDp2vN0i63ObgzoANmmMS69rtHdj63/z024aKX2mbz9ojAIRY/LCRwTFg4LZ6keAjacyiq98k57AOM+cD91HIMsU+t6QRvMAqlX6KVE6jmKOi4eXVYoLiC1OT1oEv6a8HryaNT29FCfhycyOgqUKTcEZ67BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIiMu84+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D81DC2BBFC;
+	Tue, 30 Apr 2024 11:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475947;
-	bh=WfZpPZUwTWEgrVbgqPZ70CjoCZreXJxJgd4K+lJnEd0=;
+	s=korg; t=1714475730;
+	bh=cZcyCJYZaHx9qUifVohoEXxZNbZn+WzDYY1lHCiqxH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E2B4a/DYRkNOVXUSi1Q//kC0gXzJoQWqBaOdY7d/+3OqBmC1byEQG6GiXPu2+bk4+
-	 dGboMdDESFGVKabSLWOjTIDPU2JE8pxLZOwCj/+CO9BwxphaG4JpWnsI3S5UTUl2dg
-	 7wOP3Mkpa/sIaZKVjXROkY84XnsLwELk1L43l0Sc=
+	b=FIiMu84+qT4QRaPGjCzSimt0XuFTosdG2hp0nKjiIs0blbWs5EeCxoHgDHmnvmMSn
+	 UMvBKPiZgfA7V5e66GFXfVSaAQtmv8NHM55pfaheFrLnK8vXc8oNJxl8+QosAouQqD
+	 ug/CoXmAxAvYBtGeMjasGJnGZQlQrQLhdjfGnqeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 66/80] mtd: diskonchip: work around ubsan link failure
+	=?UTF-8?q?=D0=9C=D0=B8=D1=85=D0=B0=D0=B8=D0=BB=20=D0=9D=D0=BE=D0=B2=D0=BE=D1=81=D0=B5=D0=BB=D0=BE=D0=B2?= <m.novosyolov@rosalinux.ru>,
+	=?UTF-8?q?=D0=98=D0=BB=D1=8C=D1=84=D0=B0=D1=82=20=D0=93=D0=B0=D0=BF=D1=82=D1=80=D0=B0=D1=85=D0=BC=D0=B0=D0=BD=D0=BE=D0=B2?= <i.gaptrakhmanov@rosalinux.ru>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Rik van Riel <riel@surriel.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 186/186] bounds: Use the right number of bits for power-of-two CONFIG_NR_CPUS
 Date: Tue, 30 Apr 2024 12:40:38 +0200
-Message-ID: <20240430103045.366412927@linuxfoundation.org>
+Message-ID: <20240430103103.430898146@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +66,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit 21c9fb611c25d5cd038f6fe485232e7884bb0b3d upstream.
+commit 5af385f5f4cddf908f663974847a4083b2ff2c79 upstream.
 
-I ran into a randconfig build failure with UBSAN using gcc-13.2:
+bits_per() rounds up to the next power of two when passed a power of
+two.  This causes crashes on some machines and configurations.
 
-arm-linux-gnueabi-ld: error: unplaced orphan section `.bss..Lubsan_data31' from `drivers/mtd/nand/raw/diskonchip.o'
-
-I'm not entirely sure what is going on here, but I suspect this has something
-to do with the check for the end of the doc_locations[] array that contains
-an (unsigned long)0xffffffff element, which is compared against the signed
-(int)0xffffffff. If this is the case, we should get a runtime check for
-undefined behavior, but we instead get an unexpected build-time error.
-
-I would have expected this to work fine on 32-bit architectures despite the
-signed integer overflow, though on 64-bit architectures this likely won't
-ever work.
-
-Changing the contition to instead check for the size of the array makes the
-code safe everywhere and avoids the ubsan check that leads to the link
-error. The loop code goes back to before 2.6.12.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240405143015.717429-1-arnd@kernel.org
+Reported-by: Михаил Новоселов <m.novosyolov@rosalinux.ru>
+Tested-by: Ильфат Гаптрахманов <i.gaptrakhmanov@rosalinux.ru>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3347
+Link: https://lore.kernel.org/all/1c978cf1-2934-4e66-e4b3-e81b04cb3571@rosalinux.ru/
+Fixes: f2d5dcb48f7b (bounds: support non-power-of-two CONFIG_NR_CPUS)
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/diskonchip.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bounds.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/diskonchip.c
-+++ b/drivers/mtd/nand/raw/diskonchip.c
-@@ -53,7 +53,7 @@ static unsigned long doc_locations[] __i
- 	0xe8000, 0xea000, 0xec000, 0xee000,
+--- a/kernel/bounds.c
++++ b/kernel/bounds.c
+@@ -19,7 +19,7 @@ int main(void)
+ 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
+ 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
+ #ifdef CONFIG_SMP
+-	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
++	DEFINE(NR_CPUS_BITS, order_base_2(CONFIG_NR_CPUS));
  #endif
- #endif
--	0xffffffff };
-+};
- 
- static struct mtd_info *doclist = NULL;
- 
-@@ -1552,7 +1552,7 @@ static int __init init_nanddoc(void)
- 		if (ret < 0)
- 			return ret;
- 	} else {
--		for (i = 0; (doc_locations[i] != 0xffffffff); i++) {
-+		for (i = 0; i < ARRAY_SIZE(doc_locations); i++) {
- 			doc_probe(doc_locations[i]);
- 		}
- 	}
+ 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
+ #ifdef CONFIG_LRU_GEN
 
 
 
