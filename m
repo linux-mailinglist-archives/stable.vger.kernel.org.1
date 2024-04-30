@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-42097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E1D8B7162
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525CC8B7036
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FCCA1C2276E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0964C1F21898
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E8512CDB1;
-	Tue, 30 Apr 2024 10:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AE012C544;
+	Tue, 30 Apr 2024 10:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLeCjjyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxCCQt7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B686D12C534;
-	Tue, 30 Apr 2024 10:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510A612B176;
+	Tue, 30 Apr 2024 10:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474560; cv=none; b=VmhVrPd51D5x/fExd1I5GhKII8AUp7GczZh9/T0k4y6uIiGSWtZ66S9OSG6SXyMy85vFFvKA6VnFJdUa1ZHOjok7jIBobye6UUxgt7zMYuznjXdObr/t+ZnlhFC//CbRePFW9Rh5BPSKRy0iOCvt593UVecsIMPrRZHWvIBX1OQ=
+	t=1714473836; cv=none; b=u8KRgvLt0XXdGA+Dfk2yJvtwnLaMGomnAh949psJPdhAqeTfl4m2dcawI+QMtpMJL8TEy1hicGdcCXgTGoy2rijE+/UFO0aw+Uyvoi/6HWCXPCg/ZyqXHIzUfvCXdTvdLxsg/uYxSUnVGeeA1wC4/NxbqKhm58FCUvrZjpdYwzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474560; c=relaxed/simple;
-	bh=gcZeJUkJM8JVWj1Nvii9UYlbGPkSLFRxhfuzeYwDPVg=;
+	s=arc-20240116; t=1714473836; c=relaxed/simple;
+	bh=mrTtu8dqNle0I1wVaCM6QGDp/pHK3r1QTdefX7H2w3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzsxllIpxPo1x3GkqsQf3ey1Lp+geNs7CIjj5UU1V7lLN2jyg6a8IaUjuVUhm/VgowYjovEH08KIGEfPuquObO7UD8gNM5s8hHEMlPjX/ZDUbFm1o9AZCMVdT8Uv8y9FphBxZg88Arwb3fMee6EZmDpY5aAEB2w8c98nfU3rVKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLeCjjyI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FFDC2BBFC;
-	Tue, 30 Apr 2024 10:55:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W5YnB7j3zKpPSnAC/uTrxhEydjScjso+jzjxPxwIyc1qW2XuGqLPcOKBsCngTRZqe5UkOuyVVjUYwgK3nmQZPTASddmz8iHkaW2/NagHUQOsNCvJ+cw1RIBVPCSdXLTh1AKK+SuUQfyu3vaYUK4V2v1iwyHybSLJNn1Bm9yqdBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxCCQt7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC41C2BBFC;
+	Tue, 30 Apr 2024 10:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474560;
-	bh=gcZeJUkJM8JVWj1Nvii9UYlbGPkSLFRxhfuzeYwDPVg=;
+	s=korg; t=1714473835;
+	bh=mrTtu8dqNle0I1wVaCM6QGDp/pHK3r1QTdefX7H2w3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLeCjjyIPNvCREJiBBZYAdOIToI98mxIhPNEp6REvNarG4tWP6Lj91MT2C9e/MvsA
-	 12VHzj6ZhsUplmWZ9JhdvuWNcs6ItzGZWodkgNiu/+P1vftfZ9nVDujQAV7V9YW0M5
-	 W9r9X8utBp2QLAQHy9zL7dMBse6eab/XYoxTfx4I=
+	b=zxCCQt7WKK6okqy3I72ftiZ6IvqtnkfbC2CtHWXdQqMYRM3o3igmXnsEzZ+Um2JMN
+	 0mlwGMYGNP194Y+REEVDNEKBzuCm5HupSSQTI1Ielu+HyJ6deinsl+fP7fXlPlZuMc
+	 KU1XFuScGm0UW1V5MCxuzc98Plj26z2L/CBm6FUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.8 194/228] mtd: diskonchip: work around ubsan link failure
+	Thomas Gleixner <tglx@linutronix.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 53/77] serial: core: Provide port lock wrappers
 Date: Tue, 30 Apr 2024 12:39:32 +0200
-Message-ID: <20240430103109.397683679@linuxfoundation.org>
+Message-ID: <20240430103042.703277875@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +61,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 21c9fb611c25d5cd038f6fe485232e7884bb0b3d upstream.
+[ Upstream commit b0af4bcb49464c221ad5f95d40f2b1b252ceedcc ]
 
-I ran into a randconfig build failure with UBSAN using gcc-13.2:
+When a serial port is used for kernel console output, then all
+modifications to the UART registers which are done from other contexts,
+e.g. getty, termios, are interference points for the kernel console.
 
-arm-linux-gnueabi-ld: error: unplaced orphan section `.bss..Lubsan_data31' from `drivers/mtd/nand/raw/diskonchip.o'
+So far this has been ignored and the printk output is based on the
+principle of hope. The rework of the console infrastructure which aims to
+support threaded and atomic consoles, requires to mark sections which
+modify the UART registers as unsafe. This allows the atomic write function
+to make informed decisions and eventually to restore operational state. It
+also allows to prevent the regular UART code from modifying UART registers
+while printk output is in progress.
 
-I'm not entirely sure what is going on here, but I suspect this has something
-to do with the check for the end of the doc_locations[] array that contains
-an (unsigned long)0xffffffff element, which is compared against the signed
-(int)0xffffffff. If this is the case, we should get a runtime check for
-undefined behavior, but we instead get an unexpected build-time error.
+All modifications of UART registers are guarded by the UART port lock,
+which provides an obvious synchronization point with the console
+infrastructure.
 
-I would have expected this to work fine on 32-bit architectures despite the
-signed integer overflow, though on 64-bit architectures this likely won't
-ever work.
+Provide wrapper functions for spin_[un]lock*(port->lock) invocations so
+that the console mechanics can be applied later on at a single place and
+does not require to copy the same logic all over the drivers.
 
-Changing the contition to instead check for the size of the array makes the
-code safe everywhere and avoids the ubsan check that leads to the link
-error. The loop code goes back to before 2.6.12.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240405143015.717429-1-arnd@kernel.org
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20230914183831.587273-2-john.ogness@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 54c4ec5f8c47 ("serial: mxs-auart: add spinlock around changing cts state")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/diskonchip.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/serial_core.h | 79 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
---- a/drivers/mtd/nand/raw/diskonchip.c
-+++ b/drivers/mtd/nand/raw/diskonchip.c
-@@ -53,7 +53,7 @@ static unsigned long doc_locations[] __i
- 	0xe8000, 0xea000, 0xec000, 0xee000,
- #endif
- #endif
--	0xffffffff };
-+};
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index af8143fb644cc..22735ba8c19c4 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -264,6 +264,85 @@ struct uart_port {
+ 	void			*private_data;		/* generic platform data pointer */
+ };
  
- static struct mtd_info *doclist = NULL;
- 
-@@ -1554,7 +1554,7 @@ static int __init init_nanddoc(void)
- 		if (ret < 0)
- 			return ret;
- 	} else {
--		for (i = 0; (doc_locations[i] != 0xffffffff); i++) {
-+		for (i = 0; i < ARRAY_SIZE(doc_locations); i++) {
- 			doc_probe(doc_locations[i]);
- 		}
- 	}
++/**
++ * uart_port_lock - Lock the UART port
++ * @up:		Pointer to UART port structure
++ */
++static inline void uart_port_lock(struct uart_port *up)
++{
++	spin_lock(&up->lock);
++}
++
++/**
++ * uart_port_lock_irq - Lock the UART port and disable interrupts
++ * @up:		Pointer to UART port structure
++ */
++static inline void uart_port_lock_irq(struct uart_port *up)
++{
++	spin_lock_irq(&up->lock);
++}
++
++/**
++ * uart_port_lock_irqsave - Lock the UART port, save and disable interrupts
++ * @up:		Pointer to UART port structure
++ * @flags:	Pointer to interrupt flags storage
++ */
++static inline void uart_port_lock_irqsave(struct uart_port *up, unsigned long *flags)
++{
++	spin_lock_irqsave(&up->lock, *flags);
++}
++
++/**
++ * uart_port_trylock - Try to lock the UART port
++ * @up:		Pointer to UART port structure
++ *
++ * Returns: True if lock was acquired, false otherwise
++ */
++static inline bool uart_port_trylock(struct uart_port *up)
++{
++	return spin_trylock(&up->lock);
++}
++
++/**
++ * uart_port_trylock_irqsave - Try to lock the UART port, save and disable interrupts
++ * @up:		Pointer to UART port structure
++ * @flags:	Pointer to interrupt flags storage
++ *
++ * Returns: True if lock was acquired, false otherwise
++ */
++static inline bool uart_port_trylock_irqsave(struct uart_port *up, unsigned long *flags)
++{
++	return spin_trylock_irqsave(&up->lock, *flags);
++}
++
++/**
++ * uart_port_unlock - Unlock the UART port
++ * @up:		Pointer to UART port structure
++ */
++static inline void uart_port_unlock(struct uart_port *up)
++{
++	spin_unlock(&up->lock);
++}
++
++/**
++ * uart_port_unlock_irq - Unlock the UART port and re-enable interrupts
++ * @up:		Pointer to UART port structure
++ */
++static inline void uart_port_unlock_irq(struct uart_port *up)
++{
++	spin_unlock_irq(&up->lock);
++}
++
++/**
++ * uart_port_lock_irqrestore - Unlock the UART port, restore interrupts
++ * @up:		Pointer to UART port structure
++ * @flags:	The saved interrupt flags for restore
++ */
++static inline void uart_port_unlock_irqrestore(struct uart_port *up, unsigned long flags)
++{
++	spin_unlock_irqrestore(&up->lock, flags);
++}
++
+ static inline int serial_port_in(struct uart_port *up, int offset)
+ {
+ 	return up->serial_in(up, offset);
+-- 
+2.43.0
+
 
 
 
