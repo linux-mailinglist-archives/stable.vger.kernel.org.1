@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-42001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81D08B70D8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4AB8B70E1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 253631C21A94
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:50:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C52D21C22170
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C8F12C48B;
-	Tue, 30 Apr 2024 10:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1461912C554;
+	Tue, 30 Apr 2024 10:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVw1j11U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uqc2p/GG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4737512B176;
-	Tue, 30 Apr 2024 10:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DA412C46B;
+	Tue, 30 Apr 2024 10:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474234; cv=none; b=QJZ+9l6AxJY4lvKg/0bYJ7MCUwffTtaY9FwAR+S28eIu7s+e+se31TWx5tpEbF5CqdNyoUckViL1wewoWujdAKMoyyYrU6iXb1jlXLMNYsBbSm9KGjmC+NJIgJFaFF5wnlLNZ3ClUymK5DpvudDXPKCliqlCon/HViwgn/RicFk=
+	t=1714474245; cv=none; b=uqA9fxctmjJr0YBRDSeNXNlKmu9dxzsoUcwdhWKuv6DUUo/pWfypdUJWO8oKAycfSQEDYbuPUHyqnvmtyb1tMvKY/kvjMONdsIfdoJhfCOoTttes2Usaxc+079fs/Cqmc/mPZIBvByuvXaQE5Ho8skv6B5G1lSiD3yYSHhPlmrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474234; c=relaxed/simple;
-	bh=9uL6tDCODBLvxCnL1h4zmD8m2GfjJcqpsk0TMOWeeiY=;
+	s=arc-20240116; t=1714474245; c=relaxed/simple;
+	bh=d1NWWD1x150+6QwCLG176rMtWXCqVAOvwnLByxIy0Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSWkKqceeEPS15LFA05HpBxmSkRHbm7by8qyHqI9j78Ex4EkGCoEh3U493c3Qc42SoNiRY7FojVOjZmnWXGDa3bVJXKxXdHxd2Z5ZkG8ln3aGz1Suomd8ZEmga0DrMAd2O+DIQPs0LW8Tvml9pBU5YysZZI6lKQSJcN5PJqvNpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVw1j11U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBABC4AF1A;
-	Tue, 30 Apr 2024 10:50:33 +0000 (UTC)
+	 MIME-Version; b=Xg9NylakBNiHqiKab7KQrGdrpcmCcgR5FPbiIbCKM2BFbbVAVI+IUGLvRuV+aHVoRNtvfvOcGN1HoSf3HkdoIoSBewME4LpvF5nxxtc2HivtH7Rl0SBiTK4T8J0deEu3RPtjlKtV5rO9UJhhSXrQCu8xAs2iD7zlp4mqDd69HQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uqc2p/GG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95E5C4AF1A;
+	Tue, 30 Apr 2024 10:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474234;
-	bh=9uL6tDCODBLvxCnL1h4zmD8m2GfjJcqpsk0TMOWeeiY=;
+	s=korg; t=1714474245;
+	bh=d1NWWD1x150+6QwCLG176rMtWXCqVAOvwnLByxIy0Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVw1j11UHUTWJp1nmutmtqREWrkdZurVL2lHmM+8b2Ab+dQSVGDECOFRQ69i014ys
-	 aaSm1fU16DByGEPF1cIBbgSqHPhx1GYXZdXMt9rMZAwMslRhGfJ3OYq3L0xa4dN387
-	 5IR6SqAq7Lmxh+RiAe6mU50d9sCj39sMuo7Ay43E=
+	b=Uqc2p/GGiqioXG/J4piaFc6K/qhhZ/GVAESsxqq48sc8KAaqFf1bzRuWs00eAnN5l
+	 wnkqID2BdZ55jfCYv/5AEGegXo5HE/DQglew2rVdlO8oD5rAeB5qBXcnzSzYqjCrps
+	 cHveDUYaufJikeo2DnoI4QFyTNDbx0qwLGajSWYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kwangjin Ko <kwangjin.ko@sk.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 060/228] cxl/core: Fix potential payload size confusion in cxl_mem_get_poison()
-Date: Tue, 30 Apr 2024 12:37:18 +0200
-Message-ID: <20240430103105.540845976@linuxfoundation.org>
+Subject: [PATCH 6.8 061/228] net: dsa: mv88e6xx: fix supported_interfaces setup in mv88e6250_phylink_get_caps()
+Date: Tue, 30 Apr 2024 12:37:19 +0200
+Message-ID: <20240430103105.569767426@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 References: <20240430103103.806426847@linuxfoundation.org>
@@ -69,117 +66,135 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-[ Upstream commit 4b759dd5765503bd466defac7d93aca14c23a15d ]
+[ Upstream commit a4e3899065ffa87d49dc20e8c17501edbc189692 ]
 
-A recent change to cxl_mem_get_records_log() [1] highlighted a subtle
-nuance of looping calls to cxl_internal_send_cmd(), i.e. that
-cxl_internal_send_cmd() modifies the 'size_out' member of the @mbox_cmd
-argument. That mechanism is useful for communicating underflow, but it
-is unwanted when reusing @mbox_cmd for a subsequent submission. It turns
-out that cxl_xfer_log() avoids this scenario by always redefining
-@mbox_cmd each iteration.
+With the recent PHYLINK changes requiring supported_interfaces to be set,
+MV88E6250 family switches like the 88E6020 fail to probe - cmode is
+never initialized on these devices, so mv88e6250_phylink_get_caps() does
+not set any supported_interfaces flags.
 
-Update cxl_mem_get_records_log() and cxl_mem_get_poison() to follow the
-same style as cxl_xfer_log(), i.e. re-define @mbox_cmd each iteration.
-The cxl_mem_get_records_log() change is just a style fixup, but the
-cxl_mem_get_poison() change is a potential fix, per Alison [2]:
+Instead of a cmode, on 88E6250 we have a read-only port mode value that
+encodes similar information. There is no reason to bother mapping port
+mode to the cmodes of other switch models; instead we introduce a
+mv88e6250_setup_supported_interfaces() that is called directly from
+mv88e6250_phylink_get_caps().
 
-    Poison list retrieval can hit this case if the MORE flag is set and
-    a follow on read of the list delivers more records than the previous
-    read.  ie. device gives one record, sets the _MORE flag, then gives 5.
-
-Not an urgent fix since this behavior has not been seen in the wild,
-but worth tracking as a fix.
-
-Cc: Kwangjin Ko <kwangjin.ko@sk.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Fixes: ed83f7ca398b ("cxl/mbox: Add GET_POISON_LIST mailbox command")
-Link: http://lore.kernel.org/r/20240402081404.1106-2-kwangjin.ko@sk.com [1]
-Link: http://lore.kernel.org/r/ZhAhAL/GOaWFrauw@aschofie-mobl2 [2]
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://lore.kernel.org/r/171235441633.2716581.12330082428680958635.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: de5c9bf40c45 ("net: phylink: require supported_interfaces to be filled")
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20240417103737.166651-1-matthias.schiffer@ew.tq-group.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/mbox.c | 38 +++++++++++++++++---------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 56 +++++++++++++++++++++++++++++---
+ drivers/net/dsa/mv88e6xxx/port.h | 23 ++++++++++---
+ 2 files changed, 71 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-index f0f54aeccc872..65185c9fa0013 100644
---- a/drivers/cxl/core/mbox.c
-+++ b/drivers/cxl/core/mbox.c
-@@ -946,25 +946,22 @@ static void cxl_mem_get_records_log(struct cxl_memdev_state *mds,
- 	struct cxl_memdev *cxlmd = mds->cxlds.cxlmd;
- 	struct device *dev = mds->cxlds.dev;
- 	struct cxl_get_event_payload *payload;
--	struct cxl_mbox_cmd mbox_cmd;
- 	u8 log_type = type;
- 	u16 nr_rec;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 7de8a9c9e4576..32416d8802ca4 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -566,13 +566,61 @@ static void mv88e6xxx_translate_cmode(u8 cmode, unsigned long *supported)
+ 		phy_interface_set_rgmii(supported);
+ }
  
- 	mutex_lock(&mds->event.log_lock);
- 	payload = mds->event.buf;
+-static void mv88e6250_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
+-				       struct phylink_config *config)
++static void
++mv88e6250_setup_supported_interfaces(struct mv88e6xxx_chip *chip, int port,
++				     struct phylink_config *config)
+ {
+ 	unsigned long *supported = config->supported_interfaces;
++	int err;
++	u16 reg;
  
--	mbox_cmd = (struct cxl_mbox_cmd) {
--		.opcode = CXL_MBOX_OP_GET_EVENT_RECORD,
--		.payload_in = &log_type,
--		.size_in = sizeof(log_type),
--		.payload_out = payload,
--		.min_out = struct_size(payload, records, 0),
--	};
--
- 	do {
- 		int rc, i;
--
--		mbox_cmd.size_out = mds->payload_size;
-+		struct cxl_mbox_cmd mbox_cmd = (struct cxl_mbox_cmd) {
-+			.opcode = CXL_MBOX_OP_GET_EVENT_RECORD,
-+			.payload_in = &log_type,
-+			.size_in = sizeof(log_type),
-+			.payload_out = payload,
-+			.size_out = mds->payload_size,
-+			.min_out = struct_size(payload, records, 0),
-+		};
- 
- 		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
- 		if (rc) {
-@@ -1297,7 +1294,6 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
- 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
- 	struct cxl_mbox_poison_out *po;
- 	struct cxl_mbox_poison_in pi;
--	struct cxl_mbox_cmd mbox_cmd;
- 	int nr_records = 0;
- 	int rc;
- 
-@@ -1309,16 +1305,16 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
- 	pi.offset = cpu_to_le64(offset);
- 	pi.length = cpu_to_le64(len / CXL_POISON_LEN_MULT);
- 
--	mbox_cmd = (struct cxl_mbox_cmd) {
--		.opcode = CXL_MBOX_OP_GET_POISON,
--		.size_in = sizeof(pi),
--		.payload_in = &pi,
--		.size_out = mds->payload_size,
--		.payload_out = po,
--		.min_out = struct_size(po, record, 0),
--	};
--
- 	do {
-+		struct cxl_mbox_cmd mbox_cmd = (struct cxl_mbox_cmd){
-+			.opcode = CXL_MBOX_OP_GET_POISON,
-+			.size_in = sizeof(pi),
-+			.payload_in = &pi,
-+			.size_out = mds->payload_size,
-+			.payload_out = po,
-+			.min_out = struct_size(po, record, 0),
-+		};
+-	/* Translate the default cmode */
+-	mv88e6xxx_translate_cmode(chip->ports[port].cmode, supported);
++	err = mv88e6xxx_port_read(chip, port, MV88E6XXX_PORT_STS, &reg);
++	if (err) {
++		dev_err(chip->dev, "p%d: failed to read port status\n", port);
++		return;
++	}
 +
- 		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
- 		if (rc)
- 			break;
++	switch (reg & MV88E6250_PORT_STS_PORTMODE_MASK) {
++	case MV88E6250_PORT_STS_PORTMODE_MII_10_HALF_PHY:
++	case MV88E6250_PORT_STS_PORTMODE_MII_100_HALF_PHY:
++	case MV88E6250_PORT_STS_PORTMODE_MII_10_FULL_PHY:
++	case MV88E6250_PORT_STS_PORTMODE_MII_100_FULL_PHY:
++		__set_bit(PHY_INTERFACE_MODE_REVMII, supported);
++		break;
++
++	case MV88E6250_PORT_STS_PORTMODE_MII_HALF:
++	case MV88E6250_PORT_STS_PORTMODE_MII_FULL:
++		__set_bit(PHY_INTERFACE_MODE_MII, supported);
++		break;
++
++	case MV88E6250_PORT_STS_PORTMODE_MII_DUAL_100_RMII_FULL_PHY:
++	case MV88E6250_PORT_STS_PORTMODE_MII_200_RMII_FULL_PHY:
++	case MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_HALF_PHY:
++	case MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_FULL_PHY:
++		__set_bit(PHY_INTERFACE_MODE_REVRMII, supported);
++		break;
++
++	case MV88E6250_PORT_STS_PORTMODE_MII_DUAL_100_RMII_FULL:
++	case MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_FULL:
++		__set_bit(PHY_INTERFACE_MODE_RMII, supported);
++		break;
++
++	case MV88E6250_PORT_STS_PORTMODE_MII_100_RGMII:
++		__set_bit(PHY_INTERFACE_MODE_RGMII, supported);
++		break;
++
++	default:
++		dev_err(chip->dev,
++			"p%d: invalid port mode in status register: %04x\n",
++			port, reg);
++	}
++}
++
++static void mv88e6250_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
++				       struct phylink_config *config)
++{
++	if (!mv88e6xxx_phy_is_internal(chip, port))
++		mv88e6250_setup_supported_interfaces(chip, port, config);
+ 
+ 	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100;
+ }
+diff --git a/drivers/net/dsa/mv88e6xxx/port.h b/drivers/net/dsa/mv88e6xxx/port.h
+index 86deeb347cbc1..ddadeb9bfdaee 100644
+--- a/drivers/net/dsa/mv88e6xxx/port.h
++++ b/drivers/net/dsa/mv88e6xxx/port.h
+@@ -25,10 +25,25 @@
+ #define MV88E6250_PORT_STS_PORTMODE_PHY_100_HALF	0x0900
+ #define MV88E6250_PORT_STS_PORTMODE_PHY_10_FULL		0x0a00
+ #define MV88E6250_PORT_STS_PORTMODE_PHY_100_FULL	0x0b00
+-#define MV88E6250_PORT_STS_PORTMODE_MII_10_HALF		0x0c00
+-#define MV88E6250_PORT_STS_PORTMODE_MII_100_HALF	0x0d00
+-#define MV88E6250_PORT_STS_PORTMODE_MII_10_FULL		0x0e00
+-#define MV88E6250_PORT_STS_PORTMODE_MII_100_FULL	0x0f00
++/* - Modes with PHY suffix use output instead of input clock
++ * - Modes without RMII or RGMII use MII
++ * - Modes without speed do not have a fixed speed specified in the manual
++ *   ("DC to x MHz" - variable clock support?)
++ */
++#define MV88E6250_PORT_STS_PORTMODE_MII_DISABLED		0x0000
++#define MV88E6250_PORT_STS_PORTMODE_MII_100_RGMII		0x0100
++#define MV88E6250_PORT_STS_PORTMODE_MII_DUAL_100_RMII_FULL_PHY	0x0200
++#define MV88E6250_PORT_STS_PORTMODE_MII_200_RMII_FULL_PHY	0x0400
++#define MV88E6250_PORT_STS_PORTMODE_MII_DUAL_100_RMII_FULL	0x0600
++#define MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_FULL	0x0700
++#define MV88E6250_PORT_STS_PORTMODE_MII_HALF			0x0800
++#define MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_HALF_PHY	0x0900
++#define MV88E6250_PORT_STS_PORTMODE_MII_FULL			0x0a00
++#define MV88E6250_PORT_STS_PORTMODE_MII_10_100_RMII_FULL_PHY	0x0b00
++#define MV88E6250_PORT_STS_PORTMODE_MII_10_HALF_PHY		0x0c00
++#define MV88E6250_PORT_STS_PORTMODE_MII_100_HALF_PHY		0x0d00
++#define MV88E6250_PORT_STS_PORTMODE_MII_10_FULL_PHY		0x0e00
++#define MV88E6250_PORT_STS_PORTMODE_MII_100_FULL_PHY		0x0f00
+ #define MV88E6XXX_PORT_STS_LINK			0x0800
+ #define MV88E6XXX_PORT_STS_DUPLEX		0x0400
+ #define MV88E6XXX_PORT_STS_SPEED_MASK		0x0300
 -- 
 2.43.0
 
