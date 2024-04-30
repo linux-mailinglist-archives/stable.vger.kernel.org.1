@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58DA88B73CC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87468B7363
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153402830FB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A0061F24074
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AB612D209;
-	Tue, 30 Apr 2024 11:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8ED512CD9B;
+	Tue, 30 Apr 2024 11:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tj+acnw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRvlWVMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A508801;
-	Tue, 30 Apr 2024 11:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C908801;
+	Tue, 30 Apr 2024 11:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476209; cv=none; b=Bcm9QWyCpNjKf5Tw6BNeVGARE4nz5WwbUdKvxMyBuXPLY3ljeE1F0ZP3Yx4C/MExkR0lOdFxwBF1TwVhkU/nBcXWGG3qiKY6eREpkhhVKJ4Y27mVZMtMajlw1OxAo67KpMLBa4w4bktb+8WapsL+abD+do6k37XEXBYXmwhKn1M=
+	t=1714475911; cv=none; b=uGHcVetlQfwlu7nNTh3LFAFSNAoDh5HJ9E8sG0UhkAwYV4vzBTiHKUOgFCKFFTrsu7HNE4WinwWbwCgAG2Z3+us4tuSuSg9UDvj7QCR2UF7TL8OrdMNoZMTIG13FhQmLyMClgDz/X/I/2AH58w5w4gp7iqOYGu0gy4rY43Gm3TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476209; c=relaxed/simple;
-	bh=rnVyA1JHtvCuj2gqzSYeH24QC0EyaTPnsuStrN8qROE=;
+	s=arc-20240116; t=1714475911; c=relaxed/simple;
+	bh=yTLQA4ky10UbDWVA9O/nhnHcNeLXCZ77vWH861unfnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlsWrGgOryV8j3n38231uaIEYTWcb5SygcBX/1PEPx3NR9YusS07ZVcogFqu0bq4dfR4tw7VATGn837ogCUam8OiNojIQAkMYFcBzqVbuIYHbA+bskTXmCp9lU3RMMyjoflba09GUbsW7+YJsxgfUC39mTRZOMvY/9rgM5sp4vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tj+acnw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E60C2BBFC;
-	Tue, 30 Apr 2024 11:23:28 +0000 (UTC)
+	 MIME-Version; b=XG+8yKX+9VDtBwOV5gjO+JcLC+P87oz0/v3cZEie7kn4EY8FdUPNo2wtxC6na+85v7uTwG/JK1IVv3xuJQ51bIbyjbKienfpNq6+IK6nzk2SK+/VXjeacqgxAU/aG0USlpsMPm2uhq0pzGr4izRKNB/9pR3NfMhTdf82fcibrB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRvlWVMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304E4C2BBFC;
+	Tue, 30 Apr 2024 11:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476209;
-	bh=rnVyA1JHtvCuj2gqzSYeH24QC0EyaTPnsuStrN8qROE=;
+	s=korg; t=1714475911;
+	bh=yTLQA4ky10UbDWVA9O/nhnHcNeLXCZ77vWH861unfnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tj+acnw1J9gFCUA6YATF0PU5PFtThB+cAN/npOnMKwZn9UYajv5SUyppL07ODLZAy
-	 ODn+gjW6WKO86HAK5lnBdNkL/qL28WA2NWwFtdyXMxm9nuiYcnDA3+A0ZfxuMeLrr2
-	 D6GGzY9Z6P3ut4N/UJuqvob5f7qeDJsj692Lt/PQ=
+	b=LRvlWVMlr81CrUTRwFyL+CdjegO4iIQHPsC/yYXMrPUwnu18U5oQT2DMNOExOJKhr
+	 1swlLnMciKnRcsTmPWu6q9CCJ9sqNGKr4RR8zJ3UuqUzdbY/OrPkUwD15eLrmyBjmu
+	 kJSQcnXo5cJKXcPoxx5fJnP2pmgVBIBOiy7QW6iY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/107] mlxsw: spectrum_acl_tcam: Fix race during rehash delayed work
+	Mantas Pucka <mantas@8devices.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 56/80] mmc: sdhci-msm: pervent access to suspended controller
 Date: Tue, 30 Apr 2024 12:40:28 +0200
-Message-ID: <20240430103046.663369862@linuxfoundation.org>
+Message-ID: <20240430103045.073135606@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Mantas Pucka <mantas@8devices.com>
 
-[ Upstream commit d90cfe20562407d9f080d24123078d666d730707 ]
+commit f8def10f73a516b771051a2f70f2f0446902cb4f upstream.
 
-The purpose of the rehash delayed work is to reduce the number of masks
-(eRPs) used by an ACL region as the eRP bank is a global and limited
-resource.
+Generic sdhci code registers LED device and uses host->runtime_suspended
+flag to protect access to it. The sdhci-msm driver doesn't set this flag,
+which causes a crash when LED is accessed while controller is runtime
+suspended. Fix this by setting the flag correctly.
 
-This is done in three steps:
-
-1. Creating a new set of masks and a new ACL region which will use the
-   new masks and to which the existing filters will be migrated to. The
-   new region is assigned to 'vregion->region' and the region from which
-   the filters are migrated from is assigned to 'vregion->region2'.
-
-2. Migrating all the filters from the old region to the new region.
-
-3. Destroying the old region and setting 'vregion->region2' to NULL.
-
-Only the second steps is performed under the 'vregion->lock' mutex
-although its comments says that among other things it "Protects
-consistency of region, region2 pointers".
-
-This is problematic as the first step can race with filter insertion
-from user space that uses 'vregion->region', but under the mutex.
-
-Fix by holding the mutex across the entirety of the delayed work and not
-only during the second step.
-
-Fixes: 2bffc5322fd8 ("mlxsw: spectrum_acl: Don't take mutex in mlxsw_sp_acl_tcam_vregion_rehash_work()")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/1ec1d54edf2bad0a369e6b4fa030aba64e1f124b.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
+Signed-off-by: Mantas Pucka <mantas@8devices.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-msm.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index ec0d5a4a60a98..5c0ff3d612e3c 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -756,7 +756,9 @@ static void mlxsw_sp_acl_tcam_vregion_rehash_work(struct work_struct *work)
- 			     rehash.dw.work);
- 	int credits = MLXSW_SP_ACL_TCAM_VREGION_REHASH_CREDITS;
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -2827,6 +2827,11 @@ static __maybe_unused int sdhci_msm_runt
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	unsigned long flags;
++
++	spin_lock_irqsave(&host->lock, flags);
++	host->runtime_suspended = true;
++	spin_unlock_irqrestore(&host->lock, flags);
  
-+	mutex_lock(&vregion->lock);
- 	mlxsw_sp_acl_tcam_vregion_rehash(vregion->mlxsw_sp, vregion, &credits);
-+	mutex_unlock(&vregion->lock);
- 	if (credits < 0)
- 		/* Rehash gone out of credits so it was interrupted.
- 		 * Schedule the work as soon as possible to continue.
-@@ -1394,7 +1396,6 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
- 	int err, err2;
+ 	/* Drop the performance vote */
+ 	dev_pm_opp_set_rate(dev, 0);
+@@ -2841,6 +2846,7 @@ static __maybe_unused int sdhci_msm_runt
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	unsigned long flags;
+ 	int ret;
  
- 	trace_mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion);
--	mutex_lock(&vregion->lock);
- 	err = mlxsw_sp_acl_tcam_vchunk_migrate_all(mlxsw_sp, vregion,
- 						   ctx, credits);
- 	if (err) {
-@@ -1414,7 +1415,6 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
- 			/* Let the rollback to be continued later on. */
- 		}
- 	}
--	mutex_unlock(&vregion->lock);
- 	trace_mlxsw_sp_acl_tcam_vregion_migrate_end(mlxsw_sp, vregion);
- 	return err;
+ 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
+@@ -2859,7 +2865,15 @@ static __maybe_unused int sdhci_msm_runt
+ 
+ 	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
+ 
+-	return sdhci_msm_ice_resume(msm_host);
++	ret = sdhci_msm_ice_resume(msm_host);
++	if (ret)
++		return ret;
++
++	spin_lock_irqsave(&host->lock, flags);
++	host->runtime_suspended = false;
++	spin_unlock_irqrestore(&host->lock, flags);
++
++	return ret;
  }
--- 
-2.43.0
-
+ 
+ static const struct dev_pm_ops sdhci_msm_pm_ops = {
 
 
 
