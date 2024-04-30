@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-41890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D763D8B7054
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4258B7204
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15371B20AEB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C860D2829BE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D15E12D757;
-	Tue, 30 Apr 2024 10:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636D412C530;
+	Tue, 30 Apr 2024 11:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCexCsYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cA6L+65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9AA12D753;
-	Tue, 30 Apr 2024 10:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2049D12C462;
+	Tue, 30 Apr 2024 11:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473869; cv=none; b=e14dPOx1tBZu1DCL3MLdKmOPekMFTVRvG+94WWYEaW3RZTs4M6KLsV3aaNz9uN6UDxqUJPGooRjSjdf4P1PE6liPiQw5RGqjQzJ+zssiZqxacHJ03Ds+FxP1eKQtLxN3Wj+BjImu+wRsCzWicutM/e2dSr9aO0TChQdwwZZsmvA=
+	t=1714474994; cv=none; b=FR2j8VLiS79tlYm8K5LMu8atJRBFmewkxvN0mprSM90KK/VYv3TyMGa9Z8bwshJvXmAyzMlKhTbb+vt13/K4KywynpMgmLEmCrHuTruHMYMYbcnPChPkZ+KE2SY2MT1jt14IMOK4vlD5gKBHYDDY6ip56VW6q9J36VWqJF6EDiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473869; c=relaxed/simple;
-	bh=qoIKNIK42t+BbniKY3CAVDVpqPNkGJKD7G7jO/2T5eA=;
+	s=arc-20240116; t=1714474994; c=relaxed/simple;
+	bh=3+/Xm8EDWDuS+dFBhHVH1JiEiReGYhTxAUdnkYEGJT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpxgR/wwrFh2Q7WY5TSiAV1qi/FkhnJirmXcR/nNgqt3IcdImijl83S/j4ClV0JQNCOzU62Q+/8IQ8MM5NeB7+WIuw5gwGGIY/kPictV28T9/+aXhd8t5cgcdwIGlrc9Dh0uxzZcv6iRu7KVXHIhjgTyhebh2kQjRKssDXRaFvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCexCsYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530FEC2BBFC;
-	Tue, 30 Apr 2024 10:44:28 +0000 (UTC)
+	 MIME-Version; b=Ptkju6a5yULt2zqeD6836ETIsg5hVP+DZ4sqXR6j4d01HSlt/3aHxde23rHMLcAfTl1BZzkROWTyAAGi4b0MfoVkpiQF1YIP4K8zbp9Zsid86ef0OGDKXWvyXw1JxYM8iLwT6OjBcIAfEe/qulixfYA79g/NR+ol35/fDGCfvW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cA6L+65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9348EC2BBFC;
+	Tue, 30 Apr 2024 11:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473868;
-	bh=qoIKNIK42t+BbniKY3CAVDVpqPNkGJKD7G7jO/2T5eA=;
+	s=korg; t=1714474994;
+	bh=3+/Xm8EDWDuS+dFBhHVH1JiEiReGYhTxAUdnkYEGJT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kCexCsYZG4MY9KSiyi/WywQB7o4whSSZFWo0tyl8HDLlkCjgS8U1YjtkTgJFHbaK6
-	 X6NQamMQc1Lti0YWo9HLvG1LKWTytxHuQeLmSUI2zzttQl4zpt/tORg7sz1hbdIHlJ
-	 3dM4aPu4Q0ZSb+ziy4fzpADs1NDgvK6s/M0PS9j4=
+	b=0cA6L+65vjzLLHBiwv0XRIb8CHjwyk+/xD6Q1NcVgEcLV2fdG6aMDxfh3d2xp6HIT
+	 yjqBzkeBn6F847h2//lgIc8V1j1hxO9kPdXPIs4tPUnpCB/rN5NF/zWcCsICaBNzn2
+	 ivHsxkTZ9CKwADNs2C4bjC3ltI82R3q/Eci4xrGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-	Dave Chinner <david@fromorbit.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 66/77] stackdepot: respect __GFP_NOLOCKDEP allocation flag
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 100/138] mlxsw: spectrum_acl_tcam: Fix memory leak when canceling rehash work
 Date: Tue, 30 Apr 2024 12:39:45 +0200
-Message-ID: <20240430103043.087028730@linuxfoundation.org>
+Message-ID: <20240430103052.357868758@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 6fe60465e1d53ea321ee909be26d97529e8f746c upstream.
+[ Upstream commit fb4e2b70a7194b209fc7320bbf33b375f7114bd5 ]
 
-If stack_depot_save_flags() allocates memory it always drops
-__GFP_NOLOCKDEP flag.  So when KASAN tries to track __GFP_NOLOCKDEP
-allocation we may end up with lockdep splat like bellow:
+The rehash delayed work is rescheduled with a delay if the number of
+credits at end of the work is not negative as supposedly it means that
+the migration ended. Otherwise, it is rescheduled immediately.
 
-======================================================
- WARNING: possible circular locking dependency detected
- 6.9.0-rc3+ #49 Not tainted
- ------------------------------------------------------
- kswapd0/149 is trying to acquire lock:
- ffff88811346a920
-(&xfs_nondir_ilock_class){++++}-{4:4}, at: xfs_reclaim_inode+0x3ac/0x590
-[xfs]
+After "mlxsw: spectrum_acl_tcam: Fix possible use-after-free during
+rehash" the above is no longer accurate as a non-negative number of
+credits is no longer indicative of the migration being done. It can also
+happen if the work encountered an error in which case the migration will
+resume the next time the work is scheduled.
 
- but task is already holding lock:
- ffffffff8bb33100 (fs_reclaim){+.+.}-{0:0}, at:
-balance_pgdat+0x5d9/0xad0
+The significance of the above is that it is possible for the work to be
+pending and associated with hints that were allocated when the migration
+started. This leads to the hints being leaked [1] when the work is
+canceled while pending as part of ACL region dismantle.
 
- which lock already depends on the new lock.
+Fix by freeing the hints if hints are associated with a work that was
+canceled while pending.
 
- the existing dependency chain (in reverse order) is:
- -> #1 (fs_reclaim){+.+.}-{0:0}:
-        __lock_acquire+0x7da/0x1030
-        lock_acquire+0x15d/0x400
-        fs_reclaim_acquire+0xb5/0x100
- prepare_alloc_pages.constprop.0+0xc5/0x230
-        __alloc_pages+0x12a/0x3f0
-        alloc_pages_mpol+0x175/0x340
-        stack_depot_save_flags+0x4c5/0x510
-        kasan_save_stack+0x30/0x40
-        kasan_save_track+0x10/0x30
-        __kasan_slab_alloc+0x83/0x90
-        kmem_cache_alloc+0x15e/0x4a0
-        __alloc_object+0x35/0x370
-        __create_object+0x22/0x90
- __kmalloc_node_track_caller+0x477/0x5b0
-        krealloc+0x5f/0x110
-        xfs_iext_insert_raw+0x4b2/0x6e0 [xfs]
-        xfs_iext_insert+0x2e/0x130 [xfs]
-        xfs_iread_bmbt_block+0x1a9/0x4d0 [xfs]
-        xfs_btree_visit_block+0xfb/0x290 [xfs]
-        xfs_btree_visit_blocks+0x215/0x2c0 [xfs]
-        xfs_iread_extents+0x1a2/0x2e0 [xfs]
- xfs_buffered_write_iomap_begin+0x376/0x10a0 [xfs]
-        iomap_iter+0x1d1/0x2d0
- iomap_file_buffered_write+0x120/0x1a0
-        xfs_file_buffered_write+0x128/0x4b0 [xfs]
-        vfs_write+0x675/0x890
-        ksys_write+0xc3/0x160
-        do_syscall_64+0x94/0x170
- entry_SYSCALL_64_after_hwframe+0x71/0x79
+Blame the original commit since the reliance on not having a pending
+work associated with hints is fragile.
 
-Always preserve __GFP_NOLOCKDEP to fix this.
+[1]
+unreferenced object 0xffff88810e7c3000 (size 256):
+  comm "kworker/0:16", pid 176, jiffies 4295460353
+  hex dump (first 32 bytes):
+    00 30 95 11 81 88 ff ff 61 00 00 00 00 00 00 80  .0......a.......
+    00 00 61 00 40 00 00 00 00 00 00 00 04 00 00 00  ..a.@...........
+  backtrace (crc 2544ddb9):
+    [<00000000cf8cfab3>] kmalloc_trace+0x23f/0x2a0
+    [<000000004d9a1ad9>] objagg_hints_get+0x42/0x390
+    [<000000000b143cf3>] mlxsw_sp_acl_erp_rehash_hints_get+0xca/0x400
+    [<0000000059bdb60a>] mlxsw_sp_acl_tcam_vregion_rehash_work+0x868/0x1160
+    [<00000000e81fd734>] process_one_work+0x59c/0xf20
+    [<00000000ceee9e81>] worker_thread+0x799/0x12c0
+    [<00000000bda6fe39>] kthread+0x246/0x300
+    [<0000000070056d23>] ret_from_fork+0x34/0x70
+    [<00000000dea2b93e>] ret_from_fork_asm+0x1a/0x30
 
-Link: https://lkml.kernel.org/r/20240418141133.22950-1-ryabinin.a.a@gmail.com
-Fixes: cd11016e5f52 ("mm, kasan: stackdepot implementation. Enable stackdepot for SLAB")
-Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Reported-by: Xiubo Li <xiubli@redhat.com>
-Closes: https://lore.kernel.org/all/a0caa289-ca02-48eb-9bf2-d86fd47b71f4@redhat.com/
-Reported-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Closes: https://lore.kernel.org/all/f9ff999a-e170-b66b-7caf-293f2b147ac2@opensource.wdc.com/
-Suggested-by: Dave Chinner <david@fromorbit.com>
-Tested-by: Xiubo Li <xiubli@redhat.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c9c9af91f1d9 ("mlxsw: spectrum_acl: Allow to interrupt/continue rehash work")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/0cc12ebb07c4d4c41a1265ee2c28b392ff997a86.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/stackdepot.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/lib/stackdepot.c
-+++ b/lib/stackdepot.c
-@@ -256,10 +256,10 @@ depot_stack_handle_t depot_save_stack(st
- 		/*
- 		 * Zero out zone modifiers, as we don't have specific zone
- 		 * requirements. Keep the flags related to allocation in atomic
--		 * contexts and I/O.
-+		 * contexts, I/O, nolockdep.
- 		 */
- 		alloc_flags &= ~GFP_ZONEMASK;
--		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL);
-+		alloc_flags &= (GFP_ATOMIC | GFP_KERNEL | __GFP_NOLOCKDEP);
- 		alloc_flags |= __GFP_NOWARN;
- 		page = alloc_pages(alloc_flags, STACK_ALLOC_ORDER);
- 		if (page)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index e0e7f630801a9..46b1120a8151e 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -831,10 +831,14 @@ mlxsw_sp_acl_tcam_vregion_destroy(struct mlxsw_sp *mlxsw_sp,
+ 	struct mlxsw_sp_acl_tcam *tcam = vregion->tcam;
+ 
+ 	if (vgroup->vregion_rehash_enabled && ops->region_rehash_hints_get) {
++		struct mlxsw_sp_acl_tcam_rehash_ctx *ctx = &vregion->rehash.ctx;
++
+ 		mutex_lock(&tcam->lock);
+ 		list_del(&vregion->tlist);
+ 		mutex_unlock(&tcam->lock);
+-		cancel_delayed_work_sync(&vregion->rehash.dw);
++		if (cancel_delayed_work_sync(&vregion->rehash.dw) &&
++		    ctx->hints_priv)
++			ops->region_rehash_hints_put(ctx->hints_priv);
+ 	}
+ 	mlxsw_sp_acl_tcam_vgroup_vregion_detach(mlxsw_sp, vregion);
+ 	if (vregion->region2)
+-- 
+2.43.0
+
 
 
 
