@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-42534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B488B737A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA11B8B72FA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F13B2887B1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27DD91C226C8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDCC12CD9B;
-	Tue, 30 Apr 2024 11:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7BD12CDAE;
+	Tue, 30 Apr 2024 11:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kttyAIzt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmVoZXSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7468801;
-	Tue, 30 Apr 2024 11:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1AB12C805;
+	Tue, 30 Apr 2024 11:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475973; cv=none; b=gAVhbAsaAdL86kMhYjusup0zhtW5l9Ac0IvSWtf35nq84GCchOMGWZJYXTAxIgIjx2hEz3oa/FWxfBA9kLBTTurU0nWicfstVt2kSiNdEQoJJ8FTycxtqoWKh1TPP3F5zHOHapyaCg1d2vRTvXwr3BKGJY1fYCdWKkjTZUfz+sE=
+	t=1714475639; cv=none; b=eG+U+ppx+KdiRu2twrphratRBkRVKK4ECzt+BW1BSEgDNS3kcryWdapYkybobAUDlaych9cLoKfqRFhEOZNmQfv+7rri093NAMkfONYcl4/L4AaTdMOBr0TYBXYfUE61S0xXwIui56IFX0Hl9BBXARvOclujfbbjQNbq6FaB8iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475973; c=relaxed/simple;
-	bh=2BpX3oZ2ZU9Ki34jjnt6xK51XSlGWcfGnpP2pec22nE=;
+	s=arc-20240116; t=1714475639; c=relaxed/simple;
+	bh=VrAuTUA/rgwYQoLrJo4If0hCMM8vFzbaKZsuDOfHtkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XrR3NEzx+SBI4g0ruJ3TWt3bzuKPjKXx/4xY6pdDD0/DzOy467aCbd23oRO/vMxb8juwz0Mhn0bsEdDTtEkkXwN58fqVIcgQxJYUmYiQHQ1J3/aSnGX+VckASFBb1f65nr5ZPbTJh/t4Heb1f9JyOi13rvU3OwAfq2ibmyvL9v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kttyAIzt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29BBC2BBFC;
-	Tue, 30 Apr 2024 11:19:32 +0000 (UTC)
+	 MIME-Version; b=ASCdyBkGaWjoLTPT2miuS6IE9ZrV9rBHyShf5mmiJpElvLIBcgPwqU1ovTcrPdPukDj9FlrdP5gHzVdkaG4W9A5sUMbM5KR3vrha+HYA9lAfT45765rLYfhxCv8PT17BHQej/rGLdOqMzLVZWtKErC91ZzcZhyYkL29C/zlcC3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmVoZXSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91C9C2BBFC;
+	Tue, 30 Apr 2024 11:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475973;
-	bh=2BpX3oZ2ZU9Ki34jjnt6xK51XSlGWcfGnpP2pec22nE=;
+	s=korg; t=1714475639;
+	bh=VrAuTUA/rgwYQoLrJo4If0hCMM8vFzbaKZsuDOfHtkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kttyAIztQrGB4kZY0wWAT7ZOYlDU5lavhyY4g2AKka1ZFW2ZZfPbR5M3NK07DBsu3
-	 D9Oa2iSMfYwdDsy/RTtp8rqAjtUSUlhrgpE3M3AejA7TiNCH4TRLoHQw1d7C9XpPaW
-	 Ks70+HF8NmrHwHuRICjbNM3FK0FuiwDgCt9Tgr94=
+	b=fmVoZXSaMXaXWJ/uhYDFS47Hu7kMoqLGEAo6Vk24ElGlT1DsU3SfCsvicVaztiM/p
+	 BVzBuiv3LkmjTCfcfk1s7QnWVLs+DNVvTjzjT4GYHh0sQcHxKxh6iw2LHGLw3rHoXE
+	 newePfkHSc7e6Z7HIHpdQDInULKGClqvDoIbCJHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 36/80] mlxsw: spectrum_acl_tcam: Fix incorrect list API usage
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Chris Oo <cho@microsoft.com>
+Subject: [PATCH 6.6 156/186] x86/tdx: Preserve shared bit on mprotect()
 Date: Tue, 30 Apr 2024 12:40:08 +0200
-Message-ID: <20240430103044.483372728@linuxfoundation.org>
+Message-ID: <20240430103102.562870952@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit b377add0f0117409c418ddd6504bd682ebe0bf79 ]
+commit a0a8d15a798be4b8f20aca2ba91bf6b688c6a640 upstream.
 
-Both the function that migrates all the chunks within a region and the
-function that migrates all the entries within a chunk call
-list_first_entry() on the respective lists without checking that the
-lists are not empty. This is incorrect usage of the API, which leads to
-the following warning [1].
+The TDX guest platform takes one bit from the physical address to
+indicate if the page is shared (accessible by VMM). This bit is not part
+of the physical_mask and is not preserved during mprotect(). As a
+result, the 'shared' bit is lost during mprotect() on shared mappings.
 
-Fix by returning if the lists are empty as there is nothing to migrate
-in this case.
+_COMMON_PAGE_CHG_MASK specifies which PTE bits need to be preserved
+during modification. AMD includes 'sme_me_mask' in the define to
+preserve the 'encrypt' bit.
 
-[1]
-WARNING: CPU: 0 PID: 6437 at drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c:1266 mlxsw_sp_acl_tcam_vchunk_migrate_all+0x1f1/0>
-Modules linked in:
-CPU: 0 PID: 6437 Comm: kworker/0:37 Not tainted 6.9.0-rc3-custom-00883-g94a65f079ef6 #39
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-RIP: 0010:mlxsw_sp_acl_tcam_vchunk_migrate_all+0x1f1/0x2c0
-[...]
-Call Trace:
- <TASK>
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x6c/0x4a0
- process_one_work+0x151/0x370
- worker_thread+0x2cb/0x3e0
- kthread+0xd0/0x100
- ret_from_fork+0x34/0x50
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+To cover both Intel and AMD cases, include 'cc_mask' in
+_COMMON_PAGE_CHG_MASK instead of 'sme_me_mask'.
 
-Fixes: 6f9579d4e302 ("mlxsw: spectrum_acl: Remember where to continue rehash migration")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/4628e9a22d1d84818e28310abbbc498e7bc31bc9.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Chris Oo <cho@microsoft.com>
+
+Fixes: 41394e33f3a0 ("x86/tdx: Extend the confidential computing API to support TDX guests")
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240424082035.4092071-1-kirill.shutemov%40linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/include/asm/coco.h          |    5 ++++-
+ arch/x86/include/asm/pgtable_types.h |    3 ++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 8c1e97d463eb7..e0e7f630801a9 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1284,6 +1284,9 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
- 		return 0;
- 	}
+--- a/arch/x86/include/asm/coco.h
++++ b/arch/x86/include/asm/coco.h
+@@ -12,9 +12,10 @@ enum cc_vendor {
+ };
  
-+	if (list_empty(&vchunk->ventry_list))
-+		goto out;
+ extern enum cc_vendor cc_vendor;
+-extern u64 cc_mask;
+ 
+ #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
++extern u64 cc_mask;
 +
- 	/* If the migration got interrupted, we have the ventry to start from
- 	 * stored in context.
- 	 */
-@@ -1335,6 +1338,7 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
- 		}
- 	}
- 
-+out:
- 	mlxsw_sp_acl_tcam_vchunk_migrate_end(mlxsw_sp, vchunk, ctx);
- 	return 0;
- }
-@@ -1348,6 +1352,9 @@ mlxsw_sp_acl_tcam_vchunk_migrate_all(struct mlxsw_sp *mlxsw_sp,
- 	struct mlxsw_sp_acl_tcam_vchunk *vchunk;
- 	int err;
- 
-+	if (list_empty(&vregion->vchunk_list))
-+		return 0;
+ static inline void cc_set_mask(u64 mask)
+ {
+ 	RIP_REL_REF(cc_mask) = mask;
+@@ -24,6 +25,8 @@ u64 cc_mkenc(u64 val);
+ u64 cc_mkdec(u64 val);
+ void cc_random_init(void);
+ #else
++static const u64 cc_mask = 0;
 +
- 	/* If the migration got interrupted, we have the vchunk
- 	 * we are working on stored in context.
- 	 */
--- 
-2.43.0
-
+ static inline u64 cc_mkenc(u64 val)
+ {
+ 	return val;
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -148,7 +148,7 @@
+ #define _COMMON_PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |	\
+ 				 _PAGE_SPECIAL | _PAGE_ACCESSED |	\
+ 				 _PAGE_DIRTY_BITS | _PAGE_SOFT_DIRTY |	\
+-				 _PAGE_DEVMAP | _PAGE_ENC | _PAGE_UFFD_WP)
++				 _PAGE_DEVMAP | _PAGE_CC | _PAGE_UFFD_WP)
+ #define _PAGE_CHG_MASK	(_COMMON_PAGE_CHG_MASK | _PAGE_PAT)
+ #define _HPAGE_CHG_MASK (_COMMON_PAGE_CHG_MASK | _PAGE_PSE | _PAGE_PAT_LARGE)
+ 
+@@ -173,6 +173,7 @@ enum page_cache_mode {
+ };
+ #endif
+ 
++#define _PAGE_CC		(_AT(pteval_t, cc_mask))
+ #define _PAGE_ENC		(_AT(pteval_t, sme_me_mask))
+ 
+ #define _PAGE_CACHE_MASK	(_PAGE_PWT | _PAGE_PCD | _PAGE_PAT)
 
 
 
