@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6338D8B71BF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D35A08B70FA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94DB01C21631
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606871F21711
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E054512C487;
-	Tue, 30 Apr 2024 11:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFD512C52C;
+	Tue, 30 Apr 2024 10:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDsNxj9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HudfDgGC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1457464;
-	Tue, 30 Apr 2024 11:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696BEE560;
+	Tue, 30 Apr 2024 10:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474820; cv=none; b=b+saZc0y17tTxur+xuDiGXbxfHa3IspDyRZTEJexhXzyTBGsV0Zk5TVMZ4Z7VLiq8y20mtd5YA2XKtNizjCaZU6FnnbitqTdskCCCIljCeO+ZuOcYFJlEnUhE+vcS7MOmH2W1W9UYA2nKYt+jMfz8kIo2Px7CMbBAUei7HcEaMI=
+	t=1714474303; cv=none; b=t3YPvv8rUs6oBWpPe22VG/blkT06DxHlbLnvkTSBisaGeHQ55vL8KjRqfGeCZTxHJUyljWB+0OksDAjOhkDydg66WX3yp8pipYsP0JtrXiDbYurZD2JREWs7bYhRmPbIHqOBa3OO4GPv+N9AOUcOFS3r4K5isd+UYLdyJAGMLTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474820; c=relaxed/simple;
-	bh=qJwB5hpzcbPj/By/4ijKwCdo2FA3ml51+CYNfq3kQ3E=;
+	s=arc-20240116; t=1714474303; c=relaxed/simple;
+	bh=KnbB/6VHUQrV0a19zvwlhqnFElOInqdz2opf7h/4O5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0Zg7n12cXkbj75q7Ch46l9cbRiixxDIwLNHxzu9QmRfrDqDy/HyLttfwp8DZzMIylxTPh05CFaaCgDLZ4a8L5CSneESzBzX/j00c1LFSvGUKE9zBSdNahmQ548X7rj8jSpAon6CW1ffQzBvDzEGH64D2TI3zA0YpkC3N0qq7yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDsNxj9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205C8C2BBFC;
-	Tue, 30 Apr 2024 11:00:19 +0000 (UTC)
+	 MIME-Version; b=jzkB6Cxyt8vt3BWczKYfML2l85qEoo+wa5GqAiy7b92navijkIlhvRgC6R2TNMq/GLKAA1pcNvpitC+4z2N/kxOwn3TGj11ERVTs/8dR2w7f4PeCxpyZQSGwXS+Y//i9q6XhD70GZbXleM9ZQpdhcnuNrHrmdF/mapERt8zoq0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HudfDgGC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BC6C2BBFC;
+	Tue, 30 Apr 2024 10:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474820;
-	bh=qJwB5hpzcbPj/By/4ijKwCdo2FA3ml51+CYNfq3kQ3E=;
+	s=korg; t=1714474303;
+	bh=KnbB/6VHUQrV0a19zvwlhqnFElOInqdz2opf7h/4O5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KDsNxj9JQWbKU48lBkufInjZM3blrOTMpZ8/pHHPjT3CrZHfE0Aqq3bOT/dru9Zyu
-	 lPx1qvuqrGpMMQVSAQZhKUnDofAoi52svLEuezHpyYc/r9JVYJyI9X/QGEG/ZHQdBa
-	 P8FyC5fewUFdJAevN6lqNcch6kMO/BM5+8f8+nTI=
+	b=HudfDgGC0wgGfMlCYYoW5K2FkNtIbrfd0O/bxSn6okoPV67kVwONAv9e1cpETWGZz
+	 vPkiRbT9Af/zrypfcJoCepVOMQPdHqljy2tuA2wFVL5DnYi61nYD0dCEy6CMBzUX9t
+	 DgNUNgIkqImjqetI7nOyzmA8bTz/qb/PjImmxKPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 009/138] octeontx2-af: Fix NIX SQ mode and BP config
-Date: Tue, 30 Apr 2024 12:38:14 +0200
-Message-ID: <20240430103049.700228407@linuxfoundation.org>
+Subject: [PATCH 6.8 117/228] tls: fix lockless read of strp->msg_ready in ->poll
+Date: Tue, 30 Apr 2024 12:38:15 +0200
+Message-ID: <20240430103107.185384526@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit faf23006185e777db18912685922c5ddb2df383f ]
+[ Upstream commit 0844370f8945086eb9335739d10205dcea8d707b ]
 
-NIX SQ mode and link backpressure configuration is required for
-all platforms. But in current driver this code is wrongly placed
-under specific platform check. This patch fixes the issue by
-moving the code out of platform check.
+tls_sk_poll is called without locking the socket, and needs to read
+strp->msg_ready (via tls_strp_msg_ready). Convert msg_ready to a bool
+and use READ_ONCE/WRITE_ONCE where needed. The remaining reads are
+only performed when the socket is locked.
 
-Fixes: 5d9b976d4480 ("octeontx2-af: Support fixed transmit scheduler topology")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Link: https://lore.kernel.org/r/20240408063643.26288-1-gakula@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 121dca784fc0 ("tls: suppress wakeups unless we have a full record")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/0b7ee062319037cf86af6b317b3d72f7bfcd2e97.1713797701.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 20 +++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ include/net/tls.h  | 3 ++-
+ net/tls/tls.h      | 2 +-
+ net/tls/tls_strp.c | 6 +++---
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index e549b09c347a7..fb4b18be503c5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -3146,18 +3146,18 @@ int rvu_nix_init(struct rvu *rvu)
- 		 */
- 		rvu_write64(rvu, blkaddr, NIX_AF_CFG,
- 			    rvu_read64(rvu, blkaddr, NIX_AF_CFG) | 0x40ULL);
-+	}
+diff --git a/include/net/tls.h b/include/net/tls.h
+index 340ad43971e47..33f657d3c0510 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -111,7 +111,8 @@ struct tls_strparser {
+ 	u32 stopped : 1;
+ 	u32 copy_mode : 1;
+ 	u32 mixed_decrypted : 1;
+-	u32 msg_ready : 1;
++
++	bool msg_ready;
  
--		/* Set chan/link to backpressure TL3 instead of TL2 */
--		rvu_write64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL, 0x01);
-+	/* Set chan/link to backpressure TL3 instead of TL2 */
-+	rvu_write64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL, 0x01);
+ 	struct strp_msg stm;
  
--		/* Disable SQ manager's sticky mode operation (set TM6 = 0)
--		 * This sticky mode is known to cause SQ stalls when multiple
--		 * SQs are mapped to same SMQ and transmitting pkts at a time.
--		 */
--		cfg = rvu_read64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS);
--		cfg &= ~BIT_ULL(15);
--		rvu_write64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS, cfg);
--	}
-+	/* Disable SQ manager's sticky mode operation (set TM6 = 0)
-+	 * This sticky mode is known to cause SQ stalls when multiple
-+	 * SQs are mapped to same SMQ and transmitting pkts at a time.
-+	 */
-+	cfg = rvu_read64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS);
-+	cfg &= ~BIT_ULL(15);
-+	rvu_write64(rvu, blkaddr, NIX_AF_SQM_DBG_CTL_STATUS, cfg);
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index 762f424ff2d59..e5e47452308ab 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -215,7 +215,7 @@ static inline struct sk_buff *tls_strp_msg(struct tls_sw_context_rx *ctx)
  
- 	ltdefs = rvu->kpu.lt_def;
- 	/* Calibrate X2P bus to check if CGX/LBK links are fine */
+ static inline bool tls_strp_msg_ready(struct tls_sw_context_rx *ctx)
+ {
+-	return ctx->strp.msg_ready;
++	return READ_ONCE(ctx->strp.msg_ready);
+ }
+ 
+ static inline bool tls_strp_msg_mixed_decrypted(struct tls_sw_context_rx *ctx)
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index ca1e0e198ceb4..5df08d848b5c9 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -360,7 +360,7 @@ static int tls_strp_copyin(read_descriptor_t *desc, struct sk_buff *in_skb,
+ 	if (strp->stm.full_len && strp->stm.full_len == skb->len) {
+ 		desc->count = 0;
+ 
+-		strp->msg_ready = 1;
++		WRITE_ONCE(strp->msg_ready, 1);
+ 		tls_rx_msg_ready(strp);
+ 	}
+ 
+@@ -528,7 +528,7 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
+ 	if (!tls_strp_check_queue_ok(strp))
+ 		return tls_strp_read_copy(strp, false);
+ 
+-	strp->msg_ready = 1;
++	WRITE_ONCE(strp->msg_ready, 1);
+ 	tls_rx_msg_ready(strp);
+ 
+ 	return 0;
+@@ -580,7 +580,7 @@ void tls_strp_msg_done(struct tls_strparser *strp)
+ 	else
+ 		tls_strp_flush_anchor_copy(strp);
+ 
+-	strp->msg_ready = 0;
++	WRITE_ONCE(strp->msg_ready, 0);
+ 	memset(&strp->stm, 0, sizeof(strp->stm));
+ 
+ 	tls_strp_check_rcv(strp);
 -- 
 2.43.0
 
