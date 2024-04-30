@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321FE8B73B1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:22:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FD58B71FA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1F3128889A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:22:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F36251C22F6A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB18F12D214;
-	Tue, 30 Apr 2024 11:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A17112C819;
+	Tue, 30 Apr 2024 11:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwxoABP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/+jqQ1+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A0912D1EA;
-	Tue, 30 Apr 2024 11:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB08912C462;
+	Tue, 30 Apr 2024 11:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476133; cv=none; b=MMhGIg4APwrDbgHcbNUicva9szcjN327YgTGnfc4ab50OLD087LQ/fzxLimT1NA7wnNkJcP/AXMrEA7OUUfByZrO13N7sNOQBMAAV3hdX5H82LxgV+98DXLJhulCB+Rcb1KctufLTRlMJESu3jP7/CEOUDx5nyrUYx2EIjJMals=
+	t=1714474962; cv=none; b=E8SQQwhbf6OVaNGNLQh5q8GJuLDDTGpPLtclbyMfXJ7Gj38p1MjIHKPQNbnhWUcnp9Zl0pBoqQuwKty1hnjudUgphrEZtIF+xYfU0KZ6zX+tQr4eZnTAdkmA5CZSmB/4pJRolMGHdI5JyBerOPUdQUKBZjUfbrH4uN+tVC7XAF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476133; c=relaxed/simple;
-	bh=mShDFB0iKg2PxgpFeMJ8AJB+YLGhu+oLZBR7MhOzYPQ=;
+	s=arc-20240116; t=1714474962; c=relaxed/simple;
+	bh=qOv8XcV+4vqMh0HBLphYkNd2C2yDrB5TMlGG1xQLBlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G5ZDJIzLcBf12879/QywBCRmiM0+5wtnH3Cp8Or6KqRLztDZ3Zw6D6flI5IZPtkK5OJUCg5/BX9fwwhzjeMLV4hliuy/7ENo0TIJoS0jvM7b4ifSF799K2q0fAx2y3gD2bwrWkNIfhTBZ3f8bNDYuwJPYVxcFAgIuvFxlzva2Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwxoABP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB079C2BBFC;
-	Tue, 30 Apr 2024 11:22:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P2iOT8nwm5Dtk7Ue09V2mgfdmf7cyjJxfldA/k9nRX1IcIogjlPTcizdcGW2hoSzEyljUi/I2or/EkrrlcJ0Zab40w3LvfGn/T6RKOMMvdVyATjqVtcilAA2DLlSqkWF5ciIHZPD85vvXZYFsr2tgi152mzGYpsjJVyGr61E3yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/+jqQ1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8C4C2BBFC;
+	Tue, 30 Apr 2024 11:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476133;
-	bh=mShDFB0iKg2PxgpFeMJ8AJB+YLGhu+oLZBR7MhOzYPQ=;
+	s=korg; t=1714474962;
+	bh=qOv8XcV+4vqMh0HBLphYkNd2C2yDrB5TMlGG1xQLBlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwxoABP3ynAsfgXf+lo2J/08t6ADx5BpbcQEyg80iSql9+wjA3Rzo2Ry9+6A099PI
-	 nfSqqbvoV1iCpSaVXpppccGBCx9FNvbn0Pmw9Qn7FWR4i2O7fPV4m+bPT/9xKZmK9q
-	 x2Cwn36P/am4cjFeKI4d5H2KZOceMRK9GvDAk7tE=
+	b=j/+jqQ1+Yrw7h0rGAPuXf8ee1F7RN7e9Ir1tL1qMIRAtcQFF8rHGEwLloqjoqe3BA
+	 K3AaZnsmOhC+drXBve69dKp0NbfsbJScB8Kg7XvqDVTJqMBntjwtjSP0BNwM4L6YkV
+	 Xw28Ii1Ox6dt4cPrJ6xFsxusyjo1TJfDYk2u0woI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 007/107] ipv6: fib: hide unused pn variable
+Subject: [PATCH 5.10 082/138] arm64: dts: mediatek: mt2712: fix validation errors
 Date: Tue, 30 Apr 2024 12:39:27 +0200
-Message-ID: <20240430103044.875067966@linuxfoundation.org>
+Message-ID: <20240430103051.836273966@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 74043489fcb5e5ca4074133582b5b8011b67f9e7 ]
+[ Upstream commit 3baac7291effb501c4d52df7019ebf52011e5772 ]
 
-When CONFIG_IPV6_SUBTREES is disabled, the only user is hidden, causing
-a 'make W=1' warning:
+1. Fixup infracfg clock controller binding
+   It also acts as reset controller so #reset-cells is required.
+2. Use -pins suffix for pinctrl
 
-net/ipv6/ip6_fib.c: In function 'fib6_add':
-net/ipv6/ip6_fib.c:1388:32: error: variable 'pn' set but not used [-Werror=unused-but-set-variable]
+This fixes:
+arch/arm64/boot/dts/mediatek/mt2712-evb.dtb: syscon@10001000: '#reset-cells' is a required property
+        from schema $id: http://devicetree.org/schemas/arm/mediatek/mediatek,infracfg.yaml#
+arch/arm64/boot/dts/mediatek/mt2712-evb.dtb: pinctrl@1000b000: 'eth_default', 'eth_sleep', 'usb0_iddig', 'usb1_iddig' do not match any of the regexes: 'pinctrl-[0-9]+', 'pins$'
+        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt65xx-pinctrl.yaml#
 
-Add another #ifdef around the variable declaration, matching the other
-uses in this file.
-
-Fixes: 66729e18df08 ("[IPV6] ROUTE: Make sure we have fn->leaf when adding a node on subtree.")
-Link: https://lore.kernel.org/netdev/20240322131746.904943-1-arnd@kernel.org/
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240408074219.3030256-1-arnd@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240301074741.8362-1-zajec5@gmail.com
+[Angelo: Added Fixes tags]
+Fixes: 5d4839709c8e ("arm64: dts: mt2712: Add clock controller device nodes")
+Fixes: 1724f4cc5133 ("arm64: dts: Add USB3 related nodes for MT2712")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt2712-evb.dts | 8 ++++----
+ arch/arm64/boot/dts/mediatek/mt2712e.dtsi   | 3 ++-
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 7d593e50977cf..3afc32fe9b07b 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1307,7 +1307,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 	     struct nl_info *info, struct netlink_ext_ack *extack)
- {
- 	struct fib6_table *table = rt->fib6_table;
--	struct fib6_node *fn, *pn = NULL;
-+	struct fib6_node *fn;
-+#ifdef CONFIG_IPV6_SUBTREES
-+	struct fib6_node *pn = NULL;
-+#endif
- 	int err = -ENOMEM;
- 	int allow_create = 1;
- 	int replace_required = 0;
-@@ -1331,9 +1334,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 		goto out;
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
+index 9d20cabf4f699..99515c13da3cf 100644
+--- a/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt2712-evb.dts
+@@ -127,7 +127,7 @@
+ };
  
-+#ifdef CONFIG_IPV6_SUBTREES
- 	pn = fn;
+ &pio {
+-	eth_default: eth_default {
++	eth_default: eth-default-pins {
+ 		tx_pins {
+ 			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GBE_TXD3>,
+ 				 <MT2712_PIN_72_GBE_TXD2__FUNC_GBE_TXD2>,
+@@ -154,7 +154,7 @@
+ 		};
+ 	};
  
--#ifdef CONFIG_IPV6_SUBTREES
- 	if (rt->fib6_src.plen) {
- 		struct fib6_node *sn;
+-	eth_sleep: eth_sleep {
++	eth_sleep: eth-sleep-pins {
+ 		tx_pins {
+ 			pinmux = <MT2712_PIN_71_GBE_TXD3__FUNC_GPIO71>,
+ 				 <MT2712_PIN_72_GBE_TXD2__FUNC_GPIO72>,
+@@ -180,14 +180,14 @@
+ 		};
+ 	};
  
+-	usb0_id_pins_float: usb0_iddig {
++	usb0_id_pins_float: usb0-iddig-pins {
+ 		pins_iddig {
+ 			pinmux = <MT2712_PIN_12_IDDIG_P0__FUNC_IDDIG_A>;
+ 			bias-pull-up;
+ 		};
+ 	};
+ 
+-	usb1_id_pins_float: usb1_iddig {
++	usb1_id_pins_float: usb1-iddig-pins {
+ 		pins_iddig {
+ 			pinmux = <MT2712_PIN_14_IDDIG_P1__FUNC_IDDIG_B>;
+ 			bias-pull-up;
+diff --git a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
+index cc3d1c99517d1..f7ce2eba10f7a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt2712e.dtsi
+@@ -249,10 +249,11 @@
+ 		#clock-cells = <1>;
+ 	};
+ 
+-	infracfg: syscon@10001000 {
++	infracfg: clock-controller@10001000 {
+ 		compatible = "mediatek,mt2712-infracfg", "syscon";
+ 		reg = <0 0x10001000 0 0x1000>;
+ 		#clock-cells = <1>;
++		#reset-cells = <1>;
+ 	};
+ 
+ 	pericfg: syscon@10003000 {
 -- 
 2.43.0
 
