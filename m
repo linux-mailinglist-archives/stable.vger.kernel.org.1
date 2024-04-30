@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-42548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166048B7389
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2248B717C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA761288834
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A54DB22D42
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638EF12CDAE;
-	Tue, 30 Apr 2024 11:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB1612C48A;
+	Tue, 30 Apr 2024 10:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WESD4NSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtGqBUjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2289A8801;
-	Tue, 30 Apr 2024 11:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D00812C499;
+	Tue, 30 Apr 2024 10:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476018; cv=none; b=u3kcAyQe0q/pTq+gzAp8d5O2/amHO0PPuRTIwQUoInUF2eOhDYubWl5NkOpTrT0/FyEUh8U1oESNNQHiSYyOD2aI7DSb10KWMFq9ItueJ20AUnIYXfUKRHxVibqV/HEdOjiZyX6jsABeN23E8P/ZMuHnEudk3/TJRrIp0p3c1/g=
+	t=1714474616; cv=none; b=dOCBly6RgvSnjphcaKwiVNpNBJT0oS+6eoolPnBlkBer4kWrbEuTHlSVZFeBfW7ouQjgCAN7jFnle6KMAMYlSF6WAVtArmoxBuWi1aAbK2Jj4/H3kcvuqWWGBPovZSJhA9P0qkL2kf6OWPFSPDRfF/FgQRSrzfe2UXbcH/NkWbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476018; c=relaxed/simple;
-	bh=nFwLMQvRWsHyXb5UbI/RJRUv7oU5Q+Y9nSbuBvIgqCI=;
+	s=arc-20240116; t=1714474616; c=relaxed/simple;
+	bh=3LmBwj1A00Us3JgxM3GPDLNrywKJw5PHzpP/zuwTq8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTepBIlNzWddNxsDcfwpuue3gDeR0ZN7GxrPIsfjRBeFhKoRSHLav1YrT4489C1K8dN59/qwZMSZ/yd0wHeyez3XW62zWxa6bVS3ZOdMnMqqInXMZMKFK+ypJJfw4A3a66Pq9BQpojtoSF+vkUPffMV1TwxFvKOuhVXImN+7oK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WESD4NSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9242EC4AF18;
-	Tue, 30 Apr 2024 11:20:17 +0000 (UTC)
+	 MIME-Version; b=AciuZi1VKv6r+WtLh+l6TJm87i/uB08IH1iXeA9lqIllkj0tdqvZCHUXVid+pprdjiGG8juxLZoH/Ck3iZ3QhZvpPV0jR7tm2XorwVlZY6q8Dba2UxBl4dXd03I6pIKAbWEXMgQlCDkt2y/1gkrq99o6FcQjva2+9X+uXovLAuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtGqBUjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B8EC2BBFC;
+	Tue, 30 Apr 2024 10:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476018;
-	bh=nFwLMQvRWsHyXb5UbI/RJRUv7oU5Q+Y9nSbuBvIgqCI=;
+	s=korg; t=1714474615;
+	bh=3LmBwj1A00Us3JgxM3GPDLNrywKJw5PHzpP/zuwTq8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WESD4NSMtVqNH9NUcEaxfb6T2jNqU0DPl9lbn2ZhiXyFBBMFSThheDY5k6xccUMHs
-	 Mmiz9ka687FAq49pND/cHB6jofA9Q6sq5hV6aOHee2uQWKeHzm+wMgCUCedlsp6Ud6
-	 eL+nryNAz4m2aQppuSNtGoMifw4qPLWJeYoleXlo=
+	b=YtGqBUjH67cBzyKNEIXNg3NAXdWLzEejANzGU54+b8psbjy4ZO6acfidlOLpLDt85
+	 Pr8DOLm5ToWzBdAXghX1t4fpldGUQN9c+xCiy+GqwW1fI3iSS9Zw1WNwEmSZ0vQ5vQ
+	 PclXOLdeHHZkOfy5ZNkhmPJDRlqh/7w9v8EiWwQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.4 001/107] batman-adv: Avoid infinite loop trying to resize local TT
+	Jarred White <jarredwhite@linux.microsoft.com>,
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.8 183/228] ACPI: CPPC: Fix bit_offset shift in MASK_VAL() macro
 Date: Tue, 30 Apr 2024 12:39:21 +0200
-Message-ID: <20240430103044.701842056@linuxfoundation.org>
+Message-ID: <20240430103109.083890570@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Jarred White <jarredwhite@linux.microsoft.com>
 
-commit b1f532a3b1e6d2e5559c7ace49322922637a28aa upstream.
+commit 05d92ee782eeb7b939bdd0189e6efcab9195bf95 upstream.
 
-If the MTU of one of an attached interface becomes too small to transmit
-the local translation table then it must be resized to fit inside all
-fragments (when enabled) or a single packet.
+Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
+system memory accesses") neglected to properly wrap the bit_offset shift
+when it comes to applying the mask. This may cause incorrect values to be
+read and may cause the cpufreq module not be loaded.
 
-But if the MTU becomes too low to transmit even the header + the VLAN
-specific part then the resizing of the local TT will never succeed. This
-can for example happen when the usable space is 110 bytes and 11 VLANs are
-on top of batman-adv. In this case, at least 116 byte would be needed.
-There will just be an endless spam of
+[   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
+[   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
 
-   batman_adv: batadv0: Forced to purge local tt entries to fit new maximum fragment MTU (110)
+Also, corrected the bitmask generation in GENMASK (extra bit being added).
 
-in the log but the function will never finish. Problem here is that the
-timeout will be halved all the time and will then stagnate at 0 and
-therefore never be able to reduce the table even more.
-
-There are other scenarios possible with a similar result. The number of
-BATADV_TT_CLIENT_NOPURGE entries in the local TT can for example be too
-high to fit inside a packet. Such a scenario can therefore happen also with
-only a single VLAN + 7 non-purgable addresses - requiring at least 120
-bytes.
-
-While this should be handled proactively when:
-
-* interface with too low MTU is added
-* VLAN is added
-* non-purgeable local mac is added
-* MTU of an attached interface is reduced
-* fragmentation setting gets disabled (which most likely requires dropping
-  attached interfaces)
-
-not all of these scenarios can be prevented because batman-adv is only
-consuming events without the the possibility to prevent these actions
-(non-purgable MAC address added, MTU of an attached interface is reduced).
-It is therefore necessary to also make sure that the code is able to handle
-also the situations when there were already incompatible system
-configuration are present.
-
-Cc: stable@vger.kernel.org
-Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
-Reported-by: syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
+Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
+Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
+Reviewed-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/cppc_acpi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -4190,7 +4190,7 @@ void batadv_tt_local_resize_to_mtu(struc
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -170,8 +170,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_
+ #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
  
- 	spin_lock_bh(&bat_priv->tt.commit_lock);
+ /* Shift and apply the mask for CPC reads/writes */
+-#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
+-					GENMASK(((reg)->bit_width), 0)))
++#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
++					GENMASK(((reg)->bit_width) - 1, 0))
  
--	while (true) {
-+	while (timeout) {
- 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
- 		if (packet_size_max >= table_size)
- 			break;
+ static ssize_t show_feedback_ctrs(struct kobject *kobj,
+ 		struct kobj_attribute *attr, char *buf)
 
 
 
