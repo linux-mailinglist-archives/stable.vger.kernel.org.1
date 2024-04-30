@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-42139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D585C8B7197
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26118B7379
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12BBF1C22466
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1585DB209F3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE4712C487;
-	Tue, 30 Apr 2024 10:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954A012CDAE;
+	Tue, 30 Apr 2024 11:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IU/8w3zC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBrrA+XA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC16128816;
-	Tue, 30 Apr 2024 10:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9D48801;
+	Tue, 30 Apr 2024 11:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474693; cv=none; b=jgtVva/sD08g1VL3jySe4p9jdNj3YoooEO7KogCVPl6bsgeDoP5FkXBxTC1fHggSXX1GumUVgq2Om8Vjj6qw6c+AZj6GpITZ2d4/cmfoQhmwsR8lU68+KreWkWcMAPU9lqkhZyKuyakkT5c0j8UrQUfaSadEDrpbLS+0fMDXFCo=
+	t=1714475970; cv=none; b=t3zHktB88U8t8gWoYhG6Fa/+9bdEYyqym4X5CahEB2rVr9uJy1773SLLFA041zmAFhyX80PWaGeWi9KCLUdPNiIrfQl/R4AA0jsYgkmuTDxQOEsrvOpp/zBnkea+E1yc6WYPZt+ZOdOC0CYYHyJ7DS1niguqa0zXJCDTaZrPAio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474693; c=relaxed/simple;
-	bh=sVNrfHH8Gw53TRd8SrCLd2co5Vr7hRPlnnfye1u5/7I=;
+	s=arc-20240116; t=1714475970; c=relaxed/simple;
+	bh=/DZuc+mf/p6b1qWN0ecZJ11ZE21Bvci8W1alxCg19Rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5rW5GQ8HgoteqW2aNLWdEflWZypkJ4c+yHypyh4qZRFIE/d3sRWMvygjTYGYbT7HTTGMpcKQ4MHkRBtYtyvW5FPXl9Zs0v5ScP4QaIuPtljRzcWYryKOe/KJVqYirMAihGaBRthdnqfE6XtruRoBw1+s4j52qHb+yJkGdNBHtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IU/8w3zC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58B4C2BBFC;
-	Tue, 30 Apr 2024 10:58:12 +0000 (UTC)
+	 MIME-Version; b=pLXpl9rEp0QuOFj2bdTS/NkqVeqq9yBf8vFHp89bhzIt7wPvNEd4CtRS8JcOot8B9HDtML3qdJVhtNutVogvvu0X9ZO8aY51Ecd6V91b5HsPunTldu/hVELHb5eDMErGxur42O43xBX8MZmxA4KS725yJpShMKcN/WX1f2Bkk3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBrrA+XA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9EAC2BBFC;
+	Tue, 30 Apr 2024 11:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474693;
-	bh=sVNrfHH8Gw53TRd8SrCLd2co5Vr7hRPlnnfye1u5/7I=;
+	s=korg; t=1714475970;
+	bh=/DZuc+mf/p6b1qWN0ecZJ11ZE21Bvci8W1alxCg19Rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IU/8w3zC0Eh5qbyp+1bwKK35DO0faDXCz65f65VPmUhAt9rAnZFdM3X3dJXSBUH1E
-	 LfIcWpH9XSppgNUw7ZbtI6/EKy7WfUZof5XgWCq7Yg55q9JQuKqlrWSlo0poKnMMdg
-	 gR0PMu2cfsJUtN8c4MGAaMIsFmtqwpEyHFXqu8uI=
+	b=XBrrA+XAUVahYVAySMW6jk39YdacF9DPWLZdRykFhP0mSUbVdiB3wRkuwOqcTXVil
+	 Hj/05ovAj/XfMEEppTUjxSmEzOhvgVh1qqQ9iWFoopWk7EFs2CwARfBGGfSXUKQWFr
+	 xzfSsjle9ysw9Ylhtk/G1PFKfxcbP0SDW5uVRHhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.8 228/228] Bluetooth: hci_sync: Fix UAF on hci_abort_conn_sync
-Date: Tue, 30 Apr 2024 12:40:06 +0200
-Message-ID: <20240430103110.381831659@linuxfoundation.org>
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 35/80] mlxsw: spectrum_acl_tcam: Fix warning during rehash
+Date: Tue, 30 Apr 2024 12:40:07 +0200
+Message-ID: <20240430103044.454243919@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +65,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 7453847fb22c7c45334c43cc6a02ea5df5b9961d upstream.
+[ Upstream commit 743edc8547a92b6192aa1f1b6bb78233fa21dc9b ]
 
-Fixes the following trace where hci_acl_create_conn_sync attempts to
-call hci_abort_conn_sync after timeout:
+As previously explained, the rehash delayed work migrates filters from
+one region to another. This is done by iterating over all chunks (all
+the filters with the same priority) in the region and in each chunk
+iterating over all the filters.
 
-BUG: KASAN: slab-use-after-free in hci_abort_conn_sync
-(net/bluetooth/hci_sync.c:5439)
-Read of size 2 at addr ffff88800322c032 by task kworker/u3:2/36
+When the work runs out of credits it stores the current chunk and entry
+as markers in the per-work context so that it would know where to resume
+the migration from the next time the work is scheduled.
 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-1.fc38
-04/01/2014
-Workqueue: hci0 hci_cmd_sync_work
+Upon error, the chunk marker is reset to NULL, but without resetting the
+entry markers despite being relative to it. This can result in migration
+being resumed from an entry that does not belong to the chunk being
+migrated. In turn, this will eventually lead to a chunk being iterated
+over as if it is an entry. Because of how the two structures happen to
+be defined, this does not lead to KASAN splats, but to warnings such as
+[1].
+
+Fix by creating a helper that resets all the markers and call it from
+all the places the currently only reset the chunk marker. For good
+measures also call it when starting a completely new rehash. Add a
+warning to avoid future cases.
+
+[1]
+WARNING: CPU: 7 PID: 1076 at drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c:407 mlxsw_afk_encode+0x242/0x2f0
+Modules linked in:
+CPU: 7 PID: 1076 Comm: kworker/7:24 Tainted: G        W          6.9.0-rc3-custom-00880-g29e61d91b77b #29
+Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
+Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
+RIP: 0010:mlxsw_afk_encode+0x242/0x2f0
+[...]
 Call Trace:
-<TASK>
-dump_stack_lvl (./arch/x86/include/asm/irqflags.h:26
-./arch/x86/include/asm/irqflags.h:67 ./arch/x86/include/asm/irqflags.h:127
-lib/dump_stack.c:107)
-print_report (mm/kasan/report.c:378 mm/kasan/report.c:488)
-? preempt_count_sub (kernel/sched/core.c:5889)
-? __virt_addr_valid (./arch/x86/include/asm/preempt.h:103 (discriminator 1)
-./include/linux/rcupdate.h:865 (discriminator 1)
-./include/linux/mmzone.h:2026 (discriminator 1)
-arch/x86/mm/physaddr.c:65 (discriminator 1))
-? hci_abort_conn_sync (net/bluetooth/hci_sync.c:5439)
-kasan_report (mm/kasan/report.c:603)
-? hci_abort_conn_sync (net/bluetooth/hci_sync.c:5439)
-hci_abort_conn_sync (net/bluetooth/hci_sync.c:5439)
-? __pfx_hci_abort_conn_sync (net/bluetooth/hci_sync.c:5433)
-hci_acl_create_conn_sync (net/bluetooth/hci_sync.c:6681)
+ <TASK>
+ mlxsw_sp_acl_atcam_entry_add+0xd9/0x3c0
+ mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
+ mlxsw_sp_acl_tcam_vchunk_migrate_all+0x109/0x290
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0x6c/0x470
+ process_one_work+0x151/0x370
+ worker_thread+0x2cb/0x3e0
+ kthread+0xd0/0x100
+ ret_from_fork+0x34/0x50
+ </TASK>
 
-Fixes: 45340097ce6e ("Bluetooth: hci_conn: Only do ACL connections sequentially")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6f9579d4e302 ("mlxsw: spectrum_acl: Remember where to continue rehash migration")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/cc17eed86b41dd829d39b07906fec074a9ce580e.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ .../mellanox/mlxsw/spectrum_acl_tcam.c        | 20 ++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6735,15 +6735,10 @@ static int hci_acl_create_conn_sync(stru
- 	else
- 		cp.role_switch = 0x00;
- 
--	err = __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
--				       sizeof(cp), &cp,
--				       HCI_EV_CONN_COMPLETE,
--				       conn->conn_timeout, NULL);
--
--	if (err == -ETIMEDOUT)
--		hci_abort_conn_sync(hdev, conn, HCI_ERROR_LOCAL_HOST_TERM);
--
--	return err;
-+	return __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
-+					sizeof(cp), &cp,
-+					HCI_EV_CONN_COMPLETE,
-+					conn->conn_timeout, NULL);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index b63b4a3ee7c42..8c1e97d463eb7 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -725,6 +725,17 @@ static void mlxsw_sp_acl_tcam_vregion_rehash_work(struct work_struct *work)
+ 		mlxsw_sp_acl_tcam_vregion_rehash_work_schedule(vregion);
  }
  
- int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn)
++static void
++mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(struct mlxsw_sp_acl_tcam_rehash_ctx *ctx)
++{
++	/* The entry markers are relative to the current chunk and therefore
++	 * needs to be reset together with the chunk marker.
++	 */
++	ctx->current_vchunk = NULL;
++	ctx->start_ventry = NULL;
++	ctx->stop_ventry = NULL;
++}
++
+ static void
+ mlxsw_sp_acl_tcam_rehash_ctx_vchunk_changed(struct mlxsw_sp_acl_tcam_vchunk *vchunk)
+ {
+@@ -747,7 +758,7 @@ mlxsw_sp_acl_tcam_rehash_ctx_vregion_changed(struct mlxsw_sp_acl_tcam_vregion *v
+ 	 * the current chunk pointer to make sure all chunks
+ 	 * are properly migrated.
+ 	 */
+-	vregion->rehash.ctx.current_vchunk = NULL;
++	mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(&vregion->rehash.ctx);
+ }
+ 
+ static struct mlxsw_sp_acl_tcam_vregion *
+@@ -1250,7 +1261,7 @@ mlxsw_sp_acl_tcam_vchunk_migrate_end(struct mlxsw_sp *mlxsw_sp,
+ {
+ 	mlxsw_sp_acl_tcam_chunk_destroy(mlxsw_sp, vchunk->chunk2);
+ 	vchunk->chunk2 = NULL;
+-	ctx->current_vchunk = NULL;
++	mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(ctx);
+ }
+ 
+ static int
+@@ -1282,6 +1293,8 @@ mlxsw_sp_acl_tcam_vchunk_migrate_one(struct mlxsw_sp *mlxsw_sp,
+ 		ventry = list_first_entry(&vchunk->ventry_list,
+ 					  typeof(*ventry), list);
+ 
++	WARN_ON(ventry->vchunk != vchunk);
++
+ 	list_for_each_entry_from(ventry, &vchunk->ventry_list, list) {
+ 		/* During rollback, once we reach the ventry that failed
+ 		 * to migrate, we are done.
+@@ -1373,7 +1386,7 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
+ 		 * to vregion->region.
+ 		 */
+ 		swap(vregion->region, vregion->region2);
+-		ctx->current_vchunk = NULL;
++		mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(ctx);
+ 		ctx->this_is_rollback = true;
+ 		err2 = mlxsw_sp_acl_tcam_vchunk_migrate_all(mlxsw_sp, vregion,
+ 							    ctx, credits);
+@@ -1432,6 +1445,7 @@ mlxsw_sp_acl_tcam_vregion_rehash_start(struct mlxsw_sp *mlxsw_sp,
+ 
+ 	ctx->hints_priv = hints_priv;
+ 	ctx->this_is_rollback = false;
++	mlxsw_sp_acl_tcam_rehash_ctx_vchunk_reset(ctx);
+ 
+ 	return 0;
+ 
+-- 
+2.43.0
+
 
 
 
