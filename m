@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381118B719A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6498B7268
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2F051F22555
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC1C1F211C9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32FF12C487;
-	Tue, 30 Apr 2024 10:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D9E12DD95;
+	Tue, 30 Apr 2024 11:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/V4C12b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXXSkBOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17567464;
-	Tue, 30 Apr 2024 10:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460C612D758;
+	Tue, 30 Apr 2024 11:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474700; cv=none; b=l7Z9vWBgGqpS5L76wA72f1QhjM18CDXm+JN0sWj0KBcbQuHbrOhBjgdPAwPG07lD3HDp0rQcBLnmvxCHHveTFW0uU3N85cbEI2JeyOJOf6J2xBmD1Gf+9h16XFJ0iTjM8XTngQHGmqWN7sI1QoPwF3OrAvZez8yH/8Cgc2O4el4=
+	t=1714475256; cv=none; b=OPb6NlHZ0XoJJqVy2X08rZl7X0E1OBx4iuXgwoJsdXygr9YEapBmI0OGDmBuo/o3JGj8oCst0doaA2kDPPRwX8FrjO1/GMNYWn9bRiJien6O6Mw/zGUkhrT/4w3xet4WTN0hykzbdKMCL7O969+5+CyiboOBhNUwpx/dliKJtUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474700; c=relaxed/simple;
-	bh=VaY7pxNAYLE4M6wueR1n0yDgvE3bSa+i00vZHnP52/w=;
+	s=arc-20240116; t=1714475256; c=relaxed/simple;
+	bh=7BBeaO7u4PvZ1J1iSUvXRi/3cgL44eO984js7F45ieQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwLYdlGPLh6pUc1Qle9x2FI+79IlI+0/QI6h9y3sTu0Q/yKfvDsbK+H89J0leLGJUeJIEUFGLOQYDb5gR0gyaSmcRWFKCOz0x1s/38PWQ/aPUYe1aaGy0p58aHKKV0g21z4wHkV0JwuXfPKaTUdiYMeZWgfE1gI9BpspE1joIcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/V4C12b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDBDC2BBFC;
-	Tue, 30 Apr 2024 10:58:19 +0000 (UTC)
+	 MIME-Version; b=Iyi2n6j4x7ghRNLb7aup81oXVfJ/qw4kjcuBtBvxMjR/7oNIY8O5ftJswTNLTK4lhuP0JUU+0QHOB/8hmByGxQMhjJO6Xfa9YOBOsC8q5zoMB9NvEH1XAxzdTkS6dLM3ksprJBMnn1XSOr7l1+e1hR2SnzY52JaiZuIcfLQxWVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXXSkBOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3B4C4AF19;
+	Tue, 30 Apr 2024 11:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474700;
-	bh=VaY7pxNAYLE4M6wueR1n0yDgvE3bSa+i00vZHnP52/w=;
+	s=korg; t=1714475256;
+	bh=7BBeaO7u4PvZ1J1iSUvXRi/3cgL44eO984js7F45ieQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/V4C12bLSp+SqwOPO8IXrZhcj0UOkD7Q1zslSfg8WD3PMFniOGZcYOODUqZQlbF8
-	 yPZsuMw2ggUdjuuuVvSJBuuJTRP4O0Q4LAAcZRUFyf8OUSbeE5tyBtz0mY5RR1ycVp
-	 Alg4eciG6NwKWLa8HIfEktp+iMA+4x58Rloun6j0=
+	b=cXXSkBOo66EmWmtSUflbL8kLm2/svqSBG8kqZeFTiQDXQxoBqMkbnbVG1hqCcS9My
+	 Gw1aeHCsZ/rLa7a6mioyYCCSBxip3Ff4NlPXkF2XbHrFGkgGJkD4ZClXNnXXDszTXv
+	 8uPTolCssVJhK1TpzVwzldbbDtbKZX2WAaP4NeGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.10 001/138] batman-adv: Avoid infinite loop trying to resize local TT
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 034/186] gpio: tangier: Use correct type for the IRQ chip data
 Date: Tue, 30 Apr 2024 12:38:06 +0200
-Message-ID: <20240430103049.469038967@linuxfoundation.org>
+Message-ID: <20240430103059.021079959@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit b1f532a3b1e6d2e5559c7ace49322922637a28aa upstream.
+[ Upstream commit 7d045025a24b6336d444d359bd4312f351d017f9 ]
 
-If the MTU of one of an attached interface becomes too small to transmit
-the local translation table then it must be resized to fit inside all
-fragments (when enabled) or a single packet.
+IRQ chip data contains a pointer to the GPIO chip. Luckily we have
+the pointers the same, but strictly speaking it's not guaranteed.
+Even though, still better to fix this.
 
-But if the MTU becomes too low to transmit even the header + the VLAN
-specific part then the resizing of the local TT will never succeed. This
-can for example happen when the usable space is 110 bytes and 11 VLANs are
-on top of batman-adv. In this case, at least 116 byte would be needed.
-There will just be an endless spam of
-
-   batman_adv: batadv0: Forced to purge local tt entries to fit new maximum fragment MTU (110)
-
-in the log but the function will never finish. Problem here is that the
-timeout will be halved all the time and will then stagnate at 0 and
-therefore never be able to reduce the table even more.
-
-There are other scenarios possible with a similar result. The number of
-BATADV_TT_CLIENT_NOPURGE entries in the local TT can for example be too
-high to fit inside a packet. Such a scenario can therefore happen also with
-only a single VLAN + 7 non-purgable addresses - requiring at least 120
-bytes.
-
-While this should be handled proactively when:
-
-* interface with too low MTU is added
-* VLAN is added
-* non-purgeable local mac is added
-* MTU of an attached interface is reduced
-* fragmentation setting gets disabled (which most likely requires dropping
-  attached interfaces)
-
-not all of these scenarios can be prevented because batman-adv is only
-consuming events without the the possibility to prevent these actions
-(non-purgable MAC address added, MTU of an attached interface is reduced).
-It is therefore necessary to also make sure that the code is able to handle
-also the situations when there were already incompatible system
-configuration are present.
-
-Cc: stable@vger.kernel.org
-Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
-Reported-by: syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ccf6fd6dcc86 ("gpio: merrifield: Introduce GPIO driver to support Merrifield")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-tangier.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -4188,7 +4188,7 @@ void batadv_tt_local_resize_to_mtu(struc
+diff --git a/drivers/gpio/gpio-tangier.c b/drivers/gpio/gpio-tangier.c
+index 7ce3eddaed257..1ce40b7673b11 100644
+--- a/drivers/gpio/gpio-tangier.c
++++ b/drivers/gpio/gpio-tangier.c
+@@ -205,7 +205,8 @@ static int tng_gpio_set_config(struct gpio_chip *chip, unsigned int offset,
  
- 	spin_lock_bh(&bat_priv->tt.commit_lock);
+ static void tng_irq_ack(struct irq_data *d)
+ {
+-	struct tng_gpio *priv = irq_data_get_irq_chip_data(d);
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct tng_gpio *priv = gpiochip_get_data(gc);
+ 	irq_hw_number_t gpio = irqd_to_hwirq(d);
+ 	unsigned long flags;
+ 	void __iomem *gisr;
+@@ -241,7 +242,8 @@ static void tng_irq_unmask_mask(struct tng_gpio *priv, u32 gpio, bool unmask)
  
--	while (true) {
-+	while (timeout) {
- 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
- 		if (packet_size_max >= table_size)
- 			break;
+ static void tng_irq_mask(struct irq_data *d)
+ {
+-	struct tng_gpio *priv = irq_data_get_irq_chip_data(d);
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct tng_gpio *priv = gpiochip_get_data(gc);
+ 	irq_hw_number_t gpio = irqd_to_hwirq(d);
+ 
+ 	tng_irq_unmask_mask(priv, gpio, false);
+@@ -250,7 +252,8 @@ static void tng_irq_mask(struct irq_data *d)
+ 
+ static void tng_irq_unmask(struct irq_data *d)
+ {
+-	struct tng_gpio *priv = irq_data_get_irq_chip_data(d);
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct tng_gpio *priv = gpiochip_get_data(gc);
+ 	irq_hw_number_t gpio = irqd_to_hwirq(d);
+ 
+ 	gpiochip_enable_irq(&priv->chip, gpio);
+-- 
+2.43.0
+
 
 
 
