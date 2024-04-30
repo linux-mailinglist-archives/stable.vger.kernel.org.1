@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-42187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BAD8B71C9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB158B713C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31D3B1C224BB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 584851F21E94
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E6D12C487;
-	Tue, 30 Apr 2024 11:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B4712CD89;
+	Tue, 30 Apr 2024 10:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHi6NiHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMpvKk3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C1212B176;
-	Tue, 30 Apr 2024 11:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDB112C490;
+	Tue, 30 Apr 2024 10:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474849; cv=none; b=DtQgYiAGRjHHgheCwgpcdH11kjH7lwI4HZypamKYYuKfx5zp7cMj/4VdjFGjS6ElK5kXwTTbi6DgfoN6OVK4Kh6VjEV7h40lJTBpCVyK51Txkh1C73qDXY0MHkuidfidoA8Uc6VFVy4Rxn5wNIla8XoPt1ghxWkFGm7LOE44m4M=
+	t=1714474456; cv=none; b=JrpaxRh+fjajRUMymWltU+8FeHevPzizqqjGZGfUpD8NuQmpOUOAdG1uXSWEyg7pLQoUGorfGhSBTz3cZRVe2rCUBFi3RxcXC3amHP3cFm8Fl6Ku6wWP51h0gQafSe7NXenY/L4tScDM6Cvd2CzRm61aZfQyiHEjQVhBSZYKTrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474849; c=relaxed/simple;
-	bh=yDfoGFiM6pw6A7rsJi8yDj721g770UmlL36RYXmgNwY=;
+	s=arc-20240116; t=1714474456; c=relaxed/simple;
+	bh=hoCHWzuuQrhPPA+WtiyBDPcMLiMz97454kIdaEvUA6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZLfvNso/aQpg0FGw7oPy4zKYT3HQ3q8sv+Sc34qj0+1yO7eJP92yuI7NBEbN3S9QPYMsR3q2sjOIX8qEJ/yAVTXxgsogzVXFjlB0Eh4hEfScpgveDVFOQbAmIErliFHRNN8r/4liRg+lMKajQGLqyo2k6A6CwiD8RTtyQSYcu5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHi6NiHL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A2DC2BBFC;
-	Tue, 30 Apr 2024 11:00:48 +0000 (UTC)
+	 MIME-Version; b=s/U6hitMQkLjKyXe90wl+M+mp1KXoRoP8rid0oR1YceB2lsbxR8jkH+pOY8dMx/kLEY/TSe3v8k5sFd/1tQwJJrofWc6axGSaTMA69SZuQ0Qg1RLRi3ZVBNaNv0/tTJvPtfHGL/9q2qm0hTjF42bjOwgsiB8in4pF7felZXKd/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMpvKk3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDD7C2BBFC;
+	Tue, 30 Apr 2024 10:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474849;
-	bh=yDfoGFiM6pw6A7rsJi8yDj721g770UmlL36RYXmgNwY=;
+	s=korg; t=1714474456;
+	bh=hoCHWzuuQrhPPA+WtiyBDPcMLiMz97454kIdaEvUA6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHi6NiHLm14wTPX/N4EY/WXPKc9F+Tk9MCjR4SvT/JqMt1qcHBLOq66GooDoz6WOP
-	 yUWf89smBjaJtEFdXYE6ucjGVot3FfzKxOqLEoBNgYnyCe3iHcpKOJEhF0haqU8xkv
-	 AtHvCaqMhg2ztpTf53LxeLdH/IZyv75V+wrHz59s=
+	b=DMpvKk3tH12Mg2k4V63AWQ83SdCfE1xrPuqIS3BqWFvLTTTm+R0891TvXD+3JcMIn
+	 fscmwSn4lWaSZi359EHNRnKi+AEfRvftAgUucbv1jMqigdUmBvwf3d0ISJieN+8Z25
+	 QnNDK3e0l6LCrRalORiexOsiIueuCz9mYaNSJ8A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	stable@kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH 5.10 055/138] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Chris Oo <cho@microsoft.com>
+Subject: [PATCH 6.8 162/228] x86/tdx: Preserve shared bit on mprotect()
 Date: Tue, 30 Apr 2024 12:39:00 +0200
-Message-ID: <20240430103051.046715060@linuxfoundation.org>
+Message-ID: <20240430103108.482787659@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-commit 1be3226445362bfbf461c92a5bcdb1723f2e4907 upstream.
+commit a0a8d15a798be4b8f20aca2ba91bf6b688c6a640 upstream.
 
-The mitigation was intended to stop the irq completely. That may be
-better than a hard lock-up but it turns out that you get a crash anyway
-if you're using pmac_zilog as a serial console:
+The TDX guest platform takes one bit from the physical address to
+indicate if the page is shared (accessible by VMM). This bit is not part
+of the physical_mask and is not preserved during mprotect(). As a
+result, the 'shared' bit is lost during mprotect() on shared mappings.
 
-ttyPZ0: pmz: rx irq flood !
-BUG: spinlock recursion on CPU#0, swapper/0
+_COMMON_PAGE_CHG_MASK specifies which PTE bits need to be preserved
+during modification. AMD includes 'sme_me_mask' in the define to
+preserve the 'encrypt' bit.
 
-That's because the pr_err() call in pmz_receive_chars() results in
-pmz_console_write() attempting to lock a spinlock already locked in
-pmz_interrupt(). With CONFIG_DEBUG_SPINLOCK=y, this produces a fatal
-BUG splat. The spinlock in question is the one in struct uart_port.
+To cover both Intel and AMD cases, include 'cc_mask' in
+_COMMON_PAGE_CHG_MASK instead of 'sme_me_mask'.
 
-Even when it's not fatal, the serial port rx function ceases to work.
-Also, the iteration limit doesn't play nicely with QEMU, as can be
-seen in the bug report linked below.
+Reported-and-tested-by: Chris Oo <cho@microsoft.com>
 
-A web search for other reports of the error message "pmz: rx irq flood"
-didn't produce anything. So I don't think this code is needed any more.
-Remove it.
-
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: stable@kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Link: https://github.com/vivier/qemu-m68k/issues/44
-Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Link: https://lore.kernel.org/r/e853cf2c762f23101cd2ddec0cc0c2be0e72685f.1712568223.git.fthain@linux-m68k.org
+Fixes: 41394e33f3a0 ("x86/tdx: Extend the confidential computing API to support TDX guests")
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240424082035.4092071-1-kirill.shutemov%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/pmac_zilog.c |   14 --------------
- 1 file changed, 14 deletions(-)
+ arch/x86/include/asm/coco.h          |    1 +
+ arch/x86/include/asm/pgtable_types.h |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/pmac_zilog.c
-+++ b/drivers/tty/serial/pmac_zilog.c
-@@ -217,7 +217,6 @@ static bool pmz_receive_chars(struct uar
+--- a/arch/x86/include/asm/coco.h
++++ b/arch/x86/include/asm/coco.h
+@@ -24,6 +24,7 @@ u64 cc_mkdec(u64 val);
+ void cc_random_init(void);
+ #else
+ #define cc_vendor (CC_VENDOR_NONE)
++static const u64 cc_mask = 0;
+ 
+ static inline u64 cc_mkenc(u64 val)
  {
- 	struct tty_port *port;
- 	unsigned char ch, r1, drop, flag;
--	int loops = 0;
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -148,7 +148,7 @@
+ #define _COMMON_PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |	\
+ 				 _PAGE_SPECIAL | _PAGE_ACCESSED |	\
+ 				 _PAGE_DIRTY_BITS | _PAGE_SOFT_DIRTY |	\
+-				 _PAGE_DEVMAP | _PAGE_ENC | _PAGE_UFFD_WP)
++				 _PAGE_DEVMAP | _PAGE_CC | _PAGE_UFFD_WP)
+ #define _PAGE_CHG_MASK	(_COMMON_PAGE_CHG_MASK | _PAGE_PAT)
+ #define _HPAGE_CHG_MASK (_COMMON_PAGE_CHG_MASK | _PAGE_PSE | _PAGE_PAT_LARGE)
  
- 	/* Sanity check, make sure the old bug is no longer happening */
- 	if (uap->port.state == NULL) {
-@@ -298,25 +297,12 @@ static bool pmz_receive_chars(struct uar
- 		if (r1 & Rx_OVR)
- 			tty_insert_flip_char(port, 0, TTY_OVERRUN);
- 	next_char:
--		/* We can get stuck in an infinite loop getting char 0 when the
--		 * line is in a wrong HW state, we break that here.
--		 * When that happens, I disable the receive side of the driver.
--		 * Note that what I've been experiencing is a real irq loop where
--		 * I'm getting flooded regardless of the actual port speed.
--		 * Something strange is going on with the HW
--		 */
--		if ((++loops) > 1000)
--			goto flood;
- 		ch = read_zsreg(uap, R0);
- 		if (!(ch & Rx_CH_AV))
- 			break;
- 	}
+@@ -173,6 +173,7 @@ enum page_cache_mode {
+ };
+ #endif
  
- 	return true;
-- flood:
--	pmz_interrupt_control(uap, 0);
--	pmz_error("pmz: rx irq flood !\n");
--	return true;
- }
++#define _PAGE_CC		(_AT(pteval_t, cc_mask))
+ #define _PAGE_ENC		(_AT(pteval_t, sme_me_mask))
  
- static void pmz_status_handle(struct uart_pmac_port *uap)
+ #define _PAGE_CACHE_MASK	(_PAGE_PWT | _PAGE_PCD | _PAGE_PAT)
 
 
 
