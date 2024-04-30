@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E1C8B7201
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2387F8B72DA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4CEE281BC9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1261F21BA0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F7912C487;
-	Tue, 30 Apr 2024 11:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE4212D769;
+	Tue, 30 Apr 2024 11:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUH4ywnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhTnxpPa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A4812B176;
-	Tue, 30 Apr 2024 11:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B27112D209;
+	Tue, 30 Apr 2024 11:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474984; cv=none; b=Tf9gMycWBCY0bKmj2gKm52KPgmu5H7duZiMy1Jevsh9huFIjxeRuLPxLMArqdES+66CS19guNYzcPK3nnE8JI5mN4dtwFpN9UBDHz62gUc+pGiMwO5FJS6JO3v3+xxRldGToBpMggUPU7kYzZaVgB/db3u8lFVZQ4T485KT0B0E=
+	t=1714475547; cv=none; b=Z7oyb5Ry9+Xkvr3cmHMB18Yr7v4ea72Nk3rEKbfvdb7TWzCnl77+ETjR6qLgvI9868DPWU54+4enaLTJHvdlgnX9yGAObxY06Aqtq2J3Yra2C4QPvr03q2O2GgQ2UqFC4qQQyZqhG2UrlbiCcdbKIcZKZ/w6/lwBgmQgYMsT9yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474984; c=relaxed/simple;
-	bh=32DfC9nNlx0ILb4rimoifvAa/1s+7zz5J6PQSEyxy34=;
+	s=arc-20240116; t=1714475547; c=relaxed/simple;
+	bh=b+CyqGRCbQJhLjuRTM13DHCWsiAvxIgPJZC9u33RGAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MuwmL9HciN0uEA6AG42wZovcXiRJJeG9A3ic0ryJLMgdTECGWyeCl5qr4890rS8mvMAuEe9ITSTOBa6J5S2rVrJDB5JGi695/vETgBU9c7HQTbaYmXhBCChacwgMwWAZZ6WdOpAvgQvaEEiKQyPxkByxmYZ++ya+XRQulDObxxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUH4ywnr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E68BC2BBFC;
-	Tue, 30 Apr 2024 11:03:03 +0000 (UTC)
+	 MIME-Version; b=EiEqf22Tcyx5yb28OtA1ClZD07ay3dnLIhQ8O8VyEp42jzOVDVlrapNUFPepwjjdGC+vl5yV6WlqE5eC5xwSCDU1KIHxyofNRu2T/A3ztOt6HyG0ctKI9srkyiaPsO3Z5pzQLe6K2yuyyP+tJsjNnMNj+lY6jPpJ2kIctleQETI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhTnxpPa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CEAC2BBFC;
+	Tue, 30 Apr 2024 11:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474984;
-	bh=32DfC9nNlx0ILb4rimoifvAa/1s+7zz5J6PQSEyxy34=;
+	s=korg; t=1714475547;
+	bh=b+CyqGRCbQJhLjuRTM13DHCWsiAvxIgPJZC9u33RGAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUH4ywnrRdzqRzvJMGk0/iV3igumB2G2cBLK/lwNdT7bonWqGvzB+FT89LQtLR4AU
-	 2+TL0Pb426jvM5vzB3MNhBWAToWF4MoqrQ/bPwh4722Xidq6VNC2bzfpEIdYtPMJSw
-	 rRhQSuTw8HUHHe/7QR3wCkgtogebjvamJPBX+As0=
+	b=qhTnxpPan1CSV2hvZ0lP+ok96BSgkG2FXhU58DDaSWkJIXHrnf6oiesioSEJv1KFQ
+	 2a+CcgJjGc1XTIKgUeSvl79WUw5Lt9hzokvO58VYxaWSKsqfXUqUAYX+xBfWEcd8CE
+	 9npjJkin1EnR2evhOx3dpQghrK5Tyk4mok9/drdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/138] mlxsw: spectrum_acl_tcam: Fix memory leak during rehash
+	Nam Cao <namcao@linutronix.de>,
+	Jiri Kosina <jkosina@suse.com>,
+	Eva Kurchatova <nyandarknessgirl@gmail.com>
+Subject: [PATCH 6.6 130/186] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up
 Date: Tue, 30 Apr 2024 12:39:42 +0200
-Message-ID: <20240430103052.270747209@linuxfoundation.org>
+Message-ID: <20240430103101.804993786@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 8ca3f7a7b61393804c46f170743c3b839df13977 ]
+commit 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e upstream.
 
-The rehash delayed work migrates filters from one region to another.
-This is done by iterating over all chunks (all the filters with the same
-priority) in the region and in each chunk iterating over all the
-filters.
+The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
+However, this is not necessary, because I2C core already has its own
+locking for that.
 
-If the migration fails, the code tries to migrate the filters back to
-the old region. However, the rollback itself can also fail in which case
-another migration will be erroneously performed. Besides the fact that
-this ping pong is not a very good idea, it also creates a problem.
+More importantly, this flag can cause a lock-up: if the flag is set in
+i2c_hid_xfer() and an interrupt happens, the interrupt handler
+(i2c_hid_irq) will check this flag and return immediately without doing
+anything, then the interrupt handler will be invoked again in an
+infinite loop.
 
-Each virtual chunk references two chunks: The currently used one
-('vchunk->chunk') and a backup ('vchunk->chunk2'). During migration the
-first holds the chunk we want to migrate filters to and the second holds
-the chunk we are migrating filters from.
+Since interrupt handler is an RT task, it takes over the CPU and the
+flag-clearing task never gets scheduled, thus we have a lock-up.
 
-The code currently assumes - but does not verify - that the backup chunk
-does not exist (NULL) if the currently used chunk does not reference the
-target region. This assumption breaks when we are trying to rollback a
-rollback, resulting in the backup chunk being overwritten and leaked
-[1].
+Delete this unnecessary flag.
 
-Fix by not rolling back a failed rollback and add a warning to avoid
-future cases.
-
-[1]
-WARNING: CPU: 5 PID: 1063 at lib/parman.c:291 parman_destroy+0x17/0x20
-Modules linked in:
-CPU: 5 PID: 1063 Comm: kworker/5:11 Tainted: G        W          6.9.0-rc2-custom-00784-gc6a05c468a0b #14
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-RIP: 0010:parman_destroy+0x17/0x20
-[...]
-Call Trace:
- <TASK>
- mlxsw_sp_acl_atcam_region_fini+0x19/0x60
- mlxsw_sp_acl_tcam_region_destroy+0x49/0xf0
- mlxsw_sp_acl_tcam_vregion_rehash_work+0x1f1/0x470
- process_one_work+0x151/0x370
- worker_thread+0x2cb/0x3e0
- kthread+0xd0/0x100
- ret_from_fork+0x34/0x50
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Fixes: 843500518509 ("mlxsw: spectrum_acl: Do rollback as another call to mlxsw_sp_acl_tcam_vchunk_migrate_all()")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/d5edd4f4503934186ae5cfe268503b16345b4e0f.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
+Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
+Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/i2c-hid/i2c-hid-core.c |    9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index cdad4772b60a0..b63b4a3ee7c42 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1230,6 +1230,8 @@ mlxsw_sp_acl_tcam_vchunk_migrate_start(struct mlxsw_sp *mlxsw_sp,
- {
- 	struct mlxsw_sp_acl_tcam_chunk *new_chunk;
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -64,7 +64,6 @@
+ /* flags */
+ #define I2C_HID_STARTED		0
+ #define I2C_HID_RESET_PENDING	1
+-#define I2C_HID_READ_PENDING	2
  
-+	WARN_ON(vchunk->chunk2);
-+
- 	new_chunk = mlxsw_sp_acl_tcam_chunk_create(mlxsw_sp, vchunk, region);
- 	if (IS_ERR(new_chunk))
- 		return PTR_ERR(new_chunk);
-@@ -1364,6 +1366,8 @@ mlxsw_sp_acl_tcam_vregion_migrate(struct mlxsw_sp *mlxsw_sp,
- 	err = mlxsw_sp_acl_tcam_vchunk_migrate_all(mlxsw_sp, vregion,
- 						   ctx, credits);
- 	if (err) {
-+		if (ctx->this_is_rollback)
-+			return err;
- 		/* In case migration was not successful, we need to swap
- 		 * so the original region pointer is assigned again
- 		 * to vregion->region.
--- 
-2.43.0
-
+ #define I2C_HID_PWR_ON		0x00
+ #define I2C_HID_PWR_SLEEP	0x01
+@@ -190,15 +189,10 @@ static int i2c_hid_xfer(struct i2c_hid *
+ 		msgs[n].len = recv_len;
+ 		msgs[n].buf = recv_buf;
+ 		n++;
+-
+-		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
+ 	}
+ 
+ 	ret = i2c_transfer(client->adapter, msgs, n);
+ 
+-	if (recv_len)
+-		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
+-
+ 	if (ret != n)
+ 		return ret < 0 ? ret : -EIO;
+ 
+@@ -566,9 +560,6 @@ static irqreturn_t i2c_hid_irq(int irq,
+ {
+ 	struct i2c_hid *ihid = dev_id;
+ 
+-	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
+-		return IRQ_HANDLED;
+-
+ 	i2c_hid_get_input(ihid);
+ 
+ 	return IRQ_HANDLED;
 
 
 
