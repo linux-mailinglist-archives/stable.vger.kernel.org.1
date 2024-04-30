@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-42416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD3D8B72E9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1C88B705F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17991C20AA4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D0C11C21A95
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C5D12CDA5;
-	Tue, 30 Apr 2024 11:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB07312C817;
+	Tue, 30 Apr 2024 10:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vGu3+wT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQM98zha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285B08801;
-	Tue, 30 Apr 2024 11:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87779129E81;
+	Tue, 30 Apr 2024 10:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475594; cv=none; b=TXHX3G3vY/+U/93+V0u46ctgigTrsS5S2WMCfXJgb7hzrf1xet05W4KXobPe6xoM9mGap6ApwZBt6iMXTcm/MUqlk0VvTwt6yqUXdU793HBhbiOm61QbbVl0+hCVaL5dq8uiqvXti3DETps33TNp0MUI+OFghQCX3efa17bbwaQ=
+	t=1714473904; cv=none; b=oRiFKGJhiggqZJmxObKTFUEFFQ02uwjvDsIfoMDcL1ko3dG1zcW/2HNxngOELQe2sx70MaHv/5bU1e9vRuI2iUsOnR5Mra/isL0uoLufxj9g0rqRHrnUBpUS1pebNF/X//dawuLjG90wd7vOtaGSV1kb1aP8afWkEHQ0OJn8suI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475594; c=relaxed/simple;
-	bh=4Dm8+4qJZ3jTxmAeVM0tTcaoHfvLUtUz+Dtohh1PH7E=;
+	s=arc-20240116; t=1714473904; c=relaxed/simple;
+	bh=sLZ5SCbbu+PdzxHRGKBfGu3oSNBZVOfHUfBb6pClKLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrcYZChiAYXj/YMxs4VcDyyzt+wZEC+iFWtZzQ1oamfcBRA5Q80kNT52M2BtnMBgn6x+UqRE9kY8eRhPHNdNrnLUDVRsuotBlcqpIOJt10LkE3GwKHvXciwaqgH6aGTwvKuYt0SbXdHykKSlxeH39JDE+Z/Xj85lhPwZDAi2cAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vGu3+wT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB51C2BBFC;
-	Tue, 30 Apr 2024 11:13:12 +0000 (UTC)
+	 MIME-Version; b=BmCBt+2dw47uQZDnAKltH05Dh+sYZkEiysltr0FEncr5I3wujHCFYie1u6D8zMTEwZENCzacTAaMHHZlSXceHq2u/nzxnJghp0tZ9lEBVXjlio9YhQB9rR0WlDOaDLkPOy3XQAtT0cyqfCuSxo5/gt5WJ5xoE7gXU/cTTVWbz9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQM98zha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3D8C4AF1C;
+	Tue, 30 Apr 2024 10:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475594;
-	bh=4Dm8+4qJZ3jTxmAeVM0tTcaoHfvLUtUz+Dtohh1PH7E=;
+	s=korg; t=1714473904;
+	bh=sLZ5SCbbu+PdzxHRGKBfGu3oSNBZVOfHUfBb6pClKLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0vGu3+wTKs4PW/LNmS2yMRjhkyxBnpgDEGpRvNTmwj19rPzhcx6EQPmsfD7a45+sn
-	 HnQALix5y5O43h17+hHKrF6oVlSLp3ImdDarJsVcjbNJjW/nXe7Fh193SJoB8PBvY7
-	 zKMZ3aoI3hR0PtIn0je7gXvU4pdZopoEUwYT6gXQ=
+	b=NQM98zha1kgdWPoOixCLK/hKneYkQXcQHsuUj/hue0kZkbWmHJt/phKn5/Yfx52IS
+	 nXB7bqlgQHU8VxOlJuY+xD+Mg6qctUK6Hu1kvh2lW4gp648irYpcRhmXkvIxemtp/K
+	 R7BD+tPnz2rZk5i3dN4Wkr5UZmHQUiM05RC5i9+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 6.6 144/186] irqchip/gic-v3-its: Prevent double free on error
+	John Ogness <john.ogness@linutronix.de>,
+	linux-serial@vger.kernel.org,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 4.19 77/77] serial: core: fix kernel-doc for uart_port_unlock_irqrestore()
 Date: Tue, 30 Apr 2024 12:39:56 +0200
-Message-ID: <20240430103102.212953553@linuxfoundation.org>
+Message-ID: <20240430103043.415003630@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit c26591afd33adce296c022e3480dea4282b7ef91 upstream.
+commit 29bff582b74ed0bdb7e6986482ad9e6799ea4d2f upstream.
 
-The error handling path in its_vpe_irq_domain_alloc() causes a double free
-when its_vpe_init() fails after successfully allocating at least one
-interrupt. This happens because its_vpe_irq_domain_free() frees the
-interrupts along with the area bitmap and the vprop_page and
-its_vpe_irq_domain_alloc() subsequently frees the area bitmap and the
-vprop_page again.
+Fix the function name to avoid a kernel-doc warning:
 
-Fix this by unconditionally invoking its_vpe_irq_domain_free() which
-handles all cases correctly and by removing the bitmap/vprop_page freeing
-from its_vpe_irq_domain_alloc().
+include/linux/serial_core.h:666: warning: expecting prototype for uart_port_lock_irqrestore(). Prototype was for uart_port_unlock_irqrestore() instead
 
-[ tglx: Massaged change log ]
-
-Fixes: 7d75bbb4bc1a ("irqchip/gic-v3-its: Add VPE irq domain allocation/teardown")
-Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240418061053.96803-2-guanrui.huang@linux.alibaba.com
+Fixes: b0af4bcb4946 ("serial: core: Provide port lock wrappers")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: linux-serial@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20230927044128.4748-1-rdunlap@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ include/linux/serial_core.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -4561,13 +4561,8 @@ static int its_vpe_irq_domain_alloc(stru
- 		irqd_set_resend_when_in_progress(irq_get_irq_data(virq + i));
- 	}
- 
--	if (err) {
--		if (i > 0)
--			its_vpe_irq_domain_free(domain, virq, i);
--
--		its_lpi_free(bitmap, base, nr_ids);
--		its_free_prop_table(vprop_page);
--	}
-+	if (err)
-+		its_vpe_irq_domain_free(domain, virq, i);
- 
- 	return err;
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -334,7 +334,7 @@ static inline void uart_port_unlock_irq(
  }
+ 
+ /**
+- * uart_port_lock_irqrestore - Unlock the UART port, restore interrupts
++ * uart_port_unlock_irqrestore - Unlock the UART port, restore interrupts
+  * @up:		Pointer to UART port structure
+  * @flags:	The saved interrupt flags for restore
+  */
 
 
 
