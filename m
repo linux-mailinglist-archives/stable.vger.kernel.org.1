@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B847C8B731A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B788B7441
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA2251C23152
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C11EA286895
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8957112CD9B;
-	Tue, 30 Apr 2024 11:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D3312D761;
+	Tue, 30 Apr 2024 11:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3WKpzuX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlWQm0t8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486C712D1EA;
-	Tue, 30 Apr 2024 11:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EBF12D753;
+	Tue, 30 Apr 2024 11:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475714; cv=none; b=AAs1OxYoq8Rd+9hqg69Cx41ei4epIQ3tMaKA1JyXxgFE7SmP/XsiJw6LMkqVA1sOVH6B8FmpM+YHB6/leB5gocRCCIEB7QxO7HyU+sXIXpO/jJWNrtgou4qiyREkoYWT81nYr2+5izMSVGE3ogiGJXwMXiHt2KYhSPEVgYREZtg=
+	t=1714476538; cv=none; b=XdnFuxGdazHbBHkPhbBNHoLlqwyvTGvZeI1p7928/6pJjJB11Plm5aIEfz//RXLnp/R996qmqOzG+jM1yB0ZOu2W9FVrR3F9E9T+PQsBCVbSfr8Ra5JzR1mTHEVfZL+AC60EhuswcSOGUj5B/tx/mOX5/GMLS+67cf4Zuq+8t7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475714; c=relaxed/simple;
-	bh=db2GWncdnCfVpSkptLL+1MOVlYMIsdL2Q2xJTW5TuiA=;
+	s=arc-20240116; t=1714476538; c=relaxed/simple;
+	bh=uEF5edBPjjsWOM5cUwMRuPNg6m1kW8Yu6BMXcEPInh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XyWeY3GAfp4Acd5N2BtGMvXGMcwUfLYCOZvyju522xXDRDKTUX6i3EiqtNgvE3Jc6WT32PbS2EIyLGB1zHpEb4JzXpfO/+Q1b9F3UKfpyGYU/JmmcuzYgT3PHp0warOgoaidIr04Q+M6K8WZ1UWgmiLo7s2HaUlAinqlbH272vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3WKpzuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9B6C2BBFC;
-	Tue, 30 Apr 2024 11:15:13 +0000 (UTC)
+	 MIME-Version; b=hbo0Bka1auCmn6t5N5o4XxoJ2EK59z14zcpdtdoz4nZ+SRTElNlwNEqJ3Zr0egFjKr9IWj0fsQ6V4q4QrLa2gGCLgTRb1GhOqx/uXb/SISR0WiZ150eYPBP64ChfIUH7D6VOGCf+zv41ahtM7U2ttsrAMu14pJNjK8+wNf5YxfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlWQm0t8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C665C4AF19;
+	Tue, 30 Apr 2024 11:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475714;
-	bh=db2GWncdnCfVpSkptLL+1MOVlYMIsdL2Q2xJTW5TuiA=;
+	s=korg; t=1714476538;
+	bh=uEF5edBPjjsWOM5cUwMRuPNg6m1kW8Yu6BMXcEPInh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K3WKpzuXt9OSqDQVRJW8Iv6FCPV/tfXVuA4LOfFQ7vlwmIIAXJAUWh99/3WTeXShn
-	 1zhyeDqt9GO5KU06UztGsn4vWxyVph7C2cGjQAPc5yW0Tasa45MQUvIPoXObZNNbth
-	 zCRE0c49Zc1q/ea83mND7CvSS+MiKYL6szqMsgmw=
+	b=MlWQm0t8rsnWzTDoj/RNy2gKeC+ThrorBCRFTkHjpfRUuPaNr8ZpyiFxAvgWArB+h
+	 P09E6M/43Sj2L8Whnp/w7tYGcqOEX896j+PqvlSHakBPQGGmjZIRVclIaVuy1l0Wco
+	 /K1l1v21bS3Un66rRY45Qqx/hsC96RK6j5bmNDTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	syzbot+26eedf3631650972f17c@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>
-Subject: [PATCH 6.6 181/186] ovl: fix memory leak in ovl_parse_param()
+	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.1 064/110] rust: dont select CONSTRUCTORS
 Date: Tue, 30 Apr 2024 12:40:33 +0200
-Message-ID: <20240430103103.285965689@linuxfoundation.org>
+Message-ID: <20240430103049.457708886@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-commit 37f32f52643869131ec01bb69bdf9f404f6109fb upstream.
+commit 7d49f53af4b988b188d3932deac2c9c80fd7d9ce upstream.
 
-On failure to parse parameters in ovl_parse_param_lowerdir(), it is
-necessary to update ctx->nr with the correct nr before using
-ovl_reset_lowerdirs() to release l->name.
+This was originally part of commit 4b9a68f2e59a0 ("rust: add support for
+static synchronisation primitives") from the old Rust branch, which used
+module constructors to initialize globals containing various
+synchronisation primitives with pin-init. That commit has never been
+upstreamed, but the `select CONSTRUCTORS` statement ended up being
+included in the patch that initially added Rust support to the Linux
+Kernel.
 
-Reported-and-tested-by: syzbot+26eedf3631650972f17c@syzkaller.appspotmail.com
-Fixes: c835110b588a ("ovl: remove unused code in lowerdir param parsing")
-Co-authored-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+We are not using module constructors, so let's remove the select.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Cc: stable@vger.kernel.org
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Link: https://lore.kernel.org/r/20240308-constructors-v1-1-4c811342391c@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/params.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ init/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -438,7 +438,7 @@ static int ovl_parse_param_lowerdir(cons
- 	struct ovl_fs_context *ctx = fc->fs_private;
- 	struct ovl_fs_context_layer *l;
- 	char *dup = NULL, *iter;
--	ssize_t nr_lower = 0, nr = 0, nr_data = 0;
-+	ssize_t nr_lower, nr;
- 	bool data_layer = false;
- 
- 	/*
-@@ -490,6 +490,7 @@ static int ovl_parse_param_lowerdir(cons
- 	iter = dup;
- 	l = ctx->lower;
- 	for (nr = 0; nr < nr_lower; nr++, l++) {
-+		ctx->nr++;
- 		memset(l, 0, sizeof(*l));
- 
- 		err = ovl_mount_dir(iter, &l->path);
-@@ -506,10 +507,10 @@ static int ovl_parse_param_lowerdir(cons
- 			goto out_put;
- 
- 		if (data_layer)
--			nr_data++;
-+			ctx->nr_data++;
- 
- 		/* Calling strchr() again would overrun. */
--		if ((nr + 1) == nr_lower)
-+		if (ctx->nr == nr_lower)
- 			break;
- 
- 		err = -EINVAL;
-@@ -519,7 +520,7 @@ static int ovl_parse_param_lowerdir(cons
- 			 * This is a regular layer so we require that
- 			 * there are no data layers.
- 			 */
--			if ((ctx->nr_data + nr_data) > 0) {
-+			if (ctx->nr_data > 0) {
- 				pr_err("regular lower layers cannot follow data lower layers");
- 				goto out_put;
- 			}
-@@ -532,8 +533,6 @@ static int ovl_parse_param_lowerdir(cons
- 		data_layer = true;
- 		iter++;
- 	}
--	ctx->nr = nr_lower;
--	ctx->nr_data += nr_data;
- 	kfree(dup);
- 	return 0;
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1924,7 +1924,6 @@ config RUST
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+-	select CONSTRUCTORS
+ 	help
+ 	  Enables Rust support in the kernel.
  
 
 
