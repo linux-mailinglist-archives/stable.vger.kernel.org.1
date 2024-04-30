@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-41885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF38E8B703E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B61A8B729A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CBFF1C2194E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05D631F217B5
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1343312CDBA;
-	Tue, 30 Apr 2024 10:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DC812CD90;
+	Tue, 30 Apr 2024 11:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnUhpKO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fe/FzQ8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26B012C7E3;
-	Tue, 30 Apr 2024 10:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E5912C805;
+	Tue, 30 Apr 2024 11:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473853; cv=none; b=rcNaGY7fWSGuP3UPWYVOMZSlAmyADrHQM9psPxsVZSwWo1LNvrS73CRfcQ7JSHK2vxhEfRQO+ROWjVZmmf3FHr3v4qI8ZkQ/4r2tGwGRrMe0CJu9J1RsWrt5uc+n7MuGw7ppGrsg91pOM4gc7dzEJ4FapZyORZBVyoPZlQ4Xf7I=
+	t=1714475417; cv=none; b=m25AQyk6MLvNmR4l+sqrHsxzcY2uFAItzUXCT6U/VfH7fE7qyFPkbX7jLTNp57Vpk7TK9KfC/oYwdckXfXoVd9BL325fJnPcM968TUReCq/OrZVB1sJhDeLwsTWX2Arf8adeezsJxTr+wjQd45FGwXA3lxkIgNfmW5QLXhVeTE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473853; c=relaxed/simple;
-	bh=6TltmW1IjyMliMHTXCzWdMI3g4VV7pesox8b+X5aZUU=;
+	s=arc-20240116; t=1714475417; c=relaxed/simple;
+	bh=dKQpgXzKtQLryRXc9BhPFJgqkXwgknLX7MdNw4kl0RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYQdVUL4DifLPWBEUjrlSCdFn+J3tjNzJtG1hudU80nRjAehBkJeqnMtgJ137ythiQitMZSOtM2giIiP7GkYaPsJYvuV/wP9I2LFJPKXU4KnLfOb+78+xCMaq3v/fnZ8qKpj4eRcqT3iFOXKK7eEQfVVnVBqY7u3EZiOxt5WfJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnUhpKO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDCEC2BBFC;
-	Tue, 30 Apr 2024 10:44:13 +0000 (UTC)
+	 MIME-Version; b=HnUPLWltuFwkJJA3yUxRyo43XgiFUVtDSfFSpNrtaMR0OiowCVTYWYmJkwQXLlx8WDJ9ZQ6cPWQmLxEP9v708CYO3waco0ZnVgcwaR0MJ/WRJW3h9ef24DeHsCKs2DZTxgYJ3AP4cs6UCbt5y7UHuoQmLthJb20Yub39vpMqB6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fe/FzQ8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6032C2BBFC;
+	Tue, 30 Apr 2024 11:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473853;
-	bh=6TltmW1IjyMliMHTXCzWdMI3g4VV7pesox8b+X5aZUU=;
+	s=korg; t=1714475417;
+	bh=dKQpgXzKtQLryRXc9BhPFJgqkXwgknLX7MdNw4kl0RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fnUhpKO9beNIODFUE7DIBo2VX5+7eDBwa//jTBKAyvf5qDXNd8Ztzid+g7VtG5pZk
-	 IGN1lO1y1hJvM7T/A0ZJd3UcCEHabr5/dER4BZqkvebh85Tcql7D504wIQArcYAxaG
-	 5Hb+JB0k695L8O1WdStpZf0IhNN+UkchGsn0U7MY=
+	b=Fe/FzQ8QvXNs2Mh4FZdU1iu7DhMLRmlOSoJNPsD4hsd9a/Gt/mFCPRi5VBlHWDKCf
+	 dQ5Zv0dgNzmvXHNe/SlG224ekeE9ktUZ+gtXsseE3+KXnfmo2uI27OAH7wbfJ3faSk
+	 aT6hyBLn4fAWy1zXZ4nk1UzW3HXh7Wb2iII0wKbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 22/77] comedi: vmk80xx: fix incomplete endpoint checking
+	Sindhu Devale <sindhu.devale@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Robert Ganzynkowicz <robert.ganzynkowicz@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 089/186] i40e: Do not use WQ_MEM_RECLAIM flag for workqueue
 Date: Tue, 30 Apr 2024 12:39:01 +0200
-Message-ID: <20240430103041.783158093@linuxfoundation.org>
+Message-ID: <20240430103100.616117662@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +67,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Sindhu Devale <sindhu.devale@intel.com>
 
-commit d1718530e3f640b7d5f0050e725216eab57a85d8 upstream.
+[ Upstream commit 2cc7d150550cc981aceedf008f5459193282425c ]
 
-While vmk80xx does have endpoint checking implemented, some things
-can fall through the cracks. Depending on the hardware model,
-URBs can have either bulk or interrupt type, and current version
-of vmk80xx_find_usb_endpoints() function does not take that fully
-into account. While this warning does not seem to be too harmful,
-at the very least it will crash systems with 'panic_on_warn' set on
-them.
+Issue reported by customer during SRIOV testing, call trace:
+When both i40e and the i40iw driver are loaded, a warning
+in check_flush_dependency is being triggered. This seems
+to be because of the i40e driver workqueue is allocated with
+the WQ_MEM_RECLAIM flag, and the i40iw one is not.
 
-Fix the issue found by Syzkaller [1] by somewhat simplifying the
-endpoint checking process with usb_find_common_endpoints() and
-ensuring that only expected endpoint types are present.
+Similar error was encountered on ice too and it was fixed by
+removing the flag. Do the same for i40e too.
 
-This patch has not been tested on real hardware.
+[Feb 9 09:08] ------------[ cut here ]------------
+[  +0.000004] workqueue: WQ_MEM_RECLAIM i40e:i40e_service_task [i40e] is
+flushing !WQ_MEM_RECLAIM infiniband:0x0
+[  +0.000060] WARNING: CPU: 0 PID: 937 at kernel/workqueue.c:2966
+check_flush_dependency+0x10b/0x120
+[  +0.000007] Modules linked in: snd_seq_dummy snd_hrtimer snd_seq
+snd_timer snd_seq_device snd soundcore nls_utf8 cifs cifs_arc4
+nls_ucs2_utils rdma_cm iw_cm ib_cm cifs_md4 dns_resolver netfs qrtr
+rfkill sunrpc vfat fat intel_rapl_msr intel_rapl_common irdma
+intel_uncore_frequency intel_uncore_frequency_common ice ipmi_ssif
+isst_if_common skx_edac nfit libnvdimm x86_pkg_temp_thermal
+intel_powerclamp gnss coretemp ib_uverbs rapl intel_cstate ib_core
+iTCO_wdt iTCO_vendor_support acpi_ipmi mei_me ipmi_si intel_uncore
+ioatdma i2c_i801 joydev pcspkr mei ipmi_devintf lpc_ich
+intel_pch_thermal i2c_smbus ipmi_msghandler acpi_power_meter acpi_pad
+xfs libcrc32c ast sd_mod drm_shmem_helper t10_pi drm_kms_helper sg ixgbe
+drm i40e ahci crct10dif_pclmul libahci crc32_pclmul igb crc32c_intel
+libata ghash_clmulni_intel i2c_algo_bit mdio dca wmi dm_mirror
+dm_region_hash dm_log dm_mod fuse
+[  +0.000050] CPU: 0 PID: 937 Comm: kworker/0:3 Kdump: loaded Not
+tainted 6.8.0-rc2-Feb-net_dev-Qiueue-00279-gbd43c5687e05 #1
+[  +0.000003] Hardware name: Intel Corporation S2600BPB/S2600BPB, BIOS
+SE5C620.86B.02.01.0013.121520200651 12/15/2020
+[  +0.000001] Workqueue: i40e i40e_service_task [i40e]
+[  +0.000024] RIP: 0010:check_flush_dependency+0x10b/0x120
+[  +0.000003] Code: ff 49 8b 54 24 18 48 8d 8b b0 00 00 00 49 89 e8 48
+81 c6 b0 00 00 00 48 c7 c7 b0 97 fa 9f c6 05 8a cc 1f 02 01 e8 35 b3 fd
+ff <0f> 0b e9 10 ff ff ff 80 3d 78 cc 1f 02 00 75 94 e9 46 ff ff ff 90
+[  +0.000002] RSP: 0018:ffffbd294976bcf8 EFLAGS: 00010282
+[  +0.000002] RAX: 0000000000000000 RBX: ffff94d4c483c000 RCX:
+0000000000000027
+[  +0.000001] RDX: ffff94d47f620bc8 RSI: 0000000000000001 RDI:
+ffff94d47f620bc0
+[  +0.000001] RBP: 0000000000000000 R08: 0000000000000000 R09:
+00000000ffff7fff
+[  +0.000001] R10: ffffbd294976bb98 R11: ffffffffa0be65e8 R12:
+ffff94c5451ea180
+[  +0.000001] R13: ffff94c5ab5e8000 R14: ffff94c5c20b6e05 R15:
+ffff94c5f1330ab0
+[  +0.000001] FS:  0000000000000000(0000) GS:ffff94d47f600000(0000)
+knlGS:0000000000000000
+[  +0.000002] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  +0.000001] CR2: 00007f9e6f1fca70 CR3: 0000000038e20004 CR4:
+00000000007706f0
+[  +0.000000] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
+0000000000000000
+[  +0.000001] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:
+0000000000000400
+[  +0.000001] PKRU: 55555554
+[  +0.000001] Call Trace:
+[  +0.000001]  <TASK>
+[  +0.000002]  ? __warn+0x80/0x130
+[  +0.000003]  ? check_flush_dependency+0x10b/0x120
+[  +0.000002]  ? report_bug+0x195/0x1a0
+[  +0.000005]  ? handle_bug+0x3c/0x70
+[  +0.000003]  ? exc_invalid_op+0x14/0x70
+[  +0.000002]  ? asm_exc_invalid_op+0x16/0x20
+[  +0.000006]  ? check_flush_dependency+0x10b/0x120
+[  +0.000002]  ? check_flush_dependency+0x10b/0x120
+[  +0.000002]  __flush_workqueue+0x126/0x3f0
+[  +0.000015]  ib_cache_cleanup_one+0x1c/0xe0 [ib_core]
+[  +0.000056]  __ib_unregister_device+0x6a/0xb0 [ib_core]
+[  +0.000023]  ib_unregister_device_and_put+0x34/0x50 [ib_core]
+[  +0.000020]  i40iw_close+0x4b/0x90 [irdma]
+[  +0.000022]  i40e_notify_client_of_netdev_close+0x54/0xc0 [i40e]
+[  +0.000035]  i40e_service_task+0x126/0x190 [i40e]
+[  +0.000024]  process_one_work+0x174/0x340
+[  +0.000003]  worker_thread+0x27e/0x390
+[  +0.000001]  ? __pfx_worker_thread+0x10/0x10
+[  +0.000002]  kthread+0xdf/0x110
+[  +0.000002]  ? __pfx_kthread+0x10/0x10
+[  +0.000002]  ret_from_fork+0x2d/0x50
+[  +0.000003]  ? __pfx_kthread+0x10/0x10
+[  +0.000001]  ret_from_fork_asm+0x1b/0x30
+[  +0.000004]  </TASK>
+[  +0.000001] ---[ end trace 0000000000000000 ]---
 
-[1] Syzkaller report:
-usb 1-1: BOGUS urb xfer, pipe 1 != type 3
-WARNING: CPU: 0 PID: 781 at drivers/usb/core/urb.c:504 usb_submit_urb+0xc4e/0x18c0 drivers/usb/core/urb.c:503
-...
-Call Trace:
- <TASK>
- usb_start_wait_urb+0x113/0x520 drivers/usb/core/message.c:59
- vmk80xx_reset_device drivers/comedi/drivers/vmk80xx.c:227 [inline]
- vmk80xx_auto_attach+0xa1c/0x1a40 drivers/comedi/drivers/vmk80xx.c:818
- comedi_auto_config+0x238/0x380 drivers/comedi/drivers.c:1067
- usb_probe_interface+0x5cd/0xb00 drivers/usb/core/driver.c:399
-...
-
-Similar issue also found by Syzkaller:
-Link: https://syzkaller.appspot.com/bug?extid=5205eb2f17de3e01946e
-
-Reported-and-tested-by: syzbot+5f29dc6a889fc42bd896@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Fixes: 49253d542cc0 ("staging: comedi: vmk80xx: factor out usb endpoint detection")
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20240408171633.31649-1-n.zhandarovich@fintech.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d5957cbdecd ("i40e: remove WQ_UNBOUND and the task limit of our workqueue")
+Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Robert Ganzynkowicz <robert.ganzynkowicz@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240423182723.740401-2-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/comedi/drivers/vmk80xx.c |   35 ++++++++++---------------------
- 1 file changed, 12 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/staging/comedi/drivers/vmk80xx.c
-+++ b/drivers/staging/comedi/drivers/vmk80xx.c
-@@ -642,33 +642,22 @@ static int vmk80xx_find_usb_endpoints(st
- 	struct vmk80xx_private *devpriv = dev->private;
- 	struct usb_interface *intf = comedi_to_usb_interface(dev);
- 	struct usb_host_interface *iface_desc = intf->cur_altsetting;
--	struct usb_endpoint_descriptor *ep_desc;
--	int i;
-+	struct usb_endpoint_descriptor *ep_rx_desc, *ep_tx_desc;
-+	int ret;
- 
--	if (iface_desc->desc.bNumEndpoints != 2)
--		return -ENODEV;
--
--	for (i = 0; i < iface_desc->desc.bNumEndpoints; i++) {
--		ep_desc = &iface_desc->endpoint[i].desc;
--
--		if (usb_endpoint_is_int_in(ep_desc) ||
--		    usb_endpoint_is_bulk_in(ep_desc)) {
--			if (!devpriv->ep_rx)
--				devpriv->ep_rx = ep_desc;
--			continue;
--		}
-+	if (devpriv->model == VMK8061_MODEL)
-+		ret = usb_find_common_endpoints(iface_desc, &ep_rx_desc,
-+						&ep_tx_desc, NULL, NULL);
-+	else
-+		ret = usb_find_common_endpoints(iface_desc, NULL, NULL,
-+						&ep_rx_desc, &ep_tx_desc);
- 
--		if (usb_endpoint_is_int_out(ep_desc) ||
--		    usb_endpoint_is_bulk_out(ep_desc)) {
--			if (!devpriv->ep_tx)
--				devpriv->ep_tx = ep_desc;
--			continue;
--		}
--	}
--
--	if (!devpriv->ep_rx || !devpriv->ep_tx)
-+	if (ret)
- 		return -ENODEV;
- 
-+	devpriv->ep_rx = ep_rx_desc;
-+	devpriv->ep_tx = ep_tx_desc;
-+
- 	if (!usb_endpoint_maxp(devpriv->ep_rx) || !usb_endpoint_maxp(devpriv->ep_tx))
- 		return -EINVAL;
- 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index a21fc92aa2725..54d3bd8ec5ea3 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -16778,7 +16778,7 @@ static int __init i40e_init_module(void)
+ 	 * since we need to be able to guarantee forward progress even under
+ 	 * memory pressure.
+ 	 */
+-	i40e_wq = alloc_workqueue("%s", WQ_MEM_RECLAIM, 0, i40e_driver_name);
++	i40e_wq = alloc_workqueue("%s", 0, 0, i40e_driver_name);
+ 	if (!i40e_wq) {
+ 		pr_err("%s: Failed to create workqueue\n", i40e_driver_name);
+ 		return -ENOMEM;
+-- 
+2.43.0
+
 
 
 
