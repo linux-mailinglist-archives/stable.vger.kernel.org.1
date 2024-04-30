@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE12E8B7423
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CED58B71FF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC5671C210BF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C71231F22A84
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F8212D214;
-	Tue, 30 Apr 2024 11:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5E112D1EA;
+	Tue, 30 Apr 2024 11:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2RFk7IT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFncKIC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2051812C805;
-	Tue, 30 Apr 2024 11:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD3B12B176;
+	Tue, 30 Apr 2024 11:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476458; cv=none; b=kKfUyl6t1BEV3jNCXCGcrYgu7OKUNBTMJWCv+zuENWiiECAp85S+50Dm/ZZnpiVvXMPYKs1zC+qn8HGTsqmELvymXfOx/WDLTjU6HaH7tRfmvOoslAQBL9HlcS9yEvAMmZ//W/zLLYUqoXEs5aN6SdV/fdKv3vw8pt2rpMPivRE=
+	t=1714474978; cv=none; b=SQ537hyelS/6fN8D5FZ7BEFTvTmeha9JaOHJZHJSbcVWmM7I/wBdALISdJJMRYKPweduLe3YlMPzGzrNhCHA7w0Cz9DT4cKEOWtpIMev0zR1QPcAJp/vAkTmeWFxezzU/c2l+DAZ0sTfDSoEeVnszotSq70tMdojU/UeA1vKTlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476458; c=relaxed/simple;
-	bh=Z26HW/UxJeGNid644wjLBtXLMSWWx5u8NJVtKwNMc0E=;
+	s=arc-20240116; t=1714474978; c=relaxed/simple;
+	bh=tNvJq4yWdumy6L1pOSZE+5RgacrnDt5ld/ZKY74HaCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=plF8N8Ux+zWfmjZEoOZwl6EaV3fSZVhxxmMCBaBr5Gh3V53VVhE0fXZEc6cPbvTtRPnh2oY2CzWnNcPgdu+Dsu65NNTmW3dqKrcM7NRp30eTj0GIWTu/DNG9FA7YC5GbeEViY3KO4u3TTNcvC7e+aRiWK8b/tzw+enSqcEg4B8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2RFk7IT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F64C2BBFC;
-	Tue, 30 Apr 2024 11:27:37 +0000 (UTC)
+	 MIME-Version; b=HOOnZQ6ZAcx7bpYckigbOtyNAU4oavms5W7WHLLJc7I9qBAF9jYo8rsI4T+4QuX5Reb6McBehjErXSVdXMYM+Oktp1q+XTHc3TqCN1wzzDBNBReQrxCRBxAyqVAD/5WTNwzPEuDCIy2nPuIzMl4XRR9OcbBgqLr3zCfWhrt/Ths=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFncKIC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9764C4AF19;
+	Tue, 30 Apr 2024 11:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476458;
-	bh=Z26HW/UxJeGNid644wjLBtXLMSWWx5u8NJVtKwNMc0E=;
+	s=korg; t=1714474978;
+	bh=tNvJq4yWdumy6L1pOSZE+5RgacrnDt5ld/ZKY74HaCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O2RFk7IThjyPh30mhCH7CsVVXphmzcIgt/EzwbQJvp/PMqMONy46Ji05kbxhzZHJ4
-	 T8lW+ZNsGge4AOASxP2n8VRBSnIy+VPfPAQfvSUZMY96Ct2KBxpqdTPKXWu0jyyMyj
-	 o7kEyqPiKTrjntmLZdYrfKiUhW9aF1004MlO/WNo=
+	b=ZFncKIC+oght0O1hN3BocLbIy4TWnKjf3NNpVkez73Nb5HtgZKiogTHE5MNiyvf6+
+	 O9UOyIpzIrSDmlhiKGp2SuVE6XFKswX6qRqk1k17gqIs89H+A+DBOQ6KiCge6ZCTb3
+	 zZ55JAge7BoO7fpl7Pk7PfDdEvc8H+EiRLTyqrKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/110] arm64: dts: mediatek: mt8192: Add missing gce-client-reg to mutex
+Subject: [PATCH 5.10 095/138] mlxsw: spectrum_acl_tcam: Fix possible use-after-free during rehash
 Date: Tue, 30 Apr 2024 12:39:40 +0200
-Message-ID: <20240430103047.902630587@linuxfoundation.org>
+Message-ID: <20240430103052.212883130@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +63,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 00bcc8810d9dd69d3899a4189e2f3964f263a600 ]
+[ Upstream commit 54225988889931467a9b55fdbef534079b665519 ]
 
-Add the missing mediatek,gce-client-reg property to the mutex node to
-allow it to use the GCE. This prevents the "can't parse gce-client-reg
-property" error from being printed and should result in better
-performance.
+The rehash delayed work migrates filters from one region to another
+according to the number of available credits.
 
-Fixes: b4b75bac952b ("arm64: dts: mt8192: Add display nodes")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240229-gce-client-reg-add-missing-mt8192-95-v1-1-b12c233a8a33@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+The migrated from region is destroyed at the end of the work if the
+number of credits is non-negative as the assumption is that this is
+indicative of migration being complete. This assumption is incorrect as
+a non-negative number of credits can also be the result of a failed
+migration.
+
+The destruction of a region that still has filters referencing it can
+result in a use-after-free [1].
+
+Fix by not destroying the region if migration failed.
+
+[1]
+BUG: KASAN: slab-use-after-free in mlxsw_sp_acl_ctcam_region_entry_remove+0x21d/0x230
+Read of size 8 at addr ffff8881735319e8 by task kworker/0:31/3858
+
+CPU: 0 PID: 3858 Comm: kworker/0:31 Tainted: G        W          6.9.0-rc2-custom-00782-gf2275c2157d8 #5
+Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
+Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xc6/0x120
+ print_report+0xce/0x670
+ kasan_report+0xd7/0x110
+ mlxsw_sp_acl_ctcam_region_entry_remove+0x21d/0x230
+ mlxsw_sp_acl_ctcam_entry_del+0x2e/0x70
+ mlxsw_sp_acl_atcam_entry_del+0x81/0x210
+ mlxsw_sp_acl_tcam_vchunk_migrate_all+0x3cd/0xb50
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0x157/0x1300
+ process_one_work+0x8eb/0x19b0
+ worker_thread+0x6c9/0xf70
+ kthread+0x2c9/0x3b0
+ ret_from_fork+0x4d/0x80
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Allocated by task 174:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ __kmalloc+0x19c/0x360
+ mlxsw_sp_acl_tcam_region_create+0xdf/0x9c0
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0x954/0x1300
+ process_one_work+0x8eb/0x19b0
+ worker_thread+0x6c9/0xf70
+ kthread+0x2c9/0x3b0
+ ret_from_fork+0x4d/0x80
+ ret_from_fork_asm+0x1a/0x30
+
+Freed by task 7:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ poison_slab_object+0x102/0x170
+ __kasan_slab_free+0x14/0x30
+ kfree+0xc1/0x290
+ mlxsw_sp_acl_tcam_region_destroy+0x272/0x310
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0x731/0x1300
+ process_one_work+0x8eb/0x19b0
+ worker_thread+0x6c9/0xf70
+ kthread+0x2c9/0x3b0
+ ret_from_fork+0x4d/0x80
+ ret_from_fork_asm+0x1a/0x30
+
+Fixes: c9c9af91f1d9 ("mlxsw: spectrum_acl: Allow to interrupt/continue rehash work")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/3e412b5659ec2310c5c615760dfe5eac18dd7ebd.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8192.dtsi | 1 +
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8192.dtsi b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-index 4ed8a0f187583..7ecba8c7262da 100644
---- a/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-@@ -1240,6 +1240,7 @@
- 			reg = <0 0x14001000 0 0x1000>;
- 			interrupts = <GIC_SPI 252 IRQ_TYPE_LEVEL_HIGH 0>;
- 			clocks = <&mmsys CLK_MM_DISP_MUTEX0>;
-+			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
- 			mediatek,gce-events = <CMDQ_EVENT_DISP_STREAM_DONE_ENG_EVENT_0>,
- 					      <CMDQ_EVENT_DISP_STREAM_DONE_ENG_EVENT_1>;
- 			power-domains = <&spm MT8192_POWER_DOMAIN_DISP>;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index f663cb0fd19a3..a60d511f00eaa 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -1481,6 +1481,7 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
+ 						ctx, credits);
+ 	if (err) {
+ 		dev_err(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
++		return;
+ 	}
+ 
+ 	if (*credits >= 0)
 -- 
 2.43.0
 
