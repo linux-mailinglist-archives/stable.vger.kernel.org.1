@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016A78B726F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1324B8B7103
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A280F282AE9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4489E1C21957
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116EB12D743;
-	Tue, 30 Apr 2024 11:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F60612C819;
+	Tue, 30 Apr 2024 10:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9Gay1DS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLk84hpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30F612CDAE;
-	Tue, 30 Apr 2024 11:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F073212C487;
+	Tue, 30 Apr 2024 10:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475278; cv=none; b=tMZxHyIqvzgghPcJIK2DdndabRY7h7DR2szJ7bRfvDLxWjw+KASA36kM2DjyYAl1bNR3sak6QQLtSFb/Gsm2a/We9AQymRcQ6KY6Kr3FcHPMbm/eeY5Q9bvZduibWAaQHkTopEurejUY6DXely0F1p6POtLVEmW4xnB/5syKFn8=
+	t=1714474324; cv=none; b=kYdUH+QfEeDPZ6h6JK3gsmR4WVgseJVSrSgfxLUhSvnXd7UICDVOOirlcC+jxYnCeO3Ut81aPVS1DmMy1Gs83aZxgKBOqVLQbzvKDYxTdxLpq5qwOXQhc8NTJ4elSS26pi9id6tuUIct+/mAbu+q5wk2IJfWLO4gIAs486y9eh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475278; c=relaxed/simple;
-	bh=7JcElU5uO2pD8Apw3n1K1FJzWI6RA2ANfKerNNlW5ts=;
+	s=arc-20240116; t=1714474324; c=relaxed/simple;
+	bh=BscQzC8MejwO+Ouxt+Gsp1yUuuNTKjlzdz4W+5O5CAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3Dh5VcK2BEIhm5oti3C2p5SgFFdg4clnFJXcRkLDqPnevsqAZthl72g/RsYPGN+mS7ANAvRUs0pr3eXuX9PGRUbxyAf+4pW7p766pH8Xl0AJXcFy+mFewcRrWaII9vfrIpIYM3T63aoAzSTL1y2brxXjd82wQKH3Z19U8hoPNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9Gay1DS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3081BC2BBFC;
-	Tue, 30 Apr 2024 11:07:58 +0000 (UTC)
+	 MIME-Version; b=B4uhlGW1Z2RT0O9itbcXwgFxB9urzCaoKTMpOGfDtZ37FqiAOvlsTlvX929FnFKd1GA8fxoGNEeh48qlmzz8tkwZ6SPE2O3DNkjh+XrRmkO6Sop3x+pV9/WR6gNQR8a4G+c6mogkiEhDkYEHIibJTfcPDRGL8Suxxnfv1AfuSCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLk84hpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01165C2BBFC;
+	Tue, 30 Apr 2024 10:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475278;
-	bh=7JcElU5uO2pD8Apw3n1K1FJzWI6RA2ANfKerNNlW5ts=;
+	s=korg; t=1714474323;
+	bh=BscQzC8MejwO+Ouxt+Gsp1yUuuNTKjlzdz4W+5O5CAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9Gay1DStmRm6yqNGvTlgMhbaMz7aVxf5o8ZtVFTl8ng48qjw1GDUmvQK8RFDd+sF
-	 h2ZS9OarUTuHeba+2pFbyxw4tVC1a7hrtuSjrJx84mUP4c7a5SxaMoSb/ozqg1wmu0
-	 U5FK9HiTF2d7pAKE+rqCZ7p4n2SFwoP5HloaKkuE=
+	b=XLk84hpXw8OWPDQ7VSaP+k6BG7W6OgQFDBT/3tDLUFMbHdUx4Rv3f4nuyLb/UvwpI
+	 FYwGK9LluqCazpe/N5k2blmFW7SEwWCMGPPCwI1BGqQrcVy1VmdQCicizDJir56KLe
+	 CWnuWo+R0enwvbvG1VXuroPkfvRmWqgXM6w4AGbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Oliver Neukum <oneukum@suse.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/186] ARM: dts: microchip: at91-sama7g5ek: Replace regulator-suspend-voltage with the valid property
+Subject: [PATCH 6.8 123/228] usb: xhci: correct return value in case of STS_HCE
 Date: Tue, 30 Apr 2024 12:38:21 +0200
-Message-ID: <20240430103059.455845251@linuxfoundation.org>
+Message-ID: <20240430103107.355977146@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Simion <andrei.simion@microchip.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit e027b71762e84ee9d4ba9ad5401b956b9e83ed2a ]
+[ Upstream commit 5bfc311dd6c376d350b39028b9000ad766ddc934 ]
 
-By checking the pmic node with microchip,mcp16502.yaml#
-'regulator-suspend-voltage' does not match any of the
-regexes 'pinctrl-[0-9]+' from schema microchip,mcp16502.yaml#
-which inherits regulator.yaml#. So replace regulator-suspend-voltage
-with regulator-suspend-microvolt to avoid the inconsitency.
+If we get STS_HCE we give up on the interrupt, but for the purpose
+of IRQ handling that still counts as ours. We may return IRQ_NONE
+only if we are positive that it wasn't ours. Hence correct the default.
 
-Fixes: 85b1304b9daa ("ARM: dts: at91: sama7g5ek: set regulator voltages for standby state")
-Signed-off-by: Andrei Simion <andrei.simion@microchip.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20240404123824.19182-2-andrei.simion@microchip.com
-[claudiu.beznea: added a dot before starting the last sentence in commit
- description]
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fixes: 2a25e66d676d ("xhci: print warning when HCE was set")
+Cc: stable@vger.kernel.org # v6.2+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240404121106.2842417-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/at91-sama7g5ek.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-ring.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/microchip/at91-sama7g5ek.dts b/arch/arm/boot/dts/microchip/at91-sama7g5ek.dts
-index 217e9b96c61e5..20b2497657ae4 100644
---- a/arch/arm/boot/dts/microchip/at91-sama7g5ek.dts
-+++ b/arch/arm/boot/dts/microchip/at91-sama7g5ek.dts
-@@ -293,7 +293,7 @@
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 2306a95d6251a..b2868217de941 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -3123,7 +3123,7 @@ static int xhci_handle_events(struct xhci_hcd *xhci, struct xhci_interrupter *ir
+ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ {
+ 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
+-	irqreturn_t ret = IRQ_NONE;
++	irqreturn_t ret = IRQ_HANDLED;
+ 	u32 status;
  
- 					regulator-state-standby {
- 						regulator-on-in-suspend;
--						regulator-suspend-voltage = <1150000>;
-+						regulator-suspend-microvolt = <1150000>;
- 						regulator-mode = <4>;
- 					};
+ 	spin_lock(&xhci->lock);
+@@ -3131,12 +3131,13 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ 	status = readl(&xhci->op_regs->status);
+ 	if (status == ~(u32)0) {
+ 		xhci_hc_died(xhci);
+-		ret = IRQ_HANDLED;
+ 		goto out;
+ 	}
  
-@@ -314,7 +314,7 @@
+-	if (!(status & STS_EINT))
++	if (!(status & STS_EINT)) {
++		ret = IRQ_NONE;
+ 		goto out;
++	}
  
- 					regulator-state-standby {
- 						regulator-on-in-suspend;
--						regulator-suspend-voltage = <1050000>;
-+						regulator-suspend-microvolt = <1050000>;
- 						regulator-mode = <4>;
- 					};
+ 	if (status & STS_HCE) {
+ 		xhci_warn(xhci, "WARNING: Host Controller Error\n");
+@@ -3146,7 +3147,6 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ 	if (status & STS_FATAL) {
+ 		xhci_warn(xhci, "WARNING: Host System Error\n");
+ 		xhci_halt(xhci);
+-		ret = IRQ_HANDLED;
+ 		goto out;
+ 	}
  
-@@ -331,7 +331,7 @@
- 					regulator-always-on;
+@@ -3157,7 +3157,6 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ 	 */
+ 	status |= STS_EINT;
+ 	writel(status, &xhci->op_regs->status);
+-	ret = IRQ_HANDLED;
  
- 					regulator-state-standby {
--						regulator-suspend-voltage = <1800000>;
-+						regulator-suspend-microvolt = <1800000>;
- 						regulator-on-in-suspend;
- 					};
- 
-@@ -346,7 +346,7 @@
- 					regulator-max-microvolt = <3700000>;
- 
- 					regulator-state-standby {
--						regulator-suspend-voltage = <1800000>;
-+						regulator-suspend-microvolt = <1800000>;
- 						regulator-on-in-suspend;
- 					};
- 
+ 	/* This is the handler of the primary interrupter */
+ 	xhci_handle_events(xhci, xhci->interrupters[0]);
 -- 
 2.43.0
 
