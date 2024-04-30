@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-41845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D078B6FFD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81638B71EB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24B162850DF
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 053BB1C23009
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD00212C46B;
-	Tue, 30 Apr 2024 10:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB90512CDB2;
+	Tue, 30 Apr 2024 11:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0idgx68c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wR5AaFp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B41127B70;
-	Tue, 30 Apr 2024 10:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C9512C534;
+	Tue, 30 Apr 2024 11:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473734; cv=none; b=uw7vG4KErbrxENijzvao2FJIxw00JhgZ3baGsGYKFyrd0tzcqwr9zrk1RdcbwJEuHgC51jAAVH4QSUd/YydkRv51joY7J7Z8ga7hCKgKW0ZyBNdyFbuRWwj847OUwFMo8CIeY4IkUYH1W2sdKad+Jc/ZAZgf0kRYYHZr6z43stA=
+	t=1714474933; cv=none; b=Tgrhr3q4KpXc/hwjd7+dSa/L8So2bUBgO7pHasz6zjX/Grm/kpSzLceYg7HlSf6UFOmPBBiihki3iz65q8WQLYdhZGax+craFnWpTxL4elkE73XWTRL3Hht03F8jDBMbNemKF/cUkkwG0mUKKnVzZ/Tw8PRSXdQNn+JNfgtORB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473734; c=relaxed/simple;
-	bh=kOxIqRD/O+3VSnI4BCB9E0otHSiLmg5IpBB96fxW1d0=;
+	s=arc-20240116; t=1714474933; c=relaxed/simple;
+	bh=7jcUqfUq+Jh9F09L1xjgESM+c+A3wos48ud8IUxl6rA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uo8j3++PegS7Az2ixR/g3DHpZWYr+jXDUoL+vkMXuuX+sYyOpWeqDOGUAb4sdrhFYI/gLsYUqGlxwNg/z5iFiO8761HZzuEs8jRkXaYB2Ky9QbG8c+9l5+53dpu9Su6VKihKlpp6JuVPG/4+Tmgqgw91/AbPgQEKDyB9WJSWiBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0idgx68c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9117C2BBFC;
-	Tue, 30 Apr 2024 10:42:13 +0000 (UTC)
+	 MIME-Version; b=ipynl/9zcSn6e9foT2al5QVkRqqdiFzfmDVHcDhQ6jwsMGCi226rUQ3Nc9j53u09KfriNkYRhEaDe6NLsUaB6ee9MXOgU/CL47xIfDw5Op0wO4NhAG9pPVcT+tnXn6Z+Z/JDjNZ+uC/6vFnEijyerskQkoL4WE7gUDJzq4XoOtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wR5AaFp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5D3C2BBFC;
+	Tue, 30 Apr 2024 11:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473734;
-	bh=kOxIqRD/O+3VSnI4BCB9E0otHSiLmg5IpBB96fxW1d0=;
+	s=korg; t=1714474933;
+	bh=7jcUqfUq+Jh9F09L1xjgESM+c+A3wos48ud8IUxl6rA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0idgx68cc5CC0amEAs1h9qhdlecRGn1Pk7Mwz3jz0UvtZ3yss1D7gWYT6LkwOJNyA
-	 KVIW4NV/qraL+pA0LKBkazZi3FR7rT+PMKqMMwnY+6gkG49yM68avfuUcnp/HYzM+3
-	 wICwDu5WlfkPgXEmASyUa+UF1P/2F/Y8UzhGY6Eg=
+	b=wR5AaFp9VljgqfFWwf3zIXlpPVdKO/z7PAhkLzkcVDIZh9/WSTYzFTkgfJQQ1+OEZ
+	 rq/FP205q2YP9deVgWQtZ2J9/Ulsq4QPr3GToiflmbSyL6DVdkvBgIMzym+2JvTMmt
+	 iTWUJAmakrm4f940PppPQec9mhOkyCkf1tAvCnMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Kees Cook <keescook@chromium.org>,
-	Ajay Kaher <akaher@vmware.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 09/77] tracing: hide unused ftrace_event_id_fops
+Subject: [PATCH 5.10 043/138] drm/panel: visionox-rm69299: dont unregister DSI device
 Date: Tue, 30 Apr 2024 12:38:48 +0200
-Message-ID: <20240430103041.395760584@linuxfoundation.org>
+Message-ID: <20240430103050.699306184@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,76 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 5281ec83454d70d98b71f1836fb16512566c01cd ]
+[ Upstream commit 9e4d3f4f34455abbaa9930bf6b7575a5cd081496 ]
 
-When CONFIG_PERF_EVENTS, a 'make W=1' build produces a warning about the
-unused ftrace_event_id_fops variable:
+The DSI device for the panel was registered by the DSI host, so it is an
+error to unregister it from the panel driver. Drop the call to
+mipi_dsi_device_unregister().
 
-kernel/trace/trace_events.c:2155:37: error: 'ftrace_event_id_fops' defined but not used [-Werror=unused-const-variable=]
- 2155 | static const struct file_operations ftrace_event_id_fops = {
-
-Hide this in the same #ifdef as the reference to it.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240403080702.3509288-7-arnd@kernel.org
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Ajay Kaher <akaher@vmware.com>
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Clément Léger <cleger@rivosinc.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: "Tzvetomir Stoyanov (VMware)" <tz.stoyanov@gmail.com>
-Fixes: 620a30e97feb ("tracing: Don't pass file_operations array to event_create_dir()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: c7f66d32dd43 ("drm/panel: add support for rm69299 visionox panel")
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404-drop-panel-unregister-v1-1-9f56953c5fb9@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -1309,6 +1309,7 @@ static int trace_format_open(struct inod
+diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+index eb43503ec97b3..6134432e4918d 100644
+--- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
++++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+@@ -261,8 +261,6 @@ static int visionox_rm69299_remove(struct mipi_dsi_device *dsi)
+ 	struct visionox_rm69299 *ctx = mipi_dsi_get_drvdata(dsi);
+ 
+ 	mipi_dsi_detach(ctx->dsi);
+-	mipi_dsi_device_unregister(ctx->dsi);
+-
+ 	drm_panel_remove(&ctx->panel);
  	return 0;
  }
- 
-+#ifdef CONFIG_PERF_EVENTS
- static ssize_t
- event_id_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
- {
-@@ -1323,6 +1324,7 @@ event_id_read(struct file *filp, char __
- 
- 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, len);
- }
-+#endif
- 
- static ssize_t
- event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
-@@ -1727,10 +1729,12 @@ static const struct file_operations ftra
- 	.release = seq_release,
- };
- 
-+#ifdef CONFIG_PERF_EVENTS
- static const struct file_operations ftrace_event_id_fops = {
- 	.read = event_id_read,
- 	.llseek = default_llseek,
- };
-+#endif
- 
- static const struct file_operations ftrace_event_filter_fops = {
- 	.open = tracing_open_generic,
+-- 
+2.43.0
+
 
 
 
