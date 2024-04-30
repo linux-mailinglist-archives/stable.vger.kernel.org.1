@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4168B728C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:09:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE67F8B715A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0F561C2232B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:09:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7B8AB22BF9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B93312CDA5;
-	Tue, 30 Apr 2024 11:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4D412C81F;
+	Tue, 30 Apr 2024 10:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG+QLH4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OeucSfiA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4885812C805;
-	Tue, 30 Apr 2024 11:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD6012C47A;
+	Tue, 30 Apr 2024 10:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475368; cv=none; b=BY4rWxWh0ttD+gg7Z61J1mVlCEX5jvSsn3FPyIK8LD7niyaB2SYc6RJMmXduks6kB5CU/cMHqaTh1F9h0U+mMy9UWFO76y5fZvM6cFPZM7GvFaARdY/Chwdm//IwwcbMyLPi0xE6emVKCeYw6pbi3qrxJuLMJY/bKfbg6Lk/jy0=
+	t=1714474532; cv=none; b=JT6Xm3zcd6no7Iqvnj2AQiCZS9cOFzCq7bH5uEMeDrin5POLlHzbWX7zdJTs91mr8Nc2P8c8T71kqDH9m21YXzR6g9dvewYHMYWcav4B7fYLDJSxhDH0a+y2XQ2r1ipLTZcM6AT9diD4u80srHdVtIQSrjbPlNeCUdPRpTGaiP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475368; c=relaxed/simple;
-	bh=bLJgpLimLEYY+ZvTJl5dKS1Fqw5ki/QcOsFFeeONKq4=;
+	s=arc-20240116; t=1714474532; c=relaxed/simple;
+	bh=d3rHV8uKZYDJQXWdCSlMgcLIWqAQRD2uwjQGBIAEK74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6j96/gv1cMqJvhrTrufIv2sfQgaLyaqugTihUY2vQVuFRHHkO3ySYQJbi9CsRUtmM9xPxmoWKBgVglTYFK8p4QIBNmIcSUxOUfU4Ho6TPuXMjtJUeJ6EKcgYrSHPD/740ZcetbGoUUh5GZYx2KkIvQAb0kGkgzF09PhRQCDgWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG+QLH4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA632C2BBFC;
-	Tue, 30 Apr 2024 11:09:27 +0000 (UTC)
+	 MIME-Version; b=I30iJFgDUZHyLiRUuEhKY+EJdZBNG9xT9yvrVKhWqTqNxYbgFGECDKnEFMJTjwvmGW86yDoaqPVHfVEdp7JRxI/LgumV1d2PaArzsYk1KmL96WQ3EJkcUBQ0LYy3ya7fKcgopUXsb8mPaWYyclDkNAev0RsZkntljcPTUjy+ixg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OeucSfiA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224ADC2BBFC;
+	Tue, 30 Apr 2024 10:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475368;
-	bh=bLJgpLimLEYY+ZvTJl5dKS1Fqw5ki/QcOsFFeeONKq4=;
+	s=korg; t=1714474532;
+	bh=d3rHV8uKZYDJQXWdCSlMgcLIWqAQRD2uwjQGBIAEK74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WG+QLH4Avhi351+4PTMcq7VFb3oQRAGK2v7RRM9An1jJlQFrcD+5sKBwYfTYxDIUB
-	 nuOkb58NO5Ix79sIcy1X64oLXMX9moA2Zn9xvqyopzlDDuuASAhZL9LqhOM/YgVvJ7
-	 4vgFydZSsj8/PXSLkwLbw94eenB7xLWQP2N4DLEM=
+	b=OeucSfiA4eqticRhrUeS0mr1XPQr/3rTkYoG5cc2NhIuuCqpVaTg0oBw5wWl9Z/zD
+	 xWc7scTdt4J1z7iXve5QAxiCGRRGoGiC9q1iYF8upehYh8Ekg/7O+jqU7IMOPQEwB9
+	 DAT3zjvywu+uLNQgsyi/ucnibWpkOE6TwxiJzfn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/186] mlxsw: Use refcount_t for reference counting
+	Mantas Pucka <mantas@8devices.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.8 148/228] mmc: sdhci-msm: pervent access to suspended controller
 Date: Tue, 30 Apr 2024 12:38:46 +0200
-Message-ID: <20240430103100.186899483@linuxfoundation.org>
+Message-ID: <20240430103108.078914404@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,401 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Mantas Pucka <mantas@8devices.com>
 
-[ Upstream commit 1267f7223bec186dc26ef4e6075496c6217355de ]
+commit f8def10f73a516b771051a2f70f2f0446902cb4f upstream.
 
-mlxsw driver uses 'unsigned int' for reference counters in several
-structures. Instead, use refcount_t type which allows us to catch overflow
-and underflow issues. Change the type of the counters and use the
-appropriate API.
+Generic sdhci code registers LED device and uses host->runtime_suspended
+flag to protect access to it. The sdhci-msm driver doesn't set this flag,
+which causes a crash when LED is accessed while controller is runtime
+suspended. Fix this by setting the flag correctly.
 
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 627f9c1bb882 ("mlxsw: spectrum_acl_tcam: Fix race in region ID allocation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
+Signed-off-by: Mantas Pucka <mantas@8devices.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlxsw/core_acl_flex_actions.c      | 16 ++++++++--------
- .../mellanox/mlxsw/core_acl_flex_keys.c         |  9 +++++----
- .../net/ethernet/mellanox/mlxsw/spectrum_acl.c  | 11 ++++++-----
- .../ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 17 +++++++++--------
- .../ethernet/mellanox/mlxsw/spectrum_router.c   | 15 ++++++++-------
- .../mellanox/mlxsw/spectrum_switchdev.c         |  8 ++++----
- 6 files changed, 40 insertions(+), 36 deletions(-)
+ drivers/mmc/host/sdhci-msm.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
-index faa63ea9b83e1..1915fa41c6224 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
-@@ -95,7 +95,7 @@ struct mlxsw_afa_set {
- 		      */
- 	   has_trap:1,
- 	   has_police:1;
--	unsigned int ref_count;
-+	refcount_t ref_count;
- 	struct mlxsw_afa_set *next; /* Pointer to the next set. */
- 	struct mlxsw_afa_set *prev; /* Pointer to the previous set,
- 				     * note that set may have multiple
-@@ -120,7 +120,7 @@ struct mlxsw_afa_fwd_entry {
- 	struct rhash_head ht_node;
- 	struct mlxsw_afa_fwd_entry_ht_key ht_key;
- 	u32 kvdl_index;
--	unsigned int ref_count;
-+	refcount_t ref_count;
- };
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -2694,6 +2694,11 @@ static __maybe_unused int sdhci_msm_runt
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	unsigned long flags;
++
++	spin_lock_irqsave(&host->lock, flags);
++	host->runtime_suspended = true;
++	spin_unlock_irqrestore(&host->lock, flags);
  
- static const struct rhashtable_params mlxsw_afa_fwd_entry_ht_params = {
-@@ -282,7 +282,7 @@ static struct mlxsw_afa_set *mlxsw_afa_set_create(bool is_first)
- 	/* Need to initialize the set to pass by default */
- 	mlxsw_afa_set_goto_set(set, MLXSW_AFA_SET_GOTO_BINDING_CMD_TERM, 0);
- 	set->ht_key.is_first = is_first;
--	set->ref_count = 1;
-+	refcount_set(&set->ref_count, 1);
- 	return set;
+ 	/* Drop the performance vote */
+ 	dev_pm_opp_set_rate(dev, 0);
+@@ -2708,6 +2713,7 @@ static __maybe_unused int sdhci_msm_runt
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	unsigned long flags;
+ 	int ret;
+ 
+ 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
+@@ -2726,7 +2732,15 @@ static __maybe_unused int sdhci_msm_runt
+ 
+ 	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
+ 
+-	return sdhci_msm_ice_resume(msm_host);
++	ret = sdhci_msm_ice_resume(msm_host);
++	if (ret)
++		return ret;
++
++	spin_lock_irqsave(&host->lock, flags);
++	host->runtime_suspended = false;
++	spin_unlock_irqrestore(&host->lock, flags);
++
++	return ret;
  }
  
-@@ -330,7 +330,7 @@ static void mlxsw_afa_set_unshare(struct mlxsw_afa *mlxsw_afa,
- static void mlxsw_afa_set_put(struct mlxsw_afa *mlxsw_afa,
- 			      struct mlxsw_afa_set *set)
- {
--	if (--set->ref_count)
-+	if (!refcount_dec_and_test(&set->ref_count))
- 		return;
- 	if (set->shared)
- 		mlxsw_afa_set_unshare(mlxsw_afa, set);
-@@ -350,7 +350,7 @@ static struct mlxsw_afa_set *mlxsw_afa_set_get(struct mlxsw_afa *mlxsw_afa,
- 	set = rhashtable_lookup_fast(&mlxsw_afa->set_ht, &orig_set->ht_key,
- 				     mlxsw_afa_set_ht_params);
- 	if (set) {
--		set->ref_count++;
-+		refcount_inc(&set->ref_count);
- 		mlxsw_afa_set_put(mlxsw_afa, orig_set);
- 	} else {
- 		set = orig_set;
-@@ -564,7 +564,7 @@ mlxsw_afa_fwd_entry_create(struct mlxsw_afa *mlxsw_afa, u16 local_port)
- 	if (!fwd_entry)
- 		return ERR_PTR(-ENOMEM);
- 	fwd_entry->ht_key.local_port = local_port;
--	fwd_entry->ref_count = 1;
-+	refcount_set(&fwd_entry->ref_count, 1);
- 
- 	err = rhashtable_insert_fast(&mlxsw_afa->fwd_entry_ht,
- 				     &fwd_entry->ht_node,
-@@ -607,7 +607,7 @@ mlxsw_afa_fwd_entry_get(struct mlxsw_afa *mlxsw_afa, u16 local_port)
- 	fwd_entry = rhashtable_lookup_fast(&mlxsw_afa->fwd_entry_ht, &ht_key,
- 					   mlxsw_afa_fwd_entry_ht_params);
- 	if (fwd_entry) {
--		fwd_entry->ref_count++;
-+		refcount_inc(&fwd_entry->ref_count);
- 		return fwd_entry;
- 	}
- 	return mlxsw_afa_fwd_entry_create(mlxsw_afa, local_port);
-@@ -616,7 +616,7 @@ mlxsw_afa_fwd_entry_get(struct mlxsw_afa *mlxsw_afa, u16 local_port)
- static void mlxsw_afa_fwd_entry_put(struct mlxsw_afa *mlxsw_afa,
- 				    struct mlxsw_afa_fwd_entry *fwd_entry)
- {
--	if (--fwd_entry->ref_count)
-+	if (!refcount_dec_and_test(&fwd_entry->ref_count))
- 		return;
- 	mlxsw_afa_fwd_entry_destroy(mlxsw_afa, fwd_entry);
- }
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c
-index 70f9b5e85a26f..bf140e7416e19 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c
-@@ -5,6 +5,7 @@
- #include <linux/slab.h>
- #include <linux/list.h>
- #include <linux/errno.h>
-+#include <linux/refcount.h>
- 
- #include "item.h"
- #include "core_acl_flex_keys.h"
-@@ -105,7 +106,7 @@ EXPORT_SYMBOL(mlxsw_afk_destroy);
- 
- struct mlxsw_afk_key_info {
- 	struct list_head list;
--	unsigned int ref_count;
-+	refcount_t ref_count;
- 	unsigned int blocks_count;
- 	int element_to_block[MLXSW_AFK_ELEMENT_MAX]; /* index is element, value
- 						      * is index inside "blocks"
-@@ -282,7 +283,7 @@ mlxsw_afk_key_info_create(struct mlxsw_afk *mlxsw_afk,
- 	if (err)
- 		goto err_picker;
- 	list_add(&key_info->list, &mlxsw_afk->key_info_list);
--	key_info->ref_count = 1;
-+	refcount_set(&key_info->ref_count, 1);
- 	return key_info;
- 
- err_picker:
-@@ -304,7 +305,7 @@ mlxsw_afk_key_info_get(struct mlxsw_afk *mlxsw_afk,
- 
- 	key_info = mlxsw_afk_key_info_find(mlxsw_afk, elusage);
- 	if (key_info) {
--		key_info->ref_count++;
-+		refcount_inc(&key_info->ref_count);
- 		return key_info;
- 	}
- 	return mlxsw_afk_key_info_create(mlxsw_afk, elusage);
-@@ -313,7 +314,7 @@ EXPORT_SYMBOL(mlxsw_afk_key_info_get);
- 
- void mlxsw_afk_key_info_put(struct mlxsw_afk_key_info *key_info)
- {
--	if (--key_info->ref_count)
-+	if (!refcount_dec_and_test(&key_info->ref_count))
- 		return;
- 	mlxsw_afk_key_info_destroy(key_info);
- }
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-index 7c59c8a135840..b01b000bc71c1 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-@@ -9,6 +9,7 @@
- #include <linux/rhashtable.h>
- #include <linux/netdevice.h>
- #include <linux/mutex.h>
-+#include <linux/refcount.h>
- #include <net/net_namespace.h>
- #include <net/tc_act/tc_vlan.h>
- 
-@@ -55,7 +56,7 @@ struct mlxsw_sp_acl_ruleset {
- 	struct rhash_head ht_node; /* Member of acl HT */
- 	struct mlxsw_sp_acl_ruleset_ht_key ht_key;
- 	struct rhashtable rule_ht;
--	unsigned int ref_count;
-+	refcount_t ref_count;
- 	unsigned int min_prio;
- 	unsigned int max_prio;
- 	unsigned long priv[];
-@@ -99,7 +100,7 @@ static bool
- mlxsw_sp_acl_ruleset_is_singular(const struct mlxsw_sp_acl_ruleset *ruleset)
- {
- 	/* We hold a reference on ruleset ourselves */
--	return ruleset->ref_count == 2;
-+	return refcount_read(&ruleset->ref_count) == 2;
- }
- 
- int mlxsw_sp_acl_ruleset_bind(struct mlxsw_sp *mlxsw_sp,
-@@ -176,7 +177,7 @@ mlxsw_sp_acl_ruleset_create(struct mlxsw_sp *mlxsw_sp,
- 	ruleset = kzalloc(alloc_size, GFP_KERNEL);
- 	if (!ruleset)
- 		return ERR_PTR(-ENOMEM);
--	ruleset->ref_count = 1;
-+	refcount_set(&ruleset->ref_count, 1);
- 	ruleset->ht_key.block = block;
- 	ruleset->ht_key.chain_index = chain_index;
- 	ruleset->ht_key.ops = ops;
-@@ -222,13 +223,13 @@ static void mlxsw_sp_acl_ruleset_destroy(struct mlxsw_sp *mlxsw_sp,
- 
- static void mlxsw_sp_acl_ruleset_ref_inc(struct mlxsw_sp_acl_ruleset *ruleset)
- {
--	ruleset->ref_count++;
-+	refcount_inc(&ruleset->ref_count);
- }
- 
- static void mlxsw_sp_acl_ruleset_ref_dec(struct mlxsw_sp *mlxsw_sp,
- 					 struct mlxsw_sp_acl_ruleset *ruleset)
- {
--	if (--ruleset->ref_count)
-+	if (!refcount_dec_and_test(&ruleset->ref_count))
- 		return;
- 	mlxsw_sp_acl_ruleset_destroy(mlxsw_sp, ruleset);
- }
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 50ea1eff02b2f..f20052776b3f2 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -9,6 +9,7 @@
- #include <linux/rhashtable.h>
- #include <linux/netdevice.h>
- #include <linux/mutex.h>
-+#include <linux/refcount.h>
- #include <net/devlink.h>
- #include <trace/events/mlxsw.h>
- 
-@@ -155,7 +156,7 @@ struct mlxsw_sp_acl_tcam_vregion {
- 		struct mlxsw_sp_acl_tcam_rehash_ctx ctx;
- 	} rehash;
- 	struct mlxsw_sp *mlxsw_sp;
--	unsigned int ref_count;
-+	refcount_t ref_count;
- };
- 
- struct mlxsw_sp_acl_tcam_vchunk;
-@@ -176,7 +177,7 @@ struct mlxsw_sp_acl_tcam_vchunk {
- 	unsigned int priority; /* Priority within the vregion and group */
- 	struct mlxsw_sp_acl_tcam_vgroup *vgroup;
- 	struct mlxsw_sp_acl_tcam_vregion *vregion;
--	unsigned int ref_count;
-+	refcount_t ref_count;
- };
- 
- struct mlxsw_sp_acl_tcam_entry {
-@@ -769,7 +770,7 @@ mlxsw_sp_acl_tcam_vregion_create(struct mlxsw_sp *mlxsw_sp,
- 	vregion->tcam = tcam;
- 	vregion->mlxsw_sp = mlxsw_sp;
- 	vregion->vgroup = vgroup;
--	vregion->ref_count = 1;
-+	refcount_set(&vregion->ref_count, 1);
- 
- 	vregion->key_info = mlxsw_afk_key_info_get(afk, elusage);
- 	if (IS_ERR(vregion->key_info)) {
-@@ -856,7 +857,7 @@ mlxsw_sp_acl_tcam_vregion_get(struct mlxsw_sp *mlxsw_sp,
- 			 */
- 			return ERR_PTR(-EOPNOTSUPP);
- 		}
--		vregion->ref_count++;
-+		refcount_inc(&vregion->ref_count);
- 		return vregion;
- 	}
- 
-@@ -871,7 +872,7 @@ static void
- mlxsw_sp_acl_tcam_vregion_put(struct mlxsw_sp *mlxsw_sp,
- 			      struct mlxsw_sp_acl_tcam_vregion *vregion)
- {
--	if (--vregion->ref_count)
-+	if (!refcount_dec_and_test(&vregion->ref_count))
- 		return;
- 	mlxsw_sp_acl_tcam_vregion_destroy(mlxsw_sp, vregion);
- }
-@@ -924,7 +925,7 @@ mlxsw_sp_acl_tcam_vchunk_create(struct mlxsw_sp *mlxsw_sp,
- 	INIT_LIST_HEAD(&vchunk->ventry_list);
- 	vchunk->priority = priority;
- 	vchunk->vgroup = vgroup;
--	vchunk->ref_count = 1;
-+	refcount_set(&vchunk->ref_count, 1);
- 
- 	vregion = mlxsw_sp_acl_tcam_vregion_get(mlxsw_sp, vgroup,
- 						priority, elusage);
-@@ -1008,7 +1009,7 @@ mlxsw_sp_acl_tcam_vchunk_get(struct mlxsw_sp *mlxsw_sp,
- 		if (WARN_ON(!mlxsw_afk_key_info_subset(vchunk->vregion->key_info,
- 						       elusage)))
- 			return ERR_PTR(-EINVAL);
--		vchunk->ref_count++;
-+		refcount_inc(&vchunk->ref_count);
- 		return vchunk;
- 	}
- 	return mlxsw_sp_acl_tcam_vchunk_create(mlxsw_sp, vgroup,
-@@ -1019,7 +1020,7 @@ static void
- mlxsw_sp_acl_tcam_vchunk_put(struct mlxsw_sp *mlxsw_sp,
- 			     struct mlxsw_sp_acl_tcam_vchunk *vchunk)
- {
--	if (--vchunk->ref_count)
-+	if (!refcount_dec_and_test(&vchunk->ref_count))
- 		return;
- 	mlxsw_sp_acl_tcam_vchunk_destroy(mlxsw_sp, vchunk);
- }
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index ae2fb9efbc509..d15aa6b25a888 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -501,7 +501,7 @@ struct mlxsw_sp_rt6 {
- 
- struct mlxsw_sp_lpm_tree {
- 	u8 id; /* tree ID */
--	unsigned int ref_count;
-+	refcount_t ref_count;
- 	enum mlxsw_sp_l3proto proto;
- 	unsigned long prefix_ref_count[MLXSW_SP_PREFIX_COUNT];
- 	struct mlxsw_sp_prefix_usage prefix_usage;
-@@ -578,7 +578,7 @@ mlxsw_sp_lpm_tree_find_unused(struct mlxsw_sp *mlxsw_sp)
- 
- 	for (i = 0; i < mlxsw_sp->router->lpm.tree_count; i++) {
- 		lpm_tree = &mlxsw_sp->router->lpm.trees[i];
--		if (lpm_tree->ref_count == 0)
-+		if (refcount_read(&lpm_tree->ref_count) == 0)
- 			return lpm_tree;
- 	}
- 	return NULL;
-@@ -654,7 +654,7 @@ mlxsw_sp_lpm_tree_create(struct mlxsw_sp *mlxsw_sp,
- 	       sizeof(lpm_tree->prefix_usage));
- 	memset(&lpm_tree->prefix_ref_count, 0,
- 	       sizeof(lpm_tree->prefix_ref_count));
--	lpm_tree->ref_count = 1;
-+	refcount_set(&lpm_tree->ref_count, 1);
- 	return lpm_tree;
- 
- err_left_struct_set:
-@@ -678,7 +678,7 @@ mlxsw_sp_lpm_tree_get(struct mlxsw_sp *mlxsw_sp,
- 
- 	for (i = 0; i < mlxsw_sp->router->lpm.tree_count; i++) {
- 		lpm_tree = &mlxsw_sp->router->lpm.trees[i];
--		if (lpm_tree->ref_count != 0 &&
-+		if (refcount_read(&lpm_tree->ref_count) &&
- 		    lpm_tree->proto == proto &&
- 		    mlxsw_sp_prefix_usage_eq(&lpm_tree->prefix_usage,
- 					     prefix_usage)) {
-@@ -691,14 +691,15 @@ mlxsw_sp_lpm_tree_get(struct mlxsw_sp *mlxsw_sp,
- 
- static void mlxsw_sp_lpm_tree_hold(struct mlxsw_sp_lpm_tree *lpm_tree)
- {
--	lpm_tree->ref_count++;
-+	refcount_inc(&lpm_tree->ref_count);
- }
- 
- static void mlxsw_sp_lpm_tree_put(struct mlxsw_sp *mlxsw_sp,
- 				  struct mlxsw_sp_lpm_tree *lpm_tree)
- {
--	if (--lpm_tree->ref_count == 0)
--		mlxsw_sp_lpm_tree_destroy(mlxsw_sp, lpm_tree);
-+	if (!refcount_dec_and_test(&lpm_tree->ref_count))
-+		return;
-+	mlxsw_sp_lpm_tree_destroy(mlxsw_sp, lpm_tree);
- }
- 
- #define MLXSW_SP_LPM_TREE_MIN 1 /* tree 0 is reserved */
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-index 6c749c148148d..6397ff0dc951c 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-@@ -61,7 +61,7 @@ struct mlxsw_sp_bridge_port {
- 	struct mlxsw_sp_bridge_device *bridge_device;
- 	struct list_head list;
- 	struct list_head vlans_list;
--	unsigned int ref_count;
-+	refcount_t ref_count;
- 	u8 stp_state;
- 	unsigned long flags;
- 	bool mrouter;
-@@ -495,7 +495,7 @@ mlxsw_sp_bridge_port_create(struct mlxsw_sp_bridge_device *bridge_device,
- 			     BR_MCAST_FLOOD;
- 	INIT_LIST_HEAD(&bridge_port->vlans_list);
- 	list_add(&bridge_port->list, &bridge_device->ports_list);
--	bridge_port->ref_count = 1;
-+	refcount_set(&bridge_port->ref_count, 1);
- 
- 	err = switchdev_bridge_port_offload(brport_dev, mlxsw_sp_port->dev,
- 					    NULL, NULL, NULL, false, extack);
-@@ -531,7 +531,7 @@ mlxsw_sp_bridge_port_get(struct mlxsw_sp_bridge *bridge,
- 
- 	bridge_port = mlxsw_sp_bridge_port_find(bridge, brport_dev);
- 	if (bridge_port) {
--		bridge_port->ref_count++;
-+		refcount_inc(&bridge_port->ref_count);
- 		return bridge_port;
- 	}
- 
-@@ -558,7 +558,7 @@ static void mlxsw_sp_bridge_port_put(struct mlxsw_sp_bridge *bridge,
- {
- 	struct mlxsw_sp_bridge_device *bridge_device;
- 
--	if (--bridge_port->ref_count != 0)
-+	if (!refcount_dec_and_test(&bridge_port->ref_count))
- 		return;
- 	bridge_device = bridge_port->bridge_device;
- 	mlxsw_sp_bridge_port_destroy(bridge_port);
--- 
-2.43.0
-
+ static const struct dev_pm_ops sdhci_msm_pm_ops = {
 
 
 
