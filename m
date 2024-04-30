@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00AD8B739F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 847678B7336
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E1DB1C23286
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5E961C23222
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EFD12CDAE;
-	Tue, 30 Apr 2024 11:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF8A12D215;
+	Tue, 30 Apr 2024 11:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPCg/c3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7+SvIME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0893612C805;
-	Tue, 30 Apr 2024 11:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5618801;
+	Tue, 30 Apr 2024 11:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476085; cv=none; b=dmVXPwieT4ICc87UXawNCY1Jb1sSNwUzbX8L8+EEZxXoNtigvJcFhK1LG9Wp17+V7n0KDqt75+SxnSU76gX8xXYXUz+jX79rfM4iYvJs8mcLnMx3Jxh36CbkfxpJaRaCAf+xCxOoqX68t86UqH1avGe50ThKSkzH4JSeVrz7dVc=
+	t=1714475784; cv=none; b=hVBmKab/6hW/hT7tnpinQ53lAVk6SAOSCE0zDnPsC9rvK0Wyy4abQ1ZxDwXvqYXvFFPOq6ndtTA7tozMeMoTKcNkMcoA4g1kkF/CxP0rMFlRdOBFObxeKBw86+Wt/qIEfhBeodfMDlPamNnANafOrSZ3po90+5D+4dybrvQHTzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476085; c=relaxed/simple;
-	bh=p4txSBRjcjDbN5gWr0dPHdiXRsMhc9nhqNUEs/8oFUM=;
+	s=arc-20240116; t=1714475784; c=relaxed/simple;
+	bh=dxDS2Uaa80moevLR0eouSHzLcmfKW+NyYYr8XD0K3V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCoQv1iMacpBZSf4hMTmydoN+udrxpUEAwXwu7eUMXrYz9go1ARgvMCCIhHyKljQXWCA0PTSw3tbQJ6b3MIrGYUyHICMOmxXkf2sx8HNc5W43MEpzwBeahd0Fs7kfvQPG3NJWy7azCYt8KD8rPLwJBpPN0SQ/qZe/qoO7KPm6KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPCg/c3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCC9C2BBFC;
-	Tue, 30 Apr 2024 11:21:24 +0000 (UTC)
+	 MIME-Version; b=GsIRsf9FWznejqMyPkxqt/CV7gc9ynSB6Iia/W92u4Hmx/CaJ/uNJ7aoz89dEPqv3oFdQf5JqTi0LcVh5NDZPlmEyTUAzIJpQFkGemEaXfZfKbsdkPCJ0b4nOPmfO01VtW95v4Ib9sSBZWO6DFxoblw0AL0oPWzzJJDN8Acz0ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7+SvIME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22EEC2BBFC;
+	Tue, 30 Apr 2024 11:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476084;
-	bh=p4txSBRjcjDbN5gWr0dPHdiXRsMhc9nhqNUEs/8oFUM=;
+	s=korg; t=1714475784;
+	bh=dxDS2Uaa80moevLR0eouSHzLcmfKW+NyYYr8XD0K3V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPCg/c3uftG/CKPVLl5LiEu09d0QynM8QN5g/8/1dwaXBneDmWXf3gKCm+/5Nvfdl
-	 GvU7ehwSkyraYnDnQMmkHoBePHTNLTjaoY70MjmpQB7KtMVdTLc3zJX2txqthZkDv2
-	 K6b8qN6029rV1HmN65LfGvNe4P54YX0Xl0AZFJ+Y=
+	b=m7+SvIMEwmR7z5vPKpWxjikQdZ/Sn3Uc2IWO3cUbk2dUACP4pYOyZPt6SIgUY9C61
+	 R3O0T+pRmbBl8iY38raBUl/qdPon7cANpz3sOJjr1hBHiUJP/MXf4jlsdJ/V5ytNnO
+	 8qt/nCminJyLT+fdfYvR7r4G0JyryZ1xxaFFrigU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <sboyd@kernel.org>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/107] clk: Mark all_lists as const
+Subject: [PATCH 5.15 17/80] ARC: [plat-hsdk]: Remove misplaced interrupt-cells property
 Date: Tue, 30 Apr 2024 12:39:49 +0200
-Message-ID: <20240430103045.521998640@linuxfoundation.org>
+Message-ID: <20240430103043.922012072@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Alexey Brodkin <Alexey.Brodkin@synopsys.com>
 
-[ Upstream commit 75061a6ff49ba3482c6319ded0c26e6a526b0967 ]
+[ Upstream commit 61231eb8113ce47991f35024f9c20810b37996bf ]
 
-This list array doesn't change at runtime. Mark it const to move to RO
-memory.
+"gmac" node stands for just an ordinary Ethernet controller,
+which is by no means a provider of interrupts, i.e. it doesn't serve
+as an interrupt controller, thus "#interrupt-cells" property doesn't
+belong to it and so we remove it.
 
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20220217220554.2711696-2-sboyd@kernel.org
-Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
+Fixes:
+------------>8------------
+  DTC     arch/arc/boot/dts/hsdk.dtb
+arch/arc/boot/dts/hsdk.dts:207.23-235.5: Warning (interrupt_provider): /soc/ethernet@8000: '#interrupt-cells' found, but node is not an interrupt provider
+arch/arc/boot/dts/hsdk.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+------------>8------------
+
+Reported-by: Vineet Gupta <vgupta@kernel.org>
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arc/boot/dts/hsdk.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 85a043e8a9d57..f9d89b42b8f9d 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -37,7 +37,7 @@ static HLIST_HEAD(clk_root_list);
- static HLIST_HEAD(clk_orphan_list);
- static LIST_HEAD(clk_notifier_list);
+diff --git a/arch/arc/boot/dts/hsdk.dts b/arch/arc/boot/dts/hsdk.dts
+index dcaa44e408ace..27f4194b376bb 100644
+--- a/arch/arc/boot/dts/hsdk.dts
++++ b/arch/arc/boot/dts/hsdk.dts
+@@ -205,7 +205,6 @@
+ 		};
  
--static struct hlist_head *all_lists[] = {
-+static const struct hlist_head *all_lists[] = {
- 	&clk_root_list,
- 	&clk_orphan_list,
- 	NULL,
-@@ -3940,7 +3940,7 @@ static void clk_core_evict_parent_cache_subtree(struct clk_core *root,
- /* Remove this clk from all parent caches */
- static void clk_core_evict_parent_cache(struct clk_core *core)
- {
--	struct hlist_head **lists;
-+	const struct hlist_head **lists;
- 	struct clk_core *root;
- 
- 	lockdep_assert_held(&prepare_lock);
+ 		gmac: ethernet@8000 {
+-			#interrupt-cells = <1>;
+ 			compatible = "snps,dwmac";
+ 			reg = <0x8000 0x2000>;
+ 			interrupts = <10>;
 -- 
 2.43.0
 
