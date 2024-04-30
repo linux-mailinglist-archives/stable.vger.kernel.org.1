@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-41888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47928B7051
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B31AB8B7224
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FFEBB21568
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 698461F2366D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0E012D1FC;
-	Tue, 30 Apr 2024 10:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D6312CD96;
+	Tue, 30 Apr 2024 11:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKZxzcgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mdrdoevw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B66612D748;
-	Tue, 30 Apr 2024 10:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B5E12C54B;
+	Tue, 30 Apr 2024 11:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473863; cv=none; b=k+nOo/oRzI1+v/pMPns8ZPDQl9SFB8j305LINxyRFDF23CzZePHd7S5cJ5IgLUjfUGqO0pwnL03LgR2Hl9NJ75PXnpB4iDq5oMoeKmfHsTfXscv3rS72wj7tASEFLlwhjQTb2cIPHzFFZRxwOXRTOMnBxku1doFvhEhBPHXJWok=
+	t=1714475091; cv=none; b=BqWUIEA3U5psplgDjvfr2OC/3fEj5N6W8KQKkZvsZAE5WGuYQt+ieRw2niG9eLxJbEZagEBRwQ66LXDUUU5QRX+D15CqV01w0tEOymo4LlmSphCyyJ/7rUz6r6AA9ARorR+7GzW7SUFaKsHytGba37iau5t2C6zMCKZNZkET9Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473863; c=relaxed/simple;
-	bh=sQfc4pp9RvBIdgJBezKuKHfxU00Sq//tWdPd/6hEovo=;
+	s=arc-20240116; t=1714475091; c=relaxed/simple;
+	bh=MPoQHONkmhQDhC0lzVf9jz8yAaKZHxfGMKNV3ib36CQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e4aTXl2xRSaG604QqFymIDMCAgVGlT3byNxxJMtq/ZJVTcvNwHJzj8/PCn0snelOUqlYBbI+j5xC+xpYHnpk5Ji9W43GGNJ0dYNmxId1QNQKDsldYuPYWlaANI3dFk+GY9yQeoCunhSorbYdmnj2OK8OWnHi5p2CUEJvde8r7P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKZxzcgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B778C4AF14;
-	Tue, 30 Apr 2024 10:44:22 +0000 (UTC)
+	 MIME-Version; b=ralKzBvn5Yq6ABRjY7n9+WNVwv3F0ANasCnschzFcZcI3AZM/mpGcttHds1GG/iK5++sDi/G08iVWLVFm5a3Y5TfLPPaGQ6y3MPOXeZvL+yCyt63yUOuhlRuY8HvhOXWHWndN+3W/F0bQXtRst3obtnlo4GS8s9eZuQ/20XyLsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mdrdoevw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAEEC2BBFC;
+	Tue, 30 Apr 2024 11:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473862;
-	bh=sQfc4pp9RvBIdgJBezKuKHfxU00Sq//tWdPd/6hEovo=;
+	s=korg; t=1714475091;
+	bh=MPoQHONkmhQDhC0lzVf9jz8yAaKZHxfGMKNV3ib36CQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VKZxzcgx4FpvjJJYNTeLFrOoNRxvSX3hgN4xz7x+bd9yyC3ckUTRvgvCDzDtIVwso
-	 xaPb6B+D1kVUEJw+MG9FyJqaVLmNO0v2lH7TmyMhK1lyEh6p8foz4Mm7/39LzFoxq1
-	 HmB8p5IkywFlpnok9SWP4PXB3Gy60SbFSkbaBe3Y=
+	b=Mdrdoevw8jLx0CehP8fWHUvCaknrayCU/PhcFb8oiyJ5l+ypACjgYL5YeIehsl2iS
+	 UBpxIXCvabFd2Ui9ciUF7kTp4prJKeAO/QrS+D8+EDYQzyQwpE8HRX74IST4zSMPFe
+	 Of8wY8dclnOMXbaOhxklQL/lmrV8mEwdq7fUJyFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 56/77] amdgpu: validate offset_in_bo of drm_amdgpu_gem_va
+Subject: [PATCH 5.10 090/138] net: gtp: Fix Use-After-Free in gtp_dellink
 Date: Tue, 30 Apr 2024 12:39:35 +0200
-Message-ID: <20240430103042.792237890@linuxfoundation.org>
+Message-ID: <20240430103052.069580012@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit 9f0bcf49e9895cb005d78b33a5eebfa11711b425 ]
+[ Upstream commit f2a904107ee2b647bb7794a1a82b67740d7c8a64 ]
 
-This is motivated by OOB access in amdgpu_vm_update_range when
-offset_in_bo+map_size overflows.
+Since call_rcu, which is called in the hlist_for_each_entry_rcu traversal
+of gtp_dellink, is not part of the RCU read critical section, it
+is possible that the RCU grace period will pass during the traversal and
+the key will be free.
 
-v2: keep the validations in amdgpu_vm_bo_map
-v3: add the validations to amdgpu_vm_bo_map/amdgpu_vm_bo_replace_map
-    rather than to amdgpu_gem_va_ioctl
+To prevent this, it should be changed to hlist_for_each_entry_safe.
 
-Fixes: 9f7eb5367d00 ("drm/amdgpu: actually use the VM map parameters")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 6fef2d4c00b5 ("drm/amdgpu: validate the parameters of bo mapping operations more clearly")
+Fixes: 94dc550a5062 ("gtp: fix an use-after-free in ipv4_pdp_find()")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/gtp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index acf03c716aca5..aa972448284dd 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2076,14 +2076,14 @@ int amdgpu_vm_bo_map(struct amdgpu_device *adev,
- 	uint64_t eaddr;
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 4e19760cddefe..c8246363d3832 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -700,11 +700,12 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
+ static void gtp_dellink(struct net_device *dev, struct list_head *head)
+ {
+ 	struct gtp_dev *gtp = netdev_priv(dev);
++	struct hlist_node *next;
+ 	struct pdp_ctx *pctx;
+ 	int i;
  
- 	/* validate the parameters */
--	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK ||
--	    size == 0 || size & ~PAGE_MASK)
-+	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
-+		return -EINVAL;
-+	if (saddr + size <= saddr || offset + size <= offset)
- 		return -EINVAL;
+ 	for (i = 0; i < gtp->hash_size; i++)
+-		hlist_for_each_entry_rcu(pctx, &gtp->tid_hash[i], hlist_tid)
++		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
+ 			pdp_context_delete(pctx);
  
- 	/* make sure object fit at this offset */
- 	eaddr = saddr + size - 1;
--	if (saddr >= eaddr ||
--	    (bo && offset + size > amdgpu_bo_size(bo)) ||
-+	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
- 	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
- 		return -EINVAL;
- 
-@@ -2142,14 +2142,14 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
- 	int r;
- 
- 	/* validate the parameters */
--	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK ||
--	    size == 0 || size & ~PAGE_MASK)
-+	if (saddr & ~PAGE_MASK || offset & ~PAGE_MASK || size & ~PAGE_MASK)
-+		return -EINVAL;
-+	if (saddr + size <= saddr || offset + size <= offset)
- 		return -EINVAL;
- 
- 	/* make sure object fit at this offset */
- 	eaddr = saddr + size - 1;
--	if (saddr >= eaddr ||
--	    (bo && offset + size > amdgpu_bo_size(bo)) ||
-+	if ((bo && offset + size > amdgpu_bo_size(bo)) ||
- 	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
- 		return -EINVAL;
- 
+ 	list_del_rcu(&gtp->list);
 -- 
 2.43.0
 
