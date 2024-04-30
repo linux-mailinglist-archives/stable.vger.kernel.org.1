@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-42636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842938B73ED
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:25:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B218B7466
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B2A11F22296
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:25:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A1DAB20BA6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DEA12D1F1;
-	Tue, 30 Apr 2024 11:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629C612D755;
+	Tue, 30 Apr 2024 11:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHHVgqAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGJF5x56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E0412C47A;
-	Tue, 30 Apr 2024 11:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDFF12BF32;
+	Tue, 30 Apr 2024 11:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476298; cv=none; b=lRhe4wMYqKOg93QcIf2AKkx2H2WIY10GuD15FNXfPQJFVr1cyjLoZ9UpSxgE7qobRu3bCoQ6ajc3OP29bEIERe5XBRLOydcHGbM1ls5tKouq4BVdyQH16YvsLIm9rs9jv4QZnNykQki/kX73kfyY3zYunCwE9imLm4Oacj1sjn8=
+	t=1714476625; cv=none; b=lCa0FDdAbqoUvQC9jqGeRFDhtjPThItsfPLlXZ47OeygphgB3ezTqZ3c9MALl8HWxPxWK5CidjaaaTOqP8MTjqRdvMjV0zdScqHpD97XMwUCr94AvA9mXCIXoj9C+QQhQPCA3HN+1ypNDNnLY2wfvV5EO95e2Kk3Y0jR2Qu/UXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476298; c=relaxed/simple;
-	bh=dBEnNRLDx28w+DDLgNWPFCJ3R+nxSIbLnXeH8JyPBGg=;
+	s=arc-20240116; t=1714476625; c=relaxed/simple;
+	bh=d0INP11+EDQ23CFilIUNwrVt21R3wUqUdy64joyW9FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCvCiO0uV7yY8u3zeDWn2HpbaCn9emMaBUU46wrZCVfvSTWP8bLq+Iv1hDUaFfDR3OtD2huSl2Lwx95LdwfpUTwhCvxj4Wq/n60xLquZFbYbp4Lh63hHYKwA2byCkT1psdFLAscLv0eq0WyZeHgYvEEvTZhyq8no8FM6aVlJy+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHHVgqAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04193C2BBFC;
-	Tue, 30 Apr 2024 11:24:57 +0000 (UTC)
+	 MIME-Version; b=nZYzXTHrfUFMAqUl3DEFLbcO8R1so5v+qroc7tQQs//3USH5dIuLhTFvM0XxUjs4BX6DVfX74oKCgv2E31dZpoxLrEJ54rzMQ2lnhlgangdGqJvLAXsrhQeLnHjcuqFDt1FfteCDfASA6mydZdnoErSr+1Vb/eOY5OXKpi6pY3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGJF5x56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBB8C2BBFC;
+	Tue, 30 Apr 2024 11:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476298;
-	bh=dBEnNRLDx28w+DDLgNWPFCJ3R+nxSIbLnXeH8JyPBGg=;
+	s=korg; t=1714476625;
+	bh=d0INP11+EDQ23CFilIUNwrVt21R3wUqUdy64joyW9FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHHVgqAJHC6tgKUIPbQYQ63vFR6gu90IEMvCQcHtPzThHYytuRzoKzfdWt+U52wOY
-	 GVsYGxiNWCp5Ze7QTHiQanZnBbT6VqRaO75IVp++iH+SPY4JYO8Y0Hnud5Utr1IJ2J
-	 ZDNp5Pzr2+P2imu/RSajUIyRBcRS7AtvKGdx0bj4=
+	b=RGJF5x56r6Z3gyYeUqBCOWgR2iZTm6JEf3RosXeyepP3UiWw9XoeXbRXxSRgBie70
+	 L+VBcqnswXF4AC5Uprp6BLlTFpUvRmbN74oZmf7eRCKlaGP9sKBtrC4qk7V6ZvH3+C
+	 /kP2WYjZTJKZji5f9b5BvK8pZuDnVrRhh1jIlGcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Arnd Bergmann <arnd@arndb.de>,
 	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.4 097/107] mtd: diskonchip: work around ubsan link failure
-Date: Tue, 30 Apr 2024 12:40:57 +0200
-Message-ID: <20240430103047.521177987@linuxfoundation.org>
+Subject: [PATCH 6.1 089/110] mtd: diskonchip: work around ubsan link failure
+Date: Tue, 30 Apr 2024 12:40:58 +0200
+Message-ID: <20240430103050.198821848@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -107,7 +107,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  static struct mtd_info *doclist = NULL;
  
-@@ -1666,7 +1666,7 @@ static int __init init_nanddoc(void)
+@@ -1552,7 +1552,7 @@ static int __init init_nanddoc(void)
  		if (ret < 0)
  			return ret;
  	} else {
