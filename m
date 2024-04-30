@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2548B73E9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5960B8B7461
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C4CD1C209D5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ECB41F229E3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA2F12D1F1;
-	Tue, 30 Apr 2024 11:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738A312D757;
+	Tue, 30 Apr 2024 11:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1tmHwHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmzhYWDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFB112C805;
-	Tue, 30 Apr 2024 11:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3009712C805;
+	Tue, 30 Apr 2024 11:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476285; cv=none; b=ZsRyRyjhcd4juRc3C0WSnvYd+ajqW3zmjnHTctWfJRIqZ8UQ/WJIxr6ysa/A8ntw9wvgfBhYeXzD6bndZi20kbMQercaPpPUFACbq+etZiDFgEwQRNqZulNj/1E/Zwkr/07kuD0Zziy6UkDQSe0N2QD3nwW3f9GhcuAbHXF4Lhk=
+	t=1714476609; cv=none; b=tXLFi/jpH1zun89lmxFp6Yzlu9JdZKF1xP+U/f2nug9yhNGaPTGAshyJLv98QdkzW/VSb2nWJ0Aze78dk+5NMJFdaity/QeHtd54NTTvYfeSW/cPe90JbB2v2wjCpRuR+n+HSZoCoOLHvh5j1GXcjRtvr1qMo5NBJ/fBXlCY7gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476285; c=relaxed/simple;
-	bh=3w+7MTX2Oeiz+dLzkrp7hAbf3xPwnTQC0QeW7SEIhfI=;
+	s=arc-20240116; t=1714476609; c=relaxed/simple;
+	bh=fDjd2iAGdyzglUlN9QcICJGvM3XBGfV3WJa1HwCQh4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnWYc68wufjY6sc83Q2vsX6ewwmt5d2eCfCsxljSVyBuT9gyY8YL0zMeq9FxXaeBCukb9skZsxZ3YPOTCCEGBiaSYp46XT9vTf3MtGiqf2h7ex0C5FVspUJBeIkk9YJvXYWwuLcCXLFbBSFQcupAHgJB1P+jWq+E4a+p5tXgOy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1tmHwHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD1DC2BBFC;
-	Tue, 30 Apr 2024 11:24:44 +0000 (UTC)
+	 MIME-Version; b=jz5L9CkhiubGUB8k3ay1HA+nOc9dIO8xjzrs5iFFIzEQMkNAFeWorr8TrJ22eOksbdTA2K+JiP0uo+H9XMkyHRjvLfhUGMoRkngQw2g3OAvPmLvwxXvR22mKHity7JwPARO00Hq11IVoehygqjOPhyJlgWrzAReUoctUW8jYebU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmzhYWDJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9CDC4AF19;
+	Tue, 30 Apr 2024 11:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476285;
-	bh=3w+7MTX2Oeiz+dLzkrp7hAbf3xPwnTQC0QeW7SEIhfI=;
+	s=korg; t=1714476609;
+	bh=fDjd2iAGdyzglUlN9QcICJGvM3XBGfV3WJa1HwCQh4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x1tmHwHBl1sbM5w5+IRYDk06/LBW5FSybxuk83W2+h+GfyifVtPY4bxxpXhS1tatq
-	 u1hQgb9Lpw7nt/UC4rlUywptVLZPEcXy8mWoCcxrtSFJKcRDm+a/sQtDwTGOGLkefY
-	 nk9Dtgyej9LVxQCgi9UZjQ+Q2gv92HNGOwAJ7EPw=
+	b=dmzhYWDJsV8nZTUW+ZX0qc8FgUPk5SRgKtUvsXpysQl+FD637EXPO1TBefAxba3Tg
+	 hKhiYvxzC2B8fZhLuEs6Zh8V/TaTAf8HscL6eTuOOHkt5Nu6PDdwjQolEdtLIhuKDn
+	 ISuZyEfVFQEp4+kOVcodqyNp3uOU6ekEphzZfz+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 5.4 093/107] irqchip/gic-v3-its: Prevent double free on error
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 084/110] ethernet: Add helper for assigning packet type when dest address does not match device address
 Date: Tue, 30 Apr 2024 12:40:53 +0200
-Message-ID: <20240430103047.401784173@linuxfoundation.org>
+Message-ID: <20240430103050.047610283@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit c26591afd33adce296c022e3480dea4282b7ef91 upstream.
+commit 6e159fd653d7ebf6290358e0330a0cb8a75cf73b upstream.
 
-The error handling path in its_vpe_irq_domain_alloc() causes a double free
-when its_vpe_init() fails after successfully allocating at least one
-interrupt. This happens because its_vpe_irq_domain_free() frees the
-interrupts along with the area bitmap and the vprop_page and
-its_vpe_irq_domain_alloc() subsequently frees the area bitmap and the
-vprop_page again.
+Enable reuse of logic in eth_type_trans for determining packet type.
 
-Fix this by unconditionally invoking its_vpe_irq_domain_free() which
-handles all cases correctly and by removing the bitmap/vprop_page freeing
-from its_vpe_irq_domain_alloc().
-
-[ tglx: Massaged change log ]
-
-Fixes: 7d75bbb4bc1a ("irqchip/gic-v3-its: Add VPE irq domain allocation/teardown")
-Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240418061053.96803-2-guanrui.huang@linux.alibaba.com
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240423181319.115860-3-rrameshbabu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ include/linux/etherdevice.h |   25 +++++++++++++++++++++++++
+ net/ethernet/eth.c          |   12 +-----------
+ 2 files changed, 26 insertions(+), 11 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3121,13 +3121,8 @@ static int its_vpe_irq_domain_alloc(stru
- 		set_bit(i, bitmap);
- 	}
- 
--	if (err) {
--		if (i > 0)
--			its_vpe_irq_domain_free(domain, virq, i);
--
--		its_lpi_free(bitmap, base, nr_ids);
--		its_free_prop_table(vprop_page);
--	}
-+	if (err)
-+		its_vpe_irq_domain_free(domain, virq, i);
- 
- 	return err;
+--- a/include/linux/etherdevice.h
++++ b/include/linux/etherdevice.h
+@@ -594,6 +594,31 @@ static inline void eth_hw_addr_gen(struc
  }
+ 
+ /**
++ * eth_skb_pkt_type - Assign packet type if destination address does not match
++ * @skb: Assigned a packet type if address does not match @dev address
++ * @dev: Network device used to compare packet address against
++ *
++ * If the destination MAC address of the packet does not match the network
++ * device address, assign an appropriate packet type.
++ */
++static inline void eth_skb_pkt_type(struct sk_buff *skb,
++				    const struct net_device *dev)
++{
++	const struct ethhdr *eth = eth_hdr(skb);
++
++	if (unlikely(!ether_addr_equal_64bits(eth->h_dest, dev->dev_addr))) {
++		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
++			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
++				skb->pkt_type = PACKET_BROADCAST;
++			else
++				skb->pkt_type = PACKET_MULTICAST;
++		} else {
++			skb->pkt_type = PACKET_OTHERHOST;
++		}
++	}
++}
++
++/**
+  * eth_skb_pad - Pad buffer to mininum number of octets for Ethernet frame
+  * @skb: Buffer to pad
+  *
+--- a/net/ethernet/eth.c
++++ b/net/ethernet/eth.c
+@@ -164,17 +164,7 @@ __be16 eth_type_trans(struct sk_buff *sk
+ 	eth = (struct ethhdr *)skb->data;
+ 	skb_pull_inline(skb, ETH_HLEN);
+ 
+-	if (unlikely(!ether_addr_equal_64bits(eth->h_dest,
+-					      dev->dev_addr))) {
+-		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
+-			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
+-				skb->pkt_type = PACKET_BROADCAST;
+-			else
+-				skb->pkt_type = PACKET_MULTICAST;
+-		} else {
+-			skb->pkt_type = PACKET_OTHERHOST;
+-		}
+-	}
++	eth_skb_pkt_type(skb, dev);
+ 
+ 	/*
+ 	 * Some variants of DSA tagging don't have an ethertype field
 
 
 
