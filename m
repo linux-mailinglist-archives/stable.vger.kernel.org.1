@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-42029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D04E8B7108
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062928B7272
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A5FB22A91
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2180281A04
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3645412C54B;
-	Tue, 30 Apr 2024 10:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7680212D772;
+	Tue, 30 Apr 2024 11:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oh2lVhCb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohlctfzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E335D12C49E;
-	Tue, 30 Apr 2024 10:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31ECE12D1E8;
+	Tue, 30 Apr 2024 11:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474330; cv=none; b=V/Xn2HIPMN8K2KQdj4ha+7YfRnZXyGph9h6LlkqTbnZpYjMwWkKxeJXJFEyR6QHSQVUzIXIgixsIcSHLKyuUWXoK9a53koFDlNQR8YjgistAACbmDNLneHcwg1R1tCofnAToLJ6Mkl6ePCJ4a01u0ywu3YKLKRi2i531ZuQmni0=
+	t=1714475288; cv=none; b=RpdZqgbqGcFU1vlVUMrEKUk4CeVEg6MepAjj3IbRjxYKMhoDb/4W09ZVMaJB0LGgybRmZAeaGHDI+ur6hyNQ3x8AeZc1FOPcH8dEZM742xykx6Xvxd2mGmIbGa5AExMJJXuiZej6mkciUAEd9u8Ee8jR419E2OBm4urZtv+AKEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474330; c=relaxed/simple;
-	bh=G7YLd8FcaZIdmM9XUifJPDPxYOltl1fYAGiGHsOe2LY=;
+	s=arc-20240116; t=1714475288; c=relaxed/simple;
+	bh=swF9UoJpOGcVFvBue55Jk6ugeaTqFKF8jgdH2G4giqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkhQiUDooBmGCl7sZoDjSiF5d168pI+n/LzI+8++uGPVl6IQ4Jw3LYroegQnz2+HrYiVUfCW2MW0Z+fkwja8U2ek1dHnAzY6xZl0otVnJK77FIjksKKl2PxihPIRv2CkVDqJ05fek/xvhkDiPN/oPrjpbMiv/HBubfo8VHrzlFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oh2lVhCb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A27C2BBFC;
-	Tue, 30 Apr 2024 10:52:09 +0000 (UTC)
+	 MIME-Version; b=X8FDrModrWM4j7RJ7KM9Vzb23NVzhcNG0dIQAKbplhRPwS+hEVPQDHUck3DzsKuznEUr/Kt+96SnbitVsNRXN/GLxDr6hxHdGmNdZKsQfI0XFfS+hh+ODiZFbwF0kyRXB6Hfnr7mdOetg1JlU86KioSB8AO+FIUE5DM+2ULnuxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohlctfzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97644C2BBFC;
+	Tue, 30 Apr 2024 11:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474329;
-	bh=G7YLd8FcaZIdmM9XUifJPDPxYOltl1fYAGiGHsOe2LY=;
+	s=korg; t=1714475288;
+	bh=swF9UoJpOGcVFvBue55Jk6ugeaTqFKF8jgdH2G4giqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oh2lVhCbvScbbFKAtzL1v7ikz2ML4hpwcFoU2voIvgZl/+mSfNE2Q6fU9t2wF46Ai
-	 +t2ebw0pWOJQUVbSQPSKwLecODu6snwHARjS9STzi/uj01XxDpvAofNy3Xv4pzGBCG
-	 rJ+3f/brQ7bYsilFT4SSHgXJZcLwjK2B2iv3en/U=
+	b=ohlctfzFhwCMwpRR6qsXLuOhCBBo7k0N4xJZjWaUuzdm3PLKz+uevQIaFLqSmdRpq
+	 Bn70iTcGgNweFq+YRcCg0dAaIXGDSj5p3G7nLSKiWLFc70ITQSjippuioJik31dgXE
+	 lXyrykAMx3qKCXDWBiKXJnKPYIMH5Vh+oXaW9h8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Babu Moger <babu.moger@amd.com>,
-	Sandipan Das <sandipan.das@amd.com>,
-	Like Xu <like.xu.linux@gmail.com>,
-	Mingwei Zhang <mizhang@google.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 125/228] KVM: x86/pmu: Set enable bits for GP counters in PERF_GLOBAL_CTRL at "RESET"
-Date: Tue, 30 Apr 2024 12:38:23 +0200
-Message-ID: <20240430103107.414485011@linuxfoundation.org>
+Subject: [PATCH 6.6 052/186] bnxt_en: refactor reset close code
+Date: Tue, 30 Apr 2024 12:38:24 +0200
+Message-ID: <20240430103059.542414673@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,136 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Vikas Gupta <vikas.gupta@broadcom.com>
 
-[ Upstream commit de120e1d692d73c7eefa3278837b1eb68f90728a ]
+[ Upstream commit 7474b1c82be3780692d537d331f9aa7fc1e5a368 ]
 
-Set the enable bits for general purpose counters in IA32_PERF_GLOBAL_CTRL
-when refreshing the PMU to emulate the MSR's architecturally defined
-post-RESET behavior.  Per Intel's SDM:
+Introduce bnxt_fw_fatal_close() API which can be used
+to stop data path and disable device when firmware
+is in fatal state.
 
-  IA32_PERF_GLOBAL_CTRL:  Sets bits n-1:0 and clears the upper bits.
-
-and
-
-  Where "n" is the number of general-purpose counters available in the processor.
-
-AMD also documents this behavior for PerfMonV2 CPUs in one of AMD's many
-PPRs.
-
-Do not set any PERF_GLOBAL_CTRL bits if there are no general purpose
-counters, although a literal reading of the SDM would require the CPU to
-set either bits 63:0 or 31:0.  The intent of the behavior is to globally
-enable all GP counters; honor the intent, if not the letter of the law.
-
-Leaving PERF_GLOBAL_CTRL '0' effectively breaks PMU usage in guests that
-haven't been updated to work with PMUs that support PERF_GLOBAL_CTRL.
-This bug was recently exposed when KVM added supported for AMD's
-PerfMonV2, i.e. when KVM started exposing a vPMU with PERF_GLOBAL_CTRL to
-guest software that only knew how to program v1 PMUs (that don't support
-PERF_GLOBAL_CTRL).
-
-Failure to emulate the post-RESET behavior results in such guests
-unknowingly leaving all general purpose counters globally disabled (the
-entire reason the post-RESET value sets the GP counter enable bits is to
-maintain backwards compatibility).
-
-The bug has likely gone unnoticed because PERF_GLOBAL_CTRL has been
-supported on Intel CPUs for as long as KVM has existed, i.e. hardly anyone
-is running guest software that isn't aware of PERF_GLOBAL_CTRL on Intel
-PMUs.  And because up until v6.0, KVM _did_ emulate the behavior for Intel
-CPUs, although the old behavior was likely dumb luck.
-
-Because (a) that old code was also broken in its own way (the history of
-this code is a comedy of errors), and (b) PERF_GLOBAL_CTRL was documented
-as having a value of '0' post-RESET in all SDMs before March 2023.
-
-Initial vPMU support in commit f5132b01386b ("KVM: Expose a version 2
-architectural PMU to a guests") *almost* got it right (again likely by
-dumb luck), but for some reason only set the bits if the guest PMU was
-advertised as v1:
-
-        if (pmu->version == 1) {
-                pmu->global_ctrl = (1 << pmu->nr_arch_gp_counters) - 1;
-                return;
-        }
-
-Commit f19a0c2c2e6a ("KVM: PMU emulation: GLOBAL_CTRL MSR should be
-enabled on reset") then tried to remedy that goof, presumably because
-guest PMUs were leaving PERF_GLOBAL_CTRL '0', i.e. weren't enabling
-counters.
-
-        pmu->global_ctrl = ((1 << pmu->nr_arch_gp_counters) - 1) |
-                (((1ull << pmu->nr_arch_fixed_counters) - 1) << X86_PMC_IDX_FIXED);
-        pmu->global_ctrl_mask = ~pmu->global_ctrl;
-
-That was KVM's behavior up until commit c49467a45fe0 ("KVM: x86/pmu:
-Don't overwrite the pmu->global_ctrl when refreshing") removed
-*everything*.  However, it did so based on the behavior defined by the
-SDM , which at the time stated that "Global Perf Counter Controls" is
-'0' at Power-Up and RESET.
-
-But then the March 2023 SDM (325462-079US), stealthily changed its
-"IA-32 and Intel 64 Processor States Following Power-up, Reset, or INIT"
-table to say:
-
-  IA32_PERF_GLOBAL_CTRL: Sets bits n-1:0 and clears the upper bits.
-
-Note, kvm_pmu_refresh() can be invoked multiple times, i.e. it's not a
-"pure" RESET flow.  But it can only be called prior to the first KVM_RUN,
-i.e. the guest will only ever observe the final value.
-
-Note #2, KVM has always cleared global_ctrl during refresh (see commit
-f5132b01386b ("KVM: Expose a version 2 architectural PMU to a guests")),
-i.e. there is no danger of breaking existing setups by clobbering a value
-set by userspace.
-
-Reported-by: Babu Moger <babu.moger@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Like Xu <like.xu.linux@gmail.com>
-Cc: Mingwei Zhang <mizhang@google.com>
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Tested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Link: https://lore.kernel.org/r/20240309013641.1413400-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: a1acdc226bae ("bnxt_en: Fix the PCI-AER routines")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/pmu.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index 38512954ec267..2ab2d5213f52f 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -766,8 +766,20 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
- 	pmu->pebs_data_cfg_mask = ~0ull;
- 	bitmap_zero(pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX);
- 
--	if (vcpu->kvm->arch.enable_pmu)
--		static_call(kvm_x86_pmu_refresh)(vcpu);
-+	if (!vcpu->kvm->arch.enable_pmu)
-+		return;
-+
-+	static_call(kvm_x86_pmu_refresh)(vcpu);
-+
-+	/*
-+	 * At RESET, both Intel and AMD CPUs set all enable bits for general
-+	 * purpose counters in IA32_PERF_GLOBAL_CTRL (so that software that
-+	 * was written for v1 PMUs don't unknowingly leave GP counters disabled
-+	 * in the global controls).  Emulate that behavior when refreshing the
-+	 * PMU so that userspace doesn't need to manually set PERF_GLOBAL_CTRL.
-+	 */
-+	if (kvm_pmu_has_perf_global_ctrl(pmu) && pmu->nr_arch_gp_counters)
-+		pmu->global_ctrl = GENMASK_ULL(pmu->nr_arch_gp_counters - 1, 0);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 38e3b2225ff1c..1cf4aae8702b4 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11807,6 +11807,16 @@ static void bnxt_rx_ring_reset(struct bnxt *bp)
+ 	bnxt_rtnl_unlock_sp(bp);
  }
  
- void kvm_pmu_init(struct kvm_vcpu *vcpu)
++static void bnxt_fw_fatal_close(struct bnxt *bp)
++{
++	bnxt_tx_disable(bp);
++	bnxt_disable_napi(bp);
++	bnxt_disable_int_sync(bp);
++	bnxt_free_irq(bp);
++	bnxt_clear_int_mode(bp);
++	pci_disable_device(bp->pdev);
++}
++
+ static void bnxt_fw_reset_close(struct bnxt *bp)
+ {
+ 	bnxt_ulp_stop(bp);
+@@ -11820,12 +11830,7 @@ static void bnxt_fw_reset_close(struct bnxt *bp)
+ 		pci_read_config_word(bp->pdev, PCI_SUBSYSTEM_ID, &val);
+ 		if (val == 0xffff)
+ 			bp->fw_reset_min_dsecs = 0;
+-		bnxt_tx_disable(bp);
+-		bnxt_disable_napi(bp);
+-		bnxt_disable_int_sync(bp);
+-		bnxt_free_irq(bp);
+-		bnxt_clear_int_mode(bp);
+-		pci_disable_device(bp->pdev);
++		bnxt_fw_fatal_close(bp);
+ 	}
+ 	__bnxt_close_nic(bp, true, false);
+ 	bnxt_vf_reps_free(bp);
 -- 
 2.43.0
 
