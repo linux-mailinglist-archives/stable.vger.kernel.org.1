@@ -1,169 +1,146 @@
-Return-Path: <stable+bounces-41792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 868E18B6936
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 05:49:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7A78B693C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 05:52:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04A891F22153
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 03:49:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 013A5283DE1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 03:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E026210A01;
-	Tue, 30 Apr 2024 03:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Sthx9++5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0009C10A1D;
+	Tue, 30 Apr 2024 03:52:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DF3DDA6;
-	Tue, 30 Apr 2024 03:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94B1DDA6
+	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 03:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714448940; cv=none; b=XfsmCF04eH5k8nps7ENJRhggPqDWXxE6OfWko4oykwOZeZ9T4SgtJsMlARDN7siZ5+kNUXipPpg/5k0SCXt0GCnXDnx/akSO5ybIXJM8Rl9/uuYw9hk2MkICrApz6qXcn3i7uOEPV0+YZZHpvezn74CoPC4ta/HpxOFZVc6CRn4=
+	t=1714449124; cv=none; b=B5MPi9iL1u41QUnPQbY9IPrqZZLYORdOk3hf+Ze53yk7/wN0yIdB0r0Nq3OgNAncSYOoxH5T1vCIUhU8vJZ3yJWhQ9a0MmyLJoxojJCS+xYcQyGH668JY5a2q/KXJe7nu1iB/9lsXY7Z6vIORX6sc9b2gwn4OziryRR2eGelT6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714448940; c=relaxed/simple;
-	bh=ck1aZwQ49wiF6650/y3Fd0edDmmLYkPXeji2D5ccG1M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G+dbdEW6mfmYLyMdDz6e+4r5SfA7gB7sX62S2DWQLlviZeGBqvAi07vFH4Ryyyjg/h0MiEcsadqfYzIeqebBFTDh7KnzLpe0YcZINroWqQEZ/WobVh4aUJtpfnLyDyPoj0vX1MTyUyrO6z05jZQ6sXkexElaWJRJAEky7JiVPyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Sthx9++5; arc=none smtp.client-ip=115.124.30.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1714448936; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=LHgmlMnWiTL7VMF+EvFDp3WPEp9YHdbnDCQmrGY9IhA=;
-	b=Sthx9++5kg+CcP1GPg0457NUDBlEyP7xGvhUj+UuNggTd/0ephjaSDITD1iMKElT7u3GDr3uNIQlgSYTfYVIUSlec5jt/3aLCIx9bCao5/W/Ry9pZN3KcuXYAZTqcoNQaoxYrN3yCbhlAbvs/xk2VsxzfGi5I3cC1n2H6/g7gDA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R981e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032014016;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0W5aqHHx_1714448934;
-Received: from localhost(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0W5aqHHx_1714448934)
-          by smtp.aliyun-inc.com;
-          Tue, 30 Apr 2024 11:48:55 +0800
-From: Jingbo Xu <jefflexu@linux.alibaba.com>
-To: sashal@kernel.org,
-	gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: amir73il@gmail.com,
-	linux-unionfs@vger.kernel.org
-Subject: [STABLE 6.6.y] ovl: fix memory leak in ovl_parse_param()
-Date: Tue, 30 Apr 2024 11:48:54 +0800
-Message-Id: <20240430034854.126947-1-jefflexu@linux.alibaba.com>
-X-Mailer: git-send-email 2.19.1.6.gb485710b
+	s=arc-20240116; t=1714449124; c=relaxed/simple;
+	bh=1RVRx6cvAej+t0Gx5zPiZI6lRFGQp07U8KSyOjbk+TI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T9xJfRHe/2WJM/zauEcon9EcV19zlvrM6m7a0r4PAWKbeh/ZK0nMQiWB8EdX95cFeZMpMzhkw6GSUryOkIWgrIk1S8qnG7NnlwLBiqrCtvNzrfP7J89AjlBFOvKUgRM6AaIMra2RkXxkD3A/8zhii9xpTn4gB+8IOyoNexJVj9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [192.168.1.103] (unknown [120.221.12.99])
+	by APP-05 (Coremail) with SMTP id zQCowAC3vADZajBm_MtxBw--.37512S2;
+	Tue, 30 Apr 2024 11:51:53 +0800 (CST)
+Message-ID: <7f976727-3ad8-4071-9a91-4a32a01abd32@iscas.ac.cn>
+Date: Tue, 30 Apr 2024 11:51:53 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Revert "riscv: kdump: fix crashkernel reserving
+ problem on RISC-V"
+To: Baoquan He <bhe@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ Chen Jiahao <chenjiahao16@huawei.com>
+References: <20240430032403.19562-1-xingmingzheng@iscas.ac.cn>
+ <ZjBoBYwdPMyPDGhG@MiWiFi-R3L-srv>
+From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Content-Language: en-US
+In-Reply-To: <ZjBoBYwdPMyPDGhG@MiWiFi-R3L-srv>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:zQCowAC3vADZajBm_MtxBw--.37512S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFWrAF1rAF1fGrykKry5CFg_yoW8Zw4fpr
+	48Can0yFZYkr97GaySyrW7ua4FqasYvry3uwsFy34fXFsFqryrKwn0qF43WryDWr4Fgry0
+	vFWq9r1v9r1Fy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUyIb7Iv0xC_Zr1lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
+	C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JV
+	WxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41l42xK82IYc2Ij64vIr41l4I8I
+	3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxV
+	WUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAF
+	wI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcI
+	k0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j
+	6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU45EfUUUUU
+X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiBgwDCmYwL+HHqAABs1
 
-From: Amir Goldstein <amir73il@gmail.com>
+On 4/30/24 11:39, Baoquan He wrote:
+> On 04/30/24 at 11:24am, Mingzheng Xing wrote:
+>> This reverts commit 1d6cd2146c2b58bc91266db1d5d6a5f9632e14c0 which was
+>> mistakenly added into v6.6.y and the commit corresponding to the 'Fixes:'
+>> tag is invalid. For more information, see link [1].
+>>
+>> This will result in the loss of Crashkernel data in /proc/iomem, and kdump
+>> failed:
+>>
+>> ```
+>> Memory for crashkernel is not reserved
+>> Please reserve memory by passing"crashkernel=Y@X" parameter to kernel
+>> Then try to loading kdump kernel
+>> ```
+>>
+>> After revert, kdump works fine. Tested on QEMU riscv.
+>>
+>> Link: https://lore.kernel.org/linux-riscv/ZSiQRDGLZk7lpakE@MiWiFi-R3L-srv [1]
+>> Cc: Baoquan He <bhe@redhat.com>
+>> Cc: Chen Jiahao <chenjiahao16@huawei.com>
+>> Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+> 
+> Ack. This is necessary for v6.6.y stable branch.
+> 
+> Acked-by: Baoquan He <bhe@redhat.com>
+> 
 
-commit 37f32f52643869131ec01bb69bdf9f404f6109fb upstream.
+Thanks,
 
-On failure to parse parameters in ovl_parse_param_lowerdir(), it is
-necessary to update ctx->nr with the correct nr before using
-ovl_reset_lowerdirs() to release l->name.
+Hi, Greg. This is for the 6.6.y branch only.
 
-Reported-and-tested-by: syzbot+26eedf3631650972f17c@syzkaller.appspotmail.com
-Fixes: c835110b588a ("ovl: remove unused code in lowerdir param parsing")
-Co-authored-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
----
-Commit c835110b588a ("ovl: remove unused code in lowerdir param
-parsing") was back ported to 6.6.y as a "Stable-dep-of" of commit
-2824083db76c ("ovl: Always reject mounting over case-insensitive
-directories"), while omitting the fix for commit c835110b588a itself.
-Maybe that is because by the time commit 37f32f526438 (the fix) is merged
-into master branch, commit c835110b588a has not been back ported to 6.6.y
-yet.
-
-This causes ltp test warning on vfat (EBUSY when umounting) [1]:
-tst_test.c:1701: TINFO: === Testing on vfat ===
-tst_test.c:1117: TINFO: Formatting /dev/loop0 with vfat opts='' extra opts=''
-tst_test.c:1131: TINFO: Mounting /dev/loop0 to /tmp/ltp-XeGbUgDq5N/LTP_fankzf5WQ/mntpoint fstyp=vfat flags=0
-fanotify13.c:152: TINFO: Test #0.1: FAN_REPORT_FID with mark flag: FAN_MARK_INODE
-fanotify13.c:157: TCONF: overlayfs not supported on vfat
-fanotify13.c:152: TINFO: Test #1.1: FAN_REPORT_FID with mark flag: FAN_MARK_INODE
-fanotify13.c:157: TCONF: overlayfs not supported on vfat
-fanotify13.c:152: TINFO: Test #2.1: FAN_REPORT_FID with mark flag: FAN_MARK_MOUNT
-fanotify13.c:157: TCONF: overlayfs not supported on vfat
-fanotify13.c:152: TINFO: Test #3.1: FAN_REPORT_FID with mark flag: FAN_MARK_MOUNT
-fanotify13.c:157: TCONF: overlayfs not supported on vfat
-fanotify13.c:152: TINFO: Test #4.1: FAN_REPORT_FID with mark flag: FAN_MARK_FILESYSTEM
-fanotify13.c:157: TCONF: overlayfs not supported on vfat
-fanotify13.c:152: TINFO: Test #5.1: FAN_REPORT_FID with mark flag: FAN_MARK_FILESYSTEM
-fanotify13.c:157: TCONF: overlayfs not supported on vfat
-tst_device.c:408: TINFO: umount('mntpoint') failed with EBUSY, try  1...
-tst_device.c:412: TINFO: Likely gvfsd-trash is probing newly mounted fs, kill it to speed up tests.
-tst_device.c:408: TINFO: umount('mntpoint') failed with EBUSY, try  2...
-tst_device.c:408: TINFO: umount('mntpoint') failed with EBUSY, try  3...
-tst_device.c:408: TINFO: umount('mntpoint') failed with EBUSY, try  4...
-
-Reproduce:
-/opt/ltp/runltp -f syscalls -s fanotify13
-
-The original fix is applied to 6.6.y without conflict.
-
-[1] https://lists.linux.it/pipermail/ltp/2023-November/036189.html
----
- fs/overlayfs/params.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
-index ad3593a41fb5..488f920f79d2 100644
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -438,7 +438,7 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
- 	struct ovl_fs_context *ctx = fc->fs_private;
- 	struct ovl_fs_context_layer *l;
- 	char *dup = NULL, *iter;
--	ssize_t nr_lower = 0, nr = 0, nr_data = 0;
-+	ssize_t nr_lower, nr;
- 	bool data_layer = false;
- 
- 	/*
-@@ -490,6 +490,7 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
- 	iter = dup;
- 	l = ctx->lower;
- 	for (nr = 0; nr < nr_lower; nr++, l++) {
-+		ctx->nr++;
- 		memset(l, 0, sizeof(*l));
- 
- 		err = ovl_mount_dir(iter, &l->path);
-@@ -506,10 +507,10 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
- 			goto out_put;
- 
- 		if (data_layer)
--			nr_data++;
-+			ctx->nr_data++;
- 
- 		/* Calling strchr() again would overrun. */
--		if ((nr + 1) == nr_lower)
-+		if (ctx->nr == nr_lower)
- 			break;
- 
- 		err = -EINVAL;
-@@ -519,7 +520,7 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
- 			 * This is a regular layer so we require that
- 			 * there are no data layers.
- 			 */
--			if ((ctx->nr_data + nr_data) > 0) {
-+			if (ctx->nr_data > 0) {
- 				pr_err("regular lower layers cannot follow data lower layers");
- 				goto out_put;
- 			}
-@@ -532,8 +533,6 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
- 		data_layer = true;
- 		iter++;
- 	}
--	ctx->nr = nr_lower;
--	ctx->nr_data += nr_data;
- 	kfree(dup);
- 	return 0;
- 
--- 
-2.19.1.6.gb485710b
+>> ---
+>>
+>> v1 -> v2:
+>>
+>> - Changed the commit message
+>> - Added Cc:
+>>
+>> v1:
+>> https://lore.kernel.org/stable/20240416085647.14376-1-xingmingzheng@iscas.ac.cn
+>>
+>>  arch/riscv/kernel/setup.c | 13 +++++++++++++
+>>  1 file changed, 13 insertions(+)
+>>
+>> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+>> index aac853ae4eb74..e600aab116a40 100644
+>> --- a/arch/riscv/kernel/setup.c
+>> +++ b/arch/riscv/kernel/setup.c
+>> @@ -173,6 +173,19 @@ static void __init init_resources(void)
+>>  	if (ret < 0)
+>>  		goto error;
+>>  
+>> +#ifdef CONFIG_KEXEC_CORE
+>> +	if (crashk_res.start != crashk_res.end) {
+>> +		ret = add_resource(&iomem_resource, &crashk_res);
+>> +		if (ret < 0)
+>> +			goto error;
+>> +	}
+>> +	if (crashk_low_res.start != crashk_low_res.end) {
+>> +		ret = add_resource(&iomem_resource, &crashk_low_res);
+>> +		if (ret < 0)
+>> +			goto error;
+>> +	}
+>> +#endif
+>> +
+>>  #ifdef CONFIG_CRASH_DUMP
+>>  	if (elfcorehdr_size > 0) {
+>>  		elfcorehdr_res.start = elfcorehdr_addr;
+>> -- 
+>> 2.34.1
+>>
 
 
