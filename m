@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-42177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707A38B71BE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8148B70F9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 275B8283B01
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E00E7B22716
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04CE12C490;
-	Tue, 30 Apr 2024 11:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A50F12C499;
+	Tue, 30 Apr 2024 10:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDmDz8dP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESXbZQYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CECE7464;
-	Tue, 30 Apr 2024 11:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B3112B176;
+	Tue, 30 Apr 2024 10:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474817; cv=none; b=GwtSzjccfTu5F647x/2pY98VNSTT3/WnQjIt6al+vvxtewoSdQMs3jFfwgvpEFiccRRH7uQzHbjWRn8/vQ/Bk9vkWxKiaPvVRTsRk4Job8CUEVnk7yXdplVNtltB0J9UNtkcRCxuESfSM0f6h0sDly9aqKiF+nhIkB7JbqfAU+k=
+	t=1714474293; cv=none; b=itipt1Kw0q4AgPJH8WaIxJvYbNqHPnbqCITpCxomUy99j+CsnrGeMeINsEUV7gx4BwZImwh9PlzrhuqH6jnUmBBG1r8MpvMSI7KiH+1sQheQpBsDtBcA0RbQUzoj4bObzj5aIIF8NhC7x2qYT0BLGfPrt6YkdvY9u123XGjTNpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474817; c=relaxed/simple;
-	bh=XTmQ0ssi4hQIGuHALZFLujV7wKv/oEuckRXWqnfB98M=;
+	s=arc-20240116; t=1714474293; c=relaxed/simple;
+	bh=rzYsLSJduh+nEkn8UkuFwGvrZsUJXSiVdh89UB0aN9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftTfSbcALfOkvShMv/uCTG7RZryaXlIdiG79rRTm8rqWcWfNBExPsgPKlSfiH6fRyRVRYRNtbHk8HGTEzIWr9roqQYzG0kEnYVHylSJpFG7/BsugBheIMyyNOQpk8wVIaGoUarDovnq2dYtV7RgQ16oS/rMkwnymcIwo1XWCEc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDmDz8dP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E2AC2BBFC;
-	Tue, 30 Apr 2024 11:00:16 +0000 (UTC)
+	 MIME-Version; b=Y7CE1Ux+4i4/7y7y0opHrMkSsK/ClzmMUkxo0EqiaofdLqi2SgN2Bo1mjLqWlcgdR2+phw7fam88VR5PDM1X/cUnzPJG+rb3ggaCbOqqE/76xmq6NUJqV3n4g0jkKaS8PWPtkevCN29v5+XbSZOSed2Nc5F2XeYWtHNaNeGsqIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESXbZQYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC459C2BBFC;
+	Tue, 30 Apr 2024 10:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474817;
-	bh=XTmQ0ssi4hQIGuHALZFLujV7wKv/oEuckRXWqnfB98M=;
+	s=korg; t=1714474293;
+	bh=rzYsLSJduh+nEkn8UkuFwGvrZsUJXSiVdh89UB0aN9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDmDz8dPXB0yiRdoGK79242jN4PjeUbr+2kDkQ1cb222syCmmyNIbPRknB1HdReq7
-	 GgNqr/UUzDq4NNgs3Nyc4/32xfw4JxzIvk8rR74x10W7V+aUnutz2lbnOrIpV7pLT4
-	 oionrkismvdvzuXgrTBooATB7/QR3Z90i8wMWYWk=
+	b=ESXbZQYiGQx4Neml+Rgp0OT5BoDfOAv25dnhm85MzKIA2s3FnZgXoKkV5xd/PRBcM
+	 z1wyCVLatTjR4xqt6fDC6JlXbIn/FTWWAlvjwbCuvVGZJ3BxJesAVrwOxxbM1ANcF+
+	 H4eCA+FvEcPv6zkuzcIl5dv2vYeEhm2bYt88X4BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9ee20ec1de7b3168db09@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Phillip Potter <phil@philpotter.co.uk>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/138] geneve: fix header validation in geneve[6]_xmit_skb
+Subject: [PATCH 6.8 115/228] dpll: check that pin is registered in __dpll_pin_unregister()
 Date: Tue, 30 Apr 2024 12:38:13 +0200
-Message-ID: <20240430103049.670950440@linuxfoundation.org>
+Message-ID: <20240430103107.128134573@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,168 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit d8a6213d70accb403b82924a1c229e733433a5ef ]
+[ Upstream commit 9736c648370d237f61065a7e45e668e2db4374e9 ]
 
-syzbot is able to trigger an uninit-value in geneve_xmit() [1]
+Similar to what is done in dpll_device_unregister(), add assertion to
+__dpll_pin_unregister() to make sure driver does not try to unregister
+non-registered pin.
 
-Problem : While most ip tunnel helpers (like ip_tunnel_get_dsfield())
-uses skb_protocol(skb, true), pskb_inet_may_pull() is only using
-skb->protocol.
-
-If anything else than ETH_P_IPV6 or ETH_P_IP is found in skb->protocol,
-pskb_inet_may_pull() does nothing at all.
-
-If a vlan tag was provided by the caller (af_packet in the syzbot case),
-the network header might not point to the correct location, and skb
-linear part could be smaller than expected.
-
-Add skb_vlan_inet_prepare() to perform a complete mac validation.
-
-Use this in geneve for the moment, I suspect we need to adopt this
-more broadly.
-
-v4 - Jakub reported v3 broke l2_tos_ttl_inherit.sh selftest
-   - Only call __vlan_get_protocol() for vlan types.
-Link: https://lore.kernel.org/netdev/20240404100035.3270a7d5@kernel.org/
-
-v2,v3 - Addressed Sabrina comments on v1 and v2
-Link: https://lore.kernel.org/netdev/Zg1l9L2BNoZWZDZG@hog/
-
-[1]
-
-BUG: KMSAN: uninit-value in geneve_xmit_skb drivers/net/geneve.c:910 [inline]
- BUG: KMSAN: uninit-value in geneve_xmit+0x302d/0x5420 drivers/net/geneve.c:1030
-  geneve_xmit_skb drivers/net/geneve.c:910 [inline]
-  geneve_xmit+0x302d/0x5420 drivers/net/geneve.c:1030
-  __netdev_start_xmit include/linux/netdevice.h:4903 [inline]
-  netdev_start_xmit include/linux/netdevice.h:4917 [inline]
-  xmit_one net/core/dev.c:3531 [inline]
-  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3547
-  __dev_queue_xmit+0x348d/0x52c0 net/core/dev.c:4335
-  dev_queue_xmit include/linux/netdevice.h:3091 [inline]
-  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
-  packet_snd net/packet/af_packet.c:3081 [inline]
-  packet_sendmsg+0x8bb0/0x9ef0 net/packet/af_packet.c:3113
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  __sys_sendto+0x685/0x830 net/socket.c:2191
-  __do_sys_sendto net/socket.c:2203 [inline]
-  __se_sys_sendto net/socket.c:2199 [inline]
-  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2199
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:3804 [inline]
-  slab_alloc_node mm/slub.c:3845 [inline]
-  kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
-  __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
-  alloc_skb include/linux/skbuff.h:1318 [inline]
-  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
-  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
-  packet_alloc_skb net/packet/af_packet.c:2930 [inline]
-  packet_snd net/packet/af_packet.c:3024 [inline]
-  packet_sendmsg+0x722d/0x9ef0 net/packet/af_packet.c:3113
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  __sys_sendto+0x685/0x830 net/socket.c:2191
-  __do_sys_sendto net/socket.c:2203 [inline]
-  __se_sys_sendto net/socket.c:2199 [inline]
-  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2199
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-CPU: 0 PID: 5033 Comm: syz-executor346 Not tainted 6.9.0-rc1-syzkaller-00005-g928a87efa423 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-
-Fixes: d13f048dd40e ("net: geneve: modify IP header check in geneve6_xmit_skb and geneve_xmit_skb")
-Reported-by: syzbot+9ee20ec1de7b3168db09@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/000000000000d19c3a06152f9ee4@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Phillip Potter <phil@philpotter.co.uk>
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Phillip Potter <phil@philpotter.co.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Link: https://lore.kernel.org/r/20240206074853.345744-1-jiri@resnulli.us
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 38d7b94e81d0 ("dpll: fix dpll_pin_on_pin_register() for multiple parent pins")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/geneve.c     |  4 ++--
- include/net/ip_tunnels.h | 33 +++++++++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+), 2 deletions(-)
+ drivers/dpll/dpll_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 2bb9820c66641..af35361a3dcee 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -907,7 +907,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
+diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
+index c751a87c7a8e6..3e6282937e35c 100644
+--- a/drivers/dpll/dpll_core.c
++++ b/drivers/dpll/dpll_core.c
+@@ -29,6 +29,8 @@ static u32 dpll_pin_xa_id;
+ 	WARN_ON_ONCE(!xa_get_mark(&dpll_device_xa, (d)->id, DPLL_REGISTERED))
+ #define ASSERT_DPLL_NOT_REGISTERED(d)	\
+ 	WARN_ON_ONCE(xa_get_mark(&dpll_device_xa, (d)->id, DPLL_REGISTERED))
++#define ASSERT_DPLL_PIN_REGISTERED(p) \
++	WARN_ON_ONCE(!xa_get_mark(&dpll_pin_xa, (p)->id, DPLL_REGISTERED))
  
--	if (!pskb_inet_may_pull(skb))
-+	if (!skb_vlan_inet_prepare(skb))
- 		return -EINVAL;
- 
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-@@ -1004,7 +1004,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
- 
--	if (!pskb_inet_may_pull(skb))
-+	if (!skb_vlan_inet_prepare(skb))
- 		return -EINVAL;
- 
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 58d8e6260aa13..1f016af0622bd 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -333,6 +333,39 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
- 	return pskb_network_may_pull(skb, nhlen);
- }
- 
-+/* Variant of pskb_inet_may_pull().
-+ */
-+static inline bool skb_vlan_inet_prepare(struct sk_buff *skb)
-+{
-+	int nhlen = 0, maclen = ETH_HLEN;
-+	__be16 type = skb->protocol;
-+
-+	/* Essentially this is skb_protocol(skb, true)
-+	 * And we get MAC len.
-+	 */
-+	if (eth_type_vlan(type))
-+		type = __vlan_get_protocol(skb, type, &maclen);
-+
-+	switch (type) {
-+#if IS_ENABLED(CONFIG_IPV6)
-+	case htons(ETH_P_IPV6):
-+		nhlen = sizeof(struct ipv6hdr);
-+		break;
-+#endif
-+	case htons(ETH_P_IP):
-+		nhlen = sizeof(struct iphdr);
-+		break;
-+	}
-+	/* For ETH_P_IPV6/ETH_P_IP we make sure to pull
-+	 * a base network header in skb->head.
-+	 */
-+	if (!pskb_may_pull(skb, maclen + nhlen))
-+		return false;
-+
-+	skb_set_network_header(skb, maclen);
-+	return true;
-+}
-+
- static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
+ struct dpll_device_registration {
+ 	struct list_head list;
+@@ -651,6 +653,7 @@ static void
+ __dpll_pin_unregister(struct dpll_device *dpll, struct dpll_pin *pin,
+ 		      const struct dpll_pin_ops *ops, void *priv)
  {
- 	const struct ip_tunnel_encap_ops *ops;
++	ASSERT_DPLL_PIN_REGISTERED(pin);
+ 	dpll_xa_ref_pin_del(&dpll->pin_refs, pin, ops, priv);
+ 	dpll_xa_ref_dpll_del(&pin->dpll_refs, dpll, ops, priv);
+ 	if (xa_empty(&pin->dpll_refs))
 -- 
 2.43.0
 
