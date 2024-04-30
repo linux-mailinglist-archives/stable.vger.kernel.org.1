@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-42119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199228B7180
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62AA8B72E6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF78B1F213A4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06FA1B23399
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A0A128816;
-	Tue, 30 Apr 2024 10:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8288812CD90;
+	Tue, 30 Apr 2024 11:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ykc0yHsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSaZpwZ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFE612C534;
-	Tue, 30 Apr 2024 10:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA1E1E50A;
+	Tue, 30 Apr 2024 11:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474632; cv=none; b=olIh5nz3SAHHpkjFWVhRH2eYTcwxFARqs8zCxEKA00RyZYxzjXRG27bSDVYOrsECmKLexY2P88e/YwFL2fejmAMgLWjBXeLw0Yn6xS2Jww4k21EOvPvqVjFAiD2VSBkE0znIuDx+Ti5/lfLx/i/Kymr1wpj4tWGdXf9WfHcqdH8=
+	t=1714475584; cv=none; b=BDlPmtHTiXzn6VWLUiD5pojHaAWydpx5n6/Ge2CLeBjq4L4Jm0N6A3dNxXF5FOw9BWvP4qFDyAtn/it3HEFCaxPK4cB6GZKeU3NV6h5DX7sPfl1Ii+el/d6Zh69dyY6pQXFct0UtMGzhmYBVAgCvrlg2IJ9McLgeklFY9VqagfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474632; c=relaxed/simple;
-	bh=4d4v2lb4jSXvlHK0koSGlIXQJGBgUoZCttNTYB6EUV0=;
+	s=arc-20240116; t=1714475584; c=relaxed/simple;
+	bh=ycONLZEvvtYqCb3WuDzJvTe25E9GAGfd249LwHlXxBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oym516SuJncxogkC4wEceb4JIrjdH7C8H29Smf3TXwkC9MDxquq1JAK6cmnvytvL4MN6pA46UlXCb+I68dFVVLa60iEZn5rm+iJA72rnDuvoL/mNIiCooTmw4CSwc87xD2X0E7yiVBQzQE5Gso9+tb4MQ6QkBmsQYd1qQScwQas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ykc0yHsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD695C2BBFC;
-	Tue, 30 Apr 2024 10:57:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AKjeHXfLIocZ+urfbFE1tBiIaj+yTfLZg8U7Tiwpasd3UKXuvZIdGInlAA5aR+0ta/s9zCsqSY+075zhe1g4nnuq+Twr4pIRTUm28ecTGbGzyTqoMqN39B0QHdq0Gk6n+bTDLsGq4ci3ypX9o2eIifx8S0ZX84Hs0KaLJstHtxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSaZpwZ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BBAC2BBFC;
+	Tue, 30 Apr 2024 11:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474632;
-	bh=4d4v2lb4jSXvlHK0koSGlIXQJGBgUoZCttNTYB6EUV0=;
+	s=korg; t=1714475584;
+	bh=ycONLZEvvtYqCb3WuDzJvTe25E9GAGfd249LwHlXxBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ykc0yHsJXf8NcjwIOsizEgb8YGRzSEEQaB1XhVk4FD8k9wQjPWGOm8LPcR5KhoUxi
-	 MUqhsIeP2TqrpvtpB0cwe1af+v+5c23gzjqW+ePRdb1SHk5znU2u2lQiWPWwbiiyrV
-	 rQURVy2y5cNALtlTNOmHhbacjNY4QaC+xEIS8P8Y=
+	b=QSaZpwZ8JPOp3DI66L1ToEelciiufuixAUS/9Hz5jp/h6AW43S4Mi4bpP88dSgQa6
+	 FlgmKO1n2lQxFM1E032ifShg70klgVtogxx0G0RuAy2m/u8xPqFrtthCjqBJqTZV12
+	 Nvwa6VYEn5xR+se8GNSIlDSw9sk6l517Q6gTaxyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Bo Gan <ganboing@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 214/228] riscv: Fix TASK_SIZE on 64-bit NOMMU
-Date: Tue, 30 Apr 2024 12:39:52 +0200
-Message-ID: <20240430103109.981056692@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 141/186] drm/amdgpu/sdma5.2: use legacy HDP flush for SDMA2/3
+Date: Tue, 30 Apr 2024 12:39:53 +0200
+Message-ID: <20240430103102.126719400@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 6065e736f82c817c9a597a31ee67f0ce4628e948 ]
+commit 9792b7cc18aaa0c2acae6af5d0acf249bcb1ab0d upstream.
 
-On NOMMU, userspace memory can come from anywhere in physical RAM. The
-current definition of TASK_SIZE is wrong if any RAM exists above 4G,
-causing spurious failures in the userspace access routines.
+This avoids a potential conflict with firmwares with the newer
+HDP flush mechanism.
 
-Fixes: 6bd33e1ece52 ("riscv: add nommu support")
-Fixes: c3f896dcf1e4 ("mm: switch the test_vmalloc module to use __vmalloc_node")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
-Reviewed-by: Bo Gan <ganboing@gmail.com>
-Link: https://lore.kernel.org/r/20240227003630.3634533-2-samuel.holland@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 3422ced8a07fd..39c6bb8254683 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -888,7 +888,7 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- #define PAGE_SHARED		__pgprot(0)
- #define PAGE_KERNEL		__pgprot(0)
- #define swapper_pg_dir		NULL
--#define TASK_SIZE		0xffffffffUL
-+#define TASK_SIZE		_AC(-1, UL)
- #define VMALLOC_START		_AC(0, UL)
- #define VMALLOC_END		TASK_SIZE
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
+@@ -292,17 +292,21 @@ static void sdma_v5_2_ring_emit_hdp_flus
+ 	u32 ref_and_mask = 0;
+ 	const struct nbio_hdp_flush_reg *nbio_hf_reg = adev->nbio.hdp_flush_reg;
  
--- 
-2.43.0
-
+-	ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
++	if (ring->me > 1) {
++		amdgpu_asic_flush_hdp(adev, ring);
++	} else {
++		ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
+ 
+-	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
+-			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
+-			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
+-	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
+-	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
+-	amdgpu_ring_write(ring, ref_and_mask); /* reference */
+-	amdgpu_ring_write(ring, ref_and_mask); /* mask */
+-	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
+-			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
++		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
++				  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
++				  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
++		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
++		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
++		amdgpu_ring_write(ring, ref_and_mask); /* reference */
++		amdgpu_ring_write(ring, ref_and_mask); /* mask */
++		amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
++				  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
++	}
+ }
+ 
+ /**
 
 
 
