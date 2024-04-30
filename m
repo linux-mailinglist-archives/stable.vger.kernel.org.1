@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-41875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5268B702F
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:44:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED4D8B7205
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BF8C1F220C8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:44:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0F11282DDD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD9412D750;
-	Tue, 30 Apr 2024 10:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CC612C54B;
+	Tue, 30 Apr 2024 11:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHcUjzwp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/jew75F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED83012D74D;
-	Tue, 30 Apr 2024 10:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DD212C462;
+	Tue, 30 Apr 2024 11:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473824; cv=none; b=RkuAmgOlO+ZcZMROf8nJ4lLbg+/D9Gl2XZpxDmh/StwbqlCiD9OZtXQ+rwgWSMuaI9TUJ6DOzRQyFQ79KbL7f992fhvT3Z7sPqlA8pkrqT039tgyHPh3SISat5V28CUgUfLEbQDhvt5Ymth4J8E+fpu1eWTSIyStjOCSzs+FHCE=
+	t=1714474997; cv=none; b=M6VaEpvE71puVYE2WFWNW/DDqdUEQfASIV4ASPhc6JCHEm90c4mdpu+DE6QOZrVL34xj262hpojhKiXIMxu5ZLU2yH8bDygaXt1teZ95oKGJf46qSEq8THcfqzcwlxXcsR7+vPnIdJfYa3D2EF6TaY5kcXc6ZJobYO7zI4rlfuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473824; c=relaxed/simple;
-	bh=VU6TZYeUxiP9MKY8uq8nfNX0NdWG3D+lyihds4Z/fpg=;
+	s=arc-20240116; t=1714474997; c=relaxed/simple;
+	bh=fS+ZIRFatC4u1ekKUpY9bz+tjAblmsJqQ4kib4HTMi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UcbiESn0oQgm42PVifGY5pPEsjKs1CfgAFDcdd3MO6q/xy/0GSk00kb+iyjTg+zfzkFg0PsJsLwYKaShQclBOkNpJazsxycUthNZ+6SBr4BMe/npGyF9vHx18r/RZXjBd77qkikwAo42HJ87rxGoFulkgfAOS5MTflcriFgaDVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHcUjzwp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFD0C4AF1B;
-	Tue, 30 Apr 2024 10:43:43 +0000 (UTC)
+	 MIME-Version; b=FvCo+165/m0bue8BT3xuRgk13B57UdW3izc61tXGe7wh/2VCqP/c20jeKsKOSAv2BmDB/mLcnlacQKfCzYvCiJY0ug+F65UUt/h0nY6/Nvz8EuFuulmzPqJGrJu1nR3RqsVs0HqH4J1tM8EsP9Rvbr1OxrCB0fHDzAmO+6rfFRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/jew75F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1A2C2BBFC;
+	Tue, 30 Apr 2024 11:03:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473823;
-	bh=VU6TZYeUxiP9MKY8uq8nfNX0NdWG3D+lyihds4Z/fpg=;
+	s=korg; t=1714474997;
+	bh=fS+ZIRFatC4u1ekKUpY9bz+tjAblmsJqQ4kib4HTMi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHcUjzwpcUj+n+bpa4FvXltUuvCOI2J4Lv2t/SRBg2ak6qySHs03yat1zxcicX9TR
-	 B5lmHYRPBe70l+JNpQPpHPvPoKauKigwGUB8AAmLXgjMSVwiB3768S/eEPpw5V0+p4
-	 SUZ8sqfaVDc7j7BnG8yBYuuoxE/Gdv3eN8eOAT6k=
+	b=C/jew75Fnq2bvbpYMWSaEFQrMEHW1AqcYhZeu/2CyYJ7gQH/rJ5L0/SKq29ESOYoh
+	 yWPSfGFnJyBpQNF7+cjlLWORsscOfT6ZwYAz01AGjvtZgQTx/Zx1eNcEPhb9ab3F9r
+	 +rEQveMVkzXqh8U7lvqOAVc9ag2QgOWn8b0PDczU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ismael Luceno <iluceno@suse.de>,
-	Andreas Taschner <andreas.taschner@suse.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Firo Yang <firo.yang@suse.com>
-Subject: [PATCH 4.19 49/77] ipvs: Fix checksumming on GSO of SCTP packets
+	Vineet Gupta <vgupta@kernel.org>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 083/138] ARC: [plat-hsdk]: Remove misplaced interrupt-cells property
 Date: Tue, 30 Apr 2024 12:39:28 +0200
-Message-ID: <20240430103042.584119200@linuxfoundation.org>
+Message-ID: <20240430103051.864727790@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ismael Luceno <iluceno@suse.de>
+From: Alexey Brodkin <Alexey.Brodkin@synopsys.com>
 
-[ Upstream commit e10d3ba4d434ed172914617ed8d74bd411421193 ]
+[ Upstream commit 61231eb8113ce47991f35024f9c20810b37996bf ]
 
-It was observed in the wild that pairs of consecutive packets would leave
-the IPVS with the same wrong checksum, and the issue only went away when
-disabling GSO.
+"gmac" node stands for just an ordinary Ethernet controller,
+which is by no means a provider of interrupts, i.e. it doesn't serve
+as an interrupt controller, thus "#interrupt-cells" property doesn't
+belong to it and so we remove it.
 
-IPVS needs to avoid computing the SCTP checksum when using GSO.
+Fixes:
+------------>8------------
+  DTC     arch/arc/boot/dts/hsdk.dtb
+arch/arc/boot/dts/hsdk.dts:207.23-235.5: Warning (interrupt_provider): /soc/ethernet@8000: '#interrupt-cells' found, but node is not an interrupt provider
+arch/arc/boot/dts/hsdk.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+------------>8------------
 
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Co-developed-by: Firo Yang <firo.yang@suse.com>
-Signed-off-by: Ismael Luceno <iluceno@suse.de>
-Tested-by: Andreas Taschner <andreas.taschner@suse.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reported-by: Vineet Gupta <vgupta@kernel.org>
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arc/boot/dts/hsdk.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index b0cd7d08f2a7a..18e2e489d0e51 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -123,7 +123,8 @@ sctp_snat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	if (sctph->source != cp->vport || payload_csum ||
- 	    skb->ip_summed == CHECKSUM_PARTIAL) {
- 		sctph->source = cp->vport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 	}
-@@ -171,7 +172,8 @@ sctp_dnat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	    (skb->ip_summed == CHECKSUM_PARTIAL &&
- 	     !(skb_dst(skb)->dev->features & NETIF_F_SCTP_CRC))) {
- 		sctph->dest = cp->dport;
--		sctp_nat_csum(skb, sctph, sctphoff);
-+		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else if (skb->ip_summed != CHECKSUM_PARTIAL) {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 	}
+diff --git a/arch/arc/boot/dts/hsdk.dts b/arch/arc/boot/dts/hsdk.dts
+index dcaa44e408ace..27f4194b376bb 100644
+--- a/arch/arc/boot/dts/hsdk.dts
++++ b/arch/arc/boot/dts/hsdk.dts
+@@ -205,7 +205,6 @@
+ 		};
+ 
+ 		gmac: ethernet@8000 {
+-			#interrupt-cells = <1>;
+ 			compatible = "snps,dwmac";
+ 			reg = <0x8000 0x2000>;
+ 			interrupts = <10>;
 -- 
 2.43.0
 
