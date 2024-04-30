@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-41895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED288B7057
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D97ED8B73A1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A5B1281141
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D17EB210DB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1857B12C48B;
-	Tue, 30 Apr 2024 10:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFD612CDAE;
+	Tue, 30 Apr 2024 11:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dn0Z//Gm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGfnyRkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB89612C47A;
-	Tue, 30 Apr 2024 10:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFE112C805;
+	Tue, 30 Apr 2024 11:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473883; cv=none; b=OT2x//CrkixxXEo1YL1IwrgcB6WBK9Ihzt6ca4ThVZM3qggN7XhWy6qyBSfoBLcEWW3mgR0ox0Dzk1hhTY5lrQ/Xe/rdcSmdrk5urIcLjZ8NKE53ZzsN1WI8afHKjuYmUA8BQezzKNIlWx8fjwQiV6DBG9L2GBbgXJ2HK9Zoh7Q=
+	t=1714476091; cv=none; b=bgnOc4Sn2pOt0RB7XvjztMGpBrZit/RIMnd19T2oXyVYJfkRLWl0dfgeTLSSX+RT9fXGLRDeFCyVmH7STN/sOe0WNDk1ruwBQJHrjJ3kV2u4yxKji2T4kldH7FgP77itI7Gj9PuLhMKPbjhlsyVCasjgAYqAKfCGHcED9lKPrWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473883; c=relaxed/simple;
-	bh=LSgtHiTVy1r4DHM3bC86e4XAHL2SF1qgK61lD2IXvME=;
+	s=arc-20240116; t=1714476091; c=relaxed/simple;
+	bh=U7YtRZtBioJtm9rI4wi/Qzd1baIK5F6lWsJegfQnD6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEvwhg8Xe8b1eYI6EXxdDUAnYhO3smrKaDkbgQiQq6I7ZAMVer441DzJTyTPR2w78s4BJV24S4FDIsyuaU1qQgjboFIbx9vP/99xKGip75YmlY5rtgII2zth1/hcFuXXfqxcpzEyZVAdSyW4K4+wb2MmfgEE2s2uRQl6af9WUao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dn0Z//Gm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF4EC2BBFC;
-	Tue, 30 Apr 2024 10:44:43 +0000 (UTC)
+	 MIME-Version; b=JpvkJPAv0mLcMA+13cz35wc5jFqrKpgi0TgWWKhESLYoKKc4mgdSwbBj/3T6e5rR1bqdNxmgNvFQDuO0VbDFyE+Fw7eS84ZGH6RR2GwcoU2O1G1mHCOpbLywC8IZwIH+GKiAJA7MxTReR4QEm+hVqarPXw+gHma3bGGRY18mOGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGfnyRkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E3BC2BBFC;
+	Tue, 30 Apr 2024 11:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473883;
-	bh=LSgtHiTVy1r4DHM3bC86e4XAHL2SF1qgK61lD2IXvME=;
+	s=korg; t=1714476091;
+	bh=U7YtRZtBioJtm9rI4wi/Qzd1baIK5F6lWsJegfQnD6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dn0Z//GmiCHkPsYrIYUXcNuC4Q9T8VrXbHtuniHJcZCl+r0ze7fxaY6nWBDvdAAgm
-	 BtbnDwbYDp7soT0UI0SR3pU6sMuPvxu5mUhvYQjCWrqSggZVX5gcy62hhXBtkiqy6+
-	 IzbiX33vMSOcTfnVkTRC/r6Q3WxKqNf8wWI33EGU=
+	b=NGfnyRkd4rH+mFhv5TS7sRuoC2C6nBWPFr5KSr8kUB6szr+qxpd0OIecpzkZPoyLm
+	 V3UGgURR7EF0TAYWr8MTH0a8u1XQIF7pJMFVQVWD8ttZYekum3mhlnUYgG4meyrF3u
+	 WrfUfnZmxSWKZ5scSMpJ6EAb3aGyU2sbCI8K5uPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Claudiu Beznea <claudiu.beznea@microchip.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 71/77] idma64: Dont try to serve interrupts when device is powered off
+Subject: [PATCH 5.4 030/107] clk: remove extra empty line
 Date: Tue, 30 Apr 2024 12:39:50 +0200
-Message-ID: <20240430103043.235435483@linuxfoundation.org>
+Message-ID: <20240430103045.550888780@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 9140ce47872bfd89fca888c2f992faa51d20c2bc ]
+[ Upstream commit 79806d338829b2bf903480428d8ce5aab8e2d24b ]
 
-When iDMA 64-bit device is powered off, the IRQ status register
-is all 1:s. This is never happen in real case and signalling that
-the device is simply powered off. Don't try to serve interrupts
-that are not ours.
+Remove extra empty line.
 
-Fixes: 667dfed98615 ("dmaengine: add a driver for Intel integrated DMA 64-bit")
-Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
-Closes: https://lore.kernel.org/r/700bbb84-90e1-4505-8ff0-3f17ea8bc631@gmail.com
-Tested-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240321120453.1360138-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20220630151205.3935560-1-claudiu.beznea@microchip.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idma64.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/clk.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
-index 89c5e5b460687..920e98dc7113e 100644
---- a/drivers/dma/idma64.c
-+++ b/drivers/dma/idma64.c
-@@ -172,6 +172,10 @@ static irqreturn_t idma64_irq(int irq, void *dev)
- 	u32 status_err;
- 	unsigned short i;
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index f9d89b42b8f9d..276b8a1f3c3f3 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -3508,7 +3508,6 @@ static int __clk_core_init(struct clk_core *core)
  
-+	/* Since IRQ may be shared, check if DMA controller is powered on */
-+	if (status == GENMASK(31, 0))
-+		return IRQ_NONE;
-+
- 	dev_vdbg(idma64->dma.dev, "%s: status=%#x\n", __func__, status);
+ 	clk_core_reparent_orphans_nolock();
  
- 	/* Check if we have any interrupt from the DMA controller */
+-
+ 	kref_init(&core->ref);
+ out:
+ 	clk_pm_runtime_put(core);
 -- 
 2.43.0
 
