@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17EED8B721D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B558B715E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A91971F21A6A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74849285AFA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14D312C490;
-	Tue, 30 Apr 2024 11:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A76612C530;
+	Tue, 30 Apr 2024 10:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijs/JrVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ch+V0mIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DE212C462;
-	Tue, 30 Apr 2024 11:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DDC12C462;
+	Tue, 30 Apr 2024 10:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475069; cv=none; b=i/d9S88Qvs9hNi6frb1IZcqHbPQ+1JcLAbjAWCP8Bqy2iK0CKBJF/w6tuM5H0jOIRo5GY8WvSPA6xxA3ZON6J1SR51rE9bpwbTBLf06JYP+d+Uh3c2NlcqE8rp2o7Wn0tWpRiTs8+B5QeLUs4TqmTMMpg5014s2lPzjeP/B4kxQ=
+	t=1714474549; cv=none; b=d6wnqvG/QWLp4ayQsC+c0fhwOdz9QdtfpHfzowGzRPlId3FMrrdJt8QG1Bxzp+czdQyf5unCIWo6D4OiYReRv/VHb+B1WOowVRzXgdXnr7QsuWk9+JLe6sjkCovtd/WGQJm6y5fIoef9uvoe230V5iO3L26QHRcRtAi975dGL18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475069; c=relaxed/simple;
-	bh=yYeHXK5+DjZADydlmiK0NGtbiuFwPmr6ZLzwyEqLuo4=;
+	s=arc-20240116; t=1714474549; c=relaxed/simple;
+	bh=I57b3cwvCNdi5XKb/ysa6mULLbFU61OS+W6uiMS1COI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQDLr/84eTqJu9SxUSY4HxBDzIIT5iH/rd0QQpOjaWdAE9U8c+hXDXk8nRcGzNyQAf9y/urJnO3XcquozIxZFIm0i+4KSXeYBdgvWZDKHeaH2lyY/lTUDjkOcQ3HFZjjOhc0zQWk80QthpfQI51VQDWlmLyJlbV4GmrXFtnX5Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijs/JrVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73FFC2BBFC;
-	Tue, 30 Apr 2024 11:04:28 +0000 (UTC)
+	 MIME-Version; b=i6utRnbWBjvBK3odQPnKQDPZ9jXip7U0dl2jHTAD4t77WQ7gMpeeok05vnAg9xkdo82iOJ5vS7u2JyCwIyks0IAsT0IEtUfTwo+zppFcWnqFk+Fe1imd9KYL/J15CoAePd+cu+S+Axi12I1g6eGD09xKGD0lbJzG9ff7/kbo5VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch+V0mIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E59BC2BBFC;
+	Tue, 30 Apr 2024 10:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475069;
-	bh=yYeHXK5+DjZADydlmiK0NGtbiuFwPmr6ZLzwyEqLuo4=;
+	s=korg; t=1714474549;
+	bh=I57b3cwvCNdi5XKb/ysa6mULLbFU61OS+W6uiMS1COI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijs/JrVDFKu8Z61g30n5SUsOEo0pJxFAKFTLy+mdZ5G1JCpP+VefSYxt119eU2ApJ
-	 15n3LDGSZf+iw5NKS3MkQDjMQxU9HHrUH3mGRz2ExW+vF3Ob1gcET57vFqVQD9wbBU
-	 gyMfYvHFzjh7l72/jvmaf8BZjrtIujGR610PmYds=
+	b=Ch+V0mIcy4ZB2z1kPrCdpZ903wfAsiiZhLkTHflBirGII0ow6RXiHbO15qbsfsINF
+	 Zq0+qY8cUpifSRSk7XUX2sXl1BFaDk4xHfKJDMGY0wxYW6bflJ5gxoPLDRlYqIzz5n
+	 QGvjZLwH0gRXHJFoeWTe3MmSOZTB++KGyzy4S9AI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Bauer <mail@david-bauer.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/138] vxlan: drop packets from invalid src-address
+	Yick Xie <yick.xie@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 192/228] udp: preserve the connected status if only UDP cmsg
 Date: Tue, 30 Apr 2024 12:39:30 +0200
-Message-ID: <20240430103051.923014156@linuxfoundation.org>
+Message-ID: <20240430103109.339867059@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Yick Xie <yick.xie@gmail.com>
 
-[ Upstream commit f58f45c1e5b92975e91754f5407250085a6ae7cf ]
+commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
 
-The VXLAN driver currently does not check if the inner layer2
-source-address is valid.
+If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+"connected" should not be set to 0. Otherwise it stops
+the connected socket from using the cached route.
 
-In case source-address snooping/learning is enabled, a entry in the FDB
-for the invalid address is created with the layer3 address of the tunnel
-endpoint.
-
-If the frame happens to have a non-unicast address set, all this
-non-unicast traffic is subsequently not flooded to the tunnel network
-but sent to the learnt host in the FDB. To make matters worse, this FDB
-entry does not expire.
-
-Apply the same filtering for packets as it is done for bridges. This not
-only drops these invalid packets but avoids them from being learnt into
-the FDB.
-
-Fixes: d342894c5d2f ("vxlan: virtual extensible lan")
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv4/udp.c |    5 +++--
+ net/ipv6/udp.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 3096769e718ed..b173497a3e0ca 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1778,6 +1778,10 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
- 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
- 		return false;
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1125,16 +1125,17 @@ int udp_sendmsg(struct sock *sk, struct
  
-+	/* Ignore packets from invalid src-address */
-+	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
-+		return false;
-+
- 	/* Get address from the outer IP header */
- 	if (vxlan_get_sk_family(vs) == AF_INET) {
- 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
--- 
-2.43.0
-
+ 	if (msg->msg_controllen) {
+ 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip_cmsg_send(sk, msg, &ipc,
+ 					   sk->sk_family == AF_INET6);
++			connected = 0;
++		}
+ 		if (unlikely(err < 0)) {
+ 			kfree(ipc.opt);
+ 			return err;
+ 		}
+ 		if (ipc.opt)
+ 			free = 1;
+-		connected = 0;
+ 	}
+ 	if (!ipc.opt) {
+ 		struct ip_options_rcu *inet_opt;
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1476,9 +1476,11 @@ do_udp_sendmsg:
+ 		ipc6.opt = opt;
+ 
+ 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, fl6,
+ 						    &ipc6);
++			connected = false;
++		}
+ 		if (err < 0) {
+ 			fl6_sock_release(flowlabel);
+ 			return err;
+@@ -1490,7 +1492,6 @@ do_udp_sendmsg:
+ 		}
+ 		if (!(opt->opt_nflen|opt->opt_flen))
+ 			opt = NULL;
+-		connected = false;
+ 	}
+ 	if (!opt) {
+ 		opt = txopt_get(np);
 
 
 
