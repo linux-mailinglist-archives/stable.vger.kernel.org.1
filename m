@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-41910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2568B7069
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9728B7300
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41399B21945
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 768CA2861F9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D2212C498;
-	Tue, 30 Apr 2024 10:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CD512DDAF;
+	Tue, 30 Apr 2024 11:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0gjSRQ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNpv/Z1k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0320F12C461;
-	Tue, 30 Apr 2024 10:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E9812D215;
+	Tue, 30 Apr 2024 11:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473928; cv=none; b=QdPNqURYv2qr5VXoiRHLRs1Sci+LjjXVt/LNn4FJoxb1NDcHtiTYJo3bVLP0y1nv7+aJMi8pO5zT8EB3vITXXmurUz1dtEfj5QTbmRg0JwZMDARlalr7P9kw11B9Xv2eBa4oDUyP2TnjIkYvrbuZ71GU7Jt6CZb1ZENeNSklzls=
+	t=1714475649; cv=none; b=L4fWHUFipIP7EonxjtGQZinjeduwmjij0ruI7rJicK1O3bnsSroEVHJ1wtjFYw21dGhu6gwrao+iHuKS2chau4y2lNDYFe7nE43NI3VUMHcyHio/FMQZuM3obdOIaKW9VqmN9V/cTM2T9wZf1VMazip2EJKDmjx//HsVgMnKSL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473928; c=relaxed/simple;
-	bh=rRpxk2yXVK4TtmT+YMlCQfr6wY206MUM2ICUUOZnjE8=;
+	s=arc-20240116; t=1714475649; c=relaxed/simple;
+	bh=QER33Um8DSt9li4AakiqdP6eonE84+scmJVfTMhqtCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EBy1Brm2W3u62NeKuRnSjwuvJMzW/l5WagXBZcGiKNXo6lSEpDgK83pIQrIk76QGlT5vMv2Cm/qBAOH1Z+j96Bx7BwY7ERdQmRHu9P0yEJF7BLJkfsSbxeuU/carC2yxLggjnD0ouvNrRHKxZCU5rmpsqIva74Kle0zfusSXLPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0gjSRQ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80701C2BBFC;
-	Tue, 30 Apr 2024 10:45:27 +0000 (UTC)
+	 MIME-Version; b=bZIptTMBHNOb9PRgcwW9+l2dyy99JngOura6IEzUKx/Ze5MyVvRjLdfgpLA1OvYegyxq8D1c8PyrKQyEUZ1RTNRCdq4ZSd2mDzVEvoYUZQEIghuW3UQrmGALKsnUm68uO1bjvNvrSo4kjxZ7/VLK+zc1HGwks9FR4qoPTrIB2y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNpv/Z1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E6DC4AF1B;
+	Tue, 30 Apr 2024 11:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473927;
-	bh=rRpxk2yXVK4TtmT+YMlCQfr6wY206MUM2ICUUOZnjE8=;
+	s=korg; t=1714475649;
+	bh=QER33Um8DSt9li4AakiqdP6eonE84+scmJVfTMhqtCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M0gjSRQ3LdNYtrRxaVzapRG0fMkCGmiaz8T306Nav79hse3oham6ESNRF+yLNSgaY
-	 M/zYll/+F0fMmZkw3UiixhVqod+rGTGcxtaG6WVhcxkjJcpWeCBbhFtPxu55MoygBf
-	 BHaVkTs83MRN4glLvC7m2u+DuIZA6m81vs/GJ6+s=
+	b=kNpv/Z1khctJDl2cOcafCSbWaJV2kjQIb6LMQHmsp4+fn3AeS46CI34LxY+DOym3F
+	 tvueLdjmnzwI76/20IWjkCRPSgMdOSmrwcD7tn9N1JtlH0Z699bwqh11La4G0G6V0i
+	 tllpC/lDl3Q2eL12rjsv8qAvsjiYycq6EM8i4xsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oak Zeng <oak.zeng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 55/77] drm/amdgpu: restrict bo mapping within gpu address limits
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 122/186] mtd: rawnand: qcom: Fix broken OP_RESET_DEVICE command in qcom_misc_cmd_type_exec()
 Date: Tue, 30 Apr 2024 12:39:34 +0200
-Message-ID: <20240430103042.762486586@linuxfoundation.org>
+Message-ID: <20240430103101.575140727@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 8b80d74bdb2285d3022b349c8451eb16535f7906 ]
+commit b61bb5bc2c1cd00bb53db42f705735db6e8700f0 upstream.
 
-Have strict check on bo mapping since on some systems, such as A+A or
-hybrid, the cpu might support 5 level paging or can address memory above
-48 bits but gpu might be limited by hardware to just use 48 bits. In
-general, this applies to all asics where this limitation can be checked
-against their max_pfn range. This restricts the range to map bo within
-pratical limits of cpu and gpu for shared virtual memory access.
+While migrating to exec_ops in commit a82990c8a409 ("mtd: rawnand: qcom:
+Add read/read_start ops in exec_op path"), OP_RESET_DEVICE command handling
+got broken unintentionally. Right now for the OP_RESET_DEVICE command,
+qcom_misc_cmd_type_exec() will simply return 0 without handling it. Even,
+if that gets fixed, an unnecessary FLASH_STATUS read descriptor command is
+being added in the middle and that seems to be causing the command to fail
+on IPQ806x devices.
 
-Reviewed-by: Oak Zeng <oak.zeng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 6fef2d4c00b5 ("drm/amdgpu: validate the parameters of bo mapping operations more clearly")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So let's fix the above two issues to make OP_RESET_DEVICE command working
+again.
+
+Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
+Cc: stable@vger.kernel.org
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240404083157.940-1-ansuelsmth@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/qcom_nandc.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index cdcf9e697c398..acf03c716aca5 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2083,7 +2083,8 @@ int amdgpu_vm_bo_map(struct amdgpu_device *adev,
- 	/* make sure object fit at this offset */
- 	eaddr = saddr + size - 1;
- 	if (saddr >= eaddr ||
--	    (bo && offset + size > amdgpu_bo_size(bo)))
-+	    (bo && offset + size > amdgpu_bo_size(bo)) ||
-+	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
- 		return -EINVAL;
+diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
+index b079605c84d3..b8cff9240b28 100644
+--- a/drivers/mtd/nand/raw/qcom_nandc.c
++++ b/drivers/mtd/nand/raw/qcom_nandc.c
+@@ -2815,7 +2815,7 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
+ 			      host->cfg0_raw & ~(7 << CW_PER_PAGE));
+ 		nandc_set_reg(chip, NAND_DEV0_CFG1, host->cfg1_raw);
+ 		instrs = 3;
+-	} else {
++	} else if (q_op.cmd_reg != OP_RESET_DEVICE) {
+ 		return 0;
+ 	}
  
- 	saddr /= AMDGPU_GPU_PAGE_SIZE;
-@@ -2148,7 +2149,8 @@ int amdgpu_vm_bo_replace_map(struct amdgpu_device *adev,
- 	/* make sure object fit at this offset */
- 	eaddr = saddr + size - 1;
- 	if (saddr >= eaddr ||
--	    (bo && offset + size > amdgpu_bo_size(bo)))
-+	    (bo && offset + size > amdgpu_bo_size(bo)) ||
-+	    (eaddr >= adev->vm_manager.max_pfn << AMDGPU_GPU_PAGE_SHIFT))
- 		return -EINVAL;
+@@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
+ 	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
  
- 	/* Allocate all the needed memory */
+ 	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
+-	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
+-	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
+-	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
++	if (q_op.cmd_reg == OP_BLOCK_ERASE)
++		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
+ 
+ 	write_reg_dma(nandc, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
+ 	read_reg_dma(nandc, NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
 -- 
-2.43.0
+2.44.0
 
 
 
