@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-42604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E105E8B73C8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26E78B7312
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 973BF1F21FC3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBCCDB227BB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032628801;
-	Tue, 30 Apr 2024 11:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D897012D215;
+	Tue, 30 Apr 2024 11:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MC4JNI5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6//lwB7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E0917592;
-	Tue, 30 Apr 2024 11:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9575012CDA5;
+	Tue, 30 Apr 2024 11:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476196; cv=none; b=Sea/Aj25gv2pAC+jOtZgDdDgezTXqujeeJjqAf44tusNEHYZ5/oErWN3G0stzgAEsmwo/etFiXJZ+56NdXHhQtYYj1Ic7RSxHEIWkxsV4cusJjP1kU45q4AvVlw/TqVR3ekIym2A/5zGcK8S+Ig7RCUYeLsDdOPYPXond3nXvhg=
+	t=1714475681; cv=none; b=ARK4T/7+Tnv8Sc7u/KOV1YBe5M3c07jo4wvR2XIGVTQuFMLj+2xJRsYAFgyF5iCWxn8MMoFHT900rOICyNLXv4Wn+l+Kd+j9+EgqtQPYQqVbK1b0URecBwSiFxaYfRMemP9S5qFdEpeuaOz8OI9J8zYJ6uzRakFhie1qxL1GDsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476196; c=relaxed/simple;
-	bh=7w1F6tUqly0yoPZpAJbgQS7IeAPUunyl17Fpv81xa8g=;
+	s=arc-20240116; t=1714475681; c=relaxed/simple;
+	bh=+dSnriYXAi/dOmwuUznuBqkhPydFvQhIdz7/uN9wAo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cx/mF0CSYOykkVI0ApkKBPpU1pLqxiMm9xKlCVSqGcaSqJ7IitL5DgNE6RAcMKRc+q3Upv2VDpvOodRSqS6r28EICcfhSfAQceQZs1QljOJTmN1td3oJDDV1oFWxmhQYVWNlKlqYWHjZSESt0Bi1retwo1Lut6s+kwGV2lwe+tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MC4JNI5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32446C2BBFC;
-	Tue, 30 Apr 2024 11:23:16 +0000 (UTC)
+	 MIME-Version; b=UJU3cQIxUzqeJyEsMbI4kOpU3bQyPwAt6FR7jsVN+aKWiiE8X81DssekCQxRK+elDVMglva4qrGluJyLLBNKwsaeCW5mTRcMhJu01JJpopvkHnlPvleCRa+wedWJ2u7INaljtar14f0Hl4H0ucKDaBYLN5pcqGjOO9hLdu95JlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6//lwB7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DF6C2BBFC;
+	Tue, 30 Apr 2024 11:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476196;
-	bh=7w1F6tUqly0yoPZpAJbgQS7IeAPUunyl17Fpv81xa8g=;
+	s=korg; t=1714475681;
+	bh=+dSnriYXAi/dOmwuUznuBqkhPydFvQhIdz7/uN9wAo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MC4JNI5qu+klA/Jh2/8h6+GNXKhbeTqEiq7r0ss8XcB9yALx1g/mq5e5+dPM9G/LS
-	 qp1d3MeNgfhUN4LH1Ux8g+uXqfQQMVANfMN2AtzTds/5oBTEHRApWyjezd1VTmRqv8
-	 ZUq1nW9pyWB+w+KC0TMcU2dqLExfrgpWiNMXg39I=
+	b=x6//lwB7+g0GxrW82bfJ1+NPfsjJgtGa07x88VMqym0jhOmkbhWG1N2Qfg4f0IYAr
+	 nl+VtDkKJSAH4VnEq9uf9cZAWOCmSgcFPwUaIa1VhJbQViqZXLGGbj7MXlsB5UNV+V
+	 Hcmw+6BuYYN+OZG25nnfXNHTFaNRF9PCWczQt35Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	shironeko <shironeko@tesaguri.club>,
-	Eric Dumazet <edumazet@google.com>,
-	Jose Alonso <joalonsof@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Eric DeVolder <eric_devolder@yahoo.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/107] net: usb: ax88179_178a: stop lying about skb->truesize
+Subject: [PATCH 6.6 172/186] riscv: fix VMALLOC_START definition
 Date: Tue, 30 Apr 2024 12:40:24 +0200
-Message-ID: <20240430103046.544941882@linuxfoundation.org>
+Message-ID: <20240430103103.023909332@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +69,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit 4ce62d5b2f7aecd4900e7d6115588ad7f9acccca ]
+[ Upstream commit ac88ff6b9d7dea9f0907c86bdae204dde7d5c0e6 ]
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+When below config items are set, compiler complained:
 
-In this patch, I removed one of the skb->truesize overide.
+--------------------
+CONFIG_CRASH_CORE=y
+CONFIG_KEXEC_CORE=y
+CONFIG_CRASH_DUMP=y
+......
+-----------------------
 
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path")
+-------------------------------------------------------------------
+arch/riscv/kernel/crash_core.c: In function 'arch_crash_save_vmcoreinfo':
+arch/riscv/kernel/crash_core.c:11:58: warning: format '%lx' expects argument of type 'long unsigned int', but argument 2 has type 'int' [-Wformat=]
+11 |         vmcoreinfo_append_str("NUMBER(VMALLOC_START)=0x%lx\n", VMALLOC_START);
+   |                                                        ~~^
+   |                                                          |
+   |                                                          long unsigned int
+   |                                                        %x
+----------------------------------------------------------------------
 
-Fixes: f8ebb3ac881b ("net: usb: ax88179_178a: Fix packet receiving")
-Reported-by: shironeko <shironeko@tesaguri.club>
-Closes: https://lore.kernel.org/netdev/c110f41a0d2776b525930f213ca9715c@tesaguri.club/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jose Alonso <joalonsof@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240421193828.1966195-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is because on riscv macro VMALLOC_START has different type when
+CONFIG_MMU is set or unset.
+
+arch/riscv/include/asm/pgtable.h:
+--------------------------------------------------
+
+Changing it to _AC(0, UL) in case CONFIG_MMU=n can fix the warning.
+
+Link: https://lkml.kernel.org/r/ZW7OsX4zQRA3mO4+@MiWiFi-R3L-srv
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>	# build-tested
+Cc: Eric DeVolder <eric_devolder@yahoo.com>
+Cc: Ignat Korchagin <ignat@cloudflare.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 6065e736f82c ("riscv: Fix TASK_SIZE on 64-bit NOMMU")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 84dc9fb2b1f3f..c6159b521e063 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1452,21 +1452,16 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			/* Skip IP alignment pseudo header */
- 			skb_pull(skb, 2);
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 2793304bf1b76..eaa54a3a16212 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -904,7 +904,7 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+ #define PAGE_KERNEL		__pgprot(0)
+ #define swapper_pg_dir		NULL
+ #define TASK_SIZE		0xffffffffUL
+-#define VMALLOC_START		0
++#define VMALLOC_START		_AC(0, UL)
+ #define VMALLOC_END		TASK_SIZE
  
--			skb->truesize = SKB_TRUESIZE(pkt_len_plus_padd);
- 			ax88179_rx_checksum(skb, pkt_hdr);
- 			return 1;
- 		}
- 
--		ax_skb = skb_clone(skb, GFP_ATOMIC);
-+		ax_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
- 		if (!ax_skb)
- 			return 0;
--		skb_trim(ax_skb, pkt_len);
-+		skb_put(ax_skb, pkt_len);
-+		memcpy(ax_skb->data, skb->data + 2, pkt_len);
- 
--		/* Skip IP alignment pseudo header */
--		skb_pull(ax_skb, 2);
--
--		skb->truesize = pkt_len_plus_padd +
--				SKB_DATA_ALIGN(sizeof(struct sk_buff));
- 		ax88179_rx_checksum(ax_skb, pkt_hdr);
- 		usbnet_skb_return(dev, ax_skb);
- 
+ #endif /* !CONFIG_MMU */
 -- 
 2.43.0
 
