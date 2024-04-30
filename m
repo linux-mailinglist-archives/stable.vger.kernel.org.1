@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-42427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F708B72F7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE348B721E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43B141F21688
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E44DE285C36
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E212C12D1F4;
-	Tue, 30 Apr 2024 11:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F5E12C801;
+	Tue, 30 Apr 2024 11:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5v2ym37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NDuARGF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0486211C;
-	Tue, 30 Apr 2024 11:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BF312C462;
+	Tue, 30 Apr 2024 11:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475629; cv=none; b=AXa37pqVgF51703q978t2xLl1IK/c0IL3w0TLfDpoKkuzsSJwQQGakCAH5q/wA7Ojd1nrsEe3ki8EWPHoomOn27q004Grgzc0ICGzqAPYrQwgh7FIxAEf129MiveKBncsFkEfnjBLy9UfcSumV+GjjRwc5n3Ltn5I7BENgqF6ck=
+	t=1714475072; cv=none; b=Wf01eUpwFF5xlOgbnlrmQU+npdGLgRwA36g1YuNadab/zL+ZMnzo53yRdu6KnN6O9LGiO2tJlA8Gp+ZkcdozGLoQ7nzEE4VVJ4NDWfteCMECIX2Y6iQN5yAi2KF/AhhDR13JR9MvjqyDpHnMGAZYd9ZV+AhZ7neA+yTzG/qvF5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475629; c=relaxed/simple;
-	bh=ocUHaCR5VhFkzBvzAuPGqa8FS/z/qxShnf5xBJugNWg=;
+	s=arc-20240116; t=1714475072; c=relaxed/simple;
+	bh=UyjtlqQhd1djINb/td3UFda3xaPNluBPyWA6w1g8efs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXg2rjL06HajpZUi/YzzIRaghZIr9WEL5euRKo9Mrkwxfc2zQPe9TrxekgwyJ7giQd7HqiY6xiY6CqoHQ3VTTxEqw8JqoDfxpKx48dys/ZHXMVma1MJ0v/qmIncC95YOxxWHCNkVhMOEtPJBPPukkQwukGBL8OGVfENd8TCV2mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5v2ym37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25B6C2BBFC;
-	Tue, 30 Apr 2024 11:13:48 +0000 (UTC)
+	 MIME-Version; b=o0aMRccGnLPsJclktUd8dHdwR3BhN6aa939BNm6/AAeJsRpcx7cd7+BcVUniqMtwAM/FowX+wKyB26666bLf1WM7MjQxNYihuMyeEdSxt2HlqKPb2BIcDI5jPpeAr6PgmoVh6wzJlfSnzQMu//PWGn0R0TMtc3+t9V/oTPwLDPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NDuARGF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB52C2BBFC;
+	Tue, 30 Apr 2024 11:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475629;
-	bh=ocUHaCR5VhFkzBvzAuPGqa8FS/z/qxShnf5xBJugNWg=;
+	s=korg; t=1714475072;
+	bh=UyjtlqQhd1djINb/td3UFda3xaPNluBPyWA6w1g8efs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5v2ym37tjTB4NExF774E75g8lZVsAUqeP3dF29EkNl75Ius87Ztz2l2JR8lrs8Ql
-	 B4FhMOcWVbgbS6m8QLX2BIpMxqvRinkglyLnJpB/ZsEs2dt41vSpcasE2ANxeTgNlC
-	 4Y75qFSOre/NEzia50JcFu7yJYsxlt+KmPWnea9g=
+	b=0NDuARGFXGJbeawp0iybDtaEXrdqQY/G13IbVb4jrIpAIrBg4QjDT2y52BbQQa6lr
+	 qVS88GxblmsseP/EbRay3wiMEgjXWIQQh+sZhF7GYO0+/ubqHEOgLXvzqosG/7MAey
+	 acUuS8xf9Pc8HDKSTTGFBxXWtIv1NQ/Bu/7d7zps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Steev Klimaszewski <steev@kali.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 154/186] phy: qcom: qmp-combo: Fix register base for QSERDES_DP_PHY_MODE
+	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH 5.10 121/138] irqchip/gic-v3-its: Prevent double free on error
 Date: Tue, 30 Apr 2024 12:40:06 +0200
-Message-ID: <20240430103102.504458827@linuxfoundation.org>
+Message-ID: <20240430103052.967222301@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,59 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
 
-commit ee13e1f3c72b9464a4d73017c060ab503eed653a upstream.
+commit c26591afd33adce296c022e3480dea4282b7ef91 upstream.
 
-The register base that was used to write to the QSERDES_DP_PHY_MODE
-register was 'dp_dp_phy' before commit 815891eee668 ("phy:
-qcom-qmp-combo: Introduce orientation variable"). There isn't any
-explanation in the commit why this is changed, so I suspect it was an
-oversight or happened while being extracted from some other series.
-Oddly the value being 0x4c or 0x5c doesn't seem to matter for me, so I
-suspect this is dead code, but that can be fixed in another patch. It's
-not good to write to the wrong register space, and maybe some other
-version of this phy relies on this.
+The error handling path in its_vpe_irq_domain_alloc() causes a double free
+when its_vpe_init() fails after successfully allocating at least one
+interrupt. This happens because its_vpe_irq_domain_free() frees the
+interrupts along with the area bitmap and the vprop_page and
+its_vpe_irq_domain_alloc() subsequently frees the area bitmap and the
+vprop_page again.
 
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Abel Vesa <abel.vesa@linaro.org>
-Cc: Steev Klimaszewski <steev@kali.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>
-Cc: Bjorn Andersson <quic_bjorande@quicinc.com>
-Cc: stable@vger.kernel.org      # 6.5
-Fixes: 815891eee668 ("phy: qcom-qmp-combo: Introduce orientation variable")
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240405000111.1450598-1-swboyd@chromium.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fix this by unconditionally invoking its_vpe_irq_domain_free() which
+handles all cases correctly and by removing the bitmap/vprop_page freeing
+from its_vpe_irq_domain_alloc().
+
+[ tglx: Massaged change log ]
+
+Fixes: 7d75bbb4bc1a ("irqchip/gic-v3-its: Add VPE irq domain allocation/teardown")
+Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240418061053.96803-2-guanrui.huang@linux.alibaba.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -2047,9 +2047,9 @@ static bool qmp_combo_configure_dp_mode(
- 	writel(val, qmp->dp_dp_phy + QSERDES_DP_PHY_PD_CTL);
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -4508,13 +4508,8 @@ static int its_vpe_irq_domain_alloc(stru
+ 		set_bit(i, bitmap);
+ 	}
  
- 	if (reverse)
--		writel(0x4c, qmp->pcs + QSERDES_DP_PHY_MODE);
-+		writel(0x4c, qmp->dp_dp_phy + QSERDES_DP_PHY_MODE);
- 	else
--		writel(0x5c, qmp->pcs + QSERDES_DP_PHY_MODE);
-+		writel(0x5c, qmp->dp_dp_phy + QSERDES_DP_PHY_MODE);
+-	if (err) {
+-		if (i > 0)
+-			its_vpe_irq_domain_free(domain, virq, i);
+-
+-		its_lpi_free(bitmap, base, nr_ids);
+-		its_free_prop_table(vprop_page);
+-	}
++	if (err)
++		its_vpe_irq_domain_free(domain, virq, i);
  
- 	return reverse;
+ 	return err;
  }
 
 
